@@ -14,10 +14,10 @@ from ...types import UNSET, Response, Unset
 def _get_kwargs(
     *,
     id: str | Unset = UNSET,
-    entity_id: str | Unset = UNSET,
-    name: str | Unset = UNSET,
     business_id: str | Unset = UNSET,
     business_id_type: str | Unset = UNSET,
+    entity_id: str | Unset = UNSET,
+    name: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -27,13 +27,13 @@ def _get_kwargs(
 
     params["id"] = id
 
-    params["entity_id"] = entity_id
-
-    params["name"] = name
-
     params["business_id"] = business_id
 
     params["business_id_type"] = business_id_type
+
+    params["entity_id"] = entity_id
+
+    params["name"] = name
 
     params["select"] = select
 
@@ -149,10 +149,10 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     id: str | Unset = UNSET,
-    entity_id: str | Unset = UNSET,
-    name: str | Unset = UNSET,
     business_id: str | Unset = UNSET,
     business_id_type: str | Unset = UNSET,
+    entity_id: str | Unset = UNSET,
+    name: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -162,10 +162,10 @@ def sync_detailed(
 
     Args:
         id (str | Unset):
-        entity_id (str | Unset):
-        name (str | Unset):
         business_id (str | Unset):
         business_id_type (str | Unset):
+        entity_id (str | Unset):
+        name (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -181,10 +181,10 @@ def sync_detailed(
 
     kwargs = _get_kwargs(
         id=id,
-        entity_id=entity_id,
-        name=name,
         business_id=business_id,
         business_id_type=business_id_type,
+        entity_id=entity_id,
+        name=name,
         select=select,
         order=order,
         offset=offset,
@@ -202,10 +202,10 @@ def sync(
     *,
     client: AuthenticatedClient,
     id: str | Unset = UNSET,
-    entity_id: str | Unset = UNSET,
-    name: str | Unset = UNSET,
     business_id: str | Unset = UNSET,
     business_id_type: str | Unset = UNSET,
+    entity_id: str | Unset = UNSET,
+    name: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -215,10 +215,10 @@ def sync(
 
     Args:
         id (str | Unset):
-        entity_id (str | Unset):
-        name (str | Unset):
         business_id (str | Unset):
         business_id_type (str | Unset):
+        entity_id (str | Unset):
+        name (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -235,10 +235,10 @@ def sync(
     return sync_detailed(
         client=client,
         id=id,
-        entity_id=entity_id,
-        name=name,
         business_id=business_id,
         business_id_type=business_id_type,
+        entity_id=entity_id,
+        name=name,
         select=select,
         order=order,
         offset=offset,
@@ -250,10 +250,10 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     id: str | Unset = UNSET,
-    entity_id: str | Unset = UNSET,
-    name: str | Unset = UNSET,
     business_id: str | Unset = UNSET,
     business_id_type: str | Unset = UNSET,
+    entity_id: str | Unset = UNSET,
+    name: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -263,10 +263,10 @@ async def asyncio_detailed(
 
     Args:
         id (str | Unset):
-        entity_id (str | Unset):
-        name (str | Unset):
         business_id (str | Unset):
         business_id_type (str | Unset):
+        entity_id (str | Unset):
+        name (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -282,10 +282,10 @@ async def asyncio_detailed(
 
     kwargs = _get_kwargs(
         id=id,
-        entity_id=entity_id,
-        name=name,
         business_id=business_id,
         business_id_type=business_id_type,
+        entity_id=entity_id,
+        name=name,
         select=select,
         order=order,
         offset=offset,
@@ -301,10 +301,10 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     id: str | Unset = UNSET,
-    entity_id: str | Unset = UNSET,
-    name: str | Unset = UNSET,
     business_id: str | Unset = UNSET,
     business_id_type: str | Unset = UNSET,
+    entity_id: str | Unset = UNSET,
+    name: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -314,10 +314,10 @@ async def asyncio(
 
     Args:
         id (str | Unset):
-        entity_id (str | Unset):
-        name (str | Unset):
         business_id (str | Unset):
         business_id_type (str | Unset):
+        entity_id (str | Unset):
+        name (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -335,10 +335,10 @@ async def asyncio(
         await asyncio_detailed(
             client=client,
             id=id,
-            entity_id=entity_id,
-            name=name,
             business_id=business_id,
             business_id_type=business_id_type,
+            entity_id=entity_id,
+            name=name,
             select=select,
             order=order,
             offset=offset,

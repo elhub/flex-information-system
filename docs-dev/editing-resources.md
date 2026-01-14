@@ -34,7 +34,10 @@ Read-only fields and generated fields like surrogate keys should be marked as
 such with the `readOnly` attribute, fields referencing other resources should be
 marked with `x-foreign-key`, and non-updatable fields (fields that can be given
 when creating the resource but read-only after) should be marked with
-`x-no-update`. All `x-*` fields are deleted in the final OpenAPI specification
+`x-no-update`.
+If a field has x-filter, the fields are filterable in their list-endpoint,
+most Ids and foreign-keys should have this attribute.
+All `x-*` fields are deleted in the final OpenAPI specification
 file and only there in the source YAML to inform the schema and documentation
 generation procedures.
 

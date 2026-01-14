@@ -14,8 +14,8 @@ from ...types import UNSET, Response, Unset
 def _get_kwargs(
     *,
     id: str | Unset = UNSET,
-    service_provider_id: str | Unset = UNSET,
     name: str | Unset = UNSET,
+    service_provider_id: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -26,9 +26,9 @@ def _get_kwargs(
 
     params["id"] = id
 
-    params["service_provider_id"] = service_provider_id
-
     params["name"] = name
+
+    params["service_provider_id"] = service_provider_id
 
     params["select"] = select
 
@@ -146,8 +146,8 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     id: str | Unset = UNSET,
-    service_provider_id: str | Unset = UNSET,
     name: str | Unset = UNSET,
+    service_provider_id: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -158,8 +158,8 @@ def sync_detailed(
 
     Args:
         id (str | Unset):
-        service_provider_id (str | Unset):
         name (str | Unset):
+        service_provider_id (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -176,8 +176,8 @@ def sync_detailed(
 
     kwargs = _get_kwargs(
         id=id,
-        service_provider_id=service_provider_id,
         name=name,
+        service_provider_id=service_provider_id,
         select=select,
         order=order,
         offset=offset,
@@ -196,8 +196,8 @@ def sync(
     *,
     client: AuthenticatedClient,
     id: str | Unset = UNSET,
-    service_provider_id: str | Unset = UNSET,
     name: str | Unset = UNSET,
+    service_provider_id: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -208,8 +208,8 @@ def sync(
 
     Args:
         id (str | Unset):
-        service_provider_id (str | Unset):
         name (str | Unset):
+        service_provider_id (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -227,8 +227,8 @@ def sync(
     return sync_detailed(
         client=client,
         id=id,
-        service_provider_id=service_provider_id,
         name=name,
+        service_provider_id=service_provider_id,
         select=select,
         order=order,
         offset=offset,
@@ -241,8 +241,8 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     id: str | Unset = UNSET,
-    service_provider_id: str | Unset = UNSET,
     name: str | Unset = UNSET,
+    service_provider_id: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -253,8 +253,8 @@ async def asyncio_detailed(
 
     Args:
         id (str | Unset):
-        service_provider_id (str | Unset):
         name (str | Unset):
+        service_provider_id (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -271,8 +271,8 @@ async def asyncio_detailed(
 
     kwargs = _get_kwargs(
         id=id,
-        service_provider_id=service_provider_id,
         name=name,
+        service_provider_id=service_provider_id,
         select=select,
         order=order,
         offset=offset,
@@ -289,8 +289,8 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     id: str | Unset = UNSET,
-    service_provider_id: str | Unset = UNSET,
     name: str | Unset = UNSET,
+    service_provider_id: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -301,8 +301,8 @@ async def asyncio(
 
     Args:
         id (str | Unset):
-        service_provider_id (str | Unset):
         name (str | Unset):
+        service_provider_id (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -321,8 +321,8 @@ async def asyncio(
         await asyncio_detailed(
             client=client,
             id=id,
-            service_provider_id=service_provider_id,
             name=name,
+            service_provider_id=service_provider_id,
             select=select,
             order=order,
             offset=offset,

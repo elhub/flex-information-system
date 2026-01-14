@@ -3684,13 +3684,10 @@ export const zListControllableUnitData = z.object({
             .optional(),
         ),
       ),
-      accounting_point_id: z.optional(
+      business_id: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
-          z
-            .string()
-            .regex(/^eq\.[0-9]+$/)
-            .optional(),
+          z.string().optional(),
         ),
       ),
       name: z.optional(
@@ -3699,10 +3696,13 @@ export const zListControllableUnitData = z.object({
           z.string().optional(),
         ),
       ),
-      business_id: z.optional(
+      accounting_point_id: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
-          z.string().optional(),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
         ),
       ),
       select: z.optional(
@@ -3838,13 +3838,10 @@ export const zListControllableUnitHistoryData = z.object({
             .optional(),
         ),
       ),
-      accounting_point_id: z.optional(
+      business_id: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
-          z
-            .string()
-            .regex(/^eq\.[0-9]+$/)
-            .optional(),
+          z.string().optional(),
         ),
       ),
       name: z.optional(
@@ -3853,10 +3850,13 @@ export const zListControllableUnitHistoryData = z.object({
           z.string().optional(),
         ),
       ),
-      business_id: z.optional(
+      accounting_point_id: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
-          z.string().optional(),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
         ),
       ),
       select: z.optional(
@@ -4475,6 +4475,18 @@ export const zListControllableUnitServiceProviderData = z.object({
             .optional(),
         ),
       ),
+      valid_from: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      valid_to: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
       select: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
@@ -4660,6 +4672,18 @@ export const zListControllableUnitServiceProviderHistoryData = z.object({
             .optional(),
         ),
       ),
+      valid_from: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      valid_to: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
       select: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
@@ -4741,6 +4765,12 @@ export const zListServiceProvidingGroupData = z.object({
             .optional(),
         ),
       ),
+      name: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
       service_provider_id: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
@@ -4748,12 +4778,6 @@ export const zListServiceProvidingGroupData = z.object({
             .string()
             .regex(/^eq\.[0-9]+$/)
             .optional(),
-        ),
-      ),
-      name: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
         ),
       ),
       select: z.optional(
@@ -4889,6 +4913,12 @@ export const zListServiceProvidingGroupHistoryData = z.object({
             .optional(),
         ),
       ),
+      name: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
       service_provider_id: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
@@ -4896,12 +4926,6 @@ export const zListServiceProvidingGroupHistoryData = z.object({
             .string()
             .regex(/^eq\.[0-9]+$/)
             .optional(),
-        ),
-      ),
-      name: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
         ),
       ),
       select: z.optional(
@@ -5001,6 +5025,18 @@ export const zListServiceProvidingGroupMembershipData = z.object({
             .string()
             .regex(/^eq\.[0-9]+$/)
             .optional(),
+        ),
+      ),
+      valid_from: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      valid_to: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
         ),
       ),
       select: z.optional(
@@ -5177,6 +5213,18 @@ export const zListServiceProvidingGroupMembershipHistoryData = z.object({
             .string()
             .regex(/^eq\.[0-9]+$/)
             .optional(),
+        ),
+      ),
+      valid_from: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      valid_to: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
         ),
       ),
       select: z.optional(
@@ -6264,12 +6312,6 @@ export const zListEntityData = z.object({
             .optional(),
         ),
       ),
-      name: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
       business_id: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
@@ -6277,6 +6319,12 @@ export const zListEntityData = z.object({
         ),
       ),
       business_id_type: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      name: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
@@ -6412,6 +6460,12 @@ export const zListEntityClientData = z.object({
             .optional(),
         ),
       ),
+      name: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
       party_id: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
@@ -6419,12 +6473,6 @@ export const zListEntityClientData = z.object({
             .string()
             .regex(/^eq\.[0-9]+$/)
             .optional(),
-        ),
-      ),
-      name: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
         ),
       ),
       select: z.optional(
@@ -6571,6 +6619,18 @@ export const zListPartyData = z.object({
             .optional(),
         ),
       ),
+      business_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      business_id_type: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
       entity_id: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
@@ -6581,18 +6641,6 @@ export const zListPartyData = z.object({
         ),
       ),
       name: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      business_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      business_id_type: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
@@ -6725,6 +6773,18 @@ export const zListPartyHistoryData = z.object({
             .optional(),
         ),
       ),
+      business_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      business_id_type: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
       entity_id: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
@@ -6735,18 +6795,6 @@ export const zListPartyHistoryData = z.object({
         ),
       ),
       name: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      business_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      business_id_type: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
@@ -7220,6 +7268,12 @@ export const zListTechnicalResourceData = z.object({
             .optional(),
         ),
       ),
+      name: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
       controllable_unit_id: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
@@ -7227,12 +7281,6 @@ export const zListTechnicalResourceData = z.object({
             .string()
             .regex(/^eq\.[0-9]+$/)
             .optional(),
-        ),
-      ),
-      name: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
         ),
       ),
       select: z.optional(
@@ -7391,6 +7439,12 @@ export const zListTechnicalResourceHistoryData = z.object({
             .optional(),
         ),
       ),
+      name: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
       controllable_unit_id: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
@@ -7398,12 +7452,6 @@ export const zListTechnicalResourceHistoryData = z.object({
             .string()
             .regex(/^eq\.[0-9]+$/)
             .optional(),
-        ),
-      ),
-      name: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
         ),
       ),
       select: z.optional(
@@ -7676,6 +7724,12 @@ export const zListAccountingPointData = z.object({
             .optional(),
         ),
       ),
+      business_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
       system_operator_id: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
@@ -7683,12 +7737,6 @@ export const zListAccountingPointData = z.object({
             .string()
             .regex(/^eq\.[0-9]+$/)
             .optional(),
-        ),
-      ),
-      business_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
         ),
       ),
       select: z.optional(
@@ -7780,6 +7828,18 @@ export const zListAccountingPointBalanceResponsiblePartyData = z.object({
             .optional(),
         ),
       ),
+      valid_from: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      valid_to: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
       select: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
@@ -7835,6 +7895,18 @@ export const zListAccountingPointBiddingZoneData = z.object({
             .string()
             .regex(/^eq\.[0-9]+$/)
             .optional(),
+        ),
+      ),
+      valid_from: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      valid_to: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
         ),
       ),
       select: z.optional(
@@ -7903,6 +7975,18 @@ export const zListAccountingPointEndUserData = z.object({
             .optional(),
         ),
       ),
+      valid_from: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      valid_to: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
       select: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
@@ -7969,6 +8053,18 @@ export const zListAccountingPointEnergySupplierData = z.object({
             .optional(),
         ),
       ),
+      valid_from: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      valid_to: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
       select: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
@@ -8026,13 +8122,13 @@ export const zListMeteringGridAreaData = z.object({
             .optional(),
         ),
       ),
-      name: z.optional(
+      business_id: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
         ),
       ),
-      business_id: z.optional(
+      name: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
@@ -8127,6 +8223,18 @@ export const zListAccountingPointMeteringGridAreaData = z.object({
             .optional(),
         ),
       ),
+      valid_from: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      valid_to: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
       select: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
@@ -8184,13 +8292,13 @@ export const zListProductTypeData = z.object({
             .optional(),
         ),
       ),
-      name: z.optional(
+      business_id: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),
         ),
       ),
-      business_id: z.optional(
+      name: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),

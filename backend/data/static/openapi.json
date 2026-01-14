@@ -5479,13 +5479,12 @@
                     },
                     {
                         "in": "query",
+                        "name": "business_id",
                         "schema": {
-                            "type": "string",
-                            "pattern": "^eq\\.[0-9]+$"
+                            "type": "string"
                         },
-                        "example": "eq.55",
-                        "description": "Reference to the accounting point that the controllable unit is connected to.",
-                        "name": "accounting_point_id"
+                        "example": "eq.somebusiness_id",
+                        "description": "Unique business identifier for the controllable unit."
                     },
                     {
                         "in": "query",
@@ -5498,12 +5497,13 @@
                     },
                     {
                         "in": "query",
-                        "name": "business_id",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
                         },
-                        "example": "eq.somebusiness_id",
-                        "description": "Unique business identifier for the controllable unit."
+                        "example": "eq.55",
+                        "description": "Reference to the accounting point that the controllable unit is connected to.",
+                        "name": "accounting_point_id"
                     },
                     {
                         "description": "Filtering Columns",
@@ -6042,13 +6042,12 @@
                     },
                     {
                         "in": "query",
+                        "name": "business_id",
                         "schema": {
-                            "type": "string",
-                            "pattern": "^eq\\.[0-9]+$"
+                            "type": "string"
                         },
-                        "example": "eq.55",
-                        "description": "Reference to the accounting point that the controllable unit is connected to.",
-                        "name": "accounting_point_id"
+                        "example": "eq.somebusiness_id",
+                        "description": "Unique business identifier for the controllable unit."
                     },
                     {
                         "in": "query",
@@ -6061,12 +6060,13 @@
                     },
                     {
                         "in": "query",
-                        "name": "business_id",
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
                         },
-                        "example": "eq.somebusiness_id",
-                        "description": "Unique business identifier for the controllable unit."
+                        "example": "eq.55",
+                        "description": "Reference to the accounting point that the controllable unit is connected to.",
+                        "name": "accounting_point_id"
                     },
                     {
                         "description": "Filtering Columns",
@@ -8166,6 +8166,24 @@
                         "name": "end_user_id"
                     },
                     {
+                        "in": "query",
+                        "name": "valid_from",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_from",
+                        "description": "The date from which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone."
+                    },
+                    {
+                        "in": "query",
+                        "name": "valid_to",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_to",
+                        "description": "The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -8832,6 +8850,24 @@
                         "name": "end_user_id"
                     },
                     {
+                        "in": "query",
+                        "name": "valid_from",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_from",
+                        "description": "The date from which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone."
+                    },
+                    {
+                        "in": "query",
+                        "name": "valid_to",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_to",
+                        "description": "The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -9114,6 +9150,15 @@
                     },
                     {
                         "in": "query",
+                        "name": "name",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somename",
+                        "description": "Free text name of the service providing group."
+                    },
+                    {
+                        "in": "query",
                         "schema": {
                             "type": "string",
                             "pattern": "^eq\\.[0-9]+$"
@@ -9121,15 +9166,6 @@
                         "example": "eq.55",
                         "description": "Reference to the `party` (service provider) managing the group.",
                         "name": "service_provider_id"
-                    },
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "eq.somename",
-                        "description": "Free text name of the service providing group."
                     },
                     {
                         "description": "Filtering Columns",
@@ -9668,6 +9704,15 @@
                     },
                     {
                         "in": "query",
+                        "name": "name",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somename",
+                        "description": "Free text name of the service providing group."
+                    },
+                    {
+                        "in": "query",
                         "schema": {
                             "type": "string",
                             "pattern": "^eq\\.[0-9]+$"
@@ -9675,15 +9720,6 @@
                         "example": "eq.55",
                         "description": "Reference to the `party` (service provider) managing the group.",
                         "name": "service_provider_id"
-                    },
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "eq.somename",
-                        "description": "Free text name of the service providing group."
                     },
                     {
                         "description": "Filtering Columns",
@@ -9985,6 +10021,24 @@
                         "example": "eq.55",
                         "description": "Reference to the service providing group this relation links to a controllable unit.",
                         "name": "service_providing_group_id"
+                    },
+                    {
+                        "in": "query",
+                        "name": "valid_from",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_from",
+                        "description": "The date from which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone."
+                    },
+                    {
+                        "in": "query",
+                        "name": "valid_to",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_to",
+                        "description": "The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone."
                     },
                     {
                         "description": "Filtering Columns",
@@ -10634,6 +10688,24 @@
                         "example": "eq.55",
                         "description": "Reference to the service providing group this relation links to a controllable unit.",
                         "name": "service_providing_group_id"
+                    },
+                    {
+                        "in": "query",
+                        "name": "valid_from",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_from",
+                        "description": "The date from which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone."
+                    },
+                    {
+                        "in": "query",
+                        "name": "valid_to",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_to",
+                        "description": "The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone."
                     },
                     {
                         "description": "Filtering Columns",
@@ -14403,15 +14475,6 @@
                     },
                     {
                         "in": "query",
-                        "name": "name",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "eq.somename",
-                        "description": "Name of the entity. Maximum 128 characters."
-                    },
-                    {
-                        "in": "query",
                         "name": "business_id",
                         "schema": {
                             "type": "string"
@@ -14426,6 +14489,15 @@
                             "type": "string"
                         },
                         "example": "eq.somebusiness_id_type"
+                    },
+                    {
+                        "in": "query",
+                        "name": "name",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somename",
+                        "description": "Name of the entity. Maximum 128 characters."
                     },
                     {
                         "description": "Filtering Columns",
@@ -14943,6 +15015,15 @@
                     },
                     {
                         "in": "query",
+                        "name": "name",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somename",
+                        "description": "Name of the client."
+                    },
+                    {
+                        "in": "query",
                         "schema": {
                             "type": "string",
                             "pattern": "^eq\\.[0-9]+$"
@@ -14950,15 +15031,6 @@
                         "example": "eq.55",
                         "description": "Reference to the party this client allows to assume. A null value means the client cannot assume any party.",
                         "name": "party_id"
-                    },
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "eq.somename",
-                        "description": "Name of the client."
                     },
                     {
                         "description": "Filtering Columns",
@@ -15569,6 +15641,23 @@
                     },
                     {
                         "in": "query",
+                        "name": "business_id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somebusiness_id",
+                        "description": "The business identifier of the party. Format depends on `business_id_type`."
+                    },
+                    {
+                        "in": "query",
+                        "name": "business_id_type",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somebusiness_id_type"
+                    },
+                    {
+                        "in": "query",
                         "schema": {
                             "type": "string",
                             "pattern": "^eq\\.[0-9]+$"
@@ -15585,23 +15674,6 @@
                         },
                         "example": "eq.somename",
                         "description": "Name of the party. Maximum 128 characters."
-                    },
-                    {
-                        "in": "query",
-                        "name": "business_id",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "eq.somebusiness_id",
-                        "description": "The business identifier of the party. Format depends on `business_id_type`."
-                    },
-                    {
-                        "in": "query",
-                        "name": "business_id_type",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "eq.somebusiness_id_type"
                     },
                     {
                         "description": "Filtering Columns",
@@ -16140,6 +16212,23 @@
                     },
                     {
                         "in": "query",
+                        "name": "business_id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somebusiness_id",
+                        "description": "The business identifier of the party. Format depends on `business_id_type`."
+                    },
+                    {
+                        "in": "query",
+                        "name": "business_id_type",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somebusiness_id_type"
+                    },
+                    {
+                        "in": "query",
                         "schema": {
                             "type": "string",
                             "pattern": "^eq\\.[0-9]+$"
@@ -16156,23 +16245,6 @@
                         },
                         "example": "eq.somename",
                         "description": "Name of the party. Maximum 128 characters."
-                    },
-                    {
-                        "in": "query",
-                        "name": "business_id",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "eq.somebusiness_id",
-                        "description": "The business identifier of the party. Format depends on `business_id_type`."
-                    },
-                    {
-                        "in": "query",
-                        "name": "business_id_type",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "eq.somebusiness_id_type"
                     },
                     {
                         "description": "Filtering Columns",
@@ -17757,6 +17829,15 @@
                     },
                     {
                         "in": "query",
+                        "name": "name",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somename",
+                        "description": "Name of the technical resource. Maximum 128 characters."
+                    },
+                    {
+                        "in": "query",
                         "schema": {
                             "type": "string",
                             "pattern": "^eq\\.[0-9]+$"
@@ -17764,15 +17845,6 @@
                         "example": "eq.55",
                         "description": "Reference to the controllable unit that this technical resource belongs to.",
                         "name": "controllable_unit_id"
-                    },
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "eq.somename",
-                        "description": "Name of the technical resource. Maximum 128 characters."
                     },
                     {
                         "description": "Filtering Columns",
@@ -18398,6 +18470,15 @@
                     },
                     {
                         "in": "query",
+                        "name": "name",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somename",
+                        "description": "Name of the technical resource. Maximum 128 characters."
+                    },
+                    {
+                        "in": "query",
                         "schema": {
                             "type": "string",
                             "pattern": "^eq\\.[0-9]+$"
@@ -18405,15 +18486,6 @@
                         "example": "eq.55",
                         "description": "Reference to the controllable unit that this technical resource belongs to.",
                         "name": "controllable_unit_id"
-                    },
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "eq.somename",
-                        "description": "Name of the technical resource. Maximum 128 characters."
                     },
                     {
                         "description": "Filtering Columns",
@@ -19403,6 +19475,15 @@
                     },
                     {
                         "in": "query",
+                        "name": "business_id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somebusiness_id",
+                        "description": "The GSRN metering point id of the accounting point."
+                    },
+                    {
+                        "in": "query",
                         "schema": {
                             "type": "string",
                             "pattern": "^eq\\.[0-9]+$"
@@ -19410,15 +19491,6 @@
                         "example": "eq.55",
                         "description": "The system operator of the accounting point.",
                         "name": "system_operator_id"
-                    },
-                    {
-                        "in": "query",
-                        "name": "business_id",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "eq.somebusiness_id",
-                        "description": "The GSRN metering point id of the accounting point."
                     },
                     {
                         "description": "Filtering Columns",
@@ -19720,6 +19792,24 @@
                         "name": "balance_responsible_party_id"
                     },
                     {
+                        "in": "query",
+                        "name": "valid_from",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_from",
+                        "description": "The date from which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone."
+                    },
+                    {
+                        "in": "query",
+                        "name": "valid_to",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_to",
+                        "description": "The date until which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -19887,6 +19977,24 @@
                         "example": "eq.55",
                         "description": "The ID of the accounting point.",
                         "name": "accounting_point_id"
+                    },
+                    {
+                        "in": "query",
+                        "name": "valid_from",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_from",
+                        "description": "The date from which the accounting point belongs to the bidding zone. Midnight aligned on Norwegian timezone."
+                    },
+                    {
+                        "in": "query",
+                        "name": "valid_to",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_to",
+                        "description": "The date until which the accounting point belongs to the bidding zone. Midnight aligned on Norwegian timezone."
                     },
                     {
                         "description": "Filtering Columns",
@@ -20068,6 +20176,24 @@
                         "name": "end_user_id"
                     },
                     {
+                        "in": "query",
+                        "name": "valid_from",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_from",
+                        "description": "The date from which the accounting point belongs to the end user. Midnight aligned on Norwegian timezone."
+                    },
+                    {
+                        "in": "query",
+                        "name": "valid_to",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_to",
+                        "description": "The date until which the accounting point belongs to the end user. Midnight aligned on Norwegian timezone."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -20247,6 +20373,24 @@
                         "name": "energy_supplier_id"
                     },
                     {
+                        "in": "query",
+                        "name": "valid_from",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_from",
+                        "description": "The date from which the relation between the accounting point and the energy supplier is valid. Midnight aligned on Norwegian timezone."
+                    },
+                    {
+                        "in": "query",
+                        "name": "valid_to",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_to",
+                        "description": "The date until which the relation between the accounting point and the energy supplier is valid. Midnight aligned on Norwegian timezone."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -20417,21 +20561,21 @@
                     },
                     {
                         "in": "query",
-                        "name": "name",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "eq.somename",
-                        "description": "The name of the metering grid area."
-                    },
-                    {
-                        "in": "query",
                         "name": "business_id",
                         "schema": {
                             "type": "string"
                         },
                         "example": "eq.somebusiness_id",
                         "description": "The EIC-Y code for this metering grid area."
+                    },
+                    {
+                        "in": "query",
+                        "name": "name",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somename",
+                        "description": "The name of the metering grid area."
                     },
                     {
                         "description": "Filtering Columns",
@@ -20724,6 +20868,24 @@
                         "name": "metering_grid_area_id"
                     },
                     {
+                        "in": "query",
+                        "name": "valid_from",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_from",
+                        "description": "The date from which the accounting point belongs to the metering grid area. Midnight aligned on Norwegian timezone."
+                    },
+                    {
+                        "in": "query",
+                        "name": "valid_to",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somevalid_to",
+                        "description": "The date until which the accounting point belongs to the metering grid area. Midnight aligned on Norwegian timezone."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -20894,21 +21056,21 @@
                     },
                     {
                         "in": "query",
-                        "name": "name",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "eq.somename",
-                        "description": "The name of the product type."
-                    },
-                    {
-                        "in": "query",
                         "name": "business_id",
                         "schema": {
                             "type": "string"
                         },
                         "example": "eq.somebusiness_id",
                         "description": "The code for this product type."
+                    },
+                    {
+                        "in": "query",
+                        "name": "name",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somename",
+                        "description": "The name of the product type."
                     },
                     {
                         "description": "Filtering Columns",
