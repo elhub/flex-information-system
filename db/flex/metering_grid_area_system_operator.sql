@@ -21,9 +21,9 @@ CREATE TABLE IF NOT EXISTS metering_grid_area_system_operator (
     ),
     recorded_by bigint NOT NULL DEFAULT current_identity(),
 
-    CONSTRAINT mgabz_metering_grid_area_fkey
+    CONSTRAINT mgaso_metering_grid_area_fkey
     FOREIGN KEY (metering_grid_area_id) REFERENCES metering_grid_area (id),
-    CONSTRAINT metering_grid_area_system_operator_fkey
+    CONSTRAINT mgaso_system_operator_fkey
     FOREIGN KEY (
         system_operator_id, system_operator_party_type
     ) REFERENCES party (id, type)
