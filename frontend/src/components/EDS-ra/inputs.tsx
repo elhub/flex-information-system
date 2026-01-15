@@ -119,23 +119,16 @@ const ReferenceComboboxInput = ({
     id: choice.id,
   }));
 
-  const selectedValue =
-    field.value == null
-      ? undefined
-      : options?.find((option) => option.value === String(field.value));
+  const selectedValue = options?.find(
+    (option) => option.value === String(field.value),
+  );
 
   const handleInputChange = (_event: unknown, value?: string) => {
-    if (!setFilters) {
-      return;
-    }
     const filterKey = `${fieldName ?? "name"}@ilike`;
-    const nextFilters = { ...(filterValues ?? {}) };
-    if (value) {
-      nextFilters[filterKey] = `%${value}%`;
-    } else {
-      delete nextFilters[filterKey];
-    }
-    setFilters(nextFilters);
+    setFilters({
+      ...filterValues,
+      [filterKey]: value ? `%${value}%` : undefined,
+    });
   };
 
   const handleToggle = (value: string, isSelected: boolean) => {

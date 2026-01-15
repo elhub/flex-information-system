@@ -1,4 +1,5 @@
 import { Children, ReactNode, cloneElement, isValidElement } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   FieldTitle,
   FilterLiveForm,
@@ -7,7 +8,6 @@ import {
   RecordContextProvider,
   useListContext,
   useResourceContext,
-  useTranslate,
   RaRecord,
 } from "ra-core";
 import {
@@ -70,15 +70,17 @@ const ListFilters = ({ filters }: ListFiltersProps) => (
 );
 
 const ListPagination = () => {
-  const { page, setPage, total } = useListContext();
+  const { page, perPage, setPage, total } = useListContext();
 
   if (!total || total <= 1) {
     return null;
   }
 
+  const pageCount = Math.ceil(total / perPage);
+
   return (
     <Pagination
-      count={total}
+      count={pageCount}
       page={page}
       onPageChange={setPage}
       prevText="Previous"
@@ -98,20 +100,20 @@ export const Datagrid = <T extends RaRecord>({
 }: DatagridProps) => {
   const { data, isLoading } = useListContext<T>();
   const resource = useResourceContext();
-  const translate = useTranslate();
   const rows = data ?? [];
   const columns = Children.toArray(children).filter(isValidElement);
+  const navigate = useNavigate();
+
+  const handleRowClick = (record: RaRecord) => {
+    navigate(`/${resource}/${record.id}/show`);
+  };
 
   if (isLoading) {
     return <Loader />;
   }
 
   if (!rows.length && empty !== false) {
-    return (
-      <BodyText>
-        {translate("ra.navigation.no_results", { _: "No results" })}
-      </BodyText>
-    );
+    return <BodyText>No results</BodyText>;
   }
 
   return (
@@ -134,9 +136,13 @@ export const Datagrid = <T extends RaRecord>({
       <Table.Body>
         {rows.map((record) => (
           <RecordContextProvider key={record.id} value={record}>
-            <Table.Row>
+            <Table.Row
+              style={{ cursor: "pointer" }}
+              onClick={() => handleRowClick(record)}
+            >
               {columns.map((child, index) => {
-                const key = (child.props as { source: string }).source ?? index;
+                const key =
+                  (child.props as { source?: string }).source ?? index;
                 return (
                   <Table.DataCell key={key}>
                     {cloneElement(child)}
