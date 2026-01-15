@@ -780,20 +780,10 @@ BEGIN
   INSERT INTO flex.metering_grid_area (
     business_id,
     name,
-    -- TODO: do no longer insert these fields when they are removed from MGA
-    price_area,
-    system_operator_id,
-    valid_time_range,
     recorded_by
   ) VALUES (
     test_data.forge_valid_eic(31, in_entity_name),
     in_entity_name || ' AREA 1',
-    'NO4',
-    so_id,
-    tstzrange(
-      '2023-10-01 Europe/Oslo',
-      null, '[)'
-    ),
     0
   ) RETURNING id INTO l_mga_id;
 
@@ -830,20 +820,10 @@ BEGIN
   INSERT INTO flex.metering_grid_area (
     business_id,
     name,
-    -- TODO: do no longer insert these fields when they are removed from MGA
-    price_area,
-    system_operator_id,
-    valid_time_range,
     recorded_by
   ) VALUES (
     so_mga_business_id,
     in_entity_name || ' AREA 2',
-    'NO3',
-    so_id,
-    tstzrange(
-      '2023-10-01 Europe/Oslo',
-      null, '[)'
-    ),
     0
   ) RETURNING id INTO l_mga_id;
 
