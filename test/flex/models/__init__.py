@@ -57,6 +57,7 @@ from .entity_update_request import EntityUpdateRequest
 from .error_message import ErrorMessage
 from .event_response import EventResponse
 from .identity_response import IdentityResponse
+from .metering_grid_area_business_id_type import MeteringGridAreaBusinessIdType
 from .metering_grid_area_response import MeteringGridAreaResponse
 from .notice_data_party_missing import NoticeDataPartyMissing
 from .notice_data_party_outdated import NoticeDataPartyOutdated
@@ -265,6 +266,7 @@ __all__ = (
     "ErrorMessage",
     "EventResponse",
     "IdentityResponse",
+    "MeteringGridAreaBusinessIdType",
     "MeteringGridAreaResponse",
     "NoticeDataPartyMissing",
     "NoticeDataPartyOutdated",

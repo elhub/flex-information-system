@@ -333,6 +333,11 @@ export const zAccountingPointBiddingZoneBiddingZone = z.enum([
 ]);
 
 /**
+ * The type of the business identifier.
+ */
+export const zMeteringGridAreaBusinessIdType = z.enum(["eic_y"]);
+
+/**
  * The status of the relation.
  */
 export const zSystemOperatorProductTypeStatus = z.enum(["active", "inactive"]);
@@ -1708,10 +1713,8 @@ export const zAccountingPointEnergySupplier = z.object({
  */
 export const zMeteringGridArea = z.object({
   id: z.int().readonly(),
-  business_id: z
-    .string()
-    .regex(/^[0-9]{2}Y[0-9A-Z-]{12}[0-9A-Z]$/)
-    .readonly(),
+  business_id: z.string().readonly(),
+  business_id_type: zMeteringGridAreaBusinessIdType,
   name: z.string().max(128).readonly(),
 });
 
@@ -3023,6 +3026,11 @@ export const zAccountingPointBalanceResponsiblePartyWritable = z.record(
 export const zAccountingPointBiddingZoneWritable = z.object({
   bidding_zone: zAccountingPointBiddingZoneBiddingZone,
 });
+
+/**
+ * Response schema - Metering grid area to which accounting points belong.
+ */
+export const zMeteringGridAreaWritable = z.record(z.string(), z.unknown());
 
 /**
  * Response schema - Relation between a system operator and a product type they want to buy.
@@ -8123,6 +8131,12 @@ export const zListMeteringGridAreaData = z.object({
         ),
       ),
       business_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      business_id_type: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),

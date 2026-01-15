@@ -214,9 +214,10 @@ type ApiIdentity struct {
 }
 
 type ApiMeteringGridArea struct {
-	ID         int
-	BusinessID string
-	Name       string
+	ID             int
+	BusinessID     string
+	BusinessIDType string
+	Name           string
 }
 
 type ApiNotice struct {

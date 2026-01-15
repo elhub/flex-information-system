@@ -8,6 +8,7 @@ WITH (security_invoker = true) AS (
     SELECT
         id,
         business_id,
+        'eic_y' AS business_id_type,
         name
     FROM flex.metering_grid_area
 );

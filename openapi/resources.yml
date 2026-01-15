@@ -2260,10 +2260,11 @@ resources:
           nb: ID
           nn: ID
       business_id:
-        description: The EIC-Y code for this metering grid area.
+        description: >-
+          The business identifier of the metering grid area. Format depends on
+          `business_id_type`.
         format: text
         type: string
-        pattern: '^[0-9]{2}Y[0-9A-Z-]{12}[0-9A-Z]$'
         readOnly: true
         example: '24YAOER9FNW34FNN'
         x-filter: true
@@ -2271,6 +2272,24 @@ resources:
           en: Business ID
           nb: Forretnings-ID
           nn: Forretnings-ID
+      business_id_type:
+        description: >-
+          The type of the business identifier.
+        format: text
+        type: string
+        readOnly: true
+        x-filter: true
+        enum:
+          - id: eic_y
+            x-intl:
+              en: EIC-Y (Energy Identification Code - Areas)
+              nb: EIC-Y (Energy Identification Code - Områder)
+              nn: EIC-Y (Energy Identification Code - Område)
+        example: eic_y
+        x-intl:
+          en: Business ID type
+          nb: Forretnings-ID-type
+          nn: Forretnings-ID-type
       name:
         description: The name of the metering grid area.
         format: text

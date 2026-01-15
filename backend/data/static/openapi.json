@@ -750,6 +750,16 @@
                 ],
                 "example": "NO3"
             },
+            "metering_grid_area_business_id_type": {
+                "description": "The type of the business identifier.",
+                "format": "text",
+                "type": "string",
+                "readOnly": true,
+                "enum": [
+                    "eic_y"
+                ],
+                "example": "eic_y"
+            },
             "system_operator_product_type_status": {
                 "description": "The status of the relation.",
                 "format": "text",
@@ -3299,12 +3309,14 @@
                         "example": 3
                     },
                     "business_id": {
-                        "description": "The EIC-Y code for this metering grid area.",
+                        "description": "The business identifier of the metering grid area. Format depends on `business_id_type`.",
                         "format": "text",
                         "type": "string",
-                        "pattern": "^[0-9]{2}Y[0-9A-Z-]{12}[0-9A-Z]$",
                         "readOnly": true,
                         "example": "24YAOER9FNW34FNN"
+                    },
+                    "business_id_type": {
+                        "$ref": "#/components/schemas/metering_grid_area_business_id_type"
                     },
                     "name": {
                         "description": "The name of the metering grid area.",
@@ -3318,6 +3330,7 @@
                 "required": [
                     "id",
                     "business_id",
+                    "business_id_type",
                     "name"
                 ]
             },
@@ -20566,7 +20579,15 @@
                             "type": "string"
                         },
                         "example": "eq.somebusiness_id",
-                        "description": "The EIC-Y code for this metering grid area."
+                        "description": "The business identifier of the metering grid area. Format depends on `business_id_type`."
+                    },
+                    {
+                        "in": "query",
+                        "name": "business_id_type",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somebusiness_id_type"
                     },
                     {
                         "in": "query",

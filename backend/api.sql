@@ -387,6 +387,7 @@ CREATE TABLE api.accounting_point_energy_supplier (
 CREATE TABLE api.metering_grid_area (
     id bigint NOT NULL,
     business_id text NOT NULL,
+    business_id_type text NOT NULL,
     name text NOT NULL
 );
 CREATE TABLE api.accounting_point_metering_grid_area (

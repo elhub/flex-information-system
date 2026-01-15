@@ -188,6 +188,7 @@ accounting_point_energy_supplier;valid_to;;R;R;R;R;R;R;R;R;;;
 metering_grid_area;;;;;;;;;;;;;
 metering_grid_area;id;;R;R;R;R;R;R;R;R;;;
 metering_grid_area;business_id;;R;R;R;R;R;R;R;R;;;
+metering_grid_area;business_id_type;;R;R;R;R;R;R;R;R;;;
 metering_grid_area;name;;R;R;R;R;R;R;R;R;;;
 accounting_point_metering_grid_area;;;;;;;;;;;;;
 accounting_point_metering_grid_area;accounting_point_id;;R;R;R;R;R;R;R;R;;;

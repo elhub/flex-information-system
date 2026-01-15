@@ -557,7 +557,8 @@ export const tooltips = {
     "The date until which the relation between the accounting point and the energy supplier is valid. Midnight aligned on Norwegian timezone.",
   "metering_grid_area.id": "Unique surrogate identifier.",
   "metering_grid_area.business_id":
-    "The EIC-Y code for this metering grid area.",
+    "The business identifier of the metering grid area. Format depends on `business_id_type`.",
+  "metering_grid_area.business_id_type": "The type of the business identifier.",
   "metering_grid_area.name": "The name of the metering grid area.",
   "accounting_point_metering_grid_area.accounting_point_id":
     "The ID of the accounting point.",

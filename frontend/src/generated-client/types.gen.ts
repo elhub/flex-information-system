@@ -383,6 +383,11 @@ export type AccountingPointBiddingZoneBiddingZone =
   | "NO5";
 
 /**
+ * The type of the business identifier.
+ */
+export type MeteringGridAreaBusinessIdType = "eic_y";
+
+/**
  * The status of the relation.
  */
 export type SystemOperatorProductTypeStatus = "active" | "inactive";
@@ -1801,9 +1806,10 @@ export type MeteringGridArea = {
    */
   readonly id: number;
   /**
-   * The EIC-Y code for this metering grid area.
+   * The business identifier of the metering grid area. Format depends on `business_id_type`.
    */
   readonly business_id: string;
+  business_id_type: MeteringGridAreaBusinessIdType;
   /**
    * The name of the metering grid area.
    */
@@ -3198,6 +3204,13 @@ export type AccountingPointBalanceResponsiblePartyWritable = {
  */
 export type AccountingPointBiddingZoneWritable = {
   bidding_zone: AccountingPointBiddingZoneBiddingZone;
+};
+
+/**
+ * Response schema - Metering grid area to which accounting points belong.
+ */
+export type MeteringGridAreaWritable = {
+  [key: string]: unknown;
 };
 
 /**
@@ -10618,9 +10631,10 @@ export type ListMeteringGridAreaData = {
      */
     id?: string;
     /**
-     * The EIC-Y code for this metering grid area.
+     * The business identifier of the metering grid area. Format depends on `business_id_type`.
      */
     business_id?: string;
+    business_id_type?: string;
     /**
      * The name of the metering grid area.
      */
