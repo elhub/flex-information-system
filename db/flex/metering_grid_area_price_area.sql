@@ -1,12 +1,12 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:metering-grid-area-bidding-zone-create runOnChange:true endDelimiter:--
-CREATE TABLE IF NOT EXISTS metering_grid_area_bidding_zone (
+-- changeset flex:metering-grid-area-price-area-create runOnChange:true endDelimiter:--
+CREATE TABLE IF NOT EXISTS metering_grid_area_price_area (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     metering_grid_area_id bigint NOT NULL,
-    bidding_zone text NOT NULL CHECK (
-        bidding_zone IN ('NO1', 'NO2', 'NO3', 'NO4', 'NO5')
+    price_area text NOT NULL CHECK (
+        price_area IN ('NO1', 'NO2', 'NO3', 'NO4', 'NO5')
     ),
     valid_time_range tstzrange CHECK (
         valid_time_range IS null OR (
@@ -20,6 +20,6 @@ CREATE TABLE IF NOT EXISTS metering_grid_area_bidding_zone (
     ),
     recorded_by bigint NOT NULL DEFAULT current_identity(),
 
-    CONSTRAINT mgabz_metering_grid_area_fkey
+    CONSTRAINT mgapa_metering_grid_area_fkey
     FOREIGN KEY (metering_grid_area_id) REFERENCES metering_grid_area (id)
 );

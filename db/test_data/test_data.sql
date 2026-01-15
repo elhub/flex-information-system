@@ -797,9 +797,9 @@ BEGIN
     0
   ) RETURNING id INTO l_mga_id;
 
-  INSERT INTO flex.metering_grid_area_bidding_zone (
+  INSERT INTO flex.metering_grid_area_price_area (
     metering_grid_area_id,
-    bidding_zone,
+    price_area,
     valid_time_range,
     recorded_by
   ) VALUES (
@@ -847,9 +847,9 @@ BEGIN
     0
   ) RETURNING id INTO l_mga_id;
 
-  INSERT INTO flex.metering_grid_area_bidding_zone (
+  INSERT INTO flex.metering_grid_area_price_area (
     metering_grid_area_id,
-    bidding_zone,
+    price_area,
     valid_time_range,
     recorded_by
   ) VALUES (

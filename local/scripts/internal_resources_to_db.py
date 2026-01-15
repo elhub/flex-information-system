@@ -13,7 +13,7 @@ if __name__ == "__main__":
             "accounting_point_end_user",
             "accounting_point_energy_supplier",
             "metering_grid_area",
-            "metering_grid_area_bidding_zone",
+            "metering_grid_area_price_area",
             "metering_grid_area_system_operator",
             "accounting_point_metering_grid_area",
             "energy_supplier_balance_responsibility",
