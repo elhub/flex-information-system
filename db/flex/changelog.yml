@@ -244,12 +244,6 @@ databaseChangeLog:
       file: ./metering_grid_area_migrations.sql
       relativeToChangelogFile: true
   - include:
-      file: ./metering_grid_area_price_area_migrations.sql
-      relativeToChangelogFile: true
-  - include:
-      file: ./metering_grid_area_system_operator_migrations.sql
-      relativeToChangelogFile: true
-  - include:
       file: ./party_membership_migrations.sql
       relativeToChangelogFile: true
   - include:
