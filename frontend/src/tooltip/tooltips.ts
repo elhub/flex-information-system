@@ -557,18 +557,9 @@ export const tooltips = {
     "The date until which the relation between the accounting point and the energy supplier is valid. Midnight aligned on Norwegian timezone.",
   "metering_grid_area.id": "Unique surrogate identifier.",
   "metering_grid_area.business_id":
-    "The EIC-Y code for this metering grid area.",
+    "The business identifier of the metering grid area. Format depends on `business_id_type`.",
+  "metering_grid_area.business_id_type": "The type of the business identifier.",
   "metering_grid_area.name": "The name of the metering grid area.",
-  "metering_grid_area.price_area": "The price area of the metering grid area.",
-  "metering_grid_area.system_operator_id":
-    "The system operator responsible for the metering grid area.",
-  "metering_grid_area.valid_from":
-    "The date from which the metering grid area is active. Midnight aligned on Norwegian timezone.",
-  "metering_grid_area.valid_to":
-    "The date until which the metering grid area is active. Midnight aligned on Norwegian timezone.",
-  "metering_grid_area.recorded_at":
-    "When the resource was recorded (created or updated) in the system.",
-  "metering_grid_area.recorded_by": "The identity that recorded the resource.",
   "accounting_point_metering_grid_area.accounting_point_id":
     "The ID of the accounting point.",
   "accounting_point_metering_grid_area.metering_grid_area_id":

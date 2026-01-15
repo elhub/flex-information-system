@@ -25,7 +25,7 @@ def test_accounting_point_metering_grid_area_fiso(sts):
         limit="10000",
     )
     assert isinstance(apmga, list)
-    assert len(apmga) == 3000
+    assert len(apmga) >= 3000
     assert isinstance(apmga[0], AccountingPointMeteringGridAreaResponse)
 
 

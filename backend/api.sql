@@ -387,13 +387,8 @@ CREATE TABLE api.accounting_point_energy_supplier (
 CREATE TABLE api.metering_grid_area (
     id bigint NOT NULL,
     business_id text NOT NULL,
-    name text NOT NULL,
-    price_area text NOT NULL,
-    system_operator_id bigint NOT NULL,
-    valid_from timestamp with time zone NOT NULL,
-    valid_to timestamp with time zone NULL,
-    recorded_by bigint NOT NULL,
-    recorded_at timestamp with time zone NOT NULL
+    business_id_type text NOT NULL,
+    name text NOT NULL
 );
 CREATE TABLE api.accounting_point_metering_grid_area (
     accounting_point_id bigint NOT NULL,

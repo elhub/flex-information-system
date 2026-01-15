@@ -9,17 +9,12 @@ Metering grid area accounting points belong to.
 
 ## Fields
 
-| Name                                                                                       | Description                                                                                    | Format                                                             | Reference                     |
-|--------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------|--------------------------------------------------------------------|-------------------------------|
-| <a name="field-id" href="#field-id">id</a>                                                 | Unique surrogate identifier.                                                                   | bigint<br/>Read only                                               |                               |
-| <a name="field-business_id" href="#field-business_id">business_id</a>                      | The EIC-Y code for this metering grid area.                                                    | text<br/>Pattern: `^[0-9]{2}Y[0-9A-Z-]{12}[0-9A-Z]$`<br/>Read only |                               |
-| <a name="field-name" href="#field-name">name</a>                                           | The name of the metering grid area.                                                            | text<br/>Max length: `128`<br/>Read only                           |                               |
-| <a name="field-price_area" href="#field-price_area">price_area</a>                         | The price area of the metering grid area.                                                      | text<br/>One of: `NO1`, `NO2`, `NO3`, `NO4`, `NO5`<br/>Read only   |                               |
-| <a name="field-system_operator_id" href="#field-system_operator_id">system_operator_id</a> | The system operator responsible for the metering grid area.                                    | bigint<br/>Read only                                               | [party.id](party.md#field-id) |
-| <a name="field-valid_from" href="#field-valid_from">valid_from</a>                         | The date from which the metering grid area is active. Midnight aligned on Norwegian timezone.  | timestamp with time zone<br/>Read only                             |                               |
-| <a name="field-valid_to" href="#field-valid_to">valid_to</a>                               | The date until which the metering grid area is active. Midnight aligned on Norwegian timezone. | timestamp with time zone<br/>Read only                             |                               |
-| <a name="field-recorded_at" href="#field-recorded_at">recorded_at</a>                      | When the resource was recorded (created or updated) in the system.                             | timestamp with time zone<br/>Read only                             |                               |
-| <a name="field-recorded_by" href="#field-recorded_by">recorded_by</a>                      | The identity that recorded the resource.                                                       | bigint<br/>Read only                                               |                               |
+| Name                                                                                 | Description                                                                              | Format                                   | Reference |
+|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|------------------------------------------|-----------|
+| <a name="field-id" href="#field-id">id</a>                                           | Unique surrogate identifier.                                                             | bigint<br/>Read only                     |           |
+| <a name="field-business_id" href="#field-business_id">business_id</a>                | The business identifier of the metering grid area. Format depends on `business_id_type`. | text<br/>Read only                       |           |
+| <a name="field-business_id_type" href="#field-business_id_type">business_id_type</a> | The type of the business identifier.                                                     | text<br/>One of: `eic_y`<br/>Read only   |           |
+| <a name="field-name" href="#field-name">name</a>                                     | The name of the metering grid area.                                                      | text<br/>Max length: `128`<br/>Read only |           |
 
 ## Validation Rules
 
@@ -90,14 +85,9 @@ No policies.
 
 For party type abbreviations, check [the auth docs](../technical/auth.md#party-market-actors)
 
-| FIELD              | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP | ORG |
-|--------------------|------|-----|----|----|------|----|----|----|----|-----|
-| id                 |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
-| business_id        |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
-| name               |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
-| price_area         |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
-| system_operator_id |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
-| valid_from         |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
-| valid_to           |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
-| recorded_at        |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
-| recorded_by        |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
+| FIELD            | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP | ORG |
+|------------------|------|-----|----|----|------|----|----|----|----|-----|
+| id               |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
+| business_id      |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
+| business_id_type |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
+| name             |      | R   | R  | R  | R    | R  | R  | R  | R  |     |

@@ -333,15 +333,9 @@ export const zAccountingPointBiddingZoneBiddingZone = z.enum([
 ]);
 
 /**
- * The price area of the metering grid area.
+ * The type of the business identifier.
  */
-export const zMeteringGridAreaPriceArea = z.enum([
-  "NO1",
-  "NO2",
-  "NO3",
-  "NO4",
-  "NO5",
-]);
+export const zMeteringGridAreaBusinessIdType = z.enum(["eic_y"]);
 
 /**
  * The status of the relation.
@@ -1719,22 +1713,9 @@ export const zAccountingPointEnergySupplier = z.object({
  */
 export const zMeteringGridArea = z.object({
   id: z.int().readonly(),
-  business_id: z
-    .string()
-    .regex(/^[0-9]{2}Y[0-9A-Z-]{12}[0-9A-Z]$/)
-    .readonly(),
+  business_id: z.string().readonly(),
+  business_id_type: zMeteringGridAreaBusinessIdType,
   name: z.string().max(128).readonly(),
-  price_area: zMeteringGridAreaPriceArea,
-  system_operator_id: z.int().readonly(),
-  valid_from: z.string().readonly(),
-  valid_to: z.optional(
-    z.preprocess(
-      (value) => (value === null ? undefined : value),
-      z.string().readonly().optional(),
-    ),
-  ),
-  recorded_at: z.string().readonly(),
-  recorded_by: z.int().readonly(),
 });
 
 /**
@@ -8155,28 +8136,13 @@ export const zListMeteringGridAreaData = z.object({
           z.string().optional(),
         ),
       ),
+      business_id_type: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
       name: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      system_operator_id: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z
-            .string()
-            .regex(/^eq\.[0-9]+$/)
-            .optional(),
-        ),
-      ),
-      valid_from: z.optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          z.string().optional(),
-        ),
-      ),
-      valid_to: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
           z.string().optional(),

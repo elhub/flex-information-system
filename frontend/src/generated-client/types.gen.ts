@@ -383,9 +383,9 @@ export type AccountingPointBiddingZoneBiddingZone =
   | "NO5";
 
 /**
- * The price area of the metering grid area.
+ * The type of the business identifier.
  */
-export type MeteringGridAreaPriceArea = "NO1" | "NO2" | "NO3" | "NO4" | "NO5";
+export type MeteringGridAreaBusinessIdType = "eic_y";
 
 /**
  * The status of the relation.
@@ -1806,34 +1806,14 @@ export type MeteringGridArea = {
    */
   readonly id: number;
   /**
-   * The EIC-Y code for this metering grid area.
+   * The business identifier of the metering grid area. Format depends on `business_id_type`.
    */
   readonly business_id: string;
+  business_id_type: MeteringGridAreaBusinessIdType;
   /**
    * The name of the metering grid area.
    */
   readonly name: string;
-  price_area: MeteringGridAreaPriceArea;
-  /**
-   * The system operator responsible for the metering grid area.
-   */
-  readonly system_operator_id: number;
-  /**
-   * The date from which the metering grid area is active. Midnight aligned on Norwegian timezone.
-   */
-  readonly valid_from: string;
-  /**
-   * The date until which the metering grid area is active. Midnight aligned on Norwegian timezone.
-   */
-  readonly valid_to?: string;
-  /**
-   * When the resource was recorded (created or updated) in the system.
-   */
-  readonly recorded_at: string;
-  /**
-   * The identity that recorded the resource.
-   */
-  readonly recorded_by: number;
 };
 
 /**
@@ -10651,25 +10631,14 @@ export type ListMeteringGridAreaData = {
      */
     id?: string;
     /**
-     * The EIC-Y code for this metering grid area.
+     * The business identifier of the metering grid area. Format depends on `business_id_type`.
      */
     business_id?: string;
+    business_id_type?: string;
     /**
      * The name of the metering grid area.
      */
     name?: string;
-    /**
-     * The system operator responsible for the metering grid area.
-     */
-    system_operator_id?: string;
-    /**
-     * The date from which the metering grid area is active. Midnight aligned on Norwegian timezone.
-     */
-    valid_from?: string;
-    /**
-     * The date until which the metering grid area is active. Midnight aligned on Norwegian timezone.
-     */
-    valid_to?: string;
     /**
      * Filtering Columns
      */

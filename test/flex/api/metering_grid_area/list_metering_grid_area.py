@@ -15,10 +15,8 @@ def _get_kwargs(
     *,
     id: str | Unset = UNSET,
     business_id: str | Unset = UNSET,
+    business_id_type: str | Unset = UNSET,
     name: str | Unset = UNSET,
-    system_operator_id: str | Unset = UNSET,
-    valid_from: str | Unset = UNSET,
-    valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -30,13 +28,9 @@ def _get_kwargs(
 
     params["business_id"] = business_id
 
+    params["business_id_type"] = business_id_type
+
     params["name"] = name
-
-    params["system_operator_id"] = system_operator_id
-
-    params["valid_from"] = valid_from
-
-    params["valid_to"] = valid_to
 
     params["select"] = select
 
@@ -153,10 +147,8 @@ def sync_detailed(
     client: AuthenticatedClient,
     id: str | Unset = UNSET,
     business_id: str | Unset = UNSET,
+    business_id_type: str | Unset = UNSET,
     name: str | Unset = UNSET,
-    system_operator_id: str | Unset = UNSET,
-    valid_from: str | Unset = UNSET,
-    valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -167,10 +159,8 @@ def sync_detailed(
     Args:
         id (str | Unset):
         business_id (str | Unset):
+        business_id_type (str | Unset):
         name (str | Unset):
-        system_operator_id (str | Unset):
-        valid_from (str | Unset):
-        valid_to (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -187,10 +177,8 @@ def sync_detailed(
     kwargs = _get_kwargs(
         id=id,
         business_id=business_id,
+        business_id_type=business_id_type,
         name=name,
-        system_operator_id=system_operator_id,
-        valid_from=valid_from,
-        valid_to=valid_to,
         select=select,
         order=order,
         offset=offset,
@@ -209,10 +197,8 @@ def sync(
     client: AuthenticatedClient,
     id: str | Unset = UNSET,
     business_id: str | Unset = UNSET,
+    business_id_type: str | Unset = UNSET,
     name: str | Unset = UNSET,
-    system_operator_id: str | Unset = UNSET,
-    valid_from: str | Unset = UNSET,
-    valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -223,10 +209,8 @@ def sync(
     Args:
         id (str | Unset):
         business_id (str | Unset):
+        business_id_type (str | Unset):
         name (str | Unset):
-        system_operator_id (str | Unset):
-        valid_from (str | Unset):
-        valid_to (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -244,10 +228,8 @@ def sync(
         client=client,
         id=id,
         business_id=business_id,
+        business_id_type=business_id_type,
         name=name,
-        system_operator_id=system_operator_id,
-        valid_from=valid_from,
-        valid_to=valid_to,
         select=select,
         order=order,
         offset=offset,
@@ -260,10 +242,8 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     id: str | Unset = UNSET,
     business_id: str | Unset = UNSET,
+    business_id_type: str | Unset = UNSET,
     name: str | Unset = UNSET,
-    system_operator_id: str | Unset = UNSET,
-    valid_from: str | Unset = UNSET,
-    valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -274,10 +254,8 @@ async def asyncio_detailed(
     Args:
         id (str | Unset):
         business_id (str | Unset):
+        business_id_type (str | Unset):
         name (str | Unset):
-        system_operator_id (str | Unset):
-        valid_from (str | Unset):
-        valid_to (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -294,10 +272,8 @@ async def asyncio_detailed(
     kwargs = _get_kwargs(
         id=id,
         business_id=business_id,
+        business_id_type=business_id_type,
         name=name,
-        system_operator_id=system_operator_id,
-        valid_from=valid_from,
-        valid_to=valid_to,
         select=select,
         order=order,
         offset=offset,
@@ -314,10 +290,8 @@ async def asyncio(
     client: AuthenticatedClient,
     id: str | Unset = UNSET,
     business_id: str | Unset = UNSET,
+    business_id_type: str | Unset = UNSET,
     name: str | Unset = UNSET,
-    system_operator_id: str | Unset = UNSET,
-    valid_from: str | Unset = UNSET,
-    valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -328,10 +302,8 @@ async def asyncio(
     Args:
         id (str | Unset):
         business_id (str | Unset):
+        business_id_type (str | Unset):
         name (str | Unset):
-        system_operator_id (str | Unset):
-        valid_from (str | Unset):
-        valid_to (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -350,10 +322,8 @@ async def asyncio(
             client=client,
             id=id,
             business_id=business_id,
+            business_id_type=business_id_type,
             name=name,
-            system_operator_id=system_operator_id,
-            valid_from=valid_from,
-            valid_to=valid_to,
             select=select,
             order=order,
             offset=offset,

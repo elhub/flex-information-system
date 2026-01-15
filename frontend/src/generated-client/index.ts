@@ -680,7 +680,7 @@ export type {
   ListTechnicalResourceResponse,
   ListTechnicalResourceResponses,
   MeteringGridArea,
-  MeteringGridAreaPriceArea,
+  MeteringGridAreaBusinessIdType,
   MeteringGridAreaWritable,
   Notice,
   NoticeData,

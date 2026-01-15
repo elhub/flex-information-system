@@ -636,6 +636,8 @@ DECLARE
   party_business_id_prefix text := '1337' || user_seq_id_text;
   party_business_id_seq bigint :=
       rpad(party_business_id_prefix, 12, '0')::bigint;
+
+  l_mga_id bigint;
 BEGIN
 
   PERFORM flex.set_entity_party_identity(0,0,0);
@@ -778,6 +780,7 @@ BEGIN
   INSERT INTO flex.metering_grid_area (
     business_id,
     name,
+    -- TODO: do no longer insert these fields when they are removed from MGA
     price_area,
     system_operator_id,
     valid_time_range,
@@ -792,10 +795,80 @@ BEGIN
       null, '[)'
     ),
     0
-  ), (
+  ) RETURNING id INTO l_mga_id;
+
+  INSERT INTO flex.metering_grid_area_price_area (
+    metering_grid_area_id,
+    price_area,
+    valid_time_range,
+    recorded_by
+  ) VALUES (
+    l_mga_id,
+    'NO4',
+    tstzrange(
+      '2023-10-01 Europe/Oslo',
+      null, '[)'
+    ),
+    0
+  );
+
+  INSERT INTO flex.metering_grid_area_system_operator (
+    metering_grid_area_id,
+    system_operator_id,
+    valid_time_range,
+    recorded_by
+  ) VALUES (
+    l_mga_id,
+    so_id,
+    tstzrange(
+      '2023-10-01 Europe/Oslo',
+      null, '[)'
+    ),
+    0
+  );
+
+  INSERT INTO flex.metering_grid_area (
+    business_id,
+    name,
+    -- TODO: do no longer insert these fields when they are removed from MGA
+    price_area,
+    system_operator_id,
+    valid_time_range,
+    recorded_by
+  ) VALUES (
     so_mga_business_id,
     in_entity_name || ' AREA 2',
     'NO3',
+    so_id,
+    tstzrange(
+      '2023-10-01 Europe/Oslo',
+      null, '[)'
+    ),
+    0
+  ) RETURNING id INTO l_mga_id;
+
+  INSERT INTO flex.metering_grid_area_price_area (
+    metering_grid_area_id,
+    price_area,
+    valid_time_range,
+    recorded_by
+  ) VALUES (
+    l_mga_id,
+    'NO3',
+    tstzrange(
+      '2023-10-01 Europe/Oslo',
+      null, '[)'
+    ),
+    0
+  );
+
+  INSERT INTO flex.metering_grid_area_system_operator (
+    metering_grid_area_id,
+    system_operator_id,
+    valid_time_range,
+    recorded_by
+  ) VALUES (
+    l_mga_id,
     so_id,
     tstzrange(
       '2023-10-01 Europe/Oslo',

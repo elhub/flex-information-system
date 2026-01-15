@@ -214,15 +214,10 @@ type ApiIdentity struct {
 }
 
 type ApiMeteringGridArea struct {
-	ID               int
-	BusinessID       string
-	Name             string
-	PriceArea        string
-	SystemOperatorID int
-	ValidFrom        pgtype.Timestamptz
-	ValidTo          pgtype.Timestamptz
-	RecordedBy       int
-	RecordedAt       pgtype.Timestamptz
+	ID             int
+	BusinessID     string
+	BusinessIDType string
+	Name           string
 }
 
 type ApiNotice struct {
