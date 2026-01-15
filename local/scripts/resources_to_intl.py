@@ -11,7 +11,7 @@ to TypeScript files used by the frontend.
 
 output_file_field_labels = "frontend/src/intl/field-labels.ts"
 output_file_enum_labels = "frontend/src/intl/enum-labels.ts"
-
+output_file_tooltips = "frontend/src/tooltip/tooltips.ts"
 # ------------------------------------------------------------------------------
 
 # field translations
@@ -32,6 +32,50 @@ def transpose_field_translations(tr):
                     translations[lang] = {}
                 translations[lang][key] = label
     return translations, sorted(list(all_keys))
+
+
+def transpose_descriptions(tr):
+    descriptions = {}
+    for resource, resource_descriptions in tr.items():
+        for field, description in resource_descriptions.items():
+            key = f"{resource}.{field}"
+            descriptions[key] = description
+    return descriptions
+
+
+comment_descriptions = {
+    "id": "Unique surrogate identifier.",
+    "created_by": "The identity that created the comment.",
+    "visibility": "The level of visibility of the comment.",
+    "content": "Free text content of the comment.",
+    "created_at": "When the comment was added to the CUS.",
+    "recorded_at": "When the resource was recorded (created or updated) in the system.",
+    "recorded_by": "The identity that recorded the resource.",
+}
+
+history_descriptions = {
+    "id": "Unique surrogate identifier.",
+    "replaced_at": "When the resource was replaced.",
+    "replaced_by": "The identity that replaced the resource.",
+}
+
+history_translations = {
+    "id": {
+        "en": "ID",
+        "nb": "ID",
+        "nn": "ID",
+    },
+    "replaced_at": {
+        "en": "Replaced at",
+        "nb": "Erstattet",
+        "nn": "Erstattet",
+    },
+    "replaced_by": {
+        "en": "Replaced by",
+        "nb": "Erstattet av",
+        "nn": "Erstattet av",
+    },
+}
 
 
 comment_translations = {
@@ -73,67 +117,107 @@ comment_translations = {
 }
 
 
+def get_comment_history_translations(resource):
+    return {
+        f"{resource['id']}_comment_id": {
+            "en": "Comment ID",
+            "nb": "Kommentar-ID",
+            "nn": "Kommentar-ID",
+        },
+        "replaced_at": {
+            "en": "Replaced at",
+            "nb": "Erstattet",
+            "nn": "Erstattet",
+        },
+        "replaced_by": {
+            "en": "Replaced by",
+            "nb": "Erstattet av",
+            "nn": "Erstattet av",
+        },
+    }
+
+
+def get_comment_history_descriptions(resource):
+    return {
+        f"{resource['id']}_comment_id": "Comment ID",
+        "replaced_at": "When the comment was replaced.",
+        "replaced_by": "The identity that replaced the comment.",
+    }
+
+
+audit_descriptions = {
+    "recorded_at": "When the resource was recorded (created or updated) in the system.",
+    "recorded_by": "The identity that recorded the resource.",
+}
+
+audit_translations = {
+    "recorded_at": {
+        "en": "Recorded at",
+        "nb": "Registrert",
+        "nn": "Registrert",
+    },
+    "recorded_by": {
+        "en": "Recorded by",
+        "nb": "Registrert av",
+        "nn": "Registrert av",
+    },
+}
+
+
 # generate field translations and write them to output file
 def generate_field_translations(resources):
     translations = {}
+    tooltips = {}
     for resource in resources:
         resource_translations = {}
+        resource_tooltips = {}
         for field, attr in resource["properties"].items():
+            resource_tooltips[field] = attr.get("description", None)
             if "x-intl" in attr:
                 resource_translations[field] = attr["x-intl"]
         if resource.get("audit"):
-            resource_translations["recorded_at"] = {
-                "en": "Recorded at",
-                "nb": "Registrert",
-                "nn": "Registrert",
-            }
-            resource_translations["recorded_by"] = {
-                "en": "Recorded by",
-                "nb": "Registrert av",
-                "nn": "Registrert av",
-            }
+            resource_translations = dict(resource_translations, **audit_translations)
+            resource_tooltips = dict(resource_tooltips, **audit_descriptions)
         if len(resource_translations) > 0:
             translations[resource["id"]] = resource_translations
+            tooltips[resource["id"]] = resource_tooltips
         if "history" in resource:
             resource_translations = deepcopy(resource_translations)
             resource_translations[f"{resource['id']}_id"] = resource["x-intl"]
-            resource_translations["replaced_at"] = {
-                "en": "Replaced at",
-                "nb": "Erstattet",
-                "nn": "Erstattet",
-            }
-            resource_translations["replaced_by"] = {
-                "en": "Replaced by",
-                "nb": "Erstattet av",
-                "nn": "Erstattet av",
-            }
+            resource_tooltips = deepcopy(resource_tooltips)
+            resource_tooltips[f"{resource['id']}_id"] = "Unique surrogate identifier."
+
+            resource_translations = dict(resource_translations, **history_translations)
+            resource_tooltips = dict(resource_tooltips, **history_descriptions)
             translations[f"{resource['id']}_history"] = resource_translations
+            tooltips[f"{resource['id']}_history"] = resource_tooltips
         if resource.get("comments"):
             comment_resource_translations = deepcopy(comment_translations)
             comment_resource_translations[f"{resource['id']}_id"] = resource["x-intl"]
             translations[f"{resource['id']}_comment"] = comment_resource_translations
+
+            comment_resource_tooltips = deepcopy(comment_descriptions)
+            comment_resource_tooltips[f"{resource['id']}_id"] = (
+                "Unique surrogate identifier."
+            )
+            tooltips[f"{resource['id']}_comment"] = comment_resource_tooltips
+
             # comment history
-            comment_resource_translations = deepcopy(comment_resource_translations)
-            comment_resource_translations[f"{resource['id']}_comment_id"] = {
-                "en": "Comment ID",
-                "nb": "Kommentar-ID",
-                "nn": "Kommentar-ID",
-            }
-            comment_resource_translations["replaced_at"] = {
-                "en": "Replaced at",
-                "nb": "Erstattet",
-                "nn": "Erstattet",
-            }
-            comment_resource_translations["replaced_by"] = {
-                "en": "Replaced by",
-                "nb": "Erstattet av",
-                "nn": "Erstattet av",
-            }
+            comment_resource_translations = dict(
+                comment_resource_translations,
+                **get_comment_history_translations(resource),
+            )
             translations[f"{resource['id']}_comment_history"] = (
                 comment_resource_translations
             )
 
+            comment_resource_tooltips = dict(
+                comment_resource_tooltips, **get_comment_history_descriptions(resource)
+            )
+            tooltips[f"{resource['id']}_comment_history"] = comment_resource_tooltips
+
     transposed, keys = transpose_field_translations(translations)
+    descriptions = transpose_descriptions(tooltips)
 
     with open(output_file_field_labels, "w") as output_f:
         output_f.write("// AUTO-GENERATED FILE (scripts/resources_to_intl.py)\n\n")
@@ -147,6 +231,13 @@ def generate_field_translations(resources):
         )
         json.dump(transposed, output_f, indent=2, ensure_ascii=False)
         output_f.write(";\n")
+
+    with open(output_file_tooltips, "w") as output_f:
+        output_f.write("// AUTO-GENERATED FILE (scripts/resources_to_intl.py)\n\n")
+        output_f.write("export const tooltips = ")
+        json.dump(descriptions, output_f, indent=2, ensure_ascii=False)
+        output_f.write("; ")
+        output_f.write("export type TooltipKey = keyof typeof tooltips;\n")
 
 
 # ------------------------------------------------------------------------------

@@ -371,7 +371,7 @@ openapi-postgrest:
 
     rm -rf out/*
 
-openapi: resources-to-diagram template-to-openapi openapi-to-md openapi-to-db sqlc openapi-client-test openapi-client-frontend resources-to-intl openapi-to-tooltips
+openapi: resources-to-diagram template-to-openapi openapi-to-md openapi-to-db sqlc openapi-client-test openapi-client-frontend resources-to-intl-and-tooltips
 
 template-to-openapi:
     #!/usr/bin/env bash
@@ -520,22 +520,11 @@ openapi-client-frontend:
 
     npx prettier --write src/generated-client
 
-resources-to-intl:
+resources-to-intl-and-tooltips:
     #!/usr/bin/env bash
     cat openapi/resources.yml \
         | .venv/bin/python3 local/scripts/resources_to_intl.py
-
-openapi-to-tooltips:
-    #!/usr/bin/env bash
-    cat openapi/resources.yml \
-        | .venv/bin/python3 local/scripts/openapi_to_tooltips.py \
-            > tmp.yml
-    cat openapi/openapi-api-base.yml \
-        | yq '.components.schemas | to_entries[] as $sch ireduce({};
-            .[$sch.key] = ($sch.value.properties | map_values (.description)))' \
-            >> tmp.yml
-    cat tmp.yml | yq -o json --indent 4 > frontend/src/tooltip/tooltips.json
-    rm tmp.yml
+    npx prettier --write frontend/src/intl/field-labels.ts frontend/src/intl/enum-labels.ts frontend/src/tooltip/tooltips.ts
 
 permissions: permissions-to-frontend permissions-to-md permissions-to-db
 

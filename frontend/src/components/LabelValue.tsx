@@ -1,12 +1,15 @@
 import { Stack, Typography, TypographyProps } from "@mui/material";
-import { FieldLabel } from "../intl/field-labels";
 import { useTranslateField } from "../intl/intl";
+import { FieldTooltip } from "../tooltip/FieldTooltip";
+import { TooltipKey } from "../tooltip/tooltips";
+import { FieldLabel } from "../intl/field-labels";
 
 type LabelValueProps = {
-  labelKey?: FieldLabel;
+  labelKey?: TooltipKey | FieldLabel;
   label?: string;
   value: string | number | undefined;
   unit?: string;
+  tooltip?: boolean;
 } & TypographyProps;
 
 export const LabelValue = ({
@@ -14,6 +17,7 @@ export const LabelValue = ({
   value,
   unit,
   labelKey,
+  tooltip = false,
   ...props
 }: LabelValueProps) => {
   const translateLabel = useTranslateField();
@@ -36,6 +40,7 @@ export const LabelValue = ({
       >
         {formattedValue}
       </Typography>
+      {tooltip && labelKey && <FieldTooltip tooltipKey={labelKey} />}
     </Stack>
   );
 };
