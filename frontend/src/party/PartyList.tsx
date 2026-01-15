@@ -1,9 +1,6 @@
-import { List, ReferenceField, TextField } from "react-admin";
-import {
-  AutocompleteReferenceInput,
-  Datagrid,
-  PartyReferenceInput,
-} from "../auth";
+import { ReferenceField, TextField } from "react-admin";
+import { AutocompleteReferenceInput, PartyReferenceInput } from "../auth";
+import { Datagrid, List } from "../components/EDS-ra/list";
 import { DateField } from "../components/datetime";
 import { EnumArrayInput, EnumField } from "../components/enum";
 
