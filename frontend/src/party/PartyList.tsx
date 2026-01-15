@@ -1,8 +1,15 @@
-import { ReferenceField, TextField } from "react-admin";
-import { AutocompleteReferenceInput, PartyReferenceInput } from "../auth";
+import {
+  AutocompleteReferenceInput,
+  EnumArrayInput,
+  PartyReferenceInput,
+} from "../components/EDS-ra/inputs";
 import { Datagrid, List } from "../components/EDS-ra/list";
-import { DateField } from "../components/datetime";
-import { EnumArrayInput, EnumField } from "../components/enum";
+import {
+  DateField,
+  EnumField,
+  ReferenceField,
+  TextField,
+} from "../components/EDS-ra/fields";
 
 export const PartyList = () => {
   const partyFilters = [
@@ -10,6 +17,7 @@ export const PartyList = () => {
       key="entity_id"
       source="entity_id"
       reference="entity"
+      label="Entity"
       alwaysOn
     />,
     <PartyReferenceInput
@@ -48,7 +56,6 @@ export const PartyList = () => {
         <ReferenceField
           source="entity_id"
           reference="entity"
-          sortable={false}
           label="field.party.entity_id"
         >
           <TextField source="name" />
