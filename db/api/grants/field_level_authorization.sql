@@ -5268,6 +5268,7 @@ TO flex_third_party;
 GRANT SELECT (
     id,
     business_id,
+    business_id_type,
     name
 ) ON TABLE
 api.metering_grid_area
@@ -5277,6 +5278,7 @@ TO flex_balance_responsible_party;
 GRANT SELECT (
     id,
     business_id,
+    business_id_type,
     name
 ) ON TABLE
 api.metering_grid_area
@@ -5286,6 +5288,7 @@ TO flex_energy_supplier;
 GRANT SELECT (
     id,
     business_id,
+    business_id_type,
     name
 ) ON TABLE
 api.metering_grid_area
@@ -5295,6 +5298,7 @@ TO flex_end_user;
 GRANT SELECT (
     id,
     business_id,
+    business_id_type,
     name
 ) ON TABLE
 api.metering_grid_area
@@ -5304,6 +5308,7 @@ TO flex_flexibility_information_system_operator;
 GRANT SELECT (
     id,
     business_id,
+    business_id_type,
     name
 ) ON TABLE
 api.metering_grid_area
@@ -5313,6 +5318,7 @@ TO flex_market_operator;
 GRANT SELECT (
     id,
     business_id,
+    business_id_type,
     name
 ) ON TABLE
 api.metering_grid_area
@@ -5322,6 +5328,7 @@ TO flex_system_operator;
 GRANT SELECT (
     id,
     business_id,
+    business_id_type,
     name
 ) ON TABLE
 api.metering_grid_area
@@ -5331,6 +5338,7 @@ TO flex_service_provider;
 GRANT SELECT (
     id,
     business_id,
+    business_id_type,
     name
 ) ON TABLE
 api.metering_grid_area

@@ -186,6 +186,7 @@ export type PermissionTarget =
   | "identity.party_name"
   | "metering_grid_area"
   | "metering_grid_area.business_id"
+  | "metering_grid_area.business_id_type"
   | "metering_grid_area.id"
   | "metering_grid_area.name"
   | "notice"
@@ -1248,6 +1249,10 @@ const rawPermissions: Record<
     },
     {
       target: "metering_grid_area.business_id",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.business_id_type",
       operation: "read",
     },
     {
@@ -3472,6 +3477,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "metering_grid_area.business_id_type",
+      operation: "read",
+    },
+    {
       target: "metering_grid_area.id",
       operation: "read",
     },
@@ -5690,6 +5699,10 @@ const rawPermissions: Record<
     },
     {
       target: "metering_grid_area.business_id",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.business_id_type",
       operation: "read",
     },
     {
@@ -8164,6 +8177,10 @@ const rawPermissions: Record<
     },
     {
       target: "metering_grid_area.business_id",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.business_id_type",
       operation: "read",
     },
     {
@@ -10886,6 +10903,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "metering_grid_area.business_id_type",
+      operation: "read",
+    },
+    {
       target: "metering_grid_area.id",
       operation: "read",
     },
@@ -13181,6 +13202,10 @@ const rawPermissions: Record<
     },
     {
       target: "metering_grid_area.business_id",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.business_id_type",
       operation: "read",
     },
     {
@@ -15886,6 +15911,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "metering_grid_area.business_id_type",
+      operation: "read",
+    },
+    {
       target: "metering_grid_area.id",
       operation: "read",
     },
@@ -18401,6 +18430,10 @@ const rawPermissions: Record<
     },
     {
       target: "metering_grid_area.business_id",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.business_id_type",
       operation: "read",
     },
     {
