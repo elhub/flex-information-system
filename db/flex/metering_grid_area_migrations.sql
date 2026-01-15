@@ -87,7 +87,7 @@ ALTER TABLE flex.metering_grid_area
 DROP COLUMN IF EXISTS price_area;
 
 ALTER TABLE flex.metering_grid_area
-DROP CONSTRAINT metering_grid_area_system_operator_fkey;
+DROP CONSTRAINT IF EXISTS metering_grid_area_system_operator_fkey;
 
 ALTER TABLE flex.metering_grid_area
 DROP COLUMN IF EXISTS system_operator_id;
