@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { BodyText, Loader } from "@elhub/ds-components";
+import { BodyText, Loader } from "../../ui";
 import {
   ReferenceFieldBase,
   ReferenceFieldBaseProps,

@@ -1,4 +1,4 @@
-import { BodyText, Loader } from "@elhub/ds-components";
+import { BodyText, Loader } from "../../ui";
 import { ReferenceFieldBase, useRecordContext } from "ra-core";
 import { BaseField, BaseFieldProps } from "./BaseField";
 

@@ -1,4 +1,4 @@
-import { Tag } from "@elhub/ds-components";
+import { Tag } from "../../ui";
 import { useRecordContext, useTranslate } from "ra-core";
 import { BaseField, BaseFieldProps } from "./BaseField";
 

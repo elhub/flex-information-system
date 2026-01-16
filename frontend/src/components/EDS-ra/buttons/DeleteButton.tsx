@@ -1,5 +1,5 @@
 import { ReactNode, MouseEvent } from "react";
-import { Button } from "@elhub/ds-components";
+import { Button } from "../../ui";
 import {
   useDeleteController,
   UseDeleteControllerParams,

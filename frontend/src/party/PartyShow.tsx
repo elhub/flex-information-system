@@ -1,5 +1,5 @@
 import { useResourceContext } from "ra-core";
-import { Content, Heading, VerticalSpace } from "@elhub/ds-components";
+import { Content, Heading, VerticalSpace } from "../components/ui";
 import { PartyMembershipList } from "./membership/PartyMembershipList";
 import {
   NestedResourceHistoryButton,

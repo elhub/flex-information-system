@@ -1,11 +1,5 @@
 import { ReactNode } from "react";
-import {
-  BodyText,
-  Content,
-  FlexDiv,
-  Loader,
-  Panel,
-} from "@elhub/ds-components";
+import { BodyText, Content, FlexDiv, Loader, Panel } from "../ui";
 import { RaRecord, ShowBase, ShowBaseProps } from "ra-core";
 
 export const Show = <RecordType extends RaRecord = any>(

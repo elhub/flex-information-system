@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { BodyText, Chips } from "@elhub/ds-components";
+import { BodyText, Chips } from "../../ui";
 import { useRecordContext } from "ra-core";
 import { BaseField, BaseFieldProps } from "./BaseField";
 

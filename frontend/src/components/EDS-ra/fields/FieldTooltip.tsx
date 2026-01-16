@@ -1,4 +1,4 @@
-import { Tooltip } from "@elhub/ds-components";
+import { Tooltip } from "../../ui";
 import { IconInformationCircleOutlined } from "@elhub/ds-icons";
 import { tooltips, TooltipKey } from "../../../tooltip/tooltips";
 

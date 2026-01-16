@@ -1,4 +1,4 @@
-import { Combobox, FormItem, FormItemLabel } from "@elhub/ds-components";
+import { Combobox, FormItem, FormItemLabel } from "../../ui";
 import { InputProps, useInput, useI18nProvider, useTranslate } from "ra-core";
 import { I18nProvider } from "../../../intl/intl";
 

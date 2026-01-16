@@ -7,7 +7,7 @@ import {
   useListContext,
   useResourceContext,
 } from "ra-core";
-import { BodyText, Loader, Table } from "@elhub/ds-components";
+import { BodyText, Loader, Table } from "../../ui";
 
 type DatagridProps = {
   children: ReactNode;
@@ -46,21 +46,12 @@ export const Datagrid = <T extends RaRecord>({
       <Table.Header>
         <Table.Row>
           {columns.map((child, index) => {
-            const { source, label } = child.props as {
+            const { source } = child.props as {
               source: string;
-              label?: boolean | string;
             };
-            const shouldShowLabel = label === true || typeof label === "string";
-            const headerLabel = typeof label === "string" ? label : undefined;
             return (
               <Table.ColumnHeader key={source ?? index} scope="col">
-                {shouldShowLabel ? (
-                  <FieldTitle
-                    label={headerLabel}
-                    source={source}
-                    resource={resource}
-                  />
-                ) : null}
+                <FieldTitle source={source} resource={resource} />
               </Table.ColumnHeader>
             );
           })}

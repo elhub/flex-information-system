@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { BodyText, FlexDiv } from "@elhub/ds-components";
+import { BodyText, FlexDiv } from "../../ui";
 import { usePermissions, useResourceContext, useTranslate } from "ra-core";
 import { Permissions, PermissionTarget } from "../../../auth/permissions";
 import { FieldTooltip } from "./FieldTooltip";

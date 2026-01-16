@@ -5,23 +5,25 @@ import {
   ListBaseProps,
   useListContext,
 } from "ra-core";
-import {
-  BodyText,
-  FlexDiv,
-  Pagination,
-  Panel,
-  VerticalSpace,
-} from "@elhub/ds-components";
+import { BodyText, FlexDiv, Pagination, Panel, VerticalSpace } from "../../ui";
 
 type ListProps = ListBaseProps & {
   filters?: ReactNode[];
   empty?: boolean;
+  actions?: ReactNode[];
 };
 
-export const List = ({ children, filters, empty, ...rest }: ListProps) => {
+export const List = ({
+  children,
+  filters,
+  empty,
+  actions,
+  ...rest
+}: ListProps) => {
   if (empty) {
     return (
       <ListBase {...rest}>
+        {actions && <ListActions actions={actions} />}
         <Panel border>
           <BodyText>No results</BodyText>
         </Panel>
@@ -31,6 +33,7 @@ export const List = ({ children, filters, empty, ...rest }: ListProps) => {
 
   return (
     <ListBase {...rest}>
+      {actions && <ListActions actions={actions} />}
       <Panel border>
         {filters?.length ? (
           <>
@@ -54,6 +57,16 @@ const ListFilters = ({ filters }: ListFiltersProps) => (
   <FilterLiveForm>
     <FlexDiv style={{ gap: "1rem", flexWrap: "wrap" }}>{filters}</FlexDiv>
   </FilterLiveForm>
+);
+
+type ListActionsProps = {
+  actions: ReactNode[];
+};
+
+const ListActions = ({ actions }: ListActionsProps) => (
+  <FlexDiv style={{ justifyContent: "flex-end", gap: "1rem" }}>
+    {actions}
+  </FlexDiv>
 );
 
 const ListPagination = () => {

@@ -1,4 +1,4 @@
-import { Combobox, FormItem, FormItemLabel } from "@elhub/ds-components";
+import { Combobox, FormItem, FormItemLabel } from "../../ui";
 import {
   InputProps,
   useChoicesContext,

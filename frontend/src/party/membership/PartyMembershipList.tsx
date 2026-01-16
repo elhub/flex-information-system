@@ -82,7 +82,7 @@ export const PartyMembershipList = () => {
       <ResourceContextProvider value="party_membership">
         <List
           perPage={10}
-          filters={[
+          actions={[
             <ListActions key="actions" permissions={permissions} id={id} />,
           ]}
           exporter={false}
@@ -95,13 +95,13 @@ export const PartyMembershipList = () => {
               `/party/${record.party_id}/membership/${record.id}/show`
             }
           >
-            <TextField source="id" label />
-            <ReferenceField source="entity_id" reference="entity" label>
+            <TextField source="id" />
+            <ReferenceField source="entity_id" reference="entity">
               <TextField source="name" />
             </ReferenceField>
-            <TextField source="scopes" label />
-            <DateField source="recorded_at" showTime label />
-            <IdentityField source="recorded_by" label />
+            <TextField source="scopes" />
+            <DateField source="recorded_at" showTime />
+            <IdentityField source="recorded_by" />
             {canDelete && (
               <DeleteButton mutationMode="pessimistic" redirect="" />
             )}
