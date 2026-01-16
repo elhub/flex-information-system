@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
-import { BodyText } from "../../ui";
 import { useRecordContext } from "ra-core";
 import { BaseField, BaseFieldProps } from "./BaseField";
+import { BodyText } from "../../ui";
 
 type DateFieldProps = BaseFieldProps & {
   showTime?: boolean;
