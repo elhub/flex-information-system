@@ -37,7 +37,7 @@ export const Datagrid = <T extends RaRecord>({
     return <Loader />;
   }
 
-  if (!rows.length && empty !== false) {
+  if (rows.length === 0 && empty !== false) {
     return <BodyText>No results</BodyText>;
   }
 

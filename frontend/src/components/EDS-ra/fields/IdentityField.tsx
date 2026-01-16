@@ -8,7 +8,7 @@ export const IdentityField = (props: IdentityFieldProps) => {
   const { source, label, tooltip, ...rest } = props;
   const record = useRecordContext();
 
-  if (record?.[source] == 0) {
+  if (record?.[source] === 0) {
     return (
       <BaseField source={source} label={label} tooltip={tooltip}>
         <BodyText>System</BodyText>
