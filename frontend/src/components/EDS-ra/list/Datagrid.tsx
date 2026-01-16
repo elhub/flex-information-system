@@ -2,101 +2,23 @@ import { Children, ReactNode, cloneElement, isValidElement } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   FieldTitle,
-  FilterLiveForm,
-  ListBase,
-  ListBaseProps,
+  RaRecord,
   RecordContextProvider,
   useListContext,
   useResourceContext,
-  RaRecord,
 } from "ra-core";
-import {
-  BodyText,
-  FlexDiv,
-  Loader,
-  Pagination,
-  Panel,
-  Table,
-  VerticalSpace,
-} from "@elhub/ds-components";
-
-type ListProps = ListBaseProps & {
-  filters?: ReactNode;
-  empty?: boolean;
-};
-
-export const List = ({ children, filters, empty, ...rest }: ListProps) => {
-  const filterItems = Array.isArray(filters)
-    ? filters
-    : filters
-      ? [filters]
-      : [];
-
-  if (empty) {
-    return (
-      <ListBase {...rest}>
-        <Panel border>
-          <BodyText>No results</BodyText>
-        </Panel>
-      </ListBase>
-    );
-  }
-
-  return (
-    <ListBase {...rest}>
-      <Panel border>
-        {filterItems.length ? (
-          <>
-            <ListFilters filters={filterItems} />
-            <VerticalSpace />
-          </>
-        ) : null}
-        {children}
-        <VerticalSpace />
-        <ListPagination />
-      </Panel>
-    </ListBase>
-  );
-};
-
-type ListFiltersProps = {
-  filters: ReactNode[];
-};
-
-const ListFilters = ({ filters }: ListFiltersProps) => (
-  <FilterLiveForm>
-    <FlexDiv style={{ gap: "1rem", flexWrap: "wrap" }}>{filters}</FlexDiv>
-  </FilterLiveForm>
-);
-
-const ListPagination = () => {
-  const { page, perPage, setPage, total } = useListContext();
-
-  if (!total || total <= 1) {
-    return null;
-  }
-
-  const pageCount = Math.ceil(total / perPage);
-
-  return (
-    <Pagination
-      count={pageCount}
-      page={page}
-      onPageChange={setPage}
-      prevText="Previous"
-      nextText="Next"
-    />
-  );
-};
+import { BodyText, Loader, Table } from "@elhub/ds-components";
 
 type DatagridProps = {
   children: ReactNode;
   empty?: boolean;
+  rowClick?: (record: RaRecord) => string;
 };
 
 export const Datagrid = <T extends RaRecord>({
   children,
   empty,
+  rowClick,
 }: DatagridProps) => {
   const { data, isLoading } = useListContext<T>();
   const resource = useResourceContext();
@@ -105,7 +27,10 @@ export const Datagrid = <T extends RaRecord>({
   const navigate = useNavigate();
 
   const handleRowClick = (record: RaRecord) => {
-    navigate(`/${resource}/${record.id}/show`);
+    const target = rowClick
+      ? rowClick(record)
+      : `/${resource}/${record.id}/show`;
+    navigate(target);
   };
 
   if (isLoading) {
@@ -123,11 +48,19 @@ export const Datagrid = <T extends RaRecord>({
           {columns.map((child, index) => {
             const { source, label } = child.props as {
               source: string;
-              label: string;
+              label?: boolean | string;
             };
+            const shouldShowLabel = label === true || typeof label === "string";
+            const headerLabel = typeof label === "string" ? label : undefined;
             return (
               <Table.ColumnHeader key={source ?? index} scope="col">
-                <FieldTitle label={label} source={source} resource={resource} />
+                {shouldShowLabel ? (
+                  <FieldTitle
+                    label={headerLabel}
+                    source={source}
+                    resource={resource}
+                  />
+                ) : null}
               </Table.ColumnHeader>
             );
           })}
