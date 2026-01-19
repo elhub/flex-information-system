@@ -62,6 +62,7 @@ repos:
         # https://github.com/pre-commit/identify/blob/main/identify/extensions.py
         exclude_types:
           - json
+          - json5
           - markdown
           - png
           - yaml
@@ -95,10 +96,14 @@ repos:
   #
   ## JSON
   #
+  - repo: https://gitlab.com/bmares/check-json5
+    rev: v1.0.1
+    hooks:
+      - id: check-json5
+
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:
-      - id: check-json
       - id: pretty-format-json
         args: ['--indent', '4', '--autofix', '--no-sort-keys', '--no-ensure-ascii']
   #
