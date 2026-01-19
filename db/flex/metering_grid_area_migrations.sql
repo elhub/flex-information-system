@@ -66,3 +66,34 @@ SET business_id = (
 
 ALTER TABLE flex.metering_grid_area
 ENABLE TRIGGER USER;
+
+-- changeset flex:metering-grid-area-remove-time-dependent-data runAlways:true endDelimiter:;
+--preconditions onFail:MARK_RAN
+--precondition-sql-check expectedResult:1 SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = 'flex' AND table_name = 'metering_grid_area' AND column_name = 'price_area'
+-- NB: the following works because MGAs were loaded only once
+ALTER TABLE flex.metering_grid_area_history
+DROP COLUMN IF EXISTS price_area;
+
+ALTER TABLE flex.metering_grid_area_history
+DROP COLUMN IF EXISTS system_operator_id;
+
+ALTER TABLE flex.metering_grid_area_history
+DROP COLUMN IF EXISTS system_operator_party_type;
+
+ALTER TABLE flex.metering_grid_area_history
+DROP COLUMN IF EXISTS valid_time_range;
+
+ALTER TABLE flex.metering_grid_area
+DROP COLUMN IF EXISTS price_area;
+
+ALTER TABLE flex.metering_grid_area
+DROP CONSTRAINT IF EXISTS metering_grid_area_system_operator_fkey;
+
+ALTER TABLE flex.metering_grid_area
+DROP COLUMN IF EXISTS system_operator_id;
+
+ALTER TABLE flex.metering_grid_area
+DROP COLUMN IF EXISTS system_operator_party_type;
+
+ALTER TABLE flex.metering_grid_area
+DROP COLUMN IF EXISTS valid_time_range;

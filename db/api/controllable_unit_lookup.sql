@@ -64,8 +64,7 @@ BEGIN
 
     SELECT mga.id INTO l_mga_id
     FROM flex.metering_grid_area AS mga
-    WHERE mga.business_id = in_metering_grid_area_business_id
-        AND mga.valid_time_range @> current_timestamp;
+    WHERE mga.business_id = in_metering_grid_area_business_id;
 
     -- we assume the links between the AP and the MGA/EU are valid from a few
     -- days back in time
