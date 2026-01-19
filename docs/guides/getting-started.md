@@ -38,7 +38,7 @@ On this page, you must choose a party in the list and click
 _dashboard_.
 
 For more detailed information about authentication, please head to the
-[dedicated documentation page](../technical/auth.md).
+[dedicated documentation page](../technical/auth/index.md).
 
 ## User interface of the Flexibility Information System
 

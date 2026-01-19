@@ -30,7 +30,8 @@ No notifications.
 
 ### Resource Level Authorization
 
-Below is the [RLA](../technical/auth.md#resource-level-authorization-rla) for the
+Below is the [RLA](../technical/auth/authz.md#resource-level-authorization-rla)
+for the
 resource. The default policy is **deny**.
 
 #### Anonymous
@@ -99,7 +100,7 @@ No policies.
     where the user is not allowed to read the fields from the other resource,
     null values will be showed in the `identity` resource.
 
-For party type abbreviations, check [the auth docs](../technical/auth.md#party-market-actors)
+For party type abbreviations, check [the auth docs](../technical/auth/auth-model.md#party-market-actors)
 
 | FIELD       | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP | ORG |
 |-------------|------|-----|----|----|------|----|----|----|----|-----|

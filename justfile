@@ -549,7 +549,7 @@ permissions-to-md:
 
         sed -i '/^For party type abbreviations/,$d' docs/resources/${resource}.md
 
-        echo "For party type abbreviations, check [the auth docs](../technical/auth.md#party-market-actors)" >> docs/resources/${resource}.md
+        echo "For party type abbreviations, check [the auth docs](../technical/auth/auth-model.md#party-market-actors)" >> docs/resources/${resource}.md
         echo "" >> docs/resources/${resource}.md
 
         grep -E "^((${resource})|(RESOURCE))\;" local/input/permissions.csv \

@@ -29,9 +29,9 @@ section we describe how we have chosen to interpret these concepts so far.
 > These links provide the fields, validation rules, and other technical details
 > for each resource.
 >
-> Likewise, the names of parties (such as SP, SO, ES, BRP and EU) are linked to the
-> party type definitions in the [Auth section](../technical/auth.md), which describe
-> their authentication model and authorization rules.
+> Likewise, the names of parties (such as SP, SO, ES, BRP and EU) are linked to
+> the party type definitions in the [Auth section](../technical/auth/index.md),
+> which describe their authentication model and authorization rules.
 
 ## What is a controllable unit?
 
@@ -58,9 +58,9 @@ such as an industrial boiler or an EV charger.
 * Energy storage system: a unit that can both *produce and consume* electricity,
   such as a battery that charges and discharges depending on system needs.
 
-A [service provider](../technical/auth.md#service-provider) (SP) offers flexibility
-from the controllable unit on behalf of the [end user](end-user.md) (EU) based on
-their [controllable unit service provider](../resources/controllable_unit_service_provider.md)
+A [service provider](../technical/auth/auth-model.md#service-provider) (SP)
+offers flexibility from the controllable unit on behalf of the [end user](end-user.md)
+(EU) based on their [controllable unit service provider](../resources/controllable_unit_service_provider.md)
 (CUSP) agreement, which authorises the SP to manage the CU for flexibility services.
 
 ### Technical resources
@@ -90,14 +90,16 @@ all relate to the same accounting point.
 
 In FIS, each controllable unit is connected to a single
 [accounting point](../resources/accounting_point.md) (AP).
-This ensures an unambiguous link between the CU and the [balance responsible
-party](../technical/auth.md#balance-responsible-party) (BRP) of the associated
-[energy supplier](../technical/auth.md#energy-supplier) (ES), which enables
-imbalance adjustment and settlement.
+This ensures an unambiguous link between the CU and the
+[balance responsible party](../technical/auth/auth-model.md#balance-responsible-party)
+(BRP) of the associated
+[energy supplier](../technical/auth/auth-model.md#energy-supplier) (ES), which
+enables imbalance adjustment and settlement.
 
 Knowing the AP where a CU is located also allows
-[system operators](../technical/auth.md#system-operator) (SOs) to know where in
-the grid it is. As a result they know where flexibility can be activated in the grid.
+[system operators](../technical/auth/auth-model.md#system-operator) (SOs) to
+know where in the grid it is. As a result they know where flexibility can be
+activated in the grid.
 
 ## A service providing group is a collection of controllable units
 
