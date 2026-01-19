@@ -79,7 +79,7 @@ To authenticate, the client must send a request with `Content-Type` header as
 `application/x-www-form-urlencoded` and a body similar to the following:
 
 ```text
-grant_type: urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=<authorization grant JWT>
+grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=<authorization grant JWT>
 ```
 
 The magic is in the assertion JWT. Use the following payload.
@@ -91,7 +91,7 @@ The magic is in the assertion JWT. Use the following payload.
 | `iat` | Issued At       | The time the JWT was issued. Only tokens with `iat` within 10 seconds of server time will be accepted.                                                    |                                        |
 | `iss` | Issuer          | UUID `client_id` of the entity client whose key is used to sign the token.                                                                                | `2fc014f2-e9b4-41d4-ad6b-c360b8ee6229` |
 | `jti` | JWT             | A unique identifier for the JWT. For (future) protection against replay attacks.                                                                          |                                        |
-| `sub` | Subject         | Optional. Use if the client wants to assume party as part of the request. Format `no:entity:<id_type>:<id>`. `id_type` is the party's `business_id_type`. | `no:party:gln:1234567890123`           |
+| `sub` | Subject         | Optional. Use if the client wants to assume party as part of the request. Format `no:party:<id_type>:<id>`. `id_type` is the party's `business_id_type`. | `no:party:gln:1234567890123`           |
 
 The JWT must be signed by the entity client's RSA private key. The public key
 must be uploaded to the client in the portal prior to making the request. An
