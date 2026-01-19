@@ -5,9 +5,12 @@
         "gomodUpdateImportPaths"
     ],
     "extends": [
+        // https://github.com/elhub/devxp-renovate/blob/main/default.json
         "github>elhub/devxp-renovate"
     ],
     "packageRules": [
+
+        // Disable major updates for Postgres Docker image
         {
             "enabled": false,
             "matchDatasources": [
@@ -19,6 +22,12 @@
             "matchPackageNames": [
                 "postgres"
             ]
-        }
-    ]
+        },
+        // https://docs.renovatebot.com/noise-reduction/#package-grouping
+        {
+            "groupName": "frontend",
+            "path": "frontend/**",
+        },
+    ],
+
 }
