@@ -1,10 +1,7 @@
 import { useResourceContext } from "ra-core";
 import { Content, Heading, VerticalSpace } from "../components/ui";
 import { PartyMembershipList } from "./membership/PartyMembershipList";
-import {
-  NestedResourceHistoryButton,
-  ResourceHistoryButton,
-} from "../components/history";
+import { ResourceHistoryButton } from "../components/history";
 import { EventButton } from "../event/EventButton";
 import {
   DateField,
@@ -63,10 +60,6 @@ export const PartyShow = () => {
             <Heading level={2} size="small" spacing>
               Party memberships
             </Heading>
-            <NestedResourceHistoryButton
-              child="membership"
-              label="party memberships"
-            />
             <PartyMembershipList />
           </>
         )}

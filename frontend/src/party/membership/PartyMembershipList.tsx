@@ -5,7 +5,10 @@ import {
   useRecordContext,
 } from "ra-core";
 import { List, Datagrid } from "../../components/EDS-ra/list";
-import { DeleteButton } from "../../components/EDS-ra/buttons";
+import {
+  DeleteButton,
+  NestedResourceHistoryButton,
+} from "../../components/EDS-ra/buttons";
 import { Button } from "../../components/ui";
 
 import { useNavigate } from "react-router-dom";
@@ -13,8 +16,9 @@ import {
   DateField,
   IdentityField,
   ReferenceField,
+  ScopesField,
   TextField,
-} from "../../components/EDS-ra/fields/index";
+} from "../../components/EDS-ra/fields";
 import { Permissions } from "../../auth/permissions";
 import { IconPlus, IconSearch } from "@elhub/ds-icons";
 
@@ -64,6 +68,7 @@ const ListActions = ({
     <>
       {canCreate && <CreateButton id={id} />}
       {canCreate && canLookup && <CreateViaLookupButton id={id} />}
+      <NestedResourceHistoryButton child="membership" label="View History" />
     </>
   );
 };
@@ -99,12 +104,10 @@ export const PartyMembershipList = () => {
             <ReferenceField source="entity_id" reference="entity">
               <TextField source="name" />
             </ReferenceField>
-            <TextField source="scopes" />
+            <ScopesField source="scopes" />
             <DateField source="recorded_at" showTime />
             <IdentityField source="recorded_by" />
-            {canDelete && (
-              <DeleteButton mutationMode="pessimistic" redirect="" />
-            )}
+            {canDelete && <DeleteButton />}
           </Datagrid>
         </List>
       </ResourceContextProvider>
