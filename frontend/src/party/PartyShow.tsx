@@ -1,16 +1,17 @@
 import { useResourceContext } from "ra-core";
 import { Content, Heading, VerticalSpace } from "../components/ui";
 import { PartyMembershipList } from "./membership/PartyMembershipList";
-import { ResourceHistoryButton } from "../components/history";
-import { EventButton } from "../event/EventButton";
 import {
   DateField,
   EnumField,
   IdentityField,
   ReferenceField,
+  ResourceHistoryButton,
+  EventButton,
   TextField,
-} from "../components/EDS-ra/fields/index";
-import { Show, SimpleShowLayout } from "../components/EDS-ra/show";
+  Show,
+  SimpleShowLayout,
+} from "../components/EDS-ra";
 
 export const PartyShow = () => {
   const resource = useResourceContext()!;

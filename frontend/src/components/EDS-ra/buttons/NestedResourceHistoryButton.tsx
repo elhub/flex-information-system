@@ -5,7 +5,7 @@ import { IconClockReset } from "@elhub/ds-icons";
 import {
   useNestedResourceHistory,
   UseNestedResourceHistoryProps,
-} from "./useNestedResourceHistory";
+} from "./hooks/useNestedResourceHistory";
 
 type NestedHistoryButtonProps = UseNestedResourceHistoryProps & {
   label?: ReactNode;

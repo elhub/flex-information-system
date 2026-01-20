@@ -7,18 +7,15 @@ import {
 import { List, Datagrid } from "../../components/EDS-ra/list";
 import {
   DeleteButton,
-  NestedResourceHistoryButton,
-} from "../../components/EDS-ra/buttons";
-import { Button } from "../../components/ui";
-
-import { useNavigate } from "react-router-dom";
-import {
   DateField,
   IdentityField,
   ReferenceField,
   ScopesField,
   TextField,
-} from "../../components/EDS-ra/fields";
+  NestedResourceHistoryButton,
+} from "../../components/EDS-ra";
+import { Button } from "../../components/ui";
+import { useNavigate } from "react-router-dom";
 import { Permissions } from "../../auth/permissions";
 import { IconPlus, IconSearch } from "@elhub/ds-icons";
 
