@@ -1,4 +1,4 @@
-import { Tag } from "../../ui";
+import { BodyText } from "../../ui";
 import { useRecordContext, useTranslate } from "ra-core";
 import { BaseField, BaseFieldProps } from "./BaseField";
 
@@ -17,7 +17,7 @@ export const EnumField = ({
   const value = record?.[source];
   const content =
     value == null || value === "" ? null : (
-      <Tag variant="info">{translate(`enum.${enumKey}.${value}`)}</Tag>
+      <BodyText>{translate(`enum.${enumKey}.${value}`)}</BodyText>
     );
 
   return (
