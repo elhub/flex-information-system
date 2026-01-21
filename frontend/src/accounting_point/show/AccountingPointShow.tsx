@@ -106,10 +106,7 @@ const AccountingPointConnections = () => {
             reference="metering_grid_area"
             label="field.accounting_point_metering_grid_area.metering_grid_area_id"
           >
-            <EnumField
-              source="price_area"
-              enumKey="metering_grid_area.price_area"
-            />
+            <TextField source="name" label="metering_grid_area.name" />
           </ReferenceField>
         </FieldStack>
         <FieldStack direction="row" flexWrap="wrap" spacing={2}>
