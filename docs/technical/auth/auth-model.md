@@ -1,7 +1,7 @@
 # Authentication model
 
 In this section, we describe the authentication model in the Flexibility
-Information System. This diagran shows the main concepts in the model and how
+Information System. This diagram shows the main concepts in the model and how
 they relate to each other.
 
 ![../diagrams/auth_model.drawio.png](../diagrams/auth_model.drawio.png)
