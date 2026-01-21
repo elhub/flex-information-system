@@ -146,7 +146,7 @@ programmatically.
 
 ## Party type check
 
-The party type check is what is says the tin. It checks that the party type
+The party type check is what it says on the tin. It checks that the party type
 doing the request is allowed to do the action on the resource. This is an
 additional check added on just a few routes.
 
