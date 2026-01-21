@@ -18,8 +18,8 @@ client. From there, users have two ways of authenticating.
   a self-signed JWT Authorization grant to authenticate.
 * `Client Credentials` - The entity uses a client_id and client_secret to
   authenticate. The client_id is the UUID of one of the clients added by the
-  entity in the system, and client_secret is basically a password that must be
-  set on this client.
+  entity in the system, and client_secret is a password that must be set on
+  this client.
 
 !!! note "Possible future use of enterprise certificates"
 
@@ -117,9 +117,9 @@ access the API.
 
 If the user has logged in via client credentials or OpenID connect, the user can
 assume a party by doing a
-[OAuth 2.0 Token Exchange](https://datatracker.ietf.org/doc/html/rfc8693) that
-lets an entity "impersonate" a party with the returned token. This is done by
-calling the same `/token` endpoint, this time with the `grant_type`
+[OAuth 2.0 Token Exchange (RFC8693)](https://datatracker.ietf.org/doc/html/rfc8693)
+that lets an entity "impersonate" a party with the returned token. This is done
+by calling the same `/token` endpoint, this time with the `grant_type`
 `urn:ietf:params:oauth:grant-type:token-exchange`.
 
 RFC8693 does _not_ cover the case where the client that does token exchange
@@ -140,7 +140,8 @@ Other systems have met this gap by loosely implementing the RFC, e.g. by
 [using a custom token type](https://zitadel.com/docs/guides/integrate/token-exchange#impersonation-by-user-id-example)
 or adding
 [additional form parameters](https://www.keycloak.org/docs/23.0.2/securing_apps/#form-parameters).
-We do it by using the access token obtained in step 1 as the `actor_token`.
+We do it by using the access token, first obtained when logging in as an entity,
+as the `actor_token`.
 Instead of using another token (_i.e._, `subject_token`) to specify the party
 the user wants to assume, we just expect the party ID in an additional `scope`
 parameter in the URL-encoded body of the request.

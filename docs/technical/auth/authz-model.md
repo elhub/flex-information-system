@@ -126,7 +126,7 @@ are sufficient to assume a party and get read-write access to the resources in
 the system.
 
 This happens a second time when the user assumes a party.
-If they assume a party that they own, then there scopes do not change.
+If they assume a party that they own, then their scopes do not change.
 If they assume a party they are a member of, then they get assigned the
 _intersection_ of the scopes they had as an entity with the scopes granted by
 the membership.
