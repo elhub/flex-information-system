@@ -10,7 +10,7 @@ its employees are represented in the system.
 
 ![Organisation access control management illustration](../diagrams/organisation_management.drawio.png)
 
-The four black boxes shows how the oranisation itself is modelled in the system.
+The four black boxes shows how the organisation itself is modelled in the system.
 
 * An organisation _entity_ representing the organisation
 * An organisation _party_ for administrating the organisation in the system
