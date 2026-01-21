@@ -57,7 +57,7 @@ method.
 You can set up scopes to restrict what the person using machine access will be
 able to do on the API.
 
-Let us assume you set up one entity client, in order to grant API access to one
+Let us assume you set up one entity client.
 
 Let us say you created the following entity client to enable machine access as
 the service provider party, with maximal scopes (no restrictions):
