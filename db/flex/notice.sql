@@ -1,6 +1,8 @@
 --liquibase formatted sql
 -- Manually managed file
 
+-- NB: the precondition in addition to IF EXISTS is necessary, because if
+-- notice already exists as a table, this line will make the DB complain
 -- changeset flex:notice-view-remove runAlways:true endDelimiter:;
 --preconditions onFail:MARK_RAN
 --precondition-sql-check expectedResult:1 SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'flex' AND table_name = 'notice' AND table_type = 'VIEW'
