@@ -3,6 +3,20 @@
 This changelog tracks all changes that are visible in our API.
 
 <!-- markdownlint-disable MD013 -->
+## 19.01.2026
+
+* **Removed price area, system operator, and valid time information from the**
+  **_Metering Grid Area_ resource.**
+* **Added the `business_id_type` field to the _Metering Grid Area_ resource**
+  **(always EIC-Y).**
+
+## 13.01.2026
+
+* **Added the _Accounting Point Bidding Zone_, _Accounting Point End User_,**
+  **and _Accounting Point Metering Grid Area_ resources, available for FISO,**
+  **for debugging purposes.**
+* **Added the _Metering Grid Area_ resource, as common information.**
+
 ## 27.10.2025
 
 * **Added the _Service Providing Group Grid Suspension Comment_ resource.**
