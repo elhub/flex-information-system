@@ -1,7 +1,21 @@
 # Entity Client
 
-Client linked to an entity for client credentials and JWT grant authentication
-methods. An entity can have several clients registered.
+This resource represents a client linked to an entity, to be used in the client
+credentials and JWT grant authentication methods.
+
+The main purpose of this resource is to enable machine access to the API.
+A program connecting to the API will use one of the clients present on the
+entity.
+It will thereby get the possibility to act as the party referenced in the
+`party_id` field, with the authorisations listed in the client's `scopes`.
+
+Entity clients are secured by a password in `client_secret` or a `public_key`
+associated to the private key JWTs sent to the JWT grant authentication will
+be signed with.
+
+An entity can have several clients registered, typically an organisation entity
+with one client per enterprise machine expected to use the API in an automated
+way.
 
 ## Relevant links
 
