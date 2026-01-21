@@ -5,28 +5,15 @@ import {
   ReferenceField,
   TextField,
   ExportButton,
-  CreateButton,
   usePermissions,
   TopToolbar,
 } from "react-admin";
 import { Datagrid } from "../auth";
 import { DateField } from "../components/datetime";
 import { Link } from "react-router-dom";
-import AddIcon from "@mui/icons-material/Add";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import { Permissions } from "../auth/permissions";
 import { EnumArrayInput, EnumField } from "../components/enum";
-
-const CreateCUSPButton = () => (
-  <Button
-    component={Link}
-    to={`/controllable_unit_service_provider/create`}
-    startIcon={<AddIcon />}
-    // input a CU ID instead of from a list of names (cf. CUSP input)
-    state={{ cuIDAsNumber: true }}
-    label="Manage another controllable unit"
-  />
-);
 
 const CULookupButton = () => (
   <Button
@@ -42,17 +29,10 @@ const ListActions = () => {
 
   // Permission checks
   const canLookup = permissions?.allow("controllable_unit", "lookup");
-  const canCreateCUSP = permissions?.allow(
-    "controllable_unit_service_provider",
-    "create",
-  );
-  const canCreate = permissions?.allow("controllable_unit", "create");
 
   return (
     <TopToolbar>
       {canLookup && <CULookupButton />}
-      {canCreateCUSP && <CreateCUSPButton />}
-      {canCreate && <CreateButton />}
       <ExportButton />
     </TopToolbar>
   );

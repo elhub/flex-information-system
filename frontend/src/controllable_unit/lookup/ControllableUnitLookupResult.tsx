@@ -47,6 +47,9 @@ const CreateCUButton = ({
       to={`/controllable_unit/create`}
       startIcon={<BookmarkAddIcon />}
       state={cuspLocationState}
+      variant="contained"
+      size="large"
+      sx={{ width: "500px" }}
       label="Create a new controllable unit"
     />
   );
@@ -106,7 +109,7 @@ const ControllableUnitLookupResultItem = ({
   };
 
   return (
-    <Card>
+    <Card sx={{ maxWidth: "1000px" }}>
       <SimpleShowLayout>
         <FieldStack
           spacing={2}
@@ -127,14 +130,17 @@ const ControllableUnitLookupResultItem = ({
             technical_resources={controllableUnit.technical_resources}
           />
         </FieldStack>
-        <Button
-          component={Link}
-          to={`/controllable_unit_service_provider/create`}
-          startIcon={<BookmarkAddIcon />}
-          // input a CU ID instead of from a list of names (cf. CUSP input)
-          state={cuspLocationState}
-          label="Manage this controllable unit"
-        />
+        <>
+          <Button
+            component={Link}
+            to={`/controllable_unit_service_provider/create`}
+            startIcon={<BookmarkAddIcon />}
+            // input a CU ID instead of from a list of names (cf. CUSP input)
+            state={cuspLocationState}
+            variant="contained"
+            label="Manage Controllable Unit"
+          />
+        </>
       </SimpleShowLayout>
     </Card>
   );
