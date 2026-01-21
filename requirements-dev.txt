@@ -5,7 +5,7 @@ hypothesis
 Jinja2
 markdown-callouts
 mkdocs-material
-openapi-python-client==0.28.0
+openapi-python-client==0.28.1
 openpyxl
 pandas
 psycopg[binary,pool]
