@@ -7,6 +7,9 @@ The main purpose of the Flexibility Information System is learning and research
 in the interface between the business domain and the technical solution. We are
 not currently building for production.
 
+> :warning: While we wait for Elhub's design system to be open-source.
+the frontend will not build on external machines.
+
 ## Getting started
 
 To get started, you must install a lot of local dependencies. Elhubbers do this
