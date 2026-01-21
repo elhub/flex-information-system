@@ -1,4 +1,4 @@
-# Authorization
+# Authorization model
 
 We are providing a [resource-oriented main API](api-design.md). Authorization is
 understood as allowing a user access to do an action on a resource or its field.

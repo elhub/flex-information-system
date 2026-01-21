@@ -47,7 +47,7 @@ group. One SPG grid prequalification per impacted system operator.
 
 ### Resource Level Authorization
 
-Below is the [RLA](../technical/auth/authz.md#resource-level-authorization-rla)
+Below is the [RLA](../technical/auth/authz-model.md#resource-level-authorization-rla)
 for the
 resource. The default policy is **deny**.
 

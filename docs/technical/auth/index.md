@@ -25,7 +25,7 @@ add external links to relevant resources where appropriate (like we just did ðŸ˜
   How are users identified? What are the possible roles in the system?
 * :fontawesome-solid-key: [Authentication methods](./auth-methods.md)  
   How can a user log in to the FIS?
-* :fontawesome-solid-user-cog: [Authorization](./authz.md)  
+* :fontawesome-solid-user-cog: [Authorization](./authz-model.md)  
   What is a user allowed to do?
 * :fontawesome-solid-rocket: [Getting started](./getting-started.md)  
   Set up your API user and register your first controllable unit

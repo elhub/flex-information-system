@@ -44,7 +44,7 @@ of one service provider per activation period.
 
 ### Resource Level Authorization
 
-Below is the [RLA](../technical/auth/authz.md#resource-level-authorization-rla)
+Below is the [RLA](../technical/auth/authz-model.md#resource-level-authorization-rla)
 for the
 resource. The default policy is **deny**.
 

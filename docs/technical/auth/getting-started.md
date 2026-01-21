@@ -14,7 +14,7 @@ Indeed, in order to be able to manually use the API, you need to understand what
 an _entity_ and a _party_ are and how they make up the identity of a user in the
 system.
 
-You also need to understand [_scopes_](./authz.md#scopes) and how they allow
+You also need to understand [_scopes_](./authz-model.md#scopes) and how they allow
 restricting what operations an API user can do.
 
 Finally, you need to understand what an [_entity client_](../../resources/entity_client.md)
