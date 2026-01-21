@@ -233,6 +233,9 @@ databaseChangeLog:
   - include:
       file: ./notice.sql
       relativeToChangelogFile: true
+  - include:
+      file: ./notice_fresh.sql
+      relativeToChangelogFile: true
   # history
   - includeAll:
       path: ./

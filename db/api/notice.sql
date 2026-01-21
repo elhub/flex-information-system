@@ -9,7 +9,7 @@ WITH (security_invoker = false, security_barrier = true) AS ( -- cf AP-BRP
         party_id,
         source,
         type
-    FROM flex.notice
+    FROM flex.notice_fresh
     -- no RLS policies for views, so we need to have them built-in
     WHERE
         -- RLS: NOTICE-FISO001
