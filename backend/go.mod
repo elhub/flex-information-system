@@ -12,7 +12,7 @@ require (
 	github.com/jackc/pgx/v5 v5.8.0
 	github.com/lestrrat-go/httprc/v3 v3.0.3
 	github.com/lestrrat-go/jwx/v3 v3.0.12
-	github.com/samber/slog-gin v1.18.0
+	github.com/samber/slog-gin v1.19.1
 	go.opentelemetry.io/otel v1.39.0
 	go.opentelemetry.io/otel/sdk v1.39.0
 	go.opentelemetry.io/otel/trace v1.39.0
