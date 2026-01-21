@@ -17,6 +17,29 @@ An entity can have several clients registered, typically an organisation entity
 with one client per enterprise machine expected to use the API in an automated
 way.
 
+## Example
+
+Let us take the case of a system operator organisation called "Testnett AS".
+They have an organisation entity registered in the FIS and a party of type
+`system_operator` to be able to act in the system accordingly.
+
+Imagine they want to allow API access to one of their data engineers, not to
+interact with the system, but just to perform some data analytics.
+This is possible by creating an entity client:
+
+* tied to the organisation entity (`entity_id`)
+* allowing access to the SO party (`party_id`)
+* with read-only `scopes` to make sure the data engineer does not edit any
+  data currently in use (for instance `read:data`)
+* with a public key freshly generated in `public_key` (the private key will be
+  given to the data engineer).
+
+Then, the target person will just have to use the JWT grant authentication
+method with a JWT asking for access to the SO party through the entity client
+they received (identified by `client_id` in the JWT claims).
+The JWT will have to be signed with the private key corresponding to the public
+key stored in the entity client.
+
 ## Relevant links
 
 * [API Documentation](../api/v0/index.html#/operations/list_entity_client)
