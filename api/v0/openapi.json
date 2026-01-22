@@ -101,8 +101,24 @@
       "description": "Accounting Point Balance Responsible Party"
     },
     {
+      "name": "accounting_point_bidding_zone",
+      "description": "Accounting Point Bidding Zone"
+    },
+    {
+      "name": "accounting_point_end_user",
+      "description": "Accounting Point End User"
+    },
+    {
       "name": "accounting_point_energy_supplier",
       "description": "Accounting Point Energy Supplier"
+    },
+    {
+      "name": "metering_grid_area",
+      "description": "Metering Grid Area"
+    },
+    {
+      "name": "accounting_point_metering_grid_area",
+      "description": "Accounting Point Metering Grid Area"
     },
     {
       "name": "product_type",
@@ -720,6 +736,29 @@
           "consumption",
           "production"
         ]
+      },
+      "accounting_point_bidding_zone_bidding_zone": {
+        "description": "The bidding zone of the accounting point.",
+        "format": "text",
+        "type": "string",
+        "enum": [
+          "NO1",
+          "NO2",
+          "NO3",
+          "NO4",
+          "NO5"
+        ],
+        "example": "NO3"
+      },
+      "metering_grid_area_business_id_type": {
+        "description": "The type of the business identifier.",
+        "format": "text",
+        "type": "string",
+        "readOnly": true,
+        "enum": [
+          "eic_y"
+        ],
+        "example": "eic_y"
       },
       "system_operator_product_type_status": {
         "description": "The status of the relation.",
@@ -3138,6 +3177,84 @@
           "valid_from"
         ]
       },
+      "accounting_point_bidding_zone_response": {
+        "summary": "Response - Accounting Point Bidding Zone",
+        "description": "Response schema - Relation telling which bidding zone an accounting point belongs to.",
+        "type": "object",
+        "properties": {
+          "accounting_point_id": {
+            "description": "The ID of the accounting point.",
+            "format": "bigint",
+            "type": "integer",
+            "readOnly": true,
+            "example": 245
+          },
+          "bidding_zone": {
+            "$ref": "#/components/schemas/accounting_point_bidding_zone_bidding_zone"
+          },
+          "valid_from": {
+            "description": "The date from which the accounting point belongs to the bidding zone. Midnight aligned on Norwegian timezone.",
+            "format": "timestamp with time zone",
+            "type": "string",
+            "readOnly": true,
+            "example": "2022-08-08 00:00:00 CET"
+          },
+          "valid_to": {
+            "description": "The date until which the accounting point belongs to the bidding zone. Midnight aligned on Norwegian timezone.",
+            "format": "timestamp with time zone",
+            "type": "string",
+            "readOnly": true,
+            "nullable": true,
+            "example": null
+          }
+        },
+        "required": [
+          "accounting_point_id",
+          "bidding_zone",
+          "valid_from"
+        ]
+      },
+      "accounting_point_end_user_response": {
+        "summary": "Response - Accounting Point End User",
+        "description": "Response schema - Relation telling which end user an accounting point belongs to.",
+        "type": "object",
+        "properties": {
+          "accounting_point_id": {
+            "description": "The ID of the accounting point.",
+            "format": "bigint",
+            "type": "integer",
+            "readOnly": true,
+            "example": 245
+          },
+          "end_user_id": {
+            "description": "The end user on the accounting point.",
+            "format": "bigint",
+            "type": "integer",
+            "example": 12,
+            "readOnly": true
+          },
+          "valid_from": {
+            "description": "The date from which the accounting point belongs to the end user. Midnight aligned on Norwegian timezone.",
+            "format": "timestamp with time zone",
+            "type": "string",
+            "readOnly": true,
+            "example": "2022-08-08 00:00:00 CET"
+          },
+          "valid_to": {
+            "description": "The date until which the accounting point belongs to the end user. Midnight aligned on Norwegian timezone.",
+            "format": "timestamp with time zone",
+            "type": "string",
+            "readOnly": true,
+            "nullable": true,
+            "example": null
+          }
+        },
+        "required": [
+          "accounting_point_id",
+          "end_user_id",
+          "valid_from"
+        ]
+      },
       "accounting_point_energy_supplier_response": {
         "summary": "Response - Accounting Point Energy Supplier",
         "description": "Response schema - Relation linking an energy supplier to an accounting point.",
@@ -3176,6 +3293,85 @@
         "required": [
           "accounting_point_id",
           "energy_supplier_id",
+          "valid_from"
+        ]
+      },
+      "metering_grid_area_response": {
+        "summary": "Response - Metering Grid Area",
+        "description": "Response schema - Metering grid area to which accounting points belong.",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Unique surrogate identifier.",
+            "format": "bigint",
+            "type": "integer",
+            "readOnly": true,
+            "example": 3
+          },
+          "business_id": {
+            "description": "The business identifier of the metering grid area. Format depends on `business_id_type`.",
+            "format": "text",
+            "type": "string",
+            "readOnly": true,
+            "example": "24YAOER9FNW34FNN"
+          },
+          "business_id_type": {
+            "$ref": "#/components/schemas/metering_grid_area_business_id_type"
+          },
+          "name": {
+            "description": "The name of the metering grid area.",
+            "format": "text",
+            "type": "string",
+            "maxLength": 128,
+            "readOnly": true,
+            "example": "VN04VESTNORGEDX12"
+          }
+        },
+        "required": [
+          "id",
+          "business_id",
+          "business_id_type",
+          "name"
+        ]
+      },
+      "accounting_point_metering_grid_area_response": {
+        "summary": "Response - Accounting Point Metering Grid Area",
+        "description": "Response schema - Relation telling which metering grid area an accounting point belongs to.",
+        "type": "object",
+        "properties": {
+          "accounting_point_id": {
+            "description": "The ID of the accounting point.",
+            "format": "bigint",
+            "type": "integer",
+            "readOnly": true,
+            "example": 45
+          },
+          "metering_grid_area_id": {
+            "description": "The metering grid area of the accounting point.",
+            "format": "bigint",
+            "type": "integer",
+            "example": 3,
+            "readOnly": true
+          },
+          "valid_from": {
+            "description": "The date from which the accounting point belongs to the metering grid area. Midnight aligned on Norwegian timezone.",
+            "format": "timestamp with time zone",
+            "type": "string",
+            "readOnly": true,
+            "example": "2023-09-09 00:00:00 CET"
+          },
+          "valid_to": {
+            "description": "The date until which the accounting point belongs to the metering grid area. Midnight aligned on Norwegian timezone.",
+            "format": "timestamp with time zone",
+            "type": "string",
+            "readOnly": true,
+            "nullable": true,
+            "example": null
+          }
+        },
+        "required": [
+          "accounting_point_id",
+          "metering_grid_area_id",
           "valid_from"
         ]
       },
@@ -5296,13 +5492,12 @@
           },
           {
             "in": "query",
+            "name": "business_id",
             "schema": {
-              "type": "string",
-              "pattern": "^eq\\.[0-9]+$"
+              "type": "string"
             },
-            "example": "eq.55",
-            "description": "Reference to the accounting point that the controllable unit is connected to.",
-            "name": "accounting_point_id"
+            "example": "eq.somebusiness_id",
+            "description": "Unique business identifier for the controllable unit."
           },
           {
             "in": "query",
@@ -5315,12 +5510,13 @@
           },
           {
             "in": "query",
-            "name": "business_id",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "pattern": "^eq\\.[0-9]+$"
             },
-            "example": "eq.somebusiness_id",
-            "description": "Unique business identifier for the controllable unit."
+            "example": "eq.55",
+            "description": "Reference to the accounting point that the controllable unit is connected to.",
+            "name": "accounting_point_id"
           },
           {
             "description": "Filtering Columns",
@@ -5859,13 +6055,12 @@
           },
           {
             "in": "query",
+            "name": "business_id",
             "schema": {
-              "type": "string",
-              "pattern": "^eq\\.[0-9]+$"
+              "type": "string"
             },
-            "example": "eq.55",
-            "description": "Reference to the accounting point that the controllable unit is connected to.",
-            "name": "accounting_point_id"
+            "example": "eq.somebusiness_id",
+            "description": "Unique business identifier for the controllable unit."
           },
           {
             "in": "query",
@@ -5878,12 +6073,13 @@
           },
           {
             "in": "query",
-            "name": "business_id",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "pattern": "^eq\\.[0-9]+$"
             },
-            "example": "eq.somebusiness_id",
-            "description": "Unique business identifier for the controllable unit."
+            "example": "eq.55",
+            "description": "Reference to the accounting point that the controllable unit is connected to.",
+            "name": "accounting_point_id"
           },
           {
             "description": "Filtering Columns",
@@ -7983,6 +8179,24 @@
             "name": "end_user_id"
           },
           {
+            "in": "query",
+            "name": "valid_from",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somevalid_from",
+            "description": "The date from which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone."
+          },
+          {
+            "in": "query",
+            "name": "valid_to",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somevalid_to",
+            "description": "The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone."
+          },
+          {
             "description": "Filtering Columns",
             "in": "query",
             "name": "select",
@@ -8649,6 +8863,24 @@
             "name": "end_user_id"
           },
           {
+            "in": "query",
+            "name": "valid_from",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somevalid_from",
+            "description": "The date from which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone."
+          },
+          {
+            "in": "query",
+            "name": "valid_to",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somevalid_to",
+            "description": "The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone."
+          },
+          {
             "description": "Filtering Columns",
             "in": "query",
             "name": "select",
@@ -8931,6 +9163,15 @@
           },
           {
             "in": "query",
+            "name": "name",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somename",
+            "description": "Free text name of the service providing group."
+          },
+          {
+            "in": "query",
             "schema": {
               "type": "string",
               "pattern": "^eq\\.[0-9]+$"
@@ -8938,15 +9179,6 @@
             "example": "eq.55",
             "description": "Reference to the `party` (service provider) managing the group.",
             "name": "service_provider_id"
-          },
-          {
-            "in": "query",
-            "name": "name",
-            "schema": {
-              "type": "string"
-            },
-            "example": "eq.somename",
-            "description": "Free text name of the service providing group."
           },
           {
             "description": "Filtering Columns",
@@ -9485,6 +9717,15 @@
           },
           {
             "in": "query",
+            "name": "name",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somename",
+            "description": "Free text name of the service providing group."
+          },
+          {
+            "in": "query",
             "schema": {
               "type": "string",
               "pattern": "^eq\\.[0-9]+$"
@@ -9492,15 +9733,6 @@
             "example": "eq.55",
             "description": "Reference to the `party` (service provider) managing the group.",
             "name": "service_provider_id"
-          },
-          {
-            "in": "query",
-            "name": "name",
-            "schema": {
-              "type": "string"
-            },
-            "example": "eq.somename",
-            "description": "Free text name of the service providing group."
           },
           {
             "description": "Filtering Columns",
@@ -9802,6 +10034,24 @@
             "example": "eq.55",
             "description": "Reference to the service providing group this relation links to a controllable unit.",
             "name": "service_providing_group_id"
+          },
+          {
+            "in": "query",
+            "name": "valid_from",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somevalid_from",
+            "description": "The date from which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone."
+          },
+          {
+            "in": "query",
+            "name": "valid_to",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somevalid_to",
+            "description": "The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone."
           },
           {
             "description": "Filtering Columns",
@@ -10451,6 +10701,24 @@
             "example": "eq.55",
             "description": "Reference to the service providing group this relation links to a controllable unit.",
             "name": "service_providing_group_id"
+          },
+          {
+            "in": "query",
+            "name": "valid_from",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somevalid_from",
+            "description": "The date from which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone."
+          },
+          {
+            "in": "query",
+            "name": "valid_to",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somevalid_to",
+            "description": "The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone."
           },
           {
             "description": "Filtering Columns",
@@ -14220,15 +14488,6 @@
           },
           {
             "in": "query",
-            "name": "name",
-            "schema": {
-              "type": "string"
-            },
-            "example": "eq.somename",
-            "description": "Name of the entity. Maximum 128 characters."
-          },
-          {
-            "in": "query",
             "name": "business_id",
             "schema": {
               "type": "string"
@@ -14243,6 +14502,15 @@
               "type": "string"
             },
             "example": "eq.somebusiness_id_type"
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somename",
+            "description": "Name of the entity. Maximum 128 characters."
           },
           {
             "description": "Filtering Columns",
@@ -14760,6 +15028,15 @@
           },
           {
             "in": "query",
+            "name": "name",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somename",
+            "description": "Name of the client."
+          },
+          {
+            "in": "query",
             "schema": {
               "type": "string",
               "pattern": "^eq\\.[0-9]+$"
@@ -14767,15 +15044,6 @@
             "example": "eq.55",
             "description": "Reference to the party this client allows to assume. A null value means the client cannot assume any party.",
             "name": "party_id"
-          },
-          {
-            "in": "query",
-            "name": "name",
-            "schema": {
-              "type": "string"
-            },
-            "example": "eq.somename",
-            "description": "Name of the client."
           },
           {
             "description": "Filtering Columns",
@@ -15386,6 +15654,23 @@
           },
           {
             "in": "query",
+            "name": "business_id",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somebusiness_id",
+            "description": "The business identifier of the party. Format depends on `business_id_type`."
+          },
+          {
+            "in": "query",
+            "name": "business_id_type",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somebusiness_id_type"
+          },
+          {
+            "in": "query",
             "schema": {
               "type": "string",
               "pattern": "^eq\\.[0-9]+$"
@@ -15402,23 +15687,6 @@
             },
             "example": "eq.somename",
             "description": "Name of the party. Maximum 128 characters."
-          },
-          {
-            "in": "query",
-            "name": "business_id",
-            "schema": {
-              "type": "string"
-            },
-            "example": "eq.somebusiness_id",
-            "description": "The business identifier of the party. Format depends on `business_id_type`."
-          },
-          {
-            "in": "query",
-            "name": "business_id_type",
-            "schema": {
-              "type": "string"
-            },
-            "example": "eq.somebusiness_id_type"
           },
           {
             "description": "Filtering Columns",
@@ -15957,6 +16225,23 @@
           },
           {
             "in": "query",
+            "name": "business_id",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somebusiness_id",
+            "description": "The business identifier of the party. Format depends on `business_id_type`."
+          },
+          {
+            "in": "query",
+            "name": "business_id_type",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somebusiness_id_type"
+          },
+          {
+            "in": "query",
             "schema": {
               "type": "string",
               "pattern": "^eq\\.[0-9]+$"
@@ -15973,23 +16258,6 @@
             },
             "example": "eq.somename",
             "description": "Name of the party. Maximum 128 characters."
-          },
-          {
-            "in": "query",
-            "name": "business_id",
-            "schema": {
-              "type": "string"
-            },
-            "example": "eq.somebusiness_id",
-            "description": "The business identifier of the party. Format depends on `business_id_type`."
-          },
-          {
-            "in": "query",
-            "name": "business_id_type",
-            "schema": {
-              "type": "string"
-            },
-            "example": "eq.somebusiness_id_type"
           },
           {
             "description": "Filtering Columns",
@@ -17574,6 +17842,15 @@
           },
           {
             "in": "query",
+            "name": "name",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somename",
+            "description": "Name of the technical resource. Maximum 128 characters."
+          },
+          {
+            "in": "query",
             "schema": {
               "type": "string",
               "pattern": "^eq\\.[0-9]+$"
@@ -17581,15 +17858,6 @@
             "example": "eq.55",
             "description": "Reference to the controllable unit that this technical resource belongs to.",
             "name": "controllable_unit_id"
-          },
-          {
-            "in": "query",
-            "name": "name",
-            "schema": {
-              "type": "string"
-            },
-            "example": "eq.somename",
-            "description": "Name of the technical resource. Maximum 128 characters."
           },
           {
             "description": "Filtering Columns",
@@ -18215,6 +18483,15 @@
           },
           {
             "in": "query",
+            "name": "name",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somename",
+            "description": "Name of the technical resource. Maximum 128 characters."
+          },
+          {
+            "in": "query",
             "schema": {
               "type": "string",
               "pattern": "^eq\\.[0-9]+$"
@@ -18222,15 +18499,6 @@
             "example": "eq.55",
             "description": "Reference to the controllable unit that this technical resource belongs to.",
             "name": "controllable_unit_id"
-          },
-          {
-            "in": "query",
-            "name": "name",
-            "schema": {
-              "type": "string"
-            },
-            "example": "eq.somename",
-            "description": "Name of the technical resource. Maximum 128 characters."
           },
           {
             "description": "Filtering Columns",
@@ -19220,6 +19488,15 @@
           },
           {
             "in": "query",
+            "name": "business_id",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somebusiness_id",
+            "description": "The GSRN metering point id of the accounting point."
+          },
+          {
+            "in": "query",
             "schema": {
               "type": "string",
               "pattern": "^eq\\.[0-9]+$"
@@ -19227,15 +19504,6 @@
             "example": "eq.55",
             "description": "The system operator of the accounting point.",
             "name": "system_operator_id"
-          },
-          {
-            "in": "query",
-            "name": "business_id",
-            "schema": {
-              "type": "string"
-            },
-            "example": "eq.somebusiness_id",
-            "description": "The GSRN metering point id of the accounting point."
           },
           {
             "description": "Filtering Columns",
@@ -19537,6 +19805,24 @@
             "name": "balance_responsible_party_id"
           },
           {
+            "in": "query",
+            "name": "valid_from",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somevalid_from",
+            "description": "The date from which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone."
+          },
+          {
+            "in": "query",
+            "name": "valid_to",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somevalid_to",
+            "description": "The date until which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone."
+          },
+          {
             "description": "Filtering Columns",
             "in": "query",
             "name": "select",
@@ -19684,6 +19970,390 @@
         ]
       }
     },
+    "/accounting_point_bidding_zone": {
+      "summary": "Accounting Point Bidding Zone",
+      "description": "",
+      "get": {
+        "operationId": "list_accounting_point_bidding_zone",
+        "summary": "List Accounting Point Bidding Zone",
+        "description": "",
+        "tags": [
+          "accounting_point_bidding_zone"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "pattern": "^eq\\.[0-9]+$"
+            },
+            "example": "eq.55",
+            "description": "The ID of the accounting point.",
+            "name": "accounting_point_id"
+          },
+          {
+            "in": "query",
+            "name": "valid_from",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somevalid_from",
+            "description": "The date from which the accounting point belongs to the bidding zone. Midnight aligned on Norwegian timezone."
+          },
+          {
+            "in": "query",
+            "name": "valid_to",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somevalid_to",
+            "description": "The date until which the accounting point belongs to the bidding zone. Midnight aligned on Norwegian timezone."
+          },
+          {
+            "description": "Filtering Columns",
+            "in": "query",
+            "name": "select",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Ordering",
+            "in": "query",
+            "name": "order",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Limiting and Pagination",
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Limiting and Pagination",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/accounting_point_bidding_zone_response"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "206": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/accounting_point_bidding_zone_response"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Partial Content"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/error_message"
+                    },
+                    {
+                      "$ref": "#/components/schemas/empty_object"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "406": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Not Acceptable"
+          },
+          "416": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Range Not Satisfiable"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read:data:accounting_point_bidding_zone"
+            ]
+          },
+          {}
+        ]
+      }
+    },
+    "/accounting_point_end_user": {
+      "summary": "Accounting Point End User",
+      "description": "",
+      "get": {
+        "operationId": "list_accounting_point_end_user",
+        "summary": "List Accounting Point End User",
+        "description": "",
+        "tags": [
+          "accounting_point_end_user"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "pattern": "^eq\\.[0-9]+$"
+            },
+            "example": "eq.55",
+            "description": "The ID of the accounting point.",
+            "name": "accounting_point_id"
+          },
+          {
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "pattern": "^eq\\.[0-9]+$"
+            },
+            "example": "eq.55",
+            "description": "The end user on the accounting point.",
+            "name": "end_user_id"
+          },
+          {
+            "in": "query",
+            "name": "valid_from",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somevalid_from",
+            "description": "The date from which the accounting point belongs to the end user. Midnight aligned on Norwegian timezone."
+          },
+          {
+            "in": "query",
+            "name": "valid_to",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somevalid_to",
+            "description": "The date until which the accounting point belongs to the end user. Midnight aligned on Norwegian timezone."
+          },
+          {
+            "description": "Filtering Columns",
+            "in": "query",
+            "name": "select",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Ordering",
+            "in": "query",
+            "name": "order",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Limiting and Pagination",
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Limiting and Pagination",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/accounting_point_end_user_response"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "206": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/accounting_point_end_user_response"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Partial Content"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/error_message"
+                    },
+                    {
+                      "$ref": "#/components/schemas/empty_object"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "406": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Not Acceptable"
+          },
+          "416": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Range Not Satisfiable"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read:data:accounting_point_end_user"
+            ]
+          },
+          {}
+        ]
+      }
+    },
     "/accounting_point_energy_supplier": {
       "summary": "Accounting Point Energy Supplier",
       "description": "",
@@ -19714,6 +20384,24 @@
             "example": "eq.55",
             "description": "The energy supplier of the accounting point.",
             "name": "energy_supplier_id"
+          },
+          {
+            "in": "query",
+            "name": "valid_from",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somevalid_from",
+            "description": "The date from which the relation between the accounting point and the energy supplier is valid. Midnight aligned on Norwegian timezone."
+          },
+          {
+            "in": "query",
+            "name": "valid_to",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somevalid_to",
+            "description": "The date until which the relation between the accounting point and the energy supplier is valid. Midnight aligned on Norwegian timezone."
           },
           {
             "description": "Filtering Columns",
@@ -19863,6 +20551,509 @@
         ]
       }
     },
+    "/metering_grid_area": {
+      "summary": "Metering Grid Area",
+      "description": "",
+      "get": {
+        "operationId": "list_metering_grid_area",
+        "summary": "List Metering Grid Area",
+        "description": "",
+        "tags": [
+          "metering_grid_area"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "pattern": "^eq\\.[0-9]+$"
+            },
+            "example": "eq.55",
+            "description": "Unique surrogate identifier.",
+            "name": "id"
+          },
+          {
+            "in": "query",
+            "name": "business_id",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somebusiness_id",
+            "description": "The business identifier of the metering grid area. Format depends on `business_id_type`."
+          },
+          {
+            "in": "query",
+            "name": "business_id_type",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somebusiness_id_type"
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somename",
+            "description": "The name of the metering grid area."
+          },
+          {
+            "description": "Filtering Columns",
+            "in": "query",
+            "name": "select",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Ordering",
+            "in": "query",
+            "name": "order",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Limiting and Pagination",
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Limiting and Pagination",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/metering_grid_area_response"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "206": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/metering_grid_area_response"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Partial Content"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/error_message"
+                    },
+                    {
+                      "$ref": "#/components/schemas/empty_object"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "406": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Not Acceptable"
+          },
+          "416": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Range Not Satisfiable"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read:data:metering_grid_area"
+            ]
+          },
+          {}
+        ]
+      }
+    },
+    "/metering_grid_area/{id}": {
+      "summary": "Metering Grid Area - single",
+      "description": "",
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "format": "bigint",
+            "type": "integer"
+          },
+          "example": 14
+        }
+      ],
+      "get": {
+        "operationId": "read_metering_grid_area",
+        "summary": "Read Metering Grid Area",
+        "description": "",
+        "tags": [
+          "metering_grid_area"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/metering_grid_area_response"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/error_message"
+                    },
+                    {
+                      "$ref": "#/components/schemas/empty_object"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "406": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Not Acceptable"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read:data:metering_grid_area"
+            ]
+          },
+          {}
+        ]
+      }
+    },
+    "/accounting_point_metering_grid_area": {
+      "summary": "Accounting Point Metering Grid Area",
+      "description": "",
+      "get": {
+        "operationId": "list_accounting_point_metering_grid_area",
+        "summary": "List Accounting Point Metering Grid Area",
+        "description": "",
+        "tags": [
+          "accounting_point_metering_grid_area"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "pattern": "^eq\\.[0-9]+$"
+            },
+            "example": "eq.55",
+            "description": "The ID of the accounting point.",
+            "name": "accounting_point_id"
+          },
+          {
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "pattern": "^eq\\.[0-9]+$"
+            },
+            "example": "eq.55",
+            "description": "The metering grid area of the accounting point.",
+            "name": "metering_grid_area_id"
+          },
+          {
+            "in": "query",
+            "name": "valid_from",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somevalid_from",
+            "description": "The date from which the accounting point belongs to the metering grid area. Midnight aligned on Norwegian timezone."
+          },
+          {
+            "in": "query",
+            "name": "valid_to",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somevalid_to",
+            "description": "The date until which the accounting point belongs to the metering grid area. Midnight aligned on Norwegian timezone."
+          },
+          {
+            "description": "Filtering Columns",
+            "in": "query",
+            "name": "select",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Ordering",
+            "in": "query",
+            "name": "order",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Limiting and Pagination",
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Limiting and Pagination",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/accounting_point_metering_grid_area_response"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "206": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/accounting_point_metering_grid_area_response"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Partial Content"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/error_message"
+                    },
+                    {
+                      "$ref": "#/components/schemas/empty_object"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "406": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Not Acceptable"
+          },
+          "416": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Range Not Satisfiable"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read:data:accounting_point_metering_grid_area"
+            ]
+          },
+          {}
+        ]
+      }
+    },
     "/product_type": {
       "summary": "Product Type",
       "description": "",
@@ -19886,21 +21077,21 @@
           },
           {
             "in": "query",
-            "name": "name",
-            "schema": {
-              "type": "string"
-            },
-            "example": "eq.somename",
-            "description": "The name of the product type."
-          },
-          {
-            "in": "query",
             "name": "business_id",
             "schema": {
               "type": "string"
             },
             "example": "eq.somebusiness_id",
             "description": "The code for this product type."
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somename",
+            "description": "The name of the product type."
           },
           {
             "description": "Filtering Columns",
