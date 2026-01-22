@@ -9,7 +9,7 @@ interact with the FIS through the API.
 
 ## Understand the model
 
-The first step is to read and understand our [authentication model](./auth-model.md).
+The first step is to read and understand our [authentication model](./authn-model.md).
 Indeed, in order to be able to manually use the API, you need to understand what
 an _entity_ and a _party_ are and how they make up the identity of a user in the
 system.
@@ -52,7 +52,7 @@ You should be able to assume the organisation party.
 
 Now, navigate to the page of your company's entity and add an entity client.
 A cryptographic key should be generated for each client as explained in the
-documentation of the [JWT Bearer](./auth-methods.md#jwt-bearer) authentication
+documentation of the [JWT Bearer](./authn-methods.md#jwt-bearer) authentication
 method.
 You can set up scopes to restrict what the person using machine access will be
 able to do on the API.

@@ -14,16 +14,18 @@ add external links to relevant resources where appropriate (like we just did ðŸ˜
 > [!NOTE]
 >
 > We use _auth_ as a short form for _authentication and authorization_ in this
-> section.
+> section. When they need to be distinguished, for instance in the links and
+> filenames, we write _authn_ for _authentication_ and _authz_ for
+> _authorization_.
 
 ## Details
 
 <!-- markdownlint-disable MD033 -->
 <div class="grid cards" markdown>
 
-* :fontawesome-regular-id-card: [Authentication model](./auth-model.md)  
+* :fontawesome-regular-id-card: [Authentication model](./authn-model.md)  
   How are users identified? What are the possible roles in the system?
-* :fontawesome-solid-key: [Authentication methods](./auth-methods.md)  
+* :fontawesome-solid-key: [Authentication methods](./authn-methods.md)  
   How can a user log in to the FIS?
 * :fontawesome-solid-user-cog: [Authorization](./authz-model.md)  
   What is a user allowed to do?

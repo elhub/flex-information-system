@@ -58,7 +58,7 @@ such as an industrial boiler or an EV charger.
 * Energy storage system: a unit that can both *produce and consume* electricity,
   such as a battery that charges and discharges depending on system needs.
 
-A [service provider](../technical/auth/auth-model.md#service-provider) (SP)
+A [service provider](../technical/auth/authn-model.md#service-provider) (SP)
 offers flexibility from the controllable unit on behalf of the [end user](end-user.md)
 (EU) based on their [controllable unit service provider](../resources/controllable_unit_service_provider.md)
 (CUSP) agreement, which authorises the SP to manage the CU for flexibility services.
@@ -91,13 +91,13 @@ all relate to the same accounting point.
 In FIS, each controllable unit is connected to a single
 [accounting point](../resources/accounting_point.md) (AP).
 This ensures an unambiguous link between the CU and the
-[balance responsible party](../technical/auth/auth-model.md#balance-responsible-party)
+[balance responsible party](../technical/auth/authn-model.md#balance-responsible-party)
 (BRP) of the associated
-[energy supplier](../technical/auth/auth-model.md#energy-supplier) (ES), which
+[energy supplier](../technical/auth/authn-model.md#energy-supplier) (ES), which
 enables imbalance adjustment and settlement.
 
 Knowing the AP where a CU is located also allows
-[system operators](../technical/auth/auth-model.md#system-operator) (SOs) to
+[system operators](../technical/auth/authn-model.md#system-operator) (SOs) to
 know where in the grid it is. As a result they know where flexibility can be
 activated in the grid.
 
