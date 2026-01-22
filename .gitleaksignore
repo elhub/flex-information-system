@@ -17,4 +17,4 @@ a2e03e98dd070447283fb25649eab499ceae5cec:openapi/openapi-auth.json:jwt:541
 874c8d1a46172883c2c4099643132c8919f730f6:auth/v0/openapi.json:jwt:181
 874c8d1a46172883c2c4099643132c8919f730f6:auth/v0/openapi.json:jwt:625
 874c8d1a46172883c2c4099643132c8919f730f6:auth/v0/openapi.json:jwt:660
-546adf8a98e3dbf97096744193a125145d117e59:docs/technical/auth/getting-started.md:generic-api-key:115
+5c295c1059d3406f1b978cbfdb09420e5d34a6fc:docs/technical/auth/getting-started.md:generic-api-key:115

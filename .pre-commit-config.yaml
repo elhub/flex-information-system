@@ -327,11 +327,19 @@ repos:
         files: '^.*openapi\.(json|yml|yaml)$'
 
   #
-  ## MegaLinter
+  ## Secret linting
   #
-  - repo: https://github.com/oxsecurity/megalinter
-    rev: v8.7.0
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.24.2
     hooks:
-      - id: megalinter-full
-        stages:
-          - pre-push
+      - id: gitleaks
+        name: gitleaks
+        stages: [pre-push]
+
+  - repo: local
+    hooks:
+      - id: secretlint
+        name: secretlint
+        language: docker_image
+        entry: secretlint/secretlint:latest secretlint --secretlintignore .gitignore
+        stages: [pre-push]

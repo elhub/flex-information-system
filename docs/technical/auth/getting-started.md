@@ -1,7 +1,7 @@
 # How to interact with the FIS as an API user
 
 This is a guide to get you started as a service provider that will mainly
-interact with the FIS through the API.
+interact with the FIS through our API.
 
 !!! info "Guide for portal users"
     If you rather would like to use the portal, please head to the
