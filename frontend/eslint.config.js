@@ -57,4 +57,20 @@ module.exports = defineConfig([
       ],
     },
   },
+  {
+    ignores: ["src/components/ui/**"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          paths: [
+            {
+              name: "@elhub/ds-components",
+              message: "Import from '@/components/ui' instead.",
+            },
+          ],
+        },
+      ],
+    },
+  },
 ]);

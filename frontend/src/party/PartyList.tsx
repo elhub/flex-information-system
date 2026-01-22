@@ -1,11 +1,15 @@
-import { List, ReferenceField, TextField } from "react-admin";
 import {
   AutocompleteReferenceInput,
-  Datagrid,
+  EnumArrayInput,
   PartyReferenceInput,
-} from "../auth";
-import { DateField } from "../components/datetime";
-import { EnumArrayInput, EnumField } from "../components/enum";
+} from "../components/EDS-ra/inputs";
+import { Datagrid, List } from "../components/EDS-ra/list";
+import {
+  DateField,
+  EnumField,
+  ReferenceField,
+  TextField,
+} from "../components/EDS-ra/fields";
 
 export const PartyList = () => {
   const partyFilters = [
@@ -13,6 +17,7 @@ export const PartyList = () => {
       key="entity_id"
       source="entity_id"
       reference="entity"
+      label="Entity"
       alwaysOn
     />,
     <PartyReferenceInput
@@ -46,33 +51,16 @@ export const PartyList = () => {
       filters={partyFilters}
     >
       <Datagrid>
-        <TextField source="id" label="field.party.id" />
-        <TextField source="business_id" label="field.party.business_id" />
-        <ReferenceField
-          source="entity_id"
-          reference="entity"
-          sortable={false}
-          label="field.party.entity_id"
-        >
+        <TextField source="id" />
+        <TextField source="business_id" />
+        <ReferenceField source="entity_id" reference="entity">
           <TextField source="name" />
         </ReferenceField>
-        <TextField source="name" label="field.party.name" />
-        <EnumField
-          source="type"
-          label="field.party.type"
-          enumKey="party.type"
-        />
-        <TextField source="role" label="field.party.role" />
-        <EnumField
-          source="status"
-          label="field.party.status"
-          enumKey="party.status"
-        />
-        <DateField
-          source="recorded_at"
-          showTime
-          label="field.party.recorded_at"
-        />
+        <TextField source="name" />
+        <EnumField source="type" enumKey="party.type" />
+        <TextField source="role" />
+        <EnumField source="status" enumKey="party.status" />
+        <DateField source="recorded_at" showTime />
       </Datagrid>
     </List>
   );
