@@ -29,14 +29,17 @@
         {
             "groupName": "backend",
             "matchFileNames": ["backend/**"],
+            "commitMessageSuffix": "",
         },
         {
             "groupName": "frontend",
             "matchFileNames": ["frontend/**"],
+            "commitMessageSuffix": "",
         },
         {
             "groupName": "local",
             "matchFileNames": ["test/**", "requirements-dev.txt" ],
+            "commitMessageSuffix": "",
         },
     ],
 
