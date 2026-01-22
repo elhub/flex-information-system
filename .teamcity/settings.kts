@@ -54,6 +54,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
                     gitOpsRepository = gitOpsRepo
                     projectName = "fis-backend"
                     source = Source.CommitSha
+                    isMonoRepo = true
                 }.triggerOnVcsChange { triggerRules = """
                             -:*
                             +:backend/**
@@ -90,6 +91,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
                     gitOpsRepository = gitOpsRepo
                     projectName = "fis-frontend"
                     source = Source.CommitSha
+                    isMonoRepo = true
                 }.triggerOnVcsChange { triggerRules = "+:frontend/**" }
             }
         }
