@@ -63,7 +63,7 @@ helping the reader understand the reasoning behind our decisions.
 
 We are basing our design on our `events` resource, which again is based on CloudEvents.
 
-Our `notice` resource has the follwing fields in the API:
+Our `notice` resource has the following fields in the API:
 
 * a `id` which is a unique surrogate identifier for the notice
 * a `party_id` reference to the target party
