@@ -230,6 +230,11 @@ databaseChangeLog:
   - include:
       file: ./controllable_unit_system_operator.sql
       relativeToChangelogFile: true
+  # notice
+  - includeAll:
+      path: ./notice/
+      relativeToChangelogFile: true
+      maxDepth: 1
   - include:
       file: ./notice.sql
       relativeToChangelogFile: true
