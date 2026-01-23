@@ -13,8 +13,8 @@ WITH (security_invoker = false) AS (
         'controllable_unit' AS source_resource,
         cu.id AS source_id,
         null::jsonb AS data -- noqa
-    FROM controllable_unit AS cu
-        INNER JOIN accounting_point_system_operator AS ap_so
+    FROM flex.controllable_unit AS cu
+        INNER JOIN flex.accounting_point_system_operator AS ap_so
             ON
                 cu.accounting_point_id = ap_so.accounting_point_id
                 AND ap_so.valid_time_range @> current_timestamp
@@ -31,8 +31,8 @@ WITH (security_invoker = false) AS (
         'controllable_unit' AS source_resource,
         cu.id AS source_id,
         null::jsonb AS data -- noqa
-    FROM controllable_unit AS cu
-        INNER JOIN accounting_point_system_operator AS ap_so
+    FROM flex.controllable_unit AS cu
+        INNER JOIN flex.accounting_point_system_operator AS ap_so
             ON
                 cu.accounting_point_id = ap_so.accounting_point_id
                 AND ap_so.valid_time_range @> current_timestamp
@@ -51,8 +51,8 @@ WITH (security_invoker = false) AS (
         'controllable_unit' AS source_resource,
         cu.id AS source_id,
         null::jsonb AS data -- noqa
-    FROM controllable_unit AS cu
-        INNER JOIN controllable_unit_service_provider AS cusp
+    FROM flex.controllable_unit AS cu
+        INNER JOIN flex.controllable_unit_service_provider AS cusp
             ON cu.id = cusp.controllable_unit_id
     WHERE
         cusp.valid_time_range @> current_timestamp
