@@ -2,6 +2,8 @@
 # This file is inspired by the Elhub-general mega-linter configuration file from devxp
 # https://raw.githubusercontent.com/elhub/devxp-lint-configuration/main/resources/.mega-linter.yml
 #
+# We are not using this in pre-commit, but need it since it is picked up in CI/CD.
+#
 # General configuration documentation is available at:
 # https://megalinter.io/latest/config-file/
 
