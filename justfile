@@ -1,6 +1,6 @@
 LIQUIBASE_VERSION := "4.31.1"
 
-lint: pre-commit tbls-lint gitleaks secretlint
+lint: pre-commit tbls-lint gitleaks secretlint megalinter
 
 pre-commit:
     pre-commit run --all-files
@@ -15,6 +15,9 @@ secretlint:
     secretlint \
     --secretlintignore .gitignore \
     '**/*'
+
+megalinter:
+    npx mega-linter-runner
 
 tbls-lint:
     tbls lint
