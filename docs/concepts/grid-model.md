@@ -236,7 +236,7 @@ able to identify the relation between the accounting points in an SGA with the
 accounting point for the connection point in the surrounding MGA. FIS can get
 this information from Elhub.
 
-### Defining typological trade areas
+### Defining topological trade areas
 
 Each system operator will procure flexibility within certain trade areas.
 Communicating what these areas are is important for the value chain.
@@ -250,11 +250,11 @@ defining a set of edges that "cut" the graph, we can define an area in the grid.
 This would allow for unambiguous definitions of trade areas. It also allows for
 detecting when the grid changes in a way that impacts the area definition.
 
-The following example should such a definition. The black nodes and lines are
+The following example shows such a definition. The black nodes and lines are
 the graph representing the grid. An accounting point (and thus CU) would
 typically be connected to the black and white dots.
 
-A area (blue) is defined by the red cuts. Any accounting point connected to the
+An area (blue) is defined by the red cuts. Any accounting point connected to the
 nodes inside the blue area belongs to the area.
 
 The green dotted line is a non-existing but planned connection. Since the area

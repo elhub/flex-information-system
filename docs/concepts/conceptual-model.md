@@ -144,12 +144,12 @@ As of now, the bidding zones in the system are the `price areas` in Norway
 (NO1-NO5), used for balancing.
 
 We are planning to extend this concept to include other types of bidding zones
-to facilitate local flexibility markets and possibly congestion managment for
+to facilitate local flexibility markets and possibly congestion management for
 system responsible.
 
-The end goal would be that we define all bidding zones as [`typological areas`
+The end goal would be that we define all bidding zones as [`topological areas`
 in the common national grid
-model](./grid-model.md#defining-typological-trade-areas). This will require a
+model](./grid-model.md#defining-topological-trade-areas). This will require a
 complete national grid model with accounting points mapped to nodes in the grid.
 This is possible, and in the works by, Elbits but will take time to implement.
 
@@ -157,7 +157,7 @@ There are several other ways to define bidding zones as interim solutions. We
 will explore these options depending on the needs of market participants.
 
 * Geographical areas using polygons (lat/long). Most DSO have these in the NODES
-  platform allready. This requires that accounting points have a defined
+  platform already. This requires that accounting points have a defined
   geographical location. Many accounting points in Elhub have this today, and
   for the rest, we can guess based on address etc.
 * Accounting point lists. The SO can provide a list of accounting points that
