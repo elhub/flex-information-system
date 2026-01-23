@@ -16,6 +16,7 @@ import { FieldStack } from "../auth";
 import { DateField } from "../components/datetime";
 import { ProductTypeArrayField } from "../product_type/components";
 import { EnumField } from "../components/enum";
+import { PartyInputLocationState } from "../party/PartyInput";
 
 // button to jump to the party input page in update mode with autofilled form
 const PartyUpdateButton = (props: any) => {
@@ -37,12 +38,15 @@ const PartyUpdateButton = (props: any) => {
 // button to jump to the party input page in create mode with autofilled form
 const PartyCreateButton = (props: any) => {
   const record = useRecordContext()!;
+  const locationState: PartyInputLocationState = {
+    party: record.data.party,
+  };
   return (
     <Button
       component={Link}
       to="/party/create"
       label="Create party"
-      state={record}
+      state={locationState}
       startIcon={<PersonAddIcon />}
       {...props}
     />

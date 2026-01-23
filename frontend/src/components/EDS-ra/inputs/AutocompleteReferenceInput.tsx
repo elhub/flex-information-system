@@ -1,41 +1,47 @@
-import { ReferenceInputBase, ReferenceInputBaseProps } from "ra-core";
+import {
+  ReferenceInput,
+  UseReferenceInputControllerParams,
+  useResourceContext,
+} from "react-admin";
 import { ReferenceComboboxInput } from "./ReferenceComboboxInput";
+import { BaseInputProps } from "./BaseInput";
 
-type AutocompleteReferenceInputProps = ReferenceInputBaseProps & {
-  label?: string;
-  fieldName?: string;
-};
+type AutocompleteReferenceInputProps = Omit<
+  UseReferenceInputControllerParams,
+  "source"
+> &
+  BaseInputProps & {
+    reference: string;
+    fieldName?: string;
+  };
 
-export const AutocompleteReferenceInput = (
-  props: AutocompleteReferenceInputProps,
-) => {
-  const {
-    label,
-    fieldName,
-    disabled,
-    readOnly,
-    validate,
-    defaultValue,
-    parse,
-    format,
-    name,
-    perPage,
-    ...rest
-  } = props;
+export const AutocompleteReferenceInput = ({
+  source,
+  required,
+  reference,
+  fieldName,
+  overrideLabel,
+  readOnly,
+  disabled,
+  ...rest
+}: AutocompleteReferenceInputProps) => {
+  const resource = useResourceContext();
   return (
-    <ReferenceInputBase perPage={perPage ?? 1000} {...rest}>
+    <ReferenceInput
+      source={source}
+      reference={reference}
+      perPage={1000}
+      {...rest}
+    >
       <ReferenceComboboxInput
-        source={props.source}
-        label={label}
-        disabled={disabled}
-        readOnly={readOnly}
-        validate={validate}
-        defaultValue={defaultValue}
-        parse={parse}
-        format={format}
-        name={name}
+        source={source}
+        required={required}
+        overrideLabel={overrideLabel}
         fieldName={fieldName}
+        readOnly={readOnly}
+        resource={resource}
+        disabled={disabled}
       />
-    </ReferenceInputBase>
+    </ReferenceInput>
   );
 };
