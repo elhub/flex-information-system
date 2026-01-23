@@ -136,7 +136,7 @@ We are implementing update mechanism as a single
 [MERGE](https://www.postgresql.org/docs/current/sql-merge.html) statement. This
 merge statement will compare the existing notices with the detected ones and
 deduplicate them based on a set of columns: `party_id`, `type`,
-`source_resource` and `source_id`. These colums can uniquely identify a notice.
+`source_resource` and `source_id`. These columns can uniquely identify a notice.
 
 When the ignore feature is implemented, we will use the `data` column to check
 if a notice has changed, and possibly update from `ignored` to `active` if
