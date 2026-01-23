@@ -13,6 +13,6 @@ WITH (security_invoker = false) AS (
         'service_providing_group_product_application' AS source_resource,
         spgpa.id AS source_id,
         null::jsonb AS data -- noqa
-    FROM service_providing_group_product_application AS spgpa
+    FROM flex.service_providing_group_product_application AS spgpa
     WHERE spgpa.status = 'requested'
 );
