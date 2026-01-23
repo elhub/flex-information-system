@@ -83,13 +83,6 @@ No policies.
 | TR-FISO001 | Read, create, update and delete all TR. | DONE   |
 | TR-FISO002 | Read all TR history.                    | DONE   |
 
-#### Market Operator
-
-| Policy key | Policy                                                                                                               | Status |
-|------------|----------------------------------------------------------------------------------------------------------------------|--------|
-| TR-MO001   | Read TR data on CU that are connected to their market. Only for the period CU is active in the market.               | TODO   |
-| TR-MO002   | Read TR history on CU that are connected to their market. Only history on the period the CU is active in the market. | TODO   |
-
 #### Organisation
 
 No policies.
@@ -118,11 +111,11 @@ No policies.
 For party type abbreviations, check
 [the authentication docs](../technical/auth/authn-model.md#party-market-actors).
 
-| FIELD                | ANON | BRP | ES | EU | FISO | MO | SO | SP  | TP | ORG |
-|----------------------|------|-----|----|----|------|----|----|-----|----|-----|
-| id                   |      | R   | R  | R  | R    | R  | R  | R   | R  |     |
-| name                 |      | R   | R  | R  | RCU  | R  | R  | RCU | R  |     |
-| controllable_unit_id |      | R   | R  | R  | RC   | R  | R  | RC  | R  |     |
-| details              |      | R   | R  | R  | RCU  | R  | R  | RCU | R  |     |
-| recorded_at          |      | R   | R  | R  | R    | R  | R  | R   | R  |     |
-| recorded_by          |      | R   | R  | R  | R    | R  | R  | R   | R  |     |
+| FIELD                | ANON | BRP | ES | EU | FISO | SO | SP  | TP | ORG |
+|----------------------|------|-----|----|----|------|----|-----|----|-----|
+| id                   |      | R   | R  | R  | R    | R  | R   | R  |     |
+| name                 |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
+| controllable_unit_id |      | R   | R  | R  | RC   | R  | RC  | R  |     |
+| details              |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
+| recorded_at          |      | R   | R  | R  | R    | R  | R   | R  |     |
+| recorded_by          |      | R   | R  | R  | R    | R  | R   | R  |     |

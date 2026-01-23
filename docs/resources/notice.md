@@ -95,10 +95,6 @@ No policies.
 |----------------|-------------------|--------|
 | NOTICE-FISO001 | Read all notices. | DONE   |
 
-#### Market Operator
-
-No policies.
-
 #### Organisation
 
 No policies.
@@ -120,9 +116,9 @@ No policies.
 For party type abbreviations, check
 [the authentication docs](../technical/auth/authn-model.md#party-market-actors).
 
-| FIELD    | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP | ORG |
-|----------|------|-----|----|----|------|----|----|----|----|-----|
-| party_id |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
-| type     |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
-| source   |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
-| data     |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
+| FIELD    | ANON | BRP | ES | EU | FISO | SO | SP | TP | ORG |
+|----------|------|-----|----|----|------|----|----|----|-----|
+| party_id |      | R   | R  | R  | R    | R  | R  | R  |     |
+| type     |      | R   | R  | R  | R    | R  | R  | R  |     |
+| source   |      | R   | R  | R  | R    | R  | R  | R  |     |
+| data     |      | R   | R  | R  | R    | R  | R  | R  |     |

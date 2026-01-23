@@ -52,7 +52,7 @@ Your test data will show up below.
             return {
                 suffix: 0,
                 firstName: 'Felles',
-                parties: ['BRP','EU','ES','MO','SO','SP','TP','FISO'],
+                parties: ['BRP','EU','ES','SO','SP','TP','FISO'],
                 numAccountingPoints: 1000,
                 calculateCheckDigit(code) {
                     const sum = code.split('')
