@@ -71,10 +71,6 @@ No policies.
 |---------------|------------------|--------|
 | EVENT-FISO001 | Read all events. | DONE   |
 
-#### Market Operator
-
-No policies.
-
 #### Organisation
 
 No policies.
@@ -96,12 +92,12 @@ No policies.
 For party type abbreviations, check
 [the authentication docs](../technical/auth/authn-model.md#party-market-actors).
 
-| FIELD       | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP | ORG |
-|-------------|------|-----|----|----|------|----|----|----|----|-----|
-| id          |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
-| specversion |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
-| time        |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
-| type        |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
-| source      |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
-| subject     |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
-| data        |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
+| FIELD       | ANON | BRP | ES | EU | FISO | SO | SP | TP | ORG |
+|-------------|------|-----|----|----|------|----|----|----|-----|
+| id          |      | R   | R  | R  | R    | R  | R  | R  |     |
+| specversion |      | R   | R  | R  | R    | R  | R  | R  |     |
+| time        |      | R   | R  | R  | R    | R  | R  | R  |     |
+| type        |      | R   | R  | R  | R    | R  | R  | R  |     |
+| source      |      | R   | R  | R  | R    | R  | R  | R  |     |
+| subject     |      | R   | R  | R  | R    | R  | R  | R  |     |
+| data        |      | R   | R  | R  | R    | R  | R  | R  |     |

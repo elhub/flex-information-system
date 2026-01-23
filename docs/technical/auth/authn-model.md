@@ -78,7 +78,6 @@ We have the following party types in the Flexibility Information System:
 | EU           | end_user                                | End User                                | _Sluttbruker_                               |
 | ES           | energy_supplier                         | Energy Supplier                         | _Kraftleverandør_                           |
 | FISO         | flexibility_information_system_operator | Flexibility Information System Operator | _Fleksibilitetsinformasjonssystem Operatør_ |
-| MO           | market_operator                         | Market Operator                         | _Markedoperatør_                            |
 | ORG          | organisation                            | Organisation                            | _Organisasjon_                              |
 | SO           | system_operator                         | System Operator                         | _Systemoperatør_                            |
 | SP           | service_provider                        | Service Provider                        | _Tjenesteleverandør_                        |
@@ -129,18 +128,6 @@ We use this as an administrator role for the Flexibility Information System, as
 a last resort tool to have full authorisation on the system or perform special
 operations.
 
-### Market Operator
-
-Sub-types:
-
-* _Local Market Operator_
-* _Balancing Market Operator_
-
-A party that provides a service whereby the offers to sell energy are matched
-with bids to buy energy.
-
-Based on: [Consolidated text: Regulation (EU) 2019/943](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A02019R0943-20220623).
-
 ### Organisation
 
 This is not a market party as such but a party that represents the organisation
@@ -183,6 +170,8 @@ after having successfully passed a qualification process.
 
 A party that does not have an actual responsibility in the value chain, but
 _can be_ delegated authority to, _e.g._, perform tasks or access data.
+
+One prominent example is a third party market operator, e.g. NODES.
 
 ## Roles
 

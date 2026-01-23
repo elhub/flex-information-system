@@ -97,10 +97,6 @@ No policies.
 |-------------|---------------------------------|--------|
 | PTY-FISO001 | Create, read and update all PTY | DONE   |
 
-#### Market Operator
-
-No policies.
-
 #### Organisation
 
 No policies.
@@ -122,15 +118,15 @@ No policies.
 For party type abbreviations, check
 [the authentication docs](../technical/auth/authn-model.md#party-market-actors).
 
-| FIELD            | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP | ORG |
-|------------------|------|-----|----|----|------|----|----|----|----|-----|
-| id               |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
-| name             |      | R   | R  | R  | RCU  | R  | R  | R  | R  | R   |
-| business_id      |      | R   | R  | R  | RC   | R  | R  | R  | R  | R   |
-| business_id_type |      | R   | R  | R  | RC   | R  | R  | R  | R  | R   |
-| entity_id        |      | R   | R  | R  | RC   | R  | R  | R  | R  | R   |
-| type             |      | R   | R  | R  | RC   | R  | R  | R  | R  | R   |
-| role             |      | R   | R  | R  | RC   | R  | R  | R  | R  | R   |
-| status           |      | R   | R  | R  | RU   | R  | R  | R  | R  | R   |
-| recorded_at      |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
-| recorded_by      |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
+| FIELD            | ANON | BRP | ES | EU | FISO | SO | SP | TP | ORG |
+|------------------|------|-----|----|----|------|----|----|----|-----|
+| id               |      | R   | R  | R  | R    | R  | R  | R  | R   |
+| name             |      | R   | R  | R  | RCU  | R  | R  | R  | R   |
+| business_id      |      | R   | R  | R  | RC   | R  | R  | R  | R   |
+| business_id_type |      | R   | R  | R  | RC   | R  | R  | R  | R   |
+| entity_id        |      | R   | R  | R  | RC   | R  | R  | R  | R   |
+| type             |      | R   | R  | R  | RC   | R  | R  | R  | R   |
+| role             |      | R   | R  | R  | RC   | R  | R  | R  | R   |
+| status           |      | R   | R  | R  | RU   | R  | R  | R  | R   |
+| recorded_at      |      | R   | R  | R  | R    | R  | R  | R  | R   |
+| recorded_by      |      | R   | R  | R  | R    | R  | R  | R  | R   |

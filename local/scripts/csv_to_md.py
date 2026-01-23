@@ -8,5 +8,18 @@ t.MIN_PADDING = 0
 
 csv_reader = csv.reader(sys.stdin, delimiter=";")
 # exclude resource-level permissions because this script generates the FLA table
-rows = [row for row in csv_reader if row[0] not in ("", None, "_", "-")]
-print(t.tabulate(rows, tablefmt="github", headers="firstrow"))
+headers = next(csv_reader)
+excluded_rows = ("", None, "_", "-")
+
+if "MO" in headers:
+    mo_idx = headers.index("MO")
+    headers.pop(mo_idx)
+
+    rows = [
+        [cell for i, cell in enumerate(row) if i != mo_idx]
+        for row in csv_reader
+        if row[0] not in excluded_rows
+    ]
+else:
+    rows = [row for row in csv_reader if row[0] not in excluded_rows]
+print(t.tabulate(rows, tablefmt="github", headers=headers))

@@ -72,10 +72,6 @@ No policies.
 | PTYM-FISO001 | Create, read, and delete all PTYM | DONE   |
 | PTYM-FISO002 | Read all PTYM history             | DONE   |
 
-#### Market Operator
-
-No policies.
-
 #### Organisation
 
 | Policy key  | Policy                                                                                                 | Status |
@@ -100,11 +96,11 @@ No policies.
 For party type abbreviations, check
 [the authentication docs](../technical/auth/authn-model.md#party-market-actors).
 
-| FIELD       | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP | ORG |
-|-------------|------|-----|----|----|------|----|----|----|----|-----|
-| id          |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
-| entity_id   |      | R   | R  | R  | RC   | R  | R  | R  | R  | RC  |
-| party_id    |      | R   | R  | R  | RC   | R  | R  | R  | R  | RC  |
-| scopes      |      | R   | R  | R  | RCU  | R  | R  | R  | R  | RCU |
-| recorded_at |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
-| recorded_by |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
+| FIELD       | ANON | BRP | ES | EU | FISO | SO | SP | TP | ORG |
+|-------------|------|-----|----|----|------|----|----|----|-----|
+| id          |      | R   | R  | R  | R    | R  | R  | R  | R   |
+| entity_id   |      | R   | R  | R  | RC   | R  | R  | R  | RC  |
+| party_id    |      | R   | R  | R  | RC   | R  | R  | R  | RC  |
+| scopes      |      | R   | R  | R  | RCU  | R  | R  | R  | RCU |
+| recorded_at |      | R   | R  | R  | R    | R  | R  | R  | R   |
+| recorded_by |      | R   | R  | R  | R    | R  | R  | R  | R   |

@@ -64,10 +64,6 @@ No policies.
 |--------------|-------------------------|--------|
 | NOT-FISO001  | Read all notifications. | DONE   |
 
-#### Market Operator
-
-No policies.
-
 #### Organisation
 
 No policies.
@@ -89,11 +85,11 @@ No policies.
 For party type abbreviations, check
 [the authentication docs](../technical/auth/authn-model.md#party-market-actors).
 
-| FIELD        | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP | ORG |
-|--------------|------|-----|----|----|------|----|----|----|----|-----|
-| id           |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
-| acknowledged |      | RU  | RU | RU | RU   | RU | RU | RU | RU |     |
-| event_id     |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
-| party_id     |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
-| recorded_at  |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
-| recorded_by  |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
+| FIELD        | ANON | BRP | ES | EU | FISO | SO | SP | TP | ORG |
+|--------------|------|-----|----|----|------|----|----|----|-----|
+| id           |      | R   | R  | R  | R    | R  | R  | R  |     |
+| acknowledged |      | RU  | RU | RU | RU   | RU | RU | RU |     |
+| event_id     |      | R   | R  | R  | R    | R  | R  | R  |     |
+| party_id     |      | R   | R  | R  | R    | R  | R  | R  |     |
+| recorded_at  |      | R   | R  | R  | R    | R  | R  | R  |     |
+| recorded_by  |      | R   | R  | R  | R    | R  | R  | R  |     |
