@@ -1,0 +1,39 @@
+@startuml delivery-verification
+
+!theme plain
+
+title Delivery verification
+
+autonumber
+skinparam note {
+    BackgroundColor #FFFFBD
+}
+
+participant "MDB" as MDB
+participant "Baseline source" as BS
+actor "Service Provider (SP)" as SP
+participant "Flexibility\nInformation System (FIS)" as FIS
+actor "System Operator (SO)" as SO 
+
+== Delivery verification ==
+
+activate SO
+SO -> SP: Notify start of delivery verification
+SO -> FIS: Get CU/SPG ID
+
+note right
+    SO uses FIS to get the IDs of the CUs/SPG
+    in order to collect the right metering values.
+end note
+
+SO -> MDB: Get metering values
+SO -> BS: Get baseline
+
+note right
+    SO uses the collected time series and the
+    activated bid to do the delivery verification
+    analysis.
+end note
+deactivate SO
+
+SO -> SP: Notify result of delivery verification
