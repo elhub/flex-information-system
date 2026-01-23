@@ -1,25 +1,31 @@
-import { Combobox, FormItem, FormItemLabel } from "../../ui";
+import { Combobox } from "../../ui";
 import {
-  InputProps,
   useChoicesContext,
   useGetRecordRepresentation,
   useInput,
   useResourceContext,
 } from "ra-core";
+import { BaseInput, BaseInputProps } from "./BaseInput";
 
-type ReferenceComboboxInputProps = InputProps & {
-  source: string;
-  label?: string;
+type ReferenceComboboxInputProps = BaseInputProps & {
   fieldName?: string;
 };
 
 export const ReferenceComboboxInput = ({
   source,
-  label,
+  required,
+  tooltip,
   fieldName,
+  overrideLabel,
+  readOnly,
+  disabled,
+  resource: resourceProp,
   ...rest
 }: ReferenceComboboxInputProps) => {
-  const { id, field } = useInput({ source, ...rest });
+  const { id, field, fieldState } = useInput({
+    source,
+    ...rest,
+  });
   const { allChoices, isFetching, isLoading, setFilters, filterValues } =
     useChoicesContext();
   const resource = useResourceContext();
@@ -53,15 +59,25 @@ export const ReferenceComboboxInput = ({
   };
 
   return (
-    <FormItem id={id}>
-      {label ? <FormItemLabel htmlFor={id}>{label}</FormItemLabel> : null}
+    <BaseInput
+      source={source}
+      required={required}
+      tooltip={tooltip}
+      disabled={disabled}
+      readOnly={readOnly}
+      id={id}
+      error={fieldState.error?.message}
+      resource={resourceProp}
+      overrideLabel={overrideLabel}
+    >
       <Combobox
         options={options ?? []}
         selectedOptions={selectedValue ? [selectedValue] : []}
         onToggleSelected={handleToggle}
         isLoading={isFetching || isLoading}
         onChange={handleInputChange}
+        disabled={disabled || readOnly}
       />
-    </FormItem>
+    </BaseInput>
   );
 };

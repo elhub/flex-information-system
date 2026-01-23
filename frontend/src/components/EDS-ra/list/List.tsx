@@ -24,6 +24,7 @@ export const List = ({
     return (
       <ListBase {...rest}>
         {actions && <ListActions actions={actions} />}
+        <VerticalSpace />
         <Panel border>
           <BodyText>No results</BodyText>
         </Panel>
