@@ -334,7 +334,6 @@ repos:
     hooks:
       - id: gitleaks
         name: gitleaks
-        stages: [pre-push]
 
   - repo: local
     hooks:
