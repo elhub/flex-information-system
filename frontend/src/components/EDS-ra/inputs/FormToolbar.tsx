@@ -1,6 +1,6 @@
 import { useFormContext } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { Button, FlexDiv } from "../../ui";
+import { Button, Container } from "../../ui";
 
 type FormToolbarProps = {
   saveLabel?: string;
@@ -24,7 +24,7 @@ export const FormToolbar = ({
     !saveAlwaysEnabled && (formState.isSubmitting || !formState.isDirty);
 
   return (
-    <FlexDiv
+    <Container
       style={{
         gap: "var(--eds-size-3)",
         marginTop: "var(--eds-size-3)",
@@ -42,6 +42,6 @@ export const FormToolbar = ({
       <Button variant="secondary" size="large" onClick={handleCancel}>
         {cancelLabel}
       </Button>
-    </FlexDiv>
+    </Container>
   );
 };

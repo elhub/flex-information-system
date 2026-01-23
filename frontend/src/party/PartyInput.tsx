@@ -100,7 +100,7 @@ export const PartyInput = () => {
     <Form record={record} resolver={unTypedZodResolver(zPartyCreateRequest)}>
       <FormContainer>
         <Heading level={3} size="medium">
-          {createOrUpdate == "update" ? "Edit Party" : "Create Party"}
+          {createOrUpdate === "update" ? "Edit Party" : "Create Party"}
         </Heading>
         <VerticalSpace size="small" />
         <TextInput {...fields.name} />
