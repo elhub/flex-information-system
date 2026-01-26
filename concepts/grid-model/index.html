@@ -650,10 +650,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#aggregation-to-service-providing-groups" class="md-nav__link">
+  <a href="#defining-topological-trade-areas" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Aggregation to service providing groups
+        Defining topological trade areas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aggregation-to-service-providing-groups-using-areas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Aggregation to service providing groups using areas
       
     </span>
   </a>
@@ -3212,10 +3223,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#aggregation-to-service-providing-groups" class="md-nav__link">
+  <a href="#defining-topological-trade-areas" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Aggregation to service providing groups
+        Defining topological trade areas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aggregation-to-service-providing-groups-using-areas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Aggregation to service providing groups using areas
       
     </span>
   </a>
@@ -3479,21 +3501,31 @@ grids.</p>
 able to identify the relation between the accounting points in an SGA with the
 accounting point for the connection point in the surrounding MGA. FIS can get
 this information from Elhub.</p>
-<h3 id="aggregation-to-service-providing-groups">Aggregation to service providing groups</h3>
+<h3 id="defining-topological-trade-areas">Defining topological trade areas</h3>
+<p>Each system operator will procure flexibility within certain trade areas.
+Communicating what these areas are is important for the value chain.</p>
+<p>The most precise definition of such a area would be a description referencing a
+common, national grid model.</p>
+<p>The most reliable way to define such areas would be to express them as a list of
+cuts in the grid model. A grid model is basically a graph of nodes and edges. By
+defining a set of edges that "cut" the graph, we can define an area in the grid.
+This would allow for unambiguous definitions of trade areas. It also allows for
+detecting when the grid changes in a way that impacts the area definition.</p>
+<p>The following example shows such a definition. The black nodes and lines are
+the graph representing the grid. An accounting point (and thus CU) would
+typically be connected to the black and white dots.</p>
+<p>An area (blue) is defined by the red cuts. Any accounting point connected to the
+nodes inside the blue area belongs to the area.</p>
+<p>The green dotted line is a non-existing but planned connection. Since the area
+is defined by the cuts, it is possible to detect that the planned connection
+would impact the area.</p>
+<p><img alt="area defined by cuts" src="../../diagrams/grid_area_definition.drawio.png" /></p>
+<h3 id="aggregation-to-service-providing-groups-using-areas">Aggregation to service providing groups using areas</h3>
 <p>Flexibility resources are distributed across many different locations in the
-grid, many of which are connected in the lowest level: in the distribution grid.
-And a grid model can be used to aggregate these resources. In a simple case,
-where the grid is a tree, the aggregation can be done by aggregating the
-resources in the same branch up to a certain node where services are needed.</p>
-<p><img alt="Tree Grid" src="../../diagrams/grid_tree.png" /></p>
-<blockquote>
-<p>Example: CUs connected to M,N,O and P can be used to deliver services in node
-M, if there is a congestion issue on the edge between F and M.</p>
-</blockquote>
-<p>However, we do know that the grid is not as simple as this, so we must figure
-out a way to aggregate resources reliably in a more complex grid.</p>
-<p>The grid model can also be used by system operators to identify SPGs to "arm"
-reservation contracts or end users in underlying system operator grids.</p>
+grid, many of which are connected in the lowest level: in the distribution grid.</p>
+<p>The service provider is responsible for grouping controllable units (CUs) into
+service providing groups (SPGs). Using grid-defined areas like above can help
+guide the service provider when forming these groups.</p>
 <h3 id="identifying-impacted-system-operators-for-spg-grid-prequalification">Identifying Impacted System Operators for SPG Grid Prequalification</h3>
 <p>Impacted System Operators (ISO) should do grid prequalification of service
 providing groups. A grid model can be used to identify which system operators
@@ -3542,9 +3574,9 @@ relevant for the operation of the DSO distribution system;</p>
 </blockquote>
 <p>"Operation" could also mean DF (driftsmessig forsvarlig) or FOL (Forskrift om
 leveringssikkerhet) analysis.</p>
-<p>A grid model can be used to define these areas and will allow a flexibility
-information system to give the correct data access and notifications to the
-eligible system operators.</p>
+<p>Similar to trade areas, a grid model can be used to define these areas and will
+allow a flexibility information system to give the correct data access and
+notifications to the eligible system operators.</p>
 <p>Data exchange between SOs and from FIS to SO include:</p>
 <ul>
 <li><code>structure data</code> such as substations, lines, transformers, SGUs, reactors/capacitors</li>

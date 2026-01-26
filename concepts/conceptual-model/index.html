@@ -529,6 +529,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="A service providing group is a collection of controllable units">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#types-of-bidding-zones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Types of bidding zones
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -3036,6 +3053,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="A service providing group is a collection of controllable units">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#types-of-bidding-zones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Types of bidding zones
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -3171,23 +3205,6 @@ provider to provide balancing or local services;</p>
 </blockquote>
 <p>A <a href="../../resources/service_providing_group/">service providing group</a> (SPG) is
 a collection of CUs. We call the CUs <em>members</em> of the SPG.</p>
-<p>The topological location of the members limits the use of the SPG. If SPG members
-are close together and all connected to the same part of the grid, the SPG can
-offer local services such as congestion management. If the members are spread
-out over a larger area, the SPG can maybe only offer balancing services.</p>
-<p>Each SPG is restricted to a specific area by the service provider. The provider
-specifies this when creating the SPG. We use the term <code>bidding zone</code>, rather
-than <code>scheduling area</code> used in NC DR, for this area.
-<a href="https://eur-lex.europa.eu/eli/reg/2017/1485/oj/eng">SOGL</a> tells us that the
-geographical scope of the scheduling area is equal to the bidding zone. The term
-<code>bidding zone</code> is widely used and easy to understand for market participants.
-The Norwegian word for bidding zone is <code>budområde</code>, and in common language also
-referred to as <code>prisområde</code>.</p>
-<p>As of now, the bidding zones are the scheduling areas in Norway (NO1-NO5), used
-for balancing. But this concept and restriction of SPG can also be extended to
-include local services. We foresee use of local bidding zones on SPGs used for
-congestion management. The term <code>bidding zone</code> is thus more flexible and
-future-proof than <code>scheduling area</code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The NC DR also includes a definition of a 'service providing unit' (SPU) as a
@@ -3195,6 +3212,49 @@ single unit connected to one connection agreement point. We do not include SPU
 in the FIS. We do not see a reason for this distinction and have thus not
 modelled it in.</p>
 </div>
+<p>The topological location of the SPG members limits the use of the SPG. If SPG
+members are close together and all connected to the same part of the grid, the
+SPG can offer local services such as congestion management. If the members are
+spread out over a larger area, the SPG can maybe only offer balancing services.</p>
+<p>Each SPG is restricted to a specific area by the service provider. The provider
+specifies this when creating the SPG. We use the term <code>bidding zone</code>, rather
+than <code>scheduling area</code> used in NC DR, for this area.
+<a href="https://eur-lex.europa.eu/eli/reg/2017/1485/oj/eng">SOGL</a> tells us that the
+geographical scope of the scheduling area is equal to the bidding zone. The term
+<code>bidding zone</code> is widely used and easy to understand for market participants.
+The Norwegian word for bidding zone is <code>budområde</code>, and in common language also
+referred to as <code>prisområde</code>. We foresee use of local bidding zones on SPGs used
+for congestion management. The term <code>bidding zone</code> is thus more flexible and
+future-proof than <code>scheduling area</code>.</p>
+<h3 id="types-of-bidding-zones">Types of bidding zones</h3>
+<p>As of now, the bidding zones in the system are the <code>price areas</code> in Norway
+(NO1-NO5), used for balancing.</p>
+<p>We are planning to extend this concept to include other types of bidding zones
+to facilitate local flexibility markets and possibly congestion management for
+system responsible.</p>
+<p>The end goal would be that we define all bidding zones as <a href="../grid-model/#defining-topological-trade-areas"><code>topological areas</code>
+in the common national grid
+model</a>. This will require a
+complete national grid model with accounting points mapped to nodes in the grid.
+This is possible, and in the works by, Elbits but will take time to implement.</p>
+<p>There are several other ways to define bidding zones as interim solutions. We
+will explore these options depending on the needs of market participants.</p>
+<ul>
+<li>Geographical areas using polygons (lat/long). Most DSO have these in the NODES
+  platform already. This requires that accounting points have a defined
+  geographical location. Many accounting points in Elhub have this today, and
+  for the rest, we can guess based on address etc.</li>
+<li>Accounting point lists. The SO can provide a list of accounting points that
+  defines the bidding zone. This is more work for the SO and prone to become
+  outdated, but it is precise and easy to implement.</li>
+<li>Administrative areas such as municipalities or postal codes. This is easy to
+  implement and understand, but not very precise and probably not very useful for
+  the SO.</li>
+<li>Metering grid areas (MGA). Might be useful for some SOs and cases and we know
+  which MGA all accounting points belong to.</li>
+</ul>
+<p>It will also be relevant to define bidding zones that are combinations of the
+above, to provide a hierarchy of bidding zones for different purposes.</p>
 <h2 id="example-with-ev-smart-charges">Example with EV smart charges</h2>
 <p>The diagram below illustrates how CUs and a SPG are related in the context of
 EV smart charging.</p>
