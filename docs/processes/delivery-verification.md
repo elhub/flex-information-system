@@ -7,16 +7,26 @@ information system (FIS).
 Is the delivery verification result registered in the FIS? Can FIS hold overview
 of when/which verifications have been done?
 
-The verification analysis requires time series. These time series are/are not
-located in the FIS and/but they relate to the CU and SPG IDs in the FIS.
-The time series needed for the verificaion are:
+The verification analysis requires time series at an SPG level. These time series
+are/are not located in the FIS and/but they relate to the CU and SPG IDs in the
+FIS. The time series needed for the verificaion are:
 
 * Metering values
 * Baseline
 * Bid volume
 
+The metering values are stored in a metering database (MDB) where SP continuously
+sends the metering values of its CUs/SPGs. If the metering values are stored at
+CU level, they are aggregated to SPG level by SP.
+
+The baseline is stored at a baseline source. SP sends/collects the baseline
+to/from the source.
+
+The bid volume is collected by SO when the bid is accepted. Alt. from the
+marketplace.
+
 The delivery verification is done by a procuring system operator that has activated
-at least one bid from the service provider.
+a bid from the service provider.
 
 ## Prerequisites
 
