@@ -12,17 +12,22 @@ DROP VIEW IF EXISTS notice CASCADE;
 CREATE TABLE IF NOT EXISTS notice (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     party_id bigint NOT NULL,
-    source text,
+    source_resource text NOT NULL,
+    source_id bigint NOT NULL,
     type ltree NOT NULL,
-    data jsonb,
-    recorded_at timestamptz NOT NULL DEFAULT localtimestamp,
+    data jsonb NULL,
+    status text NOT NULL,
+    record_time_range tstzrange NOT NULL DEFAULT tstzrange(
+        localtimestamp, null, '[)'
+    ),
+    recorded_by bigint NOT NULL DEFAULT current_identity(),
 
     CONSTRAINT notice_party_fkey
     FOREIGN KEY (party_id) REFERENCES party (id),
-    CONSTRAINT notice_source_check CHECK (
-        source IS null OR source ~ '^(\/([a-z][a-z_]*|[0-9]+))+$'
-    ),
     CONSTRAINT notice_type_check CHECK (
         type ~ 'no.elhub.flex.*'
+    ),
+    CONSTRAINT notice_status_check CHECK (
+        status IN ('active', 'resolved')
     )
 );
