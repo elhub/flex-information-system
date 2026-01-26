@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS notice (
     record_time_range tstzrange NOT NULL DEFAULT tstzrange(
         localtimestamp, null, '[)'
     ),
-    recorded_by bigint NOT NULL DEFAULT current_identity(),
+    recorded_by bigint NOT NULL DEFAULT 0,
 
     CONSTRAINT notice_party_fkey
     FOREIGN KEY (party_id) REFERENCES party (id),

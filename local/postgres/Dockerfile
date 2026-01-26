@@ -7,4 +7,5 @@ RUN apt-get update \
           pgtap \
           postgresql-15-pgtap \
           postgresql-15-wal2json \
+          postgresql-15-cron \
       && rm -rf /var/lib/apt/lists/*
