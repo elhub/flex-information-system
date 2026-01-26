@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS notice (
     record_time_range tstzrange NOT NULL DEFAULT tstzrange(
         localtimestamp, null, '[)'
     ),
-    recorded_by bigint NOT NULL DEFAULT 0,
+    recorded_by bigint NOT NULL DEFAULT flex.current_identity(),
 
     CONSTRAINT notice_party_fkey
     FOREIGN KEY (party_id) REFERENCES party (id),
