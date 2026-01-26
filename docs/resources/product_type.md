@@ -60,7 +60,8 @@ No notifications.
 
 ### Resource Level Authorization
 
-Below is the [RLA](../technical/auth.md#resource-level-authorization-rla) for the
+Below is the [RLA](../technical/auth/authz-model.md#resource-level-authorization-rla)
+for the
 resource. The default policy is **deny**.
 
 #### Anonymous
@@ -93,10 +94,6 @@ No policies.
 
 No policies.
 
-#### Market Operator
-
-No policies.
-
 #### Organisation
 
 No policies.
@@ -115,12 +112,13 @@ No policies.
 
 ### Field Level Authorization
 
-For party type abbreviations, check [the auth docs](../technical/auth.md#party-market-actors)
+For party type abbreviations, check
+[the authentication docs](../technical/auth/authn-model.md#party-market-actors).
 
-| FIELD       | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP | ORG |
-|-------------|------|-----|----|----|------|----|----|----|----|-----|
-| id          |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
-| business_id |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
-| name        |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
-| service     |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
-| products    |      | R   | R  | R  | R    | R  | R  | R  | R  |     |
+| FIELD       | ANON | BRP | ES | EU | FISO | SO | SP | TP | ORG |
+|-------------|------|-----|----|----|------|----|----|----|-----|
+| id          |      | R   | R  | R  | R    | R  | R  | R  |     |
+| business_id |      | R   | R  | R  | R    | R  | R  | R  |     |
+| name        |      | R   | R  | R  | R    | R  | R  | R  |     |
+| service     |      | R   | R  | R  | R    | R  | R  | R  |     |
+| products    |      | R   | R  | R  | R    | R  | R  | R  |     |

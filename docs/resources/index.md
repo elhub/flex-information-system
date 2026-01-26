@@ -63,7 +63,7 @@ On most resources we are tracking historic versions in a separate resource
 suffixed by `_history`. If the main resource is `controllable_unit`, then the
 history resource is `controllable_unit_history`.
 
-[Field Level Authorization](../technical/auth.md#field-level-authorization-fla)
+[Field Level Authorization](../technical/auth/authz-model.md#field-level-authorization-fla)
 for the history resource follows the main resource, except it is _read only_.
 The history record also contains three additional fields. The table below shows
 what these fields are and where they inherit FLA from.
@@ -74,7 +74,7 @@ what these fields are and where they inherit FLA from.
 | <a name="replaced-at" href="#replaced-at">replaced_at</a>         | Time the resource was replaced                | timestamp with time zone<br/>Generated<br/>Read only |           | `recorded_at` |
 | <a name="replaced-by" href="#replaced-by">replaced_by</a>         | Id of the identity that replaced the resource | bigint<br/>Generated<br/>Read only                   |           | `recorded_by` |
 
-[Resource Level Authorization](../technical/auth.md#resource-level-authorization-rla)
+[Resource Level Authorization](../technical/auth/authz-model.md#resource-level-authorization-rla)
 for the history resource are documented in the same place as the main resource
 and typically start with `<action> history ..`.
 

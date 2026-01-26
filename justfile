@@ -1,9 +1,23 @@
 LIQUIBASE_VERSION := "4.31.1"
 
-lint: pre-commit tbls-lint
+lint: pre-commit tbls-lint gitleaks secretlint megalinter
 
 pre-commit:
     pre-commit run --all-files
+
+gitleaks:
+    gitleaks git --verbose
+
+secretlint:
+    #!/usr/bin/env bash
+    npx --package secretlint \
+    --package @secretlint/secretlint-rule-preset-recommend \
+    secretlint \
+    --secretlintignore .gitignore \
+    '**/*'
+
+megalinter:
+    npx mega-linter-runner
 
 tbls-lint:
     tbls lint
@@ -244,9 +258,6 @@ test-migrations revision="main":
     just load
 
     echo "Migration test completed successfully!"
-
-megalinter:
-    npx mega-linter-runner
 
 coverage:
     .venv/bin/python test/check_coverage.py
@@ -549,7 +560,8 @@ permissions-to-md:
 
         sed -i '/^For party type abbreviations/,$d' docs/resources/${resource}.md
 
-        echo "For party type abbreviations, check [the auth docs](../technical/auth.md#party-market-actors)" >> docs/resources/${resource}.md
+        echo "For party type abbreviations, check" >> docs/resources/${resource}.md
+        echo "[the authentication docs](../technical/auth/authn-model.md#party-market-actors)." >> docs/resources/${resource}.md
         echo "" >> docs/resources/${resource}.md
 
         grep -E "^((${resource})|(RESOURCE))\;" local/input/permissions.csv \

@@ -1,7 +1,44 @@
 # Entity Client
 
-Client linked to an entity for client credentials and JWT grant authentication
-methods. An entity can have several clients registered.
+This resource represents a client linked to an entity, to be used in the client
+credentials and JWT grant authentication methods.
+
+The main purpose of this resource is to enable machine access to the API.
+A program connecting to the API will use one of the clients present on the
+entity.
+It will thereby get the possibility to act as the party referenced in the
+`party_id` field, with the authorisations listed in the client's `scopes`.
+
+Entity clients are secured by a password in `client_secret` or a `public_key`
+associated to the private key JWTs sent to the JWT grant authentication will
+be signed with.
+
+An entity can have several clients registered, typically an organisation entity
+with one client per enterprise machine expected to use the API in an automated
+way.
+
+## Example
+
+Let us take the case of a system operator organisation called "Testnett AS".
+They have an organisation entity registered in the FIS and a party of type
+`system_operator` to be able to act in the system accordingly.
+
+Imagine they want to allow API access to one of their data engineers, not to
+interact with the system, but just to perform some data analytics.
+This is possible by creating an entity client:
+
+* tied to the organisation entity (`entity_id`)
+* allowing access to the SO party (`party_id`)
+* with read-only `scopes` to make sure the data engineer does not edit any
+  data currently in use (for instance `read:data`)
+* with a public key freshly generated in `public_key` (the private key will be
+  given to the data engineer).
+
+Then, the target person will just have to use the JWT grant authentication
+method with a JWT asking for access to the SO party through the entity client
+they received (identified by `client_id` in the JWT claims).
+The JWT will have to be signed with the private key corresponding to the public
+key stored in the entity client.
 
 ## Relevant links
 
@@ -37,7 +74,8 @@ No notifications.
 
 ### Resource Level Authorization
 
-Below is the [RLA](../technical/auth.md#resource-level-authorization-rla) for the
+Below is the [RLA](../technical/auth/authz-model.md#resource-level-authorization-rla)
+for the
 resource. The default policy is **deny**.
 
 #### Anonymous
@@ -72,10 +110,6 @@ No policies.
 |-------------|-------------------|--------|
 | ECL-FISO001 | Read all clients. | DONE   |
 
-#### Market Operator
-
-No policies.
-
 #### Organisation
 
 | Policy key | Policy                                                                                                   | Status |
@@ -97,17 +131,18 @@ No policies.
 
 ### Field Level Authorization
 
-For party type abbreviations, check [the auth docs](../technical/auth.md#party-market-actors)
+For party type abbreviations, check
+[the authentication docs](../technical/auth/authn-model.md#party-market-actors).
 
-| FIELD         | ANON | BRP | ES | EU | FISO | MO | SO | SP | TP | ORG |
-|---------------|------|-----|----|----|------|----|----|----|----|-----|
-| id            |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
-| entity_id     |      | R   | R  | R  | R    | R  | R  | R  | R  | RC  |
-| name          |      | R   | R  | R  | R    | R  | R  | R  | R  | RCU |
-| client_id     |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
-| party_id      |      | R   | R  | R  | R    | R  | R  | R  | R  | RCU |
-| scopes        |      | R   | R  | R  | R    | R  | R  | R  | R  | RCU |
-| client_secret |      | R   | R  | R  | R    | R  | R  | R  | R  | RCU |
-| public_key    |      | R   | R  | R  | R    | R  | R  | R  | R  | RCU |
-| recorded_at   |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
-| recorded_by   |      | R   | R  | R  | R    | R  | R  | R  | R  | R   |
+| FIELD         | ANON | BRP | ES | EU | FISO | SO | SP | TP | ORG |
+|---------------|------|-----|----|----|------|----|----|----|-----|
+| id            |      | R   | R  | R  | R    | R  | R  | R  | R   |
+| entity_id     |      | R   | R  | R  | R    | R  | R  | R  | RC  |
+| name          |      | R   | R  | R  | R    | R  | R  | R  | RCU |
+| client_id     |      | R   | R  | R  | R    | R  | R  | R  | R   |
+| party_id      |      | R   | R  | R  | R    | R  | R  | R  | RCU |
+| scopes        |      | R   | R  | R  | R    | R  | R  | R  | RCU |
+| client_secret |      | R   | R  | R  | R    | R  | R  | R  | RCU |
+| public_key    |      | R   | R  | R  | R    | R  | R  | R  | RCU |
+| recorded_at   |      | R   | R  | R  | R    | R  | R  | R  | R   |
+| recorded_by   |      | R   | R  | R  | R    | R  | R  | R  | R   |

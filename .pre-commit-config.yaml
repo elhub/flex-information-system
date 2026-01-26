@@ -62,6 +62,7 @@ repos:
         # https://github.com/pre-commit/identify/blob/main/identify/extensions.py
         exclude_types:
           - json
+          - json5
           - markdown
           - png
           - yaml
@@ -86,7 +87,7 @@ repos:
     hooks:
       - id: check-yaml
         args: []
-        exclude: ^local/scripts/templates/.*$
+        exclude: ^(local/scripts/templates/.*)|(mkdocs.yml)$
   - repo: https://github.com/adrienverge/yamllint.git
     rev: v1.37.1
     hooks:
@@ -95,10 +96,14 @@ repos:
   #
   ## JSON
   #
+  - repo: https://gitlab.com/bmares/check-json5
+    rev: v1.0.1
+    hooks:
+      - id: check-json5
+
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:
-      - id: check-json
       - id: pretty-format-json
         args: ['--indent', '4', '--autofix', '--no-sort-keys', '--no-ensure-ascii']
   #
@@ -322,11 +327,18 @@ repos:
         files: '^.*openapi\.(json|yml|yaml)$'
 
   #
-  ## MegaLinter
+  ## Secret linting
   #
-  - repo: https://github.com/oxsecurity/megalinter
-    rev: v8.7.0
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.24.2
     hooks:
-      - id: megalinter-full
-        stages:
-          - pre-push
+      - id: gitleaks
+        name: gitleaks
+
+  - repo: local
+    hooks:
+      - id: secretlint
+        name: secretlint
+        language: docker_image
+        entry: secretlint/secretlint:latest secretlint --secretlintignore .gitignore
+        stages: [pre-push]

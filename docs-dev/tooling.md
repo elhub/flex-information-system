@@ -7,15 +7,6 @@ This document describes some of the tools at play in the project.
 | [pre-commit](https://pre-commit.com/) | A framework for managing and maintaining multi-language pre-commit hooks.     |
 | [just](https://github.com/casey/just) | Command runner used as a handy way to save and run project-specific commands. |
 
-## MegaLinter
-
-We use MegaLinter as a convenient way to gather several linters under the same
-tool. It is installed with the following command:
-
-```bash
-npx mega-linter-runner --install
-```
-
 ## Formatting and linting with VSCode and pre-commit
 
 To install the pre-commit hooks, run the following command:

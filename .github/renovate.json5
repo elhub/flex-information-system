@@ -1,0 +1,46 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "postUpdateOptions": [
+        "gomodTidy",
+        "gomodUpdateImportPaths"
+    ],
+    "extends": [
+        // https://github.com/elhub/devxp-renovate/blob/main/default.json
+        "github>elhub/devxp-renovate"
+    ],
+    "packageRules": [
+
+        // Disable major updates for Postgres Docker image
+        {
+            "enabled": false,
+            "matchDatasources": [
+                "docker"
+            ],
+            "matchUpdateTypes": [
+                "major"
+            ],
+            "matchPackageNames": [
+                "postgres"
+            ]
+        },
+        // https://docs.renovatebot.com/noise-reduction/#package-grouping
+        // This should allow us to override the default grouping from elhub/devxp-renovate
+        // since apparently "Last matching rule wins". Ref https://github.com/renovatebot/renovate/discussions/15796#discussioncomment-2940148
+        {
+            "groupName": "backend",
+            "matchFileNames": ["backend/**"],
+            "commitMessageSuffix": "",
+        },
+        {
+            "groupName": "frontend",
+            "matchFileNames": ["frontend/**"],
+            "commitMessageSuffix": "",
+        },
+        {
+            "groupName": "local",
+            "matchFileNames": ["test/**", "requirements-dev.txt" ],
+            "commitMessageSuffix": "",
+        },
+    ],
+
+}

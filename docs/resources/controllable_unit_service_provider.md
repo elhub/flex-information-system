@@ -44,7 +44,8 @@ of one service provider per activation period.
 
 ### Resource Level Authorization
 
-Below is the [RLA](../technical/auth.md#resource-level-authorization-rla) for the
+Below is the [RLA](../technical/auth/authz-model.md#resource-level-authorization-rla)
+for the
 resource. The default policy is **deny**.
 
 #### Anonymous
@@ -77,10 +78,6 @@ No policies.
 | CUSP-FISO001 | Read, create, update and delete all CUSP. | DONE   |
 | CUSP-FISO002 | Read history on CUSP that they can read.  | DONE   |
 
-#### Market Operator
-
-No policies.
-
 #### Organisation
 
 No policies.
@@ -105,16 +102,17 @@ No policies.
 
 ### Field Level Authorization
 
-For party type abbreviations, check [the auth docs](../technical/auth.md#party-market-actors)
+For party type abbreviations, check
+[the authentication docs](../technical/auth/authn-model.md#party-market-actors).
 
-| FIELD                | ANON | BRP | ES | EU | FISO | MO | SO | SP  | TP | ORG |
-|----------------------|------|-----|----|----|------|----|----|-----|----|-----|
-| id                   |      | R   | R  | R  | R    | R  | R  | R   | R  |     |
-| controllable_unit_id |      | R   | R  | R  | RC   | R  | R  | RC  | R  |     |
-| service_provider_id  |      | R   | R  | R  | RC   | R  | R  | RC  | R  |     |
-| end_user_id          |      | R   | R  | R  | RC   | R  | R  | RC  | R  |     |
-| contract_reference   |      | R   | R  | R  | RCU  | R  | R  | RCU | R  |     |
-| valid_from           |      | R   | R  | R  | RCU  | R  | R  | RCU | R  |     |
-| valid_to             |      | R   | R  | R  | RCU  | R  | R  | RCU | R  |     |
-| recorded_at          |      | R   | R  | R  | R    | R  | R  | R   | R  |     |
-| recorded_by          |      | R   | R  | R  | R    | R  | R  | R   | R  |     |
+| FIELD                | ANON | BRP | ES | EU | FISO | SO | SP  | TP | ORG |
+|----------------------|------|-----|----|----|------|----|-----|----|-----|
+| id                   |      | R   | R  | R  | R    | R  | R   | R  |     |
+| controllable_unit_id |      | R   | R  | R  | RC   | R  | RC  | R  |     |
+| service_provider_id  |      | R   | R  | R  | RC   | R  | RC  | R  |     |
+| end_user_id          |      | R   | R  | R  | RC   | R  | RC  | R  |     |
+| contract_reference   |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
+| valid_from           |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
+| valid_to             |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
+| recorded_at          |      | R   | R  | R  | R    | R  | R   | R  |     |
+| recorded_by          |      | R   | R  | R  | R    | R  | R   | R  |     |

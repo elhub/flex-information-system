@@ -60,7 +60,8 @@ After termination, the status can only be edited by a FIS operator.
 
 ### Resource Level Authorization
 
-Below is the [RLA](../technical/auth.md#resource-level-authorization-rla) for the
+Below is the [RLA](../technical/auth/authz-model.md#resource-level-authorization-rla)
+for the
 resource. The default policy is **deny**.
 
 #### Anonymous
@@ -91,10 +92,6 @@ No policies.
 |-------------|----------------------------------|--------|
 | SPG-FISO001 | Read, create and update all SPG. | DONE   |
 
-#### Market Operator
-
-No policies.
-
 #### Organisation
 
 No policies.
@@ -118,14 +115,15 @@ No policies.
 
 ### Field Level Authorization
 
-For party type abbreviations, check [the auth docs](../technical/auth.md#party-market-actors)
+For party type abbreviations, check
+[the authentication docs](../technical/auth/authn-model.md#party-market-actors).
 
-| FIELD               | ANON | BRP | ES | EU | FISO | MO | SO | SP  | TP | ORG |
-|---------------------|------|-----|----|----|------|----|----|-----|----|-----|
-| id                  |      | R   | R  | R  | R    | R  | R  | R   | R  |     |
-| name                |      | R   | R  | R  | RCU  | R  | R  | RCU | R  |     |
-| service_provider_id |      | R   | R  | R  | RC   | R  | R  | RC  | R  |     |
-| bidding_zone        |      | R   | R  | R  | RC   | R  | R  | RC  | R  |     |
-| status              |      | R   | R  | R  | RU   | R  | R  | RU  | R  |     |
-| recorded_at         |      | R   | R  | R  | R    | R  | R  | R   | R  |     |
-| recorded_by         |      | R   | R  | R  | R    | R  | R  | R   | R  |     |
+| FIELD               | ANON | BRP | ES | EU | FISO | SO | SP  | TP | ORG |
+|---------------------|------|-----|----|----|------|----|-----|----|-----|
+| id                  |      | R   | R  | R  | R    | R  | R   | R  |     |
+| name                |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
+| service_provider_id |      | R   | R  | R  | RC   | R  | RC  | R  |     |
+| bidding_zone        |      | R   | R  | R  | RC   | R  | RC  | R  |     |
+| status              |      | R   | R  | R  | RU   | R  | RU  | R  |     |
+| recorded_at         |      | R   | R  | R  | R    | R  | R   | R  |     |
+| recorded_by         |      | R   | R  | R  | R    | R  | R   | R  |     |

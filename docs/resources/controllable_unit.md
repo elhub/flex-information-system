@@ -111,7 +111,8 @@ can only be edited by a FIS operator.
 
 ### Resource Level Authorization
 
-Below is the [RLA](../technical/auth.md#resource-level-authorization-rla) for the
+Below is the [RLA](../technical/auth/authz-model.md#resource-level-authorization-rla)
+for the
 resource. The default policy is **deny**.
 
 #### Anonymous
@@ -150,13 +151,6 @@ No policies.
 | CU-FISO001 | Read, create and update all CU. | DONE   |
 | CU-FISO002 | Read all CU history.            | DONE   |
 
-#### Market Operator
-
-| Policy key | Policy                                                                                                            | Status |
-|------------|-------------------------------------------------------------------------------------------------------------------|--------|
-| CU-MO001   | Read CU that are connected to their market. Only for the period CU is active in the market.                       | TODO   |
-| CU-MO002   | Read history on CU that are connected to their market. Only history on the period the CU is active in the market. | TODO   |
-
 #### Organisation
 
 No policies.
@@ -185,26 +179,27 @@ No policies.
 
 ### Field Level Authorization
 
-For party type abbreviations, check [the auth docs](../technical/auth.md#party-market-actors)
+For party type abbreviations, check
+[the authentication docs](../technical/auth/authn-model.md#party-market-actors).
 
-| FIELD                      | ANON | BRP | ES | EU | FISO | MO | SO | SP  | TP | ORG |
-|----------------------------|------|-----|----|----|------|----|----|-----|----|-----|
-| id                         |      | R   | R  | R  | R    | R  | R  | R   | R  |     |
-| business_id                |      | R   | R  | R  | R    | R  | R  | R   | R  |     |
-| name                       |      | R   | R  | R  | RCU  | R  | R  | RCU | R  |     |
-| regulation_direction       |      | R   | R  | R  | RCU  | R  | R  | RCU | R  |     |
-| maximum_available_capacity |      | R   | R  | R  | RCU  | R  | R  | RCU | R  |     |
-| is_small                   |      | R   | R  | R  | R    | R  | R  | R   | R  |     |
-| start_date                 |      | R   | R  | R  | RCU  | R  | R  | RCU | R  |     |
-| status                     |      | R   | R  | R  | RU   | R  | R  | RU  | R  |     |
-| minimum_duration           |      | R   | R  | R  | RCU  | R  | R  | RCU | R  |     |
-| maximum_duration           |      | R   | R  | R  | RCU  | R  | R  | RCU | R  |     |
-| recovery_duration          |      | R   | R  | R  | RCU  | R  | R  | RCU | R  |     |
-| ramp_rate                  |      | R   | R  | R  | RCU  | R  | R  | RCU | R  |     |
-| accounting_point_id        |      | R   | R  | R  | RC   | R  | R  | RC  | R  |     |
-| grid_node_id               |      | R   | R  | R  | RCU  | R  | RU | RC  | R  |     |
-| grid_validation_status     |      | R   | R  | R  | RCU  | R  | RU | R   | R  |     |
-| grid_validation_notes      |      | R   | R  | R  | RCU  | R  | RU | R   | R  |     |
-| validated_at               |      | R   | R  | R  | RCU  | R  | RU | R   | R  |     |
-| recorded_at                |      | R   | R  | R  | R    | R  | R  | R   | R  |     |
-| recorded_by                |      | R   | R  | R  | R    | R  | R  | R   | R  |     |
+| FIELD                      | ANON | BRP | ES | EU | FISO | SO | SP  | TP | ORG |
+|----------------------------|------|-----|----|----|------|----|-----|----|-----|
+| id                         |      | R   | R  | R  | R    | R  | R   | R  |     |
+| business_id                |      | R   | R  | R  | R    | R  | R   | R  |     |
+| name                       |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
+| regulation_direction       |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
+| maximum_available_capacity |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
+| is_small                   |      | R   | R  | R  | R    | R  | R   | R  |     |
+| start_date                 |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
+| status                     |      | R   | R  | R  | RU   | R  | RU  | R  |     |
+| minimum_duration           |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
+| maximum_duration           |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
+| recovery_duration          |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
+| ramp_rate                  |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
+| accounting_point_id        |      | R   | R  | R  | RC   | R  | RC  | R  |     |
+| grid_node_id               |      | R   | R  | R  | RCU  | RU | RC  | R  |     |
+| grid_validation_status     |      | R   | R  | R  | RCU  | RU | R   | R  |     |
+| grid_validation_notes      |      | R   | R  | R  | RCU  | RU | R   | R  |     |
+| validated_at               |      | R   | R  | R  | RCU  | RU | R   | R  |     |
+| recorded_at                |      | R   | R  | R  | R    | R  | R   | R  |     |
+| recorded_by                |      | R   | R  | R  | R    | R  | R   | R  |     |

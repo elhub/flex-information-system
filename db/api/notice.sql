@@ -7,8 +7,12 @@ WITH (security_invoker = false, security_barrier = true) AS ( -- cf AP-BRP
     SELECT
         data,
         party_id,
-        source,
-        type
+        type,
+        CASE
+            WHEN source_resource IS null OR source_id IS null THEN null
+            ELSE '/' || source_resource || '/' || source_id
+        END
+        AS source
     FROM flex.notice_fresh
     -- no RLS policies for views, so we need to have them built-in
     WHERE

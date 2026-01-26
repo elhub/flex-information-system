@@ -49,7 +49,7 @@ qualification, _depending on the product type_.
 - Trading license from the Norwegian Energy
   Regulatory Authority (RME).
 - Settlement agreement with settlement responsible for imbalance settlement.
-- User agreement with the procuring system operator/market operator.
+- User agreement with the procuring system operator.
 - Qualifying the service providers technical solutions for activation, including
   full chain of systems involved.
 - Communication test.

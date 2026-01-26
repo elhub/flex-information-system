@@ -37,7 +37,8 @@ No validation rules.
 
 ### Resource Level Authorization
 
-Below is the [RLA](../technical/auth.md#resource-level-authorization-rla) for the
+Below is the [RLA](../technical/auth/authz-model.md#resource-level-authorization-rla)
+for the
 resource. The default policy is **deny**.
 
 #### Anonymous
@@ -69,10 +70,6 @@ No policies.
 | SPGPSC-FISO001 | Read, create and update all SPGPSC. | DONE   |
 | SPGPSC-FISO002 | Read history on all SPGPSC.         | DONE   |
 
-#### Market Operator
-
-No policies.
-
 #### Organisation
 
 No policies.
@@ -99,15 +96,16 @@ No policies.
 
 ### Field Level Authorization
 
-For party type abbreviations, check [the auth docs](../technical/auth.md#party-market-actors)
+For party type abbreviations, check
+[the authentication docs](../technical/auth/authn-model.md#party-market-actors).
 
-| FIELD                                         | ANON | BRP | ES | EU | FISO | MO | SO  | SP  | TP | ORG |
-|-----------------------------------------------|------|-----|----|----|------|----|-----|-----|----|-----|
-| id                                            |      | R   | R  | R  | R    | R  | R   | R   | R  |     |
-| service_providing_group_product_suspension_id |      | R   | R  | R  | RC   | R  | RC  | RC  | R  |     |
-| created_by                                    |      | R   | R  | R  | R    | R  | R   | R   | R  |     |
-| created_at                                    |      | R   | R  | R  | R    | R  | R   | R   | R  |     |
-| visibility                                    |      | R   | R  | R  | RCU  | R  | RCU | RCU | R  |     |
-| content                                       |      | R   | R  | R  | RCU  | R  | RCU | RCU | R  |     |
-| recorded_at                                   |      | R   | R  | R  | R    | R  | R   | R   | R  |     |
-| recorded_by                                   |      | R   | R  | R  | R    | R  | R   | R   | R  |     |
+| FIELD                                         | ANON | BRP | ES | EU | FISO | SO  | SP  | TP | ORG |
+|-----------------------------------------------|------|-----|----|----|------|-----|-----|----|-----|
+| id                                            |      | R   | R  | R  | R    | R   | R   | R  |     |
+| service_providing_group_product_suspension_id |      | R   | R  | R  | RC   | RC  | RC  | R  |     |
+| created_by                                    |      | R   | R  | R  | R    | R   | R   | R  |     |
+| created_at                                    |      | R   | R  | R  | R    | R   | R   | R  |     |
+| visibility                                    |      | R   | R  | R  | RCU  | RCU | RCU | R  |     |
+| content                                       |      | R   | R  | R  | RCU  | RCU | RCU | R  |     |
+| recorded_at                                   |      | R   | R  | R  | R    | R   | R   | R  |     |
+| recorded_by                                   |      | R   | R  | R  | R    | R   | R   | R  |     |

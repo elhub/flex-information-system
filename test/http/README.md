@@ -14,7 +14,8 @@ for VS Code.
 ### Obtaining an API key
 
 There are many ways to get an API key. See
-[Auth docs](../../docs/technical/auth.md) for details on using the "regular" methods.
+[Auth docs](../../docs/technical/auth/index.md) for details on using the
+"regular" methods.
 
 For manual testing it might be easiest to log in to the portal, then copy the
 API key from the browsers cookie storage. Explained below:
