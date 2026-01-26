@@ -3248,7 +3248,7 @@
 <p>In this section, we describe the authentication model in the Flexibility
 Information System. This diagram shows the main concepts in the model and how
 they relate to each other.</p>
-<p><img alt="../diagrams/auth_model.drawio.png" src="../diagrams/auth_model.drawio.png" /></p>
+<p><img alt="../diagrams/auth_model.drawio.png" src="../../../diagrams/auth_model.drawio.png" /></p>
 <h2 id="identity">Identity</h2>
 <p>Any system or person interacting with the Flexibility Information System will
 always be authenticated as a legal og natural <em>entity</em>, possibly assuming the
@@ -3263,10 +3263,10 @@ an entity must assume a party.</p>
 <p>Inspiration for this step is taken from <a href="https://info.altinn.no/en/">Altinn</a>,
 where one is presented with a list of parties upon login. The Elhub portal also
 has the same type of logical mechanism.</p>
-<p><img alt="Altinn select party" src="../assets/altinn-choose-party.png" />.</p>
+<p><img alt="Altinn select party" src="../../../assets/altinn-choose-party.png" />.</p>
 <p>The concept is also inspired by <a href="https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html">AWS AssumeRole</a>.</p>
-<p>Assuming a party is done using <a href="./auth-methods.md#token-exchange">Token Exchange</a>
-or directly in authentication using <a href="./auth-methods.md#jwt-bearer">JWT Bearer</a>
+<p>Assuming a party is done using <a href="../authn-methods/#token-exchange">Token Exchange</a>
+or directly in authentication using <a href="../authn-methods/#jwt-bearer">JWT Bearer</a>
 grant. To assume a party, the entity must be a member of the party.</p>
 <h2 id="entity-individuals-and-organisations">Entity - individuals and organisations</h2>
 <p>The <em>entity</em> is the natural or legal person using the system. This is the "raw"
@@ -3284,7 +3284,7 @@ mechanisms such as IDPorten, Maskinporten or enterprise certificates.</p>
 <p>We follow the OAuth 2.0 definition of a client as <em>"an application making
 protected resource requests"</em>. A client is basically a way for <em>an entity</em> to
 interact with the FIS API. A client can use different
-<a href="./auth-methods.md#authentication-methods">authentication methods</a>. A client is
+<a href="../authn-methods/#authentication-methods">authentication methods</a>. A client is
 restricted to a specific party and with assigned scopes.</p>
 <h2 id="party-market-actors">Party - market actors</h2>
 <p>This is the market party like a system operator or service provider. Parties in

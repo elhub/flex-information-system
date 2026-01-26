@@ -3225,8 +3225,9 @@
 
 
 <h1 id="authorization-model">Authorization model</h1>
-<p>We are providing a <a href="api-design.md">resource-oriented main API</a>. Authorization is
-understood as allowing a user access to do an action on a resource or its field.</p>
+<p>We are providing a <a href="../../api-design/">resource-oriented main API</a>. Authorization
+is understood as allowing a user access to do an action on a resource or its
+field.</p>
 <p>Our authorization model is based on a deny-by-default principle. This means that
 authorization is denied unless explicitly allowed. We then allow certain
 <em>actions</em> on <em>resource</em> or <em>field</em> level for a specific <em>party type</em>. The caller
@@ -3245,7 +3246,7 @@ access to resources <code>3</code>, <code>4</code> and <code>5</code>, and updat
 <p>Together, these policies allow the party type to read all fields except <code>A</code> of resources
 <code>3</code>, <code>4</code> and <code>5</code>, and update only field <code>D</code> of resource <code>5</code>.</p>
 <p>In addition to this, the user must have the required scope to perform the action.</p>
-<p><img alt="Resource and Field Level Authorization" src="../diagrams/auth-table.drawio.png" /></p>
+<p><img alt="Resource and Field Level Authorization" src="../../../diagrams/auth-table.drawio.png" /></p>
 <p>More information about the policies and their implementation can be found in the
 following sections.</p>
 <h2 id="scopes">Scopes</h2>
@@ -3516,7 +3517,7 @@ of historic values, and that conversely, if they cannot see the new ones, they
 will see historic values presented as current records.</p>
 <p>Let us take the example of the controllable unit resource where access for
 service providers is based on CUSP contracts.</p>
-<p><img alt="Time-dependent RLA" src="../diagrams/time_dependent_authorization.png" /></p>
+<p><img alt="Time-dependent RLA" src="../../../diagrams/time_dependent_authorization.png" /></p>
 <p>In this example we have 3 records in the data history for the CU. <code>3</code> is the
 current record. Two service providers, <code>A</code> and <code>B</code>, have had contracts on the
 CU. <code>B</code> is the current SP. Each of the service providers will see the latest
@@ -3548,7 +3549,7 @@ We call it the <em>as-of timestamp</em>, because conceptually this turns queries
 the resource into queries <em>as of</em> this specific timestamp.</p>
 <p>Let us take the example of a resource managed in turn by 4 users: D, A, B, C,
 and then D again.</p>
-<p><img alt="asof_example" src="../diagrams/asof_example.png" /></p>
+<p><img alt="asof_example" src="../../../diagrams/asof_example.png" /></p>
 <p>The resource has 3 records.
 The first one is updated (marked by a colour change), then deleted while B
 manages the resource; the second one is updated by A; the last one is created by
