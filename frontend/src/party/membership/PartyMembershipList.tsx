@@ -93,9 +93,9 @@ export const PartyMembershipList = () => {
           sort={{ field: "id", order: "DESC" }}
         >
           <Datagrid
-            rowClick={(record) =>
-              `/party/${record.party_id}/membership/${record.id}/show`
-            }
+            rowClick={(record) => {
+              return `/party/${record.party_id}/membership/${record.id}/show`;
+            }}
           >
             <TextField source="id" />
             <ReferenceField source="entity_id" reference="entity">
