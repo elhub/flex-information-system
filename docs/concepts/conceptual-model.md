@@ -115,10 +115,17 @@ NC DR defines a service providing group like this:
 A [service providing group](../resources/service_providing_group.md) (SPG) is
 a collection of CUs. We call the CUs *members* of the SPG.
 
-The topological location of the members limits the use of the SPG. If SPG members
-are close together and all connected to the same part of the grid, the SPG can
-offer local services such as congestion management. If the members are spread
-out over a larger area, the SPG can maybe only offer balancing services.
+> [!NOTE]
+>
+> The NC DR also includes a definition of a 'service providing unit' (SPU) as a
+> single unit connected to one connection agreement point. We do not include SPU
+> in the FIS. We do not see a reason for this distinction and have thus not
+> modelled it in.
+
+The topological location of the SPG members limits the use of the SPG. If SPG
+members are close together and all connected to the same part of the grid, the
+SPG can offer local services such as congestion management. If the members are
+spread out over a larger area, the SPG can maybe only offer balancing services.
 
 Each SPG is restricted to a specific area by the service provider. The provider
 specifies this when creating the SPG. We use the term `bidding zone`, rather
@@ -127,20 +134,43 @@ than `scheduling area` used in NC DR, for this area.
 geographical scope of the scheduling area is equal to the bidding zone. The term
 `bidding zone` is widely used and easy to understand for market participants.
 The Norwegian word for bidding zone is `budområde`, and in common language also
-referred to as `prisområde`.
-
-As of now, the bidding zones are the scheduling areas in Norway (NO1-NO5), used
-for balancing. But this concept and restriction of SPG can also be extended to
-include local services. We foresee use of local bidding zones on SPGs used for
-congestion management. The term `bidding zone` is thus more flexible and
+referred to as `prisområde`. We foresee use of local bidding zones on SPGs used
+for congestion management. The term `bidding zone` is thus more flexible and
 future-proof than `scheduling area`.
 
-> [!NOTE]
->
-> The NC DR also includes a definition of a 'service providing unit' (SPU) as a
-> single unit connected to one connection agreement point. We do not include SPU
-> in the FIS. We do not see a reason for this distinction and have thus not
-> modelled it in.
+### Types of bidding zones
+
+As of now, the bidding zones in the system are the `price areas` in Norway
+(NO1-NO5), used for balancing.
+
+We are planning to extend this concept to include other types of bidding zones
+to facilitate local flexibility markets and possibly congestion management for
+system responsible.
+
+The end goal would be that we define all bidding zones as [`topological areas`
+in the common national grid
+model](./grid-model.md#defining-topological-trade-areas). This will require a
+complete national grid model with accounting points mapped to nodes in the grid.
+This is possible, and in the works by, Elbits but will take time to implement.
+
+There are several other ways to define bidding zones as interim solutions. We
+will explore these options depending on the needs of market participants.
+
+* Geographical areas using polygons (lat/long). Most DSO have these in the NODES
+  platform already. This requires that accounting points have a defined
+  geographical location. Many accounting points in Elhub have this today, and
+  for the rest, we can guess based on address etc.
+* Accounting point lists. The SO can provide a list of accounting points that
+  defines the bidding zone. This is more work for the SO and prone to become
+  outdated, but it is precise and easy to implement.
+* Administrative areas such as municipalities or postal codes. This is easy to
+  implement and understand, but not very precise and probably not very useful for
+  the SO.
+* Metering grid areas (MGA). Might be useful for some SOs and cases and we know
+  which MGA all accounting points belong to.
+
+It will also be relevant to define bidding zones that are combinations of the
+above, to provide a hierarchy of bidding zones for different purposes.
 
 ## Example with EV smart charges
 
