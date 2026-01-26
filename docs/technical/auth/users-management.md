@@ -8,7 +8,7 @@ employees.
 The following diagram shows the end result of how an example organisation and
 its employees are represented in the system.
 
-![Organisation access control management illustration](../diagrams/organisation_management.drawio.png)
+![Organisation access control management illustration](../../diagrams/organisation_management.drawio.png)
 
 The four black boxes shows how the organisation itself is modelled in the system.
 
@@ -70,4 +70,4 @@ Let us show an example of sequence of actions in the system to perform such an
 autonomous access control management. In this example, FIS operator adds Kari as
 admin and Kari adds Ola as a regular user for the Energy Supplier party.
 
-![Organisation access control management sequence](../diagrams/org_access_control_management.png)
+![Organisation access control management sequence](../../diagrams/org_access_control_management.png)

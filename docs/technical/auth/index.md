@@ -23,15 +23,15 @@ add external links to relevant resources where appropriate (like we just did ðŸ˜
 <!-- markdownlint-disable MD033 -->
 <div class="grid cards" markdown>
 
-* :fontawesome-regular-id-card: [Authentication model](./authn-model.md)  
+* :fontawesome-regular-id-card: [Authentication model](./authn-model.md)
   How are users identified? What are the possible roles in the system?
-* :fontawesome-solid-key: [Authentication methods](./authn-methods.md)  
+* :fontawesome-solid-key: [Authentication methods](./authn-methods.md)
   How can a user log in to the FIS?
-* :fontawesome-solid-user-cog: [Authorization](./authz-model.md)  
+* :fontawesome-solid-user-cog: [Authorization](./authz-model.md)
   What is a user allowed to do?
-* :fontawesome-solid-rocket: [Getting started](./getting-started.md)  
+* :fontawesome-solid-rocket: [Getting started](./getting-started.md)
   Set up your API user and register your first controllable unit
-* :fontawesome-solid-users: [Users management](./users-management.md)  
+* :fontawesome-solid-users: [Users management](./users-management.md)
   How to manage access to assets in the system?
 
 </div>
@@ -44,7 +44,7 @@ and responsibility. The layers are independent of each other and a request is
 required to pass all the layers to be allowed access. The following diagram
 shows the layers we have in our model.
 
-![Auth Layers](../diagrams/auth_layers.drawio.png)
+![Auth Layers](../../diagrams/auth_layers.drawio.png)
 
 The layers in the auth model are there to protect our resources. These resources
 take the form of data or remote procedure calls (RPCs) in our APIs. You can
@@ -88,7 +88,7 @@ resources or fields. The table below shows the actions and their corresponding
 | **C**all   | POST      | EXECUTE        | Used for RPC type endpoints. |
 
 We do not model `List` as a specific action even tho it is a verb - someting a
-user can do - on the [API](api-design.md). It is covered by `Read`.
+user can do - on the [API](../api-design.md). It is covered by `Read`.
 
 ## OAuth 2.0 and OpenID Connect standards
 

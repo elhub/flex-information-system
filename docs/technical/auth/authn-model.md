@@ -4,7 +4,7 @@ In this section, we describe the authentication model in the Flexibility
 Information System. This diagram shows the main concepts in the model and how
 they relate to each other.
 
-![../diagrams/auth_model.drawio.png](../diagrams/auth_model.drawio.png)
+![../diagrams/auth_model.drawio.png](../../diagrams/auth_model.drawio.png)
 
 ## Identity
 
@@ -24,12 +24,12 @@ Inspiration for this step is taken from [Altinn](https://info.altinn.no/en/),
 where one is presented with a list of parties upon login. The Elhub portal also
 has the same type of logical mechanism.
 
-![Altinn select party](../assets/altinn-choose-party.png).
+![Altinn select party](../../assets/altinn-choose-party.png).
 
 The concept is also inspired by [AWS AssumeRole](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html).
 
-Assuming a party is done using [Token Exchange](./auth-methods.md#token-exchange)
-or directly in authentication using [JWT Bearer](./auth-methods.md#jwt-bearer)
+Assuming a party is done using [Token Exchange](./authn-methods.md#token-exchange)
+or directly in authentication using [JWT Bearer](./authn-methods.md#jwt-bearer)
 grant. To assume a party, the entity must be a member of the party.
 
 ## Entity - individuals and organisations
@@ -51,7 +51,7 @@ mechanisms such as IDPorten, Maskinporten or enterprise certificates.
 We follow the OAuth 2.0 definition of a client as _"an application making
 protected resource requests"_. A client is basically a way for _an entity_ to
 interact with the FIS API. A client can use different
-[authentication methods](./auth-methods.md#authentication-methods). A client is
+[authentication methods](./authn-methods.md#authentication-methods). A client is
 restricted to a specific party and with assigned scopes.
 
 ## Party - market actors

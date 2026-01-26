@@ -167,7 +167,7 @@ Below is an example of realistic login sequence:
 * they ask for a token exchange in the second call to the `/token` endpoint,
   in order to assume one of the possible parties.
 
-![Login Sequence](../diagrams/login_sequence.png)
+![Login Sequence](../../diagrams/login_sequence.png)
 
 ## User information endpoint
 
