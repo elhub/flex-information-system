@@ -9,7 +9,7 @@ CREATE VIEW notice_spgpa_status_requested
 WITH (security_invoker = false) AS (
     SELECT
         spgpa.procuring_system_operator_id AS party_id,
-        'no.elhub.flex.service_providing_group_product_application.status.requested' AS type, -- noqa
+        'no.elhub.flex.service_providing_group_product_application.status.requested'::ltree AS type, -- noqa
         'service_providing_group_product_application' AS source_resource,
         spgpa.id AS source_id,
         null::jsonb AS data -- noqa

@@ -9,7 +9,8 @@ CREATE VIEW notice_cusp_valid_time_outside_contract
 WITH (security_invoker = false) AS (
     SELECT
         service_provider_id AS party_id,
-        'no.elhub.flex.controllable_unit_service_provider.valid_time.outside_contract' AS type, -- noqa
+        'no.elhub.flex.controllable_unit_service_provider.valid_time.outside_contract'::ltree -- noqa
+            AS type, -- noqa
         'controllable_unit_service_provider' AS source_resource,
         id AS source_id,
         jsonb_build_object(

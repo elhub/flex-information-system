@@ -31,7 +31,7 @@ WITH (security_invoker = false) AS (
 
     SELECT
         spgps.procuring_system_operator_id AS party_id,
-        'no.elhub.flex.service_providing_group_product_suspension.product_type.not_qualified' AS type, -- noqa
+        'no.elhub.flex.service_providing_group_product_suspension.product_type.not_qualified'::ltree AS type, -- noqa
         'service_providing_group_product_suspension' AS source_resource,
         spgps.id AS source_id,
         jsonb_build_object(
@@ -61,7 +61,7 @@ CREATE VIEW notice_spgps_lingering
 WITH (security_invoker = false) AS (
     SELECT
         spgps.procuring_system_operator_id AS party_id,
-        'no.elhub.flex.service_providing_group_product_suspension.lingering'
+        'no.elhub.flex.service_providing_group_product_suspension.lingering'::ltree
             AS type, -- noqa
         'service_providing_group_product_suspension' AS source_resource,
         spgps.id AS source_id,

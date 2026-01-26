@@ -9,7 +9,7 @@ CREATE VIEW notice_party_missing
 WITH (security_invoker = false) AS (
     SELECT
         p_fiso.id AS party_id,
-        'no.elhub.flex.party.missing' AS type, -- noqa
+        'no.elhub.flex.party.missing'::ltree AS type, -- noqa
         null AS source_resource, -- no source because the party does not exist yet
         null::bigint AS source_id,
         jsonb_build_object(
@@ -49,7 +49,7 @@ CREATE VIEW notice_party_outdated
 WITH (security_invoker = false) AS (
     SELECT
         p_fiso.id AS party_id,
-        'no.elhub.flex.party.outdated' AS type, -- noqa
+        'no.elhub.flex.party.outdated'::ltree AS type, -- noqa
         'party' AS source_resource,
         p.id AS source_id,
         jsonb_strip_nulls(
@@ -94,7 +94,7 @@ CREATE VIEW notice_party_residual
 WITH (security_invoker = false) AS (
     SELECT
         p_fiso.id AS party_id,
-        'no.elhub.flex.party.residual' AS type, -- noqa
+        'no.elhub.flex.party.residual'::ltree AS type, -- noqa
         'party' AS source_resource,
         p.id AS source_id,
         null::jsonb AS data -- noqa

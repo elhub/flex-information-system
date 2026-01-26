@@ -9,7 +9,7 @@ CREATE VIEW notice_spggs_not_grid_prequalified
 WITH (security_invoker = false) AS (
     SELECT
         spggs.impacted_system_operator_id AS party_id,
-        'no.elhub.flex.service_providing_group_grid_suspension.not_grid_prequalified' AS type, -- noqa
+        'no.elhub.flex.service_providing_group_grid_suspension.not_grid_prequalified'::ltree AS type, -- noqa
         'service_providing_group_grid_suspension' AS source_resource,
         spggs.id AS source_id,
         null::jsonb AS data -- noqa
@@ -32,7 +32,7 @@ CREATE VIEW notice_spggs_lingering
 WITH (security_invoker = false) AS (
     SELECT
         spggs.impacted_system_operator_id AS party_id,
-        'no.elhub.flex.service_providing_group_grid_suspension.lingering' AS type, -- noqa
+        'no.elhub.flex.service_providing_group_grid_suspension.lingering'::ltree AS type, -- noqa
         'service_providing_group_grid_suspension' AS source_resource,
         spggs.id AS source_id,
         null::jsonb AS data -- noqa

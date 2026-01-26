@@ -9,7 +9,7 @@ CREATE VIEW notice_spgm_valid_time_outside_contract
 WITH (security_invoker = false) AS (
     SELECT -- noqa
         spg.service_provider_id AS party_id,
-        'no.elhub.flex.service_providing_group_membership.valid_time.outside_contract' AS type, -- noqa
+        'no.elhub.flex.service_providing_group_membership.valid_time.outside_contract'::ltree AS type, -- noqa
         'service_providing_group_membership' AS source_resource,
         spgm.id AS source_id,
         null::jsonb AS data -- noqa
@@ -39,7 +39,7 @@ CREATE VIEW notice_spgm_bidding_zone_mismatch
 WITH (security_invoker = false) AS (
     SELECT -- noqa
         spg.service_provider_id AS party_id,
-        'no.elhub.flex.service_providing_group_membership.bidding_zone_mismatch' AS type, -- noqa
+        'no.elhub.flex.service_providing_group_membership.bidding_zone_mismatch'::ltree AS type, -- noqa
         'service_providing_group_membership' AS source_resource,
         spgm.id AS source_id,
         null::jsonb AS data -- noqa
