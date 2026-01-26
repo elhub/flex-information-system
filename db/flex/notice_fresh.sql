@@ -5,7 +5,7 @@
 -- DROP + CREATE instead of CREATE OR REPLACE: cf https://stackoverflow.com/a/65118443
 -- This view combines all notice types from individual views.
 -- Individual views are defined in separate files for maintainability.
-DROP VIEW IF EXISTS notice CASCADE;
+DROP VIEW IF EXISTS notice_fresh CASCADE;
 -- noqa: disable=AM04
 CREATE VIEW notice_fresh
 WITH (security_invoker = false) AS (
@@ -75,3 +75,61 @@ WITH (security_invoker = false) AS (
     SELECT * FROM notice_party_residual
 );
 -- noqa: enable=AM04
+
+-- changeset flex:notice-sync-function runOnChange:true endDelimiter:--
+-- synchronise the notice table with the fresh notice discovery
+CREATE OR REPLACE FUNCTION notice_sync()
+RETURNS TABLE (action text, id bigint)
+SECURITY DEFINER
+LANGUAGE sql AS $$
+MERGE INTO flex.notice AS np  -- persistent notices
+USING flex.notice_fresh AS nf -- freshly computed notices
+ON np.party_id = nf.party_id
+    AND np.type = nf.type
+    AND np.source_resource = nf.source_resource
+    AND np.source_id = nf.source_id
+-- notices already registered and also recomputed must be updated
+WHEN MATCHED AND (
+    np.data IS DISTINCT FROM nf.data -- the data has changed
+    OR np.status = 'resolved'        -- the notice must be reactivated
+) THEN
+    UPDATE SET
+        data = nf.data,
+        status = 'active'
+-- notices already registered with no changes are not touched
+WHEN MATCHED AND np.data = nf.data THEN DO NOTHING
+-- notices already registered but not recomputed must be resolved
+WHEN NOT MATCHED BY SOURCE THEN
+    UPDATE SET
+        status = 'resolved'
+-- notices freshly computed but not registered must be created
+WHEN NOT MATCHED BY TARGET THEN
+    INSERT (
+        party_id,
+        type,
+        source_resource,
+        source_id,
+        data,
+        status
+    ) VALUES (
+        nf.party_id,
+        nf.type,
+        nf.source_resource,
+        nf.source_id,
+        nf.data,
+        'active'
+    )
+RETURNING
+    WITH OLD AS old_np, NEW AS new_np
+    CASE merge_action()
+        WHEN 'INSERT' THEN 'created'
+        ELSE -- UPDATE
+            CASE
+                WHEN new_np.status = 'resolved' THEN 'resolved'
+                WHEN new_np.status = 'active' AND old_np.status = 'resolved'
+                    THEN 'reactivated'
+                ELSE 'updated'
+            END
+    END AS action,
+    np.id
+$$;
