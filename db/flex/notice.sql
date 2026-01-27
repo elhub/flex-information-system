@@ -64,3 +64,9 @@ CREATE TABLE IF NOT EXISTS notice (
         status IN ('active', 'resolved')
     )
 );
+
+-- changeset flex:notice-capture-event runOnChange:true endDelimiter:--
+CREATE OR REPLACE TRIGGER notice_event
+AFTER INSERT OR UPDATE ON notice
+FOR EACH ROW
+EXECUTE FUNCTION capture_event();
