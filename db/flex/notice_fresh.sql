@@ -9,70 +9,81 @@ DROP VIEW IF EXISTS notice_fresh CASCADE;
 -- noqa: disable=AM04
 CREATE VIEW notice_fresh
 WITH (security_invoker = false) AS (
-    -- Controllable Unit notices
-    SELECT * FROM notice_cu_grid_node_id_missing
-    UNION ALL
-    SELECT * FROM notice_cu_grid_validation_status_pending
-    UNION ALL
-    SELECT * FROM notice_cu_grid_validation_status_incomplete_information
+    SELECT
+        nf.*,
+        flex.notice_key(
+            nf.party_id,
+            nf.type,
+            nf.source_resource,
+            nf.source_id,
+            nf.data
+        ) AS key -- noqa
+    FROM (
+        -- Controllable Unit notices
+        SELECT * FROM notice_cu_grid_node_id_missing
+        UNION ALL
+        SELECT * FROM notice_cu_grid_validation_status_pending
+        UNION ALL
+        SELECT * FROM notice_cu_grid_validation_status_incomplete_information
 
-    -- Controllable Unit Service Provider notices
-    UNION ALL
-    SELECT * FROM notice_cusp_valid_time_outside_contract
+        -- Controllable Unit Service Provider notices
+        UNION ALL
+        SELECT * FROM notice_cusp_valid_time_outside_contract
 
-    -- Controllable Unit Suspension notices
-    UNION ALL
-    SELECT * FROM notice_cus_not_active
-    UNION ALL
-    SELECT * FROM notice_cus_lingering
+        -- Controllable Unit Suspension notices
+        UNION ALL
+        SELECT * FROM notice_cus_not_active
+        UNION ALL
+        SELECT * FROM notice_cus_lingering
 
-    -- Service Provider Product Application notices
-    UNION ALL
-    SELECT * FROM notice_sppa_status_requested
+        -- Service Provider Product Application notices
+        UNION ALL
+        SELECT * FROM notice_sppa_status_requested
 
-    -- Service Provider Product Suspension notices
-    UNION ALL
-    SELECT * FROM notice_spps_product_type_not_qualified
-    UNION ALL
-    SELECT * FROM notice_spps_lingering
+        -- Service Provider Product Suspension notices
+        UNION ALL
+        SELECT * FROM notice_spps_product_type_not_qualified
+        UNION ALL
+        SELECT * FROM notice_spps_lingering
 
-    -- Service Providing Group notices
-    UNION ALL
-    SELECT * FROM notice_spg_brp_multiple
+        -- Service Providing Group notices
+        UNION ALL
+        SELECT * FROM notice_spg_brp_multiple
 
-    -- Service Providing Group Membership notices
-    UNION ALL
-    SELECT * FROM notice_spgm_valid_time_outside_contract
-    UNION ALL
-    SELECT * FROM notice_spgm_bidding_zone_mismatch
+        -- Service Providing Group Membership notices
+        UNION ALL
+        SELECT * FROM notice_spgm_valid_time_outside_contract
+        UNION ALL
+        SELECT * FROM notice_spgm_bidding_zone_mismatch
 
-    -- Service Providing Group Product Application notices
-    UNION ALL
-    SELECT * FROM notice_spgpa_status_requested
+        -- Service Providing Group Product Application notices
+        UNION ALL
+        SELECT * FROM notice_spgpa_status_requested
 
-    -- Service Providing Group Grid Prequalification notices
-    UNION ALL
-    SELECT * FROM notice_spggp_status_requested
+        -- Service Providing Group Grid Prequalification notices
+        UNION ALL
+        SELECT * FROM notice_spggp_status_requested
 
-    -- Service Providing Group Grid Suspension notices
-    UNION ALL
-    SELECT * FROM notice_spggs_not_grid_prequalified
-    UNION ALL
-    SELECT * FROM notice_spggs_lingering
+        -- Service Providing Group Grid Suspension notices
+        UNION ALL
+        SELECT * FROM notice_spggs_not_grid_prequalified
+        UNION ALL
+        SELECT * FROM notice_spggs_lingering
 
-    -- Service Providing Group Product Suspension notices
-    UNION ALL
-    SELECT * FROM notice_spgps_product_type_not_qualified
-    UNION ALL
-    SELECT * FROM notice_spgps_lingering
+        -- Service Providing Group Product Suspension notices
+        UNION ALL
+        SELECT * FROM notice_spgps_product_type_not_qualified
+        UNION ALL
+        SELECT * FROM notice_spgps_lingering
 
-    -- Party notices
-    UNION ALL
-    SELECT * FROM notice_party_missing
-    UNION ALL
-    SELECT * FROM notice_party_outdated
-    UNION ALL
-    SELECT * FROM notice_party_residual
+        -- Party notices
+        UNION ALL
+        SELECT * FROM notice_party_missing
+        UNION ALL
+        SELECT * FROM notice_party_outdated
+        UNION ALL
+        SELECT * FROM notice_party_residual
+    ) AS nf
 );
 -- noqa: enable=AM04
 
