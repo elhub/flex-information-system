@@ -90,122 +90,60 @@ WITH (security_invoker = false) AS (
 -- changeset flex:notice-sync-function runOnChange:true endDelimiter:--
 -- synchronise the notice table with the fresh notice discovery
 CREATE OR REPLACE FUNCTION notice_sync()
-RETURNS TABLE (action text, id bigint)
-SECURITY DEFINER
-LANGUAGE sql AS $$
-    WITH
-        -- notices already registered but not recomputed must be resolved
-        resolved AS (
-            UPDATE flex.notice AS np
-            SET status = 'resolved'
-            WHERE np.status = 'active'
-                AND NOT EXISTS (
-                    SELECT 1 FROM flex.notice_fresh AS nf
-                    WHERE nf.party_id IS NOT DISTINCT FROM np.party_id
-                        AND nf.type = np.type
-                        AND nf.source_resource = np.source_resource
-                        AND nf.source_id = np.source_id
-                )
-            RETURNING 'resolved'::text AS action, np.id
-        ),
-        -- resolved notices that are recomputed must be reactivated
-        reactivated AS (
-            UPDATE flex.notice AS np
-            SET
-                status = 'active',
-                data = nf.data -- update data BTW if necessary
-            FROM flex.notice_fresh AS nf
-            WHERE nf.party_id IS NOT DISTINCT FROM np.party_id
-                AND nf.type = np.type
-                AND nf.source_resource = np.source_resource
-                AND nf.source_id = np.source_id
-                AND np.status = 'resolved'
-                -- if a notice is resolved by the query above, it should not be
-                -- taken into account here
-                AND NOT EXISTS (
-                    SELECT 1 FROM resolved AS nr
-                    WHERE nr.id = np.id
-                )
-            RETURNING 'reactivated'::text AS action, np.id
-        ),
-        -- notices already registered with change in data must be updated
-        updated AS (
-            UPDATE flex.notice AS np
-            SET data = nf.data
-            FROM flex.notice_fresh AS nf
-            WHERE nf.party_id IS NOT DISTINCT FROM np.party_id
-                AND nf.type = np.type
-                AND nf.source_resource = np.source_resource
-                AND nf.source_id = np.source_id
-                AND np.data IS DISTINCT FROM nf.data
-                -- if already handled by reactivation, do not consider updated
-                AND NOT EXISTS (
-                    SELECT 1 FROM reactivated AS nr
-                    WHERE nr.id = np.id
-                )
-            RETURNING 'updated'::text AS action, np.id
-        ),
-        -- notices freshly computed but not registered must be created
-        -- NB: this one can run concurrently with the others because they all
-        --     consider notices that match between the table and the view,
-        --     so the cases handled here (new in the view, missing from table)
-        --     will never have been handled before
-        created AS (
-            INSERT INTO flex.notice (
-                party_id,
-                type,
-                source_resource,
-                source_id,
-                data,
-                status
-            )
-            SELECT
-                nf.party_id,
-                nf.type,
-                nf.source_resource,
-                nf.source_id,
-                nf.data,
-                'active'
-            FROM flex.notice_fresh AS nf
-            WHERE NOT EXISTS (
-                SELECT 1 FROM flex.notice AS np
-                WHERE np.party_id IS NOT DISTINCT FROM nf.party_id
-                    AND np.type = nf.type
-                    AND np.source_resource = nf.source_resource
-                    AND np.source_id = nf.source_id
-            )
-            RETURNING 'created'::text AS action, id
-        )
-
-    SELECT * FROM resolved
-    UNION ALL
-    SELECT * FROM reactivated
-    UNION ALL
-    SELECT * FROM updated
-    UNION ALL
-    SELECT * FROM created
-$$;
-
--- changeset flex:notice-sync-job runOnChange:true endDelimiter:--
--- job definition: identify as system, then sync and log the changes
-CREATE OR REPLACE FUNCTION notice_sync_job()
 RETURNS void
 SECURITY DEFINER
 LANGUAGE plpgsql AS $$
-DECLARE
-  l_notice_change record;
 BEGIN
-    RAISE NOTICE 'Starting notice synchronisation job...';
     PERFORM set_config('flex.current_identity', '0', false);
-    FOR l_notice_change IN
-        SELECT * FROM flex.notice_sync()
-    LOOP
-        RAISE NOTICE
-            'Notice % was %',
-            l_notice_change.id,
-            l_notice_change.action;
-    END LOOP;
-    RAISE NOTICE 'End of notice synchronisation job.';
+
+    MERGE INTO flex.notice AS np -- persistent notices
+    USING flex.notice_fresh AS nf -- freshly computed notices
+    ON np.key = nf.key
+    -- notices already registered and also recomputed must be updated
+    WHEN MATCHED AND (
+        np.data IS DISTINCT FROM nf.data -- the data has changed
+        OR np.status = 'resolved'        -- the notice must be reactivated
+    ) THEN
+        UPDATE SET
+            data = nf.data,
+            status = 'active';
+
+    -- notices already registered with no changes are not touched
+    -- NB: useless to add to the current MERGE as it is the last clause
+    -- WHEN MATCHED AND np.data = nf.data THEN DO NOTHING
+
+    -- notices already registered but not recomputed must be resolved
+    -- NB: this is the 'NOT MATCHED [BY SOURCE]' part, where UPDATE statements
+    --     are available only in PG>=17
+    UPDATE flex.notice AS np
+    SET status = 'resolved'
+    WHERE NOT EXISTS (
+        SELECT 1 FROM flex.notice_fresh AS nf
+        WHERE nf.key = np.key
+    );
+
+    -- notices freshly computed but not registered must be created
+    -- NB: this is the 'NOT MATCHED BY TARGET' part, available only in PG>=17
+    INSERT INTO flex.notice (
+        party_id,
+        type,
+        source_resource,
+        source_id,
+        data,
+        status
+    )
+    SELECT
+        nf.party_id,
+        nf.type,
+        nf.source_resource,
+        nf.source_id,
+        nf.data,
+        'active'
+    FROM flex.notice_fresh AS nf
+    WHERE NOT EXISTS (
+        SELECT 1 FROM flex.notice AS np
+        WHERE np.key = nf.key
+    );
 END;
 $$;
 
@@ -214,5 +152,5 @@ $$;
 SELECT cron.schedule(
     'notice-sync',
     '*/5 * * * *', -- every 5 minutes
-    $$SELECT flex.notice_sync_job()$$
+    $$SELECT flex.notice_sync()$$
 );
