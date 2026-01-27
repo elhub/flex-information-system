@@ -1,7 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:notice runOnChange:true endDelimiter:--
+-- changeset flex:notice runAlways:true endDelimiter:;
 -- DROP + CREATE instead of CREATE OR REPLACE: cf https://stackoverflow.com/a/65118443
 -- This view combines all notice types from individual views.
 -- Individual views are defined in separate files for maintainability.
