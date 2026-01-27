@@ -1,7 +1,7 @@
 import { usePermissions } from "ra-core";
 import { useLocation } from "react-router-dom";
-import { Permissions, PermissionTarget } from "../../../auth/permissions";
-import { chunksOf, removeSuffix } from "../../../util";
+import { Permissions, PermissionTarget } from "../../../../auth/permissions";
+import { chunksOf, removeSuffix } from "../../../../util";
 
 export type UseNestedResourceHistoryProps = {
   child: string;

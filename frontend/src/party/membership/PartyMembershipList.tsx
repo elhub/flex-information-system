@@ -7,18 +7,15 @@ import {
 import { List, Datagrid } from "../../components/EDS-ra/list";
 import {
   DeleteButton,
-  NestedResourceHistoryButton,
-} from "../../components/EDS-ra/buttons";
-import { Button } from "../../components/ui";
-
-import { useNavigate } from "react-router-dom";
-import {
   DateField,
   IdentityField,
   ReferenceField,
   ScopesField,
   TextField,
-} from "../../components/EDS-ra/fields";
+  NestedResourceHistoryButton,
+} from "../../components/EDS-ra";
+import { Button } from "../../components/ui";
+import { useNavigate } from "react-router-dom";
 import { Permissions } from "../../auth/permissions";
 import { IconPlus, IconSearch } from "@elhub/ds-icons";
 
@@ -96,9 +93,9 @@ export const PartyMembershipList = () => {
           sort={{ field: "id", order: "DESC" }}
         >
           <Datagrid
-            rowClick={(record) =>
-              `/party/${record.party_id}/membership/${record.id}/show`
-            }
+            rowClick={(record) => {
+              return `/party/${record.party_id}/membership/${record.id}/show`;
+            }}
           >
             <TextField source="id" />
             <ReferenceField source="entity_id" reference="entity">
