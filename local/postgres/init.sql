@@ -4,7 +4,6 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp"; -- noqa: RF05
 CREATE EXTENSION IF NOT EXISTS btree_gist;
 CREATE EXTENSION IF NOT EXISTS ltree;
-CREATE EXTENSION IF NOT EXISTS pg_cron;
 
 -- flex is the main role for the application
 CREATE ROLE flex WITH NOINHERIT LOGIN PASSWORD 'flex_password';
@@ -15,8 +14,6 @@ GRANT CREATE ON DATABASE flex TO flex;
 ALTER USER flex WITH REPLICATION;
 -- the main schema must exist for liquibase to add its changelog tables
 CREATE SCHEMA flex AUTHORIZATION flex;
--- grant cron job execution to flex
-GRANT USAGE ON SCHEMA cron TO flex;
 
 -- authenticator is used by backend/postgREST to connect to the database
 CREATE ROLE flex_authenticator

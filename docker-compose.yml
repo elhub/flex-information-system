@@ -21,10 +21,6 @@ services:
       -c log_statement=all
       -c log_min_messages=debug1
       -c wal_level=logical
-      -c shared_preload_libraries=pg_cron
-      -c cron.database_name=flex
-      -c cron.timezone=Europe/Oslo
-      -c cron.use_background_workers=on
   postgrest:
     image: postgrest/postgrest:latest
     expose:

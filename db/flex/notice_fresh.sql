@@ -146,11 +146,3 @@ BEGIN
     );
 END;
 $$;
-
--- changeset flex:notice-sync-job-schedule runAlways:true endDelimiter:;
--- schedule the job
-SELECT cron.schedule(
-    'notice-sync',
-    '*/5 * * * *', -- every 5 minutes
-    $$SELECT flex.notice_sync()$$
-);
