@@ -2,32 +2,17 @@ import { useState, ReactNode, createElement } from "react";
 import {
   Admin,
   CustomRoutes,
-  getStorage,
   ResourceContextProvider,
   Layout as RaLayout,
   LayoutProps,
   localStorageStore,
-  AppBar as RaAppBar,
-  TitlePortal,
   Menu,
-  UserMenu,
-  useGetIdentity,
-  useRedirect,
-  useUserMenu,
   useCreatePath,
   MenuItemLink,
 } from "react-admin";
-import {
-  Chip,
-  CircularProgress,
-  MenuItem,
-  ListItemIcon,
-  ListItemText,
-  Box,
-} from "@mui/material";
+import { MenuItem, ListItemIcon, ListItemText, Box } from "@mui/material";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import Collapse from "@mui/material/Collapse";
 
 import DefaultIcon from "@mui/icons-material/ViewList";
@@ -36,13 +21,12 @@ import {
   useGetResourceLabel,
   useCanAccess,
   DataProvider,
-  useTranslate,
 } from "ra-core";
 
 import { Route } from "react-router-dom";
 import { apiURL, serverURL, httpClient, authURL, docsURL } from "./httpConfig";
 
-import { authProvider, sessionInfoKey } from "./auth";
+import { authProvider } from "./auth";
 
 import { Breadcrumbs } from "./components/Breadcrumbs";
 import { elhubTheme } from "./theme";
@@ -61,6 +45,7 @@ import postgrestRestProvider, {
 } from "@raphiniert/ra-data-postgrest";
 
 import { useI18nProvider } from "./intl/intl";
+import { Header } from "./components/Header/Header";
 
 const config: IDataProviderConfig = {
   apiUrl: apiURL,
@@ -85,102 +70,6 @@ const dataProvider: DataProvider = {
       );
       return { ...response, data: newData };
     }),
-};
-
-const RedirectMenuButton = (props: { label: string; url: string }) => {
-  const redirect = useRedirect();
-  const userMenu = useUserMenu();
-
-  return (
-    <MenuItem
-      onClick={() => {
-        userMenu?.onClose();
-        redirect(props.url);
-      }}
-    >
-      <ListItemIcon>
-        <PeopleAltIcon />
-      </ListItemIcon>
-      <ListItemText>{props.label}</ListItemText>
-    </MenuItem>
-  );
-};
-
-// We implement a custom logout button since we don't want the default
-// logout to redirect to our external auth service, since it is called by
-// both checkAuth and checkError in the authProvider.
-//
-// Only user-initiated logout should go to the external auth service.
-const Logout = () => {
-  const redirect = useRedirect();
-  const userMenu = useUserMenu();
-
-  return (
-    <MenuItem
-      onClick={() => {
-        getStorage().removeItem(sessionInfoKey);
-        userMenu?.onClose();
-        redirect(`${authURL}/logout`);
-      }}
-    >
-      <ListItemIcon>
-        <PeopleAltIcon />
-      </ListItemIcon>
-      <ListItemText>Logout</ListItemText>
-    </MenuItem>
-  );
-};
-
-const AppBar = () => {
-  const redirect = useRedirect();
-  const { isLoading, data, error } = useGetIdentity();
-  const translate = useTranslate();
-  if (error) redirect("/login");
-
-  let roleLabel = "...";
-  if (!isLoading) {
-    roleLabel =
-      data!.role == "flex_entity"
-        ? translate("text.entity_role")
-        : translate(`enum.party.role.${data!.role}`);
-  }
-
-  return (
-    <RaAppBar
-      userMenu={
-        <UserMenu>
-          {!isLoading && (
-            <RedirectMenuButton
-              url="/login/assumeParty"
-              label={data!.partyID ? "Unassume party" : "Assume party"}
-            />
-          )}
-          {!isLoading && (
-            <RedirectMenuButton
-              url={`/entity/${data!.entityID}/show`}
-              label="My entity"
-            />
-          )}
-          {!isLoading && data!.partyID && (
-            <RedirectMenuButton
-              url={`/party/${data!.partyID}/show`}
-              label="My party"
-            />
-          )}
-          <Logout />
-        </UserMenu>
-      }
-    >
-      <TitlePortal />
-      {isLoading && <CircularProgress size={25} thickness={2} />}
-      <Chip
-        label={roleLabel}
-        variant="outlined"
-        style={{ color: elhubTheme.palette.primary.contrastText }}
-      />
-      <Box sx={{ width: 8 }} />
-    </RaAppBar>
-  );
 };
 
 const SubMenu = ({
@@ -349,7 +238,7 @@ const FooterButton = ({ href, label }: any) => (
 
 const Layout = ({ children }: LayoutProps) => (
   <>
-    <RaLayout menu={MainMenu} appBar={AppBar}>
+    <RaLayout menu={MainMenu} appBar={Header}>
       <Breadcrumbs />
       {children}
       <Box m={3} />
