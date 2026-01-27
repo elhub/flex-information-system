@@ -4425,6 +4425,7 @@
                         "type": "string",
                         "pattern": "^(\\/([a-z][a-z_]*|[0-9]+))+$",
                         "readOnly": true,
+                        "nullable": true,
                         "example": "/service_providing_group_membership/4"
                     },
                     "data": {
@@ -4438,8 +4439,7 @@
                 },
                 "required": [
                     "party_id",
-                    "type",
-                    "source"
+                    "type"
                 ]
             },
             "controllable_unit_history_response": {

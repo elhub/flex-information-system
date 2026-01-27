@@ -12,8 +12,8 @@ DROP VIEW IF EXISTS notice CASCADE;
 CREATE TABLE IF NOT EXISTS notice (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     party_id bigint NOT NULL,
-    source_resource text NOT NULL,
-    source_id bigint NOT NULL,
+    source_resource text NULL,
+    source_id bigint NULL,
     type ltree NOT NULL,
     data jsonb NULL,
     status text NOT NULL,

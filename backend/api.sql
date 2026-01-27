@@ -586,6 +586,6 @@ CREATE TABLE api.service_providing_group_product_suspension_comment_history (
 CREATE TABLE api.notice (
     party_id bigint NOT NULL,
     type text NOT NULL,
-    source text NOT NULL,
+    source text NULL,
     data jsonb NULL
 );
