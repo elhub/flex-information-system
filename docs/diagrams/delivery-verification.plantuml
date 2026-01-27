@@ -9,7 +9,7 @@ skinparam note {
     BackgroundColor #FFFFBD
 }
 
-participant "TSDB" as TSDB
+participant "Time series database" as TSDB
 actor "Service Provider (SP)" as SP
 participant "Flexibility\nInformation System (FIS)" as FIS
 actor "System Operator (SO)" as SO 
