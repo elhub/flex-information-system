@@ -110,7 +110,7 @@ For party type abbreviations, check
 | id                          |      | R   | R  | R  | R    | R  | R  | R  |     |
 | service_providing_group_id  |      | R   | R  | R  | RC   | R  | R  | R  |     |
 | impacted_system_operator_id |      | R   | R  | R  | RC   | R  | R  | R  |     |
-| status                      |      | R   | R  | R  | RU   | RU | R  | R  |     |
+| status                      |      | R   | R  | R  | RCU  | RU | R  | R  |     |
 | prequalified_at             |      | R   | R  | R  | RU   | RU | R  | R  |     |
 | recorded_at                 |      | R   | R  | R  | R    | R  | R  | R  |     |
 | recorded_by                 |      | R   | R  | R  | R    | R  | R  | R  |     |

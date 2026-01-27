@@ -129,7 +129,7 @@ For party type abbreviations, check
 | service_providing_group_id   |      | R   | R  | R  | R    | R  | RC  | R  |     |
 | procuring_system_operator_id |      | R   | R  | R  | R    | R  | RC  | R  |     |
 | product_type_ids             |      | R   | R  | R  | RU   | RU | RCU | R  |     |
-| status                       |      | R   | R  | R  | RU   | RU | RU  | R  |     |
+| status                       |      | R   | R  | R  | RU   | RU | RCU | R  |     |
 | notes                        |      | R   | R  | R  | RU   | RU | R   | R  |     |
 | prequalified_at              |      | R   | R  | R  | RU   | RU | R   | R  |     |
 | verified_at                  |      | R   | R  | R  | RU   | RU | R   | R  |     |

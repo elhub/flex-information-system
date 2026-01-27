@@ -127,6 +127,6 @@ For party type abbreviations, check
 | entity_id        |      | R   | R  | R  | RC   | R  | R  | R  | R   |
 | type             |      | R   | R  | R  | RC   | R  | R  | R  | R   |
 | role             |      | R   | R  | R  | RC   | R  | R  | R  | R   |
-| status           |      | R   | R  | R  | RU   | R  | R  | R  | R   |
+| status           |      | R   | R  | R  | RCU  | R  | R  | R  | R   |
 | recorded_at      |      | R   | R  | R  | R    | R  | R  | R  | R   |
 | recorded_by      |      | R   | R  | R  | R    | R  | R  | R  | R   |

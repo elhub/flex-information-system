@@ -7542,6 +7542,10 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit.status",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit.status",
       operation: "read",
     },
     {
@@ -8317,6 +8321,10 @@ const rawPermissions: Record<
     },
     {
       target: "party.status",
+      operation: "create",
+    },
+    {
+      target: "party.status",
       operation: "read",
     },
     {
@@ -9015,6 +9023,10 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group.status",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group.status",
       operation: "read",
     },
     {
@@ -9072,6 +9084,10 @@ const rawPermissions: Record<
       target:
         "service_providing_group_grid_prequalification.service_providing_group_id",
       operation: "read",
+    },
+    {
+      target: "service_providing_group_grid_prequalification.status",
+      operation: "create",
     },
     {
       target: "service_providing_group_grid_prequalification.status",
@@ -10051,6 +10067,10 @@ const rawPermissions: Record<
     {
       target: "system_operator_product_type.recorded_by",
       operation: "read",
+    },
+    {
+      target: "system_operator_product_type.status",
+      operation: "create",
     },
     {
       target: "system_operator_product_type.status",
@@ -14929,6 +14949,10 @@ const rawPermissions: Record<
     },
     {
       target: "system_operator_product_type.status",
+      operation: "create",
+    },
+    {
+      target: "system_operator_product_type.status",
       operation: "read",
     },
     {
@@ -15338,6 +15362,10 @@ const rawPermissions: Record<
     {
       target: "controllable_unit.start_date",
       operation: "update",
+    },
+    {
+      target: "controllable_unit.status",
+      operation: "create",
     },
     {
       target: "controllable_unit.status",
@@ -16220,6 +16248,10 @@ const rawPermissions: Record<
     },
     {
       target: "service_provider_product_application.status",
+      operation: "create",
+    },
+    {
+      target: "service_provider_product_application.status",
       operation: "read",
     },
     {
@@ -16646,6 +16678,10 @@ const rawPermissions: Record<
     {
       target: "service_providing_group.service_provider_id",
       operation: "read",
+    },
+    {
+      target: "service_providing_group.status",
+      operation: "create",
     },
     {
       target: "service_providing_group.status",
@@ -17290,6 +17326,10 @@ const rawPermissions: Record<
       target:
         "service_providing_group_product_application.service_providing_group_id",
       operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application.status",
+      operation: "create",
     },
     {
       target: "service_providing_group_product_application.status",
