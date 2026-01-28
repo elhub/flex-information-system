@@ -9,10 +9,11 @@ CREATE VIEW notice_cu_grid_node_id_missing
 WITH (security_invoker = false) AS (
     SELECT -- noqa
         ap_so.system_operator_id AS party_id,
-        'no.elhub.flex.controllable_unit.grid_node_id.missing' AS type, -- noqa
+        'no.elhub.flex.controllable_unit.grid_node_id.missing'::ltree AS type, -- noqa
         'controllable_unit' AS source_resource,
         cu.id AS source_id,
-        null::jsonb AS data -- noqa
+        null::jsonb AS data, -- noqa
+        md5(cu.id::text) AS deduplication_key -- noqa
     FROM flex.controllable_unit AS cu
         INNER JOIN flex.accounting_point_system_operator AS ap_so
             ON
@@ -27,10 +28,11 @@ CREATE VIEW notice_cu_grid_validation_status_pending
 WITH (security_invoker = false) AS (
     SELECT
         ap_so.system_operator_id AS party_id,
-        'no.elhub.flex.controllable_unit.grid_validation_status.pending' AS type, -- noqa
+        'no.elhub.flex.controllable_unit.grid_validation_status.pending'::ltree AS type, -- noqa
         'controllable_unit' AS source_resource,
         cu.id AS source_id,
-        null::jsonb AS data -- noqa
+        null::jsonb AS data, -- noqa
+        md5(cu.id::text) AS deduplication_key -- noqa
     FROM flex.controllable_unit AS cu
         INNER JOIN flex.accounting_point_system_operator AS ap_so
             ON
@@ -47,10 +49,11 @@ CREATE VIEW notice_cu_grid_validation_status_incomplete_information
 WITH (security_invoker = false) AS (
     SELECT
         cusp.service_provider_id AS party_id,
-        'no.elhub.flex.controllable_unit.grid_validation_status.incomplete_information' AS type, -- noqa
+        'no.elhub.flex.controllable_unit.grid_validation_status.incomplete_information'::ltree AS type, -- noqa
         'controllable_unit' AS source_resource,
         cu.id AS source_id,
-        null::jsonb AS data -- noqa
+        null::jsonb AS data, -- noqa
+        md5(cu.id::text) AS deduplication_key -- noqa
     FROM flex.controllable_unit AS cu
         INNER JOIN flex.controllable_unit_service_provider AS cusp
             ON cu.id = cusp.controllable_unit_id
