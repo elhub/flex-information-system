@@ -24,12 +24,6 @@ client.setConfig({
   baseUrl: apiURL,
 });
 
-const primaryColor = window.env.PRIMARY_COLOR ?? "#0b3c28";
-document.documentElement.style.setProperty(
-  "--eds-semantic-background-action-primary",
-  primaryColor,
-);
-
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <App />
