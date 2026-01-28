@@ -76,7 +76,7 @@ WITH (security_invoker = false) AS (
 );
 -- noqa: enable=AM04
 
--- changeset flex:notice-sync-function runOnChange:true endDelimiter:--
+-- changeset flex:notice-sync-function runAlways:true endDelimiter:--
 -- synchronise the notice table with the fresh notice discovery
 CREATE OR REPLACE FUNCTION notice_sync()
 RETURNS void
