@@ -1,10 +1,4 @@
-import {
-  BodyText,
-  Button,
-  Dropdown,
-  FlexCenterDiv,
-  Loader,
-} from "@elhub/ds-components";
+import { BodyText, Button, Dropdown, FlexDiv, Loader } from "../ui";
 import {
   IconBuilding,
   IconChevronDown,
@@ -58,10 +52,10 @@ const UserDropdown = () => {
         className={styles.dropDownToggle}
         data-testid="header-desktop-menu-toggle"
       >
-        <FlexCenterDiv gap={0.5}>
+        <FlexDiv gap={0.5}>
           <IconUser />
           <BodyText weight="bold">{data?.fullName ?? "User"}</BodyText>
-        </FlexCenterDiv>
+        </FlexDiv>
       </Button>
       <Dropdown.Menu arrow placement="bottom">
         <Dropdown.Menu.GroupedList.Heading>
@@ -73,20 +67,20 @@ const UserDropdown = () => {
             variant="invisible"
             onClick={handleAssumeParty}
           >
-            <FlexCenterDiv gap={0.5}>
+            <FlexDiv gap={0.5}>
               <IconBuilding />
               {data?.partyID ? "Unassume party" : "Assume party"}
-            </FlexCenterDiv>
+            </FlexDiv>
           </Dropdown.Menu.GroupedList.Item>
 
           <Dropdown.Menu.GroupedList.Item
             className={styles.dropDownItemButton}
             onClick={handleMyEntity}
           >
-            <FlexCenterDiv gap={0.5}>
+            <FlexDiv gap={0.5}>
               <IconUser />
               <BodyText>My entity</BodyText>
-            </FlexCenterDiv>
+            </FlexDiv>
           </Dropdown.Menu.GroupedList.Item>
 
           {data?.partyID && (
@@ -94,10 +88,10 @@ const UserDropdown = () => {
               className={styles.dropDownItemButton}
               onClick={handleMyParty}
             >
-              <FlexCenterDiv gap={0.5}>
+              <FlexDiv gap={0.5}>
                 <IconBuilding />
                 <BodyText>My party</BodyText>
-              </FlexCenterDiv>
+              </FlexDiv>
             </Dropdown.Menu.GroupedList.Item>
           )}
 
@@ -105,10 +99,10 @@ const UserDropdown = () => {
             className={styles.dropDownItemButton}
             onClick={handleLogout}
           >
-            <FlexCenterDiv gap={0.5}>
+            <FlexDiv gap={0.5}>
               <IconViewOff />
               <BodyText>Logout</BodyText>
-            </FlexCenterDiv>
+            </FlexDiv>
           </Dropdown.Menu.GroupedList.Item>
         </Dropdown.Menu.GroupedList>
       </Dropdown.Menu>

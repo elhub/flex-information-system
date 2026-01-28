@@ -255,7 +255,7 @@ const Layout = ({ children }: LayoutProps) => (
         justifyContent: "center",
         alignItems: "center",
         padding: "10px",
-        backgroundColor: elhubTheme.palette.primary.main,
+        backgroundColor: "var(--eds-semantic-background-action-primary)",
         textAlign: "center",
       }}
     >
