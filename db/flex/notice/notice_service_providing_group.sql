@@ -11,10 +11,11 @@ CREATE VIEW notice_spg_brp_multiple
 WITH (security_invoker = false) AS (
     SELECT
         sp_id AS party_id,
-        'no.elhub.flex.service_providing_group.balance_responsible_party.multiple' AS type, -- noqa
+        'no.elhub.flex.service_providing_group.balance_responsible_party.multiple'::ltree AS type, -- noqa
         'service_providing_group' AS source_resource,
         spg_id AS source_id,
-        null::jsonb AS data -- noqa
+        null::jsonb AS data, -- noqa
+        md5(spg_id::text) AS deduplication_key -- noqa
     FROM (
         SELECT
             spg.id AS spg_id,

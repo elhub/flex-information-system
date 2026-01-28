@@ -223,7 +223,7 @@ type ApiMeteringGridArea struct {
 type ApiNotice struct {
 	PartyID int
 	Type    string
-	Source  string
+	Source  *string
 	Data    []byte
 }
 

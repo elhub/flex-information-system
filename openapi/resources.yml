@@ -3072,6 +3072,7 @@ resources:
         type: string
         pattern: '^(\/([a-z][a-z_]*|[0-9]+))+$'
         readOnly: true
+        nullable: true
         example: '/service_providing_group_membership/4'
         x-intl:
           en: Source

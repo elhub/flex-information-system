@@ -26,7 +26,7 @@ WITH (security_invoker = false) AS (
 
     SELECT
         spps.procuring_system_operator_id AS party_id,
-        'no.elhub.flex.service_provider_product_suspension.product_type.not_qualified' AS type, -- noqa
+        'no.elhub.flex.service_provider_product_suspension.product_type.not_qualified'::ltree AS type, -- noqa
         'service_provider_product_suspension' AS source_resource,
         spps.id AS source_id,
         jsonb_build_object(
@@ -37,7 +37,8 @@ WITH (security_invoker = false) AS (
                     SELECT unnest(coalesce(qpts.product_type_ids, '{}'))
                 )
             )
-        ) AS data -- noqa
+        ) AS data, -- noqa
+        md5(spps.id::text) AS deduplication_key -- noqa
     FROM flex.service_provider_product_suspension AS spps
         LEFT JOIN qualified_product_types AS qpts
             ON
@@ -53,10 +54,11 @@ CREATE VIEW notice_spps_lingering
 WITH (security_invoker = false) AS (
     SELECT
         spps.procuring_system_operator_id AS party_id,
-        'no.elhub.flex.service_provider_product_suspension.lingering' AS type, -- noqa
+        'no.elhub.flex.service_provider_product_suspension.lingering'::ltree AS type, -- noqa
         'service_provider_product_suspension' AS source_resource,
         spps.id AS source_id,
-        null::jsonb AS data -- noqa
+        null::jsonb AS data, -- noqa
+        md5(spps.id::text) AS deduplication_key -- noqa
     FROM flex.service_provider_product_suspension AS spps
     WHERE
         lower(spps.record_time_range) < current_timestamp - interval '2 weeks'

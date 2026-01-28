@@ -9,10 +9,11 @@ CREATE VIEW notice_sppa_status_requested
 WITH (security_invoker = false) AS (
     SELECT
         sppa.system_operator_id AS party_id,
-        'no.elhub.flex.service_provider_product_application.status.requested' AS type, -- noqa
+        'no.elhub.flex.service_provider_product_application.status.requested'::ltree AS type, -- noqa
         'service_provider_product_application' AS source_resource,
         sppa.id AS source_id,
-        null::jsonb AS data -- noqa
+        null::jsonb AS data, -- noqa
+        md5(sppa.id::text) AS deduplication_key -- noqa
     FROM flex.service_provider_product_application AS sppa
     WHERE sppa.status = 'requested'
 );
