@@ -33,6 +33,12 @@ CREATE TABLE IF NOT EXISTS notice (
     )
 );
 
+-- changeset flex:notice-index runAlways:true endDelimiter:;
+CREATE INDEX IF NOT EXISTS notice_index_party_id
+ON flex.notice (party_id);
+CREATE INDEX IF NOT EXISTS notice_index_status
+ON flex.notice (status);
+
 -- changeset flex:notice-capture-event runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER notice_event
 AFTER INSERT OR UPDATE ON notice
