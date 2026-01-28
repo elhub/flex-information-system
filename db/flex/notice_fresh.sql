@@ -99,7 +99,7 @@ BEGIN
     WHEN MATCHED AND np.data IS DISTINCT FROM nf.data THEN
         UPDATE SET
             data = nf.data,
-            status = 'active';
+            status = 'active'
     -- notices freshly computed but not registered must be created
     WHEN NOT MATCHED /* BY TARGET */ THEN
         INSERT (
