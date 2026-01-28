@@ -2403,7 +2403,7 @@ export type Notice = {
   /**
    * The URI of the resource concerned by the event.
    */
-  readonly source?: string;
+  readonly source: string;
 };
 
 /**

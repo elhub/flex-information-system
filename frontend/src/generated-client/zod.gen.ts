@@ -2216,12 +2216,10 @@ export const zNotice = z.object({
     .string()
     .regex(/^no.elhub.flex./)
     .readonly(),
-  source: z.optional(
-    z
-      .string()
-      .regex(/^(\/([a-z][a-z_]*|[0-9]+))+$/)
-      .readonly(),
-  ),
+  source: z
+    .string()
+    .regex(/^(\/([a-z][a-z_]*|[0-9]+))+$/)
+    .readonly(),
 });
 
 /**
