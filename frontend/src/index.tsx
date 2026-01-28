@@ -10,15 +10,19 @@ import { App } from "./App";
 import { client } from "./generated-client/client.gen";
 import { apiURL } from "./httpConfig";
 
+declare global {
+  interface Window {
+    env: {
+      PRIMARY_COLOR: string;
+      VITE_FLEX_URL: string;
+      VITE_FLEX_COLOR_DARK: string;
+    };
+  }
+}
+
 client.setConfig({
   baseUrl: apiURL,
 });
-
-declare global {
-  interface Window {
-    env: any;
-  }
-}
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

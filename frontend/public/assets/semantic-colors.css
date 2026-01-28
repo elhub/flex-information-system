@@ -1,0 +1,14 @@
+:root {
+  /* Secondary actions - lighter slate shades */
+  --eds-semantic-background-action-secondary-selected: #64748b !important;
+  --eds-semantic-background-action-secondary-disabled: #d1d5db !important;
+  --eds-semantic-background-action-secondary-active: #cbd5e1 !important;
+  --eds-semantic-background-action-secondary-hover: #94a3b8 !important;
+  --eds-semantic-background-action-secondary: #64748b !important;
+
+  /* Primary actions - deeper slate shades */
+  --eds-semantic-background-action-primary-disabled: #d1d5db !important;
+  --eds-semantic-background-action-primary-active: #0f172a !important;
+  --eds-semantic-background-action-primary-hover: #334155 !important;
+  --eds-semantic-background-action-primary: #1e293b !important;
+}
