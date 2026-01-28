@@ -191,7 +191,7 @@ For party type abbreviations, check
 | maximum_available_capacity |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
 | is_small                   |      | R   | R  | R  | R    | R  | R   | R  |     |
 | start_date                 |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
-| status                     |      | R   | R  | R  | RU   | R  | RU  | R  |     |
+| status                     |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
 | minimum_duration           |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
 | maximum_duration           |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
 | recovery_duration          |      | R   | R  | R  | RCU  | R  | RCU | R  |     |

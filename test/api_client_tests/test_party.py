@@ -12,6 +12,7 @@ from flex.models import (
     ErrorMessage,
     PartyRole,
     PartyType,
+    PartyStatus,
 )
 from flex.api.party import (
     create_party,
@@ -118,6 +119,19 @@ def test_party_fiso(sts):
     parties = list_party.sync(client=client_fiso)
     assert isinstance(parties, list)
 
+    # cannot create a party with status other than `new`
+    e = create_party.sync(
+        client=client_fiso,
+        body=PartyCreateRequest(
+            name="New End User",
+            role=PartyRole.FLEX_END_USER,
+            type_=PartyType.END_USER,
+            entity_id=ent_id,
+            status=PartyStatus.ACTIVE,
+        ),
+    )
+    assert isinstance(e, ErrorMessage)
+
     # endpoint: POST /party
     # can create an end user with a UUID
     p = create_party.sync(
@@ -127,11 +141,12 @@ def test_party_fiso(sts):
             role=PartyRole.FLEX_END_USER,
             type_=PartyType.END_USER,
             entity_id=ent_id,
+            status=PartyStatus.NEW,
         ),
     )
     assert isinstance(p, PartyResponse)
 
-    # can create something else with an EIC
+    # can create something else with an EIC (btw no status => default `new`)
     p = create_party.sync(
         client=client_fiso,
         body=PartyCreateRequest(
