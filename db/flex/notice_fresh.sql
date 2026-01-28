@@ -98,51 +98,48 @@ BEGIN
 
     MERGE INTO flex.notice AS np -- persistent notices
     USING flex.notice_fresh AS nf -- freshly computed notices
-    ON np.key = nf.key
-    -- notices already registered and also recomputed must be updated
-    WHEN MATCHED AND (
-        np.data IS DISTINCT FROM nf.data -- the data has changed
-        OR np.status = 'resolved'        -- the notice must be reactivated
-    ) THEN
+    ON np.party_id = nf.party_id
+        AND np.type = nf.type
+        AND np.key = nf.key
+    -- resolved notices that are recomputed must be reactivated
+    WHEN MATCHED AND np.status = 'resolved' THEN
+        UPDATE SET
+            data = nf.data,
+            status = 'active'
+    -- active notices with data changes must be updated
+    WHEN MATCHED AND np.data IS DISTINCT FROM nf.data THEN
         UPDATE SET
             data = nf.data,
             status = 'active';
-
-    -- notices already registered with no changes are not touched
-    -- NB: useless to add to the current MERGE as it is the last clause
-    -- WHEN MATCHED AND np.data = nf.data THEN DO NOTHING
+    -- notices freshly computed but not registered must be created
+    WHEN NOT MATCHED /* BY TARGET */ THEN
+        INSERT (
+            party_id,
+            type,
+            source_resource,
+            source_id,
+            data,
+            status
+        ) VALUES (
+            nf.party_id,
+            nf.type,
+            nf.source_resource,
+            nf.source_id,
+            nf.data,
+            'active'
+        );
 
     -- notices already registered but not recomputed must be resolved
-    -- NB: this is the 'NOT MATCHED [BY SOURCE]' part, where UPDATE statements
-    --     are available only in PG>=17
+    -- NB: this is the 'NOT MATCHED BY SOURCE' part, available only in PG>=17
+    -- WHEN NOT MATCHED BY SOURCE THEN
+    --     UPDATE SET status = 'resolved';
     UPDATE flex.notice AS np
     SET status = 'resolved'
     WHERE NOT EXISTS (
         SELECT 1 FROM flex.notice_fresh AS nf
-        WHERE nf.key = np.key
-    );
-
-    -- notices freshly computed but not registered must be created
-    -- NB: this is the 'NOT MATCHED BY TARGET' part, available only in PG>=17
-    INSERT INTO flex.notice (
-        party_id,
-        type,
-        source_resource,
-        source_id,
-        data,
-        status
-    )
-    SELECT
-        nf.party_id,
-        nf.type,
-        nf.source_resource,
-        nf.source_id,
-        nf.data,
-        'active'
-    FROM flex.notice_fresh AS nf
-    WHERE NOT EXISTS (
-        SELECT 1 FROM flex.notice AS np
-        WHERE np.key = nf.key
+        WHERE nf.party_id = np.party_id
+            AND nf.type = np.type
+            AND nf.key = np.key
     );
 END;
 $$;
