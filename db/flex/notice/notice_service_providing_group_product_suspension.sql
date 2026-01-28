@@ -42,7 +42,8 @@ WITH (security_invoker = false) AS (
                     SELECT unnest(coalesce(qpts.product_type_ids, '{}'))
                 )
             )
-        ) AS data -- noqa
+        ) AS data, -- noqa
+        md5(spgps.id::text) AS key -- noqa
     FROM flex.service_providing_group_product_suspension AS spgps
         LEFT JOIN qualified_product_types AS qpts
             ON
@@ -65,7 +66,8 @@ WITH (security_invoker = false) AS (
             AS type, -- noqa
         'service_providing_group_product_suspension' AS source_resource,
         spgps.id AS source_id,
-        null::jsonb AS data -- noqa
+        null::jsonb AS data, -- noqa
+        md5(spgps.id::text) AS key -- noqa
     FROM flex.service_providing_group_product_suspension AS spgps
     WHERE
         lower(spgps.record_time_range)

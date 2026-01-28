@@ -12,7 +12,8 @@ WITH (security_invoker = false) AS (
         'no.elhub.flex.service_providing_group_grid_suspension.not_grid_prequalified'::ltree AS type, -- noqa
         'service_providing_group_grid_suspension' AS source_resource,
         spggs.id AS source_id,
-        null::jsonb AS data -- noqa
+        null::jsonb AS data, -- noqa
+        md5(spggs.id::text) AS key -- noqa
     FROM flex.service_providing_group_grid_suspension AS spggs
     WHERE NOT EXISTS (
         SELECT 1
@@ -35,7 +36,8 @@ WITH (security_invoker = false) AS (
         'no.elhub.flex.service_providing_group_grid_suspension.lingering'::ltree AS type, -- noqa
         'service_providing_group_grid_suspension' AS source_resource,
         spggs.id AS source_id,
-        null::jsonb AS data -- noqa
+        null::jsonb AS data, -- noqa
+        md5(spggs.id::text) AS key -- noqa
     FROM flex.service_providing_group_grid_suspension AS spggs
     WHERE
         lower(spggs.record_time_range)

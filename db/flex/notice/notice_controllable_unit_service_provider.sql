@@ -31,7 +31,8 @@ WITH (security_invoker = false) AS (
                         AS timeline_section
                 ) AS invalid_timeline_sections
             )
-        ) AS data -- noqa
+        ) AS data, -- noqa
+        md5(id::text) AS key -- noqa
     FROM (
         SELECT
             cusp.id,

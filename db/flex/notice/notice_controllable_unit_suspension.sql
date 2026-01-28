@@ -12,7 +12,8 @@ WITH (security_invoker = false) AS (
         'no.elhub.flex.controllable_unit_suspension.not_active'::ltree AS type, -- noqa
         'controllable_unit_suspension' AS source_resource,
         cus.id AS source_id,
-        null::jsonb AS data -- noqa
+        null::jsonb AS data, -- noqa
+        md5(cus.id::text) AS key -- noqa
     FROM flex.controllable_unit_suspension AS cus
     WHERE NOT EXISTS (
         SELECT 1
@@ -33,7 +34,8 @@ WITH (security_invoker = false) AS (
             AS type, -- noqa
         'controllable_unit_suspension' AS source_resource,
         cus.id AS source_id,
-        null::jsonb AS data -- noqa
+        null::jsonb AS data, -- noqa
+        md5(cus.id::text) AS key -- noqa
     FROM flex.controllable_unit_suspension AS cus
     WHERE
         lower(cus.record_time_range)

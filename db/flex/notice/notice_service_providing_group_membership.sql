@@ -12,7 +12,8 @@ WITH (security_invoker = false) AS (
         'no.elhub.flex.service_providing_group_membership.valid_time.outside_contract'::ltree AS type, -- noqa
         'service_providing_group_membership' AS source_resource,
         spgm.id AS source_id,
-        null::jsonb AS data -- noqa
+        null::jsonb AS data, -- noqa
+        md5(spgm.id::text) AS key -- noqa
     FROM flex.service_providing_group_membership AS spgm -- noqa
         INNER JOIN flex.service_providing_group AS spg
             ON spgm.service_providing_group_id = spg.id
@@ -42,7 +43,8 @@ WITH (security_invoker = false) AS (
         'no.elhub.flex.service_providing_group_membership.bidding_zone_mismatch'::ltree AS type, -- noqa
         'service_providing_group_membership' AS source_resource,
         spgm.id AS source_id,
-        null::jsonb AS data -- noqa
+        null::jsonb AS data, -- noqa
+        md5(spgm.id::text) AS key -- noqa
     FROM flex.service_providing_group_membership AS spgm -- noqa
         INNER JOIN flex.service_providing_group AS spg
             ON spgm.service_providing_group_id = spg.id

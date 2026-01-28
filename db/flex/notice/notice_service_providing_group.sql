@@ -14,7 +14,8 @@ WITH (security_invoker = false) AS (
         'no.elhub.flex.service_providing_group.balance_responsible_party.multiple'::ltree AS type, -- noqa
         'service_providing_group' AS source_resource,
         spg_id AS source_id,
-        null::jsonb AS data -- noqa
+        null::jsonb AS data, -- noqa
+        md5(spg_id::text) AS key -- noqa
     FROM (
         SELECT
             spg.id AS spg_id,
