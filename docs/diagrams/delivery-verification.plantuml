@@ -1,0 +1,40 @@
+@startuml delivery-verification
+
+!theme plain
+
+title Delivery verification
+
+autonumber
+skinparam note {
+    BackgroundColor #FFFFBD
+}
+
+participant "Time series database" as TSDB
+actor "Service Provider (SP)" as SP
+participant "Flexibility\nInformation System (FIS)" as FIS
+actor "System Operator (SO)" as SO 
+
+== Delivery verification ==
+
+activate SO
+SO -> FIS: Get CU/SPG ID
+FIS --> SO: CU/SPG ID
+
+note right
+    PSO uses FIS to get the IDs of the CUs/SPG
+    in order to collect the right metering values.
+end note
+
+SO -> TSDB: Get metering values and baseline
+TSDB --> SO: Metering values and baseline
+
+note right
+    PSO uses the collected time series and the
+    activated bid to do the delivery verification
+    analysis.
+end note
+
+SO -> FIS: Register result of delivery verification
+FIS --> SP: Notify
+
+deactivate SO
