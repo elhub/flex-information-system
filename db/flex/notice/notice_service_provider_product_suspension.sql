@@ -38,7 +38,7 @@ WITH (security_invoker = false) AS (
                 )
             )
         ) AS data, -- noqa
-        md5(spps.id::text) AS key -- noqa
+        md5(spps.id::text) AS deduplication_key -- noqa
     FROM flex.service_provider_product_suspension AS spps
         LEFT JOIN qualified_product_types AS qpts
             ON
@@ -58,7 +58,7 @@ WITH (security_invoker = false) AS (
         'service_provider_product_suspension' AS source_resource,
         spps.id AS source_id,
         null::jsonb AS data, -- noqa
-        md5(spps.id::text) AS key -- noqa
+        md5(spps.id::text) AS deduplication_key -- noqa
     FROM flex.service_provider_product_suspension AS spps
     WHERE
         lower(spps.record_time_range) < current_timestamp - interval '2 weeks'

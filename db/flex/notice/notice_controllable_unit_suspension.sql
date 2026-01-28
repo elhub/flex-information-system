@@ -13,7 +13,7 @@ WITH (security_invoker = false) AS (
         'controllable_unit_suspension' AS source_resource,
         cus.id AS source_id,
         null::jsonb AS data, -- noqa
-        md5(cus.id::text) AS key -- noqa
+        md5(cus.id::text) AS deduplication_key -- noqa
     FROM flex.controllable_unit_suspension AS cus
     WHERE NOT EXISTS (
         SELECT 1
@@ -35,7 +35,7 @@ WITH (security_invoker = false) AS (
         'controllable_unit_suspension' AS source_resource,
         cus.id AS source_id,
         null::jsonb AS data, -- noqa
-        md5(cus.id::text) AS key -- noqa
+        md5(cus.id::text) AS deduplication_key -- noqa
     FROM flex.controllable_unit_suspension AS cus
     WHERE
         lower(cus.record_time_range)

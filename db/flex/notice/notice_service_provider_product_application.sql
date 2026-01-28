@@ -13,7 +13,7 @@ WITH (security_invoker = false) AS (
         'service_provider_product_application' AS source_resource,
         sppa.id AS source_id,
         null::jsonb AS data, -- noqa
-        md5(sppa.id::text) AS key -- noqa
+        md5(sppa.id::text) AS deduplication_key -- noqa
     FROM flex.service_provider_product_application AS sppa
     WHERE sppa.status = 'requested'
 );

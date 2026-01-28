@@ -13,7 +13,7 @@ WITH (security_invoker = false) AS (
         'service_providing_group_grid_suspension' AS source_resource,
         spggs.id AS source_id,
         null::jsonb AS data, -- noqa
-        md5(spggs.id::text) AS key -- noqa
+        md5(spggs.id::text) AS deduplication_key -- noqa
     FROM flex.service_providing_group_grid_suspension AS spggs
     WHERE NOT EXISTS (
         SELECT 1
@@ -37,7 +37,7 @@ WITH (security_invoker = false) AS (
         'service_providing_group_grid_suspension' AS source_resource,
         spggs.id AS source_id,
         null::jsonb AS data, -- noqa
-        md5(spggs.id::text) AS key -- noqa
+        md5(spggs.id::text) AS deduplication_key -- noqa
     FROM flex.service_providing_group_grid_suspension AS spggs
     WHERE
         lower(spggs.record_time_range)

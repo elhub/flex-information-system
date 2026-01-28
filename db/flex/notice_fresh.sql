@@ -89,7 +89,7 @@ BEGIN
     USING flex.notice_fresh AS nf -- freshly computed notices
     ON np.party_id = nf.party_id
         AND np.type = nf.type
-        AND np.key = nf.key
+        AND np.deduplication_key = nf.deduplication_key
     -- resolved notices that are recomputed must be reactivated
     WHEN MATCHED AND np.status = 'resolved' THEN
         UPDATE SET
@@ -105,6 +105,7 @@ BEGIN
         INSERT (
             party_id,
             type,
+            deduplication_key,
             source_resource,
             source_id,
             data,
@@ -112,6 +113,7 @@ BEGIN
         ) VALUES (
             nf.party_id,
             nf.type,
+            nf.deduplication_key,
             nf.source_resource,
             nf.source_id,
             nf.data,
@@ -128,7 +130,7 @@ BEGIN
         SELECT 1 FROM flex.notice_fresh AS nf
         WHERE nf.party_id = np.party_id
             AND nf.type = np.type
-            AND nf.key = np.key
+            AND nf.deduplication_key = np.deduplication_key
     );
 END;
 $$;

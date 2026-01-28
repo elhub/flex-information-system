@@ -32,7 +32,7 @@ WITH (security_invoker = false) AS (
                 ) AS invalid_timeline_sections
             )
         ) AS data, -- noqa
-        md5(id::text) AS key -- noqa
+        md5(id::text) AS deduplication_key -- noqa
     FROM (
         SELECT
             cusp.id,

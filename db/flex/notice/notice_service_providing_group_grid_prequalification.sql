@@ -13,7 +13,7 @@ WITH (security_invoker = false) AS (
         'service_providing_group_grid_prequalification' AS source_resource,
         spggp.id AS source_id,
         null::jsonb AS data, -- noqa
-        md5(spggp.id::text) AS key -- noqa
+        md5(spggp.id::text) AS deduplication_key -- noqa
     FROM flex.service_providing_group_grid_prequalification AS spggp
     WHERE spggp.status = 'requested'
 );

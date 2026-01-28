@@ -13,7 +13,7 @@ WITH (security_invoker = false) AS (
         'service_providing_group_membership' AS source_resource,
         spgm.id AS source_id,
         null::jsonb AS data, -- noqa
-        md5(spgm.id::text) AS key -- noqa
+        md5(spgm.id::text) AS deduplication_key -- noqa
     FROM flex.service_providing_group_membership AS spgm -- noqa
         INNER JOIN flex.service_providing_group AS spg
             ON spgm.service_providing_group_id = spg.id
@@ -44,7 +44,7 @@ WITH (security_invoker = false) AS (
         'service_providing_group_membership' AS source_resource,
         spgm.id AS source_id,
         null::jsonb AS data, -- noqa
-        md5(spgm.id::text) AS key -- noqa
+        md5(spgm.id::text) AS deduplication_key -- noqa
     FROM flex.service_providing_group_membership AS spgm -- noqa
         INNER JOIN flex.service_providing_group AS spg
             ON spgm.service_providing_group_id = spg.id

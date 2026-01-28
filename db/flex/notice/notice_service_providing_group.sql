@@ -15,7 +15,7 @@ WITH (security_invoker = false) AS (
         'service_providing_group' AS source_resource,
         spg_id AS source_id,
         null::jsonb AS data, -- noqa
-        md5(spg_id::text) AS key -- noqa
+        md5(spg_id::text) AS deduplication_key -- noqa
     FROM (
         SELECT
             spg.id AS spg_id,

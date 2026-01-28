@@ -31,7 +31,7 @@ WITH (security_invoker = false) AS (
                 )
             )
         ) AS data, -- noqa
-        md5(p_stg.gln::text) AS key -- noqa
+        md5(p_stg.gln::text) AS deduplication_key -- noqa
     FROM flex.party_staging AS p_stg -- noqa
         LEFT JOIN flex.entity AS e_stg
             ON p_stg.org = e_stg.business_id
@@ -75,7 +75,7 @@ WITH (security_invoker = false) AS (
                 )
             )
         ) AS data, -- noqa
-        md5(p.id::text) AS key -- noqa
+        md5(p.id::text) AS deduplication_key -- noqa
     FROM flex.party AS p -- noqa
         INNER JOIN flex.entity AS e
             ON p.entity_id = e.id
@@ -100,7 +100,7 @@ WITH (security_invoker = false) AS (
         'party' AS source_resource,
         p.id AS source_id,
         null::jsonb AS data, -- noqa
-        md5(p.id::text) AS key -- noqa
+        md5(p.id::text) AS deduplication_key -- noqa
     FROM flex.party AS p -- noqa
         -- warn all FISOs
         INNER JOIN flex.party AS p_fiso
