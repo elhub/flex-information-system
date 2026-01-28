@@ -1,13 +1,7 @@
 import { ReactNode, useState } from "react";
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-} from "@mui/material";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { useNotify } from "react-admin";
+import { Button, Modal } from "./ui";
 
 type UseConfirmActionOptions = {
   title: string;
@@ -56,22 +50,30 @@ export const useConfirmAction = ({
   };
 
   const dialog = (
-    <Dialog open={open} onClose={() => setOpen(false)}>
-      <DialogTitle>{title}</DialogTitle>
-      {content ? <DialogContent>{content}</DialogContent> : null}
-      <DialogActions>
-        <Button disabled={isPending} onClick={() => setOpen(false)}>
+    <Modal open={open} onClose={() => setOpen(false)}>
+      <Modal.Header title={title} />
+      {content ? <Modal.Content>{content}</Modal.Content> : null}
+      <Modal.Footer>
+        <Button
+          variant="secondary"
+          disabled={isPending}
+          onClick={() => setOpen(false)}
+        >
           {cancelText}
         </Button>
         <Button disabled={isPending} onClick={confirm}>
           {confirmText}
         </Button>
-      </DialogActions>
-    </Dialog>
+      </Modal.Footer>
+    </Modal>
   );
 
   return {
-    buttonProps: { onClick: () => setOpen(true) },
+    buttonProps: {
+      onClick: () => {
+        setOpen(true);
+      },
+    },
     dialog,
     isOpen: open,
     isPending,

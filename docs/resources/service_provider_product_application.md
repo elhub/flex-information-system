@@ -122,7 +122,7 @@ For party type abbreviations, check
 | service_provider_id |      | R   | R  | R  | R    | R  | RC  | R  |     |
 | system_operator_id  |      | R   | R  | R  | R    | R  | RC  | R  |     |
 | product_type_ids    |      | R   | R  | R  | RU   | R  | RCU | R  |     |
-| status              |      | R   | R  | R  | RU   | RU | R   | R  |     |
+| status              |      | R   | R  | R  | RU   | RU | RC  | R  |     |
 | qualified_at        |      | R   | R  | R  | RU   | RU | R   | R  |     |
 | recorded_at         |      | R   | R  | R  | R    | R  | R   | R  |     |
 | recorded_by         |      | R   | R  | R  | R    | R  | R   | R  |     |

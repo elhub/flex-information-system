@@ -420,7 +420,8 @@ GRANT INSERT (
     business_id_type,
     entity_id,
     type,
-    role
+    role,
+    status
 ) ON TABLE
 api.party
 TO flex_flexibility_information_system_operator;
@@ -1248,6 +1249,7 @@ GRANT INSERT (
     regulation_direction,
     maximum_available_capacity,
     start_date,
+    status,
     minimum_duration,
     maximum_duration,
     recovery_duration,
@@ -1371,6 +1373,7 @@ GRANT INSERT (
     regulation_direction,
     maximum_available_capacity,
     start_date,
+    status,
     minimum_duration,
     maximum_duration,
     recovery_duration,
@@ -2626,7 +2629,8 @@ TO flex_end_user;
 GRANT INSERT (
     name,
     service_provider_id,
-    bidding_zone
+    bidding_zone,
+    status
 ) ON TABLE
 api.service_providing_group
 TO flex_flexibility_information_system_operator;
@@ -2682,7 +2686,8 @@ TO flex_system_operator;
 GRANT INSERT (
     name,
     service_provider_id,
-    bidding_zone
+    bidding_zone,
+    status
 ) ON TABLE
 api.service_providing_group
 TO flex_service_provider;
@@ -3189,7 +3194,8 @@ TO flex_end_user;
 -- changeset flex:api-grant-service-providing-group-grid-prequalification-fiso-insert endDelimiter:-- runAlways:true
 GRANT INSERT (
     service_providing_group_id,
-    impacted_system_operator_id
+    impacted_system_operator_id,
+    status
 ) ON TABLE
 api.service_providing_group_grid_prequalification
 TO flex_flexibility_information_system_operator;
@@ -5551,7 +5557,8 @@ TO flex_end_user;
 -- changeset flex:api-grant-system-operator-product-type-fiso-insert endDelimiter:-- runAlways:true
 GRANT INSERT (
     system_operator_id,
-    product_type_id
+    product_type_id,
+    status
 ) ON TABLE
 api.system_operator_product_type
 TO flex_flexibility_information_system_operator;
@@ -5590,7 +5597,8 @@ TO flex_market_operator;
 -- changeset flex:api-grant-system-operator-product-type-so-insert endDelimiter:-- runAlways:true
 GRANT INSERT (
     system_operator_id,
-    product_type_id
+    product_type_id,
+    status
 ) ON TABLE
 api.system_operator_product_type
 TO flex_system_operator;
@@ -5873,7 +5881,8 @@ TO flex_system_operator;
 GRANT INSERT (
     service_provider_id,
     system_operator_id,
-    product_type_ids
+    product_type_ids,
+    status
 ) ON TABLE
 api.service_provider_product_application
 TO flex_service_provider;
@@ -6778,7 +6787,8 @@ TO flex_system_operator;
 GRANT INSERT (
     service_providing_group_id,
     procuring_system_operator_id,
-    product_type_ids
+    product_type_ids,
+    status
 ) ON TABLE
 api.service_providing_group_product_application
 TO flex_service_provider;

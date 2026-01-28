@@ -1,4 +1,9 @@
-import { Children, ReactNode, cloneElement, isValidElement } from "react";
+import React, {
+  Children,
+  ReactNode,
+  cloneElement,
+  isValidElement,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import {
   FieldTitle,
@@ -26,11 +31,18 @@ export const Datagrid = <T extends RaRecord>({
   const columns = Children.toArray(children).filter(isValidElement);
   const navigate = useNavigate();
 
-  const handleRowClick = (record: RaRecord) => {
-    const target = rowClick
-      ? rowClick(record)
-      : `/${resource}/${record.id}/show`;
-    navigate(target);
+  const handleRowClick = (
+    e: React.MouseEvent<HTMLTableRowElement>,
+    record: RaRecord,
+  ) => {
+    const target = e.target as HTMLElement;
+    // We dont want to navigate if the target is a button or a link, or a modal overlay, because it's handled by the button or link itself.
+    if (target.closest("button, a, .eds-modal__overlay")) {
+      return;
+    }
+
+    const url = rowClick ? rowClick(record) : `/${resource}/${record.id}/show`;
+    navigate(url);
   };
 
   if (isLoading) {
@@ -62,7 +74,7 @@ export const Datagrid = <T extends RaRecord>({
           <RecordContextProvider key={record.id} value={record}>
             <Table.Row
               style={{ cursor: "pointer" }}
-              onClick={() => handleRowClick(record)}
+              onClick={(e) => handleRowClick(e, record)}
             >
               {columns.map((child, index) => {
                 const key =

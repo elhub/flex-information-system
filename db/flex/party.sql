@@ -77,6 +77,19 @@ CREATE INDEX IF NOT EXISTS uk_entity_end_user ON party (entity_id) WHERE (
     type = 'end_user'
 );
 
+-- changeset flex:party-status-insert-trigger runOnChange:true endDelimiter:--
+CREATE OR REPLACE TRIGGER party_status_insert
+BEFORE INSERT ON flex.party
+FOR EACH ROW
+EXECUTE FUNCTION status.restrict_insert('new');
+
+-- changeset flex:party-status-update-trigger runOnChange:true endDelimiter:--
+CREATE OR REPLACE TRIGGER party_status_update
+BEFORE UPDATE OF status ON flex.party
+FOR EACH ROW
+WHEN (OLD.status IS DISTINCT FROM NEW.status) -- noqa
+EXECUTE FUNCTION status.restrict_update('new');
+
 -- changeset flex:party-role-exists-trigger runOnChange:true endDelimiter:;
 -- This trigger functions is used to ensure that the
 -- role name exists in the database catalog tables

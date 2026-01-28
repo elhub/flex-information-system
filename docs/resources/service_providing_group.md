@@ -124,6 +124,6 @@ For party type abbreviations, check
 | name                |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
 | service_provider_id |      | R   | R  | R  | RC   | R  | RC  | R  |     |
 | bidding_zone        |      | R   | R  | R  | RC   | R  | RC  | R  |     |
-| status              |      | R   | R  | R  | RU   | R  | RU  | R  |     |
+| status              |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
 | recorded_at         |      | R   | R  | R  | R    | R  | R   | R  |     |
 | recorded_by         |      | R   | R  | R  | R    | R  | R   | R  |     |

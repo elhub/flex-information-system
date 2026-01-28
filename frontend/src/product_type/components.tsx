@@ -1,3 +1,4 @@
+import React from "react";
 import {
   ArrayField,
   FieldProps,
@@ -42,7 +43,7 @@ export const ProductTypeField = ({ source }: FieldProps) => {
       // handler applies first, and then we are sent to this link after changing
       // pages. This allows ignoring the potential row click.
       // (cf ReferenceField's implementation in React-Admin)
-      onClick={(e: any) => e.stopPropagation()}
+      onClick={(e: React.MouseEvent<HTMLAnchorElement>) => e.stopPropagation()}
     >
       <Tooltip title={data?.service}>
         <Chip

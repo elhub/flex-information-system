@@ -34,17 +34,21 @@ DECLARE
   party_id bigint;
 BEGIN
   IF party_business_id IS NULL THEN
-      INSERT INTO flex.party (name, type, role, status, entity_id)
-      VALUES (party_name, party_type, 'flex_' || party_type, 'active', parent_entity_id)
+      INSERT INTO flex.party (name, type, role, entity_id)
+      VALUES (party_name, party_type, 'flex_' || party_type, parent_entity_id)
       RETURNING id INTO party_id;
   ELSE
-      INSERT INTO flex.party (name, type, role, status, business_id, business_id_type, entity_id)
+      INSERT INTO flex.party (name, type, role, business_id, business_id_type, entity_id)
       VALUES (
-          party_name, party_type, 'flex_' || party_type, 'active',
+          party_name, party_type, 'flex_' || party_type,
           party_business_id, party_business_id_type, parent_entity_id
       )
       RETURNING id INTO party_id;
   END IF;
+
+  UPDATE flex.party
+  SET status = 'active'
+  WHERE id = party_id;
 
   INSERT INTO flex.party_membership (
     entity_id,

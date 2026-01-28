@@ -1,2 +1,4 @@
 export * from "./DeleteButton";
-export * from "./NestedHistoryButton";
+export * from "./EventButton";
+export * from "./NestedResourceHistoryButton";
+export * from "./ResourceHistoryButton";

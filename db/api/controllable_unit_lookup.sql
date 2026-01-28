@@ -125,16 +125,18 @@ BEGIN
             entity_id,
             name,
             type,
-            role,
-            status
+            role
         ) VALUES (
             l_eu_entity_id,
             in_accounting_point_business_id || ' - EU',
             'end_user',
-            'flex_end_user',
-            'active'
+            'flex_end_user'
         )
         RETURNING id INTO l_eu_party_id;
+
+        UPDATE flex.party
+        SET status = 'active'
+        WHERE id = l_eu_party_id;
     ELSE
         SELECT p.id INTO l_eu_party_id
         FROM flex.party AS p
