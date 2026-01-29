@@ -12,6 +12,7 @@ import {
 } from "../components/EDS-ra/fields";
 import { zParty } from "../generated-client/zod.gen";
 import { getFields } from "../util";
+import { CreateButton } from "../components/EDS-ra";
 
 export const PartyList = () => {
   const partyFilters = [
@@ -38,6 +39,7 @@ export const PartyList = () => {
       sort={{ field: "id", order: "DESC" }}
       empty={false}
       filters={partyFilters}
+      actions={[<CreateButton key="create" />]}
     >
       <Datagrid>
         <TextField source={partyFields.id.source} />

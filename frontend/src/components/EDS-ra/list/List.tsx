@@ -5,7 +5,7 @@ import {
   ListBaseProps,
   useListContext,
 } from "ra-core";
-import { BodyText, FlexDiv, Pagination, Panel, VerticalSpace } from "../../ui";
+import { BodyText, FlexDiv, Pagination, Panel } from "../../ui";
 
 type ListProps = ListBaseProps & {
   filters?: ReactNode[];
@@ -20,32 +20,33 @@ export const List = ({
   actions,
   ...rest
 }: ListProps) => {
-  if (empty) {
-    return (
-      <ListBase {...rest}>
-        {actions && <ListActions actions={actions} />}
-        <VerticalSpace />
-        <Panel border>
-          <BodyText>No results</BodyText>
-        </Panel>
-      </ListBase>
-    );
-  }
-
   return (
     <ListBase {...rest}>
-      {actions && <ListActions actions={actions} />}
-      <Panel border>
-        {filters?.length ? (
-          <>
-            <ListFilters filters={filters} />
-            <VerticalSpace />
-          </>
-        ) : null}
-        {children}
-        <VerticalSpace />
-        <ListPagination />
-      </Panel>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "var(--eds-size-1)",
+        }}
+      >
+        {actions && <ListActions actions={actions} />}
+        <Panel
+          border
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "var(--eds-size-5)",
+          }}
+        >
+          {filters?.length ? (
+            <>
+              <ListFilters filters={filters} />
+            </>
+          ) : null}
+          {empty ? <BodyText>No results</BodyText> : children}
+          <ListPagination />
+        </Panel>
+      </div>
     </ListBase>
   );
 };
@@ -73,7 +74,7 @@ const ListActions = ({ actions }: ListActionsProps) => (
 const ListPagination = () => {
   const { page, perPage, setPage, total } = useListContext();
 
-  if (!total || total <= 1) {
+  if (!total) {
     return null;
   }
 
