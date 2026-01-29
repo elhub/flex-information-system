@@ -18,7 +18,9 @@ const SimpleShowLayout = ({ children }: SimpleShowLayoutProps) => {
   const resource = useResourceContext();
   const { permissions } = usePermissions<Permissions>();
 
-  const canEdit = permissions?.allow(resource as PermissionTarget, "update");
+  const canEdit = resource
+    ? permissions?.allow(resource as PermissionTarget, "update")
+    : false;
   const isHistory = resource?.endsWith("_history");
 
   return (
