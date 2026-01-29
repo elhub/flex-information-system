@@ -13,6 +13,8 @@ import {
 import { zParty } from "../generated-client/zod.gen";
 import { getFields } from "../util";
 import { CreateButton } from "../components/EDS-ra";
+import { usePermissions } from "ra-core";
+import { Permissions } from "../auth/permissions";
 
 export const PartyList = () => {
   const partyFilters = [
@@ -32,14 +34,15 @@ export const PartyList = () => {
   ];
 
   const partyFields = getFields(zParty.shape);
+  const { permissions } = usePermissions<Permissions>();
+  const canCreate = permissions?.allow("party", "create");
 
   return (
     <List
-      perPage={25}
       sort={{ field: "id", order: "DESC" }}
       empty={false}
       filters={partyFilters}
-      actions={[<CreateButton key="create" />]}
+      actions={canCreate ? [<CreateButton key="create" />] : []}
     >
       <Datagrid>
         <TextField source={partyFields.id.source} />
