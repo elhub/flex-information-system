@@ -43,7 +43,7 @@ export const LoginPage = () => {
             >
               <img
                 alt="EuroFlex logo"
-                src="/assets/icon.svg"
+                src="/static-assets/icon.svg"
                 style={{ width: 150 }}
               />
               <Avatar
