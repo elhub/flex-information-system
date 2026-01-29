@@ -7,8 +7,7 @@
 -- Individual views are defined in separate files for maintainability.
 DROP VIEW IF EXISTS notice_fresh CASCADE;
 -- noqa: disable=AM04
-CREATE VIEW notice_fresh
-WITH (security_invoker = false) AS (
+CREATE MATERIALIZED VIEW IF NOT EXISTS notice_fresh AS (
     -- Controllable Unit notices
     SELECT * FROM notice_cu_grid_node_id_missing
     UNION ALL
@@ -83,6 +82,7 @@ RETURNS void
 SECURITY DEFINER
 LANGUAGE plpgsql AS $$
 BEGIN
+    REFRESH MATERIALIZED VIEW flex.notice_fresh;
     PERFORM set_config('flex.current_identity', '0', false);
 
     MERGE INTO flex.notice AS np -- persistent notices
