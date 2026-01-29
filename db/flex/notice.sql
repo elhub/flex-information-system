@@ -1,77 +1,44 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:notice runAlways:true endDelimiter:;
--- DROP + CREATE instead of CREATE OR REPLACE: cf https://stackoverflow.com/a/65118443
--- This view combines all notice types from individual views.
--- Individual views are defined in separate files for maintainability.
+-- NB: the precondition in addition to IF EXISTS is necessary, because if
+-- notice already exists as a table, this line will make the DB complain
+-- changeset flex:notice-view-remove runAlways:true endDelimiter:;
+--preconditions onFail:MARK_RAN
+--precondition-sql-check expectedResult:1 SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'flex' AND table_name = 'notice' AND table_type = 'VIEW'
 DROP VIEW IF EXISTS notice CASCADE;
--- noqa: disable=AM04
-CREATE VIEW notice
-WITH (security_invoker = false) AS (
-    -- Controllable Unit notices
-    SELECT * FROM notice_cu_grid_node_id_missing
-    UNION ALL
-    SELECT * FROM notice_cu_grid_validation_status_pending
-    UNION ALL
-    SELECT * FROM notice_cu_grid_validation_status_incomplete_information
 
-    -- Controllable Unit Service Provider notices
-    UNION ALL
-    SELECT * FROM notice_cusp_valid_time_outside_contract
+-- changeset flex:notice-create runAlways:true endDelimiter:--
+CREATE TABLE IF NOT EXISTS notice (
+    id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    party_id bigint NOT NULL,
+    source_resource text NULL,
+    source_id bigint NULL,
+    type ltree NOT NULL,
+    data jsonb NULL,
+    status text NOT NULL,
+    deduplication_key text NOT NULL,
+    record_time_range tstzrange NOT NULL DEFAULT tstzrange(
+        localtimestamp, null, '[)'
+    ),
+    recorded_by bigint NOT NULL DEFAULT flex.current_identity(),
 
-    -- Controllable Unit Suspension notices
-    UNION ALL
-    SELECT * FROM notice_cus_not_active
-    UNION ALL
-    SELECT * FROM notice_cus_lingering
-
-    -- Service Provider Product Application notices
-    UNION ALL
-    SELECT * FROM notice_sppa_status_requested
-
-    -- Service Provider Product Suspension notices
-    UNION ALL
-    SELECT * FROM notice_spps_product_type_not_qualified
-    UNION ALL
-    SELECT * FROM notice_spps_lingering
-
-    -- Service Providing Group notices
-    UNION ALL
-    SELECT * FROM notice_spg_brp_multiple
-
-    -- Service Providing Group Membership notices
-    UNION ALL
-    SELECT * FROM notice_spgm_valid_time_outside_contract
-    UNION ALL
-    SELECT * FROM notice_spgm_bidding_zone_mismatch
-
-    -- Service Providing Group Product Application notices
-    UNION ALL
-    SELECT * FROM notice_spgpa_status_requested
-
-    -- Service Providing Group Grid Prequalification notices
-    UNION ALL
-    SELECT * FROM notice_spggp_status_requested
-
-    -- Service Providing Group Grid Suspension notices
-    UNION ALL
-    SELECT * FROM notice_spggs_not_grid_prequalified
-    UNION ALL
-    SELECT * FROM notice_spggs_lingering
-
-    -- Service Providing Group Product Suspension notices
-    UNION ALL
-    SELECT * FROM notice_spgps_product_type_not_qualified
-    UNION ALL
-    SELECT * FROM notice_spgps_lingering
-
-    -- Party notices
-    UNION ALL
-    SELECT * FROM notice_party_missing
-    UNION ALL
-    SELECT * FROM notice_party_outdated
-    UNION ALL
-    SELECT * FROM notice_party_residual
+    CONSTRAINT notice_party_fkey
+    FOREIGN KEY (party_id) REFERENCES party (id),
+    CONSTRAINT notice_type_check CHECK (
+        type ~ 'no.elhub.flex.*'
+    ),
+    CONSTRAINT notice_status_check CHECK (
+        status IN ('active', 'resolved')
+    )
 );
--- noqa: enable=AM04
+
+-- changeset flex:notice-index runAlways:true endDelimiter:--
+CREATE INDEX IF NOT EXISTS notice_index_party_id_status
+ON flex.notice (party_id, status);
+
+-- changeset flex:notice-capture-event runOnChange:true endDelimiter:--
+CREATE OR REPLACE TRIGGER notice_event
+AFTER INSERT OR UPDATE ON notice
+FOR EACH ROW
+EXECUTE FUNCTION capture_event();

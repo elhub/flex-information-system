@@ -31,7 +31,7 @@ WITH (security_invoker = false) AS (
 
     SELECT
         spgps.procuring_system_operator_id AS party_id,
-        'no.elhub.flex.service_providing_group_product_suspension.product_type.not_qualified' AS type, -- noqa
+        'no.elhub.flex.service_providing_group_product_suspension.product_type.not_qualified'::ltree AS type, -- noqa
         'service_providing_group_product_suspension' AS source_resource,
         spgps.id AS source_id,
         jsonb_build_object(
@@ -42,7 +42,8 @@ WITH (security_invoker = false) AS (
                     SELECT unnest(coalesce(qpts.product_type_ids, '{}'))
                 )
             )
-        ) AS data -- noqa
+        ) AS data, -- noqa
+        md5(spgps.id::text) AS deduplication_key -- noqa
     FROM flex.service_providing_group_product_suspension AS spgps
         LEFT JOIN qualified_product_types AS qpts
             ON
@@ -61,11 +62,12 @@ CREATE VIEW notice_spgps_lingering
 WITH (security_invoker = false) AS (
     SELECT
         spgps.procuring_system_operator_id AS party_id,
-        'no.elhub.flex.service_providing_group_product_suspension.lingering'
+        'no.elhub.flex.service_providing_group_product_suspension.lingering'::ltree
             AS type, -- noqa
         'service_providing_group_product_suspension' AS source_resource,
         spgps.id AS source_id,
-        null::jsonb AS data -- noqa
+        null::jsonb AS data, -- noqa
+        md5(spgps.id::text) AS deduplication_key -- noqa
     FROM flex.service_providing_group_product_suspension AS spgps
     WHERE
         lower(spgps.record_time_range)

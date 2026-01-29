@@ -9,10 +9,11 @@ CREATE VIEW notice_cus_not_active
 WITH (security_invoker = false) AS (
     SELECT
         cus.impacted_system_operator_id AS party_id,
-        'no.elhub.flex.controllable_unit_suspension.not_active' AS type, -- noqa
+        'no.elhub.flex.controllable_unit_suspension.not_active'::ltree AS type, -- noqa
         'controllable_unit_suspension' AS source_resource,
         cus.id AS source_id,
-        null::jsonb AS data -- noqa
+        null::jsonb AS data, -- noqa
+        md5(cus.id::text) AS deduplication_key -- noqa
     FROM flex.controllable_unit_suspension AS cus
     WHERE NOT EXISTS (
         SELECT 1
@@ -29,11 +30,12 @@ CREATE VIEW notice_cus_lingering
 WITH (security_invoker = false) AS (
     SELECT
         cus.impacted_system_operator_id AS party_id,
-        'no.elhub.flex.controllable_unit_suspension.lingering'
+        'no.elhub.flex.controllable_unit_suspension.lingering'::ltree
             AS type, -- noqa
         'controllable_unit_suspension' AS source_resource,
         cus.id AS source_id,
-        null::jsonb AS data -- noqa
+        null::jsonb AS data, -- noqa
+        md5(cus.id::text) AS deduplication_key -- noqa
     FROM flex.controllable_unit_suspension AS cus
     WHERE
         lower(cus.record_time_range)

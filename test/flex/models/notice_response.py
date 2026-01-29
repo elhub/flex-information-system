@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import TYPE_CHECKING, Any, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -26,14 +26,15 @@ class NoticeResponse:
         party_id (int): Reference to the party targeted by the notice. Example: 18.
         type_ (str): The type of the notice. Example:
             no.elhub.flex.service_providing_group_membership.valid_time.outside_contract.
-        source (str): The URI of the resource concerned by the event. Example: /service_providing_group_membership/4.
+        source (None | str | Unset): The URI of the resource concerned by the event. Example:
+            /service_providing_group_membership/4.
         data (NoticeDataPartyMissing | NoticeDataPartyOutdated | NoticeDataProductTypeNotQualified |
             NoticeDataValidTimeOutsideContract | Unset):
     """
 
     party_id: int
     type_: str
-    source: str
+    source: None | str | Unset = UNSET
     data: (
         NoticeDataPartyMissing
         | NoticeDataPartyOutdated
@@ -52,7 +53,11 @@ class NoticeResponse:
 
         type_ = self.type_
 
-        source = self.source
+        source: None | str | Unset
+        if isinstance(self.source, Unset):
+            source = UNSET
+        else:
+            source = self.source
 
         data: dict[str, Any] | Unset
         if isinstance(self.data, Unset):
@@ -72,9 +77,10 @@ class NoticeResponse:
             {
                 "party_id": party_id,
                 "type": type_,
-                "source": source,
             }
         )
+        if source is not UNSET:
+            field_dict["source"] = source
         if data is not UNSET:
             field_dict["data"] = data
 
@@ -92,7 +98,14 @@ class NoticeResponse:
 
         type_ = d.pop("type")
 
-        source = d.pop("source")
+        def _parse_source(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        source = _parse_source(d.pop("source", UNSET))
 
         def _parse_data(
             data: object,

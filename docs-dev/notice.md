@@ -22,7 +22,8 @@ prevent a process from making progress.
 Notices have several important characteristics:
 
 * Notices always concern _one specific resource_ where an action is required.
-  Therefore, they must contain a _reference_ to that resource.
+  When it is an existing resource in the system, they must contain a _reference_
+  to that resource.
 * Notices are of different _types_.
   This helps the user understand what is actually wrong with the resource and
   how to fix it.
@@ -130,13 +131,43 @@ enough not to _duplicate_ notices:
 1. _new_ ones must be _created_ as _active_
 2. _existing_ but not _detected_ must be updated as _resolved_
 3. _existing_ and _detected_ must be updated if their `data` has changed
-4. _resolved_ ones that are rediscovered must be _recreated_
+4. _resolved_ ones that are rediscovered must be _reactivated_
 
-We are implementing update mechanism as a single
+We are implementing update mechanism as a
 [MERGE](https://www.postgresql.org/docs/current/sql-merge.html) statement. This
 merge statement will compare the existing notices with the detected ones and
-deduplicate them based on a set of columns: `party_id`, `type`,
-`source_resource` and `source_id`. These columns can uniquely identify a notice.
+deduplicate them based on a set of columns: `party_id`, `type`, and a
+`deduplication_key` column whose computation depends on the type of notice.
+These columns can uniquely identify a notice and allow distinguishing between a
+different notice or the same notice that got updated.
+
+A good deduplication key should contain the _least amount of information_ that
+suffices to uniquely identify a notice, no matter its _state_ (changes to
+`status` do not change the nature of the notice) or _freshness_ (differences in
+`data` do not _always_ mean that it is a different notice).
+The construction of the key is very important because it prevents the system
+from creating two notices that are actually telling the same thing twice, but
+instead allows detecting _outdated_ or _resolved_ notices that should be
+_updated_ or _reactivated_.
+As notices with different `type` or `party_id` will never be compared to each
+other, the key must focus on the remaining information.
+Relevant data to include in the computation of the key can vary based on the
+type of the notice.
+For instance, a notice about a missing party in the system is easily identified
+with the GLN of the missing party, because two notices about the same GLN
+missing _always_ refer to the same party even though the rest of the data might
+be different.
+However, the name of the missing party is not interesting here.
+Indeed, two notices with the same missing GLN but different names just mean that
+one of them is a _more recent version_ of the other, not that they are
+_different_ notices.
+Note that most of the notice types can use the `source_id` as sufficient
+information for the deduplication key.
+
+For now, we are forced to use a second `UPDATE` statement after the `MERGE`,
+because the `MATCHED BY SOURCE` condition we would use to identify one of the
+cases is only available from [v17](https://www.postgresql.org/docs/17/sql-merge.html)
+of PostgreSQL.
 
 When the ignore feature is implemented, we will use the `data` column to check
 if a notice has changed, and possibly update from `ignored` to `active` if
