@@ -79,6 +79,7 @@ repos:
           - ts
           - tsx
           - go
+          - svg
   #
   ## YAML
   #

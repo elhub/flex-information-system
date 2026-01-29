@@ -1,0 +1,26 @@
+.topBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: var(--eds-semantic-background-action-primary);
+  height: var(--eds-size-12);
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  width: 100%;
+}
+
+.dropDownToggle {
+  color: var(--eds-color-white);
+
+  &:hover {
+    color: var(--eds-color-white);
+  }
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--eds-size-3);
+}
