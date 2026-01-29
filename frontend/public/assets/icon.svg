@@ -1,0 +1,17 @@
+<svg width="240" height="220" viewBox="0 0 240 220" xmlns="http://www.w3.org/2000/svg">
+  <!-- White circle surrounding the entire node system -->
+  <circle cx="120" cy="105" r="90" fill="#ffffff" stroke="#ffffff" stroke-width="4"/>
+
+  <!-- Lines -->
+  <line x1="120" y1="110" x2="70"  y2="55"  stroke="#1b1436" stroke-width="4"/>
+  <line x1="120" y1="110" x2="170" y2="90"  stroke="#1b1436" stroke-width="4"/>
+  <line x1="120" y1="110" x2="85"  y2="155" stroke="#1b1436" stroke-width="4"/>
+  <line x1="120" y1="110" x2="155" y2="155" stroke="#1b1436" stroke-width="4"/>
+
+  <!-- Filled circles (nodes) -->
+  <circle cx="120" cy="110" r="18" fill="rgba(14, 57, 36, 1)"/>
+  <circle cx="70"  cy="55"  r="16" fill="rgba(14, 57, 36, 1)"/>
+  <circle cx="170" cy="90"  r="14" fill="rgba(220,228,247,1)"/>
+  <circle cx="85"  cy="155" r="14" fill="#000000"/>
+  <circle cx="155" cy="155" r="14" fill="#000000"/>
+</svg>

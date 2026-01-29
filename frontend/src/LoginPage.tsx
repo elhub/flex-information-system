@@ -21,13 +21,13 @@ export const LoginPage = () => {
   return (
     <Form onSubmit={startLogin} noValidate>
       <Box
-        sx={(theme) => ({
+        sx={() => ({
           display: "flex",
           flexDirection: "column",
           minHeight: "100vh",
           alignItems: "center",
           justifyContent: "flex-start",
-          background: `linear-gradient(180deg, ${theme.palette.primary.main} 25%, ${theme.palette.common.white} 100%)`,
+          background: `linear-gradient(180deg, var(--eds-semantic-background-action-primary) 25%, #ffffff 100%)`,
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
         })}
@@ -43,7 +43,7 @@ export const LoginPage = () => {
             >
               <img
                 alt="EuroFlex logo"
-                src="/euroflex_logo.png"
+                src="/assets/icon.svg"
                 style={{ width: 150 }}
               />
               <Avatar
