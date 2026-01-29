@@ -29,6 +29,7 @@ export const FormToolbar = ({
         gap: "var(--eds-size-3)",
         marginTop: "var(--eds-size-3)",
         marginBottom: "var(--eds-size-3)",
+        flexDirection: "row",
       }}
     >
       <Button
@@ -39,7 +40,12 @@ export const FormToolbar = ({
       >
         {saveLabel}
       </Button>
-      <Button variant="secondary" size="large" onClick={handleCancel}>
+      <Button
+        variant="secondary"
+        type="button"
+        size="large"
+        onClick={handleCancel}
+      >
         {cancelLabel}
       </Button>
     </Container>
