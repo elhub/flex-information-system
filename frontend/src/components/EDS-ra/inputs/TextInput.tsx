@@ -33,6 +33,7 @@ export const TextInput = ({
       readOnly={readOnly}
       id={id}
       error={fieldState.error?.message}
+      {...rest}
     >
       <TextField
         id={id}

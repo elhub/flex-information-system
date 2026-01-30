@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useFormContext } from "react-hook-form";
 import { callControllableUnitLookup } from "../../generated-client";
 import { zControllableUnitLookupRequest } from "../../generated-client/zod.gen";
-import { unTypedZodResolver } from "../../util";
+import { getFields, unTypedZodResolver } from "../../util";
 import {
   FormContainer,
   Heading,
@@ -12,6 +12,7 @@ import {
   FlexDiv,
 } from "../../components/ui";
 import { TextInput, FormToolbar } from "../../components/EDS-ra/inputs";
+import { ControllableUnitInputLocationState } from "../ControllableUnitInput";
 
 const ControllableUnitLookupForm = () => {
   const { watch } = useFormContext();
@@ -23,25 +24,28 @@ const ControllableUnitLookupForm = () => {
   const controllableUnitDisabled =
     accountingPoint && accountingPoint.length > 0;
 
+  const keys = getFields(zControllableUnitLookupRequest.shape);
+
   return (
-    <FlexDiv style={{ gap: "var(--eds-size-3)", flexWrap: "wrap" }}>
+    <FlexDiv
+      style={{
+        flexDirection: "column",
+        gap: "var(--eds-size-3)",
+        flexWrap: "wrap",
+      }}
+    >
+      <TextInput overrideLabel="End user" tooltip={false} {...keys.end_user} />
       <TextInput
-        source="end_user"
-        required
-        overrideLabel="End user"
-        tooltip={false}
-      />
-      <TextInput
-        source="accounting_point"
         disabled={accountingPointDisabled}
         overrideLabel="Accounting point"
         tooltip={false}
+        {...keys.accounting_point}
       />
       <TextInput
-        source="controllable_unit"
         disabled={controllableUnitDisabled}
         overrideLabel="Controllable unit"
         tooltip={false}
+        {...keys.controllable_unit}
       />
     </FlexDiv>
   );
@@ -76,6 +80,20 @@ export const ControllableUnitLookupInput = () => {
       notify(response.error.message, { type: "error" });
       return;
     }
+
+    // if no controllable units are found, navigate to the create controllable unit page
+    if (response.data.controllable_units.length === 0) {
+      const state: ControllableUnitInputLocationState = {
+        controllableUnit: {
+          accounting_point_id: response.data.accounting_point.id,
+        },
+      };
+      navigate("/controllable_unit/create", {
+        state,
+      });
+      return;
+    }
+
     // navigate to the dedicated show page for the result
     return navigate("/controllable_unit/lookup/result", {
       state: { result: response.data },
@@ -104,7 +122,6 @@ export const ControllableUnitLookupInput = () => {
           and either the GSRN of the accounting point or the business ID of the
           controllable unit.
         </BodyText>
-        <VerticalSpace />
         <ControllableUnitLookupForm />
         <FormToolbar saveLabel="Lookup" />
       </FormContainer>
