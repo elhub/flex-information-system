@@ -1,45 +1,17 @@
-import {
-  required,
-  SimpleForm,
-  TextInput,
-  Toolbar as RAToolbar,
-  useNotify,
-} from "react-admin";
-import { Typography, Stack, Button, Box } from "@mui/material";
+import { Form, useNotify } from "ra-core";
 import { useNavigate, useLocation } from "react-router-dom";
-import TravelExploreIcon from "@mui/icons-material/TravelExplore";
-import UndoIcon from "@mui/icons-material/Undo";
 import { useFormContext } from "react-hook-form";
-import { InputStack } from "../../auth";
 import { callControllableUnitLookup } from "../../generated-client";
 import { zControllableUnitLookupRequest } from "../../generated-client/zod.gen";
 import { unTypedZodResolver } from "../../util";
-
-const Toolbar = () => {
-  const navigate = useNavigate();
-
-  return (
-    <RAToolbar>
-      <Button
-        color="primary"
-        variant="contained"
-        startIcon={<TravelExploreIcon />}
-        type="submit"
-      >
-        Lookup
-      </Button>
-      <Box width="1em" />
-      <Button
-        color="inherit"
-        variant="contained"
-        startIcon={<UndoIcon />}
-        onClick={() => navigate(-1)}
-      >
-        Cancel
-      </Button>
-    </RAToolbar>
-  );
-};
+import {
+  FormContainer,
+  Heading,
+  VerticalSpace,
+  BodyText,
+  FlexDiv,
+} from "../../components/ui";
+import { TextInput, FormToolbar } from "../../components/EDS-ra/inputs";
 
 const ControllableUnitLookupForm = () => {
   const { watch } = useFormContext();
@@ -52,23 +24,26 @@ const ControllableUnitLookupForm = () => {
     accountingPoint && accountingPoint.length > 0;
 
   return (
-    <InputStack direction="row" flexWrap="wrap">
+    <FlexDiv style={{ gap: "var(--eds-size-3)", flexWrap: "wrap" }}>
       <TextInput
         source="end_user"
-        label="text.lookup.input.end_user"
-        validate={required()}
+        required
+        overrideLabel="End user"
+        tooltip={false}
       />
       <TextInput
         source="accounting_point"
-        label="text.lookup.input.accounting_point"
         disabled={accountingPointDisabled}
+        overrideLabel="Accounting point"
+        tooltip={false}
       />
       <TextInput
         source="controllable_unit"
-        label="text.lookup.input.controllable_unit"
         disabled={controllableUnitDisabled}
+        overrideLabel="Controllable unit"
+        tooltip={false}
       />
-    </InputStack>
+    </FlexDiv>
   );
 };
 
@@ -108,31 +83,31 @@ export const ControllableUnitLookupInput = () => {
   };
 
   return (
-    <SimpleForm
-      maxWidth={1280}
-      onSubmit={lookup}
+    <Form
       defaultValues={{ controllable_unit: defaultControllableUnit }}
-      // React admin types does not handle required types in validation resolvers, but it works at runtime.
       resolver={unTypedZodResolver(zControllableUnitLookupRequest)}
-      toolbar={<Toolbar />}
+      onSubmit={lookup}
     >
-      <Stack direction="column" spacing={1}>
-        <Typography variant="h6" gutterBottom>
+      <FormContainer>
+        <Heading level={3} size="medium">
           Lookup a controllable unit
-        </Typography>
-        <p>
+        </Heading>
+        <VerticalSpace />
+        <BodyText>
           This operation allows you to get information about one or several
           controllable units registered in the Flexibility Information System,
           in order to, for instance, create controllable unit service provider
           resources.
-        </p>
-        <p>
+        </BodyText>
+        <BodyText>
           Input the business ID of the end user behind the controllable unit,
           and either the GSRN of the accounting point or the business ID of the
           controllable unit.
-        </p>
+        </BodyText>
+        <VerticalSpace />
         <ControllableUnitLookupForm />
-      </Stack>
-    </SimpleForm>
+        <FormToolbar saveLabel="Lookup" />
+      </FormContainer>
+    </Form>
   );
 };
