@@ -1,49 +1,40 @@
 import {
-  DateInput,
-  required,
-  SimpleForm,
-  TextInput,
+  Form,
+  useCreateController,
   useNotify,
   useRecordContext,
-} from "react-admin";
-import {
-  Typography,
-  Stack,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-} from "@mui/material";
-import {
-  AutocompleteReferenceInput,
-  InputStack,
-  useCreateOrUpdate,
-} from "../auth";
-import { Toolbar } from "../components/Toolbar";
-import { UnitInput } from "../components/unitComponents";
-import { DateTimeInput } from "../components/datetime";
+} from "ra-core";
+import { useNavigate } from "react-router-dom";
 import { ControllableUnit } from "../generated-client";
 import useLocationState from "../hooks/useLocationState";
 import {
   zControllableUnit,
   zControllableUnitCreateRequest,
 } from "../generated-client/zod.gen";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "react-router-dom";
+import { getFields, unTypedZodResolver } from "../util";
 import { ControllableUnitServiceProviderLocationState } from "./service_provider/ControllableUnitServiceProviderInput";
-import { EnumInput } from "../components/enum";
+import { useCreateOrUpdate } from "../auth";
+import { FormContainer, Heading, FlexDiv, Accordion } from "../components/ui";
+import {
+  TextInput,
+  EnumInput,
+  AutocompleteReferenceInput,
+  DateInput,
+  FormToolbar,
+} from "../components/EDS-ra/inputs";
+import { formatDateToMidnightISO } from "../components/datetime";
 
 export type ControllableUnitInputLocationState = {
   controllableUnit: Partial<ControllableUnit>;
   endUserId?: number;
 };
 
-// common layout to create and edit pages
 export const ControllableUnitInput = () => {
   const createOrUpdate = useCreateOrUpdate();
   const locationState = useLocationState<ControllableUnitInputLocationState>();
   const navigate = useNavigate();
   const notify = useNotify();
+  const { save } = useCreateController();
 
   const controllableUnitOverride: Partial<ControllableUnit> = zControllableUnit
     .partial()
@@ -51,11 +42,11 @@ export const ControllableUnitInput = () => {
 
   const record = useRecordContext<ControllableUnit>();
 
-  // This should probably be handled in the api, if we dont want them to be required.
   const defaultValues: Partial<ControllableUnit> = {
     regulation_direction: "up",
     maximum_available_capacity: 1,
     status: "new",
+    start_date: formatDateToMidnightISO(new Date().toISOString()) ?? undefined,
   };
 
   const overridenRecord = {
@@ -82,124 +73,87 @@ export const ControllableUnitInput = () => {
     );
   };
 
+  const handleSubmit = async (data: unknown) => {
+    if (save) {
+      await save(data as Partial<ControllableUnit>);
+    }
+    if (createOrUpdate === "create") {
+      onCreate(data);
+    }
+  };
+
+  const fields = getFields(zControllableUnitCreateRequest.shape);
+
   return (
-    <SimpleForm
+    <Form
       record={overridenRecord}
-      resolver={zodResolver(zControllableUnitCreateRequest) as any}
-      toolbar={
-        <Toolbar
-          onSuccess={createOrUpdate === "create" ? onCreate : undefined}
-        />
-      }
+      resolver={unTypedZodResolver(zControllableUnitCreateRequest)}
+      onSubmit={handleSubmit}
     >
-      <Typography variant="h5" gutterBottom>
-        {createOrUpdate == "update"
-          ? "Edit Controllable Unit"
-          : "Create Controllable Unit"}
-      </Typography>
-      <Stack direction="column" spacing={3}>
-        <InputStack direction="row" flexWrap="wrap">
-          <TextInput
-            source="name"
-            label="field.controllable_unit.name"
-            validate={required()}
-          />
+      <FormContainer>
+        <Heading level={3} size="medium">
+          {createOrUpdate == "update"
+            ? "Edit Controllable Unit"
+            : "Create Controllable Unit"}
+        </Heading>
+
+        <FlexDiv style={{ gap: "var(--eds-size-3)", flexDirection: "column" }}>
+          <TextInput {...fields.name} />
           <AutocompleteReferenceInput
-            source="accounting_point_id"
+            {...fields.accounting_point_id}
             reference="accounting_point"
-            label="field.controllable_unit.accounting_point_id"
-            fieldName="business_id"
           />
-          <DateInput
-            source="start_date"
-            label="field.controllable_unit.start_date"
-          />
+          <DateInput {...fields.start_date} />
           <EnumInput
-            source="status"
-            label="field.controllable_unit.status"
+            {...fields.status}
             enumKey="controllable_unit.status"
-            validate={createOrUpdate == "update" ? required() : undefined}
+            required={createOrUpdate == "update"}
           />
-        </InputStack>
+        </FlexDiv>
 
-        <Accordion>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography variant="h6">Technical Information</Typography>
-          </AccordionSummary>
+        <Accordion border>
+          <Accordion.Item>
+            <Accordion.Header>Technical Information</Accordion.Header>
+            <Accordion.Content>
+              <FlexDiv
+                style={{ gap: "var(--eds-size-3)", flexDirection: "column" }}
+              >
+                <TextInput
+                  {...fields.maximum_available_capacity}
+                  type="number"
+                />
+                <EnumInput
+                  {...fields.regulation_direction}
+                  enumKey="controllable_unit.regulation_direction"
+                />
+                <TextInput {...fields.minimum_duration} type="number" />
+                <TextInput {...fields.maximum_duration} type="number" />
+                <TextInput {...fields.recovery_duration} type="number" />
+                <TextInput {...fields.ramp_rate} type="number" />
+              </FlexDiv>
+            </Accordion.Content>
+          </Accordion.Item>
 
-          <AccordionDetails>
-            <InputStack direction="row" flexWrap="wrap">
-              <UnitInput
-                source="maximum_available_capacity"
-                label="field.controllable_unit.maximum_available_capacity"
-                unit="kW"
-                min={0}
-                validate={required()}
-              />
-              <EnumInput
-                enumKey="controllable_unit.regulation_direction"
-                source="regulation_direction"
-                label="field.controllable_unit.regulation_direction"
-                defaultValue="up"
-                validate={required()}
-              />
-              <UnitInput
-                source="minimum_duration"
-                label="field.controllable_unit.minimum_duration"
-                unit="s"
-              />
-              <UnitInput
-                source="maximum_duration"
-                label="field.controllable_unit.maximum_duration"
-                unit="s"
-              />
-              <UnitInput
-                source="recovery_duration"
-                label="field.controllable_unit.recovery_duration"
-                unit="s"
-              />
-              <UnitInput
-                source="ramp_rate"
-                label="field.controllable_unit.ramp_rate"
-                unit="kW/min"
-                min={0.001}
-              />
-            </InputStack>
-          </AccordionDetails>
+          <Accordion.Item>
+            <Accordion.Header>Grid Validation</Accordion.Header>
+            <Accordion.Content>
+              <FlexDiv
+                style={{ gap: "var(--eds-size-3)", flexDirection: "column" }}
+              >
+                <TextInput {...fields.grid_node_id} />
+                <EnumInput
+                  {...fields.grid_validation_status}
+                  enumKey="controllable_unit.grid_validation_status"
+                />
+                <TextInput {...fields.grid_validation_notes} />
+                <DateInput {...fields.validated_at} />
+              </FlexDiv>
+            </Accordion.Content>
+          </Accordion.Item>
         </Accordion>
 
-        <Accordion>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography variant="h6">Grid Validation</Typography>
-          </AccordionSummary>
-
-          <AccordionDetails>
-            <InputStack direction="row" flexWrap="wrap">
-              <TextInput
-                source="grid_node_id"
-                label="field.controllable_unit.grid_node_id"
-              />
-              <EnumInput
-                source="grid_validation_status"
-                label="field.controllable_unit.grid_validation_status"
-                enumKey="controllable_unit.grid_validation_status"
-                validate={required()}
-              />
-              <TextInput
-                source="grid_validation_notes"
-                label="field.controllable_unit.grid_validation_notes"
-                multiline={true}
-                minRows={3}
-                sx={{ minWidth: { xs: 300, md: 500 } }}
-              />
-              <DateTimeInput
-                source="validated_at"
-                label="field.controllable_unit.validated_at"
-              />
-            </InputStack>
-          </AccordionDetails>
-        </Accordion>
-      </Stack>
-    </SimpleForm>
+        <FormToolbar />
+      </FormContainer>
+    </Form>
   );
 };

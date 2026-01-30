@@ -1,4 +1,5 @@
 import {
+  Accordion,
   BodyText,
   Button,
   Card,
@@ -12,6 +13,7 @@ import {
   Combobox,
   Content,
   Container,
+  Datepicker,
   FlexDiv,
   Header,
   FormItem,
@@ -35,6 +37,7 @@ import {
 import FormContainer from "./formContainer";
 
 export {
+  Accordion,
   BodyText,
   Button,
   Card,
@@ -48,6 +51,7 @@ export {
   Combobox,
   Content,
   Container,
+  Datepicker,
   Dropdown,
   FlexDiv,
   Header,
