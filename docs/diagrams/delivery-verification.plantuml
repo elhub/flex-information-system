@@ -9,14 +9,38 @@ skinparam note {
     BackgroundColor #FFFFBD
 }
 
-participant "Time series database" as TSDB
+participant "Time series\nservice design" as TS
 actor "Service Provider (SP)" as SP
+participant "Market platform" as MP
 participant "Flexibility\nInformation System (FIS)" as FIS
 actor "System Operator (SO)" as SO 
+participant "Elhub" as EL
+
+== Bid activation ==
+
+activate SP
+SP -> MP: Send bid
+SP -> MP: Send baseline
+SO -> MP: Activate bid
+
+note left
+    SP activates the SPG
+    after the bid is activated
+end note
+
+SP -> TS: Measured values
+deactivate SP
+
+activate SO
+SO -> EL: Metering values from smart meters
+
+note right
+    Elhub receives the metering values
+    from the system operator at D+1
+end note
 
 == Delivery verification ==
 
-activate SO
 SO -> FIS: Get CU/SPG ID
 FIS --> SO: CU/SPG ID
 
@@ -25,10 +49,14 @@ note right
     in order to collect the right metering values.
 end note
 
-SO -> TSDB: Get metering values and baseline
-TSDB --> SO: Metering values and baseline
+SO -> MP: Get baseline
+MP --> SO: Baseline
+SO -> TS: Get measured values
+TS --> SO: Measured values
+SO -> EL: Get metering values from smart meters
+EL --> SO: Metering values
 
-note right
+note left
     PSO uses the collected time series and the
     activated bid to do the delivery verification
     analysis.
