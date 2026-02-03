@@ -50,12 +50,10 @@ note right
     in order to collect the right metering values.
 end note
 
-SO -> TS: Get measured values and baseline
-TS --> SO: Measured values and baseline
-SO -> EL: Get metering values from smart meters
-EL --> SO: Metering values
+SO -> TS: Get measured values, metered values and baseline
+TS --> SO: Measured values, metered values and baseline
 
-note left
+note right
     PSO uses the collected time series and the
     activated bid to do the delivery verification
     analysis.
