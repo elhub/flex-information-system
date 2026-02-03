@@ -9,7 +9,7 @@ skinparam note {
     BackgroundColor #FFFFBD
 }
 
-participant "Time series\nservice design" as TS
+participant "Time series\nservice" as TS
 actor "Service Provider (SP)" as SP
 participant "Market platform" as MP
 participant "Flexibility\nInformation System (FIS)" as FIS
@@ -21,6 +21,8 @@ participant "Elhub" as EL
 activate SP
 SP -> MP: Send bid
 SP -> MP: Send baseline
+
+Activate SO
 SO -> MP: Activate bid
 
 note left
@@ -31,7 +33,6 @@ end note
 SP -> TS: Measured values
 deactivate SP
 
-activate SO
 SO -> EL: Metering values from smart meters
 
 note right
@@ -49,10 +50,8 @@ note right
     in order to collect the right metering values.
 end note
 
-SO -> MP: Get baseline
-MP --> SO: Baseline
-SO -> TS: Get measured values
-TS --> SO: Measured values
+SO -> TS: Get measured values and baseline
+TS --> SO: Measured values and baseline
 SO -> EL: Get metering values from smart meters
 EL --> SO: Metering values
 
