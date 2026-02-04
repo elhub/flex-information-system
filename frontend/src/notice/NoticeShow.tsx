@@ -1,45 +1,35 @@
-import { SimpleShowLayout, TextField, Show, ReferenceField } from "react-admin";
-import { Stack, Typography } from "@mui/material";
-import { FieldStack } from "../auth";
-import { DateField } from "../components/datetime";
-import { EnumField } from "../components/enum";
+import {
+  DateField,
+  EnumField,
+  ReferenceField,
+  Show,
+  TextField,
+} from "../components/EDS-ra";
+import { Content, Heading, VerticalSpace } from "../components/ui";
 import { NoticeShowDetails } from "./NoticeShowDetails";
 
 export const NoticeShow = () => (
   <Show>
-    <SimpleShowLayout>
-      <Stack direction="column" spacing={2}>
-        <Typography variant="h6" gutterBottom>
-          Basic information
-        </Typography>
-        <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-          <TextField source="id" label="field.notice.id" />
-          <ReferenceField
-            source="party_id"
-            reference="party"
-            sortable={false}
-            label="field.notice.party_id"
-          >
-            <TextField source="name" />
-          </ReferenceField>
-          <TextField source="type" label="field.notice.type" />
-          <TextField source="source" label="field.notice.source" />
-          <EnumField
-            source="status"
-            enumKey="notice.status"
-            label="field.notice.status"
-          />
-          <DateField
-            source="recorded_at"
-            showTime
-            label="field.notice.recorded_at"
-          />
-        </FieldStack>
-        <Typography variant="h6" gutterBottom>
-          Details
-        </Typography>
-        <NoticeShowDetails />
-      </Stack>
-    </SimpleShowLayout>
+    <Heading level={2} size="small" spacing>
+      Basic information
+    </Heading>
+    <Content>
+      <TextField source="id" label />
+      <ReferenceField source="party_id" reference="party" label>
+        <TextField source="name" />
+      </ReferenceField>
+      <TextField source="type" label />
+      <TextField source="source" label />
+      <EnumField source="status" enumKey="notice.status" label />
+      <DateField source="recorded_at" showTime label />
+    </Content>
+
+    <VerticalSpace />
+    <Heading level={2} size="small" spacing>
+      Details
+    </Heading>
+    <Content>
+      <NoticeShowDetails />
+    </Content>
   </Show>
 );

@@ -1,4 +1,8 @@
 export { ArrayInput, type ArrayInputOption } from "./ArrayInput";
+export {
+  AutocompleteInput,
+  type AutocompleteInputChoice,
+} from "./AutocompleteInput";
 export { AutocompleteReferenceInput } from "./AutocompleteReferenceInput";
 export { BaseInput, type BaseInputProps } from "./BaseInput";
 export { EnumArrayInput } from "./EnumArrayInput";
