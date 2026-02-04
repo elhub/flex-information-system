@@ -1,10 +1,4 @@
-import {
-  Form,
-  useCreateController,
-  useNotify,
-  useRecordContext,
-} from "ra-core";
-import { useNavigate } from "react-router-dom";
+import { Form, useRecordContext } from "ra-core";
 import { ControllableUnit } from "../generated-client";
 import useLocationState from "../hooks/useLocationState";
 import {
@@ -12,7 +6,6 @@ import {
   zControllableUnitCreateRequest,
 } from "../generated-client/zod.gen";
 import { getFields, unTypedZodResolver } from "../util";
-import { ControllableUnitServiceProviderLocationState } from "./service_provider/ControllableUnitServiceProviderInput";
 import { useCreateOrUpdate } from "../auth";
 import { FormContainer, Heading, FlexDiv, Accordion } from "../components/ui";
 import {
@@ -32,9 +25,6 @@ export type ControllableUnitInputLocationState = {
 export const ControllableUnitInput = () => {
   const createOrUpdate = useCreateOrUpdate();
   const locationState = useLocationState<ControllableUnitInputLocationState>();
-  const navigate = useNavigate();
-  const notify = useNotify();
-  const { save } = useCreateController();
 
   const controllableUnitOverride: Partial<ControllableUnit> = zControllableUnit
     .partial()
@@ -55,40 +45,12 @@ export const ControllableUnitInput = () => {
     ...controllableUnitOverride,
   } as ControllableUnit;
 
-  const onCreate = (data: unknown) => {
-    const controllableUnit = zControllableUnit.partial().parse(data ?? {});
-    const cuspState: ControllableUnitServiceProviderLocationState = {
-      cusp: {
-        controllable_unit_id: controllableUnit.id,
-        end_user_id: locationState?.endUserId,
-        valid_from: controllableUnit.start_date,
-      },
-    };
-
-    notify("Controllable Unit created successfully", { type: "success" });
-
-    navigate(
-      `/controllable_unit/${controllableUnit.id}/service_provider/create`,
-      { state: cuspState, replace: true },
-    );
-  };
-
-  const handleSubmit = async (data: unknown) => {
-    if (save) {
-      await save(data as Partial<ControllableUnit>);
-    }
-    if (createOrUpdate === "create") {
-      onCreate(data);
-    }
-  };
-
   const fields = getFields(zControllableUnitCreateRequest.shape);
 
   return (
     <Form
       record={overridenRecord}
       resolver={unTypedZodResolver(zControllableUnitCreateRequest)}
-      onSubmit={handleSubmit}
     >
       <FormContainer>
         <Heading level={3} size="medium">
