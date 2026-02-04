@@ -216,9 +216,9 @@ consider are
 - **Timeline** – e.g. future or historic data
 - **Audit** – essentially bi-temporal data
 
-## Measured and metering values
+## Metering values
 
-Measured and metering values are the recorded data of energy production and
+Metering values are the recorded data of energy production and
 consumption. These values are needed for creating baselines, calculating
 activated volume, verification and quantification. The needed time-resolution of
 the measured and metering values depends on their intended use.
@@ -230,22 +230,24 @@ flexibility provided by the CU, metering values must therefore be obtained
 directly from the CU itself using a sub meter og a dedicated meter.
 In such cases, the service provider collects the metering values.
 
-Metering values collected by smart meters are stored in Elhub. Metering values
-collected by sub meters or dedicated meters are not stored in Elhub and need to
-be collected and managed by the service provider.
+Most metering values collected by smart meters are stored in Elhub ar D+1 07:00.
+Current legislation requires that all residential custommers have metering values
+at 60-minute resolution, while commercial custommers have metering values at
+15-minute resolution Metering values collected by sub meters or dedicated meters
+are _not_ stored in Elhub and must be collected and managed by the service provider.
 
 The procuring system operator (PSO) needs the metering values that make up a
 SPG in order to do both quantification and verification. These metering values
-must be stored in a sentralized time series database. The database will contain
-IDs for the time series that can be linked to the CU and SPG IDs in the flexibility
-information system. For quantification and verification purposes, baselines should
-also be stored in the time series database. The service provider is responsible
-for sending the metering values of its CUs/SPGs to the time series
-database.
+must be made available through a time series service. The time series need to have
+IDs that can be linked to the CU and SPG IDs in the flexibility information system.
+For quantification and verification purposes, baselines should also be made available
+though a time series service.
+
+**Noe om hvem som har ansvar for hva?**
 
 The flow of the metering values is:
 
-Tegning av Kilde -> SP -> TSDB -> SO hvor SP og SO --(ID)--> FIS
+Tegning av Kilde -> SP -> TSs -> SO hvor SP og SO --(ID og auth)--> FIS
 
 ## Baselines
 
@@ -335,7 +337,7 @@ The baseline is set to zero. Could be useful e.g. for fossil fuel generators or
 batteries. It can only be used if the asset is in contracted to not consume and/or
 produce energy for the periods it is part of a reservation contract.
 
-## FLow of time series before and after activation
+## Flow of time series before and after activation
 
 Illustration explaining the timeline from bid to verification (along with which
 parties are involved and which source)
@@ -430,6 +432,31 @@ Allocation can be done with:
     - assigned by SP per bid/activation - this required [activation data](#activation-data)
     - assigned by doing an approximate quantification on the lower level
 
+### Example of quantification
+
+In order to calculate the delivered volume, a system operator can do a
+quantification analysis using metering values, baseline and bid volume.
+
+First, the delivered volume can be calculated by subtracting
+the metering values from the baseline. Then the delivered volume is divided
+by the bid volume, giving a percentage of the delivery.
+
+$$
+\text{Delivered volume} = \text{baseline} - \text{metering values}
+$$
+
+$$
+\text{Delivery} = \frac{\text{delivered volume}}{\text{bid volume}} = x\%
+$$
+
+The percentage required for settlement depends on the product-specific requirements.
+
+This delivery calculation method can also be used for verification purposes, where
+checking the delivered volume serves as a quality assurance measure to confirm that
+the SPG delivered the agreed upon volume.
+
+GRAPH TO ILLUSTRATE ANALYSIS
+
 ### Verification
 
 Verification is a quality assurance activity done by the system operator to
@@ -475,32 +502,6 @@ The verification might include
 It is at the system operator's discretion to decide how and when to verify the
 service delivery, as long as it does not put an additional/undue burden on the
 service provider.
-
-### Example of verification
-
-In order to verify that a bid volume var delivered, a system operator can do
-a delivery verification using measured values, baseline and bid volume.
-
-First, the delivered volume can be calculated by subtracting
-the measured values from the baseline. Then the delivered volume is divided
-by the bid volume, giving a percentage of the delivery.
-
-$$
-\text{Delivered volume} = \text{baseline} - \text{measured values}
-$$
-
-$$
-\text{Delivery} = \frac{\text{delivered volume}}{\text{bid volume}} = x\%
-$$
-
-The percentage required for approving the delivery will depend on the
-product-specific requirements.
-
-This method of calculating the delivery can also be used for quantification
-where the result determines the settlement. (alt. opposite, make this an example
-of quantification that can also be used for verification)
-
-GRAPH TO ILLUSTRATE ANALYSIS
 
 ## Activation data
 
