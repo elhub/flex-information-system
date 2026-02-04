@@ -1,7 +1,8 @@
 import { Datepicker } from "../../ui";
 import { useInput } from "ra-core";
 import { BaseInput, BaseInputProps } from "./BaseInput";
-import { formatDateToMidnightISO } from "../../datetime";
+import { formatISO, parseISO } from "date-fns";
+import { tz } from "@date-fns/tz";
 
 type DateTimeInputProps = BaseInputProps;
 
@@ -15,9 +16,6 @@ export const DateInput = ({
 }: DateTimeInputProps) => {
   const { id, field, fieldState } = useInput({ source, ...rest });
 
-  const formatDate = (date: Date) =>
-    formatDateToMidnightISO(date.toISOString());
-
   return (
     <BaseInput
       source={source}
@@ -30,10 +28,20 @@ export const DateInput = ({
     >
       <Datepicker
         id={id}
-        selected={field.value ? new Date(field.value) : null}
-        onSelect={(date) => field.onChange(date ? formatDate(date) : null)}
+        selected={
+          field.value
+            ? parseISO(field.value, { in: tz("Europe/Oslo") })
+            : undefined
+        }
+        onChange={(date) =>
+          field.onChange(
+            date ? formatISO(date, { in: tz("Europe/Oslo") }) : null,
+          )
+        }
         onBlur={field.onBlur}
+        size="large"
         disabled={disabled}
+        navigateButtons={false}
       />
     </BaseInput>
   );

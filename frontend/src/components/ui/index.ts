@@ -13,7 +13,6 @@ import {
   Combobox,
   Content,
   Container,
-  Datepicker,
   FlexDiv,
   Header,
   FormItem,
@@ -35,6 +34,7 @@ import {
   VerticalSpace,
 } from "@elhub/ds-components";
 import FormContainer from "./formContainer";
+import { Datepicker } from "./datepicker/Datepicker";
 
 export {
   Accordion,
