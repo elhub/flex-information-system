@@ -23,15 +23,15 @@ The time series needed for the verificaion are:
 * Baseline
 * Bid volume
 
-The metering values and baseline are available through the time series service
-design. There is an [integration](../technical/time-series-design.md#integration)
+The metering values and baseline are available through the time series service.
+There is an [integration](../technical/time-series-design.md#integration)
 between the time series service and FIS, where FIS references the time series by
 ID and holds authorization information.
 
 SP continuously sends _metering values_ of its CUs to the time series service.
-The CUs are then aggregated BY SOMEONE (må oppdateres) to the SPG level. The IDs
-of the time series can be matched with the IDs of the CUs and SPGs registered in
-the FIS.
+The CUs are then aggregated BY **SOMEONE (må oppdateres)** to the SPG level. The
+IDs of the time series can be matched with the IDs of the CUs and SPGs registered
+in the FIS.
 
 The metering values from the smart meter connected to the accountig point are sent
 continuously to Elhub by the SO. These values are available at D+1 07:00 and are
