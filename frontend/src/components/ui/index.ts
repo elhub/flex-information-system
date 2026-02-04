@@ -29,6 +29,7 @@ import {
   SelectItem,
   Table,
   Tag,
+  Textarea,
   TextField,
   Tooltip,
   VerticalSpace,
@@ -72,4 +73,5 @@ export {
   Tooltip,
   VerticalSpace,
   FormContainer,
+  Textarea,
 };

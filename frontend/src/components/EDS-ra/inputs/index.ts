@@ -7,4 +7,5 @@ export { EnumInput } from "./EnumInput";
 export { FormToolbar } from "./FormToolbar";
 export { PartyReferenceInput } from "./PartyReferenceInput";
 export { ReferenceComboboxInput } from "./ReferenceComboboxInput";
+export { TextAreaInput } from "./TextAreaInput";
 export { TextInput } from "./TextInput";
