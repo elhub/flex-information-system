@@ -13,13 +13,17 @@ from ...types import UNSET, Response, Unset
 
 def _get_kwargs(
     *,
+    id: str | Unset = UNSET,
     party_id: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
+
+    params["id"] = id
 
     params["party_id"] = party_id
 
@@ -136,6 +140,7 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
+    id: str | Unset = UNSET,
     party_id: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
@@ -145,6 +150,7 @@ def sync_detailed(
     """List Notice
 
     Args:
+        id (str | Unset):
         party_id (str | Unset):
         select (str | Unset):
         order (str | Unset):
@@ -160,6 +166,7 @@ def sync_detailed(
     """
 
     kwargs = _get_kwargs(
+        id=id,
         party_id=party_id,
         select=select,
         order=order,
@@ -177,6 +184,7 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
+    id: str | Unset = UNSET,
     party_id: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
@@ -186,6 +194,7 @@ def sync(
     """List Notice
 
     Args:
+        id (str | Unset):
         party_id (str | Unset):
         select (str | Unset):
         order (str | Unset):
@@ -202,6 +211,7 @@ def sync(
 
     return sync_detailed(
         client=client,
+        id=id,
         party_id=party_id,
         select=select,
         order=order,
@@ -213,6 +223,7 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
+    id: str | Unset = UNSET,
     party_id: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
@@ -222,6 +233,7 @@ async def asyncio_detailed(
     """List Notice
 
     Args:
+        id (str | Unset):
         party_id (str | Unset):
         select (str | Unset):
         order (str | Unset):
@@ -237,6 +249,7 @@ async def asyncio_detailed(
     """
 
     kwargs = _get_kwargs(
+        id=id,
         party_id=party_id,
         select=select,
         order=order,
@@ -252,6 +265,7 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
+    id: str | Unset = UNSET,
     party_id: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
@@ -261,6 +275,7 @@ async def asyncio(
     """List Notice
 
     Args:
+        id (str | Unset):
         party_id (str | Unset):
         select (str | Unset):
         order (str | Unset):
@@ -278,6 +293,7 @@ async def asyncio(
     return (
         await asyncio_detailed(
             client=client,
+            id=id,
             party_id=party_id,
             select=select,
             order=order,

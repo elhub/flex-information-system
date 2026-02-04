@@ -584,8 +584,12 @@ CREATE TABLE api.service_providing_group_product_suspension_comment_history (
     replaced_at timestamp with time zone NULL
 );
 CREATE TABLE api.notice (
+    id bigint NOT NULL,
+    status text NOT NULL,
     party_id bigint NOT NULL,
     type text NOT NULL,
     source text NULL,
-    data jsonb NULL
+    data jsonb NULL,
+    recorded_by bigint NOT NULL,
+    recorded_at timestamp with time zone NOT NULL
 );

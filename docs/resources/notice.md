@@ -40,12 +40,16 @@ from the responsible party.
 
 ## Fields
 
-| Name                                                         | Description                                     | Format                                                          | Reference                     |
-|--------------------------------------------------------------|-------------------------------------------------|-----------------------------------------------------------------|-------------------------------|
-| <a name="field-party_id" href="#field-party_id">party_id</a> | Reference to the party targeted by the notice.  | bigint<br/>Read only                                            | [party.id](party.md#field-id) |
-| <a name="field-type" href="#field-type">type</a>             | The type of the notice.                         | text<br/>Pattern: `^no.elhub.flex.`<br/>Read only               |                               |
-| <a name="field-source" href="#field-source">source</a>       | The URI of the resource concerned by the event. | text<br/>Pattern: `^(\/([a-z][a-z_]*\|[0-9]+))+$`<br/>Read only |                               |
-| <a name="field-data" href="#field-data">data</a>             | The data of the notice.                         | <br/>Read only                                                  |                               |
+| Name                                                                  | Description                                                        | Format                                                          | Reference                     |
+|-----------------------------------------------------------------------|--------------------------------------------------------------------|-----------------------------------------------------------------|-------------------------------|
+| <a name="field-id" href="#field-id">id</a>                            | Unique surrogate identifier.                                       | bigint<br/>Read only                                            |                               |
+| <a name="field-status" href="#field-status">status</a>                | The status of the notice.                                          | text<br/>One of: `active`, `resolved`<br/>Default: `active`     |                               |
+| <a name="field-party_id" href="#field-party_id">party_id</a>          | Reference to the party targeted by the notice.                     | bigint<br/>Read only                                            | [party.id](party.md#field-id) |
+| <a name="field-type" href="#field-type">type</a>                      | The type of the notice.                                            | text<br/>Pattern: `^no.elhub.flex.`<br/>Read only               |                               |
+| <a name="field-source" href="#field-source">source</a>                | The URI of the resource concerned by the event.                    | text<br/>Pattern: `^(\/([a-z][a-z_]*\|[0-9]+))+$`<br/>Read only |                               |
+| <a name="field-data" href="#field-data">data</a>                      | The data of the notice.                                            | <br/>Read only                                                  |                               |
+| <a name="field-recorded_at" href="#field-recorded_at">recorded_at</a> | When the resource was recorded (created or updated) in the system. | timestamp with time zone<br/>Read only                          |                               |
+| <a name="field-recorded_by" href="#field-recorded_by">recorded_by</a> | The identity that recorded the resource.                           | bigint<br/>Read only                                            |                               |
 
 ## Validation Rules
 
@@ -116,9 +120,13 @@ No policies.
 For party type abbreviations, check
 [the authentication docs](../technical/auth/authn-model.md#party-market-actors).
 
-| FIELD    | ANON | BRP | ES | EU | FISO | SO | SP | TP | ORG |
-|----------|------|-----|----|----|------|----|----|----|-----|
-| party_id |      | R   | R  | R  | R    | R  | R  | R  |     |
-| type     |      | R   | R  | R  | R    | R  | R  | R  |     |
-| source   |      | R   | R  | R  | R    | R  | R  | R  |     |
-| data     |      | R   | R  | R  | R    | R  | R  | R  |     |
+| FIELD       | ANON | BRP | ES | EU | FISO | SO | SP | TP | ORG |
+|-------------|------|-----|----|----|------|----|----|----|-----|
+| id          |      | R   | R  | R  | R    | R  | R  | R  |     |
+| party_id    |      | R   | R  | R  | R    | R  | R  | R  |     |
+| type        |      | R   | R  | R  | R    | R  | R  | R  |     |
+| source      |      | R   | R  | R  | R    | R  | R  | R  |     |
+| data        |      | R   | R  | R  | R    | R  | R  | R  |     |
+| status      |      | R   | R  | R  | R    | R  | R  | R  |     |
+| recorded_by |      | R   | R  | R  | R    | R  | R  | R  |     |
+| recorded_at |      | R   | R  | R  | R    | R  | R  | R  |     |

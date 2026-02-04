@@ -64,6 +64,7 @@ from .notice_data_party_outdated import NoticeDataPartyOutdated
 from .notice_data_product_type_not_qualified import NoticeDataProductTypeNotQualified
 from .notice_data_valid_time_outside_contract import NoticeDataValidTimeOutsideContract
 from .notice_response import NoticeResponse
+from .notice_status import NoticeStatus
 from .notification_response import NotificationResponse
 from .notification_update_request import NotificationUpdateRequest
 from .party_business_id_type import PartyBusinessIdType
@@ -273,6 +274,7 @@ __all__ = (
     "NoticeDataProductTypeNotQualified",
     "NoticeDataValidTimeOutsideContract",
     "NoticeResponse",
+    "NoticeStatus",
     "NotificationResponse",
     "NotificationUpdateRequest",
     "PartyBusinessIdType",

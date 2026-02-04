@@ -3039,8 +3039,42 @@ resources:
       nn: Melding
     operations:
       - list
+      - read
     generate_views: false
+    audit: true
     properties:
+      id:
+        description: Unique surrogate identifier.
+        format: bigint
+        type: integer
+        readOnly: true
+        x-filter: true
+        example: 254
+        x-intl:
+          en: ID
+          nb: ID
+          nn: ID
+      status:
+        description: The status of the notice.
+        format: text
+        type: string
+        default: active
+        enum:
+          - id: active
+            x-intl:
+              en: Active
+              nb: Aktiv
+              nn: Aktiv
+          - id: resolved
+            x-intl:
+              en: Resolved
+              nb: Løst
+              nn: Løyst
+        example: active
+        x-intl:
+          en: Status
+          nb: Status
+          nn: Status
       party_id:
         description: Reference to the party targeted by the notice.
         format: bigint

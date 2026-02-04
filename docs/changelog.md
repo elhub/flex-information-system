@@ -3,6 +3,11 @@
 This changelog tracks all changes that are visible in our API.
 
 <!-- markdownlint-disable MD013 -->
+## 04.02.2026
+
+* **Added the `id`, `status` and audit fields to the _Notice_ resource.**  
+  This resource is now persistent.
+
 ## 19.01.2026
 
 * **Removed price area, system operator, and valid time information from the**

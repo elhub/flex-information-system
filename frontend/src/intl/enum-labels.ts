@@ -30,6 +30,8 @@ export type EnumLabel =
   | "entity.type.organisation"
   | "entity.type.person"
   | "metering_grid_area.business_id_type.eic_y"
+  | "notice.status.active"
+  | "notice.status.resolved"
   | "party.business_id_type.eic_x"
   | "party.business_id_type.gln"
   | "party.business_id_type.org"
@@ -220,6 +222,8 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_providing_group_product_suspension.reason.failed_verification":
       "Failed verification",
     "service_providing_group_product_suspension.reason.other": "Other",
+    "notice.status.active": "Active",
+    "notice.status.resolved": "Resolved",
   },
   nb: {
     "comment.visibility.same_party": "Samme aktør",
@@ -345,6 +349,8 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_providing_group_product_suspension.reason.failed_verification":
       "Feilet verifisering",
     "service_providing_group_product_suspension.reason.other": "Annet",
+    "notice.status.active": "Aktiv",
+    "notice.status.resolved": "Løst",
   },
   nn: {
     "comment.visibility.same_party": "Same aktør",
@@ -469,5 +475,7 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_providing_group_product_suspension.reason.failed_verification":
       "Feila verifisering",
     "service_providing_group_product_suspension.reason.other": "Anna",
+    "notice.status.active": "Aktiv",
+    "notice.status.resolved": "Løyst",
   },
 };
