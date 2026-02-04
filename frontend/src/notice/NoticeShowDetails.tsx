@@ -323,8 +323,6 @@ const NoticeSPPSProductTypeNotQualifiedShow = () => {
 export const NoticeShowDetails = () => {
   const record = useRecordContext();
 
-  console.log(JSON.stringify(record));
-
   switch (record?.type) {
     case "no.elhub.flex.party.outdated":
       return <NoticePartyOutdatedShow />;
