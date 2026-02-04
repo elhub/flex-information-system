@@ -454,6 +454,11 @@ export type ServiceProvidingGroupProductSuspensionCommentVisibility =
   | "any_involved_party";
 
 /**
+ * The status of the notice.
+ */
+export type NoticeStatus = "active" | "resolved";
+
+/**
  * Request schema for update operations - Controllable unit
  */
 export type ControllableUnitUpdateRequest = {
@@ -2393,6 +2398,11 @@ export type ServiceProvidingGroupProductSuspensionComment = {
  */
 export type Notice = {
   /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  status: NoticeStatus;
+  /**
    * Reference to the party targeted by the notice.
    */
   readonly party_id: number;
@@ -2403,7 +2413,15 @@ export type Notice = {
   /**
    * The URI of the resource concerned by the event.
    */
-  readonly source: string;
+  readonly source?: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
 };
 
 /**
@@ -3369,7 +3387,7 @@ export type ServiceProvidingGroupProductSuspensionCommentWritable = {
  * Response schema - Notice to users about various issues or actions expected from them.
  */
 export type NoticeWritable = {
-  [key: string]: unknown;
+  status: NoticeStatus;
 };
 
 /**
@@ -14146,6 +14164,10 @@ export type ListNoticeData = {
   path?: never;
   query?: {
     /**
+     * Unique surrogate identifier.
+     */
+    id?: string;
+    /**
      * Reference to the party targeted by the notice.
      */
     party_id?: string;
@@ -14214,3 +14236,50 @@ export type ListNoticeResponses = {
 };
 
 export type ListNoticeResponse = ListNoticeResponses[keyof ListNoticeResponses];
+
+export type ReadNoticeData = {
+  body?: never;
+  path: {
+    id: number;
+  };
+  query?: never;
+  url: "/notice/{id}";
+};
+
+export type ReadNoticeErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type ReadNoticeError = ReadNoticeErrors[keyof ReadNoticeErrors];
+
+export type ReadNoticeResponses = {
+  /**
+   * OK
+   */
+  200: Notice;
+};
+
+export type ReadNoticeResponse = ReadNoticeResponses[keyof ReadNoticeResponses];

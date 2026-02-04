@@ -7901,80 +7901,112 @@ TO flex_internal_event_notification;
 
 -- changeset flex:api-grant-notice-brp-select endDelimiter:-- runAlways:true
 GRANT SELECT (
+    id,
     party_id,
     type,
     source,
-    data
+    data,
+    status,
+    recorded_by,
+    recorded_at
 ) ON TABLE
 api.notice
 TO flex_balance_responsible_party;
 
 -- changeset flex:api-grant-notice-es-select endDelimiter:-- runAlways:true
 GRANT SELECT (
+    id,
     party_id,
     type,
     source,
-    data
+    data,
+    status,
+    recorded_by,
+    recorded_at
 ) ON TABLE
 api.notice
 TO flex_energy_supplier;
 
 -- changeset flex:api-grant-notice-eu-select endDelimiter:-- runAlways:true
 GRANT SELECT (
+    id,
     party_id,
     type,
     source,
-    data
+    data,
+    status,
+    recorded_by,
+    recorded_at
 ) ON TABLE
 api.notice
 TO flex_end_user;
 
 -- changeset flex:api-grant-notice-fiso-select endDelimiter:-- runAlways:true
 GRANT SELECT (
+    id,
     party_id,
     type,
     source,
-    data
+    data,
+    status,
+    recorded_by,
+    recorded_at
 ) ON TABLE
 api.notice
 TO flex_flexibility_information_system_operator;
 
 -- changeset flex:api-grant-notice-mo-select endDelimiter:-- runAlways:true
 GRANT SELECT (
+    id,
     party_id,
     type,
     source,
-    data
+    data,
+    status,
+    recorded_by,
+    recorded_at
 ) ON TABLE
 api.notice
 TO flex_market_operator;
 
 -- changeset flex:api-grant-notice-so-select endDelimiter:-- runAlways:true
 GRANT SELECT (
+    id,
     party_id,
     type,
     source,
-    data
+    data,
+    status,
+    recorded_by,
+    recorded_at
 ) ON TABLE
 api.notice
 TO flex_system_operator;
 
 -- changeset flex:api-grant-notice-sp-select endDelimiter:-- runAlways:true
 GRANT SELECT (
+    id,
     party_id,
     type,
     source,
-    data
+    data,
+    status,
+    recorded_by,
+    recorded_at
 ) ON TABLE
 api.notice
 TO flex_service_provider;
 
 -- changeset flex:api-grant-notice-tp-select endDelimiter:-- runAlways:true
 GRANT SELECT (
+    id,
     party_id,
     type,
     source,
-    data
+    data,
+    status,
+    recorded_by,
+    recorded_at
 ) ON TABLE
 api.notice
 TO flex_third_party;

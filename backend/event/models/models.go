@@ -221,10 +221,14 @@ type ApiMeteringGridArea struct {
 }
 
 type ApiNotice struct {
-	PartyID int
-	Type    string
-	Source  *string
-	Data    []byte
+	ID         int
+	Status     string
+	PartyID    int
+	Type       string
+	Source     *string
+	Data       []byte
+	RecordedBy int
+	RecordedAt pgtype.Timestamptz
 }
 
 type ApiNotification struct {

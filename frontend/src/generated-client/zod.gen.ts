@@ -411,6 +411,11 @@ export const zServiceProvidingGroupProductSuspensionCommentVisibility = z.enum([
 ]);
 
 /**
+ * The status of the notice.
+ */
+export const zNoticeStatus = z.enum(["active", "resolved"]);
+
+/**
  * Request schema for update operations - Controllable unit
  */
 export const zControllableUnitUpdateRequest = z.object({
@@ -2211,15 +2216,21 @@ export const zServiceProvidingGroupProductSuspensionComment = z.object({
  * Response schema - Notice to users about various issues or actions expected from them.
  */
 export const zNotice = z.object({
+  id: z.int().readonly(),
+  status: zNoticeStatus.default("active"),
   party_id: z.int().readonly(),
   type: z
     .string()
     .regex(/^no.elhub.flex./)
     .readonly(),
-  source: z
-    .string()
-    .regex(/^(\/([a-z][a-z_]*|[0-9]+))+$/)
-    .readonly(),
+  source: z.optional(
+    z
+      .string()
+      .regex(/^(\/([a-z][a-z_]*|[0-9]+))+$/)
+      .readonly(),
+  ),
+  recorded_at: z.string().readonly(),
+  recorded_by: z.int().readonly(),
 });
 
 /**
@@ -3140,7 +3151,9 @@ export const zServiceProvidingGroupProductSuspensionCommentWritable = z.object({
 /**
  * Response schema - Notice to users about various issues or actions expected from them.
  */
-export const zNoticeWritable = z.record(z.string(), z.unknown());
+export const zNoticeWritable = z.object({
+  status: zNoticeStatus.default("active"),
+});
 
 /**
  * Controllable unit - history
@@ -10487,6 +10500,15 @@ export const zListNoticeData = z.object({
   ),
   query: z.optional(
     z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
       party_id: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
@@ -10528,3 +10550,26 @@ export const zListNoticeResponse = z.union([
   z.array(zNotice),
   z.array(zNotice),
 ]);
+
+export const zReadNoticeData = z.object({
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.object({
+    id: z.int(),
+  }),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+});
+
+/**
+ * OK
+ */
+export const zReadNoticeResponse = zNotice;

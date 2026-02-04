@@ -157,8 +157,12 @@ export type FieldLabel =
   | "metering_grid_area.id"
   | "metering_grid_area.name"
   | "notice.data"
+  | "notice.id"
   | "notice.party_id"
+  | "notice.recorded_at"
+  | "notice.recorded_by"
   | "notice.source"
+  | "notice.status"
   | "notice.type"
   | "notification.acknowledged"
   | "notification.event_id"
@@ -1102,10 +1106,14 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Replaced at",
     "service_providing_group_product_suspension_comment_history.replaced_by":
       "Replaced by",
+    "notice.id": "ID",
+    "notice.status": "Status",
     "notice.party_id": "Party",
     "notice.type": "Type",
     "notice.source": "Source",
     "notice.data": "Data",
+    "notice.recorded_at": "Recorded at",
+    "notice.recorded_by": "Recorded by",
   },
   nb: {
     "controllable_unit.id": "ID",
@@ -1726,10 +1734,14 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Erstattet",
     "service_providing_group_product_suspension_comment_history.replaced_by":
       "Erstattet av",
+    "notice.id": "ID",
+    "notice.status": "Status",
     "notice.party_id": "Aktør",
     "notice.type": "Type",
     "notice.source": "Kilde",
     "notice.data": "Data",
+    "notice.recorded_at": "Registrert",
+    "notice.recorded_by": "Registrert av",
   },
   nn: {
     "controllable_unit.id": "ID",
@@ -2348,9 +2360,13 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Erstattet",
     "service_providing_group_product_suspension_comment_history.replaced_by":
       "Erstattet av",
+    "notice.id": "ID",
+    "notice.status": "Status",
     "notice.party_id": "Aktør",
     "notice.type": "Type",
     "notice.source": "Kjelde",
     "notice.data": "Data",
+    "notice.recorded_at": "Registrert",
+    "notice.recorded_by": "Registrert av",
   },
 };

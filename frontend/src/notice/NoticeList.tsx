@@ -7,8 +7,9 @@ import {
 } from "react-admin";
 import { Datagrid, PartyReferenceInput } from "../auth";
 import { ResourceButton } from "../components/ResourceButton";
-import { NoticeShow } from "./NoticeShow";
 import noticeTypes from "./noticeTypes";
+import { EnumArrayInput, EnumField } from "../components/enum";
+import { DateField } from "../components/datetime";
 
 const NoticeResourceButton = () => {
   const noticeRecord = useRecordContext()!;
@@ -43,18 +44,19 @@ export const NoticeList = () => {
       }}
       choices={noticeTypes.map((nt) => ({ id: nt.id, name: nt.label }))}
     />,
+    <EnumArrayInput
+      key="notice_status"
+      label="field.notice.status"
+      enumKey="notice.status"
+      source="status@in"
+      alwaysOn
+    />,
   ];
 
-  // a defined sort parameter is required there because notice has no ID field
-  // cf https://github.com/marmelab/react-admin/blob/27dccfb8519de551ef7e236355860aacef36ef56/packages/ra-core/src/controller/list/useListController.ts#L451-L454
   return (
-    <List
-      perPage={25}
-      filters={filters}
-      sort={{ field: "source", order: "DESC" }}
-      empty={false}
-    >
-      <Datagrid expand={NoticeShow} expandSingle={true}>
+    <List perPage={25} filters={filters} empty={false}>
+      <Datagrid>
+        <TextField source="id" label="field.notice.id" />
         <ReferenceField
           source="party_id"
           reference="party"
@@ -65,6 +67,16 @@ export const NoticeList = () => {
         </ReferenceField>
         <TextField source="type" label="field.notice.type" />
         <TextField source="source" label="field.notice.source" />
+        <EnumField
+          source="status"
+          enumKey="notice.status"
+          label="field.notice.status"
+        />
+        <DateField
+          source="recorded_at"
+          showTime
+          label="field.notice.recorded_at"
+        />
         <NoticeResourceButton />
       </Datagrid>
     </List>

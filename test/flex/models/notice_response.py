@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, Any, TypeVar, cast
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
+from ..models.notice_status import NoticeStatus
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
@@ -23,17 +24,26 @@ class NoticeResponse:
     """Response schema - Notice to users about various issues or actions expected from them.
 
     Attributes:
+        id (int): Unique surrogate identifier. Example: 254.
+        status (NoticeStatus): The status of the notice. Example: active.
         party_id (int): Reference to the party targeted by the notice. Example: 18.
         type_ (str): The type of the notice. Example:
             no.elhub.flex.service_providing_group_membership.valid_time.outside_contract.
+        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
+            23:59:00 CET.
+        recorded_by (int): The identity that recorded the resource. Example: 145.
         source (None | str | Unset): The URI of the resource concerned by the event. Example:
             /service_providing_group_membership/4.
         data (NoticeDataPartyMissing | NoticeDataPartyOutdated | NoticeDataProductTypeNotQualified |
             NoticeDataValidTimeOutsideContract | Unset):
     """
 
+    id: int
+    status: NoticeStatus
     party_id: int
     type_: str
+    recorded_at: str
+    recorded_by: int
     source: None | str | Unset = UNSET
     data: (
         NoticeDataPartyMissing
@@ -49,9 +59,17 @@ class NoticeResponse:
         from ..models.notice_data_party_outdated import NoticeDataPartyOutdated
         from ..models.notice_data_valid_time_outside_contract import NoticeDataValidTimeOutsideContract
 
+        id = self.id
+
+        status = self.status.value
+
         party_id = self.party_id
 
         type_ = self.type_
+
+        recorded_at = self.recorded_at
+
+        recorded_by = self.recorded_by
 
         source: None | str | Unset
         if isinstance(self.source, Unset):
@@ -75,8 +93,12 @@ class NoticeResponse:
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
+                "id": id,
+                "status": status,
                 "party_id": party_id,
                 "type": type_,
+                "recorded_at": recorded_at,
+                "recorded_by": recorded_by,
             }
         )
         if source is not UNSET:
@@ -94,9 +116,17 @@ class NoticeResponse:
         from ..models.notice_data_valid_time_outside_contract import NoticeDataValidTimeOutsideContract
 
         d = dict(src_dict)
+        id = d.pop("id")
+
+        status = NoticeStatus(d.pop("status"))
+
         party_id = d.pop("party_id")
 
         type_ = d.pop("type")
+
+        recorded_at = d.pop("recorded_at")
+
+        recorded_by = d.pop("recorded_by")
 
         def _parse_source(data: object) -> None | str | Unset:
             if data is None:
@@ -151,8 +181,12 @@ class NoticeResponse:
         data = _parse_data(d.pop("data", UNSET))
 
         notice_response = cls(
+            id=id,
+            status=status,
             party_id=party_id,
             type_=type_,
+            recorded_at=recorded_at,
+            recorded_by=recorded_by,
             source=source,
             data=data,
         )

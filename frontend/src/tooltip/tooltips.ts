@@ -864,9 +864,14 @@ export const tooltips = {
     "When the comment was replaced.",
   "service_providing_group_product_suspension_comment_history.replaced_by":
     "The identity that replaced the comment.",
+  "notice.id": "Unique surrogate identifier.",
+  "notice.status": "The status of the notice.",
   "notice.party_id": "Reference to the party targeted by the notice.",
   "notice.type": "The type of the notice.",
   "notice.source": "The URI of the resource concerned by the event.",
   "notice.data": "The data of the notice.",
+  "notice.recorded_at":
+    "When the resource was recorded (created or updated) in the system.",
+  "notice.recorded_by": "The identity that recorded the resource.",
 };
 export type TooltipKey = keyof typeof tooltips;

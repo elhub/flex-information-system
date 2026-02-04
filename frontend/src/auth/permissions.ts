@@ -191,8 +191,12 @@ export type PermissionTarget =
   | "metering_grid_area.name"
   | "notice"
   | "notice.data"
+  | "notice.id"
   | "notice.party_id"
+  | "notice.recorded_at"
+  | "notice.recorded_by"
   | "notice.source"
+  | "notice.status"
   | "notice.type"
   | "notification"
   | "notification.acknowledged"
@@ -1272,6 +1276,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "notice.id",
+      operation: "read",
+    },
+    {
       target: "notice.party_id",
       operation: "read",
     },
@@ -1280,7 +1288,19 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "notice.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "notice.recorded_by",
+      operation: "read",
+    },
+    {
       target: "notice.source",
+      operation: "read",
+    },
+    {
+      target: "notice.status",
       operation: "read",
     },
     {
@@ -3497,6 +3517,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "notice.id",
+      operation: "read",
+    },
+    {
       target: "notice.party_id",
       operation: "read",
     },
@@ -3505,7 +3529,19 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "notice.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "notice.recorded_by",
+      operation: "read",
+    },
+    {
       target: "notice.source",
+      operation: "read",
+    },
+    {
+      target: "notice.status",
       operation: "read",
     },
     {
@@ -5722,6 +5758,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "notice.id",
+      operation: "read",
+    },
+    {
       target: "notice.party_id",
       operation: "read",
     },
@@ -5730,7 +5770,19 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "notice.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "notice.recorded_by",
+      operation: "read",
+    },
+    {
       target: "notice.source",
+      operation: "read",
+    },
+    {
+      target: "notice.status",
       operation: "read",
     },
     {
@@ -8204,6 +8256,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "notice.id",
+      operation: "read",
+    },
+    {
       target: "notice.party_id",
       operation: "read",
     },
@@ -8212,7 +8268,19 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "notice.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "notice.recorded_by",
+      operation: "read",
+    },
+    {
       target: "notice.source",
+      operation: "read",
+    },
+    {
+      target: "notice.status",
       operation: "read",
     },
     {
@@ -10943,6 +11011,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "notice.id",
+      operation: "read",
+    },
+    {
       target: "notice.party_id",
       operation: "read",
     },
@@ -10951,7 +11023,19 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "notice.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "notice.recorded_by",
+      operation: "read",
+    },
+    {
       target: "notice.source",
+      operation: "read",
+    },
+    {
+      target: "notice.status",
       operation: "read",
     },
     {
@@ -13245,6 +13329,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "notice.id",
+      operation: "read",
+    },
+    {
       target: "notice.party_id",
       operation: "read",
     },
@@ -13253,7 +13341,19 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "notice.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "notice.recorded_by",
+      operation: "read",
+    },
+    {
       target: "notice.source",
+      operation: "read",
+    },
+    {
+      target: "notice.status",
       operation: "read",
     },
     {
@@ -15959,6 +16059,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "notice.id",
+      operation: "read",
+    },
+    {
       target: "notice.party_id",
       operation: "read",
     },
@@ -15967,7 +16071,19 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "notice.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "notice.recorded_by",
+      operation: "read",
+    },
+    {
       target: "notice.source",
+      operation: "read",
+    },
+    {
+      target: "notice.status",
       operation: "read",
     },
     {
@@ -18493,6 +18609,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "notice.id",
+      operation: "read",
+    },
+    {
       target: "notice.party_id",
       operation: "read",
     },
@@ -18501,7 +18621,19 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "notice.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "notice.recorded_by",
+      operation: "read",
+    },
+    {
       target: "notice.source",
+      operation: "read",
+    },
+    {
+      target: "notice.status",
       operation: "read",
     },
     {

@@ -315,6 +315,9 @@ import type {
   ReadMeteringGridAreaData,
   ReadMeteringGridAreaErrors,
   ReadMeteringGridAreaResponses,
+  ReadNoticeData,
+  ReadNoticeErrors,
+  ReadNoticeResponses,
   ReadNotificationData,
   ReadNotificationErrors,
   ReadNotificationResponses,
@@ -3817,5 +3820,21 @@ export const listNotice = <ThrowOnError extends boolean = false>(
   >({
     security: [{ scheme: "bearer", type: "http" }],
     url: "/notice",
+    ...options,
+  });
+
+/**
+ * Read Notice
+ */
+export const readNotice = <ThrowOnError extends boolean = false>(
+  options: Options<ReadNoticeData, ThrowOnError>,
+) =>
+  (options.client ?? client).get<
+    ReadNoticeResponses,
+    ReadNoticeErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/notice/{id}",
     ...options,
   });

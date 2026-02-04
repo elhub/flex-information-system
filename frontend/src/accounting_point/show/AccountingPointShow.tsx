@@ -33,8 +33,6 @@ const AccountingPointConnections = () => {
     throw error;
   }
 
-  console.log(JSON.stringify(accountingPointViewModel));
-
   return (
     <RecordContextProvider
       value={{ ...record, ...accountingPointViewModel.connections }}
