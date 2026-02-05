@@ -50,7 +50,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
 
                 gitOps {
                     buildNameSuffix = "Backend"
-                    clusters = setOf(KubeCluster.TEST9, KubeCluster.MT1)
+                    clusters = setOf(KubeCluster.TEST9, KubeCluster.MARKET_TRIAL_1)
                     gitOpsRepository = gitOpsRepo
                     projectName = "fis-backend"
                     source = Source.CommitSha
@@ -87,7 +87,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
 
                 gitOps {
                     buildNameSuffix = "Frontend"
-                    clusters = setOf(KubeCluster.TEST9, KubeCluster.MT1)
+                    clusters = setOf(KubeCluster.TEST9, KubeCluster.MARKET_TRIAL_1)
                     gitOpsRepository = gitOpsRepo
                     projectName = "fis-frontend"
                     source = Source.CommitSha
