@@ -9,7 +9,7 @@ skinparam note {
     BackgroundColor #FFFFBD
 }
 
-participant "Time series\nservice" as TS
+participant "Time series\nservices" as TS
 actor "Service Provider (SP)" as SP
 participant "Market platform" as MP
 participant "Flexibility\nInformation System (FIS)" as FIS
@@ -20,13 +20,14 @@ participant "Elhub" as EL
 
 activate SP
 SP -> MP: Send bid
-SP -> MP: Send baseline
+SP -> TS: Send baseline
+SO --> TS: Get baseline
 
 Activate SO
 SO -> MP: Activate bid
 
 note left
-    SP activates the SPG
+    SP activates the SPG's resources
     after the bid is activated
 end note
 
@@ -42,18 +43,20 @@ end note
 
 == Delivery verification ==
 
-SO -> FIS: Get CU/SPG ID
-FIS --> SO: CU/SPG ID
+SO -> FIS: Get CU/SPG/MP ID
+FIS --> SO: CU/SPG/MP ID
 
 note right
-    PSO uses FIS to get the IDs of the CUs/SPG
+    PSO uses FIS to get the IDs of the CUs/SPG amd MPID
     in order to collect the right metering values.
 end note
 
 SO -> TS: Get measured values, metered values and baseline
 TS --> SO: Measured values, metered values and baseline
+SO -> EL : Get metered values
+EL --> SO : Metered Values
 
-note right
+note left
     PSO uses the collected time series and the
     activated bid to do the delivery verification
     analysis.
