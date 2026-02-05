@@ -23,16 +23,18 @@ const NoticeResourceButton = () => {
 };
 
 export const NoticeList = () => {
+  const noticeFields = getFields(zNotice.shape);
+
   const filters = [
     <PartyReferenceInput
-      source="party_id"
+      source={noticeFields.party_id.source}
       label="field.notice.party_id"
       noTypeFilter
       key="party"
     />,
     <AutocompleteInput
       key="notice_type"
-      source="type"
+      source={noticeFields.type.source}
       choices={noticeTypes.map((nt) => ({ id: nt.id, name: nt.label }))}
       style={{ width: "600px" }}
     />,
@@ -42,8 +44,6 @@ export const NoticeList = () => {
       source="status@in"
     />,
   ];
-
-  const noticeFields = getFields(zNotice.shape);
 
   return (
     <List perPage={25} filters={filters} empty={false}>

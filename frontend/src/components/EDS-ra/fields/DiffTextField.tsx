@@ -18,8 +18,11 @@ export const DiffTextField = ({ source, changed }: DiffTextFieldProps) => {
       style={
         changed
           ? record?.isNewRecord
-            ? { color: "green" }
-            : { color: "red", textDecoration: "line-through" }
+            ? { color: "var(--eds-semantic-text-success)" }
+            : {
+                color: "var(--eds-semantic-text-error)",
+                textDecoration: "line-through",
+              }
           : {}
       }
     >

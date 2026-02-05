@@ -4,10 +4,10 @@ import {
   ResourceContextProvider,
   useGetOne,
 } from "ra-core";
-import { Alert, AlertTitle } from "@mui/material";
 import { Link } from "react-router-dom";
 import { IconPlus, IconPencil } from "@elhub/ds-icons";
 import {
+  Alert,
   BodyText,
   Button,
   Content,
@@ -24,38 +24,54 @@ import {
 import { ProductTypeArrayField } from "../product_type/components";
 import { PartyInputLocationState } from "../party/PartyInput";
 import { DiffTextField } from "../components/EDS-ra/fields/DiffTextField";
-import { Party } from "../generated-client";
+import { Party, Notice as GNotice } from "../generated-client";
+import {
+  zEntity,
+  zParty,
+  zControllableUnitServiceProvider,
+  zNoticeDataProductTypeNotQualified,
+} from "../generated-client/zod.gen";
+import { getFields } from "../util";
+
+type Notice = GNotice & {
+  data: any;
+};
+
+type NoticeShowDetailsProps = {
+  notice: Notice;
+};
 
 type PartyUpdateButtonProps = {
   party_id: string;
   disabled?: boolean;
+  partyData: Party;
 };
 
 // button to jump to the party input page in update mode with autofilled form
-const PartyUpdateButton = ({ party_id, disabled }: PartyUpdateButtonProps) => {
-  const record = useRecordContext()!;
-
-  return (
-    <Button
-      as={Link}
-      to={`/party/${party_id}`}
-      state={record}
-      icon={IconPencil}
-      disabled={disabled}
-    >
-      Update party
-    </Button>
-  );
-};
+const PartyUpdateButton = ({
+  party_id,
+  disabled,
+  partyData,
+}: PartyUpdateButtonProps) => (
+  <Button
+    as={Link}
+    to={`/party/${party_id}`}
+    state={partyData}
+    icon={IconPencil}
+    disabled={disabled}
+  >
+    Update party
+  </Button>
+);
 
 type PartyCreateButtonProps = {
+  partyData: Party;
   disabled?: boolean;
 };
 
 // button to jump to the party input page in create mode with autofilled form
-const PartyCreateButton = ({ disabled }: PartyCreateButtonProps) => {
-  const record = useRecordContext<Party>()!;
-  const locationState: PartyInputLocationState = { party: record };
+const PartyCreateButton = ({ partyData, disabled }: PartyCreateButtonProps) => {
+  const locationState: PartyInputLocationState = { party: partyData };
 
   return (
     <Button
@@ -71,23 +87,30 @@ const PartyCreateButton = ({ disabled }: PartyCreateButtonProps) => {
 };
 
 // component to show details of a notice of type no.elhub.flex.party.missing
-const NoticePartyMissingShow = () => {
-  const record = useRecordContext()!;
-
-  const entityExists = record.data.party?.entity_id != undefined;
+const NoticePartyMissingShowDetails = ({ notice }: NoticeShowDetailsProps) => {
+  const entityExists = notice.data.party?.entity_id != undefined;
 
   const entityAlert = entityExists ? (
-    <Alert severity="success">
-      <AlertTitle>Found</AlertTitle>
-      The entity owning the missing party already exists in the system.
-    </Alert>
+    <>
+      <Alert variant="success">Found</Alert>
+      <VerticalSpace />
+      <BodyText>
+        The entity owning the missing party already exists in the system.
+      </BodyText>
+    </>
   ) : (
-    <Alert severity="warning">
-      <AlertTitle>Not found</AlertTitle>
-      The owning entity of the missing party is also missing from the system. It
-      must be created before the missing party can be added.
-    </Alert>
+    <>
+      <Alert variant="warning">Not found</Alert>
+      <VerticalSpace />
+      <BodyText>
+        The owning entity of the missing party is also missing from the system.
+        It must be created before the missing party can be added.
+      </BodyText>
+    </>
   );
+
+  const entityFields = getFields(zEntity.shape);
+  const partyFields = getFields(zParty.shape);
 
   return (
     <>
@@ -99,16 +122,20 @@ const NoticePartyMissingShow = () => {
       <BodyText weight="bold">Entity owning the missing party</BodyText>
       <VerticalSpace size="small" />
       <ResourceContextProvider value="entity">
-        <RecordContextProvider value={record.data.entity}>
+        <RecordContextProvider value={notice.data.entity}>
           <Content>
-            <TextField source="business_id" label />
+            <TextField source={entityFields.business_id.source} label />
             <EnumField
-              source="business_id_type"
+              source={entityFields.business_id_type.source}
               enumKey="entity.business_id_type"
               label
             />
-            <TextField source="name" label />
-            <EnumField source="type" enumKey="entity.type" label />
+            <TextField source={entityFields.name.source} label />
+            <EnumField
+              source={entityFields.type.source}
+              enumKey="entity.type"
+              label
+            />
           </Content>
           <VerticalSpace size="small" />
           {entityAlert}
@@ -119,20 +146,27 @@ const NoticePartyMissingShow = () => {
       <BodyText weight="bold">Missing party</BodyText>
       <VerticalSpace size="small" />
       <ResourceContextProvider value="party">
-        <RecordContextProvider value={record.data.party}>
+        <RecordContextProvider value={notice.data.party}>
           <Content>
-            <TextField source="business_id" label />
+            <TextField source={partyFields.business_id.source} label />
             <EnumField
-              source="business_id_type"
+              source={partyFields.business_id_type.source}
               enumKey="party.business_id_type"
               label
             />
-            <TextField source="entity_id" label />
-            <TextField source="name" label />
-            <EnumField source="type" enumKey="party.type" label />
+            <TextField source={partyFields.entity_id.source} label />
+            <TextField source={partyFields.name.source} label />
+            <EnumField
+              source={partyFields.type.source}
+              enumKey="party.type"
+              label
+            />
           </Content>
           <VerticalSpace size="small" />
-          <PartyCreateButton disabled={!entityExists} />
+          <PartyCreateButton
+            disabled={!entityExists}
+            partyData={notice.data.party}
+          />
         </RecordContextProvider>
       </ResourceContextProvider>
     </>
@@ -140,14 +174,15 @@ const NoticePartyMissingShow = () => {
 };
 
 // component to show details of a notice of type no.elhub.flex.party.outdated
-const NoticePartyOutdatedShow = () => {
-  const record = useRecordContext()!;
+const NoticePartyOutdatedShowDetails = ({ notice }: NoticeShowDetailsProps) => {
+  const entityChanged = notice.data.entity?.business_id != undefined;
+  const nameChanged = notice.data.party?.name != undefined;
+  const entityExists = notice.data.party?.entity_id != undefined;
 
-  const entityChanged = record.data.entity?.business_id != undefined;
-  const nameChanged = record.data.party?.name != undefined;
-  const entityExists = record.data.party?.entity_id != undefined;
+  const partyID = notice.source!.split("/")[2];
 
-  const partyID = record.source.split("/")[2];
+  const entityFields = getFields(zEntity.shape);
+  const partyFields = getFields(zParty.shape);
 
   const {
     data: outdatedParty,
@@ -163,64 +198,84 @@ const NoticePartyOutdatedShow = () => {
       <VerticalSpace />
 
       <BodyText weight="bold">Entity owning the party</BodyText>
-      <VerticalSpace size="small" />
+      <VerticalSpace />
       {entityChanged ? (
         <ResourceContextProvider value="entity">
-          <RecordContextProvider value={record.data.entity}>
+          <RecordContextProvider value={notice.data.entity}>
             <Content>
-              <TextField source="business_id" label />
+              <TextField source={entityFields.business_id.source} label />
               <EnumField
-                source="business_id_type"
+                source={entityFields.business_id_type.source}
                 enumKey="entity.business_id_type"
                 label
               />
-              <TextField source="name" label />
-              <EnumField source="type" enumKey="entity.type" label />
+              <TextField source={entityFields.name.source} label />
+              <EnumField
+                source={entityFields.type.source}
+                enumKey="entity.type"
+                label
+              />
             </Content>
             <VerticalSpace size="small" />
             {entityExists ? (
-              <Alert severity="success">
-                <AlertTitle>Found</AlertTitle>
-                The updated entity already exists in the system.
-              </Alert>
+              <>
+                <Alert variant="success">Found</Alert>
+                <VerticalSpace />
+                <BodyText>
+                  The updated entity already exists in the system.
+                </BodyText>
+              </>
             ) : (
-              <Alert severity="warning">
-                <AlertTitle>Not found</AlertTitle>
-                The owning entity was updated to a new one that does not exist
-                in the system. It must be created before the outdated party can
-                be updated.
-              </Alert>
+              <>
+                <Alert variant="warning">Not found</Alert>
+                <VerticalSpace />
+                <BodyText>
+                  The owning entity was updated to a new one that does not exist
+                  in the system. It must be created before the outdated party
+                  can be updated.
+                </BodyText>
+              </>
             )}
           </RecordContextProvider>
         </ResourceContextProvider>
       ) : (
-        <Alert severity="info">
-          <AlertTitle>No entity change</AlertTitle>
-          The owning entity was not updated as part of the fetched changes that
-          were made to the current party.
-        </Alert>
+        <>
+          <Alert variant="info">No entity change</Alert>
+          <VerticalSpace />
+          <BodyText>
+            The owning entity was not updated as part of the fetched changes
+            that were made to the current party.
+          </BodyText>
+        </>
       )}
 
       <VerticalSpace />
       <BodyText weight="bold">Updated party information</BodyText>
-      <VerticalSpace size="small" />
+      <VerticalSpace />
       <ResourceContextProvider value="party">
         <FlexDiv style={{ flexDirection: "column", gap: "1rem" }}>
           <Datagrid
             rowClick={false}
             data={[
               { ...outdatedParty, isNewRecord: false, id: "old" },
-              { ...record.data.party, isNewRecord: true, id: "new" },
+              { ...notice.data.party, isNewRecord: true, id: "new" },
             ]}
           >
-            <TextField source="business_id" />
-            <TextField source="business_id_type" />
-            <DiffTextField source="entity_id" changed={entityChanged} />
-            <DiffTextField source="name" changed={nameChanged} />
-            <TextField source="type" />
+            <TextField source={partyFields.business_id.source} />
+            <TextField source={partyFields.business_id_type.source} />
+            <DiffTextField
+              source={partyFields.entity_id.source}
+              changed={entityChanged}
+            />
+            <DiffTextField
+              source={partyFields.name.source}
+              changed={nameChanged}
+            />
+            <TextField source={partyFields.type.source} />
           </Datagrid>
           <PartyUpdateButton
             party_id={partyID}
+            partyData={notice.data.party}
             disabled={entityChanged && !entityExists}
           />
         </FlexDiv>
@@ -231,8 +286,10 @@ const NoticePartyOutdatedShow = () => {
 
 // component to show details of a notice of type
 // no.elhub.flex.controllable_unit_service_provider.valid_time.outside_contract
-const NoticeCUSPValidTimeOutsideContractShow = () => {
-  const record = useRecordContext()!;
+const NoticeCUSPValidTimeOutsideContractShowDetails = ({
+  notice,
+}: NoticeShowDetailsProps) => {
+  const cuspFields = getFields(zControllableUnitServiceProvider.shape);
 
   return (
     <>
@@ -250,15 +307,15 @@ const NoticeCUSPValidTimeOutsideContractShow = () => {
       <ResourceContextProvider value="controllable_unit_service_provider">
         <Datagrid
           rowClick={false}
-          data={record.data.invalid_timeline.map(
+          data={notice.data.invalid_timeline.map(
             (item: object, index: number) => ({
               ...item,
               id: index,
             }),
           )}
         >
-          <DateField source="valid_from" />
-          <DateField source="valid_to" />
+          <DateField source={cuspFields.valid_from.source} />
+          <DateField source={cuspFields.valid_to.source} />
         </Datagrid>
       </ResourceContextProvider>
     </>
@@ -267,8 +324,10 @@ const NoticeCUSPValidTimeOutsideContractShow = () => {
 
 // component to show details of a notice of type
 // no.elhub.flex.service_provider_product_suspension.product_type.not_qualified
-const NoticeSPPSProductTypeNotQualifiedShow = () => {
-  const record = useRecordContext()!;
+const NoticeSPPSProductTypeNotQualifiedShowDetails = ({
+  notice,
+}: NoticeShowDetailsProps) => {
+  const noticeDataFields = getFields(zNoticeDataProductTypeNotQualified.shape);
 
   return (
     <>
@@ -276,10 +335,10 @@ const NoticeSPPSProductTypeNotQualifiedShow = () => {
         The following product types are not qualified for the service provider:
       </Heading>
       <VerticalSpace />
-      <RecordContextProvider value={record.data}>
+      <RecordContextProvider value={notice.data}>
         <ProductTypeArrayField
           label="field.service_provider_product_suspension.product_type_ids"
-          source="product_type_ids"
+          source={noticeDataFields.product_type_ids.source}
         />
       </RecordContextProvider>
     </>
@@ -287,17 +346,17 @@ const NoticeSPPSProductTypeNotQualifiedShow = () => {
 };
 
 export const NoticeShowDetails = () => {
-  const record = useRecordContext();
+  const record = useRecordContext<Notice>();
 
   switch (record?.type) {
     case "no.elhub.flex.party.outdated":
-      return <NoticePartyOutdatedShow />;
+      return <NoticePartyOutdatedShowDetails notice={record} />;
     case "no.elhub.flex.party.missing":
-      return <NoticePartyMissingShow />;
+      return <NoticePartyMissingShowDetails notice={record} />;
     case "no.elhub.flex.controllable_unit_service_provider.valid_time.outside_contract":
-      return <NoticeCUSPValidTimeOutsideContractShow />;
+      return <NoticeCUSPValidTimeOutsideContractShowDetails notice={record} />;
     case "no.elhub.flex.service_provider_product_suspension.product_type.not_qualified":
-      return <NoticeSPPSProductTypeNotQualifiedShow />;
+      return <NoticeSPPSProductTypeNotQualifiedShowDetails notice={record} />;
     default:
       return <BodyText>No additional details on this notice.</BodyText>;
   }

@@ -1,4 +1,5 @@
 import {
+  Alert,
   BodyText,
   Button,
   Chips,
@@ -28,6 +29,7 @@ import {
 import FormContainer from "./formContainer";
 
 export {
+  Alert,
   BodyText,
   Button,
   Chips,
