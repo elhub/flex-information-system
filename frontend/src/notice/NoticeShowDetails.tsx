@@ -15,12 +15,7 @@ import {
   Heading,
   VerticalSpace,
 } from "../components/ui";
-import {
-  Datagrid,
-  DateField,
-  EnumField,
-  TextField,
-} from "../components/EDS-ra";
+import { DateField, EnumField, TextField } from "../components/EDS-ra";
 import { ProductTypeArrayField } from "../product_type/components";
 import { PartyInputLocationState } from "../party/PartyInput";
 import { DiffTextField } from "../components/EDS-ra/fields/DiffTextField";
@@ -32,6 +27,7 @@ import {
   zNoticeDataProductTypeNotQualified,
 } from "../generated-client/zod.gen";
 import { getFields } from "../util";
+import { DataTable } from "../components/EDS-ra/list/Datagrid";
 
 type Notice = GNotice & {
   data: any;
@@ -254,7 +250,7 @@ const NoticePartyOutdatedShowDetails = ({ notice }: NoticeShowDetailsProps) => {
       <VerticalSpace />
       <ResourceContextProvider value="party">
         <FlexDiv style={{ flexDirection: "column", gap: "1rem" }}>
-          <Datagrid
+          <DataTable
             rowClick={false}
             data={[
               { ...outdatedParty, isNewRecord: false, id: "old" },
@@ -272,7 +268,7 @@ const NoticePartyOutdatedShowDetails = ({ notice }: NoticeShowDetailsProps) => {
               changed={nameChanged}
             />
             <TextField source={partyFields.type.source} />
-          </Datagrid>
+          </DataTable>
           <PartyUpdateButton
             party_id={partyID}
             partyData={notice.data.party}
@@ -305,7 +301,7 @@ const NoticeCUSPValidTimeOutsideContractShowDetails = ({
       </BodyText>
       <VerticalSpace />
       <ResourceContextProvider value="controllable_unit_service_provider">
-        <Datagrid
+        <DataTable
           rowClick={false}
           data={notice.data.invalid_timeline.map(
             (item: object, index: number) => ({
@@ -316,7 +312,7 @@ const NoticeCUSPValidTimeOutsideContractShowDetails = ({
         >
           <DateField source={cuspFields.valid_from.source} />
           <DateField source={cuspFields.valid_to.source} />
-        </Datagrid>
+        </DataTable>
       </ResourceContextProvider>
     </>
   );

@@ -53,15 +53,14 @@ export const AutocompleteInput = ({
       id={id}
       error={fieldState.error?.message}
     >
-      <div style={style}>
-        <Combobox
-          options={options}
-          selectedOptions={selectedOption ? [selectedOption] : []}
-          onToggleSelected={handleToggle}
-          placeholder={placeholder}
-          disabled={disabled || readOnly}
-        />
-      </div>
+      <Combobox
+        style={style}
+        options={options}
+        selectedOptions={selectedOption ? [selectedOption] : []}
+        onToggleSelected={handleToggle}
+        placeholder={placeholder}
+        disabled={disabled || readOnly}
+      />
     </BaseInput>
   );
 };

@@ -3,37 +3,57 @@ import React, {
   ReactNode,
   cloneElement,
   isValidElement,
-  useContext,
 } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   FieldTitle,
-  ListContext,
   RaRecord,
   RecordContextProvider,
   useResourceContext,
+  useListContext,
 } from "ra-core";
 import { BodyText, Loader, Table } from "../../ui";
 
-type DatagridProps<T extends RaRecord = RaRecord> = {
+type DatagridProps = {
   children: ReactNode;
   empty?: boolean;
   rowClick?: false | ((record: RaRecord) => string);
-  data?: T[];
 };
 
 export const Datagrid = <T extends RaRecord>({
   children,
   empty,
   rowClick,
-  data: dataProp,
-}: DatagridProps<T>) => {
+}: DatagridProps) => {
+  const { data: listData, isLoading } = useListContext<T>();
+  const data = listData ?? [];
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  return (
+    <DataTable<T> data={data} empty={empty} rowClick={rowClick}>
+      {children}
+    </DataTable>
+  );
+};
+
+type DataTableProps<T extends RaRecord = RaRecord> = {
+  children: ReactNode;
+  empty?: boolean;
+  rowClick?: false | ((record: RaRecord) => string);
+  data: T[];
+};
+
+export const DataTable = <T extends RaRecord>({
+  children,
+  empty,
+  rowClick,
+  data,
+}: DataTableProps<T>) => {
   // try to get data from list context if not provided directly
-  const listContext = useContext(ListContext);
-  const data = dataProp ?? listContext?.data ?? [];
-  const isLoading = listContext?.isLoading;
   const resource = useResourceContext();
-  const rows = data ?? [];
   const columns = Children.toArray(children).filter(isValidElement);
   const navigate = useNavigate();
   const hasRowClick = rowClick !== false;
@@ -60,11 +80,8 @@ export const Datagrid = <T extends RaRecord>({
   };
 
   // Only show loading when using list context (not when data is passed directly)
-  if (!dataProp && isLoading) {
-    return <Loader />;
-  }
 
-  if (rows.length === 0 && empty !== false) {
+  if (data.length === 0 && empty !== false) {
     return <BodyText>No results</BodyText>;
   }
 
@@ -85,7 +102,7 @@ export const Datagrid = <T extends RaRecord>({
         </Table.Row>
       </Table.Header>
       <Table.Body>
-        {rows.map((record) => (
+        {data.map((record) => (
           <RecordContextProvider key={record.id} value={record}>
             <Table.Row
               style={hasRowClick ? { cursor: "pointer" } : undefined}
