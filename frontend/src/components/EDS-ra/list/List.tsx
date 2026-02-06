@@ -11,6 +11,7 @@ type ListProps = ListBaseProps & {
   filters?: ReactNode[];
   empty?: boolean;
   actions?: ReactNode[];
+  pagination?: boolean;
 };
 
 export const List = ({
@@ -18,6 +19,7 @@ export const List = ({
   filters,
   empty,
   actions,
+  pagination = true,
   ...rest
 }: ListProps) => {
   return (
@@ -27,7 +29,7 @@ export const List = ({
         <Panel border className="flex flex-col gap-5">
           {filters?.length ? <ListFilters filters={filters} /> : null}
           {empty ? <BodyText>No results</BodyText> : children}
-          <ListPagination />
+          {pagination && <ListPagination />}
         </Panel>
       </div>
     </ListBase>
