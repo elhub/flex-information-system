@@ -1,12 +1,11 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:energy-supplier-balance-responsibility-create runOnChange:false endDelimiter:--
+-- changeset flex:energy-supplier-balance-responsibility-create runAlways:true endDelimiter:--
 -- internal
 -- This table stores the balance responsible party chosen by each energy
 -- supplier in the different metering grid areas, in both possible directions.
 CREATE TABLE IF NOT EXISTS energy_supplier_balance_responsibility (
-    id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     metering_grid_area_id bigint NOT NULL,
     energy_supplier_id bigint NOT NULL,
     energy_supplier_party_type text GENERATED ALWAYS AS (

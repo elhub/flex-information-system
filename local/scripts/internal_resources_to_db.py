@@ -16,8 +16,18 @@ if __name__ == "__main__":
             "metering_grid_area_price_area",
             "metering_grid_area_system_operator",
             "accounting_point_metering_grid_area",
-            "energy_supplier_balance_responsibility",
             "notice",
+        ]
+    ]
+    resources += [
+        {
+            "id": r,
+            "history": True,
+            "history_index": False,
+            "audit": True,
+        }
+        for r in [
+            "energy_supplier_balance_responsibility",
         ]
     ]
 

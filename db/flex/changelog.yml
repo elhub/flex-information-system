@@ -120,6 +120,9 @@ databaseChangeLog:
       file: ./energy_supplier_balance_responsibility.sql
       relativeToChangelogFile: true
   - include:
+      file: ./energy_supplier_balance_responsibility_migrations.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./accounting_point_balance_responsible_party.sql
       relativeToChangelogFile: true
   - include:

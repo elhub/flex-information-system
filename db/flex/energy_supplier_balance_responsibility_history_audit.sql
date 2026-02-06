@@ -15,11 +15,6 @@ flex.energy_supplier_balance_responsibility_history (
     replaced_by bigint NOT NULL
 );
 
--- changeset flex:energy-supplier-balance-responsibility-history-id-index endDelimiter:--
-CREATE INDEX IF NOT EXISTS
-energy_supplier_balance_responsibility_history_id_idx
-ON flex.energy_supplier_balance_responsibility_history (id);
-
 -- changeset flex:energy-supplier-balance-responsibility-history-rls endDelimiter:--
 ALTER TABLE IF EXISTS
 flex.energy_supplier_balance_responsibility_history

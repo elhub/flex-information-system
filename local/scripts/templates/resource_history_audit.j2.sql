@@ -15,10 +15,13 @@ flex.{{ resource }}_history (
     replaced_by bigint NOT NULL
 );
 
+{%- if "history_index" not in data or data.get("history_index") %}
+
 -- changeset flex:{{ resource | replace("_", "-") }}-history-id-index endDelimiter:--
 CREATE INDEX IF NOT EXISTS
 {{ resource }}_history_id_idx
 ON flex.{{ resource }}_history (id);
+{%- endif %}
 
 -- changeset flex:{{ resource | replace("_", "-") }}-history-rls endDelimiter:--
 ALTER TABLE IF EXISTS
