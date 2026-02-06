@@ -20,8 +20,8 @@ export const Header = ({
   controllableUnit: ControllableUnit | undefined;
 }) => {
   return (
-    <FlexDiv style={{ gap: "var(--eds-size-2)", alignItems: "center" }}>
-      <Heading level={1} size="xlarge">
+    <FlexDiv className="flex flex-row items-center gap-3">
+      <Heading level={1} size="large">
         Controllable Unit - {controllableUnit?.name} (
         {controllableUnit?.maximum_available_capacity} kW)
       </Heading>

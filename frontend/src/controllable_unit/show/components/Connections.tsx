@@ -35,7 +35,12 @@ export const Connections = ({
   );
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-1">
+      <LabelValue labelKey="controllable_unit.id" value={controllableUnit.id} />
+      <LabelValue
+        labelKey="controllable_unit.business_id"
+        value={controllableUnit.business_id}
+      />
       <LabelValue
         label="Accounting point"
         value={`${accountingPoint?.business_id} (${systemOperator?.name})`}
