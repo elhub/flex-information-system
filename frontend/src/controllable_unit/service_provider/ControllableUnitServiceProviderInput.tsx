@@ -1,32 +1,22 @@
-import {
-  NumberInput,
-  required,
-  SimpleForm,
-  TextInput,
-  useGetIdentity,
-  useRecordContext,
-  UserIdentity,
-} from "react-admin";
-import { Typography, Box, Stack } from "@mui/material";
-import {
-  AutocompleteReferenceInput,
-  PartyReferenceInput,
-  InputStack,
-} from "../../auth";
+import { Form, useGetIdentity, useRecordContext, UserIdentity } from "ra-core";
 import { useNavigate } from "react-router-dom";
-import { Toolbar } from "../../components/Toolbar";
 import { ValidTimeTooltip } from "../../components/ValidTimeTooltip";
-import {
-  formatDateToMidnightISO,
-  MidnightDateInput,
-} from "../../components/datetime";
-import { countDefinedValues, unTypedZodResolver } from "../../util";
+import { formatDateToMidnightISO } from "../../components/datetime";
+import { countDefinedValues, getFields, unTypedZodResolver } from "../../util";
 import {
   zControllableUnitServiceProvider,
   zControllableUnitServiceProviderCreateRequest,
 } from "../../generated-client/zod.gen";
 import { ControllableUnitServiceProvider } from "../../generated-client";
 import useLocationState from "../../hooks/useLocationState";
+import { FormContainer, Heading, FlexDiv } from "../../components/ui";
+import {
+  TextInput,
+  AutocompleteReferenceInput,
+  PartyReferenceInput,
+  DateInput,
+  FormToolbar,
+} from "../../components/EDS-ra/inputs";
 
 export type ControllableUnitServiceProviderLocationState = {
   cusp?: Partial<ControllableUnitServiceProvider>;
@@ -36,7 +26,6 @@ export type ControllableUnitServiceProviderLocationState = {
   cuIDAsNumber?: boolean;
 };
 
-// common layout to create and edit pages
 export const ControllableUnitServiceProviderInput = () => {
   const locationState =
     useLocationState<ControllableUnitServiceProviderLocationState>();
@@ -100,74 +89,65 @@ const ControllableUnitServiceProviderForm = ({
     navigate(`/controllable_unit/${record.controllable_unit_id}/show`);
   };
 
+  const fields = getFields(zControllableUnitServiceProviderCreateRequest.shape);
+
   return (
-    <SimpleForm
+    <Form
       record={recordWithPartyId}
-      maxWidth={1280}
       resolver={unTypedZodResolver(
         zControllableUnitServiceProviderCreateRequest,
       )}
-      /* By default, the save button waits for an edit to be done to become
-         enabled. It was made to prevent empty edit calls.
-         In the case of a restore, we don't do any edit, as the modifications
-         we will apply are already brought into the fields by the state passed
-         into the restore button. So the save button is disabled, but we still
-         want to be able to hit it right away after clicking restore. */
-      toolbar={<Toolbar onCancel={onCancel} saveAlwaysEnabled={hasOverride} />}
     >
-      <Stack direction="column" spacing={1}>
-        <Typography variant="h6" gutterBottom>
+      <FormContainer>
+        <Heading level={3} size="medium">
           Basic information
-        </Typography>
-        <InputStack direction="row" flexWrap="wrap">
+        </Heading>
+
+        <FlexDiv style={{ gap: "var(--eds-size-3)", flexDirection: "column" }}>
           {cuIDAsNumber ? (
-            <NumberInput
-              source="controllable_unit_id"
-              label="field.controllable_unit_service_provider.controllable_unit_id"
+            <TextInput
+              {...fields.controllable_unit_id}
+              type="number"
+              overrideLabel="Controllable unit ID"
             />
           ) : (
             <AutocompleteReferenceInput
-              source="controllable_unit_id"
+              {...fields.controllable_unit_id}
               reference="controllable_unit"
-              label="field.controllable_unit_service_provider.controllable_unit_id"
               readOnly
             />
           )}
           <PartyReferenceInput
-            source="service_provider_id"
-            label="field.controllable_unit_service_provider.service_provider_id"
+            {...fields.service_provider_id}
             readOnly={isServiceProvider}
           />
-          <NumberInput
-            source="end_user_id"
-            label="field.controllable_unit_service_provider.end_user_id"
-          />
-        </InputStack>
-        <InputStack direction="row" flexWrap="wrap">
-          <TextInput
-            source="contract_reference"
-            validate={required()}
-            label="field.controllable_unit_service_provider.contract_reference"
-          />
-        </InputStack>
-        <Stack direction="row" flexWrap="wrap">
-          <Typography variant="h6" gutterBottom>
+          <TextInput {...fields.end_user_id} type="number" />
+        </FlexDiv>
+
+        <FlexDiv style={{ gap: "var(--eds-size-3)", flexDirection: "column" }}>
+          <TextInput {...fields.contract_reference} />
+        </FlexDiv>
+
+        <FlexDiv
+          style={{
+            gap: "var(--eds-size-2)",
+            alignItems: "center",
+            flexWrap: "wrap",
+          }}
+        >
+          <Heading level={4} size="small">
             Valid time
-          </Typography>
-          <Box m={1} />
+          </Heading>
           <ValidTimeTooltip />
-        </Stack>
-        <InputStack direction="row" flexWrap="wrap">
-          <MidnightDateInput
-            source="valid_from"
-            label="field.controllable_unit_service_provider.valid_from"
-          />
-          <MidnightDateInput
-            source="valid_to"
-            label="field.controllable_unit_service_provider.valid_to"
-          />
-        </InputStack>
-      </Stack>
-    </SimpleForm>
+        </FlexDiv>
+
+        <FlexDiv style={{ gap: "var(--eds-size-3)", flexDirection: "column" }}>
+          <DateInput {...fields.valid_from} />
+          <DateInput {...fields.valid_to} />
+        </FlexDiv>
+
+        <FormToolbar onCancel={onCancel} saveAlwaysEnabled={hasOverride} />
+      </FormContainer>
+    </Form>
   );
 };

@@ -1,8 +1,8 @@
-import { Stack, Typography, TypographyProps } from "@mui/material";
 import { useTranslateField } from "../intl/intl";
 import { FieldTooltip } from "../tooltip/FieldTooltip";
 import { TooltipKey } from "../tooltip/tooltips";
 import { FieldLabel } from "../intl/field-labels";
+import { BodyText, BodyTextProps, FlexDiv } from "./ui";
 
 type LabelValueProps = {
   labelKey?: TooltipKey | FieldLabel;
@@ -10,7 +10,7 @@ type LabelValueProps = {
   value: string | number | undefined;
   unit?: string;
   tooltip?: boolean;
-} & TypographyProps;
+} & Omit<BodyTextProps, "children">;
 
 export const LabelValue = ({
   label,
@@ -28,19 +28,12 @@ export const LabelValue = ({
   const formattedValue = unit ? `${value} ${unit}` : value;
 
   return (
-    <Stack direction="row" spacing={1} alignItems="center">
-      <Typography variant="subtitle1" color="text.secondary" {...props}>
+    <FlexDiv style={{ gap: "var(--eds-size-1)" }}>
+      <BodyText weight="bold" {...props}>
         {labelKey ? translateLabel(labelKey) : label}:
-      </Typography>
-      <Typography
-        variant="body1"
-        fontWeight="400"
-        color="text.primary"
-        {...props}
-      >
-        {formattedValue}
-      </Typography>
+      </BodyText>
+      <BodyText {...props}>{formattedValue}</BodyText>
       {tooltip && labelKey && <FieldTooltip tooltipKey={labelKey} />}
-    </Stack>
+    </FlexDiv>
   );
 };

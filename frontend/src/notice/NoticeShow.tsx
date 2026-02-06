@@ -1,45 +1,49 @@
-import { SimpleShowLayout, TextField, Show, ReferenceField } from "react-admin";
-import { Stack, Typography } from "@mui/material";
-import { FieldStack } from "../auth";
-import { DateField } from "../components/datetime";
-import { EnumField } from "../components/enum";
+import {
+  DateField,
+  EnumField,
+  ReferenceField,
+  Show,
+  TextField,
+} from "../components/EDS-ra";
+import { Content, Heading, VerticalSpace } from "../components/ui";
+import { zNotice } from "../generated-client/zod.gen";
+import { getFields } from "../util";
 import { NoticeShowDetails } from "./NoticeShowDetails";
 
-export const NoticeShow = () => (
-  <Show>
-    <SimpleShowLayout>
-      <Stack direction="column" spacing={2}>
-        <Typography variant="h6" gutterBottom>
-          Basic information
-        </Typography>
-        <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-          <TextField source="id" label="field.notice.id" />
-          <ReferenceField
-            source="party_id"
-            reference="party"
-            sortable={false}
-            label="field.notice.party_id"
-          >
-            <TextField source="name" />
-          </ReferenceField>
-          <TextField source="type" label="field.notice.type" />
-          <TextField source="source" label="field.notice.source" />
-          <EnumField
-            source="status"
-            enumKey="notice.status"
-            label="field.notice.status"
-          />
-          <DateField
-            source="recorded_at"
-            showTime
-            label="field.notice.recorded_at"
-          />
-        </FieldStack>
-        <Typography variant="h6" gutterBottom>
-          Details
-        </Typography>
+export const NoticeShow = () => {
+  const noticeFields = getFields(zNotice.shape);
+
+  return (
+    <Show>
+      <Heading level={2} size="small" spacing>
+        Basic information
+      </Heading>
+      <Content>
+        <TextField source={noticeFields.id.source} label />
+        <ReferenceField
+          source={noticeFields.party_id.source}
+          reference="party"
+          label
+        >
+          <TextField source="name" />
+        </ReferenceField>
+        <TextField source={noticeFields.type.source} label />
+        <TextField source={noticeFields.source.source} label />
+        <EnumField
+          source={noticeFields.status.source}
+          enumKey="notice.status"
+          label
+        />
+        <DateField source={noticeFields.recorded_at.source} showTime label />
+      </Content>
+
+      <VerticalSpace />
+      <Heading level={2} size="small" spacing>
+        Details
+      </Heading>
+      <Content>
         <NoticeShowDetails />
-      </Stack>
-    </SimpleShowLayout>
-  </Show>
-);
+      </Content>
+    </Show>
+  );
+};

@@ -1,26 +1,23 @@
-import {
-  TextField,
-  SimpleShowLayout,
-  Title,
-  RecordContextProvider,
-  Button,
-  useTranslate,
-} from "react-admin";
+import { useTranslate } from "ra-core";
 import { Link, useLocation } from "react-router-dom";
-import { Typography, Stack, Card, Box } from "@mui/material";
-import BookmarkAddIcon from "@mui/icons-material/BookmarkAdd";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import { FieldStack } from "../../auth";
 import { zControllableUnitLookup } from "../../generated-client/zod.gen";
 import { ControllableUnitLookup } from "../../generated-client";
 import { ControllableUnitServiceProviderLocationState } from "../service_provider/ControllableUnitServiceProviderInput";
 import { ControllableUnitInputLocationState } from "../ControllableUnitInput";
+import {
+  Heading,
+  BodyText,
+  FlexDiv,
+  Button,
+  Card,
+  CardHeader,
+  CardHeaderContent,
+  CardTitle,
+  CardContent,
+  CardFooter,
+  Table,
+} from "../../components/ui";
+import { LabelValue } from "../../components/LabelValue";
 
 type LookupResponse_ControllableUnit =
   ControllableUnitLookup["controllable_units"][number];
@@ -43,18 +40,18 @@ const CreateCUButton = ({
 
   return (
     <Button
-      component={Link}
-      to={`/controllable_unit/create`}
-      startIcon={<BookmarkAddIcon />}
+      as={Link}
+      to="/controllable_unit/create"
       state={cuspLocationState}
-      variant="contained"
+      variant="primary"
       size="large"
-      sx={{ width: "500px" }}
-      label="Create a new controllable unit"
-    />
+      style={{ maxWidth: "500px" }}
+    >
+      Create a new controllable unit
+    </Button>
   );
 };
-// local list of TRs for each CU
+
 const TechnicalResourceList = ({
   technical_resources,
 }: {
@@ -62,37 +59,38 @@ const TechnicalResourceList = ({
 }) => {
   const translate = useTranslate();
 
+  if (technical_resources.length === 0) {
+    return <BodyText>No technical resources </BodyText>;
+  }
+
   return (
-    <TableContainer component={Paper}>
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell>{translate("field.technical_resource.id")}</TableCell>
-            <TableCell align="right">
-              {translate("field.technical_resource.name")}
-            </TableCell>
-            <TableCell align="right">
-              {translate("field.technical_resource.details")}
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {technical_resources.map((tr: LookupResponse_TechnicalResource) => (
-            <TableRow key={tr.id}>
-              <TableCell component="th" scope="row">
-                {tr.id}
-              </TableCell>
-              <TableCell align="right">{tr.name}</TableCell>
-              <TableCell align="right">{tr.details}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Table>
+      <Table.Header>
+        <Table.Row>
+          <Table.ColumnHeader scope="col">
+            {translate("field.technical_resource.id")}
+          </Table.ColumnHeader>
+          <Table.ColumnHeader scope="col">
+            {translate("field.technical_resource.name")}
+          </Table.ColumnHeader>
+          <Table.ColumnHeader scope="col">
+            {translate("field.technical_resource.details")}
+          </Table.ColumnHeader>
+        </Table.Row>
+      </Table.Header>
+      <Table.Body>
+        {technical_resources.map((tr: LookupResponse_TechnicalResource) => (
+          <Table.Row key={tr.id}>
+            <Table.DataCell>{tr.id}</Table.DataCell>
+            <Table.DataCell>{tr.name}</Table.DataCell>
+            <Table.DataCell>{tr.details}</Table.DataCell>
+          </Table.Row>
+        ))}
+      </Table.Body>
+    </Table>
   );
 };
 
-// one instance of this component per CU found in the lookup operation
 const ControllableUnitLookupResultItem = ({
   controllableUnit,
   endUserId,
@@ -109,44 +107,46 @@ const ControllableUnitLookupResultItem = ({
   };
 
   return (
-    <Card sx={{ maxWidth: "1000px" }}>
-      <SimpleShowLayout>
-        <FieldStack
-          spacing={2}
-          direction="row"
-          flexWrap="wrap"
-          allowAll
-          hideTooltips
+    <Card style={{ maxWidth: "1000px" }}>
+      <CardHeader>
+        <CardHeaderContent>
+          <FlexDiv
+            style={{ flexDirection: "column", gap: "var(--eds-size-3)" }}
+          >
+            <LabelValue
+              labelKey="controllable_unit.id"
+              value={controllableUnit.id}
+            />
+            <LabelValue
+              labelKey="controllable_unit.business_id"
+              value={controllableUnit.business_id}
+            />
+            <LabelValue
+              labelKey="controllable_unit.name"
+              value={controllableUnit.name}
+            />
+          </FlexDiv>
+        </CardHeaderContent>
+      </CardHeader>
+      <CardContent>
+        <TechnicalResourceList
+          technical_resources={controllableUnit.technical_resources}
+        />
+      </CardContent>
+      <CardFooter style={{ justifyContent: "flex-end" }}>
+        <Button
+          as={Link}
+          to="/controllable_unit_service_provider/create"
+          state={cuspLocationState}
+          variant="primary"
         >
-          <TextField source="id" label="field.controllable_unit.id" />
-          <TextField
-            source="business_id"
-            label="field.controllable_unit.business_id"
-          />
-          <TextField source="name" label="field.controllable_unit.name" />
-        </FieldStack>
-        <FieldStack spacing={2} allowAll hideTooltips>
-          <TechnicalResourceList
-            technical_resources={controllableUnit.technical_resources}
-          />
-        </FieldStack>
-        <>
-          <Button
-            component={Link}
-            to={`/controllable_unit_service_provider/create`}
-            startIcon={<BookmarkAddIcon />}
-            // input a CU ID instead of from a list of names (cf. CUSP input)
-            state={cuspLocationState}
-            variant="contained"
-            label="Manage Controllable Unit"
-          />
-        </>
-      </SimpleShowLayout>
+          Manage Controllable Unit
+        </Button>
+      </CardFooter>
     </Card>
   );
 };
 
-// page to display results of controllable unit lookup operation
 export const ControllableUnitLookupResult = () => {
   const {
     state: { result },
@@ -156,74 +156,66 @@ export const ControllableUnitLookupResult = () => {
   );
 
   return (
-    <RecordContextProvider value={controllableUnitLookUpResult}>
-      <Stack spacing={2}>
-        <Box m={1} />
-        <Title title="Controllable Unit Lookup Result" />
-        <Typography variant="h6">Technical information</Typography>
-        <Stack direction="row" spacing={2}>
-          <Card>
-            <Box m={2}>
-              <Stack spacing={2}>
-                <Typography variant="h6">Accounting point</Typography>
-                <FieldStack
-                  spacing={2}
-                  direction="row"
-                  flexWrap="wrap"
-                  allowAll
-                  hideTooltips
-                >
-                  <TextField
-                    source="accounting_point.id"
-                    label="field.accounting_point.id"
-                  />
-                  <TextField
-                    source="accounting_point.business_id"
-                    label="field.accounting_point.business_id"
-                  />
-                </FieldStack>
-              </Stack>
-            </Box>
-          </Card>
-          <Card>
-            <Box m={2}>
-              <Stack spacing={2}>
-                <Typography variant="h6">End user</Typography>
-                <FieldStack
-                  spacing={2}
-                  direction="row"
-                  flexWrap="wrap"
-                  allowAll
-                  hideTooltips
-                >
-                  <TextField source="end_user.id" label="field.party.id" />
-                </FieldStack>
-              </Stack>
-            </Box>
-          </Card>
-        </Stack>
-        <CreateCUButton
-          accountingPointId={controllableUnitLookUpResult.accounting_point.id}
-          endUserId={controllableUnitLookUpResult.end_user.id}
-        />
-        {controllableUnitLookUpResult.controllable_units.length == 0 ? (
-          <Typography variant="h6">No controllable units found</Typography>
-        ) : (
-          <>
-            <Typography variant="h6">Controllable units found</Typography>
-            <Stack spacing={2}>
-              {controllableUnitLookUpResult.controllable_units.map((record) => (
-                <RecordContextProvider key={record.id} value={record}>
-                  <ControllableUnitLookupResultItem
-                    controllableUnit={record}
-                    endUserId={controllableUnitLookUpResult.end_user.id}
-                  />
-                </RecordContextProvider>
-              ))}
-            </Stack>
-          </>
-        )}
-      </Stack>
-    </RecordContextProvider>
+    <FlexDiv style={{ flexDirection: "column", gap: "var(--eds-size-3)" }}>
+      <Heading level={2} size="large">
+        Controllable Unit Lookup Result
+      </Heading>
+      <Heading level={3} size="medium">
+        Technical information
+      </Heading>
+      <FlexDiv style={{ gap: "var(--eds-size-3)", flexWrap: "wrap" }}>
+        <Card>
+          <CardHeader>
+            <CardHeaderContent>
+              <CardTitle>Accounting point</CardTitle>
+            </CardHeaderContent>
+          </CardHeader>
+          <CardContent>
+            <FlexDiv
+              style={{ flexDirection: "column", gap: "var(--eds-size-3)" }}
+            >
+              <LabelValue
+                labelKey="accounting_point.id"
+                value={controllableUnitLookUpResult.accounting_point.id}
+              />
+              <LabelValue
+                labelKey="accounting_point.business_id"
+                value={
+                  controllableUnitLookUpResult.accounting_point.business_id
+                }
+              />
+              <LabelValue
+                labelKey="accounting_point_end_user.end_user_id"
+                value={controllableUnitLookUpResult.end_user.id}
+              />
+            </FlexDiv>
+          </CardContent>
+        </Card>
+      </FlexDiv>
+      <CreateCUButton
+        accountingPointId={controllableUnitLookUpResult.accounting_point.id}
+        endUserId={controllableUnitLookUpResult.end_user.id}
+      />
+      {controllableUnitLookUpResult.controllable_units.length == 0 ? (
+        <BodyText>No controllable units found</BodyText>
+      ) : (
+        <>
+          <Heading level={3} size="medium">
+            Controllable units found:
+          </Heading>
+          <FlexDiv
+            style={{ flexDirection: "column", gap: "var(--eds-size-3)" }}
+          >
+            {controllableUnitLookUpResult.controllable_units.map((cu) => (
+              <ControllableUnitLookupResultItem
+                key={cu.id}
+                controllableUnit={cu}
+                endUserId={controllableUnitLookUpResult.end_user.id}
+              />
+            ))}
+          </FlexDiv>
+        </>
+      )}
+    </FlexDiv>
   );
 };

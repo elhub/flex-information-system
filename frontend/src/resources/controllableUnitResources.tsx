@@ -27,6 +27,7 @@ import {
 import { ControllableUnitSuspensionList } from "../controllable_unit";
 import { ControllableUnitServiceProviderList } from "../controllable_unit/service_provider/ControllableUnitServiceProviderList";
 import { ControllableUnitBalanceResponsiblePartyList } from "../controllable_unit/balance_responsible_party/ControllableUnitBalanceResponsiblePartyList";
+import ControllableUnitCreate from "../controllable_unit/ControllableUnitCreate";
 
 export const createControllableUnitResources = (permissions: Permissions) => {
   const resources: JSX.Element[] = [];
@@ -55,13 +56,7 @@ export const createControllableUnitResources = (permissions: Permissions) => {
             </EditRedirectPreviousPage>
           ) : undefined
         }
-        create={
-          canCreate ? (
-            <Create>
-              <ControllableUnitInput />
-            </Create>
-          ) : undefined
-        }
+        create={canCreate ? <ControllableUnitCreate /> : undefined}
         recordRepresentation="name"
       >
         {/* lookup */}

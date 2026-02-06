@@ -12,6 +12,7 @@ import {
 } from "react-admin";
 import { Stack, Chip, Tooltip } from "@mui/material";
 import { ProductType } from "../generated-client";
+import { Tag } from "../components/ui";
 
 // display a product type with name and example products if present
 export const displayProductType = (productType: ProductType) =>
@@ -76,14 +77,12 @@ export const ProductTypeArrayField = (props: any) => {
         render={({ data }) => (
           <Stack direction="row" spacing={2}>
             {data?.map((pt_id) => (
-              <Chip
-                key={pt_id as any}
-                sx={{ marginBottom: 1 }}
-                label={
+              <Tag key={pt_id as any}>
+                {
                   productTypes?.find((productType) => productType.id == pt_id)
                     ?.name
                 }
-              />
+              </Tag>
             ))}
           </Stack>
         )}
