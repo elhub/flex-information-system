@@ -1,6 +1,15 @@
 import {
+  Accordion,
   BodyText,
+  BodyTextProps,
   Button,
+  Card,
+  CardHeader,
+  CardHeaderContent,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
   Chips,
   Combobox,
   Content,
@@ -21,19 +30,31 @@ import {
   SelectItem,
   Table,
   Tag,
+  Textarea,
   TextField,
   Tooltip,
   VerticalSpace,
 } from "@elhub/ds-components";
 import FormContainer from "./formContainer";
+import { Datepicker } from "./datepicker/Datepicker";
 
 export {
+  Accordion,
   BodyText,
+  type BodyTextProps,
   Button,
+  Card,
+  CardHeader,
+  CardHeaderContent,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
   Chips,
   Combobox,
   Content,
   Container,
+  Datepicker,
   Dropdown,
   FlexDiv,
   Header,
@@ -54,4 +75,5 @@ export {
   Tooltip,
   VerticalSpace,
   FormContainer,
+  Textarea,
 };
