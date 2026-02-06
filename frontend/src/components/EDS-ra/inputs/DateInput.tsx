@@ -16,6 +16,14 @@ export const DateInput = ({
 }: DateTimeInputProps) => {
   const { id, field, fieldState } = useInput({ source, ...rest });
 
+  const onDateChange = (date: Date | null) => {
+    field.onChange(
+      date
+        ? formatISO(date, { representation: "date", in: tz("Europe/Oslo") })
+        : null,
+    );
+  };
+
   return (
     <BaseInput
       source={source}
@@ -33,11 +41,7 @@ export const DateInput = ({
             ? parseISO(field.value, { in: tz("Europe/Oslo") })
             : undefined
         }
-        onChange={(date) =>
-          field.onChange(
-            date ? formatISO(date, { in: tz("Europe/Oslo") }) : null,
-          )
-        }
+        onChange={(date) => onDateChange(date)}
         onBlur={field.onBlur}
         size="large"
         disabled={disabled}
