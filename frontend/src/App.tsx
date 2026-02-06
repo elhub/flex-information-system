@@ -244,32 +244,11 @@ const Layout = ({ children }: LayoutProps) => (
       <Box m={3} />
     </RaLayout>
     <ReactQueryDevtools initialIsOpen={false} />
-    <footer
-      style={{
-        position: "fixed",
-        right: 0,
-        bottom: 0,
-        left: 0,
-        zIndex: 100,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: "10px",
-        backgroundColor: "var(--eds-semantic-background-action-primary)",
-        textAlign: "center",
-      }}
-    >
-      <form
-        style={{
-          display: "flex",
-          gap: "10px",
-        }}
-      >
-        <FooterButton href={serverURL} label="Portal" />
-        <FooterButton href={docsURL} label="Project documentation" />
-        <FooterButton href={apiURL} label="Main API documentation" />
-        <FooterButton href={authURL} label="Auth API documentation" />
-      </form>
+    <footer className="fixed z-10 bottom-0 left-0 w-full flex justify-center items-center p-2 bg-semantic-background-action-primary">
+      <FooterButton href={serverURL} label="Portal" />
+      <FooterButton href={docsURL} label="Project documentation" />
+      <FooterButton href={apiURL} label="Main API documentation" />
+      <FooterButton href={authURL} label="Auth API documentation" />
     </footer>
   </>
 );

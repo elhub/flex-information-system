@@ -3,6 +3,7 @@ import react from "@vitejs/plugin-react";
 import fs from "fs";
 import { homedir } from "os";
 import checker from "vite-plugin-checker";
+import tailwindcss from '@tailwindcss/vite';
 
 // https://vitejs.dev/config/
 
@@ -25,7 +26,7 @@ export default defineConfig({
   optimizeDeps: {
     include: ["@mui/material/Tooltip"],
   },
-  plugins: [react(), checker({ typescript: true })],
+  plugins: [react(), checker({ typescript: true }), tailwindcss()],
   define: {
     "process.env": {},
   },
