@@ -3,7 +3,7 @@ import react from "@vitejs/plugin-react";
 import fs from "fs";
 import { homedir } from "os";
 import checker from "vite-plugin-checker";
-import tailwindcss from '@tailwindcss/vite'
+import tailwindcss from '@tailwindcss/vite';
 
 // https://vitejs.dev/config/
 
