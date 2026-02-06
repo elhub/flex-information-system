@@ -1,4 +1,5 @@
 import {
+  Alert,
   Accordion,
   BodyText,
   BodyTextProps,
@@ -39,6 +40,7 @@ import FormContainer from "./formContainer";
 import { Datepicker } from "./datepicker/Datepicker";
 
 export {
+  Alert,
   Accordion,
   BodyText,
   type BodyTextProps,
