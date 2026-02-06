@@ -1,6 +1,7 @@
 import {
   Accordion,
   BodyText,
+  BodyTextProps,
   Button,
   Card,
   CardHeader,
@@ -40,6 +41,7 @@ import { Datepicker } from "./datepicker/Datepicker";
 export {
   Accordion,
   BodyText,
+  type BodyTextProps,
   Button,
   Card,
   CardHeader,

@@ -1,9 +1,8 @@
-import { TypographyProps } from "@mui/material";
 import { useTranslateField } from "../intl/intl";
 import { FieldTooltip } from "../tooltip/FieldTooltip";
 import { TooltipKey } from "../tooltip/tooltips";
 import { FieldLabel } from "../intl/field-labels";
-import { BodyText, FlexDiv } from "./ui";
+import { BodyText, BodyTextProps, FlexDiv } from "./ui";
 
 type LabelValueProps = {
   labelKey?: TooltipKey | FieldLabel;
@@ -11,7 +10,7 @@ type LabelValueProps = {
   value: string | number | undefined;
   unit?: string;
   tooltip?: boolean;
-} & TypographyProps;
+} & Omit<BodyTextProps, "children">;
 
 export const LabelValue = ({
   label,
