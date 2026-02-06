@@ -8,7 +8,6 @@ import {
 import { useGetIdentity, useRedirect, useTranslate, getStorage } from "ra-core";
 import { authURL } from "../../httpConfig";
 import { sessionInfoKey } from "../../auth";
-import styles from "./header.module.css";
 
 const UserDropdown = () => {
   const { isLoading, data } = useGetIdentity();
@@ -94,13 +93,11 @@ const UserDropdown = () => {
             return (
               <Dropdown.Menu.GroupedList.Item
                 key={index}
-                className={styles.dropDownItemButton}
+                className="flex gap-2 center"
                 onClick={item.onClick}
               >
-                <div className="flex flex-row gap-2 items-center">
-                  <Icon />
-                  <BodyText>{item.label}</BodyText>
-                </div>
+                <Icon />
+                <BodyText>{item.label}</BodyText>
               </Dropdown.Menu.GroupedList.Item>
             );
           })}
