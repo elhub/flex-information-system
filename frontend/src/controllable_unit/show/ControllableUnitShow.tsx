@@ -1,11 +1,4 @@
-import {
-  Loading,
-  Show,
-  SimpleShowLayout,
-  useRecordContext,
-  useResourceContext,
-} from "react-admin";
-import { Box, Stack } from "@mui/material";
+import { useRecordContext } from "ra-core";
 import {
   ControllableUnit,
   ControllableUnitHistory,
@@ -20,6 +13,9 @@ import { ControllableUnitShowActions } from "./ControllableUnitShowActions";
 import { ControllableUnitAlerts } from "./components/ControllableUnitAlerts";
 import { LabelValue } from "../../components/LabelValue";
 import { TechnicalResourceList } from "../technical_resource/TechnicalResourceList";
+import { Show } from "../../components/EDS-ra";
+import { Loader } from "../../components/ui";
+import { formatDate } from "date-fns";
 
 const Layout = () => {
   const record = useRecordContext<ControllableUnit | ControllableUnitHistory>();
@@ -30,67 +26,55 @@ const Layout = () => {
   } = useControllableUnitViewModel(record);
 
   if (isPending) {
-    return <Loading />;
+    return <Loader />;
   }
 
   if (error) {
-    // This is catched by the React Admin Error Boundary
     throw error;
   }
 
   return (
-    <SimpleShowLayout>
-      <Stack direction="column" spacing={4}>
-        <Header
-          controllableUnit={controllableUnitViewModel?.controllableUnit}
-        />
-        <ControllableUnitAlerts
-          controllableUnitViewModel={controllableUnitViewModel}
-        />
+    <div className="flex flex-col gap-5">
+      <Header controllableUnit={controllableUnitViewModel?.controllableUnit} />
+      <ControllableUnitAlerts
+        controllableUnitViewModel={controllableUnitViewModel}
+      />
 
-        <Connections controllableUnitViewModel={controllableUnitViewModel} />
+      <Connections controllableUnitViewModel={controllableUnitViewModel} />
 
-        <Box sx={{ maxWidth: "1000px" }}>
-          <TechnicalResourceList />
-        </Box>
+      <div className="max-w-2xl">
+        <TechnicalResourceList />
+      </div>
 
-        <TechnicalInformation
-          controllableUnit={controllableUnitViewModel?.controllableUnit}
-        />
+      <TechnicalInformation
+        controllableUnit={controllableUnitViewModel?.controllableUnit}
+      />
 
-        <GridValidation
-          controllableUnit={controllableUnitViewModel?.controllableUnit}
-        />
+      <GridValidation
+        controllableUnit={controllableUnitViewModel?.controllableUnit}
+      />
 
-        <LabelValue
-          color="text.secondary"
-          labelKey="controllable_unit.recorded_at"
-          value={
-            controllableUnitViewModel?.controllableUnit?.recorded_at
-              ? new Date(
-                  controllableUnitViewModel?.controllableUnit?.recorded_at,
-                ).toLocaleString()
-              : undefined
-          }
-        />
-      </Stack>
-    </SimpleShowLayout>
+      <LabelValue
+        labelKey="controllable_unit.recorded_at"
+        value={
+          controllableUnitViewModel?.controllableUnit?.recorded_at
+            ? formatDate(
+                controllableUnitViewModel?.controllableUnit?.recorded_at,
+                "dd.MM.yyyy HH:mm",
+              )
+            : undefined
+        }
+      />
+    </div>
   );
 };
 
 export const ControllableUnitShow = () => {
-  const resource = useResourceContext();
-  const isHistory = !!resource?.endsWith("_history");
   const { id } = useParams<{ id: string }>();
 
   return (
     <Show
-      actions={
-        <ControllableUnitShowActions
-          controllableUnitId={id}
-          isHistory={isHistory}
-        />
-      }
+      extraActions={<ControllableUnitShowActions controllableUnitId={id} />}
     >
       <Layout />
     </Show>

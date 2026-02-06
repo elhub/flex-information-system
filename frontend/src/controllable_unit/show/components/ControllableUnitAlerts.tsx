@@ -1,13 +1,13 @@
 import { Link, usePermissions } from "react-admin";
 import { ControllableUnitShowViewModel } from "../useControllableUnitViewModel";
-import { Alert, AlertColor, AlertTitle, Button } from "@mui/material";
 import { ReactNode } from "react";
 import { Permissions } from "../../../auth/permissions";
 import { ActivateControllableUnitButton } from "./ActivateControllableUnitButton";
 import { TechnicalResourceInputLocationState } from "../../technical_resource/TechnicalResourceInput";
+import { BodyText, Heading, Alert, Button } from "../../../components/ui";
 
 type AlertType = {
-  severity: AlertColor;
+  severity: "info" | "success" | "warning" | "error";
   title: string;
   content: ReactNode;
   action?: ReactNode;
@@ -35,7 +35,7 @@ const useControllableUnitAlerts = (
       content: `The controllable unit is suspended. Reason: ${suspension.reason}`,
       action: (
         <Button
-          component={Link}
+          as={Link}
           to={`/controllable_unit/${controllableUnit.id}/suspension/${suspension.id}/show`}
         >
           See suspension
@@ -57,7 +57,7 @@ const useControllableUnitAlerts = (
         "To set the controllable unit as active, one technical resource is required.",
       action: (
         <Button
-          component={Link}
+          as={Link}
           disabled={!canCreateTechnicalResource}
           state={locationState}
           to={`/controllable_unit/${controllableUnit.id}/technical_resource/create`}
@@ -95,14 +95,16 @@ export const ControllableUnitAlerts = ({
     return null;
   }
   return (
-    <Alert
-      sx={{ maxWidth: 800 }}
-      action={alert.action}
-      variant="outlined"
-      severity={alert.severity as AlertColor}
-    >
-      <AlertTitle>{alert.title}</AlertTitle>
-      {alert.content}
+    <Alert variant={alert.severity} className="max-w-3xl gap-4">
+      <div className="flex flex-row items-center justify-between w-full!">
+        <div className="flex flex-col gap-2">
+          <Heading level={5} size="small">
+            {alert.title}
+          </Heading>
+          <BodyText>{alert.content}</BodyText>
+        </div>
+        {alert.action && <>{alert.action}</>}
+      </div>
     </Alert>
   );
 };

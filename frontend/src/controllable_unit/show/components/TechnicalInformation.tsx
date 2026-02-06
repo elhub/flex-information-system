@@ -1,4 +1,3 @@
-import { Box } from "@mui/material";
 import { ControllableUnit } from "../../../generated-client";
 import { LabelValue } from "../../../components/LabelValue";
 
@@ -8,7 +7,7 @@ export const TechnicalInformation = ({
   controllableUnit: ControllableUnit | undefined;
 }) => {
   return (
-    <Box>
+    <div>
       <LabelValue
         tooltip={true}
         labelKey="controllable_unit.maximum_available_capacity"
@@ -44,6 +43,6 @@ export const TechnicalInformation = ({
         value={controllableUnit?.ramp_rate}
         unit="kW/min"
       />
-    </Box>
+    </div>
   );
 };

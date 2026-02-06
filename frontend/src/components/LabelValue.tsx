@@ -2,7 +2,7 @@ import { useTranslateField } from "../intl/intl";
 import { FieldTooltip } from "../tooltip/FieldTooltip";
 import { TooltipKey } from "../tooltip/tooltips";
 import { FieldLabel } from "../intl/field-labels";
-import { BodyText, BodyTextProps, FlexDiv } from "./ui";
+import { BodyText, BodyTextProps } from "./ui";
 
 type LabelValueProps = {
   labelKey?: TooltipKey | FieldLabel;
@@ -28,12 +28,12 @@ export const LabelValue = ({
   const formattedValue = unit ? `${value} ${unit}` : value;
 
   return (
-    <FlexDiv style={{ gap: "var(--eds-size-1)" }}>
+    <div className="flex gap-2 items-center">
       <BodyText weight="bold" {...props}>
         {labelKey ? translateLabel(labelKey) : label}:
       </BodyText>
       <BodyText {...props}>{formattedValue}</BodyText>
       {tooltip && labelKey && <FieldTooltip tooltipKey={labelKey} />}
-    </FlexDiv>
+    </div>
   );
 };

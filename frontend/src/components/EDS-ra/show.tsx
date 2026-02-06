@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { BodyText, Content, FlexDiv, Loader, Panel } from "../ui";
+import { BodyText, Content, Loader, Panel } from "../ui";
 import { Permissions, PermissionTarget } from "../../auth/permissions";
 import {
   RaRecord,
@@ -12,9 +12,17 @@ import { EditButton, EventButton, ResourceHistoryButton } from "./buttons";
 
 type SimpleShowLayoutProps = {
   children: ReactNode;
+  /*
+
+   Edit button, resource history button, event button are there by default
+  */
+  extraActions?: ReactNode;
 };
 
-const SimpleShowLayout = ({ children }: SimpleShowLayoutProps) => {
+const SimpleShowLayout = ({
+  children,
+  extraActions,
+}: SimpleShowLayoutProps) => {
   const resource = useResourceContext();
   const { permissions } = usePermissions<Permissions>();
 
@@ -26,11 +34,12 @@ const SimpleShowLayout = ({ children }: SimpleShowLayoutProps) => {
   return (
     <>
       {!isHistory ? (
-        <FlexDiv style={{ justifyContent: "flex-end", gap: "1rem" }}>
+        <div className="flex justify-end gap-2">
           {canEdit && <EditButton />}
+          {extraActions}
           <ResourceHistoryButton />
           <EventButton />
-        </FlexDiv>
+        </div>
       ) : null}
       <Panel border>
         <Content>{children}</Content>
@@ -40,9 +49,9 @@ const SimpleShowLayout = ({ children }: SimpleShowLayoutProps) => {
 };
 
 export const Show = <RecordType extends RaRecord = any>(
-  props: ShowBaseProps<RecordType>,
+  props: ShowBaseProps<RecordType> & SimpleShowLayoutProps,
 ) => {
-  const { children, ...rest } = props;
+  const { children, extraActions, ...rest } = props;
 
   return (
     <ShowBase
@@ -50,7 +59,9 @@ export const Show = <RecordType extends RaRecord = any>(
       loading={<Loader />}
       error={<BodyText>Something went wrong</BodyText>}
     >
-      <SimpleShowLayout>{children}</SimpleShowLayout>
+      <SimpleShowLayout extraActions={extraActions}>
+        {children}
+      </SimpleShowLayout>
     </ShowBase>
   );
 };
