@@ -5,7 +5,7 @@ import UserDropdown from "./UserDropdown";
 import { Header as DSHeader } from "../ui";
 export const Header = () => {
   return (
-    <DSHeader className="flex justify-between items-center p-4 bg-semantic-background-action-primary h-12 fixed z-100 top-0 w-full">
+    <DSHeader className="flex justify-between items-center p-4 bg-semantic-background-action-primary h-12 fixed z-popover top-0 w-full">
       <Link
         className="flex items-center gap-2"
         as={NavLink}
