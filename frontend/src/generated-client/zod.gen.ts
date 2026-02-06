@@ -431,14 +431,12 @@ export const zControllableUnitUpdateRequest = z.object({
       z.iso.date().optional(),
     ),
   ),
-  status: z
-    .optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        zControllableUnitStatus.optional(),
-      ),
-    )
-    .default("new"),
+  status: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zControllableUnitStatus.optional(),
+    ),
+  ),
   regulation_direction: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -486,14 +484,12 @@ export const zControllableUnitUpdateRequest = z.object({
         .optional(),
     ),
   ),
-  grid_validation_status: z
-    .optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        zControllableUnitGridValidationStatus.optional(),
-      ),
-    )
-    .default("pending"),
+  grid_validation_status: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zControllableUnitGridValidationStatus.optional(),
+    ),
+  ),
   grid_validation_notes: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -519,14 +515,12 @@ export const zControllableUnitCreateRequest = z.object({
       z.iso.date().optional(),
     ),
   ),
-  status: z
-    .optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        zControllableUnitStatus.optional(),
-      ),
-    )
-    .default("new"),
+  status: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zControllableUnitStatus.optional(),
+    ),
+  ),
   regulation_direction: zControllableUnitRegulationDirection,
   maximum_available_capacity: z.number().gte(0).lte(999999.999),
   minimum_duration: z.optional(
@@ -565,14 +559,12 @@ export const zControllableUnitCreateRequest = z.object({
         .optional(),
     ),
   ),
-  grid_validation_status: z
-    .optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        zControllableUnitGridValidationStatus.optional(),
-      ),
-    )
-    .default("pending"),
+  grid_validation_status: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zControllableUnitGridValidationStatus.optional(),
+    ),
+  ),
   grid_validation_notes: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -605,7 +597,7 @@ export const zControllableUnit = z.object({
       z.iso.date().optional(),
     ),
   ),
-  status: zControllableUnitStatus.default("new"),
+  status: zControllableUnitStatus,
   regulation_direction: zControllableUnitRegulationDirection,
   maximum_available_capacity: z.number().gte(0).lte(999999.999),
   is_small: z.boolean().readonly(),
@@ -645,8 +637,7 @@ export const zControllableUnit = z.object({
         .optional(),
     ),
   ),
-  grid_validation_status:
-    zControllableUnitGridValidationStatus.default("pending"),
+  grid_validation_status: zControllableUnitGridValidationStatus,
   grid_validation_notes: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -705,14 +696,12 @@ export const zControllableUnitSuspension = z.object({
  * Request schema for update operations - Comment made by a party involved in a controllable unit suspension.
  */
 export const zControllableUnitSuspensionCommentUpdateRequest = z.object({
-  visibility: z
-    .optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        zControllableUnitSuspensionCommentVisibility.optional(),
-      ),
-    )
-    .default("same_party"),
+  visibility: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zControllableUnitSuspensionCommentVisibility.optional(),
+    ),
+  ),
   content: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -726,14 +715,12 @@ export const zControllableUnitSuspensionCommentUpdateRequest = z.object({
  */
 export const zControllableUnitSuspensionCommentCreateRequest = z.object({
   controllable_unit_suspension_id: z.int(),
-  visibility: z
-    .optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        zControllableUnitSuspensionCommentVisibility.optional(),
-      ),
-    )
-    .default("same_party"),
+  visibility: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zControllableUnitSuspensionCommentVisibility.optional(),
+    ),
+  ),
   content: z.string().max(2048),
 });
 
@@ -745,8 +732,7 @@ export const zControllableUnitSuspensionComment = z.object({
   controllable_unit_suspension_id: z.int(),
   created_by: z.int().readonly(),
   created_at: z.string().readonly(),
-  visibility:
-    zControllableUnitSuspensionCommentVisibility.default("same_party"),
+  visibility: zControllableUnitSuspensionCommentVisibility,
   content: z.string().max(2048),
   recorded_at: z.string().readonly(),
   recorded_by: z.int().readonly(),
@@ -839,14 +825,12 @@ export const zServiceProvidingGroupUpdateRequest = z.object({
       zServiceProvidingGroupBiddingZone.optional(),
     ),
   ),
-  status: z
-    .optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        zServiceProvidingGroupStatus.optional(),
-      ),
-    )
-    .default("new"),
+  status: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zServiceProvidingGroupStatus.optional(),
+    ),
+  ),
 });
 
 /**
@@ -856,14 +840,12 @@ export const zServiceProvidingGroupCreateRequest = z.object({
   name: z.string().max(128),
   service_provider_id: z.int(),
   bidding_zone: zServiceProvidingGroupBiddingZone,
-  status: z
-    .optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        zServiceProvidingGroupStatus.optional(),
-      ),
-    )
-    .default("new"),
+  status: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zServiceProvidingGroupStatus.optional(),
+    ),
+  ),
 });
 
 /**
@@ -874,7 +856,7 @@ export const zServiceProvidingGroup = z.object({
   name: z.string().max(128),
   service_provider_id: z.int(),
   bidding_zone: zServiceProvidingGroupBiddingZone,
-  status: zServiceProvidingGroupStatus.default("new"),
+  status: zServiceProvidingGroupStatus,
   recorded_at: z.string().readonly(),
   recorded_by: z.int().readonly(),
 });
@@ -935,14 +917,12 @@ export const zServiceProvidingGroupMembership = z.object({
  */
 export const zServiceProvidingGroupGridPrequalificationUpdateRequest = z.object(
   {
-    status: z
-      .optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          zServiceProvidingGroupGridPrequalificationStatus.optional(),
-        ),
-      )
-      .default("requested"),
+    status: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zServiceProvidingGroupGridPrequalificationStatus.optional(),
+      ),
+    ),
     prequalified_at: z.optional(
       z.preprocess(
         (value) => (value === null ? undefined : value),
@@ -959,14 +939,12 @@ export const zServiceProvidingGroupGridPrequalificationCreateRequest = z.object(
   {
     service_providing_group_id: z.int(),
     impacted_system_operator_id: z.int(),
-    status: z
-      .optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          zServiceProvidingGroupGridPrequalificationStatus.optional(),
-        ),
-      )
-      .default("requested"),
+    status: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zServiceProvidingGroupGridPrequalificationStatus.optional(),
+      ),
+    ),
     prequalified_at: z.optional(
       z.preprocess(
         (value) => (value === null ? undefined : value),
@@ -983,7 +961,7 @@ export const zServiceProvidingGroupGridPrequalification = z.object({
   id: z.int().readonly(),
   service_providing_group_id: z.int(),
   impacted_system_operator_id: z.int(),
-  status: zServiceProvidingGroupGridPrequalificationStatus.default("requested"),
+  status: zServiceProvidingGroupGridPrequalificationStatus,
   prequalified_at: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -999,14 +977,12 @@ export const zServiceProvidingGroupGridPrequalification = z.object({
  */
 export const zServiceProvidingGroupGridPrequalificationCommentUpdateRequest =
   z.object({
-    visibility: z
-      .optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          zServiceProvidingGroupGridPrequalificationCommentVisibility.optional(),
-        ),
-      )
-      .default("same_party"),
+    visibility: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zServiceProvidingGroupGridPrequalificationCommentVisibility.optional(),
+      ),
+    ),
     content: z.optional(
       z.preprocess(
         (value) => (value === null ? undefined : value),
@@ -1021,14 +997,12 @@ export const zServiceProvidingGroupGridPrequalificationCommentUpdateRequest =
 export const zServiceProvidingGroupGridPrequalificationCommentCreateRequest =
   z.object({
     service_providing_group_grid_prequalification_id: z.int(),
-    visibility: z
-      .optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          zServiceProvidingGroupGridPrequalificationCommentVisibility.optional(),
-        ),
-      )
-      .default("same_party"),
+    visibility: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zServiceProvidingGroupGridPrequalificationCommentVisibility.optional(),
+      ),
+    ),
     content: z.string().max(2048),
   });
 
@@ -1040,10 +1014,7 @@ export const zServiceProvidingGroupGridPrequalificationComment = z.object({
   service_providing_group_grid_prequalification_id: z.int(),
   created_by: z.int().readonly(),
   created_at: z.string().readonly(),
-  visibility:
-    zServiceProvidingGroupGridPrequalificationCommentVisibility.default(
-      "same_party",
-    ),
+  visibility: zServiceProvidingGroupGridPrequalificationCommentVisibility,
   content: z.string().max(2048),
   recorded_at: z.string().readonly(),
   recorded_by: z.int().readonly(),
@@ -1092,14 +1063,12 @@ export const zServiceProvidingGroupGridSuspension = z.object({
  */
 export const zServiceProvidingGroupGridSuspensionCommentUpdateRequest =
   z.object({
-    visibility: z
-      .optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          zServiceProvidingGroupGridSuspensionCommentVisibility.optional(),
-        ),
-      )
-      .default("same_party"),
+    visibility: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zServiceProvidingGroupGridSuspensionCommentVisibility.optional(),
+      ),
+    ),
     content: z.optional(
       z.preprocess(
         (value) => (value === null ? undefined : value),
@@ -1114,14 +1083,12 @@ export const zServiceProvidingGroupGridSuspensionCommentUpdateRequest =
 export const zServiceProvidingGroupGridSuspensionCommentCreateRequest =
   z.object({
     service_providing_group_grid_suspension_id: z.int(),
-    visibility: z
-      .optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          zServiceProvidingGroupGridSuspensionCommentVisibility.optional(),
-        ),
-      )
-      .default("same_party"),
+    visibility: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zServiceProvidingGroupGridSuspensionCommentVisibility.optional(),
+      ),
+    ),
     content: z.string().max(2048),
   });
 
@@ -1133,8 +1100,7 @@ export const zServiceProvidingGroupGridSuspensionComment = z.object({
   service_providing_group_grid_suspension_id: z.int(),
   created_by: z.int().readonly(),
   created_at: z.string().readonly(),
-  visibility:
-    zServiceProvidingGroupGridSuspensionCommentVisibility.default("same_party"),
+  visibility: zServiceProvidingGroupGridSuspensionCommentVisibility,
   content: z.string().max(2048),
   recorded_at: z.string().readonly(),
   recorded_by: z.int().readonly(),
@@ -1339,14 +1305,12 @@ export const zEntityClient = z.object({
  * * End User
  */
 export const zPartyUpdateRequest = z.object({
-  business_id_type: z
-    .optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        zPartyBusinessIdType.optional(),
-      ),
-    )
-    .default("uuid"),
+  business_id_type: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zPartyBusinessIdType.optional(),
+    ),
+  ),
   name: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -1365,14 +1329,12 @@ export const zPartyUpdateRequest = z.object({
       zPartyType.optional(),
     ),
   ),
-  status: z
-    .optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        zPartyStatus.optional(),
-      ),
-    )
-    .default("new"),
+  status: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zPartyStatus.optional(),
+    ),
+  ),
 });
 
 /**
@@ -1393,26 +1355,22 @@ export const zPartyCreateRequest = z.object({
       z.string().optional(),
     ),
   ),
-  business_id_type: z
-    .optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        zPartyBusinessIdType.optional(),
-      ),
-    )
-    .default("uuid"),
+  business_id_type: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zPartyBusinessIdType.optional(),
+    ),
+  ),
   entity_id: z.int(),
   name: z.string(),
   role: zPartyRole,
   type: zPartyType,
-  status: z
-    .optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        zPartyStatus.optional(),
-      ),
-    )
-    .default("new"),
+  status: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zPartyStatus.optional(),
+    ),
+  ),
 });
 
 /**
@@ -1429,12 +1387,12 @@ export const zPartyCreateRequest = z.object({
 export const zParty = z.object({
   id: z.int().readonly(),
   business_id: z.string(),
-  business_id_type: zPartyBusinessIdType.default("uuid"),
+  business_id_type: zPartyBusinessIdType,
   entity_id: z.int(),
   name: z.string(),
   role: zPartyRole,
   type: zPartyType,
-  status: zPartyStatus.default("new"),
+  status: zPartyStatus,
   recorded_at: z.string().readonly(),
   recorded_by: z.int().readonly(),
 });
@@ -1753,14 +1711,12 @@ export const zProductType = z.object({
  * Request schema for update operations - Relation between a system operator and a product type they want to buy.
  */
 export const zSystemOperatorProductTypeUpdateRequest = z.object({
-  status: z
-    .optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        zSystemOperatorProductTypeStatus.optional(),
-      ),
-    )
-    .default("active"),
+  status: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zSystemOperatorProductTypeStatus.optional(),
+    ),
+  ),
 });
 
 /**
@@ -1769,14 +1725,12 @@ export const zSystemOperatorProductTypeUpdateRequest = z.object({
 export const zSystemOperatorProductTypeCreateRequest = z.object({
   system_operator_id: z.int(),
   product_type_id: z.int(),
-  status: z
-    .optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        zSystemOperatorProductTypeStatus.optional(),
-      ),
-    )
-    .default("active"),
+  status: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zSystemOperatorProductTypeStatus.optional(),
+    ),
+  ),
 });
 
 /**
@@ -1786,7 +1740,7 @@ export const zSystemOperatorProductType = z.object({
   id: z.int().readonly(),
   system_operator_id: z.int(),
   product_type_id: z.int(),
-  status: zSystemOperatorProductTypeStatus.default("active"),
+  status: zSystemOperatorProductTypeStatus,
   recorded_at: z.string().readonly(),
   recorded_by: z.int().readonly(),
 });
@@ -1801,14 +1755,12 @@ export const zServiceProviderProductApplicationUpdateRequest = z.object({
       z.array(z.int()).optional(),
     ),
   ),
-  status: z
-    .optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        zServiceProviderProductApplicationStatus.optional(),
-      ),
-    )
-    .default("requested"),
+  status: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zServiceProviderProductApplicationStatus.optional(),
+    ),
+  ),
   qualified_at: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -1824,14 +1776,12 @@ export const zServiceProviderProductApplicationCreateRequest = z.object({
   service_provider_id: z.int(),
   system_operator_id: z.int(),
   product_type_ids: z.array(z.int()),
-  status: z
-    .optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        zServiceProviderProductApplicationStatus.optional(),
-      ),
-    )
-    .default("requested"),
+  status: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zServiceProviderProductApplicationStatus.optional(),
+    ),
+  ),
   qualified_at: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -1848,7 +1798,7 @@ export const zServiceProviderProductApplication = z.object({
   service_provider_id: z.int(),
   system_operator_id: z.int(),
   product_type_ids: z.array(z.int()),
-  status: zServiceProviderProductApplicationStatus.default("requested"),
+  status: zServiceProviderProductApplicationStatus,
   qualified_at: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -1863,14 +1813,12 @@ export const zServiceProviderProductApplication = z.object({
  * Request schema for update operations - Comment made by a party involved in a service provider product application.
  */
 export const zServiceProviderProductApplicationCommentUpdateRequest = z.object({
-  visibility: z
-    .optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        zServiceProviderProductApplicationCommentVisibility.optional(),
-      ),
-    )
-    .default("same_party"),
+  visibility: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zServiceProviderProductApplicationCommentVisibility.optional(),
+    ),
+  ),
   content: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -1884,14 +1832,12 @@ export const zServiceProviderProductApplicationCommentUpdateRequest = z.object({
  */
 export const zServiceProviderProductApplicationCommentCreateRequest = z.object({
   service_provider_product_application_id: z.int(),
-  visibility: z
-    .optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        zServiceProviderProductApplicationCommentVisibility.optional(),
-      ),
-    )
-    .default("same_party"),
+  visibility: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zServiceProviderProductApplicationCommentVisibility.optional(),
+    ),
+  ),
   content: z.string().max(2048),
 });
 
@@ -1903,8 +1849,7 @@ export const zServiceProviderProductApplicationComment = z.object({
   service_provider_product_application_id: z.int(),
   created_by: z.int().readonly(),
   created_at: z.string().readonly(),
-  visibility:
-    zServiceProviderProductApplicationCommentVisibility.default("same_party"),
+  visibility: zServiceProviderProductApplicationCommentVisibility,
   content: z.string().max(2048),
   recorded_at: z.string().readonly(),
   recorded_by: z.int().readonly(),
@@ -1960,14 +1905,12 @@ export const zServiceProviderProductSuspension = z.object({
  * Request schema for update operations - Comment made by a party involved in a service provider product suspension.
  */
 export const zServiceProviderProductSuspensionCommentUpdateRequest = z.object({
-  visibility: z
-    .optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        zServiceProviderProductSuspensionCommentVisibility.optional(),
-      ),
-    )
-    .default("same_party"),
+  visibility: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zServiceProviderProductSuspensionCommentVisibility.optional(),
+    ),
+  ),
   content: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -1981,14 +1924,12 @@ export const zServiceProviderProductSuspensionCommentUpdateRequest = z.object({
  */
 export const zServiceProviderProductSuspensionCommentCreateRequest = z.object({
   service_provider_product_suspension_id: z.int(),
-  visibility: z
-    .optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        zServiceProviderProductSuspensionCommentVisibility.optional(),
-      ),
-    )
-    .default("same_party"),
+  visibility: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zServiceProviderProductSuspensionCommentVisibility.optional(),
+    ),
+  ),
   content: z.string().max(2048),
 });
 
@@ -2000,8 +1941,7 @@ export const zServiceProviderProductSuspensionComment = z.object({
   service_provider_product_suspension_id: z.int(),
   created_by: z.int().readonly(),
   created_at: z.string().readonly(),
-  visibility:
-    zServiceProviderProductSuspensionCommentVisibility.default("same_party"),
+  visibility: zServiceProviderProductSuspensionCommentVisibility,
   content: z.string().max(2048),
   recorded_at: z.string().readonly(),
   recorded_by: z.int().readonly(),
@@ -2017,14 +1957,12 @@ export const zServiceProvidingGroupProductApplicationUpdateRequest = z.object({
       z.array(z.int()).optional(),
     ),
   ),
-  status: z
-    .optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        zServiceProvidingGroupProductApplicationStatus.optional(),
-      ),
-    )
-    .default("requested"),
+  status: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zServiceProvidingGroupProductApplicationStatus.optional(),
+    ),
+  ),
   notes: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -2052,14 +1990,12 @@ export const zServiceProvidingGroupProductApplicationCreateRequest = z.object({
   service_providing_group_id: z.int(),
   procuring_system_operator_id: z.int(),
   product_type_ids: z.array(z.int()),
-  status: z
-    .optional(
-      z.preprocess(
-        (value) => (value === null ? undefined : value),
-        zServiceProvidingGroupProductApplicationStatus.optional(),
-      ),
-    )
-    .default("requested"),
+  status: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zServiceProvidingGroupProductApplicationStatus.optional(),
+    ),
+  ),
   notes: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -2088,7 +2024,7 @@ export const zServiceProvidingGroupProductApplication = z.object({
   service_providing_group_id: z.int(),
   procuring_system_operator_id: z.int(),
   product_type_ids: z.array(z.int()),
-  status: zServiceProvidingGroupProductApplicationStatus.default("requested"),
+  status: zServiceProvidingGroupProductApplicationStatus,
   notes: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -2162,14 +2098,12 @@ export const zServiceProvidingGroupProductSuspension = z.object({
  */
 export const zServiceProvidingGroupProductSuspensionCommentUpdateRequest =
   z.object({
-    visibility: z
-      .optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          zServiceProvidingGroupProductSuspensionCommentVisibility.optional(),
-        ),
-      )
-      .default("same_party"),
+    visibility: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zServiceProvidingGroupProductSuspensionCommentVisibility.optional(),
+      ),
+    ),
     content: z.optional(
       z.preprocess(
         (value) => (value === null ? undefined : value),
@@ -2184,14 +2118,12 @@ export const zServiceProvidingGroupProductSuspensionCommentUpdateRequest =
 export const zServiceProvidingGroupProductSuspensionCommentCreateRequest =
   z.object({
     service_providing_group_product_suspension_id: z.int(),
-    visibility: z
-      .optional(
-        z.preprocess(
-          (value) => (value === null ? undefined : value),
-          zServiceProvidingGroupProductSuspensionCommentVisibility.optional(),
-        ),
-      )
-      .default("same_party"),
+    visibility: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zServiceProvidingGroupProductSuspensionCommentVisibility.optional(),
+      ),
+    ),
     content: z.string().max(2048),
   });
 
@@ -2203,10 +2135,7 @@ export const zServiceProvidingGroupProductSuspensionComment = z.object({
   service_providing_group_product_suspension_id: z.int(),
   created_by: z.int().readonly(),
   created_at: z.string().readonly(),
-  visibility:
-    zServiceProvidingGroupProductSuspensionCommentVisibility.default(
-      "same_party",
-    ),
+  visibility: zServiceProvidingGroupProductSuspensionCommentVisibility,
   content: z.string().max(2048),
   recorded_at: z.string().readonly(),
   recorded_by: z.int().readonly(),
@@ -2217,7 +2146,7 @@ export const zServiceProvidingGroupProductSuspensionComment = z.object({
  */
 export const zNotice = z.object({
   id: z.int().readonly(),
-  status: zNoticeStatus.default("active"),
+  status: zNoticeStatus,
   party_id: z.int().readonly(),
   type: z
     .string()
@@ -2705,7 +2634,7 @@ export const zControllableUnitWritable = z.object({
       z.iso.date().optional(),
     ),
   ),
-  status: zControllableUnitStatus.default("new"),
+  status: zControllableUnitStatus,
   regulation_direction: zControllableUnitRegulationDirection,
   maximum_available_capacity: z.number().gte(0).lte(999999.999),
   minimum_duration: z.optional(
@@ -2744,8 +2673,7 @@ export const zControllableUnitWritable = z.object({
         .optional(),
     ),
   ),
-  grid_validation_status:
-    zControllableUnitGridValidationStatus.default("pending"),
+  grid_validation_status: zControllableUnitGridValidationStatus,
   grid_validation_notes: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -2774,8 +2702,7 @@ export const zControllableUnitSuspensionWritable = z.object({
  */
 export const zControllableUnitSuspensionCommentWritable = z.object({
   controllable_unit_suspension_id: z.int(),
-  visibility:
-    zControllableUnitSuspensionCommentVisibility.default("same_party"),
+  visibility: zControllableUnitSuspensionCommentVisibility,
   content: z.string().max(2048),
 });
 
@@ -2808,7 +2735,7 @@ export const zServiceProvidingGroupWritable = z.object({
   name: z.string().max(128),
   service_provider_id: z.int(),
   bidding_zone: zServiceProvidingGroupBiddingZone,
-  status: zServiceProvidingGroupStatus.default("new"),
+  status: zServiceProvidingGroupStatus,
 });
 
 /**
@@ -2832,7 +2759,7 @@ export const zServiceProvidingGroupMembershipWritable = z.object({
 export const zServiceProvidingGroupGridPrequalificationWritable = z.object({
   service_providing_group_id: z.int(),
   impacted_system_operator_id: z.int(),
-  status: zServiceProvidingGroupGridPrequalificationStatus.default("requested"),
+  status: zServiceProvidingGroupGridPrequalificationStatus,
   prequalified_at: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -2847,10 +2774,7 @@ export const zServiceProvidingGroupGridPrequalificationWritable = z.object({
 export const zServiceProvidingGroupGridPrequalificationCommentWritable =
   z.object({
     service_providing_group_grid_prequalification_id: z.int(),
-    visibility:
-      zServiceProvidingGroupGridPrequalificationCommentVisibility.default(
-        "same_party",
-      ),
+    visibility: zServiceProvidingGroupGridPrequalificationCommentVisibility,
     content: z.string().max(2048),
   });
 
@@ -2868,8 +2792,7 @@ export const zServiceProvidingGroupGridSuspensionWritable = z.object({
  */
 export const zServiceProvidingGroupGridSuspensionCommentWritable = z.object({
   service_providing_group_grid_suspension_id: z.int(),
-  visibility:
-    zServiceProvidingGroupGridSuspensionCommentVisibility.default("same_party"),
+  visibility: zServiceProvidingGroupGridSuspensionCommentVisibility,
   content: z.string().max(2048),
 });
 
@@ -2940,12 +2863,12 @@ export const zEntityClientWritable = z.object({
  */
 export const zPartyWritable = z.object({
   business_id: z.string(),
-  business_id_type: zPartyBusinessIdType.default("uuid"),
+  business_id_type: zPartyBusinessIdType,
   entity_id: z.int(),
   name: z.string(),
   role: zPartyRole,
   type: zPartyType,
-  status: zPartyStatus.default("new"),
+  status: zPartyStatus,
 });
 
 /**
@@ -3049,7 +2972,7 @@ export const zMeteringGridAreaWritable = z.record(z.string(), z.unknown());
 export const zSystemOperatorProductTypeWritable = z.object({
   system_operator_id: z.int(),
   product_type_id: z.int(),
-  status: zSystemOperatorProductTypeStatus.default("active"),
+  status: zSystemOperatorProductTypeStatus,
 });
 
 /**
@@ -3059,7 +2982,7 @@ export const zServiceProviderProductApplicationWritable = z.object({
   service_provider_id: z.int(),
   system_operator_id: z.int(),
   product_type_ids: z.array(z.int()),
-  status: zServiceProviderProductApplicationStatus.default("requested"),
+  status: zServiceProviderProductApplicationStatus,
   qualified_at: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -3073,8 +2996,7 @@ export const zServiceProviderProductApplicationWritable = z.object({
  */
 export const zServiceProviderProductApplicationCommentWritable = z.object({
   service_provider_product_application_id: z.int(),
-  visibility:
-    zServiceProviderProductApplicationCommentVisibility.default("same_party"),
+  visibility: zServiceProviderProductApplicationCommentVisibility,
   content: z.string().max(2048),
 });
 
@@ -3093,8 +3015,7 @@ export const zServiceProviderProductSuspensionWritable = z.object({
  */
 export const zServiceProviderProductSuspensionCommentWritable = z.object({
   service_provider_product_suspension_id: z.int(),
-  visibility:
-    zServiceProviderProductSuspensionCommentVisibility.default("same_party"),
+  visibility: zServiceProviderProductSuspensionCommentVisibility,
   content: z.string().max(2048),
 });
 
@@ -3105,7 +3026,7 @@ export const zServiceProvidingGroupProductApplicationWritable = z.object({
   service_providing_group_id: z.int(),
   procuring_system_operator_id: z.int(),
   product_type_ids: z.array(z.int()),
-  status: zServiceProvidingGroupProductApplicationStatus.default("requested"),
+  status: zServiceProvidingGroupProductApplicationStatus,
   notes: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -3141,10 +3062,7 @@ export const zServiceProvidingGroupProductSuspensionWritable = z.object({
  */
 export const zServiceProvidingGroupProductSuspensionCommentWritable = z.object({
   service_providing_group_product_suspension_id: z.int(),
-  visibility:
-    zServiceProvidingGroupProductSuspensionCommentVisibility.default(
-      "same_party",
-    ),
+  visibility: zServiceProvidingGroupProductSuspensionCommentVisibility,
   content: z.string().max(2048),
 });
 
@@ -3152,7 +3070,7 @@ export const zServiceProvidingGroupProductSuspensionCommentWritable = z.object({
  * Response schema - Notice to users about various issues or actions expected from them.
  */
 export const zNoticeWritable = z.object({
-  status: zNoticeStatus.default("active"),
+  status: zNoticeStatus,
 });
 
 /**

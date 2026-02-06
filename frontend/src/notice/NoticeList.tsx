@@ -1,15 +1,19 @@
 import {
   AutocompleteInput,
+  Datagrid,
+  DateField,
+  EnumArrayInput,
+  EnumField,
   List,
+  PartyReferenceInput,
   ReferenceField,
+  ResourceButton,
   TextField,
-  useRecordContext,
-} from "react-admin";
-import { Datagrid, PartyReferenceInput } from "../auth";
-import { ResourceButton } from "../components/ResourceButton";
+} from "../components/EDS-ra";
 import noticeTypes from "./noticeTypes";
-import { EnumArrayInput, EnumField } from "../components/enum";
-import { DateField } from "../components/datetime";
+import { zNotice } from "../generated-client/zod.gen";
+import { getFields } from "../util";
+import { useRecordContext } from "react-admin";
 
 const NoticeResourceButton = () => {
   const noticeRecord = useRecordContext()!;
@@ -19,64 +23,42 @@ const NoticeResourceButton = () => {
 };
 
 export const NoticeList = () => {
+  const noticeFields = getFields(zNotice.shape);
+
   const filters = [
     <PartyReferenceInput
-      source="party_id"
+      source={noticeFields.party_id.source}
       label="field.notice.party_id"
       noTypeFilter
       key="party"
     />,
     <AutocompleteInput
       key="notice_type"
-      label="field.notice.type"
-      source="type"
-      TextFieldProps={{
-        style: {
-          width: "600px",
-        },
-      }}
-      slotProps={{
-        popper: {
-          style: {
-            width: "fit-content",
-          },
-        },
-      }}
+      source={noticeFields.type.source}
       choices={noticeTypes.map((nt) => ({ id: nt.id, name: nt.label }))}
+      style={{ width: "600px" }}
     />,
     <EnumArrayInput
       key="notice_status"
-      label="field.notice.status"
       enumKey="notice.status"
       source="status@in"
-      alwaysOn
     />,
   ];
 
   return (
     <List perPage={25} filters={filters} empty={false}>
       <Datagrid>
-        <TextField source="id" label="field.notice.id" />
-        <ReferenceField
-          source="party_id"
-          reference="party"
-          sortable={false}
-          label="field.notice.party_id"
-        >
+        <TextField source={noticeFields.id.source} />
+        <ReferenceField source={noticeFields.party_id.source} reference="party">
           <TextField source="name" />
         </ReferenceField>
-        <TextField source="type" label="field.notice.type" />
-        <TextField source="source" label="field.notice.source" />
+        <TextField source={noticeFields.type.source} />
+        <TextField source={noticeFields.source.source} />
         <EnumField
-          source="status"
+          source={noticeFields.status.source}
           enumKey="notice.status"
-          label="field.notice.status"
         />
-        <DateField
-          source="recorded_at"
-          showTime
-          label="field.notice.recorded_at"
-        />
+        <DateField source={noticeFields.recorded_at.source} showTime />
         <NoticeResourceButton />
       </Datagrid>
     </List>
