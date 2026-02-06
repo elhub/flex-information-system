@@ -38,7 +38,7 @@ export const BaseField = ({
 
   return (
     <FlexDiv style={{ gap: "0.5rem", alignItems: "center" }}>
-      {label === true ? <BodyText weight="bold">{labelText} :</BodyText> : null}
+      {label === true ? <BodyText weight="bold">{labelText}:</BodyText> : null}
       {children}
       {shouldShowTooltip ? (
         <FieldTooltip resource={resource} field={source} />
