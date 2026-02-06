@@ -49,12 +49,13 @@ const UserDropdown = () => {
         variant="invisible"
         as={Dropdown.Toggle}
         size="medium"
-        className={styles.dropDownToggle}
         data-testid="header-desktop-menu-toggle"
       >
         <FlexDiv gap={0.5}>
-          <IconUser />
-          <BodyText weight="bold">{data?.fullName ?? "User"}</BodyText>
+          <IconUser className="text-white!" />
+          <BodyText weight="bold" className="text-white">
+            {data?.fullName ?? "User"}
+          </BodyText>
         </FlexDiv>
       </Button>
       <Dropdown.Menu arrow placement="bottom">
