@@ -32,7 +32,7 @@ the diagram below:
 
 ![Resource synchronisation architecture diagram](../diagrams/resource_sync.drawio.png)
 
-On the left hand side lies the _internal data source table_, which is the target
+On the left-hand side lies the _internal data source table_, which is the target
 of the synchronisation process.
 It is the table whose data will be used by the rest of the database as a trusted
 source of information.
