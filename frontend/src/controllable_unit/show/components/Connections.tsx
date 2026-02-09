@@ -1,7 +1,8 @@
-import { Box, Link, Stack } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import { LabelValue } from "../../../components/LabelValue";
 import { ControllableUnitShowViewModel } from "../useControllableUnitViewModel";
+import { Link } from "../../../components/ui";
+import { formatDate } from "date-fns";
 
 const formatRange = (start: string | undefined, end: string | undefined) => {
   if (!start) {
@@ -9,10 +10,10 @@ const formatRange = (start: string | undefined, end: string | undefined) => {
   }
 
   if (!end) {
-    return `${new Date(start).toLocaleDateString("no-NB")} - present`;
+    return `${formatDate(start, "dd.MM.yyyy")} - present`;
   }
 
-  return `${new Date(start).toLocaleDateString("no-NB")} - ${new Date(end).toLocaleDateString("no-NB")}`;
+  return `${formatDate(start, "dd.MM.yyyy")} - ${formatDate(end, "dd.MM.yyyy")}`;
 };
 
 export const Connections = ({
@@ -34,12 +35,12 @@ export const Connections = ({
   );
 
   return (
-    <Box>
+    <div className="flex flex-col gap-2">
       <LabelValue
         label="Accounting point"
         value={`${accountingPoint?.business_id} (${systemOperator?.name})`}
       />
-      <Stack direction="row" spacing={1} alignItems="center">
+      <div className="flex flex-row gap-2 items-center">
         <LabelValue
           label="Service provider"
           value={
@@ -50,12 +51,12 @@ export const Connections = ({
         />
         <Link
           to={`/controllable_unit/${controllableUnit?.id}/service_provider`}
-          component={RouterLink}
+          as={RouterLink}
         >
           See all contracts
         </Link>
-      </Stack>
-      <Stack direction="row" spacing={1} alignItems="center">
+      </div>
+      <div className="flex flex-row gap-2 items-center">
         <LabelValue
           labelKey="accounting_point_balance_responsible_party.balance_responsible_party_id"
           value={
@@ -66,11 +67,11 @@ export const Connections = ({
         />
         <Link
           to={`/controllable_unit/${controllableUnit?.id}/balance_responsible_party`}
-          component={RouterLink}
+          as={RouterLink}
         >
           See all balance responsible parties
         </Link>
-      </Stack>
-    </Box>
+      </div>
+    </div>
   );
 };
