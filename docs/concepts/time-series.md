@@ -216,6 +216,32 @@ consider are
 - **Timeline** – e.g. future or historic data
 - **Audit** – essentially bi-temporal data
 
+## Metering values
+
+Metering values are the recorded data of energy production and
+consumption. These values are needed for creating baselines, calculating
+activated volume, verification and quantification. The needed time-resolution of
+the measured and metering values depends on their intended use.
+
+Metering values measured by smart meters are collected by the connecting system
+operator. In some cases, a controllable unit (CU) represents only a small share
+of the total consumption behind a metering point. To accurately measure the
+flexibility provided by the CU, metering values must therefore be obtained
+directly from the CU itself using a sub meter or a dedicated meter.
+In such cases, the service provider collects the metering values.
+
+Metering values collected by the connecting system operator from smart meters
+are stored in Elhub by 07:00 for the previous day. Current legislation requires
+that all residential custommers have metering values at 60-minute resolution, while
+commercial custommers with grid connection > 1000V have metering values at
+15-minute resolution Metering values collected by sub meters or dedicated meters
+are _not_ stored in Elhub and must be collected and managed by the service provider.
+
+The procuring system operator (PSO) needs the metering values that make up a
+SPG in order to do both quantification and verification. These metering values
+must be made available through a time series service. The time series need to have
+IDs that can be linked to the CU and SPG IDs in the flexibility information system.
+
 ## Baselines
 
 As defined above, a baseline is a counterfactual reference about the
@@ -391,6 +417,29 @@ Allocation can be done with:
 - dynamic factors
     - assigned by SP per bid/activation - this required [activation data](#activation-data)
     - assigned by doing an approximate quantification on the lower level
+
+### Example of quantification
+
+In order to calculate the delivered volume, a system operator can do a
+quantification analysis using metering values, baseline and bid volume.
+
+First, the delivered volume can be calculated by subtracting
+the metering values from the baseline. Then the delivered volume is divided
+by the bid volume, giving a percentage of the delivery.
+
+$$
+\text{Delivered volume} = \text{baseline} - \text{metering values}
+$$
+
+$$
+\text{Delivery} = \frac{\text{delivered volume}}{\text{bid volume}} = x\%
+$$
+
+The percentage required for settlement depends on the product-specific requirements.
+
+This delivery calculation method can also be used for verification purposes, where
+checking the delivered volume serves as a quality assurance measure to confirm that
+the SPG delivered the agreed upon volume.
 
 ### Verification
 
