@@ -1,7 +1,7 @@
 # Delivery verification
 
 This process describes the [verification](../concepts/time-series.md#verification)
-of a delivered flexibility service and how it relates to the FFlexibility Information
+of a delivered flexibility service and how it relates to the Flexibility Information
 System (FIS).
 
 [NOTE]
