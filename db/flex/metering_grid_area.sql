@@ -13,6 +13,6 @@ CREATE TABLE IF NOT EXISTS metering_grid_area (
 
     CONSTRAINT metering_grid_area_business_id_check
     CHECK (
-        utils.validate_business_id(business_id, 'eic_y')
+        validate_business_id(business_id, 'eic_y')
     )
 );

@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS party (
     -- PTY-VAL002
     CONSTRAINT check_party_business_id CHECK (
         char_length(business_id) <= 36
-        AND utils.validate_business_id(business_id, business_id_type)
+        AND validate_business_id(business_id, business_id_type)
     ),
     CONSTRAINT check_party_business_id_type CHECK (
         business_id_type IN (

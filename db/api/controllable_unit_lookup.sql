@@ -95,7 +95,7 @@ BEGIN
         WHERE e.business_id = in_end_user_business_id
     ) THEN
         -- end user can be person or organisation
-        IF utils.validate_business_id(in_end_user_business_id, 'pid') THEN
+        IF flex.validate_business_id(in_end_user_business_id, 'pid') THEN
             l_end_user_business_id_type := 'pid';
             l_end_user_type := 'person';
         ELSE

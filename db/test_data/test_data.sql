@@ -1035,12 +1035,12 @@ END;
 $$ LANGUAGE plpgsql SECURITY DEFINER VOLATILE;
 
 -- changeset flex:test-data-fill-party-staging runOnChange:true endDelimiter:--
--- Copy parties from flex.party to landing.party_staging
+-- Copy parties from flex.party to flex.party_staging
 CREATE OR REPLACE FUNCTION test_data.fill_party_staging()
 RETURNS void
 AS $$
 BEGIN
-  INSERT INTO landing.party_staging (gln, org, name, type)
+  INSERT INTO flex.party_staging (gln, org, name, type)
   SELECT
       p.business_id AS gln,
       e.business_id AS org,

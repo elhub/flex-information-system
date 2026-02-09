@@ -9,8 +9,5 @@ databaseChangeLog:
         - sql: GRANT USAGE ON SCHEMA landing TO flex_internal
         - sql: GRANT USAGE ON SCHEMA landing TO flex_operation_readonly, flex_operation_update, flex_operation_readwrite
   - include:
-      file: ./party_staging.sql
-      relativeToChangelogFile: true
-  - include:
-      file: ./party_staging_migrations.sql
+      file: ./energy_supplier_balance_responsibility_staging.sql
       relativeToChangelogFile: true
