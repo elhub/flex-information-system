@@ -6,7 +6,7 @@
 CREATE TABLE IF NOT EXISTS controllable_unit (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     business_id uuid UNIQUE NOT NULL DEFAULT (public.uuid_generate_v4()) CHECK (
-        validate_business_id(business_id::text, 'uuid')
+        utils.validate_business_id(business_id::text, 'uuid')
     ),
     name text NOT NULL CHECK ((char_length(name) <= 512)),
     start_date date NULL,
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS controllable_unit (
     ramp_rate decimal(9, 3) NULL CHECK (ramp_rate > 0),
     accounting_point_id bigint NOT NULL,
     grid_node_id uuid NULL CHECK (
-        grid_node_id IS NULL OR validate_business_id(grid_node_id::text, 'uuid')
+        grid_node_id IS NULL OR utils.validate_business_id(grid_node_id::text, 'uuid')
     ),
     grid_validation_status text NOT NULL DEFAULT 'pending' CHECK (
         grid_validation_status IN (

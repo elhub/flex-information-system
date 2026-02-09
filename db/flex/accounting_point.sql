@@ -7,7 +7,7 @@
 CREATE TABLE IF NOT EXISTS accounting_point (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     business_id text UNIQUE NOT NULL CHECK (
-        validate_business_id(business_id, 'gsrn')
+        utils.validate_business_id(business_id, 'gsrn')
     ),
     record_time_range tstzrange NOT NULL DEFAULT tstzrange(
         localtimestamp, null, '[)'

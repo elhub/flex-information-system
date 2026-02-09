@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS entity (
     ),
     CONSTRAINT check_identity_business_id CHECK (
         char_length(business_id) <= 128
-        AND validate_business_id(business_id, business_id_type)
+        AND utils.validate_business_id(business_id, business_id_type)
     ),
     CONSTRAINT check_entity_type_business_id_type CHECK (
         (type = 'person' AND business_id_type IN ('pid', 'email'))

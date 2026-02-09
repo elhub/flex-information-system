@@ -1,7 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:metering-grid-area-business-id-update-to-eic-y runOnChange:false endDelimiter:--
+-- changeset flex:metering-grid-area-business-id-update-to-eic-y runOnChange:true endDelimiter:--
 --preconditions onFail:MARK_RAN
 --precondition-sql-check expectedResult:1 SELECT COUNT(*) FROM pg_catalog.pg_constraint WHERE conname = 'metering_grid_area_business_id_check' AND conbin::text LIKE '%101 105 99 95 120%'
 -- (NB: searching for the ASCII codes for "eic_x")
@@ -53,7 +53,7 @@ $$;
 ALTER TABLE flex.metering_grid_area
 ADD CONSTRAINT metering_grid_area_business_id_check
 CHECK (
-    validate_business_id(business_id, 'eic_y')
+    utils.validate_business_id(business_id, 'eic_y')
 );
 
 -- update from main table to history will work because MGAs cannot be deleted
