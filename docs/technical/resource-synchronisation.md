@@ -22,8 +22,7 @@ external sources:
 * balance responsibility information per metering grid area: approximately 100k
   records, to be updated every few days at least
 
-All data sources we are talking about are therefore subject to relatively light
-updates happening at a daily level.
+All of these data sources receive relatively small updates on a daily basis.
 
 ## Architecture pattern
 
