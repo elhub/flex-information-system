@@ -227,12 +227,13 @@ Metering values measured by smart meters are collected by the connecting system
 operator. In some cases, a controllable unit (CU) represents only a small share
 of the total consumption behind a metering point. To accurately measure the
 flexibility provided by the CU, metering values must therefore be obtained
-directly from the CU itself using a sub meter og a dedicated meter.
+directly from the CU itself using a sub meter or a dedicated meter.
 In such cases, the service provider collects the metering values.
 
-Most metering values collected by smart meters are stored in Elhub ar D+1 07:00.
-Current legislation requires that all residential custommers have metering values
-at 60-minute resolution, while commercial custommers have metering values at
+Metering values collected by the connecting system operator from smart meters
+are stored in Elhub by 07:00 for the previous day. Current legislation requires
+that all residential custommers have metering values at 60-minute resolution, while
+commercial custommers with grid connection > 1000V have metering values at
 15-minute resolution Metering values collected by sub meters or dedicated meters
 are _not_ stored in Elhub and must be collected and managed by the service provider.
 
@@ -240,14 +241,6 @@ The procuring system operator (PSO) needs the metering values that make up a
 SPG in order to do both quantification and verification. These metering values
 must be made available through a time series service. The time series need to have
 IDs that can be linked to the CU and SPG IDs in the flexibility information system.
-For quantification and verification purposes, baselines should also be made available
-though a time series service.
-
-**Noe om hvem som har ansvar for hva?**
-
-The flow of the metering values is:
-
-Tegning av Kilde -> SP -> TSs -> SO hvor SP og SO --(ID og auth)--> FIS
 
 ## Baselines
 
@@ -336,13 +329,6 @@ and other factors that can impact the consumption or production of energy.
 The baseline is set to zero. Could be useful e.g. for fossil fuel generators or
 batteries. It can only be used if the asset is in contracted to not consume and/or
 produce energy for the periods it is part of a reservation contract.
-
-## Flow of time series before and after activation
-
-Illustration explaining the timeline from bid to verification (along with which
-parties are involved and which source)
-
-Bid -> Send baseline - > Accepet bid -> activation -> quantification (verification)
 
 ## Quantification and verification
 
@@ -454,8 +440,6 @@ The percentage required for settlement depends on the product-specific requireme
 This delivery calculation method can also be used for verification purposes, where
 checking the delivered volume serves as a quality assurance measure to confirm that
 the SPG delivered the agreed upon volume.
-
-GRAPH TO ILLUSTRATE ANALYSIS
 
 ### Verification
 
