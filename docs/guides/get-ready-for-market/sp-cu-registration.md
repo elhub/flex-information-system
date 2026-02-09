@@ -7,7 +7,9 @@ Learn more about the controllable unit and related concepts here:
 [Conceptual model](../../concepts/conceptual-model.md)
 
 The illustration below gives an overview of the necessary steps the service
-provider myst go through to register a controllable unit in the FIS portal.
+provider must go through to
+[register a controllable unit](../../processes/controllable-unit-registration.md)
+in the FIS portal.
 
 ![SP CU registration path](../../diagrams/sp_cu_registration.drawio.png)
 
@@ -19,17 +21,17 @@ to take in the portal and the reasons these steps are required.
 >Relevant links to related processes and resources are provided under each
 >step:
 >
->* Process pages describe the end-to-end process and show how each step relates
->to other parties.
+>* [Process pages](../../processes/index.md) describe the end-to-end process and
+> show how each step relates to other parties.
 >
->* Resource pages provide explanations of the resource fields, validation rules,
->notifications and authorization policies.
+>* [Resource pages](../../resources/index.md) provide explanations of the resource
+> fields, validation rules, notifications and authorization policies.
 
 ## 1. Start at CU registrations
 
 Begin by navigating to `CU registrations` in the menu.  
-This is where the [CU registration](../../processes/controllable-unit-registration.md)
-and [maintenance](../../processes/controllable-unit-update.md) are performed.
+This is where the [CU registration](../../processes/controllable-unit-registration.md),
+starts.
 
 ## 2. Look up the controllable unit
 
@@ -47,13 +49,12 @@ by performing the [CU lookup process](../../processes/controllable-unit-lookup.m
 
 ## 3. Check if the controllable unit already exists
 
-Inspect the list of CUs associated with the accounting point:
+Inspect the list of CUs at the accounting point:
 
 * If the CU does **not** appear → proceed to `Create a new controllable unit`.
 * If the CU **does** appear → the CU is already registered.  
   *If the CU is receiving a new contract to switch service provider, follow the
-  [SP Switching Initiated by New SP](../../processes/service-provider-switching.md)
-  process.*
+  [service provider switching process](../../processes/service-provider-switching.md).*
 
 > [!NOTE]
 >
@@ -69,15 +70,18 @@ as described in the portal.
 
 >[!NOTE]
 >
->The information supports several processes: *linke til prosesser*
+>The information supports several processes:
 >
->* It enables the system operator to assess whether the CU can operate safely
->within the grid.
->* It ensures that the CU can be correctly linked to a service providing group (SPG),
->which determines how the CU will participate in flexibility markets.
->* It influences how the prequalification application for the >SPG is structured,
->since the technical characteristics of the CU affect the overall
->delivery potential of the group.
+>* [Grid validation](../../processes/controllable-unit-registration.md):
+> It enables the system operator to assess whether the CU can operate safely
+> within the grid.
+>* [SPG registration](../../processes/service-provider-registration-and-approval.md):
+> It ensures that the CU can be correctly linked to a service providing group (SPG),
+> which determines how the CU will participate in flexibility markets.
+>* [SPG product application](../../processes/service-provider-product-application.md):
+> It influences the prequalification application for the SPG,
+> since the technical characteristics of the CU affect the overall
+> delivery potential of the group.
 
 ## 5. Add a reference to the end‑user contract
 
@@ -96,9 +100,8 @@ service provider to manage the CU in the system.
 
 ## 6. Add technical resources
 
-The next step is to add [Technical resources](../../resources/technical_resource.md),
-which represent the actual
-assets that the CU consists of.
+The next step is to add [technical resources](../../resources/technical_resource.md),
+which represent the actual assets that the CU consists of.
 
 A controllable unit may contain several technical resources, and each must be
 added individually in the portal.
@@ -122,4 +125,4 @@ the CU.
 Based on the system operator's analysis, the CU receives a grid validation status
 and the service provider will be notified.
 
-Information about the status is found under the menu item CU registration.
+Information about the status is found under the menu item `CU registration`.
