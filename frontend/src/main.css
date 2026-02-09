@@ -1,7 +1,4 @@
-@import "@elhub/ds-tokens/dist/tokens.css";
 @import "tailwindcss";
-@import "./theme.css";
-
-@layer components {
-  @import "@elhub/ds-css/dist/index.css";
-}
+@import "@elhub/ds-tokens/dist/tokens.css" layer(utilities);
+@import "@elhub/ds-css/dist/index.css" layer(components);
+@import "./theme.css" layer(utilities);

@@ -36,6 +36,7 @@ const useControllableUnitAlerts = (
       action: (
         <Button
           as={Link}
+          variant="invisible"
           to={`/controllable_unit/${controllableUnit.id}/suspension/${suspension.id}/show`}
         >
           See suspension
@@ -60,6 +61,7 @@ const useControllableUnitAlerts = (
           as={Link}
           disabled={!canCreateTechnicalResource}
           state={locationState}
+          variant="invisible"
           to={`/controllable_unit/${controllableUnit.id}/technical_resource/create`}
         >
           Add technical resource
@@ -96,14 +98,14 @@ export const ControllableUnitAlerts = ({
   }
   return (
     <Alert variant={alert.severity} className="max-w-3xl gap-4">
-      <div className="flex flex-row items-center justify-between w-full!">
-        <div className="flex flex-col gap-2">
+      <div className="flex flex-row items-center justify-between w-full ">
+        <div className="flex-5 flex flex-col gap-2">
           <Heading level={5} size="small">
             {alert.title}
           </Heading>
           <BodyText>{alert.content}</BodyText>
         </div>
-        {alert.action && <>{alert.action}</>}
+        <div className="flex-1">{alert.action && <>{alert.action}</>}</div>
       </div>
     </Alert>
   );
