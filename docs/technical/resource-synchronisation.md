@@ -12,8 +12,8 @@ inconsistencies.
 
 The implementation of such an update mechanism depends on the nature of the
 required updates, _i.e._, whether the data provided by the external source
-change very frequently or just once in a while, and whether the amount of data
-is light very heavy.
+changes very frequently or just once in a while, and whether the amount of
+data is light or very heavy.
 
 In the case of the FIS, we need to keep track of data from the following
 external sources:
