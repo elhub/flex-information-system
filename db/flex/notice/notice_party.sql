@@ -32,7 +32,7 @@ WITH (security_invoker = false) AS (
             )
         ) AS data, -- noqa
         md5(p_stg.gln::text) AS deduplication_key -- noqa
-    FROM flex.party_staging AS p_stg -- noqa
+    FROM landing.party_staging AS p_stg -- noqa
         LEFT JOIN flex.entity AS e_stg
             ON p_stg.org = e_stg.business_id
         -- warn all FISOs
@@ -79,7 +79,7 @@ WITH (security_invoker = false) AS (
     FROM flex.party AS p -- noqa
         INNER JOIN flex.entity AS e
             ON p.entity_id = e.id
-        INNER JOIN flex.party_staging AS p_stg
+        INNER JOIN landing.party_staging AS p_stg
             ON p.business_id = p_stg.gln
             -- party has changed name or owning entity
             AND (p.name != p_stg.name OR e.business_id != p_stg.org)
@@ -109,7 +109,7 @@ WITH (security_invoker = false) AS (
         p.business_id_type = 'gln'
         AND p.status != 'terminated'
         AND NOT EXISTS (
-            SELECT 1 FROM flex.party_staging AS p_stg
+            SELECT 1 FROM landing.party_staging AS p_stg
             WHERE p_stg.gln = p.business_id
         )
 );

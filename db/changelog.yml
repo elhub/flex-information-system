@@ -30,6 +30,9 @@ databaseChangeLog:
         - sql: GRANT USAGE ON SCHEMA status TO flex_anonymous, flex_internal
         - sql: GRANT USAGE ON SCHEMA utils TO flex_anonymous, flex_internal
   - include:
+      file: ./landing/changelog.yml
+      relativeToChangelogFile: true
+  - include:
       file: ./flex/changelog.yml
       relativeToChangelogFile: true
   - include:
