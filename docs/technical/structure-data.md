@@ -17,7 +17,7 @@ splitting the fetching and update steps.
 
 Fetching is the process
 of getting data from the external source and loading it into a staging
-table. The updates functionality is responsible for comparing exiting data
+table. The updates functionality is responsible for comparing existing data
 with the staging table and updating the target table accordingly.
 
 The structure data that must be synchronised is summarised in the table below.
@@ -31,11 +31,11 @@ The structure data that must be synchronised is summarised in the table below.
 
 As you can see from the last column in the table, there are two different
 strategies for _doing updates_: notice and automatic. These will be
-described in more detail below, but lets first look at the general pattern.
+described in more detail below, but let's first look at the general pattern.
 
 ## Fetching mechanism
 
-This data must be fetched and loaded by a compontent that is external to the FIS
+This data must be fetched and loaded by a component that is external to the FIS
 itself. The reason for keeping this responsibility outside of the FIS is that
 depending on what country/context the system is deployed in, the data may be
 sourced from different places. Baking the data loading process into the FIS
@@ -89,7 +89,7 @@ depending on the size of the dataset and the update mechanism we have in place.
 ### Replace
 
 For bigger datasets, using the automatic update strategy, we replace the whole
-dataset with the new one. This is largely for performance and simpliciy. Since
+dataset with the new one. This is largely for performance and simplicity. Since
 the system does not rely on the data always being present in the staging tables,
 this allows us to use unlogged tables, truncate and PostgreSQL copy command to
 efficiently load the data.
@@ -137,14 +137,14 @@ of the structure data types we synchronise in the system.
 ### Party synchronisation
 
 Party synchronisation is using the notice update strategy and the merge loading
-strategy. The diagram below show how this is done in the system.
+strategy. The diagram below shows how this is done in the system.
 
 ![Party synchronisation overview](../diagrams/structure_data_party.drawio.png)
 
 ### Energy Supplier Balance Responsibility synchronisation
 
 Energy Supplier Balance Responsibility (ES BR) synchronisation is using the automatic
-update strategy and the replace loading strategy. The diagram below show how
+update strategy and the replace loading strategy. The diagram below shows how
 this is done in the system.
 
 ![Energy Supplier Balance Responsibility synchronisation overview](../diagrams/structure_data_es_br.drawio.png)
