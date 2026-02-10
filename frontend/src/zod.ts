@@ -12,7 +12,6 @@ type Schema = ZodType<
 > & { shape: ZodRawShape };
 
 const customErrorHandler = (schema: ZodRawShape, issue: $ZodRawIssue) => {
-  console.log(issue, "issue");
   if (issue.code === "invalid_format" && issue.format === "regex") {
     // Handle the regex
     return "Wrong format";
