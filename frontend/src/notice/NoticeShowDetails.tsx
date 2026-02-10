@@ -26,7 +26,7 @@ import {
   zControllableUnitServiceProvider,
   zNoticeDataProductTypeNotQualified,
 } from "../generated-client/zod.gen";
-import { getFields } from "../util";
+import { getFields } from "../zod";
 import { DataTable } from "../components/EDS-ra/list/Datagrid";
 
 type Notice = GNotice & {

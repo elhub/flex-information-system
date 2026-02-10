@@ -12,7 +12,7 @@ import {
 } from "../components/EDS-ra";
 import noticeTypes from "./noticeTypes";
 import { zNotice } from "../generated-client/zod.gen";
-import { getFields } from "../util";
+import { getFields } from "../zod";
 import { useRecordContext } from "react-admin";
 
 const NoticeResourceButton = () => {

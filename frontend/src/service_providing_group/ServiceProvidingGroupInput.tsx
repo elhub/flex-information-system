@@ -4,7 +4,7 @@ import { Stack } from "@mui/material";
 import { Toolbar } from "../components/Toolbar";
 import { zServiceProvidingGroupCreateRequest } from "../generated-client/zod.gen";
 import { EnumInput } from "../components/enum";
-import { unTypedZodResolver } from "../util";
+import { unTypedZodResolver } from "../zod";
 
 // common layout to create and edit pages
 export const ServiceProvidingGroupInput = () => {

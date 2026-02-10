@@ -7,7 +7,7 @@ import {
 } from "../components/EDS-ra";
 import { Content, Heading, VerticalSpace } from "../components/ui";
 import { zNotice } from "../generated-client/zod.gen";
-import { getFields } from "../util";
+import { getFields } from "../zod";
 import { NoticeShowDetails } from "./NoticeShowDetails";
 
 export const NoticeShow = () => {

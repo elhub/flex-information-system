@@ -3,7 +3,7 @@ import { zTechnicalResource } from "../../generated-client/zod.gen";
 import { TechnicalResource } from "../../generated-client";
 import useLocationState from "../../hooks/useLocationState";
 import { zTechnicalResourceCreateRequest } from "../../generated-client/zod.gen";
-import { getFields, unTypedZodResolver } from "../../util";
+import { getFields, unTypedZodResolver } from "../../zod";
 import { FormContainer, Heading, FlexDiv } from "../../components/ui";
 import {
   TextInput,
