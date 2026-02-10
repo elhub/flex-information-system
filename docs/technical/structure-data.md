@@ -1,6 +1,6 @@
 # Structure data from external sources
 
-The FIS relies on some structure data that originate and is maintained
+The FIS relies on some structure data that originate and are maintained
 elsewhere/by other systems. The data is used for reference purposes and to
 ensure consistency.
 
@@ -22,12 +22,12 @@ with the staging table and updating the target table accordingly.
 
 The structure data that must be synchronised is summarised in the table below.
 
-| Data                                   | Description/comment                                                 | Size (NO) | Authority (NO) | Loading | Update    |
-|----------------------------------------|---------------------------------------------------------------------|-----------|----------------|---------|-----------|
-| Party                                  | Market participants (SP and SO)                                     | ~500      | Ediel          | Merge   | Notice    |
-| Price Area                             | NO1-5 in Norway                                                     | ~5        | Statnett       | Merge   | Notice    |
-| Metering Grid Area (MGA)               | Grid areas used in settlement, including SO and price area relation | ~500      | Statnett       | Merge   | Notice    |
-| Energy Supplier Balance Responsibility | Balance responsibility of each ES, MGA and direction                | ~100k     | eSett          | Replace | Automatic |
+| Data                                   | Description/comment                                                 | Size in records (NO) | Authority (NO) | Loading | Update    |
+|----------------------------------------|---------------------------------------------------------------------|----------------------|----------------|---------|-----------|
+| Party                                  | Market participants (SP and SO)                                     | ~500                 | Ediel          | Merge   | Notice    |
+| Price Area                             | NO1-5 in Norway                                                     | ~5                   | Statnett       | Merge   | Notice    |
+| Metering Grid Area (MGA)               | Grid areas used in settlement, including SO and price area relation | ~500                 | Statnett       | Merge   | Notice    |
+| Energy Supplier Balance Responsibility | Balance responsibility of each ES, MGA and direction                | ~100k                | eSett          | Replace | Automatic |
 
 As you can see from the last column in the table, there are two different
 strategies for _doing updates_: notice and automatic. These will be
@@ -43,14 +43,13 @@ would tie the system to a specific set of data sources, which is not desirable.
 
 Data is loaded into the staging structure with business identifiers from the
 external data source.
-
 It is the responsibility of the fetching component and staging structure to
 ensure that the data is of the right format and quality.
 
 ### Getting data
 
 When synchronising data, in general, we can distinguish between three different
-technical approaches.
+technical approaches:
 
 * `full` - The whole dataset is fetched and compared to the existing data.
 * `delta` - Changes since the last synchronisation are fetched and applied to
@@ -58,15 +57,15 @@ technical approaches.
 * `event-based` - Changes are sent as they happen, and the existing data is
   updated accordingly.
 
-In addition to this, the full and delta approaches can be either `scheduled` or
-triggered `ad-hoc` by users.
+In addition to this, the `full` and `delta` approaches can be either `scheduled`
+or triggered `ad-hoc` by users.
 
 The FIS synchronisations only currently use the `full` approach, based on a
 `scheduled` external mechanism. Other approaches will be added on an as-needed
 basis.
 
 All these structure data types are slow-moving, meaning that they do not change
-very often. Synchronizing the data can be done on a nightly basis, and it is not
+very often. Synchronising the data can be done on a nightly basis, and it is not
 critical if the data is a few hours or even a day or two old.
 
 Interdependencies among our resources (such as foreign key constraints) also make
@@ -76,8 +75,8 @@ inconsistencies.
 ### Database interface
 
 The data fetching component interfaces directly with the database to load the
-data into the staging structure. We do this via dedicated view, procedures and
-unlogged tables in a separate staging schema. This is to ensure decoupling and
+data into the staging structure. We do this via dedicated views, procedures and
+unlogged tables in a separate `staging` schema. This is to ensure decoupling and
 prevent assuming an internal database structure from the outside, which makes us
 free to change the internal details over time if needed.
 
@@ -96,7 +95,7 @@ efficiently load the data.
 
 ### Merge
 
-Datasets that are small and rely on the notice update mechanism depends on
+Datasets that are small and rely on the notice update mechanism depend on
 having the data always available in the staging tables. We must use a merge
 strategy for loading the data. This means that the fetching component must
 update, insert, delete existing records in the staging table as needed.
@@ -136,15 +135,15 @@ of the structure data types we synchronise in the system.
 
 ### Party synchronisation
 
-Party synchronisation is using the notice update strategy and the merge loading
+Party synchronisation is using the merge loading strategy and the notice update
 strategy. The diagram below shows how this is done in the system.
 
 ![Party synchronisation overview](../diagrams/structure_data_party.drawio.png)
 
 ### Energy Supplier Balance Responsibility synchronisation
 
-Energy Supplier Balance Responsibility (ES BR) synchronisation is using the automatic
-update strategy and the replace loading strategy. The diagram below shows how
-this is done in the system.
+Energy Supplier Balance Responsibility (ES BR) synchronisation is using the
+replace loading strategy and the automatic update strategy.
+The diagram below shows how this is done in the system.
 
 ![Energy Supplier Balance Responsibility synchronisation overview](../diagrams/structure_data_es_br.drawio.png)
