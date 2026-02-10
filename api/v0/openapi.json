@@ -858,6 +858,17 @@
         ],
         "example": "same_party"
       },
+      "notice_status": {
+        "description": "The status of the notice.",
+        "format": "text",
+        "type": "string",
+        "default": "active",
+        "enum": [
+          "active",
+          "resolved"
+        ],
+        "example": "active"
+      },
       "controllable_unit_update_request": {
         "summary": "Update - Controllable unit",
         "description": "Request schema for update operations - Controllable unit",
@@ -4464,6 +4475,17 @@
         "description": "Response schema - Notice to users about various issues or actions expected from them.",
         "type": "object",
         "properties": {
+          "id": {
+            "description": "Unique surrogate identifier.",
+            "format": "bigint",
+            "type": "integer",
+            "readOnly": true,
+            "example": 254
+          },
+          "status": {
+            "$ref": "#/components/schemas/notice_status",
+            "default": "active"
+          },
           "party_id": {
             "description": "Reference to the party targeted by the notice.",
             "format": "bigint",
@@ -4485,6 +4507,7 @@
             "type": "string",
             "pattern": "^(\\/([a-z][a-z_]*|[0-9]+))+$",
             "readOnly": true,
+            "nullable": true,
             "example": "/service_providing_group_membership/4"
           },
           "data": {
@@ -4494,12 +4517,29 @@
             "readOnly": true,
             "nullable": true,
             "example": null
+          },
+          "recorded_at": {
+            "description": "When the resource was recorded (created or updated) in the system.",
+            "format": "timestamp with time zone",
+            "type": "string",
+            "readOnly": true,
+            "example": "2023-12-31 23:59:00 CET"
+          },
+          "recorded_by": {
+            "description": "The identity that recorded the resource.",
+            "format": "bigint",
+            "type": "integer",
+            "readOnly": true,
+            "example": 145
           }
         },
         "required": [
+          "id",
+          "status",
           "party_id",
           "type",
-          "source"
+          "recorded_at",
+          "recorded_by"
         ]
       },
       "controllable_unit_history_response": {
@@ -28475,6 +28515,16 @@
               "pattern": "^eq\\.[0-9]+$"
             },
             "example": "eq.55",
+            "description": "Unique surrogate identifier.",
+            "name": "id"
+          },
+          {
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "pattern": "^eq\\.[0-9]+$"
+            },
+            "example": "eq.55",
             "description": "Reference to the party targeted by the notice.",
             "name": "party_id"
           },
@@ -28604,6 +28654,126 @@
               }
             },
             "description": "Range Not Satisfiable"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read:data:notice"
+            ]
+          },
+          {}
+        ]
+      }
+    },
+    "/notice/{id}": {
+      "summary": "Notice - single",
+      "description": "",
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "format": "bigint",
+            "type": "integer"
+          },
+          "example": 14
+        }
+      ],
+      "get": {
+        "operationId": "read_notice",
+        "summary": "Read Notice",
+        "description": "",
+        "tags": [
+          "notice"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/notice_response"
+                }
+              }
+            },
+            "description": "OK",
+            "links": {
+              "party_id": {
+                "operationId": "read_party",
+                "parameters": {
+                  "path.id": "$response.body#/party_id"
+                },
+                "description": "The `party_id` value returned in the response can be used as the `id` parameter in `GET /party/{id}`."
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/error_message"
+                    },
+                    {
+                      "$ref": "#/components/schemas/empty_object"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "406": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Not Acceptable"
           },
           "500": {
             "content": {

@@ -805,6 +805,8 @@
       
         
       
+        
+      
     
     
     
@@ -953,6 +955,34 @@
     
   
     CU Update
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../processes/delivery-verification/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Delivery verification
   
 
     
@@ -3525,6 +3555,18 @@ from the responsible party.</p>
 </thead>
 <tbody>
 <tr>
+<td><a name="field-id" href="#field-id">id</a></td>
+<td>Unique surrogate identifier.</td>
+<td>bigint<br/>Read only</td>
+<td></td>
+</tr>
+<tr>
+<td><a name="field-status" href="#field-status">status</a></td>
+<td>The status of the notice.</td>
+<td>text<br/>One of: <code>active</code>, <code>resolved</code><br/>Default: <code>active</code></td>
+<td></td>
+</tr>
+<tr>
 <td><a name="field-party_id" href="#field-party_id">party_id</a></td>
 <td>Reference to the party targeted by the notice.</td>
 <td>bigint<br/>Read only</td>
@@ -3546,6 +3588,18 @@ from the responsible party.</p>
 <td><a name="field-data" href="#field-data">data</a></td>
 <td>The data of the notice.</td>
 <td><br/>Read only</td>
+<td></td>
+</tr>
+<tr>
+<td><a name="field-recorded_at" href="#field-recorded_at">recorded_at</a></td>
+<td>When the resource was recorded (created or updated) in the system.</td>
+<td>timestamp with time zone<br/>Read only</td>
+<td></td>
+</tr>
+<tr>
+<td><a name="field-recorded_by" href="#field-recorded_by">recorded_by</a></td>
+<td>The identity that recorded the resource.</td>
+<td>bigint<br/>Read only</td>
 <td></td>
 </tr>
 </tbody>
@@ -3631,6 +3685,18 @@ resource. The default policy is <strong>deny</strong>.</p>
 </thead>
 <tbody>
 <tr>
+<td>id</td>
+<td></td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td></td>
+</tr>
+<tr>
 <td>party_id</td>
 <td></td>
 <td>R</td>
@@ -3668,6 +3734,42 @@ resource. The default policy is <strong>deny</strong>.</p>
 </tr>
 <tr>
 <td>data</td>
+<td></td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td></td>
+</tr>
+<tr>
+<td>status</td>
+<td></td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td></td>
+</tr>
+<tr>
+<td>recorded_by</td>
+<td></td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td></td>
+</tr>
+<tr>
+<td>recorded_at</td>
 <td></td>
 <td>R</td>
 <td>R</td>
