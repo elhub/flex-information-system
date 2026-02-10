@@ -12,7 +12,7 @@ staging.energy_supplier_balance_responsibility_staging (
     balance_responsible_party_business_id text NOT NULL, -- GLN
     energy_direction text NOT NULL,
     valid_time_range tstzrange,
-    recorded_at timestamptz NOT NULL DEFAULT (localtimestamp),
+    recorded_at timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT esbr_staging_metering_grid_area_business_id_check CHECK (
         validate_business_id(metering_grid_area_business_id, 'eic_y')
