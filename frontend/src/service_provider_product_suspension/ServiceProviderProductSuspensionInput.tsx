@@ -4,7 +4,7 @@ import { PartyReferenceInput, InputStack } from "../auth";
 import { Toolbar } from "../components/Toolbar";
 import { ProductTypeArrayInput } from "../product_type/components";
 import { zServiceProviderProductSuspensionCreateRequest } from "../generated-client/zod.gen";
-import { unTypedZodResolver } from "../util";
+import { unTypedZodResolver } from "../zod";
 import { EnumInput } from "../components/enum";
 
 export const ServiceProviderProductSuspensionInput = () => {

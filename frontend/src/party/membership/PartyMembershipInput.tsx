@@ -10,7 +10,7 @@ import { Toolbar } from "../../components/Toolbar";
 import { ScopesInput } from "../../components/scopes";
 import { useMemo } from "react";
 import { zPartyMembershipCreateRequest } from "../../generated-client/zod.gen";
-import { unTypedZodResolver } from "../../util";
+import { unTypedZodResolver } from "../../zod";
 
 // keep only the fields that map to the UI
 const filterRecord = ({ party_id, entity_id, scopes }: any) => ({

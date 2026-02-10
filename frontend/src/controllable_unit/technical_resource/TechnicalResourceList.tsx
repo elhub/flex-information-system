@@ -8,7 +8,7 @@ import { TextField } from "../../components/EDS-ra/fields";
 import { DeleteButton } from "../../components/EDS-ra";
 import { Button, Heading } from "../../components/ui";
 import { zTechnicalResource } from "../../generated-client/zod.gen";
-import { getFields } from "../../util";
+import { getFields } from "../../zod";
 import { IconPlus } from "@elhub/ds-icons";
 
 // automatically fill the controllable_unit_id field with the ID of the

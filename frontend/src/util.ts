@@ -1,7 +1,5 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { EmptyObject, Resolver } from "react-hook-form";
+import { EmptyObject } from "react-hook-form";
 import { ErrorMessage } from "./generated-client";
-import { ZodRawShape, ZodType } from "zod";
 
 // split an array into chunks of given size
 export function chunksOf(size: number, t: any[]): any[][] {
@@ -33,12 +31,6 @@ export function countDefinedValues(obj: any): number {
   }, 0);
 }
 
-// this is the type react admin uses internally for the form values
-type FieldValues = Record<string, any>;
-// React admin does not support required fields in the schema, so we need to untype the resolver
-export const unTypedZodResolver = (schema: Parameters<typeof zodResolver>[0]) =>
-  zodResolver(schema) as Resolver<FieldValues>;
-
 export type Response<T> =
   | {
       data: T;
@@ -55,19 +47,4 @@ export const throwOnError = <T>(response: Response<T>): T => {
     throw error;
   }
   return data;
-};
-
-// Use Zod schema to get the keys of the fields and if they are required.
-export const getFields = <T extends ZodRawShape>(schema: T) => {
-  return Object.entries(schema).reduce(
-    (acc, [key, value]) => {
-      const isNullable =
-        "safeParse" in value
-          ? (value as ZodType<unknown>).safeParse(undefined).success
-          : false;
-      acc[key as keyof T] = { required: !isNullable, source: key as keyof T };
-      return acc;
-    },
-    {} as Record<keyof T, { required: boolean; source: keyof T }>,
-  );
 };

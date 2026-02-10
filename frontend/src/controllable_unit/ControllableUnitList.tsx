@@ -12,7 +12,7 @@ import { EnumArrayInput } from "../components/EDS-ra/inputs";
 import { Button } from "../components/ui";
 import { Permissions } from "../auth/permissions";
 import { zControllableUnit } from "../generated-client/zod.gen";
-import { getFields } from "../util";
+import { getFields } from "../zod";
 import { IconPlus } from "@elhub/ds-icons";
 
 const CULookupButton = () => (

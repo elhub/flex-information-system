@@ -5,7 +5,7 @@ import {
   zPartyCreateRequest,
   zPartyUpdateRequest,
 } from "../generated-client/zod.gen";
-import { getFields, unTypedZodResolver } from "../util";
+import { getFields, unTypedZodResolver } from "../zod";
 import { useCreateOrUpdate } from "../auth";
 import { FormContainer, Heading, VerticalSpace } from "../components/ui";
 import {
