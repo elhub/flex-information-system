@@ -41,7 +41,5 @@ CREATE TABLE IF NOT EXISTS energy_supplier_balance_responsibility_staging (
         energy_supplier_business_id WITH =,
         energy_direction WITH =,
         valid_time_range WITH &&
-    ) WHERE (valid_time_range IS NOT null),
-    CONSTRAINT uk_esbr_staging_mga_es_direction
-    UNIQUE (metering_grid_area_name, energy_supplier_name, energy_direction)
+    ) WHERE (valid_time_range IS NOT null)
 );
