@@ -5,13 +5,20 @@ elsewhere/by other systems. The data is used for reference purposes and to
 ensure consistency.
 
 We call the process of getting this data into the FIS database
-_synchronisation_. And we split this in two steps: _fetching_ and _updates_.
-Fetching is the process of getting data from the external source and loading it
-into a staging structure. The updates functionality is responsible for comparing
-exiting data with the staging structure and updating the target tables
-accordingly.
+_synchronisation_. And we split this in two steps: _fetching_ and _updates_. The
+diagram below shows a conceptual overview of the synchronisation process.
 
 ![Structure data sync conceptual overview](../diagrams/structure_data_sync.drawio.png)
+
+The left _target table_ is the target of the synchronisation process. It is the
+table whose data will be used by the rest of the system as a trusted source of
+information. The right _staging table_ represents a kind of intermediary step,
+splitting the fetching and update steps.
+
+Fetching is the process
+of getting data from the external source and loading it into a staging
+table. The updates functionality is responsible for comparing exiting data
+with the staging table and updating the target table accordingly.
 
 The structure data that must be synchronised is summarised in the table below.
 
@@ -23,7 +30,7 @@ The structure data that must be synchronised is summarised in the table below.
 | Energy Supplier Balance Responsibility | Balance responsibility of each ES, MGA and direction                | ~100k     | eSett          | Replace | Automatic |
 
 As you can see from the last column in the table, there are two different
-strategies for _doing updates_: manual and automatic. These will be
+strategies for _doing updates_: notice and automatic. These will be
 described in more detail below, but lets first look at the general pattern.
 
 ## Fetching mechanism
@@ -92,12 +99,12 @@ efficiently load the data.
 Datasets that are small and rely on the notice update mechanism depends on
 having the data always available in the staging tables. We must use a merge
 strategy for loading the data. This means that the fetching component must
-update, insert, delete existing records in the staging structure as needed.
+update, insert, delete existing records in the staging table as needed.
 
 ## Update mechanism
 
 We have two different mechanisms for _doing updates_ into the target tables in
-the system: manual and automatic. We are picking the mechanism based on the size
+the system: notice and automatic. We are picking the mechanism based on the size
 and significance of the data.
 
 ### Notice
@@ -105,8 +112,10 @@ and significance of the data.
 For data that is not too big and whose updates are not too frequent, we rely on
 a FIS operator to review the data and decide whether to accept it or not. The
 operator is mostly in the loop to be informed, but can also do/request changes
-to the data in upstream systems in case something is wrong. This is the case for
-party, price area and MGA synchronisation.
+to the data in upstream systems in case something is wrong.
+
+The operator is made aware of the updates via
+[notices](../concepts/notification-and-notice.md#notice).
 
 For instance, party synchronisation is done manually by the appropriate users,
 after they have received _notices_ about the inconsistency or out-of-sync state
@@ -120,24 +129,6 @@ review and acceptance. Instead we accept all updates and need to bake in safety
 logic to ensure that we do not accept bad data/updates. The energy supplier
 balance responsibility data is loaded with this strategy.
 
-On the left-hand side lies the _internal data source table_, which is the target
-of the synchronisation process.
-It is the table whose data will be used by the rest of the database as a trusted
-source of information.
-
-The key component of the pattern we implement here is the _landing table_,
-representing a kind of intermediary step, splitting the data fetching and the
-data update phases.
-Data will first be loaded into the landing table, then an _update procedure_
-will be followed to actually update the target table.
-
-The landing table is a copy of the target table without the foreign key
-constraints to allow storing "raw" data.
-It is the update procedure's responsibility to ignore/fix/warn about wrong
-records coming from the landing table.
-The landing table still contains some format checks to ensure more data quality,
-even though we trust the external source to some extent.
-
 ## Examples
 
 The following two sections illustrate how the above mechanisms are used for two
@@ -145,13 +136,15 @@ of the structure data types we synchronise in the system.
 
 ### Party synchronisation
 
-Party syncronisation is using the manual update strategy and the merge loading
+Party synchronisation is using the notice update strategy and the merge loading
 strategy. The diagram below show how this is done in the system.
 
-TODO diagram - manual process - notice etc!
+![Party synchronisation overview](../diagrams/structure_data_party.drawio.png)
 
 ### Energy Supplier Balance Responsibility synchronisation
 
-Energy Supplier Balance Responsibility synchronisation is using the automatic
+Energy Supplier Balance Responsibility (ES BR) synchronisation is using the automatic
 update strategy and the replace loading strategy. The diagram below show how
 this is done in the system.
+
+![Energy Supplier Balance Responsibility synchronisation overview](../diagrams/structure_data_es_br.drawio.png)
