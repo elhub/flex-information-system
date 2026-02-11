@@ -42,7 +42,7 @@ const zControllableUnitCreateForm = z.object({
   start_date: zControllableUnitCreateRequest.shape.start_date
     .nonoptional()
     .refine((date) => isPast(date), {
-      message: "Start date must be in the future",
+      message: "Start date must be today or a past date",
     }),
 });
 type ControllableUnitCreateFormValues = z.infer<

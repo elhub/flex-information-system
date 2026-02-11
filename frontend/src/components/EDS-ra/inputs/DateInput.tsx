@@ -35,6 +35,7 @@ export const DateInput = ({
       error={fieldState.error?.message}
     >
       <Datepicker
+        {...rest}
         id={id}
         selected={
           field.value
@@ -46,7 +47,6 @@ export const DateInput = ({
         size="large"
         disabled={disabled}
         navigateButtons={false}
-        {...rest}
       />
     </BaseInput>
   );
