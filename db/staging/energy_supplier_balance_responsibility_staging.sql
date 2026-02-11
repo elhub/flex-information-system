@@ -6,7 +6,7 @@
 -- stores the balance responsible party chosen by each energy supplier in the
 -- different metering grid areas, as fetched from the external source
 CREATE UNLOGGED TABLE IF NOT EXISTS
-staging.energy_supplier_balance_responsibility_staging (
+staging.energy_supplier_balance_responsibility (
     metering_grid_area_business_id text NOT NULL, -- EIC-Y
     energy_supplier_business_id text NOT NULL, -- GLN
     balance_responsible_party_business_id text NOT NULL, -- GLN
@@ -48,12 +48,12 @@ staging.energy_supplier_balance_responsibility_staging (
 -- changeset flex:energy-supplier-balance-responsibility-staging-prepare runOnChange:false endDelimiter:--
 -- empty the staging table before loading new data
 CREATE OR REPLACE FUNCTION
-staging.energy_supplier_balance_responsibility_staging_prepare()
+staging.energy_supplier_balance_responsibility_prepare()
 RETURNS void
 SECURITY DEFINER
 LANGUAGE sql
 AS $$
-    TRUNCATE TABLE staging.energy_supplier_balance_responsibility_staging
+    TRUNCATE TABLE staging.energy_supplier_balance_responsibility
     -- if foreign keys are defined on this table (SHOULD NOT), the prepare
     -- operation will fail and then we can trace this back to this reason
     RESTRICT;
