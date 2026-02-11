@@ -1,6 +1,6 @@
 # backend - build for production
 # https://docs.docker.com/guides/golang/build-images/
-FROM docker.jfrog.elhub.cloud/golang:1.25.7-alpine AS builder
+FROM docker.jfrog.elhub.cloud/golang:1.26.0-alpine AS builder
 
 WORKDIR /app
 
