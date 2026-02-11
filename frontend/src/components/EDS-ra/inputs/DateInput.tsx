@@ -1,9 +1,8 @@
-import { Datepicker } from "../../ui";
+import { Datepicker, DatepickerProps } from "../../ui";
 import { useInput } from "ra-core";
 import { BaseInput, BaseInputProps } from "./BaseInput";
 import { formatISO, parseISO } from "date-fns";
 import { tz } from "@date-fns/tz";
-import { DatepickerProps } from "@elhub/ds-components";
 
 type DateTimeInputProps = BaseInputProps & DatepickerProps;
 
