@@ -58,6 +58,24 @@ AS $$
     RESTRICT;
 $$;
 
+-- changeset flex:energy-supplier-balance-responsibility-staging-fk-view runOnChange:true endDelimiter:--
+-- ESBR staging with foreign key resolved (business IDs turned into IDs)
+CREATE OR REPLACE VIEW staging.energy_supplier_balance_responsibility_fk AS (
+    SELECT
+        mga.id AS metering_grid_area_id,
+        esp.id AS energy_supplier_id,
+        brpp.id AS balance_responsible_party_id,
+        stg.energy_direction,
+        stg.valid_time_range
+    FROM staging.energy_supplier_balance_responsibility AS stg
+        INNER JOIN flex.metering_grid_area AS mga
+            ON stg.metering_grid_area_business_id = mga.business_id
+        INNER JOIN flex.party AS esp
+            ON stg.energy_supplier_business_id = esp.business_id
+        INNER JOIN flex.party AS brpp
+            ON stg.balance_responsible_party_business_id = brpp.business_id
+);
+
 -- changeset flex:energy-supplier-balance-responsibility-staging-update runOnChange:false endDelimiter:--
 -- update the actual table with new data from the staging table
 CREATE OR REPLACE FUNCTION
@@ -118,47 +136,29 @@ BEGIN
     -- update will thus be (MGA, ES, direction, valid time start). We don't care
     -- about BRP or end of valid time.
 
-    -- convert business IDs from the staging table (no foreign keys) into
-    -- actual IDs of the "referenced" records that should exist in the system
-    WITH staging_esbr AS (
-        SELECT
-            mga.id AS metering_grid_area_id,
-            esp.id AS energy_supplier_id,
-            brpp.id AS balance_responsible_party_id,
-            stg.energy_direction,
-            stg.valid_time_range
-            energy_direction,
-            valid_time_range
-        FROM staging.energy_supplier_balance_responsibility stg
-            INNER JOIN flex.metering_grid_area mga
-                ON stg.metering_grid_area_business_id = mga.business_id
-            INNER JOIN flex.party esp
-                ON stg.energy_supplier_business_id = esp.business_id
-            INNER JOIN flex.party brpp
-                ON stg.balance_responsible_party_business_id = brpp.business_id
-            ON mga.business_id = staging.metering_grid_area_business_id
-    ),
+    -- defer (NB: not disable) timeline consistency checks until the update
+    -- procedure is done, as we will be doing stateful operations in an
+    -- arbitrary order that may temporarily violate them
+    SET CONSTRAINTS ALL DEFERRED;
 
     -- step 1
-    -- in PG>=17, this second CTE can be replaced with a simple
+    -- in PG>=17, this can be replaced with a simple
     -- 'WHEN NOT MATCHED BY SOURCE THEN DELETE' clause in the MERGE below
-    del AS (
-        DELETE FROM flex.energy_supplier_balance_responsibility AS flex_esbr
-        WHERE NOT EXISTS (
-            SELECT 1
-            FROM staging_esbr
-            WHERE staging_esbr.metering_grid_area_id
-            = flex_esbr.metering_grid_area_id
-                AND staging_esbr.energy_supplier_id
-                = flex_esbr.energy_supplier_id
-                AND staging_esbr.energy_direction = flex_esbr.energy_direction
-                AND lower(staging_esbr.valid_time_range)
-                = lower(flex_esbr.valid_time_range)
-        )
-    )
+    DELETE FROM flex.energy_supplier_balance_responsibility AS flex_esbr
+    WHERE NOT EXISTS (
+        SELECT 1
+        FROM staging.energy_supplier_balance_responsibility_fk AS staging_esbr
+        WHERE staging_esbr.metering_grid_area_id
+        = flex_esbr.metering_grid_area_id
+            AND staging_esbr.energy_supplier_id
+            = flex_esbr.energy_supplier_id
+            AND staging_esbr.energy_direction = flex_esbr.energy_direction
+            AND lower(staging_esbr.valid_time_range)
+            = lower(flex_esbr.valid_time_range)
+    );
 
     MERGE INTO flex.energy_supplier_balance_responsibility AS flex_esbr
-    USING staging_esbr
+    USING staging.energy_supplier_balance_responsibility_fk AS staging_esbr
         ON flex_esbr.metering_grid_area_id = staging_esbr.metering_grid_area_id
         AND flex_esbr.energy_supplier_id = staging_esbr.energy_supplier_id
         AND flex_esbr.energy_direction = staging_esbr.energy_direction
@@ -197,6 +197,7 @@ SECURITY DEFINER
 LANGUAGE plpgsql
 AS $$
 BEGIN
-    -- TODO
+    -- TODO: safety checks
+    PERFORM staging.energy_supplier_balance_responsibility_update();
 END;
 $$;
