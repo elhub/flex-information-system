@@ -1,17 +1,17 @@
-import { Chip, Stack, Typography } from "@mui/material";
 import {
   ControllableUnit,
   ControllableUnitStatus,
 } from "../../../generated-client";
+import { FlexDiv, Heading, Tag } from "../../../components/ui";
 
-const colorMap: Record<
+const statusVariantMap: Record<
   ControllableUnitStatus,
-  "info" | "primary" | "secondary" | "warning"
+  "info" | "success" | "warning" | "error"
 > = {
   new: "info",
-  active: "primary",
-  inactive: "secondary",
-  terminated: "warning",
+  active: "success",
+  inactive: "warning",
+  terminated: "error",
 };
 
 export const Header = ({
@@ -20,15 +20,14 @@ export const Header = ({
   controllableUnit: ControllableUnit | undefined;
 }) => {
   return (
-    <Stack direction="row" spacing={2} alignItems="center">
-      <Typography variant="h4" gutterBottom>
+    <FlexDiv className="flex flex-row items-center gap-3">
+      <Heading level={1} size="large">
         Controllable Unit - {controllableUnit?.name} (
         {controllableUnit?.maximum_available_capacity} kW)
-      </Typography>
-      <Chip
-        label={controllableUnit?.status ?? "active"}
-        color={colorMap[controllableUnit?.status ?? "active"]}
-      />
-    </Stack>
+      </Heading>
+      <Tag variant={statusVariantMap[controllableUnit?.status ?? "active"]}>
+        {controllableUnit?.status ?? "active"}
+      </Tag>
+    </FlexDiv>
   );
 };

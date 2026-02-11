@@ -16,7 +16,7 @@ import { useMemo } from "react";
 import { ProductTypeArrayInput } from "../../product_type/components";
 import { zServiceProvidingGroupProductSuspensionCreateRequest } from "../../generated-client/zod.gen";
 import { EnumInput } from "../../components/enum";
-import { unTypedZodResolver } from "../../util";
+import { unTypedZodResolver } from "../../zod";
 
 const filterRecord = ({
   service_providing_group_id,

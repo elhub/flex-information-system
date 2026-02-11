@@ -59,20 +59,20 @@ export const zControllableUnitLookupRequest = z.object({
  */
 export const zControllableUnitLookup = z.object({
   accounting_point: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
     business_id: z.string().regex(/^[1-9][0-9]{17}$/),
   }),
   end_user: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   controllable_units: z.array(
     z.object({
-      id: z.int(),
+      id: z.coerce.number(),
       business_id: z.string(),
       name: z.string(),
       technical_resources: z.array(
         z.object({
-          id: z.int(),
+          id: z.coerce.number(),
           name: z.string(),
           details: z.optional(
             z.preprocess(
@@ -102,7 +102,7 @@ export const zEntityLookup = z.object({
   entity_id: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
-      z.int().optional(),
+      z.coerce.number().optional(),
     ),
   ),
 });
@@ -146,7 +146,7 @@ export const zNoticeDataProductTypeNotQualified = z.object({
   product_type_ids: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
-      z.array(z.int()).optional(),
+      z.array(z.coerce.number()).optional(),
     ),
   ),
 });
@@ -446,31 +446,31 @@ export const zControllableUnitUpdateRequest = z.object({
   maximum_available_capacity: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
-      z.number().gte(0).lte(999999.999).optional(),
+      z.coerce.number().gte(0).lte(999999.999).optional(),
     ),
   ),
   minimum_duration: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
-      z.int().gte(0).optional(),
+      z.coerce.number().gte(0).optional(),
     ),
   ),
   maximum_duration: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
-      z.int().gte(0).optional(),
+      z.coerce.number().gte(0).optional(),
     ),
   ),
   recovery_duration: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
-      z.int().gte(0).optional(),
+      z.coerce.number().gte(0).optional(),
     ),
   ),
   ramp_rate: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
-      z.number().gte(0.001).optional(),
+      z.coerce.number().gte(0.001).optional(),
     ),
   ),
   grid_node_id: z.optional(
@@ -522,32 +522,32 @@ export const zControllableUnitCreateRequest = z.object({
     ),
   ),
   regulation_direction: zControllableUnitRegulationDirection,
-  maximum_available_capacity: z.number().gte(0).lte(999999.999),
+  maximum_available_capacity: z.coerce.number().gte(0).lte(999999.999),
   minimum_duration: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
-      z.int().gte(0).optional(),
+      z.coerce.number().gte(0).optional(),
     ),
   ),
   maximum_duration: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
-      z.int().gte(0).optional(),
+      z.coerce.number().gte(0).optional(),
     ),
   ),
   recovery_duration: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
-      z.int().gte(0).optional(),
+      z.coerce.number().gte(0).optional(),
     ),
   ),
   ramp_rate: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
-      z.number().gte(0.001).optional(),
+      z.coerce.number().gte(0.001).optional(),
     ),
   ),
-  accounting_point_id: z.int(),
+  accounting_point_id: z.coerce.number(),
   grid_node_id: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -583,7 +583,7 @@ export const zControllableUnitCreateRequest = z.object({
  * Response schema - Controllable unit
  */
 export const zControllableUnit = z.object({
-  id: z.int().readonly(),
+  id: z.coerce.number().readonly(),
   business_id: z
     .string()
     .regex(
@@ -599,33 +599,33 @@ export const zControllableUnit = z.object({
   ),
   status: zControllableUnitStatus,
   regulation_direction: zControllableUnitRegulationDirection,
-  maximum_available_capacity: z.number().gte(0).lte(999999.999),
+  maximum_available_capacity: z.coerce.number().gte(0).lte(999999.999),
   is_small: z.boolean().readonly(),
   minimum_duration: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
-      z.int().gte(0).optional(),
+      z.coerce.number().gte(0).optional(),
     ),
   ),
   maximum_duration: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
-      z.int().gte(0).optional(),
+      z.coerce.number().gte(0).optional(),
     ),
   ),
   recovery_duration: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
-      z.int().gte(0).optional(),
+      z.coerce.number().gte(0).optional(),
     ),
   ),
   ramp_rate: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
-      z.number().gte(0.001).optional(),
+      z.coerce.number().gte(0.001).optional(),
     ),
   ),
-  accounting_point_id: z.int(),
+  accounting_point_id: z.coerce.number(),
   grid_node_id: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -651,7 +651,7 @@ export const zControllableUnit = z.object({
     ),
   ),
   recorded_at: z.string().readonly(),
-  recorded_by: z.int().readonly(),
+  recorded_by: z.coerce.number().readonly(),
 });
 
 /**
@@ -670,11 +670,11 @@ export const zControllableUnitSuspensionUpdateRequest = z.object({
  * Request schema for create operations - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
  */
 export const zControllableUnitSuspensionCreateRequest = z.object({
-  controllable_unit_id: z.int(),
+  controllable_unit_id: z.coerce.number(),
   impacted_system_operator_id: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
-      z.int().optional(),
+      z.coerce.number().optional(),
     ),
   ),
   reason: zControllableUnitSuspensionReason,
@@ -684,12 +684,12 @@ export const zControllableUnitSuspensionCreateRequest = z.object({
  * Response schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
  */
 export const zControllableUnitSuspension = z.object({
-  id: z.int().readonly(),
-  controllable_unit_id: z.int(),
-  impacted_system_operator_id: z.int(),
+  id: z.coerce.number().readonly(),
+  controllable_unit_id: z.coerce.number(),
+  impacted_system_operator_id: z.coerce.number(),
   reason: zControllableUnitSuspensionReason,
   recorded_at: z.string().readonly(),
-  recorded_by: z.int().readonly(),
+  recorded_by: z.coerce.number().readonly(),
 });
 
 /**
@@ -714,7 +714,7 @@ export const zControllableUnitSuspensionCommentUpdateRequest = z.object({
  * Request schema for create operations - Comment made by a party involved in a controllable unit suspension.
  */
 export const zControllableUnitSuspensionCommentCreateRequest = z.object({
-  controllable_unit_suspension_id: z.int(),
+  controllable_unit_suspension_id: z.coerce.number(),
   visibility: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -728,14 +728,14 @@ export const zControllableUnitSuspensionCommentCreateRequest = z.object({
  * Response schema - Comment made by a party involved in a controllable unit suspension.
  */
 export const zControllableUnitSuspensionComment = z.object({
-  id: z.int().readonly(),
-  controllable_unit_suspension_id: z.int(),
-  created_by: z.int().readonly(),
+  id: z.coerce.number().readonly(),
+  controllable_unit_suspension_id: z.coerce.number(),
+  created_by: z.coerce.number().readonly(),
   created_at: z.string().readonly(),
   visibility: zControllableUnitSuspensionCommentVisibility,
   content: z.string().max(2048),
   recorded_at: z.string().readonly(),
-  recorded_by: z.int().readonly(),
+  recorded_by: z.coerce.number().readonly(),
 });
 
 /**
@@ -766,9 +766,9 @@ export const zControllableUnitServiceProviderUpdateRequest = z.object({
  * Request schema for create operations - Relation between controllable unit and service provider
  */
 export const zControllableUnitServiceProviderCreateRequest = z.object({
-  controllable_unit_id: z.int(),
-  service_provider_id: z.int(),
-  end_user_id: z.int(),
+  controllable_unit_id: z.coerce.number(),
+  service_provider_id: z.coerce.number(),
+  end_user_id: z.coerce.number(),
   contract_reference: z.string().max(128),
   valid_from: z.optional(
     z.preprocess(
@@ -788,10 +788,10 @@ export const zControllableUnitServiceProviderCreateRequest = z.object({
  * Response schema - Relation between controllable unit and service provider
  */
 export const zControllableUnitServiceProvider = z.object({
-  id: z.int().readonly(),
-  controllable_unit_id: z.int(),
-  service_provider_id: z.int(),
-  end_user_id: z.int(),
+  id: z.coerce.number().readonly(),
+  controllable_unit_id: z.coerce.number(),
+  service_provider_id: z.coerce.number(),
+  end_user_id: z.coerce.number(),
   contract_reference: z.string().max(128),
   valid_from: z.optional(
     z.preprocess(
@@ -806,7 +806,7 @@ export const zControllableUnitServiceProvider = z.object({
     ),
   ),
   recorded_at: z.string().readonly(),
-  recorded_by: z.int().readonly(),
+  recorded_by: z.coerce.number().readonly(),
 });
 
 /**
@@ -838,7 +838,7 @@ export const zServiceProvidingGroupUpdateRequest = z.object({
  */
 export const zServiceProvidingGroupCreateRequest = z.object({
   name: z.string().max(128),
-  service_provider_id: z.int(),
+  service_provider_id: z.coerce.number(),
   bidding_zone: zServiceProvidingGroupBiddingZone,
   status: z.optional(
     z.preprocess(
@@ -852,13 +852,13 @@ export const zServiceProvidingGroupCreateRequest = z.object({
  * Response schema - Group of controllable units
  */
 export const zServiceProvidingGroup = z.object({
-  id: z.int().readonly(),
+  id: z.coerce.number().readonly(),
   name: z.string().max(128),
-  service_provider_id: z.int(),
+  service_provider_id: z.coerce.number(),
   bidding_zone: zServiceProvidingGroupBiddingZone,
   status: zServiceProvidingGroupStatus,
   recorded_at: z.string().readonly(),
-  recorded_by: z.int().readonly(),
+  recorded_by: z.coerce.number().readonly(),
 });
 
 /**
@@ -883,8 +883,8 @@ export const zServiceProvidingGroupMembershipUpdateRequest = z.object({
  * Request schema for create operations - Membership relation of controllable unit in service providing group
  */
 export const zServiceProvidingGroupMembershipCreateRequest = z.object({
-  controllable_unit_id: z.int(),
-  service_providing_group_id: z.int(),
+  controllable_unit_id: z.coerce.number(),
+  service_providing_group_id: z.coerce.number(),
   valid_from: z.string(),
   valid_to: z.optional(
     z.preprocess(
@@ -898,9 +898,9 @@ export const zServiceProvidingGroupMembershipCreateRequest = z.object({
  * Response schema - Membership relation of controllable unit in service providing group
  */
 export const zServiceProvidingGroupMembership = z.object({
-  id: z.int().readonly(),
-  controllable_unit_id: z.int(),
-  service_providing_group_id: z.int(),
+  id: z.coerce.number().readonly(),
+  controllable_unit_id: z.coerce.number(),
+  service_providing_group_id: z.coerce.number(),
   valid_from: z.string(),
   valid_to: z.optional(
     z.preprocess(
@@ -909,7 +909,7 @@ export const zServiceProvidingGroupMembership = z.object({
     ),
   ),
   recorded_at: z.string().readonly(),
-  recorded_by: z.int().readonly(),
+  recorded_by: z.coerce.number().readonly(),
 });
 
 /**
@@ -937,8 +937,8 @@ export const zServiceProvidingGroupGridPrequalificationUpdateRequest = z.object(
  */
 export const zServiceProvidingGroupGridPrequalificationCreateRequest = z.object(
   {
-    service_providing_group_id: z.int(),
-    impacted_system_operator_id: z.int(),
+    service_providing_group_id: z.coerce.number(),
+    impacted_system_operator_id: z.coerce.number(),
     status: z.optional(
       z.preprocess(
         (value) => (value === null ? undefined : value),
@@ -958,9 +958,9 @@ export const zServiceProvidingGroupGridPrequalificationCreateRequest = z.object(
  * Response schema - Grid prequalification for service providing group
  */
 export const zServiceProvidingGroupGridPrequalification = z.object({
-  id: z.int().readonly(),
-  service_providing_group_id: z.int(),
-  impacted_system_operator_id: z.int(),
+  id: z.coerce.number().readonly(),
+  service_providing_group_id: z.coerce.number(),
+  impacted_system_operator_id: z.coerce.number(),
   status: zServiceProvidingGroupGridPrequalificationStatus,
   prequalified_at: z.optional(
     z.preprocess(
@@ -969,7 +969,7 @@ export const zServiceProvidingGroupGridPrequalification = z.object({
     ),
   ),
   recorded_at: z.string().readonly(),
-  recorded_by: z.int().readonly(),
+  recorded_by: z.coerce.number().readonly(),
 });
 
 /**
@@ -996,7 +996,7 @@ export const zServiceProvidingGroupGridPrequalificationCommentUpdateRequest =
  */
 export const zServiceProvidingGroupGridPrequalificationCommentCreateRequest =
   z.object({
-    service_providing_group_grid_prequalification_id: z.int(),
+    service_providing_group_grid_prequalification_id: z.coerce.number(),
     visibility: z.optional(
       z.preprocess(
         (value) => (value === null ? undefined : value),
@@ -1010,14 +1010,14 @@ export const zServiceProvidingGroupGridPrequalificationCommentCreateRequest =
  * Response schema - Comment made by a party involved in a service providing group grid prequalification.
  */
 export const zServiceProvidingGroupGridPrequalificationComment = z.object({
-  id: z.int().readonly(),
-  service_providing_group_grid_prequalification_id: z.int(),
-  created_by: z.int().readonly(),
+  id: z.coerce.number().readonly(),
+  service_providing_group_grid_prequalification_id: z.coerce.number(),
+  created_by: z.coerce.number().readonly(),
   created_at: z.string().readonly(),
   visibility: zServiceProvidingGroupGridPrequalificationCommentVisibility,
   content: z.string().max(2048),
   recorded_at: z.string().readonly(),
-  recorded_by: z.int().readonly(),
+  recorded_by: z.coerce.number().readonly(),
 });
 
 /**
@@ -1039,10 +1039,10 @@ export const zServiceProvidingGroupGridSuspensionCreateRequest = z.object({
   impacted_system_operator_id: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
-      z.int().optional(),
+      z.coerce.number().optional(),
     ),
   ),
-  service_providing_group_id: z.int(),
+  service_providing_group_id: z.coerce.number(),
   reason: zServiceProvidingGroupGridSuspensionReason,
 });
 
@@ -1050,12 +1050,12 @@ export const zServiceProvidingGroupGridSuspensionCreateRequest = z.object({
  * Response schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
  */
 export const zServiceProvidingGroupGridSuspension = z.object({
-  id: z.int().readonly(),
-  impacted_system_operator_id: z.int(),
-  service_providing_group_id: z.int(),
+  id: z.coerce.number().readonly(),
+  impacted_system_operator_id: z.coerce.number(),
+  service_providing_group_id: z.coerce.number(),
   reason: zServiceProvidingGroupGridSuspensionReason,
   recorded_at: z.string().readonly(),
-  recorded_by: z.int().readonly(),
+  recorded_by: z.coerce.number().readonly(),
 });
 
 /**
@@ -1082,7 +1082,7 @@ export const zServiceProvidingGroupGridSuspensionCommentUpdateRequest =
  */
 export const zServiceProvidingGroupGridSuspensionCommentCreateRequest =
   z.object({
-    service_providing_group_grid_suspension_id: z.int(),
+    service_providing_group_grid_suspension_id: z.coerce.number(),
     visibility: z.optional(
       z.preprocess(
         (value) => (value === null ? undefined : value),
@@ -1096,14 +1096,14 @@ export const zServiceProvidingGroupGridSuspensionCommentCreateRequest =
  * Response schema - Comment made by a party involved in a service providing group grid suspension.
  */
 export const zServiceProvidingGroupGridSuspensionComment = z.object({
-  id: z.int().readonly(),
-  service_providing_group_grid_suspension_id: z.int(),
-  created_by: z.int().readonly(),
+  id: z.coerce.number().readonly(),
+  service_providing_group_grid_suspension_id: z.coerce.number(),
+  created_by: z.coerce.number().readonly(),
   created_at: z.string().readonly(),
   visibility: zServiceProvidingGroupGridSuspensionCommentVisibility,
   content: z.string().max(2048),
   recorded_at: z.string().readonly(),
-  recorded_by: z.int().readonly(),
+  recorded_by: z.coerce.number().readonly(),
 });
 
 /**
@@ -1165,13 +1165,13 @@ export const zEntityCreateRequest = z.object({
  * * Organisation
  */
 export const zEntity = z.object({
-  id: z.int().readonly(),
+  id: z.coerce.number().readonly(),
   business_id: z.string(),
   business_id_type: zEntityBusinessIdType,
   name: z.string(),
   type: zEntityType,
   recorded_at: z.string().readonly(),
-  recorded_by: z.int().readonly(),
+  recorded_by: z.coerce.number().readonly(),
 });
 
 /**
@@ -1187,7 +1187,7 @@ export const zEntityClientUpdateRequest = z.object({
   party_id: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
-      z.int().optional(),
+      z.coerce.number().optional(),
     ),
   ),
   scopes: z.optional(
@@ -1219,7 +1219,7 @@ export const zEntityClientUpdateRequest = z.object({
  * Request schema for create operations - Client linked to an entity for client credentials and JWT grant authentication methods.
  */
 export const zEntityClientCreateRequest = z.object({
-  entity_id: z.int(),
+  entity_id: z.coerce.number(),
   name: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -1229,7 +1229,7 @@ export const zEntityClientCreateRequest = z.object({
   party_id: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
-      z.int().optional(),
+      z.coerce.number().optional(),
     ),
   ),
   scopes: z.array(zAuthScope),
@@ -1256,8 +1256,8 @@ export const zEntityClientCreateRequest = z.object({
  * Response schema - Client linked to an entity for client credentials and JWT grant authentication methods.
  */
 export const zEntityClient = z.object({
-  id: z.int().readonly(),
-  entity_id: z.int(),
+  id: z.coerce.number().readonly(),
+  entity_id: z.coerce.number(),
   name: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -1268,7 +1268,7 @@ export const zEntityClient = z.object({
   party_id: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
-      z.int().optional(),
+      z.coerce.number().optional(),
     ),
   ),
   scopes: z.array(zAuthScope),
@@ -1290,7 +1290,7 @@ export const zEntityClient = z.object({
     ),
   ),
   recorded_at: z.string().readonly(),
-  recorded_by: z.int().readonly(),
+  recorded_by: z.coerce.number().readonly(),
 });
 
 /**
@@ -1361,7 +1361,7 @@ export const zPartyCreateRequest = z.object({
       zPartyBusinessIdType.optional(),
     ),
   ),
-  entity_id: z.int(),
+  entity_id: z.coerce.number(),
   name: z.string(),
   role: zPartyRole,
   type: zPartyType,
@@ -1385,16 +1385,16 @@ export const zPartyCreateRequest = z.object({
  * * End User
  */
 export const zParty = z.object({
-  id: z.int().readonly(),
+  id: z.coerce.number().readonly(),
   business_id: z.string(),
   business_id_type: zPartyBusinessIdType,
-  entity_id: z.int(),
+  entity_id: z.coerce.number(),
   name: z.string(),
   role: zPartyRole,
   type: zPartyType,
   status: zPartyStatus,
   recorded_at: z.string().readonly(),
-  recorded_by: z.int().readonly(),
+  recorded_by: z.coerce.number().readonly(),
 });
 
 /**
@@ -1456,8 +1456,8 @@ export const zPartyMembershipUpdateRequest = z.object({
  * Request schema for create operations - The relation between a party and entity.
  */
 export const zPartyMembershipCreateRequest = z.object({
-  party_id: z.int(),
-  entity_id: z.int(),
+  party_id: z.coerce.number(),
+  entity_id: z.coerce.number(),
   scopes: z.array(zAuthScope),
 });
 
@@ -1465,25 +1465,25 @@ export const zPartyMembershipCreateRequest = z.object({
  * Response schema - The relation between a party and entity.
  */
 export const zPartyMembership = z.object({
-  id: z.int().readonly(),
-  party_id: z.int(),
-  entity_id: z.int(),
+  id: z.coerce.number().readonly(),
+  party_id: z.coerce.number(),
+  entity_id: z.coerce.number(),
   scopes: z.array(zAuthScope),
   recorded_at: z.string().readonly(),
-  recorded_by: z.int().readonly(),
+  recorded_by: z.coerce.number().readonly(),
 });
 
 /**
  * Response schema - Resource uniquely identifying a user by linking its entity and the potentially assumed party.
  */
 export const zIdentity = z.object({
-  id: z.int().readonly(),
-  entity_id: z.int().readonly(),
+  id: z.coerce.number().readonly(),
+  entity_id: z.coerce.number().readonly(),
   entity_name: z.string().readonly(),
   party_id: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
-      z.int().readonly().optional(),
+      z.coerce.number().readonly().optional(),
     ),
   ),
   party_name: z.optional(
@@ -1517,7 +1517,7 @@ export const zTechnicalResourceUpdateRequest = z.object({
  */
 export const zTechnicalResourceCreateRequest = z.object({
   name: z.string(),
-  controllable_unit_id: z.int(),
+  controllable_unit_id: z.coerce.number(),
   details: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -1530,9 +1530,9 @@ export const zTechnicalResourceCreateRequest = z.object({
  * Response schema - Technical unit being part of a controllable unit.
  */
 export const zTechnicalResource = z.object({
-  id: z.int().readonly(),
+  id: z.coerce.number().readonly(),
   name: z.string(),
-  controllable_unit_id: z.int(),
+  controllable_unit_id: z.coerce.number(),
   details: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -1540,14 +1540,14 @@ export const zTechnicalResource = z.object({
     ),
   ),
   recorded_at: z.string().readonly(),
-  recorded_by: z.int().readonly(),
+  recorded_by: z.coerce.number().readonly(),
 });
 
 /**
  * Response schema - Event happening in the system.
  */
 export const zEvent = z.object({
-  id: z.int().readonly(),
+  id: z.coerce.number().readonly(),
   specversion: z.string().readonly(),
   time: z.string().readonly(),
   type: z
@@ -1588,34 +1588,34 @@ export const zNotificationUpdateRequest = z.object({
  * Response schema - Notification about an event happening in the system.
  */
 export const zNotification = z.object({
-  id: z.int().readonly(),
+  id: z.coerce.number().readonly(),
   acknowledged: z.boolean(),
-  event_id: z.int(),
-  party_id: z.int(),
+  event_id: z.coerce.number(),
+  party_id: z.coerce.number(),
   recorded_at: z.string().readonly(),
-  recorded_by: z.int().readonly(),
+  recorded_by: z.coerce.number().readonly(),
 });
 
 /**
  * Response schema - Accounting point for a controllable unit.
  */
 export const zAccountingPoint = z.object({
-  id: z.int().readonly(),
+  id: z.coerce.number().readonly(),
   business_id: z
     .string()
     .regex(/^[1-9][0-9]{17}$/)
     .readonly(),
-  system_operator_id: z.int().readonly(),
+  system_operator_id: z.coerce.number().readonly(),
   recorded_at: z.string().readonly(),
-  recorded_by: z.int().readonly(),
+  recorded_by: z.coerce.number().readonly(),
 });
 
 /**
  * Response schema - Relation linking a balance responsible party to an accounting point.
  */
 export const zAccountingPointBalanceResponsibleParty = z.object({
-  accounting_point_id: z.int().readonly(),
-  balance_responsible_party_id: z.int().readonly(),
+  accounting_point_id: z.coerce.number().readonly(),
+  balance_responsible_party_id: z.coerce.number().readonly(),
   energy_direction: zAccountingPointBalanceResponsiblePartyEnergyDirection,
   valid_from: z.string().readonly(),
   valid_to: z.optional(
@@ -1630,7 +1630,7 @@ export const zAccountingPointBalanceResponsibleParty = z.object({
  * Response schema - Relation telling which bidding zone an accounting point belongs to.
  */
 export const zAccountingPointBiddingZone = z.object({
-  accounting_point_id: z.int().readonly(),
+  accounting_point_id: z.coerce.number().readonly(),
   bidding_zone: zAccountingPointBiddingZoneBiddingZone,
   valid_from: z.string().readonly(),
   valid_to: z.optional(
@@ -1645,8 +1645,8 @@ export const zAccountingPointBiddingZone = z.object({
  * Response schema - Relation telling which end user an accounting point belongs to.
  */
 export const zAccountingPointEndUser = z.object({
-  accounting_point_id: z.int().readonly(),
-  end_user_id: z.int().readonly(),
+  accounting_point_id: z.coerce.number().readonly(),
+  end_user_id: z.coerce.number().readonly(),
   valid_from: z.string().readonly(),
   valid_to: z.optional(
     z.preprocess(
@@ -1660,8 +1660,8 @@ export const zAccountingPointEndUser = z.object({
  * Response schema - Relation linking an energy supplier to an accounting point.
  */
 export const zAccountingPointEnergySupplier = z.object({
-  accounting_point_id: z.int().readonly(),
-  energy_supplier_id: z.int().readonly(),
+  accounting_point_id: z.coerce.number().readonly(),
+  energy_supplier_id: z.coerce.number().readonly(),
   valid_from: z.string().readonly(),
   valid_to: z.optional(
     z.preprocess(
@@ -1675,7 +1675,7 @@ export const zAccountingPointEnergySupplier = z.object({
  * Response schema - Metering grid area to which accounting points belong.
  */
 export const zMeteringGridArea = z.object({
-  id: z.int().readonly(),
+  id: z.coerce.number().readonly(),
   business_id: z.string().readonly(),
   business_id_type: zMeteringGridAreaBusinessIdType,
   name: z.string().max(128).readonly(),
@@ -1685,8 +1685,8 @@ export const zMeteringGridArea = z.object({
  * Response schema - Relation telling which metering grid area an accounting point belongs to.
  */
 export const zAccountingPointMeteringGridArea = z.object({
-  accounting_point_id: z.int().readonly(),
-  metering_grid_area_id: z.int().readonly(),
+  accounting_point_id: z.coerce.number().readonly(),
+  metering_grid_area_id: z.coerce.number().readonly(),
   valid_from: z.string().readonly(),
   valid_to: z.optional(
     z.preprocess(
@@ -1700,7 +1700,7 @@ export const zAccountingPointMeteringGridArea = z.object({
  * Response schema - Product type.
  */
 export const zProductType = z.object({
-  id: z.int().readonly(),
+  id: z.coerce.number().readonly(),
   business_id: z.string().readonly(),
   name: z.string().max(64).readonly(),
   service: z.string().readonly(),
@@ -1723,8 +1723,8 @@ export const zSystemOperatorProductTypeUpdateRequest = z.object({
  * Request schema for create operations - Relation between a system operator and a product type they want to buy.
  */
 export const zSystemOperatorProductTypeCreateRequest = z.object({
-  system_operator_id: z.int(),
-  product_type_id: z.int(),
+  system_operator_id: z.coerce.number(),
+  product_type_id: z.coerce.number(),
   status: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -1737,12 +1737,12 @@ export const zSystemOperatorProductTypeCreateRequest = z.object({
  * Response schema - Relation between a system operator and a product type they want to buy.
  */
 export const zSystemOperatorProductType = z.object({
-  id: z.int().readonly(),
-  system_operator_id: z.int(),
-  product_type_id: z.int(),
+  id: z.coerce.number().readonly(),
+  system_operator_id: z.coerce.number(),
+  product_type_id: z.coerce.number(),
   status: zSystemOperatorProductTypeStatus,
   recorded_at: z.string().readonly(),
-  recorded_by: z.int().readonly(),
+  recorded_by: z.coerce.number().readonly(),
 });
 
 /**
@@ -1752,7 +1752,7 @@ export const zServiceProviderProductApplicationUpdateRequest = z.object({
   product_type_ids: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
-      z.array(z.int()).optional(),
+      z.array(z.coerce.number()).optional(),
     ),
   ),
   status: z.optional(
@@ -1773,9 +1773,9 @@ export const zServiceProviderProductApplicationUpdateRequest = z.object({
  * Request schema for create operations - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
  */
 export const zServiceProviderProductApplicationCreateRequest = z.object({
-  service_provider_id: z.int(),
-  system_operator_id: z.int(),
-  product_type_ids: z.array(z.int()),
+  service_provider_id: z.coerce.number(),
+  system_operator_id: z.coerce.number(),
+  product_type_ids: z.array(z.coerce.number()),
   status: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -1794,10 +1794,10 @@ export const zServiceProviderProductApplicationCreateRequest = z.object({
  * Response schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
  */
 export const zServiceProviderProductApplication = z.object({
-  id: z.int().readonly(),
-  service_provider_id: z.int(),
-  system_operator_id: z.int(),
-  product_type_ids: z.array(z.int()),
+  id: z.coerce.number().readonly(),
+  service_provider_id: z.coerce.number(),
+  system_operator_id: z.coerce.number(),
+  product_type_ids: z.array(z.coerce.number()),
   status: zServiceProviderProductApplicationStatus,
   qualified_at: z.optional(
     z.preprocess(
@@ -1806,7 +1806,7 @@ export const zServiceProviderProductApplication = z.object({
     ),
   ),
   recorded_at: z.string().readonly(),
-  recorded_by: z.int().readonly(),
+  recorded_by: z.coerce.number().readonly(),
 });
 
 /**
@@ -1831,7 +1831,7 @@ export const zServiceProviderProductApplicationCommentUpdateRequest = z.object({
  * Request schema for create operations - Comment made by a party involved in a service provider product application.
  */
 export const zServiceProviderProductApplicationCommentCreateRequest = z.object({
-  service_provider_product_application_id: z.int(),
+  service_provider_product_application_id: z.coerce.number(),
   visibility: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -1845,14 +1845,14 @@ export const zServiceProviderProductApplicationCommentCreateRequest = z.object({
  * Response schema - Comment made by a party involved in a service provider product application.
  */
 export const zServiceProviderProductApplicationComment = z.object({
-  id: z.int().readonly(),
-  service_provider_product_application_id: z.int(),
-  created_by: z.int().readonly(),
+  id: z.coerce.number().readonly(),
+  service_provider_product_application_id: z.coerce.number(),
+  created_by: z.coerce.number().readonly(),
   created_at: z.string().readonly(),
   visibility: zServiceProviderProductApplicationCommentVisibility,
   content: z.string().max(2048),
   recorded_at: z.string().readonly(),
-  recorded_by: z.int().readonly(),
+  recorded_by: z.coerce.number().readonly(),
 });
 
 /**
@@ -1862,7 +1862,7 @@ export const zServiceProviderProductSuspensionUpdateRequest = z.object({
   product_type_ids: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
-      z.array(z.int()).optional(),
+      z.array(z.coerce.number()).optional(),
     ),
   ),
   reason: z.optional(
@@ -1880,11 +1880,11 @@ export const zServiceProviderProductSuspensionCreateRequest = z.object({
   procuring_system_operator_id: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
-      z.int().optional(),
+      z.coerce.number().optional(),
     ),
   ),
-  service_provider_id: z.int(),
-  product_type_ids: z.array(z.int()),
+  service_provider_id: z.coerce.number(),
+  product_type_ids: z.array(z.coerce.number()),
   reason: zServiceProviderProductSuspensionReason,
 });
 
@@ -1892,13 +1892,13 @@ export const zServiceProviderProductSuspensionCreateRequest = z.object({
  * Response schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
  */
 export const zServiceProviderProductSuspension = z.object({
-  id: z.int().readonly(),
-  procuring_system_operator_id: z.int(),
-  service_provider_id: z.int(),
-  product_type_ids: z.array(z.int()),
+  id: z.coerce.number().readonly(),
+  procuring_system_operator_id: z.coerce.number(),
+  service_provider_id: z.coerce.number(),
+  product_type_ids: z.array(z.coerce.number()),
   reason: zServiceProviderProductSuspensionReason,
   recorded_at: z.string().readonly(),
-  recorded_by: z.int().readonly(),
+  recorded_by: z.coerce.number().readonly(),
 });
 
 /**
@@ -1923,7 +1923,7 @@ export const zServiceProviderProductSuspensionCommentUpdateRequest = z.object({
  * Request schema for create operations - Comment made by a party involved in a service provider product suspension.
  */
 export const zServiceProviderProductSuspensionCommentCreateRequest = z.object({
-  service_provider_product_suspension_id: z.int(),
+  service_provider_product_suspension_id: z.coerce.number(),
   visibility: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -1937,14 +1937,14 @@ export const zServiceProviderProductSuspensionCommentCreateRequest = z.object({
  * Response schema - Comment made by a party involved in a service provider product suspension.
  */
 export const zServiceProviderProductSuspensionComment = z.object({
-  id: z.int().readonly(),
-  service_provider_product_suspension_id: z.int(),
-  created_by: z.int().readonly(),
+  id: z.coerce.number().readonly(),
+  service_provider_product_suspension_id: z.coerce.number(),
+  created_by: z.coerce.number().readonly(),
   created_at: z.string().readonly(),
   visibility: zServiceProviderProductSuspensionCommentVisibility,
   content: z.string().max(2048),
   recorded_at: z.string().readonly(),
-  recorded_by: z.int().readonly(),
+  recorded_by: z.coerce.number().readonly(),
 });
 
 /**
@@ -1954,7 +1954,7 @@ export const zServiceProvidingGroupProductApplicationUpdateRequest = z.object({
   product_type_ids: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
-      z.array(z.int()).optional(),
+      z.array(z.coerce.number()).optional(),
     ),
   ),
   status: z.optional(
@@ -1987,9 +1987,9 @@ export const zServiceProvidingGroupProductApplicationUpdateRequest = z.object({
  * Request schema for create operations - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
  */
 export const zServiceProvidingGroupProductApplicationCreateRequest = z.object({
-  service_providing_group_id: z.int(),
-  procuring_system_operator_id: z.int(),
-  product_type_ids: z.array(z.int()),
+  service_providing_group_id: z.coerce.number(),
+  procuring_system_operator_id: z.coerce.number(),
+  product_type_ids: z.array(z.coerce.number()),
   status: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -2020,10 +2020,10 @@ export const zServiceProvidingGroupProductApplicationCreateRequest = z.object({
  * Response schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
  */
 export const zServiceProvidingGroupProductApplication = z.object({
-  id: z.int().readonly(),
-  service_providing_group_id: z.int(),
-  procuring_system_operator_id: z.int(),
-  product_type_ids: z.array(z.int()),
+  id: z.coerce.number().readonly(),
+  service_providing_group_id: z.coerce.number(),
+  procuring_system_operator_id: z.coerce.number(),
+  product_type_ids: z.array(z.coerce.number()),
   status: zServiceProvidingGroupProductApplicationStatus,
   notes: z.optional(
     z.preprocess(
@@ -2044,7 +2044,7 @@ export const zServiceProvidingGroupProductApplication = z.object({
     ),
   ),
   recorded_at: z.string().readonly(),
-  recorded_by: z.int().readonly(),
+  recorded_by: z.coerce.number().readonly(),
 });
 
 /**
@@ -2054,7 +2054,7 @@ export const zServiceProvidingGroupProductSuspensionUpdateRequest = z.object({
   product_type_ids: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
-      z.array(z.int()).optional(),
+      z.array(z.coerce.number()).optional(),
     ),
   ),
   reason: z.optional(
@@ -2072,11 +2072,11 @@ export const zServiceProvidingGroupProductSuspensionCreateRequest = z.object({
   procuring_system_operator_id: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
-      z.int().optional(),
+      z.coerce.number().optional(),
     ),
   ),
-  service_providing_group_id: z.int(),
-  product_type_ids: z.array(z.int()),
+  service_providing_group_id: z.coerce.number(),
+  product_type_ids: z.array(z.coerce.number()),
   reason: zServiceProvidingGroupProductSuspensionReason,
 });
 
@@ -2084,13 +2084,13 @@ export const zServiceProvidingGroupProductSuspensionCreateRequest = z.object({
  * Response schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
  */
 export const zServiceProvidingGroupProductSuspension = z.object({
-  id: z.int().readonly(),
-  procuring_system_operator_id: z.int(),
-  service_providing_group_id: z.int(),
-  product_type_ids: z.array(z.int()),
+  id: z.coerce.number().readonly(),
+  procuring_system_operator_id: z.coerce.number(),
+  service_providing_group_id: z.coerce.number(),
+  product_type_ids: z.array(z.coerce.number()),
   reason: zServiceProvidingGroupProductSuspensionReason,
   recorded_at: z.string().readonly(),
-  recorded_by: z.int().readonly(),
+  recorded_by: z.coerce.number().readonly(),
 });
 
 /**
@@ -2117,7 +2117,7 @@ export const zServiceProvidingGroupProductSuspensionCommentUpdateRequest =
  */
 export const zServiceProvidingGroupProductSuspensionCommentCreateRequest =
   z.object({
-    service_providing_group_product_suspension_id: z.int(),
+    service_providing_group_product_suspension_id: z.coerce.number(),
     visibility: z.optional(
       z.preprocess(
         (value) => (value === null ? undefined : value),
@@ -2131,23 +2131,23 @@ export const zServiceProvidingGroupProductSuspensionCommentCreateRequest =
  * Response schema - Comment made by a party involved in a service providing group product suspension.
  */
 export const zServiceProvidingGroupProductSuspensionComment = z.object({
-  id: z.int().readonly(),
-  service_providing_group_product_suspension_id: z.int(),
-  created_by: z.int().readonly(),
+  id: z.coerce.number().readonly(),
+  service_providing_group_product_suspension_id: z.coerce.number(),
+  created_by: z.coerce.number().readonly(),
   created_at: z.string().readonly(),
   visibility: zServiceProvidingGroupProductSuspensionCommentVisibility,
   content: z.string().max(2048),
   recorded_at: z.string().readonly(),
-  recorded_by: z.int().readonly(),
+  recorded_by: z.coerce.number().readonly(),
 });
 
 /**
  * Response schema - Notice to users about various issues or actions expected from them.
  */
 export const zNotice = z.object({
-  id: z.int().readonly(),
+  id: z.coerce.number().readonly(),
   status: zNoticeStatus,
-  party_id: z.int().readonly(),
+  party_id: z.coerce.number().readonly(),
   type: z
     .string()
     .regex(/^no.elhub.flex./)
@@ -2159,7 +2159,7 @@ export const zNotice = z.object({
       .readonly(),
   ),
   recorded_at: z.string().readonly(),
-  recorded_by: z.int().readonly(),
+  recorded_by: z.coerce.number().readonly(),
 });
 
 /**
@@ -2167,11 +2167,11 @@ export const zNotice = z.object({
  */
 export const zControllableUnitHistory = zControllableUnit.and(
   z.object({
-    controllable_unit_id: z.int(),
+    controllable_unit_id: z.coerce.number(),
     replaced_by: z.optional(
       z.preprocess(
         (value) => (value === null ? undefined : value),
-        z.int().optional(),
+        z.coerce.number().optional(),
       ),
     ),
     replaced_at: z.optional(
@@ -2189,11 +2189,11 @@ export const zControllableUnitHistory = zControllableUnit.and(
 export const zControllableUnitSuspensionHistory =
   zControllableUnitSuspension.and(
     z.object({
-      controllable_unit_suspension_id: z.int(),
+      controllable_unit_suspension_id: z.coerce.number(),
       replaced_by: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
-          z.int().optional(),
+          z.coerce.number().optional(),
         ),
       ),
       replaced_at: z.optional(
@@ -2211,11 +2211,11 @@ export const zControllableUnitSuspensionHistory =
 export const zControllableUnitSuspensionCommentHistory =
   zControllableUnitSuspensionComment.and(
     z.object({
-      controllable_unit_suspension_comment_id: z.int(),
+      controllable_unit_suspension_comment_id: z.coerce.number(),
       replaced_by: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
-          z.int().optional(),
+          z.coerce.number().optional(),
         ),
       ),
       replaced_at: z.optional(
@@ -2233,11 +2233,11 @@ export const zControllableUnitSuspensionCommentHistory =
 export const zControllableUnitServiceProviderHistory =
   zControllableUnitServiceProvider.and(
     z.object({
-      controllable_unit_service_provider_id: z.int(),
+      controllable_unit_service_provider_id: z.coerce.number(),
       replaced_by: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
-          z.int().optional(),
+          z.coerce.number().optional(),
         ),
       ),
       replaced_at: z.optional(
@@ -2254,11 +2254,11 @@ export const zControllableUnitServiceProviderHistory =
  */
 export const zServiceProvidingGroupHistory = zServiceProvidingGroup.and(
   z.object({
-    service_providing_group_id: z.int(),
+    service_providing_group_id: z.coerce.number(),
     replaced_by: z.optional(
       z.preprocess(
         (value) => (value === null ? undefined : value),
-        z.int().optional(),
+        z.coerce.number().optional(),
       ),
     ),
     replaced_at: z.optional(
@@ -2276,11 +2276,11 @@ export const zServiceProvidingGroupHistory = zServiceProvidingGroup.and(
 export const zServiceProvidingGroupMembershipHistory =
   zServiceProvidingGroupMembership.and(
     z.object({
-      service_providing_group_membership_id: z.int(),
+      service_providing_group_membership_id: z.coerce.number(),
       replaced_by: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
-          z.int().optional(),
+          z.coerce.number().optional(),
         ),
       ),
       replaced_at: z.optional(
@@ -2298,11 +2298,11 @@ export const zServiceProvidingGroupMembershipHistory =
 export const zServiceProvidingGroupGridPrequalificationHistory =
   zServiceProvidingGroupGridPrequalification.and(
     z.object({
-      service_providing_group_grid_prequalification_id: z.int(),
+      service_providing_group_grid_prequalification_id: z.coerce.number(),
       replaced_by: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
-          z.int().optional(),
+          z.coerce.number().optional(),
         ),
       ),
       replaced_at: z.optional(
@@ -2320,11 +2320,12 @@ export const zServiceProvidingGroupGridPrequalificationHistory =
 export const zServiceProvidingGroupGridPrequalificationCommentHistory =
   zServiceProvidingGroupGridPrequalificationComment.and(
     z.object({
-      service_providing_group_grid_prequalification_comment_id: z.int(),
+      service_providing_group_grid_prequalification_comment_id:
+        z.coerce.number(),
       replaced_by: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
-          z.int().optional(),
+          z.coerce.number().optional(),
         ),
       ),
       replaced_at: z.optional(
@@ -2342,11 +2343,11 @@ export const zServiceProvidingGroupGridPrequalificationCommentHistory =
 export const zServiceProvidingGroupGridSuspensionHistory =
   zServiceProvidingGroupGridSuspension.and(
     z.object({
-      service_providing_group_grid_suspension_id: z.int(),
+      service_providing_group_grid_suspension_id: z.coerce.number(),
       replaced_by: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
-          z.int().optional(),
+          z.coerce.number().optional(),
         ),
       ),
       replaced_at: z.optional(
@@ -2364,11 +2365,11 @@ export const zServiceProvidingGroupGridSuspensionHistory =
 export const zServiceProvidingGroupGridSuspensionCommentHistory =
   zServiceProvidingGroupGridSuspensionComment.and(
     z.object({
-      service_providing_group_grid_suspension_comment_id: z.int(),
+      service_providing_group_grid_suspension_comment_id: z.coerce.number(),
       replaced_by: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
-          z.int().optional(),
+          z.coerce.number().optional(),
         ),
       ),
       replaced_at: z.optional(
@@ -2385,11 +2386,11 @@ export const zServiceProvidingGroupGridSuspensionCommentHistory =
  */
 export const zPartyHistory = zParty.and(
   z.object({
-    party_id: z.int(),
+    party_id: z.coerce.number(),
     replaced_by: z.optional(
       z.preprocess(
         (value) => (value === null ? undefined : value),
-        z.int().optional(),
+        z.coerce.number().optional(),
       ),
     ),
     replaced_at: z.optional(
@@ -2406,11 +2407,11 @@ export const zPartyHistory = zParty.and(
  */
 export const zPartyMembershipHistory = zPartyMembership.and(
   z.object({
-    party_membership_id: z.int(),
+    party_membership_id: z.coerce.number(),
     replaced_by: z.optional(
       z.preprocess(
         (value) => (value === null ? undefined : value),
-        z.int().optional(),
+        z.coerce.number().optional(),
       ),
     ),
     replaced_at: z.optional(
@@ -2427,11 +2428,11 @@ export const zPartyMembershipHistory = zPartyMembership.and(
  */
 export const zTechnicalResourceHistory = zTechnicalResource.and(
   z.object({
-    technical_resource_id: z.int(),
+    technical_resource_id: z.coerce.number(),
     replaced_by: z.optional(
       z.preprocess(
         (value) => (value === null ? undefined : value),
-        z.int().optional(),
+        z.coerce.number().optional(),
       ),
     ),
     replaced_at: z.optional(
@@ -2448,11 +2449,11 @@ export const zTechnicalResourceHistory = zTechnicalResource.and(
  */
 export const zSystemOperatorProductTypeHistory = zSystemOperatorProductType.and(
   z.object({
-    system_operator_product_type_id: z.int(),
+    system_operator_product_type_id: z.coerce.number(),
     replaced_by: z.optional(
       z.preprocess(
         (value) => (value === null ? undefined : value),
-        z.int().optional(),
+        z.coerce.number().optional(),
       ),
     ),
     replaced_at: z.optional(
@@ -2470,11 +2471,11 @@ export const zSystemOperatorProductTypeHistory = zSystemOperatorProductType.and(
 export const zServiceProviderProductApplicationHistory =
   zServiceProviderProductApplication.and(
     z.object({
-      service_provider_product_application_id: z.int(),
+      service_provider_product_application_id: z.coerce.number(),
       replaced_by: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
-          z.int().optional(),
+          z.coerce.number().optional(),
         ),
       ),
       replaced_at: z.optional(
@@ -2492,11 +2493,11 @@ export const zServiceProviderProductApplicationHistory =
 export const zServiceProviderProductApplicationCommentHistory =
   zServiceProviderProductApplicationComment.and(
     z.object({
-      service_provider_product_application_comment_id: z.int(),
+      service_provider_product_application_comment_id: z.coerce.number(),
       replaced_by: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
-          z.int().optional(),
+          z.coerce.number().optional(),
         ),
       ),
       replaced_at: z.optional(
@@ -2514,11 +2515,11 @@ export const zServiceProviderProductApplicationCommentHistory =
 export const zServiceProviderProductSuspensionHistory =
   zServiceProviderProductSuspension.and(
     z.object({
-      service_provider_product_suspension_id: z.int(),
+      service_provider_product_suspension_id: z.coerce.number(),
       replaced_by: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
-          z.int().optional(),
+          z.coerce.number().optional(),
         ),
       ),
       replaced_at: z.optional(
@@ -2536,11 +2537,11 @@ export const zServiceProviderProductSuspensionHistory =
 export const zServiceProviderProductSuspensionCommentHistory =
   zServiceProviderProductSuspensionComment.and(
     z.object({
-      service_provider_product_suspension_comment_id: z.int(),
+      service_provider_product_suspension_comment_id: z.coerce.number(),
       replaced_by: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
-          z.int().optional(),
+          z.coerce.number().optional(),
         ),
       ),
       replaced_at: z.optional(
@@ -2558,11 +2559,11 @@ export const zServiceProviderProductSuspensionCommentHistory =
 export const zServiceProvidingGroupProductApplicationHistory =
   zServiceProvidingGroupProductApplication.and(
     z.object({
-      service_providing_group_product_application_id: z.int(),
+      service_providing_group_product_application_id: z.coerce.number(),
       replaced_by: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
-          z.int().optional(),
+          z.coerce.number().optional(),
         ),
       ),
       replaced_at: z.optional(
@@ -2580,11 +2581,11 @@ export const zServiceProvidingGroupProductApplicationHistory =
 export const zServiceProvidingGroupProductSuspensionHistory =
   zServiceProvidingGroupProductSuspension.and(
     z.object({
-      service_providing_group_product_suspension_id: z.int(),
+      service_providing_group_product_suspension_id: z.coerce.number(),
       replaced_by: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
-          z.int().optional(),
+          z.coerce.number().optional(),
         ),
       ),
       replaced_at: z.optional(
@@ -2602,11 +2603,11 @@ export const zServiceProvidingGroupProductSuspensionHistory =
 export const zServiceProvidingGroupProductSuspensionCommentHistory =
   zServiceProvidingGroupProductSuspensionComment.and(
     z.object({
-      service_providing_group_product_suspension_comment_id: z.int(),
+      service_providing_group_product_suspension_comment_id: z.coerce.number(),
       replaced_by: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
-          z.int().optional(),
+          z.coerce.number().optional(),
         ),
       ),
       replaced_at: z.optional(
@@ -2636,32 +2637,32 @@ export const zControllableUnitWritable = z.object({
   ),
   status: zControllableUnitStatus,
   regulation_direction: zControllableUnitRegulationDirection,
-  maximum_available_capacity: z.number().gte(0).lte(999999.999),
+  maximum_available_capacity: z.coerce.number().gte(0).lte(999999.999),
   minimum_duration: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
-      z.int().gte(0).optional(),
+      z.coerce.number().gte(0).optional(),
     ),
   ),
   maximum_duration: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
-      z.int().gte(0).optional(),
+      z.coerce.number().gte(0).optional(),
     ),
   ),
   recovery_duration: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
-      z.int().gte(0).optional(),
+      z.coerce.number().gte(0).optional(),
     ),
   ),
   ramp_rate: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
-      z.number().gte(0.001).optional(),
+      z.coerce.number().gte(0.001).optional(),
     ),
   ),
-  accounting_point_id: z.int(),
+  accounting_point_id: z.coerce.number(),
   grid_node_id: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -2692,8 +2693,8 @@ export const zControllableUnitWritable = z.object({
  * Response schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
  */
 export const zControllableUnitSuspensionWritable = z.object({
-  controllable_unit_id: z.int(),
-  impacted_system_operator_id: z.int(),
+  controllable_unit_id: z.coerce.number(),
+  impacted_system_operator_id: z.coerce.number(),
   reason: zControllableUnitSuspensionReason,
 });
 
@@ -2701,7 +2702,7 @@ export const zControllableUnitSuspensionWritable = z.object({
  * Response schema - Comment made by a party involved in a controllable unit suspension.
  */
 export const zControllableUnitSuspensionCommentWritable = z.object({
-  controllable_unit_suspension_id: z.int(),
+  controllable_unit_suspension_id: z.coerce.number(),
   visibility: zControllableUnitSuspensionCommentVisibility,
   content: z.string().max(2048),
 });
@@ -2710,9 +2711,9 @@ export const zControllableUnitSuspensionCommentWritable = z.object({
  * Response schema - Relation between controllable unit and service provider
  */
 export const zControllableUnitServiceProviderWritable = z.object({
-  controllable_unit_id: z.int(),
-  service_provider_id: z.int(),
-  end_user_id: z.int(),
+  controllable_unit_id: z.coerce.number(),
+  service_provider_id: z.coerce.number(),
+  end_user_id: z.coerce.number(),
   contract_reference: z.string().max(128),
   valid_from: z.optional(
     z.preprocess(
@@ -2733,7 +2734,7 @@ export const zControllableUnitServiceProviderWritable = z.object({
  */
 export const zServiceProvidingGroupWritable = z.object({
   name: z.string().max(128),
-  service_provider_id: z.int(),
+  service_provider_id: z.coerce.number(),
   bidding_zone: zServiceProvidingGroupBiddingZone,
   status: zServiceProvidingGroupStatus,
 });
@@ -2742,8 +2743,8 @@ export const zServiceProvidingGroupWritable = z.object({
  * Response schema - Membership relation of controllable unit in service providing group
  */
 export const zServiceProvidingGroupMembershipWritable = z.object({
-  controllable_unit_id: z.int(),
-  service_providing_group_id: z.int(),
+  controllable_unit_id: z.coerce.number(),
+  service_providing_group_id: z.coerce.number(),
   valid_from: z.string(),
   valid_to: z.optional(
     z.preprocess(
@@ -2757,8 +2758,8 @@ export const zServiceProvidingGroupMembershipWritable = z.object({
  * Response schema - Grid prequalification for service providing group
  */
 export const zServiceProvidingGroupGridPrequalificationWritable = z.object({
-  service_providing_group_id: z.int(),
-  impacted_system_operator_id: z.int(),
+  service_providing_group_id: z.coerce.number(),
+  impacted_system_operator_id: z.coerce.number(),
   status: zServiceProvidingGroupGridPrequalificationStatus,
   prequalified_at: z.optional(
     z.preprocess(
@@ -2773,7 +2774,7 @@ export const zServiceProvidingGroupGridPrequalificationWritable = z.object({
  */
 export const zServiceProvidingGroupGridPrequalificationCommentWritable =
   z.object({
-    service_providing_group_grid_prequalification_id: z.int(),
+    service_providing_group_grid_prequalification_id: z.coerce.number(),
     visibility: zServiceProvidingGroupGridPrequalificationCommentVisibility,
     content: z.string().max(2048),
   });
@@ -2782,8 +2783,8 @@ export const zServiceProvidingGroupGridPrequalificationCommentWritable =
  * Response schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
  */
 export const zServiceProvidingGroupGridSuspensionWritable = z.object({
-  impacted_system_operator_id: z.int(),
-  service_providing_group_id: z.int(),
+  impacted_system_operator_id: z.coerce.number(),
+  service_providing_group_id: z.coerce.number(),
   reason: zServiceProvidingGroupGridSuspensionReason,
 });
 
@@ -2791,7 +2792,7 @@ export const zServiceProvidingGroupGridSuspensionWritable = z.object({
  * Response schema - Comment made by a party involved in a service providing group grid suspension.
  */
 export const zServiceProvidingGroupGridSuspensionCommentWritable = z.object({
-  service_providing_group_grid_suspension_id: z.int(),
+  service_providing_group_grid_suspension_id: z.coerce.number(),
   visibility: zServiceProvidingGroupGridSuspensionCommentVisibility,
   content: z.string().max(2048),
 });
@@ -2817,7 +2818,7 @@ export const zEntityWritable = z.object({
  * Response schema - Client linked to an entity for client credentials and JWT grant authentication methods.
  */
 export const zEntityClientWritable = z.object({
-  entity_id: z.int(),
+  entity_id: z.coerce.number(),
   name: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -2827,7 +2828,7 @@ export const zEntityClientWritable = z.object({
   party_id: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
-      z.int().optional(),
+      z.coerce.number().optional(),
     ),
   ),
   scopes: z.array(zAuthScope),
@@ -2864,7 +2865,7 @@ export const zEntityClientWritable = z.object({
 export const zPartyWritable = z.object({
   business_id: z.string(),
   business_id_type: zPartyBusinessIdType,
-  entity_id: z.int(),
+  entity_id: z.coerce.number(),
   name: z.string(),
   role: zPartyRole,
   type: zPartyType,
@@ -2918,8 +2919,8 @@ export const zNoticeDataWritable = z.union([
  * Response schema - The relation between a party and entity.
  */
 export const zPartyMembershipWritable = z.object({
-  party_id: z.int(),
-  entity_id: z.int(),
+  party_id: z.coerce.number(),
+  entity_id: z.coerce.number(),
   scopes: z.array(zAuthScope),
 });
 
@@ -2928,7 +2929,7 @@ export const zPartyMembershipWritable = z.object({
  */
 export const zTechnicalResourceWritable = z.object({
   name: z.string(),
-  controllable_unit_id: z.int(),
+  controllable_unit_id: z.coerce.number(),
   details: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -2942,8 +2943,8 @@ export const zTechnicalResourceWritable = z.object({
  */
 export const zNotificationWritable = z.object({
   acknowledged: z.boolean(),
-  event_id: z.int(),
-  party_id: z.int(),
+  event_id: z.coerce.number(),
+  party_id: z.coerce.number(),
 });
 
 /**
@@ -2970,8 +2971,8 @@ export const zMeteringGridAreaWritable = z.record(z.string(), z.unknown());
  * Response schema - Relation between a system operator and a product type they want to buy.
  */
 export const zSystemOperatorProductTypeWritable = z.object({
-  system_operator_id: z.int(),
-  product_type_id: z.int(),
+  system_operator_id: z.coerce.number(),
+  product_type_id: z.coerce.number(),
   status: zSystemOperatorProductTypeStatus,
 });
 
@@ -2979,9 +2980,9 @@ export const zSystemOperatorProductTypeWritable = z.object({
  * Response schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
  */
 export const zServiceProviderProductApplicationWritable = z.object({
-  service_provider_id: z.int(),
-  system_operator_id: z.int(),
-  product_type_ids: z.array(z.int()),
+  service_provider_id: z.coerce.number(),
+  system_operator_id: z.coerce.number(),
+  product_type_ids: z.array(z.coerce.number()),
   status: zServiceProviderProductApplicationStatus,
   qualified_at: z.optional(
     z.preprocess(
@@ -2995,7 +2996,7 @@ export const zServiceProviderProductApplicationWritable = z.object({
  * Response schema - Comment made by a party involved in a service provider product application.
  */
 export const zServiceProviderProductApplicationCommentWritable = z.object({
-  service_provider_product_application_id: z.int(),
+  service_provider_product_application_id: z.coerce.number(),
   visibility: zServiceProviderProductApplicationCommentVisibility,
   content: z.string().max(2048),
 });
@@ -3004,9 +3005,9 @@ export const zServiceProviderProductApplicationCommentWritable = z.object({
  * Response schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
  */
 export const zServiceProviderProductSuspensionWritable = z.object({
-  procuring_system_operator_id: z.int(),
-  service_provider_id: z.int(),
-  product_type_ids: z.array(z.int()),
+  procuring_system_operator_id: z.coerce.number(),
+  service_provider_id: z.coerce.number(),
+  product_type_ids: z.array(z.coerce.number()),
   reason: zServiceProviderProductSuspensionReason,
 });
 
@@ -3014,7 +3015,7 @@ export const zServiceProviderProductSuspensionWritable = z.object({
  * Response schema - Comment made by a party involved in a service provider product suspension.
  */
 export const zServiceProviderProductSuspensionCommentWritable = z.object({
-  service_provider_product_suspension_id: z.int(),
+  service_provider_product_suspension_id: z.coerce.number(),
   visibility: zServiceProviderProductSuspensionCommentVisibility,
   content: z.string().max(2048),
 });
@@ -3023,9 +3024,9 @@ export const zServiceProviderProductSuspensionCommentWritable = z.object({
  * Response schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
  */
 export const zServiceProvidingGroupProductApplicationWritable = z.object({
-  service_providing_group_id: z.int(),
-  procuring_system_operator_id: z.int(),
-  product_type_ids: z.array(z.int()),
+  service_providing_group_id: z.coerce.number(),
+  procuring_system_operator_id: z.coerce.number(),
+  product_type_ids: z.array(z.coerce.number()),
   status: zServiceProvidingGroupProductApplicationStatus,
   notes: z.optional(
     z.preprocess(
@@ -3051,9 +3052,9 @@ export const zServiceProvidingGroupProductApplicationWritable = z.object({
  * Response schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
  */
 export const zServiceProvidingGroupProductSuspensionWritable = z.object({
-  procuring_system_operator_id: z.int(),
-  service_providing_group_id: z.int(),
-  product_type_ids: z.array(z.int()),
+  procuring_system_operator_id: z.coerce.number(),
+  service_providing_group_id: z.coerce.number(),
+  product_type_ids: z.array(z.coerce.number()),
   reason: zServiceProvidingGroupProductSuspensionReason,
 });
 
@@ -3061,7 +3062,7 @@ export const zServiceProvidingGroupProductSuspensionWritable = z.object({
  * Response schema - Comment made by a party involved in a service providing group product suspension.
  */
 export const zServiceProvidingGroupProductSuspensionCommentWritable = z.object({
-  service_providing_group_product_suspension_id: z.int(),
+  service_providing_group_product_suspension_id: z.coerce.number(),
   visibility: zServiceProvidingGroupProductSuspensionCommentVisibility,
   content: z.string().max(2048),
 });
@@ -3078,11 +3079,11 @@ export const zNoticeWritable = z.object({
  */
 export const zControllableUnitHistoryWritable = zControllableUnitWritable.and(
   z.object({
-    controllable_unit_id: z.int(),
+    controllable_unit_id: z.coerce.number(),
     replaced_by: z.optional(
       z.preprocess(
         (value) => (value === null ? undefined : value),
-        z.int().optional(),
+        z.coerce.number().optional(),
       ),
     ),
     replaced_at: z.optional(
@@ -3100,11 +3101,11 @@ export const zControllableUnitHistoryWritable = zControllableUnitWritable.and(
 export const zControllableUnitSuspensionHistoryWritable =
   zControllableUnitSuspensionWritable.and(
     z.object({
-      controllable_unit_suspension_id: z.int(),
+      controllable_unit_suspension_id: z.coerce.number(),
       replaced_by: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
-          z.int().optional(),
+          z.coerce.number().optional(),
         ),
       ),
       replaced_at: z.optional(
@@ -3122,11 +3123,11 @@ export const zControllableUnitSuspensionHistoryWritable =
 export const zControllableUnitSuspensionCommentHistoryWritable =
   zControllableUnitSuspensionCommentWritable.and(
     z.object({
-      controllable_unit_suspension_comment_id: z.int(),
+      controllable_unit_suspension_comment_id: z.coerce.number(),
       replaced_by: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
-          z.int().optional(),
+          z.coerce.number().optional(),
         ),
       ),
       replaced_at: z.optional(
@@ -3144,11 +3145,11 @@ export const zControllableUnitSuspensionCommentHistoryWritable =
 export const zControllableUnitServiceProviderHistoryWritable =
   zControllableUnitServiceProviderWritable.and(
     z.object({
-      controllable_unit_service_provider_id: z.int(),
+      controllable_unit_service_provider_id: z.coerce.number(),
       replaced_by: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
-          z.int().optional(),
+          z.coerce.number().optional(),
         ),
       ),
       replaced_at: z.optional(
@@ -3166,11 +3167,11 @@ export const zControllableUnitServiceProviderHistoryWritable =
 export const zServiceProvidingGroupHistoryWritable =
   zServiceProvidingGroupWritable.and(
     z.object({
-      service_providing_group_id: z.int(),
+      service_providing_group_id: z.coerce.number(),
       replaced_by: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
-          z.int().optional(),
+          z.coerce.number().optional(),
         ),
       ),
       replaced_at: z.optional(
@@ -3188,11 +3189,11 @@ export const zServiceProvidingGroupHistoryWritable =
 export const zServiceProvidingGroupMembershipHistoryWritable =
   zServiceProvidingGroupMembershipWritable.and(
     z.object({
-      service_providing_group_membership_id: z.int(),
+      service_providing_group_membership_id: z.coerce.number(),
       replaced_by: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
-          z.int().optional(),
+          z.coerce.number().optional(),
         ),
       ),
       replaced_at: z.optional(
@@ -3210,11 +3211,11 @@ export const zServiceProvidingGroupMembershipHistoryWritable =
 export const zServiceProvidingGroupGridPrequalificationHistoryWritable =
   zServiceProvidingGroupGridPrequalificationWritable.and(
     z.object({
-      service_providing_group_grid_prequalification_id: z.int(),
+      service_providing_group_grid_prequalification_id: z.coerce.number(),
       replaced_by: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
-          z.int().optional(),
+          z.coerce.number().optional(),
         ),
       ),
       replaced_at: z.optional(
@@ -3232,11 +3233,12 @@ export const zServiceProvidingGroupGridPrequalificationHistoryWritable =
 export const zServiceProvidingGroupGridPrequalificationCommentHistoryWritable =
   zServiceProvidingGroupGridPrequalificationCommentWritable.and(
     z.object({
-      service_providing_group_grid_prequalification_comment_id: z.int(),
+      service_providing_group_grid_prequalification_comment_id:
+        z.coerce.number(),
       replaced_by: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
-          z.int().optional(),
+          z.coerce.number().optional(),
         ),
       ),
       replaced_at: z.optional(
@@ -3254,11 +3256,11 @@ export const zServiceProvidingGroupGridPrequalificationCommentHistoryWritable =
 export const zServiceProvidingGroupGridSuspensionHistoryWritable =
   zServiceProvidingGroupGridSuspensionWritable.and(
     z.object({
-      service_providing_group_grid_suspension_id: z.int(),
+      service_providing_group_grid_suspension_id: z.coerce.number(),
       replaced_by: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
-          z.int().optional(),
+          z.coerce.number().optional(),
         ),
       ),
       replaced_at: z.optional(
@@ -3276,11 +3278,11 @@ export const zServiceProvidingGroupGridSuspensionHistoryWritable =
 export const zServiceProvidingGroupGridSuspensionCommentHistoryWritable =
   zServiceProvidingGroupGridSuspensionCommentWritable.and(
     z.object({
-      service_providing_group_grid_suspension_comment_id: z.int(),
+      service_providing_group_grid_suspension_comment_id: z.coerce.number(),
       replaced_by: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
-          z.int().optional(),
+          z.coerce.number().optional(),
         ),
       ),
       replaced_at: z.optional(
@@ -3297,11 +3299,11 @@ export const zServiceProvidingGroupGridSuspensionCommentHistoryWritable =
  */
 export const zPartyHistoryWritable = zPartyWritable.and(
   z.object({
-    party_id: z.int(),
+    party_id: z.coerce.number(),
     replaced_by: z.optional(
       z.preprocess(
         (value) => (value === null ? undefined : value),
-        z.int().optional(),
+        z.coerce.number().optional(),
       ),
     ),
     replaced_at: z.optional(
@@ -3318,11 +3320,11 @@ export const zPartyHistoryWritable = zPartyWritable.and(
  */
 export const zPartyMembershipHistoryWritable = zPartyMembershipWritable.and(
   z.object({
-    party_membership_id: z.int(),
+    party_membership_id: z.coerce.number(),
     replaced_by: z.optional(
       z.preprocess(
         (value) => (value === null ? undefined : value),
-        z.int().optional(),
+        z.coerce.number().optional(),
       ),
     ),
     replaced_at: z.optional(
@@ -3339,11 +3341,11 @@ export const zPartyMembershipHistoryWritable = zPartyMembershipWritable.and(
  */
 export const zTechnicalResourceHistoryWritable = zTechnicalResourceWritable.and(
   z.object({
-    technical_resource_id: z.int(),
+    technical_resource_id: z.coerce.number(),
     replaced_by: z.optional(
       z.preprocess(
         (value) => (value === null ? undefined : value),
-        z.int().optional(),
+        z.coerce.number().optional(),
       ),
     ),
     replaced_at: z.optional(
@@ -3361,11 +3363,11 @@ export const zTechnicalResourceHistoryWritable = zTechnicalResourceWritable.and(
 export const zSystemOperatorProductTypeHistoryWritable =
   zSystemOperatorProductTypeWritable.and(
     z.object({
-      system_operator_product_type_id: z.int(),
+      system_operator_product_type_id: z.coerce.number(),
       replaced_by: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
-          z.int().optional(),
+          z.coerce.number().optional(),
         ),
       ),
       replaced_at: z.optional(
@@ -3383,11 +3385,11 @@ export const zSystemOperatorProductTypeHistoryWritable =
 export const zServiceProviderProductApplicationHistoryWritable =
   zServiceProviderProductApplicationWritable.and(
     z.object({
-      service_provider_product_application_id: z.int(),
+      service_provider_product_application_id: z.coerce.number(),
       replaced_by: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
-          z.int().optional(),
+          z.coerce.number().optional(),
         ),
       ),
       replaced_at: z.optional(
@@ -3405,11 +3407,11 @@ export const zServiceProviderProductApplicationHistoryWritable =
 export const zServiceProviderProductApplicationCommentHistoryWritable =
   zServiceProviderProductApplicationCommentWritable.and(
     z.object({
-      service_provider_product_application_comment_id: z.int(),
+      service_provider_product_application_comment_id: z.coerce.number(),
       replaced_by: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
-          z.int().optional(),
+          z.coerce.number().optional(),
         ),
       ),
       replaced_at: z.optional(
@@ -3427,11 +3429,11 @@ export const zServiceProviderProductApplicationCommentHistoryWritable =
 export const zServiceProviderProductSuspensionHistoryWritable =
   zServiceProviderProductSuspensionWritable.and(
     z.object({
-      service_provider_product_suspension_id: z.int(),
+      service_provider_product_suspension_id: z.coerce.number(),
       replaced_by: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
-          z.int().optional(),
+          z.coerce.number().optional(),
         ),
       ),
       replaced_at: z.optional(
@@ -3449,11 +3451,11 @@ export const zServiceProviderProductSuspensionHistoryWritable =
 export const zServiceProviderProductSuspensionCommentHistoryWritable =
   zServiceProviderProductSuspensionCommentWritable.and(
     z.object({
-      service_provider_product_suspension_comment_id: z.int(),
+      service_provider_product_suspension_comment_id: z.coerce.number(),
       replaced_by: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
-          z.int().optional(),
+          z.coerce.number().optional(),
         ),
       ),
       replaced_at: z.optional(
@@ -3471,11 +3473,11 @@ export const zServiceProviderProductSuspensionCommentHistoryWritable =
 export const zServiceProvidingGroupProductApplicationHistoryWritable =
   zServiceProvidingGroupProductApplicationWritable.and(
     z.object({
-      service_providing_group_product_application_id: z.int(),
+      service_providing_group_product_application_id: z.coerce.number(),
       replaced_by: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
-          z.int().optional(),
+          z.coerce.number().optional(),
         ),
       ),
       replaced_at: z.optional(
@@ -3493,11 +3495,11 @@ export const zServiceProvidingGroupProductApplicationHistoryWritable =
 export const zServiceProvidingGroupProductSuspensionHistoryWritable =
   zServiceProvidingGroupProductSuspensionWritable.and(
     z.object({
-      service_providing_group_product_suspension_id: z.int(),
+      service_providing_group_product_suspension_id: z.coerce.number(),
       replaced_by: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
-          z.int().optional(),
+          z.coerce.number().optional(),
         ),
       ),
       replaced_at: z.optional(
@@ -3515,11 +3517,11 @@ export const zServiceProvidingGroupProductSuspensionHistoryWritable =
 export const zServiceProvidingGroupProductSuspensionCommentHistoryWritable =
   zServiceProvidingGroupProductSuspensionCommentWritable.and(
     z.object({
-      service_providing_group_product_suspension_comment_id: z.int(),
+      service_providing_group_product_suspension_comment_id: z.coerce.number(),
       replaced_by: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
-          z.int().optional(),
+          z.coerce.number().optional(),
         ),
       ),
       replaced_at: z.optional(
@@ -3711,7 +3713,7 @@ export const zReadControllableUnitData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -3729,7 +3731,7 @@ export const zReadControllableUnitResponse = zControllableUnit;
 export const zUpdateControllableUnitData = z.object({
   body: zControllableUnitUpdateRequest,
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -3839,7 +3841,7 @@ export const zReadControllableUnitHistoryData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -3964,7 +3966,7 @@ export const zDeleteControllableUnitSuspensionData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -3987,7 +3989,7 @@ export const zReadControllableUnitSuspensionData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -4006,7 +4008,7 @@ export const zReadControllableUnitSuspensionResponse =
 export const zUpdateControllableUnitSuspensionData = z.object({
   body: zControllableUnitSuspensionUpdateRequest,
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -4113,7 +4115,7 @@ export const zReadControllableUnitSuspensionHistoryData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -4230,7 +4232,7 @@ export const zReadControllableUnitSuspensionCommentData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -4249,7 +4251,7 @@ export const zReadControllableUnitSuspensionCommentResponse =
 export const zUpdateControllableUnitSuspensionCommentData = z.object({
   body: zControllableUnitSuspensionCommentUpdateRequest,
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -4347,7 +4349,7 @@ export const zReadControllableUnitSuspensionCommentHistoryData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -4494,7 +4496,7 @@ export const zDeleteControllableUnitServiceProviderData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -4517,7 +4519,7 @@ export const zReadControllableUnitServiceProviderData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -4536,7 +4538,7 @@ export const zReadControllableUnitServiceProviderResponse =
 export const zUpdateControllableUnitServiceProviderData = z.object({
   body: zControllableUnitServiceProviderUpdateRequest,
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -4664,7 +4666,7 @@ export const zReadControllableUnitServiceProviderHistoryData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -4786,7 +4788,7 @@ export const zReadServiceProvidingGroupData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -4804,7 +4806,7 @@ export const zReadServiceProvidingGroupResponse = zServiceProvidingGroup;
 export const zUpdateServiceProvidingGroupData = z.object({
   body: zServiceProvidingGroupUpdateRequest,
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -4908,7 +4910,7 @@ export const zReadServiceProvidingGroupHistoryData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -5046,7 +5048,7 @@ export const zDeleteServiceProvidingGroupMembershipData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -5069,7 +5071,7 @@ export const zReadServiceProvidingGroupMembershipData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -5088,7 +5090,7 @@ export const zReadServiceProvidingGroupMembershipResponse =
 export const zUpdateServiceProvidingGroupMembershipData = z.object({
   body: zServiceProvidingGroupMembershipUpdateRequest,
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -5207,7 +5209,7 @@ export const zReadServiceProvidingGroupMembershipHistoryData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -5333,7 +5335,7 @@ export const zReadServiceProvidingGroupGridPrequalificationData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -5352,7 +5354,7 @@ export const zReadServiceProvidingGroupGridPrequalificationResponse =
 export const zUpdateServiceProvidingGroupGridPrequalificationData = z.object({
   body: zServiceProvidingGroupGridPrequalificationUpdateRequest,
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -5461,7 +5463,7 @@ export const zReadServiceProvidingGroupGridPrequalificationHistoryData =
       ),
     ),
     path: z.object({
-      id: z.int(),
+      id: z.coerce.number(),
     }),
     query: z.optional(
       z.preprocess(
@@ -5582,7 +5584,7 @@ export const zReadServiceProvidingGroupGridPrequalificationCommentData =
       ),
     ),
     path: z.object({
-      id: z.int(),
+      id: z.coerce.number(),
     }),
     query: z.optional(
       z.preprocess(
@@ -5602,7 +5604,7 @@ export const zUpdateServiceProvidingGroupGridPrequalificationCommentData =
   z.object({
     body: zServiceProvidingGroupGridPrequalificationCommentUpdateRequest,
     path: z.object({
-      id: z.int(),
+      id: z.coerce.number(),
     }),
     query: z.optional(
       z.preprocess(
@@ -5701,7 +5703,7 @@ export const zReadServiceProvidingGroupGridPrequalificationCommentHistoryData =
       ),
     ),
     path: z.object({
-      id: z.int(),
+      id: z.coerce.number(),
     }),
     query: z.optional(
       z.preprocess(
@@ -5827,7 +5829,7 @@ export const zDeleteServiceProvidingGroupGridSuspensionData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -5850,7 +5852,7 @@ export const zReadServiceProvidingGroupGridSuspensionData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -5869,7 +5871,7 @@ export const zReadServiceProvidingGroupGridSuspensionResponse =
 export const zUpdateServiceProvidingGroupGridSuspensionData = z.object({
   body: zServiceProvidingGroupGridSuspensionUpdateRequest,
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -5976,7 +5978,7 @@ export const zReadServiceProvidingGroupGridSuspensionHistoryData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -6093,7 +6095,7 @@ export const zReadServiceProvidingGroupGridSuspensionCommentData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -6112,7 +6114,7 @@ export const zReadServiceProvidingGroupGridSuspensionCommentResponse =
 export const zUpdateServiceProvidingGroupGridSuspensionCommentData = z.object({
   body: zServiceProvidingGroupGridSuspensionCommentUpdateRequest,
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -6211,7 +6213,7 @@ export const zReadServiceProvidingGroupGridSuspensionCommentHistoryData =
       ),
     ),
     path: z.object({
-      id: z.int(),
+      id: z.coerce.number(),
     }),
     query: z.optional(
       z.preprocess(
@@ -6336,7 +6338,7 @@ export const zReadEntityData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -6354,7 +6356,7 @@ export const zReadEntityResponse = zEntity;
 export const zUpdateEntityData = z.object({
   body: zEntityUpdateRequest,
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -6481,7 +6483,7 @@ export const zDeleteEntityClientData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -6504,7 +6506,7 @@ export const zReadEntityClientData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -6522,7 +6524,7 @@ export const zReadEntityClientResponse = zEntityClient;
 export const zUpdateEntityClientData = z.object({
   body: zEntityClientUpdateRequest,
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -6649,7 +6651,7 @@ export const zReadPartyData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -6667,7 +6669,7 @@ export const zReadPartyResponse = zParty;
 export const zUpdatePartyData = z.object({
   body: zPartyUpdateRequest,
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -6780,7 +6782,7 @@ export const zReadPartyHistoryData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -6904,7 +6906,7 @@ export const zDeletePartyMembershipData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -6927,7 +6929,7 @@ export const zReadPartyMembershipData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -6945,7 +6947,7 @@ export const zReadPartyMembershipResponse = zPartyMembership;
 export const zUpdatePartyMembershipData = z.object({
   body: zPartyMembershipUpdateRequest,
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -7052,7 +7054,7 @@ export const zReadPartyMembershipHistoryData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -7168,7 +7170,7 @@ export const zReadIdentityData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -7289,7 +7291,7 @@ export const zDeleteTechnicalResourceData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -7312,7 +7314,7 @@ export const zReadTechnicalResourceData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -7330,7 +7332,7 @@ export const zReadTechnicalResourceResponse = zTechnicalResource;
 export const zUpdateTechnicalResourceData = z.object({
   body: zTechnicalResourceUpdateRequest,
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -7434,7 +7436,7 @@ export const zReadTechnicalResourceHistoryData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -7511,7 +7513,7 @@ export const zReadEventData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -7609,7 +7611,7 @@ export const zReadNotificationData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -7627,7 +7629,7 @@ export const zReadNotificationResponse = zNotification;
 export const zUpdateNotificationData = z.object({
   body: zNotificationUpdateRequest,
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -7719,7 +7721,7 @@ export const zReadAccountingPointData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -8120,7 +8122,7 @@ export const zReadMeteringGridAreaData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -8290,7 +8292,7 @@ export const zReadProductTypeData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -8415,7 +8417,7 @@ export const zReadSystemOperatorProductTypeData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -8434,7 +8436,7 @@ export const zReadSystemOperatorProductTypeResponse =
 export const zUpdateSystemOperatorProductTypeData = z.object({
   body: zSystemOperatorProductTypeUpdateRequest,
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -8541,7 +8543,7 @@ export const zReadSystemOperatorProductTypeHistoryData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -8676,7 +8678,7 @@ export const zReadServiceProviderProductApplicationData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -8695,7 +8697,7 @@ export const zReadServiceProviderProductApplicationResponse =
 export const zUpdateServiceProviderProductApplicationData = z.object({
   body: zServiceProviderProductApplicationUpdateRequest,
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -8811,7 +8813,7 @@ export const zReadServiceProviderProductApplicationHistoryData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -8928,7 +8930,7 @@ export const zReadServiceProviderProductApplicationCommentData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -8947,7 +8949,7 @@ export const zReadServiceProviderProductApplicationCommentResponse =
 export const zUpdateServiceProviderProductApplicationCommentData = z.object({
   body: zServiceProviderProductApplicationCommentUpdateRequest,
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -9048,7 +9050,7 @@ export const zReadServiceProviderProductApplicationCommentHistoryData =
       ),
     ),
     path: z.object({
-      id: z.int(),
+      id: z.coerce.number(),
     }),
     query: z.optional(
       z.preprocess(
@@ -9183,7 +9185,7 @@ export const zDeleteServiceProviderProductSuspensionData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -9206,7 +9208,7 @@ export const zReadServiceProviderProductSuspensionData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -9225,7 +9227,7 @@ export const zReadServiceProviderProductSuspensionResponse =
 export const zUpdateServiceProviderProductSuspensionData = z.object({
   body: zServiceProviderProductSuspensionUpdateRequest,
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -9341,7 +9343,7 @@ export const zReadServiceProviderProductSuspensionHistoryData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -9458,7 +9460,7 @@ export const zReadServiceProviderProductSuspensionCommentData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -9477,7 +9479,7 @@ export const zReadServiceProviderProductSuspensionCommentResponse =
 export const zUpdateServiceProviderProductSuspensionCommentData = z.object({
   body: zServiceProviderProductSuspensionCommentUpdateRequest,
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -9579,7 +9581,7 @@ export const zReadServiceProviderProductSuspensionCommentHistoryData = z.object(
       ),
     ),
     path: z.object({
-      id: z.int(),
+      id: z.coerce.number(),
     }),
     query: z.optional(
       z.preprocess(
@@ -9715,7 +9717,7 @@ export const zReadServiceProvidingGroupProductApplicationData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -9734,7 +9736,7 @@ export const zReadServiceProvidingGroupProductApplicationResponse =
 export const zUpdateServiceProvidingGroupProductApplicationData = z.object({
   body: zServiceProvidingGroupProductApplicationUpdateRequest,
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -9854,7 +9856,7 @@ export const zReadServiceProvidingGroupProductApplicationHistoryData = z.object(
       ),
     ),
     path: z.object({
-      id: z.int(),
+      id: z.coerce.number(),
     }),
     query: z.optional(
       z.preprocess(
@@ -9990,7 +9992,7 @@ export const zDeleteServiceProvidingGroupProductSuspensionData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -10013,7 +10015,7 @@ export const zReadServiceProvidingGroupProductSuspensionData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -10032,7 +10034,7 @@ export const zReadServiceProvidingGroupProductSuspensionResponse =
 export const zUpdateServiceProvidingGroupProductSuspensionData = z.object({
   body: zServiceProvidingGroupProductSuspensionUpdateRequest,
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -10149,7 +10151,7 @@ export const zReadServiceProvidingGroupProductSuspensionHistoryData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -10268,7 +10270,7 @@ export const zReadServiceProvidingGroupProductSuspensionCommentData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(
@@ -10288,7 +10290,7 @@ export const zUpdateServiceProvidingGroupProductSuspensionCommentData =
   z.object({
     body: zServiceProvidingGroupProductSuspensionCommentUpdateRequest,
     path: z.object({
-      id: z.int(),
+      id: z.coerce.number(),
     }),
     query: z.optional(
       z.preprocess(
@@ -10387,7 +10389,7 @@ export const zReadServiceProvidingGroupProductSuspensionCommentHistoryData =
       ),
     ),
     path: z.object({
-      id: z.int(),
+      id: z.coerce.number(),
     }),
     query: z.optional(
       z.preprocess(
@@ -10477,7 +10479,7 @@ export const zReadNoticeData = z.object({
     ),
   ),
   path: z.object({
-    id: z.int(),
+    id: z.coerce.number(),
   }),
   query: z.optional(
     z.preprocess(

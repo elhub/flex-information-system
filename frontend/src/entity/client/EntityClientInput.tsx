@@ -9,7 +9,7 @@ import { useLocation } from "react-router-dom";
 import { Toolbar } from "../../components/Toolbar";
 import { ScopesInput } from "../../components/scopes";
 import { zEntityClientCreateRequest } from "../../generated-client/zod.gen";
-import { unTypedZodResolver } from "../../util";
+import { unTypedZodResolver } from "../../zod";
 
 // common layout to create and edit pages
 export const EntityClientInput = () => {

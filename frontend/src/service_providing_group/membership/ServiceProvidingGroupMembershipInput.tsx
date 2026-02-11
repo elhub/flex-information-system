@@ -7,7 +7,7 @@ import { ValidTimeTooltip } from "../../components/ValidTimeTooltip";
 import { MidnightDateInput } from "../../components/datetime";
 import { useMemo } from "react";
 import { zServiceProvidingGroupMembershipCreateRequest } from "../../generated-client/zod.gen";
-import { unTypedZodResolver } from "../../util";
+import { unTypedZodResolver } from "../../zod";
 
 // keep only the fields that map to the UI
 const filterRecord = ({

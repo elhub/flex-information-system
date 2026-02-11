@@ -1,4 +1,3 @@
-import { Box } from "@mui/material";
 import { ControllableUnit } from "../../../generated-client";
 import { LabelValue } from "../../../components/LabelValue";
 
@@ -8,7 +7,7 @@ export const GridValidation = ({
   controllableUnit: ControllableUnit | undefined;
 }) => {
   return (
-    <Box>
+    <div>
       <LabelValue
         tooltip={true}
         labelKey="controllable_unit.grid_node_id"
@@ -24,6 +23,6 @@ export const GridValidation = ({
         labelKey="controllable_unit.grid_validation_notes"
         value={controllableUnit?.grid_validation_notes}
       />
-    </Box>
+    </div>
   );
 };

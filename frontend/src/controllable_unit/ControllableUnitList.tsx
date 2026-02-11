@@ -1,108 +1,83 @@
+import { Link } from "react-router-dom";
+import { usePermissions } from "ra-core";
+import { ExportButton } from "react-admin";
+import { Datagrid, List } from "../components/EDS-ra/list";
 import {
-  List,
-  Button,
-  BooleanField,
+  DateField,
+  EnumField,
   ReferenceField,
   TextField,
-  ExportButton,
-  usePermissions,
-  TopToolbar,
-} from "react-admin";
-import { Datagrid } from "../auth";
-import { DateField } from "../components/datetime";
-import { Link } from "react-router-dom";
-import TravelExploreIcon from "@mui/icons-material/TravelExplore";
+} from "../components/EDS-ra/fields";
+import { EnumArrayInput } from "../components/EDS-ra/inputs";
+import { Button } from "../components/ui";
 import { Permissions } from "../auth/permissions";
-import { EnumArrayInput, EnumField } from "../components/enum";
+import { zControllableUnit } from "../generated-client/zod.gen";
+import { getFields } from "../zod";
+import { IconPlus } from "@elhub/ds-icons";
 
 const CULookupButton = () => (
   <Button
-    component={Link}
+    as={Link}
+    icon={IconPlus}
     to="/controllable_unit/lookup"
-    startIcon={<TravelExploreIcon />}
-    label="Lookup a controllable unit"
-  />
+    variant="invisible"
+  >
+    Create
+  </Button>
 );
 
-const ListActions = () => {
+export const ControllableUnitList = () => {
   const { permissions } = usePermissions<Permissions>();
-
-  // Permission checks
   const canLookup = permissions?.allow("controllable_unit", "lookup");
 
-  return (
-    <TopToolbar>
-      {canLookup && <CULookupButton />}
-      <ExportButton />
-    </TopToolbar>
-  );
-};
-
-export const ControllableUnitList = () => {
   const controllableUnitFilters = [
     <EnumArrayInput
       key="status"
-      label="Status"
       source="status@in"
       enumKey="controllable_unit.status"
-      alwaysOn
     />,
+  ];
+
+  const fields = getFields(zControllableUnit.shape);
+
+  const actions = [
+    ...(canLookup ? [<CULookupButton key="lookup" />] : []),
+    <ExportButton key="export" />,
   ];
 
   return (
     <List
-      perPage={25}
       sort={{ field: "id", order: "DESC" }}
       empty={false}
       filters={controllableUnitFilters}
-      actions={<ListActions />}
+      actions={actions}
     >
       <Datagrid>
-        <TextField source="id" label="field.controllable_unit.id" />
-        <TextField
-          source="business_id"
-          label="field.controllable_unit.business_id"
-        />
-        <TextField source="name" label="field.controllable_unit.name" />
-        <DateField
-          source="start_date"
-          label="field.controllable_unit.start_date"
-        />
+        <TextField source={fields.id.source} />
+        <TextField source={fields.business_id.source} />
+        <TextField source={fields.name.source} />
+        <DateField source={fields.start_date.source} />
         <EnumField
-          source="status"
-          label="field.controllable_unit.status"
+          source={fields.status.source}
           enumKey="controllable_unit.status"
         />
         <EnumField
-          source="regulation_direction"
-          label="field.controllable_unit.regulation_direction"
+          source={fields.regulation_direction.source}
           enumKey="controllable_unit.regulation_direction"
         />
-        <BooleanField
-          source="is_small"
-          label="field.controllable_unit.is_small"
-        />
+        <TextField source={fields.is_small.source} />
         <ReferenceField
-          source="accounting_point_id"
+          source={fields.accounting_point_id.source}
           reference="accounting_point"
-          label="field.controllable_unit.accounting_point_id"
         >
           <TextField source="business_id" />
         </ReferenceField>
-        <TextField
-          source="grid_node_id"
-          label="field.controllable_unit.grid_node_id"
-        />
+        <TextField source={fields.grid_node_id.source} />
         <EnumField
-          source="grid_validation_status"
-          label="field.controllable_unit.grid_validation_status"
+          source={fields.grid_validation_status.source}
           enumKey="controllable_unit.grid_validation_status"
         />
-        <DateField
-          source="recorded_at"
-          showTime
-          label="field.controllable_unit.recorded_at"
-        />
+        <DateField source={fields.recorded_at.source} showTime />
       </Datagrid>
     </List>
   );

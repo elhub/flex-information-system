@@ -374,15 +374,16 @@
   --shadow-xl: 0 8px 10px -6px rgb(0 0 0 / 0.1),
     0 25px 50px -5px rgb(0 0 0 / 0.1);
   --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+}
 
-  --z-0: 0;
-  --z-10: 10;
-  --z-20: 20;
-  --z-30: 30;
-  --z-40: 40;
-  --z-50: 50;
-  --z-focus: 10;
-  --z-popover: 1000;
-  --z-modal: 2000;
-  --z-tooltip: 3000;
+@layer utilities {
+  .z-popover {
+    z-index: 1000;
+  }
+  .z-modal {
+    z-index: 2000;
+  }
+  .z-tooltip {
+    z-index: 3000;
+  }
 }

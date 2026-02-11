@@ -48,18 +48,34 @@ elhubProject(Group.FLEX, "flex-information-system") {
                     source = Source.CommitSha
                 }
 
-                gitOps {
-                    buildNameSuffix = "Backend"
-                    clusters = setOf(KubeCluster.TEST9, KubeCluster.MARKET_TRIAL_1)
-                    gitOpsRepository = gitOpsRepo
-                    projectName = "fis-backend"
-                    source = Source.CommitSha
-                    isMonoRepo = true
-                }.triggerOnVcsChange { triggerRules = """
-                            -:*
-                            +:backend/**
-                            +:db/**
-                    """.trimIndent()
+                parallel {
+                    gitOps {
+                        buildNameSuffix = "backend test"
+                        clusters = setOf(KubeCluster.TEST9)
+                        gitOpsRepository = gitOpsRepo
+                        projectName = "fis-backend"
+                        source = Source.CommitSha
+                        isMonoRepo = true
+                        autoMerge = true
+                    }.triggerOnVcsChange { triggerRules = """
+                                -:*
+                                +:backend/**
+                                +:db/**
+                        """.trimIndent()
+                    }
+                    gitOps {
+                        buildNameSuffix = "backend euro"
+                        clusters = setOf(KubeCluster.MARKET_TRIAL_1)
+                        gitOpsRepository = gitOpsRepo
+                        projectName = "fis-backend"
+                        source = Source.CommitSha
+                        isMonoRepo = true
+                    }.triggerOnVcsChange { triggerRules = """
+                                -:*
+                                +:backend/**
+                                +:db/**
+                        """.trimIndent()
+                    }
                 }
             }
             sequential {
@@ -85,14 +101,26 @@ elhubProject(Group.FLEX, "flex-information-system") {
                     source = Source.CommitSha
                 }
 
-                gitOps {
-                    buildNameSuffix = "Frontend"
-                    clusters = setOf(KubeCluster.TEST9, KubeCluster.MARKET_TRIAL_1)
-                    gitOpsRepository = gitOpsRepo
-                    projectName = "fis-frontend"
-                    source = Source.CommitSha
-                    isMonoRepo = true
-                }.triggerOnVcsChange { triggerRules = "+:frontend/**" }
+                parallel {
+                    gitOps {
+                        buildNameSuffix = "frontend test"
+                        clusters = setOf(KubeCluster.TEST9)
+                        gitOpsRepository = gitOpsRepo
+                        projectName = "fis-frontend"
+                        source = Source.CommitSha
+                        isMonoRepo = true
+                        autoMerge = true
+                    }.triggerOnVcsChange { triggerRules = "+:frontend/**" }
+
+                    gitOps {
+                        buildNameSuffix = "frontend euro"
+                        clusters = setOf(KubeCluster.MARKET_TRIAL_1)
+                        gitOpsRepository = gitOpsRepo
+                        projectName = "fis-frontend"
+                        source = Source.CommitSha
+                        isMonoRepo = true
+                    }.triggerOnVcsChange { triggerRules = "+:frontend/**" }
+                }
             }
         }
     }

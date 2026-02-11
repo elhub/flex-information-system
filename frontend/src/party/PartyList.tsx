@@ -11,7 +11,7 @@ import {
   TextField,
 } from "../components/EDS-ra/fields";
 import { zParty } from "../generated-client/zod.gen";
-import { getFields } from "../util";
+import { getFields } from "../zod";
 import { CreateButton } from "../components/EDS-ra";
 import { usePermissions } from "ra-core";
 import { Permissions } from "../auth/permissions";

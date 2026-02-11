@@ -14,7 +14,7 @@ import { Toolbar } from "../components/Toolbar";
 import { ProductTypeArrayInput } from "../product_type/components";
 import { zServiceProviderProductApplicationCreateRequest } from "../generated-client/zod.gen";
 import { EnumInput } from "../components/enum";
-import { unTypedZodResolver } from "../util";
+import { unTypedZodResolver } from "../zod";
 
 // keep only the fields that map to the UI
 const filterRecord = ({
