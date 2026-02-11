@@ -3,8 +3,9 @@ import { useInput } from "ra-core";
 import { BaseInput, BaseInputProps } from "./BaseInput";
 import { formatISO, parseISO } from "date-fns";
 import { tz } from "@date-fns/tz";
+import { DatepickerProps } from "@elhub/ds-components";
 
-type DateTimeInputProps = BaseInputProps;
+type DateTimeInputProps = BaseInputProps & DatepickerProps;
 
 export const DateInput = ({
   source,
@@ -46,6 +47,7 @@ export const DateInput = ({
         size="large"
         disabled={disabled}
         navigateButtons={false}
+        {...rest}
       />
     </BaseInput>
   );
