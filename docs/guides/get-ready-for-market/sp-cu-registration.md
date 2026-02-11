@@ -126,3 +126,11 @@ Based on the system operator's analysis, the CU receives a grid validation statu
 and the service provider will be notified.
 
 Information about the status is found under the menu item `CU registration`.
+
+## Next step: Grouping controllable units in a service providing group
+
+Once the CU is registered, it can be added to a service providing group (SPG).
+Grid validation is not required at this stage, but be aware that the SPG may be
+affected later if the CU does not pass grid validation.
+
+→ Continue with [the guide on grouping CUs](sp-spg-registration.md).

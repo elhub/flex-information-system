@@ -71,5 +71,10 @@ Flexibility Information System portal.
 
 ## Step-by-step: How to register a controllable unit
 
-Follow the [Registering a controllable unit](sp-cu-registration.md) tutorial to
+Follow the [Registering a Controllable Unit](sp-cu-registration.md) tutorial to
 register a controllable unit.
+
+## Step-by-step: How to group controllable units in a service providing group
+
+Follow the [Grouping Controllable Units in a Service Providing Group](sp-spg-registration.md)
+tutorial to register a controllable unit.
