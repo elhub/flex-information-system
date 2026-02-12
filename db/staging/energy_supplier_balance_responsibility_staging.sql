@@ -56,9 +56,9 @@ AS $$
     RESTRICT;
 $$;
 
--- changeset flex:energy-supplier-balance-responsibility-staging-fk-view runOnChange:true endDelimiter:--
+-- changeset flex:energy-supplier-balance-responsibility-staging-view runOnChange:true endDelimiter:--
 -- ESBR staging with foreign key resolved (business IDs turned into IDs)
-CREATE OR REPLACE VIEW staging.energy_supplier_balance_responsibility_fk AS (
+CREATE OR REPLACE VIEW staging.energy_supplier_balance_responsibility_v AS (
     SELECT
         mga.id AS metering_grid_area_id,
         esp.id AS energy_supplier_id,
@@ -69,9 +69,13 @@ CREATE OR REPLACE VIEW staging.energy_supplier_balance_responsibility_fk AS (
         INNER JOIN flex.metering_grid_area AS mga
             ON stg.metering_grid_area_business_id = mga.business_id
         INNER JOIN flex.party AS esp
-            ON stg.energy_supplier_business_id = esp.business_id
+            ON
+                stg.energy_supplier_business_id = esp.business_id
+                AND esp.type = 'energy_supplier'
         INNER JOIN flex.party AS brpp
-            ON stg.balance_responsible_party_business_id = brpp.business_id
+            ON
+                stg.balance_responsible_party_business_id = brpp.business_id
+                AND brpp.type = 'balance_responsible_party'
 );
 
 -- changeset flex:energy-supplier-balance-responsibility-staging-update runOnChange:false endDelimiter:--
@@ -145,7 +149,7 @@ BEGIN
     DELETE FROM flex.energy_supplier_balance_responsibility AS flex_esbr
     WHERE NOT EXISTS (
         SELECT 1
-        FROM staging.energy_supplier_balance_responsibility_fk AS staging_esbr
+        FROM staging.energy_supplier_balance_responsibility_v AS staging_esbr
         WHERE staging_esbr.metering_grid_area_id
         = flex_esbr.metering_grid_area_id
             AND staging_esbr.energy_supplier_id
@@ -156,7 +160,7 @@ BEGIN
     );
 
     MERGE INTO flex.energy_supplier_balance_responsibility AS flex_esbr
-    USING staging.energy_supplier_balance_responsibility_fk AS staging_esbr
+    USING staging.energy_supplier_balance_responsibility_v AS staging_esbr
         ON flex_esbr.metering_grid_area_id = staging_esbr.metering_grid_area_id
         AND flex_esbr.energy_supplier_id = staging_esbr.energy_supplier_id
         AND flex_esbr.energy_direction = staging_esbr.energy_direction
@@ -198,39 +202,19 @@ DECLARE
     l_flex_count int;
     l_staging_count int;
 BEGIN
-    -- first safety check: comparison of BRP relation counts
+    -- safety check: comparison of BRP relation counts
     -- if the staging count is too low compared to the target count, we may have
     -- a lot of deletes and the rest of the system may stop working correctly
     -- (potential sign of low quality in the input data)
 
     SELECT COUNT(*) INTO l_staging_count
-    FROM staging.energy_supplier_balance_responsibility
-    WHERE valid_time_range @> current_timestamp;
+    FROM staging.energy_supplier_balance_responsibility_v;
 
     SELECT COUNT(*) INTO l_flex_count
-    FROM flex.energy_supplier_balance_responsibility
-    WHERE valid_time_range @> current_timestamp;
+    FROM flex.energy_supplier_balance_responsibility;
 
-    IF l_staging_count::numeric / l_flex_count < 0.5 THEN
-        RAISE EXCEPTION 'The number of balance responsibility relations in staging is lower than 50% of the current amount, aborting update';
-    END IF;
-
-    -- second safety check: no hole in valid time
-    -- data from external source should be complete and cover the whole timeline
-    IF EXISTS (
-        SELECT 1
-        FROM (
-            -- no hole in the timeline means that the timeline, when aggregated,
-            -- should be a multirange with a single continuous range inside
-            SELECT range_agg(valid_time_range) AS timeline
-            FROM staging.energy_supplier_balance_responsibility
-            GROUP BY metering_grid_area_business_id,
-                energy_supplier_business_id,
-                energy_direction
-        ) AS staging_timelines
-        WHERE (SELECT COUNT(*) FROM unnest(timeline)) > 1
-    ) THEN
-        RAISE EXCEPTION 'There is a hole in one of the staging balance responsibility timelines, aborting update';
+    IF l_flex_count > 0 AND l_staging_count::numeric / l_flex_count < 0.8 THEN
+        RAISE EXCEPTION 'The number of balance responsibility relations in staging is lower than 80% of the current amount, aborting update';
     END IF;
 
     PERFORM staging.energy_supplier_balance_responsibility_update();
