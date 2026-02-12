@@ -214,7 +214,8 @@ BEGIN
     FROM flex.energy_supplier_balance_responsibility;
 
     IF l_flex_count > 0 AND l_staging_count::numeric / l_flex_count < 0.8 THEN
-        RAISE EXCEPTION 'The number of balance responsibility relations in staging is lower than 80% of the current amount, aborting update';
+        RAISE EXCEPTION USING
+            MESSAGE = 'The number of balance responsibility relations in staging is lower than 80% of the current amount, aborting update';
     END IF;
 
     PERFORM staging.energy_supplier_balance_responsibility_update();
