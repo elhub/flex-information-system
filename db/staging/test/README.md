@@ -66,7 +66,7 @@ SELECT * FROM flex.energy_supplier_balance_responsibility;
 - on record `1`, the end of valid time should have been updated, but at least
   the record is *reused*, not deleted and replaced with another
 - record `2` however has different valid time start in the staging table, so it
-  should be deleted and replaced with record `19`
+  should be deleted and replaced with a new record
 - record `4` is the last on MGA `4` before the update, it should be there with
-  an ended valid time, and we should have a new record `20` to register the new
+  an ended valid time, and we should have a new record to register the new
   BRP chosen in the updated dataset.
