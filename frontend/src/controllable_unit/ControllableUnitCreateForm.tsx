@@ -39,6 +39,7 @@ const zControllableUnitCreateForm = z.object({
   end_user_id: zControllableUnitServiceProviderCreateRequest.shape.end_user_id,
   contract_reference:
     zControllableUnitServiceProviderCreateRequest.shape.contract_reference,
+  // We want to ensure that the start date is not a future date so the user has access to change its values after creation.
   start_date: zControllableUnitCreateRequest.shape.start_date
     .nonoptional()
     .refine((date) => isPast(date), {
@@ -54,6 +55,7 @@ export const ControllableUnitCreateForm = () => {
   const notify = useNotify();
   const navigate = useNavigate();
 
+  // We need to save the id if the cu is created successfully but the cusp fails.
   const [savedControllableUnitId, setSavedControllableUnitId] = useState<
     number | undefined
   >(undefined);
@@ -178,6 +180,7 @@ export const ControllableUnitCreateForm = () => {
             {...fields.contract_reference}
             resource="controllable_unit_service_provider"
           />
+          {/* We want to ensure that the start date is not a future date so the user has access to change its values after creation. */}
           <DateInput {...fields.start_date} maxDate={new Date()} />
         </div>
         <FormToolbar />

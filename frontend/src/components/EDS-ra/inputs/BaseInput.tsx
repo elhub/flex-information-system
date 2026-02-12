@@ -1,5 +1,10 @@
 import { ReactNode } from "react";
-import { FormItem, FormItemLabel, FlexDiv } from "../../ui";
+import {
+  FormItem,
+  FormItemLabel,
+  FlexDiv,
+  FormItemDescription,
+} from "../../ui";
 import { usePermissions, useResourceContext, useTranslate } from "ra-core";
 import { Permissions, PermissionTarget } from "../../../auth/permissions";
 import { useCreateOrUpdate } from "../../../auth/useCreateOrUpdate";
@@ -13,6 +18,7 @@ export type BaseInputProps = {
   readOnly?: boolean;
   resource?: string;
   overrideLabel?: string;
+  description?: string;
 };
 
 type BaseInputPropsWithChildren = BaseInputProps & {
@@ -29,6 +35,7 @@ export const BaseInput = ({
   readOnly,
   id,
   error,
+  description,
   children,
   resource: resourceProp,
   overrideLabel,
@@ -59,6 +66,7 @@ export const BaseInput = ({
       error={error}
       inputProps={{ required: required, disabled: isDisabled }}
       size="large"
+      description={description}
     >
       <FlexDiv style={{ gap: "var(--eds-size-2)", alignItems: "center" }}>
         <FormItemLabel htmlFor={id} size="large">
@@ -66,6 +74,7 @@ export const BaseInput = ({
         </FormItemLabel>
         {tooltip && <FieldTooltip resource={resource} field={source} />}
       </FlexDiv>
+      {description && <FormItemDescription>{description}</FormItemDescription>}
       {children}
     </FormItem>
   );

@@ -21,18 +21,19 @@ export const LabelValue = ({
   ...props
 }: LabelValueProps) => {
   const translateLabel = useTranslateField();
-  if (!value) {
-    return null;
-  }
 
-  const formattedValue = unit ? `${value} ${unit}` : value;
+  const formattedValue = value
+    ? unit
+      ? `${value} ${unit}`
+      : value
+    : "No value";
 
   return (
     <div className="flex gap-2 items-center">
       <BodyText weight="bold" {...props}>
         {labelKey ? translateLabel(labelKey) : label}:
       </BodyText>
-      <BodyText {...props}>{formattedValue}</BodyText>
+      <BodyText {...props}>{formattedValue} </BodyText>
       {tooltip && labelKey && <FieldTooltip tooltipKey={labelKey} />}
     </div>
   );

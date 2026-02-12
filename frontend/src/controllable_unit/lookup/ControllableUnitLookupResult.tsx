@@ -158,11 +158,15 @@ export const ControllableUnitLookupResult = () => {
   return (
     <FlexDiv style={{ flexDirection: "column", gap: "var(--eds-size-3)" }}>
       <Heading level={2} size="large">
-        Controllable Unit Lookup Result
+        Controllable Unit already exists
       </Heading>
-      <Heading level={3} size="medium">
-        Technical information
-      </Heading>
+      <BodyText>
+        There already exists controllable units associated with the accounting
+        point (GSRN: {controllableUnitLookUpResult.accounting_point.business_id}
+        ) and end user (ID: {controllableUnitLookUpResult.end_user.id}). Create
+        a new one or one of the existing ones.
+      </BodyText>
+
       <FlexDiv style={{ gap: "var(--eds-size-3)", flexWrap: "wrap" }}>
         <Card>
           <CardHeader>
