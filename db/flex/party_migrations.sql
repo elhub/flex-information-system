@@ -34,3 +34,9 @@ ALTER TABLE flex.party ADD CONSTRAINT check_organisation_iff_org CHECK (
     OR
     (type != 'organisation' AND business_id_type != 'org')
 );
+
+-- changeset flex:party-unique-business-id-type runOnChange:false endDelimiter:;
+--preconditions onFail:MARK_RAN
+--precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM pg_catalog.pg_constraint WHERE conname = 'uk_party_business_id_type'
+ALTER TABLE flex.party ADD CONSTRAINT uk_party_business_id_type
+UNIQUE (business_id, type);
