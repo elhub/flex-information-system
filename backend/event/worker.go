@@ -85,6 +85,8 @@ func (eventWorker *Worker) Stop(ctx context.Context) error {
 // handleMessage is the function run by the worker on each Message coming
 // from a replication connection dedicated to event processing. It has access
 // to a transaction to perform operations on the database.
+//
+//nolint:cyclop,funlen
 func (eventWorker *Worker) handleMessage(
 	ctx context.Context,
 	message *pgoutput.InsertMessage,
@@ -130,23 +132,27 @@ func (eventWorker *Worker) handleMessage(
 
 	slog.DebugContext(ctx, "notification recipients", "recipients", notificationRecipients)
 
-	// notify
-	for _, recipient := range notificationRecipients {
+	// if the party that caused the event is in the list of recipients, they should not receive a notification
+	for i, recipient := range notificationRecipients {
 		if recipient == eventPartyID {
-			// never notify the party causing the event (useless)
-			continue
+			notificationRecipients = append(notificationRecipients[:i], notificationRecipients[i+1:]...)
+			break
 		}
+	}
 
-		err := queries.Notify(ctx, event.ID, recipient)
+	if len(notificationRecipients) > 0 {
+		err = queries.NotifyMany(ctx, event.ID, notificationRecipients)
 		if err != nil {
 			return fmt.Errorf("could not insert notification: %w", err)
 		}
 
-		slog.InfoContext(ctx, fmt.Sprintf("notified party #%d of event #%d", recipient, event.ID))
-	}
+		slog.InfoContext(ctx, "notified parties of event", "event_id", event.ID)
 
-	if err = tx.Commit(ctx); err != nil {
-		return fmt.Errorf("could not commit transaction: %w", err)
+		if err = tx.Commit(ctx); err != nil {
+			return fmt.Errorf("could not commit transaction: %w", err)
+		}
+	} else {
+		slog.DebugContext(ctx, "no parties to notify for event", "event_id", event.ID)
 	}
 
 	return nil

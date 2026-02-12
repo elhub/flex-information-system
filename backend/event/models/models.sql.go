@@ -941,3 +941,14 @@ func (q *Queries) Notify(ctx context.Context, eventID int, partyID int) error {
 	_, err := q.db.Exec(ctx, notify, eventID, partyID)
 	return err
 }
+
+const notifyMany = `-- name: NotifyMany :exec
+INSERT INTO api.notification (event_id, party_id)
+SELECT $1, unnest($2::bigint[])
+ON CONFLICT DO NOTHING
+`
+
+func (q *Queries) NotifyMany(ctx context.Context, eventID int, partyIds []int) error {
+	_, err := q.db.Exec(ctx, notifyMany, eventID, partyIds)
+	return err
+}
