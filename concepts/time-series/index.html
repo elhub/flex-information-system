@@ -4092,12 +4092,12 @@ quantification analysis using metering values, baseline and bid volume.</p>
 <p>First, the delivered volume can be calculated by subtracting
 the metering values from the baseline. Then the delivered volume is divided
 by the bid volume, giving a percentage of the delivery.</p>
-<p>$$
+<div class="arithmatex">\[
 \text{Delivered volume} = \text{baseline} - \text{metering values}
-$$</p>
-<p>$$
+\]</div>
+<div class="arithmatex">\[
 \text{Delivery} = \frac{\text{delivered volume}}{\text{bid volume}} = x\%
-$$</p>
+\]</div>
 <p>The percentage required for settlement depends on the product-specific requirements.</p>
 <p>This delivery calculation method can also be used for verification purposes, where
 checking the delivered volume serves as a quality assurance measure to confirm that
@@ -4600,6 +4600,10 @@ and end user.</td>
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
       
     
   </body>
