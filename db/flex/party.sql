@@ -1,8 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:party-create runOnChange:false endDelimiter:--
---validCheckSum: 9:65fc6f6a36ea85af1b3dcb1e11a78ec2
+-- changeset flex:party-create runOnChange:true endDelimiter:--
 CREATE TABLE IF NOT EXISTS party (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     -- PTY-VAL002
@@ -68,7 +67,8 @@ CREATE TABLE IF NOT EXISTS party (
             'third_party'
         )
     ),
-    CONSTRAINT uk_party_id_type UNIQUE (id, type)
+    CONSTRAINT uk_party_id_type UNIQUE (id, type),
+    CONSTRAINT uk_party_business_id_type UNIQUE (business_id, type)
 );
 
 -- changeset flex:party-entiry-end-user-uk runOnChange:true endDelimiter:--
