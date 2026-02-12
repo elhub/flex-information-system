@@ -167,7 +167,12 @@ BEGIN
         AND lower(flex_esbr.valid_time_range)
         = lower(staging_esbr.valid_time_range)
     -- step 2
-    WHEN MATCHED THEN
+    WHEN MATCHED AND (
+        upper(staging_esbr.valid_time_range)
+        IS DISTINCT FROM upper(flex_esbr.valid_time_range)
+            OR staging_esbr.balance_responsible_party_id
+            != staging_esbr.balance_responsible_party_id
+    ) THEN
         UPDATE SET
             balance_responsible_party_id
             = staging_esbr.balance_responsible_party_id,
