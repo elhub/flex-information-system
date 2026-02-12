@@ -91,6 +91,7 @@ def test_cusp_fiso(data):
     assert isinstance(e, ErrorMessage)
 
     # endpoint: POST /controllable_unit_service_provider
+    # NB: accept missing time (automatically set to midnight)
     cusp = create_controllable_unit_service_provider.sync(
         client=client_fiso,
         body=ControllableUnitServiceProviderCreateRequest(
@@ -98,7 +99,7 @@ def test_cusp_fiso(data):
             service_provider_id=sp_id,
             end_user_id=eu_id,
             contract_reference="TEST-CONTRACT",
-            valid_from="2024-01-01T00:00:00+1",
+            valid_from="2024-01-01",
             valid_to=None,
         ),
     )
