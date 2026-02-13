@@ -1,10 +1,10 @@
-import { Datepicker } from "../../ui";
+import { Datepicker, DatepickerProps } from "../../ui";
 import { useInput } from "ra-core";
 import { BaseInput, BaseInputProps } from "./BaseInput";
 import { formatISO, parseISO } from "date-fns";
 import { tz } from "@date-fns/tz";
 
-type DateTimeInputProps = BaseInputProps;
+type DateTimeInputProps = BaseInputProps & DatepickerProps;
 
 export const DateInput = ({
   source,
@@ -35,6 +35,7 @@ export const DateInput = ({
       error={fieldState.error?.message}
     >
       <Datepicker
+        {...rest}
         id={id}
         selected={
           field.value
