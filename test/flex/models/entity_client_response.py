@@ -25,8 +25,8 @@ class EntityClientResponse:
             party. When assuming a party through party membership, the least privileged set of scopes will be kept.
             Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.
             Example: ['read:data'].
-        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-            23:59:00 CET.
+        recorded_at (str): When the resource was recorded (created or updated) in the system. Example:
+            2023-12-31T23:59:00Z.
         recorded_by (int): The identity that recorded the resource. Example: 145.
         name (None | str | Unset): Name of the client. Example: Laptop.
         party_id (int | None | Unset): Reference to the party this client allows to assume. A null value means the

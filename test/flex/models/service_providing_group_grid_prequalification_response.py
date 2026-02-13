@@ -25,11 +25,11 @@ class ServiceProvidingGroupGridPrequalificationResponse:
         impacted_system_operator_id (int): Reference to the `party` that is the impacted system operator. Example: 7.
         status (ServiceProvidingGroupGridPrequalificationStatus): The status of the grid prequalification for this
             service providing group. Example: in_progress.
-        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-            23:59:00 CET.
+        recorded_at (str): When the resource was recorded (created or updated) in the system. Example:
+            2023-12-31T23:59:00Z.
         recorded_by (int): The identity that recorded the resource. Example: 145.
         prequalified_at (None | str | Unset): When the current grid prequalification was last approved. Example:
-            2023-01-08 10:00:00 CET.
+            2023-01-08T10:00:00+01.
     """
 
     id: int

@@ -19,7 +19,7 @@ class AccountingPointEndUserResponse:
         accounting_point_id (int): The ID of the accounting point. Example: 245.
         end_user_id (int): The end user on the accounting point. Example: 12.
         valid_from (str): The date from which the accounting point belongs to the end user. Midnight aligned on
-            Norwegian timezone. Example: 2022-08-08 00:00:00 CET.
+            Norwegian timezone. Example: 2022-08-08T00:00:00+02.
         valid_to (None | str | Unset): The date until which the accounting point belongs to the end user. Midnight
             aligned on Norwegian timezone.
     """

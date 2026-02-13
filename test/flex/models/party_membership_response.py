@@ -22,8 +22,8 @@ class PartyMembershipResponse:
         scopes (list[AuthScope]): List of scopes granted to the entity when it acts as the party. Scopes are inspired
             from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms. Example:
             ['read:data'].
-        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-            23:59:00 CET.
+        recorded_at (str): When the resource was recorded (created or updated) in the system. Example:
+            2023-12-31T23:59:00Z.
         recorded_by (int): The identity that recorded the resource. Example: 145.
     """
 

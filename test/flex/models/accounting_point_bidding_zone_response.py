@@ -20,7 +20,7 @@ class AccountingPointBiddingZoneResponse:
         accounting_point_id (int): The ID of the accounting point. Example: 245.
         bidding_zone (AccountingPointBiddingZoneBiddingZone): The bidding zone of the accounting point. Example: NO3.
         valid_from (str): The date from which the accounting point belongs to the bidding zone. Midnight aligned on
-            Norwegian timezone. Example: 2022-08-08 00:00:00 CET.
+            Norwegian timezone. Example: 2022-08-08T00:00:00+02.
         valid_to (None | str | Unset): The date until which the accounting point belongs to the bidding zone. Midnight
             aligned on Norwegian timezone.
     """

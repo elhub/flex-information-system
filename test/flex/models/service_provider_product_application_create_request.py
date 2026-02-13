@@ -22,8 +22,8 @@ class ServiceProviderProductApplicationCreateRequest:
             system_operator_id (int): Reference to the system operator. Example: 39.
             product_type_ids (list[int]): References to the product types. Example: [2, 4, 5].
             status (ServiceProviderProductApplicationStatus | Unset): The status of the application. Example: in_progress.
-            qualified_at (None | str | Unset): When the product application was last validated. Example: 2022-08-08 12:00:00
-                CET.
+            qualified_at (None | str | Unset): When the product application was last validated. Example:
+                2022-08-08T12:00:00+02.
     """
 
     service_provider_id: int

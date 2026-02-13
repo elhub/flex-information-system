@@ -291,7 +291,7 @@ resources:
         format: timestamp with time zone
         type: string
         nullable: true
-        example: 2022-08-08 12:00:00 CET
+        example: '2022-08-08T12:00:00+02'
         x-intl:
           en: Validated at
           nb: Validert
@@ -489,7 +489,7 @@ resources:
         type: string
         x-filter: true
         nullable: true
-        example: 2022-08-08 00:00:00 CET
+        example: '2022-08-08T00:00:00+02'
         x-intl:
           en: Valid from
           nb: Gyldig fra
@@ -502,7 +502,7 @@ resources:
         type: string
         x-filter: true
         nullable: true
-        example: 2022-09-10 00:00:00 CET
+        example: '2022-09-10T00:00:00+02'
         x-intl:
           en: Valid to
           nb: Gyldig til
@@ -712,7 +712,7 @@ resources:
         format: timestamp with time zone
         type: string
         x-filter: true
-        example: 2022-08-08 00:00:00 CET
+        example: '2022-08-08T00:00:00+02'
         x-intl:
           en: Valid from
           nb: Gyldig fra
@@ -843,7 +843,7 @@ resources:
         format: timestamp with time zone
         type: string
         nullable: true
-        example: 2023-01-08 10:00:00 CET
+        example: '2023-01-08T10:00:00+01'
         x-intl:
           en: Prequalified at
           nb: Prekvalifisert
@@ -1737,7 +1737,7 @@ resources:
         format: timestamp with time zone
         type: string
         readOnly: true
-        example: 2022-08-08 12:00:00 CET
+        example: '2022-08-08T12:00:00+02'
         x-intl:
           en: Time
           nb: Tidspunkt
@@ -1983,7 +1983,7 @@ resources:
         type: string
         readOnly: true
         x-filter: true
-        example: 2022-08-08 00:00:00 CET
+        example: '2022-08-08T00:00:00+02'
         x-intl:
           en: Valid from
           nb: Gyldig fra
@@ -2075,7 +2075,7 @@ resources:
         type: string
         readOnly: true
         x-filter: true
-        example: 2022-08-08 00:00:00 CET
+        example: '2022-08-08T00:00:00+02'
         x-intl:
           en: Valid from
           nb: Gyldig fra
@@ -2143,7 +2143,7 @@ resources:
         format: timestamp with time zone
         type: string
         readOnly: true
-        example: 2022-08-08 00:00:00 CET
+        example: '2022-08-08T00:00:00+02'
         x-filter: true
         x-intl:
           en: Valid from
@@ -2214,7 +2214,7 @@ resources:
         type: string
         readOnly: true
         x-filter: true
-        example: 2023-09-09 00:00:00 CET
+        example: '2023-09-09T00:00:00+02'
         x-intl:
           en: Valid from
           nb: Gyldig fra
@@ -2353,7 +2353,7 @@ resources:
         type: string
         readOnly: true
         x-filter: true
-        example: 2023-09-09 00:00:00 CET
+        example: '2023-09-09T00:00:00+02'
         x-intl:
           en: Valid from
           nb: Gyldig fra
@@ -2642,7 +2642,7 @@ resources:
         format: timestamp with time zone
         type: string
         nullable: true
-        example: 2022-08-08 12:00:00 CET
+        example: '2022-08-08T12:00:00+02'
         x-intl:
           en: Qualified at
           nb: Kvalifisert
@@ -2909,7 +2909,7 @@ resources:
         format: timestamp with time zone
         type: string
         nullable: true
-        example: 2022-08-08 12:00:00 CET
+        example: '2022-08-08T12:00:00+02'
         x-intl:
           en: Prequalified at
           nb: Prekvalifisert
@@ -2919,7 +2919,7 @@ resources:
         format: timestamp with time zone
         type: string
         nullable: true
-        example: 2021-08-08 10:00:00 CET
+        example: '2021-08-08T10:00:00+02'
         x-intl:
           en: Verified at
           nb: Verifisert

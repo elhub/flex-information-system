@@ -19,7 +19,7 @@ class AccountingPointEnergySupplierResponse:
         accounting_point_id (int): The ID of the accounting point. Example: 45.
         energy_supplier_id (int): The energy supplier of the accounting point. Example: 7.
         valid_from (str): The date from which the relation between the accounting point and the energy supplier is
-            valid. Midnight aligned on Norwegian timezone. Example: 2023-09-09 00:00:00 CET.
+            valid. Midnight aligned on Norwegian timezone. Example: 2023-09-09T00:00:00+02.
         valid_to (None | str | Unset): The date until which the relation between the accounting point and the energy
             supplier is valid. Midnight aligned on Norwegian timezone.
     """

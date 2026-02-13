@@ -23,11 +23,11 @@ class ServiceProviderProductApplicationResponse:
             system_operator_id (int): Reference to the system operator. Example: 39.
             product_type_ids (list[int]): References to the product types. Example: [2, 4, 5].
             status (ServiceProviderProductApplicationStatus): The status of the application. Example: in_progress.
-            recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-                23:59:00 CET.
+            recorded_at (str): When the resource was recorded (created or updated) in the system. Example:
+                2023-12-31T23:59:00Z.
             recorded_by (int): The identity that recorded the resource. Example: 145.
-            qualified_at (None | str | Unset): When the product application was last validated. Example: 2022-08-08 12:00:00
-                CET.
+            qualified_at (None | str | Unset): When the product application was last validated. Example:
+                2022-08-08T12:00:00+02.
     """
 
     id: int

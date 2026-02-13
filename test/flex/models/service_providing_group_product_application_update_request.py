@@ -22,10 +22,10 @@ class ServiceProvidingGroupProductApplicationUpdateRequest:
             status (ServiceProvidingGroupProductApplicationStatus | Unset): The status of the application. Example:
                 in_progress.
             notes (None | str | Unset): Free text notes on the current product application status.
-            prequalified_at (None | str | Unset): When the product application was last prequalified. Example: 2022-08-08
-                12:00:00 CET.
-            verified_at (None | str | Unset): When the product application was last verified. Example: 2021-08-08 10:00:00
-                CET.
+            prequalified_at (None | str | Unset): When the product application was last prequalified. Example:
+                2022-08-08T12:00:00+02.
+            verified_at (None | str | Unset): When the product application was last verified. Example:
+                2021-08-08T10:00:00+02.
     """
 
     product_type_ids: list[int] | Unset = UNSET

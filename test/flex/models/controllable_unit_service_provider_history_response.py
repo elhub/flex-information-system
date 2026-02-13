@@ -24,17 +24,16 @@ class ControllableUnitServiceProviderHistoryResponse:
         end_user_id (int): Technical ID of the end user behind the accounting point.
         contract_reference (str): The service providers internal reference to the contract with the end user. Typically
             an internal identifier to a stored document or consent record. Example: 123e4567-e89b-12d3-a456-426614174000.
-        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-            23:59:00 CET.
+        recorded_at (str): When the resource was recorded (created or updated) in the system. Example:
+            2023-12-31T23:59:00Z.
         recorded_by (int): The identity that recorded the resource. Example: 145.
         controllable_unit_service_provider_id (int): Reference to the resource that was updated. Example: 48.
         valid_from (None | str | Unset): The date from which the relation between the controllable unit and the service
-            provider is valid. Midnight aligned on Norwegian timezone. Example: 2022-08-08 00:00:00 CET.
+            provider is valid. Midnight aligned on Norwegian timezone. Example: 2022-08-08T00:00:00+02.
         valid_to (None | str | Unset): The date until which the relation between the controllable unit and the service
-            provider is valid. Midnight aligned on Norwegian timezone. Example: 2022-09-10 00:00:00 CET.
+            provider is valid. Midnight aligned on Norwegian timezone. Example: 2022-09-10T00:00:00+02.
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
-        replaced_at (None | str | Unset): When the resource was replaced in the system. Example: 2024-07-07 10:00:00
-            CET.
+        replaced_at (None | str | Unset): When the resource was replaced in the system. Example: 2024-07-07T10:00:00Z.
     """
 
     id: int

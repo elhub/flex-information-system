@@ -43,8 +43,8 @@ class ControllableUnitCreateRequest:
         grid_validation_status (ControllableUnitGridValidationStatus | Unset): The grid validation status of the
             controllable unit. Example: validated.
         grid_validation_notes (None | str | Unset): Free text notes on the current grid validation status.
-        validated_at (None | str | Unset): When the controllable unit was last validated. Example: 2022-08-08 12:00:00
-            CET.
+        validated_at (None | str | Unset): When the controllable unit was last validated. Example:
+            2022-08-08T12:00:00+02.
     """
 
     name: str

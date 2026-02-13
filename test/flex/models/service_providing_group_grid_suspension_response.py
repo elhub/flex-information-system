@@ -23,8 +23,8 @@ class ServiceProvidingGroupGridSuspensionResponse:
             service_providing_group_id (int): Reference to the service providing group being suspended. Example: 13.
             reason (ServiceProvidingGroupGridSuspensionReason): The reason for the suspension. Example:
                 significant_group_change.
-            recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-                23:59:00 CET.
+            recorded_at (str): When the resource was recorded (created or updated) in the system. Example:
+                2023-12-31T23:59:00Z.
             recorded_by (int): The identity that recorded the resource. Example: 145.
     """
 

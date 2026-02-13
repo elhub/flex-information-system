@@ -24,13 +24,12 @@ class ControllableUnitSuspensionCommentHistoryResponse:
         visibility (ControllableUnitSuspensionCommentVisibility): The level of visibility of the comment. Example:
             same_party.
         content (str): Free text content of the comment. Example: Missing document..
-        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-            23:59:00 CET.
+        recorded_at (str): When the resource was recorded (created or updated) in the system. Example:
+            2023-12-31T23:59:00Z.
         recorded_by (int): The identity that recorded the resource. Example: 145.
         controllable_unit_suspension_comment_id (int): Reference to the resource that was updated. Example: 48.
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
-        replaced_at (None | str | Unset): When the resource was replaced in the system. Example: 2024-07-07 10:00:00
-            CET.
+        replaced_at (None | str | Unset): When the resource was replaced in the system. Example: 2024-07-07T10:00:00Z.
     """
 
     id: int

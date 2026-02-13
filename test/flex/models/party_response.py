@@ -37,8 +37,8 @@ class PartyResponse:
                 service_provider. Example: flex_energy_supplier.
             type_ (PartyType): The type of the party, e.g SystemOperator, ServiceProvider Example: energy_supplier.
             status (PartyStatus): The status of the party. Example: active.
-            recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-                23:59:00 CET.
+            recorded_at (str): When the resource was recorded (created or updated) in the system. Example:
+                2023-12-31T23:59:00Z.
             recorded_by (int): The identity that recorded the resource. Example: 145.
     """
 
