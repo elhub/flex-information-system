@@ -24,7 +24,6 @@ services:
       -c shared_preload_libraries=pg_cron
       -c cron.database_name=flex
       -c cron.timezone=Europe/Oslo
-      -c timezone=Europe/Oslo
   postgrest:
     image: postgrest/postgrest:latest
     expose:

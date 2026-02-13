@@ -137,7 +137,7 @@ The three first contracts are therefore invalid, even if number `2` starts at
 midnight on 14.07, and the three last ones are valid, and number `5` can start
 as soon as midnight on 07.07. The end date of these contracts does not matter.
 
-## Timezones
+## Timestamps
 
 In the context of storing datetime-related information, a timestamp only has
 meaning if it is considered in a given timezone.
@@ -147,6 +147,64 @@ meaning if it is considered in a given timezone.
 Datetime data is stored in the system in the standard [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
 format (date + time + timezone), so that information in the database is complete
 and does not depend on any user configuration.
+
+### API format
+
+When it comes to API design, we want to find a good tradeoff between
+predictability and usability. We MUST support an open and widespread standard so
+that our software behaves in an expected way, is easy to integrate, and does not
+cause any surprise for users. However, if we can infer some information or allow
+less strict formats if it makes users' life substantially simpler, we SHOULD try
+to do it.
+
+The general rule of thumb is that any timestamp following the subset of the
+ISO 8601 standard described in [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6)
+is _valid_ in our system. Here is an example of such a timestamp:
+
+```text
+2024-05-08T21:07:34.102+01:00
+```
+
+However, this is a bit strict and can be cumbersome to use, so we also accept
+some variations described below.
+
+#### Date
+
+The _date_ part of the timestamp remains very strict: we only accept the
+readable and unambiguous format `YYYY-MM-DD` defined in ISO 8601.
+
+<!-- markdownlint-disable-next-line MD024 -->
+#### Time
+
+The _time_ part of the timestamp is made _optional_ in our system, in several
+ways. Indeed, as explained higher in this document, in quite some cases, we
+expect timestamps to be _midnight-aligned_. In such cases, it is therefore not
+very user-friendly to always expect a time, where giving a day should be enough.
+The whole time part of the timestamp can thus be omitted and will be considered
+as midnight (`00:00:00.000`).
+
+As milliseconds and seconds do not always make sense business-wise, if they are
+omitted, they are inferred to be zero. If a time is given, hour and minute are
+always required.
+
+We also relax the `T` separator between date and time and accept a space there.
+
+#### Timezone
+
+Timezones can be provided in three possible formats:
+
+- the ISO 8601 format, _i.e._, either `Z` for UTC, a hour offset
+  (`+HH` or `-HH`), or a hour-minute offset (`+HH:MM` or `-HH:MM`)
+- a timezone name: `Europe/Oslo`, `Asia/Tokyo`, `Canada/Atlantic`, _etc._
+- a timezone abbreviation: `CET`, `GMT`, `UTC`, _etc._
+
+Timezone names and abbreviations are those of the
+[IANA](https://timeapi.io/documentation/iana-timezones).
+
+Timezones are also made _optional_, so if omitted, the UTC timezone is inferred
+by default. This means that a midnight-aligned timestamp in the Norwegian
+timezone can be given as `YYYY-MM-DD Europe/Oslo`, for instance, which arguably
+makes the use of the API easier.
 
 ### Time in the user interface
 
