@@ -147,14 +147,13 @@ func (eventWorker *Worker) handleMessage(
 		}
 
 		slog.InfoContext(ctx, "notified parties of event", "event_id", event.ID)
-
-		if err = tx.Commit(ctx); err != nil {
-			return fmt.Errorf("could not commit transaction: %w", err)
-		}
 	} else {
 		slog.DebugContext(ctx, "no parties to notify for event", "event_id", event.ID)
 	}
 
+	if err = tx.Commit(ctx); err != nil {
+		return fmt.Errorf("could not commit transaction: %w", err)
+	}
 	return nil
 }
 
