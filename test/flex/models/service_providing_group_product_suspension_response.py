@@ -24,8 +24,8 @@ class ServiceProvidingGroupProductSuspensionResponse:
             product_type_ids (list[int]): References to the suspended product types. Example: [3, 6].
             reason (ServiceProvidingGroupProductSuspensionReason): The reason for the suspension. Example:
                 failed_verification.
-            recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-                23:59:00 CET.
+            recorded_at (str): When the resource was recorded (created or updated) in the system. Example:
+                2023-12-31T23:59:00Z.
             recorded_by (int): The identity that recorded the resource. Example: 145.
     """
 

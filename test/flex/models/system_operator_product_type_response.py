@@ -20,8 +20,8 @@ class SystemOperatorProductTypeResponse:
         system_operator_id (int): Reference to the system operator. Example: 37.
         product_type_id (int): Reference to the product type. Example: 8.
         status (SystemOperatorProductTypeStatus): The status of the relation. Example: active.
-        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-            23:59:00 CET.
+        recorded_at (str): When the resource was recorded (created or updated) in the system. Example:
+            2023-12-31T23:59:00Z.
         recorded_by (int): The identity that recorded the resource. Example: 145.
     """
 

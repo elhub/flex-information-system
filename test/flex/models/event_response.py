@@ -18,7 +18,7 @@ class EventResponse:
     Attributes:
         id (int): Unique surrogate identifier. Example: 89.
         specversion (str): The version of the CloudEvents specification followed by the resource. Example: 1.0.
-        time (str): The time at which the event was generated. Example: 2022-08-08 12:00:00 CET.
+        time (str): The time at which the event was generated. Example: 2022-08-08T12:00:00+02.
         type_ (str): The type of the event. Example: no.elhub.flex.service_providing_group.update.
         source (str): The URI of the resource concerned by the event. Example: /controllable_unit/4.
         subject (None | str | Unset): The URI of the specific subject of the event within the resource pointed by

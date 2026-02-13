@@ -17,7 +17,7 @@ class ServiceProvidingGroupMembershipUpdateRequest:
 
     Attributes:
         valid_from (str | Unset): The date from which the relation between the controllable unit and the service
-            providing group is valid. Midnight aligned on Norwegian timezone. Example: 2022-08-08 00:00:00 CET.
+            providing group is valid. Midnight aligned on Norwegian timezone. Example: 2022-08-08T00:00:00+02.
         valid_to (None | str | Unset): The date until which the relation between the controllable unit and the service
             providing group is valid. Midnight aligned on Norwegian timezone.
     """

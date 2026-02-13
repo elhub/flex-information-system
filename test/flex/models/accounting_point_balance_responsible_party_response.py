@@ -24,7 +24,7 @@ class AccountingPointBalanceResponsiblePartyResponse:
         energy_direction (AccountingPointBalanceResponsiblePartyEnergyDirection): The direction of the effect on the
             balance that the BRP takes responsibility for. Example: consumption.
         valid_from (str): The date from which the relation between the accounting point and the balance responsible
-            party is valid. Midnight aligned on Norwegian timezone. Example: 2022-08-08 00:00:00 CET.
+            party is valid. Midnight aligned on Norwegian timezone. Example: 2022-08-08T00:00:00+02.
         valid_to (None | str | Unset): The date until which the relation between the accounting point and the balance
             responsible party is valid. Midnight aligned on Norwegian timezone.
     """

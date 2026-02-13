@@ -26,8 +26,8 @@ class ServiceProviderProductApplicationCommentResponse:
         visibility (ServiceProviderProductApplicationCommentVisibility): The level of visibility of the comment.
             Example: same_party.
         content (str): Free text content of the comment. Example: Missing document..
-        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-            23:59:00 CET.
+        recorded_at (str): When the resource was recorded (created or updated) in the system. Example:
+            2023-12-31T23:59:00Z.
         recorded_by (int): The identity that recorded the resource. Example: 145.
     """
 

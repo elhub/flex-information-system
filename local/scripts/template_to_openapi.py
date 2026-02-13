@@ -60,7 +60,7 @@ def history_schema_template(resource, resource_summary):
                         "format": "timestamp with time zone",
                         "type": "string",
                         "nullable": True,
-                        "example": "2024-07-07 10:00:00 CET",
+                        "example": "2024-07-07T10:00:00Z",
                     },
                 },
                 "required": [f"{resource}_id"],
@@ -535,7 +535,7 @@ def generate_openapi_document(base_file, resources_file, servers_file):
                 "format": "timestamp with time zone",
                 "type": "string",
                 "readOnly": True,
-                "example": "2023-12-31 23:59:00 CET",
+                "example": "2023-12-31T23:59:00Z",
             }
             all_properties["recorded_by"] = {
                 "description": "The identity that recorded the resource.",

@@ -18,8 +18,8 @@ class NotificationResponse:
         acknowledged (bool): Whether the notification was acknowledged by the target user.
         event_id (int): Reference to the event notified by this resource. Example: 37.
         party_id (int): Reference to the party concerned by this notification. Example: 37.
-        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-            23:59:00 CET.
+        recorded_at (str): When the resource was recorded (created or updated) in the system. Example:
+            2023-12-31T23:59:00Z.
         recorded_by (int): The identity that recorded the resource. Example: 145.
     """
 

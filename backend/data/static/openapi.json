@@ -962,7 +962,7 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "nullable": true,
-                        "example": "2022-08-08 12:00:00 CET"
+                        "example": "2022-08-08T12:00:00+02"
                     }
                 }
             },
@@ -1066,7 +1066,7 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "nullable": true,
-                        "example": "2022-08-08 12:00:00 CET"
+                        "example": "2022-08-08T12:00:00+02"
                     }
                 },
                 "required": [
@@ -1198,14 +1198,14 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "nullable": true,
-                        "example": "2022-08-08 12:00:00 CET"
+                        "example": "2022-08-08T12:00:00+02"
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
                         "format": "timestamp with time zone",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31 23:59:00 CET"
+                        "example": "2023-12-31T23:59:00Z"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -1297,7 +1297,7 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31 23:59:00 CET"
+                        "example": "2023-12-31T23:59:00Z"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -1410,7 +1410,7 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31 23:59:00 CET"
+                        "example": "2023-12-31T23:59:00Z"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -1449,14 +1449,14 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "nullable": true,
-                        "example": "2022-08-08 00:00:00 CET"
+                        "example": "2022-08-08T00:00:00+02"
                     },
                     "valid_to": {
                         "description": "The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.",
                         "format": "timestamp with time zone",
                         "type": "string",
                         "nullable": true,
-                        "example": "2022-09-10 00:00:00 CET"
+                        "example": "2022-09-10T00:00:00+02"
                     }
                 }
             },
@@ -1495,14 +1495,14 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "nullable": true,
-                        "example": "2022-08-08 00:00:00 CET"
+                        "example": "2022-08-08T00:00:00+02"
                     },
                     "valid_to": {
                         "description": "The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.",
                         "format": "timestamp with time zone",
                         "type": "string",
                         "nullable": true,
-                        "example": "2022-09-10 00:00:00 CET"
+                        "example": "2022-09-10T00:00:00+02"
                     }
                 },
                 "required": [
@@ -1554,21 +1554,21 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "nullable": true,
-                        "example": "2022-08-08 00:00:00 CET"
+                        "example": "2022-08-08T00:00:00+02"
                     },
                     "valid_to": {
                         "description": "The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.",
                         "format": "timestamp with time zone",
                         "type": "string",
                         "nullable": true,
-                        "example": "2022-09-10 00:00:00 CET"
+                        "example": "2022-09-10T00:00:00+02"
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
                         "format": "timestamp with time zone",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31 23:59:00 CET"
+                        "example": "2023-12-31T23:59:00Z"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -1678,7 +1678,7 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31 23:59:00 CET"
+                        "example": "2023-12-31T23:59:00Z"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -1707,7 +1707,7 @@
                         "description": "The date from which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.",
                         "format": "timestamp with time zone",
                         "type": "string",
-                        "example": "2022-08-08 00:00:00 CET"
+                        "example": "2022-08-08T00:00:00+02"
                     },
                     "valid_to": {
                         "description": "The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.",
@@ -1739,7 +1739,7 @@
                         "description": "The date from which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.",
                         "format": "timestamp with time zone",
                         "type": "string",
-                        "example": "2022-08-08 00:00:00 CET"
+                        "example": "2022-08-08T00:00:00+02"
                     },
                     "valid_to": {
                         "description": "The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.",
@@ -1783,7 +1783,7 @@
                         "description": "The date from which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.",
                         "format": "timestamp with time zone",
                         "type": "string",
-                        "example": "2022-08-08 00:00:00 CET"
+                        "example": "2022-08-08T00:00:00+02"
                     },
                     "valid_to": {
                         "description": "The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.",
@@ -1797,7 +1797,7 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31 23:59:00 CET"
+                        "example": "2023-12-31T23:59:00Z"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -1830,7 +1830,7 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "nullable": true,
-                        "example": "2023-01-08 10:00:00 CET"
+                        "example": "2023-01-08T10:00:00+01"
                     }
                 }
             },
@@ -1860,7 +1860,7 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "nullable": true,
-                        "example": "2023-01-08 10:00:00 CET"
+                        "example": "2023-01-08T10:00:00+01"
                     }
                 },
                 "required": [
@@ -1901,14 +1901,14 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "nullable": true,
-                        "example": "2023-01-08 10:00:00 CET"
+                        "example": "2023-01-08T10:00:00+01"
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
                         "format": "timestamp with time zone",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31 23:59:00 CET"
+                        "example": "2023-12-31T23:59:00Z"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -2021,7 +2021,7 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31 23:59:00 CET"
+                        "example": "2023-12-31T23:59:00Z"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -2110,7 +2110,7 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31 23:59:00 CET"
+                        "example": "2023-12-31T23:59:00Z"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -2223,7 +2223,7 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31 23:59:00 CET"
+                        "example": "2023-12-31T23:59:00Z"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -2329,7 +2329,7 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31 23:59:00 CET"
+                        "example": "2023-12-31T23:59:00Z"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -2529,7 +2529,7 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31 23:59:00 CET"
+                        "example": "2023-12-31T23:59:00Z"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -2669,7 +2669,7 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31 23:59:00 CET"
+                        "example": "2023-12-31T23:59:00Z"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -2785,7 +2785,7 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31 23:59:00 CET"
+                        "example": "2023-12-31T23:59:00Z"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -2942,7 +2942,7 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31 23:59:00 CET"
+                        "example": "2023-12-31T23:59:00Z"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -2984,7 +2984,7 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2022-08-08 12:00:00 CET"
+                        "example": "2022-08-08T12:00:00+02"
                     },
                     "type": {
                         "description": "The type of the event.",
@@ -3075,7 +3075,7 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31 23:59:00 CET"
+                        "example": "2023-12-31T23:59:00Z"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -3125,7 +3125,7 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31 23:59:00 CET"
+                        "example": "2023-12-31T23:59:00Z"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -3170,7 +3170,7 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2022-08-08 00:00:00 CET"
+                        "example": "2022-08-08T00:00:00+02"
                     },
                     "valid_to": {
                         "description": "The date until which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone.",
@@ -3208,7 +3208,7 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2022-08-08 00:00:00 CET"
+                        "example": "2022-08-08T00:00:00+02"
                     },
                     "valid_to": {
                         "description": "The date until which the accounting point belongs to the bidding zone. Midnight aligned on Norwegian timezone.",
@@ -3249,7 +3249,7 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2022-08-08 00:00:00 CET"
+                        "example": "2022-08-08T00:00:00+02"
                     },
                     "valid_to": {
                         "description": "The date until which the accounting point belongs to the end user. Midnight aligned on Norwegian timezone.",
@@ -3290,7 +3290,7 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-09-09 00:00:00 CET"
+                        "example": "2023-09-09T00:00:00+02"
                     },
                     "valid_to": {
                         "description": "The date until which the relation between the accounting point and the energy supplier is valid. Midnight aligned on Norwegian timezone.",
@@ -3369,7 +3369,7 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-09-09 00:00:00 CET"
+                        "example": "2023-09-09T00:00:00+02"
                     },
                     "valid_to": {
                         "description": "The date until which the accounting point belongs to the metering grid area. Midnight aligned on Norwegian timezone.",
@@ -3507,7 +3507,7 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31 23:59:00 CET"
+                        "example": "2023-12-31T23:59:00Z"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -3553,7 +3553,7 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "nullable": true,
-                        "example": "2022-08-08 12:00:00 CET"
+                        "example": "2022-08-08T12:00:00+02"
                     }
                 }
             },
@@ -3596,7 +3596,7 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "nullable": true,
-                        "example": "2022-08-08 12:00:00 CET"
+                        "example": "2022-08-08T12:00:00+02"
                     }
                 },
                 "required": [
@@ -3651,14 +3651,14 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "nullable": true,
-                        "example": "2022-08-08 12:00:00 CET"
+                        "example": "2022-08-08T12:00:00+02"
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
                         "format": "timestamp with time zone",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31 23:59:00 CET"
+                        "example": "2023-12-31T23:59:00Z"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -3772,7 +3772,7 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31 23:59:00 CET"
+                        "example": "2023-12-31T23:59:00Z"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -3898,7 +3898,7 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31 23:59:00 CET"
+                        "example": "2023-12-31T23:59:00Z"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -4012,7 +4012,7 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31 23:59:00 CET"
+                        "example": "2023-12-31T23:59:00Z"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -4068,14 +4068,14 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "nullable": true,
-                        "example": "2022-08-08 12:00:00 CET"
+                        "example": "2022-08-08T12:00:00+02"
                     },
                     "verified_at": {
                         "description": "When the product application was last verified.",
                         "format": "timestamp with time zone",
                         "type": "string",
                         "nullable": true,
-                        "example": "2021-08-08 10:00:00 CET"
+                        "example": "2021-08-08T10:00:00+02"
                     }
                 }
             },
@@ -4126,14 +4126,14 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "nullable": true,
-                        "example": "2022-08-08 12:00:00 CET"
+                        "example": "2022-08-08T12:00:00+02"
                     },
                     "verified_at": {
                         "description": "When the product application was last verified.",
                         "format": "timestamp with time zone",
                         "type": "string",
                         "nullable": true,
-                        "example": "2021-08-08 10:00:00 CET"
+                        "example": "2021-08-08T10:00:00+02"
                     }
                 },
                 "required": [
@@ -4196,21 +4196,21 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "nullable": true,
-                        "example": "2022-08-08 12:00:00 CET"
+                        "example": "2022-08-08T12:00:00+02"
                     },
                     "verified_at": {
                         "description": "When the product application was last verified.",
                         "format": "timestamp with time zone",
                         "type": "string",
                         "nullable": true,
-                        "example": "2021-08-08 10:00:00 CET"
+                        "example": "2021-08-08T10:00:00+02"
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
                         "format": "timestamp with time zone",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31 23:59:00 CET"
+                        "example": "2023-12-31T23:59:00Z"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -4335,7 +4335,7 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31 23:59:00 CET"
+                        "example": "2023-12-31T23:59:00Z"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -4449,7 +4449,7 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31 23:59:00 CET"
+                        "example": "2023-12-31T23:59:00Z"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -4523,7 +4523,7 @@
                         "format": "timestamp with time zone",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31 23:59:00 CET"
+                        "example": "2023-12-31T23:59:00Z"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -4569,7 +4569,7 @@
                                 "format": "timestamp with time zone",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07 10:00:00 CET"
+                                "example": "2024-07-07T10:00:00Z"
                             }
                         },
                         "required": [
@@ -4605,7 +4605,7 @@
                                 "format": "timestamp with time zone",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07 10:00:00 CET"
+                                "example": "2024-07-07T10:00:00Z"
                             }
                         },
                         "required": [
@@ -4641,7 +4641,7 @@
                                 "format": "timestamp with time zone",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07 10:00:00 CET"
+                                "example": "2024-07-07T10:00:00Z"
                             }
                         },
                         "required": [
@@ -4677,7 +4677,7 @@
                                 "format": "timestamp with time zone",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07 10:00:00 CET"
+                                "example": "2024-07-07T10:00:00Z"
                             }
                         },
                         "required": [
@@ -4713,7 +4713,7 @@
                                 "format": "timestamp with time zone",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07 10:00:00 CET"
+                                "example": "2024-07-07T10:00:00Z"
                             }
                         },
                         "required": [
@@ -4749,7 +4749,7 @@
                                 "format": "timestamp with time zone",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07 10:00:00 CET"
+                                "example": "2024-07-07T10:00:00Z"
                             }
                         },
                         "required": [
@@ -4785,7 +4785,7 @@
                                 "format": "timestamp with time zone",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07 10:00:00 CET"
+                                "example": "2024-07-07T10:00:00Z"
                             }
                         },
                         "required": [
@@ -4821,7 +4821,7 @@
                                 "format": "timestamp with time zone",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07 10:00:00 CET"
+                                "example": "2024-07-07T10:00:00Z"
                             }
                         },
                         "required": [
@@ -4857,7 +4857,7 @@
                                 "format": "timestamp with time zone",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07 10:00:00 CET"
+                                "example": "2024-07-07T10:00:00Z"
                             }
                         },
                         "required": [
@@ -4893,7 +4893,7 @@
                                 "format": "timestamp with time zone",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07 10:00:00 CET"
+                                "example": "2024-07-07T10:00:00Z"
                             }
                         },
                         "required": [
@@ -4929,7 +4929,7 @@
                                 "format": "timestamp with time zone",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07 10:00:00 CET"
+                                "example": "2024-07-07T10:00:00Z"
                             }
                         },
                         "required": [
@@ -4965,7 +4965,7 @@
                                 "format": "timestamp with time zone",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07 10:00:00 CET"
+                                "example": "2024-07-07T10:00:00Z"
                             }
                         },
                         "required": [
@@ -5001,7 +5001,7 @@
                                 "format": "timestamp with time zone",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07 10:00:00 CET"
+                                "example": "2024-07-07T10:00:00Z"
                             }
                         },
                         "required": [
@@ -5037,7 +5037,7 @@
                                 "format": "timestamp with time zone",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07 10:00:00 CET"
+                                "example": "2024-07-07T10:00:00Z"
                             }
                         },
                         "required": [
@@ -5073,7 +5073,7 @@
                                 "format": "timestamp with time zone",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07 10:00:00 CET"
+                                "example": "2024-07-07T10:00:00Z"
                             }
                         },
                         "required": [
@@ -5109,7 +5109,7 @@
                                 "format": "timestamp with time zone",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07 10:00:00 CET"
+                                "example": "2024-07-07T10:00:00Z"
                             }
                         },
                         "required": [
@@ -5145,7 +5145,7 @@
                                 "format": "timestamp with time zone",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07 10:00:00 CET"
+                                "example": "2024-07-07T10:00:00Z"
                             }
                         },
                         "required": [
@@ -5181,7 +5181,7 @@
                                 "format": "timestamp with time zone",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07 10:00:00 CET"
+                                "example": "2024-07-07T10:00:00Z"
                             }
                         },
                         "required": [
@@ -5217,7 +5217,7 @@
                                 "format": "timestamp with time zone",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07 10:00:00 CET"
+                                "example": "2024-07-07T10:00:00Z"
                             }
                         },
                         "required": [
@@ -5253,7 +5253,7 @@
                                 "format": "timestamp with time zone",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07 10:00:00 CET"
+                                "example": "2024-07-07T10:00:00Z"
                             }
                         },
                         "required": [
@@ -5289,7 +5289,7 @@
                                 "format": "timestamp with time zone",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07 10:00:00 CET"
+                                "example": "2024-07-07T10:00:00Z"
                             }
                         },
                         "required": [

@@ -25,7 +25,7 @@ class ServiceProvidingGroupGridPrequalificationCreateRequest:
         status (ServiceProvidingGroupGridPrequalificationStatus | Unset): The status of the grid prequalification for
             this service providing group. Example: in_progress.
         prequalified_at (None | str | Unset): When the current grid prequalification was last approved. Example:
-            2023-01-08 10:00:00 CET.
+            2023-01-08T10:00:00+01.
     """
 
     service_providing_group_id: int

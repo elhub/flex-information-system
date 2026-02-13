@@ -19,7 +19,7 @@ class AccountingPointMeteringGridAreaResponse:
         accounting_point_id (int): The ID of the accounting point. Example: 45.
         metering_grid_area_id (int): The metering grid area of the accounting point. Example: 3.
         valid_from (str): The date from which the accounting point belongs to the metering grid area. Midnight aligned
-            on Norwegian timezone. Example: 2023-09-09 00:00:00 CET.
+            on Norwegian timezone. Example: 2023-09-09T00:00:00+02.
         valid_to (None | str | Unset): The date until which the accounting point belongs to the metering grid area.
             Midnight aligned on Norwegian timezone.
     """
