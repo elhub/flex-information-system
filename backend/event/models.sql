@@ -266,6 +266,11 @@ INSERT INTO api.notification (event_id, party_id)
 VALUES (@event_id, @party_id)
 ON CONFLICT DO NOTHING;
 
+-- name: NotifyMany :exec
+INSERT INTO api.notification (event_id, party_id)
+SELECT @event_id, unnest(@party_ids::bigint[])
+ON CONFLICT DO NOTHING;
+
 -- name: GetControllableUnitLookupNotificationRecipients :many
 SELECT cueu.end_user_id
 FROM notification.controllable_unit_end_user AS cueu
