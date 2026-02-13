@@ -221,9 +221,14 @@ func (replConn *Connection) handlePrimaryKeepaliveMessage(
 			messageCtx,
 			replConn.conn,
 			pglogrepl.StandbyStatusUpdate{
-				WALWritePosition: replConn.lsn,
-				WALFlushPosition: replConn.lsn,
-				WALApplyPosition: replConn.lsn,
+				// The +1 seems to be the way to do it. Dunno why.
+				// At least that seems to be the convention in other tools working with logical replication
+				// Examples:
+				//  - https://github.com/eulerto/wal2json/blob/master/wal2json.c#L95
+				//  - https://hexdocs.pm/postgrex_pgoutput/Postgrex.PgOutput.html#encode/1-examples
+				WALWritePosition: replConn.lsn + 1,
+				WALFlushPosition: replConn.lsn + 1,
+				WALApplyPosition: replConn.lsn + 1,
 				ClientTime:       time.Now(),
 				ReplyRequested:   false,
 			},
