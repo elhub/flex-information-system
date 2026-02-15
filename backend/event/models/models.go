@@ -668,7 +668,7 @@ type NotificationControllableUnitSystemOperator struct {
 }
 
 type NotificationEvent struct {
-	ID              int64
+	ID              int
 	Type            string
 	SourceResource  string
 	SourceID        int

@@ -15,13 +15,13 @@ CREATE TABLE notification.controllable_unit_system_operator (
 );
 
 CREATE TABLE notification.event (
-    id BIGSERIAL PRIMARY KEY,
+    id bigint NOT NULL,
     type TEXT NOT NULL,
     source_resource TEXT NOT NULL,
-    source_id BIGINT NOT NULL,
+    source_id bigint NOT NULL,
     subject_resource TEXT NULL,
-    subject_id BIGINT NULL,
+    subject_id bigint NULL,
     processed BOOLEAN NOT NULL DEFAULT false,
     recorded_at TIMESTAMPTZ NOT NULL,
-    recorded_by BIGINT NOT NULL
+    recorded_by bigint NOT NULL
 );

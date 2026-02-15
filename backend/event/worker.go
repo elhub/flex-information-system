@@ -149,7 +149,7 @@ func (eventWorker *Worker) processBatch(ctx context.Context) (bool, error) {
 		}
 
 		if len(notificationRecipients) > 0 {
-			err = queries.NotifyMany(ctx, int(event.ID), notificationRecipients)
+			err = queries.NotifyMany(ctx, event.ID, notificationRecipients)
 			if err != nil {
 				return false, fmt.Errorf("could not insert notification: %w", err)
 			}
@@ -159,7 +159,7 @@ func (eventWorker *Worker) processBatch(ctx context.Context) (bool, error) {
 			slog.DebugContext(ctx, "no parties to notify for event", "event_id", event.ID)
 		}
 
-		eventIDs = append(eventIDs, int(event.ID))
+		eventIDs = append(eventIDs, event.ID)
 	}
 
 	// Mark all events in the batch as processed
