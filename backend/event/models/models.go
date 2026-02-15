@@ -666,3 +666,15 @@ type NotificationControllableUnitSystemOperator struct {
 	SystemOperatorID   int
 	ValidTimeRange     pgtype.Range[pgtype.Timestamptz]
 }
+
+type NotificationEvent struct {
+	ID              int64
+	Type            string
+	SourceResource  string
+	SourceID        int
+	SubjectResource *string
+	SubjectID       *int
+	Processed       bool
+	RecordedAt      pgtype.Timestamptz
+	RecordedBy      int
+}
