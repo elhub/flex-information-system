@@ -186,14 +186,11 @@ table. We are using triggers to make the event handling transparent to the
 application code changing the data. Also, PostgREST is limited in its ability to
 customize transactions.
 
-To read the data from the event table to create notifications, we use a
-[logical replication](https://www.postgresql.org/docs/current/logical-replication.html)
-and a worker in the custom backend to identify recipients and insert
-notifications. The worker is defined in the `worker` package, and connects to
-the replication slot by using the `pgrepl` package.
+To read the data from the event table to create notifications, poll based worker
+in the backend to identify recipients and insert notifications. The worker is
+defined in the `worker` package and is concurrency safe due to the use of the
+`FOR UPDATE SKIP LOCKED` pattern.
 
 We are doing this in an external worker since to allow for
 flexibility to add other notification mechanisms as well as being able to
 offload the "identify recipients" read load to a future read replica database.
-In the database, we store the notification with a foreign key to the event, but
-in the API/view we embed it.
