@@ -153,6 +153,7 @@ export const ControllableUnitCreateForm = ({
               {...fields.contract_reference}
               resource="controllable_unit_service_provider"
             />
+            {/* We want to ensure that the start date is not a future date so the user has access to change its values after creation. */}
             <DateInput {...fields.start_date} maxDate={new Date()} />
           </div>
           <EnumInput
@@ -165,9 +166,6 @@ export const ControllableUnitCreateForm = ({
             type="number"
             disabled={!!savedControllableUnitId}
           />
-        </div>
-        <div className="flex flex-col gap-3">
-          {/* We want to ensure that the start date is not a future date so the user has access to change its values after creation. */}
         </div>
         <FormToolbar />
       </FormContainer>
