@@ -119,7 +119,7 @@ We accept the following formats for datetimes:
 
 * `YYYY-MM-DDTHH:MM[:SS[.FFF]]±HH:MM` - RFC 3339
 * `YYYY-MM-DDTHH:MM[:SS[.FFF]]Z` - RFC 3339 - UTC
-* `YYYY-MM-DDTHH:MM[:SS[.FFF]] <Timezone name or abbreviation>` - Extended
+* `YYYY-MM-DD HH:MM[:SS[.FFF]] <Timezone name or abbreviation>` - Extended
   format with IANA timezone names and abbreviations
 
 Read on below for more details on the accepted formats.
@@ -131,7 +131,9 @@ readable and unambiguous format `YYYY-MM-DD` defined in ISO 8601.
 
 #### Time
 
-A `T` must separate the date and time.
+A `T` must separate the date and time when using the RFC 3339 format. If using
+the extended format with IANA timezone names or abbreviations, a space
+must be used instead.
 
 As milliseconds and seconds do not always make sense business-wise, if they are
 omitted in the datetime, they are inferred to be zero. Hour and minute are
@@ -139,17 +141,17 @@ however always required.
 
 #### Timezone
 
-Timezones can be provided in three possible formats:
+Timezones can be provided in two possible formats.
 
-* the ISO 8601 format, _i.e._, either `Z` for UTC, a hour offset
-  (`+HH` or `-HH`), or a hour-minute offset (`+HH:MM` or `-HH:MM`)
-* a timezone name: `Europe/Oslo`, `Asia/Tokyo`, `Canada/Atlantic`, _etc._
-* a timezone abbreviation: `CET`, `GMT`, `UTC`, _etc._
+1. the ISO 8601 format, _i.e._, either `Z` for UTC, a hour offset (`+HH` or
+   `-HH`), or a hour-minute offset (`+HH:MM` or `-HH:MM`)
+1. a space followed by a timezone name (`Europe/Oslo`, `Asia/Tokyo`,
+   `Canada/Atlantic`, etc) or abbreviation ( `CET`, `GMT`, `UTC`, etc)
 
 Timezone names and abbreviations are those of the
 [IANA](https://timeapi.io/documentation/iana-timezones).
 This means that a midnight-aligned datetime in the Norwegian timezone can be
-given as `YYYY-MM-DDT00:00 Europe/Oslo`, for instance, which arguably makes the
+given as `YYYY-MM-DD 00:00 Europe/Oslo`, for instance, which arguably makes the
 use of the API easier.
 
 ## History
