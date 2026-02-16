@@ -550,6 +550,11 @@ permissions-to-db:
     echo "-- liquibase formatted sql\n-- AUTO-GENERATED FILE (just permissions-to-db)\n" \
         | tee db/api/grants/field_level_authorization.sql > db/flex/grants/field_level_authorization.sql
 
+    echo "-- changeset flex:api-field-level-authorization runAlways:true" \
+        >> db/api/grants/field_level_authorization.sql
+    echo "-- changeset flex:flex-field-level-authorization runAlways:true" \
+        >> db/flex/grants/field_level_authorization.sql
+
     cat local/input/permissions.csv \
         | .venv/bin/python3 local/scripts/permissions_to_grant.py \
         >> db/api/grants/field_level_authorization.sql \
