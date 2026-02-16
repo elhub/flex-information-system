@@ -43,19 +43,21 @@ Common categories of technologies found in Statnett markets and in the NCDR are.
 
 Technologies can be categorized according to the following table.
 
-| Technology (EN) | Technology (NO)   | Category         | Notes |
-|-----------------|-------------------|------------------|-------|
-| heat            | varme             | consumption      |       |
-|                 | elbil             | consumption      |       |
-|                 | elbil med V2G     | energy storage?? |       |
-| boiler          | elkjel            | consumption      |       |
-| water heater    | varmtvannsbereder | consumption      |       |
-| solar panel     | solcelle          | production       |       |
-| wind turbine    | vindturbin        | production       |       |
-| hydro           | vannkraft         | production       |       |
-| battery         | batteri           | energy storage   |       |
-| pumped storage  | pumpekraftverk    | energy storage   |       |
-| pump            | pumpe             | consumption      |       |
+| Technology (EN)  | Technology (NO)   | Category         | Notes |
+|------------------|-------------------|------------------|-------|
+| heat             | varme             | consumption      |       |
+|                  | elbil             | consumption      |       |
+|                  | elbil med V2G     | energy storage?? |       |
+| boiler           | elkjel            | consumption      |       |
+| water heater     | varmtvannsbereder | consumption      |       |
+| solar panel      | solcelle          | production       |       |
+| wind turbine     | vindturbin        | production       |       |
+| hydro            | vannkraft         | production       |       |
+| battery          | batteri           | energy storage   |       |
+| pumped storage   | pumpekraftverk    | energy storage   |       |
+| pump             | pumpe             | consumption      |       |
+| backup generator | nødstrømsaggregat | production??     |       |
+| TODO             | More stuff        |                  |       |
 
 When registering resources that are not covered by the table above, new
 technologies can be defined as needed. But we should provide the possibility to
@@ -69,19 +71,57 @@ By monitoring the use of these, we can learn more about the technologies that
 are not yet covered by the table, and decide if they should be added as new
 technologies.
 
-## Information on different logical levels
+## Technology is stored on the lowest level
 
 A design goal of the flexibility information system is to only store information
-once, and then compile or compose that information to the other levels.
+once, and then compile or compose that information to the other levels. The
+levels refer to the [conceptual model](./conceptual-model.md).
 
-### Accounting point information
+The service provider must register technical resources of the controllable unit.
+Each technical resource is registered as a technology. The category is then
+derived from the technology.
+
+This approach has several advantages:
+
+* allows for registering controllable units with multiple technologies, such as
+  smart homes (water heater, electric vehicle, heat pump) or data centers
+  (battery, backup generator, other consumption)
+* simpler for service provider to register since they only need to know the
+  technology, not how to categorize it
+* deriving the category on both CU and SPG level is possible
+* monitoring and reporting statistics on the use of different technologies in
+  the market can be done
+
+In addition to this information stored by the service provider, we can also use
+information about the accounting point to understand more about the flexibility
+resource.
+
+## Accounting point information
 
 All controllable units are connected to accounting points. The Norwegian Datahub
 Elhub has information about the energy direction of the accounting point as well
 as consumption/production types.
 
-* [Metering Point
-  Type](https://dok.elhub.no/e27/referansedata-for-malepunkttype) - i.e. energy
-  direction
+* [Metering Point Type](https://dok.elhub.no/e27/referansedata-for-malepunkttype)
+  i.e. energy direction
 * [Production Type](https://dok.elhub.no/e27/referansedata-for-produksjonstype)
 * [Consumption Type](https://dok.elhub.no/e27/referansedata-for-forbrukstype)
+
+For consumption, Elhub also has information about the consumer, such as
+[NACE and Consumption code Code](https://dok.elhub.no/e27/retningslinjer-for-nrings-og-forbrukskode).
+
+## Example
+
+Datacenter accounting point could look like this.
+
+* Metering Point Type: Consumption
+* Consumption Type: Consumption
+* NACE code: 63.100 - Data processing, hosting and related activities
+* Controllable unit
+    * Derived technology categories: Consumption, Production, Energy storage
+    * Maximum available capacity: 100 kW
+    * Regulation direction: Both
+    * Technical resources
+        * Technology: Battery
+        * Technology: Backup generator
+        * Technology: Other consumption
