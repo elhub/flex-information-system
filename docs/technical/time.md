@@ -144,58 +144,15 @@ meaning if it is considered in a given timezone.
 
 ### Storage format
 
-Datetime data is stored in the system in the standard [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
-format (date + time + timezone), so that information in the database is complete
-and does not depend on any user configuration.
+Datetime data is stored in our database as [timestamp with time
+zone](https://www.postgresql.org/docs/current/datatype-datetime.html), so that
+information in the database is complete and does not depend on any user
+configuration.
 
 ### API format
 
-When it comes to API design, we want to find a good tradeoff between
-predictability and usability. We MUST support an open and widespread standard so
-that our software behaves in an expected way, is easy to integrate, and does not
-cause any surprise for users. However, if we can allow less strict formats if it
-makes users' life simpler, we SHOULD try to do it.
-
-The general rule of thumb is that any timestamp following the subset of the
-ISO 8601 standard described in [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6)
-is _valid_ in our system, and our API _always returns_ timestamps in this
-format. Here is an example of such a timestamp:
-
-```text
-2024-05-08T21:07:34.102+01:00
-```
-
-However, this is a bit strict and can be cumbersome to use in requests, so we
-also accept some variations described below.
-
-#### Date
-
-The _date_ part of the timestamp remains very strict: we only accept the
-readable and unambiguous format `YYYY-MM-DD` defined in ISO 8601.
-
-<!-- markdownlint-disable-next-line MD024 -->
-#### Time
-
-As milliseconds and seconds do not always make sense business-wise, if they are
-omitted in the timestamp, they are inferred to be zero. Hour and minute are
-however always required.
-
-We also relax the `T` separator between date and time and accept a space there.
-
-#### Timezone
-
-Timezones can be provided in three possible formats:
-
-- the ISO 8601 format, _i.e._, either `Z` for UTC, a hour offset
-  (`+HH` or `-HH`), or a hour-minute offset (`+HH:MM` or `-HH:MM`)
-- a timezone name: `Europe/Oslo`, `Asia/Tokyo`, `Canada/Atlantic`, _etc._
-- a timezone abbreviation: `CET`, `GMT`, `UTC`, _etc._
-
-Timezone names and abbreviations are those of the
-[IANA](https://timeapi.io/documentation/iana-timezones).
-This means that a midnight-aligned timestamp in the Norwegian timezone can be
-given as `YYYY-MM-DD 00:00 Europe/Oslo`, for instance, which arguably makes the
-use of the API easier.
+For documentation about the timestamp format used in the API check
+[API design](./api-design.md#time).
 
 ### Time in the user interface
 

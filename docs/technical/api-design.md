@@ -75,6 +75,85 @@ We implement a few common fields on all resources. These are
 | `recorded_at` | datetime | Time the resource was last recorded (created or updated) |
 | `recorded_by` | bigint   | Id of the identity that last recorded the resource       |
 
+## Datetime
+
+When it comes to API design, we want to find a good tradeoff between
+predictability and usability. We MUST support an open and widespread standard so
+that our software behaves in an expected way, is easy to integrate, and does not
+cause any surprise for users. However, if we can allow less strict formats if it
+makes users' life simpler, we SHOULD try to do it.
+
+The general principles we follow regarding datetime fields are:
+
+* datetime should always have timezone information when transmitted and stored
+* we generally follow the
+  [JSON Schema](https://json-schema.org/understanding-json-schema/reference/type#dates-and-times)
+  `date-time` format which follows the
+  [RFC 3339 profile](https://tools.ietf.org/html/rfc3339#section-5.6) of
+  [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601).
+* we extend RFC 3339 to allow the use of timezone names and abbreviations
+  defined in the
+  [IANA timezone database](https://timeapi.io/documentation/iana-timezones).
+  This makes it easier to use the API with midnight-aligned timestamps in the Norwegian
+  timezone.
+
+### Output format
+
+The api returns datetimes in UTC according the the RFC 3339 format.
+
+Here is an example of such a datetime:
+
+```text
+2024-08-31T22:00:00+00:00
+```
+
+### Input format
+
+> [!NOTE]
+>
+> The current version of the API is based on [PostgREST](https://postgrest.org/)
+> and thus accepts datetimes in all kinds of formats. A future
+> version of the API will restrict this to what is described here.
+
+We accept the following formats for datetimes:
+
+* `YYYY-MM-DDTHH:MM[:SS[.FFF]]±HH:MM` - RFC 3339
+* `YYYY-MM-DDTHH:MM[:SS[.FFF]]Z` - RFC 3339 - UTC
+* `YYYY-MM-DD HH:MM[:SS[.FFF]] <Timezone name or abbreviation>` - Extended
+  format with IANA timezone names and abbreviations
+
+Read on below for more details on the accepted formats.
+
+#### Date
+
+The _date_ part of the datetime remains very strict: we only accept the
+readable and unambiguous format `YYYY-MM-DD` defined in ISO 8601.
+
+#### Time
+
+A `T` must separate the date and time when using the RFC 3339 format. If using
+the extended format with IANA timezone names or abbreviations, a space
+must be used instead.
+
+As milliseconds and seconds do not always make sense business-wise, if they are
+omitted in the datetime, they are inferred to be zero. Hour and minute are
+however always required.
+
+#### Timezone
+
+Timezones can be provided in two possible formats.
+
+1. the ISO 8601 format, _i.e._, either `Z` for UTC, a hour offset (`+HH` or
+   `-HH`), or a hour-minute offset (`+HH:MM` or `-HH:MM`)
+1. a space followed by a timezone name (`Europe/Oslo`, `Asia/Tokyo`,
+   `Canada/Atlantic`, etc) or abbreviation ( `CET`, `GMT`, `UTC`, etc)
+
+Timezone names and abbreviations are those of the
+[IANA](https://timeapi.io/documentation/iana-timezones).
+This means that a midnight-aligned datetime in the Norwegian timezone can be
+given as `YYYY-MM-DD 00:00 Europe/Oslo`, for instance, which arguably makes the
+use of the API easier.
+
 ## History
 
 We provide history as a separate resource on the api. The history resource
@@ -83,7 +162,7 @@ adjustments of a few of the fields.
 
 | Field           | Type      | Description                                   |
 |-----------------|-----------|-----------------------------------------------|
-| `id`            | bigint    | Unique identifier of the *historic record*    |
+| `id`            | bigint    | Unique identifier of the _historic record_    |
 | `<resource>_id` | bigint    | Id of the resource that this history is for   |
 | `replaced_at`   | date-time | Time the resource was replaced                |
 | `replaced_by`   | bigint    | Id of the identity that replaced the resource |
@@ -102,36 +181,36 @@ The only allowed action/method is `read`/`GET`.
 
 ## Events and notifications
 
-Every resource modification in the system leads to an *event* being recorded.
-Events contain data identifying precisely which *resource* was touched and what
-is the *nature* of the modification done.
+Every resource modification in the system leads to an _event_ being recorded.
+Events contain data identifying precisely which _resource_ was touched and what
+is the _nature_ of the modification done.
 
-The server then turns events into *notifications* that the user can read and
+The server then turns events into _notifications_ that the user can read and
 acknowledge as part of the processes supported by the Flexibility Information
 System.
 
 [Events](../resources/event.md) and [notifications](../resources/notification.md)
-are reachable in the API as regular resources like the others, *i.e.*, through
+are reachable in the API as regular resources like the others, _i.e._, through
 the `/event` and `/notification` endpoint families.
 
 ## Notices
 
-Strongly enforcing consistency and closely following processes is a *hard* task
-in a system that is optimised for change and where users can make *mistakes*.
+Strongly enforcing consistency and closely following processes is a _hard_ task
+in a system that is optimised for change and where users can make _mistakes_.
 
 In order to store decently reliable data while still keeping a maintainable
-system in the long run, we generally make sure that *new* data entering the
+system in the long run, we generally make sure that _new_ data entering the
 system are consistent with existing data, but we tolerate some level of
-*temporary* inconsistency or invalidity for some resources. This has several
-advantages, such as *sparing* us the need for advanced *rollback* mechanisms.
+_temporary_ inconsistency or invalidity for some resources. This has several
+advantages, such as _sparing_ us the need for advanced _rollback_ mechanisms.
 
 However, even if we do not enforce it as strictly in the database, we consider
-that such issues *should* be fixed eventually. This is the purpose of the
-[*notice*](../resources/notice.md) resource. It detects inconsistencies or
+that such issues _should_ be fixed eventually. This is the purpose of the
+[_notice_](../resources/notice.md) resource. It detects inconsistencies or
 invalid states in ongoing processes and exposes them through the API for each
 user to see what actions on the system are expected from them. This allows
 making mistakes but also detecting and fixing them in a decent time, ensuring
-*eventually strong* consistency between the resources in the system in a
+_eventually strong_ consistency between the resources in the system in a
 flexible way.
 
 For information about notifications and notices as a concept see
@@ -257,13 +336,13 @@ value.
 
 ## Rich text fields
 
-Some text fields actually support *rich text* content. For simplicity, we chose
+Some text fields actually support _rich text_ content. For simplicity, we chose
 HTML as the format of rich text fields, as it is a very common format readily
 available in all web browsers, which are likely to be the host of the frontend
 environments that will interact with our API.
 
-In such cases, where data stored in a system must be *interpreted* in order to
-be displayed, this data should always go through a *sanitisation* step before
+In such cases, where data stored in a system must be _interpreted_ in order to
+be displayed, this data should always go through a _sanitisation_ step before
 being used. This sanitisation can happen one or several times, before storing
 the data or after retrieving it. For now, rich text fields are a test feature,
 so we choose not to validate their content on the server side. It is therefore
