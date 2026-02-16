@@ -1,24 +1,46 @@
 # CU Lookup
 
-This process is used to look up information about controllable units before
-initiating controllable unit registration or service provider switching, in
-order to verify whether the unit is already registered in the system.
+This process is used to look up information about controllable units to verify
+whether they are already registered in the system before initiating the following
+processes:
 
-Before starting the CU registration or switching process, the service provider
-needs to verify the link between the end user and the accounting point / CU, as
-well as validate CU data. This process retrieves the necessary information from
-FIS, to ensure that the service provider has sufficient data to determine the
-appropriate process to execute.
+- [controllable unit registration](controllable-unit-registration.md)
+- [service provider switching](service-provider-switching.md)
 
-To prevent unauthorized use, FIS requires the end user id from the service
-provider to allow them to access CU data. If the accounting point or CU is
-already part of the system, this validation will be done based on existing data
-in FIS. Data for accounting points with CUs will always be synced from Elhub.
+## Why is CU lookup a necessary process?
 
-If, however, the service provider is requesting data for an accounting point
-that does not have any CUs registered in FIS, there will be a synchronous lookup
-towards Elhub to validate the accounting point end user relation. From then on,
-the accounting point will be part of the regular data sync from Elhub.
+1. To verify whether the unit is already registered in the system  
+   to determine next step
+
+    This process retrieves the necessary information from FIS, to ensure that the
+    service provider has sufficient data to determine the appropriate process
+    to execute.
+
+    After a successful request, the service provider evaluates the returned CU
+    data and decides the next step. If the CU is there, then
+    the next step could be service provider switching
+    or evaluation of the data. If the CU is not there, the service provider can
+    create a new CU. This is further explained below.
+
+2. To verify the link between the end user and the accounting point / CU
+
+    Before starting the CU registration or switching process, the service provider
+    needs to verify the link between the end user and the accounting point / CU.
+
+3. To prevent unauthorized use
+
+    To prevent unauthorized use, FIS requires the end user id from the service
+    provider to allow them to access CU data.
+
+    If the accounting point or CU is
+    already part of the system, this validation will be done based on existing data
+    in FIS. Data for accounting points with CUs will always be synced from Elhub.
+
+    If, however, the service provider is requesting data for an accounting point
+    that does not have any CUs registered in FIS, there will be a synchronous lookup
+    towards Elhub to validate the [accounting point end user relation](../resources/accounting_point_end_user.md).
+    From then on, the accounting point will be part of the regular data sync
+    from Elhub.
 
 ## Prerequisites
 
@@ -46,7 +68,7 @@ end user does not match the end user associated with the CU or AP, the response
 will be `403 - Forbidden`.
 
 Upon a successful request, the response will be `200 - Ok` and contain the
-following fields.
+following fields:
 
 | Field              | Abbr | Description                                                                            |
 |--------------------|------|----------------------------------------------------------------------------------------|
@@ -59,13 +81,13 @@ the expected response. The column `Next action` is just ment as a guide.
 
 | CU  | AP  | AP exists | CU(s) exists | EU matches | HTTP response   | Response      | Next action           |
 |-----|-----|-----------|--------------|------------|-----------------|---------------|-----------------------|
-| Yes | No  | ❔         | ❌            | ❔          | 404 - Not found | ErrorMessage  | Check request data    |
-| Yes | No  | ❔         | ✅            | ❌          | 403 - Forbidden | ErrorMessage  | Check request data    |
-| Yes | No  | ❔         | ✅            | ✅          | 200 - Ok        | EU, AP, CU(1) | Create contract       |
-| No  | Yes | ❌         | ❔            | ❔          | 404 - Not found | ErrorMessage  | Check request data    |
-| No  | Yes | ✅         | ❔            | ❌          | 403 - Forbidden | ErrorMessage  | Check request data    |
-| No  | Yes | ✅         | ❌            | ✅          | 200 - Ok        | EU, AP, CU(0) | Create CU             |
-| No  | Yes | ✅         | ✅            | ✅          | 200 - Ok        | EU, AP, CU(n) | Evaluate returned CUs |
+| Yes | No  | ❔        | ❌           | ❔         | 404 - Not found | ErrorMessage  | Check request data    |
+| Yes | No  | ❔        | ✅           | ❌         | 403 - Forbidden | ErrorMessage  | Check request data    |
+| Yes | No  | ❔        | ✅           | ✅         | 200 - Ok        | EU, AP, CU(1) | Create contract       |
+| No  | Yes | ❌        | ❔           | ❔         | 404 - Not found | ErrorMessage  | Check request data    |
+| No  | Yes | ✅        | ❔           | ❌         | 403 - Forbidden | ErrorMessage  | Check request data    |
+| No  | Yes | ✅        | ❌           | ✅         | 200 - Ok        | EU, AP, CU(0) | Create CU             |
+| No  | Yes | ✅        | ✅           | ✅         | 200 - Ok        | EU, AP, CU(n) | Evaluate returned CUs |
 
 ## Sequence
 

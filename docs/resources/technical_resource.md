@@ -1,10 +1,8 @@
 # Technical Resource
 
-This resource holds technical details about units and resources that the
-controllable unit consists of. The purpose of this resource is to register
-information that can help procuring system operators performing product
-pre-qualification and simplify that evaluation if controllable units are
-identical. A controllable unit can contain several technical resources.
+This resource holds technical details about the assets that the
+controllable unit consists of. A controllable unit can contain several technical
+resources.
 
 For more information about the technical resource and its role in the
 flexibility structure, see [Conceptual Model and Terminology](../concepts/conceptual-model.md).
