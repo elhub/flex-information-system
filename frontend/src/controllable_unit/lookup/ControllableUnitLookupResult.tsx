@@ -7,66 +7,37 @@ import { ControllableUnitInputLocationState } from "../ControllableUnitInput";
 import {
   Heading,
   BodyText,
-  FlexDiv,
   Button,
+  Alert,
   Card,
-  CardHeader,
-  CardHeaderContent,
-  CardTitle,
   CardContent,
-  CardFooter,
   Table,
+  Container,
 } from "../../components/ui";
-import { LabelValue } from "../../components/LabelValue";
 
 type LookupResponse_ControllableUnit =
   ControllableUnitLookup["controllable_units"][number];
 type LookupResponse_TechnicalResource =
   LookupResponse_ControllableUnit["technical_resources"][number];
 
-const CreateCUButton = ({
-  accountingPointId,
-  endUserId,
+const TechnicalResourceDetails = ({
+  technicalResources,
 }: {
-  accountingPointId: number;
-  endUserId?: number;
-}) => {
-  const cuspLocationState: ControllableUnitInputLocationState = {
-    controllableUnit: {
-      accounting_point_id: accountingPointId,
-    },
-    endUserId: endUserId,
-  };
-
-  return (
-    <Button
-      as={Link}
-      to="/controllable_unit/create"
-      state={cuspLocationState}
-      variant="primary"
-      size="large"
-      style={{ maxWidth: "500px" }}
-    >
-      Create a new controllable unit
-    </Button>
-  );
-};
-
-const TechnicalResourceList = ({
-  technical_resources,
-}: {
-  technical_resources: LookupResponse_TechnicalResource[];
+  technicalResources: LookupResponse_TechnicalResource[];
 }) => {
   const translate = useTranslate();
 
-  if (technical_resources.length === 0) {
-    return <BodyText>No technical resources </BodyText>;
+  if (technicalResources.length === 0) {
+    return <BodyText>No technical resources</BodyText>;
   }
 
   return (
-    <Table>
-      <Table.Header>
-        <Table.Row>
+    <Container>
+      <Heading level={4} size="small">
+        Technical resources
+      </Heading>
+      <Table size="small">
+        <Table.Header>
           <Table.ColumnHeader scope="col">
             {translate("field.technical_resource.id")}
           </Table.ColumnHeader>
@@ -76,74 +47,18 @@ const TechnicalResourceList = ({
           <Table.ColumnHeader scope="col">
             {translate("field.technical_resource.details")}
           </Table.ColumnHeader>
-        </Table.Row>
-      </Table.Header>
-      <Table.Body>
-        {technical_resources.map((tr: LookupResponse_TechnicalResource) => (
-          <Table.Row key={tr.id}>
-            <Table.DataCell>{tr.id}</Table.DataCell>
-            <Table.DataCell>{tr.name}</Table.DataCell>
-            <Table.DataCell>{tr.details}</Table.DataCell>
-          </Table.Row>
-        ))}
-      </Table.Body>
-    </Table>
-  );
-};
-
-const ControllableUnitLookupResultItem = ({
-  controllableUnit,
-  endUserId,
-}: {
-  controllableUnit: LookupResponse_ControllableUnit;
-  endUserId: number;
-}) => {
-  const cuspLocationState: ControllableUnitServiceProviderLocationState = {
-    cusp: {
-      controllable_unit_id: controllableUnit.id,
-      end_user_id: endUserId,
-    },
-    cuIDAsNumber: true,
-  };
-
-  return (
-    <Card style={{ maxWidth: "1000px" }}>
-      <CardHeader>
-        <CardHeaderContent>
-          <FlexDiv
-            style={{ flexDirection: "column", gap: "var(--eds-size-3)" }}
-          >
-            <LabelValue
-              labelKey="controllable_unit.id"
-              value={controllableUnit.id}
-            />
-            <LabelValue
-              labelKey="controllable_unit.business_id"
-              value={controllableUnit.business_id}
-            />
-            <LabelValue
-              labelKey="controllable_unit.name"
-              value={controllableUnit.name}
-            />
-          </FlexDiv>
-        </CardHeaderContent>
-      </CardHeader>
-      <CardContent>
-        <TechnicalResourceList
-          technical_resources={controllableUnit.technical_resources}
-        />
-      </CardContent>
-      <CardFooter style={{ justifyContent: "flex-end" }}>
-        <Button
-          as={Link}
-          to="/controllable_unit_service_provider/create"
-          state={cuspLocationState}
-          variant="primary"
-        >
-          Manage Controllable Unit
-        </Button>
-      </CardFooter>
-    </Card>
+        </Table.Header>
+        <Table.Body>
+          {technicalResources.map((tr) => (
+            <Table.Row key={tr.id}>
+              <Table.DataCell>{tr.id}</Table.DataCell>
+              <Table.DataCell>{tr.name}</Table.DataCell>
+              <Table.DataCell>{tr.details}</Table.DataCell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
+    </Container>
   );
 };
 
@@ -151,75 +66,112 @@ export const ControllableUnitLookupResult = () => {
   const {
     state: { result },
   } = useLocation();
-  const controllableUnitLookUpResult = zControllableUnitLookup.parse(
-    result ?? {},
-  );
+  const data = zControllableUnitLookup.parse(result ?? {});
+
+  const createLocationState: ControllableUnitInputLocationState = {
+    controllableUnit: {
+      accounting_point_id: data.accounting_point.id,
+    },
+    endUserId: data.end_user.id,
+  };
+
+  const cuCount = data.controllable_units.length;
+  const hasCUs = cuCount > 0;
 
   return (
-    <FlexDiv style={{ flexDirection: "column", gap: "var(--eds-size-3)" }}>
+    <div className="flex flex-col gap-5 max-w-4xl mt-4">
       <Heading level={2} size="large">
-        Controllable Unit already exists
+        Controllable unit lookup
       </Heading>
-      <BodyText>
-        There already exists controllable units associated with the accounting
-        point (GSRN: {controllableUnitLookUpResult.accounting_point.business_id}
-        ) and end user (ID: {controllableUnitLookUpResult.end_user.id}). Create
-        a new one or one of the existing ones.
-      </BodyText>
 
-      <FlexDiv style={{ gap: "var(--eds-size-3)", flexWrap: "wrap" }}>
-        <Card>
-          <CardHeader>
-            <CardHeaderContent>
-              <CardTitle>Accounting point</CardTitle>
-            </CardHeaderContent>
-          </CardHeader>
+      <Alert variant="info">
+        Accounting point {data.accounting_point.business_id} already has{" "}
+        {cuCount} controllable {cuCount === 1 ? "unit" : "units"}. You can
+        manage an existing unit or create a new one.
+      </Alert>
+
+      <section className="flex flex-col gap-3">
+        <Heading level={3} size="medium">
+          Create new
+        </Heading>
+        <Card className="max-w-3xl">
           <CardContent>
-            <FlexDiv
-              style={{ flexDirection: "column", gap: "var(--eds-size-3)" }}
-            >
-              <LabelValue
-                labelKey="accounting_point.id"
-                value={controllableUnitLookUpResult.accounting_point.id}
-              />
-              <LabelValue
-                labelKey="accounting_point.business_id"
-                value={
-                  controllableUnitLookUpResult.accounting_point.business_id
-                }
-              />
-              <LabelValue
-                labelKey="accounting_point_end_user.end_user_id"
-                value={controllableUnitLookUpResult.end_user.id}
-              />
-            </FlexDiv>
+            <div className="flex items-center justify-between gap-4">
+              <BodyText>
+                Register a new controllable unit for this accounting point.
+              </BodyText>
+              <Button
+                as={Link}
+                to="/controllable_unit/create"
+                state={createLocationState}
+                variant="primary"
+              >
+                Create new unit
+              </Button>
+            </div>
           </CardContent>
         </Card>
-      </FlexDiv>
-      <CreateCUButton
-        accountingPointId={controllableUnitLookUpResult.accounting_point.id}
-        endUserId={controllableUnitLookUpResult.end_user.id}
-      />
-      {controllableUnitLookUpResult.controllable_units.length == 0 ? (
-        <BodyText>No controllable units found</BodyText>
-      ) : (
-        <>
+      </section>
+
+      {hasCUs && (
+        <section className="flex flex-col gap-3">
           <Heading level={3} size="medium">
-            Controllable units found:
+            Existing units
           </Heading>
-          <FlexDiv
-            style={{ flexDirection: "column", gap: "var(--eds-size-3)" }}
-          >
-            {controllableUnitLookUpResult.controllable_units.map((cu) => (
-              <ControllableUnitLookupResultItem
-                key={cu.id}
-                controllableUnit={cu}
-                endUserId={controllableUnitLookUpResult.end_user.id}
-              />
-            ))}
-          </FlexDiv>
-        </>
+          <Table>
+            <Table.Header>
+              <Table.ColumnHeader scope="col"></Table.ColumnHeader>
+              <Table.ColumnHeader scope="col">Name</Table.ColumnHeader>
+              <Table.ColumnHeader scope="col">Business ID</Table.ColumnHeader>
+              <Table.ColumnHeader scope="col">
+                Technical resources
+              </Table.ColumnHeader>
+              <Table.ColumnHeader scope="col" />
+            </Table.Header>
+            <Table.Body>
+              {data.controllable_units.map((cu) => {
+                const cuspState: ControllableUnitServiceProviderLocationState =
+                  {
+                    cusp: {
+                      controllable_unit_id: cu.id,
+                      end_user_id: data.end_user.id,
+                    },
+                    cuIDAsNumber: true,
+                  };
+
+                return (
+                  <Table.ExpandableRow
+                    key={cu.id}
+                    content={
+                      <TechnicalResourceDetails
+                        technicalResources={cu.technical_resources}
+                      />
+                    }
+                    expansionDisabled={cu.technical_resources.length === 0}
+                  >
+                    <Table.DataCell>{cu.name ?? `CU #${cu.id}`}</Table.DataCell>
+                    <Table.DataCell>{cu.business_id ?? "—"}</Table.DataCell>
+                    <Table.DataCell>
+                      {cu.technical_resources.length}
+                    </Table.DataCell>
+                    <Table.DataCell>
+                      <Button
+                        as={Link}
+                        to="/controllable_unit_service_provider/create"
+                        state={cuspState}
+                        variant="primary"
+                        size="small"
+                      >
+                        Manage
+                      </Button>
+                    </Table.DataCell>
+                  </Table.ExpandableRow>
+                );
+              })}
+            </Table.Body>
+          </Table>
+        </section>
       )}
-    </FlexDiv>
+    </div>
   );
 };
