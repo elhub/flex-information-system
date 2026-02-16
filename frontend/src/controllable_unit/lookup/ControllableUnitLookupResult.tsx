@@ -1,9 +1,12 @@
 import { useTranslate } from "ra-core";
-import { Link, useLocation } from "react-router-dom";
-import { zControllableUnitLookup } from "../../generated-client/zod.gen";
-import { ControllableUnitLookup } from "../../generated-client";
+import { Link, useSearchParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import {
+  callControllableUnitLookup,
+  ControllableUnitLookup,
+} from "../../generated-client";
 import { ControllableUnitServiceProviderLocationState } from "../service_provider/ControllableUnitServiceProviderInput";
-import { ControllableUnitInputLocationState } from "../ControllableUnitInput";
+import { throwOnError } from "../../util";
 import {
   Heading,
   BodyText,
@@ -13,6 +16,7 @@ import {
   CardContent,
   Table,
   Container,
+  Loader,
 } from "../../components/ui";
 
 type LookupResponse_ControllableUnit =
@@ -63,20 +67,54 @@ const TechnicalResourceDetails = ({
 };
 
 export const ControllableUnitLookupResult = () => {
+  const [searchParams] = useSearchParams();
+  const accountingPointGsrn = searchParams.get("accounting_point");
+  const endUserOrgNo = searchParams.get("end_user");
+
   const {
-    state: { result },
-  } = useLocation();
-  const data = zControllableUnitLookup.parse(result ?? {});
+    data: parsedData,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["controllableUnitLookup", accountingPointGsrn, endUserOrgNo],
+    queryFn: () =>
+      callControllableUnitLookup({
+        body: {
+          end_user: endUserOrgNo!,
+          accounting_point: accountingPointGsrn!,
+        },
+      }).then(throwOnError),
+    enabled: !!accountingPointGsrn && !!endUserOrgNo,
+  });
 
-  const createLocationState: ControllableUnitInputLocationState = {
-    controllableUnit: {
-      accounting_point_id: data.accounting_point.id,
-    },
-    endUserId: data.end_user.id,
-  };
+  if (!accountingPointGsrn || !endUserOrgNo) {
+    return (
+      <div className="flex flex-col gap-5 max-w-4xl mt-4">
+        <Alert variant="error">
+          Missing accounting_point or end_user in URL
+        </Alert>
+      </div>
+    );
+  }
 
-  const cuCount = data.controllable_units.length;
+  if (error) {
+    return (
+      <div className="flex flex-col gap-5 max-w-4xl mt-4">
+        <Alert variant="error">{error.message}</Alert>
+      </div>
+    );
+  }
+
+  if (isLoading || !parsedData) {
+    return <Loader size="large" />;
+  }
+
+  const cuCount = parsedData.controllable_units.length;
   const hasCUs = cuCount > 0;
+
+  const createUrl =
+    `/controllable_unit/create?accounting_point_id=${parsedData.accounting_point.id}` +
+    (parsedData.end_user.id ? `&end_user_id=${parsedData.end_user.id}` : "");
 
   return (
     <div className="flex flex-col gap-5 max-w-4xl mt-4">
@@ -85,7 +123,7 @@ export const ControllableUnitLookupResult = () => {
       </Heading>
 
       <Alert variant="info">
-        Accounting point {data.accounting_point.business_id} already has{" "}
+        Accounting point {parsedData.accounting_point.business_id} already has{" "}
         {cuCount} controllable {cuCount === 1 ? "unit" : "units"}. You can
         manage an existing unit or create a new one.
       </Alert>
@@ -100,12 +138,7 @@ export const ControllableUnitLookupResult = () => {
               <BodyText>
                 Register a new controllable unit for this accounting point.
               </BodyText>
-              <Button
-                as={Link}
-                to="/controllable_unit/create"
-                state={createLocationState}
-                variant="primary"
-              >
+              <Button as={Link} to={createUrl} variant="primary">
                 Create new unit
               </Button>
             </div>
@@ -129,12 +162,12 @@ export const ControllableUnitLookupResult = () => {
               <Table.ColumnHeader scope="col" />
             </Table.Header>
             <Table.Body>
-              {data.controllable_units.map((cu) => {
+              {parsedData.controllable_units.map((cu) => {
                 const cuspState: ControllableUnitServiceProviderLocationState =
                   {
                     cusp: {
                       controllable_unit_id: cu.id,
-                      end_user_id: data.end_user.id,
+                      end_user_id: parsedData.end_user.id,
                     },
                     cuIDAsNumber: true,
                   };

@@ -62,7 +62,7 @@ export const createControllableUnitResources = (permissions: Permissions) => {
         {/* lookup */}
         <Route path="lookup" element={<ControllableUnitLookupInput />} />
         <Route
-          path="lookup/result"
+          path="lookup/:accounting_point_id"
           element={<ControllableUnitLookupResult />}
         />
         {/* controllable unit history */}

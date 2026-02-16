@@ -5,9 +5,7 @@ import { zControllableUnitLookupRequest } from "../../generated-client/zod.gen";
 import { getFields, unTypedZodResolver } from "../../zod";
 import { FormContainer, Heading } from "../../components/ui";
 import { TextInput, FormToolbar } from "../../components/EDS-ra/inputs";
-import { ControllableUnitInputLocationState } from "../ControllableUnitInput";
 
-// page to enter data required for controllable unit lookup
 export const ControllableUnitLookupInput = () => {
   const { state } = useLocation();
   const defaultControllableUnit = state?.controllable_unit as
@@ -39,23 +37,28 @@ export const ControllableUnitLookupInput = () => {
       return;
     }
 
-    // if no controllable units are found, navigate to the create controllable unit page
+    const accountingPointId = response.data.accounting_point.id;
+    const endUserId = response.data.end_user.id;
+    const accountingPointGsrn = response.data.accounting_point.business_id;
+    const endUserOrgNo = lookupRequest.data.end_user;
+
     if (response.data.controllable_units.length === 0) {
-      const state: ControllableUnitInputLocationState = {
-        controllableUnit: {
-          accounting_point_id: response.data.accounting_point.id,
-        },
-      };
-      navigate("/controllable_unit/create", {
-        state,
+      const params = new URLSearchParams({
+        accounting_point_id: String(accountingPointId),
+        end_user_id: String(endUserId),
       });
+      navigate(`/controllable_unit/create?${params.toString()}`);
       return;
     }
 
-    // navigate to the dedicated show page for the result
-    return navigate("/controllable_unit/lookup/result", {
-      state: { result: response.data },
+    const resultParams = new URLSearchParams({
+      end_user_id: String(endUserId),
+      accounting_point: accountingPointGsrn,
+      end_user: endUserOrgNo,
     });
+    return navigate(
+      `/controllable_unit/lookup/${accountingPointId}?${resultParams.toString()}`,
+    );
   };
 
   return (

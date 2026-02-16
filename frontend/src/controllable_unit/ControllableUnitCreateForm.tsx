@@ -1,17 +1,14 @@
 import { Form, useGetIdentity, UserIdentity } from "ra-core";
 import { useNotify } from "react-admin";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
-  ControllableUnit,
   createControllableUnit,
   createControllableUnitServiceProvider,
 } from "../generated-client";
 import {
-  zControllableUnit,
   zControllableUnitCreateRequest,
   zControllableUnitServiceProviderCreateRequest,
 } from "../generated-client/zod.gen";
-import useLocationState from "../hooks/useLocationState";
 import { getFields, unTypedZodResolver } from "../zod";
 import { FormContainer, Heading } from "../components/ui";
 import {
@@ -22,7 +19,6 @@ import {
   FormToolbar,
   DateInput,
 } from "../components/EDS-ra/inputs";
-import { ControllableUnitInputLocationState } from "./ControllableUnitInput";
 import z from "zod";
 import { useState } from "react";
 import { format, formatISO, isPast, parse } from "date-fns";
@@ -51,9 +47,16 @@ type ControllableUnitCreateFormValues = z.infer<
 >;
 
 export const ControllableUnitCreateForm = () => {
-  const locationState = useLocationState<ControllableUnitInputLocationState>();
+  const [searchParams] = useSearchParams();
   const notify = useNotify();
   const navigate = useNavigate();
+
+  const accountingPointIdParam = searchParams.get("accounting_point_id");
+  const endUserIdParam = searchParams.get("end_user_id");
+  const accountingPointId = accountingPointIdParam
+    ? Number(accountingPointIdParam)
+    : undefined;
+  const endUserId = endUserIdParam ? Number(endUserIdParam) : undefined;
 
   // We need to save the id if the cu is created successfully but the cusp fails.
   const [savedControllableUnitId, setSavedControllableUnitId] = useState<
@@ -66,23 +69,15 @@ export const ControllableUnitCreateForm = () => {
   const isServiceProvider =
     (identity as UserIdentity | undefined)?.role === "flex_service_provider";
 
-  const controllableUnitOverride: Partial<ControllableUnit> = zControllableUnit
-    .partial()
-    .parse(locationState?.controllableUnit ?? {});
-
   const record: Partial<ControllableUnitCreateFormValues> = {
     regulation_direction: "up",
     maximum_available_capacity: 1,
-    accounting_point_id: controllableUnitOverride.accounting_point_id,
-    end_user_id: locationState?.endUserId,
+    accounting_point_id: accountingPointId,
+    end_user_id: endUserId,
     service_provider_id: isServiceProvider
       ? (identity as UserIdentity | undefined)?.partyID
       : undefined,
-    start_date: controllableUnitOverride.start_date
-      ? formatISO(
-          parse(controllableUnitOverride.start_date, "yyyy-MM-dd", new Date()),
-        )
-      : format(new Date(), "yyyy-MM-dd"),
+    start_date: format(new Date(), "yyyy-MM-dd"),
   };
 
   const fields = getFields(zControllableUnitCreateForm.shape);
