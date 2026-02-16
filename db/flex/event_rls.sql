@@ -46,10 +46,17 @@ ALTER TABLE IF EXISTS event ENABLE ROW LEVEL SECURITY;
 
 -- internal
 GRANT SELECT ON event TO flex_internal_event_notification;
-CREATE POLICY "EVENT_INTERNAL_EVENT_NOTIFICATION" ON event
+CREATE POLICY "EVENT_INTERNAL_EVENT_NOTIFICATION_SELECT" ON event
 FOR SELECT
 TO flex_internal_event_notification
 USING (true);
+
+GRANT UPDATE (processed) ON event TO flex_internal_event_notification;
+CREATE POLICY "EVENT_INTERNAL_EVENT_NOTIFICATION_UPDATE" ON event
+FOR UPDATE
+TO flex_internal_event_notification
+USING (true)
+WITH CHECK (true);
 
 GRANT SELECT ON event TO flex_end_user;
 
@@ -85,13 +92,15 @@ USING (
     NOT (type ~ 'no.elhub.flex.controllable_unit.lookup')
     -- when subject is here, it is the most precise identifier of the thing
     -- the event concerns, so we should do the check on it instead of source
-    AND CASE WHEN subject_resource IS NOT null
+    AND CASE
+        WHEN subject_resource IS NOT null
             THEN event_resource_visible_check(
-                    subject_resource,
-                    subject_id,
-                    lower(record_time_range)
-                )
-        ELSE event_resource_visible_check(
+                subject_resource,
+                subject_id,
+                lower(record_time_range)
+            )
+        ELSE
+            event_resource_visible_check(
                 source_resource,
                 source_id,
                 lower(record_time_range)
