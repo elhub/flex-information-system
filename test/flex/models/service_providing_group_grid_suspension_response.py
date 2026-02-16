@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
 from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
 from ..models.service_providing_group_grid_suspension_reason import ServiceProvidingGroupGridSuspensionReason
 
@@ -23,7 +25,7 @@ class ServiceProvidingGroupGridSuspensionResponse:
             service_providing_group_id (int): Reference to the service providing group being suspended. Example: 13.
             reason (ServiceProvidingGroupGridSuspensionReason): The reason for the suspension. Example:
                 significant_group_change.
-            recorded_at (str): When the resource was recorded (created or updated) in the system. Example:
+            recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
                 2023-12-31T23:59:00Z.
             recorded_by (int): The identity that recorded the resource. Example: 145.
     """
@@ -32,7 +34,7 @@ class ServiceProvidingGroupGridSuspensionResponse:
     impacted_system_operator_id: int
     service_providing_group_id: int
     reason: ServiceProvidingGroupGridSuspensionReason
-    recorded_at: str
+    recorded_at: datetime.datetime
     recorded_by: int
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -45,7 +47,7 @@ class ServiceProvidingGroupGridSuspensionResponse:
 
         reason = self.reason.value
 
-        recorded_at = self.recorded_at
+        recorded_at = self.recorded_at.isoformat()
 
         recorded_by = self.recorded_by
 
@@ -75,7 +77,7 @@ class ServiceProvidingGroupGridSuspensionResponse:
 
         reason = ServiceProvidingGroupGridSuspensionReason(d.pop("reason"))
 
-        recorded_at = d.pop("recorded_at")
+        recorded_at = isoparse(d.pop("recorded_at"))
 
         recorded_by = d.pop("recorded_by")
 

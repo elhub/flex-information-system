@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
 from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
 from ..models.service_providing_group_bidding_zone import ServiceProvidingGroupBiddingZone
 from ..models.service_providing_group_status import ServiceProvidingGroupStatus
@@ -23,7 +25,7 @@ class ServiceProvidingGroupResponse:
         bidding_zone (ServiceProvidingGroupBiddingZone): The bidding zone that restricts which CUs that can be added to
             the group. Also known as scheduling area or price area for TSO. Example: NO3.
         status (ServiceProvidingGroupStatus): The status of the group. Example: active.
-        recorded_at (str): When the resource was recorded (created or updated) in the system. Example:
+        recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31T23:59:00Z.
         recorded_by (int): The identity that recorded the resource. Example: 145.
     """
@@ -33,7 +35,7 @@ class ServiceProvidingGroupResponse:
     service_provider_id: int
     bidding_zone: ServiceProvidingGroupBiddingZone
     status: ServiceProvidingGroupStatus
-    recorded_at: str
+    recorded_at: datetime.datetime
     recorded_by: int
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -48,7 +50,7 @@ class ServiceProvidingGroupResponse:
 
         status = self.status.value
 
-        recorded_at = self.recorded_at
+        recorded_at = self.recorded_at.isoformat()
 
         recorded_by = self.recorded_by
 
@@ -81,7 +83,7 @@ class ServiceProvidingGroupResponse:
 
         status = ServiceProvidingGroupStatus(d.pop("status"))
 
-        recorded_at = d.pop("recorded_at")
+        recorded_at = isoparse(d.pop("recorded_at"))
 
         recorded_by = d.pop("recorded_by")
 

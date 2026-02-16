@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
 from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
 from ..models.party_business_id_type import PartyBusinessIdType
 from ..models.party_role import PartyRole
@@ -37,7 +39,7 @@ class PartyResponse:
                 service_provider. Example: flex_energy_supplier.
             type_ (PartyType): The type of the party, e.g SystemOperator, ServiceProvider Example: energy_supplier.
             status (PartyStatus): The status of the party. Example: active.
-            recorded_at (str): When the resource was recorded (created or updated) in the system. Example:
+            recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
                 2023-12-31T23:59:00Z.
             recorded_by (int): The identity that recorded the resource. Example: 145.
     """
@@ -50,7 +52,7 @@ class PartyResponse:
     role: PartyRole
     type_: PartyType
     status: PartyStatus
-    recorded_at: str
+    recorded_at: datetime.datetime
     recorded_by: int
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -71,7 +73,7 @@ class PartyResponse:
 
         status = self.status.value
 
-        recorded_at = self.recorded_at
+        recorded_at = self.recorded_at.isoformat()
 
         recorded_by = self.recorded_by
 
@@ -113,7 +115,7 @@ class PartyResponse:
 
         status = PartyStatus(d.pop("status"))
 
-        recorded_at = d.pop("recorded_at")
+        recorded_at = isoparse(d.pop("recorded_at"))
 
         recorded_by = d.pop("recorded_by")
 

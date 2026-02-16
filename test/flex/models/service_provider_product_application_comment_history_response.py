@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
 from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
 from ..models.service_provider_product_application_comment_visibility import (
     ServiceProviderProductApplicationCommentVisibility,
@@ -23,29 +25,30 @@ class ServiceProviderProductApplicationCommentHistoryResponse:
         service_provider_product_application_id (int): Reference to the service provider product application. Example:
             7.
         created_by (int): Reference to the identity that created the comment. Example: 94.
-        created_at (str): When the comment was added to the SPPA. Example: 2022-08-08 12:00:00 CET.
+        created_at (datetime.datetime): When the comment was added to the SPPA. Example: 2022-08-08 12:00:00+02:00.
         visibility (ServiceProviderProductApplicationCommentVisibility): The level of visibility of the comment.
             Example: same_party.
         content (str): Free text content of the comment. Example: Missing document..
-        recorded_at (str): When the resource was recorded (created or updated) in the system. Example:
+        recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31T23:59:00Z.
         recorded_by (int): The identity that recorded the resource. Example: 145.
         service_provider_product_application_comment_id (int): Reference to the resource that was updated. Example: 48.
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
-        replaced_at (None | str | Unset): When the resource was replaced in the system. Example: 2024-07-07T10:00:00Z.
+        replaced_at (datetime.datetime | None | Unset): When the resource was replaced in the system. Example:
+            2024-07-07T10:00:00Z.
     """
 
     id: int
     service_provider_product_application_id: int
     created_by: int
-    created_at: str
+    created_at: datetime.datetime
     visibility: ServiceProviderProductApplicationCommentVisibility
     content: str
-    recorded_at: str
+    recorded_at: datetime.datetime
     recorded_by: int
     service_provider_product_application_comment_id: int
     replaced_by: int | None | Unset = UNSET
-    replaced_at: None | str | Unset = UNSET
+    replaced_at: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -55,13 +58,13 @@ class ServiceProviderProductApplicationCommentHistoryResponse:
 
         created_by = self.created_by
 
-        created_at = self.created_at
+        created_at = self.created_at.isoformat()
 
         visibility = self.visibility.value
 
         content = self.content
 
-        recorded_at = self.recorded_at
+        recorded_at = self.recorded_at.isoformat()
 
         recorded_by = self.recorded_by
 
@@ -76,6 +79,8 @@ class ServiceProviderProductApplicationCommentHistoryResponse:
         replaced_at: None | str | Unset
         if isinstance(self.replaced_at, Unset):
             replaced_at = UNSET
+        elif isinstance(self.replaced_at, datetime.datetime):
+            replaced_at = self.replaced_at.isoformat()
         else:
             replaced_at = self.replaced_at
 
@@ -110,13 +115,13 @@ class ServiceProviderProductApplicationCommentHistoryResponse:
 
         created_by = d.pop("created_by")
 
-        created_at = d.pop("created_at")
+        created_at = isoparse(d.pop("created_at"))
 
         visibility = ServiceProviderProductApplicationCommentVisibility(d.pop("visibility"))
 
         content = d.pop("content")
 
-        recorded_at = d.pop("recorded_at")
+        recorded_at = isoparse(d.pop("recorded_at"))
 
         recorded_by = d.pop("recorded_by")
 
@@ -131,12 +136,20 @@ class ServiceProviderProductApplicationCommentHistoryResponse:
 
         replaced_by = _parse_replaced_by(d.pop("replaced_by", UNSET))
 
-        def _parse_replaced_at(data: object) -> None | str | Unset:
+        def _parse_replaced_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(None | str | Unset, data)
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                replaced_at_type_0 = isoparse(data)
+
+                return replaced_at_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(datetime.datetime | None | Unset, data)
 
         replaced_at = _parse_replaced_at(d.pop("replaced_at", UNSET))
 

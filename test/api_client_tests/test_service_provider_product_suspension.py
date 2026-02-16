@@ -34,6 +34,7 @@ from flex.api.service_provider_product_suspension import (
     list_service_provider_product_suspension_history,
     read_service_provider_product_suspension_history,
 )
+import datetime
 import pytest
 from typing import cast
 
@@ -95,7 +96,9 @@ def data():
             id=cast(int, sppa.id),
             body=ServiceProviderProductApplicationUpdateRequest(
                 status=ServiceProviderProductApplicationStatus.QUALIFIED,
-                qualified_at="2024-01-01T00:00:00Z",
+                qualified_at=datetime.datetime.fromisoformat(
+                    "2024-01-01T00:00:00+00:00"
+                ),
             ),
         )
         assert not isinstance(u, ErrorMessage)
@@ -349,7 +352,9 @@ def test_spps_so_003_negative(data):
             id=cast(int, sppa.id),
             body=ServiceProviderProductApplicationUpdateRequest(
                 status=ServiceProviderProductApplicationStatus.QUALIFIED,
-                qualified_at="2024-01-01T00:00:00Z",
+                qualified_at=datetime.datetime.fromisoformat(
+                    "2024-01-01T00:00:00+00:00"
+                ),
             ),
         )
         assert not isinstance(u, ErrorMessage)

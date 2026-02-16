@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
 from ..models.notice_status import NoticeStatus
 from ..types import UNSET, Unset
@@ -29,7 +31,7 @@ class NoticeResponse:
         party_id (int): Reference to the party targeted by the notice. Example: 18.
         type_ (str): The type of the notice. Example:
             no.elhub.flex.service_providing_group_membership.valid_time.outside_contract.
-        recorded_at (str): When the resource was recorded (created or updated) in the system. Example:
+        recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31T23:59:00Z.
         recorded_by (int): The identity that recorded the resource. Example: 145.
         source (None | str | Unset): The URI of the resource concerned by the event. Example:
@@ -42,7 +44,7 @@ class NoticeResponse:
     status: NoticeStatus
     party_id: int
     type_: str
-    recorded_at: str
+    recorded_at: datetime.datetime
     recorded_by: int
     source: None | str | Unset = UNSET
     data: (
@@ -67,7 +69,7 @@ class NoticeResponse:
 
         type_ = self.type_
 
-        recorded_at = self.recorded_at
+        recorded_at = self.recorded_at.isoformat()
 
         recorded_by = self.recorded_by
 
@@ -124,7 +126,7 @@ class NoticeResponse:
 
         type_ = d.pop("type")
 
-        recorded_at = d.pop("recorded_at")
+        recorded_at = isoparse(d.pop("recorded_at"))
 
         recorded_by = d.pop("recorded_by")
 

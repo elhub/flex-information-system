@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
 from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
 from ..models.auth_scope import AuthScope
 
@@ -22,7 +24,7 @@ class PartyMembershipResponse:
         scopes (list[AuthScope]): List of scopes granted to the entity when it acts as the party. Scopes are inspired
             from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms. Example:
             ['read:data'].
-        recorded_at (str): When the resource was recorded (created or updated) in the system. Example:
+        recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31T23:59:00Z.
         recorded_by (int): The identity that recorded the resource. Example: 145.
     """
@@ -31,7 +33,7 @@ class PartyMembershipResponse:
     party_id: int
     entity_id: int
     scopes: list[AuthScope]
-    recorded_at: str
+    recorded_at: datetime.datetime
     recorded_by: int
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -47,7 +49,7 @@ class PartyMembershipResponse:
             scopes_item = scopes_item_data.value
             scopes.append(scopes_item)
 
-        recorded_at = self.recorded_at
+        recorded_at = self.recorded_at.isoformat()
 
         recorded_by = self.recorded_by
 
@@ -82,7 +84,7 @@ class PartyMembershipResponse:
 
             scopes.append(scopes_item)
 
-        recorded_at = d.pop("recorded_at")
+        recorded_at = isoparse(d.pop("recorded_at"))
 
         recorded_by = d.pop("recorded_by")
 

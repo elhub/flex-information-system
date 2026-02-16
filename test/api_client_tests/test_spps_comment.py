@@ -39,6 +39,7 @@ from flex.api.service_provider_product_suspension_comment import (
     list_service_provider_product_suspension_comment_history,
     read_service_provider_product_suspension_comment_history,
 )
+import datetime
 import pytest
 from typing import cast
 
@@ -87,7 +88,7 @@ def data():
         id=cast(int, sppa.id),
         body=ServiceProviderProductApplicationUpdateRequest(
             status=ServiceProviderProductApplicationStatus.QUALIFIED,
-            qualified_at="2025-08-08 Europe/Oslo",
+            qualified_at=datetime.datetime.fromisoformat("2025-08-08T00:00:00+02:00"),
         ),
     )
     assert not isinstance(u, ErrorMessage)
@@ -136,7 +137,7 @@ def data():
         id=cast(int, sppa.id),
         body=ServiceProviderProductApplicationUpdateRequest(
             status=ServiceProviderProductApplicationStatus.QUALIFIED,
-            qualified_at="2025-08-08 Europe/Oslo",
+            qualified_at=datetime.datetime.fromisoformat("2025-08-08T00:00:00+02:00"),
         ),
     )
     assert not isinstance(u, ErrorMessage)

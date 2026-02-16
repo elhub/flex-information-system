@@ -69,11 +69,11 @@ api design that has been used as a reference.
 
 We implement a few common fields on all resources. These are
 
-| Field         | Type                     | Description                                              |
-|---------------|--------------------------|----------------------------------------------------------|
-| `id`          | bigint                   | Unique identifier                                        |
-| `recorded_at` | timestamp with time zone | Time the resource was last recorded (created or updated) |
-| `recorded_by` | bigint                   | Id of the identity that last recorded the resource       |
+| Field         | Type     | Description                                              |
+|---------------|----------|----------------------------------------------------------|
+| `id`          | bigint   | Unique identifier                                        |
+| `recorded_at` | datetime | Time the resource was last recorded (created or updated) |
+| `recorded_by` | bigint   | Id of the identity that last recorded the resource       |
 
 ## History
 
@@ -81,12 +81,12 @@ We provide history as a separate resource on the api. The history resource
 provide the same fields as the main resource, but with the addition and
 adjustments of a few of the fields.
 
-| Field           | Type                     | Description                                   |
-|-----------------|--------------------------|-----------------------------------------------|
-| `id`            | bigint                   | Unique identifier of the *historic record*    |
-| `<resource>_id` | bigint                   | Id of the resource that this history is for   |
-| `replaced_at`   | timestamp with time zone | Time the resource was replaced                |
-| `replaced_by`   | bigint                   | Id of the identity that replaced the resource |
+| Field           | Type      | Description                                   |
+|-----------------|-----------|-----------------------------------------------|
+| `id`            | bigint    | Unique identifier of the *historic record*    |
+| `<resource>_id` | bigint    | Id of the resource that this history is for   |
+| `replaced_at`   | date-time | Time the resource was replaced                |
+| `replaced_by`   | bigint    | Id of the identity that replaced the resource |
 
 The history records are available via a resource path that appends `_history` to
 the resource name. Example for `controllable_unit`.

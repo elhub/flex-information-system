@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
 from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
 from ..models.service_providing_group_product_application_status import ServiceProvidingGroupProductApplicationStatus
 from ..types import UNSET, Unset
@@ -23,13 +25,13 @@ class ServiceProvidingGroupProductApplicationResponse:
             procuring_system_operator_id (int): Reference to the procuring system operator. Example: 39.
             product_type_ids (list[int]): References to the product types. Example: [2, 4, 5].
             status (ServiceProvidingGroupProductApplicationStatus): The status of the application. Example: in_progress.
-            recorded_at (str): When the resource was recorded (created or updated) in the system. Example:
+            recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
                 2023-12-31T23:59:00Z.
             recorded_by (int): The identity that recorded the resource. Example: 145.
             notes (None | str | Unset): Free text notes on the current product application status.
-            prequalified_at (None | str | Unset): When the product application was last prequalified. Example:
+            prequalified_at (datetime.datetime | None | Unset): When the product application was last prequalified. Example:
                 2022-08-08T12:00:00+02.
-            verified_at (None | str | Unset): When the product application was last verified. Example:
+            verified_at (datetime.datetime | None | Unset): When the product application was last verified. Example:
                 2021-08-08T10:00:00+02.
     """
 
@@ -38,11 +40,11 @@ class ServiceProvidingGroupProductApplicationResponse:
     procuring_system_operator_id: int
     product_type_ids: list[int]
     status: ServiceProvidingGroupProductApplicationStatus
-    recorded_at: str
+    recorded_at: datetime.datetime
     recorded_by: int
     notes: None | str | Unset = UNSET
-    prequalified_at: None | str | Unset = UNSET
-    verified_at: None | str | Unset = UNSET
+    prequalified_at: datetime.datetime | None | Unset = UNSET
+    verified_at: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -56,7 +58,7 @@ class ServiceProvidingGroupProductApplicationResponse:
 
         status = self.status.value
 
-        recorded_at = self.recorded_at
+        recorded_at = self.recorded_at.isoformat()
 
         recorded_by = self.recorded_by
 
@@ -69,12 +71,16 @@ class ServiceProvidingGroupProductApplicationResponse:
         prequalified_at: None | str | Unset
         if isinstance(self.prequalified_at, Unset):
             prequalified_at = UNSET
+        elif isinstance(self.prequalified_at, datetime.datetime):
+            prequalified_at = self.prequalified_at.isoformat()
         else:
             prequalified_at = self.prequalified_at
 
         verified_at: None | str | Unset
         if isinstance(self.verified_at, Unset):
             verified_at = UNSET
+        elif isinstance(self.verified_at, datetime.datetime):
+            verified_at = self.verified_at.isoformat()
         else:
             verified_at = self.verified_at
 
@@ -113,7 +119,7 @@ class ServiceProvidingGroupProductApplicationResponse:
 
         status = ServiceProvidingGroupProductApplicationStatus(d.pop("status"))
 
-        recorded_at = d.pop("recorded_at")
+        recorded_at = isoparse(d.pop("recorded_at"))
 
         recorded_by = d.pop("recorded_by")
 
@@ -126,21 +132,37 @@ class ServiceProvidingGroupProductApplicationResponse:
 
         notes = _parse_notes(d.pop("notes", UNSET))
 
-        def _parse_prequalified_at(data: object) -> None | str | Unset:
+        def _parse_prequalified_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(None | str | Unset, data)
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                prequalified_at_type_0 = isoparse(data)
+
+                return prequalified_at_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(datetime.datetime | None | Unset, data)
 
         prequalified_at = _parse_prequalified_at(d.pop("prequalified_at", UNSET))
 
-        def _parse_verified_at(data: object) -> None | str | Unset:
+        def _parse_verified_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(None | str | Unset, data)
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                verified_at_type_0 = isoparse(data)
+
+                return verified_at_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(datetime.datetime | None | Unset, data)
 
         verified_at = _parse_verified_at(d.pop("verified_at", UNSET))
 

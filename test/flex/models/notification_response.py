@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
 from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
 T = TypeVar("T", bound="NotificationResponse")
 
@@ -18,7 +20,7 @@ class NotificationResponse:
         acknowledged (bool): Whether the notification was acknowledged by the target user.
         event_id (int): Reference to the event notified by this resource. Example: 37.
         party_id (int): Reference to the party concerned by this notification. Example: 37.
-        recorded_at (str): When the resource was recorded (created or updated) in the system. Example:
+        recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31T23:59:00Z.
         recorded_by (int): The identity that recorded the resource. Example: 145.
     """
@@ -27,7 +29,7 @@ class NotificationResponse:
     acknowledged: bool
     event_id: int
     party_id: int
-    recorded_at: str
+    recorded_at: datetime.datetime
     recorded_by: int
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -40,7 +42,7 @@ class NotificationResponse:
 
         party_id = self.party_id
 
-        recorded_at = self.recorded_at
+        recorded_at = self.recorded_at.isoformat()
 
         recorded_by = self.recorded_by
 
@@ -70,7 +72,7 @@ class NotificationResponse:
 
         party_id = d.pop("party_id")
 
-        recorded_at = d.pop("recorded_at")
+        recorded_at = isoparse(d.pop("recorded_at"))
 
         recorded_by = d.pop("recorded_by")
 

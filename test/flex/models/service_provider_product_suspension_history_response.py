@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
 from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
 from ..models.service_provider_product_suspension_reason import ServiceProviderProductSuspensionReason
 from ..types import UNSET, Unset
@@ -23,12 +25,13 @@ class ServiceProviderProductSuspensionHistoryResponse:
         service_provider_id (int): Reference to the service provider being suspended. Example: 52.
         product_type_ids (list[int]): References to the suspended product types. Example: [1, 7].
         reason (ServiceProviderProductSuspensionReason): The reason for the suspension. Example: communication_issues.
-        recorded_at (str): When the resource was recorded (created or updated) in the system. Example:
+        recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31T23:59:00Z.
         recorded_by (int): The identity that recorded the resource. Example: 145.
         service_provider_product_suspension_id (int): Reference to the resource that was updated. Example: 48.
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
-        replaced_at (None | str | Unset): When the resource was replaced in the system. Example: 2024-07-07T10:00:00Z.
+        replaced_at (datetime.datetime | None | Unset): When the resource was replaced in the system. Example:
+            2024-07-07T10:00:00Z.
     """
 
     id: int
@@ -36,11 +39,11 @@ class ServiceProviderProductSuspensionHistoryResponse:
     service_provider_id: int
     product_type_ids: list[int]
     reason: ServiceProviderProductSuspensionReason
-    recorded_at: str
+    recorded_at: datetime.datetime
     recorded_by: int
     service_provider_product_suspension_id: int
     replaced_by: int | None | Unset = UNSET
-    replaced_at: None | str | Unset = UNSET
+    replaced_at: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -54,7 +57,7 @@ class ServiceProviderProductSuspensionHistoryResponse:
 
         reason = self.reason.value
 
-        recorded_at = self.recorded_at
+        recorded_at = self.recorded_at.isoformat()
 
         recorded_by = self.recorded_by
 
@@ -69,6 +72,8 @@ class ServiceProviderProductSuspensionHistoryResponse:
         replaced_at: None | str | Unset
         if isinstance(self.replaced_at, Unset):
             replaced_at = UNSET
+        elif isinstance(self.replaced_at, datetime.datetime):
+            replaced_at = self.replaced_at.isoformat()
         else:
             replaced_at = self.replaced_at
 
@@ -106,7 +111,7 @@ class ServiceProviderProductSuspensionHistoryResponse:
 
         reason = ServiceProviderProductSuspensionReason(d.pop("reason"))
 
-        recorded_at = d.pop("recorded_at")
+        recorded_at = isoparse(d.pop("recorded_at"))
 
         recorded_by = d.pop("recorded_by")
 
@@ -121,12 +126,20 @@ class ServiceProviderProductSuspensionHistoryResponse:
 
         replaced_by = _parse_replaced_by(d.pop("replaced_by", UNSET))
 
-        def _parse_replaced_at(data: object) -> None | str | Unset:
+        def _parse_replaced_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(None | str | Unset, data)
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                replaced_at_type_0 = isoparse(data)
+
+                return replaced_at_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(datetime.datetime | None | Unset, data)
 
         replaced_at = _parse_replaced_at(d.pop("replaced_at", UNSET))
 

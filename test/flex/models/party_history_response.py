@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
 from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
 from ..models.party_business_id_type import PartyBusinessIdType
 from ..models.party_role import PartyRole
@@ -30,12 +32,13 @@ class PartyHistoryResponse:
             service_provider. Example: flex_energy_supplier.
         type_ (PartyType): The type of the party, e.g SystemOperator, ServiceProvider Example: energy_supplier.
         status (PartyStatus): The status of the party. Example: active.
-        recorded_at (str): When the resource was recorded (created or updated) in the system. Example:
+        recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31T23:59:00Z.
         recorded_by (int): The identity that recorded the resource. Example: 145.
         party_id (int): Reference to the resource that was updated. Example: 48.
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
-        replaced_at (None | str | Unset): When the resource was replaced in the system. Example: 2024-07-07T10:00:00Z.
+        replaced_at (datetime.datetime | None | Unset): When the resource was replaced in the system. Example:
+            2024-07-07T10:00:00Z.
     """
 
     id: int
@@ -46,11 +49,11 @@ class PartyHistoryResponse:
     role: PartyRole
     type_: PartyType
     status: PartyStatus
-    recorded_at: str
+    recorded_at: datetime.datetime
     recorded_by: int
     party_id: int
     replaced_by: int | None | Unset = UNSET
-    replaced_at: None | str | Unset = UNSET
+    replaced_at: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -70,7 +73,7 @@ class PartyHistoryResponse:
 
         status = self.status.value
 
-        recorded_at = self.recorded_at
+        recorded_at = self.recorded_at.isoformat()
 
         recorded_by = self.recorded_by
 
@@ -85,6 +88,8 @@ class PartyHistoryResponse:
         replaced_at: None | str | Unset
         if isinstance(self.replaced_at, Unset):
             replaced_at = UNSET
+        elif isinstance(self.replaced_at, datetime.datetime):
+            replaced_at = self.replaced_at.isoformat()
         else:
             replaced_at = self.replaced_at
 
@@ -131,7 +136,7 @@ class PartyHistoryResponse:
 
         status = PartyStatus(d.pop("status"))
 
-        recorded_at = d.pop("recorded_at")
+        recorded_at = isoparse(d.pop("recorded_at"))
 
         recorded_by = d.pop("recorded_by")
 
@@ -146,12 +151,20 @@ class PartyHistoryResponse:
 
         replaced_by = _parse_replaced_by(d.pop("replaced_by", UNSET))
 
-        def _parse_replaced_at(data: object) -> None | str | Unset:
+        def _parse_replaced_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(None | str | Unset, data)
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                replaced_at_type_0 = isoparse(data)
+
+                return replaced_at_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(datetime.datetime | None | Unset, data)
 
         replaced_at = _parse_replaced_at(d.pop("replaced_at", UNSET))
 

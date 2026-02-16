@@ -27,9 +27,10 @@ from flex.api.controllable_unit_service_provider import (
     read_controllable_unit_service_provider_history,
     list_controllable_unit_service_provider_history,
 )
+import datetime
 import pytest
 from typing import cast
-from datetime import date, datetime, timedelta, time, timezone
+from datetime import date, timedelta, time, timezone
 
 
 @pytest.fixture
@@ -84,7 +85,7 @@ def test_cusp_fiso(data):
             service_provider_id=sp_id,
             end_user_id=unrelated_eu_id,
             contract_reference="TEST-CONTRACT",
-            valid_from="2024-01-01T00:00:00+1",
+            valid_from=datetime.datetime.fromisoformat("2024-01-01T00:00:00+01:00"),
             valid_to=None,
         ),
     )
@@ -98,7 +99,7 @@ def test_cusp_fiso(data):
             service_provider_id=sp_id,
             end_user_id=eu_id,
             contract_reference="TEST-CONTRACT",
-            valid_from="2024-01-01T00:00:00+1",
+            valid_from=datetime.datetime.fromisoformat("2024-01-01T00:00:00+01:00"),
             valid_to=None,
         ),
     )
@@ -149,7 +150,7 @@ def test_cusp_fiso(data):
         client=client_fiso,
         id=cast(int, cusp.id),
         body=ControllableUnitServiceProviderUpdateRequest(
-            valid_to="2020-01-02T00:00:00+1",
+            valid_to=datetime.datetime.fromisoformat("2020-01-02T00:00:00+01:00"),
         ),
     )
     assert isinstance(u, ErrorMessage)
@@ -159,7 +160,7 @@ def test_cusp_fiso(data):
         client=client_fiso,
         id=cast(int, cusp.id),
         body=ControllableUnitServiceProviderUpdateRequest(
-            valid_to="2024-01-02T00:00:00+1",
+            valid_to=datetime.datetime.fromisoformat("2024-01-02T00:00:00+01:00"),
         ),
     )
     assert not (isinstance(u, ErrorMessage))
@@ -231,11 +232,9 @@ def test_cusp_sp(data):
     assert len(cusps_sp) > 0
 
     def midnight_n_days_diff(n):
-        return (
-            datetime.combine(date.today() + timedelta(days=n), time.min)
-            .astimezone(tz=timezone.utc)
-            .isoformat()
-        )
+        return datetime.datetime.combine(
+            date.today() + timedelta(days=n), time.min
+        ).astimezone(tz=timezone.utc)
 
     # SP can add CU-SP for current date when the CU is empty
 

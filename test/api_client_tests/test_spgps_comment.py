@@ -73,6 +73,7 @@ from flex.api.service_providing_group_product_suspension_comment import (
     read_service_providing_group_product_suspension_comment_history,
 )
 from flex import AuthenticatedClient
+import datetime
 import pytest
 from typing import cast
 
@@ -112,7 +113,7 @@ def create_spgps(client_fiso, sp, so, ap_id, eu_id):
             service_provider_id=sp_id,
             end_user_id=eu_id,
             contract_reference="TEST-CONTRACT-SPGPS-1",
-            valid_from="2024-01-01T00:00:00+1",
+            valid_from=datetime.datetime.fromisoformat("2024-01-01T00:00:00+01:00"),
         ),
     )
     assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
@@ -122,7 +123,7 @@ def create_spgps(client_fiso, sp, so, ap_id, eu_id):
         body=ServiceProvidingGroupMembershipCreateRequest(
             controllable_unit_id=cast(int, cu.id),
             service_providing_group_id=cast(int, spg.id),
-            valid_from="2024-01-01T00:00:00+1",
+            valid_from=datetime.datetime.fromisoformat("2024-01-01T00:00:00+01:00"),
         ),
     )
     assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
@@ -161,7 +162,7 @@ def create_spgps(client_fiso, sp, so, ap_id, eu_id):
         id=cast(int, sppa.id),
         body=ServiceProviderProductApplicationUpdateRequest(
             status=ServiceProviderProductApplicationStatus.QUALIFIED,
-            qualified_at="2024-01-01T00:00:00+1",
+            qualified_at=datetime.datetime.fromisoformat("2024-01-01T00:00:00+01:00"),
         ),
     )
     assert not isinstance(u, ErrorMessage)
@@ -183,7 +184,9 @@ def create_spgps(client_fiso, sp, so, ap_id, eu_id):
         id=cast(int, spgpa.id),
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
             status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFIED,
-            prequalified_at="2024-01-01T00:00:00+1",
+            prequalified_at=datetime.datetime.fromisoformat(
+                "2024-01-01T00:00:00+01:00"
+            ),
         ),
     )
     assert not (isinstance(u, ErrorMessage))

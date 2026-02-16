@@ -959,7 +959,7 @@
                     },
                     "validated_at": {
                         "description": "When the controllable unit was last validated.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "nullable": true,
                         "example": "2022-08-08T12:00:00+02"
@@ -1063,7 +1063,7 @@
                     },
                     "validated_at": {
                         "description": "When the controllable unit was last validated.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "nullable": true,
                         "example": "2022-08-08T12:00:00+02"
@@ -1195,14 +1195,14 @@
                     },
                     "validated_at": {
                         "description": "When the controllable unit was last validated.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "nullable": true,
                         "example": "2022-08-08T12:00:00+02"
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "example": "2023-12-31T23:59:00Z"
@@ -1294,7 +1294,7 @@
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "example": "2023-12-31T23:59:00Z"
@@ -1389,10 +1389,10 @@
                     },
                     "created_at": {
                         "description": "When the comment was added to the CUS.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2022-08-08 12:00:00 CET"
+                        "example": "2022-08-08 12:00:00+02:00"
                     },
                     "visibility": {
                         "$ref": "#/components/schemas/controllable_unit_suspension_comment_visibility",
@@ -1407,7 +1407,7 @@
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "example": "2023-12-31T23:59:00Z"
@@ -1446,14 +1446,14 @@
                     },
                     "valid_from": {
                         "description": "The date from which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "nullable": true,
                         "example": "2022-08-08T00:00:00+02"
                     },
                     "valid_to": {
                         "description": "The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "nullable": true,
                         "example": "2022-09-10T00:00:00+02"
@@ -1492,14 +1492,14 @@
                     },
                     "valid_from": {
                         "description": "The date from which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "nullable": true,
                         "example": "2022-08-08T00:00:00+02"
                     },
                     "valid_to": {
                         "description": "The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "nullable": true,
                         "example": "2022-09-10T00:00:00+02"
@@ -1551,21 +1551,21 @@
                     },
                     "valid_from": {
                         "description": "The date from which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "nullable": true,
                         "example": "2022-08-08T00:00:00+02"
                     },
                     "valid_to": {
                         "description": "The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "nullable": true,
                         "example": "2022-09-10T00:00:00+02"
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "example": "2023-12-31T23:59:00Z"
@@ -1675,7 +1675,7 @@
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "example": "2023-12-31T23:59:00Z"
@@ -1705,13 +1705,13 @@
                 "properties": {
                     "valid_from": {
                         "description": "The date from which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "example": "2022-08-08T00:00:00+02"
                     },
                     "valid_to": {
                         "description": "The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "nullable": true,
                         "example": null
@@ -1737,13 +1737,13 @@
                     },
                     "valid_from": {
                         "description": "The date from which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "example": "2022-08-08T00:00:00+02"
                     },
                     "valid_to": {
                         "description": "The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "nullable": true,
                         "example": null
@@ -1781,20 +1781,20 @@
                     },
                     "valid_from": {
                         "description": "The date from which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "example": "2022-08-08T00:00:00+02"
                     },
                     "valid_to": {
                         "description": "The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "nullable": true,
                         "example": null
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "example": "2023-12-31T23:59:00Z"
@@ -1827,7 +1827,7 @@
                     },
                     "prequalified_at": {
                         "description": "When the current grid prequalification was last approved.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "nullable": true,
                         "example": "2023-01-08T10:00:00+01"
@@ -1857,7 +1857,7 @@
                     },
                     "prequalified_at": {
                         "description": "When the current grid prequalification was last approved.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "nullable": true,
                         "example": "2023-01-08T10:00:00+01"
@@ -1898,14 +1898,14 @@
                     },
                     "prequalified_at": {
                         "description": "When the current grid prequalification was last approved.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "nullable": true,
                         "example": "2023-01-08T10:00:00+01"
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "example": "2023-12-31T23:59:00Z"
@@ -2000,10 +2000,10 @@
                     },
                     "created_at": {
                         "description": "When the comment was added to the SPGGP.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2022-08-08 12:00:00 CET"
+                        "example": "2022-08-08 12:00:00+02:00"
                     },
                     "visibility": {
                         "$ref": "#/components/schemas/service_providing_group_grid_prequalification_comment_visibility",
@@ -2018,7 +2018,7 @@
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "example": "2023-12-31T23:59:00Z"
@@ -2107,7 +2107,7 @@
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "example": "2023-12-31T23:59:00Z"
@@ -2202,10 +2202,10 @@
                     },
                     "created_at": {
                         "description": "When the comment was added to the SPGGS.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2022-08-08 12:00:00 CET"
+                        "example": "2022-08-08 12:00:00+02:00"
                     },
                     "visibility": {
                         "$ref": "#/components/schemas/service_providing_group_grid_suspension_comment_visibility",
@@ -2220,7 +2220,7 @@
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "example": "2023-12-31T23:59:00Z"
@@ -2326,7 +2326,7 @@
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "example": "2023-12-31T23:59:00Z"
@@ -2526,7 +2526,7 @@
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "example": "2023-12-31T23:59:00Z"
@@ -2666,7 +2666,7 @@
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "example": "2023-12-31T23:59:00Z"
@@ -2782,7 +2782,7 @@
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "example": "2023-12-31T23:59:00Z"
@@ -2939,7 +2939,7 @@
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "example": "2023-12-31T23:59:00Z"
@@ -2981,7 +2981,7 @@
                     },
                     "time": {
                         "description": "The time at which the event was generated.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "example": "2022-08-08T12:00:00+02"
@@ -3072,7 +3072,7 @@
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "example": "2023-12-31T23:59:00Z"
@@ -3122,7 +3122,7 @@
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "example": "2023-12-31T23:59:00Z"
@@ -3167,14 +3167,14 @@
                     },
                     "valid_from": {
                         "description": "The date from which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "example": "2022-08-08T00:00:00+02"
                     },
                     "valid_to": {
                         "description": "The date until which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "nullable": true,
@@ -3205,14 +3205,14 @@
                     },
                     "valid_from": {
                         "description": "The date from which the accounting point belongs to the bidding zone. Midnight aligned on Norwegian timezone.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "example": "2022-08-08T00:00:00+02"
                     },
                     "valid_to": {
                         "description": "The date until which the accounting point belongs to the bidding zone. Midnight aligned on Norwegian timezone.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "nullable": true,
@@ -3246,14 +3246,14 @@
                     },
                     "valid_from": {
                         "description": "The date from which the accounting point belongs to the end user. Midnight aligned on Norwegian timezone.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "example": "2022-08-08T00:00:00+02"
                     },
                     "valid_to": {
                         "description": "The date until which the accounting point belongs to the end user. Midnight aligned on Norwegian timezone.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "nullable": true,
@@ -3287,14 +3287,14 @@
                     },
                     "valid_from": {
                         "description": "The date from which the relation between the accounting point and the energy supplier is valid. Midnight aligned on Norwegian timezone.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "example": "2023-09-09T00:00:00+02"
                     },
                     "valid_to": {
                         "description": "The date until which the relation between the accounting point and the energy supplier is valid. Midnight aligned on Norwegian timezone.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "nullable": true,
@@ -3366,14 +3366,14 @@
                     },
                     "valid_from": {
                         "description": "The date from which the accounting point belongs to the metering grid area. Midnight aligned on Norwegian timezone.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "example": "2023-09-09T00:00:00+02"
                     },
                     "valid_to": {
                         "description": "The date until which the accounting point belongs to the metering grid area. Midnight aligned on Norwegian timezone.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "nullable": true,
@@ -3504,7 +3504,7 @@
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "example": "2023-12-31T23:59:00Z"
@@ -3550,7 +3550,7 @@
                     },
                     "qualified_at": {
                         "description": "When the product application was last validated.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "nullable": true,
                         "example": "2022-08-08T12:00:00+02"
@@ -3593,7 +3593,7 @@
                     },
                     "qualified_at": {
                         "description": "When the product application was last validated.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "nullable": true,
                         "example": "2022-08-08T12:00:00+02"
@@ -3648,14 +3648,14 @@
                     },
                     "qualified_at": {
                         "description": "When the product application was last validated.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "nullable": true,
                         "example": "2022-08-08T12:00:00+02"
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "example": "2023-12-31T23:59:00Z"
@@ -3751,10 +3751,10 @@
                     },
                     "created_at": {
                         "description": "When the comment was added to the SPPA.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2022-08-08 12:00:00 CET"
+                        "example": "2022-08-08 12:00:00+02:00"
                     },
                     "visibility": {
                         "$ref": "#/components/schemas/service_provider_product_application_comment_visibility",
@@ -3769,7 +3769,7 @@
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "example": "2023-12-31T23:59:00Z"
@@ -3895,7 +3895,7 @@
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "example": "2023-12-31T23:59:00Z"
@@ -3991,10 +3991,10 @@
                     },
                     "created_at": {
                         "description": "When the comment was added to the SPPS.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2022-08-08 12:00:00 CET"
+                        "example": "2022-08-08 12:00:00+02:00"
                     },
                     "visibility": {
                         "$ref": "#/components/schemas/service_provider_product_suspension_comment_visibility",
@@ -4009,7 +4009,7 @@
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "example": "2023-12-31T23:59:00Z"
@@ -4065,14 +4065,14 @@
                     },
                     "prequalified_at": {
                         "description": "When the product application was last prequalified.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "nullable": true,
                         "example": "2022-08-08T12:00:00+02"
                     },
                     "verified_at": {
                         "description": "When the product application was last verified.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "nullable": true,
                         "example": "2021-08-08T10:00:00+02"
@@ -4123,14 +4123,14 @@
                     },
                     "prequalified_at": {
                         "description": "When the product application was last prequalified.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "nullable": true,
                         "example": "2022-08-08T12:00:00+02"
                     },
                     "verified_at": {
                         "description": "When the product application was last verified.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "nullable": true,
                         "example": "2021-08-08T10:00:00+02"
@@ -4193,21 +4193,21 @@
                     },
                     "prequalified_at": {
                         "description": "When the product application was last prequalified.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "nullable": true,
                         "example": "2022-08-08T12:00:00+02"
                     },
                     "verified_at": {
                         "description": "When the product application was last verified.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "nullable": true,
                         "example": "2021-08-08T10:00:00+02"
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "example": "2023-12-31T23:59:00Z"
@@ -4332,7 +4332,7 @@
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "example": "2023-12-31T23:59:00Z"
@@ -4428,10 +4428,10 @@
                     },
                     "created_at": {
                         "description": "When the comment was added to the SPGPS.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2022-08-08 12:00:00 CET"
+                        "example": "2022-08-08 12:00:00+02:00"
                     },
                     "visibility": {
                         "$ref": "#/components/schemas/service_providing_group_product_suspension_comment_visibility",
@@ -4446,7 +4446,7 @@
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "example": "2023-12-31T23:59:00Z"
@@ -4520,7 +4520,7 @@
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "readOnly": true,
                         "example": "2023-12-31T23:59:00Z"
@@ -4566,7 +4566,7 @@
                             },
                             "replaced_at": {
                                 "description": "When the resource was replaced in the system.",
-                                "format": "timestamp with time zone",
+                                "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
                                 "example": "2024-07-07T10:00:00Z"
@@ -4602,7 +4602,7 @@
                             },
                             "replaced_at": {
                                 "description": "When the resource was replaced in the system.",
-                                "format": "timestamp with time zone",
+                                "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
                                 "example": "2024-07-07T10:00:00Z"
@@ -4638,7 +4638,7 @@
                             },
                             "replaced_at": {
                                 "description": "When the resource was replaced in the system.",
-                                "format": "timestamp with time zone",
+                                "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
                                 "example": "2024-07-07T10:00:00Z"
@@ -4674,7 +4674,7 @@
                             },
                             "replaced_at": {
                                 "description": "When the resource was replaced in the system.",
-                                "format": "timestamp with time zone",
+                                "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
                                 "example": "2024-07-07T10:00:00Z"
@@ -4710,7 +4710,7 @@
                             },
                             "replaced_at": {
                                 "description": "When the resource was replaced in the system.",
-                                "format": "timestamp with time zone",
+                                "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
                                 "example": "2024-07-07T10:00:00Z"
@@ -4746,7 +4746,7 @@
                             },
                             "replaced_at": {
                                 "description": "When the resource was replaced in the system.",
-                                "format": "timestamp with time zone",
+                                "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
                                 "example": "2024-07-07T10:00:00Z"
@@ -4782,7 +4782,7 @@
                             },
                             "replaced_at": {
                                 "description": "When the resource was replaced in the system.",
-                                "format": "timestamp with time zone",
+                                "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
                                 "example": "2024-07-07T10:00:00Z"
@@ -4818,7 +4818,7 @@
                             },
                             "replaced_at": {
                                 "description": "When the resource was replaced in the system.",
-                                "format": "timestamp with time zone",
+                                "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
                                 "example": "2024-07-07T10:00:00Z"
@@ -4854,7 +4854,7 @@
                             },
                             "replaced_at": {
                                 "description": "When the resource was replaced in the system.",
-                                "format": "timestamp with time zone",
+                                "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
                                 "example": "2024-07-07T10:00:00Z"
@@ -4890,7 +4890,7 @@
                             },
                             "replaced_at": {
                                 "description": "When the resource was replaced in the system.",
-                                "format": "timestamp with time zone",
+                                "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
                                 "example": "2024-07-07T10:00:00Z"
@@ -4926,7 +4926,7 @@
                             },
                             "replaced_at": {
                                 "description": "When the resource was replaced in the system.",
-                                "format": "timestamp with time zone",
+                                "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
                                 "example": "2024-07-07T10:00:00Z"
@@ -4962,7 +4962,7 @@
                             },
                             "replaced_at": {
                                 "description": "When the resource was replaced in the system.",
-                                "format": "timestamp with time zone",
+                                "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
                                 "example": "2024-07-07T10:00:00Z"
@@ -4998,7 +4998,7 @@
                             },
                             "replaced_at": {
                                 "description": "When the resource was replaced in the system.",
-                                "format": "timestamp with time zone",
+                                "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
                                 "example": "2024-07-07T10:00:00Z"
@@ -5034,7 +5034,7 @@
                             },
                             "replaced_at": {
                                 "description": "When the resource was replaced in the system.",
-                                "format": "timestamp with time zone",
+                                "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
                                 "example": "2024-07-07T10:00:00Z"
@@ -5070,7 +5070,7 @@
                             },
                             "replaced_at": {
                                 "description": "When the resource was replaced in the system.",
-                                "format": "timestamp with time zone",
+                                "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
                                 "example": "2024-07-07T10:00:00Z"
@@ -5106,7 +5106,7 @@
                             },
                             "replaced_at": {
                                 "description": "When the resource was replaced in the system.",
-                                "format": "timestamp with time zone",
+                                "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
                                 "example": "2024-07-07T10:00:00Z"
@@ -5142,7 +5142,7 @@
                             },
                             "replaced_at": {
                                 "description": "When the resource was replaced in the system.",
-                                "format": "timestamp with time zone",
+                                "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
                                 "example": "2024-07-07T10:00:00Z"
@@ -5178,7 +5178,7 @@
                             },
                             "replaced_at": {
                                 "description": "When the resource was replaced in the system.",
-                                "format": "timestamp with time zone",
+                                "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
                                 "example": "2024-07-07T10:00:00Z"
@@ -5214,7 +5214,7 @@
                             },
                             "replaced_at": {
                                 "description": "When the resource was replaced in the system.",
-                                "format": "timestamp with time zone",
+                                "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
                                 "example": "2024-07-07T10:00:00Z"
@@ -5250,7 +5250,7 @@
                             },
                             "replaced_at": {
                                 "description": "When the resource was replaced in the system.",
-                                "format": "timestamp with time zone",
+                                "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
                                 "example": "2024-07-07T10:00:00Z"
@@ -5286,7 +5286,7 @@
                             },
                             "replaced_at": {
                                 "description": "When the resource was replaced in the system.",
-                                "format": "timestamp with time zone",
+                                "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
                                 "example": "2024-07-07T10:00:00Z"

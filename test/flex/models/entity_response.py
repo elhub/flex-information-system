@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
 from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
 from ..models.entity_business_id_type import EntityBusinessIdType
 from ..models.entity_type import EntityType
@@ -33,7 +35,7 @@ class EntityResponse:
             business_id_type (EntityBusinessIdType): The type of the business identifier. Example: pid.
             name (str): Name of the entity. Maximum 128 characters. Example: John Smith.
             type_ (EntityType): The type of the entity, e.g Person, Organisation Example: person.
-            recorded_at (str): When the resource was recorded (created or updated) in the system. Example:
+            recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
                 2023-12-31T23:59:00Z.
             recorded_by (int): The identity that recorded the resource. Example: 145.
     """
@@ -43,7 +45,7 @@ class EntityResponse:
     business_id_type: EntityBusinessIdType
     name: str
     type_: EntityType
-    recorded_at: str
+    recorded_at: datetime.datetime
     recorded_by: int
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -58,7 +60,7 @@ class EntityResponse:
 
         type_ = self.type_.value
 
-        recorded_at = self.recorded_at
+        recorded_at = self.recorded_at.isoformat()
 
         recorded_by = self.recorded_by
 
@@ -91,7 +93,7 @@ class EntityResponse:
 
         type_ = EntityType(d.pop("type"))
 
-        recorded_at = d.pop("recorded_at")
+        recorded_at = isoparse(d.pop("recorded_at"))
 
         recorded_by = d.pop("recorded_by")
 

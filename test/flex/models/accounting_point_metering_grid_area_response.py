@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
 from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
 from ..types import UNSET, Unset
 
@@ -18,16 +20,16 @@ class AccountingPointMeteringGridAreaResponse:
     Attributes:
         accounting_point_id (int): The ID of the accounting point. Example: 45.
         metering_grid_area_id (int): The metering grid area of the accounting point. Example: 3.
-        valid_from (str): The date from which the accounting point belongs to the metering grid area. Midnight aligned
-            on Norwegian timezone. Example: 2023-09-09T00:00:00+02.
-        valid_to (None | str | Unset): The date until which the accounting point belongs to the metering grid area.
-            Midnight aligned on Norwegian timezone.
+        valid_from (datetime.datetime): The date from which the accounting point belongs to the metering grid area.
+            Midnight aligned on Norwegian timezone. Example: 2023-09-09T00:00:00+02.
+        valid_to (datetime.datetime | None | Unset): The date until which the accounting point belongs to the metering
+            grid area. Midnight aligned on Norwegian timezone.
     """
 
     accounting_point_id: int
     metering_grid_area_id: int
-    valid_from: str
-    valid_to: None | str | Unset = UNSET
+    valid_from: datetime.datetime
+    valid_to: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -35,11 +37,13 @@ class AccountingPointMeteringGridAreaResponse:
 
         metering_grid_area_id = self.metering_grid_area_id
 
-        valid_from = self.valid_from
+        valid_from = self.valid_from.isoformat()
 
         valid_to: None | str | Unset
         if isinstance(self.valid_to, Unset):
             valid_to = UNSET
+        elif isinstance(self.valid_to, datetime.datetime):
+            valid_to = self.valid_to.isoformat()
         else:
             valid_to = self.valid_to
 
@@ -64,14 +68,22 @@ class AccountingPointMeteringGridAreaResponse:
 
         metering_grid_area_id = d.pop("metering_grid_area_id")
 
-        valid_from = d.pop("valid_from")
+        valid_from = isoparse(d.pop("valid_from"))
 
-        def _parse_valid_to(data: object) -> None | str | Unset:
+        def _parse_valid_to(data: object) -> datetime.datetime | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(None | str | Unset, data)
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                valid_to_type_0 = isoparse(data)
+
+                return valid_to_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(datetime.datetime | None | Unset, data)
 
         valid_to = _parse_valid_to(d.pop("valid_to", UNSET))
 

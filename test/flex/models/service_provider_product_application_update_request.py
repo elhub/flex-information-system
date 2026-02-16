@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
 from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
 from ..models.service_provider_product_application_status import ServiceProviderProductApplicationStatus
 from ..types import UNSET, Unset
@@ -20,13 +22,13 @@ class ServiceProviderProductApplicationUpdateRequest:
         Attributes:
             product_type_ids (list[int] | Unset): References to the product types. Example: [2, 4, 5].
             status (ServiceProviderProductApplicationStatus | Unset): The status of the application. Example: in_progress.
-            qualified_at (None | str | Unset): When the product application was last validated. Example:
+            qualified_at (datetime.datetime | None | Unset): When the product application was last validated. Example:
                 2022-08-08T12:00:00+02.
     """
 
     product_type_ids: list[int] | Unset = UNSET
     status: ServiceProviderProductApplicationStatus | Unset = UNSET
-    qualified_at: None | str | Unset = UNSET
+    qualified_at: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -41,6 +43,8 @@ class ServiceProviderProductApplicationUpdateRequest:
         qualified_at: None | str | Unset
         if isinstance(self.qualified_at, Unset):
             qualified_at = UNSET
+        elif isinstance(self.qualified_at, datetime.datetime):
+            qualified_at = self.qualified_at.isoformat()
         else:
             qualified_at = self.qualified_at
 
@@ -68,12 +72,20 @@ class ServiceProviderProductApplicationUpdateRequest:
         else:
             status = ServiceProviderProductApplicationStatus(_status)
 
-        def _parse_qualified_at(data: object) -> None | str | Unset:
+        def _parse_qualified_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(None | str | Unset, data)
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                qualified_at_type_0 = isoparse(data)
+
+                return qualified_at_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(datetime.datetime | None | Unset, data)
 
         qualified_at = _parse_qualified_at(d.pop("qualified_at", UNSET))
 

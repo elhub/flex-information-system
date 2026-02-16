@@ -35,6 +35,8 @@ from flex.api.technical_resource import (
     read_technical_resource_history,
     list_technical_resource_history,
 )
+import datetime
+import zoneinfo
 import pytest
 from typing import cast
 from datetime import date
@@ -414,7 +416,9 @@ def test_tr_sp(sts):
             service_provider_id=common_sp_id,
             end_user_id=eu_id,
             contract_reference="1111r4128",
-            valid_from=f"{date.today().isoformat()} Europe/Oslo",
+            valid_from=datetime.datetime.combine(
+                date.today(), datetime.time(), tzinfo=zoneinfo.ZoneInfo("Europe/Oslo")
+            ),
         ),
     )
     assert isinstance(cusp_common, ControllableUnitServiceProviderResponse)

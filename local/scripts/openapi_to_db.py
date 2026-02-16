@@ -32,6 +32,8 @@ def sql_type_of_field_attr(attr):
     else:
         if "format" not in attr:
             return "jsonb"
+        if attr["format"] == "date-time":
+            return "timestamp with time zone"
         return attr["format"]
 
 
