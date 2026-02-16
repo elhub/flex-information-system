@@ -2,7 +2,8 @@
 
 This guide explains how a Service Provider (SP) can register a new
 [Controllable Unit (CU)](../../resources/controllable_unit.md) in the Flexibility
-Information System (FIS).
+Information System (FIS). It explains each step that is needed as well as the
+reason why these steps are required.
 
 Learn more about the CU and related concepts here:
 [Conceptual model](../../concepts/conceptual-model.md)
@@ -15,7 +16,7 @@ in the FIS.
 
 ## 1. Start at CU registrations
 
-Begin by navigating to CU registration.  
+Begin by navigating to CU registrations.  
 This is where the [CU registration](../../processes/controllable-unit-registration.md)
 process starts.
 
@@ -67,7 +68,8 @@ functions as the authorization mechanism within the register. This enables the
 service provider to manage the CU in the system.
 
 > [!NOTE]  
-> It is not possible ta add contracts with start dates in the future.
+> It is not possible to add contracts with start dates in the future when
+> registering a new CU.
 
 ## 6. Add technical resources
 
@@ -81,9 +83,9 @@ added individually in the portal.
 >Registering these resources is important because:
 >
 >* It provides the technical details needed by procuring system operators when
->performing product pre‑qualification.
+> performing product prequalification.
 >* It enables more efficient evaluation when different CUs contain identical or
->similar technical resources.
+> similar technical resources.
 
 ## 7. Activate the controllable unit
 
@@ -101,12 +103,17 @@ of the status. The status is registered on the controllable unit.
 
 ## Next step: Grouping controllable units in a service providing group
 
-Once the CU is registered, it can be added to a service providing group (SPG).
+Once the CU is registered, it can be added to a service providing group (SPG) -
+also before the CU is grid validated.
 
-[!NOTE]
->A grid validation can sometimes be dependant on the total formation of a service
->providing group. It is therefore possible to create a service providing group and
->add the controllable units to the group before the controllable units are activated
-and/or validated.
+You may choose between two valid workflows:
+
+1. Add each CU to an SPG immediately after registration
+
+2. Register all CUs first, then group them
+
+    If you plan to include several CUs in the same SPG, you can complete the
+    registration of all those CUs first. When you are done registering the relevant
+    units, you can create or update an SPG and add the CUs together.
 
 → Continue with [the guide on grouping CUs](sp-spg-registration.md).

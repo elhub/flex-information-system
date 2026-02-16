@@ -18,7 +18,7 @@ step
 
     After a successful request, the service provider evaluates the returned CU
     data and decides the next step. If the CU is there, then
-    the next step could be [service provider switching](service-provider-switching.md)
+    the next step could be service provider switching
     or evaluation of the data. If the CU is not there, the service provider can
     create a new CU. This is further explained below.
 
@@ -38,8 +38,9 @@ step
 
     If, however, the service provider is requesting data for an accounting point
     that does not have any CUs registered in FIS, there will be a synchronous lookup
-    towards Elhub to validate the accounting point end user relation. From then
-    on, the accounting point will be part of the regular data sync from Elhub.
+    towards Elhub to validate the [accounting point end user relation](../resources/accounting_point_end_user.md).
+    From then on, the accounting point will be part of the regular data sync
+    from Elhub.
 
 ## Prerequisites
 

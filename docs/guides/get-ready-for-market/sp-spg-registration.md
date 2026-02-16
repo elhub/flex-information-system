@@ -17,10 +17,10 @@ in the FIS portal.
 
 ## 1. Start at SPG registrations
 
-Begin by navigating to SPG registration.  
+Begin by navigating to SPG registrations.  
 This is the entry point for [grouping of controllable units](../../processes/service-providing-group-registration.md).
 
-## 2. Create the service providing group
+## 2. Create a new service providing group
 
 Before creating an SPG, it is important to consider what the SPG will be used for.
 An SPG is the operational unit the service provider uses in the market. This means
@@ -28,21 +28,12 @@ the SPG should be structured in a way that reflects:
 
 * Which product types the group is intended to deliver
 * [Which bidding zone the units belong to](../../concepts/conceptual-model.md#types-of-bidding-zones)
-* How changes to the SPG may affect grid prequalification status
 
 Thinking about the SPG’s purpose early helps ensure that the group is created
 correctly and avoids the need for restructuring later.
 
 Create a new [service providing group](../../resources/service_providing_group.md)
 and fill in the required information as described in the portal.
-
-### 2c. If an SPG is already registered and activated
-
-If you already have an active SPG, you may add more controllable units to it as
-described in Step 3.
-
-**Depending on the changes you make, the system operator may
-update the SPG’s grid prequalification status.*
 
 ## 3. Add controllable units to the service providing group
 
@@ -73,3 +64,8 @@ notified. The impacted system operatorwill grid prequalify the SPG.
 
 The system operator sets a grid prequalification status and the SP is notified of
 the status. The status is registered on the SPG.
+
+## Next step: Apply for service providing group product qualification
+
+Once the SPG is registered with CUs, the service provider can apply for
+[SPG product application](../../processes/service-provider-product-application.md).
