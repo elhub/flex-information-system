@@ -47,7 +47,7 @@ requirements which depend on the [product type(s)](../../resources/product_type.
 >* [Grid prequalification](../../processes/controllable-unit-registration.md):
 > It enables the system operator(s) to assess whether the SPG can operate safely
 > within the grid.
->* [SPG product application](../../processes/service-provider-product-application.md):
+>* [SPG product application](../../processes/service-providing-group-product-application.md):
 > It enables the procuring system operatos to assess whether the SPG can deliver
 >a certain product.
 
@@ -65,7 +65,7 @@ notified. The impacted system operatorwill grid prequalify the SPG.
 The system operator sets a grid prequalification status and the SP is notified of
 the status. The status is registered on the SPG.
 
-## Next step: Apply for service providing group product qualification
+## Next step: Apply for service providing group product prequalification
 
 Once the SPG is registered with CUs, the service provider can apply for
-[SPG product application](../../processes/service-provider-product-application.md).
+[SPG product prequalification](../../processes/service-providing-group-product-application.md).

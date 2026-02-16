@@ -9,8 +9,8 @@ processes:
 
 ## Why is CU lookup a necessary process?
 
-1. To verify whether the unit is already registered in the system to determine next
-step
+1. To verify whether the unit is already registered in the system  
+   to determine next step
 
     This process retrieves the necessary information from FIS, to ensure that the
     service provider has sufficient data to determine the appropriate process
