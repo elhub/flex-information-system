@@ -52,12 +52,11 @@ export const ControllableUnitLookupInput = () => {
     }
 
     const resultParams = new URLSearchParams({
-      end_user_id: String(endUserId),
-      accounting_point: accountingPointGsrn,
       end_user: endUserOrgNo,
+      accounting_point: accountingPointGsrn,
     });
     return navigate(
-      `/controllable_unit/lookup/${accountingPointId}?${resultParams.toString()}`,
+      `/controllable_unit/lookup/result?${resultParams.toString()}`,
     );
   };
 
