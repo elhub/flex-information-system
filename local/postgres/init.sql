@@ -63,6 +63,8 @@ GRANT flex_operation_readwrite TO local_operator;
 CREATE ROLE flex_internal_event_notification WITH NOLOGIN;
 GRANT flex_internal TO flex_internal_event_notification;
 
+CREATE ROLE flex_internal_staging WITH NOLOGIN;
+GRANT flex_internal TO flex_internal_staging;
 
 -- authenticator will set role to any of the party and internal roles
 GRANT flex_anonymous TO flex_authenticator;
@@ -79,6 +81,7 @@ GRANT flex_third_party TO flex_authenticator;
 
 -- internal system roles
 GRANT flex_internal_event_notification TO flex_authenticator;
+GRANT flex_internal_staging TO flex_authenticator;
 
 -- common and anonymous inherits from common
 GRANT flex_anonymous TO

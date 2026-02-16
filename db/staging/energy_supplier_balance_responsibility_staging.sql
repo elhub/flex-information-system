@@ -226,3 +226,11 @@ BEGIN
     PERFORM staging.energy_supplier_balance_responsibility_update();
 END;
 $$;
+
+-- changeset flex:energy-supplier-balance-responsibility-staging-grants runOnChange:false endDelimiter:;
+GRANT INSERT, SELECT, UPDATE, DELETE
+ON staging.energy_supplier_balance_responsibility
+TO flex_internal_staging;
+GRANT INSERT, SELECT, UPDATE, DELETE
+ON staging.energy_supplier_balance_responsibility_v
+TO flex_internal_staging;
