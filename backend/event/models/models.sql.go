@@ -314,6 +314,54 @@ func (q *Queries) GetControllableUnitUpdateNotificationRecipients(ctx context.Co
 	return items, nil
 }
 
+const getEventsToProcess = `-- name: GetEventsToProcess :many
+SELECT
+    id,
+    type,
+    source_resource,
+    source_id,
+    subject_resource,
+    subject_id,
+    processed,
+    recorded_at,
+    recorded_by
+FROM notification.event e
+WHERE processed = false
+ORDER BY id
+LIMIT $1
+FOR UPDATE SKIP LOCKED
+`
+
+func (q *Queries) GetEventsToProcess(ctx context.Context, batchSize int32) ([]NotificationEvent, error) {
+	rows, err := q.db.Query(ctx, getEventsToProcess, batchSize)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []NotificationEvent
+	for rows.Next() {
+		var i NotificationEvent
+		if err := rows.Scan(
+			&i.ID,
+			&i.Type,
+			&i.SourceResource,
+			&i.SourceID,
+			&i.SubjectResource,
+			&i.SubjectID,
+			&i.Processed,
+			&i.RecordedAt,
+			&i.RecordedBy,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getServiceProviderProductApplicationCommentNotificationRecipients = `-- name: GetServiceProviderProductApplicationCommentNotificationRecipients :many
 SELECT DISTINCT
     unnest(ARRAY[sppa.service_provider_id, sppa.system_operator_id])::bigint
@@ -929,6 +977,17 @@ func (q *Queries) GetTechnicalResourceNotificationRecipients(ctx context.Context
 		return nil, err
 	}
 	return items, nil
+}
+
+const markEventsAsProcessed = `-- name: MarkEventsAsProcessed :exec
+UPDATE notification.event
+SET processed = true
+WHERE id in (SELECT unnest($1::bigint[]))
+`
+
+func (q *Queries) MarkEventsAsProcessed(ctx context.Context, eventIds []int) error {
+	_, err := q.db.Exec(ctx, markEventsAsProcessed, eventIds)
+	return err
 }
 
 const notify = `-- name: Notify :exec

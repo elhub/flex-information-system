@@ -7,39 +7,39 @@ import (
 	"flex/event/models"
 	"flex/internal/trace"
 	"flex/pgpool"
-	"flex/pgrepl"
-	"flex/pgrepl/pgoutput"
 	"fmt"
 	"log/slog"
+	"time"
 )
 
 var errNilArguments = errors.New("arguments must not be nil")
 
 var tracer = trace.Tracer("flex/event/worker") //nolint:gochecknoglobals
 
-// Worker holds a connection to a replication slot dedicated to event handling.
+// Worker holds a connection pool for event handling.
 type Worker struct {
-	replConn  *pgrepl.Connection
-	pool      *pgpool.Pool
-	logPrefix string
-	ctxKey    string
+	pool   *pgpool.Pool
+	ctxKey string
 }
 
 // NewWorker creates an event worker.
 func NewWorker(
-	replConn *pgrepl.Connection,
 	pool *pgpool.Pool,
 	ctxKey string,
-	logPrefix string,
 ) (*Worker, error) {
-	if replConn == nil || pool == nil {
+	if pool == nil {
 		return nil, errNilArguments
 	}
 
-	return &Worker{replConn, pool, logPrefix, ctxKey}, nil
+	return &Worker{pool, ctxKey}, nil
 }
 
-// Start is the main loop of the worker, it gives WAL messages to the handler.
+const (
+	batchSize    = 42
+	waitDuration = 10 * time.Second
+)
+
+// Start is the main loop of the worker, it polls for unprocessed events.
 // Must not be called in the main thread.
 func (eventWorker *Worker) Start(ctx context.Context) error {
 	// give a role to the worker so that the database methods can be used
@@ -55,106 +55,124 @@ func (eventWorker *Worker) Start(ctx context.Context) error {
 		case <-ctx.Done(): // if the server closes, the worker should stop too
 			return errEndContext
 		default:
-			ctx, span := tracer.Start(ctx, "eventWorker.handleMessage", trace.WithNewRoot())
-			defer span.End()
+			ctx, span := tracer.Start(ctx, "eventWorker.processBatch", trace.WithNewRoot())
 
-			msg, err := eventWorker.replConn.ReceiveMessage(ctx)
+			hadEvents, err := eventWorker.processBatch(ctx)
+			span.End()
+
 			if err != nil {
-				slog.ErrorContext(ctx, "could not receive message from replication connection", "error", err)
-				return err //nolint:wrapcheck
+				slog.ErrorContext(ctx, "could not process batch", "error", err)
+				// Wait before retrying on error
+				time.Sleep(waitDuration)
+				continue
 			}
 
-			if err = eventWorker.handleMessage(ctx, msg); err != nil {
-				slog.ErrorContext(ctx, "could not handle message in worker", "error", err)
-				return err
+			if !hadEvents {
+				// No events found, wait before polling again
+				time.Sleep(waitDuration)
 			}
+			// If hadEvents is true, immediately loop to process next batch
 		}
 	}
 }
 
-// Stop stops the worker after closing underlying connections.
-func (eventWorker *Worker) Stop(ctx context.Context) error {
-	err := eventWorker.replConn.Close(ctx)
-	if err != nil {
-		return fmt.Errorf("could not close replication connection: %w", err)
-	}
-
-	return nil
-}
-
-// handleMessage is the function run by the worker on each Message coming
-// from a replication connection dedicated to event processing. It has access
-// to a transaction to perform operations on the database.
+// processBatch fetches and processes a batch of unprocessed events.
+// Returns true if any events were processed, false if the queue was empty.
 //
 //nolint:cyclop,funlen
-func (eventWorker *Worker) handleMessage(
-	ctx context.Context,
-	message *pgoutput.InsertMessage,
-) error {
+func (eventWorker *Worker) processBatch(ctx context.Context) (bool, error) {
 	conn, err := eventWorker.pool.Acquire(ctx)
 	if err != nil {
-		return systemConnectionError(err)
+		return false, systemConnectionError(err)
 	}
 	defer conn.Release()
 
 	tx, err := conn.Begin(ctx)
 	if err != nil {
-		return transactionError(err)
+		return false, transactionError(err)
 	}
+	defer tx.Rollback(ctx)
 
 	queries := models.New(tx)
 
-	event, err := fromTupleData(&message.TupleData)
+	events, err := queries.GetEventsToProcess(ctx, batchSize)
 	if err != nil {
-		return fmt.Errorf("could not parse event from change: %w", err)
+		return false, fmt.Errorf("could not get events to process: %w", err)
 	}
 
-	slog.DebugContext(
-		ctx, "handling event", "type", event.Type, "resource_id", event.ResourceID,
-	)
-
-	// TODO (improvement): go through the auth API instead of the models
-	eventPartyID, err := authModels.PartyOfIdentity(ctx, tx, event.RecordedBy)
-	if err != nil {
-		return fmt.Errorf("could not get party of identity: %w", err)
+	if len(events) == 0 {
+		// No events to process, rollback and return
+		return false, nil
 	}
 
-	// determine who should be notified
-	notificationRecipients, err := queries.GetNotificationRecipients(
-		ctx,
-		event.Type,
-		event.ResourceID,
-		event.RecordedAt,
-	)
-	if err != nil {
-		return fmt.Errorf("could not get notification recipients: %w", err)
-	}
+	slog.DebugContext(ctx, "processing event batch", "count", len(events))
 
-	slog.DebugContext(ctx, "notification recipients", "recipients", notificationRecipients)
+	// need to keep track of event IDs to mark them as processed later
+	eventIDs := make([]int, 0, len(events))
 
-	// if the party that caused the event is in the list of recipients, they should not receive a notification
-	for i, recipient := range notificationRecipients {
-		if recipient == eventPartyID {
-			notificationRecipients = append(notificationRecipients[:i], notificationRecipients[i+1:]...)
-			break
+	for _, event := range events {
+		slog.DebugContext(
+			ctx, "handling event", "type", event.Type, "id", event.ID,
+		)
+
+		// Determine resource ID (use subject_id if present, otherwise source_id)
+		resourceID := event.SourceID
+		if event.SubjectID != nil {
+			resourceID = *event.SubjectID
 		}
-	}
 
-	if len(notificationRecipients) > 0 {
-		err = queries.NotifyMany(ctx, event.ID, notificationRecipients)
+		// TODO (improvement): go through the auth API instead of the models
+		eventPartyID, err := authModels.PartyOfIdentity(ctx, tx, event.RecordedBy)
 		if err != nil {
-			return fmt.Errorf("could not insert notification: %w", err)
+			return false, fmt.Errorf("could not get party of identity: %w", err)
 		}
 
-		slog.InfoContext(ctx, "notified parties of event", "event_id", event.ID)
-	} else {
-		slog.DebugContext(ctx, "no parties to notify for event", "event_id", event.ID)
+		// determine who should be notified
+		notificationRecipients, err := queries.GetNotificationRecipients(
+			ctx,
+			event.Type,
+			resourceID,
+			event.RecordedAt,
+		)
+		if err != nil {
+			return false, fmt.Errorf("could not get notification recipients: %w", err)
+		}
+
+		slog.DebugContext(ctx, "notification recipients", "recipients", notificationRecipients)
+
+		// if the party that caused the event is in the list of recipients, they should not receive a notification
+		for i, recipient := range notificationRecipients {
+			if recipient == eventPartyID {
+				notificationRecipients = append(notificationRecipients[:i], notificationRecipients[i+1:]...)
+				break
+			}
+		}
+
+		if len(notificationRecipients) > 0 {
+			err = queries.NotifyMany(ctx, event.ID, notificationRecipients)
+			if err != nil {
+				return false, fmt.Errorf("could not insert notification: %w", err)
+			}
+
+			slog.InfoContext(ctx, "notified parties of event", "event_id", event.ID)
+		} else {
+			slog.DebugContext(ctx, "no parties to notify for event", "event_id", event.ID)
+		}
+
+		eventIDs = append(eventIDs, event.ID)
+	}
+
+	// Mark all events in the batch as processed
+	err = queries.MarkEventsAsProcessed(ctx, eventIDs)
+	if err != nil {
+		return false, fmt.Errorf("could not mark events as processed: %w", err)
 	}
 
 	if err = tx.Commit(ctx); err != nil {
-		return fmt.Errorf("could not commit transaction: %w", err)
+		return false, fmt.Errorf("could not commit transaction: %w", err)
 	}
-	return nil
+
+	return true, nil
 }
 
 // error messages
