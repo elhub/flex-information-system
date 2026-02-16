@@ -4,7 +4,10 @@ import { BaseInput, BaseInputProps } from "./BaseInput";
 import { formatISO, parseISO } from "date-fns";
 import { tz } from "@date-fns/tz";
 
-type DateTimeInputProps = BaseInputProps & DatepickerProps;
+type DateTimeInputProps = BaseInputProps &
+  DatepickerProps & {
+    outputFormat?: "date" | "date-time";
+  };
 
 export const DateInput = ({
   source,
@@ -12,6 +15,7 @@ export const DateInput = ({
   tooltip,
   readOnly,
   disabled,
+  outputFormat = "date",
   ...rest
 }: DateTimeInputProps) => {
   const { id, field, fieldState } = useInput({ source, ...rest });
@@ -19,7 +23,9 @@ export const DateInput = ({
   const onDateChange = (date: Date | null) => {
     field.onChange(
       date
-        ? formatISO(date, { representation: "date", in: tz("Europe/Oslo") })
+        ? outputFormat === "date"
+          ? formatISO(date, { representation: "date", in: tz("Europe/Oslo") })
+          : formatISO(date, { in: tz("Europe/Oslo") })
         : null,
     );
   };
