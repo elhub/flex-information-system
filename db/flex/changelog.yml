@@ -141,9 +141,6 @@ databaseChangeLog:
       file: ./notification.sql
       relativeToChangelogFile: true
   - include:
-      file: ./notification_migrations.sql
-      relativeToChangelogFile: true
-  - include:
       file: ./product_type.sql
       relativeToChangelogFile: true
   - include:
