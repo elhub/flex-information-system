@@ -40,16 +40,16 @@ and fill in the required information as described in the portal.
 Add the CUs you want included in the SPG. The grouping must follow the product
 requirements which depend on the [product type(s)](../../resources/product_type.md).
 
->[!NOTE]
+> [!NOTE]
 >
 > Adding CUs to an SPG influences multiple processes:
 >
->* [Grid prequalification](../../processes/controllable-unit-registration.md):
+> * [Grid prequalification](../../processes/service-providing-group-registration.md):
 > It enables the system operator(s) to assess whether the SPG can operate safely
 > within the grid.
->* [SPG product application](../../processes/service-providing-group-product-application.md):
-> It enables the procuring system operatos to assess whether the SPG can deliver
->a certain product.
+> * [SPG product application](../../processes/service-providing-group-product-application.md):
+> It enables the procuring system operators to assess whether the SPG can deliver
+> a certain product.
 
 ## 4. Activate the service providing group
 
@@ -59,8 +59,8 @@ it has not been activated.
 
 Review all information to ensure everything is correct before activating the SPG.
 
-When a service providing group is activated, the impacted system operator(s) is
-notified. The impacted system operatorwill grid prequalify the SPG.
+When a service providing group is activated, the impacted system operator(s) are
+notified. The impacted system operator will grid prequalify the SPG.
 
 The system operator sets a grid prequalification status and the SP is notified of
 the status. The status is registered on the SPG.

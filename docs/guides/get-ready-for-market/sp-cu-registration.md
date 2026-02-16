@@ -26,7 +26,7 @@ Before creating a new controllable unit, ensure that it does **not** already
 exist in the register by performing the [CU lookup](../../processes/controllable-unit-lookup.md)
 process.
 
-This process also confirms that the accointing point belongs to the end user.
+This process also confirms that the accounting point belongs to the end user.
 The end user ID is required in order to prevent unauthorized use of the lookup function.
 
 ## 3. Check if the controllable unit already exists
@@ -43,17 +43,17 @@ Inspect the list of CUs at the accounting point:
 Create a new controllable unit and provide the required information as described
 in the portal.
 
->[!NOTE]
+> [!NOTE]
 >
->The information required supports several processes:
+> The information required supports several processes:
 >
->* [Grid validation](../../processes/controllable-unit-registration.md):
+> * [Grid validation](../../processes/controllable-unit-registration.md):
 > It enables the system operator to assess whether the CU can operate safely
 > within the grid.
->* [SPG registration](../../processes/service-provider-registration-and-approval.md):
+> * [SPG registration](../../processes/service-providing-group-registration.md):
 > It ensures that the CU can be correctly linked to a service providing group (SPG),
 > which determines how the CU will participate in flexibility markets.
->* [SPG product application](../../processes/service-provider-product-application.md):
+> * [SPG product application](../../processes/service-providing-group-product-application.md):
 > It influences the prequalification application for the SPG,
 > since the technical characteristics of the CU affect the overall
 > delivery potential of the group.
@@ -93,7 +93,7 @@ The controllable unit is now registered in the FIS, but it is only visible for t
 SP that has registered it because it has not been activated.
 
 Review all information to ensure everything is correct before activating the
-the controllable unit.
+controllable unit.
 
 When a controllable unit is activated, the connecting system operator is notified.
 The connecting system operator will grid validate the controllable unit.
