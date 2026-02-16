@@ -5,6 +5,7 @@ import { FieldLabel } from "../intl/field-labels";
 import { BodyText, BodyTextProps, Link } from "./ui";
 import { ReactNode } from "react";
 import { Link as RouterLink } from "react-router-dom";
+import { cn } from "../util";
 
 type LabelValueProps = {
   labelKey?: TooltipKey | FieldLabel;
@@ -14,6 +15,7 @@ type LabelValueProps = {
   linkText?: string;
   unit?: string;
   tooltip?: boolean;
+  className?: string;
 } & Omit<BodyTextProps, "children">;
 
 export const LabelValue = ({
@@ -24,6 +26,7 @@ export const LabelValue = ({
   tooltip = false,
   link,
   linkText,
+  className,
   ...props
 }: LabelValueProps) => {
   const translateLabel = useTranslateField();
@@ -35,23 +38,19 @@ export const LabelValue = ({
     : "No value";
 
   return (
-    <>
+    <div className={cn("contents", className)}>
       <BodyText weight="bold" {...props}>
         {labelKey ? translateLabel(labelKey) : label}:
       </BodyText>
       <div className="flex gap-2 items-center">
         <BodyText {...props}>{formattedValue}</BodyText>
-        {link && linkText ? (
+        {link && linkText && (
           <Link to={link} as={RouterLink}>
             {linkText}
           </Link>
-        ) : null}
-        {tooltip && labelKey ? (
-          <FieldTooltip tooltipKey={labelKey} />
-        ) : (
-          <div className="w-4" />
         )}
+        {tooltip && labelKey && <FieldTooltip tooltipKey={labelKey} />}
       </div>
-    </>
+    </div>
   );
 };

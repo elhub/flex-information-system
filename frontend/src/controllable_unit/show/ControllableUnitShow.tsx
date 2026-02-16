@@ -54,19 +54,18 @@ const Layout = () => {
         controllableUnit={controllableUnitViewModel?.controllableUnit}
       />
 
-      <div className="flex gap-2 items-center">
-        <LabelValue
-          labelKey="controllable_unit.recorded_at"
-          value={
-            controllableUnitViewModel?.controllableUnit?.recorded_at
-              ? formatDate(
-                  controllableUnitViewModel?.controllableUnit?.recorded_at,
-                  "dd.MM.yyyy HH:mm",
-                )
-              : undefined
-          }
-        />
-      </div>
+      <LabelValue
+        labelKey="controllable_unit.recorded_at"
+        className="flex gap-2 items-center"
+        value={
+          controllableUnitViewModel?.controllableUnit?.recorded_at
+            ? formatDate(
+                controllableUnitViewModel?.controllableUnit?.recorded_at,
+                "dd.MM.yyyy HH:mm",
+              )
+            : undefined
+        }
+      />
     </div>
   );
 };
