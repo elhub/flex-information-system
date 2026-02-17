@@ -1,3 +1,25 @@
+-- name: GetEventsToProcess :many
+SELECT
+    id,
+    type,
+    source_resource,
+    source_id,
+    subject_resource,
+    subject_id,
+    processed,
+    recorded_at,
+    recorded_by
+FROM notification.event e
+WHERE processed = false
+ORDER BY id
+LIMIT @batch_size
+FOR UPDATE SKIP LOCKED;
+
+-- name: MarkEventsAsProcessed :exec
+UPDATE notification.event
+SET processed = true
+WHERE id in (SELECT unnest(@event_ids::bigint[]));
+
 -- name: GetSystemOperatorProductTypeCreateNotificationRecipients :many
 SELECT system_operator_id
 FROM api.system_operator_product_type sopt
@@ -264,6 +286,11 @@ WHERE sppach.service_provider_product_application_comment_id = @resource_id
 -- name: Notify :exec
 INSERT INTO api.notification (event_id, party_id)
 VALUES (@event_id, @party_id)
+ON CONFLICT DO NOTHING;
+
+-- name: NotifyMany :exec
+INSERT INTO api.notification (event_id, party_id)
+SELECT @event_id, unnest(@party_ids::bigint[])
 ON CONFLICT DO NOTHING;
 
 -- name: GetControllableUnitLookupNotificationRecipients :many

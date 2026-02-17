@@ -1,5 +1,7 @@
 import { EmptyObject } from "react-hook-form";
 import { ErrorMessage } from "./generated-client";
+import { twMerge } from "tailwind-merge";
+import clsx from "clsx";
 
 // split an array into chunks of given size
 export function chunksOf(size: number, t: any[]): any[][] {
@@ -47,4 +49,9 @@ export const throwOnError = <T>(response: Response<T>): T => {
     throw error;
   }
   return data;
+};
+
+// CN is a standard utility function for merging classes
+export const cn = (...classes: (string | undefined)[]): string => {
+  return twMerge(clsx(classes));
 };

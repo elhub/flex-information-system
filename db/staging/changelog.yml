@@ -1,0 +1,16 @@
+---
+databaseChangeLog:
+  - changeSet:
+      id: staging-schema
+      author: flex
+      runAlways: true
+      changes:
+        - sql: CREATE SCHEMA IF NOT EXISTS staging AUTHORIZATION flex
+        - sql: GRANT USAGE ON SCHEMA staging TO flex_internal
+        - sql: GRANT USAGE ON SCHEMA staging TO flex_operation_readonly, flex_operation_update, flex_operation_readwrite
+  - include:
+      file: ./party_staging.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./energy_supplier_balance_responsibility_staging.sql
+      relativeToChangelogFile: true

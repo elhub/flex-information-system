@@ -15,8 +15,8 @@ import {
   AutocompleteReferenceInput,
   PartyReferenceInput,
   FormToolbar,
+  DateInput,
 } from "../../components/EDS-ra/inputs";
-import { MidnightDateInput } from "../../components/EDS-ra/inputs/DateInput";
 import { TZDate } from "@date-fns/tz";
 
 export type ControllableUnitServiceProviderLocationState = {
@@ -157,8 +157,8 @@ const ControllableUnitServiceProviderForm = ({
         </FlexDiv>
 
         <FlexDiv style={{ gap: "var(--eds-size-3)", flexDirection: "column" }}>
-          <MidnightDateInput {...fields.valid_from} />
-          <MidnightDateInput {...fields.valid_to} />
+          <DateInput {...fields.valid_from} outputFormat="date-time" />
+          <DateInput {...fields.valid_to} outputFormat="date-time" />
         </FlexDiv>
 
         <FormToolbar onCancel={onCancel} saveAlwaysEnabled={hasOverride} />

@@ -1,22 +1,23 @@
-import { Datepicker } from "../../ui";
+import { Datepicker, DatepickerProps } from "../../ui";
 import { useInput } from "ra-core";
 import { BaseInput, BaseInputProps } from "./BaseInput";
 import { formatISO, parseISO } from "date-fns";
 import { tz } from "@date-fns/tz";
 
-type DateTimeInputProps = BaseInputProps & {
-  // tells whether the date input component should internally store a timestamp
-  // in addition to the date (useful for midnight aligned fields)
-  storeMidnight: boolean;
-};
+type DateTimeInputProps = BaseInputProps &
+  DatepickerProps & {
+    // tells whether the date input component should internally store a
+    // timestamp in addition to the date (useful for midnight aligned fields)
+    outputFormat?: "date" | "date-time";
+  };
 
-const FlexibleDateInput = ({
+export const DateInput = ({
   source,
   required,
   tooltip,
   readOnly,
   disabled,
-  storeMidnight,
+  outputFormat = "date",
   ...rest
 }: DateTimeInputProps) => {
   const { id, field, fieldState } = useInput({ source, ...rest });
@@ -25,7 +26,7 @@ const FlexibleDateInput = ({
     field.onChange(
       date
         ? formatISO(date, {
-            representation: storeMidnight ? "complete" : "date",
+            representation: outputFormat === "date-time" ? "complete" : "date",
             in: tz("Europe/Oslo"),
           })
         : null,
@@ -43,6 +44,7 @@ const FlexibleDateInput = ({
       error={fieldState.error?.message}
     >
       <Datepicker
+        {...rest}
         id={id}
         selected={
           field.value
@@ -58,13 +60,3 @@ const FlexibleDateInput = ({
     </BaseInput>
   );
 };
-
-// input YYYY-MM-DD, store YYYY-MM-DD
-export const DateInput = (props: BaseInputProps) => (
-  <FlexibleDateInput {...props} storeMidnight={false} />
-);
-
-// input YYYY-MM-DD, store YYYY-MM-DD 00:00 Europe/Oslo converted to ISO format
-export const MidnightDateInput = (props: BaseInputProps) => (
-  <FlexibleDateInput {...props} storeMidnight />
-);

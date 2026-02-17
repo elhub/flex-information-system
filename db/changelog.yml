@@ -39,6 +39,9 @@ databaseChangeLog:
       file: ./notification/changelog.yml
       relativeToChangelogFile: true
   - include:
+      file: ./staging/changelog.yml
+      relativeToChangelogFile: true
+  - include:
       file: ./api/changelog.yml
       relativeToChangelogFile: true
   - include:
