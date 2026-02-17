@@ -6142,7 +6142,7 @@ GRANT SELECT (
     procuring_system_operator_id,
     product_type_ids,
     status,
-    notes,
+    additional_information,
     prequalified_at,
     verified_at,
     recorded_at,
@@ -6157,7 +6157,7 @@ GRANT SELECT (
     procuring_system_operator_id,
     product_type_ids,
     status,
-    notes,
+    additional_information,
     prequalified_at,
     verified_at,
     recorded_at,
@@ -6172,7 +6172,7 @@ GRANT SELECT (
     procuring_system_operator_id,
     product_type_ids,
     status,
-    notes,
+    additional_information,
     prequalified_at,
     verified_at,
     recorded_at,
@@ -6187,7 +6187,7 @@ GRANT SELECT (
     procuring_system_operator_id,
     product_type_ids,
     status,
-    notes,
+    additional_information,
     prequalified_at,
     verified_at,
     recorded_at,
@@ -6199,7 +6199,7 @@ TO flex_flexibility_information_system_operator;
 GRANT UPDATE (
     product_type_ids,
     status,
-    notes,
+    additional_information,
     prequalified_at,
     verified_at
 ) ON TABLE
@@ -6212,7 +6212,7 @@ GRANT SELECT (
     procuring_system_operator_id,
     product_type_ids,
     status,
-    notes,
+    additional_information,
     prequalified_at,
     verified_at,
     recorded_at,
@@ -6227,7 +6227,7 @@ GRANT SELECT (
     procuring_system_operator_id,
     product_type_ids,
     status,
-    notes,
+    additional_information,
     prequalified_at,
     verified_at,
     recorded_at,
@@ -6239,7 +6239,6 @@ TO flex_system_operator;
 GRANT UPDATE (
     product_type_ids,
     status,
-    notes,
     prequalified_at,
     verified_at
 ) ON TABLE
@@ -6250,7 +6249,8 @@ GRANT INSERT (
     service_providing_group_id,
     procuring_system_operator_id,
     product_type_ids,
-    status
+    status,
+    additional_information
 ) ON TABLE
 api.service_providing_group_product_application
 TO flex_service_provider;
@@ -6261,7 +6261,7 @@ GRANT SELECT (
     procuring_system_operator_id,
     product_type_ids,
     status,
-    notes,
+    additional_information,
     prequalified_at,
     verified_at,
     recorded_at,
@@ -6272,7 +6272,8 @@ TO flex_service_provider;
 
 GRANT UPDATE (
     product_type_ids,
-    status
+    status,
+    additional_information
 ) ON TABLE
 api.service_providing_group_product_application
 TO flex_service_provider;
@@ -6283,7 +6284,7 @@ GRANT SELECT (
     procuring_system_operator_id,
     product_type_ids,
     status,
-    notes,
+    additional_information,
     prequalified_at,
     verified_at,
     recorded_at,
@@ -6303,7 +6304,7 @@ GRANT SELECT (
     procuring_system_operator_id,
     product_type_ids,
     status,
-    notes,
+    additional_information,
     prequalified_at,
     verified_at,
     recorded_at,
@@ -6321,7 +6322,7 @@ GRANT SELECT (
     procuring_system_operator_id,
     product_type_ids,
     status,
-    notes,
+    additional_information,
     prequalified_at,
     verified_at,
     recorded_at,
@@ -6339,7 +6340,7 @@ GRANT SELECT (
     procuring_system_operator_id,
     product_type_ids,
     status,
-    notes,
+    additional_information,
     prequalified_at,
     verified_at,
     recorded_at,
@@ -6357,7 +6358,7 @@ GRANT SELECT (
     procuring_system_operator_id,
     product_type_ids,
     status,
-    notes,
+    additional_information,
     prequalified_at,
     verified_at,
     recorded_at,
@@ -6375,7 +6376,7 @@ GRANT SELECT (
     procuring_system_operator_id,
     product_type_ids,
     status,
-    notes,
+    additional_information,
     prequalified_at,
     verified_at,
     recorded_at,
@@ -6393,7 +6394,7 @@ GRANT SELECT (
     procuring_system_operator_id,
     product_type_ids,
     status,
-    notes,
+    additional_information,
     prequalified_at,
     verified_at,
     recorded_at,
@@ -6411,7 +6412,7 @@ GRANT SELECT (
     procuring_system_operator_id,
     product_type_ids,
     status,
-    notes,
+    additional_information,
     prequalified_at,
     verified_at,
     recorded_at,
@@ -6429,7 +6430,7 @@ GRANT SELECT (
     procuring_system_operator_id,
     product_type_ids,
     status,
-    notes,
+    additional_information,
     prequalified_at,
     verified_at,
     recorded_at,

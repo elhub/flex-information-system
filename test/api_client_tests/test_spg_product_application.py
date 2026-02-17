@@ -369,7 +369,7 @@ def test_spgpa_fiso_sp_so(data):
         client=client_fiso,
         id=cast(int, spgpa.id),
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
-            notes="test notes by FISO",
+            additional_information="test by FISO",
             status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFICATION_PENDING,
             prequalified_at=None,
         ),

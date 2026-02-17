@@ -3999,8 +3999,8 @@
                     "status": {
                         "$ref": "#/components/schemas/service_providing_group_product_application_status"
                     },
-                    "notes": {
-                        "description": "Free text notes on the current product application status.",
+                    "additional_information": {
+                        "description": "Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).",
                         "format": "text",
                         "type": "string",
                         "maxLength": 512,
@@ -4056,8 +4056,8 @@
                     "status": {
                         "$ref": "#/components/schemas/service_providing_group_product_application_status"
                     },
-                    "notes": {
-                        "description": "Free text notes on the current product application status.",
+                    "additional_information": {
+                        "description": "Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).",
                         "format": "text",
                         "type": "string",
                         "maxLength": 512,
@@ -4125,8 +4125,8 @@
                     "status": {
                         "$ref": "#/components/schemas/service_providing_group_product_application_status"
                     },
-                    "notes": {
-                        "description": "Free text notes on the current product application status.",
+                    "additional_information": {
+                        "description": "Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).",
                         "format": "text",
                         "type": "string",
                         "maxLength": 512,

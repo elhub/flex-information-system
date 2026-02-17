@@ -28,7 +28,8 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
             2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
         service_providing_group_product_application_id (int): Reference to the resource that was updated. Example: 48.
-        notes (None | str | Unset): Free text notes on the current product application status.
+        additional_information (None | str | Unset): Free text field for extra information about the application if
+            needed (bidding periods, unavailabilities, etc).
         prequalified_at (datetime.datetime | None | Unset): When the product application was last prequalified. Example:
             2022-08-08T12:00:00+02.
         verified_at (datetime.datetime | None | Unset): When the product application was last verified. Example:
@@ -46,7 +47,7 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
     recorded_at: datetime.datetime
     recorded_by: int
     service_providing_group_product_application_id: int
-    notes: None | str | Unset = UNSET
+    additional_information: None | str | Unset = UNSET
     prequalified_at: datetime.datetime | None | Unset = UNSET
     verified_at: datetime.datetime | None | Unset = UNSET
     replaced_by: int | None | Unset = UNSET
@@ -70,11 +71,11 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
 
         service_providing_group_product_application_id = self.service_providing_group_product_application_id
 
-        notes: None | str | Unset
-        if isinstance(self.notes, Unset):
-            notes = UNSET
+        additional_information: None | str | Unset
+        if isinstance(self.additional_information, Unset):
+            additional_information = UNSET
         else:
-            notes = self.notes
+            additional_information = self.additional_information
 
         prequalified_at: None | str | Unset
         if isinstance(self.prequalified_at, Unset):
@@ -120,8 +121,8 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
                 "service_providing_group_product_application_id": service_providing_group_product_application_id,
             }
         )
-        if notes is not UNSET:
-            field_dict["notes"] = notes
+        if additional_information is not UNSET:
+            field_dict["additional_information"] = additional_information
         if prequalified_at is not UNSET:
             field_dict["prequalified_at"] = prequalified_at
         if verified_at is not UNSET:
@@ -152,14 +153,14 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
 
         service_providing_group_product_application_id = d.pop("service_providing_group_product_application_id")
 
-        def _parse_notes(data: object) -> None | str | Unset:
+        def _parse_additional_information(data: object) -> None | str | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             return cast(None | str | Unset, data)
 
-        notes = _parse_notes(d.pop("notes", UNSET))
+        additional_information = _parse_additional_information(d.pop("additional_information", UNSET))
 
         def _parse_prequalified_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
@@ -230,7 +231,7 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
             recorded_at=recorded_at,
             recorded_by=recorded_by,
             service_providing_group_product_application_id=service_providing_group_product_application_id,
-            notes=notes,
+            additional_information=additional_information,
             prequalified_at=prequalified_at,
             verified_at=verified_at,
             replaced_by=replaced_by,
