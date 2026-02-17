@@ -51,6 +51,7 @@ export const throwOnError = <T>(response: Response<T>): T => {
   return data;
 };
 
+// CN is a standard utility function for merging classes
 export const cn = (...classes: (string | undefined)[]): string => {
   return twMerge(clsx(classes));
 };

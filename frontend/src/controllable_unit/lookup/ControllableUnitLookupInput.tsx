@@ -37,27 +37,18 @@ export const ControllableUnitLookupInput = () => {
       return;
     }
 
-    const accountingPointId = response.data.accounting_point.id;
-    const endUserId = response.data.end_user.id;
-    const accountingPointGsrn = response.data.accounting_point.business_id;
-    const endUserOrgNo = lookupRequest.data.end_user;
-
     if (response.data.controllable_units.length === 0) {
       const params = new URLSearchParams({
-        accounting_point_id: String(accountingPointId),
-        end_user_id: String(endUserId),
+        accounting_point_id: String(response.data.accounting_point.id),
+        end_user_id: String(response.data.end_user.id),
       });
       navigate(`/controllable_unit/create?${params.toString()}`);
       return;
     }
 
-    const resultParams = new URLSearchParams({
-      end_user: endUserOrgNo,
-      accounting_point: accountingPointGsrn,
+    return navigate("/controllable_unit/lookup/result", {
+      state: { result: response.data },
     });
-    return navigate(
-      `/controllable_unit/lookup/result?${resultParams.toString()}`,
-    );
   };
 
   return (
