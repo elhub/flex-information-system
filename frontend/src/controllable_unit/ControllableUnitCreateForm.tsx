@@ -98,23 +98,15 @@ export const ControllableUnitCreateForm = ({
         ...values,
         controllable_unit_id: createdControllableUnit.data.id,
         end_user_id: endUserId,
-        valid_from: controllableUnitData.start_date,
+        valid_from: controllableUnitData.start_date
+          ? formatISO(
+              parse(controllableUnitData.start_date, "yyyy-MM-dd", new Date()),
+            )
+          : undefined,
       });
     const createdControllableUnitServiceProvider =
       await createControllableUnitServiceProvider({
-        body: {
-          ...controllableUnitServiceProviderData,
-          controllable_unit_id: createdControllableUnit.data.id,
-          valid_from: controllableUnitData.start_date
-            ? formatISO(
-                parse(
-                  controllableUnitData.start_date,
-                  "yyyy-MM-dd",
-                  new Date(),
-                ),
-              )
-            : undefined,
-        },
+        body: controllableUnitServiceProviderData,
       });
 
     if (createdControllableUnitServiceProvider.error) {

@@ -56,7 +56,13 @@ export const createControllableUnitResources = (permissions: Permissions) => {
             </EditRedirectPreviousPage>
           ) : undefined
         }
-        create={canCreate ? <ControllableUnitInput /> : undefined}
+        create={
+          canCreate ? (
+            <CreateRedirectPreviousPage>
+              <ControllableUnitInput />
+            </CreateRedirectPreviousPage>
+          ) : undefined
+        }
         recordRepresentation="name"
       >
         {/* lookup */}
@@ -65,10 +71,7 @@ export const createControllableUnitResources = (permissions: Permissions) => {
           path="lookup/result"
           element={<ControllableUnitLookupResult />}
         />
-        <Route
-          path="lookup/controllable_unit/create"
-          element={<ControllableUnitCreate />}
-        />
+        <Route path="/lookup/create" element={<ControllableUnitCreate />} />
         {/* controllable unit history */}
         <Route
           path=":controllable_unit_id/history"

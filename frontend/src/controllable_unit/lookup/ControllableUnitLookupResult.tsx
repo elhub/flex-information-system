@@ -55,7 +55,7 @@ export const ControllableUnitLookupResult = () => {
               </BodyText>
               <Button
                 as={Link}
-                to={`/controllable_unit/create?accounting_point_id=${accounting_point.id}&end_user_id=${end_user.id}`}
+                to={`/controllable_unit/lookup/create?accounting_point_id=${accounting_point.id}&end_user_id=${end_user.id}`}
                 variant="primary"
               >
                 Create new unit
