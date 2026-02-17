@@ -4,14 +4,19 @@ import { BaseInput, BaseInputProps } from "./BaseInput";
 import { formatISO, parseISO } from "date-fns";
 import { tz } from "@date-fns/tz";
 
-type DateTimeInputProps = BaseInputProps;
+type DateTimeInputProps = BaseInputProps & {
+  // tells whether the date input component should internally store a timestamp
+  // in addition to the date (useful for midnight aligned fields)
+  storeMidnight: boolean;
+};
 
-export const DateInput = ({
+const FlexibleDateInput = ({
   source,
   required,
   tooltip,
   readOnly,
   disabled,
+  storeMidnight,
   ...rest
 }: DateTimeInputProps) => {
   const { id, field, fieldState } = useInput({ source, ...rest });
@@ -19,7 +24,10 @@ export const DateInput = ({
   const onDateChange = (date: Date | null) => {
     field.onChange(
       date
-        ? formatISO(date, { representation: "date", in: tz("Europe/Oslo") })
+        ? formatISO(date, {
+            representation: storeMidnight ? "complete" : "date",
+            in: tz("Europe/Oslo"),
+          })
         : null,
     );
   };
@@ -50,3 +58,13 @@ export const DateInput = ({
     </BaseInput>
   );
 };
+
+// input YYYY-MM-DD, store YYYY-MM-DD
+export const DateInput = (props: BaseInputProps) => (
+  <FlexibleDateInput {...props} storeMidnight={false} />
+);
+
+// input YYYY-MM-DD, store YYYY-MM-DD 00:00 Europe/Oslo converted to ISO format
+export const MidnightDateInput = (props: BaseInputProps) => (
+  <FlexibleDateInput {...props} storeMidnight />
+);

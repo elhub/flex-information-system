@@ -1,7 +1,6 @@
 import { Form, useGetIdentity, useRecordContext, UserIdentity } from "ra-core";
 import { useNavigate } from "react-router-dom";
 import { ValidTimeTooltip } from "../../components/ValidTimeTooltip";
-import { formatDateToMidnightISO } from "../../components/datetime";
 import { getFields, unTypedZodResolver } from "../../zod";
 import { countDefinedValues } from "../../util";
 import {
@@ -15,9 +14,10 @@ import {
   TextInput,
   AutocompleteReferenceInput,
   PartyReferenceInput,
-  DateInput,
   FormToolbar,
 } from "../../components/EDS-ra/inputs";
+import { MidnightDateInput } from "../../components/EDS-ra/inputs/DateInput";
+import { TZDate } from "@date-fns/tz";
 
 export type ControllableUnitServiceProviderLocationState = {
   cusp?: Partial<ControllableUnitServiceProvider>;
@@ -33,18 +33,32 @@ export const ControllableUnitServiceProviderInput = () => {
   const { cusp, cuIDAsNumber } = locationState ?? {};
   const actualRecord = useRecordContext<ControllableUnitServiceProvider>();
 
-  const overrideRecord = zControllableUnitServiceProvider
-    .partial()
-    .parse(cusp ?? {});
+  const overrideRecord = zControllableUnitServiceProvider.partial().parse({
+    ...cusp,
+    // if valid_from is given by CU create page, it will be a date (YYYY-MM-DD)
+    // and needs to be converted to a midnight-aligned datetime in Norway
+    valid_from: cusp?.valid_from
+      ? (() => {
+          const [y, m, d] = cusp.valid_from.split("-").map(Number);
+          return new TZDate(
+            y,
+            m - 1,
+            d,
+            0,
+            0,
+            0,
+            0,
+            "Europe/Oslo",
+          ).toISOString();
+        })()
+      : undefined,
+  });
 
   const hasOverride = countDefinedValues(overrideRecord) > 0;
 
   const overridenRecord = {
     ...actualRecord,
     ...overrideRecord,
-    valid_from: overrideRecord?.valid_from
-      ? formatDateToMidnightISO(overrideRecord?.valid_from)
-      : actualRecord?.valid_from,
   } as ControllableUnitServiceProvider;
 
   const { data: identity, isLoading: identityLoading } = useGetIdentity();
@@ -143,8 +157,8 @@ const ControllableUnitServiceProviderForm = ({
         </FlexDiv>
 
         <FlexDiv style={{ gap: "var(--eds-size-3)", flexDirection: "column" }}>
-          <DateInput {...fields.valid_from} />
-          <DateInput {...fields.valid_to} />
+          <MidnightDateInput {...fields.valid_from} />
+          <MidnightDateInput {...fields.valid_to} />
         </FlexDiv>
 
         <FormToolbar onCancel={onCancel} saveAlwaysEnabled={hasOverride} />

@@ -69,11 +69,11 @@ api design that has been used as a reference.
 
 We implement a few common fields on all resources. These are
 
-| Field         | Type     | Description                                              |
-|---------------|----------|----------------------------------------------------------|
-| `id`          | bigint   | Unique identifier                                        |
-| `recorded_at` | datetime | Time the resource was last recorded (created or updated) |
-| `recorded_by` | bigint   | Id of the identity that last recorded the resource       |
+| Field         | Type      | Description                                              |
+|---------------|-----------|----------------------------------------------------------|
+| `id`          | bigint    | Unique identifier                                        |
+| `recorded_at` | date-time | Time the resource was last recorded (created or updated) |
+| `recorded_by` | bigint    | Id of the identity that last recorded the resource       |
 
 ## Datetime
 
