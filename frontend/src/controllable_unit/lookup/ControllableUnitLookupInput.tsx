@@ -1,5 +1,5 @@
 import { Form, useNotify } from "ra-core";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { callControllableUnitLookup } from "../../generated-client";
 import { zControllableUnitLookupRequest } from "../../generated-client/zod.gen";
 import { getFields, unTypedZodResolver } from "../../zod";
@@ -7,11 +7,6 @@ import { FormContainer, Heading } from "../../components/ui";
 import { TextInput, FormToolbar } from "../../components/EDS-ra/inputs";
 
 export const ControllableUnitLookupInput = () => {
-  const { state } = useLocation();
-  const defaultControllableUnit = state?.controllable_unit as
-    | string
-    | undefined;
-
   const navigate = useNavigate();
   const notify = useNotify();
 
@@ -53,7 +48,6 @@ export const ControllableUnitLookupInput = () => {
 
   return (
     <Form
-      defaultValues={{ controllable_unit: defaultControllableUnit }}
       resolver={unTypedZodResolver(zControllableUnitLookupRequest)}
       onSubmit={lookup}
     >
