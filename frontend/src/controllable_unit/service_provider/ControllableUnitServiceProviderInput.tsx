@@ -17,7 +17,7 @@ import {
   FormToolbar,
   DateInput,
 } from "../../components/EDS-ra/inputs";
-import { TZDate } from "@date-fns/tz";
+import { formatISO, parse } from "date-fns";
 
 export type ControllableUnitServiceProviderLocationState = {
   cusp?: Partial<ControllableUnitServiceProvider>;
@@ -36,21 +36,9 @@ export const ControllableUnitServiceProviderInput = () => {
   const overrideRecord = zControllableUnitServiceProvider.partial().parse({
     ...cusp,
     // if valid_from is given by CU create page, it will be a date (YYYY-MM-DD)
-    // and needs to be converted to a midnight-aligned datetime in Norway
+    // and needs to be converted to a locally midnight-aligned datetime
     valid_from: cusp?.valid_from
-      ? (() => {
-          const [y, m, d] = cusp.valid_from.split("-").map(Number);
-          return new TZDate(
-            y,
-            m - 1,
-            d,
-            0,
-            0,
-            0,
-            0,
-            "Europe/Oslo",
-          ).toISOString();
-        })()
+      ? formatISO(parse(cusp.valid_from, "yyyy-MM-dd", new Date()))
       : undefined,
   });
 
