@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
 from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
 from ..models.service_providing_group_grid_prequalification_status import (
     ServiceProvidingGroupGridPrequalificationStatus,
@@ -21,12 +23,12 @@ class ServiceProvidingGroupGridPrequalificationUpdateRequest:
     Attributes:
         status (ServiceProvidingGroupGridPrequalificationStatus | Unset): The status of the grid prequalification for
             this service providing group. Example: in_progress.
-        prequalified_at (None | str | Unset): When the current grid prequalification was last approved. Example:
-            2023-01-08 10:00:00 CET.
+        prequalified_at (datetime.datetime | None | Unset): When the current grid prequalification was last approved.
+            Example: 2023-01-08T10:00:00+01.
     """
 
     status: ServiceProvidingGroupGridPrequalificationStatus | Unset = UNSET
-    prequalified_at: None | str | Unset = UNSET
+    prequalified_at: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -37,6 +39,8 @@ class ServiceProvidingGroupGridPrequalificationUpdateRequest:
         prequalified_at: None | str | Unset
         if isinstance(self.prequalified_at, Unset):
             prequalified_at = UNSET
+        elif isinstance(self.prequalified_at, datetime.datetime):
+            prequalified_at = self.prequalified_at.isoformat()
         else:
             prequalified_at = self.prequalified_at
 
@@ -60,12 +64,20 @@ class ServiceProvidingGroupGridPrequalificationUpdateRequest:
         else:
             status = ServiceProvidingGroupGridPrequalificationStatus(_status)
 
-        def _parse_prequalified_at(data: object) -> None | str | Unset:
+        def _parse_prequalified_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(None | str | Unset, data)
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                prequalified_at_type_0 = isoparse(data)
+
+                return prequalified_at_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(datetime.datetime | None | Unset, data)
 
         prequalified_at = _parse_prequalified_at(d.pop("prequalified_at", UNSET))
 

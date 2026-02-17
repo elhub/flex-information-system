@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
 from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
 from ..models.controllable_unit_suspension_reason import ControllableUnitSuspensionReason
 
@@ -21,8 +23,8 @@ class ControllableUnitSuspensionResponse:
         impacted_system_operator_id (int): Reference to the impacted system operator suspending the controllable unit.
             Example: 7.
         reason (ControllableUnitSuspensionReason): The reason for the suspension. Example: compromises_safe_operation.
-        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-            23:59:00 CET.
+        recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
+            2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
     """
 
@@ -30,7 +32,7 @@ class ControllableUnitSuspensionResponse:
     controllable_unit_id: int
     impacted_system_operator_id: int
     reason: ControllableUnitSuspensionReason
-    recorded_at: str
+    recorded_at: datetime.datetime
     recorded_by: int
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -43,7 +45,7 @@ class ControllableUnitSuspensionResponse:
 
         reason = self.reason.value
 
-        recorded_at = self.recorded_at
+        recorded_at = self.recorded_at.isoformat()
 
         recorded_by = self.recorded_by
 
@@ -73,7 +75,7 @@ class ControllableUnitSuspensionResponse:
 
         reason = ControllableUnitSuspensionReason(d.pop("reason"))
 
-        recorded_at = d.pop("recorded_at")
+        recorded_at = isoparse(d.pop("recorded_at"))
 
         recorded_by = d.pop("recorded_by")
 

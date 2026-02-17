@@ -6,6 +6,8 @@ import { tz } from "@date-fns/tz";
 
 type DateTimeInputProps = BaseInputProps &
   DatepickerProps & {
+    // tells whether the date input component should internally store a
+    // timestamp in addition to the date (useful for midnight aligned fields)
     outputFormat?: "date" | "date-time";
   };
 
@@ -23,9 +25,10 @@ export const DateInput = ({
   const onDateChange = (date: Date | null) => {
     field.onChange(
       date
-        ? outputFormat === "date"
-          ? formatISO(date, { representation: "date", in: tz("Europe/Oslo") })
-          : formatISO(date, { in: tz("Europe/Oslo") })
+        ? formatISO(date, {
+            representation: outputFormat === "date-time" ? "complete" : "date",
+            in: tz("Europe/Oslo"),
+          })
         : null,
     );
   };

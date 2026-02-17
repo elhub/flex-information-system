@@ -36,8 +36,8 @@ class ControllableUnitResponse:
             Example: 10289.
         grid_validation_status (ControllableUnitGridValidationStatus): The grid validation status of the controllable
             unit. Example: validated.
-        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-            23:59:00 CET.
+        recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
+            2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
         start_date (datetime.date | None | Unset): The usage date when the controllable unit is first active. Example:
             2024-05-17.
@@ -50,8 +50,8 @@ class ControllableUnitResponse:
         grid_node_id (None | str | Unset): Reference to the node that the controllable unit is connected to. Example:
             53919b79-876f-4dad-8bde-b29368367604.
         grid_validation_notes (None | str | Unset): Free text notes on the current grid validation status.
-        validated_at (None | str | Unset): When the controllable unit was last validated. Example: 2022-08-08 12:00:00
-            CET.
+        validated_at (datetime.datetime | None | Unset): When the controllable unit was last validated. Example:
+            2022-08-08T12:00:00+02.
     """
 
     id: int
@@ -63,7 +63,7 @@ class ControllableUnitResponse:
     is_small: bool
     accounting_point_id: int
     grid_validation_status: ControllableUnitGridValidationStatus
-    recorded_at: str
+    recorded_at: datetime.datetime
     recorded_by: int
     start_date: datetime.date | None | Unset = UNSET
     minimum_duration: int | None | Unset = UNSET
@@ -72,7 +72,7 @@ class ControllableUnitResponse:
     ramp_rate: float | None | Unset = UNSET
     grid_node_id: None | str | Unset = UNSET
     grid_validation_notes: None | str | Unset = UNSET
-    validated_at: None | str | Unset = UNSET
+    validated_at: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -94,7 +94,7 @@ class ControllableUnitResponse:
 
         grid_validation_status = self.grid_validation_status.value
 
-        recorded_at = self.recorded_at
+        recorded_at = self.recorded_at.isoformat()
 
         recorded_by = self.recorded_by
 
@@ -145,6 +145,8 @@ class ControllableUnitResponse:
         validated_at: None | str | Unset
         if isinstance(self.validated_at, Unset):
             validated_at = UNSET
+        elif isinstance(self.validated_at, datetime.datetime):
+            validated_at = self.validated_at.isoformat()
         else:
             validated_at = self.validated_at
 
@@ -205,7 +207,7 @@ class ControllableUnitResponse:
 
         grid_validation_status = ControllableUnitGridValidationStatus(d.pop("grid_validation_status"))
 
-        recorded_at = d.pop("recorded_at")
+        recorded_at = isoparse(d.pop("recorded_at"))
 
         recorded_by = d.pop("recorded_by")
 
@@ -280,12 +282,20 @@ class ControllableUnitResponse:
 
         grid_validation_notes = _parse_grid_validation_notes(d.pop("grid_validation_notes", UNSET))
 
-        def _parse_validated_at(data: object) -> None | str | Unset:
+        def _parse_validated_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(None | str | Unset, data)
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                validated_at_type_0 = isoparse(data)
+
+                return validated_at_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(datetime.datetime | None | Unset, data)
 
         validated_at = _parse_validated_at(d.pop("validated_at", UNSET))
 

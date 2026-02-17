@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
 from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
 from ..types import UNSET, Unset
 
@@ -18,7 +20,7 @@ class EventResponse:
     Attributes:
         id (int): Unique surrogate identifier. Example: 89.
         specversion (str): The version of the CloudEvents specification followed by the resource. Example: 1.0.
-        time (str): The time at which the event was generated. Example: 2022-08-08 12:00:00 CET.
+        time (datetime.datetime): The time at which the event was generated. Example: 2022-08-08T12:00:00+02.
         type_ (str): The type of the event. Example: no.elhub.flex.service_providing_group.update.
         source (str): The URI of the resource concerned by the event. Example: /controllable_unit/4.
         subject (None | str | Unset): The URI of the specific subject of the event within the resource pointed by
@@ -28,7 +30,7 @@ class EventResponse:
 
     id: int
     specversion: str
-    time: str
+    time: datetime.datetime
     type_: str
     source: str
     subject: None | str | Unset = UNSET
@@ -40,7 +42,7 @@ class EventResponse:
 
         specversion = self.specversion
 
-        time = self.time
+        time = self.time.isoformat()
 
         type_ = self.type_
 
@@ -83,7 +85,7 @@ class EventResponse:
 
         specversion = d.pop("specversion")
 
-        time = d.pop("time")
+        time = isoparse(d.pop("time"))
 
         type_ = d.pop("type")
 

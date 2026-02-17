@@ -1,7 +1,6 @@
 import { Form, useGetIdentity, useRecordContext, UserIdentity } from "ra-core";
 import { useNavigate } from "react-router-dom";
 import { ValidTimeTooltip } from "../../components/ValidTimeTooltip";
-import { formatDateToMidnightISO } from "../../components/datetime";
 import { getFields, unTypedZodResolver } from "../../zod";
 import { countDefinedValues } from "../../util";
 import {
@@ -15,9 +14,10 @@ import {
   TextInput,
   AutocompleteReferenceInput,
   PartyReferenceInput,
-  DateInput,
   FormToolbar,
+  DateInput,
 } from "../../components/EDS-ra/inputs";
+import { formatISO, parse } from "date-fns";
 
 export type ControllableUnitServiceProviderLocationState = {
   cusp?: Partial<ControllableUnitServiceProvider>;
@@ -33,18 +33,20 @@ export const ControllableUnitServiceProviderInput = () => {
   const { cusp, cuIDAsNumber } = locationState ?? {};
   const actualRecord = useRecordContext<ControllableUnitServiceProvider>();
 
-  const overrideRecord = zControllableUnitServiceProvider
-    .partial()
-    .parse(cusp ?? {});
+  const overrideRecord = zControllableUnitServiceProvider.partial().parse({
+    ...cusp,
+    // if valid_from is given by CU create page, it will be a date (YYYY-MM-DD)
+    // and needs to be converted to a locally midnight-aligned datetime
+    valid_from: cusp?.valid_from
+      ? formatISO(parse(cusp.valid_from, "yyyy-MM-dd", new Date()))
+      : undefined,
+  });
 
   const hasOverride = countDefinedValues(overrideRecord) > 0;
 
   const overridenRecord = {
     ...actualRecord,
     ...overrideRecord,
-    valid_from: overrideRecord?.valid_from
-      ? formatDateToMidnightISO(overrideRecord?.valid_from)
-      : actualRecord?.valid_from,
   } as ControllableUnitServiceProvider;
 
   const { data: identity, isLoading: identityLoading } = useGetIdentity();

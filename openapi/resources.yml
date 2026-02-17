@@ -288,10 +288,10 @@ resources:
           nn: Nettvalideringsnotat
       validated_at:
         description: When the controllable unit was last validated.
-        format: timestamp with time zone
+        format: date-time
         type: string
         nullable: true
-        example: 2022-08-08 12:00:00 CET
+        example: '2022-08-08T12:00:00+02'
         x-intl:
           en: Validated at
           nb: Validert
@@ -485,11 +485,11 @@ resources:
         description: >-
           The date from which the relation between the controllable unit and
           the service provider is valid. Midnight aligned on Norwegian timezone.
-        format: timestamp with time zone
+        format: date-time
         type: string
         x-filter: true
         nullable: true
-        example: 2022-08-08 00:00:00 CET
+        example: '2022-08-08T00:00:00+02'
         x-intl:
           en: Valid from
           nb: Gyldig fra
@@ -498,11 +498,11 @@ resources:
         description: >-
           The date until which the relation between the controllable unit and
           the service provider is valid. Midnight aligned on Norwegian timezone.
-        format: timestamp with time zone
+        format: date-time
         type: string
         x-filter: true
         nullable: true
-        example: 2022-09-10 00:00:00 CET
+        example: '2022-09-10T00:00:00+02'
         x-intl:
           en: Valid to
           nb: Gyldig til
@@ -709,10 +709,10 @@ resources:
           The date from which the relation between the controllable unit and
           the service providing group is valid. Midnight aligned on Norwegian
           timezone.
-        format: timestamp with time zone
+        format: date-time
         type: string
         x-filter: true
-        example: 2022-08-08 00:00:00 CET
+        example: '2022-08-08T00:00:00+02'
         x-intl:
           en: Valid from
           nb: Gyldig fra
@@ -722,7 +722,7 @@ resources:
           The date until which the relation between the controllable unit and
           the service providing group is valid. Midnight aligned on Norwegian
           timezone.
-        format: timestamp with time zone
+        format: date-time
         type: string
         x-filter: true
         nullable: true
@@ -840,10 +840,10 @@ resources:
           nn: Status
       prequalified_at:
         description: When the current grid prequalification was last approved.
-        format: timestamp with time zone
+        format: date-time
         type: string
         nullable: true
-        example: 2023-01-08 10:00:00 CET
+        example: '2023-01-08T10:00:00+01'
         x-intl:
           en: Prequalified at
           nb: Prekvalifisert
@@ -1734,10 +1734,10 @@ resources:
           nn: Spesifikasjonsversjon
       time:
         description: The time at which the event was generated.
-        format: timestamp with time zone
+        format: date-time
         type: string
         readOnly: true
-        example: 2022-08-08 12:00:00 CET
+        example: '2022-08-08T12:00:00+02'
         x-intl:
           en: Time
           nb: Tidspunkt
@@ -1979,11 +1979,11 @@ resources:
           The date from which the relation between the accounting point and
           the balance responsible party is valid. Midnight aligned on Norwegian
           timezone.
-        format: timestamp with time zone
+        format: date-time
         type: string
         readOnly: true
         x-filter: true
-        example: 2022-08-08 00:00:00 CET
+        example: '2022-08-08T00:00:00+02'
         x-intl:
           en: Valid from
           nb: Gyldig fra
@@ -1993,7 +1993,7 @@ resources:
           The date until which the relation between the accounting point and
           the balance responsible party is valid. Midnight aligned on Norwegian
           timezone.
-        format: timestamp with time zone
+        format: date-time
         type: string
         readOnly: true
         x-filter: true
@@ -2071,11 +2071,11 @@ resources:
         description: >-
           The date from which the accounting point belongs to the bidding zone.
           Midnight aligned on Norwegian timezone.
-        format: timestamp with time zone
+        format: date-time
         type: string
         readOnly: true
         x-filter: true
-        example: 2022-08-08 00:00:00 CET
+        example: '2022-08-08T00:00:00+02'
         x-intl:
           en: Valid from
           nb: Gyldig fra
@@ -2084,7 +2084,7 @@ resources:
         description: >-
           The date until which the accounting point belongs to the bidding zone.
           Midnight aligned on Norwegian timezone.
-        format: timestamp with time zone
+        format: date-time
         type: string
         readOnly: true
         nullable: true
@@ -2140,10 +2140,10 @@ resources:
         description: >-
           The date from which the accounting point belongs to the end user.
           Midnight aligned on Norwegian timezone.
-        format: timestamp with time zone
+        format: date-time
         type: string
         readOnly: true
-        example: 2022-08-08 00:00:00 CET
+        example: '2022-08-08T00:00:00+02'
         x-filter: true
         x-intl:
           en: Valid from
@@ -2153,7 +2153,7 @@ resources:
         description: >-
           The date until which the accounting point belongs to the end user.
           Midnight aligned on Norwegian timezone.
-        format: timestamp with time zone
+        format: date-time
         type: string
         readOnly: true
         nullable: true
@@ -2210,11 +2210,11 @@ resources:
         description: >-
           The date from which the relation between the accounting point and
           the energy supplier is valid. Midnight aligned on Norwegian timezone.
-        format: timestamp with time zone
+        format: date-time
         type: string
         readOnly: true
         x-filter: true
-        example: 2023-09-09 00:00:00 CET
+        example: '2023-09-09T00:00:00+02'
         x-intl:
           en: Valid from
           nb: Gyldig fra
@@ -2223,7 +2223,7 @@ resources:
         description: >-
           The date until which the relation between the accounting point and
           the energy supplier is valid. Midnight aligned on Norwegian timezone.
-        format: timestamp with time zone
+        format: date-time
         type: string
         readOnly: true
         x-filter: true
@@ -2349,11 +2349,11 @@ resources:
         description: >-
           The date from which the accounting point belongs to the metering grid
           area. Midnight aligned on Norwegian timezone.
-        format: timestamp with time zone
+        format: date-time
         type: string
         readOnly: true
         x-filter: true
-        example: 2023-09-09 00:00:00 CET
+        example: '2023-09-09T00:00:00+02'
         x-intl:
           en: Valid from
           nb: Gyldig fra
@@ -2362,7 +2362,7 @@ resources:
         description: >-
           The date until which the accounting point belongs to the metering grid
           area. Midnight aligned on Norwegian timezone.
-        format: timestamp with time zone
+        format: date-time
         type: string
         readOnly: true
         nullable: true
@@ -2639,10 +2639,10 @@ resources:
           nn: Status
       qualified_at:
         description: When the product application was last validated.
-        format: timestamp with time zone
+        format: date-time
         type: string
         nullable: true
-        example: 2022-08-08 12:00:00 CET
+        example: '2022-08-08T12:00:00+02'
         x-intl:
           en: Qualified at
           nb: Kvalifisert
@@ -2906,20 +2906,20 @@ resources:
           nn: Notat
       prequalified_at:
         description: When the product application was last prequalified.
-        format: timestamp with time zone
+        format: date-time
         type: string
         nullable: true
-        example: 2022-08-08 12:00:00 CET
+        example: '2022-08-08T12:00:00+02'
         x-intl:
           en: Prequalified at
           nb: Prekvalifisert
           nn: Prekvalifisert
       verified_at:
         description: When the product application was last verified.
-        format: timestamp with time zone
+        format: date-time
         type: string
         nullable: true
-        example: 2021-08-08 10:00:00 CET
+        example: '2021-08-08T10:00:00+02'
         x-intl:
           en: Verified at
           nb: Verifisert

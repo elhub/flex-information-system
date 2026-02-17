@@ -531,6 +531,9 @@ openapi-client-frontend:
     sed -i 's/z\.number/z\.coerce\.number/g' src/generated-client/zod.gen.ts
     sed -i 's/z\.int/z\.coerce\.number/g' src/generated-client/zod.gen.ts
 
+    # allow timezones in datetime values (full ISO 8601)
+    sed -i 's/z\.iso\.datetime()/z.iso.datetime({ offset: true })/g' src/generated-client/zod.gen.ts
+
     # Remove all default values from the zod.gen.ts file. They create problems when you dont have access to the specific field.
     sed -i 's/\.default([^)]*)//g' src/generated-client/zod.gen.ts
 

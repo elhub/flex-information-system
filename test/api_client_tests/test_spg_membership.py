@@ -42,6 +42,7 @@ from flex.api.service_providing_group_membership import (
 from flex.api.service_providing_group_grid_prequalification import (
     create_service_providing_group_grid_prequalification,
 )
+import datetime
 import pytest
 from typing import cast
 
@@ -106,8 +107,8 @@ def test_cusp_spgm_consistency_not_ok(data):
             service_provider_id=sp_id,
             end_user_id=eu_id,
             contract_reference="TEST-CONTRACT",
-            valid_from="2024-01-08T00:00:00+1",
-            valid_to="2024-01-12T00:00:00+1",
+            valid_from=datetime.datetime.fromisoformat("2024-01-08T00:00:00+01:00"),
+            valid_to=datetime.datetime.fromisoformat("2024-01-12T00:00:00+01:00"),
         ),
     )
     assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
@@ -118,8 +119,8 @@ def test_cusp_spgm_consistency_not_ok(data):
         body=ServiceProvidingGroupMembershipCreateRequest(
             controllable_unit_id=cu_id,
             service_providing_group_id=spg_id,
-            valid_from="2024-01-07T00:00:00+1",
-            valid_to="2024-01-11T00:00:00+1",
+            valid_from=datetime.datetime.fromisoformat("2024-01-07T00:00:00+01:00"),
+            valid_to=datetime.datetime.fromisoformat("2024-01-11T00:00:00+01:00"),
         ),
     )
     # should fail (begins before the CU is linked to the SP)
@@ -131,8 +132,8 @@ def test_cusp_spgm_consistency_not_ok(data):
         body=ServiceProvidingGroupMembershipCreateRequest(
             controllable_unit_id=cu_id,
             service_providing_group_id=spg_id,
-            valid_from="2024-01-09T00:00:00+1",
-            valid_to="2024-01-13T00:00:00+1",
+            valid_from=datetime.datetime.fromisoformat("2024-01-09T00:00:00+01:00"),
+            valid_to=datetime.datetime.fromisoformat("2024-01-13T00:00:00+01:00"),
         ),
     )
     # should fail (finishes after the CU is linked to the SP)
@@ -151,8 +152,8 @@ def test_spgm_sp002(data):
         body=ServiceProvidingGroupMembershipCreateRequest(
             controllable_unit_id=cu_id,
             service_providing_group_id=spg_id,
-            valid_from="2024-01-01T08:01:00+00:00",
-            valid_to="2024-01-01T09:59:00+00:00",
+            valid_from=datetime.datetime.fromisoformat("2024-01-01T08:01:00+00:00"),
+            valid_to=datetime.datetime.fromisoformat("2024-01-01T09:59:00+00:00"),
         ),
     )
     # should fail
@@ -171,8 +172,8 @@ def test_spgm_sp002(data):
             service_provider_id=sp_id,
             end_user_id=eu_id,
             contract_reference="TEST-CONTRACT",
-            valid_from="2024-01-08T00:00:00+1",
-            valid_to="2024-01-12T00:00:00+1",
+            valid_from=datetime.datetime.fromisoformat("2024-01-08T00:00:00+01:00"),
+            valid_to=datetime.datetime.fromisoformat("2024-01-12T00:00:00+01:00"),
         ),
     )
     assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
@@ -186,8 +187,8 @@ def test_spgm_sp002(data):
         body=ServiceProvidingGroupMembershipCreateRequest(
             controllable_unit_id=cu_id,
             service_providing_group_id=spg_id,
-            valid_from="2024-01-09T00:00:00+1",
-            valid_to="2024-01-11T00:00:00+1",
+            valid_from=datetime.datetime.fromisoformat("2024-01-09T00:00:00+01:00"),
+            valid_to=datetime.datetime.fromisoformat("2024-01-11T00:00:00+01:00"),
         ),
     )
     assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
@@ -198,7 +199,7 @@ def test_spgm_sp002(data):
         client=client_sp2,
         id=cast(int, spgm.id),
         body=ServiceProvidingGroupMembershipUpdateRequest(
-            valid_to="2024-01-10T00:00:00+1",
+            valid_to=datetime.datetime.fromisoformat("2024-01-10T00:00:00+01:00"),
         ),
     )
     assert isinstance(u, ErrorMessage)
@@ -208,7 +209,7 @@ def test_spgm_sp002(data):
         client=client_sp,
         id=cast(int, spgm.id),
         body=ServiceProvidingGroupMembershipUpdateRequest(
-            valid_to="2024-01-10T00:00:00+1",
+            valid_to=datetime.datetime.fromisoformat("2024-01-10T00:00:00+01:00"),
         ),
     )
     assert not (isinstance(u, ErrorMessage))
@@ -232,8 +233,8 @@ def test_spgm(data):
             service_provider_id=sp_id,
             end_user_id=eu_id,
             contract_reference="TEST-CONTRACT",
-            valid_from="2024-01-08T00:00:00+1",
-            valid_to="2024-01-12T00:00:00+1",
+            valid_from=datetime.datetime.fromisoformat("2024-01-08T00:00:00+01:00"),
+            valid_to=datetime.datetime.fromisoformat("2024-01-12T00:00:00+01:00"),
         ),
     )
     assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
@@ -253,8 +254,8 @@ def test_spgm(data):
         body=ServiceProvidingGroupMembershipCreateRequest(
             controllable_unit_id=cu_id,
             service_providing_group_id=spg_id,
-            valid_from="2024-01-09T00:00:00+1",
-            valid_to="2024-01-11T00:00:00+1",
+            valid_from=datetime.datetime.fromisoformat("2024-01-09T00:00:00+01:00"),
+            valid_to=datetime.datetime.fromisoformat("2024-01-11T00:00:00+01:00"),
         ),
     )
     assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
@@ -285,7 +286,7 @@ def test_spgm(data):
         client=client_fiso,
         id=cast(int, spgm.id),
         body=ServiceProvidingGroupMembershipUpdateRequest(
-            valid_to="2024-01-10T00:00:00+1",
+            valid_to=datetime.datetime.fromisoformat("2024-01-10T00:00:00+01:00"),
         ),
     )
     assert not (isinstance(u, ErrorMessage))
@@ -334,8 +335,8 @@ def test_spgm(data):
         body=ServiceProvidingGroupMembershipCreateRequest(
             controllable_unit_id=cu_id,
             service_providing_group_id=spg_id,
-            valid_from="2024-01-09T00:00:00+1",
-            valid_to="2024-01-11T00:00:00+1",
+            valid_from=datetime.datetime.fromisoformat("2024-01-09T00:00:00+01:00"),
+            valid_to=datetime.datetime.fromisoformat("2024-01-11T00:00:00+01:00"),
         ),
     )
     assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
@@ -362,7 +363,7 @@ def test_spgm_so(data):
             service_provider_id=sp_id,
             end_user_id=eu_id,
             contract_reference="TEST-CONTRACT",
-            valid_from="2024-01-09T00:00:00+1",
+            valid_from=datetime.datetime.fromisoformat("2024-01-09T00:00:00+01:00"),
         ),
     )
     assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
@@ -372,8 +373,8 @@ def test_spgm_so(data):
         body=ServiceProvidingGroupMembershipCreateRequest(
             controllable_unit_id=cu_id,
             service_providing_group_id=spg_id,
-            valid_from="2024-01-10T00:00:00+1",
-            valid_to="2024-01-11 Europe/Oslo",
+            valid_from=datetime.datetime.fromisoformat("2024-01-10T00:00:00+01:00"),
+            valid_to=datetime.datetime.fromisoformat("2024-01-11T00:00:00+01:00"),
         ),
     )
     assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
@@ -383,7 +384,7 @@ def test_spgm_so(data):
         client=client_sp,
         id=cast(int, spgm.id),
         body=ServiceProvidingGroupMembershipUpdateRequest(
-            valid_to="2024-01-12 Europe/Oslo",
+            valid_to=datetime.datetime.fromisoformat("2024-01-12T00:00:00+01:00"),
         ),
     )
     assert not (isinstance(u, ErrorMessage))

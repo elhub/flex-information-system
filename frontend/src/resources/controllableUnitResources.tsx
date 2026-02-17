@@ -56,7 +56,13 @@ export const createControllableUnitResources = (permissions: Permissions) => {
             </EditRedirectPreviousPage>
           ) : undefined
         }
-        create={canCreate ? <ControllableUnitInput /> : undefined}
+        create={
+          canCreate ? (
+            <CreateRedirectPreviousPage>
+              <ControllableUnitInput />
+            </CreateRedirectPreviousPage>
+          ) : undefined
+        }
         recordRepresentation="name"
       >
         {/* lookup */}
