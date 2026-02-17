@@ -9,6 +9,7 @@ import { usePermissions, useResourceContext, useTranslate } from "ra-core";
 import { Permissions, PermissionTarget } from "../../../auth/permissions";
 import { useCreateOrUpdate } from "../../../auth/useCreateOrUpdate";
 import { FieldTooltip } from "../fields/FieldTooltip";
+import { useTooltipText } from "../fields/useTooltipText";
 
 export type BaseInputProps = {
   source: string;
@@ -18,7 +19,8 @@ export type BaseInputProps = {
   readOnly?: boolean;
   resource?: string;
   overrideLabel?: string;
-  description?: string;
+  description?: boolean;
+  descriptionOverride?: string;
 };
 
 type BaseInputPropsWithChildren = BaseInputProps & {
@@ -36,6 +38,7 @@ export const BaseInput = ({
   id,
   error,
   description,
+  descriptionOverride,
   children,
   resource: resourceProp,
   overrideLabel,
@@ -49,6 +52,11 @@ export const BaseInput = ({
 
   const labelText =
     overrideLabel ?? translate(`field.${resource}.${formattedSource}`);
+  const defaultDescription = useTooltipText({
+    resource,
+    field: formattedSource,
+  });
+  const descriptionText = descriptionOverride ?? defaultDescription;
 
   // Check permissions for this field
   const isPermissionDisabled =
@@ -66,7 +74,6 @@ export const BaseInput = ({
       error={error}
       inputProps={{ required: required, disabled: isDisabled }}
       size="large"
-      description={description}
     >
       <FlexDiv style={{ gap: "var(--eds-size-2)", alignItems: "center" }}>
         <FormItemLabel htmlFor={id} size="large">
@@ -74,7 +81,9 @@ export const BaseInput = ({
         </FormItemLabel>
         {tooltip && <FieldTooltip resource={resource} field={source} />}
       </FlexDiv>
-      {description && <FormItemDescription>{description}</FormItemDescription>}
+      {description || descriptionOverride ? (
+        <FormItemDescription>{descriptionText}</FormItemDescription>
+      ) : null}
       {children}
     </FormItem>
   );

@@ -56,13 +56,15 @@ export const ControllableUnitLookupInput = () => {
           User details
         </Heading>
         <TextInput
-          description="Organisation number or birth number of the end user"
+          description
+          descriptionOverride="Organisation number or birth number of the end user"
           overrideLabel="End user"
           tooltip={false}
           {...keys.end_user}
         />
         <TextInput
-          description="GSRN of the accounting point"
+          description
+          descriptionOverride="GSRN of the accounting point"
           overrideLabel="Accounting point"
           tooltip={false}
           {...keys.accounting_point}

@@ -8,6 +8,7 @@ export type BaseFieldProps = {
   source: string;
   label?: boolean;
   tooltip?: boolean;
+  descriptionOverride?: string;
 };
 
 type BaseFieldPropsWithChildren = BaseFieldProps & {
