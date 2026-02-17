@@ -20,7 +20,7 @@ class AccountingPointResponse:
         business_id (str): The GSRN metering point id of the accounting point. Example: 709000000000000057.
         system_operator_id (int): The system operator of the accounting point.
         recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
-            2023-12-31T23:59:00Z.
+            2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
     """
 

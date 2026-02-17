@@ -26,14 +26,14 @@ class ServiceProvidingGroupMembershipHistoryResponse:
         valid_from (datetime.datetime): The date from which the relation between the controllable unit and the service
             providing group is valid. Midnight aligned on Norwegian timezone. Example: 2022-08-08T00:00:00+02.
         recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
-            2023-12-31T23:59:00Z.
+            2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
         service_providing_group_membership_id (int): Reference to the resource that was updated. Example: 48.
         valid_to (datetime.datetime | None | Unset): The date until which the relation between the controllable unit and
             the service providing group is valid. Midnight aligned on Norwegian timezone.
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (datetime.datetime | None | Unset): When the resource was replaced in the system. Example:
-            2024-07-07T10:00:00Z.
+            2024-07-07T10:00:00+00:00.
     """
 
     id: int

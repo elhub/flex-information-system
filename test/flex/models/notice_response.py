@@ -32,7 +32,7 @@ class NoticeResponse:
         type_ (str): The type of the notice. Example:
             no.elhub.flex.service_providing_group_membership.valid_time.outside_contract.
         recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
-            2023-12-31T23:59:00Z.
+            2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
         source (None | str | Unset): The URI of the resource concerned by the event. Example:
             /service_providing_group_membership/4.

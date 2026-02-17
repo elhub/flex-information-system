@@ -27,12 +27,12 @@ class ServiceProvidingGroupHistoryResponse:
             the group. Also known as scheduling area or price area for TSO. Example: NO3.
         status (ServiceProvidingGroupStatus): The status of the group. Example: active.
         recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
-            2023-12-31T23:59:00Z.
+            2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
         service_providing_group_id (int): Reference to the resource that was updated. Example: 48.
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (datetime.datetime | None | Unset): When the resource was replaced in the system. Example:
-            2024-07-07T10:00:00Z.
+            2024-07-07T10:00:00+00:00.
     """
 
     id: int

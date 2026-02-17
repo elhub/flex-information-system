@@ -430,13 +430,13 @@
                             "type": "string",
                             "format": "date-time",
                             "description": "The start time of the timeline section.",
-                            "example": "2023-01-01T00:00:00Z"
+                            "example": "2023-01-01T00:00:00+00:00"
                         },
                         "valid_to": {
                             "type": "string",
                             "format": "date-time",
                             "description": "The end time of the timeline section.",
-                            "example": "2023-01-02T00:00:00Z"
+                            "example": "2023-01-02T00:00:00+00:00"
                         }
                     }
                 }
@@ -1205,7 +1205,7 @@
                         "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31T23:59:00Z"
+                        "example": "2023-12-31T23:59:00+00:00"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -1297,7 +1297,7 @@
                         "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31T23:59:00Z"
+                        "example": "2023-12-31T23:59:00+00:00"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -1410,7 +1410,7 @@
                         "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31T23:59:00Z"
+                        "example": "2023-12-31T23:59:00+00:00"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -1568,7 +1568,7 @@
                         "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31T23:59:00Z"
+                        "example": "2023-12-31T23:59:00+00:00"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -1678,7 +1678,7 @@
                         "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31T23:59:00Z"
+                        "example": "2023-12-31T23:59:00+00:00"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -1797,7 +1797,7 @@
                         "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31T23:59:00Z"
+                        "example": "2023-12-31T23:59:00+00:00"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -1908,7 +1908,7 @@
                         "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31T23:59:00Z"
+                        "example": "2023-12-31T23:59:00+00:00"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -2021,7 +2021,7 @@
                         "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31T23:59:00Z"
+                        "example": "2023-12-31T23:59:00+00:00"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -2110,7 +2110,7 @@
                         "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31T23:59:00Z"
+                        "example": "2023-12-31T23:59:00+00:00"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -2223,7 +2223,7 @@
                         "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31T23:59:00Z"
+                        "example": "2023-12-31T23:59:00+00:00"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -2329,7 +2329,7 @@
                         "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31T23:59:00Z"
+                        "example": "2023-12-31T23:59:00+00:00"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -2529,7 +2529,7 @@
                         "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31T23:59:00Z"
+                        "example": "2023-12-31T23:59:00+00:00"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -2669,7 +2669,7 @@
                         "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31T23:59:00Z"
+                        "example": "2023-12-31T23:59:00+00:00"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -2785,7 +2785,7 @@
                         "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31T23:59:00Z"
+                        "example": "2023-12-31T23:59:00+00:00"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -2942,7 +2942,7 @@
                         "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31T23:59:00Z"
+                        "example": "2023-12-31T23:59:00+00:00"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -3075,7 +3075,7 @@
                         "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31T23:59:00Z"
+                        "example": "2023-12-31T23:59:00+00:00"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -3125,7 +3125,7 @@
                         "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31T23:59:00Z"
+                        "example": "2023-12-31T23:59:00+00:00"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -3507,7 +3507,7 @@
                         "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31T23:59:00Z"
+                        "example": "2023-12-31T23:59:00+00:00"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -3658,7 +3658,7 @@
                         "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31T23:59:00Z"
+                        "example": "2023-12-31T23:59:00+00:00"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -3772,7 +3772,7 @@
                         "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31T23:59:00Z"
+                        "example": "2023-12-31T23:59:00+00:00"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -3898,7 +3898,7 @@
                         "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31T23:59:00Z"
+                        "example": "2023-12-31T23:59:00+00:00"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -4012,7 +4012,7 @@
                         "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31T23:59:00Z"
+                        "example": "2023-12-31T23:59:00+00:00"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -4210,7 +4210,7 @@
                         "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31T23:59:00Z"
+                        "example": "2023-12-31T23:59:00+00:00"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -4335,7 +4335,7 @@
                         "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31T23:59:00Z"
+                        "example": "2023-12-31T23:59:00+00:00"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -4449,7 +4449,7 @@
                         "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31T23:59:00Z"
+                        "example": "2023-12-31T23:59:00+00:00"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -4523,7 +4523,7 @@
                         "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "example": "2023-12-31T23:59:00Z"
+                        "example": "2023-12-31T23:59:00+00:00"
                     },
                     "recorded_by": {
                         "description": "The identity that recorded the resource.",
@@ -4569,7 +4569,7 @@
                                 "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07T10:00:00Z"
+                                "example": "2024-07-07T10:00:00+00:00"
                             }
                         },
                         "required": [
@@ -4605,7 +4605,7 @@
                                 "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07T10:00:00Z"
+                                "example": "2024-07-07T10:00:00+00:00"
                             }
                         },
                         "required": [
@@ -4641,7 +4641,7 @@
                                 "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07T10:00:00Z"
+                                "example": "2024-07-07T10:00:00+00:00"
                             }
                         },
                         "required": [
@@ -4677,7 +4677,7 @@
                                 "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07T10:00:00Z"
+                                "example": "2024-07-07T10:00:00+00:00"
                             }
                         },
                         "required": [
@@ -4713,7 +4713,7 @@
                                 "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07T10:00:00Z"
+                                "example": "2024-07-07T10:00:00+00:00"
                             }
                         },
                         "required": [
@@ -4749,7 +4749,7 @@
                                 "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07T10:00:00Z"
+                                "example": "2024-07-07T10:00:00+00:00"
                             }
                         },
                         "required": [
@@ -4785,7 +4785,7 @@
                                 "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07T10:00:00Z"
+                                "example": "2024-07-07T10:00:00+00:00"
                             }
                         },
                         "required": [
@@ -4821,7 +4821,7 @@
                                 "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07T10:00:00Z"
+                                "example": "2024-07-07T10:00:00+00:00"
                             }
                         },
                         "required": [
@@ -4857,7 +4857,7 @@
                                 "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07T10:00:00Z"
+                                "example": "2024-07-07T10:00:00+00:00"
                             }
                         },
                         "required": [
@@ -4893,7 +4893,7 @@
                                 "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07T10:00:00Z"
+                                "example": "2024-07-07T10:00:00+00:00"
                             }
                         },
                         "required": [
@@ -4929,7 +4929,7 @@
                                 "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07T10:00:00Z"
+                                "example": "2024-07-07T10:00:00+00:00"
                             }
                         },
                         "required": [
@@ -4965,7 +4965,7 @@
                                 "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07T10:00:00Z"
+                                "example": "2024-07-07T10:00:00+00:00"
                             }
                         },
                         "required": [
@@ -5001,7 +5001,7 @@
                                 "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07T10:00:00Z"
+                                "example": "2024-07-07T10:00:00+00:00"
                             }
                         },
                         "required": [
@@ -5037,7 +5037,7 @@
                                 "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07T10:00:00Z"
+                                "example": "2024-07-07T10:00:00+00:00"
                             }
                         },
                         "required": [
@@ -5073,7 +5073,7 @@
                                 "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07T10:00:00Z"
+                                "example": "2024-07-07T10:00:00+00:00"
                             }
                         },
                         "required": [
@@ -5109,7 +5109,7 @@
                                 "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07T10:00:00Z"
+                                "example": "2024-07-07T10:00:00+00:00"
                             }
                         },
                         "required": [
@@ -5145,7 +5145,7 @@
                                 "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07T10:00:00Z"
+                                "example": "2024-07-07T10:00:00+00:00"
                             }
                         },
                         "required": [
@@ -5181,7 +5181,7 @@
                                 "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07T10:00:00Z"
+                                "example": "2024-07-07T10:00:00+00:00"
                             }
                         },
                         "required": [
@@ -5217,7 +5217,7 @@
                                 "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07T10:00:00Z"
+                                "example": "2024-07-07T10:00:00+00:00"
                             }
                         },
                         "required": [
@@ -5253,7 +5253,7 @@
                                 "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07T10:00:00Z"
+                                "example": "2024-07-07T10:00:00+00:00"
                             }
                         },
                         "required": [
@@ -5289,7 +5289,7 @@
                                 "format": "date-time",
                                 "type": "string",
                                 "nullable": true,
-                                "example": "2024-07-07T10:00:00Z"
+                                "example": "2024-07-07T10:00:00+00:00"
                             }
                         },
                         "required": [

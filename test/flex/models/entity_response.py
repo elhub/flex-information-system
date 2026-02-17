@@ -36,7 +36,7 @@ class EntityResponse:
             name (str): Name of the entity. Maximum 128 characters. Example: John Smith.
             type_ (EntityType): The type of the entity, e.g Person, Organisation Example: person.
             recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
-                2023-12-31T23:59:00Z.
+                2023-12-31T23:59:00+00:00.
             recorded_by (int): The identity that recorded the resource. Example: 145.
     """
 

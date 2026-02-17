@@ -28,7 +28,7 @@ class ServiceProvidingGroupGridPrequalificationResponse:
         status (ServiceProvidingGroupGridPrequalificationStatus): The status of the grid prequalification for this
             service providing group. Example: in_progress.
         recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
-            2023-12-31T23:59:00Z.
+            2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
         prequalified_at (datetime.datetime | None | Unset): When the current grid prequalification was last approved.
             Example: 2023-01-08T10:00:00+01.

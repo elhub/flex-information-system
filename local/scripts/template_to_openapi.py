@@ -60,7 +60,7 @@ def history_schema_template(resource, resource_summary):
                         "format": "date-time",
                         "type": "string",
                         "nullable": True,
-                        "example": "2024-07-07T10:00:00Z",
+                        "example": "2024-07-07T10:00:00+00:00",
                     },
                 },
                 "required": [f"{resource}_id"],
@@ -535,7 +535,7 @@ def generate_openapi_document(base_file, resources_file, servers_file):
                 "format": "date-time",
                 "type": "string",
                 "readOnly": True,
-                "example": "2023-12-31T23:59:00Z",
+                "example": "2023-12-31T23:59:00+00:00",
             }
             all_properties["recorded_by"] = {
                 "description": "The identity that recorded the resource.",

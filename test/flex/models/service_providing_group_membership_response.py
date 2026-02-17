@@ -26,7 +26,7 @@ class ServiceProvidingGroupMembershipResponse:
         valid_from (datetime.datetime): The date from which the relation between the controllable unit and the service
             providing group is valid. Midnight aligned on Norwegian timezone. Example: 2022-08-08T00:00:00+02.
         recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
-            2023-12-31T23:59:00Z.
+            2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
         valid_to (datetime.datetime | None | Unset): The date until which the relation between the controllable unit and
             the service providing group is valid. Midnight aligned on Norwegian timezone.

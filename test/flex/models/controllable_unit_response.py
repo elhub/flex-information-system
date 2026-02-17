@@ -37,7 +37,7 @@ class ControllableUnitResponse:
         grid_validation_status (ControllableUnitGridValidationStatus): The grid validation status of the controllable
             unit. Example: validated.
         recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
-            2023-12-31T23:59:00Z.
+            2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
         start_date (datetime.date | None | Unset): The usage date when the controllable unit is first active. Example:
             2024-05-17.

@@ -23,7 +23,7 @@ class TechnicalResourceResponse:
         controllable_unit_id (int): Reference to the controllable unit that this technical resource belongs to. Example:
             37.
         recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
-            2023-12-31T23:59:00Z.
+            2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
         details (None | str | Unset): Free text details about the technical resource. Example: Make: ACME
             Model: Car Charger 3000.

@@ -26,7 +26,7 @@ class ServiceProviderProductSuspensionResponse:
             product_type_ids (list[int]): References to the suspended product types. Example: [1, 7].
             reason (ServiceProviderProductSuspensionReason): The reason for the suspension. Example: communication_issues.
             recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
-                2023-12-31T23:59:00Z.
+                2023-12-31T23:59:00+00:00.
             recorded_by (int): The identity that recorded the resource. Example: 145.
     """
 
