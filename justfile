@@ -59,8 +59,6 @@ load: liquibase
 
     psql -X -v ON_ERROR_STOP=1 -d postgres -U postgres \
         -c "ALTER USER flex_authenticator PASSWORD 'authenticator_password';"
-    psql -X -v ON_ERROR_STOP=1 -d postgres -U postgres \
-        -c "ALTER USER flex_replication PASSWORD 'replication_password';"
 
     # set fixed client IDs so we can use them in the tests
     UUID_TEST='3733e21b-5def-400d-8133-06bcda02465e'
@@ -549,6 +547,11 @@ permissions: permissions-to-frontend permissions-to-md permissions-to-db
 permissions-to-db:
     echo "-- liquibase formatted sql\n-- AUTO-GENERATED FILE (just permissions-to-db)\n" \
         | tee db/api/grants/field_level_authorization.sql > db/flex/grants/field_level_authorization.sql
+
+    echo "-- changeset flex:api-field-level-authorization runAlways:true" \
+        >> db/api/grants/field_level_authorization.sql
+    echo "-- changeset flex:flex-field-level-authorization runAlways:true" \
+        >> db/flex/grants/field_level_authorization.sql
 
     cat local/input/permissions.csv \
         | .venv/bin/python3 local/scripts/permissions_to_grant.py \
