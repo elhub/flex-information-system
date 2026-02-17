@@ -1,9 +1,15 @@
 import { ReactNode } from "react";
-import { FormItem, FormItemLabel, FlexDiv } from "../../ui";
+import {
+  FormItem,
+  FormItemLabel,
+  FlexDiv,
+  FormItemDescription,
+} from "../../ui";
 import { usePermissions, useResourceContext, useTranslate } from "ra-core";
 import { Permissions, PermissionTarget } from "../../../auth/permissions";
 import { useCreateOrUpdate } from "../../../auth/useCreateOrUpdate";
 import { FieldTooltip } from "../fields/FieldTooltip";
+import { useTooltipText } from "../fields/useTooltipText";
 
 export type BaseInputProps = {
   source: string;
@@ -13,6 +19,8 @@ export type BaseInputProps = {
   readOnly?: boolean;
   resource?: string;
   overrideLabel?: string;
+  description?: boolean;
+  descriptionOverride?: string;
 };
 
 type BaseInputPropsWithChildren = BaseInputProps & {
@@ -29,6 +37,8 @@ export const BaseInput = ({
   readOnly,
   id,
   error,
+  description,
+  descriptionOverride,
   children,
   resource: resourceProp,
   overrideLabel,
@@ -42,6 +52,11 @@ export const BaseInput = ({
 
   const labelText =
     overrideLabel ?? translate(`field.${resource}.${formattedSource}`);
+  const defaultDescription = useTooltipText({
+    resource,
+    field: formattedSource,
+  });
+  const descriptionText = descriptionOverride ?? defaultDescription;
 
   // Check permissions for this field
   const isPermissionDisabled =
@@ -66,6 +81,9 @@ export const BaseInput = ({
         </FormItemLabel>
         {tooltip && <FieldTooltip resource={resource} field={source} />}
       </FlexDiv>
+      {description || descriptionOverride ? (
+        <FormItemDescription>{descriptionText}</FormItemDescription>
+      ) : null}
       {children}
     </FormItem>
   );

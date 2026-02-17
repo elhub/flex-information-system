@@ -143,8 +143,8 @@ const ControllableUnitServiceProviderForm = ({
         </FlexDiv>
 
         <FlexDiv style={{ gap: "var(--eds-size-3)", flexDirection: "column" }}>
-          <DateInput {...fields.valid_from} />
-          <DateInput {...fields.valid_to} />
+          <DateInput {...fields.valid_from} outputFormat="date-time" />
+          <DateInput {...fields.valid_to} outputFormat="date-time" />
         </FlexDiv>
 
         <FormToolbar onCancel={onCancel} saveAlwaysEnabled={hasOverride} />
