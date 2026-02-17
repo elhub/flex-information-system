@@ -36,10 +36,6 @@ CREATE ROLE flex_service_provider WITH NOLOGIN;
 CREATE ROLE flex_system_operator WITH NOLOGIN;
 CREATE ROLE flex_third_party WITH NOLOGIN;
 
--- internal roles
-CREATE ROLE flex_replication
-WITH REPLICATION NOINHERIT LOGIN PASSWORD 'replication_password';
-
 -- flex_internal is similar to flex_anonymous but is used for internal
 -- system roles. All internal roles are granted to flex_internal
 -- and inherit from it. This way, we can easily add new internal roles

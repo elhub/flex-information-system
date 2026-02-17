@@ -59,8 +59,6 @@ load: liquibase
 
     psql -X -v ON_ERROR_STOP=1 -d postgres -U postgres \
         -c "ALTER USER flex_authenticator PASSWORD 'authenticator_password';"
-    psql -X -v ON_ERROR_STOP=1 -d postgres -U postgres \
-        -c "ALTER USER flex_replication PASSWORD 'replication_password';"
 
     # set fixed client IDs so we can use them in the tests
     UUID_TEST='3733e21b-5def-400d-8133-06bcda02465e'
