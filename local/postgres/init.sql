@@ -36,6 +36,10 @@ CREATE ROLE flex_service_provider WITH NOLOGIN;
 CREATE ROLE flex_system_operator WITH NOLOGIN;
 CREATE ROLE flex_third_party WITH NOLOGIN;
 
+-- sync roles
+CREATE ROLE flex_staging_structure_data
+WITH NOINHERIT LOGIN PASSWORD 'staging_structure_data_password';
+
 -- flex_internal is similar to flex_anonymous but is used for internal
 -- system roles. All internal roles are granted to flex_internal
 -- and inherit from it. This way, we can easily add new internal roles
@@ -59,8 +63,6 @@ GRANT flex_operation_readwrite TO local_operator;
 CREATE ROLE flex_internal_event_notification WITH NOLOGIN;
 GRANT flex_internal TO flex_internal_event_notification;
 
-CREATE ROLE flex_internal_staging WITH NOLOGIN;
-GRANT flex_internal TO flex_internal_staging;
 
 -- authenticator will set role to any of the party and internal roles
 GRANT flex_anonymous TO flex_authenticator;
@@ -77,7 +79,6 @@ GRANT flex_third_party TO flex_authenticator;
 
 -- internal system roles
 GRANT flex_internal_event_notification TO flex_authenticator;
-GRANT flex_internal_staging TO flex_authenticator;
 
 -- common and anonymous inherits from common
 GRANT flex_anonymous TO
