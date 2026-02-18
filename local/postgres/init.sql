@@ -36,6 +36,10 @@ CREATE ROLE flex_service_provider WITH NOLOGIN;
 CREATE ROLE flex_system_operator WITH NOLOGIN;
 CREATE ROLE flex_third_party WITH NOLOGIN;
 
+-- sync roles
+CREATE ROLE flex_staging_structure_data
+WITH NOINHERIT LOGIN PASSWORD 'staging_structure_data_password';
+
 -- flex_internal is similar to flex_anonymous but is used for internal
 -- system roles. All internal roles are granted to flex_internal
 -- and inherit from it. This way, we can easily add new internal roles
