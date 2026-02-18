@@ -395,6 +395,13 @@ export const zServiceProvidingGroupProductApplicationStatus = z.enum([
 ]);
 
 /**
+ * The level of visibility of the comment.
+ */
+export const zServiceProvidingGroupProductApplicationCommentVisibility = z.enum(
+  ["same_party", "any_involved_party"],
+);
+
+/**
  * The reason for the suspension.
  */
 export const zServiceProvidingGroupProductSuspensionReason = z.enum([
@@ -2048,6 +2055,54 @@ export const zServiceProvidingGroupProductApplication = z.object({
 });
 
 /**
+ * Request schema for update operations - Comment made by a party involved in a service providing group product application.
+ */
+export const zServiceProvidingGroupProductApplicationCommentUpdateRequest =
+  z.object({
+    visibility: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zServiceProvidingGroupProductApplicationCommentVisibility.optional(),
+      ),
+    ),
+    content: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.string().max(2048).optional(),
+      ),
+    ),
+  });
+
+/**
+ * Request schema for create operations - Comment made by a party involved in a service providing group product application.
+ */
+export const zServiceProvidingGroupProductApplicationCommentCreateRequest =
+  z.object({
+    service_providing_group_product_application_id: z.coerce.number(),
+    visibility: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zServiceProvidingGroupProductApplicationCommentVisibility.optional(),
+      ),
+    ),
+    content: z.string().max(2048),
+  });
+
+/**
+ * Response schema - Comment made by a party involved in a service providing group product application.
+ */
+export const zServiceProvidingGroupProductApplicationComment = z.object({
+  id: z.coerce.number().readonly(),
+  service_providing_group_product_application_id: z.coerce.number(),
+  created_by: z.coerce.number().readonly(),
+  created_at: z.iso.datetime({ offset: true }).readonly(),
+  visibility: zServiceProvidingGroupProductApplicationCommentVisibility,
+  content: z.string().max(2048),
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+});
+
+/**
  * Request schema for update operations - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
  */
 export const zServiceProvidingGroupProductSuspensionUpdateRequest = z.object({
@@ -2576,6 +2631,28 @@ export const zServiceProvidingGroupProductApplicationHistory =
   );
 
 /**
+ * Service Providing Group Product Application Comment - history
+ */
+export const zServiceProvidingGroupProductApplicationCommentHistory =
+  zServiceProvidingGroupProductApplicationComment.and(
+    z.object({
+      service_providing_group_product_application_comment_id: z.coerce.number(),
+      replaced_by: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.coerce.number().optional(),
+        ),
+      ),
+      replaced_at: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.iso.datetime({ offset: true }).optional(),
+        ),
+      ),
+    }),
+  );
+
+/**
  * Service Providing Group Product Suspension - history
  */
 export const zServiceProvidingGroupProductSuspensionHistory =
@@ -3049,6 +3126,17 @@ export const zServiceProvidingGroupProductApplicationWritable = z.object({
 });
 
 /**
+ * Response schema - Comment made by a party involved in a service providing group product application.
+ */
+export const zServiceProvidingGroupProductApplicationCommentWritable = z.object(
+  {
+    service_providing_group_product_application_id: z.coerce.number(),
+    visibility: zServiceProvidingGroupProductApplicationCommentVisibility,
+    content: z.string().max(2048),
+  },
+);
+
+/**
  * Response schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
  */
 export const zServiceProvidingGroupProductSuspensionWritable = z.object({
@@ -3474,6 +3562,28 @@ export const zServiceProvidingGroupProductApplicationHistoryWritable =
   zServiceProvidingGroupProductApplicationWritable.and(
     z.object({
       service_providing_group_product_application_id: z.coerce.number(),
+      replaced_by: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.coerce.number().optional(),
+        ),
+      ),
+      replaced_at: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.iso.datetime({ offset: true }).optional(),
+        ),
+      ),
+    }),
+  );
+
+/**
+ * Service Providing Group Product Application Comment - history
+ */
+export const zServiceProvidingGroupProductApplicationCommentHistoryWritable =
+  zServiceProvidingGroupProductApplicationCommentWritable.and(
+    z.object({
+      service_providing_group_product_application_comment_id: z.coerce.number(),
       replaced_by: z.optional(
         z.preprocess(
           (value) => (value === null ? undefined : value),
@@ -9872,6 +9982,248 @@ export const zReadServiceProvidingGroupProductApplicationHistoryData = z.object(
  */
 export const zReadServiceProvidingGroupProductApplicationHistoryResponse =
   zServiceProvidingGroupProductApplicationHistory;
+
+export const zListServiceProvidingGroupProductApplicationCommentData = z.object(
+  {
+    body: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
+    path: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
+    query: z.optional(
+      z.object({
+        id: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z
+              .string()
+              .regex(/^eq\.[0-9]+$/)
+              .optional(),
+          ),
+        ),
+        service_providing_group_product_application_id: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z
+              .string()
+              .regex(/^eq\.[0-9]+$/)
+              .optional(),
+          ),
+        ),
+        select: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+        order: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+        offset: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+        limit: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+      }),
+    ),
+  },
+);
+
+export const zListServiceProvidingGroupProductApplicationCommentResponse =
+  z.union([
+    z.array(zServiceProvidingGroupProductApplicationComment),
+    z.array(zServiceProvidingGroupProductApplicationComment),
+  ]);
+
+export const zCreateServiceProvidingGroupProductApplicationCommentData =
+  z.object({
+    body: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zServiceProvidingGroupProductApplicationCommentCreateRequest.optional(),
+      ),
+    ),
+    path: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
+    query: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
+  });
+
+/**
+ * Created
+ */
+export const zCreateServiceProvidingGroupProductApplicationCommentResponse =
+  zServiceProvidingGroupProductApplicationComment;
+
+export const zReadServiceProvidingGroupProductApplicationCommentData = z.object(
+  {
+    body: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
+    path: z.object({
+      id: z.coerce.number(),
+    }),
+    query: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
+  },
+);
+
+/**
+ * OK
+ */
+export const zReadServiceProvidingGroupProductApplicationCommentResponse =
+  zServiceProvidingGroupProductApplicationComment;
+
+export const zUpdateServiceProvidingGroupProductApplicationCommentData =
+  z.object({
+    body: zServiceProvidingGroupProductApplicationCommentUpdateRequest,
+    path: z.object({
+      id: z.coerce.number(),
+    }),
+    query: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
+  });
+
+export const zUpdateServiceProvidingGroupProductApplicationCommentResponse =
+  z.union([zServiceProvidingGroupProductApplicationComment, z.void()]);
+
+export const zListServiceProvidingGroupProductApplicationCommentHistoryData =
+  z.object({
+    body: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
+    path: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
+    query: z.optional(
+      z.object({
+        id: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z
+              .string()
+              .regex(/^eq\.[0-9]+$/)
+              .optional(),
+          ),
+        ),
+        service_providing_group_product_application_comment_id: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z
+              .string()
+              .regex(/^eq\.[0-9]+$/)
+              .optional(),
+          ),
+        ),
+        service_providing_group_product_application_id: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z
+              .string()
+              .regex(/^eq\.[0-9]+$/)
+              .optional(),
+          ),
+        ),
+        select: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+        order: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+        offset: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+        limit: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+      }),
+    ),
+  });
+
+export const zListServiceProvidingGroupProductApplicationCommentHistoryResponse =
+  z.union([
+    z.array(zServiceProvidingGroupProductApplicationCommentHistory),
+    z.array(zServiceProvidingGroupProductApplicationCommentHistory),
+  ]);
+
+export const zReadServiceProvidingGroupProductApplicationCommentHistoryData =
+  z.object({
+    body: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
+    path: z.object({
+      id: z.coerce.number(),
+    }),
+    query: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
+  });
+
+/**
+ * OK
+ */
+export const zReadServiceProvidingGroupProductApplicationCommentHistoryResponse =
+  zServiceProvidingGroupProductApplicationCommentHistory;
 
 export const zListServiceProvidingGroupProductSuspensionData = z.object({
   body: z.optional(

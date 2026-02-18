@@ -792,6 +792,44 @@ export const tooltips = {
     "When the resource was replaced.",
   "service_providing_group_product_application_history.replaced_by":
     "The identity that replaced the resource.",
+  "service_providing_group_product_application_comment.id":
+    "Unique surrogate identifier.",
+  "service_providing_group_product_application_comment.created_by":
+    "The identity that created the comment.",
+  "service_providing_group_product_application_comment.visibility":
+    "The level of visibility of the comment.",
+  "service_providing_group_product_application_comment.content":
+    "Free text content of the comment.",
+  "service_providing_group_product_application_comment.created_at":
+    "When the comment was added to the CUS.",
+  "service_providing_group_product_application_comment.recorded_at":
+    "When the resource was recorded (created or updated) in the system.",
+  "service_providing_group_product_application_comment.recorded_by":
+    "The identity that recorded the resource.",
+  "service_providing_group_product_application_comment.service_providing_group_product_application_id":
+    "Unique surrogate identifier.",
+  "service_providing_group_product_application_comment_history.id":
+    "Unique surrogate identifier.",
+  "service_providing_group_product_application_comment_history.created_by":
+    "The identity that created the comment.",
+  "service_providing_group_product_application_comment_history.visibility":
+    "The level of visibility of the comment.",
+  "service_providing_group_product_application_comment_history.content":
+    "Free text content of the comment.",
+  "service_providing_group_product_application_comment_history.created_at":
+    "When the comment was added to the CUS.",
+  "service_providing_group_product_application_comment_history.recorded_at":
+    "When the resource was recorded (created or updated) in the system.",
+  "service_providing_group_product_application_comment_history.recorded_by":
+    "The identity that recorded the resource.",
+  "service_providing_group_product_application_comment_history.service_providing_group_product_application_id":
+    "Unique surrogate identifier.",
+  "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id":
+    "Comment ID",
+  "service_providing_group_product_application_comment_history.replaced_at":
+    "When the comment was replaced.",
+  "service_providing_group_product_application_comment_history.replaced_by":
+    "The identity that replaced the comment.",
   "service_providing_group_product_suspension.id":
     "Unique surrogate identifier.",
   "service_providing_group_product_suspension.procuring_system_operator_id":
