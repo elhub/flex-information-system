@@ -108,7 +108,7 @@ export const ControllableUnitInput = () => {
                   enumKey="controllable_unit.grid_validation_status"
                 />
                 <TextInput {...fields.grid_validation_notes} />
-                <DateInput {...fields.validated_at} />
+                <DateInput {...fields.validated_at} outputFormat="date-time" />
               </FlexDiv>
             </Accordion.Content>
           </Accordion.Item>
