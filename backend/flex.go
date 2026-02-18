@@ -371,7 +371,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 
 	addr := ":" + port
 
-	router, err := graceful.Default(graceful.WithAddr(addr))
+	router, err := graceful.New(gin.New(), graceful.WithAddr(addr))
 	if err != nil {
 		return fmt.Errorf("could not create router: %w", err)
 	}
@@ -379,7 +379,17 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	// Enabling the fallback context ensures that gin falls back to the underlying context.Context.
 	// It must be set e.g. for otel tracing to work.
 	router.ContextWithFallback = true
-	router.Use(trace.Middleware()) //nolint:contextcheck
+
+	// first the health check endpoint: no logging, no auth, no tracing
+	router.Match([]string{"GET", "HEAD"}, "/readyz", func(ctx *gin.Context) {
+		ctx.JSON(http.StatusOK, gin.H{"status": "ok"})
+	})
+
+	// all remaining routes go through the middleware stack
+	apiRouter := router.Group("/")
+
+	apiRouter.Use(gin.Logger())
+	apiRouter.Use(trace.Middleware()) //nolint:contextcheck
 
 	slogginConfig := sloggin.Config{ //nolint:exhaustruct
 		// We are providing our own trace.SlogHandler, so we don't need to log trace IDs here.
@@ -389,14 +399,11 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		WithResponseBody:  slogLevel == slog.LevelDebug,
 		WithRequestHeader: slogLevel == slog.LevelDebug,
 	}
-	router.Use(sloggin.NewWithConfig(logger, slogginConfig))
+
+	apiRouter.Use(sloggin.NewWithConfig(logger, slogginConfig))
 
 	// TODO use CustomRecovery to return JSON error responses
-	router.Use(gin.Recovery())
-
-	// We are handling network-type security elsewhere (nginx, nftables, network policies),
-	// so we can trust all proxies here to silence GINs warnings.
-	_ = router.SetTrustedProxies(nil)
+	apiRouter.Use(gin.Recovery())
 
 	corsConfig := cors.DefaultConfig()
 	corsConfig.AllowAllOrigins = true
@@ -406,12 +413,12 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 
 	corsConfig.AllowHeaders = []string{"Authorization"}
 
-	router.Use(cors.New(corsConfig))
-	router.Use(WrapMiddleware(middleware.RealIP))
-	router.Use(WrapMiddleware(authAPI.TokenDecodingMiddleware))
+	apiRouter.Use(cors.New(corsConfig))
+	apiRouter.Use(WrapMiddleware(middleware.RealIP))
+	apiRouter.Use(WrapMiddleware(authAPI.TokenDecodingMiddleware))
 
 	// auth API endpoints
-	authRouter := router.Group("/auth/v0")
+	authRouter := apiRouter.Group("/auth/v0")
 
 	// Endpoints
 	//nolint:contextcheck
@@ -443,17 +450,12 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 			authAPI.GetLogoutHandler)
 
 		// data API endpoint
-		router.Match(
+		apiRouter.Match(
 			[]string{"HEAD", "GET", "POST", "PATCH", "DELETE", "OPTIONS"},
 			"/api/v0/*url",
 			WrapHandler(http.StripPrefix("/api/v0", dataAPIHandler)), //nolint:contextcheck
 		)
 	} //end:nolint:contextcheck
-
-	// health check endpoints
-	router.Match([]string{"GET", "HEAD"}, "/readyz", func(ctx *gin.Context) {
-		ctx.JSON(http.StatusOK, gin.H{"status": "ok"})
-	})
 
 	slog.InfoContext(ctx, "Running server on server on"+addr)
 
