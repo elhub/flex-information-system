@@ -22,7 +22,7 @@ AS (
             spgpah.procuring_system_operator_id,
             spg.service_provider_id
         ]) AS party_id
-    FROM flex.service_providing_group_product_application AS spgpah
+    FROM flex.service_providing_group_product_application_history AS spgpah
         INNER JOIN flex.service_providing_group AS spg
             ON spgpah.service_providing_group_id = spg.id
 );
