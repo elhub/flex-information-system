@@ -2184,9 +2184,9 @@ export type ServiceProvidingGroupProductApplicationUpdateRequest = {
   product_type_ids?: Array<number>;
   status?: ServiceProvidingGroupProductApplicationStatus;
   /**
-   * Free text notes on the current product application status.
+   * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
    */
-  notes?: string;
+  additional_information?: string;
   /**
    * When the product application was last prequalified.
    */
@@ -2215,9 +2215,9 @@ export type ServiceProvidingGroupProductApplicationCreateRequest = {
   product_type_ids: Array<number>;
   status?: ServiceProvidingGroupProductApplicationStatus;
   /**
-   * Free text notes on the current product application status.
+   * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
    */
-  notes?: string;
+  additional_information?: string;
   /**
    * When the product application was last prequalified.
    */
@@ -2250,9 +2250,9 @@ export type ServiceProvidingGroupProductApplication = {
   product_type_ids: Array<number>;
   status: ServiceProvidingGroupProductApplicationStatus;
   /**
-   * Free text notes on the current product application status.
+   * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
    */
-  notes?: string;
+  additional_information?: string;
   /**
    * When the product application was last prequalified.
    */
@@ -3336,9 +3336,9 @@ export type ServiceProvidingGroupProductApplicationWritable = {
   product_type_ids: Array<number>;
   status: ServiceProvidingGroupProductApplicationStatus;
   /**
-   * Free text notes on the current product application status.
+   * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
    */
-  notes?: string;
+  additional_information?: string;
   /**
    * When the product application was last prequalified.
    */

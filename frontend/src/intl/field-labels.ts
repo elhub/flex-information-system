@@ -391,8 +391,8 @@ export type FieldLabel =
   | "service_providing_group_membership_history.service_providing_group_membership_id"
   | "service_providing_group_membership_history.valid_from"
   | "service_providing_group_membership_history.valid_to"
+  | "service_providing_group_product_application.additional_information"
   | "service_providing_group_product_application.id"
-  | "service_providing_group_product_application.notes"
   | "service_providing_group_product_application.prequalified_at"
   | "service_providing_group_product_application.procuring_system_operator_id"
   | "service_providing_group_product_application.product_type_ids"
@@ -401,8 +401,8 @@ export type FieldLabel =
   | "service_providing_group_product_application.service_providing_group_id"
   | "service_providing_group_product_application.status"
   | "service_providing_group_product_application.verified_at"
+  | "service_providing_group_product_application_history.additional_information"
   | "service_providing_group_product_application_history.id"
-  | "service_providing_group_product_application_history.notes"
   | "service_providing_group_product_application_history.prequalified_at"
   | "service_providing_group_product_application_history.procuring_system_operator_id"
   | "service_providing_group_product_application_history.product_type_ids"
@@ -1014,7 +1014,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application.product_type_ids":
       "Product types",
     "service_providing_group_product_application.status": "Status",
-    "service_providing_group_product_application.notes": "Notes",
+    "service_providing_group_product_application.additional_information":
+      "Additional information",
     "service_providing_group_product_application.prequalified_at":
       "Prequalified at",
     "service_providing_group_product_application.verified_at": "Verified at",
@@ -1028,7 +1029,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application_history.product_type_ids":
       "Product types",
     "service_providing_group_product_application_history.status": "Status",
-    "service_providing_group_product_application_history.notes": "Notes",
+    "service_providing_group_product_application_history.additional_information":
+      "Additional information",
     "service_providing_group_product_application_history.prequalified_at":
       "Prequalified at",
     "service_providing_group_product_application_history.verified_at":
@@ -1642,7 +1644,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application.product_type_ids":
       "Produkttyper",
     "service_providing_group_product_application.status": "Status",
-    "service_providing_group_product_application.notes": "Notater",
+    "service_providing_group_product_application.additional_information":
+      "Tilleggsinformasjon",
     "service_providing_group_product_application.prequalified_at":
       "Prekvalifisert",
     "service_providing_group_product_application.verified_at": "Verifisert",
@@ -1656,7 +1659,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application_history.product_type_ids":
       "Produkttyper",
     "service_providing_group_product_application_history.status": "Status",
-    "service_providing_group_product_application_history.notes": "Notater",
+    "service_providing_group_product_application_history.additional_information":
+      "Tilleggsinformasjon",
     "service_providing_group_product_application_history.prequalified_at":
       "Prekvalifisert",
     "service_providing_group_product_application_history.verified_at":
@@ -2269,7 +2273,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application.product_type_ids":
       "Produkttypar",
     "service_providing_group_product_application.status": "Status",
-    "service_providing_group_product_application.notes": "Notat",
+    "service_providing_group_product_application.additional_information":
+      "Tilleggsinformasjon",
     "service_providing_group_product_application.prequalified_at":
       "Prekvalifisert",
     "service_providing_group_product_application.verified_at": "Verifisert",
@@ -2283,7 +2288,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application_history.product_type_ids":
       "Produkttypar",
     "service_providing_group_product_application_history.status": "Status",
-    "service_providing_group_product_application_history.notes": "Notat",
+    "service_providing_group_product_application_history.additional_information":
+      "Tilleggsinformasjon",
     "service_providing_group_product_application_history.prequalified_at":
       "Prekvalifisert",
     "service_providing_group_product_application_history.verified_at":

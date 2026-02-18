@@ -22,14 +22,12 @@ const filterRecord = ({
   system_operator_id,
   product_type_ids,
   status,
-  notes,
   qualified_at,
 }: any) => ({
   service_provider_id,
   system_operator_id,
   product_type_ids,
   status,
-  notes,
   qualified_at,
 });
 

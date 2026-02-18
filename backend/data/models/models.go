@@ -542,7 +542,7 @@ type ApiServiceProvidingGroupProductApplication struct {
 	ProcuringSystemOperatorID int
 	ProductTypeIds            []int
 	Status                    string
-	Notes                     *string
+	AdditionalInformation     *string
 	PrequalifiedAt            pgtype.Timestamptz
 	VerifiedAt                pgtype.Timestamptz
 	RecordedBy                int
@@ -556,7 +556,7 @@ type ApiServiceProvidingGroupProductApplicationHistory struct {
 	ProcuringSystemOperatorID                 int
 	ProductTypeIds                            []int
 	Status                                    string
-	Notes                                     *string
+	AdditionalInformation                     *string
 	PrequalifiedAt                            pgtype.Timestamptz
 	VerifiedAt                                pgtype.Timestamptz
 	RecordedBy                                int

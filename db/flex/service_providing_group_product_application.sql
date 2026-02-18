@@ -24,9 +24,7 @@ CREATE TABLE IF NOT EXISTS service_providing_group_product_application (
             'rejected'
         )
     ),
-    notes text NULL CHECK (
-        char_length(notes) <= 512
-    ),
+    additional_information text NULL,
     prequalified_at timestamp with time zone NULL,
     verified_at timestamp with time zone NULL,
     record_time_range tstzrange NOT NULL DEFAULT tstzrange(
@@ -34,6 +32,9 @@ CREATE TABLE IF NOT EXISTS service_providing_group_product_application (
     ),
     recorded_by bigint NOT NULL DEFAULT current_identity(),
 
+    CONSTRAINT spg_product_application_additional_information_check CHECK (
+        char_length(additional_information) <= 512
+    ),
     CONSTRAINT service_providing_group_product_application_spg_fkey
     FOREIGN KEY (service_providing_group_id)
     REFERENCES service_providing_group (id),

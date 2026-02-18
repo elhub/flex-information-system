@@ -128,10 +128,6 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
               enumKey="service_providing_group_product_application.status"
               label="field.service_providing_group_product_application.status"
             />
-            <TextField
-              source="notes"
-              label="field.service_providing_group_product_application.notes"
-            />
             <DateField
               source="prequalified_at"
               showTime
@@ -141,6 +137,13 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
               source="verified_at"
               showTime
               label="field.service_providing_group_product_application.verified_at"
+            />
+          </FieldStack>
+          <FieldStack direction="row" flexWrap="wrap" spacing={2}>
+            <TextField
+              component="pre"
+              source="additional_information"
+              label="field.service_providing_group_product_application.additional_information"
             />
           </FieldStack>
 

@@ -161,3 +161,17 @@ BEFORE INSERT OR UPDATE ON service_providing_group_product_application
 FOR EACH ROW
 EXECUTE FUNCTION
 service_providing_group_product_application_sp_qualified_insert();
+
+-- changeset flex:service-providing-group-product-application-rename-notes runOnChange:false endDelimiter:;
+--preconditions onFail:MARK_RAN
+--precondition-sql-check expectedResult:1 SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = 'flex' AND table_name = 'service_providing_group_product_application' AND column_name = 'notes'
+ALTER TABLE flex.service_providing_group_product_application
+DROP CONSTRAINT service_providing_group_product_application_notes_check;
+ALTER TABLE flex.service_providing_group_product_application
+RENAME COLUMN notes TO additional_information;
+ALTER TABLE flex.service_providing_group_product_application_history
+RENAME COLUMN notes TO additional_information;
+ALTER TABLE flex.service_providing_group_product_application
+ADD CONSTRAINT spg_product_application_additional_information_check CHECK (
+    char_length(additional_information) <= 512
+);
