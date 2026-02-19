@@ -19,7 +19,7 @@ USING (true);
 
 -- internal: used for reading events on notices (notice history is not exposed)
 -- user can read history when they can read a notice
-GRANT SELECT, UPDATE ON notice_history TO flex_common;
+GRANT SELECT ON notice_history TO flex_common;
 CREATE POLICY "NOTICEH_INTERNAL" ON notice_history
 FOR ALL
 TO flex_common
