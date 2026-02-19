@@ -21,7 +21,7 @@ USING (true);
 -- user can read history when they can read a notice
 GRANT SELECT ON notice_history TO flex_common;
 CREATE POLICY "NOTICEH_INTERNAL" ON notice_history
-FOR ALL
+FOR SELECT
 TO flex_common
 USING (
     EXISTS (
