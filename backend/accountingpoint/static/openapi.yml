@@ -1,0 +1,185 @@
+---
+openapi: 3.1.0
+info:
+  title: Accounting Point Adapter
+  description: |
+    API for the accounting point adapter service. This service provides accounting point data from external datahub to the Flexibility Information System.
+
+    The adapter is responsible for translating external data formats into the format expected by FIS.
+  contact:
+    name: Elhub AS
+    url: https://elhub.no
+    email: utvikler@elhub.no
+  version: 0.0.1
+
+tags:
+  - name: accounting_point
+    description: Operations related to accounting points
+
+security:
+  - bearer_auth: []
+
+components:
+  securitySchemes:
+    bearer_auth:
+      type: http
+      scheme: bearer
+      description: Bearer token authentication. The token must be included in the Authorization header.
+
+  schemas:
+    end_user:
+      type: object
+      required:
+        - end_user_business_id
+        - valid_from
+      properties:
+        end_user_business_id:
+          type: string
+          description: >
+            Business ID of the end user.
+            Norwegian organization number or fødselsnummer.
+          pattern: "^[1-9][0-9]{8}$|^[0-9]{11}$"
+          example: "123456789"
+        valid_from:
+          type: string
+          format: date-time
+          description: Start of the validity period
+          example: "2024-01-01T00:00:00+01:00"
+        valid_to:
+          type: string
+          format: date-time
+          nullable: true
+          description: End of the validity period
+          example: "2024-12-31T00:00:00+01:00"
+
+    energy_supplier:
+      type: object
+      required:
+        - energy_supplier_business_id
+        - valid_from
+      properties:
+        energy_supplier_business_id:
+          type: string
+          description: >
+            Business ID of the energy supplier.
+            GLN format - 13 digits starting with non-zero.
+          pattern: "^[1-9][0-9]{12}$"
+          example: "7080012345678"
+        valid_from:
+          type: string
+          format: date-time
+          description: Start of the validity period
+          example: "2024-01-01T00:00:00+01:00"
+        valid_to:
+          type: string
+          format: date-time
+          nullable: true
+          description: End of the validity period
+          example: "2024-12-31T00:00:00+01:00"
+
+    metering_grid_area:
+      type: object
+      required:
+        - metering_grid_area_business_id
+        - valid_from
+      properties:
+        metering_grid_area_business_id:
+          type: string
+          description: >
+            Business ID of the metering grid area.
+            EIC-Y format.
+          pattern: "^[0-9]{2}Y[0-9A-Z\\-]{13}$"
+          example: "10YNO-1--------2"
+        valid_from:
+          type: string
+          format: date-time
+          description: Start of the validity period
+          example: "2024-01-01T00:00:00+01:00"
+        valid_to:
+          type: string
+          format: date-time
+          nullable: true
+          description: End of the validity period
+          example: "2024-12-31T00:00:00+01:00"
+
+    accounting_point:
+      type: object
+      required:
+        - gsrn
+        - end_user
+        - energy_supplier
+        - metering_grid_area
+      properties:
+        gsrn:
+          type: string
+          description: Global Service Relation Number (GSRN) - unique identifier for the accounting point
+          pattern: "^[0-9]{18}$"
+          example: "707057500012345678"
+        end_user:
+          type: array
+          description: Time-dependent list of end users associated with this accounting point
+          items:
+            $ref: '#/components/schemas/end_user'
+        energy_supplier:
+          type: array
+          description: Time-dependent list of energy suppliers associated with this accounting point
+          items:
+            $ref: '#/components/schemas/energy_supplier'
+        metering_grid_area:
+          type: array
+          description: Time-dependent list of metering grid areas associated with this accounting point
+          items:
+            $ref: '#/components/schemas/metering_grid_area'
+
+paths:
+  /accounting_point/{gsrn}:
+    get:
+      summary: Read accounting point data by GSRN
+      description: |
+        Retrieves accounting point information from the
+        datahub for a given GSRN (metering point ID).
+      operationId: read_accounting_point
+      tags:
+        - accounting_point
+      parameters:
+        - name: gsrn
+          in: path
+          required: true
+          description: Global Service Relation Number (18-digit GSRN)
+          schema:
+            type: string
+            pattern: "^[0-9]{18}$"
+          example: "707057500012345678"
+      responses:
+        '200':
+          description: Accounting point data retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/accounting_point'
+              example:
+                gsrn: "707057500012345678"
+                end_user:
+                  - end_user_business_id: "123456789"
+                    valid_from: "2024-01-01T00:00:00+01:00"
+                    valid_to: null
+                energy_supplier:
+                  - energy_supplier_business_id: "7080012345678"
+                    valid_from: "2024-01-01T00:00:00+01:00"
+                    valid_to: "2024-06-01T00:00:00+02:00"
+                  - energy_supplier_business_id: "7080087654321"
+                    valid_from: "2024-06-01T00:00:00+02:00"
+                    valid_to: null
+                metering_grid_area:
+                  - metering_grid_area_business_id: "10YNO-1--------2"
+                    valid_from: "2024-01-01T00:00:00+01:00"
+                    valid_to: null
+        'default':
+          description: Something unexpected
+          content:
+            text/plain:
+              schema:
+                type: string
+servers:
+  - url: http://accounting-point-adapter:8080
+    description: Development
