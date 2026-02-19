@@ -376,20 +376,35 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		return fmt.Errorf("could not create router: %w", err)
 	}
 
+	// silent middlewares first
+
 	// Enabling the fallback context ensures that gin falls back to the underlying context.Context.
 	// It must be set e.g. for otel tracing to work.
 	router.ContextWithFallback = true
+	router.Use(trace.Middleware()) //nolint:contextcheck
 
-	// first the health check endpoint: no logging, no auth, no tracing
+	// TODO use CustomRecovery to return JSON error responses
+	router.Use(gin.Recovery())
+
+	corsConfig := cors.DefaultConfig()
+	corsConfig.AllowAllOrigins = true
+	corsConfig.AllowMethods = []string{
+		"GET", "POST", "PATCH", "DELETE", "OPTIONS",
+	}
+
+	corsConfig.AllowHeaders = []string{"Authorization"}
+
+	router.Use(cors.New(corsConfig))
+	router.Use(WrapMiddleware(middleware.RealIP))
+
+	// silent endpoints
 	router.Match([]string{"GET", "HEAD"}, "/readyz", func(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, gin.H{"status": "ok"})
 	})
 
-	// all remaining routes go through the middleware stack
-	apiRouter := router.Group("/")
+	// middlewares with logging
 
-	apiRouter.Use(gin.Logger())
-	apiRouter.Use(trace.Middleware()) //nolint:contextcheck
+	router.Use(gin.Logger())
 
 	slogginConfig := sloggin.Config{ //nolint:exhaustruct
 		// We are providing our own trace.SlogHandler, so we don't need to log trace IDs here.
@@ -400,25 +415,12 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		WithRequestHeader: slogLevel == slog.LevelDebug,
 	}
 
-	apiRouter.Use(sloggin.NewWithConfig(logger, slogginConfig))
+	router.Use(sloggin.NewWithConfig(logger, slogginConfig))
 
-	// TODO use CustomRecovery to return JSON error responses
-	apiRouter.Use(gin.Recovery())
-
-	corsConfig := cors.DefaultConfig()
-	corsConfig.AllowAllOrigins = true
-	corsConfig.AllowMethods = []string{
-		"GET", "POST", "PATCH", "DELETE", "OPTIONS",
-	}
-
-	corsConfig.AllowHeaders = []string{"Authorization"}
-
-	apiRouter.Use(cors.New(corsConfig))
-	apiRouter.Use(WrapMiddleware(middleware.RealIP))
-	apiRouter.Use(WrapMiddleware(authAPI.TokenDecodingMiddleware))
+	router.Use(WrapMiddleware(authAPI.TokenDecodingMiddleware))
 
 	// auth API endpoints
-	authRouter := apiRouter.Group("/auth/v0")
+	authRouter := router.Group("/auth/v0")
 
 	// Endpoints
 	//nolint:contextcheck
@@ -450,7 +452,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 			authAPI.GetLogoutHandler)
 
 		// data API endpoint
-		apiRouter.Match(
+		router.Match(
 			[]string{"HEAD", "GET", "POST", "PATCH", "DELETE", "OPTIONS"},
 			"/api/v0/*url",
 			WrapHandler(http.StripPrefix("/api/v0", dataAPIHandler)), //nolint:contextcheck
