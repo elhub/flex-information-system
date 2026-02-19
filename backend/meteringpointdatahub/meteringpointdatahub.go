@@ -83,7 +83,8 @@ func (mpDatahubService *service) requestMeteringPointData(ctx context.Context, i
 		return nil, fmt.Errorf("could not create request: %w", err)
 	}
 
-	resp, err := http.DefaultClient.Do(req)
+	// NB (linter ignore): URL is from configured datahub URL, not user input
+	resp, err := http.DefaultClient.Do(req) //nolint:gosec
 	if err != nil {
 		return nil, fmt.Errorf("connection to the metering point datahub failed: %w", err)
 	}

@@ -18,7 +18,8 @@ func checkScopeWithHandler(w http.ResponseWriter, req *http.Request, requiredSco
 		slog.ErrorContext(ctx, "no request details in context", "error", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		body, _ := json.Marshal(newErrorMessage(http.StatusInternalServerError, "missing data in context", err))
-		w.Write(body)
+		// NB (ignore linter): marshalled JSON error message, not user-controlled
+		w.Write(body) //nolint:gosec
 
 		return
 	}

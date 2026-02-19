@@ -235,7 +235,8 @@ type tokenPayload struct {
 
 // tokenResponse is the response containing the access token.
 type tokenResponse struct {
-	AccessToken     string          `json:"access_token"`
+	// NB (linter ignore): this is a response struct, not a hardcoded secret
+	AccessToken     string          `json:"access_token"` //nolint:gosec
 	IssuedTokenType tokenType       `json:"issued_token_type"`
 	TokenType       accessTokenType `json:"token_type"`
 	ExpiresIn       int             `json:"expires_in"`
@@ -314,7 +315,8 @@ func (auth *API) GetSessionHandler(w http.ResponseWriter, r *http.Request) {
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusInternalServerError)
 			body, _ := json.Marshal(newErrorMessage(http.StatusInternalServerError, "unknown error when getting cookie", err))
-			w.Write(body)
+			// NB (linter ignore): body is a JSON error message, not user-controlled
+			w.Write(body) //nolint:gosec
 		}
 
 		return
@@ -340,7 +342,8 @@ func (auth *API) GetSessionHandler(w http.ResponseWriter, r *http.Request) {
 		})
 		w.WriteHeader(http.StatusBadRequest)
 		body, _ := json.Marshal(newErrorMessage(http.StatusBadRequest, "invalid session cookie", err))
-		w.Write(body)
+		// NB (linter ignore): body is a JSON error message, not user-controlled
+		w.Write(body) //nolint:gosec
 
 		return
 	}
@@ -351,7 +354,8 @@ func (auth *API) GetSessionHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		body, _ := json.Marshal(newErrorMessage(http.StatusInternalServerError, "could not begin tx", err))
-		w.Write(body)
+		// NB (linter ignore): body is a JSON error message, not user-controlled
+		w.Write(body) //nolint:gosec
 
 		return
 	}
@@ -362,7 +366,8 @@ func (auth *API) GetSessionHandler(w http.ResponseWriter, r *http.Request) {
 		slog.WarnContext(r.Context(), "error in get current user info", "error", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		body, _ := json.Marshal(newErrorMessage(http.StatusInternalServerError, "could not get current user info", err))
-		w.Write(body)
+		// NB (linter ignore): body is a JSON error message, not user-controlled
+		w.Write(body) //nolint:gosec
 
 		return
 	}
@@ -1015,9 +1020,10 @@ func (auth *API) decodeTokenString(tokenStr string) (*accessToken, error) {
 
 // clientCredentialsPayload is the payload for the client credentials request.
 type clientCredentialsPayload struct {
-	GrantType    grantType `binding:"required" form:"grant_type"`
-	ClientID     string    `binding:"required" form:"client_id"`
-	ClientSecret string    `binding:"required" form:"client_secret"`
+	GrantType grantType `binding:"required" form:"grant_type"`
+	ClientID  string    `binding:"required" form:"client_id"`
+	// NB (linter ignore): this is a field in the request, not a hardcoded secret
+	ClientSecret string `binding:"required" form:"client_secret"` //nolint:gosec
 }
 
 // Validate checks if the client credentials payload is valid.
@@ -1128,6 +1134,8 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 		return
 	}
 
+	// NB (linter ignore): no credentials hardcoded
+	//nolint:gosec
 	ctx.JSON(http.StatusOK, gin.H{
 		"access_token":      string(signedAccessToken),
 		"issued_token_type": "urn:ietf:params:oauth:token-type:jwt",
