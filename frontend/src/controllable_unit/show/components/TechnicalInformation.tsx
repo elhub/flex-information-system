@@ -7,7 +7,7 @@ export const TechnicalInformation = ({
   controllableUnit: ControllableUnit | undefined;
 }) => {
   return (
-    <div>
+    <div className="grid grid-cols-[1fr_5fr]  gap-2">
       <LabelValue
         tooltip={true}
         labelKey="controllable_unit.maximum_available_capacity"

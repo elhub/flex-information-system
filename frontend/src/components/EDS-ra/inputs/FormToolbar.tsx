@@ -1,12 +1,13 @@
 import { useFormContext } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { Button, Container } from "../../ui";
+import { Button } from "../../ui";
 
 type FormToolbarProps = {
   saveLabel?: string;
   cancelLabel?: string;
   onCancel?: () => void;
   saveAlwaysEnabled?: boolean;
+  className?: string;
 };
 
 export const FormToolbar = ({
@@ -14,6 +15,7 @@ export const FormToolbar = ({
   cancelLabel = "Cancel",
   saveAlwaysEnabled = false,
   onCancel,
+  className,
 }: FormToolbarProps) => {
   const navigate = useNavigate();
   const { formState } = useFormContext();
@@ -24,14 +26,7 @@ export const FormToolbar = ({
     !saveAlwaysEnabled && (formState.isSubmitting || !formState.isDirty);
 
   return (
-    <Container
-      style={{
-        gap: "var(--eds-size-3)",
-        marginTop: "var(--eds-size-3)",
-        marginBottom: "var(--eds-size-3)",
-        flexDirection: "row",
-      }}
-    >
+    <div className={`${className ?? ""} flex flex-row gap-3 mt-3 mb-3`}>
       <Button
         variant="primary"
         size="large"
@@ -48,6 +43,6 @@ export const FormToolbar = ({
       >
         {cancelLabel}
       </Button>
-    </Container>
+    </div>
   );
 };

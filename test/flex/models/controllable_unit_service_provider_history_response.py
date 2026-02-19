@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
 from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
 from ..types import UNSET, Unset
 
@@ -24,17 +26,17 @@ class ControllableUnitServiceProviderHistoryResponse:
         end_user_id (int): Technical ID of the end user behind the accounting point.
         contract_reference (str): The service providers internal reference to the contract with the end user. Typically
             an internal identifier to a stored document or consent record. Example: 123e4567-e89b-12d3-a456-426614174000.
-        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-            23:59:00 CET.
+        recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
+            2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
         controllable_unit_service_provider_id (int): Reference to the resource that was updated. Example: 48.
-        valid_from (None | str | Unset): The date from which the relation between the controllable unit and the service
-            provider is valid. Midnight aligned on Norwegian timezone. Example: 2022-08-08 00:00:00 CET.
-        valid_to (None | str | Unset): The date until which the relation between the controllable unit and the service
-            provider is valid. Midnight aligned on Norwegian timezone. Example: 2022-09-10 00:00:00 CET.
+        valid_from (datetime.datetime | None | Unset): The date from which the relation between the controllable unit
+            and the service provider is valid. Midnight aligned on Norwegian timezone. Example: 2022-08-08T00:00:00+02.
+        valid_to (datetime.datetime | None | Unset): The date until which the relation between the controllable unit and
+            the service provider is valid. Midnight aligned on Norwegian timezone. Example: 2022-09-10T00:00:00+02.
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
-        replaced_at (None | str | Unset): When the resource was replaced in the system. Example: 2024-07-07 10:00:00
-            CET.
+        replaced_at (datetime.datetime | None | Unset): When the resource was replaced in the system. Example:
+            2024-07-07T10:00:00+00:00.
     """
 
     id: int
@@ -42,13 +44,13 @@ class ControllableUnitServiceProviderHistoryResponse:
     service_provider_id: int
     end_user_id: int
     contract_reference: str
-    recorded_at: str
+    recorded_at: datetime.datetime
     recorded_by: int
     controllable_unit_service_provider_id: int
-    valid_from: None | str | Unset = UNSET
-    valid_to: None | str | Unset = UNSET
+    valid_from: datetime.datetime | None | Unset = UNSET
+    valid_to: datetime.datetime | None | Unset = UNSET
     replaced_by: int | None | Unset = UNSET
-    replaced_at: None | str | Unset = UNSET
+    replaced_at: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -62,7 +64,7 @@ class ControllableUnitServiceProviderHistoryResponse:
 
         contract_reference = self.contract_reference
 
-        recorded_at = self.recorded_at
+        recorded_at = self.recorded_at.isoformat()
 
         recorded_by = self.recorded_by
 
@@ -71,12 +73,16 @@ class ControllableUnitServiceProviderHistoryResponse:
         valid_from: None | str | Unset
         if isinstance(self.valid_from, Unset):
             valid_from = UNSET
+        elif isinstance(self.valid_from, datetime.datetime):
+            valid_from = self.valid_from.isoformat()
         else:
             valid_from = self.valid_from
 
         valid_to: None | str | Unset
         if isinstance(self.valid_to, Unset):
             valid_to = UNSET
+        elif isinstance(self.valid_to, datetime.datetime):
+            valid_to = self.valid_to.isoformat()
         else:
             valid_to = self.valid_to
 
@@ -89,6 +95,8 @@ class ControllableUnitServiceProviderHistoryResponse:
         replaced_at: None | str | Unset
         if isinstance(self.replaced_at, Unset):
             replaced_at = UNSET
+        elif isinstance(self.replaced_at, datetime.datetime):
+            replaced_at = self.replaced_at.isoformat()
         else:
             replaced_at = self.replaced_at
 
@@ -130,27 +138,43 @@ class ControllableUnitServiceProviderHistoryResponse:
 
         contract_reference = d.pop("contract_reference")
 
-        recorded_at = d.pop("recorded_at")
+        recorded_at = isoparse(d.pop("recorded_at"))
 
         recorded_by = d.pop("recorded_by")
 
         controllable_unit_service_provider_id = d.pop("controllable_unit_service_provider_id")
 
-        def _parse_valid_from(data: object) -> None | str | Unset:
+        def _parse_valid_from(data: object) -> datetime.datetime | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(None | str | Unset, data)
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                valid_from_type_0 = isoparse(data)
+
+                return valid_from_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(datetime.datetime | None | Unset, data)
 
         valid_from = _parse_valid_from(d.pop("valid_from", UNSET))
 
-        def _parse_valid_to(data: object) -> None | str | Unset:
+        def _parse_valid_to(data: object) -> datetime.datetime | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(None | str | Unset, data)
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                valid_to_type_0 = isoparse(data)
+
+                return valid_to_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(datetime.datetime | None | Unset, data)
 
         valid_to = _parse_valid_to(d.pop("valid_to", UNSET))
 
@@ -163,12 +187,20 @@ class ControllableUnitServiceProviderHistoryResponse:
 
         replaced_by = _parse_replaced_by(d.pop("replaced_by", UNSET))
 
-        def _parse_replaced_at(data: object) -> None | str | Unset:
+        def _parse_replaced_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(None | str | Unset, data)
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                replaced_at_type_0 = isoparse(data)
+
+                return replaced_at_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(datetime.datetime | None | Unset, data)
 
         replaced_at = _parse_replaced_at(d.pop("replaced_at", UNSET))
 

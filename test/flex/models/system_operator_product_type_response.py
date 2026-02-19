@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
 from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
 from ..models.system_operator_product_type_status import SystemOperatorProductTypeStatus
 
@@ -20,8 +22,8 @@ class SystemOperatorProductTypeResponse:
         system_operator_id (int): Reference to the system operator. Example: 37.
         product_type_id (int): Reference to the product type. Example: 8.
         status (SystemOperatorProductTypeStatus): The status of the relation. Example: active.
-        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-            23:59:00 CET.
+        recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
+            2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
     """
 
@@ -29,7 +31,7 @@ class SystemOperatorProductTypeResponse:
     system_operator_id: int
     product_type_id: int
     status: SystemOperatorProductTypeStatus
-    recorded_at: str
+    recorded_at: datetime.datetime
     recorded_by: int
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -42,7 +44,7 @@ class SystemOperatorProductTypeResponse:
 
         status = self.status.value
 
-        recorded_at = self.recorded_at
+        recorded_at = self.recorded_at.isoformat()
 
         recorded_by = self.recorded_by
 
@@ -72,7 +74,7 @@ class SystemOperatorProductTypeResponse:
 
         status = SystemOperatorProductTypeStatus(d.pop("status"))
 
-        recorded_at = d.pop("recorded_at")
+        recorded_at = isoparse(d.pop("recorded_at"))
 
         recorded_by = d.pop("recorded_by")
 

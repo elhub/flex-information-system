@@ -20,7 +20,7 @@ const filterRecord = ({
   procuring_system_operator_id,
   product_type_ids,
   status,
-  notes,
+  additional_information,
   prequalified_at,
   verified_at,
 }: any) => ({
@@ -28,7 +28,7 @@ const filterRecord = ({
   procuring_system_operator_id,
   product_type_ids,
   status,
-  notes,
+  additional_information,
   prequalified_at,
   verified_at,
 });
@@ -94,8 +94,8 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
             ]}
           />
           <TextInput
-            source="notes"
-            label="field.service_providing_group_product_application.notes"
+            source="additional_information"
+            label="field.service_providing_group_product_application.additional_information"
             multiline={true}
             minRows={3}
             sx={{ minWidth: { xs: 300, md: 500 } }}

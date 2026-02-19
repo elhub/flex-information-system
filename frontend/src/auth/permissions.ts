@@ -452,8 +452,8 @@ export type PermissionTarget =
   | "service_providing_group_membership_history.valid_from"
   | "service_providing_group_membership_history.valid_to"
   | "service_providing_group_product_application"
+  | "service_providing_group_product_application.additional_information"
   | "service_providing_group_product_application.id"
-  | "service_providing_group_product_application.notes"
   | "service_providing_group_product_application.prequalified_at"
   | "service_providing_group_product_application.procuring_system_operator_id"
   | "service_providing_group_product_application.product_type_ids"
@@ -463,8 +463,8 @@ export type PermissionTarget =
   | "service_providing_group_product_application.status"
   | "service_providing_group_product_application.verified_at"
   | "service_providing_group_product_application_history"
+  | "service_providing_group_product_application_history.additional_information"
   | "service_providing_group_product_application_history.id"
-  | "service_providing_group_product_application_history.notes"
   | "service_providing_group_product_application_history.prequalified_at"
   | "service_providing_group_product_application_history.procuring_system_operator_id"
   | "service_providing_group_product_application_history.product_type_ids"
@@ -2387,11 +2387,12 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application.id",
+      target:
+        "service_providing_group_product_application.additional_information",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application.notes",
+      target: "service_providing_group_product_application.id",
       operation: "read",
     },
     {
@@ -2433,11 +2434,12 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application_history.id",
+      target:
+        "service_providing_group_product_application_history.additional_information",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application_history.notes",
+      target: "service_providing_group_product_application_history.id",
       operation: "read",
     },
     {
@@ -4628,11 +4630,12 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application.id",
+      target:
+        "service_providing_group_product_application.additional_information",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application.notes",
+      target: "service_providing_group_product_application.id",
       operation: "read",
     },
     {
@@ -4674,11 +4677,12 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application_history.id",
+      target:
+        "service_providing_group_product_application_history.additional_information",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application_history.notes",
+      target: "service_providing_group_product_application_history.id",
       operation: "read",
     },
     {
@@ -6869,11 +6873,12 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application.id",
+      target:
+        "service_providing_group_product_application.additional_information",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application.notes",
+      target: "service_providing_group_product_application.id",
       operation: "read",
     },
     {
@@ -6915,11 +6920,12 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application_history.id",
+      target:
+        "service_providing_group_product_application_history.additional_information",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application_history.notes",
+      target: "service_providing_group_product_application_history.id",
       operation: "read",
     },
     {
@@ -9738,16 +9744,18 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target:
+        "service_providing_group_product_application.additional_information",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.additional_information",
+      operation: "update",
+    },
+    {
       target: "service_providing_group_product_application.id",
       operation: "read",
-    },
-    {
-      target: "service_providing_group_product_application.notes",
-      operation: "read",
-    },
-    {
-      target: "service_providing_group_product_application.notes",
-      operation: "update",
     },
     {
       target: "service_providing_group_product_application.prequalified_at",
@@ -9808,11 +9816,12 @@ const rawPermissions: Record<
       operation: "update",
     },
     {
-      target: "service_providing_group_product_application_history.id",
+      target:
+        "service_providing_group_product_application_history.additional_information",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application_history.notes",
+      target: "service_providing_group_product_application_history.id",
       operation: "read",
     },
     {
@@ -12122,11 +12131,12 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application.id",
+      target:
+        "service_providing_group_product_application.additional_information",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application.notes",
+      target: "service_providing_group_product_application.id",
       operation: "read",
     },
     {
@@ -12168,11 +12178,12 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application_history.id",
+      target:
+        "service_providing_group_product_application_history.additional_information",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application_history.notes",
+      target: "service_providing_group_product_application_history.id",
       operation: "read",
     },
     {
@@ -14649,16 +14660,13 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target:
+        "service_providing_group_product_application.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application.id",
       operation: "read",
-    },
-    {
-      target: "service_providing_group_product_application.notes",
-      operation: "read",
-    },
-    {
-      target: "service_providing_group_product_application.notes",
-      operation: "update",
     },
     {
       target: "service_providing_group_product_application.prequalified_at",
@@ -14719,11 +14727,12 @@ const rawPermissions: Record<
       operation: "update",
     },
     {
-      target: "service_providing_group_product_application_history.id",
+      target:
+        "service_providing_group_product_application_history.additional_information",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application_history.notes",
+      target: "service_providing_group_product_application_history.id",
       operation: "read",
     },
     {
@@ -17384,15 +17393,26 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target:
+        "service_providing_group_product_application.additional_information",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_application.additional_information",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.additional_information",
+      operation: "update",
+    },
+    {
       target: "service_providing_group_product_application",
       operation: "create",
     },
     {
       target: "service_providing_group_product_application.id",
-      operation: "read",
-    },
-    {
-      target: "service_providing_group_product_application.notes",
       operation: "read",
     },
     {
@@ -17464,11 +17484,12 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application_history.id",
+      target:
+        "service_providing_group_product_application_history.additional_information",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application_history.notes",
+      target: "service_providing_group_product_application_history.id",
       operation: "read",
     },
     {
@@ -19720,11 +19741,12 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application.id",
+      target:
+        "service_providing_group_product_application.additional_information",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application.notes",
+      target: "service_providing_group_product_application.id",
       operation: "read",
     },
     {
@@ -19766,11 +19788,12 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application_history.id",
+      target:
+        "service_providing_group_product_application_history.additional_information",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application_history.notes",
+      target: "service_providing_group_product_application_history.id",
       operation: "read",
     },
     {

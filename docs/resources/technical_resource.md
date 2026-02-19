@@ -14,14 +14,14 @@ flexibility structure, see [Conceptual Model and Terminology](../concepts/concep
 
 ## Fields
 
-| Name                                                                                             | Description                                                                 | Format                                 | Reference                                             |
-|--------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------|----------------------------------------|-------------------------------------------------------|
-| <a name="field-id" href="#field-id">id</a>                                                       | Unique surrogate identifier.                                                | bigint<br/>Read only                   |                                                       |
-| <a name="field-name" href="#field-name">name</a>                                                 | Name of the technical resource. Maximum 128 characters.                     | text<br/>Required                      |                                                       |
-| <a name="field-controllable_unit_id" href="#field-controllable_unit_id">controllable_unit_id</a> | Reference to the controllable unit that this technical resource belongs to. | bigint<br/>Required<br/>Non-updatable  | [controllable_unit.id](controllable_unit.md#field-id) |
-| <a name="field-details" href="#field-details">details</a>                                        | Free text details about the technical resource.                             | text<br/>Max length: `1024`            |                                                       |
-| <a name="field-recorded_at" href="#field-recorded_at">recorded_at</a>                            | When the resource was recorded (created or updated) in the system.          | timestamp with time zone<br/>Read only |                                                       |
-| <a name="field-recorded_by" href="#field-recorded_by">recorded_by</a>                            | The identity that recorded the resource.                                    | bigint<br/>Read only                   |                                                       |
+| Name                                                                                             | Description                                                                 | Format                                | Reference                                             |
+|--------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------|---------------------------------------|-------------------------------------------------------|
+| <a name="field-id" href="#field-id">id</a>                                                       | Unique surrogate identifier.                                                | bigint<br/>Read only                  |                                                       |
+| <a name="field-name" href="#field-name">name</a>                                                 | Name of the technical resource. Maximum 128 characters.                     | text<br/>Required                     |                                                       |
+| <a name="field-controllable_unit_id" href="#field-controllable_unit_id">controllable_unit_id</a> | Reference to the controllable unit that this technical resource belongs to. | bigint<br/>Required<br/>Non-updatable | [controllable_unit.id](controllable_unit.md#field-id) |
+| <a name="field-details" href="#field-details">details</a>                                        | Free text details about the technical resource.                             | text<br/>Max length: `1024`           |                                                       |
+| <a name="field-recorded_at" href="#field-recorded_at">recorded_at</a>                            | When the resource was recorded (created or updated) in the system.          | date-time<br/>Read only               |                                                       |
+| <a name="field-recorded_by" href="#field-recorded_by">recorded_by</a>                            | The identity that recorded the resource.                                    | bigint<br/>Read only                  |                                                       |
 
 ## Validation Rules
 

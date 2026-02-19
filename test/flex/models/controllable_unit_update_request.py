@@ -41,8 +41,8 @@ class ControllableUnitUpdateRequest:
         grid_validation_status (ControllableUnitGridValidationStatus | Unset): The grid validation status of the
             controllable unit. Example: validated.
         grid_validation_notes (None | str | Unset): Free text notes on the current grid validation status.
-        validated_at (None | str | Unset): When the controllable unit was last validated. Example: 2022-08-08 12:00:00
-            CET.
+        validated_at (datetime.datetime | None | Unset): When the controllable unit was last validated. Example:
+            2022-08-08T12:00:00+02.
     """
 
     name: str | Unset = UNSET
@@ -57,7 +57,7 @@ class ControllableUnitUpdateRequest:
     grid_node_id: None | str | Unset = UNSET
     grid_validation_status: ControllableUnitGridValidationStatus | Unset = UNSET
     grid_validation_notes: None | str | Unset = UNSET
-    validated_at: None | str | Unset = UNSET
+    validated_at: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -124,6 +124,8 @@ class ControllableUnitUpdateRequest:
         validated_at: None | str | Unset
         if isinstance(self.validated_at, Unset):
             validated_at = UNSET
+        elif isinstance(self.validated_at, datetime.datetime):
+            validated_at = self.validated_at.isoformat()
         else:
             validated_at = self.validated_at
 
@@ -258,12 +260,20 @@ class ControllableUnitUpdateRequest:
 
         grid_validation_notes = _parse_grid_validation_notes(d.pop("grid_validation_notes", UNSET))
 
-        def _parse_validated_at(data: object) -> None | str | Unset:
+        def _parse_validated_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(None | str | Unset, data)
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                validated_at_type_0 = isoparse(data)
+
+                return validated_at_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(datetime.datetime | None | Unset, data)
 
         validated_at = _parse_validated_at(d.pop("validated_at", UNSET))
 

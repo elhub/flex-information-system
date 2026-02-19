@@ -1,65 +1,16 @@
 import { Form, useNotify } from "ra-core";
-import { useNavigate, useLocation } from "react-router-dom";
-import { useFormContext } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { callControllableUnitLookup } from "../../generated-client";
 import { zControllableUnitLookupRequest } from "../../generated-client/zod.gen";
 import { getFields, unTypedZodResolver } from "../../zod";
-import {
-  FormContainer,
-  Heading,
-  VerticalSpace,
-  BodyText,
-  FlexDiv,
-} from "../../components/ui";
+import { FormContainer, Heading } from "../../components/ui";
 import { TextInput, FormToolbar } from "../../components/EDS-ra/inputs";
-import { ControllableUnitInputLocationState } from "../ControllableUnitInput";
 
-const ControllableUnitLookupForm = () => {
-  const { watch } = useFormContext();
-  const controllableUnit = watch("controllable_unit");
-  const accountingPoint = watch("accounting_point");
-
-  const accountingPointDisabled =
-    controllableUnit && controllableUnit.length > 0;
-  const controllableUnitDisabled =
-    accountingPoint && accountingPoint.length > 0;
-
-  const keys = getFields(zControllableUnitLookupRequest.shape);
-
-  return (
-    <FlexDiv
-      style={{
-        flexDirection: "column",
-        gap: "var(--eds-size-3)",
-        flexWrap: "wrap",
-      }}
-    >
-      <TextInput overrideLabel="End user" tooltip={false} {...keys.end_user} />
-      <TextInput
-        disabled={accountingPointDisabled}
-        overrideLabel="Accounting point"
-        tooltip={false}
-        {...keys.accounting_point}
-      />
-      <TextInput
-        disabled={controllableUnitDisabled}
-        overrideLabel="Controllable unit"
-        tooltip={false}
-        {...keys.controllable_unit}
-      />
-    </FlexDiv>
-  );
-};
-
-// page to enter data required for controllable unit lookup
 export const ControllableUnitLookupInput = () => {
-  const { state } = useLocation();
-  const defaultControllableUnit = state?.controllable_unit as
-    | string
-    | undefined;
-
   const navigate = useNavigate();
   const notify = useNotify();
+
+  const keys = getFields(zControllableUnitLookupRequest.shape);
 
   // launch lookup request
   const lookup = async (data: unknown) => {
@@ -81,20 +32,15 @@ export const ControllableUnitLookupInput = () => {
       return;
     }
 
-    // if no controllable units are found, navigate to the create controllable unit page
     if (response.data.controllable_units.length === 0) {
-      const state: ControllableUnitInputLocationState = {
-        controllableUnit: {
-          accounting_point_id: response.data.accounting_point.id,
-        },
-      };
-      navigate("/controllable_unit/create", {
-        state,
+      const params = new URLSearchParams({
+        accounting_point_id: String(response.data.accounting_point.id),
+        end_user_id: String(response.data.end_user.id),
       });
+      navigate(`/controllable_unit/create?${params.toString()}`);
       return;
     }
 
-    // navigate to the dedicated show page for the result
     return navigate("/controllable_unit/lookup/result", {
       state: { result: response.data },
     });
@@ -102,28 +48,29 @@ export const ControllableUnitLookupInput = () => {
 
   return (
     <Form
-      defaultValues={{ controllable_unit: defaultControllableUnit }}
       resolver={unTypedZodResolver(zControllableUnitLookupRequest)}
       onSubmit={lookup}
     >
-      <FormContainer>
+      <FormContainer className="max-w-xl mt-4 py-4">
         <Heading level={3} size="medium">
-          Lookup a controllable unit
+          User details
         </Heading>
-        <VerticalSpace />
-        <BodyText>
-          This operation allows you to get information about one or several
-          controllable units registered in the Flexibility Information System,
-          in order to, for instance, create controllable unit service provider
-          resources.
-        </BodyText>
-        <BodyText>
-          Input the business ID of the end user behind the controllable unit,
-          and either the GSRN of the accounting point or the business ID of the
-          controllable unit.
-        </BodyText>
-        <ControllableUnitLookupForm />
-        <FormToolbar saveLabel="Lookup" />
+        <TextInput
+          description
+          descriptionOverride="Organisation number or birth number of the end user"
+          overrideLabel="End user"
+          tooltip={false}
+          {...keys.end_user}
+        />
+        <TextInput
+          description
+          descriptionOverride="GSRN of the accounting point"
+          overrideLabel="Accounting point"
+          tooltip={false}
+          {...keys.accounting_point}
+          required
+        />
+        <FormToolbar saveLabel="Next" className="flex-row-reverse w-full" />
       </FormContainer>
     </Form>
   );

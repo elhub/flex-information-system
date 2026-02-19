@@ -1,38 +1,38 @@
-import { Create, useNavigate, useNotify } from "react-admin";
-import {
-  ControllableUnitInput,
-  ControllableUnitInputLocationState,
-} from "./ControllableUnitInput";
-import { ControllableUnitServiceProviderLocationState } from "./service_provider/ControllableUnitServiceProviderInput";
-import { zControllableUnit } from "../generated-client/zod.gen";
-import useLocationState from "../hooks/useLocationState";
+import { Create } from "react-admin";
+import { ControllableUnitCreateForm } from "./ControllableUnitCreateForm";
+import { useSearchParams } from "react-router-dom";
+import { Alert } from "../components/ui";
+import z from "zod";
+
+const zControllableUnitCreateParams = z.object({
+  accounting_point_id: z.coerce.number(),
+  end_user_id: z.coerce.number(),
+});
 
 const ControllableUnitCreate = () => {
-  const locationState = useLocationState<ControllableUnitInputLocationState>();
-  const navigate = useNavigate();
-  const notify = useNotify();
-
-  const onSuccess = (data: unknown) => {
-    const controllableUnit = zControllableUnit.partial().parse(data ?? {});
-    const cuspState: ControllableUnitServiceProviderLocationState = {
-      cusp: {
-        controllable_unit_id: controllableUnit.id,
-        end_user_id: locationState?.endUserId,
-        valid_from: controllableUnit.start_date,
-      },
-    };
-
-    notify("Controllable Unit created successfully", { type: "success" });
-
-    navigate(
-      `/controllable_unit/${controllableUnit.id}/service_provider/create`,
-      { state: cuspState, replace: true },
+  const [searchParams] = useSearchParams();
+  const accountingPointIdParam = searchParams.get("accounting_point_id");
+  const endUserIdParam = searchParams.get("end_user_id");
+  const createParams = zControllableUnitCreateParams.safeParse({
+    accounting_point_id: accountingPointIdParam,
+    end_user_id: endUserIdParam,
+  });
+  if (!createParams.success) {
+    return (
+      <Alert variant="error">
+        Missing accounting point or end user. Please start from the lookup page.
+      </Alert>
     );
-  };
+  }
+
+  const { accounting_point_id, end_user_id } = createParams.data;
 
   return (
-    <Create mutationOptions={{ onSuccess }}>
-      <ControllableUnitInput />
+    <Create>
+      <ControllableUnitCreateForm
+        accountingPointId={accounting_point_id}
+        endUserId={end_user_id}
+      />
     </Create>
   );
 };

@@ -56,6 +56,7 @@ const Layout = () => {
 
       <LabelValue
         labelKey="controllable_unit.recorded_at"
+        className="flex gap-2 items-center"
         value={
           controllableUnitViewModel?.controllableUnit?.recorded_at
             ? formatDate(

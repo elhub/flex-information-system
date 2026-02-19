@@ -68,11 +68,11 @@ for the history resource follows the main resource, except it is _read only_.
 The history record also contains three additional fields. The table below shows
 what these fields are and where they inherit FLA from.
 
-| Name                                                              | Description                                   | Format                                               | Reference | FLA           |
-|-------------------------------------------------------------------|-----------------------------------------------|------------------------------------------------------|-----------|---------------|
-| <a name="resource-id" href="#resource-id">&lt;resource&gt;_id</a> | Id of the resource that this history is for   | bigint<br/>Generated<br/>Read only                   |           | `id`          |
-| <a name="replaced-at" href="#replaced-at">replaced_at</a>         | Time the resource was replaced                | timestamp with time zone<br/>Generated<br/>Read only |           | `recorded_at` |
-| <a name="replaced-by" href="#replaced-by">replaced_by</a>         | Id of the identity that replaced the resource | bigint<br/>Generated<br/>Read only                   |           | `recorded_by` |
+| Name                                                              | Description                                   | Format                                | Reference | FLA           |
+|-------------------------------------------------------------------|-----------------------------------------------|---------------------------------------|-----------|---------------|
+| <a name="resource-id" href="#resource-id">&lt;resource&gt;_id</a> | Id of the resource that this history is for   | bigint<br/>Generated<br/>Read only    |           | `id`          |
+| <a name="replaced-at" href="#replaced-at">replaced_at</a>         | Time the resource was replaced                | date-time<br/>Generated<br/>Read only |           | `recorded_at` |
+| <a name="replaced-by" href="#replaced-by">replaced_by</a>         | Id of the identity that replaced the resource | bigint<br/>Generated<br/>Read only    |           | `recorded_by` |
 
 [Resource Level Authorization](../technical/auth/authz-model.md#resource-level-authorization-rla)
 for the history resource are documented in the same place as the main resource

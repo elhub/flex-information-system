@@ -60,6 +60,7 @@ from flex.api.service_providing_group_product_application import (
     read_service_providing_group_product_application_history,
 )
 from flex import AuthenticatedClient
+import datetime
 import pytest
 from typing import cast
 
@@ -116,7 +117,7 @@ def data():
             service_provider_id=sp_id,
             end_user_id=eu_id,
             contract_reference="TEST-CONTRACT",
-            valid_from="2024-01-01T00:00:00+1",
+            valid_from=datetime.datetime.fromisoformat("2024-01-01T00:00:00+01:00"),
         ),
     )
     assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
@@ -155,7 +156,7 @@ def data():
             body=ServiceProvidingGroupMembershipCreateRequest(
                 controllable_unit_id=cast(int, cu.id),
                 service_providing_group_id=spg_id,
-                valid_from="2024-01-01T00:00:00+1",
+                valid_from=datetime.datetime.fromisoformat("2024-01-01T00:00:00+01:00"),
             ),
         )
         assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
@@ -201,7 +202,9 @@ def data():
             id=cast(int, sppa.id),
             body=ServiceProviderProductApplicationUpdateRequest(
                 status=ServiceProviderProductApplicationStatus.QUALIFIED,
-                qualified_at="2024-01-01T00:00:00+1",
+                qualified_at=datetime.datetime.fromisoformat(
+                    "2024-01-01T00:00:00+01:00"
+                ),
             ),
         )
         assert not isinstance(u, ErrorMessage)
@@ -322,7 +325,9 @@ def test_spgpa_fiso_sp_so(data):
         id=cast(int, spgpa.id),
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
             status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFIED,
-            prequalified_at="2024-01-01T00:00:00+1",
+            prequalified_at=datetime.datetime.fromisoformat(
+                "2024-01-01T00:00:00+01:00"
+            ),
         ),
     )
     assert isinstance(u, ErrorMessage)
@@ -334,7 +339,9 @@ def test_spgpa_fiso_sp_so(data):
         id=cast(int, spgpa.id),
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
             status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFIED,
-            prequalified_at="2024-01-01T00:00:00+1",
+            prequalified_at=datetime.datetime.fromisoformat(
+                "2024-01-01T00:00:00+01:00"
+            ),
         ),
     )
     assert not isinstance(u, ErrorMessage)
@@ -362,7 +369,7 @@ def test_spgpa_fiso_sp_so(data):
         client=client_fiso,
         id=cast(int, spgpa.id),
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
-            notes="test notes by FISO",
+            additional_information="test by FISO",
             status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFICATION_PENDING,
             prequalified_at=None,
         ),
@@ -381,7 +388,9 @@ def test_spgpa_fiso_sp_so(data):
         id=cast(int, spgpa.id),
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
             status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFIED,
-            verified_at="2024-01-01T00:00:00+1",  # should not prevent the error
+            verified_at=datetime.datetime.fromisoformat(
+                "2024-01-01T00:00:00+01:00"
+            ),  # should not prevent the error
         ),
     )
     assert isinstance(u, ErrorMessage)
@@ -391,7 +400,9 @@ def test_spgpa_fiso_sp_so(data):
         id=cast(int, spgpa.id),
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
             status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFIED,
-            prequalified_at="2024-01-01T00:00:00+1",
+            prequalified_at=datetime.datetime.fromisoformat(
+                "2024-01-01T00:00:00+01:00"
+            ),
             verified_at=None,  # should not cause an error
         ),
     )
@@ -412,7 +423,7 @@ def test_spgpa_fiso_sp_so(data):
         id=cast(int, spgpa.id),
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
             status=ServiceProvidingGroupProductApplicationStatus.VERIFIED,
-            verified_at="2024-01-01T00:00:00+1",
+            verified_at=datetime.datetime.fromisoformat("2024-01-01T00:00:00+01:00"),
             prequalified_at=None,  # should not cause an error
         ),
     )
@@ -437,7 +448,9 @@ def test_spgpa_fiso_sp_so(data):
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
             status=ServiceProvidingGroupProductApplicationStatus.IN_PROGRESS,
             verified_at=None,
-            prequalified_at="2024-01-01T00:00:00+1",
+            prequalified_at=datetime.datetime.fromisoformat(
+                "2024-01-01T00:00:00+01:00"
+            ),
         ),
     )
     assert not isinstance(u, ErrorMessage)
