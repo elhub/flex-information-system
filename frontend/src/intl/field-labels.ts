@@ -401,6 +401,25 @@ export type FieldLabel =
   | "service_providing_group_product_application.service_providing_group_id"
   | "service_providing_group_product_application.status"
   | "service_providing_group_product_application.verified_at"
+  | "service_providing_group_product_application_comment.content"
+  | "service_providing_group_product_application_comment.created_at"
+  | "service_providing_group_product_application_comment.created_by"
+  | "service_providing_group_product_application_comment.id"
+  | "service_providing_group_product_application_comment.recorded_at"
+  | "service_providing_group_product_application_comment.recorded_by"
+  | "service_providing_group_product_application_comment.service_providing_group_product_application_id"
+  | "service_providing_group_product_application_comment.visibility"
+  | "service_providing_group_product_application_comment_history.content"
+  | "service_providing_group_product_application_comment_history.created_at"
+  | "service_providing_group_product_application_comment_history.created_by"
+  | "service_providing_group_product_application_comment_history.id"
+  | "service_providing_group_product_application_comment_history.recorded_at"
+  | "service_providing_group_product_application_comment_history.recorded_by"
+  | "service_providing_group_product_application_comment_history.replaced_at"
+  | "service_providing_group_product_application_comment_history.replaced_by"
+  | "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id"
+  | "service_providing_group_product_application_comment_history.service_providing_group_product_application_id"
+  | "service_providing_group_product_application_comment_history.visibility"
   | "service_providing_group_product_application_history.additional_information"
   | "service_providing_group_product_application_history.id"
   | "service_providing_group_product_application_history.prequalified_at"
@@ -1045,6 +1064,41 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Replaced at",
     "service_providing_group_product_application_history.replaced_by":
       "Replaced by",
+    "service_providing_group_product_application_comment.id": "ID",
+    "service_providing_group_product_application_comment.created_by":
+      "Created by",
+    "service_providing_group_product_application_comment.visibility":
+      "Visibility",
+    "service_providing_group_product_application_comment.content": "Content",
+    "service_providing_group_product_application_comment.created_at":
+      "Created at",
+    "service_providing_group_product_application_comment.recorded_at":
+      "Recorded at",
+    "service_providing_group_product_application_comment.recorded_by":
+      "Recorded by",
+    "service_providing_group_product_application_comment.service_providing_group_product_application_id":
+      "Service Providing Group Product Application",
+    "service_providing_group_product_application_comment_history.id": "ID",
+    "service_providing_group_product_application_comment_history.created_by":
+      "Created by",
+    "service_providing_group_product_application_comment_history.visibility":
+      "Visibility",
+    "service_providing_group_product_application_comment_history.content":
+      "Content",
+    "service_providing_group_product_application_comment_history.created_at":
+      "Created at",
+    "service_providing_group_product_application_comment_history.recorded_at":
+      "Recorded at",
+    "service_providing_group_product_application_comment_history.recorded_by":
+      "Recorded by",
+    "service_providing_group_product_application_comment_history.service_providing_group_product_application_id":
+      "Service Providing Group Product Application",
+    "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id":
+      "Comment ID",
+    "service_providing_group_product_application_comment_history.replaced_at":
+      "Replaced at",
+    "service_providing_group_product_application_comment_history.replaced_by":
+      "Replaced by",
     "service_providing_group_product_suspension.id": "ID",
     "service_providing_group_product_suspension.procuring_system_operator_id":
       "Procuring system operator",
@@ -1675,6 +1729,41 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Erstattet",
     "service_providing_group_product_application_history.replaced_by":
       "Erstattet av",
+    "service_providing_group_product_application_comment.id": "ID",
+    "service_providing_group_product_application_comment.created_by":
+      "Opprettet av",
+    "service_providing_group_product_application_comment.visibility":
+      "Synlighet",
+    "service_providing_group_product_application_comment.content": "Innhold",
+    "service_providing_group_product_application_comment.created_at":
+      "Opprettet",
+    "service_providing_group_product_application_comment.recorded_at":
+      "Registrert",
+    "service_providing_group_product_application_comment.recorded_by":
+      "Registrert av",
+    "service_providing_group_product_application_comment.service_providing_group_product_application_id":
+      "Fleksibilitetsgruppe produktsøknad",
+    "service_providing_group_product_application_comment_history.id": "ID",
+    "service_providing_group_product_application_comment_history.created_by":
+      "Opprettet av",
+    "service_providing_group_product_application_comment_history.visibility":
+      "Synlighet",
+    "service_providing_group_product_application_comment_history.content":
+      "Innhold",
+    "service_providing_group_product_application_comment_history.created_at":
+      "Opprettet",
+    "service_providing_group_product_application_comment_history.recorded_at":
+      "Registrert",
+    "service_providing_group_product_application_comment_history.recorded_by":
+      "Registrert av",
+    "service_providing_group_product_application_comment_history.service_providing_group_product_application_id":
+      "Fleksibilitetsgruppe produktsøknad",
+    "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id":
+      "Kommentar-ID",
+    "service_providing_group_product_application_comment_history.replaced_at":
+      "Erstattet",
+    "service_providing_group_product_application_comment_history.replaced_by":
+      "Erstattet av",
     "service_providing_group_product_suspension.id": "ID",
     "service_providing_group_product_suspension.procuring_system_operator_id":
       "Kjøpende systemoperatør",
@@ -2303,6 +2392,41 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application_history.replaced_at":
       "Erstattet",
     "service_providing_group_product_application_history.replaced_by":
+      "Erstattet av",
+    "service_providing_group_product_application_comment.id": "ID",
+    "service_providing_group_product_application_comment.created_by":
+      "Oppretta av",
+    "service_providing_group_product_application_comment.visibility":
+      "Synlegheit",
+    "service_providing_group_product_application_comment.content": "Innhald",
+    "service_providing_group_product_application_comment.created_at":
+      "Oppretta",
+    "service_providing_group_product_application_comment.recorded_at":
+      "Registrert",
+    "service_providing_group_product_application_comment.recorded_by":
+      "Registrert av",
+    "service_providing_group_product_application_comment.service_providing_group_product_application_id":
+      "Fleksibilitetsgruppe produktsøknad",
+    "service_providing_group_product_application_comment_history.id": "ID",
+    "service_providing_group_product_application_comment_history.created_by":
+      "Oppretta av",
+    "service_providing_group_product_application_comment_history.visibility":
+      "Synlegheit",
+    "service_providing_group_product_application_comment_history.content":
+      "Innhald",
+    "service_providing_group_product_application_comment_history.created_at":
+      "Oppretta",
+    "service_providing_group_product_application_comment_history.recorded_at":
+      "Registrert",
+    "service_providing_group_product_application_comment_history.recorded_by":
+      "Registrert av",
+    "service_providing_group_product_application_comment_history.service_providing_group_product_application_id":
+      "Fleksibilitetsgruppe produktsøknad",
+    "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id":
+      "Kommentar-ID",
+    "service_providing_group_product_application_comment_history.replaced_at":
+      "Erstattet",
+    "service_providing_group_product_application_comment_history.replaced_by":
       "Erstattet av",
     "service_providing_group_product_suspension.id": "ID",
     "service_providing_group_product_suspension.procuring_system_operator_id":

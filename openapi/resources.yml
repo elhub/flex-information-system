@@ -2791,6 +2791,7 @@ resources:
     history:
       - list
       - read
+    comments: true
     history_rls: true
     properties:
       id:

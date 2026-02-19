@@ -6447,6 +6447,291 @@ TO flex_internal_event_notification;
 
 GRANT SELECT (
     id,
+    service_providing_group_product_application_id,
+    created_by,
+    created_at,
+    visibility,
+    content,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.service_providing_group_product_application_comment
+TO flex_balance_responsible_party;
+
+GRANT SELECT (
+    id,
+    service_providing_group_product_application_id,
+    created_by,
+    created_at,
+    visibility,
+    content,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.service_providing_group_product_application_comment
+TO flex_energy_supplier;
+
+GRANT SELECT (
+    id,
+    service_providing_group_product_application_id,
+    created_by,
+    created_at,
+    visibility,
+    content,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.service_providing_group_product_application_comment
+TO flex_end_user;
+
+GRANT INSERT (
+    service_providing_group_product_application_id,
+    visibility,
+    content
+) ON TABLE
+api.service_providing_group_product_application_comment
+TO flex_flexibility_information_system_operator;
+
+GRANT SELECT (
+    id,
+    service_providing_group_product_application_id,
+    created_by,
+    created_at,
+    visibility,
+    content,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.service_providing_group_product_application_comment
+TO flex_flexibility_information_system_operator;
+
+GRANT UPDATE (
+    visibility,
+    content
+) ON TABLE
+api.service_providing_group_product_application_comment
+TO flex_flexibility_information_system_operator;
+
+GRANT SELECT (
+    id,
+    service_providing_group_product_application_id,
+    created_by,
+    created_at,
+    visibility,
+    content,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.service_providing_group_product_application_comment
+TO flex_market_operator;
+
+GRANT INSERT (
+    service_providing_group_product_application_id,
+    visibility,
+    content
+) ON TABLE
+api.service_providing_group_product_application_comment
+TO flex_system_operator;
+
+GRANT SELECT (
+    id,
+    service_providing_group_product_application_id,
+    created_by,
+    created_at,
+    visibility,
+    content,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.service_providing_group_product_application_comment
+TO flex_system_operator;
+
+GRANT UPDATE (
+    visibility,
+    content
+) ON TABLE
+api.service_providing_group_product_application_comment
+TO flex_system_operator;
+
+GRANT INSERT (
+    service_providing_group_product_application_id,
+    visibility,
+    content
+) ON TABLE
+api.service_providing_group_product_application_comment
+TO flex_service_provider;
+
+GRANT SELECT (
+    id,
+    service_providing_group_product_application_id,
+    created_by,
+    created_at,
+    visibility,
+    content,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.service_providing_group_product_application_comment
+TO flex_service_provider;
+
+GRANT UPDATE (
+    visibility,
+    content
+) ON TABLE
+api.service_providing_group_product_application_comment
+TO flex_service_provider;
+
+GRANT SELECT (
+    id,
+    service_providing_group_product_application_id,
+    created_by,
+    created_at,
+    visibility,
+    content,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.service_providing_group_product_application_comment
+TO flex_third_party;
+
+GRANT SELECT ON TABLE
+api.service_providing_group_product_application_comment
+TO flex_internal_event_notification;
+
+GRANT SELECT (
+    id,
+    service_providing_group_product_application_comment_id,
+    service_providing_group_product_application_id,
+    created_by,
+    created_at,
+    visibility,
+    content,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.service_providing_group_product_application_comment_history
+TO flex_balance_responsible_party;
+
+GRANT SELECT (
+    id,
+    service_providing_group_product_application_comment_id,
+    service_providing_group_product_application_id,
+    created_by,
+    created_at,
+    visibility,
+    content,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.service_providing_group_product_application_comment_history
+TO flex_energy_supplier;
+
+GRANT SELECT (
+    id,
+    service_providing_group_product_application_comment_id,
+    service_providing_group_product_application_id,
+    created_by,
+    created_at,
+    visibility,
+    content,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.service_providing_group_product_application_comment_history
+TO flex_end_user;
+
+GRANT SELECT (
+    id,
+    service_providing_group_product_application_comment_id,
+    service_providing_group_product_application_id,
+    created_by,
+    created_at,
+    visibility,
+    content,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.service_providing_group_product_application_comment_history
+TO flex_flexibility_information_system_operator;
+
+GRANT SELECT (
+    id,
+    service_providing_group_product_application_comment_id,
+    service_providing_group_product_application_id,
+    created_by,
+    created_at,
+    visibility,
+    content,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.service_providing_group_product_application_comment_history
+TO flex_market_operator;
+
+GRANT SELECT (
+    id,
+    service_providing_group_product_application_comment_id,
+    service_providing_group_product_application_id,
+    created_by,
+    created_at,
+    visibility,
+    content,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.service_providing_group_product_application_comment_history
+TO flex_system_operator;
+
+GRANT SELECT (
+    id,
+    service_providing_group_product_application_comment_id,
+    service_providing_group_product_application_id,
+    created_by,
+    created_at,
+    visibility,
+    content,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.service_providing_group_product_application_comment_history
+TO flex_service_provider;
+
+GRANT SELECT (
+    id,
+    service_providing_group_product_application_comment_id,
+    service_providing_group_product_application_id,
+    created_by,
+    created_at,
+    visibility,
+    content,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.service_providing_group_product_application_comment_history
+TO flex_third_party;
+
+GRANT SELECT ON TABLE
+api.service_providing_group_product_application_comment_history
+TO flex_internal_event_notification;
+
+GRANT SELECT (
+    id,
     procuring_system_operator_id,
     service_providing_group_id,
     product_type_ids,

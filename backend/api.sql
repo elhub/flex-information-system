@@ -539,6 +539,29 @@ CREATE TABLE api.service_providing_group_product_application_history (
     replaced_by bigint NULL,
     replaced_at timestamp with time zone NULL
 );
+CREATE TABLE api.service_providing_group_product_application_comment (
+    id bigint NOT NULL,
+    service_providing_group_product_application_id bigint NOT NULL,
+    created_by bigint NOT NULL,
+    created_at timestamp with time zone NOT NULL,
+    visibility text NOT NULL,
+    content text NOT NULL,
+    recorded_by bigint NOT NULL,
+    recorded_at timestamp with time zone NOT NULL
+);
+CREATE TABLE api.service_providing_group_product_application_comment_history (
+    service_providing_group_product_application_comment_id bigint NOT NULL,
+    id bigint NOT NULL,
+    service_providing_group_product_application_id bigint NOT NULL,
+    created_by bigint NOT NULL,
+    created_at timestamp with time zone NOT NULL,
+    visibility text NOT NULL,
+    content text NOT NULL,
+    recorded_by bigint NOT NULL,
+    recorded_at timestamp with time zone NOT NULL,
+    replaced_by bigint NULL,
+    replaced_at timestamp with time zone NULL
+);
 CREATE TABLE api.service_providing_group_product_suspension (
     id bigint NOT NULL,
     procuring_system_operator_id bigint NOT NULL,
