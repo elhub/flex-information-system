@@ -549,6 +549,31 @@ type ApiServiceProvidingGroupProductApplication struct {
 	RecordedAt                pgtype.Timestamptz
 }
 
+type ApiServiceProvidingGroupProductApplicationComment struct {
+	ID                                        int
+	ServiceProvidingGroupProductApplicationID int
+	CreatedBy                                 int
+	CreatedAt                                 pgtype.Timestamptz
+	Visibility                                string
+	Content                                   string
+	RecordedBy                                int
+	RecordedAt                                pgtype.Timestamptz
+}
+
+type ApiServiceProvidingGroupProductApplicationCommentHistory struct {
+	ServiceProvidingGroupProductApplicationCommentID int
+	ID                                               int
+	ServiceProvidingGroupProductApplicationID        int
+	CreatedBy                                        int
+	CreatedAt                                        pgtype.Timestamptz
+	Visibility                                       string
+	Content                                          string
+	RecordedBy                                       int
+	RecordedAt                                       pgtype.Timestamptz
+	ReplacedBy                                       *int
+	ReplacedAt                                       pgtype.Timestamptz
+}
+
 type ApiServiceProvidingGroupProductApplicationHistory struct {
 	ServiceProvidingGroupProductApplicationID int
 	ID                                        int

@@ -45,6 +45,9 @@ databaseChangeLog:
       file: ./api/changelog.yml
       relativeToChangelogFile: true
   - include:
+      file: ./operations/changelog.yml
+      relativeToChangelogFile: true
+  - include:
       file: ./test_data/test_data.sql
       relativeToChangelogFile: true
   # make sure the changes made by Liquibase are exposed in PostgREST

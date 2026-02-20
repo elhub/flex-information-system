@@ -462,6 +462,27 @@ export type PermissionTarget =
   | "service_providing_group_product_application.service_providing_group_id"
   | "service_providing_group_product_application.status"
   | "service_providing_group_product_application.verified_at"
+  | "service_providing_group_product_application_comment"
+  | "service_providing_group_product_application_comment.content"
+  | "service_providing_group_product_application_comment.created_at"
+  | "service_providing_group_product_application_comment.created_by"
+  | "service_providing_group_product_application_comment.id"
+  | "service_providing_group_product_application_comment.recorded_at"
+  | "service_providing_group_product_application_comment.recorded_by"
+  | "service_providing_group_product_application_comment.service_providing_group_product_application_id"
+  | "service_providing_group_product_application_comment.visibility"
+  | "service_providing_group_product_application_comment_history"
+  | "service_providing_group_product_application_comment_history.content"
+  | "service_providing_group_product_application_comment_history.created_at"
+  | "service_providing_group_product_application_comment_history.created_by"
+  | "service_providing_group_product_application_comment_history.id"
+  | "service_providing_group_product_application_comment_history.recorded_at"
+  | "service_providing_group_product_application_comment_history.recorded_by"
+  | "service_providing_group_product_application_comment_history.replaced_at"
+  | "service_providing_group_product_application_comment_history.replaced_by"
+  | "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id"
+  | "service_providing_group_product_application_comment_history.service_providing_group_product_application_id"
+  | "service_providing_group_product_application_comment_history.visibility"
   | "service_providing_group_product_application_history"
   | "service_providing_group_product_application_history.additional_information"
   | "service_providing_group_product_application_history.id"
@@ -2431,6 +2452,101 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_product_application.verified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.visibility",
       operation: "read",
     },
     {
@@ -4677,6 +4793,101 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.visibility",
+      operation: "read",
+    },
+    {
       target:
         "service_providing_group_product_application_history.additional_information",
       operation: "read",
@@ -6917,6 +7128,101 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_product_application.verified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.visibility",
       operation: "read",
     },
     {
@@ -9816,6 +10122,130 @@ const rawPermissions: Record<
       operation: "update",
     },
     {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment.service_providing_group_product_application_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "update",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.visibility",
+      operation: "read",
+    },
+    {
       target:
         "service_providing_group_product_application_history.additional_information",
       operation: "read",
@@ -12175,6 +12605,101 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_product_application.verified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.visibility",
       operation: "read",
     },
     {
@@ -14725,6 +15250,130 @@ const rawPermissions: Record<
     {
       target: "service_providing_group_product_application.verified_at",
       operation: "update",
+    },
+    {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment.service_providing_group_product_application_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "update",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.visibility",
+      operation: "read",
     },
     {
       target:
@@ -17484,6 +18133,130 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment.service_providing_group_product_application_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "update",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.visibility",
+      operation: "read",
+    },
+    {
       target:
         "service_providing_group_product_application_history.additional_information",
       operation: "read",
@@ -19785,6 +20558,101 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_product_application.verified_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.visibility",
       operation: "read",
     },
     {

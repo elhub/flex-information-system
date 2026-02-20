@@ -254,6 +254,49 @@ export const createServiceProvidingGroupResources = (
             </ResourceContextProvider>
           }
         />
+        {/* service providing group product application comments */}
+        {/* list is part of SPG product application show page */}
+        <Route
+          path=":service_providing_group_id/product_application/:service_providing_group_product_application_id/comment/:id/show"
+          element={
+            <ResourceContextProvider value="service_providing_group_product_application_comment">
+              <CommentShow />
+            </ResourceContextProvider>
+          }
+        />
+        <Route
+          path=":service_providing_group_id/product_application/:service_providing_group_product_application_id/comment/create"
+          element={
+            <ResourceContextProvider value="service_providing_group_product_application_comment">
+              <CreateRedirectPreviousPage>
+                <CommentInput />
+              </CreateRedirectPreviousPage>
+            </ResourceContextProvider>
+          }
+        />
+        <Route
+          path=":service_providing_group_id/product_application/:service_providing_group_product_application_id/comment/:id"
+          element={
+            <ResourceContextProvider value="service_providing_group_product_application_comment">
+              <EditRedirectPreviousPage>
+                <CommentInput />
+              </EditRedirectPreviousPage>
+            </ResourceContextProvider>
+          }
+        />
+        {/* service providing group product application comment history */}
+        <Route
+          path=":service_providing_group_id/product_application/:service_providing_group_product_application_id/comment_history"
+          element={<CommentHistoryList />}
+        />
+        <Route
+          path=":service_providing_group_id/product_application/:service_providing_group_product_application_id/comment_history/:id/show"
+          element={
+            <ResourceContextProvider value="service_providing_group_product_application_comment_history">
+              <CommentShow />
+            </ResourceContextProvider>
+          }
+        />
         {/* service providing group grid suspension */}
         {/* list is also part of SPG show page */}
         <Route
