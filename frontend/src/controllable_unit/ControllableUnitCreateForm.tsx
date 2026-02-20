@@ -26,8 +26,8 @@ const zControllableUnitCreateForm = z.object({
   name: zControllableUnitCreateRequest.shape.name,
   regulation_direction:
     zControllableUnitCreateRequest.shape.regulation_direction,
-  maximum_available_capacity:
-    zControllableUnitCreateRequest.shape.maximum_available_capacity,
+  maximum_active_power:
+    zControllableUnitCreateRequest.shape.maximum_active_power,
   service_provider_id:
     zControllableUnitServiceProviderCreateRequest.shape.service_provider_id,
   contract_reference:
@@ -68,7 +68,7 @@ export const ControllableUnitCreateForm = ({
 
   const record: Partial<ControllableUnitCreateFormValues> = {
     regulation_direction: "up",
-    maximum_available_capacity: 1,
+    maximum_active_power: 1,
     service_provider_id: isServiceProvider
       ? (identity as UserIdentity | undefined)?.partyID
       : undefined,
@@ -154,7 +154,7 @@ export const ControllableUnitCreateForm = ({
             disabled={!!savedControllableUnitId}
           />
           <TextInput
-            {...fields.maximum_available_capacity}
+            {...fields.maximum_active_power}
             type="number"
             disabled={!!savedControllableUnitId}
           />

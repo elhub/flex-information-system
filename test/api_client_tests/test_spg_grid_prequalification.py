@@ -87,7 +87,7 @@ def data():
             name="New CU 1",
             accounting_point_id=1002,
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
-            maximum_available_capacity=3.5,
+            maximum_active_power=3.5,
         ),
     )
     assert isinstance(cu1, ControllableUnitResponse)
@@ -98,7 +98,7 @@ def data():
             name="New CU 2",
             accounting_point_id=1002,
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
-            maximum_available_capacity=3.5,
+            maximum_active_power=3.5,
         ),
     )
     assert isinstance(cu2, ControllableUnitResponse)
@@ -109,7 +109,7 @@ def data():
             name="New CU 3",
             accounting_point_id=3,
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
-            maximum_available_capacity=3.5,
+            maximum_active_power=3.5,
         ),
     )
     assert isinstance(cu3, ControllableUnitResponse)

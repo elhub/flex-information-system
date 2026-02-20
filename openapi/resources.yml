@@ -130,7 +130,7 @@ resources:
           en: Regulation direction
           nb: Reguleringsretning
           nn: Reguleringsretning
-      maximum_available_capacity:
+      maximum_active_power:
         description: >-
           Maximum continuous active power that the controllable unit can produce
           or consume, i.e. deliver for balancing and congestion services, in kilowatts.
@@ -141,9 +141,9 @@ resources:
         multipleOf: 0.001
         example: 3.5
         x-intl:
-          en: Maximum available capacity
-          nb: Maksimal tilgjengelig kapasitet
-          nn: Maksimal tilgjengeleg kapasitet
+          en: Maximum active power
+          nb: Maksimal aktiv effekt
+          nn: Maksimal aktiv effekt
       is_small:
         description: >-
           Whether the controllable unit is small or not, following NCDR.

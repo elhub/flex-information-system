@@ -34,7 +34,7 @@ export const ControllableUnitInput = () => {
 
   const defaultValues: Partial<ControllableUnit> = {
     regulation_direction: "up",
-    maximum_available_capacity: 1,
+    maximum_active_power: 1,
     status: "new",
     start_date: formatDateToMidnightISO(new Date().toISOString()) ?? undefined,
   };
@@ -80,10 +80,7 @@ export const ControllableUnitInput = () => {
               <FlexDiv
                 style={{ gap: "var(--eds-size-3)", flexDirection: "column" }}
               >
-                <TextInput
-                  {...fields.maximum_available_capacity}
-                  type="number"
-                />
+                <TextInput {...fields.maximum_active_power} type="number" />
                 <EnumInput
                   {...fields.regulation_direction}
                   enumKey="controllable_unit.regulation_direction"

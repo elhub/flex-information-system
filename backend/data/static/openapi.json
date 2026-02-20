@@ -910,7 +910,7 @@
                     "regulation_direction": {
                         "$ref": "#/components/schemas/controllable_unit_regulation_direction"
                     },
-                    "maximum_available_capacity": {
+                    "maximum_active_power": {
                         "description": "Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
                         "format": "decimal",
                         "type": "number",
@@ -1007,7 +1007,7 @@
                     "regulation_direction": {
                         "$ref": "#/components/schemas/controllable_unit_regulation_direction"
                     },
-                    "maximum_available_capacity": {
+                    "maximum_active_power": {
                         "description": "Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
                         "format": "decimal",
                         "type": "number",
@@ -1087,7 +1087,7 @@
                 "required": [
                     "name",
                     "regulation_direction",
-                    "maximum_available_capacity",
+                    "maximum_active_power",
                     "accounting_point_id"
                 ]
             },
@@ -1132,7 +1132,7 @@
                     "regulation_direction": {
                         "$ref": "#/components/schemas/controllable_unit_regulation_direction"
                     },
-                    "maximum_available_capacity": {
+                    "maximum_active_power": {
                         "description": "Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
                         "format": "decimal",
                         "type": "number",
@@ -1236,7 +1236,7 @@
                     "name",
                     "status",
                     "regulation_direction",
-                    "maximum_available_capacity",
+                    "maximum_active_power",
                     "is_small",
                     "accounting_point_id",
                     "grid_validation_status",

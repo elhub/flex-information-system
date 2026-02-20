@@ -113,7 +113,7 @@ def test_cu_lookup_params(sts):
             name="TEST-CU-LOOKUP",
             accounting_point_id=1001,  # technical ID of AP 133700000000010007
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
-            maximum_available_capacity=3.5,
+            maximum_active_power=3.5,
         ),
     )
     assert isinstance(cu, ControllableUnitResponse)
@@ -218,7 +218,7 @@ def test_cu_lookup_params(sts):
             name="TEST-CU-LOOKUP 2",
             accounting_point_id=1001,  # technical ID of AP 133700000000010007
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
-            maximum_available_capacity=3.5,
+            maximum_active_power=3.5,
         ),
     )
     assert isinstance(cu, ControllableUnitResponse)
@@ -381,7 +381,7 @@ def test_cu_lookup_flow(sts):
             name="TEST-CU-LOOKUP",
             accounting_point_id=1001,  # technical ID of AP 133700000000010007
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
-            maximum_available_capacity=3.5,
+            maximum_active_power=3.5,
         ),
     )
     assert isinstance(cu, ControllableUnitResponse)
@@ -408,10 +408,8 @@ def test_cu_lookup_flow(sts):
     # and create a contract
 
     def midnight_n_days_diff(n):
-        return (
-            datetime.combine(date.today() + timedelta(days=n), time.min)
-            .astimezone(tz=timezone.utc)
-            .isoformat()
+        return datetime.combine(date.today() + timedelta(days=n), time.min).astimezone(
+            tz=timezone.utc
         )
 
     sp_id = sts.get_userinfo(client_sp)["party_id"]

@@ -21,11 +21,9 @@ CREATE TABLE IF NOT EXISTS controllable_unit (
     regulation_direction text NOT NULL CHECK (
         regulation_direction IN ('up', 'down', 'both')
     ),
-    maximum_available_capacity decimal(9, 3) NOT NULL CHECK (
-        maximum_available_capacity >= 0
-    ),
+    maximum_active_power decimal(9, 3) NOT NULL,
     is_small boolean GENERATED ALWAYS AS (
-        maximum_available_capacity <= 50
+        maximum_active_power <= 50
     ) STORED,
     minimum_duration bigint NULL CHECK (minimum_duration > 0),
     maximum_duration bigint NULL CHECK (maximum_duration > 0),
@@ -58,6 +56,9 @@ CREATE TABLE IF NOT EXISTS controllable_unit (
     ),
     recorded_by bigint NOT NULL DEFAULT current_identity(),
 
+    CONSTRAINT controllable_unit_maximum_active_power_check CHECK (
+        maximum_active_power >= 0
+    ),
     CONSTRAINT controllable_unit_accounting_point_id_fkey FOREIGN KEY (
         accounting_point_id
     ) REFERENCES accounting_point (id),
@@ -98,25 +99,6 @@ BEGIN
     RETURN NEW;
 END;
 $$;
-
--- changeset flex:controllable-unit-grid-validation-status-reset-trigger runOnChange:true endDelimiter:--
-CREATE OR REPLACE TRIGGER controllable_unit_grid_validation_status_reset
-BEFORE UPDATE OF
-regulation_direction,
-maximum_available_capacity,
-minimum_duration,
-maximum_duration,
-recovery_duration,
-ramp_rate,
-accounting_point_id
-ON controllable_unit
-FOR EACH ROW
-WHEN (
-    OLD.grid_validation_status IS NOT DISTINCT FROM NEW.grid_validation_status -- noqa
-    AND NEW.grid_validation_status not in ('pending', 'in_progress','validated') -- noqa
-    AND current_user = 'flex_service_provider' -- noqa
-)
-EXECUTE FUNCTION controllable_unit_grid_validation_status_reset();
 
 -- changeset flex:controllable-unit-event-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER controllable_unit_event
