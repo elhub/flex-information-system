@@ -53,3 +53,31 @@ The adapter service must implement the OpenAPI document defined in
 
 Since the adapter service is assumed to be specifically deployed for the FIS, a
 shared API Bearer key is configured on both sides.
+
+## Data synchronization
+
+Data synchronization happen "one accounting point at a time". It will
+happen ad hoc (lookup) and on a regular basis (background job).
+
+Data is fetched from the adapter and _merged_ into the FIS database
+directly in the `flex.accounting_point*` tables.
+
+Since data is fetched per metering point, pessimistic locking must be done to
+avoid concurrent syncs of the same metering point. This is done with `SELECT FOR
+UPDATE SKIP LOCKED` semantics on the relevant accounting points in
+`flex.accounting_point`.
+
+To faciliate batch synchronization, the `flex.accounting_point` table has a
+`last_synced_at` timestamp column that is updated on each sync. This allows us
+to identify which accounting points need to be synced in the background job.
+This column is not tracked in the `flex.accounting_point_history` table since it
+is just noise.
+
+A nullable `last_sync_start` timestamp is used to track if a sync is currently
+in progress. This is used to avoid starting multiple syncs of the same
+accounting point, and to be able to identify "dead" syncs that have been
+running for too long.
+
+This shows diagram tries to show how the synchronization process works.
+
+![Accounting point data synchronization](../diagrams/accounting-point-sync.drawio.png)
