@@ -2894,6 +2894,18 @@ resources:
           en: Status
           nb: Status
           nn: Status
+      maximum_active_power:
+        description: The maximum active power applied for, in kilowatts.
+        format: decimal
+        type: number
+        minimum: 0
+        maximum: 999999.999
+        multipleOf: 0.001
+        example: 150.5
+        x-intl:
+          en: Maximum active power
+          nb: Maksimal aktiv effekt
+          nn: Maksimal aktiv effekt
       additional_information:
         description: >-
           Free text field for extra information about the application if needed

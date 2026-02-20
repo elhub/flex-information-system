@@ -175,3 +175,34 @@ ALTER TABLE flex.service_providing_group_product_application
 ADD CONSTRAINT spg_product_application_additional_information_check CHECK (
     char_length(additional_information) <= 512
 );
+
+-- changeset flex:service-providing-group-product-application-maximum-active-power runOnChange:false endDelimiter:;
+--preconditions onFail:MARK_RAN
+--precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = 'flex' AND table_name = 'service_providing_group_product_application' AND column_name = 'maximum_active_power'
+ALTER TABLE flex.service_providing_group_product_application
+DISABLE TRIGGER USER;
+
+ALTER TABLE flex.service_providing_group_product_application
+ADD COLUMN IF NOT EXISTS maximum_active_power decimal(9, 3);
+
+ALTER TABLE flex.service_providing_group_product_application_history
+ADD COLUMN IF NOT EXISTS maximum_active_power decimal(9, 3);
+
+UPDATE flex.service_providing_group_product_application
+SET maximum_active_power = 0
+WHERE maximum_active_power IS NULL;
+
+UPDATE flex.service_providing_group_product_application_history
+SET maximum_active_power = 0
+WHERE maximum_active_power IS NULL;
+
+ALTER TABLE flex.service_providing_group_product_application
+ALTER COLUMN maximum_active_power SET NOT NULL;
+
+ALTER TABLE flex.service_providing_group_product_application
+ADD CONSTRAINT spg_product_application_maximum_active_power_check CHECK (
+    maximum_active_power >= 0
+);
+
+ALTER TABLE flex.service_providing_group_product_application
+ENABLE TRIGGER USER;

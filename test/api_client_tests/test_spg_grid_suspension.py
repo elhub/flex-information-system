@@ -409,6 +409,7 @@ def test_spggs_so(data):
             service_providing_group_id=spg_id,
             procuring_system_operator_id=pso_id,
             product_type_ids=[4],
+            maximum_active_power=3.5,
         ),
     )
     assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)

@@ -8,6 +8,7 @@ WITH (security_invoker = true) AS (
     SELECT
         id,
         additional_information,
+        maximum_active_power,
         prequalified_at,
         procuring_system_operator_id,
         product_type_ids,
@@ -28,6 +29,7 @@ WITH (
         id,
         id AS service_providing_group_product_application_id,
         additional_information,
+        maximum_active_power,
         prequalified_at,
         procuring_system_operator_id,
         product_type_ids,
@@ -44,6 +46,7 @@ WITH (
         history_id AS id,
         id AS service_providing_group_product_application_id,
         additional_information,
+        maximum_active_power,
         prequalified_at,
         procuring_system_operator_id,
         product_type_ids,
