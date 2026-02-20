@@ -14,7 +14,6 @@ actor "Service Provider (SP)" as SP
 participant "Market platform" as MP
 participant "Flexibility\nInformation System (FIS)" as FIS
 actor "System Operator (SO)" as SO 
-participant "Elhub" as EL
 
 == Bid activation ==
 
@@ -33,14 +32,15 @@ note left
     after the bid is activated
 end note
 
-SP -> TS: Metering values
+SP -> TS: Measured and metering values
 deactivate SP
 
-SO -> EL: Metering values from smart meters
+SO -> MP: Get bid activation information
+MP --> SO: Bid activation information
 
-note right
-    Elhub receives the metering values
-    from the system operator at D+1
+Note right
+    PSO uses the bid activation information to collect
+    the right time series for the delivery verification.
 end note
 
 == Delivery verification ==
@@ -53,12 +53,10 @@ note right
     in order to collect the right metering values.
 end note
 
-SO -> TS: Get metering values and baseline
-TS --> SO: Metering values and baseline
-SO -> EL : Get metering values
-EL --> SO : Metering Values
+SO -> TS: Get measured values, metering values and baseline
+TS --> SO: Measured values, metering values and baseline
 
-note left
+note right
     PSO uses the collected time series and the
     activated bid to do the delivery verification
     analysis.

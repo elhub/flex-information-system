@@ -33,6 +33,9 @@ SP continuously sends _metering values_ from its CUs to the time series services
 It's possible to send metering values with different granularity, e.g. minute and
 15 minutes values. The time series on CU level can be aggregated to the SPG level.
 
+SP also continuously sends _measured values_ to the time series services which are
+convertet to metering values.
+
 The metering values from the smart meter connected to the accounting point are sent
 continuously to Elhub by the SO. Values are available at 07:00 for the previous
 day and are available through the time series service.
@@ -62,6 +65,8 @@ will usually be required.
 ## Prerequisites
 
 * PSO has the activated volumes for the bid.
+* Elhub receives the metering values from the connecting system operator at D+1
+07:00 which are then available through the time series services.
 
 ## Sequence
 
