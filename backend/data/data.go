@@ -529,8 +529,7 @@ func (data *api) controllableUnitLookupHandler(
 	w.Header().Set("Content-Type", "application/json")
 
 	body, _ := json.Marshal(reformattedCULookup)
-	// NB (linter ignore): body comes from DB + backend reformatted, so not user-controlled
-	w.Write(body) //nolint:gosec
+	w.Write(body) //nolint:gosec // body comes from DB + backend reformatted, so not user-controlled
 }
 
 // controllableUnitLookupValidateInput checks that the given fields in the CU
@@ -786,8 +785,7 @@ func (data *api) postgRESTHandler(w http.ResponseWriter, req *http.Request) {
 		ModifyResponse: fixPostgRESTResponse,
 	}
 
-	// NB (linter ignore): URL is configured PostgREST endpoint, not user input
-	proxy.ServeHTTP(w, req) //nolint:gosec
+	proxy.ServeHTTP(w, req) //nolint:gosec // URL is configured PostgREST endpoint, not user input
 }
 
 // errorMessage is the format of PostgREST error messages.
