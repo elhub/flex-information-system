@@ -1022,7 +1022,7 @@ BEGIN
     service_providing_group_id,
     procuring_system_operator_id,
     product_type_ids,
-    total_prequalified_volume
+    maximum_active_power
   ) VALUES (
     spg_id,
     so_id,

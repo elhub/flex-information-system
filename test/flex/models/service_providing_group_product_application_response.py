@@ -25,7 +25,7 @@ class ServiceProvidingGroupProductApplicationResponse:
             procuring_system_operator_id (int): Reference to the procuring system operator. Example: 39.
             product_type_ids (list[int]): References to the product types. Example: [2, 4, 5].
             status (ServiceProvidingGroupProductApplicationStatus): The status of the application. Example: in_progress.
-            total_prequalified_volume (float): The total prequalified volume applied for, in kilowatts. Example: 150.5.
+            maximum_active_power (float): The maximum active power applied for, in kilowatts. Example: 150.5.
             recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
                 2023-12-31T23:59:00+00:00.
             recorded_by (int): The identity that recorded the resource. Example: 145.
@@ -42,7 +42,7 @@ class ServiceProvidingGroupProductApplicationResponse:
     procuring_system_operator_id: int
     product_type_ids: list[int]
     status: ServiceProvidingGroupProductApplicationStatus
-    total_prequalified_volume: float
+    maximum_active_power: float
     recorded_at: datetime.datetime
     recorded_by: int
     additional_information: None | str | Unset = UNSET
@@ -61,7 +61,7 @@ class ServiceProvidingGroupProductApplicationResponse:
 
         status = self.status.value
 
-        total_prequalified_volume = self.total_prequalified_volume
+        maximum_active_power = self.maximum_active_power
 
         recorded_at = self.recorded_at.isoformat()
 
@@ -98,7 +98,7 @@ class ServiceProvidingGroupProductApplicationResponse:
                 "procuring_system_operator_id": procuring_system_operator_id,
                 "product_type_ids": product_type_ids,
                 "status": status,
-                "total_prequalified_volume": total_prequalified_volume,
+                "maximum_active_power": maximum_active_power,
                 "recorded_at": recorded_at,
                 "recorded_by": recorded_by,
             }
@@ -125,7 +125,7 @@ class ServiceProvidingGroupProductApplicationResponse:
 
         status = ServiceProvidingGroupProductApplicationStatus(d.pop("status"))
 
-        total_prequalified_volume = d.pop("total_prequalified_volume")
+        maximum_active_power = d.pop("maximum_active_power")
 
         recorded_at = isoparse(d.pop("recorded_at"))
 
@@ -180,7 +180,7 @@ class ServiceProvidingGroupProductApplicationResponse:
             procuring_system_operator_id=procuring_system_operator_id,
             product_type_ids=product_type_ids,
             status=status,
-            total_prequalified_volume=total_prequalified_volume,
+            maximum_active_power=maximum_active_power,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
             additional_information=additional_information,

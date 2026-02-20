@@ -542,7 +542,7 @@ type ApiServiceProvidingGroupProductApplication struct {
 	ProcuringSystemOperatorID int
 	ProductTypeIds            []int
 	Status                    string
-	TotalPrequalifiedVolume   float64
+	MaximumActivePower        float64
 	AdditionalInformation     *string
 	PrequalifiedAt            pgtype.Timestamptz
 	VerifiedAt                pgtype.Timestamptz
@@ -582,7 +582,7 @@ type ApiServiceProvidingGroupProductApplicationHistory struct {
 	ProcuringSystemOperatorID                 int
 	ProductTypeIds                            []int
 	Status                                    string
-	TotalPrequalifiedVolume                   float64
+	MaximumActivePower                        float64
 	AdditionalInformation                     *string
 	PrequalifiedAt                            pgtype.Timestamptz
 	VerifiedAt                                pgtype.Timestamptz

@@ -1970,7 +1970,7 @@ export const zServiceProvidingGroupProductApplicationUpdateRequest = z.object({
       zServiceProvidingGroupProductApplicationStatus.optional(),
     ),
   ),
-  total_prequalified_volume: z.optional(
+  maximum_active_power: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
       z.coerce.number().gte(0).lte(999999.999).optional(),
@@ -2009,7 +2009,7 @@ export const zServiceProvidingGroupProductApplicationCreateRequest = z.object({
       zServiceProvidingGroupProductApplicationStatus.optional(),
     ),
   ),
-  total_prequalified_volume: z.coerce.number().gte(0).lte(999999.999),
+  maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
   additional_information: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -2039,7 +2039,7 @@ export const zServiceProvidingGroupProductApplication = z.object({
   procuring_system_operator_id: z.coerce.number(),
   product_type_ids: z.array(z.coerce.number()),
   status: zServiceProvidingGroupProductApplicationStatus,
-  total_prequalified_volume: z.coerce.number().gte(0).lte(999999.999),
+  maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
   additional_information: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -3113,7 +3113,7 @@ export const zServiceProvidingGroupProductApplicationWritable = z.object({
   procuring_system_operator_id: z.coerce.number(),
   product_type_ids: z.array(z.coerce.number()),
   status: zServiceProvidingGroupProductApplicationStatus,
-  total_prequalified_volume: z.coerce.number().gte(0).lte(999999.999),
+  maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
   additional_information: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),

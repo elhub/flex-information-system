@@ -239,7 +239,7 @@ def test_spgpa_fiso_sp_so(data):
             service_providing_group_id=spg_ids[0],
             procuring_system_operator_id=so_id,
             product_type_ids=[pt_ids[0]],
-            total_prequalified_volume=3.5,
+            maximum_active_power=3.5,
         ),
     )
     assert isinstance(spgpa, ErrorMessage)
@@ -253,7 +253,7 @@ def test_spgpa_fiso_sp_so(data):
             service_providing_group_id=spg_ids[0],
             procuring_system_operator_id=so_id,
             product_type_ids=[pt_ids[0]],
-            total_prequalified_volume=3.5,
+            maximum_active_power=3.5,
         ),
     )
     assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
@@ -279,7 +279,7 @@ def test_spgpa_fiso_sp_so(data):
             service_providing_group_id=spg_ids[0],
             procuring_system_operator_id=other_so_id,
             product_type_ids=[pt_ids[1]],
-            total_prequalified_volume=3.5,
+            maximum_active_power=3.5,
         ),
     )
     assert isinstance(spgpa2, ServiceProvidingGroupProductApplicationResponse)
@@ -291,7 +291,7 @@ def test_spgpa_fiso_sp_so(data):
             service_providing_group_id=spg_ids[1],
             procuring_system_operator_id=so_id,
             product_type_ids=[pt_ids[1]],
-            total_prequalified_volume=3.5,
+            maximum_active_power=3.5,
         ),
     )
     assert isinstance(spgpa3, ServiceProvidingGroupProductApplicationResponse)

@@ -22,7 +22,7 @@ const filterRecord = ({
   product_type_ids,
   status,
   additional_information,
-  total_prequalified_volume,
+  maximum_active_power,
   prequalified_at,
   verified_at,
 }: any) => ({
@@ -31,7 +31,7 @@ const filterRecord = ({
   product_type_ids,
   status,
   additional_information,
-  total_prequalified_volume,
+  maximum_active_power,
   prequalified_at,
   verified_at,
 });
@@ -100,9 +100,9 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
             readOnly={createOrUpdate === "create"}
           />
           <TextInput
-            source="total_prequalified_volume"
+            source="maximum_active_power"
             validate={required()}
-            label="field.service_providing_group_product_application.total_prequalified_volume"
+            label="field.service_providing_group_product_application.maximum_active_power"
             type="number"
           />
           <TextInput

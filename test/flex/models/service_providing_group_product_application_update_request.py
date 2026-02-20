@@ -23,8 +23,7 @@ class ServiceProvidingGroupProductApplicationUpdateRequest:
             product_type_ids (list[int] | Unset): References to the product types. Example: [2, 4, 5].
             status (ServiceProvidingGroupProductApplicationStatus | Unset): The status of the application. Example:
                 in_progress.
-            total_prequalified_volume (float | Unset): The total prequalified volume applied for, in kilowatts. Example:
-                150.5.
+            maximum_active_power (float | Unset): The maximum active power applied for, in kilowatts. Example: 150.5.
             additional_information (None | str | Unset): Free text field for extra information about the application if
                 needed (bidding periods, unavailabilities, etc).
             prequalified_at (datetime.datetime | None | Unset): When the product application was last prequalified. Example:
@@ -35,7 +34,7 @@ class ServiceProvidingGroupProductApplicationUpdateRequest:
 
     product_type_ids: list[int] | Unset = UNSET
     status: ServiceProvidingGroupProductApplicationStatus | Unset = UNSET
-    total_prequalified_volume: float | Unset = UNSET
+    maximum_active_power: float | Unset = UNSET
     additional_information: None | str | Unset = UNSET
     prequalified_at: datetime.datetime | None | Unset = UNSET
     verified_at: datetime.datetime | None | Unset = UNSET
@@ -50,7 +49,7 @@ class ServiceProvidingGroupProductApplicationUpdateRequest:
         if not isinstance(self.status, Unset):
             status = self.status.value
 
-        total_prequalified_volume = self.total_prequalified_volume
+        maximum_active_power = self.maximum_active_power
 
         additional_information: None | str | Unset
         if isinstance(self.additional_information, Unset):
@@ -81,8 +80,8 @@ class ServiceProvidingGroupProductApplicationUpdateRequest:
             field_dict["product_type_ids"] = product_type_ids
         if status is not UNSET:
             field_dict["status"] = status
-        if total_prequalified_volume is not UNSET:
-            field_dict["total_prequalified_volume"] = total_prequalified_volume
+        if maximum_active_power is not UNSET:
+            field_dict["maximum_active_power"] = maximum_active_power
         if additional_information is not UNSET:
             field_dict["additional_information"] = additional_information
         if prequalified_at is not UNSET:
@@ -104,7 +103,7 @@ class ServiceProvidingGroupProductApplicationUpdateRequest:
         else:
             status = ServiceProvidingGroupProductApplicationStatus(_status)
 
-        total_prequalified_volume = d.pop("total_prequalified_volume", UNSET)
+        maximum_active_power = d.pop("maximum_active_power", UNSET)
 
         def _parse_additional_information(data: object) -> None | str | Unset:
             if data is None:
@@ -152,7 +151,7 @@ class ServiceProvidingGroupProductApplicationUpdateRequest:
         service_providing_group_product_application_update_request = cls(
             product_type_ids=product_type_ids,
             status=status,
-            total_prequalified_volume=total_prequalified_volume,
+            maximum_active_power=maximum_active_power,
             additional_information=additional_information,
             prequalified_at=prequalified_at,
             verified_at=verified_at,

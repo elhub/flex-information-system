@@ -159,8 +159,8 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
               source="product_type_ids"
             />
             <UnitField
-              source="total_prequalified_volume"
-              label="field.service_providing_group_product_application.total_prequalified_volume"
+              source="maximum_active_power"
+              label="field.service_providing_group_product_application.maximum_active_power"
               unit="kW"
             />
           </FieldStack>

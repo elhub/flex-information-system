@@ -23,7 +23,7 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
             service_providing_group_id (int): Reference to the service providing group. Example: 18.
             procuring_system_operator_id (int): Reference to the procuring system operator. Example: 39.
             product_type_ids (list[int]): References to the product types. Example: [2, 4, 5].
-            total_prequalified_volume (float): The total prequalified volume applied for, in kilowatts. Example: 150.5.
+            maximum_active_power (float): The maximum active power applied for, in kilowatts. Example: 150.5.
             status (ServiceProvidingGroupProductApplicationStatus | Unset): The status of the application. Example:
                 in_progress.
             additional_information (None | str | Unset): Free text field for extra information about the application if
@@ -37,7 +37,7 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
     service_providing_group_id: int
     procuring_system_operator_id: int
     product_type_ids: list[int]
-    total_prequalified_volume: float
+    maximum_active_power: float
     status: ServiceProvidingGroupProductApplicationStatus | Unset = UNSET
     additional_information: None | str | Unset = UNSET
     prequalified_at: datetime.datetime | None | Unset = UNSET
@@ -51,7 +51,7 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
 
         product_type_ids = self.product_type_ids
 
-        total_prequalified_volume = self.total_prequalified_volume
+        maximum_active_power = self.maximum_active_power
 
         status: str | Unset = UNSET
         if not isinstance(self.status, Unset):
@@ -86,7 +86,7 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
                 "service_providing_group_id": service_providing_group_id,
                 "procuring_system_operator_id": procuring_system_operator_id,
                 "product_type_ids": product_type_ids,
-                "total_prequalified_volume": total_prequalified_volume,
+                "maximum_active_power": maximum_active_power,
             }
         )
         if status is not UNSET:
@@ -109,7 +109,7 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
 
         product_type_ids = cast(list[int], d.pop("product_type_ids"))
 
-        total_prequalified_volume = d.pop("total_prequalified_volume")
+        maximum_active_power = d.pop("maximum_active_power")
 
         _status = d.pop("status", UNSET)
         status: ServiceProvidingGroupProductApplicationStatus | Unset
@@ -165,7 +165,7 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
             service_providing_group_id=service_providing_group_id,
             procuring_system_operator_id=procuring_system_operator_id,
             product_type_ids=product_type_ids,
-            total_prequalified_volume=total_prequalified_volume,
+            maximum_active_power=maximum_active_power,
             status=status,
             additional_information=additional_information,
             prequalified_at=prequalified_at,

@@ -454,6 +454,7 @@ export type PermissionTarget =
   | "service_providing_group_product_application"
   | "service_providing_group_product_application.additional_information"
   | "service_providing_group_product_application.id"
+  | "service_providing_group_product_application.maximum_active_power"
   | "service_providing_group_product_application.prequalified_at"
   | "service_providing_group_product_application.procuring_system_operator_id"
   | "service_providing_group_product_application.product_type_ids"
@@ -461,7 +462,6 @@ export type PermissionTarget =
   | "service_providing_group_product_application.recorded_by"
   | "service_providing_group_product_application.service_providing_group_id"
   | "service_providing_group_product_application.status"
-  | "service_providing_group_product_application.total_prequalified_volume"
   | "service_providing_group_product_application.verified_at"
   | "service_providing_group_product_application_comment"
   | "service_providing_group_product_application_comment.content"
@@ -487,6 +487,7 @@ export type PermissionTarget =
   | "service_providing_group_product_application_history"
   | "service_providing_group_product_application_history.additional_information"
   | "service_providing_group_product_application_history.id"
+  | "service_providing_group_product_application_history.maximum_active_power"
   | "service_providing_group_product_application_history.prequalified_at"
   | "service_providing_group_product_application_history.procuring_system_operator_id"
   | "service_providing_group_product_application_history.product_type_ids"
@@ -497,7 +498,6 @@ export type PermissionTarget =
   | "service_providing_group_product_application_history.service_providing_group_id"
   | "service_providing_group_product_application_history.service_providing_group_product_application_id"
   | "service_providing_group_product_application_history.status"
-  | "service_providing_group_product_application_history.total_prequalified_volume"
   | "service_providing_group_product_application_history.verified_at"
   | "service_providing_group_product_suspension"
   | "service_providing_group_product_suspension.id"
@@ -2419,6 +2419,11 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target:
+        "service_providing_group_product_application.maximum_active_power",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application.prequalified_at",
       operation: "read",
     },
@@ -2450,11 +2455,6 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_product_application.status",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application.total_prequalified_volume",
       operation: "read",
     },
     {
@@ -2567,6 +2567,11 @@ const rawPermissions: Record<
     },
     {
       target:
+        "service_providing_group_product_application_history.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target:
         "service_providing_group_product_application_history.prequalified_at",
       operation: "read",
     },
@@ -2612,11 +2617,6 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_product_application_history.status",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_history.total_prequalified_volume",
       operation: "read",
     },
     {
@@ -4767,6 +4767,11 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target:
+        "service_providing_group_product_application.maximum_active_power",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application.prequalified_at",
       operation: "read",
     },
@@ -4798,11 +4803,6 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_product_application.status",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application.total_prequalified_volume",
       operation: "read",
     },
     {
@@ -4915,6 +4915,11 @@ const rawPermissions: Record<
     },
     {
       target:
+        "service_providing_group_product_application_history.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target:
         "service_providing_group_product_application_history.prequalified_at",
       operation: "read",
     },
@@ -4960,11 +4965,6 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_product_application_history.status",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_history.total_prequalified_volume",
       operation: "read",
     },
     {
@@ -7115,6 +7115,11 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target:
+        "service_providing_group_product_application.maximum_active_power",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application.prequalified_at",
       operation: "read",
     },
@@ -7146,11 +7151,6 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_product_application.status",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application.total_prequalified_volume",
       operation: "read",
     },
     {
@@ -7263,6 +7263,11 @@ const rawPermissions: Record<
     },
     {
       target:
+        "service_providing_group_product_application_history.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target:
         "service_providing_group_product_application_history.prequalified_at",
       operation: "read",
     },
@@ -7308,11 +7313,6 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_product_application_history.status",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_history.total_prequalified_volume",
       operation: "read",
     },
     {
@@ -10096,6 +10096,16 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target:
+        "service_providing_group_product_application.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.maximum_active_power",
+      operation: "update",
+    },
+    {
       target: "service_providing_group_product_application.prequalified_at",
       operation: "read",
     },
@@ -10139,16 +10149,6 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_product_application.status",
-      operation: "update",
-    },
-    {
-      target:
-        "service_providing_group_product_application.total_prequalified_volume",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application.total_prequalified_volume",
       operation: "update",
     },
     {
@@ -10298,6 +10298,11 @@ const rawPermissions: Record<
     },
     {
       target:
+        "service_providing_group_product_application_history.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target:
         "service_providing_group_product_application_history.prequalified_at",
       operation: "read",
     },
@@ -10343,11 +10348,6 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_product_application_history.status",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_history.total_prequalified_volume",
       operation: "read",
     },
     {
@@ -12617,6 +12617,11 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target:
+        "service_providing_group_product_application.maximum_active_power",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application.prequalified_at",
       operation: "read",
     },
@@ -12648,11 +12653,6 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_product_application.status",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application.total_prequalified_volume",
       operation: "read",
     },
     {
@@ -12765,6 +12765,11 @@ const rawPermissions: Record<
     },
     {
       target:
+        "service_providing_group_product_application_history.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target:
         "service_providing_group_product_application_history.prequalified_at",
       operation: "read",
     },
@@ -12810,11 +12815,6 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_product_application_history.status",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_history.total_prequalified_volume",
       operation: "read",
     },
     {
@@ -15251,6 +15251,11 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target:
+        "service_providing_group_product_application.maximum_active_power",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application.prequalified_at",
       operation: "read",
     },
@@ -15295,11 +15300,6 @@ const rawPermissions: Record<
     {
       target: "service_providing_group_product_application.status",
       operation: "update",
-    },
-    {
-      target:
-        "service_providing_group_product_application.total_prequalified_volume",
-      operation: "read",
     },
     {
       target: "service_providing_group_product_application",
@@ -15448,6 +15448,11 @@ const rawPermissions: Record<
     },
     {
       target:
+        "service_providing_group_product_application_history.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target:
         "service_providing_group_product_application_history.prequalified_at",
       operation: "read",
     },
@@ -15493,11 +15498,6 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_product_application_history.status",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_history.total_prequalified_volume",
       operation: "read",
     },
     {
@@ -18132,6 +18132,21 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target:
+        "service_providing_group_product_application.maximum_active_power",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_application.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.maximum_active_power",
+      operation: "update",
+    },
+    {
       target: "service_providing_group_product_application.prequalified_at",
       operation: "read",
     },
@@ -18189,21 +18204,6 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_product_application.status",
-      operation: "update",
-    },
-    {
-      target:
-        "service_providing_group_product_application.total_prequalified_volume",
-      operation: "create",
-    },
-    {
-      target:
-        "service_providing_group_product_application.total_prequalified_volume",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application.total_prequalified_volume",
       operation: "update",
     },
     {
@@ -18349,6 +18349,11 @@ const rawPermissions: Record<
     },
     {
       target:
+        "service_providing_group_product_application_history.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target:
         "service_providing_group_product_application_history.prequalified_at",
       operation: "read",
     },
@@ -18394,11 +18399,6 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_product_application_history.status",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_history.total_prequalified_volume",
       operation: "read",
     },
     {
@@ -20610,6 +20610,11 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target:
+        "service_providing_group_product_application.maximum_active_power",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application.prequalified_at",
       operation: "read",
     },
@@ -20641,11 +20646,6 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_product_application.status",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application.total_prequalified_volume",
       operation: "read",
     },
     {
@@ -20758,6 +20758,11 @@ const rawPermissions: Record<
     },
     {
       target:
+        "service_providing_group_product_application_history.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target:
         "service_providing_group_product_application_history.prequalified_at",
       operation: "read",
     },
@@ -20803,11 +20808,6 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_product_application_history.status",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_history.total_prequalified_volume",
       operation: "read",
     },
     {
