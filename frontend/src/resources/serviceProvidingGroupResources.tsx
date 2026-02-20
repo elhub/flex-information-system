@@ -585,6 +585,14 @@ export const createServiceProvidingGroupResources = (
     "service_providing_group_product_application",
     "read",
   );
+  const canCreateSPGPA = permissions.allow(
+    "service_providing_group_product_application",
+    "create",
+  );
+  const canUpdateSPGPA = permissions.allow(
+    "service_providing_group_product_application",
+    "update",
+  );
 
   if (canReadSPGPA) {
     resources.push(
@@ -593,6 +601,24 @@ export const createServiceProvidingGroupResources = (
         name="service_providing_group_product_application"
         list={ServiceProvidingGroupProductApplicationList}
         show={ServiceProvidingGroupProductApplicationShow}
+        edit={
+          canUpdateSPGPA ? (
+            <EditRedirectPreviousPage>
+              <ServiceProvidingGroupProductApplicationInput />
+            </EditRedirectPreviousPage>
+          ) : (
+            (null as any)
+          )
+        }
+        create={
+          canCreateSPGPA ? (
+            <CreateRedirectPreviousPage>
+              <ServiceProvidingGroupProductApplicationInput />
+            </CreateRedirectPreviousPage>
+          ) : (
+            (null as any)
+          )
+        }
       >
         <Route
           path=":service_providing_group_product_application_id/history"

@@ -13,6 +13,7 @@ WITH (security_invoker = true) AS (
         product_type_ids,
         service_providing_group_id,
         status,
+        total_prequalified_volume,
         verified_at,
         recorded_by,
         lower(record_time_range) AS recorded_at
@@ -33,6 +34,7 @@ WITH (
         product_type_ids,
         service_providing_group_id,
         status,
+        total_prequalified_volume,
         verified_at,
         recorded_by,
         lower(record_time_range) AS recorded_at,
@@ -49,6 +51,7 @@ WITH (
         product_type_ids,
         service_providing_group_id,
         status,
+        total_prequalified_volume,
         verified_at,
         recorded_by,
         lower(record_time_range) AS recorded_at,

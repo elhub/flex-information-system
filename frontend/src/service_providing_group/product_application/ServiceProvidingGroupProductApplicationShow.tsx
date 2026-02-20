@@ -22,6 +22,7 @@ import { Permissions } from "../../auth/permissions";
 import HistoryIcon from "@mui/icons-material/History";
 import { ServiceProvidingGroupProductApplication } from "../../generated-client";
 import { EnumField } from "../../components/enum";
+import { UnitField } from "../../components/unitComponents";
 
 const EditButton = () => {
   const record = useRecordContext();
@@ -156,6 +157,11 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
             <ProductTypeArrayField
               label="field.service_providing_group_product_application.product_type_ids"
               source="product_type_ids"
+            />
+            <UnitField
+              source="total_prequalified_volume"
+              label="field.service_providing_group_product_application.total_prequalified_volume"
+              unit="kW"
             />
           </FieldStack>
 

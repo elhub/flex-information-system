@@ -240,6 +240,7 @@ service_providing_group_product_application;service_providing_group_id;;R;R;R;R;
 service_providing_group_product_application;procuring_system_operator_id;;R;R;R;R;R;R;RC;R;;;
 service_providing_group_product_application;product_type_ids;;R;R;R;RU;R;RU;RCU;R;;;
 service_providing_group_product_application;status;;R;R;R;RU;R;RU;RCU;R;;;
+service_providing_group_product_application;total_prequalified_volume;;R;R;R;RU;R;R;RCU;R;;;
 service_providing_group_product_application;additional_information;;R;R;R;RU;R;R;RCU;R;;;
 service_providing_group_product_application;prequalified_at;;R;R;R;RU;R;RU;R;R;;;
 service_providing_group_product_application;verified_at;;R;R;R;RU;R;RU;R;R;;;

@@ -175,3 +175,34 @@ ALTER TABLE flex.service_providing_group_product_application
 ADD CONSTRAINT spg_product_application_additional_information_check CHECK (
     char_length(additional_information) <= 512
 );
+
+-- changeset flex:service-providing-group-product-application-total-prequalified-volume runOnChange:false endDelimiter:;
+--preconditions onFail:MARK_RAN
+--precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = 'flex' AND table_name = 'service_providing_group_product_application' AND column_name = 'total_prequalified_volume'
+ALTER TABLE flex.service_providing_group_product_application
+DISABLE TRIGGER USER;
+
+ALTER TABLE flex.service_providing_group_product_application
+ADD COLUMN IF NOT EXISTS total_prequalified_volume decimal(9, 3);
+
+ALTER TABLE flex.service_providing_group_product_application_history
+ADD COLUMN IF NOT EXISTS total_prequalified_volume decimal(9, 3);
+
+UPDATE flex.service_providing_group_product_application
+SET total_prequalified_volume = 0
+WHERE total_prequalified_volume IS NULL;
+
+UPDATE flex.service_providing_group_product_application_history
+SET total_prequalified_volume = 0
+WHERE total_prequalified_volume IS NULL;
+
+ALTER TABLE flex.service_providing_group_product_application
+ALTER COLUMN total_prequalified_volume SET NOT NULL;
+
+ALTER TABLE flex.service_providing_group_product_application
+ADD CONSTRAINT spg_product_application_total_prequalified_volume_check CHECK (
+    total_prequalified_volume >= 0
+);
+
+ALTER TABLE flex.service_providing_group_product_application
+ENABLE TRIGGER USER;

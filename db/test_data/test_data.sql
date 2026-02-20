@@ -1021,11 +1021,13 @@ BEGIN
   INSERT INTO flex.service_providing_group_product_application (
     service_providing_group_id,
     procuring_system_operator_id,
-    product_type_ids
+    product_type_ids,
+    total_prequalified_volume
   ) VALUES (
     spg_id,
     so_id,
-    array[pt_id]
+    array[pt_id],
+    7
   ) RETURNING id INTO spgpa_id;
 
   UPDATE flex.service_providing_group_product_application

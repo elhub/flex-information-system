@@ -6,6 +6,7 @@ import {
   PartyReferenceInput,
   InputStack,
   AutocompleteReferenceInput,
+  useCreateOrUpdate,
 } from "../../auth";
 import { DateTimeInput } from "../../components/datetime";
 import { ProductTypeArrayInput } from "../../product_type/components";
@@ -21,6 +22,7 @@ const filterRecord = ({
   product_type_ids,
   status,
   additional_information,
+  total_prequalified_volume,
   prequalified_at,
   verified_at,
 }: any) => ({
@@ -29,6 +31,7 @@ const filterRecord = ({
   product_type_ids,
   status,
   additional_information,
+  total_prequalified_volume,
   prequalified_at,
   verified_at,
 });
@@ -42,6 +45,7 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
     () => filterRecord({ ...actualRecord, ...overrideRecord }),
     [actualRecord, overrideRecord],
   );
+  const createOrUpdate = useCreateOrUpdate();
 
   return (
     <SimpleForm
@@ -92,6 +96,14 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
               "verified",
               "rejected",
             ]}
+            defaultValue="requested"
+            readOnly={createOrUpdate === "create"}
+          />
+          <TextInput
+            source="total_prequalified_volume"
+            validate={required()}
+            label="field.service_providing_group_product_application.total_prequalified_volume"
+            type="number"
           />
           <TextInput
             source="additional_information"

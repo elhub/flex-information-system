@@ -2191,6 +2191,10 @@ export type ServiceProvidingGroupProductApplicationUpdateRequest = {
   product_type_ids?: Array<number>;
   status?: ServiceProvidingGroupProductApplicationStatus;
   /**
+   * The total prequalified volume applied for, in kilowatts.
+   */
+  total_prequalified_volume?: number;
+  /**
    * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
    */
   additional_information?: string;
@@ -2221,6 +2225,10 @@ export type ServiceProvidingGroupProductApplicationCreateRequest = {
    */
   product_type_ids: Array<number>;
   status?: ServiceProvidingGroupProductApplicationStatus;
+  /**
+   * The total prequalified volume applied for, in kilowatts.
+   */
+  total_prequalified_volume: number;
   /**
    * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
    */
@@ -2256,6 +2264,10 @@ export type ServiceProvidingGroupProductApplication = {
    */
   product_type_ids: Array<number>;
   status: ServiceProvidingGroupProductApplicationStatus;
+  /**
+   * The total prequalified volume applied for, in kilowatts.
+   */
+  total_prequalified_volume: number;
   /**
    * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
    */
@@ -3422,6 +3434,10 @@ export type ServiceProvidingGroupProductApplicationWritable = {
    */
   product_type_ids: Array<number>;
   status: ServiceProvidingGroupProductApplicationStatus;
+  /**
+   * The total prequalified volume applied for, in kilowatts.
+   */
+  total_prequalified_volume: number;
   /**
    * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
    */

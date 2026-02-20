@@ -400,6 +400,7 @@ export type FieldLabel =
   | "service_providing_group_product_application.recorded_by"
   | "service_providing_group_product_application.service_providing_group_id"
   | "service_providing_group_product_application.status"
+  | "service_providing_group_product_application.total_prequalified_volume"
   | "service_providing_group_product_application.verified_at"
   | "service_providing_group_product_application_comment.content"
   | "service_providing_group_product_application_comment.created_at"
@@ -432,6 +433,7 @@ export type FieldLabel =
   | "service_providing_group_product_application_history.service_providing_group_id"
   | "service_providing_group_product_application_history.service_providing_group_product_application_id"
   | "service_providing_group_product_application_history.status"
+  | "service_providing_group_product_application_history.total_prequalified_volume"
   | "service_providing_group_product_application_history.verified_at"
   | "service_providing_group_product_suspension.id"
   | "service_providing_group_product_suspension.procuring_system_operator_id"
@@ -1033,6 +1035,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application.product_type_ids":
       "Product types",
     "service_providing_group_product_application.status": "Status",
+    "service_providing_group_product_application.total_prequalified_volume":
+      "Total prequalified volume",
     "service_providing_group_product_application.additional_information":
       "Additional information",
     "service_providing_group_product_application.prequalified_at":
@@ -1048,6 +1052,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application_history.product_type_ids":
       "Product types",
     "service_providing_group_product_application_history.status": "Status",
+    "service_providing_group_product_application_history.total_prequalified_volume":
+      "Total prequalified volume",
     "service_providing_group_product_application_history.additional_information":
       "Additional information",
     "service_providing_group_product_application_history.prequalified_at":
@@ -1698,6 +1704,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application.product_type_ids":
       "Produkttyper",
     "service_providing_group_product_application.status": "Status",
+    "service_providing_group_product_application.total_prequalified_volume":
+      "Total prekvalifisert volum",
     "service_providing_group_product_application.additional_information":
       "Tilleggsinformasjon",
     "service_providing_group_product_application.prequalified_at":
@@ -1713,6 +1721,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application_history.product_type_ids":
       "Produkttyper",
     "service_providing_group_product_application_history.status": "Status",
+    "service_providing_group_product_application_history.total_prequalified_volume":
+      "Total prekvalifisert volum",
     "service_providing_group_product_application_history.additional_information":
       "Tilleggsinformasjon",
     "service_providing_group_product_application_history.prequalified_at":
@@ -2362,6 +2372,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application.product_type_ids":
       "Produkttypar",
     "service_providing_group_product_application.status": "Status",
+    "service_providing_group_product_application.total_prequalified_volume":
+      "Total prekvalifisert volum",
     "service_providing_group_product_application.additional_information":
       "Tilleggsinformasjon",
     "service_providing_group_product_application.prequalified_at":
@@ -2377,6 +2389,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application_history.product_type_ids":
       "Produkttypar",
     "service_providing_group_product_application_history.status": "Status",
+    "service_providing_group_product_application_history.total_prequalified_volume":
+      "Total prekvalifisert volum",
     "service_providing_group_product_application_history.additional_information":
       "Tilleggsinformasjon",
     "service_providing_group_product_application_history.prequalified_at":
