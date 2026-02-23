@@ -55,7 +55,7 @@ export type PermissionTarget =
   | "controllable_unit.grid_validation_status"
   | "controllable_unit.id"
   | "controllable_unit.is_small"
-  | "controllable_unit.maximum_available_capacity"
+  | "controllable_unit.maximum_active_power"
   | "controllable_unit.maximum_duration"
   | "controllable_unit.minimum_duration"
   | "controllable_unit.name"
@@ -76,7 +76,7 @@ export type PermissionTarget =
   | "controllable_unit_history.grid_validation_status"
   | "controllable_unit_history.id"
   | "controllable_unit_history.is_small"
-  | "controllable_unit_history.maximum_available_capacity"
+  | "controllable_unit_history.maximum_active_power"
   | "controllable_unit_history.maximum_duration"
   | "controllable_unit_history.minimum_duration"
   | "controllable_unit_history.name"
@@ -749,7 +749,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.maximum_available_capacity",
+      target: "controllable_unit.maximum_active_power",
       operation: "read",
     },
     {
@@ -833,7 +833,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.maximum_available_capacity",
+      target: "controllable_unit_history.maximum_active_power",
       operation: "read",
     },
     {
@@ -3097,7 +3097,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.maximum_available_capacity",
+      target: "controllable_unit.maximum_active_power",
       operation: "read",
     },
     {
@@ -3181,7 +3181,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.maximum_available_capacity",
+      target: "controllable_unit_history.maximum_active_power",
       operation: "read",
     },
     {
@@ -5445,7 +5445,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.maximum_available_capacity",
+      target: "controllable_unit.maximum_active_power",
       operation: "read",
     },
     {
@@ -5529,7 +5529,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.maximum_available_capacity",
+      target: "controllable_unit_history.maximum_active_power",
       operation: "read",
     },
     {
@@ -7829,15 +7829,15 @@ const rawPermissions: Record<
       operation: "lookup",
     },
     {
-      target: "controllable_unit.maximum_available_capacity",
+      target: "controllable_unit.maximum_active_power",
       operation: "create",
     },
     {
-      target: "controllable_unit.maximum_available_capacity",
+      target: "controllable_unit.maximum_active_power",
       operation: "read",
     },
     {
-      target: "controllable_unit.maximum_available_capacity",
+      target: "controllable_unit.maximum_active_power",
       operation: "update",
     },
     {
@@ -7997,7 +7997,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.maximum_available_capacity",
+      target: "controllable_unit_history.maximum_active_power",
       operation: "read",
     },
     {
@@ -10947,7 +10947,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.maximum_available_capacity",
+      target: "controllable_unit.maximum_active_power",
       operation: "read",
     },
     {
@@ -11031,7 +11031,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.maximum_available_capacity",
+      target: "controllable_unit_history.maximum_active_power",
       operation: "read",
     },
     {
@@ -13307,7 +13307,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.maximum_available_capacity",
+      target: "controllable_unit.maximum_active_power",
       operation: "read",
     },
     {
@@ -13399,7 +13399,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.maximum_available_capacity",
+      target: "controllable_unit_history.maximum_active_power",
       operation: "read",
     },
     {
@@ -16081,15 +16081,15 @@ const rawPermissions: Record<
       operation: "lookup",
     },
     {
-      target: "controllable_unit.maximum_available_capacity",
+      target: "controllable_unit.maximum_active_power",
       operation: "create",
     },
     {
-      target: "controllable_unit.maximum_available_capacity",
+      target: "controllable_unit.maximum_active_power",
       operation: "read",
     },
     {
-      target: "controllable_unit.maximum_available_capacity",
+      target: "controllable_unit.maximum_active_power",
       operation: "update",
     },
     {
@@ -16241,7 +16241,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.maximum_available_capacity",
+      target: "controllable_unit_history.maximum_active_power",
       operation: "read",
     },
     {
@@ -18940,7 +18940,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.maximum_available_capacity",
+      target: "controllable_unit.maximum_active_power",
       operation: "read",
     },
     {
@@ -19024,7 +19024,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.maximum_available_capacity",
+      target: "controllable_unit_history.maximum_active_power",
       operation: "read",
     },
     {

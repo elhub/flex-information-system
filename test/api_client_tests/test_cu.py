@@ -78,7 +78,7 @@ def test_controllable_unit_fiso(sts):
             name="TEST-CU-1",
             accounting_point_id=1002,
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
-            maximum_available_capacity=3.5,
+            maximum_active_power=3.5,
         ),
     )
     assert isinstance(cu, ControllableUnitResponse)
@@ -281,7 +281,7 @@ def test_controllable_unit_so(sts):
             name="TEST-CU-18",
             accounting_point_id=1002,
             regulation_direction=ControllableUnitRegulationDirection.UP,
-            maximum_available_capacity=2,
+            maximum_active_power=2,
         ),
     )
     assert isinstance(cu, ControllableUnitResponse)
@@ -543,7 +543,7 @@ def test_controllable_unit_sp(sts):
             name="TEST-CU-2",
             accounting_point_id=1002,
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
-            maximum_available_capacity=3.5,
+            maximum_active_power=3.5,
             grid_node_id="92a7d3bf-fee5-4abc-9130-75c8067ea78c",
         ),
     )
@@ -589,7 +589,7 @@ def test_controllable_unit_sp(sts):
             name="TEST-CU-2",
             accounting_point_id=1002,
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
-            maximum_available_capacity=3.5,
+            maximum_active_power=3.5,
         ),
     )
     assert isinstance(cu, ControllableUnitResponse)
@@ -729,7 +729,7 @@ def test_controllable_unit_sp(sts):
     u = update_controllable_unit.sync(
         client=client_sp2,
         id=cast(int, cu.id),
-        body=ControllableUnitUpdateRequest(maximum_available_capacity=500),
+        body=ControllableUnitUpdateRequest(maximum_active_power=500),
     )
     assert isinstance(u, ControllableUnitResponse)
     assert u.grid_validation_status == ControllableUnitGridValidationStatus.PENDING

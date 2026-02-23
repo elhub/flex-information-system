@@ -83,7 +83,7 @@ def create_spggs(client_fiso, client_sp, sp_id, ap_id, eu_id, so_id):
             name="CU-SUSP-1",
             accounting_point_id=ap_id,
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
-            maximum_available_capacity=3.5,
+            maximum_active_power=3.5,
         ),
     )
     assert isinstance(cu, ControllableUnitResponse)

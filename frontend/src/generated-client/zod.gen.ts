@@ -450,7 +450,7 @@ export const zControllableUnitUpdateRequest = z.object({
       zControllableUnitRegulationDirection.optional(),
     ),
   ),
-  maximum_available_capacity: z.optional(
+  maximum_active_power: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
       z.coerce.number().gte(0).lte(999999.999).optional(),
@@ -529,7 +529,7 @@ export const zControllableUnitCreateRequest = z.object({
     ),
   ),
   regulation_direction: zControllableUnitRegulationDirection,
-  maximum_available_capacity: z.coerce.number().gte(0).lte(999999.999),
+  maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
   minimum_duration: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -606,7 +606,7 @@ export const zControllableUnit = z.object({
   ),
   status: zControllableUnitStatus,
   regulation_direction: zControllableUnitRegulationDirection,
-  maximum_available_capacity: z.coerce.number().gte(0).lte(999999.999),
+  maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
   is_small: z.boolean().readonly(),
   minimum_duration: z.optional(
     z.preprocess(
@@ -2722,7 +2722,7 @@ export const zControllableUnitWritable = z.object({
   ),
   status: zControllableUnitStatus,
   regulation_direction: zControllableUnitRegulationDirection,
-  maximum_available_capacity: z.coerce.number().gte(0).lte(999999.999),
+  maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
   minimum_duration: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
