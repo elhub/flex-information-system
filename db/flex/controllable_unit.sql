@@ -1,8 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:controllable-unit-create runOnChange:false endDelimiter:--
---validCheckSum: 9:be85821939083383802960279ec168af
+-- changeset flex:controllable-unit-create runOnChange:true endDelimiter:--
 CREATE TABLE IF NOT EXISTS controllable_unit (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     business_id uuid UNIQUE NOT NULL DEFAULT (public.uuid_generate_v4()) CHECK (
