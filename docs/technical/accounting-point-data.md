@@ -13,13 +13,16 @@ Norway, this is in the national datahub, Elhub.
 Accounting point data is fetched from the datahub and loaded into the FIS
 database. We need to provision a local copy to be able to efficiently use the
 data in the FIS. We only fetch data for accounting points that are relevant,
-meaning those that have controllable units connected to them.
+meaning those that have controllable units connected to them. The most important
+reason for this is data minimization in terms of data privacy. But it also helps
+with the sync performance and reduces the amount of data we need to store.
 
 Fetching and updating data must happen...
 
 * in [Controllable Unit Lookup](../processes/controllable-unit-lookup.md) for
   accounting points not already in the system.
 * on a regular basis to keep data in sync.
+* when we receive events/notifications about changes to the data from the datahub.
 
 It is the FIS that will reach out to the datahub for (updated) data.
 
@@ -27,7 +30,7 @@ It is the FIS that will reach out to the datahub for (updated) data.
 
 The [adapter pattern](https://en.wikipedia.org/wiki/Adapter_pattern) is a well-
 known pattern when integrating data from external systems. In a data
-synchronization use case like this, it is basically about wrapping/translating
+synchronization use case like this, it is basically about mapping/translating
 the data/API.
 
 The way we leverage the adapter pattern for fetching accounting point data is
@@ -53,6 +56,18 @@ The adapter service must implement the OpenAPI document defined in
 
 Since the adapter service is assumed to be specifically deployed for the FIS, a
 shared API Bearer key is configured on both sides.
+
+## Event based provisioning
+
+As of now, we do not have a technical implementation or design in place for
+[event based
+provisioning](https://docs.sikt.no/docs/datadeling/god-praksis/integrasjonsmonster/hendelsesbasert/)
+of data. But the strategy that we will follow is that _thin_ events will be made
+available to the FIS, which then is required to fetch the actual data, using the
+adapter.
+
+Wether these events will be pushed to FIS by the adapter or made available for
+pull based mechanisms will be part of a future design.
 
 ## Data synchronization
 
