@@ -18,7 +18,7 @@
         <link rel="prev" href="../service_providing_group_membership/">
       
       
-        <link rel="next" href="../service_providing_group_product_suspension/">
+        <link rel="next" href="../service_providing_group_product_application_comment/">
       
       
         
@@ -680,34 +680,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guides/get-ready-for-market/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Get Ready for Market
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../guides/getting-started/" class="md-nav__link">
         
   
@@ -752,6 +724,136 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../guides/get-ready-for-market/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Get ready for market
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_4" id="__nav_5_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Get ready for market
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/get-ready-for-market/sp-cu-registration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Registering a Controllable Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/get-ready-for-market/sp-spg-registration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Grouping Controllable Units in a Service Providing Group
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -1296,6 +1398,8 @@
       
         
           
+        
+      
         
       
         
@@ -2549,6 +2653,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../service_providing_group_product_application_comment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Service Providing Group Product Application Comment
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../service_providing_group_product_suspension/" class="md-nav__link">
         
   
@@ -3437,27 +3569,33 @@ again.</p>
 <td></td>
 </tr>
 <tr>
-<td><a name="field-notes" href="#field-notes">notes</a></td>
-<td>Free text notes on the current product application status.</td>
+<td><a name="field-maximum_active_power" href="#field-maximum_active_power">maximum_active_power</a></td>
+<td>The maximum active power applied for, in kilowatts.</td>
+<td>decimal<br/>Required<br/>Min: <code>0</code><br/>Max: <code>999999.999</code><br/>Multiple of: <code>0.001</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a name="field-additional_information" href="#field-additional_information">additional_information</a></td>
+<td>Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).</td>
 <td>text<br/>Max length: <code>512</code></td>
 <td></td>
 </tr>
 <tr>
 <td><a name="field-prequalified_at" href="#field-prequalified_at">prequalified_at</a></td>
 <td>When the product application was last prequalified.</td>
-<td>timestamp with time zone</td>
+<td>date-time</td>
 <td></td>
 </tr>
 <tr>
 <td><a name="field-verified_at" href="#field-verified_at">verified_at</a></td>
 <td>When the product application was last verified.</td>
-<td>timestamp with time zone</td>
+<td>date-time</td>
 <td></td>
 </tr>
 <tr>
 <td><a name="field-recorded_at" href="#field-recorded_at">recorded_at</a></td>
 <td>When the resource was recorded (created or updated) in the system.</td>
-<td>timestamp with time zone<br/>Read only</td>
+<td>date-time<br/>Read only</td>
 <td></td>
 </tr>
 <tr>
@@ -3702,14 +3840,26 @@ resource. The default policy is <strong>deny</strong>.</p>
 <td></td>
 </tr>
 <tr>
-<td>notes</td>
+<td>maximum_active_power</td>
 <td></td>
 <td>R</td>
 <td>R</td>
 <td>R</td>
 <td>RU</td>
+<td>R</td>
+<td>RCU</td>
+<td>R</td>
+<td></td>
+</tr>
+<tr>
+<td>additional_information</td>
+<td></td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
 <td>RU</td>
 <td>R</td>
+<td>RCU</td>
 <td>R</td>
 <td></td>
 </tr>

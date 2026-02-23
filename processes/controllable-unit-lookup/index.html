@@ -680,34 +680,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guides/get-ready-for-market/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Get Ready for Market
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../guides/getting-started/" class="md-nav__link">
         
   
@@ -752,6 +724,136 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../guides/get-ready-for-market/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Get ready for market
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_4" id="__nav_5_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Get ready for market
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/get-ready-for-market/sp-cu-registration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Registering a Controllable Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/get-ready-for-market/sp-spg-registration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Grouping Controllable Units in a Service Providing Group
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -923,6 +1025,17 @@
       Table of contents
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-is-cu-lookup-a-necessary-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why is CU lookup a necessary process?
+      
+    </span>
+  </a>
+  
+</li>
       
         <li class="md-nav__item">
   <a href="#prerequisites" class="md-nav__link">
@@ -1376,6 +1489,8 @@
       
         
           
+        
+      
         
       
         
@@ -2372,6 +2487,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../resources/service_providing_group_product_application_comment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Service Providing Group Product Application Comment
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../resources/service_providing_group_product_suspension/" class="md-nav__link">
         
   
@@ -2969,6 +3112,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#why-is-cu-lookup-a-necessary-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why is CU lookup a necessary process?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#prerequisites" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3019,22 +3173,46 @@
 
 
 <h1 id="cu-lookup">CU Lookup</h1>
-<p>This process is used to look up information about controllable units before
-initiating controllable unit registration or service provider switching, in
-order to verify whether the unit is already registered in the system.</p>
+<p>This process is used to look up information about controllable units to verify
+whether they are already registered in the system before initiating the following
+processes:</p>
+<ul>
+<li><a href="../controllable-unit-registration/">controllable unit registration</a></li>
+<li><a href="../service-provider-switching/">service provider switching</a></li>
+</ul>
+<h2 id="why-is-cu-lookup-a-necessary-process">Why is CU lookup a necessary process?</h2>
+<ol>
+<li>
+<p>To verify whether the unit is already registered in the system<br />
+   to determine next step</p>
+<p>This process retrieves the necessary information from FIS, to ensure that the
+service provider has sufficient data to determine the appropriate process
+to execute.</p>
+<p>After a successful request, the service provider evaluates the returned CU
+data and decides the next step. If the CU is there, then
+the next step could be service provider switching
+or evaluation of the data. If the CU is not there, the service provider can
+create a new CU. This is further explained below.</p>
+</li>
+<li>
+<p>To verify the link between the end user and the accounting point / CU</p>
 <p>Before starting the CU registration or switching process, the service provider
-needs to verify the link between the end user and the accounting point / CU, as
-well as validate CU data. This process retrieves the necessary information from
-FIS, to ensure that the service provider has sufficient data to determine the
-appropriate process to execute.</p>
+needs to verify the link between the end user and the accounting point / CU.</p>
+</li>
+<li>
+<p>To prevent unauthorized use</p>
 <p>To prevent unauthorized use, FIS requires the end user id from the service
-provider to allow them to access CU data. If the accounting point or CU is
+provider to allow them to access CU data.</p>
+<p>If the accounting point or CU is
 already part of the system, this validation will be done based on existing data
 in FIS. Data for accounting points with CUs will always be synced from Elhub.</p>
 <p>If, however, the service provider is requesting data for an accounting point
 that does not have any CUs registered in FIS, there will be a synchronous lookup
-towards Elhub to validate the accounting point end user relation. From then on,
-the accounting point will be part of the regular data sync from Elhub.</p>
+towards Elhub to validate the <a href="../../resources/accounting_point_end_user/">accounting point end user relation</a>.
+From then on, the accounting point will be part of the regular data sync
+from Elhub.</p>
+</li>
+</ol>
 <h2 id="prerequisites">Prerequisites</h2>
 <ul>
 <li>Service provider has a consent from the end user to request data on the
@@ -3058,7 +3236,7 @@ the response will be <code>404 - Not Found</code>. If the requested resource exi
 end user does not match the end user associated with the CU or AP, the response
 will be <code>403 - Forbidden</code>.</p>
 <p>Upon a successful request, the response will be <code>200 - Ok</code> and contain the
-following fields.</p>
+following fields:</p>
 <table>
 <thead>
 <tr>

@@ -680,34 +680,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guides/get-ready-for-market/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Get Ready for Market
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../guides/getting-started/" class="md-nav__link">
         
   
@@ -752,6 +724,136 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../guides/get-ready-for-market/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Get ready for market
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_4" id="__nav_5_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Get ready for market
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/get-ready-for-market/sp-cu-registration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Registering a Controllable Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/get-ready-for-market/sp-spg-registration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Grouping Controllable Units in a Service Providing Group
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -1294,6 +1396,8 @@
       
         
           
+        
+      
         
       
         
@@ -2290,6 +2394,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../resources/service_providing_group_product_application_comment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Service Providing Group Product Application Comment
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../resources/service_providing_group_product_suspension/" class="md-nav__link">
         
   
@@ -2746,15 +2878,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#timezones" class="md-nav__link">
+  <a href="#timestamps" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Timezones
+        Timestamps
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Timezones">
+    <nav class="md-nav" aria-label="Timestamps">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2762,6 +2894,17 @@
     <span class="md-ellipsis">
       
         Storage format
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API format
       
     </span>
   </a>
@@ -3119,15 +3262,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#timezones" class="md-nav__link">
+  <a href="#timestamps" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Timezones
+        Timestamps
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Timezones">
+    <nav class="md-nav" aria-label="Timestamps">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -3135,6 +3278,17 @@
     <span class="md-ellipsis">
       
         Storage format
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API format
       
     </span>
   </a>
@@ -3323,13 +3477,17 @@ starts on 07.07 Norwegian midnight and lasts for one week, that is, it ends on
 <p>The three first contracts are therefore invalid, even if number <code>2</code> starts at
 midnight on 14.07, and the three last ones are valid, and number <code>5</code> can start
 as soon as midnight on 07.07. The end date of these contracts does not matter.</p>
-<h2 id="timezones">Timezones</h2>
+<h2 id="timestamps">Timestamps</h2>
 <p>In the context of storing datetime-related information, a timestamp only has
 meaning if it is considered in a given timezone.</p>
 <h3 id="storage-format">Storage format</h3>
-<p>Datetime data is stored in the system in the standard <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a>
-format (date + time + timezone), so that information in the database is complete
-and does not depend on any user configuration.</p>
+<p>Datetime data is stored in our database as <a href="https://www.postgresql.org/docs/current/datatype-datetime.html">timestamp with time
+zone</a>, so that
+information in the database is complete and does not depend on any user
+configuration.</p>
+<h3 id="api-format">API format</h3>
+<p>For documentation about the timestamp format used in the API check
+<a href="../api-design/#time">API design</a>.</p>
 <h3 id="time-in-the-user-interface">Time in the user interface</h3>
 <p>As the Flexibility Information System is expected to only handle data related to
 the Norwegian flexibility market, it makes sense to use Norwegian time. This

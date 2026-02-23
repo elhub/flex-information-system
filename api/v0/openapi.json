@@ -149,6 +149,10 @@
       "description": "Service Providing Group Product Application"
     },
     {
+      "name": "service_providing_group_product_application_comment",
+      "description": "Service Providing Group Product Application Comment"
+    },
+    {
       "name": "service_providing_group_product_suspension",
       "description": "Service Providing Group Product Suspension"
     },
@@ -430,13 +434,13 @@
               "type": "string",
               "format": "date-time",
               "description": "The start time of the timeline section.",
-              "example": "2023-01-01T00:00:00Z"
+              "example": "2023-01-01T00:00:00+00:00"
             },
             "valid_to": {
               "type": "string",
               "format": "date-time",
               "description": "The end time of the timeline section.",
-              "example": "2023-01-02T00:00:00Z"
+              "example": "2023-01-02T00:00:00+00:00"
             }
           }
         }
@@ -837,6 +841,17 @@
         ],
         "example": "in_progress"
       },
+      "service_providing_group_product_application_comment_visibility": {
+        "description": "The level of visibility of the comment.",
+        "format": "text",
+        "type": "string",
+        "default": "same_party",
+        "enum": [
+          "same_party",
+          "any_involved_party"
+        ],
+        "example": "same_party"
+      },
       "service_providing_group_product_suspension_reason": {
         "description": "The reason for the suspension.",
         "format": "text",
@@ -895,7 +910,7 @@
           "regulation_direction": {
             "$ref": "#/components/schemas/controllable_unit_regulation_direction"
           },
-          "maximum_available_capacity": {
+          "maximum_active_power": {
             "description": "Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
             "format": "decimal",
             "type": "number",
@@ -959,10 +974,10 @@
           },
           "validated_at": {
             "description": "When the controllable unit was last validated.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "nullable": true,
-            "example": "2022-08-08 12:00:00 CET"
+            "example": "2022-08-08T12:00:00+02"
           }
         }
       },
@@ -992,7 +1007,7 @@
           "regulation_direction": {
             "$ref": "#/components/schemas/controllable_unit_regulation_direction"
           },
-          "maximum_available_capacity": {
+          "maximum_active_power": {
             "description": "Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
             "format": "decimal",
             "type": "number",
@@ -1063,16 +1078,16 @@
           },
           "validated_at": {
             "description": "When the controllable unit was last validated.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "nullable": true,
-            "example": "2022-08-08 12:00:00 CET"
+            "example": "2022-08-08T12:00:00+02"
           }
         },
         "required": [
           "name",
           "regulation_direction",
-          "maximum_available_capacity",
+          "maximum_active_power",
           "accounting_point_id"
         ]
       },
@@ -1117,7 +1132,7 @@
           "regulation_direction": {
             "$ref": "#/components/schemas/controllable_unit_regulation_direction"
           },
-          "maximum_available_capacity": {
+          "maximum_active_power": {
             "description": "Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
             "format": "decimal",
             "type": "number",
@@ -1195,17 +1210,17 @@
           },
           "validated_at": {
             "description": "When the controllable unit was last validated.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "nullable": true,
-            "example": "2022-08-08 12:00:00 CET"
+            "example": "2022-08-08T12:00:00+02"
           },
           "recorded_at": {
             "description": "When the resource was recorded (created or updated) in the system.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2023-12-31 23:59:00 CET"
+            "example": "2023-12-31T23:59:00+00:00"
           },
           "recorded_by": {
             "description": "The identity that recorded the resource.",
@@ -1221,7 +1236,7 @@
           "name",
           "status",
           "regulation_direction",
-          "maximum_available_capacity",
+          "maximum_active_power",
           "is_small",
           "accounting_point_id",
           "grid_validation_status",
@@ -1294,10 +1309,10 @@
           },
           "recorded_at": {
             "description": "When the resource was recorded (created or updated) in the system.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2023-12-31 23:59:00 CET"
+            "example": "2023-12-31T23:59:00+00:00"
           },
           "recorded_by": {
             "description": "The identity that recorded the resource.",
@@ -1389,10 +1404,10 @@
           },
           "created_at": {
             "description": "When the comment was added to the CUS.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2022-08-08 12:00:00 CET"
+            "example": "2022-08-08 12:00:00+02:00"
           },
           "visibility": {
             "$ref": "#/components/schemas/controllable_unit_suspension_comment_visibility",
@@ -1407,10 +1422,10 @@
           },
           "recorded_at": {
             "description": "When the resource was recorded (created or updated) in the system.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2023-12-31 23:59:00 CET"
+            "example": "2023-12-31T23:59:00+00:00"
           },
           "recorded_by": {
             "description": "The identity that recorded the resource.",
@@ -1446,17 +1461,17 @@
           },
           "valid_from": {
             "description": "The date from which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "nullable": true,
-            "example": "2022-08-08 00:00:00 CET"
+            "example": "2022-08-08T00:00:00+02"
           },
           "valid_to": {
             "description": "The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "nullable": true,
-            "example": "2022-09-10 00:00:00 CET"
+            "example": "2022-09-10T00:00:00+02"
           }
         }
       },
@@ -1492,17 +1507,17 @@
           },
           "valid_from": {
             "description": "The date from which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "nullable": true,
-            "example": "2022-08-08 00:00:00 CET"
+            "example": "2022-08-08T00:00:00+02"
           },
           "valid_to": {
             "description": "The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "nullable": true,
-            "example": "2022-09-10 00:00:00 CET"
+            "example": "2022-09-10T00:00:00+02"
           }
         },
         "required": [
@@ -1551,24 +1566,24 @@
           },
           "valid_from": {
             "description": "The date from which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "nullable": true,
-            "example": "2022-08-08 00:00:00 CET"
+            "example": "2022-08-08T00:00:00+02"
           },
           "valid_to": {
             "description": "The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "nullable": true,
-            "example": "2022-09-10 00:00:00 CET"
+            "example": "2022-09-10T00:00:00+02"
           },
           "recorded_at": {
             "description": "When the resource was recorded (created or updated) in the system.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2023-12-31 23:59:00 CET"
+            "example": "2023-12-31T23:59:00+00:00"
           },
           "recorded_by": {
             "description": "The identity that recorded the resource.",
@@ -1675,10 +1690,10 @@
           },
           "recorded_at": {
             "description": "When the resource was recorded (created or updated) in the system.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2023-12-31 23:59:00 CET"
+            "example": "2023-12-31T23:59:00+00:00"
           },
           "recorded_by": {
             "description": "The identity that recorded the resource.",
@@ -1705,13 +1720,13 @@
         "properties": {
           "valid_from": {
             "description": "The date from which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
-            "example": "2022-08-08 00:00:00 CET"
+            "example": "2022-08-08T00:00:00+02"
           },
           "valid_to": {
             "description": "The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "nullable": true,
             "example": null
@@ -1737,13 +1752,13 @@
           },
           "valid_from": {
             "description": "The date from which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
-            "example": "2022-08-08 00:00:00 CET"
+            "example": "2022-08-08T00:00:00+02"
           },
           "valid_to": {
             "description": "The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "nullable": true,
             "example": null
@@ -1781,23 +1796,23 @@
           },
           "valid_from": {
             "description": "The date from which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
-            "example": "2022-08-08 00:00:00 CET"
+            "example": "2022-08-08T00:00:00+02"
           },
           "valid_to": {
             "description": "The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "nullable": true,
             "example": null
           },
           "recorded_at": {
             "description": "When the resource was recorded (created or updated) in the system.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2023-12-31 23:59:00 CET"
+            "example": "2023-12-31T23:59:00+00:00"
           },
           "recorded_by": {
             "description": "The identity that recorded the resource.",
@@ -1827,10 +1842,10 @@
           },
           "prequalified_at": {
             "description": "When the current grid prequalification was last approved.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "nullable": true,
-            "example": "2023-01-08 10:00:00 CET"
+            "example": "2023-01-08T10:00:00+01"
           }
         }
       },
@@ -1857,10 +1872,10 @@
           },
           "prequalified_at": {
             "description": "When the current grid prequalification was last approved.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "nullable": true,
-            "example": "2023-01-08 10:00:00 CET"
+            "example": "2023-01-08T10:00:00+01"
           }
         },
         "required": [
@@ -1898,17 +1913,17 @@
           },
           "prequalified_at": {
             "description": "When the current grid prequalification was last approved.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "nullable": true,
-            "example": "2023-01-08 10:00:00 CET"
+            "example": "2023-01-08T10:00:00+01"
           },
           "recorded_at": {
             "description": "When the resource was recorded (created or updated) in the system.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2023-12-31 23:59:00 CET"
+            "example": "2023-12-31T23:59:00+00:00"
           },
           "recorded_by": {
             "description": "The identity that recorded the resource.",
@@ -2000,10 +2015,10 @@
           },
           "created_at": {
             "description": "When the comment was added to the SPGGP.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2022-08-08 12:00:00 CET"
+            "example": "2022-08-08 12:00:00+02:00"
           },
           "visibility": {
             "$ref": "#/components/schemas/service_providing_group_grid_prequalification_comment_visibility",
@@ -2018,10 +2033,10 @@
           },
           "recorded_at": {
             "description": "When the resource was recorded (created or updated) in the system.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2023-12-31 23:59:00 CET"
+            "example": "2023-12-31T23:59:00+00:00"
           },
           "recorded_by": {
             "description": "The identity that recorded the resource.",
@@ -2107,10 +2122,10 @@
           },
           "recorded_at": {
             "description": "When the resource was recorded (created or updated) in the system.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2023-12-31 23:59:00 CET"
+            "example": "2023-12-31T23:59:00+00:00"
           },
           "recorded_by": {
             "description": "The identity that recorded the resource.",
@@ -2202,10 +2217,10 @@
           },
           "created_at": {
             "description": "When the comment was added to the SPGGS.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2022-08-08 12:00:00 CET"
+            "example": "2022-08-08 12:00:00+02:00"
           },
           "visibility": {
             "$ref": "#/components/schemas/service_providing_group_grid_suspension_comment_visibility",
@@ -2220,10 +2235,10 @@
           },
           "recorded_at": {
             "description": "When the resource was recorded (created or updated) in the system.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2023-12-31 23:59:00 CET"
+            "example": "2023-12-31T23:59:00+00:00"
           },
           "recorded_by": {
             "description": "The identity that recorded the resource.",
@@ -2326,10 +2341,10 @@
           },
           "recorded_at": {
             "description": "When the resource was recorded (created or updated) in the system.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2023-12-31 23:59:00 CET"
+            "example": "2023-12-31T23:59:00+00:00"
           },
           "recorded_by": {
             "description": "The identity that recorded the resource.",
@@ -2526,10 +2541,10 @@
           },
           "recorded_at": {
             "description": "When the resource was recorded (created or updated) in the system.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2023-12-31 23:59:00 CET"
+            "example": "2023-12-31T23:59:00+00:00"
           },
           "recorded_by": {
             "description": "The identity that recorded the resource.",
@@ -2666,10 +2681,10 @@
           },
           "recorded_at": {
             "description": "When the resource was recorded (created or updated) in the system.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2023-12-31 23:59:00 CET"
+            "example": "2023-12-31T23:59:00+00:00"
           },
           "recorded_by": {
             "description": "The identity that recorded the resource.",
@@ -2782,10 +2797,10 @@
           },
           "recorded_at": {
             "description": "When the resource was recorded (created or updated) in the system.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2023-12-31 23:59:00 CET"
+            "example": "2023-12-31T23:59:00+00:00"
           },
           "recorded_by": {
             "description": "The identity that recorded the resource.",
@@ -2939,10 +2954,10 @@
           },
           "recorded_at": {
             "description": "When the resource was recorded (created or updated) in the system.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2023-12-31 23:59:00 CET"
+            "example": "2023-12-31T23:59:00+00:00"
           },
           "recorded_by": {
             "description": "The identity that recorded the resource.",
@@ -2981,10 +2996,10 @@
           },
           "time": {
             "description": "The time at which the event was generated.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2022-08-08 12:00:00 CET"
+            "example": "2022-08-08T12:00:00+02"
           },
           "type": {
             "description": "The type of the event.",
@@ -3072,10 +3087,10 @@
           },
           "recorded_at": {
             "description": "When the resource was recorded (created or updated) in the system.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2023-12-31 23:59:00 CET"
+            "example": "2023-12-31T23:59:00+00:00"
           },
           "recorded_by": {
             "description": "The identity that recorded the resource.",
@@ -3122,10 +3137,10 @@
           },
           "recorded_at": {
             "description": "When the resource was recorded (created or updated) in the system.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2023-12-31 23:59:00 CET"
+            "example": "2023-12-31T23:59:00+00:00"
           },
           "recorded_by": {
             "description": "The identity that recorded the resource.",
@@ -3167,14 +3182,14 @@
           },
           "valid_from": {
             "description": "The date from which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2022-08-08 00:00:00 CET"
+            "example": "2022-08-08T00:00:00+02"
           },
           "valid_to": {
             "description": "The date until which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
             "nullable": true,
@@ -3205,14 +3220,14 @@
           },
           "valid_from": {
             "description": "The date from which the accounting point belongs to the bidding zone. Midnight aligned on Norwegian timezone.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2022-08-08 00:00:00 CET"
+            "example": "2022-08-08T00:00:00+02"
           },
           "valid_to": {
             "description": "The date until which the accounting point belongs to the bidding zone. Midnight aligned on Norwegian timezone.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
             "nullable": true,
@@ -3246,14 +3261,14 @@
           },
           "valid_from": {
             "description": "The date from which the accounting point belongs to the end user. Midnight aligned on Norwegian timezone.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2022-08-08 00:00:00 CET"
+            "example": "2022-08-08T00:00:00+02"
           },
           "valid_to": {
             "description": "The date until which the accounting point belongs to the end user. Midnight aligned on Norwegian timezone.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
             "nullable": true,
@@ -3287,14 +3302,14 @@
           },
           "valid_from": {
             "description": "The date from which the relation between the accounting point and the energy supplier is valid. Midnight aligned on Norwegian timezone.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2023-09-09 00:00:00 CET"
+            "example": "2023-09-09T00:00:00+02"
           },
           "valid_to": {
             "description": "The date until which the relation between the accounting point and the energy supplier is valid. Midnight aligned on Norwegian timezone.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
             "nullable": true,
@@ -3366,14 +3381,14 @@
           },
           "valid_from": {
             "description": "The date from which the accounting point belongs to the metering grid area. Midnight aligned on Norwegian timezone.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2023-09-09 00:00:00 CET"
+            "example": "2023-09-09T00:00:00+02"
           },
           "valid_to": {
             "description": "The date until which the accounting point belongs to the metering grid area. Midnight aligned on Norwegian timezone.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
             "nullable": true,
@@ -3504,10 +3519,10 @@
           },
           "recorded_at": {
             "description": "When the resource was recorded (created or updated) in the system.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2023-12-31 23:59:00 CET"
+            "example": "2023-12-31T23:59:00+00:00"
           },
           "recorded_by": {
             "description": "The identity that recorded the resource.",
@@ -3550,10 +3565,10 @@
           },
           "qualified_at": {
             "description": "When the product application was last validated.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "nullable": true,
-            "example": "2022-08-08 12:00:00 CET"
+            "example": "2022-08-08T12:00:00+02"
           }
         }
       },
@@ -3593,10 +3608,10 @@
           },
           "qualified_at": {
             "description": "When the product application was last validated.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "nullable": true,
-            "example": "2022-08-08 12:00:00 CET"
+            "example": "2022-08-08T12:00:00+02"
           }
         },
         "required": [
@@ -3648,17 +3663,17 @@
           },
           "qualified_at": {
             "description": "When the product application was last validated.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "nullable": true,
-            "example": "2022-08-08 12:00:00 CET"
+            "example": "2022-08-08T12:00:00+02"
           },
           "recorded_at": {
             "description": "When the resource was recorded (created or updated) in the system.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2023-12-31 23:59:00 CET"
+            "example": "2023-12-31T23:59:00+00:00"
           },
           "recorded_by": {
             "description": "The identity that recorded the resource.",
@@ -3751,10 +3766,10 @@
           },
           "created_at": {
             "description": "When the comment was added to the SPPA.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2022-08-08 12:00:00 CET"
+            "example": "2022-08-08 12:00:00+02:00"
           },
           "visibility": {
             "$ref": "#/components/schemas/service_provider_product_application_comment_visibility",
@@ -3769,10 +3784,10 @@
           },
           "recorded_at": {
             "description": "When the resource was recorded (created or updated) in the system.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2023-12-31 23:59:00 CET"
+            "example": "2023-12-31T23:59:00+00:00"
           },
           "recorded_by": {
             "description": "The identity that recorded the resource.",
@@ -3895,10 +3910,10 @@
           },
           "recorded_at": {
             "description": "When the resource was recorded (created or updated) in the system.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2023-12-31 23:59:00 CET"
+            "example": "2023-12-31T23:59:00+00:00"
           },
           "recorded_by": {
             "description": "The identity that recorded the resource.",
@@ -3991,10 +4006,10 @@
           },
           "created_at": {
             "description": "When the comment was added to the SPPS.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2022-08-08 12:00:00 CET"
+            "example": "2022-08-08 12:00:00+02:00"
           },
           "visibility": {
             "$ref": "#/components/schemas/service_provider_product_suspension_comment_visibility",
@@ -4009,10 +4024,10 @@
           },
           "recorded_at": {
             "description": "When the resource was recorded (created or updated) in the system.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2023-12-31 23:59:00 CET"
+            "example": "2023-12-31T23:59:00+00:00"
           },
           "recorded_by": {
             "description": "The identity that recorded the resource.",
@@ -4055,8 +4070,17 @@
             "$ref": "#/components/schemas/service_providing_group_product_application_status",
             "default": "requested"
           },
-          "notes": {
-            "description": "Free text notes on the current product application status.",
+          "maximum_active_power": {
+            "description": "The maximum active power applied for, in kilowatts.",
+            "format": "decimal",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 999999.999,
+            "multipleOf": 0.001,
+            "example": 150.5
+          },
+          "additional_information": {
+            "description": "Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).",
             "format": "text",
             "type": "string",
             "maxLength": 512,
@@ -4065,17 +4089,17 @@
           },
           "prequalified_at": {
             "description": "When the product application was last prequalified.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "nullable": true,
-            "example": "2022-08-08 12:00:00 CET"
+            "example": "2022-08-08T12:00:00+02"
           },
           "verified_at": {
             "description": "When the product application was last verified.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "nullable": true,
-            "example": "2021-08-08 10:00:00 CET"
+            "example": "2021-08-08T10:00:00+02"
           }
         }
       },
@@ -4113,8 +4137,17 @@
             "$ref": "#/components/schemas/service_providing_group_product_application_status",
             "default": "requested"
           },
-          "notes": {
-            "description": "Free text notes on the current product application status.",
+          "maximum_active_power": {
+            "description": "The maximum active power applied for, in kilowatts.",
+            "format": "decimal",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 999999.999,
+            "multipleOf": 0.001,
+            "example": 150.5
+          },
+          "additional_information": {
+            "description": "Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).",
             "format": "text",
             "type": "string",
             "maxLength": 512,
@@ -4123,23 +4156,24 @@
           },
           "prequalified_at": {
             "description": "When the product application was last prequalified.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "nullable": true,
-            "example": "2022-08-08 12:00:00 CET"
+            "example": "2022-08-08T12:00:00+02"
           },
           "verified_at": {
             "description": "When the product application was last verified.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "nullable": true,
-            "example": "2021-08-08 10:00:00 CET"
+            "example": "2021-08-08T10:00:00+02"
           }
         },
         "required": [
           "service_providing_group_id",
           "procuring_system_operator_id",
-          "product_type_ids"
+          "product_type_ids",
+          "maximum_active_power"
         ]
       },
       "service_providing_group_product_application_response": {
@@ -4183,8 +4217,17 @@
             "$ref": "#/components/schemas/service_providing_group_product_application_status",
             "default": "requested"
           },
-          "notes": {
-            "description": "Free text notes on the current product application status.",
+          "maximum_active_power": {
+            "description": "The maximum active power applied for, in kilowatts.",
+            "format": "decimal",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 999999.999,
+            "multipleOf": 0.001,
+            "example": 150.5
+          },
+          "additional_information": {
+            "description": "Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).",
             "format": "text",
             "type": "string",
             "maxLength": 512,
@@ -4193,24 +4236,24 @@
           },
           "prequalified_at": {
             "description": "When the product application was last prequalified.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "nullable": true,
-            "example": "2022-08-08 12:00:00 CET"
+            "example": "2022-08-08T12:00:00+02"
           },
           "verified_at": {
             "description": "When the product application was last verified.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "nullable": true,
-            "example": "2021-08-08 10:00:00 CET"
+            "example": "2021-08-08T10:00:00+02"
           },
           "recorded_at": {
             "description": "When the resource was recorded (created or updated) in the system.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2023-12-31 23:59:00 CET"
+            "example": "2023-12-31T23:59:00+00:00"
           },
           "recorded_by": {
             "description": "The identity that recorded the resource.",
@@ -4226,6 +4269,122 @@
           "procuring_system_operator_id",
           "product_type_ids",
           "status",
+          "maximum_active_power",
+          "recorded_at",
+          "recorded_by"
+        ]
+      },
+      "service_providing_group_product_application_comment_update_request": {
+        "summary": "Update - Service Providing Group Product Application Comment",
+        "description": "Request schema for update operations - Comment made by a party involved in a service providing group product application.",
+        "type": "object",
+        "properties": {
+          "visibility": {
+            "$ref": "#/components/schemas/service_providing_group_product_application_comment_visibility",
+            "default": "same_party"
+          },
+          "content": {
+            "description": "Free text content of the comment.",
+            "format": "text",
+            "type": "string",
+            "maxLength": 2048,
+            "example": "Missing document."
+          }
+        }
+      },
+      "service_providing_group_product_application_comment_create_request": {
+        "summary": "Create - Service Providing Group Product Application Comment",
+        "description": "Request schema for create operations - Comment made by a party involved in a service providing group product application.",
+        "type": "object",
+        "properties": {
+          "service_providing_group_product_application_id": {
+            "description": "Reference to the service providing group product application.",
+            "format": "bigint",
+            "type": "integer",
+            "example": 7
+          },
+          "visibility": {
+            "$ref": "#/components/schemas/service_providing_group_product_application_comment_visibility",
+            "default": "same_party"
+          },
+          "content": {
+            "description": "Free text content of the comment.",
+            "format": "text",
+            "type": "string",
+            "maxLength": 2048,
+            "example": "Missing document."
+          }
+        },
+        "required": [
+          "service_providing_group_product_application_id",
+          "content"
+        ]
+      },
+      "service_providing_group_product_application_comment_response": {
+        "summary": "Response - Service Providing Group Product Application Comment",
+        "description": "Response schema - Comment made by a party involved in a service providing group product application.",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Unique surrogate identifier.",
+            "format": "bigint",
+            "type": "integer",
+            "readOnly": true,
+            "example": 9
+          },
+          "service_providing_group_product_application_id": {
+            "description": "Reference to the service providing group product application.",
+            "format": "bigint",
+            "type": "integer",
+            "example": 7
+          },
+          "created_by": {
+            "description": "Reference to the identity that created the comment.",
+            "format": "bigint",
+            "type": "integer",
+            "readOnly": true,
+            "example": 94
+          },
+          "created_at": {
+            "description": "When the comment was added to the SPGPA.",
+            "format": "date-time",
+            "type": "string",
+            "readOnly": true,
+            "example": "2022-08-08 12:00:00+02:00"
+          },
+          "visibility": {
+            "$ref": "#/components/schemas/service_providing_group_product_application_comment_visibility",
+            "default": "same_party"
+          },
+          "content": {
+            "description": "Free text content of the comment.",
+            "format": "text",
+            "type": "string",
+            "maxLength": 2048,
+            "example": "Missing document."
+          },
+          "recorded_at": {
+            "description": "When the resource was recorded (created or updated) in the system.",
+            "format": "date-time",
+            "type": "string",
+            "readOnly": true,
+            "example": "2023-12-31T23:59:00+00:00"
+          },
+          "recorded_by": {
+            "description": "The identity that recorded the resource.",
+            "format": "bigint",
+            "type": "integer",
+            "readOnly": true,
+            "example": 145
+          }
+        },
+        "required": [
+          "id",
+          "service_providing_group_product_application_id",
+          "created_by",
+          "created_at",
+          "visibility",
+          "content",
           "recorded_at",
           "recorded_by"
         ]
@@ -4332,10 +4491,10 @@
           },
           "recorded_at": {
             "description": "When the resource was recorded (created or updated) in the system.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2023-12-31 23:59:00 CET"
+            "example": "2023-12-31T23:59:00+00:00"
           },
           "recorded_by": {
             "description": "The identity that recorded the resource.",
@@ -4428,10 +4587,10 @@
           },
           "created_at": {
             "description": "When the comment was added to the SPGPS.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2022-08-08 12:00:00 CET"
+            "example": "2022-08-08 12:00:00+02:00"
           },
           "visibility": {
             "$ref": "#/components/schemas/service_providing_group_product_suspension_comment_visibility",
@@ -4446,10 +4605,10 @@
           },
           "recorded_at": {
             "description": "When the resource was recorded (created or updated) in the system.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2023-12-31 23:59:00 CET"
+            "example": "2023-12-31T23:59:00+00:00"
           },
           "recorded_by": {
             "description": "The identity that recorded the resource.",
@@ -4520,10 +4679,10 @@
           },
           "recorded_at": {
             "description": "When the resource was recorded (created or updated) in the system.",
-            "format": "timestamp with time zone",
+            "format": "date-time",
             "type": "string",
             "readOnly": true,
-            "example": "2023-12-31 23:59:00 CET"
+            "example": "2023-12-31T23:59:00+00:00"
           },
           "recorded_by": {
             "description": "The identity that recorded the resource.",
@@ -4566,10 +4725,10 @@
               },
               "replaced_at": {
                 "description": "When the resource was replaced in the system.",
-                "format": "timestamp with time zone",
+                "format": "date-time",
                 "type": "string",
                 "nullable": true,
-                "example": "2024-07-07 10:00:00 CET"
+                "example": "2024-07-07T10:00:00+00:00"
               }
             },
             "required": [
@@ -4602,10 +4761,10 @@
               },
               "replaced_at": {
                 "description": "When the resource was replaced in the system.",
-                "format": "timestamp with time zone",
+                "format": "date-time",
                 "type": "string",
                 "nullable": true,
-                "example": "2024-07-07 10:00:00 CET"
+                "example": "2024-07-07T10:00:00+00:00"
               }
             },
             "required": [
@@ -4638,10 +4797,10 @@
               },
               "replaced_at": {
                 "description": "When the resource was replaced in the system.",
-                "format": "timestamp with time zone",
+                "format": "date-time",
                 "type": "string",
                 "nullable": true,
-                "example": "2024-07-07 10:00:00 CET"
+                "example": "2024-07-07T10:00:00+00:00"
               }
             },
             "required": [
@@ -4674,10 +4833,10 @@
               },
               "replaced_at": {
                 "description": "When the resource was replaced in the system.",
-                "format": "timestamp with time zone",
+                "format": "date-time",
                 "type": "string",
                 "nullable": true,
-                "example": "2024-07-07 10:00:00 CET"
+                "example": "2024-07-07T10:00:00+00:00"
               }
             },
             "required": [
@@ -4710,10 +4869,10 @@
               },
               "replaced_at": {
                 "description": "When the resource was replaced in the system.",
-                "format": "timestamp with time zone",
+                "format": "date-time",
                 "type": "string",
                 "nullable": true,
-                "example": "2024-07-07 10:00:00 CET"
+                "example": "2024-07-07T10:00:00+00:00"
               }
             },
             "required": [
@@ -4746,10 +4905,10 @@
               },
               "replaced_at": {
                 "description": "When the resource was replaced in the system.",
-                "format": "timestamp with time zone",
+                "format": "date-time",
                 "type": "string",
                 "nullable": true,
-                "example": "2024-07-07 10:00:00 CET"
+                "example": "2024-07-07T10:00:00+00:00"
               }
             },
             "required": [
@@ -4782,10 +4941,10 @@
               },
               "replaced_at": {
                 "description": "When the resource was replaced in the system.",
-                "format": "timestamp with time zone",
+                "format": "date-time",
                 "type": "string",
                 "nullable": true,
-                "example": "2024-07-07 10:00:00 CET"
+                "example": "2024-07-07T10:00:00+00:00"
               }
             },
             "required": [
@@ -4818,10 +4977,10 @@
               },
               "replaced_at": {
                 "description": "When the resource was replaced in the system.",
-                "format": "timestamp with time zone",
+                "format": "date-time",
                 "type": "string",
                 "nullable": true,
-                "example": "2024-07-07 10:00:00 CET"
+                "example": "2024-07-07T10:00:00+00:00"
               }
             },
             "required": [
@@ -4854,10 +5013,10 @@
               },
               "replaced_at": {
                 "description": "When the resource was replaced in the system.",
-                "format": "timestamp with time zone",
+                "format": "date-time",
                 "type": "string",
                 "nullable": true,
-                "example": "2024-07-07 10:00:00 CET"
+                "example": "2024-07-07T10:00:00+00:00"
               }
             },
             "required": [
@@ -4890,10 +5049,10 @@
               },
               "replaced_at": {
                 "description": "When the resource was replaced in the system.",
-                "format": "timestamp with time zone",
+                "format": "date-time",
                 "type": "string",
                 "nullable": true,
-                "example": "2024-07-07 10:00:00 CET"
+                "example": "2024-07-07T10:00:00+00:00"
               }
             },
             "required": [
@@ -4926,10 +5085,10 @@
               },
               "replaced_at": {
                 "description": "When the resource was replaced in the system.",
-                "format": "timestamp with time zone",
+                "format": "date-time",
                 "type": "string",
                 "nullable": true,
-                "example": "2024-07-07 10:00:00 CET"
+                "example": "2024-07-07T10:00:00+00:00"
               }
             },
             "required": [
@@ -4962,10 +5121,10 @@
               },
               "replaced_at": {
                 "description": "When the resource was replaced in the system.",
-                "format": "timestamp with time zone",
+                "format": "date-time",
                 "type": "string",
                 "nullable": true,
-                "example": "2024-07-07 10:00:00 CET"
+                "example": "2024-07-07T10:00:00+00:00"
               }
             },
             "required": [
@@ -4998,10 +5157,10 @@
               },
               "replaced_at": {
                 "description": "When the resource was replaced in the system.",
-                "format": "timestamp with time zone",
+                "format": "date-time",
                 "type": "string",
                 "nullable": true,
-                "example": "2024-07-07 10:00:00 CET"
+                "example": "2024-07-07T10:00:00+00:00"
               }
             },
             "required": [
@@ -5034,10 +5193,10 @@
               },
               "replaced_at": {
                 "description": "When the resource was replaced in the system.",
-                "format": "timestamp with time zone",
+                "format": "date-time",
                 "type": "string",
                 "nullable": true,
-                "example": "2024-07-07 10:00:00 CET"
+                "example": "2024-07-07T10:00:00+00:00"
               }
             },
             "required": [
@@ -5070,10 +5229,10 @@
               },
               "replaced_at": {
                 "description": "When the resource was replaced in the system.",
-                "format": "timestamp with time zone",
+                "format": "date-time",
                 "type": "string",
                 "nullable": true,
-                "example": "2024-07-07 10:00:00 CET"
+                "example": "2024-07-07T10:00:00+00:00"
               }
             },
             "required": [
@@ -5106,10 +5265,10 @@
               },
               "replaced_at": {
                 "description": "When the resource was replaced in the system.",
-                "format": "timestamp with time zone",
+                "format": "date-time",
                 "type": "string",
                 "nullable": true,
-                "example": "2024-07-07 10:00:00 CET"
+                "example": "2024-07-07T10:00:00+00:00"
               }
             },
             "required": [
@@ -5142,10 +5301,10 @@
               },
               "replaced_at": {
                 "description": "When the resource was replaced in the system.",
-                "format": "timestamp with time zone",
+                "format": "date-time",
                 "type": "string",
                 "nullable": true,
-                "example": "2024-07-07 10:00:00 CET"
+                "example": "2024-07-07T10:00:00+00:00"
               }
             },
             "required": [
@@ -5178,10 +5337,10 @@
               },
               "replaced_at": {
                 "description": "When the resource was replaced in the system.",
-                "format": "timestamp with time zone",
+                "format": "date-time",
                 "type": "string",
                 "nullable": true,
-                "example": "2024-07-07 10:00:00 CET"
+                "example": "2024-07-07T10:00:00+00:00"
               }
             },
             "required": [
@@ -5214,14 +5373,50 @@
               },
               "replaced_at": {
                 "description": "When the resource was replaced in the system.",
-                "format": "timestamp with time zone",
+                "format": "date-time",
                 "type": "string",
                 "nullable": true,
-                "example": "2024-07-07 10:00:00 CET"
+                "example": "2024-07-07T10:00:00+00:00"
               }
             },
             "required": [
               "service_providing_group_product_application_id"
+            ]
+          }
+        ]
+      },
+      "service_providing_group_product_application_comment_history_response": {
+        "summary": "Service Providing Group Product Application Comment - history",
+        "description": "Service Providing Group Product Application Comment - history",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/service_providing_group_product_application_comment_response"
+          },
+          {
+            "properties": {
+              "service_providing_group_product_application_comment_id": {
+                "description": "Reference to the resource that was updated.",
+                "format": "bigint",
+                "type": "integer",
+                "example": 48
+              },
+              "replaced_by": {
+                "description": "The identity that updated the resource when it was replaced.",
+                "format": "bigint",
+                "type": "integer",
+                "nullable": true,
+                "example": 90
+              },
+              "replaced_at": {
+                "description": "When the resource was replaced in the system.",
+                "format": "date-time",
+                "type": "string",
+                "nullable": true,
+                "example": "2024-07-07T10:00:00+00:00"
+              }
+            },
+            "required": [
+              "service_providing_group_product_application_comment_id"
             ]
           }
         ]
@@ -5250,10 +5445,10 @@
               },
               "replaced_at": {
                 "description": "When the resource was replaced in the system.",
-                "format": "timestamp with time zone",
+                "format": "date-time",
                 "type": "string",
                 "nullable": true,
-                "example": "2024-07-07 10:00:00 CET"
+                "example": "2024-07-07T10:00:00+00:00"
               }
             },
             "required": [
@@ -5286,10 +5481,10 @@
               },
               "replaced_at": {
                 "description": "When the resource was replaced in the system.",
-                "format": "timestamp with time zone",
+                "format": "date-time",
                 "type": "string",
                 "nullable": true,
-                "example": "2024-07-07 10:00:00 CET"
+                "example": "2024-07-07T10:00:00+00:00"
               }
             },
             "required": [
@@ -26678,6 +26873,842 @@
           {
             "bearerAuth": [
               "read:data:service_providing_group_product_application_history"
+            ]
+          },
+          {}
+        ]
+      }
+    },
+    "/service_providing_group_product_application_comment": {
+      "summary": "Service Providing Group Product Application Comment",
+      "description": "",
+      "get": {
+        "operationId": "list_service_providing_group_product_application_comment",
+        "summary": "List Service Providing Group Product Application Comment",
+        "description": "",
+        "tags": [
+          "service_providing_group_product_application_comment"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "pattern": "^eq\\.[0-9]+$"
+            },
+            "example": "eq.55",
+            "description": "Unique surrogate identifier.",
+            "name": "id"
+          },
+          {
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "pattern": "^eq\\.[0-9]+$"
+            },
+            "example": "eq.55",
+            "description": "Reference to the service providing group product application.",
+            "name": "service_providing_group_product_application_id"
+          },
+          {
+            "description": "Filtering Columns",
+            "in": "query",
+            "name": "select",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Ordering",
+            "in": "query",
+            "name": "order",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Limiting and Pagination",
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Limiting and Pagination",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/service_providing_group_product_application_comment_response"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "206": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/service_providing_group_product_application_comment_response"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Partial Content"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/error_message"
+                    },
+                    {
+                      "$ref": "#/components/schemas/empty_object"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "406": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Not Acceptable"
+          },
+          "416": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Range Not Satisfiable"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read:data:service_providing_group_product_application_comment"
+            ]
+          },
+          {}
+        ]
+      },
+      "post": {
+        "operationId": "create_service_providing_group_product_application_comment",
+        "summary": "Create Service Providing Group Product Application Comment",
+        "description": "",
+        "tags": [
+          "service_providing_group_product_application_comment"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/service_providing_group_product_application_comment_create_request"
+              }
+            }
+          },
+          "description": "service_providing_group_product_application_comment",
+          "required": false
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/service_providing_group_product_application_comment_response"
+                }
+              }
+            },
+            "description": "Created"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/error_message"
+                    },
+                    {
+                      "$ref": "#/components/schemas/empty_object"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "406": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Not Acceptable"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "manage:data:service_providing_group_product_application_comment"
+            ]
+          }
+        ]
+      }
+    },
+    "/service_providing_group_product_application_comment/{id}": {
+      "summary": "Service Providing Group Product Application Comment - single",
+      "description": "",
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "format": "bigint",
+            "type": "integer"
+          },
+          "example": 14
+        }
+      ],
+      "get": {
+        "operationId": "read_service_providing_group_product_application_comment",
+        "summary": "Read Service Providing Group Product Application Comment",
+        "description": "",
+        "tags": [
+          "service_providing_group_product_application_comment"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/service_providing_group_product_application_comment_response"
+                }
+              }
+            },
+            "description": "OK",
+            "links": {
+              "service_providing_group_product_application_id": {
+                "operationId": "read_service_providing_group_product_application",
+                "parameters": {
+                  "path.id": "$response.body#/service_providing_group_product_application_id"
+                },
+                "description": "The `service_providing_group_product_application_id` value returned in the response can be used as the `id` parameter in `GET /service_providing_group_product_application/{id}`."
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/error_message"
+                    },
+                    {
+                      "$ref": "#/components/schemas/empty_object"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "406": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Not Acceptable"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read:data:service_providing_group_product_application_comment"
+            ]
+          },
+          {}
+        ]
+      },
+      "patch": {
+        "operationId": "update_service_providing_group_product_application_comment",
+        "summary": "Update Service Providing Group Product Application Comment",
+        "description": "",
+        "tags": [
+          "service_providing_group_product_application_comment"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/service_providing_group_product_application_comment_update_request"
+              }
+            }
+          },
+          "description": "service_providing_group_product_application_comment",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/service_providing_group_product_application_comment_response"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "204": {
+            "content": {},
+            "description": "No Content"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/error_message"
+                    },
+                    {
+                      "$ref": "#/components/schemas/empty_object"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "406": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Not Acceptable"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Conflict"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "manage:data:service_providing_group_product_application_comment"
+            ]
+          }
+        ]
+      }
+    },
+    "/service_providing_group_product_application_comment_history": {
+      "summary": "Service Providing Group Product Application Comment - history",
+      "description": "",
+      "parameters": [
+        {
+          "in": "query",
+          "schema": {
+            "type": "string",
+            "pattern": "^eq\\.[0-9]+$"
+          },
+          "example": "eq.55",
+          "description": "Identifier of the history record.",
+          "name": "id"
+        },
+        {
+          "in": "query",
+          "schema": {
+            "type": "string",
+            "pattern": "^eq\\.[0-9]+$"
+          },
+          "example": "eq.55",
+          "description": "Identifier of the Service Providing Group Product Application Comment whose history we want to inspect.",
+          "name": "service_providing_group_product_application_comment_id"
+        }
+      ],
+      "get": {
+        "operationId": "list_service_providing_group_product_application_comment_history",
+        "summary": "List Service Providing Group Product Application Comment - history",
+        "description": "",
+        "tags": [
+          "service_providing_group_product_application_comment"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "pattern": "^eq\\.[0-9]+$"
+            },
+            "example": "eq.55",
+            "description": "Unique surrogate identifier.",
+            "name": "id"
+          },
+          {
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "pattern": "^eq\\.[0-9]+$"
+            },
+            "example": "eq.55",
+            "description": "Reference to the service providing group product application.",
+            "name": "service_providing_group_product_application_id"
+          },
+          {
+            "description": "Filtering Columns",
+            "in": "query",
+            "name": "select",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Ordering",
+            "in": "query",
+            "name": "order",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Limiting and Pagination",
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Limiting and Pagination",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/service_providing_group_product_application_comment_history_response"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "206": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/service_providing_group_product_application_comment_history_response"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Partial Content"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/error_message"
+                    },
+                    {
+                      "$ref": "#/components/schemas/empty_object"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "406": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Not Acceptable"
+          },
+          "416": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Range Not Satisfiable"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read:data:service_providing_group_product_application_comment_history"
+            ]
+          },
+          {}
+        ]
+      }
+    },
+    "/service_providing_group_product_application_comment_history/{id}": {
+      "summary": "Service Providing Group Product Application Comment - history record",
+      "description": "",
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "format": "bigint",
+            "type": "integer"
+          },
+          "example": 14,
+          "description": "Identifier of the history record we want to inspect."
+        }
+      ],
+      "get": {
+        "operationId": "read_service_providing_group_product_application_comment_history",
+        "summary": "Read Service Providing Group Product Application Comment - history",
+        "description": "",
+        "tags": [
+          "service_providing_group_product_application_comment"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/service_providing_group_product_application_comment_history_response"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/error_message"
+                    },
+                    {
+                      "$ref": "#/components/schemas/empty_object"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "406": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Not Acceptable"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read:data:service_providing_group_product_application_comment_history"
             ]
           },
           {}
