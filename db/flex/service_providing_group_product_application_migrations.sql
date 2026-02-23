@@ -128,7 +128,7 @@ BEGIN
     FROM service_providing_group
     WHERE id = NEW.service_providing_group_id;
 
-    SELECT array_agg(qpt_id) INTO l_qualifying_pt_ids
+    SELECT COALESCE(array_agg(qpt_id), '{}'::bigint[]) INTO l_qualifying_pt_ids
     FROM (
         SELECT DISTINCT unnest(product_type_ids) AS qpt_id
         FROM service_provider_product_application
