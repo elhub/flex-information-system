@@ -1,19 +1,22 @@
 # Resources and technologies
 
-The system operator that is procuring services needs to know the technologies
+The system operator that is procuring services needs to know the "technologies"
 that [controllable units](./conceptual-model.md#what-is-a-controllable-unit) and
 [service providing groups](./conceptual-model.md#a-service-providing-group-is-a-collection-of-controllable-units)
-consists of.
+consists of. This is to aid the system operator in evaluating the resources.
 
 The [Network Code on Demand
-Response](../index.md#network-code-on-demand-response-nc-dr) (NCDR) has provisions
-regarding this, even tho a fundamental principle is technology neutrality. There
-are many provisions that require a flexibility information system to be able to
-store and distribute information on the technologies of the resources, for
-example (our emphasis in bold):
+Response](../index.md#network-code-on-demand-response-nc-dr) (NCDR) has
+provisions regarding this, even tho a fundamental principle is "technology
+neutrality". There are multiple provisions that require a flexibility
+information system to be able to store and distribute information on the
+technologies of the resources, for example (our emphasis in bold):
 
 * "whilst having due regard to the **particularities** of demand response, energy
   storage, distributed generation and demand curtailment" - Article 3
+* "the procuring system operator in coordination with the service provider shall
+  [...] evaluate its **technical characteristics** in comparison with the
+  corresponding product requirements" - Article 20
 * "controllable units that are **identical** to controllable units [...] previously
   prequalified by any SP for the relevant product [...] the procuring system
   operator shall simplify the evaluation" - Article 20
@@ -23,53 +26,112 @@ example (our emphasis in bold):
 * "Rules for market-based procurement [...] shall take into account
   **particularities of the different resources**" - Article 32
 
-In addition to this, information about the technology can aid in avoiding
-duplicate registrations of specific resources.
+## Devices for detecting duplicates
+
+Information about the technology can aid in avoiding duplicate registrations of
+specific resources. But, a more robust ways of avoiding duplicates is to
+register uniquely identifiable devices, such as inverters, chargers etc. with
+serial numbers. To do that, we must register a minimum of information about the
+device.
+
+* **Type** - The type of device, such as `inverter`, `hvac`, `evcharger`
+* **Make** - The manufacturer.
+* **Model** - well... the model
+* **Unique identifier** - E.g. a serial number or MAC address of the device.
+* **Maximum active power** - "Merkeeffekt" for prequalification and statistical purposes.
+
+### Case - hybrid inverters
+
+Consider a consumer with a solar panel and a battery. This consumer can have one
+of the following setups:
+
+* AC-coupled: the solar panel and battery are connected to the grid through
+  separate inverters. Both inverters can be controlled as a unit, but they are
+  technically separate resources.
+* DC-coupled: the solar panel and battery are connected to the grid through the
+  same, hybrid, inverter.
+
+If the inverter is the thing that is registered, then it will be challenging to
+set one "technology" for the device. This calls for it being possible to set
+multiple technologies per device?
 
 ## Technologies and categories
 
-For different purposes, the level of detail needed might vary. When establising
-rules and regulations, we might want to work with coarser categories of
-technologies, but while assessing if a controllable unit is identical, we must
-know a lot more details.
+On the highest level, there is a need to categorise controllable units into
+three main categories. The reason for this is.
 
-Common categories of technologies found in Statnett markets and in the NCDR are.
+* In Norwegian balancing markets, each service providing group must only contain
+  one of these categories.
+* Statistical purposes.
 
-| Statnett (EN)  | Statnett (NO) | NCDR           |
-|----------------|---------------|----------------|
-| consumption    | forbruk       | demand         |
-| production     | produksjon    | generation     |
-| energy storage | energilager   | energy storage |
+The categories are are.
 
-Technologies can be categorized according to the following table.
+| Statnett (EN)  | Statnett (NO) | NCDR name      | Emoji |
+|----------------|---------------|----------------|-------|
+| consumption    | forbruk       | demand         | 🏠    |
+| production     | produksjon    | generation     | ⚡     |
+| energy storage | energilager   | energy storage | 🔋    |
 
-| Technology (EN)  | Technology (NO)   | Category         | Notes |
-|------------------|-------------------|------------------|-------|
-| heat             | varme             | consumption      |       |
-|                  | elbil             | consumption      |       |
-|                  | elbil med V2G     | energy storage?? |       |
-| boiler           | elkjel            | consumption      |       |
-| water heater     | varmtvannsbereder | consumption      |       |
-| solar panel      | solcelle          | production       |       |
-| wind turbine     | vindturbin        | production       |       |
-| hydro            | vannkraft         | production       |       |
-| battery          | batteri           | energy storage   |       |
-| pumped storage   | pumpekraftverk    | energy storage   |       |
-| pump             | pumpe             | consumption      |       |
-| backup generator | nødstrømsaggregat | production??     |       |
-| TODO             | More stuff        |                  |       |
+We believe that rather than registering the categories themselves, we can
+register the underlying technologies, and derive the category from them.
 
-When registering resources that are not covered by the table above, new
-technologies can be defined as needed. But we should provide the possibility to
-register default technologies that are not further specified:
+This will make the registration very specific for service providers as they only
+have to register "what they have". It also makes the data more valuable as we
+can get more insight into what technologies are being utilised.
 
-* `other consumption`
-* `other production`
-* `other energy storage`
+Technologies can be categorized in a hierarchy. The hierarchy is inspired by
+[Standard for næringsgruppering (SN)](https://www.ssb.no/klass/klassifikasjoner/6).
+We want to use the same approach as SSB is taking with SN.
 
-By monitoring the use of these, we can learn more about the technologies that
-are not yet covered by the table, and decide if they should be added as new
+1. Breaking down into smaller subtechnologies only when it is actually relevant
+   for some purpose.
+2. Classifying based on the _main technology_ (ref. "viktigste aktivitet" in SN)
+
+We have used emojois to indicate the categories. When registering resources that
+are not covered by the classification, the service provider can use the "other"
+technologies. By monitoring the use of these, we can learn more about the
+technologies that are not yet covered, and decide if they should be added as new
 technologies.
+
+* Hydropower ⚡
+    * Pumped 🔋
+    * Run-of-river ⚡
+* Heat power plant ⚡
+    * Combined heat and power (CHP) ⚡
+* Solar ⚡
+* Wind ⚡
+* Backup generator ⚡
+* HVAC 🏠
+* Lighting 🏠
+* Hot water heater 🏠
+* Boiler 🏠
+* Electric vehicle charger 🏠
+    * Vehicle to grid (V2G) 🔋
+* Battery 🔋
+* Other consumption 🏠
+* Other production ⚡
+* Other energy storage 🔋
+
+> [!NOTE]
+>
+> We want to avoid registering specific technologies for things that should
+> rather be based on other information elements. A couple of examples are:
+>
+> * EV chargers - distinguishing between home and fast chargers should be based
+>   on the maximum active power and/or accounting point consumption type, not the
+>   technology.
+> * Hydropower - having specific "technologies" for small-, mini- and micro-hydro.
+
+## Where is regulation and energy direction stored?
+
+The regulation direction (up/down) does not have to be stored on each device. It
+is the overall regulation direction of the controllable unit that is relevant.
+It is therefore stored on the [controllable unit
+itself](../resources/controllable_unit.md#field-regulation_direction).
+
+The energy direction to and from the grid is already available on the accounting
+point. See [below](#accounting-point-information). Some information about the
+energy direction can also be derived from the technology and category.
 
 ## Technology is stored on the lowest level
 
@@ -119,7 +181,7 @@ Datacenter accounting point could look like this.
 * NACE code: 63.100 - Data processing, hosting and related activities
 * Controllable unit
     * Derived technology categories: Consumption, Production, Energy storage
-    * Maximum available capacity: 100 kW
+    * Maximum active power: 100 kW
     * Regulation direction: Both
     * Technical resources
         * Technology: Battery
