@@ -61,9 +61,9 @@ export const ControllableUnitInput = () => {
 
         <FlexDiv style={{ gap: "var(--eds-size-3)", flexDirection: "column" }}>
           <TextInput {...fields.name} />
-          <AutocompleteReferenceInput
+          <TextInput
             {...fields.accounting_point_id}
-            reference="accounting_point"
+            type="number"
           />
           <DateInput {...fields.start_date} />
           <EnumInput
