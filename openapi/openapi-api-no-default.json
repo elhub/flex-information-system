@@ -892,7 +892,7 @@
                     "regulation_direction": {
                         "$ref": "#/components/schemas/controllable_unit_regulation_direction"
                     },
-                    "maximum_available_capacity": {
+                    "maximum_active_power": {
                         "description": "Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
                         "format": "decimal",
                         "type": "number",
@@ -987,7 +987,7 @@
                     "regulation_direction": {
                         "$ref": "#/components/schemas/controllable_unit_regulation_direction"
                     },
-                    "maximum_available_capacity": {
+                    "maximum_active_power": {
                         "description": "Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
                         "format": "decimal",
                         "type": "number",
@@ -1066,7 +1066,7 @@
                 "required": [
                     "name",
                     "regulation_direction",
-                    "maximum_available_capacity",
+                    "maximum_active_power",
                     "accounting_point_id"
                 ]
             },
@@ -1110,7 +1110,7 @@
                     "regulation_direction": {
                         "$ref": "#/components/schemas/controllable_unit_regulation_direction"
                     },
-                    "maximum_available_capacity": {
+                    "maximum_active_power": {
                         "description": "Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
                         "format": "decimal",
                         "type": "number",
@@ -1213,7 +1213,7 @@
                     "name",
                     "status",
                     "regulation_direction",
-                    "maximum_available_capacity",
+                    "maximum_active_power",
                     "is_small",
                     "accounting_point_id",
                     "grid_validation_status",
@@ -4013,6 +4013,15 @@
                     "status": {
                         "$ref": "#/components/schemas/service_providing_group_product_application_status"
                     },
+                    "maximum_active_power": {
+                        "description": "The maximum active power applied for, in kilowatts.",
+                        "format": "decimal",
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 999999.999,
+                        "multipleOf": 0.001,
+                        "example": 150.5
+                    },
                     "additional_information": {
                         "description": "Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).",
                         "format": "text",
@@ -4070,6 +4079,15 @@
                     "status": {
                         "$ref": "#/components/schemas/service_providing_group_product_application_status"
                     },
+                    "maximum_active_power": {
+                        "description": "The maximum active power applied for, in kilowatts.",
+                        "format": "decimal",
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 999999.999,
+                        "multipleOf": 0.001,
+                        "example": 150.5
+                    },
                     "additional_information": {
                         "description": "Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).",
                         "format": "text",
@@ -4096,7 +4114,8 @@
                 "required": [
                     "service_providing_group_id",
                     "procuring_system_operator_id",
-                    "product_type_ids"
+                    "product_type_ids",
+                    "maximum_active_power"
                 ]
             },
             "service_providing_group_product_application_response": {
@@ -4138,6 +4157,15 @@
                     },
                     "status": {
                         "$ref": "#/components/schemas/service_providing_group_product_application_status"
+                    },
+                    "maximum_active_power": {
+                        "description": "The maximum active power applied for, in kilowatts.",
+                        "format": "decimal",
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 999999.999,
+                        "multipleOf": 0.001,
+                        "example": 150.5
                     },
                     "additional_information": {
                         "description": "Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).",
@@ -4182,6 +4210,7 @@
                     "procuring_system_operator_id",
                     "product_type_ids",
                     "status",
+                    "maximum_active_power",
                     "recorded_at",
                     "recorded_by"
                 ]

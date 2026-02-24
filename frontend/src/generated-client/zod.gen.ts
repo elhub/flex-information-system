@@ -450,7 +450,7 @@ export const zControllableUnitUpdateRequest = z.object({
       zControllableUnitRegulationDirection.optional(),
     ),
   ),
-  maximum_available_capacity: z.optional(
+  maximum_active_power: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
       z.coerce.number().gte(0).lte(999999.999).optional(),
@@ -529,7 +529,7 @@ export const zControllableUnitCreateRequest = z.object({
     ),
   ),
   regulation_direction: zControllableUnitRegulationDirection,
-  maximum_available_capacity: z.coerce.number().gte(0).lte(999999.999),
+  maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
   minimum_duration: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -606,7 +606,7 @@ export const zControllableUnit = z.object({
   ),
   status: zControllableUnitStatus,
   regulation_direction: zControllableUnitRegulationDirection,
-  maximum_available_capacity: z.coerce.number().gte(0).lte(999999.999),
+  maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
   is_small: z.boolean().readonly(),
   minimum_duration: z.optional(
     z.preprocess(
@@ -1970,6 +1970,12 @@ export const zServiceProvidingGroupProductApplicationUpdateRequest = z.object({
       zServiceProvidingGroupProductApplicationStatus.optional(),
     ),
   ),
+  maximum_active_power: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.coerce.number().gte(0).lte(999999.999).optional(),
+    ),
+  ),
   additional_information: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -2003,6 +2009,7 @@ export const zServiceProvidingGroupProductApplicationCreateRequest = z.object({
       zServiceProvidingGroupProductApplicationStatus.optional(),
     ),
   ),
+  maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
   additional_information: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -2032,6 +2039,7 @@ export const zServiceProvidingGroupProductApplication = z.object({
   procuring_system_operator_id: z.coerce.number(),
   product_type_ids: z.array(z.coerce.number()),
   status: zServiceProvidingGroupProductApplicationStatus,
+  maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
   additional_information: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -2714,7 +2722,7 @@ export const zControllableUnitWritable = z.object({
   ),
   status: zControllableUnitStatus,
   regulation_direction: zControllableUnitRegulationDirection,
-  maximum_available_capacity: z.coerce.number().gte(0).lte(999999.999),
+  maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
   minimum_duration: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),
@@ -3105,6 +3113,7 @@ export const zServiceProvidingGroupProductApplicationWritable = z.object({
   procuring_system_operator_id: z.coerce.number(),
   product_type_ids: z.array(z.coerce.number()),
   status: zServiceProvidingGroupProductApplicationStatus,
+  maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
   additional_information: z.optional(
     z.preprocess(
       (value) => (value === null ? undefined : value),

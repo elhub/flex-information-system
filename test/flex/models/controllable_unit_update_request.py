@@ -28,8 +28,8 @@ class ControllableUnitUpdateRequest:
         regulation_direction (ControllableUnitRegulationDirection | Unset): The regulation direction of the controllable
             unit. `up` means it can be used to increase production or decrease consumption, while `down` means to decrease
             production or increase consumption. Example: up.
-        maximum_available_capacity (float | Unset): Maximum continuous active power that the controllable unit can
-            produce or consume, i.e. deliver for balancing and congestion services, in kilowatts. Example: 3.5.
+        maximum_active_power (float | Unset): Maximum continuous active power that the controllable unit can produce or
+            consume, i.e. deliver for balancing and congestion services, in kilowatts. Example: 3.5.
         minimum_duration (int | None | Unset): The minimum activation duration in seconds. Example: 30.
         maximum_duration (int | None | Unset): The maximum activation duration in seconds. Example: 1200.
         recovery_duration (int | None | Unset): The minimum recovery duration between activations in seconds. Example:
@@ -49,7 +49,7 @@ class ControllableUnitUpdateRequest:
     start_date: datetime.date | None | Unset = UNSET
     status: ControllableUnitStatus | Unset = UNSET
     regulation_direction: ControllableUnitRegulationDirection | Unset = UNSET
-    maximum_available_capacity: float | Unset = UNSET
+    maximum_active_power: float | Unset = UNSET
     minimum_duration: int | None | Unset = UNSET
     maximum_duration: int | None | Unset = UNSET
     recovery_duration: int | None | Unset = UNSET
@@ -79,7 +79,7 @@ class ControllableUnitUpdateRequest:
         if not isinstance(self.regulation_direction, Unset):
             regulation_direction = self.regulation_direction.value
 
-        maximum_available_capacity = self.maximum_available_capacity
+        maximum_active_power = self.maximum_active_power
 
         minimum_duration: int | None | Unset
         if isinstance(self.minimum_duration, Unset):
@@ -140,8 +140,8 @@ class ControllableUnitUpdateRequest:
             field_dict["status"] = status
         if regulation_direction is not UNSET:
             field_dict["regulation_direction"] = regulation_direction
-        if maximum_available_capacity is not UNSET:
-            field_dict["maximum_available_capacity"] = maximum_available_capacity
+        if maximum_active_power is not UNSET:
+            field_dict["maximum_active_power"] = maximum_active_power
         if minimum_duration is not UNSET:
             field_dict["minimum_duration"] = minimum_duration
         if maximum_duration is not UNSET:
@@ -197,7 +197,7 @@ class ControllableUnitUpdateRequest:
         else:
             regulation_direction = ControllableUnitRegulationDirection(_regulation_direction)
 
-        maximum_available_capacity = d.pop("maximum_available_capacity", UNSET)
+        maximum_active_power = d.pop("maximum_active_power", UNSET)
 
         def _parse_minimum_duration(data: object) -> int | None | Unset:
             if data is None:
@@ -282,7 +282,7 @@ class ControllableUnitUpdateRequest:
             start_date=start_date,
             status=status,
             regulation_direction=regulation_direction,
-            maximum_available_capacity=maximum_available_capacity,
+            maximum_active_power=maximum_active_power,
             minimum_duration=minimum_duration,
             maximum_duration=maximum_duration,
             recovery_duration=recovery_duration,

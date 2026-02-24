@@ -101,7 +101,7 @@ def create_spgps(client_fiso, sp, so, ap_id, eu_id):
             name="CU-SPGPS-1",
             accounting_point_id=ap_id,
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
-            maximum_available_capacity=3.5,
+            maximum_active_power=3.5,
         ),
     )
     assert isinstance(cu, ControllableUnitResponse)
@@ -175,6 +175,7 @@ def create_spgps(client_fiso, sp, so, ap_id, eu_id):
             service_providing_group_id=spg.id,
             procuring_system_operator_id=so_id,
             product_type_ids=[4],
+            maximum_active_power=3.5,
         ),
     )
     assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)

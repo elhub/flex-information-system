@@ -23,7 +23,7 @@ export const Header = ({
     <FlexDiv className="flex flex-row items-center gap-3">
       <Heading level={1} size="large">
         Controllable Unit - {controllableUnit?.name} (
-        {controllableUnit?.maximum_available_capacity} kW)
+        {controllableUnit?.maximum_active_power} kW)
       </Heading>
       <Tag variant={statusVariantMap[controllableUnit?.status ?? "active"]}>
         {controllableUnit?.status ?? "active"}

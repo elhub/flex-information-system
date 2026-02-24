@@ -120,7 +120,7 @@ def test_event_eu(sts):
             name="EVENT-TEST-CU-1",
             accounting_point_id=1002,
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
-            maximum_available_capacity=3.5,
+            maximum_active_power=3.5,
         ),
     )
     assert isinstance(cu, ControllableUnitResponse)
@@ -222,7 +222,7 @@ def test_event_sp(sts):
             name="EVENT-TEST-CU-1",
             accounting_point_id=1002,
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
-            maximum_available_capacity=3.5,
+            maximum_active_power=3.5,
         ),
     )
     assert isinstance(cu, ControllableUnitResponse)
@@ -441,6 +441,7 @@ def test_event_sp(sts):
             service_providing_group_id=cast(int, spg.id),
             procuring_system_operator_id=so_id,
             product_type_ids=[1],
+            maximum_active_power=3.5,
         ),
     )
     assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)

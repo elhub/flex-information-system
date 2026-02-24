@@ -34,7 +34,7 @@ export type FieldLabel =
   | "controllable_unit.grid_validation_status"
   | "controllable_unit.id"
   | "controllable_unit.is_small"
-  | "controllable_unit.maximum_available_capacity"
+  | "controllable_unit.maximum_active_power"
   | "controllable_unit.maximum_duration"
   | "controllable_unit.minimum_duration"
   | "controllable_unit.name"
@@ -54,7 +54,7 @@ export type FieldLabel =
   | "controllable_unit_history.grid_validation_status"
   | "controllable_unit_history.id"
   | "controllable_unit_history.is_small"
-  | "controllable_unit_history.maximum_available_capacity"
+  | "controllable_unit_history.maximum_active_power"
   | "controllable_unit_history.maximum_duration"
   | "controllable_unit_history.minimum_duration"
   | "controllable_unit_history.name"
@@ -393,6 +393,7 @@ export type FieldLabel =
   | "service_providing_group_membership_history.valid_to"
   | "service_providing_group_product_application.additional_information"
   | "service_providing_group_product_application.id"
+  | "service_providing_group_product_application.maximum_active_power"
   | "service_providing_group_product_application.prequalified_at"
   | "service_providing_group_product_application.procuring_system_operator_id"
   | "service_providing_group_product_application.product_type_ids"
@@ -422,6 +423,7 @@ export type FieldLabel =
   | "service_providing_group_product_application_comment_history.visibility"
   | "service_providing_group_product_application_history.additional_information"
   | "service_providing_group_product_application_history.id"
+  | "service_providing_group_product_application_history.maximum_active_power"
   | "service_providing_group_product_application_history.prequalified_at"
   | "service_providing_group_product_application_history.procuring_system_operator_id"
   | "service_providing_group_product_application_history.product_type_ids"
@@ -508,8 +510,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit.start_date": "Start date",
     "controllable_unit.status": "Status",
     "controllable_unit.regulation_direction": "Regulation direction",
-    "controllable_unit.maximum_available_capacity":
-      "Maximum available capacity",
+    "controllable_unit.maximum_active_power": "Maximum active power",
     "controllable_unit.is_small": "Small",
     "controllable_unit.minimum_duration": "Minimum duration",
     "controllable_unit.maximum_duration": "Maximum duration",
@@ -528,8 +529,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit_history.start_date": "Start date",
     "controllable_unit_history.status": "Status",
     "controllable_unit_history.regulation_direction": "Regulation direction",
-    "controllable_unit_history.maximum_available_capacity":
-      "Maximum available capacity",
+    "controllable_unit_history.maximum_active_power": "Maximum active power",
     "controllable_unit_history.is_small": "Small",
     "controllable_unit_history.minimum_duration": "Minimum duration",
     "controllable_unit_history.maximum_duration": "Maximum duration",
@@ -1033,6 +1033,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application.product_type_ids":
       "Product types",
     "service_providing_group_product_application.status": "Status",
+    "service_providing_group_product_application.maximum_active_power":
+      "Maximum active power",
     "service_providing_group_product_application.additional_information":
       "Additional information",
     "service_providing_group_product_application.prequalified_at":
@@ -1048,6 +1050,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application_history.product_type_ids":
       "Product types",
     "service_providing_group_product_application_history.status": "Status",
+    "service_providing_group_product_application_history.maximum_active_power":
+      "Maximum active power",
     "service_providing_group_product_application_history.additional_information":
       "Additional information",
     "service_providing_group_product_application_history.prequalified_at":
@@ -1178,8 +1182,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit.start_date": "Startdato",
     "controllable_unit.status": "Status",
     "controllable_unit.regulation_direction": "Reguleringsretning",
-    "controllable_unit.maximum_available_capacity":
-      "Maksimal tilgjengelig kapasitet",
+    "controllable_unit.maximum_active_power": "Maksimal aktiv effekt",
     "controllable_unit.is_small": "Liten",
     "controllable_unit.minimum_duration": "Minimumsvarighet",
     "controllable_unit.maximum_duration": "Maksimumsvarighet",
@@ -1198,8 +1201,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit_history.start_date": "Startdato",
     "controllable_unit_history.status": "Status",
     "controllable_unit_history.regulation_direction": "Reguleringsretning",
-    "controllable_unit_history.maximum_available_capacity":
-      "Maksimal tilgjengelig kapasitet",
+    "controllable_unit_history.maximum_active_power": "Maksimal aktiv effekt",
     "controllable_unit_history.is_small": "Liten",
     "controllable_unit_history.minimum_duration": "Minimumsvarighet",
     "controllable_unit_history.maximum_duration": "Maksimumsvarighet",
@@ -1698,6 +1700,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application.product_type_ids":
       "Produkttyper",
     "service_providing_group_product_application.status": "Status",
+    "service_providing_group_product_application.maximum_active_power":
+      "Maksimal aktiv effekt",
     "service_providing_group_product_application.additional_information":
       "Tilleggsinformasjon",
     "service_providing_group_product_application.prequalified_at":
@@ -1713,6 +1717,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application_history.product_type_ids":
       "Produkttyper",
     "service_providing_group_product_application_history.status": "Status",
+    "service_providing_group_product_application_history.maximum_active_power":
+      "Maksimal aktiv effekt",
     "service_providing_group_product_application_history.additional_information":
       "Tilleggsinformasjon",
     "service_providing_group_product_application_history.prequalified_at":
@@ -1843,8 +1849,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit.start_date": "Startdato",
     "controllable_unit.status": "Status",
     "controllable_unit.regulation_direction": "Reguleringsretning",
-    "controllable_unit.maximum_available_capacity":
-      "Maksimal tilgjengeleg kapasitet",
+    "controllable_unit.maximum_active_power": "Maksimal aktiv effekt",
     "controllable_unit.is_small": "Liten",
     "controllable_unit.minimum_duration": "Minimumsvarigheit",
     "controllable_unit.maximum_duration": "Maksimumsvarigheit",
@@ -1863,8 +1868,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit_history.start_date": "Startdato",
     "controllable_unit_history.status": "Status",
     "controllable_unit_history.regulation_direction": "Reguleringsretning",
-    "controllable_unit_history.maximum_available_capacity":
-      "Maksimal tilgjengeleg kapasitet",
+    "controllable_unit_history.maximum_active_power": "Maksimal aktiv effekt",
     "controllable_unit_history.is_small": "Liten",
     "controllable_unit_history.minimum_duration": "Minimumsvarigheit",
     "controllable_unit_history.maximum_duration": "Maksimumsvarigheit",
@@ -2362,6 +2366,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application.product_type_ids":
       "Produkttypar",
     "service_providing_group_product_application.status": "Status",
+    "service_providing_group_product_application.maximum_active_power":
+      "Maksimal aktiv effekt",
     "service_providing_group_product_application.additional_information":
       "Tilleggsinformasjon",
     "service_providing_group_product_application.prequalified_at":
@@ -2377,6 +2383,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application_history.product_type_ids":
       "Produkttypar",
     "service_providing_group_product_application_history.status": "Status",
+    "service_providing_group_product_application_history.maximum_active_power":
+      "Maksimal aktiv effekt",
     "service_providing_group_product_application_history.additional_information":
       "Tilleggsinformasjon",
     "service_providing_group_product_application_history.prequalified_at":

@@ -482,7 +482,7 @@ export type ControllableUnitUpdateRequest = {
   /**
    * Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
    */
-  maximum_available_capacity?: number;
+  maximum_active_power?: number;
   /**
    * The minimum activation duration in seconds.
    */
@@ -531,7 +531,7 @@ export type ControllableUnitCreateRequest = {
   /**
    * Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
    */
-  maximum_available_capacity: number;
+  maximum_active_power: number;
   /**
    * The minimum activation duration in seconds.
    */
@@ -592,7 +592,7 @@ export type ControllableUnit = {
   /**
    * Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
    */
-  maximum_available_capacity: number;
+  maximum_active_power: number;
   /**
    * Whether the controllable unit is small or not, following NCDR.
    */
@@ -2191,6 +2191,10 @@ export type ServiceProvidingGroupProductApplicationUpdateRequest = {
   product_type_ids?: Array<number>;
   status?: ServiceProvidingGroupProductApplicationStatus;
   /**
+   * The maximum active power applied for, in kilowatts.
+   */
+  maximum_active_power?: number;
+  /**
    * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
    */
   additional_information?: string;
@@ -2221,6 +2225,10 @@ export type ServiceProvidingGroupProductApplicationCreateRequest = {
    */
   product_type_ids: Array<number>;
   status?: ServiceProvidingGroupProductApplicationStatus;
+  /**
+   * The maximum active power applied for, in kilowatts.
+   */
+  maximum_active_power: number;
   /**
    * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
    */
@@ -2256,6 +2264,10 @@ export type ServiceProvidingGroupProductApplication = {
    */
   product_type_ids: Array<number>;
   status: ServiceProvidingGroupProductApplicationStatus;
+  /**
+   * The maximum active power applied for, in kilowatts.
+   */
+  maximum_active_power: number;
   /**
    * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
    */
@@ -2961,7 +2973,7 @@ export type ControllableUnitWritable = {
   /**
    * Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
    */
-  maximum_available_capacity: number;
+  maximum_active_power: number;
   /**
    * The minimum activation duration in seconds.
    */
@@ -3422,6 +3434,10 @@ export type ServiceProvidingGroupProductApplicationWritable = {
    */
   product_type_ids: Array<number>;
   status: ServiceProvidingGroupProductApplicationStatus;
+  /**
+   * The maximum active power applied for, in kilowatts.
+   */
+  maximum_active_power: number;
   /**
    * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
    */

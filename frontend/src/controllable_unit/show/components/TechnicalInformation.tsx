@@ -10,8 +10,8 @@ export const TechnicalInformation = ({
     <div className="grid grid-cols-[1fr_5fr]  gap-2">
       <LabelValue
         tooltip={true}
-        labelKey="controllable_unit.maximum_available_capacity"
-        value={controllableUnit?.maximum_available_capacity}
+        labelKey="controllable_unit.maximum_active_power"
+        value={controllableUnit?.maximum_active_power}
         unit="kW"
       />
       <LabelValue

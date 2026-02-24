@@ -10,7 +10,7 @@ export const tooltips = {
   "controllable_unit.status": "The status of the controllable unit.",
   "controllable_unit.regulation_direction":
     "The regulation direction of the controllable unit. `up` means it can be used to increase production or decrease consumption, while `down` means to decrease production or increase consumption.",
-  "controllable_unit.maximum_available_capacity":
+  "controllable_unit.maximum_active_power":
     "Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
   "controllable_unit.is_small":
     "Whether the controllable unit is small or not, following NCDR.",
@@ -44,7 +44,7 @@ export const tooltips = {
   "controllable_unit_history.status": "The status of the controllable unit.",
   "controllable_unit_history.regulation_direction":
     "The regulation direction of the controllable unit. `up` means it can be used to increase production or decrease consumption, while `down` means to decrease production or increase consumption.",
-  "controllable_unit_history.maximum_available_capacity":
+  "controllable_unit_history.maximum_active_power":
     "Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
   "controllable_unit_history.is_small":
     "Whether the controllable unit is small or not, following NCDR.",
@@ -756,6 +756,8 @@ export const tooltips = {
     "References to the product types.",
   "service_providing_group_product_application.status":
     "The status of the application.",
+  "service_providing_group_product_application.maximum_active_power":
+    "The maximum active power applied for, in kilowatts.",
   "service_providing_group_product_application.additional_information":
     "Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).",
   "service_providing_group_product_application.prequalified_at":
@@ -776,6 +778,8 @@ export const tooltips = {
     "References to the product types.",
   "service_providing_group_product_application_history.status":
     "The status of the application.",
+  "service_providing_group_product_application_history.maximum_active_power":
+    "The maximum active power applied for, in kilowatts.",
   "service_providing_group_product_application_history.additional_information":
     "Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).",
   "service_providing_group_product_application_history.prequalified_at":
