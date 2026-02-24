@@ -8,7 +8,7 @@ from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
-from ..models.energy_direction_direction import EnergyDirectionDirection
+from ..models.energy_direction_direction_item import EnergyDirectionDirectionItem
 from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="EnergyDirection")
@@ -18,18 +18,22 @@ T = TypeVar("T", bound="EnergyDirection")
 class EnergyDirection:
     """
     Attributes:
-        direction (EnergyDirectionDirection): Energy direction of the accounting point. Example: consumption.
+        direction (list[EnergyDirectionDirectionItem]): Energy direction(s) of the accounting point. Example:
+            ['consumption'].
         valid_from (datetime.datetime): Start of the validity period Example: 2024-01-01T00:00:00+01:00.
         valid_to (datetime.datetime | None | Unset): End of the validity period Example: 2024-12-31T00:00:00+01:00.
     """
 
-    direction: EnergyDirectionDirection
+    direction: list[EnergyDirectionDirectionItem]
     valid_from: datetime.datetime
     valid_to: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        direction = self.direction.value
+        direction = []
+        for direction_item_data in self.direction:
+            direction_item = direction_item_data.value
+            direction.append(direction_item)
 
         valid_from = self.valid_from.isoformat()
 
@@ -57,7 +61,12 @@ class EnergyDirection:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        direction = EnergyDirectionDirection(d.pop("direction"))
+        direction = []
+        _direction = d.pop("direction")
+        for direction_item_data in _direction:
+            direction_item = EnergyDirectionDirectionItem(direction_item_data)
+
+            direction.append(direction_item)
 
         valid_from = isoparse(d.pop("valid_from"))
 

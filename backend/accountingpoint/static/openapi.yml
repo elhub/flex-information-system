@@ -92,13 +92,17 @@ components:
         - valid_from
       properties:
         direction:
-          type: string
-          enum:
-            - production
-            - consumption
-            - both
-          description: Energy direction of the accounting point.
-          example: "consumption"
+          type: array
+          items:
+            type: string
+            enum:
+              - production
+              - consumption
+          minItems: 1
+          maxItems: 2
+          uniqueItems: true
+          description: Energy direction(s) of the accounting point.
+          example: ["consumption"]
         valid_from:
           type: string
           format: date-time
@@ -215,7 +219,7 @@ paths:
                     valid_from: "2024-01-01T00:00:00+01:00"
                     valid_to: null
                 energy_direction:
-                  - direction: "consumption"
+                  - direction: ["consumption"]
                     valid_from: "2024-01-01T00:00:00+01:00"
                     valid_to: null
         'default':

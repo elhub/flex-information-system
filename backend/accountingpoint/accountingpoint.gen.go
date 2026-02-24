@@ -19,7 +19,6 @@ const (
 
 // Defines values for EnergyDirectionDirection.
 const (
-	Both        EnergyDirectionDirection = "both"
 	Consumption EnergyDirectionDirection = "consumption"
 	Production  EnergyDirectionDirection = "production"
 )
@@ -62,8 +61,8 @@ type EndUserEntityType string
 
 // EnergyDirection defines model for energy_direction.
 type EnergyDirection struct {
-	// Direction Energy direction of the accounting point.
-	Direction EnergyDirectionDirection `json:"direction"`
+	// Direction Energy direction(s) of the accounting point.
+	Direction []EnergyDirectionDirection `json:"direction"`
 
 	// ValidFrom Start of the validity period
 	ValidFrom time.Time `json:"valid_from"`
@@ -72,7 +71,7 @@ type EnergyDirection struct {
 	ValidTo *time.Time `json:"valid_to"`
 }
 
-// EnergyDirectionDirection Energy direction of the accounting point.
+// EnergyDirectionDirection defines model for EnergyDirection.Direction.
 type EnergyDirectionDirection string
 
 // EnergySupplier defines model for energy_supplier.
