@@ -46,7 +46,7 @@ controllable_unit;id;;R;R;R;R;R;R;R;R;;;
 controllable_unit;business_id;;R;R;R;R;R;R;R;R;;;
 controllable_unit;name;;R;R;R;RCU;R;R;RCU;R;;;
 controllable_unit;regulation_direction;;R;R;R;RCU;R;R;RCU;R;;;
-controllable_unit;maximum_available_capacity;;R;R;R;RCU;R;R;RCU;R;;;
+controllable_unit;maximum_active_power;;R;R;R;RCU;R;R;RCU;R;;;
 controllable_unit;is_small;;R;R;R;R;R;R;R;R;;;
 controllable_unit;start_date;;R;R;R;RCU;R;R;RCU;R;;;
 controllable_unit;status;;R;R;R;RCU;R;R;RCU;R;;;

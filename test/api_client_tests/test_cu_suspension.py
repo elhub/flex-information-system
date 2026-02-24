@@ -109,7 +109,7 @@ def data():
             name="CU-SUSP-1",
             accounting_point_id=1002,  # managed by Test SO
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
-            maximum_available_capacity=3.5,
+            maximum_active_power=3.5,
         ),
     )
     assert isinstance(cu, ControllableUnitResponse)
@@ -281,7 +281,7 @@ def test_cus_so(data):
             name="TEST-CU-18",
             accounting_point_id=1002,
             regulation_direction=ControllableUnitRegulationDirection.UP,
-            maximum_available_capacity=2,
+            maximum_active_power=2,
         ),
     )
     assert isinstance(cu, ControllableUnitResponse)
@@ -469,7 +469,7 @@ def test_cus_sp(data):
             name="CU-SUSP-1",
             accounting_point_id=1002,
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
-            maximum_available_capacity=3.5,
+            maximum_active_power=3.5,
         ),
     )
     assert isinstance(cu, ControllableUnitResponse)

@@ -29,8 +29,8 @@ class ControllableUnitHistoryResponse:
         regulation_direction (ControllableUnitRegulationDirection): The regulation direction of the controllable unit.
             `up` means it can be used to increase production or decrease consumption, while `down` means to decrease
             production or increase consumption. Example: up.
-        maximum_available_capacity (float): Maximum continuous active power that the controllable unit can produce or
-            consume, i.e. deliver for balancing and congestion services, in kilowatts. Example: 3.5.
+        maximum_active_power (float): Maximum continuous active power that the controllable unit can produce or consume,
+            i.e. deliver for balancing and congestion services, in kilowatts. Example: 3.5.
         is_small (bool): Whether the controllable unit is small or not, following NCDR. Example: True.
         accounting_point_id (int): Reference to the accounting point that the controllable unit is connected to.
             Example: 10289.
@@ -63,7 +63,7 @@ class ControllableUnitHistoryResponse:
     name: str
     status: ControllableUnitStatus
     regulation_direction: ControllableUnitRegulationDirection
-    maximum_available_capacity: float
+    maximum_active_power: float
     is_small: bool
     accounting_point_id: int
     grid_validation_status: ControllableUnitGridValidationStatus
@@ -93,7 +93,7 @@ class ControllableUnitHistoryResponse:
 
         regulation_direction = self.regulation_direction.value
 
-        maximum_available_capacity = self.maximum_available_capacity
+        maximum_active_power = self.maximum_active_power
 
         is_small = self.is_small
 
@@ -182,7 +182,7 @@ class ControllableUnitHistoryResponse:
                 "name": name,
                 "status": status,
                 "regulation_direction": regulation_direction,
-                "maximum_available_capacity": maximum_available_capacity,
+                "maximum_active_power": maximum_active_power,
                 "is_small": is_small,
                 "accounting_point_id": accounting_point_id,
                 "grid_validation_status": grid_validation_status,
@@ -227,7 +227,7 @@ class ControllableUnitHistoryResponse:
 
         regulation_direction = ControllableUnitRegulationDirection(d.pop("regulation_direction"))
 
-        maximum_available_capacity = d.pop("maximum_available_capacity")
+        maximum_active_power = d.pop("maximum_active_power")
 
         is_small = d.pop("is_small")
 
@@ -361,7 +361,7 @@ class ControllableUnitHistoryResponse:
             name=name,
             status=status,
             regulation_direction=regulation_direction,
-            maximum_available_capacity=maximum_available_capacity,
+            maximum_active_power=maximum_active_power,
             is_small=is_small,
             accounting_point_id=accounting_point_id,
             grid_validation_status=grid_validation_status,

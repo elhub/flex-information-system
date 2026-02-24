@@ -25,8 +25,8 @@ class ControllableUnitCreateRequest:
         regulation_direction (ControllableUnitRegulationDirection): The regulation direction of the controllable unit.
             `up` means it can be used to increase production or decrease consumption, while `down` means to decrease
             production or increase consumption. Example: up.
-        maximum_available_capacity (float): Maximum continuous active power that the controllable unit can produce or
-            consume, i.e. deliver for balancing and congestion services, in kilowatts. Example: 3.5.
+        maximum_active_power (float): Maximum continuous active power that the controllable unit can produce or consume,
+            i.e. deliver for balancing and congestion services, in kilowatts. Example: 3.5.
         accounting_point_id (int): Reference to the accounting point that the controllable unit is connected to.
             Example: 10289.
         start_date (datetime.date | None | Unset): The usage date when the controllable unit is first active. Example:
@@ -49,7 +49,7 @@ class ControllableUnitCreateRequest:
 
     name: str
     regulation_direction: ControllableUnitRegulationDirection
-    maximum_available_capacity: float
+    maximum_active_power: float
     accounting_point_id: int
     start_date: datetime.date | None | Unset = UNSET
     status: ControllableUnitStatus | Unset = UNSET
@@ -68,7 +68,7 @@ class ControllableUnitCreateRequest:
 
         regulation_direction = self.regulation_direction.value
 
-        maximum_available_capacity = self.maximum_available_capacity
+        maximum_active_power = self.maximum_active_power
 
         accounting_point_id = self.accounting_point_id
 
@@ -138,7 +138,7 @@ class ControllableUnitCreateRequest:
             {
                 "name": name,
                 "regulation_direction": regulation_direction,
-                "maximum_available_capacity": maximum_available_capacity,
+                "maximum_active_power": maximum_active_power,
                 "accounting_point_id": accounting_point_id,
             }
         )
@@ -172,7 +172,7 @@ class ControllableUnitCreateRequest:
 
         regulation_direction = ControllableUnitRegulationDirection(d.pop("regulation_direction"))
 
-        maximum_available_capacity = d.pop("maximum_available_capacity")
+        maximum_active_power = d.pop("maximum_active_power")
 
         accounting_point_id = d.pop("accounting_point_id")
 
@@ -281,7 +281,7 @@ class ControllableUnitCreateRequest:
         controllable_unit_create_request = cls(
             name=name,
             regulation_direction=regulation_direction,
-            maximum_available_capacity=maximum_available_capacity,
+            maximum_active_power=maximum_active_power,
             accounting_point_id=accounting_point_id,
             start_date=start_date,
             status=status,
