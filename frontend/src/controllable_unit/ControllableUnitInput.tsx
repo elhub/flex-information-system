@@ -11,7 +11,6 @@ import { FormContainer, Heading, FlexDiv, Accordion } from "../components/ui";
 import {
   TextInput,
   EnumInput,
-  AutocompleteReferenceInput,
   DateInput,
   FormToolbar,
 } from "../components/EDS-ra/inputs";
@@ -61,10 +60,7 @@ export const ControllableUnitInput = () => {
 
         <FlexDiv style={{ gap: "var(--eds-size-3)", flexDirection: "column" }}>
           <TextInput {...fields.name} />
-          <TextInput
-            {...fields.accounting_point_id}
-            type="number"
-          />
+          <TextInput {...fields.accounting_point_id} type="number" />
           <DateInput {...fields.start_date} />
           <EnumInput
             {...fields.status}
