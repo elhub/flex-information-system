@@ -37,7 +37,7 @@ export const ControllableUnitLookupInput = () => {
         accounting_point_id: String(response.data.accounting_point.id),
         end_user_id: String(response.data.end_user.id),
       });
-      navigate(`/controllable_unit/create?${params.toString()}`);
+      navigate(`/controllable_unit/lookup/create?${params.toString()}`);
       return;
     }
 
