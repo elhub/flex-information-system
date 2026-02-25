@@ -9,11 +9,13 @@ skinparam note {
     BackgroundColor #FFFFBD
 }
 
-participant "Time series\nservices" as TS
 actor "Service Provider (SP)" as SP
 participant "Market platform" as MP
 participant "Flexibility\nInformation System (FIS)" as FIS
-actor "System Operator (SO)" as SO 
+participant "Time series\nservices" as TS
+actor "Procuring System Operator (PSO)" as PSO 
+participant "Elhub" as EL
+actor "Connecting System Operator (CSO)" as CSO 
 
 == Bid activation ==
 
@@ -21,13 +23,14 @@ activate SP
 SP -> MP: Send bid
 SP -> TS: Send baseline
 
-Activate SO
-SO -> TS: Get baseline
-TS --> SO: Baseline
+Activate PSO
+PSO -> TS: Get baseline
+TS --> PSO: Baseline
 
-SO -> MP: Activate bid
+PSO -> MP: Accept bid
+MP --> PSO: Bid volume
 
-note left
+note over SP
     SP activates the SPGs resources
     after the bid is activated
 end note
@@ -35,34 +38,40 @@ end note
 SP -> TS: Measured and metering values
 deactivate SP
 
-SO -> MP: Get bid activation information
-MP --> SO: Bid activation information
+PSO -> MP: Get bid activation information
+MP --> PSO: Bid activation information
 
-Note right
+activate CSO
+CSO -> EL: Metering values
+deactivate CSO
+
+note over PSO
     PSO uses the bid activation information to collect
     the right time series for the delivery verification.
 end note
 
 == Delivery verification ==
 
-SO -> FIS: Get CU/SPG/MP ID
-FIS --> SO: CU/SPG/MP ID
+PSO -> FIS: Get CU/SPG/MP ID
+FIS --> PSO: CU/SPG/MP ID
 
-note right
+note over PSO
     PSO uses FIS to get the IDs of the CUs/SPG and MPID
     in order to collect the right metering values.
 end note
 
-SO -> TS: Get measured values, metering values and baseline
-TS --> SO: Measured values, metering values and baseline
+PSO -> TS: Get measured values, metering values and baseline
+TS --> PSO: Measured values, metering values and baseline
+PSO -> EL: Get metering values
+EL --> PSO: Metering values
 
-note right
+note over PSO
     PSO uses the collected time series and the
     activated bid to do the delivery verification
     analysis.
 end note
 
-SO -> FIS: Register result of delivery verification
+PSO -> FIS: Register result of delivery verification
 FIS --> SP: Notify
 
-deactivate SO
+deactivate PSO

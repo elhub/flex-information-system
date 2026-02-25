@@ -4,8 +4,8 @@ This process describes the [verification](../concepts/time-series.md#verificatio
 of a delivered flexibility service and how it relates to the Flexibility Information
 System (FIS).
 
-[NOTE]
-
+>[!NOTE]
+>
 >This is a general description of how a delivered service can be verified. The detailed
 >requirements for the time series required for the analysis (e.g. the requirements
 >for time resolution) should be defined in the product-specific requirements.
@@ -30,15 +30,16 @@ The time series needed for the verification are:
 ## Metering Values
 
 SP continuously sends _metering values_ from its CUs to the time series services.
-It's possible to send metering values with different granularity, e.g. minute and
-15 minutes values. The time series on CU level can be aggregated to the SPG level.
+All CUs are required to send metering values continuously. It's possible to send
+metering values with different granularity, e.g. minute and 15 minutes values.
+The time series on CU level can be aggregated to the SPG level.
 
 SP also continuously sends _measured values_ to the time series services which are
 convertet to metering values.
 
 The metering values from the smart meter connected to the accounting point are sent
-continuously to Elhub by the SO. Values are available at 07:00 for the previous
-day and are available through the time series service.
+continuously to Elhub by the connecting sytem operator. Values are available at
+07:00 for the previous day and are available through the time series service.
 
 ## Baseline
 
