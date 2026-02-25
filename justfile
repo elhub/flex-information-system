@@ -489,6 +489,19 @@ openapi-to-md:
 
     done
 
+openapi-client-accounting-point-adapter:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    mkdir -p ./out
+    rm -rf local/accounting-point/client/* ./out/openapi-client-accounting-point-adapter
+
+    ./.venv/bin/openapi-python-client generate \
+        --path ./backend/accountingpoint/static/openapi.yml \
+        --output-path ./out/openapi-client-accounting-point-adapter \
+        --config ./openapi/openapi-client-config.yml
+    mv ./out/openapi-client-accounting-point-adapter/flex/models local/accounting-point/client/models
+    mv ./out/openapi-client-accounting-point-adapter/flex/types.py local/accounting-point/client/types.py
+
 openapi-client-test:
     #!/usr/bin/env bash
     set -euo pipefail
