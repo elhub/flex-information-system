@@ -1,6 +1,6 @@
 import { useLocation } from "react-router";
 
-const useLocationState = <T extends unknown>(): T | undefined => {
+const useLocationState = <T>(): T | undefined => {
   const { state } = useLocation();
   return state as T | undefined;
 };

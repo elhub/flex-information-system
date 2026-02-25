@@ -7,7 +7,7 @@ import { ScopesField } from "../../components/scopes";
 
 export const PartyMembershipHistoryList = () => {
   const params = useParams();
-  let filter: any = {
+  const filter: any = {
     party_id: params.party_id,
   };
 

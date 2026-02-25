@@ -129,7 +129,7 @@ export function authProvider(): AuthProvider {
     },
     getIdentity: getIdentity,
     checkAuth: async () => {
-      let sessionInfoString = getStorage().getItem(sessionInfoKey);
+      const sessionInfoString = getStorage().getItem(sessionInfoKey);
       let sessionInfo = null;
       if (!sessionInfoString) {
         const { status, body, json } = await fetchUtils.fetchJson(
