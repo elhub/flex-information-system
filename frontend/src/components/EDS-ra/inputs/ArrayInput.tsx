@@ -52,6 +52,7 @@ export const ArrayInput = ({
       readOnly={readOnly}
       id={id}
       error={fieldState.error?.message}
+      nativeRequired={false}
     >
       <Combobox
         options={options}

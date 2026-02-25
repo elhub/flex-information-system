@@ -1,0 +1,103 @@
+import { DateTimePicker } from "../../ui";
+import { useInput } from "ra-core";
+import { BaseInput, BaseInputProps } from "./BaseInput";
+import { formatISO, parseISO } from "date-fns";
+import { tz } from "@date-fns/tz";
+import { Button, Tooltip } from "../../ui";
+import { IconCross, IconClockCircle } from "@elhub/ds-icons";
+
+type DateTimeInputProps = BaseInputProps & {
+  showNow?: boolean;
+};
+
+export const DateTimeInput = ({
+  source,
+  required,
+  tooltip,
+  readOnly,
+  disabled,
+  showNow,
+  ...rest
+}: DateTimeInputProps) => {
+  const { id, field, fieldState } = useInput({ source, ...rest });
+
+  return (
+    <BaseInput
+      source={source}
+      required={required}
+      tooltip={tooltip}
+      disabled={disabled}
+      readOnly={readOnly}
+      id={id}
+      error={fieldState.error?.message}
+    >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "var(--eds-size-1)",
+        }}
+      >
+        <DateTimePicker
+          id={id}
+          selected={
+            field.value
+              ? parseISO(field.value, { in: tz("Europe/Oslo") })
+              : undefined
+          }
+          onChange={(date) =>
+            field.onChange(
+              date
+                ? formatISO(date, {
+                    representation: "complete",
+                    in: tz("Europe/Oslo"),
+                  })
+                : null,
+            )
+          }
+          onBlur={field.onBlur}
+          size="large"
+          disabled={disabled}
+          navigateButtons={false}
+        />
+        {showNow && !disabled && !readOnly && (
+          <Tooltip content="Set to now">
+            <span>
+              <Button
+                type="button"
+                variant="tertiary"
+                size="small"
+                icon={IconClockCircle}
+                aria-label="Set to now"
+                onClick={() =>
+                  field.onChange(
+                    formatISO(new Date(), {
+                      representation: "complete",
+                      in: tz("Europe/Oslo"),
+                    }),
+                  )
+                }
+              />
+            </span>
+          </Tooltip>
+        )}
+        {/* isClearable on the DateTimePicker puts the cross icon on top of the picker icon.
+            So we add our own on the side instead */}
+        {!required && field.value && (
+          <Tooltip content="Clear">
+            <span>
+              <Button
+                type="button"
+                variant="tertiary"
+                size="small"
+                icon={IconCross}
+                aria-label="Clear"
+                onClick={() => field.onChange(null)}
+              />
+            </span>
+          </Tooltip>
+        )}
+      </div>
+    </BaseInput>
+  );
+};

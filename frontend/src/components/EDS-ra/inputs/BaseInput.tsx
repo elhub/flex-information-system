@@ -27,6 +27,10 @@ type BaseInputPropsWithChildren = BaseInputProps & {
   id: string;
   error?: string;
   children: ReactNode;
+  // When false, prevents native browser required validation on the underlying input
+  // (needed for multi-select Combobox where the search input is always empty after selection)
+  // The outer FormItem still has required=true so the label asterisk is shown.
+  nativeRequired?: boolean;
 };
 
 export const BaseInput = ({
@@ -42,6 +46,7 @@ export const BaseInput = ({
   children,
   resource: resourceProp,
   overrideLabel,
+  nativeRequired,
 }: BaseInputPropsWithChildren) => {
   const resource = useResourceContext({ resource: resourceProp });
   const formattedSource = source.split("@")[0];
@@ -84,7 +89,21 @@ export const BaseInput = ({
       {description || descriptionOverride ? (
         <FormItemDescription>{descriptionText}</FormItemDescription>
       ) : null}
-      {children}
+      {nativeRequired === false && required ? (
+        // Wrap in a nested FormItem context with required:false so the Combobox's
+        // internal search <input> does not get the required attribute. This prevents
+        // false native browser validation errors on multi-select inputs where the
+        // search text is always empty even after options are selected.
+        // The outer FormItem still has required:true so the label asterisk is shown.
+        <FormItem
+          id={id}
+          inputProps={{ required: false, disabled: isDisabled }}
+        >
+          {children}
+        </FormItem>
+      ) : (
+        children
+      )}
     </FormItem>
   );
 };

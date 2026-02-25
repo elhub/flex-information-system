@@ -1,22 +1,17 @@
-import {
-  required,
-  SimpleForm,
-  useGetIdentity,
-  useRecordContext,
-} from "react-admin";
-import { Typography, Stack } from "@mui/material";
-import { Toolbar } from "../../components/Toolbar";
+import { useGetIdentity, useRecordContext } from "react-admin";
+import { Form } from "ra-core";
 import { useLocation } from "react-router-dom";
-import {
-  PartyReferenceInput,
-  InputStack,
-  AutocompleteReferenceInput,
-} from "../../auth";
 import { useMemo } from "react";
-import { ProductTypeArrayInput } from "../../product_type/components";
+import { getFields, unTypedZodResolver } from "../../zod";
 import { zServiceProvidingGroupProductSuspensionCreateRequest } from "../../generated-client/zod.gen";
-import { EnumInput } from "../../components/enum";
-import { unTypedZodResolver } from "../../zod";
+import { FormContainer, Heading, VerticalSpace } from "../../components/ui";
+import {
+  EnumInput,
+  AutocompleteReferenceInput,
+  PartyReferenceInput,
+  FormToolbar,
+} from "../../components/EDS-ra/inputs";
+import { ProductTypeArrayInput } from "../../product_type/components";
 
 const filterRecord = ({
   service_providing_group_id,
@@ -41,53 +36,44 @@ export const ServiceProvidingGroupProductSuspensionInput = () => {
     [actualRecord, overrideRecord],
   );
 
+  const fields = getFields(
+    zServiceProvidingGroupProductSuspensionCreateRequest.shape,
+  );
+
   return (
-    <SimpleForm
+    <Form
       record={record}
-      maxWidth={1280}
       resolver={unTypedZodResolver(
         zServiceProvidingGroupProductSuspensionCreateRequest,
       )}
-      toolbar={<Toolbar />}
     >
-      <Stack direction="column" spacing={1}>
-        <Typography variant="h6" gutterBottom>
+      <FormContainer>
+        <Heading level={3} size="medium">
           Basic information
-        </Typography>
-        <InputStack direction="row" flexWrap="wrap">
-          <AutocompleteReferenceInput
-            source="service_providing_group_id"
-            reference="service_providing_group"
-            label="field.service_providing_group_product_suspension.service_providing_group_id"
-            readOnly={!!record?.service_providing_group_id}
-          />
-        </InputStack>
-        <InputStack direction="row" flexWrap="wrap">
-          {!isSystemOperator && (
-            <PartyReferenceInput
-              source="procuring_system_operator_id"
-              label="field.service_providing_group_product_suspension.procuring_system_operator_id"
-              filter={{ type: "system_operator" }}
-            />
-          )}
-        </InputStack>
-        <ProductTypeArrayInput
-          source="product_type_ids"
-          label="field.service_providing_group_product_suspension.product_type_ids"
+        </Heading>
+        <VerticalSpace size="small" />
+        <AutocompleteReferenceInput
+          {...fields.service_providing_group_id}
+          reference="service_providing_group"
+          readOnly={!!record?.service_providing_group_id}
         />
-        <Typography variant="h6" gutterBottom>
-          Product suspension process
-        </Typography>
-        <InputStack direction="row" flexWrap="wrap">
-          <EnumInput
-            source="reason"
-            enumKey="service_providing_group_product_suspension.reason"
-            label="field.service_providing_group_product_suspension.reason"
-            validate={required()}
-            choices={["failed_verification", "other"]}
+        {!isSystemOperator && (
+          <PartyReferenceInput
+            {...fields.procuring_system_operator_id}
+            filter={{ type: "system_operator" }}
           />
-        </InputStack>
-      </Stack>
-    </SimpleForm>
+        )}
+        <ProductTypeArrayInput {...fields.product_type_ids} />
+        <Heading level={3} size="medium">
+          Product suspension process
+        </Heading>
+        <VerticalSpace size="small" />
+        <EnumInput
+          {...fields.reason}
+          enumKey="service_providing_group_product_suspension.reason"
+        />
+        <FormToolbar />
+      </FormContainer>
+    </Form>
   );
 };

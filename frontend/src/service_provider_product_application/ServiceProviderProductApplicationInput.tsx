@@ -1,20 +1,18 @@
-import {
-  required,
-  SimpleForm,
-  useGetIdentity,
-  useGetList,
-  useRecordContext,
-} from "react-admin";
-import { Typography, Stack } from "@mui/material";
-import { PartyReferenceInput, InputStack, useCreateOrUpdate } from "../auth";
+import { useGetIdentity, useGetList } from "react-admin";
+import { Form, useRecordContext } from "ra-core";
 import { useFormContext } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { DateTimeInput } from "../components/datetime";
-import { Toolbar } from "../components/Toolbar";
-import { ProductTypeArrayInput } from "../product_type/components";
+import { useCreateOrUpdate } from "../auth";
 import { zServiceProviderProductApplicationCreateRequest } from "../generated-client/zod.gen";
-import { EnumInput } from "../components/enum";
-import { unTypedZodResolver } from "../zod";
+import { getFields, unTypedZodResolver } from "../zod";
+import { FormContainer, Heading, VerticalSpace } from "../components/ui";
+import {
+  DateTimeInput,
+  EnumInput,
+  FormToolbar,
+  PartyReferenceInput,
+} from "../components/EDS-ra/inputs";
+import { ProductTypeArrayInput } from "../product_type/components";
 
 // keep only the fields that map to the UI
 const filterRecord = ({
@@ -33,7 +31,7 @@ const filterRecord = ({
 
 // component restricting the selectable product types based on the
 // already selected system operator
-const ProductTypesInput = (props: any) => {
+const ProductTypesInput = (props: { source: string; required: boolean }) => {
   const formContext = useFormContext();
 
   const systemOperatorID = formContext.watch("system_operator_id");
@@ -67,7 +65,7 @@ const ProductTypesInput = (props: any) => {
   );
 
   const filter = systemOperatorID
-    ? (pt: any) =>
+    ? (pt: { id: number; name: string }) =>
         systemOperatorProductTypes?.find(
           (sopt: any) => sopt.product_type_id == pt.id,
         ) != undefined
@@ -94,50 +92,41 @@ export const ServiceProviderProductApplicationInput = () => {
         : currentRecord?.service_provider_id,
   });
 
+  const fields = getFields(
+    zServiceProviderProductApplicationCreateRequest.shape,
+  );
+
   return (
-    <SimpleForm
+    <Form
       record={record}
-      maxWidth={1280}
       resolver={unTypedZodResolver(
         zServiceProviderProductApplicationCreateRequest,
       )}
-      toolbar={<Toolbar />}
+      sanitizeEmptyValues
     >
-      <Stack direction="column" spacing={1}>
-        <Typography variant="h6" gutterBottom>
+      <FormContainer>
+        <Heading level={3} size="medium">
           Basic information
-        </Typography>
-        <InputStack direction="row" flexWrap="wrap">
-          <PartyReferenceInput
-            source="service_provider_id"
-            label="field.service_provider_product_application.service_provider_id"
-            readOnly={isServiceProvider}
-          />
-          <PartyReferenceInput
-            source="system_operator_id"
-            label="field.service_provider_product_application.system_operator_id"
-          />
-          <ProductTypesInput
-            source="product_type_ids"
-            label="field.service_provider_product_application.product_type_ids"
-          />
-        </InputStack>
-        <Typography variant="h6" gutterBottom>
+        </Heading>
+        <VerticalSpace size="small" />
+        <PartyReferenceInput
+          {...fields.service_provider_id}
+          readOnly={isServiceProvider}
+        />
+        <PartyReferenceInput {...fields.system_operator_id} />
+        <ProductTypesInput {...fields.product_type_ids} />
+        <Heading level={3} size="medium">
           Application process
-        </Typography>
-        <InputStack direction="row" flexWrap="wrap">
-          <EnumInput
-            source="status"
-            enumKey="service_provider_product_application.status"
-            label="field.service_provider_product_application.status"
-            validate={required()}
-          />
-          <DateTimeInput
-            source="qualified_at"
-            label="field.service_provider_product_application.qualified_at"
-          />
-        </InputStack>
-      </Stack>
-    </SimpleForm>
+        </Heading>
+        <VerticalSpace size="small" />
+        <EnumInput
+          {...fields.status}
+          enumKey="service_provider_product_application.status"
+          placeholder="Select status"
+        />
+        <DateTimeInput {...fields.qualified_at} showNow />
+        <FormToolbar />
+      </FormContainer>
+    </Form>
   );
 };
