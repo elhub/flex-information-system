@@ -108,6 +108,9 @@ databaseChangeLog:
       file: ./accounting_point_migrations.sql
       relativeToChangelogFile: true
   - include:
+      file: ./accounting_point_sync.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./accounting_point_metering_grid_area.sql
       relativeToChangelogFile: true
   - include:

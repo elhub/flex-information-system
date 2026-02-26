@@ -1,0 +1,76 @@
+@startuml accounting-point-sync-lookup
+!theme plain
+
+title Controllable Unit (CU) Registration
+
+autonumber
+autoactivate on
+skinparam note {
+    BackgroundColor #FFFFBD
+}
+
+actor "Service provider" as SP
+participant "CU Lookup" as CUL
+database "AP" as AP
+database "AP <sub>" as APSUB
+database "AP Sync" as APS
+participant "AP Adapter" as APA
+
+SP -> CUL: Lookup
+CUL -> APS: Lock (GSRN)
+return Result
+
+note right
+    SELECT FOR UPDATE NOWAIT
+    set last_started_at
+    limit 1
+    COMMIT
+end note
+
+opt Empty - First time sync of the AP - No lock
+    CUL -> APA: Get AP data
+    return
+    CUL -> AP: Insert AP record
+    AP -> APS: Insert trigger
+    return
+    return Result
+    opt Success
+        CUL -> APSUB: Merge data
+        return
+    else Conflict - Another sync completed in the meantime
+        note over CUL
+            We can just go ahead with the
+            data we got from the AP adapter
+        end note
+    end
+
+else 1 row - Lock aquired
+    CUL -> APA: Get AP data
+    return
+    CUL -> AP: Update AP record
+    return
+    CUL -> APSUB: Merge data
+    return
+
+    CUL -> APS: Unlock (AP ID)
+    note right
+        * Set last_synced_at = now
+        * Set last_started_at = null
+    end note
+    return
+else  55P03 lock_not_available - Another sync in progress
+    note over APS
+        This a edge case - it is not that likely that
+        We should just go ahead with (possibly) stale data
+    end note
+    CUL -> AP: Select AP record
+    return
+    CUL -> APSUB: Select AP data
+    return
+end
+
+return: OK
+
+
+
+@enduml

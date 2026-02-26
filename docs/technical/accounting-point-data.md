@@ -96,3 +96,7 @@ running for too long.
 This shows diagram tries to show how the synchronization process works.
 
 ![Accounting point data synchronization](../diagrams/accounting-point-sync.drawio.png)
+
+### Lookup flow
+
+![Accounting point internal lookup flow](../diagrams/accounting-point-sync-lookup.png)
