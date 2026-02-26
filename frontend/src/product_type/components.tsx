@@ -150,7 +150,6 @@ export const ProductTypeArrayInput = ({
       overrideLabel={overrideLabel}
       id={id}
       error={fieldState.error?.message}
-      nativeRequired={false}
     >
       <Combobox
         options={options}

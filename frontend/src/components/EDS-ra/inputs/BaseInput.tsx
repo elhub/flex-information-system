@@ -27,10 +27,6 @@ type BaseInputPropsWithChildren = BaseInputProps & {
   id: string;
   error?: string;
   children: ReactNode;
-  // When false, prevents native browser required validation on the underlying input
-  // (needed for multi-select Combobox where the search input is always empty after selection)
-  // The outer FormItem still has required=true so the label asterisk is shown.
-  nativeRequired?: boolean;
 };
 
 export const BaseInput = ({
@@ -46,7 +42,6 @@ export const BaseInput = ({
   children,
   resource: resourceProp,
   overrideLabel,
-  nativeRequired,
 }: BaseInputPropsWithChildren) => {
   const resource = useResourceContext({ resource: resourceProp });
   const formattedSource = source.split("@")[0];
@@ -77,33 +72,27 @@ export const BaseInput = ({
     <FormItem
       id={id}
       error={error}
-      inputProps={{ required: required, disabled: isDisabled }}
+      // required: false is a workaround to avoid native HTML5 validation
+      // Notice that we are manually setting the required asterisk in the label.
+      // It is part of the workaround.
+      inputProps={{ required: false, disabled: isDisabled }}
       size="large"
     >
       <FlexDiv style={{ gap: "var(--eds-size-2)", alignItems: "center" }}>
         <FormItemLabel htmlFor={id} size="large">
           {labelText}
+          {required && (
+            <span aria-hidden="true" className="eds-form-item__label--required">
+              *
+            </span>
+          )}
         </FormItemLabel>
         {tooltip && <FieldTooltip resource={resource} field={source} />}
       </FlexDiv>
       {description || descriptionOverride ? (
         <FormItemDescription>{descriptionText}</FormItemDescription>
       ) : null}
-      {nativeRequired === false && required ? (
-        // Wrap in a nested FormItem context with required:false so the Combobox's
-        // internal search <input> does not get the required attribute. This prevents
-        // false native browser validation errors on multi-select inputs where the
-        // search text is always empty even after options are selected.
-        // The outer FormItem still has required:true so the label asterisk is shown.
-        <FormItem
-          id={id}
-          inputProps={{ required: false, disabled: isDisabled }}
-        >
-          {children}
-        </FormItem>
-      ) : (
-        children
-      )}
+      {children}
     </FormItem>
   );
 };
