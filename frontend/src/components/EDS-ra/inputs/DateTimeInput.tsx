@@ -31,13 +31,7 @@ export const DateTimeInput = ({
       id={id}
       error={fieldState.error?.message}
     >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "var(--eds-size-1)",
-        }}
-      >
+      <div className="flex items-center gap-1">
         <DateTimePicker
           id={id}
           selected={
