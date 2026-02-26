@@ -16,9 +16,30 @@ import {
   ProductTypeArrayInput,
   ProductTypeField,
 } from "../product_type/components";
+import { usePermissions } from "ra-core";
+import { Permissions } from "../auth/permissions";
+import { Link } from "react-router-dom";
+import { Button } from "../components/ui";
+import { IconPlus } from "@elhub/ds-icons";
+
+const CreateButton = () => (
+  <Button
+    as={Link}
+    icon={IconPlus}
+    to="/system_operator_product_type/create"
+    variant="invisible"
+  >
+    Create
+  </Button>
+);
 
 export const SystemOperatorProductTypeList = () => {
   const fields = getFields(zSystemOperatorProductType.shape);
+  const { permissions } = usePermissions<Permissions>();
+  const canCreate = permissions?.allow(
+    "system_operator_product_type",
+    "create",
+  );
 
   const filters = [
     <PartyReferenceInput
@@ -39,6 +60,7 @@ export const SystemOperatorProductTypeList = () => {
       sort={{ field: "id", order: "DESC" }}
       empty={false}
       filters={filters}
+      actions={canCreate ? [<CreateButton key="create" />] : undefined}
     >
       <Datagrid>
         <TextField source={fields.id.source} />
