@@ -57,7 +57,7 @@ export const DateTimeInput = ({
           }
           onBlur={field.onBlur}
           size="large"
-          disabled={disabled}
+          disabled={disabled || readOnly}
           navigateButtons={false}
         />
         {showNow && !disabled && !readOnly && (
