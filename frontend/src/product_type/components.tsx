@@ -3,7 +3,6 @@ import {
   ArrayField,
   FieldProps,
   Link,
-  SelectArrayInput,
   SelectInput,
   useGetList,
   useGetOne,
@@ -13,6 +12,11 @@ import {
 import { Stack, Chip, Tooltip } from "@mui/material";
 import { ProductType } from "../generated-client";
 import { Tag } from "../components/ui";
+import {
+  ArrayInput,
+  ArrayInputOption,
+  ArrayInputProps,
+} from "../components/EDS-ra/inputs";
 
 // display a product type with name and example products if present
 export const displayProductType = (productType: ProductType) =>
@@ -60,7 +64,7 @@ export const ProductTypeField = ({ source }: FieldProps) => {
   );
 };
 
-// input component to select ONE product type
+// input component to select ONE product type (react-admin SelectInput for legacy use)
 export const ProductTypeInput = (props: any) => {
   const productTypes = useGetAllProductTypes();
 
@@ -92,13 +96,27 @@ export const ProductTypeArrayField = (props: any) => {
 };
 
 // input component to select MULTIPLE product types
-export const ProductTypeArrayInput = (props: any) => {
-  const { filter, ...rest } = props;
+type ProductTypeArrayInputProps = Omit<ArrayInputProps, "options"> & {
+  filter?: (pt: { id: number; name: string }) => boolean;
+};
+
+export const ProductTypeArrayInput = ({
+  filter,
+  ...rest
+}: ProductTypeArrayInputProps) => {
   const productTypes = useGetAllProductTypes();
 
+  const options: ArrayInputOption[] = (
+    filter ? (productTypes ?? []).filter(filter) : (productTypes ?? [])
+  ).map((pt) => ({ value: String(pt.id), label: pt.name }));
+
   return (
-    <SelectArrayInput
-      choices={filter ? productTypes?.filter(filter) : productTypes}
+    <ArrayInput
+      options={options}
+      format={(v: number[] | undefined) =>
+        (Array.isArray(v) ? v : []).map(String)
+      }
+      parse={(v: string[]) => (Array.isArray(v) ? v : []).map(Number)}
       {...rest}
     />
   );

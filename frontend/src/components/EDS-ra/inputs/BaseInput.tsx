@@ -72,12 +72,20 @@ export const BaseInput = ({
     <FormItem
       id={id}
       error={error}
-      inputProps={{ required: required, disabled: isDisabled }}
+      // required: false is a workaround to avoid native HTML5 validation
+      // Notice that we are manually setting the required asterisk in the label.
+      // It is part of the workaround.
+      inputProps={{ required: false, disabled: isDisabled }}
       size="large"
     >
       <FlexDiv style={{ gap: "var(--eds-size-2)", alignItems: "center" }}>
         <FormItemLabel htmlFor={id} size="large">
           {labelText}
+          {required && (
+            <span aria-hidden="true" className="eds-form-item__label--required">
+              *
+            </span>
+          )}
         </FormItemLabel>
         {tooltip && <FieldTooltip resource={resource} field={source} />}
       </FlexDiv>
