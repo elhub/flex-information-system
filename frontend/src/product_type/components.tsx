@@ -9,14 +9,13 @@ import {
   useRecordContext,
   WithListContext,
 } from "react-admin";
-import { useInput } from "ra-core";
 import { Stack, Chip, Tooltip } from "@mui/material";
 import { ProductType } from "../generated-client";
-import { Tag, Combobox } from "../components/ui";
+import { Tag } from "../components/ui";
 import {
-  BaseInput,
-  BaseInputProps,
+  ArrayInput,
   ArrayInputOption,
+  ArrayInputProps,
 } from "../components/EDS-ra/inputs";
 
 // display a product type with name and example products if present
@@ -97,68 +96,28 @@ export const ProductTypeArrayField = (props: any) => {
 };
 
 // input component to select MULTIPLE product types
-type ProductTypeArrayInputProps = BaseInputProps & {
+type ProductTypeArrayInputProps = Omit<ArrayInputProps, "options"> & {
   filter?: (pt: { id: number; name: string }) => boolean;
-  placeholder?: string;
 };
 
 export const ProductTypeArrayInput = ({
   filter,
-  source,
-  required,
-  tooltip,
-  readOnly,
-  disabled,
-  placeholder,
-  overrideLabel,
+  ...rest
 }: ProductTypeArrayInputProps) => {
   const productTypes = useGetAllProductTypes();
 
   const options: ArrayInputOption[] = (
-    typeof filter === "function"
-      ? (productTypes ?? []).filter(filter)
-      : (productTypes ?? [])
+    filter ? (productTypes ?? []).filter(filter) : (productTypes ?? [])
   ).map((pt) => ({ value: String(pt.id), label: pt.name }));
 
-  const { id, field, fieldState } = useInput({
-    source,
-    format: (v: number[] | undefined) =>
-      (Array.isArray(v) ? v : []).map(String),
-    parse: (v: string[]) => (Array.isArray(v) ? v : []).map(Number),
-  });
-
-  const selectedOptions = options.filter((option) =>
-    (field.value as string[] | undefined)?.includes(option.value),
-  );
-
-  const handleToggle = (value: string, isSelected: boolean) => {
-    const currentValues = (field.value as string[] | undefined) ?? [];
-    if (isSelected) {
-      field.onChange([...currentValues, value]);
-    } else {
-      field.onChange(currentValues.filter((v) => v !== value));
-    }
-  };
-
   return (
-    <BaseInput
-      source={source}
-      required={required}
-      tooltip={tooltip}
-      disabled={disabled}
-      readOnly={readOnly}
-      overrideLabel={overrideLabel}
-      id={id}
-      error={fieldState.error?.message}
-    >
-      <Combobox
-        options={options}
-        selectedOptions={selectedOptions}
-        onToggleSelected={handleToggle}
-        isMultiSelect
-        placeholder={placeholder}
-        disabled={disabled || readOnly}
-      />
-    </BaseInput>
+    <ArrayInput
+      options={options}
+      format={(v: number[] | undefined) =>
+        (Array.isArray(v) ? v : []).map(String)
+      }
+      parse={(v: string[]) => (Array.isArray(v) ? v : []).map(Number)}
+      {...rest}
+    />
   );
 };

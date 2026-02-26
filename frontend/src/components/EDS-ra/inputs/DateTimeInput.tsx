@@ -1,10 +1,12 @@
 import { DateTimePicker } from "../../ui";
-import { useInput } from "ra-core";
+import { useInput, usePermissions, useResourceContext } from "ra-core";
 import { BaseInput, BaseInputProps } from "./BaseInput";
 import { formatISO, parseISO } from "date-fns";
 import { tz } from "@date-fns/tz";
 import { Button } from "../../ui";
 import { IconCross, IconClockCircle } from "@elhub/ds-icons";
+import { Permissions, PermissionTarget } from "../../../auth/permissions";
+import { useCreateOrUpdate } from "../../../auth/useCreateOrUpdate";
 
 type DateTimeInputProps = BaseInputProps & {
   showNow?: boolean;
@@ -21,6 +23,17 @@ export const DateTimeInput = ({
 }: DateTimeInputProps) => {
   const { id, field, fieldState } = useInput({ source, ...rest });
 
+  const resource = useResourceContext();
+  const { permissions } = usePermissions<Permissions>();
+  const createOrUpdate = useCreateOrUpdate();
+  const isPermissionDisabled =
+    createOrUpdate != null &&
+    permissions?.allow(
+      `${resource}.${source.split("@")[0]}` as PermissionTarget,
+      createOrUpdate,
+    ) === false;
+  const isEffectivelyDisabled = disabled || readOnly || isPermissionDisabled;
+
   const onDateChange = (date: Date | null) => {
     field.onChange(
       date
@@ -32,8 +45,8 @@ export const DateTimeInput = ({
     );
   };
 
-  const displayNowButton = showNow && !disabled && !readOnly;
-  const displayClearButton = !required && !disabled && !readOnly && field.value;
+  const displayNowButton = showNow && !isEffectivelyDisabled;
+  const displayClearButton = !required && !isEffectivelyDisabled && field.value;
 
   return (
     <BaseInput
@@ -56,7 +69,7 @@ export const DateTimeInput = ({
           onChange={(date) => onDateChange(date)}
           onBlur={field.onBlur}
           size="large"
-          disabled={disabled || readOnly}
+          disabled={isEffectivelyDisabled}
           navigateButtons={false}
         />
         {displayNowButton && (

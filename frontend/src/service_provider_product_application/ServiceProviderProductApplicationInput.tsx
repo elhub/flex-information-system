@@ -1,7 +1,7 @@
 import { useGetIdentity, useGetList } from "react-admin";
 import { Form, useRecordContext } from "ra-core";
 import { useFormContext } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useCreateOrUpdate } from "../auth";
 import { zServiceProviderProductApplicationCreateRequest } from "../generated-client/zod.gen";
 import { getFields, unTypedZodResolver } from "../zod";
@@ -14,48 +14,12 @@ import {
 } from "../components/EDS-ra/inputs";
 import { ProductTypeArrayInput } from "../product_type/components";
 
-// keep only the fields that map to the UI
-const filterRecord = ({
-  service_provider_id,
-  system_operator_id,
-  product_type_ids,
-  status,
-  qualified_at,
-}: any) => ({
-  service_provider_id,
-  system_operator_id,
-  product_type_ids,
-  status,
-  qualified_at,
-});
-
 // component restricting the selectable product types based on the
 // already selected system operator
 const ProductTypesInput = (props: { source: string; required: boolean }) => {
   const formContext = useFormContext();
 
   const systemOperatorID = formContext.watch("system_operator_id");
-
-  // The useEffect block below will be executed once when the page is loaded,
-  // then only when the SO changes. We use a flag here so that the first run of
-  // the block has no effect, so this component can be used in an Edit page
-  // without the list being emptied from the existing value.
-  const [freshPage, setFreshPage] = useState(true);
-
-  // reset product types when system operator changes
-  //   This reset is needed because the former list may contain product types
-  //   the new SO is not asking for, which will hide them from the UI but keep
-  //   them in the form value, thus potentially leading to an API error that is
-  //   hard to fix in the UI.
-  /* eslint-disable react-hooks/exhaustive-deps */
-  useEffect(() => {
-    if (freshPage) {
-      setFreshPage(false);
-    } else {
-      formContext.setValue("product_type_ids", []);
-    }
-  }, [systemOperatorID]);
-  /* eslint-enable react-hooks/exhaustive-deps */
 
   const { data: systemOperatorProductTypes } = useGetList(
     "system_operator_product_type",
@@ -69,7 +33,22 @@ const ProductTypesInput = (props: { source: string; required: boolean }) => {
         systemOperatorProductTypes?.find(
           (sopt: any) => sopt.product_type_id == pt.id,
         ) != undefined
-    : undefined;
+    : () => false;
+
+  // we need to filter the already selected product types
+  // in cases when switching system operator
+  useEffect(() => {
+    const currentProductTypeIds =
+      formContext.getValues("product_type_ids") || [];
+    const filteredIds = currentProductTypeIds.filter((id: number) => {
+      const productType = { id, name: "" };
+      return filter(productType);
+    });
+
+    if (filteredIds.length !== currentProductTypeIds.length) {
+      formContext.setValue("product_type_ids", filteredIds);
+    }
+  }, [systemOperatorID, filter, formContext]);
 
   return <ProductTypeArrayInput filter={filter} {...props} />;
 };
@@ -84,13 +63,13 @@ export const ServiceProviderProductApplicationInput = () => {
 
   const isServiceProvider = identity?.role == "flex_service_provider";
 
-  const record = filterRecord({
+  const record = {
     ...currentRecord,
     service_provider_id:
       createOrUpdate == "create" && isServiceProvider
         ? identity?.partyID
         : currentRecord?.service_provider_id,
-  });
+  };
 
   const fields = getFields(
     zServiceProviderProductApplicationCreateRequest.shape,

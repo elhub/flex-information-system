@@ -1,4 +1,8 @@
-export { ArrayInput, type ArrayInputOption } from "./ArrayInput";
+export {
+  ArrayInput,
+  type ArrayInputOption,
+  type ArrayInputProps,
+} from "./ArrayInput";
 export {
   AutocompleteInput,
   type AutocompleteInputChoice,
