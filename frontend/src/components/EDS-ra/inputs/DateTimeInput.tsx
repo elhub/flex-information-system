@@ -83,7 +83,7 @@ export const DateTimeInput = ({
         )}
         {/* isClearable on the DateTimePicker puts the cross icon on top of the picker icon.
             So we add our own on the side instead */}
-        {!required && field.value && (
+        {!required && !disabled && !readOnly && field.value && (
           <Tooltip content="Clear">
             <span>
               <Button
