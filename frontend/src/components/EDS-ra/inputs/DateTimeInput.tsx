@@ -32,6 +32,9 @@ export const DateTimeInput = ({
     );
   };
 
+  const displayNowButton = showNow && !disabled && !readOnly;
+  const displayClearButton = !required && !disabled && !readOnly && field.value;
+
   return (
     <BaseInput
       source={source}
@@ -56,7 +59,7 @@ export const DateTimeInput = ({
           disabled={disabled || readOnly}
           navigateButtons={false}
         />
-        {showNow && !disabled && !readOnly && (
+        {displayNowButton && (
           <Button
             type="button"
             variant="tertiary"
@@ -70,7 +73,7 @@ export const DateTimeInput = ({
         )}
         {/* isClearable on the DateTimePicker puts the cross icon on top of the picker icon.
             So we add our own on the side instead */}
-        {!required && !disabled && !readOnly && field.value && (
+        {displayClearButton && (
           <Button
             type="button"
             variant="tertiary"
