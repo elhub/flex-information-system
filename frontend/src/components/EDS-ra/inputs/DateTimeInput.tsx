@@ -3,7 +3,7 @@ import { useInput } from "ra-core";
 import { BaseInput, BaseInputProps } from "./BaseInput";
 import { formatISO, parseISO } from "date-fns";
 import { tz } from "@date-fns/tz";
-import { Button, Tooltip } from "../../ui";
+import { Button } from "../../ui";
 import { IconCross, IconClockCircle } from "@elhub/ds-icons";
 
 type DateTimeInputProps = BaseInputProps & {
@@ -20,6 +20,17 @@ export const DateTimeInput = ({
   ...rest
 }: DateTimeInputProps) => {
   const { id, field, fieldState } = useInput({ source, ...rest });
+
+  const onDateChange = (date: Date | null) => {
+    field.onChange(
+      date
+        ? formatISO(date, {
+            representation: "complete",
+            in: tz("Europe/Oslo"),
+          })
+        : null,
+    );
+  };
 
   return (
     <BaseInput
@@ -39,57 +50,37 @@ export const DateTimeInput = ({
               ? parseISO(field.value, { in: tz("Europe/Oslo") })
               : undefined
           }
-          onChange={(date) =>
-            field.onChange(
-              date
-                ? formatISO(date, {
-                    representation: "complete",
-                    in: tz("Europe/Oslo"),
-                  })
-                : null,
-            )
-          }
+          onChange={(date) => onDateChange(date)}
           onBlur={field.onBlur}
           size="large"
           disabled={disabled || readOnly}
           navigateButtons={false}
         />
         {showNow && !disabled && !readOnly && (
-          <Tooltip content="Set to now">
-            <span>
-              <Button
-                type="button"
-                variant="tertiary"
-                size="small"
-                icon={IconClockCircle}
-                aria-label="Set to now"
-                onClick={() =>
-                  field.onChange(
-                    formatISO(new Date(), {
-                      representation: "complete",
-                      in: tz("Europe/Oslo"),
-                    }),
-                  )
-                }
-              />
-            </span>
-          </Tooltip>
+          <Button
+            type="button"
+            variant="tertiary"
+            size="small"
+            icon={IconClockCircle}
+            aria-label="Set to now"
+            onClick={() => onDateChange(new Date())}
+          >
+            Now
+          </Button>
         )}
         {/* isClearable on the DateTimePicker puts the cross icon on top of the picker icon.
             So we add our own on the side instead */}
         {!required && !disabled && !readOnly && field.value && (
-          <Tooltip content="Clear">
-            <span>
-              <Button
-                type="button"
-                variant="tertiary"
-                size="small"
-                icon={IconCross}
-                aria-label="Clear"
-                onClick={() => field.onChange(null)}
-              />
-            </span>
-          </Tooltip>
+          <Button
+            type="button"
+            variant="tertiary"
+            size="small"
+            icon={IconCross}
+            aria-label="Clear"
+            onClick={() => field.onChange(null)}
+          >
+            Clear
+          </Button>
         )}
       </div>
     </BaseInput>
