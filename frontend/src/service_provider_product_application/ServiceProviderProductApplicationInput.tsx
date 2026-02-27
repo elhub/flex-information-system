@@ -1,4 +1,4 @@
-import { useGetIdentity, useGetList } from "react-admin";
+import { useGetIdentity } from "react-admin";
 import { Form, useRecordContext } from "ra-core";
 import { useFormContext } from "react-hook-form";
 import { useEffect } from "react";
@@ -17,40 +17,22 @@ import { ProductTypeArrayInput } from "../product_type/components";
 // component restricting the selectable product types based on the
 // already selected system operator
 const ProductTypesInput = (props: { source: string; required: boolean }) => {
-  const formContext = useFormContext();
-
-  const systemOperatorID = formContext.watch("system_operator_id");
-
-  const { data: systemOperatorProductTypes } = useGetList(
-    "system_operator_product_type",
-    {
-      filter: systemOperatorID ? { system_operator_id: systemOperatorID } : {},
-    },
-  );
-
-  const filter = systemOperatorID
-    ? (pt: { id: number; name: string }) =>
-        systemOperatorProductTypes?.find(
-          (sopt: any) => sopt.product_type_id == pt.id,
-        ) != undefined
-    : () => false;
+  const { setValue, watch } = useFormContext();
+  const systemOperatorID = watch("system_operator_id");
+  const {
+    formState: { dirtyFields },
+  } = useFormContext();
+  const productTypeIdsDirty = dirtyFields.product_type_ids;
 
   // we need to filter the already selected product types
   // in cases when switching system operator
   useEffect(() => {
-    const currentProductTypeIds =
-      formContext.getValues("product_type_ids") || [];
-    const filteredIds = currentProductTypeIds.filter((id: number) => {
-      const productType = { id, name: "" };
-      return filter(productType);
-    });
-
-    if (filteredIds.length !== currentProductTypeIds.length) {
-      formContext.setValue("product_type_ids", filteredIds);
+    if (systemOperatorID && productTypeIdsDirty) {
+      setValue("product_type_ids", []);
     }
-  }, [systemOperatorID, filter, formContext]);
+  }, [productTypeIdsDirty, systemOperatorID, setValue]);
 
-  return <ProductTypeArrayInput filter={filter} {...props} />;
+  return <ProductTypeArrayInput systemOperatorId={undefined} {...props} />;
 };
 
 // common layout to create and edit pages
