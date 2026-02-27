@@ -1,0 +1,21 @@
+@startuml accounting-point-sync-incoming-event
+!theme plain
+
+title AP Sync - Incoming Event
+
+autonumber
+autoactivate on
+skinparam note {
+    BackgroundColor #FFFFBD
+}
+
+participant "Reciever" as REC
+database "AP" as AP
+database "AP <sub>" as APSUB
+database "AP Sync" as APS
+participant "AP Adapter" as APA
+
+APA -> REC: AP Updated (GSRN)
+return OK
+
+@enduml

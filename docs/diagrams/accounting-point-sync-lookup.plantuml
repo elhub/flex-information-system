@@ -1,7 +1,7 @@
 @startuml accounting-point-sync-lookup
 !theme plain
 
-title Controllable Unit (CU) Registration
+title AP Sync - Lookup
 
 autonumber
 autoactivate on
@@ -17,57 +17,48 @@ database "AP Sync" as APS
 participant "AP Adapter" as APA
 
 SP -> CUL: Lookup
-CUL -> APS: Lock (GSRN)
-return Result
 
+CUL -> APA: Get AP data
+return
+
+CUL -> AP: Insert AP\nON CONFLICT DO NOTHING\nCOMMIT
+' Something like https://stackoverflow.com/a/42217872 ?
+AP -> APS: Insert trigger\nversion 0\nlast_started_at = now
+return
+return Result (ap_id)
+
+CUL -> APS: BEGIN\nUpdate lock (ap_id)
 note right
-    SELECT FOR UPDATE NOWAIT
-    set last_started_at
+    SET LOCAL lock_timeout = '1s';
+    SELECT FOR UPDATE
     limit 1
-    COMMIT
 end note
+return Result (version)
 
-opt Empty - First time sync of the AP - No lock
-    CUL -> APA: Get AP data
-    return
-    CUL -> AP: Insert AP record
-    AP -> APS: Insert trigger
-    return
-    return Result
-    opt Success
-        CUL -> APSUB: Merge data
-        return
-    else Conflict - Another sync completed in the meantime
-        note over CUL
-            We can just go ahead with the
-            data we got from the AP adapter
-        end note
-    end
-
-else 1 row - Lock aquired
-    CUL -> APA: Get AP data
-    return
-    CUL -> AP: Update AP record
-    return
-    CUL -> APSUB: Merge data
-    return
-
-    CUL -> APS: Unlock (AP ID)
-    note right
-        * Set last_synced_at = now
-        * Set last_started_at = null
+opt 55P03 lock_not_available\nAnother sync in progress
+    note over CUL
+        This a edge case.
+        Return error and retry in caller.
     end note
-    return
-else  55P03 lock_not_available - Another sync in progress
-    note over APS
-        This a edge case - it is not that likely that
-        We should just go ahead with (possibly) stale data
-    end note
-    CUL -> AP: Select AP record
-    return
-    CUL -> APSUB: Select AP data
-    return
 end
+
+CUL -> AP: Update AP record
+note right of AP
+    Yes, even tho we might
+    have inserted above.
+    Just in case.
+end note
+return
+CUL -> APSUB: Merge data
+return
+
+CUL -> APS: Unlock (ap_id)
+note right
+    last_synced_at = now
+    last_started_at = null
+    version = version + 1
+end note
+return
 
 return: OK
 

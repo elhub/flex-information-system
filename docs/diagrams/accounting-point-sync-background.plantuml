@@ -1,0 +1,20 @@
+@startuml accounting-point-sync-background
+!theme plain
+
+title AP Sync - Background
+
+autonumber
+autoactivate on
+skinparam note {
+    BackgroundColor #FFFFBD
+}
+
+control "Scheduler" as SCH
+participant "Batch sync" as BS
+database "AP" as AP
+database "AP <sub>" as APSUB
+database "AP Sync" as APS
+participant "AP Adapter" as APA
+
+SCH -> BS: Trigger
+@enduml

@@ -77,6 +77,50 @@ happen ad hoc (lookup) and on a regular basis (background job).
 Data is fetched from the adapter and _merged_ into the FIS database
 directly in the `flex.accounting_point*` tables.
 
+There are a number of things that can happen concurrently that we need to take
+into account when doing the sync. These are:
+
+1. Multiple lookups, possibly on the same accounting point, on both new and
+   previously synced accounting points. Lookup must write to the database to be
+   able to return internal identifiers (AP and EU) to the caller.
+2. Incoming events that tell us that accounting points have been updated in the
+   datahub and should be synced.
+3. Multiple background syncs that are running on a schedule, from separate
+   workers/instances. These should pick up accounting points that we know have
+   been updated in source (priority) or have not been synced in a while, and
+   sync them.
+
+> [!NOTE]
+>
+> The design here does not take into account removal of accounting points. It is
+> not expected to happen on any time soon. Removal of accounting points from FIS
+> is only relevant if we need to delete data for privacy reasons, e.g. old data
+> that we no longer have a legal basis to keep or possibly due to data deletion
+> requests from data subjects. This is not expected to be a common occurrence
+> and will not be discussed in this document/design as of now.
+
+To enable this concurrent processing, we utilise a combination of [isolation
+levels](https://www.postgresql.org/docs/current/transaction-iso.html) and
+pessimistic locking. The locks are held on a separate locking table using
+different
+[clauses](https://www.postgresql.org/docs/16/sql-select.html#SQL-FOR-UPDATE-SHARE)
+and
+[modes](https://www.postgresql.org/docs/16/explicit-locking.html#LOCKING-ROWS)
+depending on the use case. We avoid deadlocks using
+`SET LOCAL lock_timeout = '1s'` and/or `NOWAIT|SKIP LOCKED`.
+
+1. `Update lock` - When actually writing updates to the database, to avoid
+   concurrent writes of the same accounting point. This lock is held for the
+   duration of the transaction/update. Lock timeouts are used to avoid deadlocks.
+2. `Selection lock` - When picking up accounting points to sync in the
+   background job, to avoid picking up the same accounting point in multiple
+   workers/instances. This uses a standard `SELECT FOR UPDATE SKIP LOCKED`
+   clause with CTE. This lock is held only for the duration of the selection
+   where we mark the accounting points as in progress.
+
+In addition to this, we use optimistic locking with a version column to detect
+races between lookups and background syncs.
+
 Since data is fetched per metering point, pessimistic locking must be done to
 avoid concurrent syncs of the same metering point. This is done with `SELECT FOR
 UPDATE SKIP LOCKED` semantics on the relevant accounting points in
@@ -100,3 +144,11 @@ This shows diagram tries to show how the synchronization process works.
 ### Lookup flow
 
 ![Accounting point internal lookup flow](../diagrams/accounting-point-sync-lookup.png)
+
+### Background sync flow
+
+![Accounting point sync background flow](../diagrams/accounting-point-sync-background.png)
+
+### Incoming events
+
+![Accounting point sync incoming events flow](../diagrams/accounting-point-sync-incoming-event.png)
