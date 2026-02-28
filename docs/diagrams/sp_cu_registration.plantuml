@@ -1,0 +1,72 @@
+
+@startuml sp_cu_registration
+' https://plantuml.com/activity-diagram-beta
+' This diagram shows what a SP must do when registering a CU (using the API).
+start
+:CU lookup;
+note left
+  CU lookup allows the SP to:
+  - Validate end user relation
+  - Check if CU exists or not
+  - Obtain surrogate identifiers
+
+  The SP is responsible for
+  ensuring that no duplicate
+  CUs are created.
+end note
+
+if (CU exists?) then (no)
+  :Create CU;
+  note left
+    A CU must be created with status
+    "new". It is the default.
+  end note
+else (yes)
+endif
+  :Create CU SP contract;
+  note left
+    The CU SP contract gives
+    the SP access to the CU.
+
+    The contracts are necessary
+    to facilitate access control
+    and switching of SPs on CUs.
+  end note
+  :Wait for contract to start;
+  note left
+    The contract start date
+    determines when the SP
+    can start managing the CU.
+
+    When creating a contract on
+    a new CU, make sure to set the
+    start date back in time.
+  end note
+  repeat
+    :Update CU data;
+    note left
+      Most data is provided when
+      creating the CU. This step is
+      necessary when switching SPs
+      on existing CUs.
+    end note
+    :Create/update TRs;
+    note left
+      Technical resources (TRs)
+      are the actual assets that are
+      controlled as a unit.
+    end note
+  repeat while (All data OK?) is (No) not (Yes)
+
+:Activate;
+note left
+  Activating the CU means changing
+  its status to "active".
+
+  This signals to the system operator
+  that the SP has completed the registration
+  and that grid validation can start.
+end note
+stop
+
+@enduml
