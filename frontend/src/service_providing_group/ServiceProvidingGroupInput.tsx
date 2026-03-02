@@ -1,54 +1,58 @@
-import { required, SimpleForm, TextInput, useGetIdentity } from "react-admin";
-import { InputStack, useCreateOrUpdate, PartyReferenceInput } from "../auth";
-import { Stack } from "@mui/material";
-import { Toolbar } from "../components/Toolbar";
+import { Form, useGetIdentity } from "ra-core";
 import { zServiceProvidingGroupCreateRequest } from "../generated-client/zod.gen";
-import { EnumInput } from "../components/enum";
-import { unTypedZodResolver } from "../zod";
+import { getFields, unTypedZodResolver } from "../zod";
+import { useCreateOrUpdate } from "../auth";
+import { FormContainer, Heading } from "../components/ui";
+import {
+  TextInput,
+  EnumInput,
+  PartyReferenceInput,
+  FormToolbar,
+} from "../components/EDS-ra/inputs";
 
-// common layout to create and edit pages
 export const ServiceProvidingGroupInput = () => {
   const createOrUpdate = useCreateOrUpdate();
-
   const { data: identity, isLoading: identityLoading } = useGetIdentity();
+
   if (identityLoading) return <>Loading...</>;
 
-  const is_service_provider = identity?.role == "flex_service_provider";
-  const record = is_service_provider
-    ? {
-        service_provider_id: identity?.partyID,
-      }
-    : {};
+  const isServiceProvider = identity?.role === "flex_service_provider";
+  const fields = getFields(zServiceProvidingGroupCreateRequest.shape);
 
   return (
-    <SimpleForm
-      defaultValues={record}
-      maxWidth={1280}
+    <Form
+      defaultValues={{
+        service_provider_id: identity?.partyID,
+      }}
       resolver={unTypedZodResolver(zServiceProvidingGroupCreateRequest)}
-      toolbar={<Toolbar />}
     >
-      <Stack direction="column" spacing={1}>
-        <PartyReferenceInput
-          source="service_provider_id"
-          label="field.service_providing_group.service_provider_id"
-          readOnly={is_service_provider}
-        />
-        <InputStack direction="row" flexWrap="wrap">
-          <TextInput source="name" label="field.service_providing_group.name" />
+      <FormContainer>
+        <Heading level={3} size="medium">
+          {createOrUpdate === "update"
+            ? "Edit Service Providing Group"
+            : "Create Service Providing Group"}
+        </Heading>
+
+        <div className="flex flex-col gap-3">
+          <PartyReferenceInput
+            {...fields.service_provider_id}
+            readOnly={isServiceProvider}
+          />
+          <TextInput {...fields.name} />
           <EnumInput
-            source="bidding_zone"
+            {...fields.bidding_zone}
             enumKey="service_providing_group.bidding_zone"
-            label="field.service_providing_group.bidding_zone"
-            validate={createOrUpdate == "update" ? required() : undefined}
+            required={createOrUpdate === "update"}
           />
           <EnumInput
-            source="status"
+            {...fields.status}
             enumKey="service_providing_group.status"
-            label="field.service_providing_group.status"
-            validate={createOrUpdate == "update" ? required() : undefined}
+            required={createOrUpdate === "update"}
           />
-        </InputStack>
-      </Stack>
-    </SimpleForm>
+        </div>
+
+        <FormToolbar />
+      </FormContainer>
+    </Form>
   );
 };
