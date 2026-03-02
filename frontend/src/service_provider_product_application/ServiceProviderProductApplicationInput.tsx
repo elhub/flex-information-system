@@ -32,7 +32,9 @@ const ProductTypesInput = (props: { source: string; required: boolean }) => {
     }
   }, [productTypeIdsDirty, systemOperatorID, setValue]);
 
-  return <ProductTypeArrayInput systemOperatorId={undefined} {...props} />;
+  return (
+    <ProductTypeArrayInput systemOperatorId={systemOperatorID} {...props} />
+  );
 };
 
 // common layout to create and edit pages
