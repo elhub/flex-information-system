@@ -73,7 +73,7 @@ running in the background alongside the web server.
 
 #### Transition to Kotlin
 
-We are moving the Go + PostgREST backend to a Ktor based Kotlin service. While
+We are moving the Go + PostgREST backend to a Ktor-based Kotlin service. While
 Go is a great choice for our use case, Kotlin aligns better with other teams at
 Elhub.
 
