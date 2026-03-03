@@ -34,10 +34,8 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          // Separate MUI components into their own chunk (icons tree-shake separately)
-          "mui-core": ["@mui/material"],
-          // Separate React Admin into its own chunk
-          "react-admin": ["react-admin", "ra-core"],
+          // Separate React Admin and MUI into a single chunk (they share dependencies)
+          "react-admin": ["react-admin", "ra-core", "@mui/material"],
           // Separate data provider
           "data-provider": ["@raphiniert/ra-data-postgrest"],
           // Separate query devtools (only for dev)
