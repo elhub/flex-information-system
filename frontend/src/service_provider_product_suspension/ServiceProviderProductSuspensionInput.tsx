@@ -1,11 +1,14 @@
-import { required, SimpleForm, useGetIdentity } from "react-admin";
-import { Typography, Stack } from "@mui/material";
-import { PartyReferenceInput, InputStack } from "../auth";
-import { Toolbar } from "../components/Toolbar";
-import { ProductTypeArrayInput } from "../product_type/components";
+import { useGetIdentity } from "react-admin";
+import { Form } from "ra-core";
+import { getFields, unTypedZodResolver } from "../zod";
 import { zServiceProviderProductSuspensionCreateRequest } from "../generated-client/zod.gen";
-import { unTypedZodResolver } from "../zod";
-import { EnumInput } from "../components/enum";
+import { FormContainer, Heading, VerticalSpace } from "../components/ui";
+import {
+  EnumInput,
+  FormToolbar,
+  PartyReferenceInput,
+} from "../components/EDS-ra/inputs";
+import { ProductTypeArrayInput } from "../product_type/components";
 
 export const ServiceProviderProductSuspensionInput = () => {
   const { data: identity, isLoading: identityLoading } = useGetIdentity();
@@ -13,47 +16,39 @@ export const ServiceProviderProductSuspensionInput = () => {
 
   const isSystemOperator = identity?.role == "flex_system_operator";
 
+  const fields = getFields(
+    zServiceProviderProductSuspensionCreateRequest.shape,
+  );
+
   return (
-    <SimpleForm
-      maxWidth={1280}
+    <Form
       resolver={unTypedZodResolver(
         zServiceProviderProductSuspensionCreateRequest,
       )}
-      toolbar={<Toolbar />}
     >
-      <Stack direction="column" spacing={1}>
-        <Typography variant="h6" gutterBottom>
+      <FormContainer>
+        <Heading level={3} size="medium">
           Basic information
-        </Typography>
-        <InputStack direction="row" flexWrap="wrap">
-          {!isSystemOperator && (
-            <PartyReferenceInput
-              source="procuring_system_operator_id"
-              label="field.service_provider_product_suspension.procuring_system_operator_id"
-              filter={{ type: "system_operator" }}
-            />
-          )}
+        </Heading>
+        <VerticalSpace size="small" />
+        {!isSystemOperator && (
           <PartyReferenceInput
-            source="service_provider_id"
-            label="field.service_provider_product_suspension.service_provider_id"
+            {...fields.procuring_system_operator_id}
+            filter={{ type: "system_operator" }}
           />
-          <ProductTypeArrayInput
-            source="product_type_ids"
-            label="field.service_provider_product_suspension.product_type_ids"
-          />
-        </InputStack>
-        <Typography variant="h6" gutterBottom>
+        )}
+        <PartyReferenceInput {...fields.service_provider_id} />
+        <ProductTypeArrayInput {...fields.product_type_ids} />
+        <Heading level={3} size="medium">
           Suspension details
-        </Typography>
-        <InputStack direction="row" flexWrap="wrap">
-          <EnumInput
-            source="reason"
-            enumKey="service_provider_product_suspension.reason"
-            label="field.service_provider_product_suspension.reason"
-            validate={required()}
-          />
-        </InputStack>
-      </Stack>
-    </SimpleForm>
+        </Heading>
+        <VerticalSpace size="small" />
+        <EnumInput
+          {...fields.reason}
+          enumKey="service_provider_product_suspension.reason"
+        />
+        <FormToolbar />
+      </FormContainer>
+    </Form>
   );
 };

@@ -72,7 +72,7 @@ export const BaseInput = ({
     <FormItem
       id={id}
       error={error}
-      inputProps={{ required: required, disabled: isDisabled }}
+      inputProps={{ required, disabled: isDisabled }}
       size="large"
     >
       <FlexDiv style={{ gap: "var(--eds-size-2)", alignItems: "center" }}>
