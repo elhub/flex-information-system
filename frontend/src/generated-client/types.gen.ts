@@ -6158,7 +6158,9 @@ export type CreateServiceProvidingGroupMembershipData = {
   /**
    * service_providing_group_membership
    */
-  body?: ServiceProvidingGroupMembershipCreateRequest;
+  body?:
+    | ServiceProvidingGroupMembershipCreateRequest
+    | Array<ServiceProvidingGroupMembershipCreateRequest>;
   path?: never;
   query?: never;
   url: "/service_providing_group_membership";

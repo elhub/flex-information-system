@@ -67,7 +67,7 @@ export const createServiceProvidingGroupResources = (
         }
         create={
           canCreate ? (
-            <Create redirect="list">
+            <Create redirect="edit">
               <ServiceProvidingGroupInput />
             </Create>
           ) : (
