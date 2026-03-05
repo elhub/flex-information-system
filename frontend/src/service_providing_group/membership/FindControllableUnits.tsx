@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Button, Loader, Table } from "../../components/ui";
-import { Checkbox } from "../../components/ui";
+import { Button, Checkbox, Loader } from "../../components/ui";
 import { IconPlus } from "@elhub/ds-icons";
 import {
   useAddMemberships,
   useControllableUnitsNotInSpg,
 } from "./useSpgMemberships";
+import { ColumnOf, SimpleTable } from "../../components/SimpleTable";
 
 type Props = {
   spgId: number;
@@ -40,59 +40,38 @@ export const FindControllableUnits = ({ spgId }: Props) => {
     });
   };
 
-  if (isLoading) return <Loader />;
+  const columns: ColumnOf<typeof availableCus>[] = [
+    { key: "name", header: "Name" },
+    { key: "meteringPointBusinessId", header: "Metering Point ID" },
+    {
+      key: "biddingZone",
+      header: "Price Area",
+      render: (v) => (v as string | undefined) ?? "—",
+    },
+    { key: "technicalResourceCount", header: "Nr. of Technical Resources" },
+    { key: "maximum_active_power", header: "Total Capacity (kW)" },
+    { key: "status", header: "Status" },
+  ];
 
-  if (!availableCus?.length) {
-    return (
-      <p className="text-sm text-gray-500">
-        No controllable units available to add.
-      </p>
-    );
-  }
+  if (isLoading) return <Loader />;
 
   return (
     <div className="flex flex-col gap-3">
-      <Table size="small">
-        <Table.Header>
-          <Table.Row>
-            <Table.ColumnHeader scope="col">
-              <Checkbox checked={allSelected} onChange={toggleSelectAll} />
-            </Table.ColumnHeader>
-            <Table.ColumnHeader scope="col">CU ID</Table.ColumnHeader>
-            <Table.ColumnHeader scope="col">Name</Table.ColumnHeader>
-            <Table.ColumnHeader scope="col">
-              Metering Point ID
-            </Table.ColumnHeader>
-            <Table.ColumnHeader scope="col">Price Area</Table.ColumnHeader>
-            <Table.ColumnHeader scope="col">
-              Nr. of Technical Resources
-            </Table.ColumnHeader>
-            <Table.ColumnHeader scope="col">
-              Total Capacity (kW)
-            </Table.ColumnHeader>
-            <Table.ColumnHeader scope="col">Status</Table.ColumnHeader>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {availableCus.map((cu) => (
-            <Table.Row key={cu.id}>
-              <Table.DataCell>
-                <Checkbox
-                  checked={selectedCuIds.includes(cu.id)}
-                  onChange={() => toggleCu(cu.id)}
-                />
-              </Table.DataCell>
-              <Table.DataCell>{cu.id}</Table.DataCell>
-              <Table.DataCell>{cu.name}</Table.DataCell>
-              <Table.DataCell>{cu.meteringPointBusinessId}</Table.DataCell>
-              <Table.DataCell>{cu.biddingZone ?? "—"}</Table.DataCell>
-              <Table.DataCell>{cu.technicalResourceCount}</Table.DataCell>
-              <Table.DataCell>{cu.maximum_active_power}</Table.DataCell>
-              <Table.DataCell>{cu.status}</Table.DataCell>
-            </Table.Row>
-          ))}
-        </Table.Body>
-      </Table>
+      <SimpleTable
+        size="small"
+        data={availableCus ?? []}
+        empty="No controllable units available to add."
+        columns={columns}
+        checkbox={{
+          render: (row) => (
+            <Checkbox
+              checked={selectedCuIds.includes(row.id)}
+              onChange={() => toggleCu(row.id)}
+            />
+          ),
+          header: <Checkbox checked={allSelected} onChange={toggleSelectAll} />,
+        }}
+      />
       <div>
         <Button
           icon={IconPlus}

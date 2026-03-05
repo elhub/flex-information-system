@@ -1,9 +1,13 @@
 import { ReactNode } from "react";
 import { BodyText, Table } from "./ui";
 
+export type ColumnOf<TList extends unknown[] | undefined> = Column<
+  NonNullable<TList>[number]
+>;
+
 export type Column<T> = {
   key: keyof T;
-  header: string;
+  header: ReactNode;
   render?: (value: T[keyof T], row: T) => ReactNode;
 };
 
@@ -13,6 +17,7 @@ type SimpleTableProps<T extends { id?: unknown }> = {
   size?: "medium" | "small";
   empty?: ReactNode;
   action?: { render: (row: T) => ReactNode; header?: string };
+  checkbox?: { render: (row: T) => ReactNode; header?: ReactNode };
 };
 
 export const SimpleTable = <T extends { id?: unknown }>({
@@ -21,6 +26,7 @@ export const SimpleTable = <T extends { id?: unknown }>({
   size,
   empty = "No results",
   action,
+  checkbox,
 }: SimpleTableProps<T>) => {
   if (!data.length) return <BodyText>{empty}</BodyText>;
 
@@ -28,6 +34,11 @@ export const SimpleTable = <T extends { id?: unknown }>({
     <Table size={size}>
       <Table.Header>
         <Table.Row>
+          {checkbox && (
+            <Table.ColumnHeader scope="col">
+              {checkbox.header ?? ""}
+            </Table.ColumnHeader>
+          )}
           {columns.map((col) => (
             <Table.ColumnHeader key={String(col.key)} scope="col">
               {col.header}
@@ -38,6 +49,9 @@ export const SimpleTable = <T extends { id?: unknown }>({
       <Table.Body>
         {data.map((row, i) => (
           <Table.Row key={String(row.id ?? i)}>
+            {checkbox && (
+              <Table.DataCell>{checkbox.render(row)}</Table.DataCell>
+            )}
             {columns.map((col) => (
               <Table.DataCell key={String(col.key)}>
                 {col.render
