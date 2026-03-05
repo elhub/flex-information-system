@@ -51,15 +51,31 @@ export const ExistingControllableUnitsTable = ({ spgId }: Props) => {
         empty="No controllable units in this group yet."
         action={{
           render: (row) => (
-            <DeleteButton membershipId={row.membershipId} spgId={spgId} />
+            <DeleteButton membershipId={row.membershipId!} spgId={spgId} />
           ),
           header: "",
         }}
         columns={[
           { key: "id", header: "CU ID" },
           { key: "name", header: "Name" },
+          {
+            key: "meteringPointBusinessId",
+            header: "Metering Point ID",
+          },
+          {
+            key: "biddingZone",
+            header: "Price Area",
+            render: (v) => (v as string | undefined) ?? "—",
+          },
+          {
+            key: "technicalResourceCount",
+            header: "Nr. of Technical Resources",
+          },
+          {
+            key: "maximum_active_power",
+            header: "Total Capacity (kW)",
+          },
           { key: "status", header: "Status" },
-          { key: "start_date", header: "Start date" },
         ]}
       />
     </>

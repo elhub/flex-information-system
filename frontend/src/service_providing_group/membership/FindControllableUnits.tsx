@@ -60,6 +60,17 @@ export const FindControllableUnits = ({ spgId }: Props) => {
             </Table.ColumnHeader>
             <Table.ColumnHeader scope="col">CU ID</Table.ColumnHeader>
             <Table.ColumnHeader scope="col">Name</Table.ColumnHeader>
+            <Table.ColumnHeader scope="col">
+              Metering Point ID
+            </Table.ColumnHeader>
+            <Table.ColumnHeader scope="col">Price Area</Table.ColumnHeader>
+            <Table.ColumnHeader scope="col">
+              Nr. of Technical Resources
+            </Table.ColumnHeader>
+            <Table.ColumnHeader scope="col">
+              Total Capacity (kW)
+            </Table.ColumnHeader>
+            <Table.ColumnHeader scope="col">Status</Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -72,7 +83,12 @@ export const FindControllableUnits = ({ spgId }: Props) => {
                 />
               </Table.DataCell>
               <Table.DataCell>{cu.id}</Table.DataCell>
-              <Table.DataCell>{cu.name ?? "—"}</Table.DataCell>
+              <Table.DataCell>{cu.name}</Table.DataCell>
+              <Table.DataCell>{cu.meteringPointBusinessId}</Table.DataCell>
+              <Table.DataCell>{cu.biddingZone ?? "—"}</Table.DataCell>
+              <Table.DataCell>{cu.technicalResourceCount}</Table.DataCell>
+              <Table.DataCell>{cu.maximum_active_power}</Table.DataCell>
+              <Table.DataCell>{cu.status}</Table.DataCell>
             </Table.Row>
           ))}
         </Table.Body>
