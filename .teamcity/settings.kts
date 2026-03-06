@@ -18,7 +18,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
     val imageRepoPrefix = "flex/information-system"
     val imageRepoFrontend = "$imageRepoPrefix-frontend"
     val imageRepoBackend = "$imageRepoPrefix-backend"
-    val imageRepoApi = "$imageRepoPrefix-kbackend"
+    val imageRepoKotlinBackend = "$imageRepoPrefix-kbackend"
 
 
     pipeline {
@@ -137,7 +137,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
                     workingDir = "kbackend"
                     source = Source.CommitSha
                     registrySettings = {
-                        repository = imageRepoApi
+                        repository = imageRepoKotlinBackend
                     }
                 }
 
