@@ -8,7 +8,7 @@ type Props = {
 };
 
 export const ServiceProvidingGroupMembershipTable = ({ spgId }: Props) => (
-  <Tabs defaultValue="existing">
+  <Tabs defaultValue="find">
     <Tabs.List>
       <Tabs.Tab label="Find controllable units" value="find" />
       <Tabs.Tab label="Members" value="existing" />

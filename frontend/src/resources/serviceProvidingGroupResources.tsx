@@ -1,4 +1,4 @@
-import { Resource, Create, ResourceContextProvider } from "react-admin";
+import { Resource, ResourceContextProvider } from "react-admin";
 import { Route } from "react-router-dom";
 import { JSX } from "react";
 import BookmarksIcon from "@mui/icons-material/Bookmarks";
@@ -8,7 +8,9 @@ import { EditRedirectPreviousPage, CreateRedirectPreviousPage } from "./shared";
 import { Permissions } from "../auth/permissions";
 import { ServiceProvidingGroupList } from "../service_providing_group/ServiceProvidingGroupList";
 import { ServiceProvidingGroupShow } from "../service_providing_group/ServiceProvidingGroupShow";
-import { ServiceProvidingGroupInput } from "../service_providing_group/ServiceProvidingGroupInput";
+import { ServiceProvidingGroupInput } from "../service_providing_group/input/ServiceProvidingGroupInput";
+import { ServiceProvidingGroupCreate } from "../service_providing_group/input/ServiceProvidingGroupCreate";
+import { ServiceProvidingGroupAddMembers } from "../service_providing_group/input/ServiceProvidingGroupAddMembers";
 import { ServiceProvidingGroupHistoryList } from "../service_providing_group/ServiceProvidingGroupHistoryList";
 import { ServiceProvidingGroupMembershipInput } from "../service_providing_group/membership/ServiceProvidingGroupMembershipInput";
 import { ServiceProvidingGroupMembershipShow } from "../service_providing_group/membership/ServiceProvidingGroupMembershipShow";
@@ -65,17 +67,13 @@ export const createServiceProvidingGroupResources = (
             (null as any)
           )
         }
-        create={
-          canCreate ? (
-            <Create redirect="edit">
-              <ServiceProvidingGroupInput />
-            </Create>
-          ) : (
-            (null as any)
-          )
-        }
+        create={canCreate ? <ServiceProvidingGroupCreate /> : (null as any)}
         recordRepresentation="name"
       >
+        <Route
+          path=":id/add-members"
+          element={<ServiceProvidingGroupAddMembers />}
+        />
         <Route
           path=":service_providing_group_id/history"
           element={<ServiceProvidingGroupHistoryList />}

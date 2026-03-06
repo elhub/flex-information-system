@@ -1,19 +1,16 @@
 import { Form, useGetIdentity, useRecordContext } from "ra-core";
-import { ServiceProvidingGroup } from "../generated-client";
-import { zServiceProvidingGroupCreateRequest } from "../generated-client/zod.gen";
-import { getFields, unTypedZodResolver } from "../zod";
-import { useCreateOrUpdate } from "../auth";
-import { Divider, FormContainer, Heading } from "../components/ui";
+import { ServiceProvidingGroup } from "../../generated-client";
+import { zServiceProvidingGroupCreateRequest } from "../../generated-client/zod.gen";
+import { getFields, unTypedZodResolver } from "../../zod";
+import { FormContainer, Heading } from "../../components/ui";
 import {
   TextInput,
   EnumInput,
   PartyReferenceInput,
   FormToolbar,
-} from "../components/EDS-ra/inputs";
-import { ServiceProvidingGroupMembershipTable } from "./membership/ServiceProvidingGroupMembershipTable";
+} from "../../components/EDS-ra/inputs";
 
 export const ServiceProvidingGroupInput = () => {
-  const createOrUpdate = useCreateOrUpdate();
   const { data: identity, isLoading: identityLoading } = useGetIdentity();
   const record = useRecordContext<ServiceProvidingGroup>();
 
@@ -33,9 +30,7 @@ export const ServiceProvidingGroupInput = () => {
       >
         <FormContainer>
           <Heading level={3} size="medium">
-            {createOrUpdate === "update"
-              ? "Edit Service Providing Group"
-              : "Create Service Providing Group"}
+            Edit Service Providing Group
           </Heading>
 
           <div className="flex flex-row center gap-3">
@@ -46,30 +41,17 @@ export const ServiceProvidingGroupInput = () => {
             <EnumInput
               {...fields.bidding_zone}
               enumKey="service_providing_group.bidding_zone"
-              required={createOrUpdate === "update"}
+              required
             />
-            {createOrUpdate === "update" && (
-              <EnumInput
-                {...fields.status}
-                enumKey="service_providing_group.status"
-                required
-              />
-            )}
+            <EnumInput
+              {...fields.status}
+              enumKey="service_providing_group.status"
+              required
+            />
             <FormToolbar className="flex-" />
           </div>
         </FormContainer>
       </Form>
-
-      <Divider />
-
-      {record?.id && (
-        <FormContainer>
-          <ServiceProvidingGroupMembershipTable
-            spgId={record.id}
-            biddingZone={record.bidding_zone}
-          />
-        </FormContainer>
-      )}
     </div>
   );
 };

@@ -5,6 +5,8 @@ import {
   TextField,
   useResourceContext,
 } from "react-admin";
+import { usePermissions, useRecordContext } from "ra-core";
+import { Link as RouterLink } from "react-router-dom";
 import { FieldStack } from "../auth";
 import { Typography, Stack } from "@mui/material";
 import {
@@ -20,11 +22,20 @@ import { IdentityField } from "../components/IdentityField";
 import { ServiceProvidingGroupGridSuspensionList } from "./grid_suspension/ServiceProvidingGroupGridSuspensionList";
 import { ServiceProvidingGroupProductSuspensionList } from "./product_suspension/ServiceProvidingGroupProductSuspensionList";
 import { EnumField } from "../components/enum";
+import { Button } from "../components/ui";
+import { IconUser } from "@elhub/ds-icons";
+import { Permissions } from "../auth/permissions";
 
 export const ServiceProvidingGroupShow = () => {
   const resource = useResourceContext()!;
+  const record = useRecordContext();
+  const { permissions } = usePermissions<Permissions>();
 
   const isHistory = resource.endsWith("_history");
+  const canManageMembers = permissions?.allow(
+    "service_providing_group_membership",
+    "create",
+  );
 
   return (
     <Show>
@@ -87,6 +98,16 @@ export const ServiceProvidingGroupShow = () => {
         </Stack>
         <ResourceHistoryButton />
         {!isHistory && <EventButton />}
+        {!isHistory && canManageMembers && record?.id && (
+          <Button
+            as={RouterLink}
+            to={`/service_providing_group/${record.id}/add-members`}
+            variant="invisible"
+            icon={IconUser}
+          >
+            Add / remove members
+          </Button>
+        )}
         {!isHistory && (
           <>
             <Typography variant="h6" gutterBottom>

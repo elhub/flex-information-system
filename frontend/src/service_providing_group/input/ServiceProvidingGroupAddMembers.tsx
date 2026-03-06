@@ -1,0 +1,44 @@
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { readServiceProvidingGroup } from "../../generated-client";
+import { throwOnError } from "../../util";
+import { Button, Heading, Loader, FormContainer } from "../../components/ui";
+import { ServiceProvidingGroupMembershipTable } from "../membership/ServiceProvidingGroupMembershipTable";
+import { ServiceProvidingGroupStepper } from "./ServiceProvidingGroupStepper";
+
+export const ServiceProvidingGroupAddMembers = () => {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const showStepper = searchParams.get("from") === "create";
+  const spgId = Number(id);
+
+  const { data: spg, isLoading } = useQuery({
+    queryKey: ["service_providing_group", spgId],
+    queryFn: () =>
+      readServiceProvidingGroup({ path: { id: spgId } }).then(throwOnError),
+    enabled: !!spgId,
+  });
+
+  if (isLoading) return <Loader />;
+
+  return (
+    <div className="flex flex-col gap-8">
+      {showStepper && <ServiceProvidingGroupStepper activeStep={2} />}
+      <FormContainer>
+        <Heading level={3} size="medium">
+          Add members{spg?.name ? ` to ${spg.name}` : ""}
+        </Heading>
+        <ServiceProvidingGroupMembershipTable spgId={spgId} />
+        <div className="mt-4">
+          <Button
+            variant="primary"
+            onClick={() => navigate(`/service_providing_group/${spgId}/show`)}
+          >
+            Done
+          </Button>
+        </div>
+      </FormContainer>
+    </div>
+  );
+};
