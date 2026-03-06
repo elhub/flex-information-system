@@ -458,10 +458,13 @@ openapi-to-md:
 
     echo "Generating markdown tables"
 
+    base=openapi/openapi-api-base.yml
+    resources=openapi/resources.yml
+
     for resource in $(find docs/resources/ -type f -not -name "index.md" -exec basename {} \; | cut -d. -f1); do
         echo ".. ${resource}"
 
-        table=$(cat openapi/resources.yml | .venv/bin/python3 local/scripts/openapi_to_markdown.py ${resource} )
+        table=$(.venv/bin/python3 local/scripts/openapi_to_markdown.py ${base} ${resources} ${resource} )
 
         api_link="../api/v0/index.html#/operations/list_$resource"
         docx_link="../download/${resource}.docx"

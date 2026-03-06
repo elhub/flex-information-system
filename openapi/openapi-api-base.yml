@@ -70,6 +70,163 @@ components:
         - "read:auth"
         - "use:auth"
         - "manage:auth"
+    category:
+      description: >-
+        Resource category classification. Derived from technologies.
+      format: text
+      type: string
+      enum:
+        - id: consumption
+          x-intl:
+            en: Consumption
+            nb: Forbruk
+            nn: Forbruk
+        - id: production
+          x-intl:
+            en: Production
+            nb: Produksjon
+            nn: Produksjon
+        - id: energy_storage
+          x-intl:
+            en: Energy storage
+            nb: Energilager
+            nn: Energilager
+    device_type:
+      description: >-
+        Type of device for technical resources.
+      format: text
+      type: string
+      enum:
+        - id: inverter
+          x-intl:
+            en: Inverter
+            nb: Inverter
+            nn: Inverter
+        - id: hvac
+          x-intl:
+            en: HVAC
+            nb: HVAC
+            nn: HVAC
+        - id: ev_charging_device
+          x-intl:
+            en: EV Charger
+            nb: Elbillader
+            nn: Elbilladar
+        - id: other
+          x-intl:
+            en: Other
+            nb: Annet
+            nn: Anna
+    technology:
+      description: >-
+        Technology classification using ltree path notation.
+        Technologies are hierarchical (e.g., hydropower.pumped, hvac.heat_pump).
+        Use the most specific technology applicable to the technical resource.
+      format: text
+      type: string
+      enum:
+        - id: hydropower
+          x-intl:
+            en: Hydropower
+            nb: Vannkraft
+            nn: Vasskraft
+        - id: hydropower.pumped
+          x-intl:
+            en: Hydropower - Pumped
+            nb: Vannkraft - Pumpe
+            nn: Vasskraft - Pumpe
+        - id: hydropower.run_of_river
+          x-intl:
+            en: Hydropower - Run-of-river
+            nb: Vannkraft - Elvekraft
+            nn: Vasskraft - Elvekraft
+        - id: heat_power_plant
+          x-intl:
+            en: Heat power plant
+            nb: Varmekraftverk
+            nn: Varmekraftverk
+        - id: heat_power_plant.chp
+          x-intl:
+            en: Heat power plant - Combined heat and power
+            nb: Varmekraftverk - Kraftvarme
+            nn: Varmekraftverk - Kraftvarme
+        - id: solar
+          x-intl:
+            en: Solar
+            nb: Sol
+            nn: Sol
+        - id: wind
+          x-intl:
+            en: Wind
+            nb: Vind
+            nn: Vind
+        - id: backup_generator
+          x-intl:
+            en: Backup generator
+            nb: Reservegenerator
+            nn: Reservegenerator
+        - id: hvac
+          x-intl:
+            en: HVAC
+            nb: HVAC
+            nn: HVAC
+        - id: hvac.heat
+          x-intl:
+            en: HVAC - Heat
+            nb: HVAC - Varme
+            nn: HVAC - Varme
+        - id: hvac.heat_pump
+          x-intl:
+            en: HVAC - Heat pump
+            nb: HVAC - Varmepumpe
+            nn: HVAC - Varmepumpe
+        - id: lighting
+          x-intl:
+            en: Lighting
+            nb: Belysning
+            nn: Belysning
+        - id: hot_water_heater
+          x-intl:
+            en: Hot water heater
+            nb: Varmtvannsbereder
+            nn: Varmtvannsbereder
+        - id: boiler
+          x-intl:
+            en: Boiler
+            nb: Kjele
+            nn: Kjele
+        # why "charging device"?
+        # https://www.gov.uk/government/publications/electric-vehicle-charging-device-statistics-information/electric-vehicle-charging-infrastructure-statistics-frequently-asked-questions
+        - id: ev_charging_device
+          x-intl:
+            en: Electric vehicle charger
+            nb: Elbillader
+            nn: Elbilladar
+        - id: ev_charging_device.v2g
+          x-intl:
+            en: Electric vehicle charger - Vehicle to grid
+            nb: Elbillader - Vehicle to grid
+            nn: Elbilladar - Vehicle to grid
+        - id: battery
+          x-intl:
+            en: Battery
+            nb: Batteri
+            nn: Batteri
+        - id: other.consumption
+          x-intl:
+            en: Other - Consumption
+            nb: Annet - Forbruk
+            nn: Anna - Forbruk
+        - id: other.production
+          x-intl:
+            en: Other - Production
+            nb: Annet - Produksjon
+            nn: Anna - Produksjon
+        - id: other.energy_storage
+          x-intl:
+            en: Other - Energy storage
+            nb: Annet - Energilager
+            nn: Anna - Energilager
     controllable_unit_lookup_request:
       summary: Controllable unit lookup
       description: Request schema for controllable unit lookup operations
@@ -176,15 +333,56 @@ components:
                       format: text
                       type: string
                       example: "Battery Unit A"
-                    details:
+                    technologies:
                       description: >-
-                        Additional details about the technical resource.
+                        Technologies of the technical resource.
+                      type: array
+                      items:
+                        $ref: "#/components/schemas/technology"
+                      example: ['solar', 'battery']
+                    categories:
+                      description: >-
+                        Categories derived from the technologies.
+                      type: array
+                      items:
+                        $ref: "#/components/schemas/category"
+                      example: ['production', 'energy_storage']
+                    maximum_active_power:
+                      description: >-
+                        Maximum continuous active power of the technical resource in kilowatts.
+                      format: decimal
+                      type: number
+                      example: 120.0
+                    device_type:
+                      description: The type of device.
+                      allOf:
+                        - $ref: "#/components/schemas/device_type"
+                      nullable: true
+                      example: 'inverter'
+                    device_make:
+                      description: The manufacturer of the device.
                       format: text
                       type: string
-                      example: "16A"
+                      nullable: true
+                      example: 'SolarEdge'
+                    device_model:
+                      description: The model of the device.
+                      format: text
+                      type: string
+                      nullable: true
+                      example: 'SE10K-RWS'
+                    device_unique_identifier:
+                      description: Unique identifier of the device.
+                      format: text
+                      type: string
+                      nullable: true
+                      example: 'SE10K123456789'
                   required:
                     - id
                     - name
+                    - technologies
+                    - categories
+                    - maximum_active_power
             required:
               - id
               - business_id
