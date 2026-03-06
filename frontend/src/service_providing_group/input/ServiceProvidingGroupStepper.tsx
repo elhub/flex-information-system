@@ -11,9 +11,9 @@ export const ServiceProvidingGroupStepper = ({
   activeStep: number;
 }) => (
   <Stepper
-    className="fit-content"
     steps={STEPS}
     activeStep={activeStep}
     orientation="horizontal"
   />
+);
 );
