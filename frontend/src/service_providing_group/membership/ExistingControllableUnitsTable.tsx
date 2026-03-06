@@ -6,8 +6,14 @@ import {
 import { ColumnOf, SimpleTable } from "../../components/SimpleTable";
 import { useConfirmAction } from "../../components/ConfirmAction";
 
+type ControllableUnitsInSpg = NonNullable<
+  ReturnType<typeof useControllableUnitsInSpg>["data"]
+>;
+
 type Props = {
   spgId: number;
+  controllableUnits: ControllableUnitsInSpg | undefined;
+  isLoading: boolean;
 };
 
 const DeleteButton = ({
@@ -37,10 +43,11 @@ const DeleteButton = ({
   );
 };
 
-export const ExistingControllableUnitsTable = ({ spgId }: Props) => {
-  const { data: controllableUnits, isLoading } =
-    useControllableUnitsInSpg(spgId);
-
+export const ExistingControllableUnitsTable = ({
+  spgId,
+  controllableUnits,
+  isLoading,
+}: Props) => {
   const columns: ColumnOf<typeof controllableUnits>[] = [
     { key: "id", header: "CU ID" },
     { key: "name", header: "Name" },

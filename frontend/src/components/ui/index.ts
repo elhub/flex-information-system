@@ -40,6 +40,7 @@ import {
 import FormContainer from "./formContainer";
 import { Datepicker } from "./datepicker/Datepicker";
 import { DateTimePicker } from "./datetimepicker/DateTimePicker";
+import { Stepper } from "./stepper/Stepper";
 
 export {
   Alert,
@@ -74,6 +75,7 @@ export {
   Select,
   SelectContent,
   SelectItem,
+  Stepper,
   Table,
   Tabs,
   Tag,

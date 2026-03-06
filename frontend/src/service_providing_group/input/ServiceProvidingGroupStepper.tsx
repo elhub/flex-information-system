@@ -10,5 +10,10 @@ export const ServiceProvidingGroupStepper = ({
 }: {
   activeStep: number;
 }) => (
-  <Stepper steps={STEPS} activeStep={activeStep} orientation="horizontal" />
+  <Stepper
+    className="fit-content"
+    steps={STEPS}
+    activeStep={activeStep}
+    orientation="horizontal"
+  />
 );
