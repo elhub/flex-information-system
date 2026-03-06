@@ -751,12 +751,7 @@ func (data *api) postgRESTHandler(w http.ResponseWriter, req *http.Request) {
 	// ensure singular when object is created
 	if req.Method == http.MethodPost || req.Method == http.MethodPatch {
 		// https://postgrest.org/en/v11/references/resource_representation.html#singular-or-plural
-		body, _ := io.ReadAll(req.Body)
-		req.Body = io.NopCloser(bytes.NewReader(body))
-
-		if len(body) > 0 && body[0] != '[' {
-			header.Set("Accept", "application/vnd.pgrst.object+json")
-		}
+		header.Set("Accept", "application/vnd.pgrst.object+json")
 	}
 
 	// ensure that object is returned on insert and update
