@@ -31,7 +31,9 @@ flexibility structure, see [Conceptual Model and Terminology](../concepts/concep
 
 ## Validation Rules
 
-No validation rules.
+| Validation rule key | Validation rule                                                                        | Status |
+|---------------------|----------------------------------------------------------------------------------------|--------|
+| TR-VAL001           | `device_make` is required if `device_model` or `device_unique_identifier` is provided. | TODO   |
 
 ## Notifications
 
