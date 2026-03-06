@@ -3,20 +3,27 @@
 """Generate Markdown tables to document the resource fields, from the YAML resource data file."""
 
 import yaml
-import sys
 import j2
 
 import tabulate as t
 import argparse
 from typing import NamedTuple
 
-doc: dict = yaml.safe_load(sys.stdin)
 
 parser = argparse.ArgumentParser(
     description="Generate a markdown table from an OpenAPI schema"
 )
+parser.add_argument("base", help="The base OpenAPI schema file")
+parser.add_argument("resources", help="The OpenAPI resources file")
 parser.add_argument("resource", help="The resource to generate the table for")
 args = parser.parse_args()
+
+with open(args.base) as f:
+    base = yaml.safe_load(f)
+
+with open(args.resources) as f:
+    resources = yaml.safe_load(f)
+
 resource = args.resource
 
 
@@ -46,13 +53,15 @@ audit_fields = {
 
 if resource.endswith("_comment"):
     base_resource = next(
-        r for r in doc["resources"] if r["id"] == resource.removesuffix("_comment")
+        r
+        for r in resources["resources"]
+        if r["id"] == resource.removesuffix("_comment")
     )
     yaml_resource = yaml.safe_load(
         j2.template_str(base_resource, "comment_resource.j2.yml"),
     )["data"]
 else:
-    yaml_resource = next(r for r in doc["resources"] if r["id"] == resource)
+    yaml_resource = next(r for r in resources["resources"] if r["id"] == resource)
 properties = yaml_resource["properties"]
 if yaml_resource.get("audit"):
     properties = {**properties, **audit_fields}
@@ -90,6 +99,15 @@ for field, prop in properties.items():
     if prop.get("type") == "array":
         items_format = prop["items"].get("format")
         format += "<br/>Array" + (f" of {items_format}" if items_format else "")
+
+        if prop["items"].get("$ref"):
+            # This is a reference to the base file enums
+            ref_name = prop["items"]["$ref"].split("/")[-1]
+            enum = base["components"]["schemas"][ref_name]
+            format += "<br/>One of: "
+            format += ", ".join(
+                [f"`{e['id'] if 'id' in e else e}`" for e in enum["enum"]]
+            )
 
     if default:
         format += f"<br/>Default: `{prop['default']}`"
