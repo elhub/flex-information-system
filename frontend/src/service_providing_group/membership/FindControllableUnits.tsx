@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { useNotify } from "ra-core";
-import { Button, Checkbox, Loader } from "../../components/ui";
+import { Alert, Button, Checkbox, Loader } from "../../components/ui";
 import { IconPlus } from "@elhub/ds-icons";
 import {
   useAddMemberships,
@@ -14,7 +13,7 @@ type Props = {
 
 export const FindControllableUnits = ({ spgId }: Props) => {
   const [selectedCuIds, setSelectedCuIds] = useState<number[]>([]);
-  const notify = useNotify();
+  const [failedCUs, setFailedCUs] = useState<number[]>([]);
 
   const { data: availableCus, isLoading } = useControllableUnitsNotInSpg(spgId);
   const { mutate: addMemberships, isPending: isAdding } =
@@ -38,14 +37,10 @@ export const FindControllableUnits = ({ spgId }: Props) => {
 
   const handleAdd = () => {
     addMemberships(selectedCuIds, {
-      onSuccess: () => setSelectedCuIds([]),
-      onError: (error) => {
-        notify(
-          error instanceof Error
-            ? error.message
-            : "Failed to add controllable units",
-          { type: "error" },
-        );
+      // This always succeeds since its a promise.allSettled in the mutation
+      onSuccess: (result) => {
+        setFailedCUs(result.failed);
+        setSelectedCuIds([]);
       },
     });
   };
@@ -67,6 +62,12 @@ export const FindControllableUnits = ({ spgId }: Props) => {
 
   return (
     <div className="flex flex-col gap-3">
+      {failedCUs.length > 0 && (
+        <Alert variant="error">
+          {failedCUs.length} controllable unit{failedCUs.length > 1 ? "s" : ""}{" "}
+          failed to add
+        </Alert>
+      )}
       <SimpleTable
         size="small"
         data={availableCus ?? []}

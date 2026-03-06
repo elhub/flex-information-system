@@ -147,20 +147,30 @@ export const useAddMemberships = (spgId: number) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (cuIds: number[]) =>
-      createServiceProvidingGroupMembership({
-        body: cuIds.map((controllable_unit_id) => ({
-          controllable_unit_id,
-          service_providing_group_id: spgId,
-          valid_from: set(new Date(), {
-            hours: 0,
-            minutes: 0,
-            seconds: 0,
-            milliseconds: 0,
-          }).toISOString(),
-        })),
-      }).then(throwOnError),
-    onSuccess: () => {
+    mutationFn: async (cuIds: number[]) => {
+      const results = await Promise.allSettled(
+        cuIds.map((controllable_unit_id) =>
+          createServiceProvidingGroupMembership({
+            body: {
+              controllable_unit_id,
+              service_providing_group_id: spgId,
+              valid_from: set(new Date(), {
+                hours: 0,
+                minutes: 0,
+                seconds: 0,
+                milliseconds: 0,
+              }).toISOString(),
+            },
+          }).then(throwOnError),
+        ),
+      );
+
+      return {
+        succeeded: cuIds.filter((_, i) => results[i].status === "fulfilled"),
+        failed: cuIds.filter((_, i) => results[i].status === "rejected"),
+      };
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: controllableUnitsInSpgQueryKey(spgId),
       });
