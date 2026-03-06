@@ -1,0 +1,26 @@
+config:
+  validation: true
+
+style:
+  MaxLineLength:
+    maxLineLength: 160
+    excludeRawStrings: true
+  CascadingCallWrapping:
+    active: false
+  MultilineRawStringIndentation:
+    active: false
+  ReturnCount:
+    active: false
+
+complexity:
+  active: true
+  TooManyFunctions:
+    active: true
+    thresholdInFiles: 20
+  LongMethod:
+    active: true
+    threshold: 120
+  LongParameterList:
+    active: true
+    functionThreshold: 12
+    constructorThreshold: 12

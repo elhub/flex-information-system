@@ -9,6 +9,8 @@ import no.elhub.devxp.build.configuration.pipeline.jobs.liquiBuild
 import no.elhub.devxp.build.configuration.pipeline.jobs.makeVerify
 import no.elhub.devxp.build.configuration.pipeline.jobs.npmVerify
 import no.elhub.devxp.build.configuration.pipeline.jobs.common.Source
+import no.elhub.devxp.build.configuration.pipeline.jobs.gradleJib
+import no.elhub.devxp.build.configuration.pipeline.jobs.gradleVerify
 
 elhubProject(Group.FLEX, "flex-information-system") {
 
@@ -16,6 +18,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
     val imageRepoPrefix = "flex/information-system"
     val imageRepoFrontend = "$imageRepoPrefix-frontend"
     val imageRepoBackend = "$imageRepoPrefix-backend"
+    val imageRepoKotlinBackend = "$imageRepoPrefix-kbackend"
 
 
     pipeline {
@@ -57,7 +60,8 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         source = Source.CommitSha
                         isMonoRepo = true
                         autoMerge = true
-                    }.triggerOnVcsChange { triggerRules = """
+                    }.triggerOnVcsChange {
+                        triggerRules = """
                                 -:*
                                 +:backend/**
                                 +:db/**
@@ -70,7 +74,8 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         projectName = "fis-backend"
                         source = Source.CommitSha
                         isMonoRepo = true
-                    }.triggerOnVcsChange { triggerRules = """
+                    }.triggerOnVcsChange {
+                        triggerRules = """
                                 -:*
                                 +:backend/**
                                 +:db/**
@@ -120,6 +125,52 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         source = Source.CommitSha
                         isMonoRepo = true
                     }.triggerOnVcsChange { triggerRules = "+:frontend/**" }
+                }
+            }
+            sequential {
+                gradleVerify {
+                    workingDir = "kbackend"
+                    enablePublishMetrics = true
+                }
+
+                gradleJib {
+                    workingDir = "kbackend"
+                    source = Source.CommitSha
+                    registrySettings = {
+                        repository = imageRepoKotlinBackend
+                    }
+                }
+
+                parallel {
+                    gitOps {
+                        buildNameSuffix = "kbackend test"
+                        clusters = setOf(KubeCluster.TEST9)
+                        gitOpsRepository = gitOpsRepo
+                        projectName = "flex-kbackend"
+                        source = Source.CommitSha
+                        isMonoRepo = true
+                        autoMerge = true
+                    }.triggerOnVcsChange {
+                        triggerRules = """
+                            -:*
+                            +:kbackend/**
+                        """.trimIndent()
+                    }
+
+                    gitOps {
+                        buildNameSuffix = "kbackend euro"
+                        clusters = setOf(KubeCluster.MARKET_TRIAL_1)
+                        gitOpsRepository = gitOpsRepo
+                        projectName = "flex-kbackend"
+                        source = Source.CommitSha
+                        isMonoRepo = true
+                        autoMerge = false
+                    }.triggerOnVcsChange {
+                        triggerRules = """
+                            -:*
+                            +:kbackend/**
+                        """.trimIndent()
+                    }
                 }
             }
         }
