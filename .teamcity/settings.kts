@@ -151,13 +151,13 @@ elhubProject(Group.FLEX, "flex-information-system") {
                     }.triggerOnVcsChange {
                         triggerRules = """
                             -:*
-                            +:adapter/**
+                            +:api/**
                         """.trimIndent()
                     }
 
                     gitOps {
-                        buildNameSuffix = "api test"
-                        clusters = setOf(KubeCluster.TEST9)
+                        buildNameSuffix = "api euro"
+                        clusters = setOf(KubeCluster.MARKET_TRIAL_1)
                         gitOpsRepository = gitOpsRepo
                         projectName = "flex-api"
                         source = Source.CommitSha
@@ -166,7 +166,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
                     }.triggerOnVcsChange {
                         triggerRules = """
                             -:*
-                            +:adapter/**
+                            +:api/**
                         """.trimIndent()
                     }
                 }
