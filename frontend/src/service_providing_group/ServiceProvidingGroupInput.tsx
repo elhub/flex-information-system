@@ -48,11 +48,13 @@ export const ServiceProvidingGroupInput = () => {
               enumKey="service_providing_group.bidding_zone"
               required={createOrUpdate === "update"}
             />
-            <EnumInput
-              {...fields.status}
-              enumKey="service_providing_group.status"
-              required={createOrUpdate === "update"}
-            />
+            {createOrUpdate === "update" && (
+              <EnumInput
+                {...fields.status}
+                enumKey="service_providing_group.status"
+                required
+              />
+            )}
             <FormToolbar className="flex-" />
           </div>
         </FormContainer>

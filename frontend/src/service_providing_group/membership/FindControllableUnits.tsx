@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNotify } from "ra-core";
 import { Button, Checkbox, Loader } from "../../components/ui";
 import { IconPlus } from "@elhub/ds-icons";
 import {
@@ -13,6 +14,7 @@ type Props = {
 
 export const FindControllableUnits = ({ spgId }: Props) => {
   const [selectedCuIds, setSelectedCuIds] = useState<number[]>([]);
+  const notify = useNotify();
 
   const { data: availableCus, isLoading } = useControllableUnitsNotInSpg(spgId);
   const { mutate: addMemberships, isPending: isAdding } =
@@ -37,6 +39,14 @@ export const FindControllableUnits = ({ spgId }: Props) => {
   const handleAdd = () => {
     addMemberships(selectedCuIds, {
       onSuccess: () => setSelectedCuIds([]),
+      onError: (error) => {
+        notify(
+          error instanceof Error
+            ? error.message
+            : "Failed to add controllable units",
+          { type: "error" },
+        );
+      },
     });
   };
 
