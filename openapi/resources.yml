@@ -130,7 +130,7 @@ resources:
           en: Regulation direction
           nb: Reguleringsretning
           nn: Reguleringsretning
-      maximum_active_power:
+      maximum_active_power_(kW):
         description: >-
           Maximum continuous active power that the controllable unit can produce
           or consume, i.e. deliver for balancing and congestion services, in kilowatts.
@@ -155,7 +155,7 @@ resources:
           en: Small
           nb: Liten
           nn: Liten
-      minimum_duration:
+      minimum_duration_(s):
         description: >-
           The minimum activation duration in seconds.
         format: bigint
@@ -167,7 +167,7 @@ resources:
           en: Minimum duration
           nb: Minimumsvarighet
           nn: Minimumsvarigheit
-      maximum_duration:
+      maximum_duration_(s):
         description: >-
           The maximum activation duration in seconds.
         format: bigint
@@ -179,7 +179,7 @@ resources:
           en: Maximum duration
           nb: Maksimumsvarighet
           nn: Maksimumsvarigheit
-      recovery_duration:
+      recovery_duration_(s):
         description: >-
           The minimum recovery duration between activations in seconds.
         format: bigint
@@ -191,7 +191,7 @@ resources:
           en: Recovery duration
           nb: Gjenopprettingsvarighet
           nn: Gjenopprettingsvarigheit
-      ramp_rate:
+      ramp_rate_(kW/min):
         description: >-
           The rate of power per unit of time to reach empty or full power
           for the controllable unit, in kilowatts per minute.
@@ -2894,7 +2894,7 @@ resources:
           en: Status
           nb: Status
           nn: Status
-      maximum_active_power:
+      requested_prequalified_power_(kW):
         description: The maximum active power applied for, in kilowatts.
         format: decimal
         type: number
