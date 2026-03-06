@@ -5,7 +5,6 @@ import { useControllableUnitsInSpg } from "./useSpgMemberships";
 
 type Props = {
   spgId: number;
-  biddingZone?: string;
 };
 
 export const ServiceProvidingGroupMembershipTable = ({ spgId }: Props) => {

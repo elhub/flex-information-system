@@ -11,7 +11,8 @@ import {
   readAccountingPoint,
 } from "../../generated-client";
 import { throwOnError } from "../../util";
-import { set } from "date-fns";
+import { startOfDay } from "date-fns";
+import { TZDate } from "@date-fns/tz";
 
 const fetchCurrentBiddingZone = async (
   accountingPointId: number,
@@ -28,6 +29,8 @@ const fetchCurrentBiddingZone = async (
 
   const record = results[0];
   if (!record) return undefined;
+  if (record.valid_to && new Date(record.valid_to) < new Date())
+    return undefined;
 
   return record;
 };
@@ -65,7 +68,7 @@ const fetchControllableUnitsInSpg = async (spgId: number) => {
     return [];
   }
 
-  const membershipsById = Object.fromEntries(
+  const membershipsById = new Map(
     memberships.map((m) => [m.controllable_unit_id, m.id]),
   );
 
@@ -77,7 +80,7 @@ const fetchControllableUnitsInSpg = async (spgId: number) => {
 
   return Promise.all(
     controllableUnits.map((cu) =>
-      enrichControllableUnit(cu, membershipsById[cu.id]),
+      enrichControllableUnit(cu, membershipsById.get(cu.id)),
     ),
   );
 };
@@ -87,18 +90,17 @@ const fetchControllableUnitsNotInSpg = async (spgId: number) => {
     query: { service_providing_group_id: "eq." + spgId },
   }).then(throwOnError);
 
-  const membershipsById = Object.fromEntries(
-    memberships.map((m) => [m.controllable_unit_id, m.id]),
-  );
+  const memberCuIds = memberships.map((m) => m.controllable_unit_id);
+
+  const query =
+    memberCuIds.length > 0 ? { id: `not.in.(${memberCuIds.join(",")})` } : {};
 
   const controllableUnits = await listControllableUnit({
-    query: { id: `not.in.(${Object.keys(membershipsById).join(",")})` },
+    query,
   }).then(throwOnError);
 
   return Promise.all(
-    controllableUnits.map((cu) =>
-      enrichControllableUnit(cu, membershipsById[cu.id]),
-    ),
+    controllableUnits.map((cu) => enrichControllableUnit(cu, undefined)),
   );
 };
 
@@ -123,6 +125,7 @@ export const useControllableUnitsNotInSpg = (spgId: number) =>
   useQuery({
     queryKey: controllableUnitsNotInSpgQueryKey(spgId),
     queryFn: () => fetchControllableUnitsNotInSpg(spgId),
+    enabled: !!spgId,
   });
 
 export const useRemoveMembership = (spgId: number) => {
@@ -154,12 +157,9 @@ export const useAddMemberships = (spgId: number) => {
             body: {
               controllable_unit_id,
               service_providing_group_id: spgId,
-              valid_from: set(new Date(), {
-                hours: 0,
-                minutes: 0,
-                seconds: 0,
-                milliseconds: 0,
-              }).toISOString(),
+              valid_from: startOfDay(
+                new TZDate(new Date(), "Europe/Oslo"),
+              ).toISOString(),
             },
           }).then(throwOnError),
         ),
