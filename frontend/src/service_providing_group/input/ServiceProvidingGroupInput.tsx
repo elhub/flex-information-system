@@ -29,7 +29,7 @@ export const ServiceProvidingGroupInput = () => {
           </Heading>
           <div className="flex flex-row center gap-3">
             <ServiceProvidingGroupFields isEdit />
-            <FormToolbar className="flex-" />
+            <FormToolbar />
           </div>
         </FormContainer>
       </Form>
