@@ -130,7 +130,7 @@ resources:
           en: Regulation direction
           nb: Reguleringsretning
           nn: Reguleringsretning
-      maximum_active_power_(kW):
+      maximum_active_power:
         description: >-
           Maximum continuous active power that the controllable unit can produce
           or consume, i.e. deliver for balancing and congestion services, in kilowatts.
@@ -155,7 +155,7 @@ resources:
           en: Small
           nb: Liten
           nn: Liten
-      minimum_duration_(s):
+      minimum_duration:
         description: >-
           The minimum activation duration in seconds.
         format: bigint
@@ -167,7 +167,7 @@ resources:
           en: Minimum duration
           nb: Minimumsvarighet
           nn: Minimumsvarigheit
-      maximum_duration_(s):
+      maximum_duration:
         description: >-
           The maximum activation duration in seconds.
         format: bigint
@@ -179,7 +179,7 @@ resources:
           en: Maximum duration
           nb: Maksimumsvarighet
           nn: Maksimumsvarigheit
-      recovery_duration_(s):
+      recovery_duration:
         description: >-
           The minimum recovery duration between activations in seconds.
         format: bigint
@@ -191,7 +191,7 @@ resources:
           en: Recovery duration
           nb: Gjenopprettingsvarighet
           nn: Gjenopprettingsvarigheit
-      ramp_rate_(kW/min):
+      ramp_rate:
         description: >-
           The rate of power per unit of time to reach empty or full power
           for the controllable unit, in kilowatts per minute.
@@ -2894,7 +2894,7 @@ resources:
           en: Status
           nb: Status
           nn: Status
-      requested_prequalified_power_(kW):
+      maximum_active_power:
         description: The maximum active power applied for, in kilowatts.
         format: decimal
         type: number
@@ -2903,7 +2903,7 @@ resources:
         multipleOf: 0.001
         example: 150.5
         x-intl:
-          en: Maximum active power
+          en: Applied-for active power
           nb: Maksimal aktiv effekt
           nn: Maksimal aktiv effekt
       additional_information:
