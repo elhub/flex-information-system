@@ -2990,12 +2990,7 @@ export const zListServiceProvidingGroupMembershipResponse = z.union([
 ]);
 
 export const zCreateServiceProvidingGroupMembershipData = z.object({
-  body: z
-    .union([
-      zServiceProvidingGroupMembershipCreateRequest,
-      z.array(zServiceProvidingGroupMembershipCreateRequest),
-    ])
-    .optional(),
+  body: zServiceProvidingGroupMembershipCreateRequest.optional(),
   path: z.never().optional(),
   query: z.never().optional(),
 });
