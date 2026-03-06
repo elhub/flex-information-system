@@ -1,14 +1,10 @@
 import { Form, useGetIdentity, useRecordContext } from "ra-core";
 import { ServiceProvidingGroup } from "../../generated-client";
 import { zServiceProvidingGroupCreateRequest } from "../../generated-client/zod.gen";
-import { getFields, unTypedZodResolver } from "../../zod";
+import { unTypedZodResolver } from "../../zod";
 import { FormContainer, Heading } from "../../components/ui";
-import {
-  TextInput,
-  EnumInput,
-  PartyReferenceInput,
-  FormToolbar,
-} from "../../components/EDS-ra/inputs";
+import { FormToolbar } from "../../components/EDS-ra/inputs";
+import { ServiceProvidingGroupFields } from "./ServiceProvidingGroupFields";
 
 export const ServiceProvidingGroupInput = () => {
   const { data: identity, isLoading: identityLoading } = useGetIdentity();
@@ -17,7 +13,6 @@ export const ServiceProvidingGroupInput = () => {
   if (identityLoading) return <>Loading...</>;
 
   const isServiceProvider = identity?.role === "flex_service_provider";
-  const fields = getFields(zServiceProvidingGroupCreateRequest.shape);
 
   return (
     <div className="flex flex-col gap-8">
@@ -32,22 +27,8 @@ export const ServiceProvidingGroupInput = () => {
           <Heading level={3} size="medium">
             Edit Service Providing Group
           </Heading>
-
           <div className="flex flex-row center gap-3">
-            {!isServiceProvider && (
-              <PartyReferenceInput {...fields.service_provider_id} />
-            )}
-            <TextInput {...fields.name} />
-            <EnumInput
-              {...fields.bidding_zone}
-              enumKey="service_providing_group.bidding_zone"
-              required
-            />
-            <EnumInput
-              {...fields.status}
-              enumKey="service_providing_group.status"
-              required
-            />
+            <ServiceProvidingGroupFields isEdit />
             <FormToolbar className="flex-" />
           </div>
         </FormContainer>

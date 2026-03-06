@@ -23,22 +23,20 @@ export const ServiceProvidingGroupAddMembers = () => {
   if (isLoading) return <Loader />;
 
   return (
-    <div className="flex flex-col gap-8">
+    <FormContainer>
       {showStepper && <ServiceProvidingGroupStepper activeStep={2} />}
-      <FormContainer>
-        <Heading level={3} size="medium">
-          Add members{spg?.name ? ` to ${spg.name}` : ""}
-        </Heading>
-        <ServiceProvidingGroupMembershipTable spgId={spgId} />
-        <div className="mt-4">
-          <Button
-            variant="primary"
-            onClick={() => navigate(`/service_providing_group/${spgId}/show`)}
-          >
-            Done
-          </Button>
-        </div>
-      </FormContainer>
-    </div>
+      <Heading level={3} size="medium">
+        Add members{spg?.name ? ` to ${spg.name}` : ""}
+      </Heading>
+      <ServiceProvidingGroupMembershipTable spgId={spgId} />
+      <div className="mt-4">
+        <Button
+          variant="primary"
+          onClick={() => navigate(`/service_providing_group/${spgId}/show`)}
+        >
+          Done
+        </Button>
+      </div>
+    </FormContainer>
   );
 };

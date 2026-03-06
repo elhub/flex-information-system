@@ -1,17 +1,12 @@
-import { Form, useGetIdentity } from "ra-core";
-import { useNotify } from "ra-core";
+import { Form, useGetIdentity, useNotify } from "ra-core";
 import { useNavigate } from "react-router-dom";
 import { createServiceProvidingGroup } from "../../generated-client";
 import { zServiceProvidingGroupCreateRequest } from "../../generated-client/zod.gen";
-import { getFields, unTypedZodResolver } from "../../zod";
+import { unTypedZodResolver } from "../../zod";
 import { FormContainer, Heading } from "../../components/ui";
-import {
-  TextInput,
-  EnumInput,
-  PartyReferenceInput,
-  FormToolbar,
-} from "../../components/EDS-ra/inputs";
+import { FormToolbar } from "../../components/EDS-ra/inputs";
 import { ServiceProvidingGroupStepper } from "./ServiceProvidingGroupStepper";
+import { ServiceProvidingGroupFields } from "./ServiceProvidingGroupFields";
 
 export const ServiceProvidingGroupCreate = () => {
   const notify = useNotify();
@@ -21,7 +16,6 @@ export const ServiceProvidingGroupCreate = () => {
   if (identityLoading) return <>Loading...</>;
 
   const isServiceProvider = identity?.role === "flex_service_provider";
-  const fields = getFields(zServiceProvidingGroupCreateRequest.shape);
 
   const onSubmit = async (values: object) => {
     const body = zServiceProvidingGroupCreateRequest.parse(
@@ -43,7 +37,7 @@ export const ServiceProvidingGroupCreate = () => {
   };
 
   return (
-    <FormContainer className="pt-8 px-2">
+    <FormContainer>
       <ServiceProvidingGroupStepper activeStep={1} />
       <Form
         resolver={unTypedZodResolver(zServiceProvidingGroupCreateRequest)}
@@ -55,15 +49,8 @@ export const ServiceProvidingGroupCreate = () => {
         <Heading level={3} size="medium">
           Create Service Providing Group
         </Heading>
-        {!isServiceProvider && (
-          <PartyReferenceInput {...fields.service_provider_id} />
-        )}
         <div className="flex flex-row center gap-3">
-          <TextInput {...fields.name} />
-          <EnumInput
-            {...fields.bidding_zone}
-            enumKey="service_providing_group.bidding_zone"
-          />
+          <ServiceProvidingGroupFields />
         </div>
         <FormToolbar saveLabel="Create" />
       </Form>
