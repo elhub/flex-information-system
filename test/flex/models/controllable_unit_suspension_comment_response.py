@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
 from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
 from ..models.controllable_unit_suspension_comment_visibility import ControllableUnitSuspensionCommentVisibility
 
@@ -19,22 +21,22 @@ class ControllableUnitSuspensionCommentResponse:
         id (int): Unique surrogate identifier. Example: 9.
         controllable_unit_suspension_id (int): Reference to the controllable unit suspension. Example: 7.
         created_by (int): Reference to the identity that created the comment. Example: 94.
-        created_at (str): When the comment was added to the CUS. Example: 2022-08-08 12:00:00 CET.
+        created_at (datetime.datetime): When the comment was added to the CUS. Example: 2022-08-08 12:00:00+02:00.
         visibility (ControllableUnitSuspensionCommentVisibility): The level of visibility of the comment. Example:
             same_party.
         content (str): Free text content of the comment. Example: Missing document..
-        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-            23:59:00 CET.
+        recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
+            2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
     """
 
     id: int
     controllable_unit_suspension_id: int
     created_by: int
-    created_at: str
+    created_at: datetime.datetime
     visibility: ControllableUnitSuspensionCommentVisibility
     content: str
-    recorded_at: str
+    recorded_at: datetime.datetime
     recorded_by: int
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -45,13 +47,13 @@ class ControllableUnitSuspensionCommentResponse:
 
         created_by = self.created_by
 
-        created_at = self.created_at
+        created_at = self.created_at.isoformat()
 
         visibility = self.visibility.value
 
         content = self.content
 
-        recorded_at = self.recorded_at
+        recorded_at = self.recorded_at.isoformat()
 
         recorded_by = self.recorded_by
 
@@ -81,13 +83,13 @@ class ControllableUnitSuspensionCommentResponse:
 
         created_by = d.pop("created_by")
 
-        created_at = d.pop("created_at")
+        created_at = isoparse(d.pop("created_at"))
 
         visibility = ControllableUnitSuspensionCommentVisibility(d.pop("visibility"))
 
         content = d.pop("content")
 
-        recorded_at = d.pop("recorded_at")
+        recorded_at = isoparse(d.pop("recorded_at"))
 
         recorded_by = d.pop("recorded_by")
 

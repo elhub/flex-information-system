@@ -48,7 +48,7 @@ comment_descriptions = {
     "created_by": "The identity that created the comment.",
     "visibility": "The level of visibility of the comment.",
     "content": "Free text content of the comment.",
-    "created_at": "When the comment was added to the CUS.",
+    "created_at": "When the comment was added to the resource.",
     "recorded_at": "When the resource was recorded (created or updated) in the system.",
     "recorded_by": "The identity that recorded the resource.",
 }

@@ -34,7 +34,7 @@ export type FieldLabel =
   | "controllable_unit.grid_validation_status"
   | "controllable_unit.id"
   | "controllable_unit.is_small"
-  | "controllable_unit.maximum_available_capacity"
+  | "controllable_unit.maximum_active_power"
   | "controllable_unit.maximum_duration"
   | "controllable_unit.minimum_duration"
   | "controllable_unit.name"
@@ -54,7 +54,7 @@ export type FieldLabel =
   | "controllable_unit_history.grid_validation_status"
   | "controllable_unit_history.id"
   | "controllable_unit_history.is_small"
-  | "controllable_unit_history.maximum_available_capacity"
+  | "controllable_unit_history.maximum_active_power"
   | "controllable_unit_history.maximum_duration"
   | "controllable_unit_history.minimum_duration"
   | "controllable_unit_history.name"
@@ -391,8 +391,9 @@ export type FieldLabel =
   | "service_providing_group_membership_history.service_providing_group_membership_id"
   | "service_providing_group_membership_history.valid_from"
   | "service_providing_group_membership_history.valid_to"
+  | "service_providing_group_product_application.additional_information"
   | "service_providing_group_product_application.id"
-  | "service_providing_group_product_application.notes"
+  | "service_providing_group_product_application.maximum_active_power"
   | "service_providing_group_product_application.prequalified_at"
   | "service_providing_group_product_application.procuring_system_operator_id"
   | "service_providing_group_product_application.product_type_ids"
@@ -401,8 +402,28 @@ export type FieldLabel =
   | "service_providing_group_product_application.service_providing_group_id"
   | "service_providing_group_product_application.status"
   | "service_providing_group_product_application.verified_at"
+  | "service_providing_group_product_application_comment.content"
+  | "service_providing_group_product_application_comment.created_at"
+  | "service_providing_group_product_application_comment.created_by"
+  | "service_providing_group_product_application_comment.id"
+  | "service_providing_group_product_application_comment.recorded_at"
+  | "service_providing_group_product_application_comment.recorded_by"
+  | "service_providing_group_product_application_comment.service_providing_group_product_application_id"
+  | "service_providing_group_product_application_comment.visibility"
+  | "service_providing_group_product_application_comment_history.content"
+  | "service_providing_group_product_application_comment_history.created_at"
+  | "service_providing_group_product_application_comment_history.created_by"
+  | "service_providing_group_product_application_comment_history.id"
+  | "service_providing_group_product_application_comment_history.recorded_at"
+  | "service_providing_group_product_application_comment_history.recorded_by"
+  | "service_providing_group_product_application_comment_history.replaced_at"
+  | "service_providing_group_product_application_comment_history.replaced_by"
+  | "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id"
+  | "service_providing_group_product_application_comment_history.service_providing_group_product_application_id"
+  | "service_providing_group_product_application_comment_history.visibility"
+  | "service_providing_group_product_application_history.additional_information"
   | "service_providing_group_product_application_history.id"
-  | "service_providing_group_product_application_history.notes"
+  | "service_providing_group_product_application_history.maximum_active_power"
   | "service_providing_group_product_application_history.prequalified_at"
   | "service_providing_group_product_application_history.procuring_system_operator_id"
   | "service_providing_group_product_application_history.product_type_ids"
@@ -489,8 +510,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit.start_date": "Start date",
     "controllable_unit.status": "Status",
     "controllable_unit.regulation_direction": "Regulation direction",
-    "controllable_unit.maximum_available_capacity":
-      "Maximum available capacity",
+    "controllable_unit.maximum_active_power": "Maximum active power",
     "controllable_unit.is_small": "Small",
     "controllable_unit.minimum_duration": "Minimum duration",
     "controllable_unit.maximum_duration": "Maximum duration",
@@ -509,8 +529,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit_history.start_date": "Start date",
     "controllable_unit_history.status": "Status",
     "controllable_unit_history.regulation_direction": "Regulation direction",
-    "controllable_unit_history.maximum_available_capacity":
-      "Maximum available capacity",
+    "controllable_unit_history.maximum_active_power": "Maximum active power",
     "controllable_unit_history.is_small": "Small",
     "controllable_unit_history.minimum_duration": "Minimum duration",
     "controllable_unit_history.maximum_duration": "Maximum duration",
@@ -1014,7 +1033,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application.product_type_ids":
       "Product types",
     "service_providing_group_product_application.status": "Status",
-    "service_providing_group_product_application.notes": "Notes",
+    "service_providing_group_product_application.maximum_active_power":
+      "Maximum active power",
+    "service_providing_group_product_application.additional_information":
+      "Additional information",
     "service_providing_group_product_application.prequalified_at":
       "Prequalified at",
     "service_providing_group_product_application.verified_at": "Verified at",
@@ -1028,7 +1050,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application_history.product_type_ids":
       "Product types",
     "service_providing_group_product_application_history.status": "Status",
-    "service_providing_group_product_application_history.notes": "Notes",
+    "service_providing_group_product_application_history.maximum_active_power":
+      "Maximum active power",
+    "service_providing_group_product_application_history.additional_information":
+      "Additional information",
     "service_providing_group_product_application_history.prequalified_at":
       "Prequalified at",
     "service_providing_group_product_application_history.verified_at":
@@ -1042,6 +1067,41 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application_history.replaced_at":
       "Replaced at",
     "service_providing_group_product_application_history.replaced_by":
+      "Replaced by",
+    "service_providing_group_product_application_comment.id": "ID",
+    "service_providing_group_product_application_comment.created_by":
+      "Created by",
+    "service_providing_group_product_application_comment.visibility":
+      "Visibility",
+    "service_providing_group_product_application_comment.content": "Content",
+    "service_providing_group_product_application_comment.created_at":
+      "Created at",
+    "service_providing_group_product_application_comment.recorded_at":
+      "Recorded at",
+    "service_providing_group_product_application_comment.recorded_by":
+      "Recorded by",
+    "service_providing_group_product_application_comment.service_providing_group_product_application_id":
+      "Service Providing Group Product Application",
+    "service_providing_group_product_application_comment_history.id": "ID",
+    "service_providing_group_product_application_comment_history.created_by":
+      "Created by",
+    "service_providing_group_product_application_comment_history.visibility":
+      "Visibility",
+    "service_providing_group_product_application_comment_history.content":
+      "Content",
+    "service_providing_group_product_application_comment_history.created_at":
+      "Created at",
+    "service_providing_group_product_application_comment_history.recorded_at":
+      "Recorded at",
+    "service_providing_group_product_application_comment_history.recorded_by":
+      "Recorded by",
+    "service_providing_group_product_application_comment_history.service_providing_group_product_application_id":
+      "Service Providing Group Product Application",
+    "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id":
+      "Comment ID",
+    "service_providing_group_product_application_comment_history.replaced_at":
+      "Replaced at",
+    "service_providing_group_product_application_comment_history.replaced_by":
       "Replaced by",
     "service_providing_group_product_suspension.id": "ID",
     "service_providing_group_product_suspension.procuring_system_operator_id":
@@ -1122,8 +1182,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit.start_date": "Startdato",
     "controllable_unit.status": "Status",
     "controllable_unit.regulation_direction": "Reguleringsretning",
-    "controllable_unit.maximum_available_capacity":
-      "Maksimal tilgjengelig kapasitet",
+    "controllable_unit.maximum_active_power": "Maksimal aktiv effekt",
     "controllable_unit.is_small": "Liten",
     "controllable_unit.minimum_duration": "Minimumsvarighet",
     "controllable_unit.maximum_duration": "Maksimumsvarighet",
@@ -1142,8 +1201,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit_history.start_date": "Startdato",
     "controllable_unit_history.status": "Status",
     "controllable_unit_history.regulation_direction": "Reguleringsretning",
-    "controllable_unit_history.maximum_available_capacity":
-      "Maksimal tilgjengelig kapasitet",
+    "controllable_unit_history.maximum_active_power": "Maksimal aktiv effekt",
     "controllable_unit_history.is_small": "Liten",
     "controllable_unit_history.minimum_duration": "Minimumsvarighet",
     "controllable_unit_history.maximum_duration": "Maksimumsvarighet",
@@ -1642,7 +1700,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application.product_type_ids":
       "Produkttyper",
     "service_providing_group_product_application.status": "Status",
-    "service_providing_group_product_application.notes": "Notater",
+    "service_providing_group_product_application.maximum_active_power":
+      "Maksimal aktiv effekt",
+    "service_providing_group_product_application.additional_information":
+      "Tilleggsinformasjon",
     "service_providing_group_product_application.prequalified_at":
       "Prekvalifisert",
     "service_providing_group_product_application.verified_at": "Verifisert",
@@ -1656,7 +1717,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application_history.product_type_ids":
       "Produkttyper",
     "service_providing_group_product_application_history.status": "Status",
-    "service_providing_group_product_application_history.notes": "Notater",
+    "service_providing_group_product_application_history.maximum_active_power":
+      "Maksimal aktiv effekt",
+    "service_providing_group_product_application_history.additional_information":
+      "Tilleggsinformasjon",
     "service_providing_group_product_application_history.prequalified_at":
       "Prekvalifisert",
     "service_providing_group_product_application_history.verified_at":
@@ -1670,6 +1734,41 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application_history.replaced_at":
       "Erstattet",
     "service_providing_group_product_application_history.replaced_by":
+      "Erstattet av",
+    "service_providing_group_product_application_comment.id": "ID",
+    "service_providing_group_product_application_comment.created_by":
+      "Opprettet av",
+    "service_providing_group_product_application_comment.visibility":
+      "Synlighet",
+    "service_providing_group_product_application_comment.content": "Innhold",
+    "service_providing_group_product_application_comment.created_at":
+      "Opprettet",
+    "service_providing_group_product_application_comment.recorded_at":
+      "Registrert",
+    "service_providing_group_product_application_comment.recorded_by":
+      "Registrert av",
+    "service_providing_group_product_application_comment.service_providing_group_product_application_id":
+      "Fleksibilitetsgruppe produktsøknad",
+    "service_providing_group_product_application_comment_history.id": "ID",
+    "service_providing_group_product_application_comment_history.created_by":
+      "Opprettet av",
+    "service_providing_group_product_application_comment_history.visibility":
+      "Synlighet",
+    "service_providing_group_product_application_comment_history.content":
+      "Innhold",
+    "service_providing_group_product_application_comment_history.created_at":
+      "Opprettet",
+    "service_providing_group_product_application_comment_history.recorded_at":
+      "Registrert",
+    "service_providing_group_product_application_comment_history.recorded_by":
+      "Registrert av",
+    "service_providing_group_product_application_comment_history.service_providing_group_product_application_id":
+      "Fleksibilitetsgruppe produktsøknad",
+    "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id":
+      "Kommentar-ID",
+    "service_providing_group_product_application_comment_history.replaced_at":
+      "Erstattet",
+    "service_providing_group_product_application_comment_history.replaced_by":
       "Erstattet av",
     "service_providing_group_product_suspension.id": "ID",
     "service_providing_group_product_suspension.procuring_system_operator_id":
@@ -1750,8 +1849,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit.start_date": "Startdato",
     "controllable_unit.status": "Status",
     "controllable_unit.regulation_direction": "Reguleringsretning",
-    "controllable_unit.maximum_available_capacity":
-      "Maksimal tilgjengeleg kapasitet",
+    "controllable_unit.maximum_active_power": "Maksimal aktiv effekt",
     "controllable_unit.is_small": "Liten",
     "controllable_unit.minimum_duration": "Minimumsvarigheit",
     "controllable_unit.maximum_duration": "Maksimumsvarigheit",
@@ -1770,8 +1868,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit_history.start_date": "Startdato",
     "controllable_unit_history.status": "Status",
     "controllable_unit_history.regulation_direction": "Reguleringsretning",
-    "controllable_unit_history.maximum_available_capacity":
-      "Maksimal tilgjengeleg kapasitet",
+    "controllable_unit_history.maximum_active_power": "Maksimal aktiv effekt",
     "controllable_unit_history.is_small": "Liten",
     "controllable_unit_history.minimum_duration": "Minimumsvarigheit",
     "controllable_unit_history.maximum_duration": "Maksimumsvarigheit",
@@ -2269,7 +2366,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application.product_type_ids":
       "Produkttypar",
     "service_providing_group_product_application.status": "Status",
-    "service_providing_group_product_application.notes": "Notat",
+    "service_providing_group_product_application.maximum_active_power":
+      "Maksimal aktiv effekt",
+    "service_providing_group_product_application.additional_information":
+      "Tilleggsinformasjon",
     "service_providing_group_product_application.prequalified_at":
       "Prekvalifisert",
     "service_providing_group_product_application.verified_at": "Verifisert",
@@ -2283,7 +2383,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application_history.product_type_ids":
       "Produkttypar",
     "service_providing_group_product_application_history.status": "Status",
-    "service_providing_group_product_application_history.notes": "Notat",
+    "service_providing_group_product_application_history.maximum_active_power":
+      "Maksimal aktiv effekt",
+    "service_providing_group_product_application_history.additional_information":
+      "Tilleggsinformasjon",
     "service_providing_group_product_application_history.prequalified_at":
       "Prekvalifisert",
     "service_providing_group_product_application_history.verified_at":
@@ -2297,6 +2400,41 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application_history.replaced_at":
       "Erstattet",
     "service_providing_group_product_application_history.replaced_by":
+      "Erstattet av",
+    "service_providing_group_product_application_comment.id": "ID",
+    "service_providing_group_product_application_comment.created_by":
+      "Oppretta av",
+    "service_providing_group_product_application_comment.visibility":
+      "Synlegheit",
+    "service_providing_group_product_application_comment.content": "Innhald",
+    "service_providing_group_product_application_comment.created_at":
+      "Oppretta",
+    "service_providing_group_product_application_comment.recorded_at":
+      "Registrert",
+    "service_providing_group_product_application_comment.recorded_by":
+      "Registrert av",
+    "service_providing_group_product_application_comment.service_providing_group_product_application_id":
+      "Fleksibilitetsgruppe produktsøknad",
+    "service_providing_group_product_application_comment_history.id": "ID",
+    "service_providing_group_product_application_comment_history.created_by":
+      "Oppretta av",
+    "service_providing_group_product_application_comment_history.visibility":
+      "Synlegheit",
+    "service_providing_group_product_application_comment_history.content":
+      "Innhald",
+    "service_providing_group_product_application_comment_history.created_at":
+      "Oppretta",
+    "service_providing_group_product_application_comment_history.recorded_at":
+      "Registrert",
+    "service_providing_group_product_application_comment_history.recorded_by":
+      "Registrert av",
+    "service_providing_group_product_application_comment_history.service_providing_group_product_application_id":
+      "Fleksibilitetsgruppe produktsøknad",
+    "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id":
+      "Kommentar-ID",
+    "service_providing_group_product_application_comment_history.replaced_at":
+      "Erstattet",
+    "service_providing_group_product_application_comment_history.replaced_by":
       "Erstattet av",
     "service_providing_group_product_suspension.id": "ID",
     "service_providing_group_product_suspension.procuring_system_operator_id":

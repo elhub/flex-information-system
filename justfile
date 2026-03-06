@@ -59,8 +59,6 @@ load: liquibase
 
     psql -X -v ON_ERROR_STOP=1 -d postgres -U postgres \
         -c "ALTER USER flex_authenticator PASSWORD 'authenticator_password';"
-    psql -X -v ON_ERROR_STOP=1 -d postgres -U postgres \
-        -c "ALTER USER flex_replication PASSWORD 'replication_password';"
 
     # set fixed client IDs so we can use them in the tests
     UUID_TEST='3733e21b-5def-400d-8133-06bcda02465e'
@@ -491,6 +489,19 @@ openapi-to-md:
 
     done
 
+openapi-client-accounting-point-adapter:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    mkdir -p ./out
+    rm -rf local/accounting-point/client/* ./out/openapi-client-accounting-point-adapter
+
+    ./.venv/bin/openapi-python-client generate \
+        --path ./backend/accountingpoint/static/openapi.yml \
+        --output-path ./out/openapi-client-accounting-point-adapter \
+        --config ./openapi/openapi-client-config.yml
+    mv ./out/openapi-client-accounting-point-adapter/flex/models local/accounting-point/client/models
+    mv ./out/openapi-client-accounting-point-adapter/flex/types.py local/accounting-point/client/types.py
+
 openapi-client-test:
     #!/usr/bin/env bash
     set -euo pipefail
@@ -533,6 +544,9 @@ openapi-client-frontend:
     sed -i 's/z\.number/z\.coerce\.number/g' src/generated-client/zod.gen.ts
     sed -i 's/z\.int/z\.coerce\.number/g' src/generated-client/zod.gen.ts
 
+    # allow timezones in datetime values (full ISO 8601)
+    sed -i 's/z\.iso\.datetime()/z.iso.datetime({ offset: true })/g' src/generated-client/zod.gen.ts
+
     # Remove all default values from the zod.gen.ts file. They create problems when you dont have access to the specific field.
     sed -i 's/\.default([^)]*)//g' src/generated-client/zod.gen.ts
 
@@ -549,6 +563,11 @@ permissions: permissions-to-frontend permissions-to-md permissions-to-db
 permissions-to-db:
     echo "-- liquibase formatted sql\n-- AUTO-GENERATED FILE (just permissions-to-db)\n" \
         | tee db/api/grants/field_level_authorization.sql > db/flex/grants/field_level_authorization.sql
+
+    echo "-- changeset flex:api-field-level-authorization runAlways:true" \
+        >> db/api/grants/field_level_authorization.sql
+    echo "-- changeset flex:flex-field-level-authorization runAlways:true" \
+        >> db/flex/grants/field_level_authorization.sql
 
     cat local/input/permissions.csv \
         | .venv/bin/python3 local/scripts/permissions_to_grant.py \

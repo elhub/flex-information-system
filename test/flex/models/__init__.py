@@ -164,6 +164,21 @@ from .service_providing_group_membership_create_request import ServiceProvidingG
 from .service_providing_group_membership_history_response import ServiceProvidingGroupMembershipHistoryResponse
 from .service_providing_group_membership_response import ServiceProvidingGroupMembershipResponse
 from .service_providing_group_membership_update_request import ServiceProvidingGroupMembershipUpdateRequest
+from .service_providing_group_product_application_comment_create_request import (
+    ServiceProvidingGroupProductApplicationCommentCreateRequest,
+)
+from .service_providing_group_product_application_comment_history_response import (
+    ServiceProvidingGroupProductApplicationCommentHistoryResponse,
+)
+from .service_providing_group_product_application_comment_response import (
+    ServiceProvidingGroupProductApplicationCommentResponse,
+)
+from .service_providing_group_product_application_comment_update_request import (
+    ServiceProvidingGroupProductApplicationCommentUpdateRequest,
+)
+from .service_providing_group_product_application_comment_visibility import (
+    ServiceProvidingGroupProductApplicationCommentVisibility,
+)
 from .service_providing_group_product_application_create_request import (
     ServiceProvidingGroupProductApplicationCreateRequest,
 )
@@ -338,6 +353,11 @@ __all__ = (
     "ServiceProvidingGroupMembershipHistoryResponse",
     "ServiceProvidingGroupMembershipResponse",
     "ServiceProvidingGroupMembershipUpdateRequest",
+    "ServiceProvidingGroupProductApplicationCommentCreateRequest",
+    "ServiceProvidingGroupProductApplicationCommentHistoryResponse",
+    "ServiceProvidingGroupProductApplicationCommentResponse",
+    "ServiceProvidingGroupProductApplicationCommentUpdateRequest",
+    "ServiceProvidingGroupProductApplicationCommentVisibility",
     "ServiceProvidingGroupProductApplicationCreateRequest",
     "ServiceProvidingGroupProductApplicationHistoryResponse",
     "ServiceProvidingGroupProductApplicationResponse",

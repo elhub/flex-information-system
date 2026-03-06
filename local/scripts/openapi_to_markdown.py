@@ -32,7 +32,7 @@ table: list[Row] = []
 audit_fields = {
     "recorded_at": {
         "description": "When the resource was recorded (created or updated) in the system.",
-        "format": "timestamp with time zone",
+        "format": "date-time",
         "readOnly": True,
         "x-generated": True,
     },

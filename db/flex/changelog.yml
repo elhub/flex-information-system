@@ -141,9 +141,6 @@ databaseChangeLog:
       file: ./notification.sql
       relativeToChangelogFile: true
   - include:
-      file: ./notification_migrations.sql
-      relativeToChangelogFile: true
-  - include:
       file: ./product_type.sql
       relativeToChangelogFile: true
   - include:
@@ -181,6 +178,9 @@ databaseChangeLog:
       relativeToChangelogFile: true
   - include:
       file: ./service_providing_group_product_application.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./service_providing_group_product_application_comment.sql
       relativeToChangelogFile: true
   - include:
       file: ./service_providing_group_product_suspension.sql
@@ -290,6 +290,9 @@ databaseChangeLog:
       relativeToChangelogFile: true
   - include:
       file: ./service_providing_group_grid_prequalification_involved_parties.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./service_providing_group_product_application_involved_parties.sql
       relativeToChangelogFile: true
 
   # RLS, grants

@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
 from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
 from ..models.service_providing_group_product_suspension_reason import ServiceProvidingGroupProductSuspensionReason
 
@@ -24,8 +26,8 @@ class ServiceProvidingGroupProductSuspensionResponse:
             product_type_ids (list[int]): References to the suspended product types. Example: [3, 6].
             reason (ServiceProvidingGroupProductSuspensionReason): The reason for the suspension. Example:
                 failed_verification.
-            recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-                23:59:00 CET.
+            recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
+                2023-12-31T23:59:00+00:00.
             recorded_by (int): The identity that recorded the resource. Example: 145.
     """
 
@@ -34,7 +36,7 @@ class ServiceProvidingGroupProductSuspensionResponse:
     service_providing_group_id: int
     product_type_ids: list[int]
     reason: ServiceProvidingGroupProductSuspensionReason
-    recorded_at: str
+    recorded_at: datetime.datetime
     recorded_by: int
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -49,7 +51,7 @@ class ServiceProvidingGroupProductSuspensionResponse:
 
         reason = self.reason.value
 
-        recorded_at = self.recorded_at
+        recorded_at = self.recorded_at.isoformat()
 
         recorded_by = self.recorded_by
 
@@ -82,7 +84,7 @@ class ServiceProvidingGroupProductSuspensionResponse:
 
         reason = ServiceProvidingGroupProductSuspensionReason(d.pop("reason"))
 
-        recorded_at = d.pop("recorded_at")
+        recorded_at = isoparse(d.pop("recorded_at"))
 
         recorded_by = d.pop("recorded_by")
 

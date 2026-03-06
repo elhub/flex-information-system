@@ -57,10 +57,10 @@ def history_schema_template(resource, resource_summary):
                     },
                     "replaced_at": {
                         "description": "When the resource was replaced in the system.",
-                        "format": "timestamp with time zone",
+                        "format": "date-time",
                         "type": "string",
                         "nullable": True,
-                        "example": "2024-07-07 10:00:00 CET",
+                        "example": "2024-07-07T10:00:00+00:00",
                     },
                 },
                 "required": [f"{resource}_id"],
@@ -532,10 +532,10 @@ def generate_openapi_document(base_file, resources_file, servers_file):
             # Adding these directly instead of using a reference, since the generator did not like allOf + defined properties
             all_properties["recorded_at"] = {
                 "description": "When the resource was recorded (created or updated) in the system.",
-                "format": "timestamp with time zone",
+                "format": "date-time",
                 "type": "string",
                 "readOnly": True,
-                "example": "2023-12-31 23:59:00 CET",
+                "example": "2023-12-31T23:59:00+00:00",
             }
             all_properties["recorded_by"] = {
                 "description": "The identity that recorded the resource.",
@@ -762,7 +762,7 @@ def generate_openapi_document(base_file, resources_file, servers_file):
 
     # ---- export ----
 
-    print(json.dumps(base, indent=4))
+    print(json.dumps(base, indent=4, default=str))
 
 
 if __name__ == "__main__":

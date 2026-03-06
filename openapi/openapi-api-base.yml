@@ -247,12 +247,12 @@ components:
             type: string
             format: date-time
             description: The start time of the timeline section.
-            example: "2023-01-01T00:00:00Z"
+            example: "2023-01-01T00:00:00+00:00"
           valid_to:
             type: string
             format: date-time
             description: The end time of the timeline section.
-            example: "2023-01-02T00:00:00Z"
+            example: "2023-01-02T00:00:00+00:00"
     notice_data_valid_time_outside_contract:
       description: >-
         Format of the data field in a notice of type

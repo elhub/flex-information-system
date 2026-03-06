@@ -282,6 +282,14 @@ func NewAPIHandler(
 	mux.Handle("GET /service_providing_group_product_application_history", dataListPostgRESTHandler)
 	mux.Handle("GET /service_providing_group_product_application_history/{id}", dataPostgRESTHandler)
 
+	mux.Handle("GET /service_providing_group_product_application_comment", dataListPostgRESTHandler)
+	mux.Handle("POST /service_providing_group_product_application_comment", dataPostgRESTHandler)
+	mux.Handle("GET /service_providing_group_product_application_comment/{id}", dataPostgRESTHandler)
+	mux.Handle("PATCH /service_providing_group_product_application_comment/{id}", dataPostgRESTHandler)
+
+	mux.Handle("GET /service_providing_group_product_application_comment_history", dataListPostgRESTHandler)
+	mux.Handle("GET /service_providing_group_product_application_comment_history/{id}", dataPostgRESTHandler)
+
 	mux.Handle("GET /service_providing_group_product_suspension", dataListPostgRESTHandler)
 	mux.Handle("POST /service_providing_group_product_suspension", dataPostgRESTHandler)
 	mux.Handle("GET /service_providing_group_product_suspension/{id}", dataPostgRESTHandler)
@@ -521,7 +529,7 @@ func (data *api) controllableUnitLookupHandler(
 	w.Header().Set("Content-Type", "application/json")
 
 	body, _ := json.Marshal(reformattedCULookup)
-	w.Write(body)
+	w.Write(body) //nolint:gosec // body comes from DB + backend reformatted, so not user-controlled
 }
 
 // controllableUnitLookupValidateInput checks that the given fields in the CU
@@ -765,18 +773,19 @@ func (data *api) postgRESTHandler(w http.ResponseWriter, req *http.Request) {
 		)
 	}
 
-	proxy := httputil.NewSingleHostReverseProxy(data.postgRESTURL)
-	proxy.Director = func(req *http.Request) {
-		req.Header = header
-		req.Host = data.postgRESTURL.Host
-		req.URL.Scheme = data.postgRESTURL.Scheme
-		req.URL.Host = data.postgRESTURL.Host
-		req.URL.Path = url
-		req.URL.RawQuery = query.Encode()
+	proxy := &httputil.ReverseProxy{ //nolint:exhaustruct
+		Rewrite: func(req *httputil.ProxyRequest) {
+			req.Out.Header = header
+			req.Out.Host = data.postgRESTURL.Host
+			req.Out.URL.Scheme = data.postgRESTURL.Scheme
+			req.Out.URL.Host = data.postgRESTURL.Host
+			req.Out.URL.Path = url
+			req.Out.URL.RawQuery = query.Encode()
+		},
+		ModifyResponse: fixPostgRESTResponse,
 	}
-	proxy.ModifyResponse = fixPostgRESTResponse
 
-	proxy.ServeHTTP(w, req)
+	proxy.ServeHTTP(w, req) //nolint:gosec // URL is configured PostgREST endpoint, not user input
 }
 
 // errorMessage is the format of PostgREST error messages.

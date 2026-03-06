@@ -7,7 +7,7 @@ export const GridValidation = ({
   controllableUnit: ControllableUnit | undefined;
 }) => {
   return (
-    <div>
+    <div className="grid grid-cols-[1fr_5fr]  gap-2">
       <LabelValue
         tooltip={true}
         labelKey="controllable_unit.grid_node_id"

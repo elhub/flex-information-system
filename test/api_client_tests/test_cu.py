@@ -49,6 +49,7 @@ from flex.api.service_providing_group_grid_prequalification import (
     create_service_providing_group_grid_prequalification,
 )
 from typing import cast
+import datetime
 import pytest
 
 
@@ -77,7 +78,7 @@ def test_controllable_unit_fiso(sts):
             name="TEST-CU-1",
             accounting_point_id=1002,
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
-            maximum_available_capacity=3.5,
+            maximum_active_power=3.5,
         ),
     )
     assert isinstance(cu, ControllableUnitResponse)
@@ -186,7 +187,7 @@ def test_controllable_unit_fiso(sts):
         id=cast(int, cu.id),
         body=ControllableUnitUpdateRequest(
             grid_validation_status=ControllableUnitGridValidationStatus.VALIDATED,
-            validated_at="2024-01-01T08:00:00",
+            validated_at=datetime.datetime.fromisoformat("2024-01-01T08:00:00"),
         ),
     )
     assert not isinstance(u, ErrorMessage)
@@ -248,7 +249,7 @@ def test_controllable_unit_so(sts):
         client=client_so,
         id=cast(int, cu.id),
         body=ControllableUnitUpdateRequest(
-            validated_at="2024-01-01T08:00:00",
+            validated_at=datetime.datetime.fromisoformat("2024-01-01T08:00:00"),
         ),
     )
     assert not (isinstance(u, ErrorMessage))
@@ -258,7 +259,7 @@ def test_controllable_unit_so(sts):
         client=client_iso,
         id=cast(int, cu.id),
         body=ControllableUnitUpdateRequest(
-            validated_at="2024-04-04T08:00:00",
+            validated_at=datetime.datetime.fromisoformat("2024-04-04T08:00:00"),
         ),
     )
     assert isinstance(u, ErrorMessage)
@@ -280,7 +281,7 @@ def test_controllable_unit_so(sts):
             name="TEST-CU-18",
             accounting_point_id=1002,
             regulation_direction=ControllableUnitRegulationDirection.UP,
-            maximum_available_capacity=2,
+            maximum_active_power=2,
         ),
     )
     assert isinstance(cu, ControllableUnitResponse)
@@ -306,7 +307,7 @@ def test_controllable_unit_so(sts):
             service_provider_id=sp_id,
             end_user_id=eu_id,
             contract_reference="TEST-CONTRACT",
-            valid_from="2024-01-01T00:00:00+1",
+            valid_from=datetime.datetime.fromisoformat("2024-01-01T00:00:00+01:00"),
         ),
     )
     assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
@@ -316,7 +317,7 @@ def test_controllable_unit_so(sts):
         body=ServiceProvidingGroupMembershipCreateRequest(
             controllable_unit_id=cast(int, cu.id),
             service_providing_group_id=cast(int, spg.id),
-            valid_from="2024-01-01T00:00:00+1",
+            valid_from=datetime.datetime.fromisoformat("2024-01-01T00:00:00+01:00"),
         ),
     )
     assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
@@ -542,7 +543,7 @@ def test_controllable_unit_sp(sts):
             name="TEST-CU-2",
             accounting_point_id=1002,
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
-            maximum_available_capacity=3.5,
+            maximum_active_power=3.5,
             grid_node_id="92a7d3bf-fee5-4abc-9130-75c8067ea78c",
         ),
     )
@@ -561,7 +562,7 @@ def test_controllable_unit_sp(sts):
             service_provider_id=sp1_id,
             end_user_id=eu_id,
             contract_reference="TEST-CONTRACT",
-            valid_from="2099-01-01T00:00:00+1",
+            valid_from=datetime.datetime.fromisoformat("2099-01-01T00:00:00+01:00"),
             valid_to=None,
         ),
     )
@@ -588,7 +589,7 @@ def test_controllable_unit_sp(sts):
             name="TEST-CU-2",
             accounting_point_id=1002,
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
-            maximum_available_capacity=3.5,
+            maximum_active_power=3.5,
         ),
     )
     assert isinstance(cu, ControllableUnitResponse)
@@ -607,7 +608,7 @@ def test_controllable_unit_sp(sts):
             service_provider_id=sp1_id,
             end_user_id=eu_id,
             contract_reference="TEST-CONTRACT",
-            valid_from="2099-01-01T00:00:00+1",
+            valid_from=datetime.datetime.fromisoformat("2099-01-01T00:00:00+01:00"),
             valid_to=None,
         ),
     )
@@ -621,8 +622,8 @@ def test_controllable_unit_sp(sts):
             service_provider_id=sp2_id,
             end_user_id=eu_id,
             contract_reference="TEST-CONTRACT",
-            valid_from="2024-01-01T00:00:00+1",
-            valid_to="2090-01-01T00:00:00+1",
+            valid_from=datetime.datetime.fromisoformat("2024-01-01T00:00:00+01:00"),
+            valid_to=datetime.datetime.fromisoformat("2090-01-01T00:00:00+01:00"),
         ),
     )
     assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
@@ -728,7 +729,7 @@ def test_controllable_unit_sp(sts):
     u = update_controllable_unit.sync(
         client=client_sp2,
         id=cast(int, cu.id),
-        body=ControllableUnitUpdateRequest(maximum_available_capacity=500),
+        body=ControllableUnitUpdateRequest(maximum_active_power=500),
     )
     assert isinstance(u, ControllableUnitResponse)
     assert u.grid_validation_status == ControllableUnitGridValidationStatus.PENDING

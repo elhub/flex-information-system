@@ -23,9 +23,10 @@ export const AutocompleteReferenceInput = ({
   overrideLabel,
   readOnly,
   disabled,
+  resource: resourceProp,
   ...rest
 }: AutocompleteReferenceInputProps) => {
-  const resource = useResourceContext();
+  const resource = useResourceContext({ resource: resourceProp });
   return (
     <ReferenceInput
       source={source}

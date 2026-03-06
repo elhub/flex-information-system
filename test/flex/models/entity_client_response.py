@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
 from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
 from ..models.auth_scope import AuthScope
 from ..types import UNSET, Unset
@@ -25,8 +27,8 @@ class EntityClientResponse:
             party. When assuming a party through party membership, the least privileged set of scopes will be kept.
             Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.
             Example: ['read:data'].
-        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-            23:59:00 CET.
+        recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
+            2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
         name (None | str | Unset): Name of the client. Example: Laptop.
         party_id (int | None | Unset): Reference to the party this client allows to assume. A null value means the
@@ -46,7 +48,7 @@ class EntityClientResponse:
     entity_id: int
     client_id: str
     scopes: list[AuthScope]
-    recorded_at: str
+    recorded_at: datetime.datetime
     recorded_by: int
     name: None | str | Unset = UNSET
     party_id: int | None | Unset = UNSET
@@ -66,7 +68,7 @@ class EntityClientResponse:
             scopes_item = scopes_item_data.value
             scopes.append(scopes_item)
 
-        recorded_at = self.recorded_at
+        recorded_at = self.recorded_at.isoformat()
 
         recorded_by = self.recorded_by
 
@@ -133,7 +135,7 @@ class EntityClientResponse:
 
             scopes.append(scopes_item)
 
-        recorded_at = d.pop("recorded_at")
+        recorded_at = isoparse(d.pop("recorded_at"))
 
         recorded_by = d.pop("recorded_by")
 

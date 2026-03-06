@@ -83,7 +83,7 @@ func NewProvider( //nolint: funlen
 		return nil, fmt.Errorf("could not create OIDC provider request: %w", err)
 	}
 
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := http.DefaultClient.Do(req) //nolint:gosec // URL is from configured issuer URL, not user input
 	if err != nil {
 		return nil, fmt.Errorf("could not fetch OIDC provider details: %w", err)
 	}
@@ -328,7 +328,7 @@ func (p *Provider) parRequest(ctx context.Context, state, nonce, codeChallenge s
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	p.addBasicAuth(req)
 
-	resp, err := client.Do(req)
+	resp, err := client.Do(req) //nolint:gosec // URL is from OIDC provider configuration, not user input
 	if err != nil {
 		return "", fmt.Errorf("could not push authorization request: %w", err)
 	}

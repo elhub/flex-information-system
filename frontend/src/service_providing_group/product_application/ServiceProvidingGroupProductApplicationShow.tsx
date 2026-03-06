@@ -17,10 +17,12 @@ import { DateField } from "../../components/datetime";
 import { FieldStack } from "../../auth";
 import { IdentityField } from "../../components/IdentityField";
 import { ProductTypeArrayField } from "../../product_type/components";
+import { CommentList as GenericCommentList } from "../../components/comments";
 import { Permissions } from "../../auth/permissions";
 import HistoryIcon from "@mui/icons-material/History";
 import { ServiceProvidingGroupProductApplication } from "../../generated-client";
 import { EnumField } from "../../components/enum";
+import { UnitField } from "../../components/unitComponents";
 
 const EditButton = () => {
   const record = useRecordContext();
@@ -58,6 +60,45 @@ const HistoryButton = () => {
       to={`/service_providing_group/${record?.service_providing_group_id}/product_application_history${filter}`}
       startIcon={<HistoryIcon />}
       label="View History"
+    />
+  );
+};
+
+const CommentHistoryButton = () => {
+  const record = useRecordContext<ServiceProvidingGroupProductApplication>();
+  const { permissions } = usePermissions<Permissions>();
+
+  return (
+    <Button
+      component={Link}
+      disabled={
+        !permissions?.allow(
+          "service_providing_group_product_application_comment_history",
+          "read",
+        )
+      }
+      to={`/service_providing_group/${record?.service_providing_group_id}/product_application/${record?.id}/comment_history`}
+      startIcon={<HistoryIcon />}
+      label="View History of Comments"
+    />
+  );
+};
+
+const CommentList = () => {
+  const record = useRecordContext<ServiceProvidingGroupProductApplication>();
+  return (
+    <GenericCommentList
+      parentPath={
+        record
+          ? [
+              {
+                resource: "service_providing_group",
+                id: record.service_providing_group_id,
+              },
+              { resource: "product_application", id: record.id },
+            ]
+          : undefined
+      }
     />
   );
 };
@@ -117,6 +158,11 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
               label="field.service_providing_group_product_application.product_type_ids"
               source="product_type_ids"
             />
+            <UnitField
+              source="maximum_active_power"
+              label="field.service_providing_group_product_application.maximum_active_power"
+              unit="kW"
+            />
           </FieldStack>
 
           <Typography variant="h6" gutterBottom>
@@ -128,10 +174,6 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
               enumKey="service_providing_group_product_application.status"
               label="field.service_providing_group_product_application.status"
             />
-            <TextField
-              source="notes"
-              label="field.service_providing_group_product_application.notes"
-            />
             <DateField
               source="prequalified_at"
               showTime
@@ -141,6 +183,13 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
               source="verified_at"
               showTime
               label="field.service_providing_group_product_application.verified_at"
+            />
+          </FieldStack>
+          <FieldStack direction="row" flexWrap="wrap" spacing={2}>
+            <TextField
+              component="pre"
+              source="additional_information"
+              label="field.service_providing_group_product_application.additional_information"
             />
           </FieldStack>
 
@@ -170,6 +219,15 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
         </Stack>
         <HistoryButton />
         {!isHistory && <EventButton filterOnSubject />}
+        {!isHistory && (
+          <>
+            <Typography variant="h6" gutterBottom>
+              Comments
+            </Typography>
+            <CommentHistoryButton />
+            <CommentList />
+          </>
+        )}
       </SimpleShowLayout>
     </Show>
   );

@@ -4,9 +4,7 @@ export const UnitField = ({ unit, source, ...props }: any) => (
   <FunctionField
     source={source}
     render={(record) =>
-      record[source] && record[source] != null
-        ? `${record[source]} ${unit}`
-        : null
+      record[source] == null ? null : `${record[source]} ${unit}`
     }
     {...props}
   />

@@ -55,7 +55,7 @@ export type PermissionTarget =
   | "controllable_unit.grid_validation_status"
   | "controllable_unit.id"
   | "controllable_unit.is_small"
-  | "controllable_unit.maximum_available_capacity"
+  | "controllable_unit.maximum_active_power"
   | "controllable_unit.maximum_duration"
   | "controllable_unit.minimum_duration"
   | "controllable_unit.name"
@@ -76,7 +76,7 @@ export type PermissionTarget =
   | "controllable_unit_history.grid_validation_status"
   | "controllable_unit_history.id"
   | "controllable_unit_history.is_small"
-  | "controllable_unit_history.maximum_available_capacity"
+  | "controllable_unit_history.maximum_active_power"
   | "controllable_unit_history.maximum_duration"
   | "controllable_unit_history.minimum_duration"
   | "controllable_unit_history.name"
@@ -452,8 +452,9 @@ export type PermissionTarget =
   | "service_providing_group_membership_history.valid_from"
   | "service_providing_group_membership_history.valid_to"
   | "service_providing_group_product_application"
+  | "service_providing_group_product_application.additional_information"
   | "service_providing_group_product_application.id"
-  | "service_providing_group_product_application.notes"
+  | "service_providing_group_product_application.maximum_active_power"
   | "service_providing_group_product_application.prequalified_at"
   | "service_providing_group_product_application.procuring_system_operator_id"
   | "service_providing_group_product_application.product_type_ids"
@@ -462,9 +463,31 @@ export type PermissionTarget =
   | "service_providing_group_product_application.service_providing_group_id"
   | "service_providing_group_product_application.status"
   | "service_providing_group_product_application.verified_at"
+  | "service_providing_group_product_application_comment"
+  | "service_providing_group_product_application_comment.content"
+  | "service_providing_group_product_application_comment.created_at"
+  | "service_providing_group_product_application_comment.created_by"
+  | "service_providing_group_product_application_comment.id"
+  | "service_providing_group_product_application_comment.recorded_at"
+  | "service_providing_group_product_application_comment.recorded_by"
+  | "service_providing_group_product_application_comment.service_providing_group_product_application_id"
+  | "service_providing_group_product_application_comment.visibility"
+  | "service_providing_group_product_application_comment_history"
+  | "service_providing_group_product_application_comment_history.content"
+  | "service_providing_group_product_application_comment_history.created_at"
+  | "service_providing_group_product_application_comment_history.created_by"
+  | "service_providing_group_product_application_comment_history.id"
+  | "service_providing_group_product_application_comment_history.recorded_at"
+  | "service_providing_group_product_application_comment_history.recorded_by"
+  | "service_providing_group_product_application_comment_history.replaced_at"
+  | "service_providing_group_product_application_comment_history.replaced_by"
+  | "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id"
+  | "service_providing_group_product_application_comment_history.service_providing_group_product_application_id"
+  | "service_providing_group_product_application_comment_history.visibility"
   | "service_providing_group_product_application_history"
+  | "service_providing_group_product_application_history.additional_information"
   | "service_providing_group_product_application_history.id"
-  | "service_providing_group_product_application_history.notes"
+  | "service_providing_group_product_application_history.maximum_active_power"
   | "service_providing_group_product_application_history.prequalified_at"
   | "service_providing_group_product_application_history.procuring_system_operator_id"
   | "service_providing_group_product_application_history.product_type_ids"
@@ -726,7 +749,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.maximum_available_capacity",
+      target: "controllable_unit.maximum_active_power",
       operation: "read",
     },
     {
@@ -810,7 +833,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.maximum_available_capacity",
+      target: "controllable_unit_history.maximum_active_power",
       operation: "read",
     },
     {
@@ -2387,11 +2410,17 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target:
+        "service_providing_group_product_application.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application.id",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application.notes",
+      target:
+        "service_providing_group_product_application.maximum_active_power",
       operation: "read",
     },
     {
@@ -2433,11 +2462,112 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application_history.id",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application_history.notes",
+      target:
+        "service_providing_group_product_application_history.maximum_active_power",
       operation: "read",
     },
     {
@@ -2967,7 +3097,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.maximum_available_capacity",
+      target: "controllable_unit.maximum_active_power",
       operation: "read",
     },
     {
@@ -3051,7 +3181,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.maximum_available_capacity",
+      target: "controllable_unit_history.maximum_active_power",
       operation: "read",
     },
     {
@@ -4628,11 +4758,17 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target:
+        "service_providing_group_product_application.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application.id",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application.notes",
+      target:
+        "service_providing_group_product_application.maximum_active_power",
       operation: "read",
     },
     {
@@ -4674,11 +4810,112 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application_history.id",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application_history.notes",
+      target:
+        "service_providing_group_product_application_history.maximum_active_power",
       operation: "read",
     },
     {
@@ -5208,7 +5445,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.maximum_available_capacity",
+      target: "controllable_unit.maximum_active_power",
       operation: "read",
     },
     {
@@ -5292,7 +5529,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.maximum_available_capacity",
+      target: "controllable_unit_history.maximum_active_power",
       operation: "read",
     },
     {
@@ -6869,11 +7106,17 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target:
+        "service_providing_group_product_application.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application.id",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application.notes",
+      target:
+        "service_providing_group_product_application.maximum_active_power",
       operation: "read",
     },
     {
@@ -6915,11 +7158,112 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application_history.id",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application_history.notes",
+      target:
+        "service_providing_group_product_application_history.maximum_active_power",
       operation: "read",
     },
     {
@@ -7485,15 +7829,15 @@ const rawPermissions: Record<
       operation: "lookup",
     },
     {
-      target: "controllable_unit.maximum_available_capacity",
+      target: "controllable_unit.maximum_active_power",
       operation: "create",
     },
     {
-      target: "controllable_unit.maximum_available_capacity",
+      target: "controllable_unit.maximum_active_power",
       operation: "read",
     },
     {
-      target: "controllable_unit.maximum_available_capacity",
+      target: "controllable_unit.maximum_active_power",
       operation: "update",
     },
     {
@@ -7653,7 +7997,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.maximum_available_capacity",
+      target: "controllable_unit_history.maximum_active_power",
       operation: "read",
     },
     {
@@ -9738,15 +10082,27 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target:
+        "service_providing_group_product_application.additional_information",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.additional_information",
+      operation: "update",
+    },
+    {
       target: "service_providing_group_product_application.id",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application.notes",
+      target:
+        "service_providing_group_product_application.maximum_active_power",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application.notes",
+      target:
+        "service_providing_group_product_application.maximum_active_power",
       operation: "update",
     },
     {
@@ -9808,11 +10164,141 @@ const rawPermissions: Record<
       operation: "update",
     },
     {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment.service_providing_group_product_application_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "update",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application_history.id",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application_history.notes",
+      target:
+        "service_providing_group_product_application_history.maximum_active_power",
       operation: "read",
     },
     {
@@ -10461,7 +10947,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.maximum_available_capacity",
+      target: "controllable_unit.maximum_active_power",
       operation: "read",
     },
     {
@@ -10545,7 +11031,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.maximum_available_capacity",
+      target: "controllable_unit_history.maximum_active_power",
       operation: "read",
     },
     {
@@ -12122,11 +12608,17 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target:
+        "service_providing_group_product_application.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application.id",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application.notes",
+      target:
+        "service_providing_group_product_application.maximum_active_power",
       operation: "read",
     },
     {
@@ -12168,11 +12660,112 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application_history.id",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application_history.notes",
+      target:
+        "service_providing_group_product_application_history.maximum_active_power",
       operation: "read",
     },
     {
@@ -12714,7 +13307,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.maximum_available_capacity",
+      target: "controllable_unit.maximum_active_power",
       operation: "read",
     },
     {
@@ -12806,7 +13399,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.maximum_available_capacity",
+      target: "controllable_unit_history.maximum_active_power",
       operation: "read",
     },
     {
@@ -14649,16 +15242,18 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target:
+        "service_providing_group_product_application.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application.id",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application.notes",
+      target:
+        "service_providing_group_product_application.maximum_active_power",
       operation: "read",
-    },
-    {
-      target: "service_providing_group_product_application.notes",
-      operation: "update",
     },
     {
       target: "service_providing_group_product_application.prequalified_at",
@@ -14719,11 +15314,141 @@ const rawPermissions: Record<
       operation: "update",
     },
     {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment.service_providing_group_product_application_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "update",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application_history.id",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application_history.notes",
+      target:
+        "service_providing_group_product_application_history.maximum_active_power",
       operation: "read",
     },
     {
@@ -15356,15 +16081,15 @@ const rawPermissions: Record<
       operation: "lookup",
     },
     {
-      target: "controllable_unit.maximum_available_capacity",
+      target: "controllable_unit.maximum_active_power",
       operation: "create",
     },
     {
-      target: "controllable_unit.maximum_available_capacity",
+      target: "controllable_unit.maximum_active_power",
       operation: "read",
     },
     {
-      target: "controllable_unit.maximum_available_capacity",
+      target: "controllable_unit.maximum_active_power",
       operation: "update",
     },
     {
@@ -15516,7 +16241,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.maximum_available_capacity",
+      target: "controllable_unit_history.maximum_active_power",
       operation: "read",
     },
     {
@@ -17384,6 +18109,21 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target:
+        "service_providing_group_product_application.additional_information",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_application.additional_information",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.additional_information",
+      operation: "update",
+    },
+    {
       target: "service_providing_group_product_application",
       operation: "create",
     },
@@ -17392,8 +18132,19 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application.notes",
+      target:
+        "service_providing_group_product_application.maximum_active_power",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_application.maximum_active_power",
       operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.maximum_active_power",
+      operation: "update",
     },
     {
       target: "service_providing_group_product_application.prequalified_at",
@@ -17464,11 +18215,141 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment.service_providing_group_product_application_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "update",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application_history.id",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application_history.notes",
+      target:
+        "service_providing_group_product_application_history.maximum_active_power",
       operation: "read",
     },
     {
@@ -18059,7 +18940,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.maximum_available_capacity",
+      target: "controllable_unit.maximum_active_power",
       operation: "read",
     },
     {
@@ -18143,7 +19024,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.maximum_available_capacity",
+      target: "controllable_unit_history.maximum_active_power",
       operation: "read",
     },
     {
@@ -19720,11 +20601,17 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target:
+        "service_providing_group_product_application.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application.id",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application.notes",
+      target:
+        "service_providing_group_product_application.maximum_active_power",
       operation: "read",
     },
     {
@@ -19766,11 +20653,112 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application_history.id",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application_history.notes",
+      target:
+        "service_providing_group_product_application_history.maximum_active_power",
       operation: "read",
     },
     {

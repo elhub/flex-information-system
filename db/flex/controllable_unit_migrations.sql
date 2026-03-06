@@ -105,3 +105,41 @@ WHEN (
     AND OLD.validated_at IS NULL AND NEW.validated_at IS NULL -- noqa
 )
 EXECUTE FUNCTION controllable_unit_grid_validation_status_approved();
+
+-- changeset flex:controllable-unit-maximum-active-power-rename runOnChange:false endDelimiter:;
+--preconditions onFail:MARK_RAN
+--precondition-sql-check expectedResult:1 SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = 'flex' AND table_name = 'controllable_unit' AND column_name = 'maximum_available_capacity'
+ALTER TABLE flex.controllable_unit
+DISABLE TRIGGER USER;
+
+ALTER TABLE flex.controllable_unit
+RENAME COLUMN maximum_available_capacity TO maximum_active_power;
+
+ALTER TABLE flex.controllable_unit_history
+RENAME COLUMN maximum_available_capacity TO maximum_active_power;
+
+ALTER TABLE flex.controllable_unit
+RENAME CONSTRAINT controllable_unit_maximum_available_capacity_check
+TO controllable_unit_maximum_active_power_check;
+
+ALTER TABLE flex.controllable_unit
+ENABLE TRIGGER USER;
+
+-- changeset flex:controllable-unit-grid-validation-status-reset-trigger runOnChange:true endDelimiter:--
+CREATE OR REPLACE TRIGGER controllable_unit_grid_validation_status_reset
+BEFORE UPDATE OF
+regulation_direction,
+maximum_active_power,
+minimum_duration,
+maximum_duration,
+recovery_duration,
+ramp_rate,
+accounting_point_id
+ON controllable_unit
+FOR EACH ROW
+WHEN (
+    OLD.grid_validation_status IS NOT DISTINCT FROM NEW.grid_validation_status -- noqa
+    AND NEW.grid_validation_status not in ('pending', 'in_progress','validated') -- noqa
+    AND current_user = 'flex_service_provider' -- noqa
+)
+EXECUTE FUNCTION controllable_unit_grid_validation_status_reset();

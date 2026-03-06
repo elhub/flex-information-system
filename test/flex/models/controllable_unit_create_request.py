@@ -25,8 +25,8 @@ class ControllableUnitCreateRequest:
         regulation_direction (ControllableUnitRegulationDirection): The regulation direction of the controllable unit.
             `up` means it can be used to increase production or decrease consumption, while `down` means to decrease
             production or increase consumption. Example: up.
-        maximum_available_capacity (float): Maximum continuous active power that the controllable unit can produce or
-            consume, i.e. deliver for balancing and congestion services, in kilowatts. Example: 3.5.
+        maximum_active_power (float): Maximum continuous active power that the controllable unit can produce or consume,
+            i.e. deliver for balancing and congestion services, in kilowatts. Example: 3.5.
         accounting_point_id (int): Reference to the accounting point that the controllable unit is connected to.
             Example: 10289.
         start_date (datetime.date | None | Unset): The usage date when the controllable unit is first active. Example:
@@ -43,13 +43,13 @@ class ControllableUnitCreateRequest:
         grid_validation_status (ControllableUnitGridValidationStatus | Unset): The grid validation status of the
             controllable unit. Example: validated.
         grid_validation_notes (None | str | Unset): Free text notes on the current grid validation status.
-        validated_at (None | str | Unset): When the controllable unit was last validated. Example: 2022-08-08 12:00:00
-            CET.
+        validated_at (datetime.datetime | None | Unset): When the controllable unit was last validated. Example:
+            2022-08-08T12:00:00+02.
     """
 
     name: str
     regulation_direction: ControllableUnitRegulationDirection
-    maximum_available_capacity: float
+    maximum_active_power: float
     accounting_point_id: int
     start_date: datetime.date | None | Unset = UNSET
     status: ControllableUnitStatus | Unset = UNSET
@@ -60,7 +60,7 @@ class ControllableUnitCreateRequest:
     grid_node_id: None | str | Unset = UNSET
     grid_validation_status: ControllableUnitGridValidationStatus | Unset = UNSET
     grid_validation_notes: None | str | Unset = UNSET
-    validated_at: None | str | Unset = UNSET
+    validated_at: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -68,7 +68,7 @@ class ControllableUnitCreateRequest:
 
         regulation_direction = self.regulation_direction.value
 
-        maximum_available_capacity = self.maximum_available_capacity
+        maximum_active_power = self.maximum_active_power
 
         accounting_point_id = self.accounting_point_id
 
@@ -127,6 +127,8 @@ class ControllableUnitCreateRequest:
         validated_at: None | str | Unset
         if isinstance(self.validated_at, Unset):
             validated_at = UNSET
+        elif isinstance(self.validated_at, datetime.datetime):
+            validated_at = self.validated_at.isoformat()
         else:
             validated_at = self.validated_at
 
@@ -136,7 +138,7 @@ class ControllableUnitCreateRequest:
             {
                 "name": name,
                 "regulation_direction": regulation_direction,
-                "maximum_available_capacity": maximum_available_capacity,
+                "maximum_active_power": maximum_active_power,
                 "accounting_point_id": accounting_point_id,
             }
         )
@@ -170,7 +172,7 @@ class ControllableUnitCreateRequest:
 
         regulation_direction = ControllableUnitRegulationDirection(d.pop("regulation_direction"))
 
-        maximum_available_capacity = d.pop("maximum_available_capacity")
+        maximum_active_power = d.pop("maximum_active_power")
 
         accounting_point_id = d.pop("accounting_point_id")
 
@@ -259,19 +261,27 @@ class ControllableUnitCreateRequest:
 
         grid_validation_notes = _parse_grid_validation_notes(d.pop("grid_validation_notes", UNSET))
 
-        def _parse_validated_at(data: object) -> None | str | Unset:
+        def _parse_validated_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(None | str | Unset, data)
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                validated_at_type_0 = isoparse(data)
+
+                return validated_at_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(datetime.datetime | None | Unset, data)
 
         validated_at = _parse_validated_at(d.pop("validated_at", UNSET))
 
         controllable_unit_create_request = cls(
             name=name,
             regulation_direction=regulation_direction,
-            maximum_available_capacity=maximum_available_capacity,
+            maximum_active_power=maximum_active_power,
             accounting_point_id=accounting_point_id,
             start_date=start_date,
             status=status,

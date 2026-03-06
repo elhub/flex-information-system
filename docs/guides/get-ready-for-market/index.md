@@ -13,7 +13,7 @@ and system operators to participate in the market.
 >
 > For a detailed definition of when a service providing group (SPG) is
 > considered *ready for market*, check the
-> [Ready for market](../concepts/ready-for-market.md) concept page.
+> [Ready for market](../../concepts/ready-for-market.md) concept page.
 
 ## Prerequisites
 
@@ -44,7 +44,7 @@ being ready for market:
 
 <!--[Process priority - the happy path](../diagrams/registration_happy_path.png)-->
 
-![Get ready for market path](../diagrams/ready_for_market.drawio.png)
+![Get ready for market path](../../diagrams/ready_for_market.drawio.png)
 
 The diagram shows us that a service provider can register all their data at
 once, and that the (pre)qualification processes can run in parallel.
@@ -55,7 +55,7 @@ We are using the following notation:
 
 * `ellipses` - start and end states
 * `rectangles` - processes
-    * `solid border` - main process ([Processes](../processes/index.md))
+    * `solid border` - [main process](../../processes/index.md)
     * `dotted border` - sub-process driving/responsible market party
 * colors indicating the driving/responsible market party for a (sub-)process
     * `green` - system operator
@@ -63,3 +63,18 @@ We are using the following notation:
     * `red` - flexibility information system operator
     * `white` - unspecified
 * `arrows` - dependencies between processes
+
+## Step 0: Getting started
+
+Follow the [Getting started](../getting-started.md) tutorial to begin using the
+Flexibility Information System portal.
+
+## Step-by-step: How to register a controllable unit
+
+Follow the [Registering a Controllable Unit](sp-cu-registration.md) tutorial to
+register a controllable unit.
+
+## Step-by-step: How to group controllable units in a service providing group
+
+Follow the [Grouping Controllable Units in a Service Providing Group](sp-spg-registration.md)
+tutorial to register a controllable unit.

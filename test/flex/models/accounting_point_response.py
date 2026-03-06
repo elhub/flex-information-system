@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
 from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
 T = TypeVar("T", bound="AccountingPointResponse")
 
@@ -17,15 +19,15 @@ class AccountingPointResponse:
         id (int): Unique surrogate identifier. Example: 89.
         business_id (str): The GSRN metering point id of the accounting point. Example: 709000000000000057.
         system_operator_id (int): The system operator of the accounting point.
-        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-            23:59:00 CET.
+        recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
+            2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
     """
 
     id: int
     business_id: str
     system_operator_id: int
-    recorded_at: str
+    recorded_at: datetime.datetime
     recorded_by: int
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -36,7 +38,7 @@ class AccountingPointResponse:
 
         system_operator_id = self.system_operator_id
 
-        recorded_at = self.recorded_at
+        recorded_at = self.recorded_at.isoformat()
 
         recorded_by = self.recorded_by
 
@@ -63,7 +65,7 @@ class AccountingPointResponse:
 
         system_operator_id = d.pop("system_operator_id")
 
-        recorded_at = d.pop("recorded_at")
+        recorded_at = isoparse(d.pop("recorded_at"))
 
         recorded_by = d.pop("recorded_by")
 

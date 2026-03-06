@@ -48,7 +48,7 @@ from the responsible party.
 | <a name="field-type" href="#field-type">type</a>                      | The type of the notice.                                            | text<br/>Pattern: `^no.elhub.flex.`<br/>Read only               |                               |
 | <a name="field-source" href="#field-source">source</a>                | The URI of the resource concerned by the event.                    | text<br/>Pattern: `^(\/([a-z][a-z_]*\|[0-9]+))+$`<br/>Read only |                               |
 | <a name="field-data" href="#field-data">data</a>                      | The data of the notice.                                            | <br/>Read only                                                  |                               |
-| <a name="field-recorded_at" href="#field-recorded_at">recorded_at</a> | When the resource was recorded (created or updated) in the system. | timestamp with time zone<br/>Read only                          |                               |
+| <a name="field-recorded_at" href="#field-recorded_at">recorded_at</a> | When the resource was recorded (created or updated) in the system. | date-time<br/>Read only                                         |                               |
 | <a name="field-recorded_by" href="#field-recorded_by">recorded_by</a> | The identity that recorded the resource.                           | bigint<br/>Read only                                            |                               |
 
 ## Validation Rules

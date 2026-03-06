@@ -122,7 +122,7 @@ BEGIN
     name,
     start_date,
     regulation_direction,
-    maximum_available_capacity,
+    maximum_active_power,
     minimum_duration,
     maximum_duration,
     recovery_duration,
@@ -155,7 +155,7 @@ BEGIN
     name,
     start_date,
     regulation_direction,
-    maximum_available_capacity,
+    maximum_active_power,
     minimum_duration,
     maximum_duration,
     recovery_duration,
@@ -177,7 +177,7 @@ BEGIN
     cu.name || ' COMMON-EU-ES-2023', -- this string will be searched in tests
     cu.start_date,
     cu.regulation_direction,
-    cu.maximum_available_capacity,
+    cu.maximum_active_power,
     cu.minimum_duration,
     cu.maximum_duration,
     cu.recovery_duration,
@@ -205,7 +205,7 @@ BEGIN
     cu.name || ' TEST-SP-2024-07',
     cu.start_date,
     cu.regulation_direction,
-    cu.maximum_available_capacity,
+    cu.maximum_active_power,
     cu.minimum_duration,
     cu.maximum_duration,
     cu.recovery_duration,
@@ -232,7 +232,7 @@ BEGIN
     cu.name || ' COMMON-BRP-CUSP-2024',
     cu.start_date,
     cu.regulation_direction,
-    cu.maximum_available_capacity,
+    cu.maximum_active_power,
     cu.minimum_duration,
     cu.maximum_duration,
     cu.recovery_duration,
@@ -259,7 +259,7 @@ BEGIN
     cu.name || ' COMMON-SP-AS-OF-2024',
     cu.start_date,
     cu.regulation_direction,
-    cu.maximum_available_capacity,
+    cu.maximum_active_power,
     cu.minimum_duration,
     cu.maximum_duration,
     cu.recovery_duration,
@@ -286,7 +286,7 @@ BEGIN
     cu.name || ' TEST-SP-2025',
     cu.start_date,
     cu.regulation_direction,
-    cu.maximum_available_capacity,
+    cu.maximum_active_power,
     cu.minimum_duration,
     cu.maximum_duration,
     cu.recovery_duration,
@@ -1021,11 +1021,13 @@ BEGIN
   INSERT INTO flex.service_providing_group_product_application (
     service_providing_group_id,
     procuring_system_operator_id,
-    product_type_ids
+    product_type_ids,
+    maximum_active_power
   ) VALUES (
     spg_id,
     so_id,
-    array[pt_id]
+    array[pt_id],
+    7
   ) RETURNING id INTO spgpa_id;
 
   UPDATE flex.service_providing_group_product_application

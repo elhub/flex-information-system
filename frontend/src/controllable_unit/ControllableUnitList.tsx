@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { usePermissions } from "ra-core";
+import { useGetIdentity, usePermissions } from "ra-core";
 import { ExportButton } from "react-admin";
 import { Datagrid, List } from "../components/EDS-ra/list";
 import {
@@ -26,9 +26,23 @@ const CULookupButton = () => (
   </Button>
 );
 
+const CreateButton = () => (
+  <Button
+    as={Link}
+    icon={IconPlus}
+    to="/controllable_unit/create"
+    variant="invisible"
+  >
+    Create manually
+  </Button>
+);
+
 export const ControllableUnitList = () => {
   const { permissions } = usePermissions<Permissions>();
+  const { data: identity } = useGetIdentity();
   const canLookup = permissions?.allow("controllable_unit", "lookup");
+  const isFiso =
+    identity?.role === "flex_flexibility_information_system_operator";
 
   const controllableUnitFilters = [
     <EnumArrayInput
@@ -42,6 +56,7 @@ export const ControllableUnitList = () => {
 
   const actions = [
     ...(canLookup ? [<CULookupButton key="lookup" />] : []),
+    ...(isFiso ? [<CreateButton key="create" />] : []),
     <ExportButton key="export" />,
   ];
 

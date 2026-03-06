@@ -440,6 +440,13 @@ export type ServiceProvidingGroupProductApplicationStatus =
   | "rejected";
 
 /**
+ * The level of visibility of the comment.
+ */
+export type ServiceProvidingGroupProductApplicationCommentVisibility =
+  | "same_party"
+  | "any_involved_party";
+
+/**
  * The reason for the suspension.
  */
 export type ServiceProvidingGroupProductSuspensionReason =
@@ -475,7 +482,7 @@ export type ControllableUnitUpdateRequest = {
   /**
    * Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
    */
-  maximum_available_capacity?: number;
+  maximum_active_power?: number;
   /**
    * The minimum activation duration in seconds.
    */
@@ -524,7 +531,7 @@ export type ControllableUnitCreateRequest = {
   /**
    * Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
    */
-  maximum_available_capacity: number;
+  maximum_active_power: number;
   /**
    * The minimum activation duration in seconds.
    */
@@ -585,7 +592,7 @@ export type ControllableUnit = {
   /**
    * Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
    */
-  maximum_available_capacity: number;
+  maximum_active_power: number;
   /**
    * Whether the controllable unit is small or not, following NCDR.
    */
@@ -2184,9 +2191,13 @@ export type ServiceProvidingGroupProductApplicationUpdateRequest = {
   product_type_ids?: Array<number>;
   status?: ServiceProvidingGroupProductApplicationStatus;
   /**
-   * Free text notes on the current product application status.
+   * The maximum active power applied for, in kilowatts.
    */
-  notes?: string;
+  maximum_active_power?: number;
+  /**
+   * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
+   */
+  additional_information?: string;
   /**
    * When the product application was last prequalified.
    */
@@ -2215,9 +2226,13 @@ export type ServiceProvidingGroupProductApplicationCreateRequest = {
   product_type_ids: Array<number>;
   status?: ServiceProvidingGroupProductApplicationStatus;
   /**
-   * Free text notes on the current product application status.
+   * The maximum active power applied for, in kilowatts.
    */
-  notes?: string;
+  maximum_active_power: number;
+  /**
+   * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
+   */
+  additional_information?: string;
   /**
    * When the product application was last prequalified.
    */
@@ -2250,9 +2265,13 @@ export type ServiceProvidingGroupProductApplication = {
   product_type_ids: Array<number>;
   status: ServiceProvidingGroupProductApplicationStatus;
   /**
-   * Free text notes on the current product application status.
+   * The maximum active power applied for, in kilowatts.
    */
-  notes?: string;
+  maximum_active_power: number;
+  /**
+   * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
+   */
+  additional_information?: string;
   /**
    * When the product application was last prequalified.
    */
@@ -2261,6 +2280,67 @@ export type ServiceProvidingGroupProductApplication = {
    * When the product application was last verified.
    */
   verified_at?: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+};
+
+/**
+ * Request schema for update operations - Comment made by a party involved in a service providing group product application.
+ */
+export type ServiceProvidingGroupProductApplicationCommentUpdateRequest = {
+  visibility?: ServiceProvidingGroupProductApplicationCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content?: string;
+};
+
+/**
+ * Request schema for create operations - Comment made by a party involved in a service providing group product application.
+ */
+export type ServiceProvidingGroupProductApplicationCommentCreateRequest = {
+  /**
+   * Reference to the service providing group product application.
+   */
+  service_providing_group_product_application_id: number;
+  visibility?: ServiceProvidingGroupProductApplicationCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+};
+
+/**
+ * Response schema - Comment made by a party involved in a service providing group product application.
+ */
+export type ServiceProvidingGroupProductApplicationComment = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the service providing group product application.
+   */
+  service_providing_group_product_application_id: number;
+  /**
+   * Reference to the identity that created the comment.
+   */
+  readonly created_by: number;
+  /**
+   * When the comment was added to the SPGPA.
+   */
+  readonly created_at: string;
+  visibility: ServiceProvidingGroupProductApplicationCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
   /**
    * When the resource was recorded (created or updated) in the system.
    */
@@ -2779,6 +2859,25 @@ export type ServiceProvidingGroupProductApplicationHistory =
   };
 
 /**
+ * Service Providing Group Product Application Comment - history
+ */
+export type ServiceProvidingGroupProductApplicationCommentHistory =
+  ServiceProvidingGroupProductApplicationComment & {
+    /**
+     * Reference to the resource that was updated.
+     */
+    service_providing_group_product_application_comment_id: number;
+    /**
+     * The identity that updated the resource when it was replaced.
+     */
+    replaced_by?: number;
+    /**
+     * When the resource was replaced in the system.
+     */
+    replaced_at?: string;
+  };
+
+/**
  * Service Providing Group Product Suspension - history
  */
 export type ServiceProvidingGroupProductSuspensionHistory =
@@ -2874,7 +2973,7 @@ export type ControllableUnitWritable = {
   /**
    * Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
    */
-  maximum_available_capacity: number;
+  maximum_active_power: number;
   /**
    * The minimum activation duration in seconds.
    */
@@ -3336,9 +3435,13 @@ export type ServiceProvidingGroupProductApplicationWritable = {
   product_type_ids: Array<number>;
   status: ServiceProvidingGroupProductApplicationStatus;
   /**
-   * Free text notes on the current product application status.
+   * The maximum active power applied for, in kilowatts.
    */
-  notes?: string;
+  maximum_active_power: number;
+  /**
+   * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
+   */
+  additional_information?: string;
   /**
    * When the product application was last prequalified.
    */
@@ -3347,6 +3450,21 @@ export type ServiceProvidingGroupProductApplicationWritable = {
    * When the product application was last verified.
    */
   verified_at?: string;
+};
+
+/**
+ * Response schema - Comment made by a party involved in a service providing group product application.
+ */
+export type ServiceProvidingGroupProductApplicationCommentWritable = {
+  /**
+   * Reference to the service providing group product application.
+   */
+  service_providing_group_product_application_id: number;
+  visibility: ServiceProvidingGroupProductApplicationCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
 };
 
 /**
@@ -3737,6 +3855,25 @@ export type ServiceProvidingGroupProductApplicationHistoryWritable =
      * Reference to the resource that was updated.
      */
     service_providing_group_product_application_id: number;
+    /**
+     * The identity that updated the resource when it was replaced.
+     */
+    replaced_by?: number;
+    /**
+     * When the resource was replaced in the system.
+     */
+    replaced_at?: string;
+  };
+
+/**
+ * Service Providing Group Product Application Comment - history
+ */
+export type ServiceProvidingGroupProductApplicationCommentHistoryWritable =
+  ServiceProvidingGroupProductApplicationCommentWritable & {
+    /**
+     * Reference to the resource that was updated.
+     */
+    service_providing_group_product_application_comment_id: number;
     /**
      * The identity that updated the resource when it was replaced.
      */
@@ -13345,6 +13482,383 @@ export type ReadServiceProvidingGroupProductApplicationHistoryResponses = {
 
 export type ReadServiceProvidingGroupProductApplicationHistoryResponse =
   ReadServiceProvidingGroupProductApplicationHistoryResponses[keyof ReadServiceProvidingGroupProductApplicationHistoryResponses];
+
+export type ListServiceProvidingGroupProductApplicationCommentData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Unique surrogate identifier.
+     */
+    id?: string;
+    /**
+     * Reference to the service providing group product application.
+     */
+    service_providing_group_product_application_id?: string;
+    /**
+     * Filtering Columns
+     */
+    select?: string;
+    /**
+     * Ordering
+     */
+    order?: string;
+    /**
+     * Limiting and Pagination
+     */
+    offset?: string;
+    /**
+     * Limiting and Pagination
+     */
+    limit?: string;
+  };
+  url: "/service_providing_group_product_application_comment";
+};
+
+export type ListServiceProvidingGroupProductApplicationCommentErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Range Not Satisfiable
+   */
+  416: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type ListServiceProvidingGroupProductApplicationCommentError =
+  ListServiceProvidingGroupProductApplicationCommentErrors[keyof ListServiceProvidingGroupProductApplicationCommentErrors];
+
+export type ListServiceProvidingGroupProductApplicationCommentResponses = {
+  /**
+   * OK
+   */
+  200: Array<ServiceProvidingGroupProductApplicationComment>;
+  /**
+   * Partial Content
+   */
+  206: Array<ServiceProvidingGroupProductApplicationComment>;
+};
+
+export type ListServiceProvidingGroupProductApplicationCommentResponse =
+  ListServiceProvidingGroupProductApplicationCommentResponses[keyof ListServiceProvidingGroupProductApplicationCommentResponses];
+
+export type CreateServiceProvidingGroupProductApplicationCommentData = {
+  /**
+   * service_providing_group_product_application_comment
+   */
+  body?: ServiceProvidingGroupProductApplicationCommentCreateRequest;
+  path?: never;
+  query?: never;
+  url: "/service_providing_group_product_application_comment";
+};
+
+export type CreateServiceProvidingGroupProductApplicationCommentErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Conflict
+   */
+  409: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type CreateServiceProvidingGroupProductApplicationCommentError =
+  CreateServiceProvidingGroupProductApplicationCommentErrors[keyof CreateServiceProvidingGroupProductApplicationCommentErrors];
+
+export type CreateServiceProvidingGroupProductApplicationCommentResponses = {
+  /**
+   * Created
+   */
+  201: ServiceProvidingGroupProductApplicationComment;
+};
+
+export type CreateServiceProvidingGroupProductApplicationCommentResponse =
+  CreateServiceProvidingGroupProductApplicationCommentResponses[keyof CreateServiceProvidingGroupProductApplicationCommentResponses];
+
+export type ReadServiceProvidingGroupProductApplicationCommentData = {
+  body?: never;
+  path: {
+    id: number;
+  };
+  query?: never;
+  url: "/service_providing_group_product_application_comment/{id}";
+};
+
+export type ReadServiceProvidingGroupProductApplicationCommentErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type ReadServiceProvidingGroupProductApplicationCommentError =
+  ReadServiceProvidingGroupProductApplicationCommentErrors[keyof ReadServiceProvidingGroupProductApplicationCommentErrors];
+
+export type ReadServiceProvidingGroupProductApplicationCommentResponses = {
+  /**
+   * OK
+   */
+  200: ServiceProvidingGroupProductApplicationComment;
+};
+
+export type ReadServiceProvidingGroupProductApplicationCommentResponse =
+  ReadServiceProvidingGroupProductApplicationCommentResponses[keyof ReadServiceProvidingGroupProductApplicationCommentResponses];
+
+export type UpdateServiceProvidingGroupProductApplicationCommentData = {
+  /**
+   * service_providing_group_product_application_comment
+   */
+  body: ServiceProvidingGroupProductApplicationCommentUpdateRequest;
+  path: {
+    id: number;
+  };
+  query?: never;
+  url: "/service_providing_group_product_application_comment/{id}";
+};
+
+export type UpdateServiceProvidingGroupProductApplicationCommentErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Conflict
+   */
+  409: ErrorMessage;
+};
+
+export type UpdateServiceProvidingGroupProductApplicationCommentError =
+  UpdateServiceProvidingGroupProductApplicationCommentErrors[keyof UpdateServiceProvidingGroupProductApplicationCommentErrors];
+
+export type UpdateServiceProvidingGroupProductApplicationCommentResponses = {
+  /**
+   * OK
+   */
+  200: ServiceProvidingGroupProductApplicationComment;
+  /**
+   * No Content
+   */
+  204: void;
+};
+
+export type UpdateServiceProvidingGroupProductApplicationCommentResponse =
+  UpdateServiceProvidingGroupProductApplicationCommentResponses[keyof UpdateServiceProvidingGroupProductApplicationCommentResponses];
+
+export type ListServiceProvidingGroupProductApplicationCommentHistoryData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Unique surrogate identifier.
+     */
+    id?: string;
+    /**
+     * Identifier of the Service Providing Group Product Application Comment whose history we want to inspect.
+     */
+    service_providing_group_product_application_comment_id?: string;
+    /**
+     * Reference to the service providing group product application.
+     */
+    service_providing_group_product_application_id?: string;
+    /**
+     * Filtering Columns
+     */
+    select?: string;
+    /**
+     * Ordering
+     */
+    order?: string;
+    /**
+     * Limiting and Pagination
+     */
+    offset?: string;
+    /**
+     * Limiting and Pagination
+     */
+    limit?: string;
+  };
+  url: "/service_providing_group_product_application_comment_history";
+};
+
+export type ListServiceProvidingGroupProductApplicationCommentHistoryErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Range Not Satisfiable
+   */
+  416: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type ListServiceProvidingGroupProductApplicationCommentHistoryError =
+  ListServiceProvidingGroupProductApplicationCommentHistoryErrors[keyof ListServiceProvidingGroupProductApplicationCommentHistoryErrors];
+
+export type ListServiceProvidingGroupProductApplicationCommentHistoryResponses =
+  {
+    /**
+     * OK
+     */
+    200: Array<ServiceProvidingGroupProductApplicationCommentHistory>;
+    /**
+     * Partial Content
+     */
+    206: Array<ServiceProvidingGroupProductApplicationCommentHistory>;
+  };
+
+export type ListServiceProvidingGroupProductApplicationCommentHistoryResponse =
+  ListServiceProvidingGroupProductApplicationCommentHistoryResponses[keyof ListServiceProvidingGroupProductApplicationCommentHistoryResponses];
+
+export type ReadServiceProvidingGroupProductApplicationCommentHistoryData = {
+  body?: never;
+  path: {
+    /**
+     * Identifier of the history record we want to inspect.
+     */
+    id: number;
+  };
+  query?: never;
+  url: "/service_providing_group_product_application_comment_history/{id}";
+};
+
+export type ReadServiceProvidingGroupProductApplicationCommentHistoryErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type ReadServiceProvidingGroupProductApplicationCommentHistoryError =
+  ReadServiceProvidingGroupProductApplicationCommentHistoryErrors[keyof ReadServiceProvidingGroupProductApplicationCommentHistoryErrors];
+
+export type ReadServiceProvidingGroupProductApplicationCommentHistoryResponses =
+  {
+    /**
+     * OK
+     */
+    200: ServiceProvidingGroupProductApplicationCommentHistory;
+  };
+
+export type ReadServiceProvidingGroupProductApplicationCommentHistoryResponse =
+  ReadServiceProvidingGroupProductApplicationCommentHistoryResponses[keyof ReadServiceProvidingGroupProductApplicationCommentHistoryResponses];
 
 export type ListServiceProvidingGroupProductSuspensionData = {
   body?: never;

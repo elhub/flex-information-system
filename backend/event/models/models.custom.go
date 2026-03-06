@@ -68,9 +68,19 @@ func (q *Queries) GetNotificationRecipients( //nolint:cyclop,funlen
 	case "no.elhub.flex.service_providing_group_product_application.create",
 		"no.elhub.flex.service_providing_group_product_application.update":
 		return q.GetServiceProvidingGroupProductApplicationNotificationRecipients(ctx, resourceID)
+	case "no.elhub.flex.service_providing_group_product_application_comment.create",
+		"no.elhub.flex.service_providing_group_product_application_comment.update":
+		return q.GetServiceProvidingGroupProductApplicationCommentNotificationRecipients(
+			ctx, resourceID, recordedAt,
+		)
 	case "no.elhub.flex.service_providing_group_grid_prequalification.create",
 		"no.elhub.flex.service_providing_group_grid_prequalification.update":
 		return q.GetServiceProvidingGroupGridPrequalificationNotificationRecipients(ctx, resourceID)
+	case "no.elhub.flex.service_providing_group_grid_prequalification_comment.create",
+		"no.elhub.flex.service_providing_group_grid_prequalification_comment.update":
+		return q.GetServiceProvidingGroupGridPrequalificationCommentNotificationRecipients(
+			ctx, resourceID, recordedAt,
+		)
 	case "no.elhub.flex.service_providing_group_grid_suspension.create",
 		"no.elhub.flex.service_providing_group_grid_suspension.update",
 		"no.elhub.flex.service_providing_group_grid_suspension.delete":

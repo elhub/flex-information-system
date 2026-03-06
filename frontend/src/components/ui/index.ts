@@ -38,6 +38,7 @@ import {
 } from "@elhub/ds-components";
 import FormContainer from "./formContainer";
 import { Datepicker } from "./datepicker/Datepicker";
+import { DateTimePicker } from "./datetimepicker/DateTimePicker";
 
 export {
   Alert,
@@ -57,6 +58,7 @@ export {
   Content,
   Container,
   Datepicker,
+  DateTimePicker,
   Dropdown,
   FlexDiv,
   Header,
@@ -79,3 +81,6 @@ export {
   FormContainer,
   Textarea,
 };
+
+// Export all the types from the ds-components package
+export * from "@elhub/ds-components/dist/ds-components";

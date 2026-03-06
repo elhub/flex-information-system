@@ -44,6 +44,7 @@ from flex.api.controllable_unit_service_provider import (
     create_controllable_unit_service_provider,
 )
 from typing import cast
+import datetime
 import pytest
 
 
@@ -68,7 +69,7 @@ def data():
             name="CU-SUSP-1",
             accounting_point_id=1002,  # managed by Test SO
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
-            maximum_available_capacity=3.5,
+            maximum_active_power=3.5,
         ),
     )
     assert isinstance(cu, ControllableUnitResponse)
@@ -98,7 +99,7 @@ def data():
             service_provider_id=sp_id,
             end_user_id=eu_id,
             contract_reference="TEST-CONTRACT-SUSP-1",
-            valid_from="2024-01-01T00:00:00+1",
+            valid_from=datetime.datetime.fromisoformat("2024-01-01T00:00:00+01:00"),
         ),
     )
     assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)

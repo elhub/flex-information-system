@@ -1,115 +1,99 @@
-import { required, SimpleForm, TextInput, useRecordContext } from "react-admin";
-import { Typography, Stack } from "@mui/material";
-import { Toolbar } from "../../components/Toolbar";
+import { useRecordContext } from "react-admin";
+import { Form } from "ra-core";
+import { useFormContext } from "react-hook-form";
+import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import {
-  PartyReferenceInput,
-  InputStack,
-  AutocompleteReferenceInput,
-} from "../../auth";
-import { DateTimeInput } from "../../components/datetime";
-import { ProductTypeArrayInput } from "../../product_type/components";
-import { useMemo } from "react";
+import { getFields, unTypedZodResolver } from "../../zod";
+import { useCreateOrUpdate } from "../../auth";
 import { zServiceProvidingGroupProductApplicationCreateRequest } from "../../generated-client/zod.gen";
-import { EnumInput } from "../../components/enum";
-import { unTypedZodResolver } from "../../zod";
+import { FormContainer, Heading, VerticalSpace } from "../../components/ui";
+import {
+  TextInput,
+  TextAreaInput,
+  EnumInput,
+  AutocompleteReferenceInput,
+  PartyReferenceInput,
+  DateTimeInput,
+  FormToolbar,
+} from "../../components/EDS-ra/inputs";
+import { ProductTypeArrayInput } from "../../product_type/components";
 
-// keep only the fields that map to the UI
-const filterRecord = ({
-  service_providing_group_id,
-  procuring_system_operator_id,
-  product_type_ids,
-  status,
-  notes,
-  prequalified_at,
-  verified_at,
-}: any) => ({
-  service_providing_group_id,
-  procuring_system_operator_id,
-  product_type_ids,
-  status,
-  notes,
-  prequalified_at,
-  verified_at,
-});
+// component restricting the selectable product types based on the
+// already selected procuring system operator
+const ProductTypesInput = (props: { source: string; required: boolean }) => {
+  const { setValue, watch } = useFormContext();
+  const {
+    formState: { dirtyFields },
+  } = useFormContext();
+  const productTypeIdsDirty = dirtyFields.product_type_ids;
+  const systemOperatorID = watch("procuring_system_operator_id");
+
+  useEffect(() => {
+    if (systemOperatorID && productTypeIdsDirty) {
+      setValue("product_type_ids", []);
+    }
+  }, [productTypeIdsDirty, systemOperatorID, setValue]);
+
+  return (
+    <ProductTypeArrayInput systemOperatorId={systemOperatorID} {...props} />
+  );
+};
 
 // common layout to create and edit pages
 export const ServiceProvidingGroupProductApplicationInput = () => {
   const { state: overrideRecord } = useLocation();
   const actualRecord = useRecordContext();
-  // Memoize the combined record to avoid re-renders causing errors
-  const record = useMemo(
-    () => filterRecord({ ...actualRecord, ...overrideRecord }),
-    [actualRecord, overrideRecord],
+  const parsedOverrideRecord =
+    zServiceProvidingGroupProductApplicationCreateRequest
+      .partial()
+      .parse(overrideRecord ?? {});
+
+  const record = { ...actualRecord, ...parsedOverrideRecord };
+  const createOrUpdate = useCreateOrUpdate();
+
+  const fields = getFields(
+    zServiceProvidingGroupProductApplicationCreateRequest.shape,
   );
 
   return (
-    <SimpleForm
+    <Form
       record={record}
-      maxWidth={1280}
       resolver={unTypedZodResolver(
         zServiceProvidingGroupProductApplicationCreateRequest,
       )}
-      toolbar={<Toolbar />}
+      sanitizeEmptyValues
     >
-      <Stack direction="column" spacing={1}>
-        <Typography variant="h6" gutterBottom>
+      <FormContainer>
+        <Heading level={3} size="medium">
           Basic information
-        </Typography>
-        <InputStack direction="row" flexWrap="wrap">
-          <AutocompleteReferenceInput
-            source="service_providing_group_id"
-            reference="service_providing_group"
-            label="field.service_providing_group_product_application.service_providing_group_id"
-            readOnly={!!record?.service_providing_group_id}
-          />
-          <PartyReferenceInput
-            source="procuring_system_operator_id"
-            label="field.service_providing_group_product_application.procuring_system_operator_id"
-            filter={{ type: "system_operator" }}
-          />
-          <ProductTypeArrayInput
-            source="product_type_ids"
-            label="field.service_providing_group_product_application.product_type_ids"
-            validate={required()}
-          />
-        </InputStack>
-        <Typography variant="h6" gutterBottom>
+        </Heading>
+        <VerticalSpace size="small" />
+        <AutocompleteReferenceInput
+          {...fields.service_providing_group_id}
+          reference="service_providing_group"
+          readOnly={!!record?.service_providing_group_id}
+        />
+        <PartyReferenceInput
+          {...fields.procuring_system_operator_id}
+          filter={{ type: "system_operator" }}
+        />
+        <ProductTypesInput {...fields.product_type_ids} />
+        <Heading level={3} size="medium">
           Application process
-        </Typography>
-        <InputStack direction="row" flexWrap="wrap">
-          <EnumInput
-            source="status"
-            enumKey="service_providing_group_product_application.status"
-            label="field.service_providing_group_product_application.status"
-            validate={required()}
-            choices={[
-              "requested",
-              "prequalification_pending",
-              "in_progress",
-              "temporary_qualified",
-              "prequalified",
-              "verified",
-              "rejected",
-            ]}
-          />
-          <TextInput
-            source="notes"
-            label="field.service_providing_group_product_application.notes"
-            multiline={true}
-            minRows={3}
-            sx={{ minWidth: { xs: 300, md: 500 } }}
-          />
-          <DateTimeInput
-            source="prequalified_at"
-            label="field.service_providing_group_product_application.prequalified_at"
-          />
-          <DateTimeInput
-            source="verified_at"
-            label="field.service_providing_group_product_application.verified_at"
-          />
-        </InputStack>
-      </Stack>
-    </SimpleForm>
+        </Heading>
+        <VerticalSpace size="small" />
+        <EnumInput
+          {...fields.status}
+          enumKey="service_providing_group_product_application.status"
+          defaultValue="requested"
+          readOnly={createOrUpdate === "create"}
+        />
+        <TextInput {...fields.maximum_active_power} type="number" />
+        <TextAreaInput {...fields.additional_information} />
+        <DateTimeInput {...fields.prequalified_at} />
+        <DateTimeInput {...fields.verified_at} />
+        <FormToolbar />
+      </FormContainer>
+    </Form>
   );
 };

@@ -1,10 +1,15 @@
-import { Datepicker } from "../../ui";
+import { Datepicker, DatepickerProps } from "../../ui";
 import { useInput } from "ra-core";
 import { BaseInput, BaseInputProps } from "./BaseInput";
 import { formatISO, parseISO } from "date-fns";
 import { tz } from "@date-fns/tz";
 
-type DateTimeInputProps = BaseInputProps;
+type DateTimeInputProps = BaseInputProps &
+  DatepickerProps & {
+    // tells whether the date input component should internally store a
+    // timestamp in addition to the date (useful for midnight aligned fields)
+    outputFormat?: "date" | "date-time";
+  };
 
 export const DateInput = ({
   source,
@@ -12,6 +17,7 @@ export const DateInput = ({
   tooltip,
   readOnly,
   disabled,
+  outputFormat = "date",
   ...rest
 }: DateTimeInputProps) => {
   const { id, field, fieldState } = useInput({ source, ...rest });
@@ -19,7 +25,10 @@ export const DateInput = ({
   const onDateChange = (date: Date | null) => {
     field.onChange(
       date
-        ? formatISO(date, { representation: "date", in: tz("Europe/Oslo") })
+        ? formatISO(date, {
+            representation: outputFormat === "date-time" ? "complete" : "date",
+            in: tz("Europe/Oslo"),
+          })
         : null,
     );
   };
@@ -35,6 +44,7 @@ export const DateInput = ({
       error={fieldState.error?.message}
     >
       <Datepicker
+        {...rest}
         id={id}
         selected={
           field.value

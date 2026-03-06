@@ -9,12 +9,12 @@ Relation telling which end user an accounting point belongs to.
 
 ## Fields
 
-| Name                                                                                          | Description                                                                                                | Format                                 | Reference                                           |
-|-----------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|----------------------------------------|-----------------------------------------------------|
-| <a name="field-accounting_point_id" href="#field-accounting_point_id">accounting_point_id</a> | The ID of the accounting point.                                                                            | bigint<br/>Read only                   | [accounting_point.id](accounting_point.md#field-id) |
-| <a name="field-end_user_id" href="#field-end_user_id">end_user_id</a>                         | The end user on the accounting point.                                                                      | bigint<br/>Read only                   | [party.id](party.md#field-id)                       |
-| <a name="field-valid_from" href="#field-valid_from">valid_from</a>                            | The date from which the accounting point belongs to the end user. Midnight aligned on Norwegian timezone.  | timestamp with time zone<br/>Read only |                                                     |
-| <a name="field-valid_to" href="#field-valid_to">valid_to</a>                                  | The date until which the accounting point belongs to the end user. Midnight aligned on Norwegian timezone. | timestamp with time zone<br/>Read only |                                                     |
+| Name                                                                                          | Description                                                                                                | Format                  | Reference                                           |
+|-----------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|-------------------------|-----------------------------------------------------|
+| <a name="field-accounting_point_id" href="#field-accounting_point_id">accounting_point_id</a> | The ID of the accounting point.                                                                            | bigint<br/>Read only    | [accounting_point.id](accounting_point.md#field-id) |
+| <a name="field-end_user_id" href="#field-end_user_id">end_user_id</a>                         | The end user on the accounting point.                                                                      | bigint<br/>Read only    | [party.id](party.md#field-id)                       |
+| <a name="field-valid_from" href="#field-valid_from">valid_from</a>                            | The date from which the accounting point belongs to the end user. Midnight aligned on Norwegian timezone.  | date-time<br/>Read only |                                                     |
+| <a name="field-valid_to" href="#field-valid_to">valid_to</a>                                  | The date until which the accounting point belongs to the end user. Midnight aligned on Norwegian timezone. | date-time<br/>Read only |                                                     |
 
 ## Validation Rules
 

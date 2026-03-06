@@ -3,7 +3,6 @@ import {
   ArrayField,
   FieldProps,
   Link,
-  SelectArrayInput,
   SelectInput,
   useGetList,
   useGetOne,
@@ -11,8 +10,18 @@ import {
   WithListContext,
 } from "react-admin";
 import { Stack, Chip, Tooltip } from "@mui/material";
-import { ProductType } from "../generated-client";
+import {
+  listProductType,
+  listSystemOperatorProductType,
+  ProductType,
+} from "../generated-client";
 import { Tag } from "../components/ui";
+import {
+  ArrayInput,
+  ArrayInputOption,
+  ArrayInputProps,
+} from "../components/EDS-ra/inputs";
+import { useQuery } from "@tanstack/react-query";
 
 // display a product type with name and example products if present
 export const displayProductType = (productType: ProductType) =>
@@ -32,6 +41,32 @@ function useGetAllProductTypes() {
 
   return productTypes;
 }
+
+export const useGetProductTypesBySystemOperator = (
+  systemOperatorId?: number,
+) => {
+  return useQuery({
+    queryKey: ["productTypesBySystemOperator", systemOperatorId],
+    queryFn: () => getProductTypesBySystemOperator(systemOperatorId),
+  });
+};
+
+const getProductTypesBySystemOperator = async (systemOperatorId?: number) => {
+  const { data: productTypes } = await listProductType();
+
+  if (!systemOperatorId) {
+    return productTypes;
+  }
+
+  const { data: systemOperatorProductTypes } =
+    await listSystemOperatorProductType({
+      query: { system_operator_id: `eq.${systemOperatorId}` },
+    });
+
+  return systemOperatorProductTypes
+    ?.map((sopt) => productTypes?.find((pt) => pt.id === sopt.product_type_id))
+    .filter((pt) => pt !== undefined);
+};
 
 export const ProductTypeField = ({ source }: FieldProps) => {
   const record = useRecordContext()!;
@@ -60,7 +95,7 @@ export const ProductTypeField = ({ source }: FieldProps) => {
   );
 };
 
-// input component to select ONE product type
+// input component to select ONE product type (react-admin SelectInput for legacy use)
 export const ProductTypeInput = (props: any) => {
   const productTypes = useGetAllProductTypes();
 
@@ -92,13 +127,27 @@ export const ProductTypeArrayField = (props: any) => {
 };
 
 // input component to select MULTIPLE product types
-export const ProductTypeArrayInput = (props: any) => {
-  const { filter, ...rest } = props;
-  const productTypes = useGetAllProductTypes();
+type ProductTypeArrayInputProps = Omit<ArrayInputProps, "options"> & {
+  systemOperatorId?: number;
+};
+
+export const ProductTypeArrayInput = ({
+  systemOperatorId,
+  ...rest
+}: ProductTypeArrayInputProps) => {
+  const { data: productTypes } =
+    useGetProductTypesBySystemOperator(systemOperatorId);
+
+  const options: ArrayInputOption[] =
+    productTypes?.map((pt) => ({ value: String(pt.id), label: pt.name })) ?? [];
 
   return (
-    <SelectArrayInput
-      choices={filter ? productTypes?.filter(filter) : productTypes}
+    <ArrayInput
+      options={options}
+      format={(v: number[] | undefined) =>
+        (Array.isArray(v) ? v : []).map(String)
+      }
+      parse={(v: string[]) => (Array.isArray(v) ? v : []).map(Number)}
       {...rest}
     />
   );

@@ -62,6 +62,9 @@ import type {
   CreateServiceProvidingGroupMembershipData,
   CreateServiceProvidingGroupMembershipErrors,
   CreateServiceProvidingGroupMembershipResponses,
+  CreateServiceProvidingGroupProductApplicationCommentData,
+  CreateServiceProvidingGroupProductApplicationCommentErrors,
+  CreateServiceProvidingGroupProductApplicationCommentResponses,
   CreateServiceProvidingGroupProductApplicationData,
   CreateServiceProvidingGroupProductApplicationErrors,
   CreateServiceProvidingGroupProductApplicationResponses,
@@ -242,6 +245,12 @@ import type {
   ListServiceProvidingGroupMembershipHistoryErrors,
   ListServiceProvidingGroupMembershipHistoryResponses,
   ListServiceProvidingGroupMembershipResponses,
+  ListServiceProvidingGroupProductApplicationCommentData,
+  ListServiceProvidingGroupProductApplicationCommentErrors,
+  ListServiceProvidingGroupProductApplicationCommentHistoryData,
+  ListServiceProvidingGroupProductApplicationCommentHistoryErrors,
+  ListServiceProvidingGroupProductApplicationCommentHistoryResponses,
+  ListServiceProvidingGroupProductApplicationCommentResponses,
   ListServiceProvidingGroupProductApplicationData,
   ListServiceProvidingGroupProductApplicationErrors,
   ListServiceProvidingGroupProductApplicationHistoryData,
@@ -398,6 +407,12 @@ import type {
   ReadServiceProvidingGroupMembershipHistoryErrors,
   ReadServiceProvidingGroupMembershipHistoryResponses,
   ReadServiceProvidingGroupMembershipResponses,
+  ReadServiceProvidingGroupProductApplicationCommentData,
+  ReadServiceProvidingGroupProductApplicationCommentErrors,
+  ReadServiceProvidingGroupProductApplicationCommentHistoryData,
+  ReadServiceProvidingGroupProductApplicationCommentHistoryErrors,
+  ReadServiceProvidingGroupProductApplicationCommentHistoryResponses,
+  ReadServiceProvidingGroupProductApplicationCommentResponses,
   ReadServiceProvidingGroupProductApplicationData,
   ReadServiceProvidingGroupProductApplicationErrors,
   ReadServiceProvidingGroupProductApplicationHistoryData,
@@ -485,6 +500,9 @@ import type {
   UpdateServiceProvidingGroupMembershipData,
   UpdateServiceProvidingGroupMembershipErrors,
   UpdateServiceProvidingGroupMembershipResponses,
+  UpdateServiceProvidingGroupProductApplicationCommentData,
+  UpdateServiceProvidingGroupProductApplicationCommentErrors,
+  UpdateServiceProvidingGroupProductApplicationCommentResponses,
   UpdateServiceProvidingGroupProductApplicationData,
   UpdateServiceProvidingGroupProductApplicationErrors,
   UpdateServiceProvidingGroupProductApplicationResponses,
@@ -3511,6 +3529,140 @@ export const readServiceProvidingGroupProductApplicationHistory = <
   >({
     security: [{ scheme: "bearer", type: "http" }],
     url: "/service_providing_group_product_application_history/{id}",
+    ...options,
+  });
+
+/**
+ * List Service Providing Group Product Application Comment
+ */
+export const listServiceProvidingGroupProductApplicationComment = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<
+    ListServiceProvidingGroupProductApplicationCommentData,
+    ThrowOnError
+  >,
+) =>
+  (options?.client ?? client).get<
+    ListServiceProvidingGroupProductApplicationCommentResponses,
+    ListServiceProvidingGroupProductApplicationCommentErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/service_providing_group_product_application_comment",
+    ...options,
+  });
+
+/**
+ * Create Service Providing Group Product Application Comment
+ */
+export const createServiceProvidingGroupProductApplicationComment = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<
+    CreateServiceProvidingGroupProductApplicationCommentData,
+    ThrowOnError
+  >,
+) =>
+  (options?.client ?? client).post<
+    CreateServiceProvidingGroupProductApplicationCommentResponses,
+    CreateServiceProvidingGroupProductApplicationCommentErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/service_providing_group_product_application_comment",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+
+/**
+ * Read Service Providing Group Product Application Comment
+ */
+export const readServiceProvidingGroupProductApplicationComment = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<
+    ReadServiceProvidingGroupProductApplicationCommentData,
+    ThrowOnError
+  >,
+) =>
+  (options.client ?? client).get<
+    ReadServiceProvidingGroupProductApplicationCommentResponses,
+    ReadServiceProvidingGroupProductApplicationCommentErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/service_providing_group_product_application_comment/{id}",
+    ...options,
+  });
+
+/**
+ * Update Service Providing Group Product Application Comment
+ */
+export const updateServiceProvidingGroupProductApplicationComment = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<
+    UpdateServiceProvidingGroupProductApplicationCommentData,
+    ThrowOnError
+  >,
+) =>
+  (options.client ?? client).patch<
+    UpdateServiceProvidingGroupProductApplicationCommentResponses,
+    UpdateServiceProvidingGroupProductApplicationCommentErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/service_providing_group_product_application_comment/{id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+
+/**
+ * List Service Providing Group Product Application Comment - history
+ */
+export const listServiceProvidingGroupProductApplicationCommentHistory = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<
+    ListServiceProvidingGroupProductApplicationCommentHistoryData,
+    ThrowOnError
+  >,
+) =>
+  (options?.client ?? client).get<
+    ListServiceProvidingGroupProductApplicationCommentHistoryResponses,
+    ListServiceProvidingGroupProductApplicationCommentHistoryErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/service_providing_group_product_application_comment_history",
+    ...options,
+  });
+
+/**
+ * Read Service Providing Group Product Application Comment - history
+ */
+export const readServiceProvidingGroupProductApplicationCommentHistory = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<
+    ReadServiceProvidingGroupProductApplicationCommentHistoryData,
+    ThrowOnError
+  >,
+) =>
+  (options.client ?? client).get<
+    ReadServiceProvidingGroupProductApplicationCommentHistoryResponses,
+    ReadServiceProvidingGroupProductApplicationCommentHistoryErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/service_providing_group_product_application_comment_history/{id}",
     ...options,
   });
 

@@ -53,50 +53,50 @@ type ApiAccountingPointMeteringGridArea struct {
 }
 
 type ApiControllableUnit struct {
-	ID                       int
-	BusinessID               string
-	Name                     string
-	StartDate                pgtype.Date
-	Status                   string
-	RegulationDirection      string
-	MaximumAvailableCapacity float64
-	IsSmall                  bool
-	MinimumDuration          *int
-	MaximumDuration          *int
-	RecoveryDuration         *int
-	RampRate                 *float64
-	AccountingPointID        int
-	GridNodeID               *string
-	GridValidationStatus     string
-	GridValidationNotes      *string
-	ValidatedAt              pgtype.Timestamptz
-	RecordedBy               int
-	RecordedAt               pgtype.Timestamptz
+	ID                   int
+	BusinessID           string
+	Name                 string
+	StartDate            pgtype.Date
+	Status               string
+	RegulationDirection  string
+	MaximumActivePower   float64
+	IsSmall              bool
+	MinimumDuration      *int
+	MaximumDuration      *int
+	RecoveryDuration     *int
+	RampRate             *float64
+	AccountingPointID    int
+	GridNodeID           *string
+	GridValidationStatus string
+	GridValidationNotes  *string
+	ValidatedAt          pgtype.Timestamptz
+	RecordedBy           int
+	RecordedAt           pgtype.Timestamptz
 }
 
 type ApiControllableUnitHistory struct {
-	ControllableUnitID       int
-	ID                       int
-	BusinessID               string
-	Name                     string
-	StartDate                pgtype.Date
-	Status                   string
-	RegulationDirection      string
-	MaximumAvailableCapacity float64
-	IsSmall                  bool
-	MinimumDuration          *int
-	MaximumDuration          *int
-	RecoveryDuration         *int
-	RampRate                 *float64
-	AccountingPointID        int
-	GridNodeID               *string
-	GridValidationStatus     string
-	GridValidationNotes      *string
-	ValidatedAt              pgtype.Timestamptz
-	RecordedBy               int
-	RecordedAt               pgtype.Timestamptz
-	ReplacedBy               *int
-	ReplacedAt               pgtype.Timestamptz
+	ControllableUnitID   int
+	ID                   int
+	BusinessID           string
+	Name                 string
+	StartDate            pgtype.Date
+	Status               string
+	RegulationDirection  string
+	MaximumActivePower   float64
+	IsSmall              bool
+	MinimumDuration      *int
+	MaximumDuration      *int
+	RecoveryDuration     *int
+	RampRate             *float64
+	AccountingPointID    int
+	GridNodeID           *string
+	GridValidationStatus string
+	GridValidationNotes  *string
+	ValidatedAt          pgtype.Timestamptz
+	RecordedBy           int
+	RecordedAt           pgtype.Timestamptz
+	ReplacedBy           *int
+	ReplacedAt           pgtype.Timestamptz
 }
 
 type ApiControllableUnitServiceProvider struct {
@@ -542,11 +542,37 @@ type ApiServiceProvidingGroupProductApplication struct {
 	ProcuringSystemOperatorID int
 	ProductTypeIds            []int
 	Status                    string
-	Notes                     *string
+	MaximumActivePower        float64
+	AdditionalInformation     *string
 	PrequalifiedAt            pgtype.Timestamptz
 	VerifiedAt                pgtype.Timestamptz
 	RecordedBy                int
 	RecordedAt                pgtype.Timestamptz
+}
+
+type ApiServiceProvidingGroupProductApplicationComment struct {
+	ID                                        int
+	ServiceProvidingGroupProductApplicationID int
+	CreatedBy                                 int
+	CreatedAt                                 pgtype.Timestamptz
+	Visibility                                string
+	Content                                   string
+	RecordedBy                                int
+	RecordedAt                                pgtype.Timestamptz
+}
+
+type ApiServiceProvidingGroupProductApplicationCommentHistory struct {
+	ServiceProvidingGroupProductApplicationCommentID int
+	ID                                               int
+	ServiceProvidingGroupProductApplicationID        int
+	CreatedBy                                        int
+	CreatedAt                                        pgtype.Timestamptz
+	Visibility                                       string
+	Content                                          string
+	RecordedBy                                       int
+	RecordedAt                                       pgtype.Timestamptz
+	ReplacedBy                                       *int
+	ReplacedAt                                       pgtype.Timestamptz
 }
 
 type ApiServiceProvidingGroupProductApplicationHistory struct {
@@ -556,7 +582,8 @@ type ApiServiceProvidingGroupProductApplicationHistory struct {
 	ProcuringSystemOperatorID                 int
 	ProductTypeIds                            []int
 	Status                                    string
-	Notes                                     *string
+	MaximumActivePower                        float64
+	AdditionalInformation                     *string
 	PrequalifiedAt                            pgtype.Timestamptz
 	VerifiedAt                                pgtype.Timestamptz
 	RecordedBy                                int

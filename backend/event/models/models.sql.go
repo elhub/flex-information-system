@@ -538,6 +538,44 @@ func (q *Queries) GetServiceProvidingGroupCreateNotificationRecipients(ctx conte
 	return items, nil
 }
 
+const getServiceProvidingGroupGridPrequalificationCommentNotificationRecipients = `-- name: GetServiceProvidingGroupGridPrequalificationCommentNotificationRecipients :many
+SELECT DISTINCT
+    unnest(ARRAY[spg.service_provider_id, spggp.impacted_system_operator_id])::bigint
+FROM api.service_providing_group_grid_prequalification_comment_history AS spggpch
+    -- not using SPGGP history because the resource cannot be deleted
+    INNER JOIN api.service_providing_group_grid_prequalification AS spggp
+        ON spggpch.service_providing_group_grid_prequalification_id = spggp.id
+    -- SPG cannot be deleted + SP does not change
+    INNER JOIN api.service_providing_group AS spg
+        ON spggp.service_providing_group_id = spg.id
+WHERE spggpch.service_providing_group_grid_prequalification_comment_id = $1
+    AND tstzrange(spggpch.recorded_at, spggpch.replaced_at, '[]')
+        @> $2::timestamptz
+    -- private comments do not lead to notifications
+    AND spggpch.visibility = 'any_involved_party'
+`
+
+// using SPGGP comment history because visibility can change over time
+func (q *Queries) GetServiceProvidingGroupGridPrequalificationCommentNotificationRecipients(ctx context.Context, resourceID int, recordedAt pgtype.Timestamptz) ([]int, error) {
+	rows, err := q.db.Query(ctx, getServiceProvidingGroupGridPrequalificationCommentNotificationRecipients, resourceID, recordedAt)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []int
+	for rows.Next() {
+		var column_1 int
+		if err := rows.Scan(&column_1); err != nil {
+			return nil, err
+		}
+		items = append(items, column_1)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getServiceProvidingGroupGridPrequalificationNotificationRecipients = `-- name: GetServiceProvidingGroupGridPrequalificationNotificationRecipients :many
 SELECT impacted_system_operator_id
 FROM api.service_providing_group_grid_prequalification spggp
@@ -704,6 +742,44 @@ func (q *Queries) GetServiceProvidingGroupMembershipNotificationRecipients(ctx c
 			return nil, err
 		}
 		items = append(items, service_provider_id)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getServiceProvidingGroupProductApplicationCommentNotificationRecipients = `-- name: GetServiceProvidingGroupProductApplicationCommentNotificationRecipients :many
+SELECT DISTINCT
+    unnest(ARRAY[spg.service_provider_id, spgpa.procuring_system_operator_id])::bigint
+FROM api.service_providing_group_product_application_comment_history AS spgpach
+    -- not using SPGPA history because the resource cannot be deleted
+    INNER JOIN api.service_providing_group_product_application AS spgpa
+        ON spgpach.service_providing_group_product_application_id = spgpa.id
+    -- SPG cannot be deleted + SP does not change
+    INNER JOIN api.service_providing_group AS spg
+        ON spgpa.service_providing_group_id = spg.id
+WHERE spgpach.service_providing_group_product_application_comment_id = $1
+    AND tstzrange(spgpach.recorded_at, spgpach.replaced_at, '[]')
+        @> $2::timestamptz
+    -- private comments do not lead to notifications
+    AND spgpach.visibility = 'any_involved_party'
+`
+
+// using SPGPA comment history because visibility can change over time
+func (q *Queries) GetServiceProvidingGroupProductApplicationCommentNotificationRecipients(ctx context.Context, resourceID int, recordedAt pgtype.Timestamptz) ([]int, error) {
+	rows, err := q.db.Query(ctx, getServiceProvidingGroupProductApplicationCommentNotificationRecipients, resourceID, recordedAt)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []int
+	for rows.Next() {
+		var column_1 int
+		if err := rows.Scan(&column_1); err != nil {
+			return nil, err
+		}
+		items = append(items, column_1)
 	}
 	if err := rows.Err(); err != nil {
 		return nil, err

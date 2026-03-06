@@ -22,7 +22,7 @@ AS (
             spggph.impacted_system_operator_id,
             spg.service_provider_id
         ]) AS party_id
-    FROM flex.service_providing_group_grid_prequalification AS spggph
+    FROM flex.service_providing_group_grid_prequalification_history AS spggph
         INNER JOIN flex.service_providing_group AS spg
             ON spggph.service_providing_group_id = spg.id
 );

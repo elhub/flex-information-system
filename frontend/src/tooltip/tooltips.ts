@@ -10,7 +10,7 @@ export const tooltips = {
   "controllable_unit.status": "The status of the controllable unit.",
   "controllable_unit.regulation_direction":
     "The regulation direction of the controllable unit. `up` means it can be used to increase production or decrease consumption, while `down` means to decrease production or increase consumption.",
-  "controllable_unit.maximum_available_capacity":
+  "controllable_unit.maximum_active_power":
     "Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
   "controllable_unit.is_small":
     "Whether the controllable unit is small or not, following NCDR.",
@@ -44,7 +44,7 @@ export const tooltips = {
   "controllable_unit_history.status": "The status of the controllable unit.",
   "controllable_unit_history.regulation_direction":
     "The regulation direction of the controllable unit. `up` means it can be used to increase production or decrease consumption, while `down` means to decrease production or increase consumption.",
-  "controllable_unit_history.maximum_available_capacity":
+  "controllable_unit_history.maximum_active_power":
     "Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
   "controllable_unit_history.is_small":
     "Whether the controllable unit is small or not, following NCDR.",
@@ -110,7 +110,7 @@ export const tooltips = {
   "controllable_unit_suspension_comment.content":
     "Free text content of the comment.",
   "controllable_unit_suspension_comment.created_at":
-    "When the comment was added to the CUS.",
+    "When the comment was added to the resource.",
   "controllable_unit_suspension_comment.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "controllable_unit_suspension_comment.recorded_by":
@@ -126,7 +126,7 @@ export const tooltips = {
   "controllable_unit_suspension_comment_history.content":
     "Free text content of the comment.",
   "controllable_unit_suspension_comment_history.created_at":
-    "When the comment was added to the CUS.",
+    "When the comment was added to the resource.",
   "controllable_unit_suspension_comment_history.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "controllable_unit_suspension_comment_history.recorded_by":
@@ -285,7 +285,7 @@ export const tooltips = {
   "service_providing_group_grid_prequalification_comment.content":
     "Free text content of the comment.",
   "service_providing_group_grid_prequalification_comment.created_at":
-    "When the comment was added to the CUS.",
+    "When the comment was added to the resource.",
   "service_providing_group_grid_prequalification_comment.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group_grid_prequalification_comment.recorded_by":
@@ -301,7 +301,7 @@ export const tooltips = {
   "service_providing_group_grid_prequalification_comment_history.content":
     "Free text content of the comment.",
   "service_providing_group_grid_prequalification_comment_history.created_at":
-    "When the comment was added to the CUS.",
+    "When the comment was added to the resource.",
   "service_providing_group_grid_prequalification_comment_history.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group_grid_prequalification_comment_history.recorded_by":
@@ -352,7 +352,7 @@ export const tooltips = {
   "service_providing_group_grid_suspension_comment.content":
     "Free text content of the comment.",
   "service_providing_group_grid_suspension_comment.created_at":
-    "When the comment was added to the CUS.",
+    "When the comment was added to the resource.",
   "service_providing_group_grid_suspension_comment.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group_grid_suspension_comment.recorded_by":
@@ -368,7 +368,7 @@ export const tooltips = {
   "service_providing_group_grid_suspension_comment_history.content":
     "Free text content of the comment.",
   "service_providing_group_grid_suspension_comment_history.created_at":
-    "When the comment was added to the CUS.",
+    "When the comment was added to the resource.",
   "service_providing_group_grid_suspension_comment_history.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group_grid_suspension_comment_history.recorded_by":
@@ -646,7 +646,7 @@ export const tooltips = {
   "service_provider_product_application_comment.content":
     "Free text content of the comment.",
   "service_provider_product_application_comment.created_at":
-    "When the comment was added to the CUS.",
+    "When the comment was added to the resource.",
   "service_provider_product_application_comment.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_provider_product_application_comment.recorded_by":
@@ -662,7 +662,7 @@ export const tooltips = {
   "service_provider_product_application_comment_history.content":
     "Free text content of the comment.",
   "service_provider_product_application_comment_history.created_at":
-    "When the comment was added to the CUS.",
+    "When the comment was added to the resource.",
   "service_provider_product_application_comment_history.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_provider_product_application_comment_history.recorded_by":
@@ -717,7 +717,7 @@ export const tooltips = {
   "service_provider_product_suspension_comment.content":
     "Free text content of the comment.",
   "service_provider_product_suspension_comment.created_at":
-    "When the comment was added to the CUS.",
+    "When the comment was added to the resource.",
   "service_provider_product_suspension_comment.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_provider_product_suspension_comment.recorded_by":
@@ -733,7 +733,7 @@ export const tooltips = {
   "service_provider_product_suspension_comment_history.content":
     "Free text content of the comment.",
   "service_provider_product_suspension_comment_history.created_at":
-    "When the comment was added to the CUS.",
+    "When the comment was added to the resource.",
   "service_provider_product_suspension_comment_history.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_provider_product_suspension_comment_history.recorded_by":
@@ -756,8 +756,10 @@ export const tooltips = {
     "References to the product types.",
   "service_providing_group_product_application.status":
     "The status of the application.",
-  "service_providing_group_product_application.notes":
-    "Free text notes on the current product application status.",
+  "service_providing_group_product_application.maximum_active_power":
+    "The maximum active power applied for, in kilowatts.",
+  "service_providing_group_product_application.additional_information":
+    "Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).",
   "service_providing_group_product_application.prequalified_at":
     "When the product application was last prequalified.",
   "service_providing_group_product_application.verified_at":
@@ -776,8 +778,10 @@ export const tooltips = {
     "References to the product types.",
   "service_providing_group_product_application_history.status":
     "The status of the application.",
-  "service_providing_group_product_application_history.notes":
-    "Free text notes on the current product application status.",
+  "service_providing_group_product_application_history.maximum_active_power":
+    "The maximum active power applied for, in kilowatts.",
+  "service_providing_group_product_application_history.additional_information":
+    "Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).",
   "service_providing_group_product_application_history.prequalified_at":
     "When the product application was last prequalified.",
   "service_providing_group_product_application_history.verified_at":
@@ -792,6 +796,44 @@ export const tooltips = {
     "When the resource was replaced.",
   "service_providing_group_product_application_history.replaced_by":
     "The identity that replaced the resource.",
+  "service_providing_group_product_application_comment.id":
+    "Unique surrogate identifier.",
+  "service_providing_group_product_application_comment.created_by":
+    "The identity that created the comment.",
+  "service_providing_group_product_application_comment.visibility":
+    "The level of visibility of the comment.",
+  "service_providing_group_product_application_comment.content":
+    "Free text content of the comment.",
+  "service_providing_group_product_application_comment.created_at":
+    "When the comment was added to the resource.",
+  "service_providing_group_product_application_comment.recorded_at":
+    "When the resource was recorded (created or updated) in the system.",
+  "service_providing_group_product_application_comment.recorded_by":
+    "The identity that recorded the resource.",
+  "service_providing_group_product_application_comment.service_providing_group_product_application_id":
+    "Unique surrogate identifier.",
+  "service_providing_group_product_application_comment_history.id":
+    "Unique surrogate identifier.",
+  "service_providing_group_product_application_comment_history.created_by":
+    "The identity that created the comment.",
+  "service_providing_group_product_application_comment_history.visibility":
+    "The level of visibility of the comment.",
+  "service_providing_group_product_application_comment_history.content":
+    "Free text content of the comment.",
+  "service_providing_group_product_application_comment_history.created_at":
+    "When the comment was added to the resource.",
+  "service_providing_group_product_application_comment_history.recorded_at":
+    "When the resource was recorded (created or updated) in the system.",
+  "service_providing_group_product_application_comment_history.recorded_by":
+    "The identity that recorded the resource.",
+  "service_providing_group_product_application_comment_history.service_providing_group_product_application_id":
+    "Unique surrogate identifier.",
+  "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id":
+    "Comment ID",
+  "service_providing_group_product_application_comment_history.replaced_at":
+    "When the comment was replaced.",
+  "service_providing_group_product_application_comment_history.replaced_by":
+    "The identity that replaced the comment.",
   "service_providing_group_product_suspension.id":
     "Unique surrogate identifier.",
   "service_providing_group_product_suspension.procuring_system_operator_id":
@@ -835,7 +877,7 @@ export const tooltips = {
   "service_providing_group_product_suspension_comment.content":
     "Free text content of the comment.",
   "service_providing_group_product_suspension_comment.created_at":
-    "When the comment was added to the CUS.",
+    "When the comment was added to the resource.",
   "service_providing_group_product_suspension_comment.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group_product_suspension_comment.recorded_by":
@@ -851,7 +893,7 @@ export const tooltips = {
   "service_providing_group_product_suspension_comment_history.content":
     "Free text content of the comment.",
   "service_providing_group_product_suspension_comment_history.created_at":
-    "When the comment was added to the CUS.",
+    "When the comment was added to the resource.",
   "service_providing_group_product_suspension_comment_history.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group_product_suspension_comment_history.recorded_by":

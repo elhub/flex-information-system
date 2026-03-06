@@ -42,10 +42,10 @@ data:
       example: 94
     created_at:
       description: When the comment was added to the {{ data.acronym }}.
-      format: timestamp with time zone
+      format: date-time
       type: string
       readOnly: true
-      example: 2022-08-08 12:00:00 CET
+      example: 2022-08-08T12:00:00+02:00
     visibility:
       description: The level of visibility of the comment.
       format: text

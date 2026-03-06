@@ -1,7 +1,5 @@
-import { Link as RouterLink } from "react-router-dom";
 import { LabelValue } from "../../../components/LabelValue";
 import { ControllableUnitShowViewModel } from "../useControllableUnitViewModel";
-import { Link } from "../../../components/ui";
 import { formatDate } from "date-fns";
 
 const formatRange = (start: string | undefined, end: string | undefined) => {
@@ -35,7 +33,7 @@ export const Connections = ({
   );
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className="grid grid-cols-[1fr_5fr]  gap-2">
       <LabelValue labelKey="controllable_unit.id" value={controllableUnit.id} />
       <LabelValue
         labelKey="controllable_unit.business_id"
@@ -45,38 +43,40 @@ export const Connections = ({
         label="Accounting point"
         value={`${accountingPoint?.business_id} (${systemOperator?.name})`}
       />
-      <div className="flex flex-row gap-2 items-center">
-        <LabelValue
-          label="Service provider"
-          value={
-            serviceProvider
-              ? `${serviceProvider?.name} (${serviceProviderRange})`
-              : "No service provider"
-          }
-        />
-        <Link
-          to={`/controllable_unit/${controllableUnit?.id}/service_provider`}
-          as={RouterLink}
-        >
-          See all contracts
-        </Link>
-      </div>
-      <div className="flex flex-row gap-2 items-center">
-        <LabelValue
-          labelKey="accounting_point_balance_responsible_party.balance_responsible_party_id"
-          value={
-            balanceResponsibleParty
-              ? `${balanceResponsibleParty?.name}`
-              : "No balance responsible party"
-          }
-        />
-        <Link
-          to={`/controllable_unit/${controllableUnit?.id}/balance_responsible_party`}
-          as={RouterLink}
-        >
-          See all balance responsible parties
-        </Link>
-      </div>
+      <LabelValue
+        label="Service provider"
+        value={
+          serviceProvider
+            ? `${serviceProvider?.name} (${serviceProviderRange})`
+            : "No service provider"
+        }
+        link={
+          serviceProvider
+            ? `/controllable_unit/${controllableUnit?.id}/service_provider`
+            : undefined
+        }
+        linkText={serviceProvider ? "See all contracts" : undefined}
+      />
+      <LabelValue
+        labelKey="accounting_point_balance_responsible_party.balance_responsible_party_id"
+        value={
+          balanceResponsibleParty?.name ? (
+            balanceResponsibleParty?.name
+          ) : (
+            <span>No balance responsible party</span>
+          )
+        }
+        link={
+          balanceResponsibleParty
+            ? `/controllable_unit/${controllableUnit?.id}/balance_responsible_party`
+            : undefined
+        }
+        linkText={
+          balanceResponsibleParty
+            ? "See all balance responsible parties"
+            : undefined
+        }
+      />
     </div>
   );
 };
