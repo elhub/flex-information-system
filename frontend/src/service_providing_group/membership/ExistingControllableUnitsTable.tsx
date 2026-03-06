@@ -23,13 +23,13 @@ const DeleteButton = ({
   membershipId: number;
   spgId: number;
 }) => {
-  const { mutate: removeMembership } = useRemoveMembership(spgId);
+  const { mutateAsync: removeMembership } = useRemoveMembership(spgId);
   const { buttonProps, dialog } = useConfirmAction({
     title: "Delete",
     content:
       "Are you sure you want to delete this item? This action cannot be undone.",
     onConfirmMutation: {
-      mutationFn: async () => removeMembership(membershipId),
+      mutationFn: () => removeMembership(membershipId),
     },
   });
 
