@@ -16,6 +16,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
     val imageRepoPrefix = "flex/information-system"
     val imageRepoFrontend = "$imageRepoPrefix-frontend"
     val imageRepoBackend = "$imageRepoPrefix-backend"
+    val imageRepoApi = "$imageRepoPrefix-api"
 
 
     pipeline {
@@ -57,7 +58,8 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         source = Source.CommitSha
                         isMonoRepo = true
                         autoMerge = true
-                    }.triggerOnVcsChange { triggerRules = """
+                    }.triggerOnVcsChange {
+                        triggerRules = """
                                 -:*
                                 +:backend/**
                                 +:db/**
@@ -70,7 +72,8 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         projectName = "fis-backend"
                         source = Source.CommitSha
                         isMonoRepo = true
-                    }.triggerOnVcsChange { triggerRules = """
+                    }.triggerOnVcsChange {
+                        triggerRules = """
                                 -:*
                                 +:backend/**
                                 +:db/**
@@ -120,6 +123,52 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         source = Source.CommitSha
                         isMonoRepo = true
                     }.triggerOnVcsChange { triggerRules = "+:frontend/**" }
+                }
+            }
+            sequential {
+                gradleVerify {
+                    workingDir = "api"
+                    enablePublishMetrics = true
+                }
+
+                gradleJib {
+                    workingDir = "api"
+                    source = Source.CommitSha
+                    registrySettings = {
+                        repository = imageRepoApi
+                    }
+                }
+
+                parallel {
+                    gitOps {
+                        buildNameSuffix = "api test"
+                        clusters = setOf(KubeCluster.TEST9)
+                        gitOpsRepository = gitOpsRepo
+                        projectName = "flex-api"
+                        source = Source.CommitSha
+                        isMonoRepo = true
+                        autoMerge = true
+                    }.triggerOnVcsChange {
+                        triggerRules = """
+                            -:*
+                            +:adapter/**
+                        """.trimIndent()
+                    }
+
+                    gitOps {
+                        buildNameSuffix = "api test"
+                        clusters = setOf(KubeCluster.TEST9)
+                        gitOpsRepository = gitOpsRepo
+                        projectName = "flex-api"
+                        source = Source.CommitSha
+                        isMonoRepo = true
+                        autoMerge = true
+                    }.triggerOnVcsChange {
+                        triggerRules = """
+                            -:*
+                            +:adapter/**
+                        """.trimIndent()
+                    }
                 }
             }
         }
