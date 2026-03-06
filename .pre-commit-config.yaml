@@ -356,10 +356,10 @@ repos:
       - id: ktlint
         name: ktlint
         entry: /usr/bin/bash
-        args: ['-c', "ktlint -F --color 'api/src/**/*.kt' '!**/generated/**'"]
+        args: ['-c', "ktlint -F --color 'kbackend/src/**/*.kt' '!**/generated/**'"]
         language: script
       - id: detekt
         name: detekt
         entry: /usr/bin/bash
-        args: ['-c', "detekt --input './api/' --all-rules --auto-correct --config detekt-config.yaml --excludes '**/generated/**,**/*.kts'"]
+        args: ['-c', "detekt --input './kbackend/' --all-rules --auto-correct --config detekt-config.yaml --excludes '**/generated/**,**/*.kts'"]
         language: script

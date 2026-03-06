@@ -1,4 +1,4 @@
-package no.elhub.flex.api.config
+package no.elhub.flex.config
 
 import com.sksamuel.cohort.Cohort
 import com.sksamuel.cohort.HealthCheckRegistry

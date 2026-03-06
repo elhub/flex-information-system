@@ -9,6 +9,8 @@ import no.elhub.devxp.build.configuration.pipeline.jobs.liquiBuild
 import no.elhub.devxp.build.configuration.pipeline.jobs.makeVerify
 import no.elhub.devxp.build.configuration.pipeline.jobs.npmVerify
 import no.elhub.devxp.build.configuration.pipeline.jobs.common.Source
+import no.elhub.devxp.build.configuration.pipeline.jobs.gradleJib
+import no.elhub.devxp.build.configuration.pipeline.jobs.gradleVerify
 
 elhubProject(Group.FLEX, "flex-information-system") {
 
@@ -16,7 +18,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
     val imageRepoPrefix = "flex/information-system"
     val imageRepoFrontend = "$imageRepoPrefix-frontend"
     val imageRepoBackend = "$imageRepoPrefix-backend"
-    val imageRepoApi = "$imageRepoPrefix-api"
+    val imageRepoApi = "$imageRepoPrefix-kbackend"
 
 
     pipeline {
@@ -127,12 +129,12 @@ elhubProject(Group.FLEX, "flex-information-system") {
             }
             sequential {
                 gradleVerify {
-                    workingDir = "api"
+                    workingDir = "kbackend"
                     enablePublishMetrics = true
                 }
 
                 gradleJib {
-                    workingDir = "api"
+                    workingDir = "kbackend"
                     source = Source.CommitSha
                     registrySettings = {
                         repository = imageRepoApi
@@ -141,32 +143,32 @@ elhubProject(Group.FLEX, "flex-information-system") {
 
                 parallel {
                     gitOps {
-                        buildNameSuffix = "api test"
+                        buildNameSuffix = "kbackend test"
                         clusters = setOf(KubeCluster.TEST9)
                         gitOpsRepository = gitOpsRepo
-                        projectName = "flex-api"
+                        projectName = "flex-kbackend"
                         source = Source.CommitSha
                         isMonoRepo = true
                         autoMerge = true
                     }.triggerOnVcsChange {
                         triggerRules = """
                             -:*
-                            +:api/**
+                            +:kbackend/**
                         """.trimIndent()
                     }
 
                     gitOps {
-                        buildNameSuffix = "api euro"
+                        buildNameSuffix = "kbackend euro"
                         clusters = setOf(KubeCluster.MARKET_TRIAL_1)
                         gitOpsRepository = gitOpsRepo
-                        projectName = "flex-api"
+                        projectName = "flex-kbackend"
                         source = Source.CommitSha
                         isMonoRepo = true
                         autoMerge = true
                     }.triggerOnVcsChange {
                         triggerRules = """
                             -:*
-                            +:api/**
+                            +:kbackend/**
                         """.trimIndent()
                     }
                 }

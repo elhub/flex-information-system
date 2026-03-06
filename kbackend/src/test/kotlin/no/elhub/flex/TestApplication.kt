@@ -1,12 +1,12 @@
-package no.elhub.flex.api
+package no.elhub.flex
 
 import io.ktor.server.application.install
 import io.ktor.server.testing.TestApplication
-import no.elhub.flex.api.config.Tracing
-import no.elhub.flex.api.config.configureLogging
-import no.elhub.flex.api.config.configureMonitoring
-import no.elhub.flex.api.config.configureRouting
-import no.elhub.flex.api.config.configureSerialization
+import no.elhub.flex.config.Tracing
+import no.elhub.flex.config.configureLogging
+import no.elhub.flex.config.configureMonitoring
+import no.elhub.flex.config.configureRouting
+import no.elhub.flex.config.configureSerialization
 
 fun defaultTestApplication(): TestApplication =
     TestApplication {

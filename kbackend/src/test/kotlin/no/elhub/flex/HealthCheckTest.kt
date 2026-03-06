@@ -1,4 +1,4 @@
-package no.elhub.flex.api
+package no.elhub.flex
 
 import io.kotest.assertions.arrow.core.shouldBeRight
 import io.kotest.core.spec.style.FunSpec
@@ -8,7 +8,7 @@ import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.testing.TestApplication
-import no.elhub.flex.api.config.TraceInfo
+import no.elhub.flex.config.TraceInfo
 
 class HealthCheckTest :
     FunSpec({

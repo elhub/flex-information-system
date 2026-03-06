@@ -1,4 +1,4 @@
-package no.elhub.flex.api.config
+package no.elhub.flex.config
 
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application

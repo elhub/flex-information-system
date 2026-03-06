@@ -1,4 +1,4 @@
-package no.elhub.flex.api.util
+package no.elhub.flex.util
 
 import arrow.core.Either
 import arrow.core.left

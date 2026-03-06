@@ -1,4 +1,4 @@
-package no.elhub.flex.api.util
+package no.elhub.flex.util
 
 /**
  * Custom type for all errors in the app.

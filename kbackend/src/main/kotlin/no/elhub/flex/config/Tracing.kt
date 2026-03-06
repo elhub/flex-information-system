@@ -1,12 +1,12 @@
-package no.elhub.flex.api.config
+package no.elhub.flex.config
 
 import arrow.core.Either
 import arrow.core.flatMap
 import arrow.core.raise.either
 import io.ktor.server.application.createApplicationPlugin
 import io.ktor.util.AttributeKey
-import no.elhub.flex.api.util.ParsingError
-import no.elhub.flex.api.util.header
+import no.elhub.flex.util.ParsingError
+import no.elhub.flex.util.header
 import java.security.SecureRandom
 import kotlin.ByteArray
 
