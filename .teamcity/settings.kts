@@ -164,7 +164,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         projectName = "flex-kbackend"
                         source = Source.CommitSha
                         isMonoRepo = true
-                        autoMerge = true
+                        autoMerge = false
                     }.triggerOnVcsChange {
                         triggerRules = """
                             -:*
