@@ -7,10 +7,12 @@ export type ArrayInputOption = {
   label: string;
 };
 
-type ArrayInputProps = BaseInputProps & {
+export type ArrayInputProps = BaseInputProps & {
   options: ArrayInputOption[];
   defaultValue?: string[];
   placeholder?: string;
+  format?: (value: any) => string[];
+  parse?: (value: string[]) => any;
 };
 
 export const ArrayInput = ({
@@ -22,11 +24,15 @@ export const ArrayInput = ({
   disabled,
   defaultValue,
   placeholder,
+  format,
+  parse,
   ...rest
 }: ArrayInputProps) => {
   const { id, field, fieldState } = useInput({
     source,
     defaultValue,
+    format,
+    parse,
     ...rest,
   });
 
