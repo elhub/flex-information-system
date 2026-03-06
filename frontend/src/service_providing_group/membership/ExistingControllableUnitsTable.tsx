@@ -1,0 +1,83 @@
+import { Button, Loader } from "../../components/ui";
+import {
+  useControllableUnitsInSpg,
+  useRemoveMembership,
+} from "./useSpgMemberships";
+import { ColumnOf, SimpleTable } from "../../components/SimpleTable";
+import { useConfirmAction } from "../../components/ConfirmAction";
+
+type ControllableUnitsInSpg = NonNullable<
+  ReturnType<typeof useControllableUnitsInSpg>["data"]
+>;
+
+type Props = {
+  spgId: number;
+  controllableUnits: ControllableUnitsInSpg | undefined;
+  isLoading: boolean;
+};
+
+const DeleteButton = ({
+  membershipId,
+  spgId,
+}: {
+  membershipId: number;
+  spgId: number;
+}) => {
+  const { mutateAsync: removeMembership } = useRemoveMembership(spgId);
+  const { buttonProps, dialog } = useConfirmAction({
+    title: "Delete",
+    content:
+      "Are you sure you want to delete this item? This action cannot be undone.",
+    onConfirmMutation: {
+      mutationFn: () => removeMembership(membershipId),
+    },
+  });
+
+  return (
+    <>
+      <Button variant="caution" onClick={() => buttonProps.onClick()}>
+        Remove
+      </Button>
+      {dialog}
+    </>
+  );
+};
+
+export const ExistingControllableUnitsTable = ({
+  spgId,
+  controllableUnits,
+  isLoading,
+}: Props) => {
+  const columns: ColumnOf<typeof controllableUnits>[] = [
+    { key: "id", header: "CU ID" },
+    { key: "name", header: "Name" },
+    { key: "meteringPointBusinessId", header: "Metering Point ID" },
+    {
+      key: "biddingZone",
+      header: "Price Area",
+      render: (v) => (v as string | undefined) ?? "—",
+    },
+    { key: "technicalResourceCount", header: "Nr. of Technical Resources" },
+    { key: "maximum_active_power", header: "Total Capacity (kW)" },
+    { key: "status", header: "Status" },
+  ];
+
+  if (isLoading) return <Loader />;
+
+  return (
+    <>
+      <SimpleTable
+        size="small"
+        data={controllableUnits ?? []}
+        empty="No controllable units in this group yet."
+        action={{
+          render: (row) => (
+            <DeleteButton membershipId={row.membershipId!} spgId={spgId} />
+          ),
+          header: "",
+        }}
+        columns={columns}
+      />
+    </>
+  );
+};
