@@ -2903,7 +2903,7 @@ resources:
         multipleOf: 0.001
         example: 150.5
         x-intl:
-          en: Maximum active power
+          en: Applied-for active power
           nb: Maksimal aktiv effekt
           nn: Maksimal aktiv effekt
       additional_information:
