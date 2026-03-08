@@ -357,9 +357,15 @@ repos:
         name: ktlint
         entry: /usr/bin/bash
         args: ['-c', "ktlint -F --color 'kbackend/src/**/*.kt' '!**/generated/**'"]
+        pass_filenames: false
+        files: "kbackend/.*\\.kt$"
+        types: [kotlin]
         language: script
       - id: detekt
         name: detekt
         entry: /usr/bin/bash
         args: ['-c', "detekt --input './kbackend/' --all-rules --auto-correct --config detekt-config.yaml --excludes '**/generated/**,**/*.kts'"]
+        pass_filenames: false
+        files: "kbackend/.*\\.kt$"
+        types: [kotlin]
         language: script
