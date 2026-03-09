@@ -23,7 +23,7 @@ class ServiceProvidingGroupProductApplicationUpdateRequest:
             product_type_ids (list[int] | Unset): References to the product types. Example: [2, 4, 5].
             status (ServiceProvidingGroupProductApplicationStatus | Unset): The status of the application. Example:
                 in_progress.
-            maximum_active_power (float | Unset): The maximum active power applied for, in kilowatts. Example: 150.5.
+            maximum_active_power (float | Unset): The maximum active power applied for. Stored in kilowatts. Example: 150.5.
             additional_information (None | str | Unset): Free text field for extra information about the application if
                 needed (bidding periods, unavailabilities, etc).
             prequalified_at (datetime.datetime | None | Unset): When the product application was last prequalified. Example:

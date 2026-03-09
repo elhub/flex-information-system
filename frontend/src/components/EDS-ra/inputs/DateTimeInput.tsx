@@ -19,6 +19,8 @@ export const DateTimeInput = ({
   readOnly,
   disabled,
   showNow,
+  description,
+  descriptionOverride,
   ...rest
 }: DateTimeInputProps) => {
   const { id, field, fieldState } = useInput({ source, ...rest });
@@ -57,6 +59,8 @@ export const DateTimeInput = ({
       readOnly={readOnly}
       id={id}
       error={fieldState.error?.message}
+      description={description}
+      descriptionOverride={descriptionOverride}
     >
       <div className="flex items-center gap-1">
         <DateTimePicker

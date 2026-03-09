@@ -21,6 +21,7 @@ export const EnumInput = ({
   onChange,
   placeholder = "Select...",
   description,
+  descriptionOverride,
   ...rest
 }: EnumInputProps) => {
   const { id, field, fieldState } = useInput({
@@ -51,6 +52,7 @@ export const EnumInput = ({
       id={id}
       error={fieldState.error?.message}
       description={description}
+      descriptionOverride={descriptionOverride}
     >
       <Select
         value={field.value ?? ""}
