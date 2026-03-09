@@ -1,19 +1,40 @@
 import { useState } from "react";
-import { Alert, Button, Checkbox, Loader } from "../../components/ui";
+import {
+  Alert,
+  BodyText,
+  Button,
+  Checkbox,
+  Datepicker,
+  FormItem,
+  FormItemLabel,
+  Loader,
+  Modal,
+} from "../../components/ui";
 import { IconPlus } from "@elhub/ds-icons";
 import {
   useAddMemberships,
   useControllableUnitsNotInSpg,
 } from "./useSpgMemberships";
 import { ColumnOf, SimpleTable } from "../../components/SimpleTable";
+import { formatISO, startOfDay } from "date-fns";
+import { tz } from "@date-fns/tz";
+import { useTranslateField } from "../../intl/intl";
 
 type Props = {
   spgId: number;
 };
 
+const toMidnightISO = (date: Date): string =>
+  formatISO(date, { representation: "complete", in: tz("Europe/Oslo") });
+
 export const FindControllableUnits = ({ spgId }: Props) => {
   const [selectedCuIds, setSelectedCuIds] = useState<number[]>([]);
   const [failedCUs, setFailedCUs] = useState<number[]>([]);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [validFrom, setValidFrom] = useState<Date>(
+    startOfDay(new Date(), { in: tz("Europe/Oslo") }),
+  );
+  const t = useTranslateField();
 
   const { data: availableCus, isLoading } = useControllableUnitsNotInSpg(spgId);
   const { mutate: addMemberships, isPending: isAdding } =
@@ -35,27 +56,44 @@ export const FindControllableUnits = ({ spgId }: Props) => {
     );
   };
 
-  const handleAdd = () => {
-    addMemberships(selectedCuIds, {
-      // This always succeeds since its a promise.allSettled in the mutation
-      onSuccess: (result) => {
-        setFailedCUs(result.failed);
-        setSelectedCuIds([]);
+  const openDialog = () => {
+    setDialogOpen(true);
+  };
+
+  const handleConfirm = () => {
+    addMemberships(
+      { cuIds: selectedCuIds, validFrom: toMidnightISO(validFrom) },
+      {
+        // This always succeeds since its a promise.allSettled in the mutation
+        onSuccess: (result) => {
+          setFailedCUs(result.failed);
+          setSelectedCuIds([]);
+          setDialogOpen(false);
+        },
       },
-    });
+    );
   };
 
   const columns: ColumnOf<typeof availableCus>[] = [
-    { key: "name", header: "Name" },
-    { key: "meteringPointBusinessId", header: "Metering Point ID" },
+    { key: "name", header: t("controllable_unit.name") },
     {
-      key: "biddingZone",
-      header: "Price Area",
+      key: "accounting_point_business_id",
+      header: t("controllable_unit.accounting_point_id"),
+    },
+    {
+      key: "bidding_zone",
+      header: t("accounting_point_bidding_zone.bidding_zone"),
       render: (v) => (v as string | undefined) ?? "—",
     },
-    { key: "technicalResourceCount", header: "Nr. of Technical Resources" },
-    { key: "maximum_active_power", header: "Total Capacity (kW)" },
-    { key: "status", header: "Status" },
+    {
+      key: "technical_resource_count",
+      header: "Number of Technical Resources",
+    },
+    {
+      key: "maximum_active_power",
+      header: t("controllable_unit.maximum_active_power"),
+    },
+    { key: "status", header: t("controllable_unit.status") },
   ];
 
   if (isLoading) return <Loader />;
@@ -87,12 +125,49 @@ export const FindControllableUnits = ({ spgId }: Props) => {
         <Button
           icon={IconPlus}
           variant="primary"
-          disabled={selectedCuIds.length === 0 || isAdding}
-          onClick={handleAdd}
+          disabled={selectedCuIds.length === 0}
+          onClick={openDialog}
         >
           Add selected CUs to group
         </Button>
       </div>
+
+      <Modal
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        aria-label="Set membership start date"
+        className="overflow-visible"
+      >
+        <Modal.Header
+          title="Set membership start date"
+          description={`Adding ${selectedCuIds.length} controllable unit${selectedCuIds.length !== 1 ? "s" : ""} to the group.`}
+        />
+        <Modal.Content>
+          <BodyText>
+            Choose the date from which the memberships are valid.
+          </BodyText>
+          <FormItem>
+            <FormItemLabel htmlFor="valid-from-picker">
+              Valid from
+            </FormItemLabel>
+            <Datepicker
+              id="valid-from-picker"
+              selected={validFrom}
+              onChange={(date) => date && setValidFrom(date)}
+              size="large"
+              navigateButtons={false}
+            />
+          </FormItem>
+        </Modal.Content>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setDialogOpen(false)}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleConfirm} disabled={isAdding}>
+            Confirm
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

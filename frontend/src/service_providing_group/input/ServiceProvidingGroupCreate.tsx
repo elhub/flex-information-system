@@ -32,13 +32,16 @@ export const ServiceProvidingGroupCreate = () => {
     }
 
     navigate(
-      `/service_providing_group/${result.data.id}/add-members?from=create`,
+      `/service_providing_group/${result.data.id}/manage-members?from=create`,
     );
   };
 
   return (
     <FormContainer>
       <ServiceProvidingGroupStepper activeStep={1} />
+      <Heading level={3} size="medium">
+        Create Service Providing Group
+      </Heading>
       <Form
         resolver={unTypedZodResolver(zServiceProvidingGroupCreateRequest)}
         defaultValues={
@@ -46,10 +49,7 @@ export const ServiceProvidingGroupCreate = () => {
         }
         onSubmit={onSubmit}
       >
-        <Heading level={3} size="medium">
-          Create Service Providing Group
-        </Heading>
-        <div className="flex flex-row center gap-3">
+        <div className="flex flex-col center gap-3">
           <ServiceProvidingGroupFields />
         </div>
         <FormToolbar saveLabel="Create" />

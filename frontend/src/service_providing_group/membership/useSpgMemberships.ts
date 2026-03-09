@@ -11,8 +11,6 @@ import {
   readAccountingPoint,
 } from "../../generated-client";
 import { throwOnError } from "../../util";
-import { startOfDay } from "date-fns";
-import { TZDate } from "@date-fns/tz";
 
 const fetchCurrentBiddingZone = async (
   accountingPointId: number,
@@ -28,10 +26,9 @@ const fetchCurrentBiddingZone = async (
   }).then(throwOnError);
 
   const record = results[0];
-  if (!record) return undefined;
-  if (record.valid_to && new Date(record.valid_to) < new Date())
+  if (record && record.valid_to && record.valid_to < now) {
     return undefined;
-
+  }
   return record;
 };
 
@@ -53,9 +50,9 @@ const enrichControllableUnit = async (
   return {
     ...cu,
     membershipId,
-    meteringPointBusinessId: accountingPoint.business_id,
-    biddingZone: currentBiddingZone?.bidding_zone,
-    technicalResourceCount: technicalResources.length,
+    accounting_point_business_id: accountingPoint.business_id,
+    bidding_zone: currentBiddingZone?.bidding_zone,
+    technical_resource_count: technicalResources.length,
   };
 };
 
@@ -150,16 +147,20 @@ export const useAddMemberships = (spgId: number) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (cuIds: number[]) => {
+    mutationFn: async ({
+      cuIds,
+      validFrom,
+    }: {
+      cuIds: number[];
+      validFrom: string;
+    }) => {
       const results = await Promise.allSettled(
         cuIds.map((controllable_unit_id) =>
           createServiceProvidingGroupMembership({
             body: {
               controllable_unit_id,
               service_providing_group_id: spgId,
-              valid_from: startOfDay(
-                new TZDate(new Date(), "Europe/Oslo"),
-              ).toISOString(),
+              valid_from: validFrom,
             },
           }).then(throwOnError),
         ),

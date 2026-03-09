@@ -2,7 +2,7 @@ export * from "./ServiceProvidingGroupList";
 export * from "./ServiceProvidingGroupHistoryList";
 export * from "./input/ServiceProvidingGroupInput";
 export * from "./input/ServiceProvidingGroupCreate";
-export * from "./input/ServiceProvidingGroupAddMembers";
+export * from "./input/ServiceProvidingGroupManageMembers";
 export * from "./ServiceProvidingGroupShow";
 export * from "./membership/ServiceProvidingGroupMembershipList";
 export * from "./membership/ServiceProvidingGroupMembershipHistoryList";

@@ -6,7 +6,7 @@ import { Button, Heading, Loader, FormContainer } from "../../components/ui";
 import { ServiceProvidingGroupMembershipTable } from "../membership/ServiceProvidingGroupMembershipTable";
 import { ServiceProvidingGroupStepper } from "./ServiceProvidingGroupStepper";
 
-export const ServiceProvidingGroupAddMembers = () => {
+export const ServiceProvidingGroupManageMembers = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -26,7 +26,7 @@ export const ServiceProvidingGroupAddMembers = () => {
     <FormContainer>
       {showStepper && <ServiceProvidingGroupStepper activeStep={2} />}
       <Heading level={3} size="medium">
-        Add members{spg?.name ? ` to ${spg.name}` : ""}
+        Manage members{spg?.name ? ` of ${spg.name}` : ""}
       </Heading>
       <ServiceProvidingGroupMembershipTable spgId={spgId} />
       <div className="mt-4">

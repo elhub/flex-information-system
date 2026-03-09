@@ -5,6 +5,7 @@ import {
 } from "./useSpgMemberships";
 import { ColumnOf, SimpleTable } from "../../components/SimpleTable";
 import { useConfirmAction } from "../../components/ConfirmAction";
+import { useTranslateField } from "../../intl/intl";
 
 type ControllableUnitsInSpg = NonNullable<
   ReturnType<typeof useControllableUnitsInSpg>["data"]
@@ -48,18 +49,26 @@ export const ExistingControllableUnitsTable = ({
   controllableUnits,
   isLoading,
 }: Props) => {
+  const t = useTranslateField();
+
   const columns: ColumnOf<typeof controllableUnits>[] = [
-    { key: "id", header: "CU ID" },
-    { key: "name", header: "Name" },
-    { key: "meteringPointBusinessId", header: "Metering Point ID" },
+    { key: "id", header: t("controllable_unit.id") },
+    { key: "name", header: t("controllable_unit.name") },
     {
-      key: "biddingZone",
-      header: "Price Area",
+      key: "accounting_point_business_id",
+      header: t("controllable_unit.accounting_point_id"),
+    },
+    {
+      key: "bidding_zone",
+      header: t("accounting_point_bidding_zone.bidding_zone"),
       render: (v) => (v as string | undefined) ?? "—",
     },
-    { key: "technicalResourceCount", header: "Nr. of Technical Resources" },
-    { key: "maximum_active_power", header: "Total Capacity (kW)" },
-    { key: "status", header: "Status" },
+    { key: "technical_resource_count", header: "Nr. of Technical Resources" },
+    {
+      key: "maximum_active_power",
+      header: t("controllable_unit.maximum_active_power"),
+    },
+    { key: "status", header: t("controllable_unit.status") },
   ];
 
   if (isLoading) return <Loader />;
@@ -71,9 +80,10 @@ export const ExistingControllableUnitsTable = ({
         data={controllableUnits ?? []}
         empty="No controllable units in this group yet."
         action={{
-          render: (row) => (
-            <DeleteButton membershipId={row.membershipId!} spgId={spgId} />
-          ),
+          render: (row) =>
+            row.membershipId !== undefined ? (
+              <DeleteButton membershipId={row.membershipId} spgId={spgId} />
+            ) : null,
           header: "",
         }}
         columns={columns}

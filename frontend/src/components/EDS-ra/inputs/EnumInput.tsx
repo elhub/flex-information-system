@@ -20,6 +20,7 @@ export const EnumInput = ({
   defaultValue,
   onChange,
   placeholder = "Select...",
+  description,
   ...rest
 }: EnumInputProps) => {
   const { id, field, fieldState } = useInput({
@@ -49,6 +50,7 @@ export const EnumInput = ({
       readOnly={readOnly}
       id={id}
       error={fieldState.error?.message}
+      description={description}
     >
       <Select
         value={field.value ?? ""}

@@ -10,7 +10,7 @@ import { ServiceProvidingGroupList } from "../service_providing_group/ServicePro
 import { ServiceProvidingGroupShow } from "../service_providing_group/ServiceProvidingGroupShow";
 import { ServiceProvidingGroupInput } from "../service_providing_group/input/ServiceProvidingGroupInput";
 import { ServiceProvidingGroupCreate } from "../service_providing_group/input/ServiceProvidingGroupCreate";
-import { ServiceProvidingGroupAddMembers } from "../service_providing_group/input/ServiceProvidingGroupAddMembers";
+import { ServiceProvidingGroupManageMembers } from "../service_providing_group/input/ServiceProvidingGroupManageMembers";
 import { ServiceProvidingGroupHistoryList } from "../service_providing_group/ServiceProvidingGroupHistoryList";
 import { ServiceProvidingGroupMembershipInput } from "../service_providing_group/membership/ServiceProvidingGroupMembershipInput";
 import { ServiceProvidingGroupMembershipShow } from "../service_providing_group/membership/ServiceProvidingGroupMembershipShow";
@@ -71,8 +71,8 @@ export const createServiceProvidingGroupResources = (
         recordRepresentation="name"
       >
         <Route
-          path=":id/add-members"
-          element={<ServiceProvidingGroupAddMembers />}
+          path=":id/manage-members"
+          element={<ServiceProvidingGroupManageMembers />}
         />
         <Route
           path=":service_providing_group_id/history"

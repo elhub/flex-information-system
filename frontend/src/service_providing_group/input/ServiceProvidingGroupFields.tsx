@@ -19,19 +19,21 @@ export const ServiceProvidingGroupFields = ({ isEdit }: Props) => {
   return (
     <>
       {!isServiceProvider && (
-        <PartyReferenceInput {...fields.service_provider_id} />
+        <PartyReferenceInput {...fields.service_provider_id} description />
       )}
-      <TextInput {...fields.name} />
+      <TextInput {...fields.name} description />
       <EnumInput
         {...fields.bidding_zone}
         enumKey="service_providing_group.bidding_zone"
         required
+        description
       />
       {isEdit && (
         <EnumInput
           {...fields.status}
           enumKey="service_providing_group.status"
           required
+          description
         />
       )}
     </>

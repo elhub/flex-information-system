@@ -32,10 +32,9 @@ export const ServiceProvidingGroupShow = () => {
   const { permissions } = usePermissions<Permissions>();
 
   const isHistory = resource.endsWith("_history");
-  const canManageMembers = permissions?.allow(
-    "service_providing_group_membership",
-    "create",
-  );
+  const canManageMembers =
+    permissions?.allow("service_providing_group_membership", "create") &&
+    permissions?.allow("service_providing_group_membership", "delete");
 
   return (
     <Show>
@@ -101,11 +100,11 @@ export const ServiceProvidingGroupShow = () => {
         {!isHistory && canManageMembers && record?.id && (
           <Button
             as={RouterLink}
-            to={`/service_providing_group/${record.id}/add-members`}
+            to={`/service_providing_group/${record.id}/manage-members`}
             variant="invisible"
             icon={IconUser}
           >
-            Add / remove members
+            Manage members
           </Button>
         )}
         {!isHistory && (

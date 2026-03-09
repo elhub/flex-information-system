@@ -44,6 +44,14 @@ export const SimpleTable = <T extends { id?: unknown }>({
               {col.header}
             </Table.ColumnHeader>
           ))}
+          {action && (
+            <Table.ColumnHeader
+              scope="col"
+              aria-label={action.header ?? "Actions"}
+            >
+              {action.header ?? ""}
+            </Table.ColumnHeader>
+          )}
         </Table.Row>
       </Table.Header>
       <Table.Body>
