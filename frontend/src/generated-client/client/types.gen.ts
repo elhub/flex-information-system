@@ -76,7 +76,6 @@ export interface RequestOptions<
     }>,
     Pick<
       ServerSentEventsOptions<TData>,
-      | "onRequest"
       | "onSseError"
       | "onSseEvent"
       | "sseDefaultRetryDelay"

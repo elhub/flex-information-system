@@ -2191,7 +2191,7 @@ export type ServiceProvidingGroupProductApplicationUpdateRequest = {
   product_type_ids?: Array<number>;
   status?: ServiceProvidingGroupProductApplicationStatus;
   /**
-   * The maximum active power applied for. Stored in kilowatts.
+   * The maximum active power applied for, in kilowatts.
    */
   maximum_active_power?: number;
   /**
@@ -2226,7 +2226,7 @@ export type ServiceProvidingGroupProductApplicationCreateRequest = {
   product_type_ids: Array<number>;
   status?: ServiceProvidingGroupProductApplicationStatus;
   /**
-   * The maximum active power applied for. Stored in kilowatts.
+   * The maximum active power applied for, in kilowatts.
    */
   maximum_active_power: number;
   /**
@@ -2265,7 +2265,7 @@ export type ServiceProvidingGroupProductApplication = {
   product_type_ids: Array<number>;
   status: ServiceProvidingGroupProductApplicationStatus;
   /**
-   * The maximum active power applied for. Stored in kilowatts.
+   * The maximum active power applied for, in kilowatts.
    */
   maximum_active_power: number;
   /**
@@ -3435,7 +3435,7 @@ export type ServiceProvidingGroupProductApplicationWritable = {
   product_type_ids: Array<number>;
   status: ServiceProvidingGroupProductApplicationStatus;
   /**
-   * The maximum active power applied for. Stored in kilowatts.
+   * The maximum active power applied for, in kilowatts.
    */
   maximum_active_power: number;
   /**

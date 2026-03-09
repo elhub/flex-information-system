@@ -7,8 +7,8 @@ import * as z from "zod";
  */
 export const zErrorMessage = z.object({
   code: z.string().regex(/^[A-Z0-9]+$/),
-  details: z.string().nullish(),
-  hint: z.string().nullish(),
+  details: z.optional(z.union([z.string(), z.null()])),
+  hint: z.optional(z.union([z.string(), z.null()])),
   message: z.string(),
 });
 
@@ -32,16 +32,26 @@ export const zAuthScope = z.enum([
  */
 export const zControllableUnitLookupRequest = z.object({
   end_user: z.string().regex(/^[1-9]([0-9]{8}|[0-9]{10})$/),
-  controllable_unit: z
-    .string()
-    .regex(
-      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
-    )
-    .optional(),
-  accounting_point: z
-    .string()
-    .regex(/^[1-9][0-9]{17}$/)
-    .optional(),
+  controllable_unit: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z
+        .string()
+        .regex(
+          /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
+        )
+        .optional(),
+    ),
+  ),
+  accounting_point: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z
+        .string()
+        .regex(/^[1-9][0-9]{17}$/)
+        .optional(),
+    ),
+  ),
 });
 
 /**
@@ -64,7 +74,12 @@ export const zControllableUnitLookup = z.object({
         z.object({
           id: z.coerce.number(),
           name: z.string(),
-          details: z.string().optional(),
+          details: z.optional(
+            z.preprocess(
+              (value) => (value === null ? undefined : value),
+              z.string().optional(),
+            ),
+          ),
         }),
       ),
     }),
@@ -84,7 +99,12 @@ export const zEntityLookupRequest = z.object({
  * Response schema for entity lookup operations
  */
 export const zEntityLookup = z.object({
-  entity_id: z.coerce.number().optional(),
+  entity_id: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.coerce.number().optional(),
+    ),
+  ),
 });
 
 /**
@@ -92,8 +112,18 @@ export const zEntityLookup = z.object({
  */
 export const zTimelineMultiRange = z.array(
   z.object({
-    valid_from: z.iso.datetime({ offset: true }).optional(),
-    valid_to: z.iso.datetime({ offset: true }).optional(),
+    valid_from: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.iso.datetime({ offset: true }).optional(),
+      ),
+    ),
+    valid_to: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.iso.datetime({ offset: true }).optional(),
+      ),
+    ),
   }),
 );
 
@@ -101,14 +131,24 @@ export const zTimelineMultiRange = z.array(
  * Format of the data field in a notice of type no.elhub.flex.*.valid_time.outside_contract
  */
 export const zNoticeDataValidTimeOutsideContract = z.object({
-  invalid_timeline: zTimelineMultiRange.optional(),
+  invalid_timeline: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zTimelineMultiRange.optional(),
+    ),
+  ),
 });
 
 /**
  * Format of the data field in a notice of type no.elhub.flex.service_provider_product_suspension.product_type.not_qualified
  */
 export const zNoticeDataProductTypeNotQualified = z.object({
-  product_type_ids: z.array(z.coerce.number()).optional(),
+  product_type_ids: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.array(z.coerce.number()).optional(),
+    ),
+  ),
 });
 
 /**
@@ -386,24 +426,89 @@ export const zNoticeStatus = z.enum(["active", "resolved"]);
  * Request schema for update operations - Controllable unit
  */
 export const zControllableUnitUpdateRequest = z.object({
-  name: z.string().max(512).optional(),
-  start_date: z.iso.date().optional(),
-  status: zControllableUnitStatus.optional(),
-  regulation_direction: zControllableUnitRegulationDirection.optional(),
-  maximum_active_power: z.coerce.number().gte(0).lte(999999.999).optional(),
-  minimum_duration: z.coerce.number().gte(0).optional(),
-  maximum_duration: z.coerce.number().gte(0).optional(),
-  recovery_duration: z.coerce.number().gte(0).optional(),
-  ramp_rate: z.coerce.number().gte(0.001).optional(),
-  grid_node_id: z
-    .string()
-    .regex(
-      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
-    )
-    .optional(),
-  grid_validation_status: zControllableUnitGridValidationStatus.optional(),
-  grid_validation_notes: z.string().max(512).optional(),
-  validated_at: z.iso.datetime({ offset: true }).optional(),
+  name: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().max(512).optional(),
+    ),
+  ),
+  start_date: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.date().optional(),
+    ),
+  ),
+  status: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zControllableUnitStatus.optional(),
+    ),
+  ),
+  regulation_direction: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zControllableUnitRegulationDirection.optional(),
+    ),
+  ),
+  maximum_active_power: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.coerce.number().gte(0).lte(999999.999).optional(),
+    ),
+  ),
+  minimum_duration: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.coerce.number().gte(0).optional(),
+    ),
+  ),
+  maximum_duration: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.coerce.number().gte(0).optional(),
+    ),
+  ),
+  recovery_duration: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.coerce.number().gte(0).optional(),
+    ),
+  ),
+  ramp_rate: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.coerce.number().gte(0.001).optional(),
+    ),
+  ),
+  grid_node_id: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z
+        .string()
+        .regex(
+          /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
+        )
+        .optional(),
+    ),
+  ),
+  grid_validation_status: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zControllableUnitGridValidationStatus.optional(),
+    ),
+  ),
+  grid_validation_notes: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().max(512).optional(),
+    ),
+  ),
+  validated_at: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.datetime({ offset: true }).optional(),
+    ),
+  ),
 });
 
 /**
@@ -411,24 +516,74 @@ export const zControllableUnitUpdateRequest = z.object({
  */
 export const zControllableUnitCreateRequest = z.object({
   name: z.string().max(512),
-  start_date: z.iso.date().optional(),
-  status: zControllableUnitStatus.optional(),
+  start_date: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.date().optional(),
+    ),
+  ),
+  status: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zControllableUnitStatus.optional(),
+    ),
+  ),
   regulation_direction: zControllableUnitRegulationDirection,
   maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
-  minimum_duration: z.coerce.number().gte(0).optional(),
-  maximum_duration: z.coerce.number().gte(0).optional(),
-  recovery_duration: z.coerce.number().gte(0).optional(),
-  ramp_rate: z.coerce.number().gte(0.001).optional(),
+  minimum_duration: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.coerce.number().gte(0).optional(),
+    ),
+  ),
+  maximum_duration: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.coerce.number().gte(0).optional(),
+    ),
+  ),
+  recovery_duration: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.coerce.number().gte(0).optional(),
+    ),
+  ),
+  ramp_rate: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.coerce.number().gte(0.001).optional(),
+    ),
+  ),
   accounting_point_id: z.coerce.number(),
-  grid_node_id: z
-    .string()
-    .regex(
-      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
-    )
-    .optional(),
-  grid_validation_status: zControllableUnitGridValidationStatus.optional(),
-  grid_validation_notes: z.string().max(512).optional(),
-  validated_at: z.iso.datetime({ offset: true }).optional(),
+  grid_node_id: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z
+        .string()
+        .regex(
+          /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
+        )
+        .optional(),
+    ),
+  ),
+  grid_validation_status: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zControllableUnitGridValidationStatus.optional(),
+    ),
+  ),
+  grid_validation_notes: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().max(512).optional(),
+    ),
+  ),
+  validated_at: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.datetime({ offset: true }).optional(),
+    ),
+  ),
 });
 
 /**
@@ -443,25 +598,65 @@ export const zControllableUnit = z.object({
     )
     .readonly(),
   name: z.string().max(512),
-  start_date: z.iso.date().optional(),
+  start_date: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.date().optional(),
+    ),
+  ),
   status: zControllableUnitStatus,
   regulation_direction: zControllableUnitRegulationDirection,
   maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
   is_small: z.boolean().readonly(),
-  minimum_duration: z.coerce.number().gte(0).optional(),
-  maximum_duration: z.coerce.number().gte(0).optional(),
-  recovery_duration: z.coerce.number().gte(0).optional(),
-  ramp_rate: z.coerce.number().gte(0.001).optional(),
+  minimum_duration: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.coerce.number().gte(0).optional(),
+    ),
+  ),
+  maximum_duration: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.coerce.number().gte(0).optional(),
+    ),
+  ),
+  recovery_duration: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.coerce.number().gte(0).optional(),
+    ),
+  ),
+  ramp_rate: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.coerce.number().gte(0.001).optional(),
+    ),
+  ),
   accounting_point_id: z.coerce.number(),
-  grid_node_id: z
-    .string()
-    .regex(
-      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
-    )
-    .optional(),
+  grid_node_id: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z
+        .string()
+        .regex(
+          /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
+        )
+        .optional(),
+    ),
+  ),
   grid_validation_status: zControllableUnitGridValidationStatus,
-  grid_validation_notes: z.string().max(512).optional(),
-  validated_at: z.iso.datetime({ offset: true }).optional(),
+  grid_validation_notes: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().max(512).optional(),
+    ),
+  ),
+  validated_at: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.datetime({ offset: true }).optional(),
+    ),
+  ),
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
 });
@@ -470,7 +665,12 @@ export const zControllableUnit = z.object({
  * Request schema for update operations - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
  */
 export const zControllableUnitSuspensionUpdateRequest = z.object({
-  reason: zControllableUnitSuspensionReason.optional(),
+  reason: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zControllableUnitSuspensionReason.optional(),
+    ),
+  ),
 });
 
 /**
@@ -478,7 +678,12 @@ export const zControllableUnitSuspensionUpdateRequest = z.object({
  */
 export const zControllableUnitSuspensionCreateRequest = z.object({
   controllable_unit_id: z.coerce.number(),
-  impacted_system_operator_id: z.coerce.number().optional(),
+  impacted_system_operator_id: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.coerce.number().optional(),
+    ),
+  ),
   reason: zControllableUnitSuspensionReason,
 });
 
@@ -498,8 +703,18 @@ export const zControllableUnitSuspension = z.object({
  * Request schema for update operations - Comment made by a party involved in a controllable unit suspension.
  */
 export const zControllableUnitSuspensionCommentUpdateRequest = z.object({
-  visibility: zControllableUnitSuspensionCommentVisibility.optional(),
-  content: z.string().max(2048).optional(),
+  visibility: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zControllableUnitSuspensionCommentVisibility.optional(),
+    ),
+  ),
+  content: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().max(2048).optional(),
+    ),
+  ),
 });
 
 /**
@@ -507,7 +722,12 @@ export const zControllableUnitSuspensionCommentUpdateRequest = z.object({
  */
 export const zControllableUnitSuspensionCommentCreateRequest = z.object({
   controllable_unit_suspension_id: z.coerce.number(),
-  visibility: zControllableUnitSuspensionCommentVisibility.optional(),
+  visibility: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zControllableUnitSuspensionCommentVisibility.optional(),
+    ),
+  ),
   content: z.string().max(2048),
 });
 
@@ -529,9 +749,24 @@ export const zControllableUnitSuspensionComment = z.object({
  * Request schema for update operations - Relation between controllable unit and service provider
  */
 export const zControllableUnitServiceProviderUpdateRequest = z.object({
-  contract_reference: z.string().max(128).optional(),
-  valid_from: z.iso.datetime({ offset: true }).optional(),
-  valid_to: z.iso.datetime({ offset: true }).optional(),
+  contract_reference: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().max(128).optional(),
+    ),
+  ),
+  valid_from: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.datetime({ offset: true }).optional(),
+    ),
+  ),
+  valid_to: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.datetime({ offset: true }).optional(),
+    ),
+  ),
 });
 
 /**
@@ -542,8 +777,18 @@ export const zControllableUnitServiceProviderCreateRequest = z.object({
   service_provider_id: z.coerce.number(),
   end_user_id: z.coerce.number(),
   contract_reference: z.string().max(128),
-  valid_from: z.iso.datetime({ offset: true }).optional(),
-  valid_to: z.iso.datetime({ offset: true }).optional(),
+  valid_from: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.datetime({ offset: true }).optional(),
+    ),
+  ),
+  valid_to: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.datetime({ offset: true }).optional(),
+    ),
+  ),
 });
 
 /**
@@ -555,8 +800,18 @@ export const zControllableUnitServiceProvider = z.object({
   service_provider_id: z.coerce.number(),
   end_user_id: z.coerce.number(),
   contract_reference: z.string().max(128),
-  valid_from: z.iso.datetime({ offset: true }).optional(),
-  valid_to: z.iso.datetime({ offset: true }).optional(),
+  valid_from: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.datetime({ offset: true }).optional(),
+    ),
+  ),
+  valid_to: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.datetime({ offset: true }).optional(),
+    ),
+  ),
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
 });
@@ -565,9 +820,24 @@ export const zControllableUnitServiceProvider = z.object({
  * Request schema for update operations - Group of controllable units
  */
 export const zServiceProvidingGroupUpdateRequest = z.object({
-  name: z.string().max(128).optional(),
-  bidding_zone: zServiceProvidingGroupBiddingZone.optional(),
-  status: zServiceProvidingGroupStatus.optional(),
+  name: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().max(128).optional(),
+    ),
+  ),
+  bidding_zone: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zServiceProvidingGroupBiddingZone.optional(),
+    ),
+  ),
+  status: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zServiceProvidingGroupStatus.optional(),
+    ),
+  ),
 });
 
 /**
@@ -577,7 +847,12 @@ export const zServiceProvidingGroupCreateRequest = z.object({
   name: z.string().max(128),
   service_provider_id: z.coerce.number(),
   bidding_zone: zServiceProvidingGroupBiddingZone,
-  status: zServiceProvidingGroupStatus.optional(),
+  status: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zServiceProvidingGroupStatus.optional(),
+    ),
+  ),
 });
 
 /**
@@ -597,8 +872,18 @@ export const zServiceProvidingGroup = z.object({
  * Request schema for update operations - Membership relation of controllable unit in service providing group
  */
 export const zServiceProvidingGroupMembershipUpdateRequest = z.object({
-  valid_from: z.iso.datetime({ offset: true }).optional(),
-  valid_to: z.iso.datetime({ offset: true }).optional(),
+  valid_from: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.datetime({ offset: true }).optional(),
+    ),
+  ),
+  valid_to: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.datetime({ offset: true }).optional(),
+    ),
+  ),
 });
 
 /**
@@ -608,7 +893,12 @@ export const zServiceProvidingGroupMembershipCreateRequest = z.object({
   controllable_unit_id: z.coerce.number(),
   service_providing_group_id: z.coerce.number(),
   valid_from: z.iso.datetime({ offset: true }),
-  valid_to: z.iso.datetime({ offset: true }).optional(),
+  valid_to: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.datetime({ offset: true }).optional(),
+    ),
+  ),
 });
 
 /**
@@ -619,7 +909,12 @@ export const zServiceProvidingGroupMembership = z.object({
   controllable_unit_id: z.coerce.number(),
   service_providing_group_id: z.coerce.number(),
   valid_from: z.iso.datetime({ offset: true }),
-  valid_to: z.iso.datetime({ offset: true }).optional(),
+  valid_to: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.datetime({ offset: true }).optional(),
+    ),
+  ),
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
 });
@@ -629,8 +924,18 @@ export const zServiceProvidingGroupMembership = z.object({
  */
 export const zServiceProvidingGroupGridPrequalificationUpdateRequest = z.object(
   {
-    status: zServiceProvidingGroupGridPrequalificationStatus.optional(),
-    prequalified_at: z.iso.datetime({ offset: true }).optional(),
+    status: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zServiceProvidingGroupGridPrequalificationStatus.optional(),
+      ),
+    ),
+    prequalified_at: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.iso.datetime({ offset: true }).optional(),
+      ),
+    ),
   },
 );
 
@@ -641,8 +946,18 @@ export const zServiceProvidingGroupGridPrequalificationCreateRequest = z.object(
   {
     service_providing_group_id: z.coerce.number(),
     impacted_system_operator_id: z.coerce.number(),
-    status: zServiceProvidingGroupGridPrequalificationStatus.optional(),
-    prequalified_at: z.iso.datetime({ offset: true }).optional(),
+    status: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zServiceProvidingGroupGridPrequalificationStatus.optional(),
+      ),
+    ),
+    prequalified_at: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.iso.datetime({ offset: true }).optional(),
+      ),
+    ),
   },
 );
 
@@ -654,7 +969,12 @@ export const zServiceProvidingGroupGridPrequalification = z.object({
   service_providing_group_id: z.coerce.number(),
   impacted_system_operator_id: z.coerce.number(),
   status: zServiceProvidingGroupGridPrequalificationStatus,
-  prequalified_at: z.iso.datetime({ offset: true }).optional(),
+  prequalified_at: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.datetime({ offset: true }).optional(),
+    ),
+  ),
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
 });
@@ -664,9 +984,18 @@ export const zServiceProvidingGroupGridPrequalification = z.object({
  */
 export const zServiceProvidingGroupGridPrequalificationCommentUpdateRequest =
   z.object({
-    visibility:
-      zServiceProvidingGroupGridPrequalificationCommentVisibility.optional(),
-    content: z.string().max(2048).optional(),
+    visibility: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zServiceProvidingGroupGridPrequalificationCommentVisibility.optional(),
+      ),
+    ),
+    content: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.string().max(2048).optional(),
+      ),
+    ),
   });
 
 /**
@@ -675,8 +1004,12 @@ export const zServiceProvidingGroupGridPrequalificationCommentUpdateRequest =
 export const zServiceProvidingGroupGridPrequalificationCommentCreateRequest =
   z.object({
     service_providing_group_grid_prequalification_id: z.coerce.number(),
-    visibility:
-      zServiceProvidingGroupGridPrequalificationCommentVisibility.optional(),
+    visibility: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zServiceProvidingGroupGridPrequalificationCommentVisibility.optional(),
+      ),
+    ),
     content: z.string().max(2048),
   });
 
@@ -698,14 +1031,24 @@ export const zServiceProvidingGroupGridPrequalificationComment = z.object({
  * Request schema for update operations - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
  */
 export const zServiceProvidingGroupGridSuspensionUpdateRequest = z.object({
-  reason: zServiceProvidingGroupGridSuspensionReason.optional(),
+  reason: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zServiceProvidingGroupGridSuspensionReason.optional(),
+    ),
+  ),
 });
 
 /**
  * Request schema for create operations - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
  */
 export const zServiceProvidingGroupGridSuspensionCreateRequest = z.object({
-  impacted_system_operator_id: z.coerce.number().optional(),
+  impacted_system_operator_id: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.coerce.number().optional(),
+    ),
+  ),
   service_providing_group_id: z.coerce.number(),
   reason: zServiceProvidingGroupGridSuspensionReason,
 });
@@ -727,9 +1070,18 @@ export const zServiceProvidingGroupGridSuspension = z.object({
  */
 export const zServiceProvidingGroupGridSuspensionCommentUpdateRequest =
   z.object({
-    visibility:
-      zServiceProvidingGroupGridSuspensionCommentVisibility.optional(),
-    content: z.string().max(2048).optional(),
+    visibility: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zServiceProvidingGroupGridSuspensionCommentVisibility.optional(),
+      ),
+    ),
+    content: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.string().max(2048).optional(),
+      ),
+    ),
   });
 
 /**
@@ -738,8 +1090,12 @@ export const zServiceProvidingGroupGridSuspensionCommentUpdateRequest =
 export const zServiceProvidingGroupGridSuspensionCommentCreateRequest =
   z.object({
     service_providing_group_grid_suspension_id: z.coerce.number(),
-    visibility:
-      zServiceProvidingGroupGridSuspensionCommentVisibility.optional(),
+    visibility: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zServiceProvidingGroupGridSuspensionCommentVisibility.optional(),
+      ),
+    ),
     content: z.string().max(2048),
   });
 
@@ -768,9 +1124,24 @@ export const zServiceProvidingGroupGridSuspensionComment = z.object({
  * * Organisation
  */
 export const zEntityUpdateRequest = z.object({
-  business_id_type: zEntityBusinessIdType.optional(),
-  name: z.string().optional(),
-  type: zEntityType.optional(),
+  business_id_type: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zEntityBusinessIdType.optional(),
+    ),
+  ),
+  name: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().optional(),
+    ),
+  ),
+  type: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zEntityType.optional(),
+    ),
+  ),
 });
 
 /**
@@ -814,16 +1185,41 @@ export const zEntity = z.object({
  * Request schema for update operations - Client linked to an entity for client credentials and JWT grant authentication methods.
  */
 export const zEntityClientUpdateRequest = z.object({
-  name: z.string().max(256).optional(),
-  party_id: z.coerce.number().optional(),
-  scopes: z.array(zAuthScope).optional(),
-  client_secret: z.string().min(12).optional(),
-  public_key: z
-    .string()
-    .regex(
-      /^-----BEGIN PUBLIC KEY-----\nMIIB[-A-Za-z0-9+\/\n]*={0,3}\n-----END PUBLIC KEY-----$/,
-    )
-    .optional(),
+  name: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().max(256).optional(),
+    ),
+  ),
+  party_id: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.coerce.number().optional(),
+    ),
+  ),
+  scopes: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.array(zAuthScope).optional(),
+    ),
+  ),
+  client_secret: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().min(12).optional(),
+    ),
+  ),
+  public_key: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z
+        .string()
+        .regex(
+          /^-----BEGIN PUBLIC KEY-----\nMIIB[-A-Za-z0-9+\/\n]*={0,3}\n-----END PUBLIC KEY-----$/,
+        )
+        .optional(),
+    ),
+  ),
 });
 
 /**
@@ -831,16 +1227,36 @@ export const zEntityClientUpdateRequest = z.object({
  */
 export const zEntityClientCreateRequest = z.object({
   entity_id: z.coerce.number(),
-  name: z.string().max(256).optional(),
-  party_id: z.coerce.number().optional(),
+  name: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().max(256).optional(),
+    ),
+  ),
+  party_id: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.coerce.number().optional(),
+    ),
+  ),
   scopes: z.array(zAuthScope),
-  client_secret: z.string().min(12).optional(),
-  public_key: z
-    .string()
-    .regex(
-      /^-----BEGIN PUBLIC KEY-----\nMIIB[-A-Za-z0-9+\/\n]*={0,3}\n-----END PUBLIC KEY-----$/,
-    )
-    .optional(),
+  client_secret: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().min(12).optional(),
+    ),
+  ),
+  public_key: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z
+        .string()
+        .regex(
+          /^-----BEGIN PUBLIC KEY-----\nMIIB[-A-Za-z0-9+\/\n]*={0,3}\n-----END PUBLIC KEY-----$/,
+        )
+        .optional(),
+    ),
+  ),
 });
 
 /**
@@ -849,17 +1265,37 @@ export const zEntityClientCreateRequest = z.object({
 export const zEntityClient = z.object({
   id: z.coerce.number().readonly(),
   entity_id: z.coerce.number(),
-  name: z.string().max(256).optional(),
+  name: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().max(256).optional(),
+    ),
+  ),
   client_id: z.string().readonly(),
-  party_id: z.coerce.number().optional(),
+  party_id: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.coerce.number().optional(),
+    ),
+  ),
   scopes: z.array(zAuthScope),
-  client_secret: z.string().min(12).optional(),
-  public_key: z
-    .string()
-    .regex(
-      /^-----BEGIN PUBLIC KEY-----\nMIIB[-A-Za-z0-9+\/\n]*={0,3}\n-----END PUBLIC KEY-----$/,
-    )
-    .optional(),
+  client_secret: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().min(12).optional(),
+    ),
+  ),
+  public_key: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z
+        .string()
+        .regex(
+          /^-----BEGIN PUBLIC KEY-----\nMIIB[-A-Za-z0-9+\/\n]*={0,3}\n-----END PUBLIC KEY-----$/,
+        )
+        .optional(),
+    ),
+  ),
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
 });
@@ -876,11 +1312,36 @@ export const zEntityClient = z.object({
  * * End User
  */
 export const zPartyUpdateRequest = z.object({
-  business_id_type: zPartyBusinessIdType.optional(),
-  name: z.string().optional(),
-  role: zPartyRole.optional(),
-  type: zPartyType.optional(),
-  status: zPartyStatus.optional(),
+  business_id_type: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zPartyBusinessIdType.optional(),
+    ),
+  ),
+  name: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().optional(),
+    ),
+  ),
+  role: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zPartyRole.optional(),
+    ),
+  ),
+  type: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zPartyType.optional(),
+    ),
+  ),
+  status: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zPartyStatus.optional(),
+    ),
+  ),
 });
 
 /**
@@ -895,13 +1356,28 @@ export const zPartyUpdateRequest = z.object({
  * * End User
  */
 export const zPartyCreateRequest = z.object({
-  business_id: z.string().optional(),
-  business_id_type: zPartyBusinessIdType.optional(),
+  business_id: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().optional(),
+    ),
+  ),
+  business_id_type: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zPartyBusinessIdType.optional(),
+    ),
+  ),
   entity_id: z.coerce.number(),
   name: z.string(),
   role: zPartyRole,
   type: zPartyType,
-  status: zPartyStatus.optional(),
+  status: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zPartyStatus.optional(),
+    ),
+  ),
 });
 
 /**
@@ -932,16 +1408,36 @@ export const zParty = z.object({
  * Format of the data field in a notice of type no.elhub.flex.party.missing
  */
 export const zNoticeDataPartyMissing = z.object({
-  entity: zEntity.optional(),
-  party: zParty.optional(),
+  entity: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zEntity.optional(),
+    ),
+  ),
+  party: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zParty.optional(),
+    ),
+  ),
 });
 
 /**
  * Format of the data field in a notice of type no.elhub.flex.party.outdated
  */
 export const zNoticeDataPartyOutdated = z.object({
-  entity: zEntity.optional(),
-  party: zParty.optional(),
+  entity: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zEntity.optional(),
+    ),
+  ),
+  party: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zParty.optional(),
+    ),
+  ),
 });
 
 export const zNoticeData = z.union([
@@ -955,7 +1451,12 @@ export const zNoticeData = z.union([
  * Request schema for update operations - The relation between a party and entity.
  */
 export const zPartyMembershipUpdateRequest = z.object({
-  scopes: z.array(zAuthScope).optional(),
+  scopes: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.array(zAuthScope).optional(),
+    ),
+  ),
 });
 
 /**
@@ -986,16 +1487,36 @@ export const zIdentity = z.object({
   id: z.coerce.number().readonly(),
   entity_id: z.coerce.number().readonly(),
   entity_name: z.string().readonly(),
-  party_id: z.coerce.number().readonly().optional(),
-  party_name: z.string().readonly().optional(),
+  party_id: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.coerce.number().readonly().optional(),
+    ),
+  ),
+  party_name: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().readonly().optional(),
+    ),
+  ),
 });
 
 /**
  * Request schema for update operations - Technical unit being part of a controllable unit.
  */
 export const zTechnicalResourceUpdateRequest = z.object({
-  name: z.string().optional(),
-  details: z.string().max(1024).optional(),
+  name: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().optional(),
+    ),
+  ),
+  details: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().max(1024).optional(),
+    ),
+  ),
 });
 
 /**
@@ -1004,7 +1525,12 @@ export const zTechnicalResourceUpdateRequest = z.object({
 export const zTechnicalResourceCreateRequest = z.object({
   name: z.string(),
   controllable_unit_id: z.coerce.number(),
-  details: z.string().max(1024).optional(),
+  details: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().max(1024).optional(),
+    ),
+  ),
 });
 
 /**
@@ -1014,7 +1540,12 @@ export const zTechnicalResource = z.object({
   id: z.coerce.number().readonly(),
   name: z.string(),
   controllable_unit_id: z.coerce.number(),
-  details: z.string().max(1024).optional(),
+  details: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().max(1024).optional(),
+    ),
+  ),
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
 });
@@ -1034,15 +1565,30 @@ export const zEvent = z.object({
     .string()
     .regex(/^(\/([a-z][a-z_]*|[0-9]+))+$/)
     .readonly(),
-  subject: z.string().readonly().optional(),
-  data: z.string().readonly().optional(),
+  subject: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().readonly().optional(),
+    ),
+  ),
+  data: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().readonly().optional(),
+    ),
+  ),
 });
 
 /**
  * Request schema for update operations - Notification about an event happening in the system.
  */
 export const zNotificationUpdateRequest = z.object({
-  acknowledged: z.boolean().optional(),
+  acknowledged: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.boolean().optional(),
+    ),
+  ),
 });
 
 /**
@@ -1079,7 +1625,12 @@ export const zAccountingPointBalanceResponsibleParty = z.object({
   balance_responsible_party_id: z.coerce.number().readonly(),
   energy_direction: zAccountingPointBalanceResponsiblePartyEnergyDirection,
   valid_from: z.iso.datetime({ offset: true }).readonly(),
-  valid_to: z.iso.datetime({ offset: true }).readonly().optional(),
+  valid_to: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.datetime({ offset: true }).readonly().optional(),
+    ),
+  ),
 });
 
 /**
@@ -1089,7 +1640,12 @@ export const zAccountingPointBiddingZone = z.object({
   accounting_point_id: z.coerce.number().readonly(),
   bidding_zone: zAccountingPointBiddingZoneBiddingZone,
   valid_from: z.iso.datetime({ offset: true }).readonly(),
-  valid_to: z.iso.datetime({ offset: true }).readonly().optional(),
+  valid_to: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.datetime({ offset: true }).readonly().optional(),
+    ),
+  ),
 });
 
 /**
@@ -1099,7 +1655,12 @@ export const zAccountingPointEndUser = z.object({
   accounting_point_id: z.coerce.number().readonly(),
   end_user_id: z.coerce.number().readonly(),
   valid_from: z.iso.datetime({ offset: true }).readonly(),
-  valid_to: z.iso.datetime({ offset: true }).readonly().optional(),
+  valid_to: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.datetime({ offset: true }).readonly().optional(),
+    ),
+  ),
 });
 
 /**
@@ -1109,7 +1670,12 @@ export const zAccountingPointEnergySupplier = z.object({
   accounting_point_id: z.coerce.number().readonly(),
   energy_supplier_id: z.coerce.number().readonly(),
   valid_from: z.iso.datetime({ offset: true }).readonly(),
-  valid_to: z.iso.datetime({ offset: true }).readonly().optional(),
+  valid_to: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.datetime({ offset: true }).readonly().optional(),
+    ),
+  ),
 });
 
 /**
@@ -1129,7 +1695,12 @@ export const zAccountingPointMeteringGridArea = z.object({
   accounting_point_id: z.coerce.number().readonly(),
   metering_grid_area_id: z.coerce.number().readonly(),
   valid_from: z.iso.datetime({ offset: true }).readonly(),
-  valid_to: z.iso.datetime({ offset: true }).readonly().optional(),
+  valid_to: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.datetime({ offset: true }).readonly().optional(),
+    ),
+  ),
 });
 
 /**
@@ -1147,7 +1718,12 @@ export const zProductType = z.object({
  * Request schema for update operations - Relation between a system operator and a product type they want to buy.
  */
 export const zSystemOperatorProductTypeUpdateRequest = z.object({
-  status: zSystemOperatorProductTypeStatus.optional(),
+  status: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zSystemOperatorProductTypeStatus.optional(),
+    ),
+  ),
 });
 
 /**
@@ -1156,7 +1732,12 @@ export const zSystemOperatorProductTypeUpdateRequest = z.object({
 export const zSystemOperatorProductTypeCreateRequest = z.object({
   system_operator_id: z.coerce.number(),
   product_type_id: z.coerce.number(),
-  status: zSystemOperatorProductTypeStatus.optional(),
+  status: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zSystemOperatorProductTypeStatus.optional(),
+    ),
+  ),
 });
 
 /**
@@ -1175,9 +1756,24 @@ export const zSystemOperatorProductType = z.object({
  * Request schema for update operations - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
  */
 export const zServiceProviderProductApplicationUpdateRequest = z.object({
-  product_type_ids: z.array(z.coerce.number()).optional(),
-  status: zServiceProviderProductApplicationStatus.optional(),
-  qualified_at: z.iso.datetime({ offset: true }).optional(),
+  product_type_ids: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.array(z.coerce.number()).optional(),
+    ),
+  ),
+  status: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zServiceProviderProductApplicationStatus.optional(),
+    ),
+  ),
+  qualified_at: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.datetime({ offset: true }).optional(),
+    ),
+  ),
 });
 
 /**
@@ -1187,8 +1783,18 @@ export const zServiceProviderProductApplicationCreateRequest = z.object({
   service_provider_id: z.coerce.number(),
   system_operator_id: z.coerce.number(),
   product_type_ids: z.array(z.coerce.number()),
-  status: zServiceProviderProductApplicationStatus.optional(),
-  qualified_at: z.iso.datetime({ offset: true }).optional(),
+  status: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zServiceProviderProductApplicationStatus.optional(),
+    ),
+  ),
+  qualified_at: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.datetime({ offset: true }).optional(),
+    ),
+  ),
 });
 
 /**
@@ -1200,7 +1806,12 @@ export const zServiceProviderProductApplication = z.object({
   system_operator_id: z.coerce.number(),
   product_type_ids: z.array(z.coerce.number()),
   status: zServiceProviderProductApplicationStatus,
-  qualified_at: z.iso.datetime({ offset: true }).optional(),
+  qualified_at: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.datetime({ offset: true }).optional(),
+    ),
+  ),
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
 });
@@ -1209,8 +1820,18 @@ export const zServiceProviderProductApplication = z.object({
  * Request schema for update operations - Comment made by a party involved in a service provider product application.
  */
 export const zServiceProviderProductApplicationCommentUpdateRequest = z.object({
-  visibility: zServiceProviderProductApplicationCommentVisibility.optional(),
-  content: z.string().max(2048).optional(),
+  visibility: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zServiceProviderProductApplicationCommentVisibility.optional(),
+    ),
+  ),
+  content: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().max(2048).optional(),
+    ),
+  ),
 });
 
 /**
@@ -1218,7 +1839,12 @@ export const zServiceProviderProductApplicationCommentUpdateRequest = z.object({
  */
 export const zServiceProviderProductApplicationCommentCreateRequest = z.object({
   service_provider_product_application_id: z.coerce.number(),
-  visibility: zServiceProviderProductApplicationCommentVisibility.optional(),
+  visibility: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zServiceProviderProductApplicationCommentVisibility.optional(),
+    ),
+  ),
   content: z.string().max(2048),
 });
 
@@ -1240,15 +1866,30 @@ export const zServiceProviderProductApplicationComment = z.object({
  * Request schema for update operations - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
  */
 export const zServiceProviderProductSuspensionUpdateRequest = z.object({
-  product_type_ids: z.array(z.coerce.number()).optional(),
-  reason: zServiceProviderProductSuspensionReason.optional(),
+  product_type_ids: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.array(z.coerce.number()).optional(),
+    ),
+  ),
+  reason: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zServiceProviderProductSuspensionReason.optional(),
+    ),
+  ),
 });
 
 /**
  * Request schema for create operations - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
  */
 export const zServiceProviderProductSuspensionCreateRequest = z.object({
-  procuring_system_operator_id: z.coerce.number().optional(),
+  procuring_system_operator_id: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.coerce.number().optional(),
+    ),
+  ),
   service_provider_id: z.coerce.number(),
   product_type_ids: z.array(z.coerce.number()),
   reason: zServiceProviderProductSuspensionReason,
@@ -1271,8 +1912,18 @@ export const zServiceProviderProductSuspension = z.object({
  * Request schema for update operations - Comment made by a party involved in a service provider product suspension.
  */
 export const zServiceProviderProductSuspensionCommentUpdateRequest = z.object({
-  visibility: zServiceProviderProductSuspensionCommentVisibility.optional(),
-  content: z.string().max(2048).optional(),
+  visibility: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zServiceProviderProductSuspensionCommentVisibility.optional(),
+    ),
+  ),
+  content: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().max(2048).optional(),
+    ),
+  ),
 });
 
 /**
@@ -1280,7 +1931,12 @@ export const zServiceProviderProductSuspensionCommentUpdateRequest = z.object({
  */
 export const zServiceProviderProductSuspensionCommentCreateRequest = z.object({
   service_provider_product_suspension_id: z.coerce.number(),
-  visibility: zServiceProviderProductSuspensionCommentVisibility.optional(),
+  visibility: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zServiceProviderProductSuspensionCommentVisibility.optional(),
+    ),
+  ),
   content: z.string().max(2048),
 });
 
@@ -1302,12 +1958,42 @@ export const zServiceProviderProductSuspensionComment = z.object({
  * Request schema for update operations - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
  */
 export const zServiceProvidingGroupProductApplicationUpdateRequest = z.object({
-  product_type_ids: z.array(z.coerce.number()).optional(),
-  status: zServiceProvidingGroupProductApplicationStatus.optional(),
-  maximum_active_power: z.coerce.number().gte(0).lte(999999.999).optional(),
-  additional_information: z.string().max(512).optional(),
-  prequalified_at: z.iso.datetime({ offset: true }).optional(),
-  verified_at: z.iso.datetime({ offset: true }).optional(),
+  product_type_ids: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.array(z.coerce.number()).optional(),
+    ),
+  ),
+  status: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zServiceProvidingGroupProductApplicationStatus.optional(),
+    ),
+  ),
+  maximum_active_power: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.coerce.number().gte(0).lte(999999.999).optional(),
+    ),
+  ),
+  additional_information: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().max(512).optional(),
+    ),
+  ),
+  prequalified_at: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.datetime({ offset: true }).optional(),
+    ),
+  ),
+  verified_at: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.datetime({ offset: true }).optional(),
+    ),
+  ),
 });
 
 /**
@@ -1317,11 +2003,31 @@ export const zServiceProvidingGroupProductApplicationCreateRequest = z.object({
   service_providing_group_id: z.coerce.number(),
   procuring_system_operator_id: z.coerce.number(),
   product_type_ids: z.array(z.coerce.number()),
-  status: zServiceProvidingGroupProductApplicationStatus.optional(),
+  status: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zServiceProvidingGroupProductApplicationStatus.optional(),
+    ),
+  ),
   maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
-  additional_information: z.string().max(512).optional(),
-  prequalified_at: z.iso.datetime({ offset: true }).optional(),
-  verified_at: z.iso.datetime({ offset: true }).optional(),
+  additional_information: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().max(512).optional(),
+    ),
+  ),
+  prequalified_at: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.datetime({ offset: true }).optional(),
+    ),
+  ),
+  verified_at: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.datetime({ offset: true }).optional(),
+    ),
+  ),
 });
 
 /**
@@ -1334,9 +2040,24 @@ export const zServiceProvidingGroupProductApplication = z.object({
   product_type_ids: z.array(z.coerce.number()),
   status: zServiceProvidingGroupProductApplicationStatus,
   maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
-  additional_information: z.string().max(512).optional(),
-  prequalified_at: z.iso.datetime({ offset: true }).optional(),
-  verified_at: z.iso.datetime({ offset: true }).optional(),
+  additional_information: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().max(512).optional(),
+    ),
+  ),
+  prequalified_at: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.datetime({ offset: true }).optional(),
+    ),
+  ),
+  verified_at: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.datetime({ offset: true }).optional(),
+    ),
+  ),
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
 });
@@ -1346,9 +2067,18 @@ export const zServiceProvidingGroupProductApplication = z.object({
  */
 export const zServiceProvidingGroupProductApplicationCommentUpdateRequest =
   z.object({
-    visibility:
-      zServiceProvidingGroupProductApplicationCommentVisibility.optional(),
-    content: z.string().max(2048).optional(),
+    visibility: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zServiceProvidingGroupProductApplicationCommentVisibility.optional(),
+      ),
+    ),
+    content: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.string().max(2048).optional(),
+      ),
+    ),
   });
 
 /**
@@ -1357,8 +2087,12 @@ export const zServiceProvidingGroupProductApplicationCommentUpdateRequest =
 export const zServiceProvidingGroupProductApplicationCommentCreateRequest =
   z.object({
     service_providing_group_product_application_id: z.coerce.number(),
-    visibility:
-      zServiceProvidingGroupProductApplicationCommentVisibility.optional(),
+    visibility: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zServiceProvidingGroupProductApplicationCommentVisibility.optional(),
+      ),
+    ),
     content: z.string().max(2048),
   });
 
@@ -1380,15 +2114,30 @@ export const zServiceProvidingGroupProductApplicationComment = z.object({
  * Request schema for update operations - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
  */
 export const zServiceProvidingGroupProductSuspensionUpdateRequest = z.object({
-  product_type_ids: z.array(z.coerce.number()).optional(),
-  reason: zServiceProvidingGroupProductSuspensionReason.optional(),
+  product_type_ids: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.array(z.coerce.number()).optional(),
+    ),
+  ),
+  reason: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zServiceProvidingGroupProductSuspensionReason.optional(),
+    ),
+  ),
 });
 
 /**
  * Request schema for create operations - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
  */
 export const zServiceProvidingGroupProductSuspensionCreateRequest = z.object({
-  procuring_system_operator_id: z.coerce.number().optional(),
+  procuring_system_operator_id: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.coerce.number().optional(),
+    ),
+  ),
   service_providing_group_id: z.coerce.number(),
   product_type_ids: z.array(z.coerce.number()),
   reason: zServiceProvidingGroupProductSuspensionReason,
@@ -1412,9 +2161,18 @@ export const zServiceProvidingGroupProductSuspension = z.object({
  */
 export const zServiceProvidingGroupProductSuspensionCommentUpdateRequest =
   z.object({
-    visibility:
-      zServiceProvidingGroupProductSuspensionCommentVisibility.optional(),
-    content: z.string().max(2048).optional(),
+    visibility: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zServiceProvidingGroupProductSuspensionCommentVisibility.optional(),
+      ),
+    ),
+    content: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.string().max(2048).optional(),
+      ),
+    ),
   });
 
 /**
@@ -1423,8 +2181,12 @@ export const zServiceProvidingGroupProductSuspensionCommentUpdateRequest =
 export const zServiceProvidingGroupProductSuspensionCommentCreateRequest =
   z.object({
     service_providing_group_product_suspension_id: z.coerce.number(),
-    visibility:
-      zServiceProvidingGroupProductSuspensionCommentVisibility.optional(),
+    visibility: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zServiceProvidingGroupProductSuspensionCommentVisibility.optional(),
+      ),
+    ),
     content: z.string().max(2048),
   });
 
@@ -1453,11 +2215,12 @@ export const zNotice = z.object({
     .string()
     .regex(/^no.elhub.flex./)
     .readonly(),
-  source: z
-    .string()
-    .regex(/^(\/([a-z][a-z_]*|[0-9]+))+$/)
-    .readonly()
-    .optional(),
+  source: z.optional(
+    z
+      .string()
+      .regex(/^(\/([a-z][a-z_]*|[0-9]+))+$/)
+      .readonly(),
+  ),
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
 });
@@ -1468,8 +2231,18 @@ export const zNotice = z.object({
 export const zControllableUnitHistory = zControllableUnit.and(
   z.object({
     controllable_unit_id: z.coerce.number(),
-    replaced_by: z.coerce.number().optional(),
-    replaced_at: z.iso.datetime({ offset: true }).optional(),
+    replaced_by: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.coerce.number().optional(),
+      ),
+    ),
+    replaced_at: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.iso.datetime({ offset: true }).optional(),
+      ),
+    ),
   }),
 );
 
@@ -1480,8 +2253,18 @@ export const zControllableUnitSuspensionHistory =
   zControllableUnitSuspension.and(
     z.object({
       controllable_unit_suspension_id: z.coerce.number(),
-      replaced_by: z.coerce.number().optional(),
-      replaced_at: z.iso.datetime({ offset: true }).optional(),
+      replaced_by: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.coerce.number().optional(),
+        ),
+      ),
+      replaced_at: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.iso.datetime({ offset: true }).optional(),
+        ),
+      ),
     }),
   );
 
@@ -1492,8 +2275,18 @@ export const zControllableUnitSuspensionCommentHistory =
   zControllableUnitSuspensionComment.and(
     z.object({
       controllable_unit_suspension_comment_id: z.coerce.number(),
-      replaced_by: z.coerce.number().optional(),
-      replaced_at: z.iso.datetime({ offset: true }).optional(),
+      replaced_by: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.coerce.number().optional(),
+        ),
+      ),
+      replaced_at: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.iso.datetime({ offset: true }).optional(),
+        ),
+      ),
     }),
   );
 
@@ -1504,8 +2297,18 @@ export const zControllableUnitServiceProviderHistory =
   zControllableUnitServiceProvider.and(
     z.object({
       controllable_unit_service_provider_id: z.coerce.number(),
-      replaced_by: z.coerce.number().optional(),
-      replaced_at: z.iso.datetime({ offset: true }).optional(),
+      replaced_by: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.coerce.number().optional(),
+        ),
+      ),
+      replaced_at: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.iso.datetime({ offset: true }).optional(),
+        ),
+      ),
     }),
   );
 
@@ -1515,8 +2318,18 @@ export const zControllableUnitServiceProviderHistory =
 export const zServiceProvidingGroupHistory = zServiceProvidingGroup.and(
   z.object({
     service_providing_group_id: z.coerce.number(),
-    replaced_by: z.coerce.number().optional(),
-    replaced_at: z.iso.datetime({ offset: true }).optional(),
+    replaced_by: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.coerce.number().optional(),
+      ),
+    ),
+    replaced_at: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.iso.datetime({ offset: true }).optional(),
+      ),
+    ),
   }),
 );
 
@@ -1527,8 +2340,18 @@ export const zServiceProvidingGroupMembershipHistory =
   zServiceProvidingGroupMembership.and(
     z.object({
       service_providing_group_membership_id: z.coerce.number(),
-      replaced_by: z.coerce.number().optional(),
-      replaced_at: z.iso.datetime({ offset: true }).optional(),
+      replaced_by: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.coerce.number().optional(),
+        ),
+      ),
+      replaced_at: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.iso.datetime({ offset: true }).optional(),
+        ),
+      ),
     }),
   );
 
@@ -1539,8 +2362,18 @@ export const zServiceProvidingGroupGridPrequalificationHistory =
   zServiceProvidingGroupGridPrequalification.and(
     z.object({
       service_providing_group_grid_prequalification_id: z.coerce.number(),
-      replaced_by: z.coerce.number().optional(),
-      replaced_at: z.iso.datetime({ offset: true }).optional(),
+      replaced_by: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.coerce.number().optional(),
+        ),
+      ),
+      replaced_at: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.iso.datetime({ offset: true }).optional(),
+        ),
+      ),
     }),
   );
 
@@ -1552,8 +2385,18 @@ export const zServiceProvidingGroupGridPrequalificationCommentHistory =
     z.object({
       service_providing_group_grid_prequalification_comment_id:
         z.coerce.number(),
-      replaced_by: z.coerce.number().optional(),
-      replaced_at: z.iso.datetime({ offset: true }).optional(),
+      replaced_by: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.coerce.number().optional(),
+        ),
+      ),
+      replaced_at: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.iso.datetime({ offset: true }).optional(),
+        ),
+      ),
     }),
   );
 
@@ -1564,8 +2407,18 @@ export const zServiceProvidingGroupGridSuspensionHistory =
   zServiceProvidingGroupGridSuspension.and(
     z.object({
       service_providing_group_grid_suspension_id: z.coerce.number(),
-      replaced_by: z.coerce.number().optional(),
-      replaced_at: z.iso.datetime({ offset: true }).optional(),
+      replaced_by: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.coerce.number().optional(),
+        ),
+      ),
+      replaced_at: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.iso.datetime({ offset: true }).optional(),
+        ),
+      ),
     }),
   );
 
@@ -1576,8 +2429,18 @@ export const zServiceProvidingGroupGridSuspensionCommentHistory =
   zServiceProvidingGroupGridSuspensionComment.and(
     z.object({
       service_providing_group_grid_suspension_comment_id: z.coerce.number(),
-      replaced_by: z.coerce.number().optional(),
-      replaced_at: z.iso.datetime({ offset: true }).optional(),
+      replaced_by: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.coerce.number().optional(),
+        ),
+      ),
+      replaced_at: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.iso.datetime({ offset: true }).optional(),
+        ),
+      ),
     }),
   );
 
@@ -1587,8 +2450,18 @@ export const zServiceProvidingGroupGridSuspensionCommentHistory =
 export const zPartyHistory = zParty.and(
   z.object({
     party_id: z.coerce.number(),
-    replaced_by: z.coerce.number().optional(),
-    replaced_at: z.iso.datetime({ offset: true }).optional(),
+    replaced_by: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.coerce.number().optional(),
+      ),
+    ),
+    replaced_at: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.iso.datetime({ offset: true }).optional(),
+      ),
+    ),
   }),
 );
 
@@ -1598,8 +2471,18 @@ export const zPartyHistory = zParty.and(
 export const zPartyMembershipHistory = zPartyMembership.and(
   z.object({
     party_membership_id: z.coerce.number(),
-    replaced_by: z.coerce.number().optional(),
-    replaced_at: z.iso.datetime({ offset: true }).optional(),
+    replaced_by: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.coerce.number().optional(),
+      ),
+    ),
+    replaced_at: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.iso.datetime({ offset: true }).optional(),
+      ),
+    ),
   }),
 );
 
@@ -1609,8 +2492,18 @@ export const zPartyMembershipHistory = zPartyMembership.and(
 export const zTechnicalResourceHistory = zTechnicalResource.and(
   z.object({
     technical_resource_id: z.coerce.number(),
-    replaced_by: z.coerce.number().optional(),
-    replaced_at: z.iso.datetime({ offset: true }).optional(),
+    replaced_by: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.coerce.number().optional(),
+      ),
+    ),
+    replaced_at: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.iso.datetime({ offset: true }).optional(),
+      ),
+    ),
   }),
 );
 
@@ -1620,8 +2513,18 @@ export const zTechnicalResourceHistory = zTechnicalResource.and(
 export const zSystemOperatorProductTypeHistory = zSystemOperatorProductType.and(
   z.object({
     system_operator_product_type_id: z.coerce.number(),
-    replaced_by: z.coerce.number().optional(),
-    replaced_at: z.iso.datetime({ offset: true }).optional(),
+    replaced_by: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.coerce.number().optional(),
+      ),
+    ),
+    replaced_at: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.iso.datetime({ offset: true }).optional(),
+      ),
+    ),
   }),
 );
 
@@ -1632,8 +2535,18 @@ export const zServiceProviderProductApplicationHistory =
   zServiceProviderProductApplication.and(
     z.object({
       service_provider_product_application_id: z.coerce.number(),
-      replaced_by: z.coerce.number().optional(),
-      replaced_at: z.iso.datetime({ offset: true }).optional(),
+      replaced_by: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.coerce.number().optional(),
+        ),
+      ),
+      replaced_at: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.iso.datetime({ offset: true }).optional(),
+        ),
+      ),
     }),
   );
 
@@ -1644,8 +2557,18 @@ export const zServiceProviderProductApplicationCommentHistory =
   zServiceProviderProductApplicationComment.and(
     z.object({
       service_provider_product_application_comment_id: z.coerce.number(),
-      replaced_by: z.coerce.number().optional(),
-      replaced_at: z.iso.datetime({ offset: true }).optional(),
+      replaced_by: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.coerce.number().optional(),
+        ),
+      ),
+      replaced_at: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.iso.datetime({ offset: true }).optional(),
+        ),
+      ),
     }),
   );
 
@@ -1656,8 +2579,18 @@ export const zServiceProviderProductSuspensionHistory =
   zServiceProviderProductSuspension.and(
     z.object({
       service_provider_product_suspension_id: z.coerce.number(),
-      replaced_by: z.coerce.number().optional(),
-      replaced_at: z.iso.datetime({ offset: true }).optional(),
+      replaced_by: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.coerce.number().optional(),
+        ),
+      ),
+      replaced_at: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.iso.datetime({ offset: true }).optional(),
+        ),
+      ),
     }),
   );
 
@@ -1668,8 +2601,18 @@ export const zServiceProviderProductSuspensionCommentHistory =
   zServiceProviderProductSuspensionComment.and(
     z.object({
       service_provider_product_suspension_comment_id: z.coerce.number(),
-      replaced_by: z.coerce.number().optional(),
-      replaced_at: z.iso.datetime({ offset: true }).optional(),
+      replaced_by: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.coerce.number().optional(),
+        ),
+      ),
+      replaced_at: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.iso.datetime({ offset: true }).optional(),
+        ),
+      ),
     }),
   );
 
@@ -1680,8 +2623,18 @@ export const zServiceProvidingGroupProductApplicationHistory =
   zServiceProvidingGroupProductApplication.and(
     z.object({
       service_providing_group_product_application_id: z.coerce.number(),
-      replaced_by: z.coerce.number().optional(),
-      replaced_at: z.iso.datetime({ offset: true }).optional(),
+      replaced_by: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.coerce.number().optional(),
+        ),
+      ),
+      replaced_at: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.iso.datetime({ offset: true }).optional(),
+        ),
+      ),
     }),
   );
 
@@ -1692,8 +2645,18 @@ export const zServiceProvidingGroupProductApplicationCommentHistory =
   zServiceProvidingGroupProductApplicationComment.and(
     z.object({
       service_providing_group_product_application_comment_id: z.coerce.number(),
-      replaced_by: z.coerce.number().optional(),
-      replaced_at: z.iso.datetime({ offset: true }).optional(),
+      replaced_by: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.coerce.number().optional(),
+        ),
+      ),
+      replaced_at: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.iso.datetime({ offset: true }).optional(),
+        ),
+      ),
     }),
   );
 
@@ -1704,8 +2667,18 @@ export const zServiceProvidingGroupProductSuspensionHistory =
   zServiceProvidingGroupProductSuspension.and(
     z.object({
       service_providing_group_product_suspension_id: z.coerce.number(),
-      replaced_by: z.coerce.number().optional(),
-      replaced_at: z.iso.datetime({ offset: true }).optional(),
+      replaced_by: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.coerce.number().optional(),
+        ),
+      ),
+      replaced_at: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.iso.datetime({ offset: true }).optional(),
+        ),
+      ),
     }),
   );
 
@@ -1716,8 +2689,18 @@ export const zServiceProvidingGroupProductSuspensionCommentHistory =
   zServiceProvidingGroupProductSuspensionComment.and(
     z.object({
       service_providing_group_product_suspension_comment_id: z.coerce.number(),
-      replaced_by: z.coerce.number().optional(),
-      replaced_at: z.iso.datetime({ offset: true }).optional(),
+      replaced_by: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.coerce.number().optional(),
+        ),
+      ),
+      replaced_at: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.iso.datetime({ offset: true }).optional(),
+        ),
+      ),
     }),
   );
 
@@ -1731,24 +2714,64 @@ export const zEmptyObjectWritable = z.record(z.string(), z.never());
  */
 export const zControllableUnitWritable = z.object({
   name: z.string().max(512),
-  start_date: z.iso.date().optional(),
+  start_date: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.date().optional(),
+    ),
+  ),
   status: zControllableUnitStatus,
   regulation_direction: zControllableUnitRegulationDirection,
   maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
-  minimum_duration: z.coerce.number().gte(0).optional(),
-  maximum_duration: z.coerce.number().gte(0).optional(),
-  recovery_duration: z.coerce.number().gte(0).optional(),
-  ramp_rate: z.coerce.number().gte(0.001).optional(),
+  minimum_duration: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.coerce.number().gte(0).optional(),
+    ),
+  ),
+  maximum_duration: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.coerce.number().gte(0).optional(),
+    ),
+  ),
+  recovery_duration: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.coerce.number().gte(0).optional(),
+    ),
+  ),
+  ramp_rate: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.coerce.number().gte(0.001).optional(),
+    ),
+  ),
   accounting_point_id: z.coerce.number(),
-  grid_node_id: z
-    .string()
-    .regex(
-      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
-    )
-    .optional(),
+  grid_node_id: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z
+        .string()
+        .regex(
+          /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
+        )
+        .optional(),
+    ),
+  ),
   grid_validation_status: zControllableUnitGridValidationStatus,
-  grid_validation_notes: z.string().max(512).optional(),
-  validated_at: z.iso.datetime({ offset: true }).optional(),
+  grid_validation_notes: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().max(512).optional(),
+    ),
+  ),
+  validated_at: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.datetime({ offset: true }).optional(),
+    ),
+  ),
 });
 
 /**
@@ -1777,8 +2800,18 @@ export const zControllableUnitServiceProviderWritable = z.object({
   service_provider_id: z.coerce.number(),
   end_user_id: z.coerce.number(),
   contract_reference: z.string().max(128),
-  valid_from: z.iso.datetime({ offset: true }).optional(),
-  valid_to: z.iso.datetime({ offset: true }).optional(),
+  valid_from: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.datetime({ offset: true }).optional(),
+    ),
+  ),
+  valid_to: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.datetime({ offset: true }).optional(),
+    ),
+  ),
 });
 
 /**
@@ -1798,7 +2831,12 @@ export const zServiceProvidingGroupMembershipWritable = z.object({
   controllable_unit_id: z.coerce.number(),
   service_providing_group_id: z.coerce.number(),
   valid_from: z.iso.datetime({ offset: true }),
-  valid_to: z.iso.datetime({ offset: true }).optional(),
+  valid_to: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.datetime({ offset: true }).optional(),
+    ),
+  ),
 });
 
 /**
@@ -1808,7 +2846,12 @@ export const zServiceProvidingGroupGridPrequalificationWritable = z.object({
   service_providing_group_id: z.coerce.number(),
   impacted_system_operator_id: z.coerce.number(),
   status: zServiceProvidingGroupGridPrequalificationStatus,
-  prequalified_at: z.iso.datetime({ offset: true }).optional(),
+  prequalified_at: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.datetime({ offset: true }).optional(),
+    ),
+  ),
 });
 
 /**
@@ -1861,16 +2904,36 @@ export const zEntityWritable = z.object({
  */
 export const zEntityClientWritable = z.object({
   entity_id: z.coerce.number(),
-  name: z.string().max(256).optional(),
-  party_id: z.coerce.number().optional(),
+  name: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().max(256).optional(),
+    ),
+  ),
+  party_id: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.coerce.number().optional(),
+    ),
+  ),
   scopes: z.array(zAuthScope),
-  client_secret: z.string().min(12).optional(),
-  public_key: z
-    .string()
-    .regex(
-      /^-----BEGIN PUBLIC KEY-----\nMIIB[-A-Za-z0-9+\/\n]*={0,3}\n-----END PUBLIC KEY-----$/,
-    )
-    .optional(),
+  client_secret: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().min(12).optional(),
+    ),
+  ),
+  public_key: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z
+        .string()
+        .regex(
+          /^-----BEGIN PUBLIC KEY-----\nMIIB[-A-Za-z0-9+\/\n]*={0,3}\n-----END PUBLIC KEY-----$/,
+        )
+        .optional(),
+    ),
+  ),
 });
 
 /**
@@ -1898,16 +2961,36 @@ export const zPartyWritable = z.object({
  * Format of the data field in a notice of type no.elhub.flex.party.missing
  */
 export const zNoticeDataPartyMissingWritable = z.object({
-  entity: zEntityWritable.optional(),
-  party: zPartyWritable.optional(),
+  entity: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zEntityWritable.optional(),
+    ),
+  ),
+  party: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zPartyWritable.optional(),
+    ),
+  ),
 });
 
 /**
  * Format of the data field in a notice of type no.elhub.flex.party.outdated
  */
 export const zNoticeDataPartyOutdatedWritable = z.object({
-  entity: zEntityWritable.optional(),
-  party: zPartyWritable.optional(),
+  entity: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zEntityWritable.optional(),
+    ),
+  ),
+  party: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zPartyWritable.optional(),
+    ),
+  ),
 });
 
 export const zNoticeDataWritable = z.union([
@@ -1932,7 +3015,12 @@ export const zPartyMembershipWritable = z.object({
 export const zTechnicalResourceWritable = z.object({
   name: z.string(),
   controllable_unit_id: z.coerce.number(),
-  details: z.string().max(1024).optional(),
+  details: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().max(1024).optional(),
+    ),
+  ),
 });
 
 /**
@@ -1981,7 +3069,12 @@ export const zServiceProviderProductApplicationWritable = z.object({
   system_operator_id: z.coerce.number(),
   product_type_ids: z.array(z.coerce.number()),
   status: zServiceProviderProductApplicationStatus,
-  qualified_at: z.iso.datetime({ offset: true }).optional(),
+  qualified_at: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.datetime({ offset: true }).optional(),
+    ),
+  ),
 });
 
 /**
@@ -2021,9 +3114,24 @@ export const zServiceProvidingGroupProductApplicationWritable = z.object({
   product_type_ids: z.array(z.coerce.number()),
   status: zServiceProvidingGroupProductApplicationStatus,
   maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
-  additional_information: z.string().max(512).optional(),
-  prequalified_at: z.iso.datetime({ offset: true }).optional(),
-  verified_at: z.iso.datetime({ offset: true }).optional(),
+  additional_information: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.string().max(512).optional(),
+    ),
+  ),
+  prequalified_at: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.datetime({ offset: true }).optional(),
+    ),
+  ),
+  verified_at: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.iso.datetime({ offset: true }).optional(),
+    ),
+  ),
 });
 
 /**
@@ -2069,8 +3177,18 @@ export const zNoticeWritable = z.object({
 export const zControllableUnitHistoryWritable = zControllableUnitWritable.and(
   z.object({
     controllable_unit_id: z.coerce.number(),
-    replaced_by: z.coerce.number().optional(),
-    replaced_at: z.iso.datetime({ offset: true }).optional(),
+    replaced_by: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.coerce.number().optional(),
+      ),
+    ),
+    replaced_at: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.iso.datetime({ offset: true }).optional(),
+      ),
+    ),
   }),
 );
 
@@ -2081,8 +3199,18 @@ export const zControllableUnitSuspensionHistoryWritable =
   zControllableUnitSuspensionWritable.and(
     z.object({
       controllable_unit_suspension_id: z.coerce.number(),
-      replaced_by: z.coerce.number().optional(),
-      replaced_at: z.iso.datetime({ offset: true }).optional(),
+      replaced_by: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.coerce.number().optional(),
+        ),
+      ),
+      replaced_at: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.iso.datetime({ offset: true }).optional(),
+        ),
+      ),
     }),
   );
 
@@ -2093,8 +3221,18 @@ export const zControllableUnitSuspensionCommentHistoryWritable =
   zControllableUnitSuspensionCommentWritable.and(
     z.object({
       controllable_unit_suspension_comment_id: z.coerce.number(),
-      replaced_by: z.coerce.number().optional(),
-      replaced_at: z.iso.datetime({ offset: true }).optional(),
+      replaced_by: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.coerce.number().optional(),
+        ),
+      ),
+      replaced_at: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.iso.datetime({ offset: true }).optional(),
+        ),
+      ),
     }),
   );
 
@@ -2105,8 +3243,18 @@ export const zControllableUnitServiceProviderHistoryWritable =
   zControllableUnitServiceProviderWritable.and(
     z.object({
       controllable_unit_service_provider_id: z.coerce.number(),
-      replaced_by: z.coerce.number().optional(),
-      replaced_at: z.iso.datetime({ offset: true }).optional(),
+      replaced_by: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.coerce.number().optional(),
+        ),
+      ),
+      replaced_at: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.iso.datetime({ offset: true }).optional(),
+        ),
+      ),
     }),
   );
 
@@ -2117,8 +3265,18 @@ export const zServiceProvidingGroupHistoryWritable =
   zServiceProvidingGroupWritable.and(
     z.object({
       service_providing_group_id: z.coerce.number(),
-      replaced_by: z.coerce.number().optional(),
-      replaced_at: z.iso.datetime({ offset: true }).optional(),
+      replaced_by: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.coerce.number().optional(),
+        ),
+      ),
+      replaced_at: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.iso.datetime({ offset: true }).optional(),
+        ),
+      ),
     }),
   );
 
@@ -2129,8 +3287,18 @@ export const zServiceProvidingGroupMembershipHistoryWritable =
   zServiceProvidingGroupMembershipWritable.and(
     z.object({
       service_providing_group_membership_id: z.coerce.number(),
-      replaced_by: z.coerce.number().optional(),
-      replaced_at: z.iso.datetime({ offset: true }).optional(),
+      replaced_by: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.coerce.number().optional(),
+        ),
+      ),
+      replaced_at: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.iso.datetime({ offset: true }).optional(),
+        ),
+      ),
     }),
   );
 
@@ -2141,8 +3309,18 @@ export const zServiceProvidingGroupGridPrequalificationHistoryWritable =
   zServiceProvidingGroupGridPrequalificationWritable.and(
     z.object({
       service_providing_group_grid_prequalification_id: z.coerce.number(),
-      replaced_by: z.coerce.number().optional(),
-      replaced_at: z.iso.datetime({ offset: true }).optional(),
+      replaced_by: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.coerce.number().optional(),
+        ),
+      ),
+      replaced_at: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.iso.datetime({ offset: true }).optional(),
+        ),
+      ),
     }),
   );
 
@@ -2154,8 +3332,18 @@ export const zServiceProvidingGroupGridPrequalificationCommentHistoryWritable =
     z.object({
       service_providing_group_grid_prequalification_comment_id:
         z.coerce.number(),
-      replaced_by: z.coerce.number().optional(),
-      replaced_at: z.iso.datetime({ offset: true }).optional(),
+      replaced_by: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.coerce.number().optional(),
+        ),
+      ),
+      replaced_at: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.iso.datetime({ offset: true }).optional(),
+        ),
+      ),
     }),
   );
 
@@ -2166,8 +3354,18 @@ export const zServiceProvidingGroupGridSuspensionHistoryWritable =
   zServiceProvidingGroupGridSuspensionWritable.and(
     z.object({
       service_providing_group_grid_suspension_id: z.coerce.number(),
-      replaced_by: z.coerce.number().optional(),
-      replaced_at: z.iso.datetime({ offset: true }).optional(),
+      replaced_by: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.coerce.number().optional(),
+        ),
+      ),
+      replaced_at: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.iso.datetime({ offset: true }).optional(),
+        ),
+      ),
     }),
   );
 
@@ -2178,8 +3376,18 @@ export const zServiceProvidingGroupGridSuspensionCommentHistoryWritable =
   zServiceProvidingGroupGridSuspensionCommentWritable.and(
     z.object({
       service_providing_group_grid_suspension_comment_id: z.coerce.number(),
-      replaced_by: z.coerce.number().optional(),
-      replaced_at: z.iso.datetime({ offset: true }).optional(),
+      replaced_by: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.coerce.number().optional(),
+        ),
+      ),
+      replaced_at: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.iso.datetime({ offset: true }).optional(),
+        ),
+      ),
     }),
   );
 
@@ -2189,8 +3397,18 @@ export const zServiceProvidingGroupGridSuspensionCommentHistoryWritable =
 export const zPartyHistoryWritable = zPartyWritable.and(
   z.object({
     party_id: z.coerce.number(),
-    replaced_by: z.coerce.number().optional(),
-    replaced_at: z.iso.datetime({ offset: true }).optional(),
+    replaced_by: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.coerce.number().optional(),
+      ),
+    ),
+    replaced_at: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.iso.datetime({ offset: true }).optional(),
+      ),
+    ),
   }),
 );
 
@@ -2200,8 +3418,18 @@ export const zPartyHistoryWritable = zPartyWritable.and(
 export const zPartyMembershipHistoryWritable = zPartyMembershipWritable.and(
   z.object({
     party_membership_id: z.coerce.number(),
-    replaced_by: z.coerce.number().optional(),
-    replaced_at: z.iso.datetime({ offset: true }).optional(),
+    replaced_by: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.coerce.number().optional(),
+      ),
+    ),
+    replaced_at: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.iso.datetime({ offset: true }).optional(),
+      ),
+    ),
   }),
 );
 
@@ -2211,8 +3439,18 @@ export const zPartyMembershipHistoryWritable = zPartyMembershipWritable.and(
 export const zTechnicalResourceHistoryWritable = zTechnicalResourceWritable.and(
   z.object({
     technical_resource_id: z.coerce.number(),
-    replaced_by: z.coerce.number().optional(),
-    replaced_at: z.iso.datetime({ offset: true }).optional(),
+    replaced_by: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.coerce.number().optional(),
+      ),
+    ),
+    replaced_at: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.iso.datetime({ offset: true }).optional(),
+      ),
+    ),
   }),
 );
 
@@ -2223,8 +3461,18 @@ export const zSystemOperatorProductTypeHistoryWritable =
   zSystemOperatorProductTypeWritable.and(
     z.object({
       system_operator_product_type_id: z.coerce.number(),
-      replaced_by: z.coerce.number().optional(),
-      replaced_at: z.iso.datetime({ offset: true }).optional(),
+      replaced_by: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.coerce.number().optional(),
+        ),
+      ),
+      replaced_at: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.iso.datetime({ offset: true }).optional(),
+        ),
+      ),
     }),
   );
 
@@ -2235,8 +3483,18 @@ export const zServiceProviderProductApplicationHistoryWritable =
   zServiceProviderProductApplicationWritable.and(
     z.object({
       service_provider_product_application_id: z.coerce.number(),
-      replaced_by: z.coerce.number().optional(),
-      replaced_at: z.iso.datetime({ offset: true }).optional(),
+      replaced_by: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.coerce.number().optional(),
+        ),
+      ),
+      replaced_at: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.iso.datetime({ offset: true }).optional(),
+        ),
+      ),
     }),
   );
 
@@ -2247,8 +3505,18 @@ export const zServiceProviderProductApplicationCommentHistoryWritable =
   zServiceProviderProductApplicationCommentWritable.and(
     z.object({
       service_provider_product_application_comment_id: z.coerce.number(),
-      replaced_by: z.coerce.number().optional(),
-      replaced_at: z.iso.datetime({ offset: true }).optional(),
+      replaced_by: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.coerce.number().optional(),
+        ),
+      ),
+      replaced_at: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.iso.datetime({ offset: true }).optional(),
+        ),
+      ),
     }),
   );
 
@@ -2259,8 +3527,18 @@ export const zServiceProviderProductSuspensionHistoryWritable =
   zServiceProviderProductSuspensionWritable.and(
     z.object({
       service_provider_product_suspension_id: z.coerce.number(),
-      replaced_by: z.coerce.number().optional(),
-      replaced_at: z.iso.datetime({ offset: true }).optional(),
+      replaced_by: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.coerce.number().optional(),
+        ),
+      ),
+      replaced_at: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.iso.datetime({ offset: true }).optional(),
+        ),
+      ),
     }),
   );
 
@@ -2271,8 +3549,18 @@ export const zServiceProviderProductSuspensionCommentHistoryWritable =
   zServiceProviderProductSuspensionCommentWritable.and(
     z.object({
       service_provider_product_suspension_comment_id: z.coerce.number(),
-      replaced_by: z.coerce.number().optional(),
-      replaced_at: z.iso.datetime({ offset: true }).optional(),
+      replaced_by: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.coerce.number().optional(),
+        ),
+      ),
+      replaced_at: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.iso.datetime({ offset: true }).optional(),
+        ),
+      ),
     }),
   );
 
@@ -2283,8 +3571,18 @@ export const zServiceProvidingGroupProductApplicationHistoryWritable =
   zServiceProvidingGroupProductApplicationWritable.and(
     z.object({
       service_providing_group_product_application_id: z.coerce.number(),
-      replaced_by: z.coerce.number().optional(),
-      replaced_at: z.iso.datetime({ offset: true }).optional(),
+      replaced_by: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.coerce.number().optional(),
+        ),
+      ),
+      replaced_at: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.iso.datetime({ offset: true }).optional(),
+        ),
+      ),
     }),
   );
 
@@ -2295,8 +3593,18 @@ export const zServiceProvidingGroupProductApplicationCommentHistoryWritable =
   zServiceProvidingGroupProductApplicationCommentWritable.and(
     z.object({
       service_providing_group_product_application_comment_id: z.coerce.number(),
-      replaced_by: z.coerce.number().optional(),
-      replaced_at: z.iso.datetime({ offset: true }).optional(),
+      replaced_by: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.coerce.number().optional(),
+        ),
+      ),
+      replaced_at: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.iso.datetime({ offset: true }).optional(),
+        ),
+      ),
     }),
   );
 
@@ -2307,8 +3615,18 @@ export const zServiceProvidingGroupProductSuspensionHistoryWritable =
   zServiceProvidingGroupProductSuspensionWritable.and(
     z.object({
       service_providing_group_product_suspension_id: z.coerce.number(),
-      replaced_by: z.coerce.number().optional(),
-      replaced_at: z.iso.datetime({ offset: true }).optional(),
+      replaced_by: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.coerce.number().optional(),
+        ),
+      ),
+      replaced_at: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.iso.datetime({ offset: true }).optional(),
+        ),
+      ),
     }),
   );
 
@@ -2319,15 +3637,40 @@ export const zServiceProvidingGroupProductSuspensionCommentHistoryWritable =
   zServiceProvidingGroupProductSuspensionCommentWritable.and(
     z.object({
       service_providing_group_product_suspension_comment_id: z.coerce.number(),
-      replaced_by: z.coerce.number().optional(),
-      replaced_at: z.iso.datetime({ offset: true }).optional(),
+      replaced_by: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.coerce.number().optional(),
+        ),
+      ),
+      replaced_at: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.iso.datetime({ offset: true }).optional(),
+        ),
+      ),
     }),
   );
 
 export const zReadOpenapiJsonData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -2337,8 +3680,18 @@ export const zReadOpenapiJsonResponse = z.record(z.string(), z.unknown());
 
 export const zCallControllableUnitLookupData = z.object({
   body: zControllableUnitLookupRequest,
-  path: z.never().optional(),
-  query: z.never().optional(),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -2348,8 +3701,18 @@ export const zCallControllableUnitLookupResponse = zControllableUnitLookup;
 
 export const zCallEntityLookupData = z.object({
   body: zEntityLookupRequest,
-  path: z.never().optional(),
-  query: z.never().optional(),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -2358,26 +3721,76 @@ export const zCallEntityLookupData = z.object({
 export const zCallEntityLookupResponse = zEntityLookup;
 
 export const zListControllableUnitData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      business_id: z.string().optional(),
-      name: z.string().optional(),
-      accounting_point_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      business_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      name: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      accounting_point_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListControllableUnitResponse = z.union([
@@ -2386,9 +3799,24 @@ export const zListControllableUnitResponse = z.union([
 ]);
 
 export const zCreateControllableUnitData = z.object({
-  body: zControllableUnitCreateRequest.optional(),
-  path: z.never().optional(),
-  query: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zControllableUnitCreateRequest.optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -2397,11 +3825,21 @@ export const zCreateControllableUnitData = z.object({
 export const zCreateControllableUnitResponse = zControllableUnit;
 
 export const zReadControllableUnitData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -2414,7 +3852,12 @@ export const zUpdateControllableUnitData = z.object({
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 export const zUpdateControllableUnitResponse = z.union([
@@ -2423,30 +3866,85 @@ export const zUpdateControllableUnitResponse = z.union([
 ]);
 
 export const zListControllableUnitHistoryData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      controllable_unit_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      business_id: z.string().optional(),
-      name: z.string().optional(),
-      accounting_point_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      controllable_unit_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      business_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      name: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      accounting_point_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListControllableUnitHistoryResponse = z.union([
@@ -2455,11 +3953,21 @@ export const zListControllableUnitHistoryResponse = z.union([
 ]);
 
 export const zReadControllableUnitHistoryData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -2468,28 +3976,73 @@ export const zReadControllableUnitHistoryData = z.object({
 export const zReadControllableUnitHistoryResponse = zControllableUnitHistory;
 
 export const zListControllableUnitSuspensionData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      controllable_unit_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      impacted_system_operator_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      controllable_unit_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      impacted_system_operator_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListControllableUnitSuspensionResponse = z.union([
@@ -2498,9 +4051,24 @@ export const zListControllableUnitSuspensionResponse = z.union([
 ]);
 
 export const zCreateControllableUnitSuspensionData = z.object({
-  body: zControllableUnitSuspensionCreateRequest.optional(),
-  path: z.never().optional(),
-  query: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zControllableUnitSuspensionCreateRequest.optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -2510,11 +4078,21 @@ export const zCreateControllableUnitSuspensionResponse =
   zControllableUnitSuspension;
 
 export const zDeleteControllableUnitSuspensionData = z.object({
-  body: zEmptyObjectWritable.optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zEmptyObjectWritable.optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -2523,11 +4101,21 @@ export const zDeleteControllableUnitSuspensionData = z.object({
 export const zDeleteControllableUnitSuspensionResponse = z.void();
 
 export const zReadControllableUnitSuspensionData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -2541,7 +4129,12 @@ export const zUpdateControllableUnitSuspensionData = z.object({
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 export const zUpdateControllableUnitSuspensionResponse = z.union([
@@ -2550,32 +4143,82 @@ export const zUpdateControllableUnitSuspensionResponse = z.union([
 ]);
 
 export const zListControllableUnitSuspensionHistoryData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      controllable_unit_suspension_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      controllable_unit_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      impacted_system_operator_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      controllable_unit_suspension_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      controllable_unit_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      impacted_system_operator_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListControllableUnitSuspensionHistoryResponse = z.union([
@@ -2584,11 +4227,21 @@ export const zListControllableUnitSuspensionHistoryResponse = z.union([
 ]);
 
 export const zReadControllableUnitSuspensionHistoryData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -2598,24 +4251,64 @@ export const zReadControllableUnitSuspensionHistoryResponse =
   zControllableUnitSuspensionHistory;
 
 export const zListControllableUnitSuspensionCommentData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      controllable_unit_suspension_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      controllable_unit_suspension_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListControllableUnitSuspensionCommentResponse = z.union([
@@ -2624,9 +4317,24 @@ export const zListControllableUnitSuspensionCommentResponse = z.union([
 ]);
 
 export const zCreateControllableUnitSuspensionCommentData = z.object({
-  body: zControllableUnitSuspensionCommentCreateRequest.optional(),
-  path: z.never().optional(),
-  query: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zControllableUnitSuspensionCommentCreateRequest.optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -2636,11 +4344,21 @@ export const zCreateControllableUnitSuspensionCommentResponse =
   zControllableUnitSuspensionComment;
 
 export const zReadControllableUnitSuspensionCommentData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -2654,7 +4372,12 @@ export const zUpdateControllableUnitSuspensionCommentData = z.object({
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 export const zUpdateControllableUnitSuspensionCommentResponse = z.union([
@@ -2663,28 +4386,73 @@ export const zUpdateControllableUnitSuspensionCommentResponse = z.union([
 ]);
 
 export const zListControllableUnitSuspensionCommentHistoryData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      controllable_unit_suspension_comment_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      controllable_unit_suspension_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      controllable_unit_suspension_comment_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      controllable_unit_suspension_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListControllableUnitSuspensionCommentHistoryResponse = z.union([
@@ -2693,11 +4461,21 @@ export const zListControllableUnitSuspensionCommentHistoryResponse = z.union([
 ]);
 
 export const zReadControllableUnitSuspensionCommentHistoryData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -2707,34 +4485,94 @@ export const zReadControllableUnitSuspensionCommentHistoryResponse =
   zControllableUnitSuspensionCommentHistory;
 
 export const zListControllableUnitServiceProviderData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      controllable_unit_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      service_provider_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      end_user_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      valid_from: z.string().optional(),
-      valid_to: z.string().optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      controllable_unit_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      service_provider_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      end_user_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      valid_from: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      valid_to: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListControllableUnitServiceProviderResponse = z.union([
@@ -2743,9 +4581,24 @@ export const zListControllableUnitServiceProviderResponse = z.union([
 ]);
 
 export const zCreateControllableUnitServiceProviderData = z.object({
-  body: zControllableUnitServiceProviderCreateRequest.optional(),
-  path: z.never().optional(),
-  query: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zControllableUnitServiceProviderCreateRequest.optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -2755,11 +4608,21 @@ export const zCreateControllableUnitServiceProviderResponse =
   zControllableUnitServiceProvider;
 
 export const zDeleteControllableUnitServiceProviderData = z.object({
-  body: zEmptyObjectWritable.optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zEmptyObjectWritable.optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -2768,11 +4631,21 @@ export const zDeleteControllableUnitServiceProviderData = z.object({
 export const zDeleteControllableUnitServiceProviderResponse = z.void();
 
 export const zReadControllableUnitServiceProviderData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -2786,7 +4659,12 @@ export const zUpdateControllableUnitServiceProviderData = z.object({
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 export const zUpdateControllableUnitServiceProviderResponse = z.union([
@@ -2795,38 +4673,103 @@ export const zUpdateControllableUnitServiceProviderResponse = z.union([
 ]);
 
 export const zListControllableUnitServiceProviderHistoryData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      controllable_unit_service_provider_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      controllable_unit_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      service_provider_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      end_user_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      valid_from: z.string().optional(),
-      valid_to: z.string().optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      controllable_unit_service_provider_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      controllable_unit_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      service_provider_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      end_user_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      valid_from: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      valid_to: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListControllableUnitServiceProviderHistoryResponse = z.union([
@@ -2835,11 +4778,21 @@ export const zListControllableUnitServiceProviderHistoryResponse = z.union([
 ]);
 
 export const zReadControllableUnitServiceProviderHistoryData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -2849,25 +4802,70 @@ export const zReadControllableUnitServiceProviderHistoryResponse =
   zControllableUnitServiceProviderHistory;
 
 export const zListServiceProvidingGroupData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      name: z.string().optional(),
-      service_provider_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      name: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      service_provider_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListServiceProvidingGroupResponse = z.union([
@@ -2876,9 +4874,24 @@ export const zListServiceProvidingGroupResponse = z.union([
 ]);
 
 export const zCreateServiceProvidingGroupData = z.object({
-  body: zServiceProvidingGroupCreateRequest.optional(),
-  path: z.never().optional(),
-  query: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zServiceProvidingGroupCreateRequest.optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -2887,11 +4900,21 @@ export const zCreateServiceProvidingGroupData = z.object({
 export const zCreateServiceProvidingGroupResponse = zServiceProvidingGroup;
 
 export const zReadServiceProvidingGroupData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -2904,7 +4927,12 @@ export const zUpdateServiceProvidingGroupData = z.object({
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 export const zUpdateServiceProvidingGroupResponse = z.union([
@@ -2913,29 +4941,79 @@ export const zUpdateServiceProvidingGroupResponse = z.union([
 ]);
 
 export const zListServiceProvidingGroupHistoryData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      service_providing_group_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      name: z.string().optional(),
-      service_provider_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      service_providing_group_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      name: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      service_provider_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListServiceProvidingGroupHistoryResponse = z.union([
@@ -2944,11 +5022,21 @@ export const zListServiceProvidingGroupHistoryResponse = z.union([
 ]);
 
 export const zReadServiceProvidingGroupHistoryData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -2958,30 +5046,85 @@ export const zReadServiceProvidingGroupHistoryResponse =
   zServiceProvidingGroupHistory;
 
 export const zListServiceProvidingGroupMembershipData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      controllable_unit_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      service_providing_group_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      valid_from: z.string().optional(),
-      valid_to: z.string().optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      controllable_unit_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      service_providing_group_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      valid_from: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      valid_to: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListServiceProvidingGroupMembershipResponse = z.union([
@@ -2990,9 +5133,24 @@ export const zListServiceProvidingGroupMembershipResponse = z.union([
 ]);
 
 export const zCreateServiceProvidingGroupMembershipData = z.object({
-  body: zServiceProvidingGroupMembershipCreateRequest.optional(),
-  path: z.never().optional(),
-  query: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zServiceProvidingGroupMembershipCreateRequest.optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -3002,11 +5160,21 @@ export const zCreateServiceProvidingGroupMembershipResponse =
   zServiceProvidingGroupMembership;
 
 export const zDeleteServiceProvidingGroupMembershipData = z.object({
-  body: zEmptyObjectWritable.optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zEmptyObjectWritable.optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -3015,11 +5183,21 @@ export const zDeleteServiceProvidingGroupMembershipData = z.object({
 export const zDeleteServiceProvidingGroupMembershipResponse = z.void();
 
 export const zReadServiceProvidingGroupMembershipData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -3033,7 +5211,12 @@ export const zUpdateServiceProvidingGroupMembershipData = z.object({
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 export const zUpdateServiceProvidingGroupMembershipResponse = z.union([
@@ -3042,34 +5225,94 @@ export const zUpdateServiceProvidingGroupMembershipResponse = z.union([
 ]);
 
 export const zListServiceProvidingGroupMembershipHistoryData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      service_providing_group_membership_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      controllable_unit_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      service_providing_group_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      valid_from: z.string().optional(),
-      valid_to: z.string().optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      service_providing_group_membership_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      controllable_unit_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      service_providing_group_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      valid_from: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      valid_to: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListServiceProvidingGroupMembershipHistoryResponse = z.union([
@@ -3078,11 +5321,21 @@ export const zListServiceProvidingGroupMembershipHistoryResponse = z.union([
 ]);
 
 export const zReadServiceProvidingGroupMembershipHistoryData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -3092,28 +5345,73 @@ export const zReadServiceProvidingGroupMembershipHistoryResponse =
   zServiceProvidingGroupMembershipHistory;
 
 export const zListServiceProvidingGroupGridPrequalificationData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      service_providing_group_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      impacted_system_operator_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      service_providing_group_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      impacted_system_operator_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListServiceProvidingGroupGridPrequalificationResponse = z.union([
@@ -3122,9 +5420,24 @@ export const zListServiceProvidingGroupGridPrequalificationResponse = z.union([
 ]);
 
 export const zCreateServiceProvidingGroupGridPrequalificationData = z.object({
-  body: zServiceProvidingGroupGridPrequalificationCreateRequest.optional(),
-  path: z.never().optional(),
-  query: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zServiceProvidingGroupGridPrequalificationCreateRequest.optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -3134,11 +5447,21 @@ export const zCreateServiceProvidingGroupGridPrequalificationResponse =
   zServiceProvidingGroupGridPrequalification;
 
 export const zReadServiceProvidingGroupGridPrequalificationData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -3152,7 +5475,12 @@ export const zUpdateServiceProvidingGroupGridPrequalificationData = z.object({
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 export const zUpdateServiceProvidingGroupGridPrequalificationResponse = z.union(
@@ -3161,32 +5489,82 @@ export const zUpdateServiceProvidingGroupGridPrequalificationResponse = z.union(
 
 export const zListServiceProvidingGroupGridPrequalificationHistoryData =
   z.object({
-    body: z.never().optional(),
-    path: z.never().optional(),
-    query: z
-      .object({
-        id: z
-          .string()
-          .regex(/^eq\.[0-9]+$/)
-          .optional(),
-        service_providing_group_grid_prequalification_id: z
-          .string()
-          .regex(/^eq\.[0-9]+$/)
-          .optional(),
-        service_providing_group_id: z
-          .string()
-          .regex(/^eq\.[0-9]+$/)
-          .optional(),
-        impacted_system_operator_id: z
-          .string()
-          .regex(/^eq\.[0-9]+$/)
-          .optional(),
-        select: z.string().optional(),
-        order: z.string().optional(),
-        offset: z.string().optional(),
-        limit: z.string().optional(),
-      })
-      .optional(),
+    body: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
+    path: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
+    query: z.optional(
+      z.object({
+        id: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z
+              .string()
+              .regex(/^eq\.[0-9]+$/)
+              .optional(),
+          ),
+        ),
+        service_providing_group_grid_prequalification_id: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z
+              .string()
+              .regex(/^eq\.[0-9]+$/)
+              .optional(),
+          ),
+        ),
+        service_providing_group_id: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z
+              .string()
+              .regex(/^eq\.[0-9]+$/)
+              .optional(),
+          ),
+        ),
+        impacted_system_operator_id: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z
+              .string()
+              .regex(/^eq\.[0-9]+$/)
+              .optional(),
+          ),
+        ),
+        select: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+        order: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+        offset: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+        limit: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+      }),
+    ),
   });
 
 export const zListServiceProvidingGroupGridPrequalificationHistoryResponse =
@@ -3197,11 +5575,21 @@ export const zListServiceProvidingGroupGridPrequalificationHistoryResponse =
 
 export const zReadServiceProvidingGroupGridPrequalificationHistoryData =
   z.object({
-    body: z.never().optional(),
+    body: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
     path: z.object({
       id: z.coerce.number(),
     }),
-    query: z.never().optional(),
+    query: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
   });
 
 /**
@@ -3212,24 +5600,64 @@ export const zReadServiceProvidingGroupGridPrequalificationHistoryResponse =
 
 export const zListServiceProvidingGroupGridPrequalificationCommentData =
   z.object({
-    body: z.never().optional(),
-    path: z.never().optional(),
-    query: z
-      .object({
-        id: z
-          .string()
-          .regex(/^eq\.[0-9]+$/)
-          .optional(),
-        service_providing_group_grid_prequalification_id: z
-          .string()
-          .regex(/^eq\.[0-9]+$/)
-          .optional(),
-        select: z.string().optional(),
-        order: z.string().optional(),
-        offset: z.string().optional(),
-        limit: z.string().optional(),
-      })
-      .optional(),
+    body: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
+    path: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
+    query: z.optional(
+      z.object({
+        id: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z
+              .string()
+              .regex(/^eq\.[0-9]+$/)
+              .optional(),
+          ),
+        ),
+        service_providing_group_grid_prequalification_id: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z
+              .string()
+              .regex(/^eq\.[0-9]+$/)
+              .optional(),
+          ),
+        ),
+        select: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+        order: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+        offset: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+        limit: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+      }),
+    ),
   });
 
 export const zListServiceProvidingGroupGridPrequalificationCommentResponse =
@@ -3240,9 +5668,24 @@ export const zListServiceProvidingGroupGridPrequalificationCommentResponse =
 
 export const zCreateServiceProvidingGroupGridPrequalificationCommentData =
   z.object({
-    body: zServiceProvidingGroupGridPrequalificationCommentCreateRequest.optional(),
-    path: z.never().optional(),
-    query: z.never().optional(),
+    body: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zServiceProvidingGroupGridPrequalificationCommentCreateRequest.optional(),
+      ),
+    ),
+    path: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
+    query: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
   });
 
 /**
@@ -3253,11 +5696,21 @@ export const zCreateServiceProvidingGroupGridPrequalificationCommentResponse =
 
 export const zReadServiceProvidingGroupGridPrequalificationCommentData =
   z.object({
-    body: z.never().optional(),
+    body: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
     path: z.object({
       id: z.coerce.number(),
     }),
-    query: z.never().optional(),
+    query: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
   });
 
 /**
@@ -3272,7 +5725,12 @@ export const zUpdateServiceProvidingGroupGridPrequalificationCommentData =
     path: z.object({
       id: z.coerce.number(),
     }),
-    query: z.never().optional(),
+    query: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
   });
 
 export const zUpdateServiceProvidingGroupGridPrequalificationCommentResponse =
@@ -3280,28 +5738,73 @@ export const zUpdateServiceProvidingGroupGridPrequalificationCommentResponse =
 
 export const zListServiceProvidingGroupGridPrequalificationCommentHistoryData =
   z.object({
-    body: z.never().optional(),
-    path: z.never().optional(),
-    query: z
-      .object({
-        id: z
-          .string()
-          .regex(/^eq\.[0-9]+$/)
-          .optional(),
-        service_providing_group_grid_prequalification_comment_id: z
-          .string()
-          .regex(/^eq\.[0-9]+$/)
-          .optional(),
-        service_providing_group_grid_prequalification_id: z
-          .string()
-          .regex(/^eq\.[0-9]+$/)
-          .optional(),
-        select: z.string().optional(),
-        order: z.string().optional(),
-        offset: z.string().optional(),
-        limit: z.string().optional(),
-      })
-      .optional(),
+    body: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
+    path: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
+    query: z.optional(
+      z.object({
+        id: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z
+              .string()
+              .regex(/^eq\.[0-9]+$/)
+              .optional(),
+          ),
+        ),
+        service_providing_group_grid_prequalification_comment_id: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z
+              .string()
+              .regex(/^eq\.[0-9]+$/)
+              .optional(),
+          ),
+        ),
+        service_providing_group_grid_prequalification_id: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z
+              .string()
+              .regex(/^eq\.[0-9]+$/)
+              .optional(),
+          ),
+        ),
+        select: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+        order: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+        offset: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+        limit: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+      }),
+    ),
   });
 
 export const zListServiceProvidingGroupGridPrequalificationCommentHistoryResponse =
@@ -3312,11 +5815,21 @@ export const zListServiceProvidingGroupGridPrequalificationCommentHistoryRespons
 
 export const zReadServiceProvidingGroupGridPrequalificationCommentHistoryData =
   z.object({
-    body: z.never().optional(),
+    body: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
     path: z.object({
       id: z.coerce.number(),
     }),
-    query: z.never().optional(),
+    query: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
   });
 
 /**
@@ -3326,28 +5839,73 @@ export const zReadServiceProvidingGroupGridPrequalificationCommentHistoryRespons
   zServiceProvidingGroupGridPrequalificationCommentHistory;
 
 export const zListServiceProvidingGroupGridSuspensionData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      impacted_system_operator_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      service_providing_group_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      impacted_system_operator_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      service_providing_group_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListServiceProvidingGroupGridSuspensionResponse = z.union([
@@ -3356,9 +5914,24 @@ export const zListServiceProvidingGroupGridSuspensionResponse = z.union([
 ]);
 
 export const zCreateServiceProvidingGroupGridSuspensionData = z.object({
-  body: zServiceProvidingGroupGridSuspensionCreateRequest.optional(),
-  path: z.never().optional(),
-  query: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zServiceProvidingGroupGridSuspensionCreateRequest.optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -3368,11 +5941,21 @@ export const zCreateServiceProvidingGroupGridSuspensionResponse =
   zServiceProvidingGroupGridSuspension;
 
 export const zDeleteServiceProvidingGroupGridSuspensionData = z.object({
-  body: zEmptyObjectWritable.optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zEmptyObjectWritable.optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -3381,11 +5964,21 @@ export const zDeleteServiceProvidingGroupGridSuspensionData = z.object({
 export const zDeleteServiceProvidingGroupGridSuspensionResponse = z.void();
 
 export const zReadServiceProvidingGroupGridSuspensionData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -3399,7 +5992,12 @@ export const zUpdateServiceProvidingGroupGridSuspensionData = z.object({
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 export const zUpdateServiceProvidingGroupGridSuspensionResponse = z.union([
@@ -3408,32 +6006,82 @@ export const zUpdateServiceProvidingGroupGridSuspensionResponse = z.union([
 ]);
 
 export const zListServiceProvidingGroupGridSuspensionHistoryData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      service_providing_group_grid_suspension_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      impacted_system_operator_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      service_providing_group_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      service_providing_group_grid_suspension_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      impacted_system_operator_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      service_providing_group_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListServiceProvidingGroupGridSuspensionHistoryResponse = z.union([
@@ -3442,11 +6090,21 @@ export const zListServiceProvidingGroupGridSuspensionHistoryResponse = z.union([
 ]);
 
 export const zReadServiceProvidingGroupGridSuspensionHistoryData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -3456,24 +6114,64 @@ export const zReadServiceProvidingGroupGridSuspensionHistoryResponse =
   zServiceProvidingGroupGridSuspensionHistory;
 
 export const zListServiceProvidingGroupGridSuspensionCommentData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      service_providing_group_grid_suspension_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      service_providing_group_grid_suspension_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListServiceProvidingGroupGridSuspensionCommentResponse = z.union([
@@ -3482,9 +6180,24 @@ export const zListServiceProvidingGroupGridSuspensionCommentResponse = z.union([
 ]);
 
 export const zCreateServiceProvidingGroupGridSuspensionCommentData = z.object({
-  body: zServiceProvidingGroupGridSuspensionCommentCreateRequest.optional(),
-  path: z.never().optional(),
-  query: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zServiceProvidingGroupGridSuspensionCommentCreateRequest.optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -3494,11 +6207,21 @@ export const zCreateServiceProvidingGroupGridSuspensionCommentResponse =
   zServiceProvidingGroupGridSuspensionComment;
 
 export const zReadServiceProvidingGroupGridSuspensionCommentData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -3512,7 +6235,12 @@ export const zUpdateServiceProvidingGroupGridSuspensionCommentData = z.object({
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 export const zUpdateServiceProvidingGroupGridSuspensionCommentResponse =
@@ -3520,28 +6248,73 @@ export const zUpdateServiceProvidingGroupGridSuspensionCommentResponse =
 
 export const zListServiceProvidingGroupGridSuspensionCommentHistoryData =
   z.object({
-    body: z.never().optional(),
-    path: z.never().optional(),
-    query: z
-      .object({
-        id: z
-          .string()
-          .regex(/^eq\.[0-9]+$/)
-          .optional(),
-        service_providing_group_grid_suspension_comment_id: z
-          .string()
-          .regex(/^eq\.[0-9]+$/)
-          .optional(),
-        service_providing_group_grid_suspension_id: z
-          .string()
-          .regex(/^eq\.[0-9]+$/)
-          .optional(),
-        select: z.string().optional(),
-        order: z.string().optional(),
-        offset: z.string().optional(),
-        limit: z.string().optional(),
-      })
-      .optional(),
+    body: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
+    path: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
+    query: z.optional(
+      z.object({
+        id: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z
+              .string()
+              .regex(/^eq\.[0-9]+$/)
+              .optional(),
+          ),
+        ),
+        service_providing_group_grid_suspension_comment_id: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z
+              .string()
+              .regex(/^eq\.[0-9]+$/)
+              .optional(),
+          ),
+        ),
+        service_providing_group_grid_suspension_id: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z
+              .string()
+              .regex(/^eq\.[0-9]+$/)
+              .optional(),
+          ),
+        ),
+        select: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+        order: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+        offset: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+        limit: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+      }),
+    ),
   });
 
 export const zListServiceProvidingGroupGridSuspensionCommentHistoryResponse =
@@ -3552,11 +6325,21 @@ export const zListServiceProvidingGroupGridSuspensionCommentHistoryResponse =
 
 export const zReadServiceProvidingGroupGridSuspensionCommentHistoryData =
   z.object({
-    body: z.never().optional(),
+    body: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
     path: z.object({
       id: z.coerce.number(),
     }),
-    query: z.never().optional(),
+    query: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
   });
 
 /**
@@ -3566,23 +6349,73 @@ export const zReadServiceProvidingGroupGridSuspensionCommentHistoryResponse =
   zServiceProvidingGroupGridSuspensionCommentHistory;
 
 export const zListEntityData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      business_id: z.string().optional(),
-      business_id_type: z.string().optional(),
-      name: z.string().optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      business_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      business_id_type: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      name: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListEntityResponse = z.union([
@@ -3591,9 +6424,24 @@ export const zListEntityResponse = z.union([
 ]);
 
 export const zCreateEntityData = z.object({
-  body: zEntityCreateRequest.optional(),
-  path: z.never().optional(),
-  query: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zEntityCreateRequest.optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -3602,11 +6450,21 @@ export const zCreateEntityData = z.object({
 export const zCreateEntityResponse = zEntity;
 
 export const zReadEntityData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -3619,35 +6477,90 @@ export const zUpdateEntityData = z.object({
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 export const zUpdateEntityResponse = z.union([zEntity, z.void()]);
 
 export const zListEntityClientData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      entity_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      name: z.string().optional(),
-      party_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      entity_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      name: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      party_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListEntityClientResponse = z.union([
@@ -3656,9 +6569,24 @@ export const zListEntityClientResponse = z.union([
 ]);
 
 export const zCreateEntityClientData = z.object({
-  body: zEntityClientCreateRequest.optional(),
-  path: z.never().optional(),
-  query: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zEntityClientCreateRequest.optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -3667,11 +6595,21 @@ export const zCreateEntityClientData = z.object({
 export const zCreateEntityClientResponse = zEntityClient;
 
 export const zDeleteEntityClientData = z.object({
-  body: zEmptyObjectWritable.optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zEmptyObjectWritable.optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -3680,11 +6618,21 @@ export const zDeleteEntityClientData = z.object({
 export const zDeleteEntityClientResponse = z.void();
 
 export const zReadEntityClientData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -3697,41 +6645,116 @@ export const zUpdateEntityClientData = z.object({
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 export const zUpdateEntityClientResponse = z.union([zEntityClient, z.void()]);
 
 export const zListPartyData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      business_id: z.string().optional(),
-      business_id_type: z.string().optional(),
-      entity_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      name: z.string().optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      business_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      business_id_type: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      entity_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      name: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListPartyResponse = z.union([z.array(zParty), z.array(zParty)]);
 
 export const zCreatePartyData = z.object({
-  body: zPartyCreateRequest.optional(),
-  path: z.never().optional(),
-  query: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zPartyCreateRequest.optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -3740,11 +6763,21 @@ export const zCreatePartyData = z.object({
 export const zCreatePartyResponse = zParty;
 
 export const zReadPartyData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -3757,37 +6790,102 @@ export const zUpdatePartyData = z.object({
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 export const zUpdatePartyResponse = z.union([zParty, z.void()]);
 
 export const zListPartyHistoryData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      party_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      business_id: z.string().optional(),
-      business_id_type: z.string().optional(),
-      entity_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      name: z.string().optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      party_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      business_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      business_id_type: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      entity_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      name: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListPartyHistoryResponse = z.union([
@@ -3796,11 +6894,21 @@ export const zListPartyHistoryResponse = z.union([
 ]);
 
 export const zReadPartyHistoryData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -3809,28 +6917,73 @@ export const zReadPartyHistoryData = z.object({
 export const zReadPartyHistoryResponse = zPartyHistory;
 
 export const zListPartyMembershipData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      party_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      entity_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      party_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      entity_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListPartyMembershipResponse = z.union([
@@ -3839,9 +6992,24 @@ export const zListPartyMembershipResponse = z.union([
 ]);
 
 export const zCreatePartyMembershipData = z.object({
-  body: zPartyMembershipCreateRequest.optional(),
-  path: z.never().optional(),
-  query: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zPartyMembershipCreateRequest.optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -3850,11 +7018,21 @@ export const zCreatePartyMembershipData = z.object({
 export const zCreatePartyMembershipResponse = zPartyMembership;
 
 export const zDeletePartyMembershipData = z.object({
-  body: zEmptyObjectWritable.optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zEmptyObjectWritable.optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -3863,11 +7041,21 @@ export const zDeletePartyMembershipData = z.object({
 export const zDeletePartyMembershipResponse = z.void();
 
 export const zReadPartyMembershipData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -3880,7 +7068,12 @@ export const zUpdatePartyMembershipData = z.object({
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 export const zUpdatePartyMembershipResponse = z.union([
@@ -3889,32 +7082,82 @@ export const zUpdatePartyMembershipResponse = z.union([
 ]);
 
 export const zListPartyMembershipHistoryData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      party_membership_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      party_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      entity_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      party_membership_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      party_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      entity_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListPartyMembershipHistoryResponse = z.union([
@@ -3923,11 +7166,21 @@ export const zListPartyMembershipHistoryResponse = z.union([
 ]);
 
 export const zReadPartyMembershipHistoryData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -3936,36 +7189,91 @@ export const zReadPartyMembershipHistoryData = z.object({
 export const zReadPartyMembershipHistoryResponse = zPartyMembershipHistory;
 
 export const zListIdentityData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      entity_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      entity_name: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      party_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      party_name: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      entity_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      entity_name: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      party_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      party_name: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListIdentityResponse = z.union([
@@ -3974,11 +7282,21 @@ export const zListIdentityResponse = z.union([
 ]);
 
 export const zReadIdentityData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -3987,25 +7305,70 @@ export const zReadIdentityData = z.object({
 export const zReadIdentityResponse = zIdentity;
 
 export const zListTechnicalResourceData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      name: z.string().optional(),
-      controllable_unit_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      name: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      controllable_unit_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListTechnicalResourceResponse = z.union([
@@ -4014,9 +7377,24 @@ export const zListTechnicalResourceResponse = z.union([
 ]);
 
 export const zCreateTechnicalResourceData = z.object({
-  body: zTechnicalResourceCreateRequest.optional(),
-  path: z.never().optional(),
-  query: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zTechnicalResourceCreateRequest.optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -4025,11 +7403,21 @@ export const zCreateTechnicalResourceData = z.object({
 export const zCreateTechnicalResourceResponse = zTechnicalResource;
 
 export const zDeleteTechnicalResourceData = z.object({
-  body: zEmptyObjectWritable.optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zEmptyObjectWritable.optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -4038,11 +7426,21 @@ export const zDeleteTechnicalResourceData = z.object({
 export const zDeleteTechnicalResourceResponse = z.void();
 
 export const zReadTechnicalResourceData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -4055,7 +7453,12 @@ export const zUpdateTechnicalResourceData = z.object({
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 export const zUpdateTechnicalResourceResponse = z.union([
@@ -4064,29 +7467,79 @@ export const zUpdateTechnicalResourceResponse = z.union([
 ]);
 
 export const zListTechnicalResourceHistoryData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      technical_resource_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      name: z.string().optional(),
-      controllable_unit_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      technical_resource_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      name: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      controllable_unit_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListTechnicalResourceHistoryResponse = z.union([
@@ -4095,11 +7548,21 @@ export const zListTechnicalResourceHistoryResponse = z.union([
 ]);
 
 export const zReadTechnicalResourceHistoryData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -4108,30 +7571,75 @@ export const zReadTechnicalResourceHistoryData = z.object({
 export const zReadTechnicalResourceHistoryResponse = zTechnicalResourceHistory;
 
 export const zListEventData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListEventResponse = z.union([z.array(zEvent), z.array(zEvent)]);
 
 export const zReadEventData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -4140,28 +7648,73 @@ export const zReadEventData = z.object({
 export const zReadEventResponse = zEvent;
 
 export const zListNotificationData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      event_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      party_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      event_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      party_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListNotificationResponse = z.union([
@@ -4170,11 +7723,21 @@ export const zListNotificationResponse = z.union([
 ]);
 
 export const zReadNotificationData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -4187,31 +7750,81 @@ export const zUpdateNotificationData = z.object({
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 export const zUpdateNotificationResponse = z.union([zNotification, z.void()]);
 
 export const zListAccountingPointData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      business_id: z.string().optional(),
-      system_operator_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      business_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      system_operator_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListAccountingPointResponse = z.union([
@@ -4220,11 +7833,21 @@ export const zListAccountingPointResponse = z.union([
 ]);
 
 export const zReadAccountingPointData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -4233,26 +7856,76 @@ export const zReadAccountingPointData = z.object({
 export const zReadAccountingPointResponse = zAccountingPoint;
 
 export const zListAccountingPointBalanceResponsiblePartyData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      accounting_point_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      balance_responsible_party_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      valid_from: z.string().optional(),
-      valid_to: z.string().optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      accounting_point_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      balance_responsible_party_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      valid_from: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      valid_to: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListAccountingPointBalanceResponsiblePartyResponse = z.union([
@@ -4261,22 +7934,67 @@ export const zListAccountingPointBalanceResponsiblePartyResponse = z.union([
 ]);
 
 export const zListAccountingPointBiddingZoneData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      accounting_point_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      valid_from: z.string().optional(),
-      valid_to: z.string().optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      accounting_point_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      valid_from: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      valid_to: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListAccountingPointBiddingZoneResponse = z.union([
@@ -4285,26 +8003,76 @@ export const zListAccountingPointBiddingZoneResponse = z.union([
 ]);
 
 export const zListAccountingPointEndUserData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      accounting_point_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      end_user_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      valid_from: z.string().optional(),
-      valid_to: z.string().optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      accounting_point_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      end_user_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      valid_from: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      valid_to: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListAccountingPointEndUserResponse = z.union([
@@ -4313,26 +8081,76 @@ export const zListAccountingPointEndUserResponse = z.union([
 ]);
 
 export const zListAccountingPointEnergySupplierData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      accounting_point_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      energy_supplier_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      valid_from: z.string().optional(),
-      valid_to: z.string().optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      accounting_point_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      energy_supplier_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      valid_from: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      valid_to: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListAccountingPointEnergySupplierResponse = z.union([
@@ -4341,23 +8159,73 @@ export const zListAccountingPointEnergySupplierResponse = z.union([
 ]);
 
 export const zListMeteringGridAreaData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      business_id: z.string().optional(),
-      business_id_type: z.string().optional(),
-      name: z.string().optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      business_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      business_id_type: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      name: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListMeteringGridAreaResponse = z.union([
@@ -4366,11 +8234,21 @@ export const zListMeteringGridAreaResponse = z.union([
 ]);
 
 export const zReadMeteringGridAreaData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -4379,26 +8257,76 @@ export const zReadMeteringGridAreaData = z.object({
 export const zReadMeteringGridAreaResponse = zMeteringGridArea;
 
 export const zListAccountingPointMeteringGridAreaData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      accounting_point_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      metering_grid_area_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      valid_from: z.string().optional(),
-      valid_to: z.string().optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      accounting_point_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      metering_grid_area_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      valid_from: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      valid_to: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListAccountingPointMeteringGridAreaResponse = z.union([
@@ -4407,22 +8335,67 @@ export const zListAccountingPointMeteringGridAreaResponse = z.union([
 ]);
 
 export const zListProductTypeData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      business_id: z.string().optional(),
-      name: z.string().optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      business_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      name: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListProductTypeResponse = z.union([
@@ -4431,11 +8404,21 @@ export const zListProductTypeResponse = z.union([
 ]);
 
 export const zReadProductTypeData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -4444,28 +8427,73 @@ export const zReadProductTypeData = z.object({
 export const zReadProductTypeResponse = zProductType;
 
 export const zListSystemOperatorProductTypeData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      system_operator_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      product_type_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      system_operator_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      product_type_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListSystemOperatorProductTypeResponse = z.union([
@@ -4474,9 +8502,24 @@ export const zListSystemOperatorProductTypeResponse = z.union([
 ]);
 
 export const zCreateSystemOperatorProductTypeData = z.object({
-  body: zSystemOperatorProductTypeCreateRequest.optional(),
-  path: z.never().optional(),
-  query: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zSystemOperatorProductTypeCreateRequest.optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -4486,11 +8529,21 @@ export const zCreateSystemOperatorProductTypeResponse =
   zSystemOperatorProductType;
 
 export const zReadSystemOperatorProductTypeData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -4504,7 +8557,12 @@ export const zUpdateSystemOperatorProductTypeData = z.object({
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 export const zUpdateSystemOperatorProductTypeResponse = z.union([
@@ -4513,32 +8571,82 @@ export const zUpdateSystemOperatorProductTypeResponse = z.union([
 ]);
 
 export const zListSystemOperatorProductTypeHistoryData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      system_operator_product_type_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      system_operator_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      product_type_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      system_operator_product_type_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      system_operator_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      product_type_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListSystemOperatorProductTypeHistoryResponse = z.union([
@@ -4547,11 +8655,21 @@ export const zListSystemOperatorProductTypeHistoryResponse = z.union([
 ]);
 
 export const zReadSystemOperatorProductTypeHistoryData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -4561,32 +8679,82 @@ export const zReadSystemOperatorProductTypeHistoryResponse =
   zSystemOperatorProductTypeHistory;
 
 export const zListServiceProviderProductApplicationData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      service_provider_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      system_operator_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      product_type_ids: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      service_provider_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      system_operator_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      product_type_ids: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListServiceProviderProductApplicationResponse = z.union([
@@ -4595,9 +8763,24 @@ export const zListServiceProviderProductApplicationResponse = z.union([
 ]);
 
 export const zCreateServiceProviderProductApplicationData = z.object({
-  body: zServiceProviderProductApplicationCreateRequest.optional(),
-  path: z.never().optional(),
-  query: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zServiceProviderProductApplicationCreateRequest.optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -4607,11 +8790,21 @@ export const zCreateServiceProviderProductApplicationResponse =
   zServiceProviderProductApplication;
 
 export const zReadServiceProviderProductApplicationData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -4625,7 +8818,12 @@ export const zUpdateServiceProviderProductApplicationData = z.object({
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 export const zUpdateServiceProviderProductApplicationResponse = z.union([
@@ -4634,36 +8832,91 @@ export const zUpdateServiceProviderProductApplicationResponse = z.union([
 ]);
 
 export const zListServiceProviderProductApplicationHistoryData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      service_provider_product_application_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      service_provider_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      system_operator_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      product_type_ids: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      service_provider_product_application_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      service_provider_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      system_operator_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      product_type_ids: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListServiceProviderProductApplicationHistoryResponse = z.union([
@@ -4672,11 +8925,21 @@ export const zListServiceProviderProductApplicationHistoryResponse = z.union([
 ]);
 
 export const zReadServiceProviderProductApplicationHistoryData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -4686,24 +8949,64 @@ export const zReadServiceProviderProductApplicationHistoryResponse =
   zServiceProviderProductApplicationHistory;
 
 export const zListServiceProviderProductApplicationCommentData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      service_provider_product_application_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      service_provider_product_application_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListServiceProviderProductApplicationCommentResponse = z.union([
@@ -4712,9 +9015,24 @@ export const zListServiceProviderProductApplicationCommentResponse = z.union([
 ]);
 
 export const zCreateServiceProviderProductApplicationCommentData = z.object({
-  body: zServiceProviderProductApplicationCommentCreateRequest.optional(),
-  path: z.never().optional(),
-  query: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zServiceProviderProductApplicationCommentCreateRequest.optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -4724,11 +9042,21 @@ export const zCreateServiceProviderProductApplicationCommentResponse =
   zServiceProviderProductApplicationComment;
 
 export const zReadServiceProviderProductApplicationCommentData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -4742,7 +9070,12 @@ export const zUpdateServiceProviderProductApplicationCommentData = z.object({
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 export const zUpdateServiceProviderProductApplicationCommentResponse = z.union([
@@ -4752,28 +9085,73 @@ export const zUpdateServiceProviderProductApplicationCommentResponse = z.union([
 
 export const zListServiceProviderProductApplicationCommentHistoryData =
   z.object({
-    body: z.never().optional(),
-    path: z.never().optional(),
-    query: z
-      .object({
-        id: z
-          .string()
-          .regex(/^eq\.[0-9]+$/)
-          .optional(),
-        service_provider_product_application_comment_id: z
-          .string()
-          .regex(/^eq\.[0-9]+$/)
-          .optional(),
-        service_provider_product_application_id: z
-          .string()
-          .regex(/^eq\.[0-9]+$/)
-          .optional(),
-        select: z.string().optional(),
-        order: z.string().optional(),
-        offset: z.string().optional(),
-        limit: z.string().optional(),
-      })
-      .optional(),
+    body: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
+    path: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
+    query: z.optional(
+      z.object({
+        id: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z
+              .string()
+              .regex(/^eq\.[0-9]+$/)
+              .optional(),
+          ),
+        ),
+        service_provider_product_application_comment_id: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z
+              .string()
+              .regex(/^eq\.[0-9]+$/)
+              .optional(),
+          ),
+        ),
+        service_provider_product_application_id: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z
+              .string()
+              .regex(/^eq\.[0-9]+$/)
+              .optional(),
+          ),
+        ),
+        select: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+        order: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+        offset: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+        limit: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+      }),
+    ),
   });
 
 export const zListServiceProviderProductApplicationCommentHistoryResponse =
@@ -4784,11 +9162,21 @@ export const zListServiceProviderProductApplicationCommentHistoryResponse =
 
 export const zReadServiceProviderProductApplicationCommentHistoryData =
   z.object({
-    body: z.never().optional(),
+    body: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
     path: z.object({
       id: z.coerce.number(),
     }),
-    query: z.never().optional(),
+    query: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
   });
 
 /**
@@ -4798,32 +9186,82 @@ export const zReadServiceProviderProductApplicationCommentHistoryResponse =
   zServiceProviderProductApplicationCommentHistory;
 
 export const zListServiceProviderProductSuspensionData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      procuring_system_operator_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      service_provider_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      product_type_ids: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      procuring_system_operator_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      service_provider_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      product_type_ids: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListServiceProviderProductSuspensionResponse = z.union([
@@ -4832,9 +9270,24 @@ export const zListServiceProviderProductSuspensionResponse = z.union([
 ]);
 
 export const zCreateServiceProviderProductSuspensionData = z.object({
-  body: zServiceProviderProductSuspensionCreateRequest.optional(),
-  path: z.never().optional(),
-  query: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zServiceProviderProductSuspensionCreateRequest.optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -4844,11 +9297,21 @@ export const zCreateServiceProviderProductSuspensionResponse =
   zServiceProviderProductSuspension;
 
 export const zDeleteServiceProviderProductSuspensionData = z.object({
-  body: zEmptyObjectWritable.optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zEmptyObjectWritable.optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -4857,11 +9320,21 @@ export const zDeleteServiceProviderProductSuspensionData = z.object({
 export const zDeleteServiceProviderProductSuspensionResponse = z.void();
 
 export const zReadServiceProviderProductSuspensionData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -4875,7 +9348,12 @@ export const zUpdateServiceProviderProductSuspensionData = z.object({
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 export const zUpdateServiceProviderProductSuspensionResponse = z.union([
@@ -4884,36 +9362,91 @@ export const zUpdateServiceProviderProductSuspensionResponse = z.union([
 ]);
 
 export const zListServiceProviderProductSuspensionHistoryData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      service_provider_product_suspension_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      procuring_system_operator_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      service_provider_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      product_type_ids: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      service_provider_product_suspension_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      procuring_system_operator_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      service_provider_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      product_type_ids: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListServiceProviderProductSuspensionHistoryResponse = z.union([
@@ -4922,11 +9455,21 @@ export const zListServiceProviderProductSuspensionHistoryResponse = z.union([
 ]);
 
 export const zReadServiceProviderProductSuspensionHistoryData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -4936,24 +9479,64 @@ export const zReadServiceProviderProductSuspensionHistoryResponse =
   zServiceProviderProductSuspensionHistory;
 
 export const zListServiceProviderProductSuspensionCommentData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      service_provider_product_suspension_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      service_provider_product_suspension_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListServiceProviderProductSuspensionCommentResponse = z.union([
@@ -4962,9 +9545,24 @@ export const zListServiceProviderProductSuspensionCommentResponse = z.union([
 ]);
 
 export const zCreateServiceProviderProductSuspensionCommentData = z.object({
-  body: zServiceProviderProductSuspensionCommentCreateRequest.optional(),
-  path: z.never().optional(),
-  query: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zServiceProviderProductSuspensionCommentCreateRequest.optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -4974,11 +9572,21 @@ export const zCreateServiceProviderProductSuspensionCommentResponse =
   zServiceProviderProductSuspensionComment;
 
 export const zReadServiceProviderProductSuspensionCommentData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -4992,7 +9600,12 @@ export const zUpdateServiceProviderProductSuspensionCommentData = z.object({
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 export const zUpdateServiceProviderProductSuspensionCommentResponse = z.union([
@@ -5002,28 +9615,73 @@ export const zUpdateServiceProviderProductSuspensionCommentResponse = z.union([
 
 export const zListServiceProviderProductSuspensionCommentHistoryData = z.object(
   {
-    body: z.never().optional(),
-    path: z.never().optional(),
-    query: z
-      .object({
-        id: z
-          .string()
-          .regex(/^eq\.[0-9]+$/)
-          .optional(),
-        service_provider_product_suspension_comment_id: z
-          .string()
-          .regex(/^eq\.[0-9]+$/)
-          .optional(),
-        service_provider_product_suspension_id: z
-          .string()
-          .regex(/^eq\.[0-9]+$/)
-          .optional(),
-        select: z.string().optional(),
-        order: z.string().optional(),
-        offset: z.string().optional(),
-        limit: z.string().optional(),
-      })
-      .optional(),
+    body: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
+    path: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
+    query: z.optional(
+      z.object({
+        id: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z
+              .string()
+              .regex(/^eq\.[0-9]+$/)
+              .optional(),
+          ),
+        ),
+        service_provider_product_suspension_comment_id: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z
+              .string()
+              .regex(/^eq\.[0-9]+$/)
+              .optional(),
+          ),
+        ),
+        service_provider_product_suspension_id: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z
+              .string()
+              .regex(/^eq\.[0-9]+$/)
+              .optional(),
+          ),
+        ),
+        select: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+        order: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+        offset: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+        limit: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+      }),
+    ),
   },
 );
 
@@ -5035,11 +9693,21 @@ export const zListServiceProviderProductSuspensionCommentHistoryResponse =
 
 export const zReadServiceProviderProductSuspensionCommentHistoryData = z.object(
   {
-    body: z.never().optional(),
+    body: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
     path: z.object({
       id: z.coerce.number(),
     }),
-    query: z.never().optional(),
+    query: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
   },
 );
 
@@ -5050,32 +9718,82 @@ export const zReadServiceProviderProductSuspensionCommentHistoryResponse =
   zServiceProviderProductSuspensionCommentHistory;
 
 export const zListServiceProvidingGroupProductApplicationData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      service_providing_group_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      procuring_system_operator_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      product_type_ids: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      service_providing_group_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      procuring_system_operator_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      product_type_ids: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListServiceProvidingGroupProductApplicationResponse = z.union([
@@ -5084,9 +9802,24 @@ export const zListServiceProvidingGroupProductApplicationResponse = z.union([
 ]);
 
 export const zCreateServiceProvidingGroupProductApplicationData = z.object({
-  body: zServiceProvidingGroupProductApplicationCreateRequest.optional(),
-  path: z.never().optional(),
-  query: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zServiceProvidingGroupProductApplicationCreateRequest.optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -5096,11 +9829,21 @@ export const zCreateServiceProvidingGroupProductApplicationResponse =
   zServiceProvidingGroupProductApplication;
 
 export const zReadServiceProvidingGroupProductApplicationData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -5114,7 +9857,12 @@ export const zUpdateServiceProvidingGroupProductApplicationData = z.object({
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 export const zUpdateServiceProvidingGroupProductApplicationResponse = z.union([
@@ -5124,36 +9872,91 @@ export const zUpdateServiceProvidingGroupProductApplicationResponse = z.union([
 
 export const zListServiceProvidingGroupProductApplicationHistoryData = z.object(
   {
-    body: z.never().optional(),
-    path: z.never().optional(),
-    query: z
-      .object({
-        id: z
-          .string()
-          .regex(/^eq\.[0-9]+$/)
-          .optional(),
-        service_providing_group_product_application_id: z
-          .string()
-          .regex(/^eq\.[0-9]+$/)
-          .optional(),
-        service_providing_group_id: z
-          .string()
-          .regex(/^eq\.[0-9]+$/)
-          .optional(),
-        procuring_system_operator_id: z
-          .string()
-          .regex(/^eq\.[0-9]+$/)
-          .optional(),
-        product_type_ids: z
-          .string()
-          .regex(/^eq\.[0-9]+$/)
-          .optional(),
-        select: z.string().optional(),
-        order: z.string().optional(),
-        offset: z.string().optional(),
-        limit: z.string().optional(),
-      })
-      .optional(),
+    body: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
+    path: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
+    query: z.optional(
+      z.object({
+        id: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z
+              .string()
+              .regex(/^eq\.[0-9]+$/)
+              .optional(),
+          ),
+        ),
+        service_providing_group_product_application_id: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z
+              .string()
+              .regex(/^eq\.[0-9]+$/)
+              .optional(),
+          ),
+        ),
+        service_providing_group_id: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z
+              .string()
+              .regex(/^eq\.[0-9]+$/)
+              .optional(),
+          ),
+        ),
+        procuring_system_operator_id: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z
+              .string()
+              .regex(/^eq\.[0-9]+$/)
+              .optional(),
+          ),
+        ),
+        product_type_ids: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z
+              .string()
+              .regex(/^eq\.[0-9]+$/)
+              .optional(),
+          ),
+        ),
+        select: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+        order: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+        offset: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+        limit: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+      }),
+    ),
   },
 );
 
@@ -5165,11 +9968,21 @@ export const zListServiceProvidingGroupProductApplicationHistoryResponse =
 
 export const zReadServiceProvidingGroupProductApplicationHistoryData = z.object(
   {
-    body: z.never().optional(),
+    body: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
     path: z.object({
       id: z.coerce.number(),
     }),
-    query: z.never().optional(),
+    query: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
   },
 );
 
@@ -5181,24 +9994,64 @@ export const zReadServiceProvidingGroupProductApplicationHistoryResponse =
 
 export const zListServiceProvidingGroupProductApplicationCommentData = z.object(
   {
-    body: z.never().optional(),
-    path: z.never().optional(),
-    query: z
-      .object({
-        id: z
-          .string()
-          .regex(/^eq\.[0-9]+$/)
-          .optional(),
-        service_providing_group_product_application_id: z
-          .string()
-          .regex(/^eq\.[0-9]+$/)
-          .optional(),
-        select: z.string().optional(),
-        order: z.string().optional(),
-        offset: z.string().optional(),
-        limit: z.string().optional(),
-      })
-      .optional(),
+    body: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
+    path: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
+    query: z.optional(
+      z.object({
+        id: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z
+              .string()
+              .regex(/^eq\.[0-9]+$/)
+              .optional(),
+          ),
+        ),
+        service_providing_group_product_application_id: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z
+              .string()
+              .regex(/^eq\.[0-9]+$/)
+              .optional(),
+          ),
+        ),
+        select: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+        order: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+        offset: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+        limit: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+      }),
+    ),
   },
 );
 
@@ -5210,9 +10063,24 @@ export const zListServiceProvidingGroupProductApplicationCommentResponse =
 
 export const zCreateServiceProvidingGroupProductApplicationCommentData =
   z.object({
-    body: zServiceProvidingGroupProductApplicationCommentCreateRequest.optional(),
-    path: z.never().optional(),
-    query: z.never().optional(),
+    body: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zServiceProvidingGroupProductApplicationCommentCreateRequest.optional(),
+      ),
+    ),
+    path: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
+    query: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
   });
 
 /**
@@ -5223,11 +10091,21 @@ export const zCreateServiceProvidingGroupProductApplicationCommentResponse =
 
 export const zReadServiceProvidingGroupProductApplicationCommentData = z.object(
   {
-    body: z.never().optional(),
+    body: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
     path: z.object({
       id: z.coerce.number(),
     }),
-    query: z.never().optional(),
+    query: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
   },
 );
 
@@ -5243,7 +10121,12 @@ export const zUpdateServiceProvidingGroupProductApplicationCommentData =
     path: z.object({
       id: z.coerce.number(),
     }),
-    query: z.never().optional(),
+    query: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
   });
 
 export const zUpdateServiceProvidingGroupProductApplicationCommentResponse =
@@ -5251,28 +10134,73 @@ export const zUpdateServiceProvidingGroupProductApplicationCommentResponse =
 
 export const zListServiceProvidingGroupProductApplicationCommentHistoryData =
   z.object({
-    body: z.never().optional(),
-    path: z.never().optional(),
-    query: z
-      .object({
-        id: z
-          .string()
-          .regex(/^eq\.[0-9]+$/)
-          .optional(),
-        service_providing_group_product_application_comment_id: z
-          .string()
-          .regex(/^eq\.[0-9]+$/)
-          .optional(),
-        service_providing_group_product_application_id: z
-          .string()
-          .regex(/^eq\.[0-9]+$/)
-          .optional(),
-        select: z.string().optional(),
-        order: z.string().optional(),
-        offset: z.string().optional(),
-        limit: z.string().optional(),
-      })
-      .optional(),
+    body: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
+    path: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
+    query: z.optional(
+      z.object({
+        id: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z
+              .string()
+              .regex(/^eq\.[0-9]+$/)
+              .optional(),
+          ),
+        ),
+        service_providing_group_product_application_comment_id: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z
+              .string()
+              .regex(/^eq\.[0-9]+$/)
+              .optional(),
+          ),
+        ),
+        service_providing_group_product_application_id: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z
+              .string()
+              .regex(/^eq\.[0-9]+$/)
+              .optional(),
+          ),
+        ),
+        select: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+        order: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+        offset: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+        limit: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+      }),
+    ),
   });
 
 export const zListServiceProvidingGroupProductApplicationCommentHistoryResponse =
@@ -5283,11 +10211,21 @@ export const zListServiceProvidingGroupProductApplicationCommentHistoryResponse 
 
 export const zReadServiceProvidingGroupProductApplicationCommentHistoryData =
   z.object({
-    body: z.never().optional(),
+    body: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
     path: z.object({
       id: z.coerce.number(),
     }),
-    query: z.never().optional(),
+    query: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
   });
 
 /**
@@ -5297,32 +10235,82 @@ export const zReadServiceProvidingGroupProductApplicationCommentHistoryResponse 
   zServiceProvidingGroupProductApplicationCommentHistory;
 
 export const zListServiceProvidingGroupProductSuspensionData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      procuring_system_operator_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      service_providing_group_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      product_type_ids: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      procuring_system_operator_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      service_providing_group_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      product_type_ids: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListServiceProvidingGroupProductSuspensionResponse = z.union([
@@ -5331,9 +10319,24 @@ export const zListServiceProvidingGroupProductSuspensionResponse = z.union([
 ]);
 
 export const zCreateServiceProvidingGroupProductSuspensionData = z.object({
-  body: zServiceProvidingGroupProductSuspensionCreateRequest.optional(),
-  path: z.never().optional(),
-  query: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zServiceProvidingGroupProductSuspensionCreateRequest.optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -5343,11 +10346,21 @@ export const zCreateServiceProvidingGroupProductSuspensionResponse =
   zServiceProvidingGroupProductSuspension;
 
 export const zDeleteServiceProvidingGroupProductSuspensionData = z.object({
-  body: zEmptyObjectWritable.optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      zEmptyObjectWritable.optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -5356,11 +10369,21 @@ export const zDeleteServiceProvidingGroupProductSuspensionData = z.object({
 export const zDeleteServiceProvidingGroupProductSuspensionResponse = z.void();
 
 export const zReadServiceProvidingGroupProductSuspensionData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -5374,7 +10397,12 @@ export const zUpdateServiceProvidingGroupProductSuspensionData = z.object({
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 export const zUpdateServiceProvidingGroupProductSuspensionResponse = z.union([
@@ -5383,36 +10411,91 @@ export const zUpdateServiceProvidingGroupProductSuspensionResponse = z.union([
 ]);
 
 export const zListServiceProvidingGroupProductSuspensionHistoryData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      service_providing_group_product_suspension_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      procuring_system_operator_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      service_providing_group_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      product_type_ids: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      service_providing_group_product_suspension_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      procuring_system_operator_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      service_providing_group_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      product_type_ids: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListServiceProvidingGroupProductSuspensionHistoryResponse =
@@ -5422,11 +10505,21 @@ export const zListServiceProvidingGroupProductSuspensionHistoryResponse =
   ]);
 
 export const zReadServiceProvidingGroupProductSuspensionHistoryData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -5436,24 +10529,64 @@ export const zReadServiceProvidingGroupProductSuspensionHistoryResponse =
   zServiceProvidingGroupProductSuspensionHistory;
 
 export const zListServiceProvidingGroupProductSuspensionCommentData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      service_providing_group_product_suspension_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      service_providing_group_product_suspension_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListServiceProvidingGroupProductSuspensionCommentResponse =
@@ -5464,9 +10597,24 @@ export const zListServiceProvidingGroupProductSuspensionCommentResponse =
 
 export const zCreateServiceProvidingGroupProductSuspensionCommentData =
   z.object({
-    body: zServiceProvidingGroupProductSuspensionCommentCreateRequest.optional(),
-    path: z.never().optional(),
-    query: z.never().optional(),
+    body: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        zServiceProvidingGroupProductSuspensionCommentCreateRequest.optional(),
+      ),
+    ),
+    path: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
+    query: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
   });
 
 /**
@@ -5476,11 +10624,21 @@ export const zCreateServiceProvidingGroupProductSuspensionCommentResponse =
   zServiceProvidingGroupProductSuspensionComment;
 
 export const zReadServiceProvidingGroupProductSuspensionCommentData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
@@ -5495,7 +10653,12 @@ export const zUpdateServiceProvidingGroupProductSuspensionCommentData =
     path: z.object({
       id: z.coerce.number(),
     }),
-    query: z.never().optional(),
+    query: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
   });
 
 export const zUpdateServiceProvidingGroupProductSuspensionCommentResponse =
@@ -5503,28 +10666,73 @@ export const zUpdateServiceProvidingGroupProductSuspensionCommentResponse =
 
 export const zListServiceProvidingGroupProductSuspensionCommentHistoryData =
   z.object({
-    body: z.never().optional(),
-    path: z.never().optional(),
-    query: z
-      .object({
-        id: z
-          .string()
-          .regex(/^eq\.[0-9]+$/)
-          .optional(),
-        service_providing_group_product_suspension_comment_id: z
-          .string()
-          .regex(/^eq\.[0-9]+$/)
-          .optional(),
-        service_providing_group_product_suspension_id: z
-          .string()
-          .regex(/^eq\.[0-9]+$/)
-          .optional(),
-        select: z.string().optional(),
-        order: z.string().optional(),
-        offset: z.string().optional(),
-        limit: z.string().optional(),
-      })
-      .optional(),
+    body: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
+    path: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
+    query: z.optional(
+      z.object({
+        id: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z
+              .string()
+              .regex(/^eq\.[0-9]+$/)
+              .optional(),
+          ),
+        ),
+        service_providing_group_product_suspension_comment_id: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z
+              .string()
+              .regex(/^eq\.[0-9]+$/)
+              .optional(),
+          ),
+        ),
+        service_providing_group_product_suspension_id: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z
+              .string()
+              .regex(/^eq\.[0-9]+$/)
+              .optional(),
+          ),
+        ),
+        select: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+        order: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+        offset: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+        limit: z.optional(
+          z.preprocess(
+            (value) => (value === null ? undefined : value),
+            z.string().optional(),
+          ),
+        ),
+      }),
+    ),
   });
 
 export const zListServiceProvidingGroupProductSuspensionCommentHistoryResponse =
@@ -5535,11 +10743,21 @@ export const zListServiceProvidingGroupProductSuspensionCommentHistoryResponse =
 
 export const zReadServiceProvidingGroupProductSuspensionCommentHistoryData =
   z.object({
-    body: z.never().optional(),
+    body: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
     path: z.object({
       id: z.coerce.number(),
     }),
-    query: z.never().optional(),
+    query: z.optional(
+      z.preprocess(
+        (value) => (value === null ? undefined : value),
+        z.never().optional(),
+      ),
+    ),
   });
 
 /**
@@ -5549,24 +10767,64 @@ export const zReadServiceProvidingGroupProductSuspensionCommentHistoryResponse =
   zServiceProvidingGroupProductSuspensionCommentHistory;
 
 export const zListNoticeData = z.object({
-  body: z.never().optional(),
-  path: z.never().optional(),
-  query: z
-    .object({
-      id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      party_id: z
-        .string()
-        .regex(/^eq\.[0-9]+$/)
-        .optional(),
-      select: z.string().optional(),
-      order: z.string().optional(),
-      offset: z.string().optional(),
-      limit: z.string().optional(),
-    })
-    .optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  path: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
+  query: z.optional(
+    z.object({
+      id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      party_id: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z
+            .string()
+            .regex(/^eq\.[0-9]+$/)
+            .optional(),
+        ),
+      ),
+      select: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      order: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      offset: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+      limit: z.optional(
+        z.preprocess(
+          (value) => (value === null ? undefined : value),
+          z.string().optional(),
+        ),
+      ),
+    }),
+  ),
 });
 
 export const zListNoticeResponse = z.union([
@@ -5575,11 +10833,21 @@ export const zListNoticeResponse = z.union([
 ]);
 
 export const zReadNoticeData = z.object({
-  body: z.never().optional(),
+  body: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
   path: z.object({
     id: z.coerce.number(),
   }),
-  query: z.never().optional(),
+  query: z.optional(
+    z.preprocess(
+      (value) => (value === null ? undefined : value),
+      z.never().optional(),
+    ),
+  ),
 });
 
 /**
