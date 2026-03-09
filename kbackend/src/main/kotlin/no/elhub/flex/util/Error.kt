@@ -5,7 +5,7 @@ package no.elhub.flex.util
  *
  * @property message details about the error
  */
-sealed class AppError(
+abstract class AppError(
     val message: String? = null,
 )
 

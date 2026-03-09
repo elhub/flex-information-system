@@ -4,3 +4,14 @@ ktor:
       - no.elhub.flex.ApplicationKt.module
   deployment:
     port: 8080
+  database:
+    url: ${FLEX_DATABASE_URL}
+    username: ${FLEX_DATABASE_USERNAME}
+    password: ${FLEX_DATABASE_PASSWORD}
+    driverClass: org.postgresql.Driver
+    hikari:
+      maximumPoolSize: 10
+
+flex:
+  jwt_secret: ${FLEX_JWT_SECRET}
+  private_url: ${FLEX_PRIVATE_URL:}
