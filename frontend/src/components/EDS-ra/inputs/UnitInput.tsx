@@ -90,7 +90,7 @@ export const UnitInput = ({
       descriptionOverride={descriptionOverride}
     >
       <div className="flex items-center gap-2">
-        <div className="flex-1">
+        <div className="w-48">
           <TextField
             id={id}
             type="number"
