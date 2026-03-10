@@ -29,7 +29,6 @@ export const SimpleTable = <T extends { id?: unknown }>({
   checkbox,
 }: SimpleTableProps<T>) => {
   if (!data.length) return <BodyText>{empty}</BodyText>;
-
   return (
     <Table size={size}>
       <Table.Header>

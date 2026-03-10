@@ -7,6 +7,7 @@ import {
   Datepicker,
   FormItem,
   FormItemLabel,
+  Link,
   Loader,
   Modal,
 } from "../../components/ui";
@@ -111,6 +112,14 @@ export const FindControllableUnits = ({ spgId }: Props) => {
         data={availableCus ?? []}
         empty="No controllable units available to add."
         columns={columns}
+        action={{
+          render: (row) => (
+            <Link external href={`#/controllable_unit/${row.id}/show`}>
+              See more
+            </Link>
+          ),
+          header: "",
+        }}
         checkbox={{
           render: (row) => (
             <Checkbox

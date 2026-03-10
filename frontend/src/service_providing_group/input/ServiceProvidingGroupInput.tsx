@@ -27,7 +27,7 @@ export const ServiceProvidingGroupInput = () => {
           <Heading level={3} size="medium">
             Edit Service Providing Group
           </Heading>
-          <div className="flex center gap-3">
+          <div className="flex flex-col center gap-3">
             <ServiceProvidingGroupFields isEdit />
             <FormToolbar />
           </div>
