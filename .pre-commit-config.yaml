@@ -358,9 +358,8 @@ repos:
         entry: /usr/bin/bash
         args: ['-c', "ktlint -F --color 'kbackend/src/**/*.kt' '!**/generated/**'"]
         language: script
-#      - id: detekt
-#        name: detekt
-#        entry: /usr/bin/bash
-#        args: ['-c', "detekt --input './kbackend/' --all-rules --auto-correct --config detekt-config.yaml --excludes '**/generated/**,**/*.kts'"]
-#        language: script
-#
+      - id: detekt
+        name: detekt
+        entry: /usr/bin/bash
+        args: ['-c', "detekt --input './kbackend/' --auto-correct --config detekt-config.yaml --excludes '**/generated/**,**/*.kts'"]
+        language: script

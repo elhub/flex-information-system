@@ -8,6 +8,7 @@ private val GSRN_REGEX = "^[1-9][0-9]{17}$".toRegex()
  * The check digit algorithm alternates multipliers of 3 and 1, scanning right-to-left
  * over the first 17 digits, then computes `(10 - (sum mod 10)) mod 10`.
  */
+@Suppress("MagicNumber")
 fun isValidGsrn(gsrn: String): Boolean {
     if (!GSRN_REGEX.matches(gsrn)) return false
 
@@ -19,7 +20,6 @@ fun isValidGsrn(gsrn: String): Boolean {
         multiplier = if (multiplier == 3) 1 else 3
     }
 
-    @Suppress("MagicNumber")
     val expectedCheckDigit = (10 - (sum % 10)) % 10
 
     return gsrn.last().digitToInt() == expectedCheckDigit
