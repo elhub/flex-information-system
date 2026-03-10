@@ -115,7 +115,7 @@ const getAccountingPointData = async (
   };
 };
 
-const getControllableUnitData = async (
+export const getControllableUnitData = async (
   controllableUnit: ControllableUnit | undefined,
 ): Promise<Omit<ControllableUnitShowViewModel, "controllableUnit">> => {
   const controllableUnitIdInt = controllableUnit?.id ?? 0;

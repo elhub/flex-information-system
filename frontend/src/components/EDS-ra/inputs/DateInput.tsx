@@ -17,6 +17,8 @@ export const DateInput = ({
   tooltip,
   readOnly,
   disabled,
+  description,
+  descriptionOverride,
   outputFormat = "date",
   ...rest
 }: DateTimeInputProps) => {
@@ -42,6 +44,8 @@ export const DateInput = ({
       readOnly={readOnly}
       id={id}
       error={fieldState.error?.message}
+      description={description}
+      descriptionOverride={descriptionOverride}
     >
       <Datepicker
         {...rest}

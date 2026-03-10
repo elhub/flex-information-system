@@ -18203,10 +18203,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application.status",
-      operation: "update",
-    },
-    {
       target: "service_providing_group_product_application",
       operation: "update",
     },

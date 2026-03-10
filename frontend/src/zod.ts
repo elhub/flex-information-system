@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ZodRawShape, ZodType } from "zod";
+import z, { ZodRawShape, ZodType } from "zod";
 import { $ZodRawIssue, $ZodTypeInternals } from "zod/v4/core";
 import { Resolver } from "react-hook-form";
 
@@ -27,7 +27,24 @@ const customErrorHandler = (schema: ZodRawShape, issue: $ZodRawIssue) => {
 
 // React admin does not support required fields in the schema, so we need to untype the resolver
 export const unTypedZodResolver = (schema: Schema) => {
-  return zodResolver(schema, {
+  const fields = getFields(schema.shape);
+  // We want to normalize optional fields so we don't have to handle both null and undefined in forms.
+  // For optional fields, null and empty strings are converted to undefined.
+  const normalizedSchema = z.object(
+    Object.fromEntries(
+      Object.entries(fields).map(([key, value]) => [
+        key,
+        value.required
+          ? schema.shape[value.source]
+          : z.preprocess(
+              (value) => (value === null || value === "" ? undefined : value),
+              schema.shape[value.source],
+            ),
+      ]),
+    ),
+  );
+
+  return zodResolver(normalizedSchema, {
     error: (issue) => customErrorHandler(schema.shape, issue),
   }) as Resolver<FieldValues>;
 };
