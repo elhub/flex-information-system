@@ -13,6 +13,7 @@ import {
   EnumInput,
   AutocompleteReferenceInput,
   DateInput,
+  UnitInput,
   FormToolbar,
 } from "../components/EDS-ra/inputs";
 import { formatDateToMidnightISO } from "../components/datetime";
@@ -60,16 +61,20 @@ export const ControllableUnitInput = () => {
         </Heading>
 
         <FlexDiv style={{ gap: "var(--eds-size-3)", flexDirection: "column" }}>
-          <TextInput {...fields.name} />
+          <TextInput {...fields.name} description tooltip={false} />
           <AutocompleteReferenceInput
             {...fields.accounting_point_id}
             reference="accounting_point"
+            description
+            tooltip={false}
           />
-          <DateInput {...fields.start_date} />
+          <DateInput {...fields.start_date} description tooltip={false} />
           <EnumInput
             {...fields.status}
             enumKey="controllable_unit.status"
             required={createOrUpdate == "update"}
+            description
+            tooltip={false}
           />
         </FlexDiv>
 
@@ -80,15 +85,45 @@ export const ControllableUnitInput = () => {
               <FlexDiv
                 style={{ gap: "var(--eds-size-3)", flexDirection: "column" }}
               >
-                <TextInput {...fields.maximum_active_power} type="number" />
+                <UnitInput
+                  {...fields.maximum_active_power}
+                  units={[
+                    { label: "kW", scale: 1 },
+                    { label: "MW", scale: 1000 },
+                  ]}
+                  description
+                  tooltip={false}
+                />
                 <EnumInput
                   {...fields.regulation_direction}
                   enumKey="controllable_unit.regulation_direction"
+                  description
+                  tooltip={false}
                 />
-                <TextInput {...fields.minimum_duration} type="number" />
-                <TextInput {...fields.maximum_duration} type="number" />
-                <TextInput {...fields.recovery_duration} type="number" />
-                <TextInput {...fields.ramp_rate} type="number" />
+                <TextInput
+                  {...fields.minimum_duration}
+                  type="number"
+                  description
+                  tooltip={false}
+                />
+                <TextInput
+                  {...fields.maximum_duration}
+                  type="number"
+                  description
+                  tooltip={false}
+                />
+                <TextInput
+                  {...fields.recovery_duration}
+                  type="number"
+                  description
+                  tooltip={false}
+                />
+                <TextInput
+                  {...fields.ramp_rate}
+                  type="number"
+                  description
+                  tooltip={false}
+                />
               </FlexDiv>
             </Accordion.Content>
           </Accordion.Item>
@@ -99,13 +134,28 @@ export const ControllableUnitInput = () => {
               <FlexDiv
                 style={{ gap: "var(--eds-size-3)", flexDirection: "column" }}
               >
-                <TextInput {...fields.grid_node_id} />
+                <TextInput
+                  {...fields.grid_node_id}
+                  description
+                  tooltip={false}
+                />
                 <EnumInput
                   {...fields.grid_validation_status}
                   enumKey="controllable_unit.grid_validation_status"
+                  description
+                  tooltip={false}
                 />
-                <TextInput {...fields.grid_validation_notes} />
-                <DateInput {...fields.validated_at} outputFormat="date-time" />
+                <TextInput
+                  {...fields.grid_validation_notes}
+                  description
+                  tooltip={false}
+                />
+                <DateInput
+                  {...fields.validated_at}
+                  outputFormat="date-time"
+                  description
+                  tooltip={false}
+                />
               </FlexDiv>
             </Accordion.Content>
           </Accordion.Item>
