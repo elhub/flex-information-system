@@ -13,6 +13,7 @@ WITH (security_invoker = false, security_barrier = true) AS (
         upper(valid_time_range) AS valid_to
     FROM flex.accounting_point_bidding_zone
     WHERE current_role = 'flex_flexibility_information_system_operator'
+    -- RLS: APBZ-SO001
     UNION ALL
     SELECT
         accounting_point_id,
@@ -23,7 +24,7 @@ WITH (security_invoker = false, security_barrier = true) AS (
         SELECT
             ap_bz.accounting_point_id,
             ap_bz.bidding_zone,
-            -- only keep the parts of AP-BRP where SO is SO on the AP
+            -- only keep the parts of APBZ where SO is SO on the AP
             unnest(
                 multirange(ap_bz.valid_time_range)
                 * range_agg(ap_so.valid_time_range)
@@ -57,7 +58,7 @@ WITH (security_invoker = false, security_barrier = true) AS (
         SELECT
             ap_bz.accounting_point_id,
             ap_bz.bidding_zone,
-            -- only keep the parts of AP-BRP where SP has a CU on the AP
+            -- only keep the parts of APBZ where SP has a CU on the AP
             unnest(
                 multirange(ap_bz.valid_time_range)
                 * range_agg(ap_sp.valid_time_range)
