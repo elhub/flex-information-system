@@ -51,6 +51,7 @@ export const ControllableUnitInput = () => {
     <Form
       record={overridenRecord}
       resolver={unTypedZodResolver(zControllableUnitCreateRequest)}
+      sanitizeEmptyValues
     >
       <FormContainer>
         <Heading level={3} size="medium">
