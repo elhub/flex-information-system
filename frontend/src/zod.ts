@@ -27,12 +27,24 @@ const customErrorHandler = (schema: ZodRawShape, issue: $ZodRawIssue) => {
 
 // React admin does not support required fields in the schema, so we need to untype the resolver
 export const unTypedZodResolver = (schema: Schema) => {
-
   const fields = getFields(schema.shape);
   // We want to convert optional fields to nullish so we dont have to handle null or undefined. Only undefined in forms.
-  const nullSchema = z.object(Object.fromEntries(Object.entries(fields).map(([key, value]) => [key, value.required ? schema.shape[value.source] : z.preprocess((value) => value === null ? undefined : value, schema.shape[value.source])])));
+  // Also handle empty strings as undefined.
+  const nullSchema = z.object(
+    Object.fromEntries(
+      Object.entries(fields).map(([key, value]) => [
+        key,
+        value.required
+          ? schema.shape[value.source]
+          : z.preprocess(
+              (value) => (value === null || value === "" ? undefined : value),
+              schema.shape[value.source],
+            ),
+      ]),
+    ),
+  );
 
-  return zodResolver(schema, {
+  return zodResolver(nullSchema, {
     error: (issue) => customErrorHandler(schema.shape, issue),
   }) as Resolver<FieldValues>;
 };
