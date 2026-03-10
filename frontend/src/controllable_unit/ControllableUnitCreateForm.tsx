@@ -17,6 +17,7 @@ import {
   PartyReferenceInput,
   FormToolbar,
   DateInput,
+  UnitInput,
 } from "../components/EDS-ra/inputs";
 import z from "zod";
 import { useState } from "react";
@@ -132,31 +133,52 @@ export const ControllableUnitCreateForm = ({
           Create Controllable Unit
         </Heading>
         <div className="flex flex-col gap-3">
-          <TextInput {...fields.name} disabled={!!savedControllableUnitId} />
+          <TextInput
+            {...fields.name}
+            disabled={!!savedControllableUnitId}
+            description
+            tooltip={false}
+          />
           {!isServiceProvider && (
             <PartyReferenceInput
               {...fields.service_provider_id}
               resource="controllable_unit_service_provider"
               readOnly={isServiceProvider}
+              description
+              tooltip={false}
             />
           )}
           <div className="flex flex-row gap-3">
             <TextInput
               {...fields.contract_reference}
               resource="controllable_unit_service_provider"
+              description
+              tooltip={false}
             />
             {/* We want to ensure that the start date is not a future date so the user has access to change its values after creation. */}
-            <DateInput {...fields.start_date} maxDate={new Date()} />
+            <DateInput
+              {...fields.start_date}
+              maxDate={new Date()}
+              description
+              tooltip={false}
+            />
           </div>
           <EnumInput
             {...fields.regulation_direction}
             enumKey="controllable_unit.regulation_direction"
             disabled={!!savedControllableUnitId}
+            description
+            tooltip={false}
           />
-          <TextInput
+          <UnitInput
             {...fields.maximum_active_power}
-            type="number"
+            units={[
+              { label: "kW", scale: 1 },
+              { label: "MW", scale: 1000 },
+            ]}
             disabled={!!savedControllableUnitId}
+            description
+            tooltip={false}
           />
         </div>
         <FormToolbar />
