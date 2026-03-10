@@ -30,7 +30,7 @@ export const unTypedZodResolver = (schema: Schema) => {
   const fields = getFields(schema.shape);
   // We want to normalize optional fields so we don't have to handle both null and undefined in forms.
   // For optional fields, null and empty strings are converted to undefined.
-  const nullSchema = z.object(
+  const normalizedSchema = z.object(
     Object.fromEntries(
       Object.entries(fields).map(([key, value]) => [
         key,
@@ -44,7 +44,7 @@ export const unTypedZodResolver = (schema: Schema) => {
     ),
   );
 
-  return zodResolver(nullSchema, {
+  return zodResolver(normalizedSchema, {
     error: (issue) => customErrorHandler(schema.shape, issue),
   }) as Resolver<FieldValues>;
 };
