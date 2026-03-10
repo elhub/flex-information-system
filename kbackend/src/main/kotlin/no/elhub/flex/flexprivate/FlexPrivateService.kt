@@ -6,7 +6,7 @@ import arrow.core.Either
  * External service interface for FlexPrivate (the Metering Point Datahub).
  *
  * Used to fetch the metering grid area business ID for an accounting point
- * that is not yet present in the local database.
+ * that is not yet present in the database.
  */
 interface FlexPrivateService {
     /**

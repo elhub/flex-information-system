@@ -1,4 +1,4 @@
-package no.elhub.flex.controllableunit
+package no.elhub.flex.controllableunit.dto
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

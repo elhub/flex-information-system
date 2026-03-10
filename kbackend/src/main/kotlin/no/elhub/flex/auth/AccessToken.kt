@@ -65,7 +65,8 @@ data class AccessToken(
                 val partyId = decoded.getClaim("party_id").asInt() ?: 0
                 val role = decoded.getClaim("role").asString()
                     ?: raise(InvalidTokenError("missing role claim"))
-                val scope = decoded.getClaim("scope").asList(String::class.java)
+                val scope = decoded.getClaim("scope").asString()
+                    ?.split(" ")
                     ?: raise(InvalidTokenError("missing scope claim"))
                 val exp = decoded.expiresAt?.time?.div(MILLIS_PER_SECOND)
                     ?: raise(InvalidTokenError("missing exp claim"))

@@ -2,7 +2,7 @@ package no.elhub.flex.controllableunit.db
 
 import arrow.core.Either
 import no.elhub.flex.auth.AccessToken
-import no.elhub.flex.controllableunit.ControllableUnit
+import no.elhub.flex.controllableunit.dto.ControllableUnit
 import no.elhub.flex.domain.AccountingPoint
 
 /** Database errors raised by [ControllableUnitRepository]. */

@@ -8,9 +8,12 @@ import io.ktor.server.application.createApplicationPlugin
 import io.ktor.server.application.hooks.CallSetup
 import io.ktor.server.response.respond
 import io.ktor.util.AttributeKey
-import no.elhub.flex.controllableunit.ErrorMessage
+import no.elhub.flex.controllableunit.dto.ErrorMessage
 
 private val logger = KotlinLogging.logger {}
+
+/** Name of the session cookie carrying the JWT */
+private const val SESSION_COOKIE_NAME = "__Host-flex_session"
 
 /** Ktor [io.ktor.util.AttributeKey] for storing the verified [AccessToken] in call attributes. */
 val AccessTokenKey = AttributeKey<AccessToken>("flex-access-token")
@@ -22,10 +25,14 @@ class FlexAuthenticationConfig {
 }
 
 /**
- * Ktor plugin that verifies the `Authorization: Bearer` JWT on every incoming request,
- * parses the claims into an [AccessToken], and stores it under [AccessTokenKey].
+ * Plugin that verifies incoming JWTs on every request and stores the parsed
+ * [AccessToken] under [AccessTokenKey].
  *
- * Responds with HTTP 401 when the token is missing, invalid, or expired.
+ * Token resolution order (matching the Go backend):
+ * 1. `Authorization: Bearer <token>` header — takes precedence.
+ * 2. `__Host-flex_session` cookie — fallback for browser/OIDC sessions.
+ *
+ * Responds with HTTP 401 when no token is present, or when the token is invalid or expired.
  */
 val FlexAuthentication: ApplicationPlugin<FlexAuthenticationConfig> =
     createApplicationPlugin("FlexAuthentication", ::FlexAuthenticationConfig) {
@@ -33,16 +40,20 @@ val FlexAuthentication: ApplicationPlugin<FlexAuthenticationConfig> =
 
         on(CallSetup) { call ->
             val authHeader = call.request.headers["Authorization"]
-            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-                logger.debug { "Missing or malformed Authorization header" }
+
+            val jwt = when {
+                authHeader != null && authHeader.startsWith("Bearer ") -> authHeader.removePrefix("Bearer ")
+                else -> call.request.cookies[SESSION_COOKIE_NAME]
+            }
+
+            if (jwt == null) {
+                logger.debug { "No Authorization header or session cookie present" }
                 call.respond(
                     HttpStatusCode.Unauthorized,
                     ErrorMessage(code = "HTTP401", message = MissingTokenError.message ?: "Unauthorized"),
                 )
                 return@on
             }
-
-            val jwt = authHeader.removePrefix("Bearer ")
 
             AccessToken.parse(jwt, secret).getOrElse { error ->
                 logger.debug { "JWT verification failed: ${error.message}" }

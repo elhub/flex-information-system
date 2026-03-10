@@ -6,8 +6,9 @@ import arrow.core.right
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.serialization.json.Json
 import no.elhub.flex.auth.AccessToken
-import no.elhub.flex.controllableunit.ControllableUnit
+import no.elhub.flex.controllableunit.dto.ControllableUnit
 import no.elhub.flex.db.FlexTransaction
+import no.elhub.flex.db.FlexTransaction.flexTransaction
 import no.elhub.flex.domain.AccountingPoint
 
 private val logger = KotlinLogging.logger {}
@@ -26,7 +27,7 @@ class ControllableUnitRepositoryImpl : ControllableUnitRepository {
     override fun getCurrentAccountingPoint(
         controllableUnitBusinessId: String,
     ): Either<RepositoryError, AccountingPoint> =
-        FlexTransaction.flexTransaction(token.role, token.extId) { conn ->
+        flexTransaction(token.role, token.extId) { conn ->
             runCatching {
                 conn.prepareStatement(
                     """
@@ -54,7 +55,7 @@ class ControllableUnitRepositoryImpl : ControllableUnitRepository {
     override fun getAccountingPointIdByBusinessId(
         accountingPointBusinessId: String,
     ): Either<RepositoryError, Int> =
-        FlexTransaction.flexTransaction(token.role, token.extId) { conn ->
+        flexTransaction(token.role, token.extId) { conn ->
             runCatching {
                 conn.prepareStatement(
                     "SELECT id FROM api.accounting_point WHERE business_id = ?",
@@ -79,7 +80,7 @@ class ControllableUnitRepositoryImpl : ControllableUnitRepository {
         meteringGridAreaBusinessId: String,
         endUserBusinessId: String,
     ): Either<RepositoryError, Int> =
-        FlexTransaction.flexTransaction(token.role, token.extId) { conn ->
+        flexTransaction(token.role, token.extId) { conn ->
             runCatching {
                 conn.prepareStatement(
                     """
@@ -108,7 +109,7 @@ class ControllableUnitRepositoryImpl : ControllableUnitRepository {
         endUserBusinessId: String,
         accountingPointBusinessId: String,
     ): Either<RepositoryError, Int> =
-        FlexTransaction.flexTransaction(token.role, token.extId) { conn ->
+        flexTransaction(token.role, token.extId) { conn ->
             runCatching {
                 conn.prepareStatement(
                     """
@@ -137,7 +138,7 @@ class ControllableUnitRepositoryImpl : ControllableUnitRepository {
         controllableUnitBusinessId: String,
         accountingPointBusinessId: String,
     ): Either<RepositoryError, List<ControllableUnit>> =
-        FlexTransaction.flexTransaction(token.role, token.extId) { conn ->
+        flexTransaction(token.role, token.extId) { conn ->
             runCatching {
                 conn.prepareStatement(
                     """

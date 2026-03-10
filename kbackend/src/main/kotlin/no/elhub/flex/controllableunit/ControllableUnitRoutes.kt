@@ -9,8 +9,8 @@ import org.koin.ktor.ext.inject
 
 /** Registers all `controllable_unit` routes on [Application]. */
 fun Application.controllableUnitRoutes() {
-    val lookup: ControllableUnitLookup by inject()
     routing {
+        val lookup: ControllableUnitLookup by inject()
         route("/controllable_unit") {
             post("/lookup") {
                 lookup.handle(call)

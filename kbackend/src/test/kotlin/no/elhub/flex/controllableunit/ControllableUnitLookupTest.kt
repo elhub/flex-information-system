@@ -23,6 +23,7 @@ import no.elhub.flex.auth.FlexAuthentication
 import no.elhub.flex.config.configureSerialization
 import no.elhub.flex.controllableunit.db.ControllableUnitRepository
 import no.elhub.flex.controllableunit.db.NotFoundError
+import no.elhub.flex.controllableunit.dto.ControllableUnit
 import no.elhub.flex.controllableunit.lookup.ControllableUnitLookup
 import no.elhub.flex.flexprivate.FlexPrivateService
 import org.koin.dsl.module
@@ -38,7 +39,7 @@ private fun makeJwt(role: String = "flex_service_provider", eid: String = "12345
         .withClaim("eid", eid)
         .withClaim("party_id", 1)
         .withClaim("role", role)
-        .withArrayClaim("scope", arrayOf("use:data:controllable_unit:lookup"))
+        .withClaim("scope", "use:data:controllable_unit:lookup")
         .withExpiresAt(Date(System.currentTimeMillis() + 60_000))
         .sign(Algorithm.HMAC256(TEST_SECRET))
 
@@ -74,6 +75,49 @@ class ControllableUnitLookupTest :
                     setBody("""{"end_user":"123456789","accounting_point":"133700000000000053"}""")
                 }
                 response.status shouldBe HttpStatusCode.Unauthorized
+                app.stop()
+            }
+
+            test("valid session cookie is accepted when no Authorization header") {
+                every {
+                    with(any<AccessToken>()) { mockRepo.getAccountingPointIdByBusinessId(any()) }
+                } returns 42.right()
+                every {
+                    with(any<AccessToken>()) { mockRepo.checkEndUserMatchesAccountingPoint(any(), any()) }
+                } returns 7.right()
+                every {
+                    with(any<AccessToken>()) { mockRepo.lookupControllableUnits(any(), any()) }
+                } returns emptyList<ControllableUnit>().right()
+
+                val app = testApp(mockRepo, mockFlexPrivate)
+                val response = app.client.post("/controllable_unit/lookup") {
+                    contentType(ContentType.Application.Json)
+                    header("Cookie", "__Host-flex_session=${makeJwt()}")
+                    setBody("""{"end_user":"123456789","accounting_point":"133700000000000053"}""")
+                }
+                response.status shouldBe HttpStatusCode.OK
+                app.stop()
+            }
+
+            test("Authorization header takes precedence over invalid session cookie") {
+                every {
+                    with(any<AccessToken>()) { mockRepo.getAccountingPointIdByBusinessId(any()) }
+                } returns 42.right()
+                every {
+                    with(any<AccessToken>()) { mockRepo.checkEndUserMatchesAccountingPoint(any(), any()) }
+                } returns 7.right()
+                every {
+                    with(any<AccessToken>()) { mockRepo.lookupControllableUnits(any(), any()) }
+                } returns emptyList<ControllableUnit>().right()
+
+                val app = testApp(mockRepo, mockFlexPrivate)
+                val response = app.client.post("/controllable_unit/lookup") {
+                    contentType(ContentType.Application.Json)
+                    header("Authorization", "Bearer ${makeJwt()}")
+                    header("Cookie", "__Host-flex_session=not-a-valid-token")
+                    setBody("""{"end_user":"123456789","accounting_point":"133700000000000053"}""")
+                }
+                response.status shouldBe HttpStatusCode.OK
                 app.stop()
             }
 

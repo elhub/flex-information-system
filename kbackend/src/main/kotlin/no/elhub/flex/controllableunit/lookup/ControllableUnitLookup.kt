@@ -11,12 +11,13 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.RoutingCall
 import no.elhub.flex.auth.AccessToken
 import no.elhub.flex.auth.AccessTokenKey
-import no.elhub.flex.controllableunit.AccountingPointSummary
-import no.elhub.flex.controllableunit.ControllableUnitLookupRequest
-import no.elhub.flex.controllableunit.ControllableUnitLookupResponse
-import no.elhub.flex.controllableunit.EndUserSummary
-import no.elhub.flex.controllableunit.ErrorMessage
 import no.elhub.flex.controllableunit.db.ControllableUnitRepository
+import no.elhub.flex.controllableunit.dto.AccountingPointSummary
+import no.elhub.flex.controllableunit.dto.ControllableUnit
+import no.elhub.flex.controllableunit.dto.ControllableUnitLookupRequest
+import no.elhub.flex.controllableunit.dto.ControllableUnitLookupResponse
+import no.elhub.flex.controllableunit.dto.EndUserSummary
+import no.elhub.flex.controllableunit.dto.ErrorMessage
 import no.elhub.flex.domain.AccountingPoint
 import no.elhub.flex.flexprivate.FlexPrivateService
 import no.elhub.flex.util.isValidGsrn
@@ -55,15 +56,15 @@ class ControllableUnitLookup(
         val token = call.attributes[AccessTokenKey]
 
         val result: Either<HttpError, ControllableUnitLookupResponse> = either {
-            val validated = checkRole(token)
+            val validatedRequest = checkRole(token)
                 .bind()
                 .let { parseBody(call).bind() }
                 .let { validateInput(it).mapLeft { e -> Pair(HttpStatusCode.BadRequest, e) }.bind() }
 
             with(token) {
-                val accountingPoint = resolveAccountingPoint(validated).bind()
-                val endUserId = verifyEndUserMatchesAccountingPoint(validated.endUser, accountingPoint.businessId).bind()
-                val controllableUnits = fetchControllableUnits(validated.controllableUnitBusinessId, accountingPoint.businessId).bind()
+                val accountingPoint = resolveAccountingPoint(validatedRequest).bind()
+                val endUserId = verifyEndUserMatchesAccountingPoint(validatedRequest.endUser, accountingPoint.businessId).bind()
+                val controllableUnits = fetchControllableUnits(validatedRequest.controllableUnitBusinessId, accountingPoint.businessId).bind()
 
                 ControllableUnitLookupResponse(
                     accountingPoint = AccountingPointSummary(id = accountingPoint.id, businessId = accountingPoint.businessId),
@@ -159,7 +160,7 @@ class ControllableUnitLookup(
     private fun fetchControllableUnits(
         controllableUnitBusinessId: String,
         accountingPointBusinessId: String,
-    ): Either<HttpError, List<no.elhub.flex.controllableunit.ControllableUnit>> =
+    ): Either<HttpError, List<ControllableUnit>> =
         repo.lookupControllableUnits(controllableUnitBusinessId, accountingPointBusinessId)
             .mapLeft { err ->
                 logger.error { "CU lookup query failed: ${err.message}" }
