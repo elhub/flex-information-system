@@ -1,13 +1,17 @@
 package no.elhub.flex
 
+import arrow.core.Either
 import io.ktor.server.application.install
 import io.ktor.server.testing.TestApplication
+import no.elhub.flex.auth.AccessToken
 import no.elhub.flex.config.Tracing
 import no.elhub.flex.config.configureLogging
 import no.elhub.flex.config.configureMonitoring
 import no.elhub.flex.config.configureRouting
 import no.elhub.flex.config.configureSerialization
 import no.elhub.flex.controllableunit.db.ControllableUnitRepository
+import no.elhub.flex.controllableunit.db.DatabaseError
+import no.elhub.flex.controllableunit.db.NotFoundError
 import no.elhub.flex.controllableunit.lookup.ControllableUnitLookup
 import no.elhub.flex.flexprivate.FlexPrivateService
 import org.koin.dsl.module
@@ -27,48 +31,38 @@ fun defaultTestApplication(): TestApplication =
                             object : FlexPrivateService {
                                 override suspend fun fetchMeteringGridArea(
                                     accountingPointBusinessId: String,
-                                ): arrow.core.Either<String, String> =
-                                    arrow.core.Either.Right("")
+                                ): Either<String, String> =
+                                    Either.Right("")
                             }
                         }
                         single<ControllableUnitRepository> {
                             object : ControllableUnitRepository {
-                                context(token: no.elhub.flex.auth.AccessToken)
+                                context(token: AccessToken)
                                 override fun getCurrentAccountingPoint(cuBusinessId: String) =
-                                    arrow.core.Either.Left(
-                                        no.elhub.flex.controllableunit.db.NotFoundError("stub"),
-                                    )
+                                    Either.Left(NotFoundError("stub"))
 
-                                context(token: no.elhub.flex.auth.AccessToken)
+                                context(token: AccessToken)
                                 override fun getAccountingPointIdByBusinessId(apBusinessId: String) =
-                                    arrow.core.Either.Left(
-                                        no.elhub.flex.controllableunit.db.NotFoundError("stub"),
-                                    )
+                                    Either.Left(NotFoundError("stub"))
 
-                                context(token: no.elhub.flex.auth.AccessToken)
+                                context(token: AccessToken)
                                 override fun upsertAccountingPointMeteringGridArea(
                                     apBusinessId: String,
                                     mgaBusinessId: String,
                                     endUserBusinessId: String,
-                                ) = arrow.core.Either.Left(
-                                    no.elhub.flex.controllableunit.db.DatabaseError("stub"),
-                                )
+                                ) = Either.Left(DatabaseError("stub"))
 
-                                context(token: no.elhub.flex.auth.AccessToken)
+                                context(token: AccessToken)
                                 override fun checkEndUserMatchesAccountingPoint(
                                     endUserBusinessId: String,
                                     apBusinessId: String,
-                                ) = arrow.core.Either.Left(
-                                    no.elhub.flex.controllableunit.db.NotFoundError("stub"),
-                                )
+                                ) = Either.Left(NotFoundError("stub"))
 
-                                context(token: no.elhub.flex.auth.AccessToken)
+                                context(token: AccessToken)
                                 override fun lookupControllableUnits(
                                     cuBusinessId: String,
                                     apBusinessId: String,
-                                ) = arrow.core.Either.Left(
-                                    no.elhub.flex.controllableunit.db.DatabaseError("stub"),
-                                )
+                                ) = Either.Left(DatabaseError("stub"))
                             }
                         }
                         single { ControllableUnitLookup(get(), get()) }
