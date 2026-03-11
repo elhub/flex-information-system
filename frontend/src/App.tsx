@@ -1,4 +1,3 @@
-import { useState, ReactNode, createElement } from "react";
 import {
   Admin,
   CustomRoutes,
@@ -6,22 +5,10 @@ import {
   Layout as RaLayout,
   LayoutProps,
   localStorageStore,
-  Menu,
-  useCreatePath,
-  MenuItemLink,
 } from "react-admin";
-import { MenuItem, ListItemIcon, ListItemText, Box } from "@mui/material";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Collapse from "@mui/material/Collapse";
+import { Box } from "@mui/material";
 
-import DefaultIcon from "@mui/icons-material/ViewList";
-import {
-  useResourceDefinitions,
-  useGetResourceLabel,
-  useCanAccess,
-  DataProvider,
-} from "ra-core";
+import { DataProvider } from "ra-core";
 
 import { Route } from "react-router-dom";
 import { apiURL, serverURL, httpClient, authURL, docsURL } from "./httpConfig";
@@ -72,154 +59,6 @@ const dataProvider: DataProvider = {
     }),
 };
 
-const SubMenu = ({
-  text,
-  defaultOpen,
-  children,
-}: {
-  text: string;
-  children: ReactNode;
-  defaultOpen?: boolean;
-}) => {
-  const [open, setOpen] = useState(defaultOpen);
-
-  const handleClick = () => {
-    setOpen(!open);
-  };
-
-  return (
-    <>
-      <MenuItem onClick={handleClick}>
-        <ListItemIcon>
-          {open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-        </ListItemIcon>
-        <ListItemText primary={text} />
-      </MenuItem>
-      <Collapse
-        in={open}
-        timeout="auto"
-        unmountOnExit
-        sx={{
-          "& .RaMenuItemLink-icon": {
-            paddingLeft: 1,
-          },
-        }}
-      >
-        {children}
-      </Collapse>
-    </>
-  );
-};
-
-// ResourceMenuItem + label override
-export const LabelledResourceMenuItem = ({
-  name,
-  label,
-}: {
-  name: string;
-  label: string;
-}) => {
-  const resources = useResourceDefinitions();
-  const { canAccess, error, isPending } = useCanAccess({
-    action: "list",
-    resource: name,
-  });
-  const getResourceLabel = useGetResourceLabel();
-  const createPath = useCreatePath();
-  if (
-    !resources ||
-    !resources[name] ||
-    isPending ||
-    canAccess === false ||
-    error != null
-  )
-    return null;
-
-  return (
-    <MenuItemLink
-      to={createPath({ resource: name, type: "list" })}
-      state={{ _scrollToTop: true }}
-      primaryText={label ?? <>{getResourceLabel(name, 2)}</>}
-      leftIcon={
-        resources[name]?.icon ? (
-          createElement(resources[name]?.icon)
-        ) : (
-          <DefaultIcon />
-        )
-      }
-    />
-  );
-};
-
-const MainMenu = () => (
-  <Menu>
-    <Menu.DashboardItem />
-    <SubMenu text="Basic resources" defaultOpen>
-      <LabelledResourceMenuItem
-        name="accounting_point"
-        label="Accounting point data"
-      />
-      <LabelledResourceMenuItem
-        name="controllable_unit"
-        label="CU registrations"
-      />
-      <LabelledResourceMenuItem
-        name="service_providing_group"
-        label="SPG registrations"
-      />
-      <LabelledResourceMenuItem
-        name="service_providing_group_membership"
-        label="SPG memberships"
-      />
-      <LabelledResourceMenuItem
-        name="service_providing_group_grid_prequalification"
-        label="SPG grid prequalifications"
-      />
-      <LabelledResourceMenuItem
-        name="system_operator_product_type"
-        label="System operator product listings"
-      />
-    </SubMenu>
-    <SubMenu text="Product application" defaultOpen>
-      <LabelledResourceMenuItem
-        name="service_provider_product_application"
-        label="SP product applications"
-      />
-      <LabelledResourceMenuItem
-        name="service_providing_group_product_application"
-        label="SPG product applications"
-      />
-    </SubMenu>
-    <SubMenu text="Suspension" defaultOpen>
-      <LabelledResourceMenuItem
-        name="controllable_unit_suspension"
-        label="CU suspensions"
-      />
-      <LabelledResourceMenuItem
-        name="service_provider_product_suspension"
-        label="SP product suspensions"
-      />
-      <LabelledResourceMenuItem
-        name="service_providing_group_grid_suspension"
-        label="SPG grid suspensions"
-      />
-      <LabelledResourceMenuItem
-        name="service_providing_group_product_suspension"
-        label="SPG product suspensions"
-      />
-    </SubMenu>
-    <SubMenu text="Identity">
-      <Menu.ResourceItem name="entity" />
-      <Menu.ResourceItem name="party" />
-    </SubMenu>
-    <SubMenu text="System">
-      <Menu.ResourceItem name="event" />
-      <Menu.ResourceItem name="notification" />
-      <Menu.ResourceItem name="notice" />
-    </SubMenu>
-  </Menu>
-);
-
 const FooterButton = ({ href, label }: any) => (
   <a
     style={{
@@ -238,10 +77,12 @@ const FooterButton = ({ href, label }: any) => (
 
 const Layout = ({ children }: LayoutProps) => (
   <>
-    <RaLayout menu={MainMenu} appBar={Header}>
-      <Breadcrumbs />
-      {children}
-      <Box m={3} />
+    <RaLayout menu={() => null} appBar={Header}>
+      <div className="pt-[104px]">
+        <Breadcrumbs />
+        {children}
+        <Box m={3} />
+      </div>
     </RaLayout>
     <ReactQueryDevtools initialIsOpen={false} />
     <footer className="fixed z-10 bottom-0 left-0 w-full flex justify-center items-center p-2 bg-semantic-background-action-primary">
