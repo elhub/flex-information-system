@@ -68,11 +68,15 @@ No policies.
 
 #### System Operator
 
-No policies.
+| Policy key  | Policy                                              | Status |
+|-------------|-----------------------------------------------------|--------|
+| APBZ-SO001  | Read APBZ when they are system operator on the AP.  | DONE   |
 
 #### Service Provider
 
-No policies.
+| Policy key  | Policy                                                          | Status |
+|-------------|-----------------------------------------------------------------|--------|
+| APBZ-SP001  | Read APBZ on periods where they are related to a CU on the AP.  | DONE   |
 
 #### Third Party
 
