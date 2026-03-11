@@ -23,7 +23,7 @@ return
 
 CUL -> AP: Insert AP\nON CONFLICT DO NOTHING\nCOMMIT
 ' Something like https://stackoverflow.com/a/42217872 ?
-AP -> APS: Insert trigger\nversion 0\nlast_started_at = now
+AP -> APS: Insert trigger\nversion = 0
 return
 return Result (ap_id)
 
@@ -31,20 +31,19 @@ CUL -> APS: BEGIN\nUpdate lock (ap_id)
 note right
     SET LOCAL lock_timeout = '1s';
     SELECT FOR UPDATE
-    limit 1
 end note
 return Result (version)
 
 opt 55P03 lock_not_available\nAnother sync in progress
     note over CUL
-        This a edge case.
+        This is an edge case.
         Return error and retry in caller.
     end note
 end
 
 CUL -> AP: Update AP record
 note right of AP
-    Yes, even tho we might
+    Yes, even though we might
     have inserted above.
     Just in case.
 end note
@@ -55,7 +54,7 @@ return
 CUL -> APS: Unlock (ap_id)
 note right
     last_synced_at = now
-    last_started_at = null
+    last_sync_start = null
     version = version + 1
 end note
 return

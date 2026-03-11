@@ -9,13 +9,20 @@ skinparam note {
     BackgroundColor #FFFFBD
 }
 
-participant "Reciever" as REC
-database "AP" as AP
-database "AP <sub>" as APSUB
-database "AP Sync" as APS
+participant "Receiver" as REC
+database "AP Event" as APE
 participant "AP Adapter" as APA
 
 APA -> REC: AP Updated (GSRN)
-return OK
+
+REC -> APE: Upsert last_event_at
+note right
+    Only if the new event is newer
+    than the current `last_event_at`.
+end note
+return
+
+REC --> APA: 200 OK
+
 
 @enduml

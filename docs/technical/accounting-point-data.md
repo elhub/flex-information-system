@@ -66,12 +66,12 @@ of data. But the strategy that we will follow is that _thin_ events will be made
 available to the FIS, which then is required to fetch the actual data, using the
 adapter.
 
-Wether these events will be pushed to FIS by the adapter or made available for
+Whether these events will be pushed to FIS by the adapter or made available for
 pull based mechanisms will be part of a future design.
 
 ## Data synchronization
 
-Data synchronization happen "one accounting point at a time". It will
+Data synchronization happens "one accounting point at a time". It will
 happen ad hoc (lookup) and on a regular basis (background job).
 
 Data is fetched from the adapter and _merged_ into the FIS database
@@ -121,25 +121,27 @@ depending on the use case. We avoid deadlocks using
 In addition to this, we use optimistic locking with a version column to detect
 races between lookups and background syncs.
 
-Since data is fetched per metering point, pessimistic locking must be done to
-avoid concurrent syncs of the same metering point. This is done with `SELECT FOR
-UPDATE SKIP LOCKED` semantics on the relevant accounting points in
-`flex.accounting_point`.
+Since data is fetched per accounting point, pessimistic locking must be used to
+avoid concurrent syncs of the same accounting point.
 
-To faciliate batch synchronization, the `flex.accounting_point` table has a
-`last_synced_at` timestamp column that is updated on each sync. This allows us
-to identify which accounting points need to be synced in the background job.
-This column is not tracked in the `flex.accounting_point_history` table since it
-is just noise.
+We use a separate synchronization table for this process:
 
-A nullable `last_sync_start` timestamp is used to track if a sync is currently
-in progress. This is used to avoid starting multiple syncs of the same
-accounting point, and to be able to identify "dead" syncs that have been
-running for too long.
+* `flex.accounting_point_sync` - handles update and selection locks for the
+  accounting point sync process, tracks sync status (`last_synced_at`,
+  `last_sync_start`), and stores event priority signal (`last_event_at`).
 
-This shows diagram tries to show how the synchronization process works.
+We keep this state separate from the main accounting point data to keep the
+sync flow and locking logic isolated.
 
-![Accounting point data synchronization](../diagrams/accounting-point-sync.drawio.png)
+To facilitate batch synchronization, the `flex.accounting_point_sync` table has
+a `last_synced_at` timestamp column that is updated on each sync. A nullable
+`last_sync_start` timestamp is used to track whether a sync is currently in
+progress. This is used to avoid starting multiple syncs of the same accounting
+point, and to be able to identify "dead" syncs that have been running for too
+long. The version column is used for optimistic locking to detect races.
+
+The following sections outline how the different flows work and how the locking
+is used in each of them.
 
 ### Lookup flow
 
@@ -147,8 +149,28 @@ This shows diagram tries to show how the synchronization process works.
 
 ### Background sync flow
 
+The batch size for the background sync can be established upon application
+startup. We generally want all accounting points to be synced within 24 hours.
+The batch size should be configured as follows. We can use startup since
+we assume that we will deploy/recycle the application quite often.
+
+```none
+Batch size = (number of accounting points) / (24 hours / sync interval) * number of workers
+```
+
+We can make this better in the future, but for now we can live with this simple
+approach.
+
+Our goal is either way that we want to spread the load out during the whole day,
+and not have a big batch of syncs running at the same time. This is to avoid
+putting too much load on the source system.
+
 ![Accounting point sync background flow](../diagrams/accounting-point-sync-background.png)
 
 ### Incoming events
+
+Incoming events update `last_event_at` in `flex.accounting_point_sync`, which
+is used to prioritize accounting points in the background sync. Event processing
+is lightweight and only updates this sync metadata.
 
 ![Accounting point sync incoming events flow](../diagrams/accounting-point-sync-incoming-event.png)
