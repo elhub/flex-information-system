@@ -34,8 +34,8 @@ fun Application.module() {
     configureMonitoring()
     configureSerialization()
 
-    val jwtSecret = environment.config.property("flex.jwt_secret").getString()
-    val accountingPointAdapterBaseUrl = environment.config.propertyOrNull("accounting_point_adapter.baseUrl")?.getString().orEmpty()
+    val jwtSecret = environment.config.property("flex.jwt-secret").getString()
+    val accountingPointAdapterBaseUrl = environment.config.propertyOrNull("accounting-point-adapter.base-url")?.getString().orEmpty()
 
     install(FlexAuthentication) {
         this.jwtSecret = jwtSecret

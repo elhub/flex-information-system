@@ -19,8 +19,10 @@ import no.elhub.flex.controllableunit.dto.ControllableUnitLookupResponse
 import no.elhub.flex.controllableunit.dto.EndUserSummary
 import no.elhub.flex.controllableunit.dto.ErrorMessage
 import no.elhub.flex.domain.AccountingPoint
+import no.elhub.flex.domain.GSRN
 import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterService
-import no.elhub.flex.util.isValidGsrn
+import no.elhub.flex.integration.accountingpointadapter.NotFoundError as AdapterNotFoundError
+import no.elhub.flex.integration.accountingpointadapter.generated.models.AccountingPoint as AdapterAccountingPoint
 
 private val logger = KotlinLogging.logger {}
 
@@ -88,10 +90,19 @@ class ControllableUnitLookup(
             },
         )
 
-    private suspend fun fetchAccountingPointData(accountingPointBusinessId: String): Either<HttpError, String> =
+    private suspend fun fetchAccountingPointData(accountingPointBusinessId: String): Either<HttpError, AdapterAccountingPoint> =
         accountingPointAdapter.getAccountingPoint(accountingPointBusinessId).mapLeft { err ->
-            logger.debug { "Accounting point not in datahub: $accountingPointBusinessId ($err)" }
-            Pair(HttpStatusCode.NotFound, ErrorMessage(code = "HTTP404", message = "accounting point does not exist"))
+            when (err) {
+                is AdapterNotFoundError -> {
+                    logger.debug { "Accounting point not found: $accountingPointBusinessId" }
+                    Pair(HttpStatusCode.NotFound, ErrorMessage(code = "HTTP404", message = "accounting point does not exist"))
+                }
+
+                else -> {
+                    logger.error { "Failed to fetch accounting point $accountingPointBusinessId: ${err.message}" }
+                    Pair(HttpStatusCode.InternalServerError, ErrorMessage(code = "HTTP500", message = "Try again later"))
+                }
+            }
         }
 
     /**
@@ -112,11 +123,20 @@ class ControllableUnitLookup(
                 }
                 .bind()
         } else {
-            val accountingPointBusinessId = validated.accountingPointBusinessId
+            val accountingPointBusinessId = requireNotNull(validated.accountingPointBusinessId) {
+                "accountingPointBusinessId must be present when controllableUnitBusinessId is absent"
+            }.value
 
             repo.getAccountingPointIdByBusinessId(accountingPointBusinessId).fold(
                 ifLeft = {
-                    val meteringGridAreaBusinessId = fetchAccountingPointData(accountingPointBusinessId).bind()
+                    val adapterAccountingPoint = fetchAccountingPointData(accountingPointBusinessId).bind()
+                    val meteringGridAreaBusinessId = adapterAccountingPoint.meteringGridArea.firstOrNull()?.businessId
+                        ?: raise(
+                            Pair(
+                                HttpStatusCode.UnprocessableEntity,
+                                ErrorMessage(code = "HTTP422", message = "accounting point has no metering grid area"),
+                            ),
+                        )
                     val accountingPointId = repo.upsertAccountingPoint(accountingPointBusinessId, meteringGridAreaBusinessId, validated.endUser)
                         .mapLeft { err ->
                             logger.error { "Failed to sync accounting point: ${err.message}" }
@@ -158,44 +178,49 @@ class ControllableUnitLookup(
 }
 
 /** Validates the request body and returns a sanitised copy or an [ErrorMessage]. */
-private fun validateInput(req: ControllableUnitLookupRequest): Either<ErrorMessage, ValidatedRequest> {
+private fun validateInput(req: ControllableUnitLookupRequest): Either<ErrorMessage, ValidatedRequest> = either {
     val endUser = req.endUser.orEmpty()
 
-    if (endUser.isEmpty()) {
-        return ErrorMessage(code = "HTTP400", message = "missing end user business ID").left()
-    }
-    if (!END_USER_REGEX.matches(endUser)) {
-        return ErrorMessage(code = "HTTP400", message = "ill formed end user business ID").left()
-    }
+    if (endUser.isEmpty()) raise(ErrorMessage(code = "HTTP400", message = "missing end user business ID"))
+    if (!END_USER_REGEX.matches(endUser)) raise(ErrorMessage(code = "HTTP400", message = "ill formed end user business ID"))
 
     val controllableUnitId = req.controllableUnit.orEmpty()
     if (controllableUnitId.isNotEmpty() && !CONTROLLABLE_UNIT_BUSINESS_ID_REGEX.matches(controllableUnitId)) {
-        return ErrorMessage(code = "HTTP400", message = "ill formed controllable unit business ID").left()
+        raise(ErrorMessage(code = "HTTP400", message = "ill formed controllable unit business ID"))
     }
 
     val accountingPointId = req.accountingPoint.orEmpty()
 
     if (accountingPointId.isEmpty() && controllableUnitId.isEmpty()) {
-        return ErrorMessage(
-            code = "HTTP400",
-            message = "missing business ID for accounting point or controllable unit",
-        ).left()
+        raise(
+            ErrorMessage(
+                code = "HTTP400",
+                message = "missing business ID for accounting point or controllable unit",
+            ),
+        )
     }
     if (accountingPointId.isNotEmpty() && controllableUnitId.isNotEmpty()) {
-        return ErrorMessage(
-            code = "HTTP400",
-            message = "request contains business IDs for both accounting point and controllable unit",
-        ).left()
-    }
-    if (accountingPointId.isNotEmpty() && !isValidGsrn(accountingPointId)) {
-        return ErrorMessage(code = "HTTP400", message = "ill formed accounting point business ID").left()
+        raise(
+            ErrorMessage(
+                code = "HTTP400",
+                message = "request contains business IDs for both accounting point and controllable unit",
+            ),
+        )
     }
 
-    return ValidatedRequest(endUser = endUser, controllableUnitBusinessId = controllableUnitId, accountingPointBusinessId = accountingPointId).right()
+    val gsrn = if (accountingPointId.isNotEmpty()) {
+        GSRN.parse(accountingPointId)
+            .mapLeft { ErrorMessage(code = "HTTP400", message = "ill formed accounting point business ID") }
+            .bind()
+    } else {
+        null
+    }
+
+    ValidatedRequest(endUser = endUser, controllableUnitBusinessId = controllableUnitId, accountingPointBusinessId = gsrn)
 }
 
 private data class ValidatedRequest(
     val endUser: String,
     val controllableUnitBusinessId: String,
-    val accountingPointBusinessId: String,
+    val accountingPointBusinessId: GSRN?,
 )
