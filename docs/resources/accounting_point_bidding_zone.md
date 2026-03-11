@@ -75,7 +75,7 @@ No policies.
 #### Service Provider
 
 | Policy key  | Policy                                                          | Status |
-|-------------|------------------------------------------------------------------|--------|
+|-------------|-----------------------------------------------------------------|--------|
 | APBZ-SP001  | Read APBZ on periods where they are related to a CU on the AP.  | DONE   |
 
 #### Third Party
