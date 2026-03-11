@@ -62,17 +62,3 @@ application {
     val isDevelopment: Boolean = project.ext.has("development")
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
 }
-
-// Security Fixes
-configurations.all {
-    resolutionStrategy {
-        eachDependency {
-            if (requested.group == "io.netty" && requested.version == "4.2.7.Final") {
-                useVersion("4.2.9.Final")
-                because(
-                    "Override Netty version to 4.2.9.Final to address CVE-2025-67735. Should be fixed in future Ktor versions after 3.3.3.",
-                )
-            }
-        }
-    }
-}
