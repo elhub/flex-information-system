@@ -15,12 +15,6 @@ private val logger = KotlinLogging.logger {}
 
 private val json = Json { ignoreUnknownKeys = true }
 
-/**
- * Production implementation of [ControllableUnitRepository].
- *
- * Each function opens its own [FlexTransaction] using the [AccessToken] supplied
- * via context parameter to apply the per-request RLS preamble.
- */
 class ControllableUnitRepositoryImpl : ControllableUnitRepository {
 
     context(token: AccessToken)
@@ -75,7 +69,7 @@ class ControllableUnitRepositoryImpl : ControllableUnitRepository {
         }
 
     context(token: AccessToken)
-    override fun upsertAccountingPointMeteringGridArea(
+    override fun upsertAccountingPoint(
         accountingPointBusinessId: String,
         meteringGridAreaBusinessId: String,
         endUserBusinessId: String,
@@ -156,7 +150,7 @@ class ControllableUnitRepositoryImpl : ControllableUnitRepository {
             }.fold(
                 onSuccess = { jsonStr ->
                     if (jsonStr == null) {
-                        DatabaseError("controllable unit lookup returned no result").left()
+                        emptyList<ControllableUnit>().right()
                     } else {
                         runCatching { json.decodeFromString<List<ControllableUnit>>(jsonStr) }.fold(
                             onSuccess = { it.right() },

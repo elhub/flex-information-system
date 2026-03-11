@@ -3,7 +3,7 @@ ktor:
     modules:
       - no.elhub.flex.ApplicationKt.module
   deployment:
-    port: 8081
+    port: 8080
   database:
     url: ${FLEX_DATABASE_URL}
     username: ${FLEX_DATABASE_USERNAME}
@@ -14,4 +14,6 @@ ktor:
 
 flex:
   jwt_secret: ${FLEX_JWT_SECRET}
-  private_url: ${FLEX_PRIVATE_URL:}
+
+accounting_point_adapter:
+  baseUrl: ${ACCOUNTING_POINT_ADAPTER_BASE_URL}

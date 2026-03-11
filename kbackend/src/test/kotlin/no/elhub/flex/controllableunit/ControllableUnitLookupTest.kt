@@ -25,7 +25,7 @@ import no.elhub.flex.controllableunit.db.ControllableUnitRepository
 import no.elhub.flex.controllableunit.db.NotFoundError
 import no.elhub.flex.controllableunit.dto.ControllableUnit
 import no.elhub.flex.controllableunit.lookup.ControllableUnitLookup
-import no.elhub.flex.flexprivate.FlexPrivateService
+import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterService
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 import java.util.Date
@@ -43,7 +43,7 @@ private fun makeJwt(role: String = "flex_service_provider", eid: String = "12345
         .withExpiresAt(Date(System.currentTimeMillis() + 60_000))
         .sign(Algorithm.HMAC256(TEST_SECRET))
 
-private fun testApp(repo: ControllableUnitRepository, flexPrivate: FlexPrivateService): TestApplication =
+private fun testApp(repo: ControllableUnitRepository, accountingPointAdapter: AccountingPointAdapterService): TestApplication =
     TestApplication {
         application {
             install(FlexAuthentication) { jwtSecret = TEST_SECRET }
@@ -51,7 +51,7 @@ private fun testApp(repo: ControllableUnitRepository, flexPrivate: FlexPrivateSe
             install(Koin) {
                 modules(
                     module {
-                        single<FlexPrivateService> { flexPrivate }
+                        single<AccountingPointAdapterService> { accountingPointAdapter }
                         single<ControllableUnitRepository> { repo }
                         single { ControllableUnitLookup(get(), get()) }
                     },
@@ -64,12 +64,12 @@ private fun testApp(repo: ControllableUnitRepository, flexPrivate: FlexPrivateSe
 class ControllableUnitLookupTest :
     FunSpec({
         val mockRepo = mockk<ControllableUnitRepository>()
-        val mockFlexPrivate = mockk<FlexPrivateService>()
+        val mockAccountingPointAdapter = mockk<AccountingPointAdapterService>()
 
         context("POST /controllable_unit/lookup") {
 
             test("missing Authorization header returns HTTP 401") {
-                val app = testApp(mockRepo, mockFlexPrivate)
+                val app = testApp(mockRepo, mockAccountingPointAdapter)
                 val response = app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     setBody("""{"end_user":"123456789","accounting_point":"133700000000000053"}""")
@@ -89,7 +89,7 @@ class ControllableUnitLookupTest :
                     with(any<AccessToken>()) { mockRepo.lookupControllableUnits(any(), any()) }
                 } returns emptyList<ControllableUnit>().right()
 
-                val app = testApp(mockRepo, mockFlexPrivate)
+                val app = testApp(mockRepo, mockAccountingPointAdapter)
                 val response = app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Cookie", "__Host-flex_session=${makeJwt()}")
@@ -110,7 +110,7 @@ class ControllableUnitLookupTest :
                     with(any<AccessToken>()) { mockRepo.lookupControllableUnits(any(), any()) }
                 } returns emptyList<ControllableUnit>().right()
 
-                val app = testApp(mockRepo, mockFlexPrivate)
+                val app = testApp(mockRepo, mockAccountingPointAdapter)
                 val response = app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt()}")
@@ -122,7 +122,7 @@ class ControllableUnitLookupTest :
             }
 
             test("disallowed role returns HTTP 401") {
-                val app = testApp(mockRepo, mockFlexPrivate)
+                val app = testApp(mockRepo, mockAccountingPointAdapter)
                 val response = app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt(role = "flex_organisation")}")
@@ -133,7 +133,7 @@ class ControllableUnitLookupTest :
             }
 
             test("missing end_user returns HTTP 400") {
-                val app = testApp(mockRepo, mockFlexPrivate)
+                val app = testApp(mockRepo, mockAccountingPointAdapter)
                 val response = app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt()}")
@@ -144,7 +144,7 @@ class ControllableUnitLookupTest :
             }
 
             test("ill-formed end_user returns HTTP 400") {
-                val app = testApp(mockRepo, mockFlexPrivate)
+                val app = testApp(mockRepo, mockAccountingPointAdapter)
                 val response = app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt()}")
@@ -155,7 +155,7 @@ class ControllableUnitLookupTest :
             }
 
             test("both AP and CU business IDs returns HTTP 400") {
-                val app = testApp(mockRepo, mockFlexPrivate)
+                val app = testApp(mockRepo, mockAccountingPointAdapter)
                 val response = app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt()}")
@@ -170,7 +170,7 @@ class ControllableUnitLookupTest :
             }
 
             test("missing both AP and CU business IDs returns HTTP 400") {
-                val app = testApp(mockRepo, mockFlexPrivate)
+                val app = testApp(mockRepo, mockAccountingPointAdapter)
                 val response = app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt()}")
@@ -181,7 +181,7 @@ class ControllableUnitLookupTest :
             }
 
             test("invalid GSRN accounting point returns HTTP 400") {
-                val app = testApp(mockRepo, mockFlexPrivate)
+                val app = testApp(mockRepo, mockAccountingPointAdapter)
                 val response = app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt()}")
@@ -196,7 +196,7 @@ class ControllableUnitLookupTest :
                     with(any<AccessToken>()) { mockRepo.getCurrentAccountingPoint(any()) }
                 } returns NotFoundError("controllable unit does not exist").left()
 
-                val app = testApp(mockRepo, mockFlexPrivate)
+                val app = testApp(mockRepo, mockAccountingPointAdapter)
                 val response = app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt()}")
@@ -214,7 +214,7 @@ class ControllableUnitLookupTest :
                     with(any<AccessToken>()) { mockRepo.checkEndUserMatchesAccountingPoint(any(), any()) }
                 } returns NotFoundError("end user does not match accounting point / controllable unit").left()
 
-                val app = testApp(mockRepo, mockFlexPrivate)
+                val app = testApp(mockRepo, mockAccountingPointAdapter)
                 val response = app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt()}")
@@ -228,9 +228,9 @@ class ControllableUnitLookupTest :
                 every {
                     with(any<AccessToken>()) { mockRepo.getAccountingPointIdByBusinessId(any()) }
                 } returns NotFoundError("accounting point not found").left()
-                coEvery { mockFlexPrivate.fetchMeteringGridArea(any()) } returns "datahub returned HTTP 404".left()
+                coEvery { mockAccountingPointAdapter.getAccountingPoint(any()) } returns "datahub returned HTTP 404".left()
 
-                val app = testApp(mockRepo, mockFlexPrivate)
+                val app = testApp(mockRepo, mockAccountingPointAdapter)
                 val response = app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt()}")
@@ -258,7 +258,7 @@ class ControllableUnitLookupTest :
                     ),
                 ).right()
 
-                val app = testApp(mockRepo, mockFlexPrivate)
+                val app = testApp(mockRepo, mockAccountingPointAdapter)
                 val response = app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt()}")

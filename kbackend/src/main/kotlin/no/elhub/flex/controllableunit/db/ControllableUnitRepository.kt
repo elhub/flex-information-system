@@ -42,7 +42,7 @@ interface ControllableUnitRepository {
      * Returns the newly-synced accounting point ID, or [DatabaseError] on failure.
      */
     context(token: AccessToken)
-    fun upsertAccountingPointMeteringGridArea(
+    fun upsertAccountingPoint(
         accountingPointBusinessId: String,
         meteringGridAreaBusinessId: String,
         endUserBusinessId: String,

@@ -13,7 +13,7 @@ import no.elhub.flex.controllableunit.db.ControllableUnitRepository
 import no.elhub.flex.controllableunit.db.DatabaseError
 import no.elhub.flex.controllableunit.db.NotFoundError
 import no.elhub.flex.controllableunit.lookup.ControllableUnitLookup
-import no.elhub.flex.flexprivate.FlexPrivateService
+import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterService
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 
@@ -27,9 +27,9 @@ fun defaultTestApplication(): TestApplication =
             install(Koin) {
                 modules(
                     module {
-                        single<FlexPrivateService> {
-                            object : FlexPrivateService {
-                                override suspend fun fetchMeteringGridArea(
+                        single<AccountingPointAdapterService> {
+                            object : AccountingPointAdapterService {
+                                override suspend fun getAccountingPoint(
                                     accountingPointBusinessId: String,
                                 ): Either<String, String> =
                                     Either.Right("")
@@ -46,7 +46,7 @@ fun defaultTestApplication(): TestApplication =
                                     Either.Left(NotFoundError("stub"))
 
                                 context(token: AccessToken)
-                                override fun upsertAccountingPointMeteringGridArea(
+                                override fun upsertAccountingPoint(
                                     apBusinessId: String,
                                     mgaBusinessId: String,
                                     endUserBusinessId: String,

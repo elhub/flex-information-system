@@ -19,7 +19,7 @@ import no.elhub.flex.controllableunit.dto.ControllableUnitLookupResponse
 import no.elhub.flex.controllableunit.dto.EndUserSummary
 import no.elhub.flex.controllableunit.dto.ErrorMessage
 import no.elhub.flex.domain.AccountingPoint
-import no.elhub.flex.flexprivate.FlexPrivateService
+import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterService
 import no.elhub.flex.util.isValidGsrn
 
 private val logger = KotlinLogging.logger {}
@@ -35,22 +35,9 @@ private val CONTROLLABLE_UNIT_BUSINESS_ID_REGEX =
 
 private typealias HttpError = Pair<HttpStatusCode, ErrorMessage>
 
-/**
- * Handles `POST /controllable_unit/lookup`.
- *
- * 1. Check role
- * 2. Parse + validate body
- * 3. Repository calls each open their own transaction with the RLS preamble applied via the
- *    [AccessToken] context parameter; FlexPrivate is called lazily only when an AP is not found
- *    in the local DB
- * 4. Build and return the response
- *
- * @param repo repository for controllable-unit database queries
- * @param flexPrivate external service for metering grid area lookups
- */
 class ControllableUnitLookup(
     private val repo: ControllableUnitRepository,
-    private val flexPrivate: FlexPrivateService,
+    private val accountingPointAdapter: AccountingPointAdapterService,
 ) {
     suspend fun handle(call: RoutingCall) {
         val token = call.attributes[AccessTokenKey]
@@ -101,8 +88,8 @@ class ControllableUnitLookup(
             },
         )
 
-    private suspend fun fetchAccountingPointMeteringGridArea(accountingPointBusinessId: String): Either<HttpError, String> =
-        flexPrivate.fetchMeteringGridArea(accountingPointBusinessId).mapLeft { err ->
+    private suspend fun fetchAccountingPointData(accountingPointBusinessId: String): Either<HttpError, String> =
+        accountingPointAdapter.getAccountingPoint(accountingPointBusinessId).mapLeft { err ->
             logger.debug { "Accounting point not in datahub: $accountingPointBusinessId ($err)" }
             Pair(HttpStatusCode.NotFound, ErrorMessage(code = "HTTP404", message = "accounting point does not exist"))
         }
@@ -111,7 +98,7 @@ class ControllableUnitLookup(
      * Resolves the Accounting Point from either the CU path or the AP path.
      *
      * - **CU path**: looks up the current accounting point for the given CU business ID.
-     * - **AP path**: fetches the AP from the database; if absent, sync with FlexPrivate — a [Left] from FlexPrivate → 404.
+     * - **AP path**: fetches the AP from the database; if absent, sync with the Accounting Point Adapter — a [Left] from the adapter → 404.
      */
     context(token: AccessToken)
     private suspend fun resolveAccountingPoint(
@@ -126,20 +113,22 @@ class ControllableUnitLookup(
                 .bind()
         } else {
             val accountingPointBusinessId = validated.accountingPointBusinessId
-            val localAccountingPointId = repo.getAccountingPointIdByBusinessId(accountingPointBusinessId)
 
-            if (localAccountingPointId.isRight()) {
-                AccountingPoint(id = (localAccountingPointId as Either.Right).value, businessId = accountingPointBusinessId)
-            } else {
-                val meteringGridAreaBusinessId = fetchAccountingPointMeteringGridArea(accountingPointBusinessId).bind()
-                val accountingPointId = repo.upsertAccountingPointMeteringGridArea(accountingPointBusinessId, meteringGridAreaBusinessId, validated.endUser)
-                    .mapLeft { err ->
-                        logger.error { "Failed to sync accounting point: ${err.message}" }
-                        Pair(HttpStatusCode.InternalServerError, ErrorMessage(code = "HTTP500", message = "Try again later"))
-                    }
-                    .bind()
-                AccountingPoint(id = accountingPointId, businessId = accountingPointBusinessId)
-            }
+            repo.getAccountingPointIdByBusinessId(accountingPointBusinessId).fold(
+                ifLeft = {
+                    val meteringGridAreaBusinessId = fetchAccountingPointData(accountingPointBusinessId).bind()
+                    val accountingPointId = repo.upsertAccountingPoint(accountingPointBusinessId, meteringGridAreaBusinessId, validated.endUser)
+                        .mapLeft { err ->
+                            logger.error { "Failed to sync accounting point: ${err.message}" }
+                            Pair(HttpStatusCode.InternalServerError, ErrorMessage(code = "HTTP500", message = "Try again later"))
+                        }
+                        .bind()
+                    AccountingPoint(id = accountingPointId, businessId = accountingPointBusinessId)
+                },
+                ifRight = { localAccountingPointId ->
+                    AccountingPoint(id = localAccountingPointId, businessId = accountingPointBusinessId)
+                },
+            )
         }
     }
 

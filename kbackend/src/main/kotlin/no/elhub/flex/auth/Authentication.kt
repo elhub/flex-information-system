@@ -6,6 +6,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.ApplicationPlugin
 import io.ktor.server.application.createApplicationPlugin
 import io.ktor.server.application.hooks.CallSetup
+import io.ktor.server.request.uri
 import io.ktor.server.response.respond
 import io.ktor.util.AttributeKey
 import no.elhub.flex.controllableunit.dto.ErrorMessage
@@ -22,6 +23,9 @@ val AccessTokenKey = AttributeKey<AccessToken>("flex-access-token")
 class FlexAuthenticationConfig {
     /** The HS256 secret used to verify incoming JWTs. */
     var jwtSecret: String = ""
+
+    /** Paths that bypass JWT verification entirely (exact match). */
+    val excludedPaths: MutableList<String> = mutableListOf()
 }
 
 /**
@@ -37,8 +41,11 @@ class FlexAuthenticationConfig {
 val FlexAuthentication: ApplicationPlugin<FlexAuthenticationConfig> =
     createApplicationPlugin("FlexAuthentication", ::FlexAuthenticationConfig) {
         val secret = pluginConfig.jwtSecret
+        val excludedPaths = pluginConfig.excludedPaths.toSet()
 
         on(CallSetup) { call ->
+            if (call.request.uri in excludedPaths) return@on
+
             val authHeader = call.request.headers["Authorization"]
 
             val jwt = when {
