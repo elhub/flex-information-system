@@ -48,12 +48,7 @@ WITH (security_invoker = false, security_barrier = true) AS (
         accounting_point_id,
         bidding_zone,
         lower(valid_time_range) AS valid_from,
-        -- allow window so SP does not see too far in the future
-        CASE
-            WHEN upper(valid_time_range) > current_timestamp + '2w'::interval
-                THEN null
-            ELSE upper(valid_time_range)
-        END AS valid_to
+        upper(valid_time_range) AS valid_to
     FROM ( -- noqa
         SELECT
             ap_bz.accounting_point_id,
@@ -76,6 +71,4 @@ WITH (security_invoker = false, security_barrier = true) AS (
             ap_bz.bidding_zone,
             ap_bz.valid_time_range
     ) AS ap_bz_for_sp
-    -- allow window, see above
-    WHERE lower(valid_time_range) < current_timestamp + '2w'::interval
 );
