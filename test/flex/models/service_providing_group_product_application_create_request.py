@@ -23,7 +23,7 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
             service_providing_group_id (int): Reference to the service providing group. Example: 18.
             procuring_system_operator_id (int): Reference to the procuring system operator. Example: 39.
             product_type_ids (list[int]): References to the product types. Example: [2, 4, 5].
-            maximum_active_power (float): The maximum active power applied for, in kilowatts. Example: 150.5.
+            maximum_active_power (float): The maximum active power applied for. Stored in kilowatts. Example: 150.5.
             status (ServiceProvidingGroupProductApplicationStatus | Unset): The status of the application. Example:
                 in_progress.
             additional_information (None | str | Unset): Free text field for extra information about the application if

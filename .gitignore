@@ -24,6 +24,9 @@
 *.dot
 !.air.toml
 
+# Intellij
+*.iml
+
 # TeamCity config
 !.teamcity/pom.xml
 !.teamcity/settings.kts

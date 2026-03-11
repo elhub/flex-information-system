@@ -6281,7 +6281,6 @@ TO flex_service_provider;
 
 GRANT UPDATE (
     product_type_ids,
-    status,
     maximum_active_power,
     additional_information
 ) ON TABLE
