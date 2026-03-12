@@ -75,8 +75,7 @@ const UserDropdown = () => {
         variant="invisible"
         as={Dropdown.Toggle}
         size="medium"
-        className="text-white"
-        data-testid="header-desktop-menu-toggle"
+        className="text-semantic-background"
       >
         <div className="flex flex-row gap-2 items-center">
           <IconUser />
