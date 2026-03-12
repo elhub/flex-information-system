@@ -34,7 +34,6 @@ logging = [
   "ktor-server-call-logging",
   "logging-oshai-kotlin-logging",
   "logging-logback",
-  "logging-slf4j-simple",
 ]
 monitoring = [
   "ktor-server-metrics-micrometer",
