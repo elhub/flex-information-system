@@ -44,6 +44,7 @@ dependencies {
     testImplementation(libs.test.testcontainers)
     testImplementation(libs.test.testcontainers.postgres)
     testImplementation(libs.test.mybatis)
+    testImplementation(libs.test.wiremock)
 }
 
 kotlin {

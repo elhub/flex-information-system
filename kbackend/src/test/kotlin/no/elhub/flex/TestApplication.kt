@@ -13,9 +13,11 @@ import no.elhub.flex.controllableunit.db.ControllableUnitRepository
 import no.elhub.flex.controllableunit.db.DatabaseError
 import no.elhub.flex.controllableunit.db.NotFoundError
 import no.elhub.flex.controllableunit.lookup.ControllableUnitLookup
+import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterError
 import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterService
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
+import no.elhub.flex.integration.accountingpointadapter.generated.models.AccountingPoint as AdapterAccountingPoint
 
 fun defaultTestApplication(): TestApplication =
     TestApplication {
@@ -30,9 +32,9 @@ fun defaultTestApplication(): TestApplication =
                         single<AccountingPointAdapterService> {
                             object : AccountingPointAdapterService {
                                 override suspend fun getAccountingPoint(
-                                    accountingPointBusinessId: String,
-                                ): Either<String, String> =
-                                    Either.Right("")
+                                    accountingPointId: String,
+                                ): Either<AccountingPointAdapterError, AdapterAccountingPoint> =
+                                    Either.Right(AdapterAccountingPoint(gsrn = accountingPointId, endUser = emptyList(), energySupplier = emptyList(), meteringGridArea = emptyList()))
                             }
                         }
                         single<ControllableUnitRepository> {
