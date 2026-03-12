@@ -26,6 +26,8 @@ export const ArrayInput = ({
   placeholder,
   format,
   parse,
+  description,
+  descriptionOverride,
   ...rest
 }: ArrayInputProps) => {
   const { id, field, fieldState } = useInput({
@@ -58,6 +60,8 @@ export const ArrayInput = ({
       readOnly={readOnly}
       id={id}
       error={fieldState.error?.message}
+      description={description}
+      descriptionOverride={descriptionOverride}
     >
       <Combobox
         options={options}

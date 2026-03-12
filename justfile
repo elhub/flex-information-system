@@ -540,9 +540,6 @@ openapi-client-frontend:
 
     rm ../backend/data/static/.openapi-frontend-client.json
 
-    # replace all z.optional properties to preprocess null so we dont have to handle null or undefined. Only undefined in forms.
-    perl -i -pe 's/z\.optional\(((?:[^()]|\((?:[^()]|\([^()]*\))*\))*)\)/z.optional(z.preprocess((value) => (value === null ? undefined : value), $1.optional()))/g' src/generated-client/zod.gen.ts
-
     # Replace number and int with z.coerce.number
     sed -i 's/z\.number/z\.coerce\.number/g' src/generated-client/zod.gen.ts
     sed -i 's/z\.int/z\.coerce\.number/g' src/generated-client/zod.gen.ts

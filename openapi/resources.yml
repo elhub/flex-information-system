@@ -2972,7 +2972,7 @@ resources:
           nb: Status
           nn: Status
       maximum_active_power:
-        description: The maximum active power applied for, in kilowatts.
+        description: The maximum active power applied for. Stored in kilowatts.
         format: decimal
         type: number
         minimum: 0

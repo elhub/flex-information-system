@@ -32,6 +32,11 @@
             "commitMessageSuffix": "",
         },
         {
+            "groupName": "kbackend",
+            "matchFileNames": ["kbackend/**"],
+            "commitMessageSuffix": "",
+        },
+        {
             "groupName": "frontend",
             "matchFileNames": ["frontend/**"],
             "commitMessageSuffix": "",

@@ -8,7 +8,7 @@ const FormContainer = (props: FormContainerProps) => {
     <Container
       {...props}
       className={cn(
-        "p-3 bg-background flex flex-col gap-5 max-w-7xl",
+        "p-3 bg-background flex flex-col gap-5 max-w-7xl mt-4",
         props.className,
       )}
     />
