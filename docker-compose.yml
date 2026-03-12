@@ -150,10 +150,21 @@ services:
         source: ${HOME}/.ca/certificates/idp.flex.internal.key.pem
         target: /key.pem
   elhub:
-    image: tiangolo/uwsgi-nginx-flask
+    build: ./local/docker-python
     ports:
-      - "5000:80"
+      - "5000:8080"
     volumes:
       - type: bind
         source: ${PWD}/local/elhub/main.py
         target: /app/main.py
+  ap-adapter:
+    build: ./local/docker-python
+    ports:
+      - "5001:8080"
+    volumes:
+      - type: bind
+        source: ${PWD}/local/accounting-point/main.py
+        target: /app/main.py
+      - type: bind
+        source: ${PWD}/local/accounting-point/client
+        target: /app/client
