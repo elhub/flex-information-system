@@ -12,6 +12,9 @@ fun Application.configureLogging() {
     install(CallLogging) {
         level = Level.INFO
 
+        mdc("trace_id") { call -> call.attributes.getOrNull(TraceKey)?.traceID }
+        mdc("span_id") { call -> call.attributes.getOrNull(TraceKey)?.spanID }
+
         format { call ->
             val status =
                 call.response
