@@ -14,13 +14,18 @@ import no.elhub.flex.integration.accountingpointadapter.generated.client.Account
 import no.elhub.flex.integration.accountingpointadapter.generated.client.ApiConfiguration
 import no.elhub.flex.integration.accountingpointadapter.generated.client.NetworkResult
 import no.elhub.flex.integration.accountingpointadapter.generated.models.AccountingPoint
+import org.koin.core.annotation.Property
+import org.koin.core.annotation.Single
 import no.elhub.flex.integration.accountingpointadapter.generated.client.NetworkError as ClientNetworkError
 
 interface AccountingPointAdapterService {
     suspend fun getAccountingPoint(accountingPointId: String): Either<AccountingPointAdapterError, AccountingPoint>
 }
 
-class AccountingPointAdapterHttpService(private val baseUrl: String) : AccountingPointAdapterService {
+@Single(createdAtStart = true)
+class AccountingPointAdapterHttpService(
+    @Property("accounting-point-adapter.base-url") private val baseUrl: String
+) : AccountingPointAdapterService {
 
     private companion object {
         const val REQUEST_TIMEOUT_MILLIS = 5000L

@@ -21,6 +21,7 @@ import no.elhub.flex.controllableunit.dto.ErrorMessage
 import no.elhub.flex.domain.AccountingPoint
 import no.elhub.flex.domain.GSRN
 import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterService
+import org.koin.core.annotation.Single
 import no.elhub.flex.integration.accountingpointadapter.NotFoundError as AdapterNotFoundError
 import no.elhub.flex.integration.accountingpointadapter.generated.models.AccountingPoint as AdapterAccountingPoint
 
@@ -37,6 +38,7 @@ private val CONTROLLABLE_UNIT_BUSINESS_ID_REGEX =
 
 private typealias HttpError = Pair<HttpStatusCode, ErrorMessage>
 
+@Single(createdAtStart = true)
 class ControllableUnitLookup(
     private val repo: ControllableUnitRepository,
     private val accountingPointAdapter: AccountingPointAdapterService,
