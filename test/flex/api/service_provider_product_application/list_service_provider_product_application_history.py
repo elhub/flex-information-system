@@ -25,7 +25,6 @@ def _get_kwargs(
     limit: str | Unset = UNSET,
     service_provider_product_application_id: str | Unset = UNSET,
 ) -> dict[str, Any]:
-
     params: dict[str, Any] = {}
 
     params["id"] = id

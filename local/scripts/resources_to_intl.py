@@ -273,7 +273,7 @@ comment_visibility_enum_translation = {
 
 
 # generate enum translations and write them to output file
-def generate_enum_translations(resources):
+def generate_enum_translations(resources, base_schemas=None):
     translations = comment_visibility_enum_translation
     for resource in resources:
         for field, attr in resource["properties"].items():
@@ -282,6 +282,16 @@ def generate_enum_translations(resources):
                     translations[f"{resource['id']}.{field}.{enum_value['id']}"] = (
                         enum_value["x-intl"]
                     )
+
+    # also process global enums from openapi-api-base.yml
+    if base_schemas:
+        for schema_name, schema_data in base_schemas.items():
+            if "enum" in schema_data and isinstance(schema_data["enum"], list):
+                if schema_data["enum"] and isinstance(schema_data["enum"][0], dict):
+                    for enum_value in schema_data["enum"]:
+                        translations[f"{schema_name}.{enum_value['id']}"] = enum_value[
+                            "x-intl"
+                        ]
 
     transposed = transpose_enum_translations(translations)
 
@@ -306,5 +316,10 @@ if __name__ == "__main__":
     resources = yaml.safe_load(sys.stdin)
     resources = resources["resources"]
 
+    # also load global schemas from openapi-api-base.yml for enum translations
+    with open("openapi/openapi-api-base.yml", "r") as base_f:
+        base = yaml.safe_load(base_f)
+    base_schemas = base.get("components", {}).get("schemas", {})
+
     generate_field_translations(resources)
-    generate_enum_translations(resources)
+    generate_enum_translations(resources, base_schemas)

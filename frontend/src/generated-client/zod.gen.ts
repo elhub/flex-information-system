@@ -28,6 +28,51 @@ export const zAuthScope = z.enum([
 ]);
 
 /**
+ * Resource category classification. Derived from technologies.
+ */
+export const zCategory = z.enum([
+  "consumption",
+  "production",
+  "energy_storage",
+]);
+
+/**
+ * Type of device for technical resources.
+ */
+export const zDeviceType = z.enum([
+  "inverter",
+  "hvac",
+  "ev_charging_device",
+  "other",
+]);
+
+/**
+ * Technology classification using ltree path notation. Technologies are hierarchical (e.g., hydropower.pumped, hvac.heat_pump). Use the most specific technology applicable to the technical resource.
+ */
+export const zTechnology = z.enum([
+  "hydropower",
+  "hydropower.pumped",
+  "hydropower.run_of_river",
+  "heat_power_plant",
+  "heat_power_plant.chp",
+  "solar",
+  "wind",
+  "backup_generator",
+  "hvac",
+  "hvac.heat",
+  "hvac.heat_pump",
+  "lighting",
+  "hot_water_heater",
+  "boiler",
+  "ev_charging_device",
+  "ev_charging_device.v2g",
+  "battery",
+  "other.consumption",
+  "other.production",
+  "other.energy_storage",
+]);
+
+/**
  * Request schema for controllable unit lookup operations
  */
 export const zControllableUnitLookupRequest = z.object({
@@ -64,7 +109,13 @@ export const zControllableUnitLookup = z.object({
         z.object({
           id: z.coerce.number(),
           name: z.string(),
-          details: z.string().optional(),
+          technologies: z.array(zTechnology),
+          categories: z.array(zCategory),
+          maximum_active_power: z.coerce.number(),
+          device_type: zDeviceType.optional(),
+          make: z.string().optional(),
+          model: z.string().optional(),
+          device_unique_identifier: z.string().optional(),
         }),
       ),
     }),
@@ -271,6 +322,15 @@ export const zPartyStatus = z.enum([
   "inactive",
   "suspended",
   "terminated",
+]);
+
+/**
+ * The type of business identifier used for the device.
+ */
+export const zTechnicalResourceBusinessIdType = z.enum([
+  "serial_number",
+  "mac",
+  "other",
 ]);
 
 /**
@@ -995,7 +1055,14 @@ export const zIdentity = z.object({
  */
 export const zTechnicalResourceUpdateRequest = z.object({
   name: z.string().optional(),
-  details: z.string().max(1024).optional(),
+  technology: z.array(zTechnology).min(1).optional(),
+  maximum_active_power: z.coerce.number().gte(0).lte(999999.999).optional(),
+  device_type: zDeviceType.optional(),
+  make: z.string().max(128).optional(),
+  model: z.string().max(128).optional(),
+  business_id: z.string().max(256).optional(),
+  business_id_type: zTechnicalResourceBusinessIdType.optional(),
+  additional_information: z.string().optional(),
 });
 
 /**
@@ -1004,7 +1071,14 @@ export const zTechnicalResourceUpdateRequest = z.object({
 export const zTechnicalResourceCreateRequest = z.object({
   name: z.string(),
   controllable_unit_id: z.coerce.number(),
-  details: z.string().max(1024).optional(),
+  technology: z.array(zTechnology).min(1),
+  maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
+  device_type: zDeviceType,
+  make: z.string().max(128).optional(),
+  model: z.string().max(128).optional(),
+  business_id: z.string().max(256).optional(),
+  business_id_type: zTechnicalResourceBusinessIdType.optional(),
+  additional_information: z.string().optional(),
 });
 
 /**
@@ -1014,7 +1088,15 @@ export const zTechnicalResource = z.object({
   id: z.coerce.number().readonly(),
   name: z.string(),
   controllable_unit_id: z.coerce.number(),
-  details: z.string().max(1024).optional(),
+  technology: z.array(zTechnology).min(1),
+  category: z.array(zCategory).readonly(),
+  maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
+  device_type: zDeviceType,
+  make: z.string().max(128).optional(),
+  model: z.string().max(128).optional(),
+  business_id: z.string().max(256).optional(),
+  business_id_type: zTechnicalResourceBusinessIdType.optional(),
+  additional_information: z.string().optional(),
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
 });
@@ -1932,7 +2014,14 @@ export const zPartyMembershipWritable = z.object({
 export const zTechnicalResourceWritable = z.object({
   name: z.string(),
   controllable_unit_id: z.coerce.number(),
-  details: z.string().max(1024).optional(),
+  technology: z.array(zTechnology).min(1),
+  maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
+  device_type: zDeviceType,
+  make: z.string().max(128).optional(),
+  model: z.string().max(128).optional(),
+  business_id: z.string().max(256).optional(),
+  business_id_type: zTechnicalResourceBusinessIdType.optional(),
+  additional_information: z.string().optional(),
 });
 
 /**

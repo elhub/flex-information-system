@@ -39,7 +39,10 @@ register a minimum of information about the device.
 * **Type** - The type of device, such as `inverter`, `hvac`, `evcharger`
 * **Make** - The manufacturer.
 * **Model** - well... the model
-* **Unique identifier** - E.g. a serial number or MAC address of the device.
+* **Business ID** - A business identifier for the device, e.g. a serial number
+  or MAC address.
+* **Business ID type** - The type of business identifier used (`serial_number`,
+  `mac`, or `other`).
 
 ## Categories and technologies for statistics and characteristics
 

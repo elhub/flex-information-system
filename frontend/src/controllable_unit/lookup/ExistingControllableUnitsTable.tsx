@@ -40,7 +40,7 @@ const TechnicalResourceDetails = ({
             {translate("field.technical_resource.name")}
           </Table.ColumnHeader>
           <Table.ColumnHeader scope="col">
-            {translate("field.technical_resource.details")}
+            {translate("field.technical_resource.maximum_active_power")}
           </Table.ColumnHeader>
         </Table.Header>
         <Table.Body>
@@ -48,7 +48,7 @@ const TechnicalResourceDetails = ({
             <Table.Row key={tr.id}>
               <Table.DataCell>{tr.id}</Table.DataCell>
               <Table.DataCell>{tr.name}</Table.DataCell>
-              <Table.DataCell>{tr.details}</Table.DataCell>
+              <Table.DataCell>{tr.maximum_active_power}</Table.DataCell>
             </Table.Row>
           ))}
         </Table.Body>

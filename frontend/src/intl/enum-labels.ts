@@ -8,6 +8,9 @@ export type EnumLabel =
   | "accounting_point_bidding_zone.bidding_zone.NO3"
   | "accounting_point_bidding_zone.bidding_zone.NO4"
   | "accounting_point_bidding_zone.bidding_zone.NO5"
+  | "category.consumption"
+  | "category.energy_storage"
+  | "category.production"
   | "comment.visibility.any_involved_party"
   | "comment.visibility.same_party"
   | "controllable_unit.grid_validation_status.in_progress"
@@ -24,6 +27,10 @@ export type EnumLabel =
   | "controllable_unit.status.terminated"
   | "controllable_unit_suspension.reason.compromises_safe_operation"
   | "controllable_unit_suspension.reason.other"
+  | "device_type.ev_charging_device"
+  | "device_type.hvac"
+  | "device_type.inverter"
+  | "device_type.other"
   | "entity.business_id_type.email"
   | "entity.business_id_type.org"
   | "entity.business_id_type.pid"
@@ -97,7 +104,30 @@ export type EnumLabel =
   | "service_providing_group_product_suspension.reason.failed_verification"
   | "service_providing_group_product_suspension.reason.other"
   | "system_operator_product_type.status.active"
-  | "system_operator_product_type.status.inactive";
+  | "system_operator_product_type.status.inactive"
+  | "technical_resource.business_id_type.mac"
+  | "technical_resource.business_id_type.other"
+  | "technical_resource.business_id_type.serial_number"
+  | "technology.backup_generator"
+  | "technology.battery"
+  | "technology.boiler"
+  | "technology.ev_charging_device"
+  | "technology.ev_charging_device.v2g"
+  | "technology.heat_power_plant"
+  | "technology.heat_power_plant.chp"
+  | "technology.hot_water_heater"
+  | "technology.hvac"
+  | "technology.hvac.heat"
+  | "technology.hvac.heat_pump"
+  | "technology.hydropower"
+  | "technology.hydropower.pumped"
+  | "technology.hydropower.run_of_river"
+  | "technology.lighting"
+  | "technology.other.consumption"
+  | "technology.other.energy_storage"
+  | "technology.other.production"
+  | "technology.solar"
+  | "technology.wind";
 
 export const enumLabels: Record<string, Record<EnumLabel, string>> = {
   en: {
@@ -178,6 +208,9 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "party.status.inactive": "Inactive",
     "party.status.suspended": "Suspended",
     "party.status.terminated": "Terminated",
+    "technical_resource.business_id_type.serial_number": "Serial number",
+    "technical_resource.business_id_type.mac": "MAC address",
+    "technical_resource.business_id_type.other": "Other",
     "accounting_point_balance_responsible_party.energy_direction.consumption":
       "Consumption",
     "accounting_point_balance_responsible_party.energy_direction.production":
@@ -224,6 +257,35 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_providing_group_product_suspension.reason.other": "Other",
     "notice.status.active": "Active",
     "notice.status.resolved": "Resolved",
+    "category.consumption": "Consumption",
+    "category.production": "Production",
+    "category.energy_storage": "Energy storage",
+    "device_type.inverter": "Inverter",
+    "device_type.hvac": "HVAC",
+    "device_type.ev_charging_device": "EV Charger",
+    "device_type.other": "Other",
+    "technology.hydropower": "Hydropower",
+    "technology.hydropower.pumped": "Hydropower - Pumped",
+    "technology.hydropower.run_of_river": "Hydropower - Run-of-river",
+    "technology.heat_power_plant": "Heat power plant",
+    "technology.heat_power_plant.chp":
+      "Heat power plant - Combined heat and power",
+    "technology.solar": "Solar",
+    "technology.wind": "Wind",
+    "technology.backup_generator": "Backup generator",
+    "technology.hvac": "HVAC",
+    "technology.hvac.heat": "HVAC - Heat",
+    "technology.hvac.heat_pump": "HVAC - Heat pump",
+    "technology.lighting": "Lighting",
+    "technology.hot_water_heater": "Hot water heater",
+    "technology.boiler": "Boiler",
+    "technology.ev_charging_device": "Electric vehicle charger",
+    "technology.ev_charging_device.v2g":
+      "Electric vehicle charger - Vehicle to grid",
+    "technology.battery": "Battery",
+    "technology.other.consumption": "Other - Consumption",
+    "technology.other.production": "Other - Production",
+    "technology.other.energy_storage": "Other - Energy storage",
   },
   nb: {
     "comment.visibility.same_party": "Samme aktør",
@@ -303,6 +365,9 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "party.status.inactive": "Inaktiv",
     "party.status.suspended": "Suspendert",
     "party.status.terminated": "Terminert",
+    "technical_resource.business_id_type.serial_number": "Serienummer",
+    "technical_resource.business_id_type.mac": "MAC-adresse",
+    "technical_resource.business_id_type.other": "Annet",
     "accounting_point_balance_responsible_party.energy_direction.consumption":
       "Forbruk",
     "accounting_point_balance_responsible_party.energy_direction.production":
@@ -351,6 +416,33 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_providing_group_product_suspension.reason.other": "Annet",
     "notice.status.active": "Aktiv",
     "notice.status.resolved": "Løst",
+    "category.consumption": "Forbruk",
+    "category.production": "Produksjon",
+    "category.energy_storage": "Energilager",
+    "device_type.inverter": "Inverter",
+    "device_type.hvac": "HVAC",
+    "device_type.ev_charging_device": "Elbillader",
+    "device_type.other": "Annet",
+    "technology.hydropower": "Vannkraft",
+    "technology.hydropower.pumped": "Vannkraft - Pumpe",
+    "technology.hydropower.run_of_river": "Vannkraft - Elvekraft",
+    "technology.heat_power_plant": "Varmekraftverk",
+    "technology.heat_power_plant.chp": "Varmekraftverk - Kraftvarme",
+    "technology.solar": "Sol",
+    "technology.wind": "Vind",
+    "technology.backup_generator": "Reservegenerator",
+    "technology.hvac": "HVAC",
+    "technology.hvac.heat": "HVAC - Varme",
+    "technology.hvac.heat_pump": "HVAC - Varmepumpe",
+    "technology.lighting": "Belysning",
+    "technology.hot_water_heater": "Varmtvannsbereder",
+    "technology.boiler": "Kjele",
+    "technology.ev_charging_device": "Elbillader",
+    "technology.ev_charging_device.v2g": "Elbillader - Vehicle to grid",
+    "technology.battery": "Batteri",
+    "technology.other.consumption": "Annet - Forbruk",
+    "technology.other.production": "Annet - Produksjon",
+    "technology.other.energy_storage": "Annet - Energilager",
   },
   nn: {
     "comment.visibility.same_party": "Same aktør",
@@ -430,6 +522,9 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "party.status.inactive": "Inaktiv",
     "party.status.suspended": "Suspendert",
     "party.status.terminated": "Terminert",
+    "technical_resource.business_id_type.serial_number": "Serienummer",
+    "technical_resource.business_id_type.mac": "MAC-adresse",
+    "technical_resource.business_id_type.other": "Anna",
     "accounting_point_balance_responsible_party.energy_direction.consumption":
       "Forbruk",
     "accounting_point_balance_responsible_party.energy_direction.production":
@@ -477,5 +572,32 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_providing_group_product_suspension.reason.other": "Anna",
     "notice.status.active": "Aktiv",
     "notice.status.resolved": "Løyst",
+    "category.consumption": "Forbruk",
+    "category.production": "Produksjon",
+    "category.energy_storage": "Energilager",
+    "device_type.inverter": "Inverter",
+    "device_type.hvac": "HVAC",
+    "device_type.ev_charging_device": "Elbilladar",
+    "device_type.other": "Anna",
+    "technology.hydropower": "Vasskraft",
+    "technology.hydropower.pumped": "Vasskraft - Pumpe",
+    "technology.hydropower.run_of_river": "Vasskraft - Elvekraft",
+    "technology.heat_power_plant": "Varmekraftverk",
+    "technology.heat_power_plant.chp": "Varmekraftverk - Kraftvarme",
+    "technology.solar": "Sol",
+    "technology.wind": "Vind",
+    "technology.backup_generator": "Reservegenerator",
+    "technology.hvac": "HVAC",
+    "technology.hvac.heat": "HVAC - Varme",
+    "technology.hvac.heat_pump": "HVAC - Varmepumpe",
+    "technology.lighting": "Belysning",
+    "technology.hot_water_heater": "Varmtvannsbereder",
+    "technology.boiler": "Kjele",
+    "technology.ev_charging_device": "Elbilladar",
+    "technology.ev_charging_device.v2g": "Elbilladar - Vehicle to grid",
+    "technology.battery": "Batteri",
+    "technology.other.consumption": "Anna - Forbruk",
+    "technology.other.production": "Anna - Produksjon",
+    "technology.other.energy_storage": "Anna - Energilager",
   },
 };

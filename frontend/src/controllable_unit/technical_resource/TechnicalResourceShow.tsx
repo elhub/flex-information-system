@@ -1,111 +1,155 @@
 import {
-  Button,
+  usePermissions,
+  useRecordContext,
+  useResourceContext,
+  useTranslate,
+} from "ra-core";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import {
+  Heading,
+  Tag,
+  VerticalSpace,
+  BodyText,
+  Link,
+} from "../../components/ui";
+import {
+  DateField,
+  EnumField,
+  FieldTooltip,
+  IdentityField,
   ReferenceField,
   Show,
-  SimpleShowLayout,
   TextField,
-  TopToolbar,
-  usePermissions,
-  useResourceContext,
-} from "react-admin";
-import { Typography, Stack } from "@mui/material";
-import { FieldStack } from "../../auth";
-import { NestedResourceHistoryButton } from "../../components/history";
-import EditIcon from "@mui/icons-material/Edit";
-import { Link, useParams } from "react-router-dom";
-import { DateField } from "../../components/datetime";
-import { EventButton } from "../../event/EventButton";
-import { IdentityField } from "../../components/IdentityField";
+} from "../../components/EDS-ra";
+import { TechnicalResource } from "../../generated-client";
+import { Button } from "../../components/ui";
+import { IconClockReset, IconPencil } from "@elhub/ds-icons";
 import { Permissions } from "../../auth/permissions";
 
-export const TechnicalResourceShow = () => {
+const EnumTagsField = ({
+  source,
+  enumKey,
+}: {
+  source: string;
+  enumKey: string;
+}) => {
+  const translate = useTranslate();
+  const record = useRecordContext<TechnicalResource>();
   const resource = useResourceContext()!;
-  const { permissions } = usePermissions<Permissions>();
-  const { id, controllable_unit_id } = useParams<{
-    id: string;
-    controllable_unit_id: string;
-  }>();
-
-  const isHistory = resource.endsWith("_history");
-
-  // Permission checks
-  const canUpdate = permissions?.allow("technical_resource", "update");
+  const labelText = translate(`field.${resource}.${source}`);
+  const values: string[] = (record as any)?.[source] ?? [];
 
   return (
-    <Show
-      actions={
-        !isHistory &&
-        canUpdate && (
-          <TopToolbar>
-            <Button
-              component={Link}
-              to={`/controllable_unit/${controllable_unit_id}/technical_resource/${id}`}
-              startIcon={<EditIcon />}
-              label="Edit"
-            />
-          </TopToolbar>
-        )
-      }
-    >
-      <SimpleShowLayout>
-        <Stack direction="column" spacing={2}>
-          <Typography variant="h6" gutterBottom>
-            Basic information
-          </Typography>
-          <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField source="id" label="field.technical_resource.id" />
-            <TextField
-              source="technical_resource_id"
-              label="field.technical_resource_history.technical_resource_id"
-            />
-            <TextField source="name" label="field.technical_resource.name" />
-            <ReferenceField
-              source="controllable_unit_id"
-              reference="controllable_unit"
-              label="field.technical_resource.controllable_unit_id"
-            >
-              <TextField source="name" />
-            </ReferenceField>
-          </FieldStack>
-          <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField
-              source="details"
-              sx={{ whiteSpace: "pre-wrap" }}
-              label="field.technical_resource.details"
-            />
-          </FieldStack>
+    <div className="contents">
+      <BodyText weight="bold">{labelText} :</BodyText>
+      <div className="flex gap-2 items-center flex-wrap">
+        {values.map((v) => (
+          <Tag key={v}>{translate(`enum.${enumKey}.${v}`, { _: v })}</Tag>
+        ))}
+        <FieldTooltip resource={resource} field={source} />
+      </div>
+    </div>
+  );
+};
 
-          <Typography variant="h6" gutterBottom>
-            Registration
-          </Typography>
-          <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <DateField
-              source="recorded_at"
-              showTime
-              label="field.technical_resource.recorded_at"
-            />
-            <IdentityField
-              source="recorded_by"
-              label="field.technical_resource.recorded_by"
-            />
-            <DateField
-              source="replaced_at"
-              showTime
-              label="field.technical_resource_history.replaced_at"
-            />
-            <IdentityField
-              source="replaced_by"
-              label="field.technical_resource_history.replaced_by"
-            />
-          </FieldStack>
-        </Stack>
-        {!isHistory && <EventButton filterOnSubject />}
-        <NestedResourceHistoryButton
-          child="technical_resource"
-          childAPIResource="technical_resource"
-          label="technical resources"
-        />
-      </SimpleShowLayout>
+const ControllableUnitLink = () => {
+  const record = useRecordContext();
+  if (!record) return null;
+  return (
+    <Link to={`/controllable_unit/${record.id}/show`} as={RouterLink}>
+      {record.name}
+    </Link>
+  );
+};
+
+const EditButton = () => {
+  const record = useRecordContext<TechnicalResource>();
+  const navigate = useNavigate();
+  return (
+    <Button
+      variant="invisible"
+      size="medium"
+      icon={IconPencil}
+      onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        navigate(
+          `/controllable_unit/${record?.controllable_unit_id}/technical_resource/${record?.id}`,
+        );
+      }}
+    >
+      Edit
+    </Button>
+  );
+};
+
+const HistoryButton = () => {
+  const record = useRecordContext<TechnicalResource>();
+  const { permissions } = usePermissions<Permissions>();
+
+  if (!record || !permissions?.allow("technical_resource_history", "read")) {
+    return null;
+  }
+
+  const filter = `?filter=${encodeURIComponent(JSON.stringify({ technical_resource_id: record.id }))}`;
+
+  return (
+    <Button
+      as={RouterLink}
+      to={`/controllable_unit/${record.controllable_unit_id}/technical_resource_history${filter}`}
+      variant="invisible"
+      icon={IconClockReset}
+    >
+      View History
+    </Button>
+  );
+};
+
+export const TechnicalResourceShow = () => {
+  return (
+    <Show editButton={<EditButton />} historyButton={<HistoryButton />}>
+      <Heading level={2} size="small" spacing>
+        Basic information
+      </Heading>
+      <div className="grid grid-cols-[1fr_5fr] gap-2">
+        <TextField source="id" label tooltip />
+        <TextField source="technical_resource_id" label tooltip />
+        <TextField source="name" label tooltip />
+        <ReferenceField
+          source="controllable_unit_id"
+          reference="controllable_unit"
+          label
+          tooltip
+        >
+          <ControllableUnitLink />
+        </ReferenceField>
+      </div>
+
+      <VerticalSpace />
+      <Heading level={2} size="small" spacing>
+        Technical information
+      </Heading>
+      <div className="grid grid-cols-[1fr_5fr] gap-2">
+        <EnumTagsField source="technology" enumKey="technology" />
+        <EnumTagsField source="category" enumKey="category" />
+        <TextField source="maximum_active_power" label tooltip />
+        <EnumField source="device_type" enumKey="device_type" label tooltip />
+        <TextField source="make" label tooltip />
+        <TextField source="model" label tooltip />
+        <TextField source="business_id" label tooltip />
+        <TextField source="business_id_type" label tooltip />
+        <TextField source="additional_information" label tooltip />
+      </div>
+
+      <VerticalSpace />
+      <Heading level={2} size="small" spacing>
+        Registration
+      </Heading>
+      <div className="grid grid-cols-[1fr_5fr] gap-2">
+        <DateField source="recorded_at" showTime label tooltip />
+        <IdentityField source="recorded_by" label tooltip />
+        <DateField source="replaced_at" showTime label tooltip />
+        <IdentityField source="replaced_by" label tooltip />
+      </div>
     </Show>
   );
 };

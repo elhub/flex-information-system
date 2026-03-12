@@ -229,6 +229,54 @@
                     "manage:auth"
                 ]
             },
+            "category": {
+                "description": "Resource category classification. Derived from technologies.",
+                "format": "text",
+                "type": "string",
+                "enum": [
+                    "consumption",
+                    "production",
+                    "energy_storage"
+                ]
+            },
+            "device_type": {
+                "description": "Type of device for technical resources.",
+                "format": "text",
+                "type": "string",
+                "enum": [
+                    "inverter",
+                    "hvac",
+                    "ev_charging_device",
+                    "other"
+                ]
+            },
+            "technology": {
+                "description": "Technology classification using ltree path notation. Technologies are hierarchical (e.g., hydropower.pumped, hvac.heat_pump). Use the most specific technology applicable to the technical resource.",
+                "format": "text",
+                "type": "string",
+                "enum": [
+                    "hydropower",
+                    "hydropower.pumped",
+                    "hydropower.run_of_river",
+                    "heat_power_plant",
+                    "heat_power_plant.chp",
+                    "solar",
+                    "wind",
+                    "backup_generator",
+                    "hvac",
+                    "hvac.heat",
+                    "hvac.heat_pump",
+                    "lighting",
+                    "hot_water_heater",
+                    "boiler",
+                    "ev_charging_device",
+                    "ev_charging_device.v2g",
+                    "battery",
+                    "other.consumption",
+                    "other.production",
+                    "other.energy_storage"
+                ]
+            },
             "controllable_unit_lookup_request": {
                 "summary": "Controllable unit lookup",
                 "description": "Request schema for controllable unit lookup operations",
@@ -345,16 +393,72 @@
                                                 "type": "string",
                                                 "example": "Battery Unit A"
                                             },
-                                            "details": {
-                                                "description": "Additional details about the technical resource.",
+                                            "technologies": {
+                                                "description": "Technologies of the technical resource.",
+                                                "type": "array",
+                                                "items": {
+                                                    "$ref": "#/components/schemas/technology"
+                                                },
+                                                "example": [
+                                                    "solar",
+                                                    "battery"
+                                                ]
+                                            },
+                                            "categories": {
+                                                "description": "Categories derived from the technologies.",
+                                                "type": "array",
+                                                "items": {
+                                                    "$ref": "#/components/schemas/category"
+                                                },
+                                                "example": [
+                                                    "production",
+                                                    "energy_storage"
+                                                ]
+                                            },
+                                            "maximum_active_power": {
+                                                "description": "Maximum continuous active power of the technical resource in kilowatts.",
+                                                "format": "decimal",
+                                                "type": "number",
+                                                "example": 120.0
+                                            },
+                                            "device_type": {
+                                                "description": "The type of device.",
+                                                "allOf": [
+                                                    {
+                                                        "$ref": "#/components/schemas/device_type"
+                                                    }
+                                                ],
+                                                "nullable": true,
+                                                "example": "inverter"
+                                            },
+                                            "make": {
+                                                "description": "The manufacturer of the device.",
                                                 "format": "text",
                                                 "type": "string",
-                                                "example": "16A"
+                                                "nullable": true,
+                                                "example": "SolarEdge"
+                                            },
+                                            "model": {
+                                                "description": "The model of the device.",
+                                                "format": "text",
+                                                "type": "string",
+                                                "nullable": true,
+                                                "example": "SE10K-RWS"
+                                            },
+                                            "device_unique_identifier": {
+                                                "description": "Unique identifier of the device.",
+                                                "format": "text",
+                                                "type": "string",
+                                                "nullable": true,
+                                                "example": "SE10K123456789"
                                             }
                                         },
                                         "required": [
                                             "id",
-                                            "name"
+                                            "name",
+                                            "technologies",
+                                            "categories",
+                                            "maximum_active_power"
                                         ]
                                     }
                                 }
@@ -720,6 +824,18 @@
                     "terminated"
                 ],
                 "example": "active"
+            },
+            "technical_resource_business_id_type": {
+                "description": "The type of business identifier used for the device.",
+                "format": "text",
+                "type": "string",
+                "nullable": true,
+                "enum": [
+                    "serial_number",
+                    "mac",
+                    "other"
+                ],
+                "example": "serial_number"
             },
             "accounting_point_balance_responsible_party_energy_direction": {
                 "description": "The direction of the effect on the balance that the BRP takes responsibility for.",
@@ -2835,13 +2951,72 @@
                         "type": "string",
                         "example": "Battery Unit #1"
                     },
-                    "details": {
-                        "description": "Free text details about the technical resource.",
+                    "technology": {
+                        "description": "Technologies of the technical resource using ltree path notation. Multiple technologies can be specified for hybrid resources (e.g., solar + battery).",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/technology"
+                        },
+                        "minItems": 1,
+                        "example": [
+                            "solar",
+                            "battery"
+                        ]
+                    },
+                    "maximum_active_power": {
+                        "description": "Maximum continuous active power (rated power) of the technical resource in kilowatts.",
+                        "format": "decimal",
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 999999.999,
+                        "nullable": false,
+                        "multipleOf": 0.001,
+                        "example": 120.0
+                    },
+                    "device_type": {
+                        "description": "The type of device.",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/device_type"
+                            }
+                        ],
+                        "nullable": false,
+                        "example": "inverter"
+                    },
+                    "make": {
+                        "description": "The manufacturer of the device. Required if model or business_id is provided.",
                         "format": "text",
                         "type": "string",
-                        "maxLength": 1024,
+                        "maxLength": 128,
                         "nullable": true,
-                        "example": "Make: ACME\nModel: Car Charger 3000"
+                        "example": "SolarEdge"
+                    },
+                    "model": {
+                        "description": "The model of the device.",
+                        "format": "text",
+                        "type": "string",
+                        "maxLength": 128,
+                        "nullable": true,
+                        "example": "SE10K-RWS"
+                    },
+                    "business_id": {
+                        "description": "Business identifier of the device, such as a serial number or MAC address.",
+                        "format": "text",
+                        "type": "string",
+                        "maxLength": 256,
+                        "nullable": true,
+                        "example": "SE10K123456789"
+                    },
+                    "business_id_type": {
+                        "$ref": "#/components/schemas/technical_resource_business_id_type",
+                        "nullable": true
+                    },
+                    "additional_information": {
+                        "description": "Free text field for extra information about the technical resource if needed.",
+                        "format": "text",
+                        "type": "string",
+                        "nullable": true,
+                        "example": null
                     }
                 }
             },
@@ -2862,18 +3037,80 @@
                         "type": "integer",
                         "example": 37
                     },
-                    "details": {
-                        "description": "Free text details about the technical resource.",
+                    "technology": {
+                        "description": "Technologies of the technical resource using ltree path notation. Multiple technologies can be specified for hybrid resources (e.g., solar + battery).",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/technology"
+                        },
+                        "minItems": 1,
+                        "example": [
+                            "solar",
+                            "battery"
+                        ]
+                    },
+                    "maximum_active_power": {
+                        "description": "Maximum continuous active power (rated power) of the technical resource in kilowatts.",
+                        "format": "decimal",
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 999999.999,
+                        "nullable": false,
+                        "multipleOf": 0.001,
+                        "example": 120.0
+                    },
+                    "device_type": {
+                        "description": "The type of device.",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/device_type"
+                            }
+                        ],
+                        "nullable": false,
+                        "example": "inverter"
+                    },
+                    "make": {
+                        "description": "The manufacturer of the device. Required if model or business_id is provided.",
                         "format": "text",
                         "type": "string",
-                        "maxLength": 1024,
+                        "maxLength": 128,
                         "nullable": true,
-                        "example": "Make: ACME\nModel: Car Charger 3000"
+                        "example": "SolarEdge"
+                    },
+                    "model": {
+                        "description": "The model of the device.",
+                        "format": "text",
+                        "type": "string",
+                        "maxLength": 128,
+                        "nullable": true,
+                        "example": "SE10K-RWS"
+                    },
+                    "business_id": {
+                        "description": "Business identifier of the device, such as a serial number or MAC address.",
+                        "format": "text",
+                        "type": "string",
+                        "maxLength": 256,
+                        "nullable": true,
+                        "example": "SE10K123456789"
+                    },
+                    "business_id_type": {
+                        "$ref": "#/components/schemas/technical_resource_business_id_type",
+                        "nullable": true
+                    },
+                    "additional_information": {
+                        "description": "Free text field for extra information about the technical resource if needed.",
+                        "format": "text",
+                        "type": "string",
+                        "nullable": true,
+                        "example": null
                     }
                 },
                 "required": [
                     "name",
-                    "controllable_unit_id"
+                    "controllable_unit_id",
+                    "technology",
+                    "maximum_active_power",
+                    "device_type"
                 ]
             },
             "technical_resource_response": {
@@ -2900,13 +3137,84 @@
                         "type": "integer",
                         "example": 37
                     },
-                    "details": {
-                        "description": "Free text details about the technical resource.",
+                    "technology": {
+                        "description": "Technologies of the technical resource using ltree path notation. Multiple technologies can be specified for hybrid resources (e.g., solar + battery).",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/technology"
+                        },
+                        "minItems": 1,
+                        "example": [
+                            "solar",
+                            "battery"
+                        ]
+                    },
+                    "category": {
+                        "description": "Categories derived from the technologies of the technical resource. Automatically computed based on the selected technologies.",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/category"
+                        },
+                        "readOnly": true,
+                        "example": [
+                            "production",
+                            "energy_storage"
+                        ]
+                    },
+                    "maximum_active_power": {
+                        "description": "Maximum continuous active power (rated power) of the technical resource in kilowatts.",
+                        "format": "decimal",
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 999999.999,
+                        "nullable": false,
+                        "multipleOf": 0.001,
+                        "example": 120.0
+                    },
+                    "device_type": {
+                        "description": "The type of device.",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/device_type"
+                            }
+                        ],
+                        "nullable": false,
+                        "example": "inverter"
+                    },
+                    "make": {
+                        "description": "The manufacturer of the device. Required if model or business_id is provided.",
                         "format": "text",
                         "type": "string",
-                        "maxLength": 1024,
+                        "maxLength": 128,
                         "nullable": true,
-                        "example": "Make: ACME\nModel: Car Charger 3000"
+                        "example": "SolarEdge"
+                    },
+                    "model": {
+                        "description": "The model of the device.",
+                        "format": "text",
+                        "type": "string",
+                        "maxLength": 128,
+                        "nullable": true,
+                        "example": "SE10K-RWS"
+                    },
+                    "business_id": {
+                        "description": "Business identifier of the device, such as a serial number or MAC address.",
+                        "format": "text",
+                        "type": "string",
+                        "maxLength": 256,
+                        "nullable": true,
+                        "example": "SE10K123456789"
+                    },
+                    "business_id_type": {
+                        "$ref": "#/components/schemas/technical_resource_business_id_type",
+                        "nullable": true
+                    },
+                    "additional_information": {
+                        "description": "Free text field for extra information about the technical resource if needed.",
+                        "format": "text",
+                        "type": "string",
+                        "nullable": true,
+                        "example": null
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
@@ -2927,6 +3235,10 @@
                     "id",
                     "name",
                     "controllable_unit_id",
+                    "technology",
+                    "category",
+                    "maximum_active_power",
+                    "device_type",
                     "recorded_at",
                     "recorded_by"
                 ]

@@ -38,12 +38,14 @@ export const BaseField = ({
   }
 
   return (
-    <div className="flex gap-2 items-center">
+    <div className="contents">
       {label === true ? <BodyText weight="bold">{labelText} :</BodyText> : null}
-      {children}
-      {shouldShowTooltip ? (
-        <FieldTooltip resource={resource} field={source} />
-      ) : null}
+      <div className="flex gap-2 items-center">
+        {children}
+        {shouldShowTooltip ? (
+          <FieldTooltip resource={resource} field={source} />
+        ) : null}
+      </div>
     </div>
   );
 };

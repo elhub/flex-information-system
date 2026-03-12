@@ -1,0 +1,21 @@
+ID,CATEGORY,NAME
+backup_generator,production,Backup generator
+battery,energy_storage,Battery
+boiler,consumption,Boiler
+ev_charging_device,consumption,Electric vehicle charger
+ev_charging_device.v2g,energy_storage,Electric vehicle charger - Vehicle to grid
+heat_power_plant,production,Heat power plant
+heat_power_plant.chp,production,Heat power plant - Combined heat and power
+hot_water_heater,consumption,Hot water heater
+hvac,consumption,HVAC
+hvac.heat_pump,consumption,HVAC - Heat pump
+hvac.heat,consumption,HVAC - Heat
+hydropower,production,Hydropower
+hydropower.pumped,production,Hydropower - Pumped
+hydropower.run_of_river,production,Hydropower - Run-of-river
+lighting,consumption,Lighting
+other.consumption,consumption,Other - Consumption
+other.energy_storage,energy_storage,Other - Energy storage
+other.production,production,Other - Production
+solar,production,Solar
+wind,production,Wind

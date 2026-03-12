@@ -1702,6 +1702,7 @@ resources:
         type: array
         items:
           $ref: "#/components/schemas/category"
+        x-no-update: true
         readOnly: true
         example: ['production', 'energy_storage']
         x-intl:
@@ -1735,21 +1736,21 @@ resources:
           en: Device type
           nb: Enhetstype
           nn: Einingstype
-      device_make:
+      make:
         description: >-
-          The manufacturer of the device. Required if device_model or device_unique_identifier is provided.
+          The manufacturer of the device. Required if model or business_id is provided.
         format: text
         type: string
         maxLength: 128
         nullable: true
         example: 'SolarEdge'
         x-details: >-
-          Must be provided if device_model or device_unique_identifier is specified.
+          Must be provided if model or business_id is specified.
         x-intl:
-          en: Device make
-          nb: Enhetsprodusent
-          nn: Einingsprodusent
-      device_model:
+          en: Make
+          nb: Produsent
+          nn: Produsent
+      model:
         description: >-
           The model of the device.
         format: text
@@ -1758,21 +1759,59 @@ resources:
         nullable: true
         example: 'SE10K-RWS'
         x-intl:
-          en: Device model
-          nb: Enhetsmodell
-          nn: Einingsmodell
-      device_unique_identifier:
+          en: Model
+          nb: Modell
+          nn: Modell
+      business_id:
         description: >-
-          Unique identifier of the device such as serial number or MAC address.
+          Business identifier of the device, such as a serial number or MAC address.
         format: text
         type: string
         maxLength: 256
         nullable: true
         example: 'SE10K123456789'
         x-intl:
-          en: Device unique identifier
-          nb: Unik enhetsidentifikator
-          nn: Unik einingsidentifikator
+          en: Business ID
+          nb: Forretnings-ID
+          nn: Forretnings-ID
+      business_id_type:
+        description: >-
+          The type of business identifier used for the device.
+        format: text
+        type: string
+        nullable: true
+        enum:
+          - id: serial_number
+            x-intl:
+              en: Serial number
+              nb: Serienummer
+              nn: Serienummer
+          - id: mac
+            x-intl:
+              en: MAC address
+              nb: MAC-adresse
+              nn: MAC-adresse
+          - id: other
+            x-intl:
+              en: Other
+              nb: Annet
+              nn: Anna
+        example: 'serial_number'
+        x-intl:
+          en: Business ID type
+          nb: Forretnings-ID-type
+          nn: Forretnings-ID-type
+      additional_information:
+        description: >-
+          Free text field for extra information about the technical resource if needed.
+        format: text
+        type: string
+        nullable: true
+        example: null
+        x-intl:
+          en: Additional information
+          nb: Tilleggsinformasjon
+          nn: Tilleggsinformasjon
 
   - id: event
     acronym: EVENT
