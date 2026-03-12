@@ -96,7 +96,9 @@ export const HeaderNav = () => {
       .map((group) => ({
         ...group,
         items: group.items.filter((item) =>
-          permissions?.allow(item.resource, "read"),
+          typeof permissions?.allow === "function"
+            ? permissions.allow(item.resource, "read")
+            : true,
         ),
       }))
       .filter((group) => group.items.length > 0);

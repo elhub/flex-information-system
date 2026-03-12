@@ -2,11 +2,9 @@ import {
   Admin,
   CustomRoutes,
   ResourceContextProvider,
-  Layout as RaLayout,
   LayoutProps,
   localStorageStore,
 } from "react-admin";
-import { Box } from "@mui/material";
 
 import { DataProvider } from "ra-core";
 
@@ -14,8 +12,6 @@ import { Route } from "react-router-dom";
 import { apiURL, serverURL, httpClient, authURL, docsURL } from "./httpConfig";
 
 import { authProvider } from "./auth";
-
-import { Breadcrumbs } from "./components/Breadcrumbs";
 import { elhubTheme } from "./theme";
 import { LoginPage } from "./LoginPage";
 import { AssumePartyPage } from "./AssumePartyPage";
@@ -77,13 +73,8 @@ const FooterButton = ({ href, label }: any) => (
 
 const Layout = ({ children }: LayoutProps) => (
   <>
-    <RaLayout menu={() => null} appBar={Header}>
-      <div className="pt-[104px]">
-        <Breadcrumbs />
-        {children}
-        <Box m={3} />
-      </div>
-    </RaLayout>
+    <Header />
+    <div className="py-8 px-6 ">{children}</div>
     <ReactQueryDevtools initialIsOpen={false} />
     <footer className="fixed z-10 bottom-0 left-0 w-full flex justify-center items-center p-2 bg-semantic-background-action-primary">
       <FooterButton href={serverURL} label="Portal" />
