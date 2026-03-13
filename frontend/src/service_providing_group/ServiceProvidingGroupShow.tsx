@@ -26,6 +26,7 @@ import { Button } from "../components/ui";
 import { IconUser } from "@elhub/ds-icons";
 import { Permissions } from "../auth/permissions";
 import { EditButton } from "../components/EDS-ra";
+import { ServiceProvidingGroupAlerts } from "./ServiceProvidingGroupAlerts";
 
 export const ServiceProvidingGroupShow = () => {
   const resource = useResourceContext()!;
@@ -39,7 +40,6 @@ export const ServiceProvidingGroupShow = () => {
     "create",
   );
   permissions?.allow("service_providing_group_membership", "delete");
-
   return (
     <Show
       actions={
@@ -57,6 +57,7 @@ export const ServiceProvidingGroupShow = () => {
       }
     >
       <SimpleShowLayout>
+        {!isHistory && <ServiceProvidingGroupAlerts />}
         <Stack direction="column" spacing={2}>
           <Typography variant="h6" gutterBottom>
             Basic information
