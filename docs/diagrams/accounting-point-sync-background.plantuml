@@ -1,0 +1,88 @@
+@startuml accounting-point-sync-background
+!theme plain
+
+title AP Sync - Background
+
+autonumber
+autoactivate on
+skinparam note {
+    BackgroundColor #FFFFBD
+}
+
+control "Scheduler" as SCH
+participant "Batch sync" as BS
+database "AP" as AP
+database "AP <sub>" as APSUB
+database "AP Sync" as APS
+participant "AP Adapter" as APA
+
+SCH -> BS: Trigger
+BS -> APS: Selection lock + return selected APs
+note right
+    WITH selected AS (
+      SELECT
+        id, version
+      FROM flex.accounting_point_sync aps
+      LEFT JOIN flex.accounting_point_event ape ON ape.accounting_point_id = aps.accounting_point_id
+      WHERE
+        -- pick old aps and that have new events
+        -- also pick dead syncs (syncs that started long ago but never finished)
+      ORDER BY
+        -- prioritize events, then old syncs
+      LIMIT <batch size>
+      FOR UPDATE flex.accounting_point_sync SKIP LOCKED
+    )
+    UPDATE ... SET last_sync_start = now()
+    RETURNING accounting_point_id
+    COMMIT;
+end note
+APS --> BS: AP list w/ id, version
+
+loop Per selected AP
+    BS -> APA: Get AP data (GSRN)
+    APA --> BS: AP payload
+
+    BS -> APS: BEGIN\nUpdate lock (ap_id)
+    note right
+        SET LOCAL lock_timeout = '1s';
+        SELECT ... FOR UPDATE
+    end note
+    return AP version
+
+    alt 55P03 lock_not_available
+        note over BS
+            AP is being synced elsewhere (lookup?).
+            We leave the AP alone and try again later.
+            `last_sync_start` will still be set but will
+            be detected as a dead sync when it gets old enough.
+        end note
+        BS -> APS: ROLLBACK
+        return
+    else Version has changed
+        note over BS
+            AP has been updated since we selected it for sync.
+            We skip this AP since it now has new data.
+            `last_sync_start` will still be set but will
+            be detected as a dead sync when it gets old enough.
+        end note
+        BS -> APS: ROLLBACK
+        return
+    else Lock acquired
+        BS -> AP: Merge AP data
+        return
+        BS -> APSUB: Merge AP sub data
+        return
+        BS -> APS: Finalize sync
+        note right
+            last_synced_at = now
+            last_sync_start = null
+            version = version + 1
+        end note
+        return
+        BS -> APS: COMMIT
+        return
+    end
+end
+
+BS --> SCH: Done
+@enduml
