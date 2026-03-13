@@ -157,6 +157,7 @@ export const ControllableUnitCreateForm = ({
                 id="accounting_point_business_id"
                 value={accountingPointBusinessId}
                 readOnly
+                disabled
               />
             </FormItem>
           )}
