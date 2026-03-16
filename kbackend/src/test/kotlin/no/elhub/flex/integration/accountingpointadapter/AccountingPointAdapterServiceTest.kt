@@ -1,6 +1,7 @@
 package no.elhub.flex.integration.accountingpointadapter
 
 import com.github.tomakehurst.wiremock.client.WireMock.aResponse
+import com.github.tomakehurst.wiremock.client.WireMock.equalTo
 import com.github.tomakehurst.wiremock.client.WireMock.get
 import com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo
 import io.kotest.assertions.arrow.core.shouldBeLeft
@@ -18,7 +19,7 @@ class AccountingPointAdapterServiceTest : FunSpec({
     lateinit var service: AccountingPointAdapterHttpService
 
     beforeSpec {
-        service = AccountingPointAdapterHttpService(AccountingPointAdapterWireMockServer.baseUrl())
+        service = AccountingPointAdapterHttpService(AccountingPointAdapterWireMockServer.baseUrl(), "secret-key")
     }
 
     beforeTest {
@@ -29,6 +30,7 @@ class AccountingPointAdapterServiceTest : FunSpec({
         test("200 response is parsed and returned as Right") {
             AccountingPointAdapterWireMockServer.stubFor(
                 get(urlPathEqualTo("/accounting_point/$GSRN"))
+                    .withHeader("X-API-Key", equalTo("secret-key"))
                     .willReturn(
                         aResponse()
                             .withStatus(HttpStatusCode.OK.value)
