@@ -16,6 +16,9 @@ import no.elhub.flex.controllableunit.lookup.ControllableUnitLookup
 import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterHttpService
 import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterService
 import org.koin.dsl.module
+import org.koin.environmentProperties
+import org.koin.fileProperties
+import org.koin.ksp.generated.defaultModule
 import org.koin.ktor.plugin.Koin
 import org.koin.logger.slf4jLogger
 
@@ -33,27 +36,23 @@ fun Application.module() {
     configureLogging()
     configureMonitoring()
     configureSerialization()
+    configureDatabase()
+    configureRouting()
 
-    val jwtSecret = environment.config.property("flex.jwt_secret").getString()
-    val accountingPointAdapterBaseUrl = environment.config.propertyOrNull("accounting_point_adapter.baseUrl")?.getString().orEmpty()
-
+    val jwtSecret = environment.config.property("flex.jwt-secret").getString()
     install(FlexAuthentication) {
         this.jwtSecret = jwtSecret
         excludedPaths += listOf("/healthz", "/metrics")
     }
 
-    configureDatabase()
-
+    // Properties injected with @Property
+    val propertiesForKoin = listOf(
+        "accounting-point-adapter.base-url",
+    )
     install(Koin) {
+        environmentProperties()
+        properties(propertiesForKoin.associateWith { environment.config.property(it).getString() })
         slf4jLogger()
-        modules(
-            module {
-                single<AccountingPointAdapterService> { AccountingPointAdapterHttpService(accountingPointAdapterBaseUrl) }
-                single<ControllableUnitRepository> { ControllableUnitRepositoryImpl() }
-                single { ControllableUnitLookup(get(), get()) }
-            },
-        )
+        modules(defaultModule)
     }
-
-    configureRouting()
 }

@@ -31,6 +31,12 @@ export const ControllableUnitLookupResult = () => {
   const cuCount = controllable_units.length;
   const hasCUs = cuCount > 0;
 
+  const searchParams = new URLSearchParams({
+    accounting_point_id: String(accounting_point.id),
+    end_user_id: String(end_user.id),
+    accounting_point_business_id: String(accounting_point.business_id),
+  });
+
   return (
     <div className="flex flex-col gap-5 max-w-4xl mt-4">
       <Heading level={2} size="large">
@@ -55,7 +61,7 @@ export const ControllableUnitLookupResult = () => {
               </BodyText>
               <Button
                 as={Link}
-                to={`/controllable_unit/lookup/create?accounting_point_id=${accounting_point.id}&end_user_id=${end_user.id}`}
+                to={`/controllable_unit/lookup/create?${searchParams.toString()}`}
                 variant="primary"
               >
                 Create new unit
