@@ -7,6 +7,8 @@ import liquibase.resource.DirectoryResourceAccessor
 import no.elhub.flex.db.FlexTransaction
 import org.jetbrains.exposed.v1.jdbc.Database
 import org.testcontainers.postgresql.PostgreSQLContainer
+import org.testcontainers.utility.DockerImageName
+import org.testcontainers.utility.MountableFile
 import java.io.File
 import java.sql.Connection
 import java.sql.DriverManager
@@ -23,20 +25,39 @@ import java.sql.DriverManager
 object PostgresTestContainer {
 
     private val container: PostgreSQLContainer =
-        PostgreSQLContainer("postgres:17")
+        PostgreSQLContainer(
+            DockerImageName
+                .parse("docker.jfrog.elhub.cloud/frzq0sxltynr/elhub/base/postgres-16:0.0.4")
+                .asCompatibleSubstituteFor("postgres")
+        )
             .withDatabaseName("flex")
             .withUsername("postgres")
             .withPassword("postgres")
-            // db-init.sql creates extensions, the flex role, and all party roles.
-            .withInitScript("db-init.sql")
+            // pg_cron requires shared_preload_libraries and cron.database_name to be set
+            // before the extension can be created.
+            .withCommand(
+                "-c",
+                "shared_preload_libraries=pg_cron",
+                "-c",
+                "cron.database_name=flex",
+                "-c",
+                "cron.timezone=Europe/Oslo",
+            )
+            // creates extensions, the flex role, and all party roles.
+            .withCopyFileToContainer(
+                MountableFile.forHostPath(findInitSql().absolutePath),
+                "/docker-entrypoint-initdb.d/init.sql",
+            )
             .withReuse(false)
 
-    /** The `flex` application user (used after init). */
-    private val flexJdbcUrl: String
+    private val jdbcUrl: String
         get() = container.jdbcUrl
 
     private val flexUsername = "flex"
     private val flexPassword = "flex_password"
+
+    private val authenticatorUsername = "flex_authenticator"
+    private val authenticatorPassword = "authenticator_password"
 
     /** Exposed [Database] connected to the test container. */
     val database: Database
@@ -45,10 +66,10 @@ object PostgresTestContainer {
         container.start()
         applyMigrations()
         database = Database.connect(
-            url = flexJdbcUrl,
+            url = jdbcUrl,
             driver = "org.postgresql.Driver",
-            user = flexUsername,
-            password = flexPassword,
+            user = authenticatorUsername,
+            password = authenticatorPassword,
         )
         FlexTransaction.init(database)
     }
@@ -59,13 +80,13 @@ object PostgresTestContainer {
      * Useful for seeding test data before a test.
      */
     fun <T> withConnection(block: (Connection) -> T): T =
-        DriverManager.getConnection(flexJdbcUrl, flexUsername, flexPassword).use(block)
+        DriverManager.getConnection(jdbcUrl, flexUsername, flexPassword).use(block)
 
     private fun applyMigrations() {
         val changelogFile = "changelog.yml"
         val dbDir = findDbDirectory()
 
-        DriverManager.getConnection(flexJdbcUrl, flexUsername, flexPassword).use { conn ->
+        DriverManager.getConnection(jdbcUrl, flexUsername, flexPassword).use { conn ->
             val database =
                 DatabaseFactory.getInstance()
                     .findCorrectDatabaseImplementation(JdbcConnection(conn))
@@ -89,5 +110,15 @@ object PostgresTestContainer {
             dir = dir.parentFile ?: return@repeat
         }
         error("Could not find db/changelog.yml relative to ${System.getProperty("user.dir")}")
+    }
+
+    private fun findInitSql(): File {
+        var dir = File(System.getProperty("user.dir"))
+        repeat(4) {
+            val candidate = File(dir, "local/postgres/init.sql")
+            if (candidate.exists()) return candidate
+            dir = dir.parentFile ?: return@repeat
+        }
+        error("Could not find local/postgres/init.sql relative to ${System.getProperty("user.dir")}")
     }
 }

@@ -5,7 +5,7 @@ import java.util.Date
 
 @Suppress("MagicNumber")
 fun systemToken(
-    role: String = "flex_service_provider",
+    role: String = "flex_internal",
     scope: List<String> = emptyList(),
     ttlSeconds: Long = 60,
 ): AccessToken = AccessToken(
