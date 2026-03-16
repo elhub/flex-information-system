@@ -48,6 +48,7 @@ fun Application.module() {
     // Properties injected with @Property
     val propertiesForKoin = listOf(
         "accounting-point-adapter.base-url",
+        "accounting-point-adapter.api-key",
     )
     install(Koin) {
         environmentProperties()
