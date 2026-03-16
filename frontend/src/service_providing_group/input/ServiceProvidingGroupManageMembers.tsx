@@ -32,9 +32,15 @@ export const ServiceProvidingGroupManageMembers = () => {
       <div className="mt-4">
         <Button
           variant="primary"
-          onClick={() => navigate(`/service_providing_group/${spgId}/show`)}
+          onClick={() =>
+            navigate(
+              showStepper
+                ? `/service_providing_group/${spgId}/activate?from=create`
+                : `/service_providing_group/${spgId}/show`,
+            )
+          }
         >
-          Done
+          {showStepper ? "Next" : "Done"}
         </Button>
       </div>
     </FormContainer>
