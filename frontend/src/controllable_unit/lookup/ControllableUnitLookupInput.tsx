@@ -36,6 +36,8 @@ export const ControllableUnitLookupInput = () => {
       const params = new URLSearchParams({
         accounting_point_id: String(response.data.accounting_point.id),
         end_user_id: String(response.data.end_user.id),
+        accounting_point_business_id:
+          response.data.accounting_point.business_id,
       });
       navigate(`/controllable_unit/lookup/create?${params.toString()}`);
       return;

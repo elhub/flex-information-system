@@ -29,6 +29,7 @@ import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterSe
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 import java.util.Date
+import no.elhub.flex.integration.accountingpointadapter.NotFoundError as AdapterNotFoundError
 
 private const val TEST_SECRET = "test-secret-key-at-least-256-bits-long-for-hs256"
 
@@ -228,7 +229,7 @@ class ControllableUnitLookupTest :
                 every {
                     with(any<AccessToken>()) { mockRepo.getAccountingPointIdByBusinessId(any()) }
                 } returns NotFoundError("accounting point not found").left()
-                coEvery { mockAccountingPointAdapter.getAccountingPoint(any()) } returns "datahub returned HTTP 404".left()
+                coEvery { mockAccountingPointAdapter.getAccountingPoint(any()) } returns AdapterNotFoundError("133700000000000053").left()
 
                 val app = testApp(mockRepo, mockAccountingPointAdapter)
                 val response = app.client.post("/controllable_unit/lookup") {

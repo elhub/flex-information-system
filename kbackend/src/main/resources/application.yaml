@@ -13,7 +13,7 @@ ktor:
       maximumPoolSize: 10
 
 flex:
-  jwt_secret: ${FLEX_JWT_SECRET}
+  jwt-secret: ${FLEX_JWT_SECRET}
 
-accounting_point_adapter:
-  baseUrl: ${ACCOUNTING_POINT_ADAPTER_BASE_URL}
+accounting-point-adapter:
+  base-url: ${ACCOUNTING_POINT_ADAPTER_BASE_URL}

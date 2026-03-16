@@ -10,7 +10,13 @@ import {
   zControllableUnitServiceProviderCreateRequest,
 } from "../generated-client/zod.gen";
 import { getFields, unTypedZodResolver } from "../zod";
-import { FormContainer, Heading } from "../components/ui";
+import {
+  FormContainer,
+  Heading,
+  FormItem,
+  FormItemLabel,
+  TextField,
+} from "../components/ui";
 import {
   TextInput,
   EnumInput,
@@ -47,11 +53,13 @@ type ControllableUnitCreateFormValues = z.infer<
 type ControllableUnitCreateFormProps = {
   accountingPointId: number;
   endUserId: number;
+  accountingPointBusinessId?: string;
 };
 
 export const ControllableUnitCreateForm = ({
   accountingPointId,
   endUserId,
+  accountingPointBusinessId,
 }: ControllableUnitCreateFormProps) => {
   const notify = useNotify();
   const navigate = useNavigate();
@@ -133,6 +141,26 @@ export const ControllableUnitCreateForm = ({
           Create Controllable Unit
         </Heading>
         <div className="flex flex-col gap-3">
+          {accountingPointBusinessId && (
+            <FormItem
+              id="accounting_point_business_id"
+              inputProps={{ disabled: true }}
+              size="large"
+            >
+              <FormItemLabel
+                htmlFor="accounting_point_business_id"
+                size="large"
+              >
+                Accounting point
+              </FormItemLabel>
+              <TextField
+                id="accounting_point_business_id"
+                value={accountingPointBusinessId}
+                readOnly
+                disabled
+              />
+            </FormItem>
+          )}
           <TextInput
             {...fields.name}
             disabled={!!savedControllableUnitId}

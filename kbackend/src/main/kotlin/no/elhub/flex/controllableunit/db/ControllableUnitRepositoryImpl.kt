@@ -10,11 +10,13 @@ import no.elhub.flex.controllableunit.dto.ControllableUnit
 import no.elhub.flex.db.FlexTransaction
 import no.elhub.flex.db.FlexTransaction.flexTransaction
 import no.elhub.flex.domain.AccountingPoint
+import org.koin.core.annotation.Single
 
 private val logger = KotlinLogging.logger {}
 
 private val json = Json { ignoreUnknownKeys = true }
 
+@Single(createdAtStart = true)
 class ControllableUnitRepositoryImpl : ControllableUnitRepository {
 
     context(token: AccessToken)
