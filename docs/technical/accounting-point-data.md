@@ -143,6 +143,20 @@ long. The version column is used for optimistic locking to detect races.
 The following sections outline how the different flows work and how the locking
 is used in each of them.
 
+The following participants are involved in the flows:
+
+* `Service Provider` - the external caller
+* `CU Lookup` - the functionality in FIS that provides CU lookup
+* `Batch Sync` - the background sync process that runs on a schedule to keep
+  data in sync
+* `AP` - the `flex.accounting_point` table
+* `AP Sync` - the `flex.accounting_point_sync` table
+* `AP <sub>` - tables that hold time dependent AP data - e.g.
+  `flex.accounting_point_energy_supplier`
+* `AP Adapter` - the adapter service that provides AP data from the datahub
+* `Receiver` - the functionality in the FIS that receives incoming events about
+  AP updates from the AP adapter
+
 ### Lookup flow
 
 ![Accounting point internal lookup flow](../diagrams/accounting-point-sync-lookup.png)
@@ -155,7 +169,7 @@ The batch size should be configured as follows. We can use startup since
 we assume that we will deploy/recycle the application quite often.
 
 ```none
-Batch size = (number of accounting points) / (24 hours / sync interval) * number of workers
+Batch size = nb_accounting_points / ((24h / interval) * nb_workers)
 ```
 
 We can make this better in the future, but for now we can live with this simple
