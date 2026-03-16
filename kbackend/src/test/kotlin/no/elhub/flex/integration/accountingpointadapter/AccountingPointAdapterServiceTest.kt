@@ -31,7 +31,7 @@ class AccountingPointAdapterServiceTest : FunSpec({
         test("200 response is parsed and returned as Right") {
             AccountingPointAdapterWireMockServer.stubFor(
                 get(urlPathEqualTo("/accounting_point/$GSRN"))
-                    .withHeader("X-API-Key", equalTo(API_KEY))
+                    .withHeader("Authorization", equalTo("Bearer $API_KEY"))
                     .willReturn(
                         aResponse()
                             .withStatus(HttpStatusCode.OK.value)
