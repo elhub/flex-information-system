@@ -12,6 +12,6 @@ psycopg[binary,pool]
 pyjwt
 pytest==9.0.2
 python-dotenv
-schemathesis==4.11.2
+schemathesis==4.12.0
 tabulate
 Flask

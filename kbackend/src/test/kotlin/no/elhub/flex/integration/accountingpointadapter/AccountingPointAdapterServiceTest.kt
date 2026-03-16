@@ -1,6 +1,7 @@
 package no.elhub.flex.integration.accountingpointadapter
 
 import com.github.tomakehurst.wiremock.client.WireMock.aResponse
+import com.github.tomakehurst.wiremock.client.WireMock.equalTo
 import com.github.tomakehurst.wiremock.client.WireMock.get
 import com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo
 import io.kotest.assertions.arrow.core.shouldBeLeft
@@ -11,6 +12,7 @@ import io.kotest.matchers.types.shouldBeInstanceOf
 import io.ktor.http.HttpStatusCode
 
 private const val GSRN = "133700000000000053"
+private const val API_KEY = "secret-key"
 
 class AccountingPointAdapterServiceTest : FunSpec({
     extensions(AccountingPointAdapterWireMockServer)
@@ -18,7 +20,7 @@ class AccountingPointAdapterServiceTest : FunSpec({
     lateinit var service: AccountingPointAdapterHttpService
 
     beforeSpec {
-        service = AccountingPointAdapterHttpService(AccountingPointAdapterWireMockServer.baseUrl())
+        service = AccountingPointAdapterHttpService(AccountingPointAdapterWireMockServer.baseUrl(), API_KEY)
     }
 
     beforeTest {
@@ -29,6 +31,7 @@ class AccountingPointAdapterServiceTest : FunSpec({
         test("200 response is parsed and returned as Right") {
             AccountingPointAdapterWireMockServer.stubFor(
                 get(urlPathEqualTo("/accounting_point/$GSRN"))
+                    .withHeader("Authorization", equalTo("Bearer $API_KEY"))
                     .willReturn(
                         aResponse()
                             .withStatus(HttpStatusCode.OK.value)

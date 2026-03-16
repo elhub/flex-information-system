@@ -24,7 +24,8 @@ interface AccountingPointAdapterService {
 
 @Single(createdAtStart = true)
 class AccountingPointAdapterHttpService(
-    @Property("accounting-point-adapter.base-url") private val baseUrl: String
+    @Property("accounting-point-adapter.base-url") private val baseUrl: String,
+    @Property("accounting-point-adapter.api-key") private val apiKey: String
 ) : AccountingPointAdapterService {
 
     private companion object {
@@ -43,7 +44,10 @@ class AccountingPointAdapterHttpService(
             },
         )
 
-    private val config = ApiConfiguration(basePath = baseUrl)
+    private val config = ApiConfiguration(
+        basePath = baseUrl,
+        customHeaders = mapOf("Authorization" to "Bearer $apiKey")
+    )
 
     override suspend fun getAccountingPoint(accountingPointId: String): Either<AccountingPointAdapterError, AccountingPoint> =
         when (val result = client.readAccountingPoint(accountingPointId, config)) {
