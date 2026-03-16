@@ -467,7 +467,25 @@ def generate_openapi_document(base_file, resources_file, servers_file):
                 if data.get("x-filter") is not None:
                     resource["properties"][field]["x-filter"] = data["x-filter"]
                 if "nullable" in data:
-                    resource["properties"][field]["nullable"] = data["nullable"]
+                    if data["nullable"]:
+                        # OAS 3.1: express nullability via oneOf instead of nullable:true
+                        # so openapi-python-client generates None | Enum | Unset correctly
+                        resource["properties"][field] = {
+                            "oneOf": [
+                                {"$ref": f"#/components/schemas/{enum_name}"},
+                                {"type": "null"},
+                            ],
+                            "nullable": True,
+                        }
+                        if data.get("default") is not None:
+                            resource["properties"][field]["default"] = data["default"]
+                        if data.get("x-filter") is not None:
+                            resource["properties"][field]["x-filter"] = data["x-filter"]
+                        if "required" in data:
+                            resource["properties"][field]["required"] = data["required"]
+                        continue
+                    else:
+                        resource["properties"][field]["nullable"] = data["nullable"]
                 if "required" in data:
                     resource["properties"][field]["required"] = data["required"]
 

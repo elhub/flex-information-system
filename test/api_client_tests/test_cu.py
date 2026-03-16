@@ -23,6 +23,8 @@ from flex.models import (
     TechnicalResourceResponse,
     ErrorMessage,
     EmptyObject,
+    Technology,
+    DeviceType,
 )
 from flex.api.controllable_unit import (
     create_controllable_unit,
@@ -157,6 +159,9 @@ def test_controllable_unit_fiso(sts):
         body=TechnicalResourceCreateRequest(
             name="TEST-TR-FOR-ACTIVATION",
             controllable_unit_id=cast(int, cu.id),
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=1.0,
+            device_type=DeviceType.OTHER,
         ),
     )
     assert isinstance(tr, TechnicalResourceResponse)
@@ -656,6 +661,9 @@ def test_controllable_unit_sp(sts):
         body=TechnicalResourceCreateRequest(
             name="TEST-TR-FOR-ACTIVATION",
             controllable_unit_id=cast(int, cu.id),
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=1.0,
+            device_type=DeviceType.OTHER,
         ),
     )
     assert isinstance(tr, TechnicalResourceResponse)

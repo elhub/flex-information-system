@@ -19,6 +19,8 @@ from flex.models import (
     TechnicalResourceCreateRequest,
     TechnicalResourceResponse,
     ErrorMessage,
+    Technology,
+    DeviceType,
 )
 from flex.models import (
     ControllableUnitSuspensionCreateRequest,
@@ -79,6 +81,9 @@ def data():
         body=TechnicalResourceCreateRequest(
             name="TEST-TR-FOR-ACTIVATION",
             controllable_unit_id=cast(int, cu.id),
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=1.0,
+            device_type=DeviceType.OTHER,
         ),
     )
     assert isinstance(tr, TechnicalResourceResponse)

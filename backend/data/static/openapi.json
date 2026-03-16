@@ -2990,7 +2990,14 @@
                         "example": "SE10K123456789"
                     },
                     "business_id_type": {
-                        "$ref": "#/components/schemas/technical_resource_business_id_type",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/technical_resource_business_id_type"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
                         "nullable": true
                     },
                     "additional_information": {
@@ -3076,7 +3083,14 @@
                         "example": "SE10K123456789"
                     },
                     "business_id_type": {
-                        "$ref": "#/components/schemas/technical_resource_business_id_type",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/technical_resource_business_id_type"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
                         "nullable": true
                     },
                     "additional_information": {
@@ -3188,7 +3202,14 @@
                         "example": "SE10K123456789"
                     },
                     "business_id_type": {
-                        "$ref": "#/components/schemas/technical_resource_business_id_type",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/technical_resource_business_id_type"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
                         "nullable": true
                     },
                     "additional_information": {

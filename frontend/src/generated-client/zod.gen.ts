@@ -1054,7 +1054,7 @@ export const zTechnicalResourceUpdateRequest = z.object({
   make: z.string().max(128).optional(),
   model: z.string().max(128).optional(),
   business_id: z.string().max(256).optional(),
-  business_id_type: zTechnicalResourceBusinessIdType.optional(),
+  business_id_type: zTechnicalResourceBusinessIdType.nullish(),
   additional_information: z.string().optional(),
 });
 
@@ -1070,7 +1070,7 @@ export const zTechnicalResourceCreateRequest = z.object({
   make: z.string().max(128).optional(),
   model: z.string().max(128).optional(),
   business_id: z.string().max(256).optional(),
-  business_id_type: zTechnicalResourceBusinessIdType.optional(),
+  business_id_type: zTechnicalResourceBusinessIdType.nullish(),
   additional_information: z.string().optional(),
 });
 
@@ -1088,7 +1088,7 @@ export const zTechnicalResource = z.object({
   make: z.string().max(128).optional(),
   model: z.string().max(128).optional(),
   business_id: z.string().max(256).optional(),
-  business_id_type: zTechnicalResourceBusinessIdType.optional(),
+  business_id_type: zTechnicalResourceBusinessIdType.nullish(),
   additional_information: z.string().optional(),
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
@@ -2013,7 +2013,7 @@ export const zTechnicalResourceWritable = z.object({
   make: z.string().max(128).optional(),
   model: z.string().max(128).optional(),
   business_id: z.string().max(256).optional(),
-  business_id_type: zTechnicalResourceBusinessIdType.optional(),
+  business_id_type: zTechnicalResourceBusinessIdType.nullish(),
   additional_information: z.string().optional(),
 });
 

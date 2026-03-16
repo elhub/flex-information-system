@@ -42,8 +42,7 @@ class TechnicalResourceHistoryResponse:
         model (None | str | Unset): The model of the device. Example: SE10K-RWS.
         business_id (None | str | Unset): Business identifier of the device, such as a serial number or MAC address.
             Example: SE10K123456789.
-        business_id_type (TechnicalResourceBusinessIdType | Unset): The type of business identifier used for the device.
-            Example: serial_number.
+        business_id_type (None | TechnicalResourceBusinessIdType | Unset):
         additional_information (None | str | Unset): Free text field for extra information about the technical resource
             if needed.
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
@@ -64,7 +63,7 @@ class TechnicalResourceHistoryResponse:
     make: None | str | Unset = UNSET
     model: None | str | Unset = UNSET
     business_id: None | str | Unset = UNSET
-    business_id_type: TechnicalResourceBusinessIdType | Unset = UNSET
+    business_id_type: None | TechnicalResourceBusinessIdType | Unset = UNSET
     additional_information: None | str | Unset = UNSET
     replaced_by: int | None | Unset = UNSET
     replaced_at: datetime.datetime | None | Unset = UNSET
@@ -115,9 +114,13 @@ class TechnicalResourceHistoryResponse:
         else:
             business_id = self.business_id
 
-        business_id_type: str | Unset = UNSET
-        if not isinstance(self.business_id_type, Unset):
+        business_id_type: None | str | Unset
+        if isinstance(self.business_id_type, Unset):
+            business_id_type = UNSET
+        elif isinstance(self.business_id_type, TechnicalResourceBusinessIdType):
             business_id_type = self.business_id_type.value
+        else:
+            business_id_type = self.business_id_type
 
         additional_information: None | str | Unset
         if isinstance(self.additional_information, Unset):
@@ -232,12 +235,22 @@ class TechnicalResourceHistoryResponse:
 
         business_id = _parse_business_id(d.pop("business_id", UNSET))
 
-        _business_id_type = d.pop("business_id_type", UNSET)
-        business_id_type: TechnicalResourceBusinessIdType | Unset
-        if isinstance(_business_id_type, Unset):
-            business_id_type = UNSET
-        else:
-            business_id_type = TechnicalResourceBusinessIdType(_business_id_type)
+        def _parse_business_id_type(data: object) -> None | TechnicalResourceBusinessIdType | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                business_id_type_type_0 = TechnicalResourceBusinessIdType(data)
+
+                return business_id_type_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(None | TechnicalResourceBusinessIdType | Unset, data)
+
+        business_id_type = _parse_business_id_type(d.pop("business_id_type", UNSET))
 
         def _parse_additional_information(data: object) -> None | str | Unset:
             if data is None:

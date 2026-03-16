@@ -1629,7 +1629,7 @@ export type TechnicalResourceUpdateRequest = {
    * Business identifier of the device, such as a serial number or MAC address.
    */
   business_id?: string;
-  business_id_type?: TechnicalResourceBusinessIdType;
+  business_id_type?: TechnicalResourceBusinessIdType | null;
   /**
    * Free text field for extra information about the technical resource if needed.
    */
@@ -1672,7 +1672,7 @@ export type TechnicalResourceCreateRequest = {
    * Business identifier of the device, such as a serial number or MAC address.
    */
   business_id?: string;
-  business_id_type?: TechnicalResourceBusinessIdType;
+  business_id_type?: TechnicalResourceBusinessIdType | null;
   /**
    * Free text field for extra information about the technical resource if needed.
    */
@@ -1723,7 +1723,7 @@ export type TechnicalResource = {
    * Business identifier of the device, such as a serial number or MAC address.
    */
   business_id?: string;
-  business_id_type?: TechnicalResourceBusinessIdType;
+  business_id_type?: TechnicalResourceBusinessIdType | null;
   /**
    * Free text field for extra information about the technical resource if needed.
    */
@@ -3424,7 +3424,7 @@ export type TechnicalResourceWritable = {
    * Business identifier of the device, such as a serial number or MAC address.
    */
   business_id?: string;
-  business_id_type?: TechnicalResourceBusinessIdType;
+  business_id_type?: TechnicalResourceBusinessIdType | null;
   /**
    * Free text field for extra information about the technical resource if needed.
    */
