@@ -30,6 +30,7 @@ class AccountingPointAdapterHttpService(
 
     private companion object {
         const val REQUEST_TIMEOUT_MILLIS = 5000L
+        const val API_KEY_HEADER_NAME = "X-API-Key"
     }
 
     private val client =
@@ -46,7 +47,7 @@ class AccountingPointAdapterHttpService(
 
     private val config = ApiConfiguration(
         basePath = baseUrl,
-        customHeaders = mapOf("X-API-Key" to apiKey)
+        customHeaders = mapOf(API_KEY_HEADER_NAME to apiKey)
     )
 
     override suspend fun getAccountingPoint(accountingPointId: String): Either<AccountingPointAdapterError, AccountingPoint> =

@@ -12,6 +12,7 @@ import io.kotest.matchers.types.shouldBeInstanceOf
 import io.ktor.http.HttpStatusCode
 
 private const val GSRN = "133700000000000053"
+private const val API_KEY = "secret-key"
 
 class AccountingPointAdapterServiceTest : FunSpec({
     extensions(AccountingPointAdapterWireMockServer)
@@ -19,7 +20,7 @@ class AccountingPointAdapterServiceTest : FunSpec({
     lateinit var service: AccountingPointAdapterHttpService
 
     beforeSpec {
-        service = AccountingPointAdapterHttpService(AccountingPointAdapterWireMockServer.baseUrl(), "secret-key")
+        service = AccountingPointAdapterHttpService(AccountingPointAdapterWireMockServer.baseUrl(), API_KEY)
     }
 
     beforeTest {
@@ -30,7 +31,7 @@ class AccountingPointAdapterServiceTest : FunSpec({
         test("200 response is parsed and returned as Right") {
             AccountingPointAdapterWireMockServer.stubFor(
                 get(urlPathEqualTo("/accounting_point/$GSRN"))
-                    .withHeader("X-API-Key", equalTo("secret-key"))
+                    .withHeader("X-API-Key", equalTo(API_KEY))
                     .willReturn(
                         aResponse()
                             .withStatus(HttpStatusCode.OK.value)
