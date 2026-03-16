@@ -392,73 +392,11 @@
                                                 "format": "text",
                                                 "type": "string",
                                                 "example": "Battery Unit A"
-                                            },
-                                            "technologies": {
-                                                "description": "Technologies of the technical resource.",
-                                                "type": "array",
-                                                "items": {
-                                                    "$ref": "#/components/schemas/technology"
-                                                },
-                                                "example": [
-                                                    "solar",
-                                                    "battery"
-                                                ]
-                                            },
-                                            "categories": {
-                                                "description": "Categories derived from the technologies.",
-                                                "type": "array",
-                                                "items": {
-                                                    "$ref": "#/components/schemas/category"
-                                                },
-                                                "example": [
-                                                    "production",
-                                                    "energy_storage"
-                                                ]
-                                            },
-                                            "maximum_active_power": {
-                                                "description": "Maximum continuous active power of the technical resource in kilowatts.",
-                                                "format": "decimal",
-                                                "type": "number",
-                                                "example": 120.0
-                                            },
-                                            "device_type": {
-                                                "description": "The type of device.",
-                                                "allOf": [
-                                                    {
-                                                        "$ref": "#/components/schemas/device_type"
-                                                    }
-                                                ],
-                                                "nullable": true,
-                                                "example": "inverter"
-                                            },
-                                            "make": {
-                                                "description": "The manufacturer of the device.",
-                                                "format": "text",
-                                                "type": "string",
-                                                "nullable": true,
-                                                "example": "SolarEdge"
-                                            },
-                                            "model": {
-                                                "description": "The model of the device.",
-                                                "format": "text",
-                                                "type": "string",
-                                                "nullable": true,
-                                                "example": "SE10K-RWS"
-                                            },
-                                            "device_unique_identifier": {
-                                                "description": "Unique identifier of the device.",
-                                                "format": "text",
-                                                "type": "string",
-                                                "nullable": true,
-                                                "example": "SE10K123456789"
                                             }
                                         },
                                         "required": [
                                             "id",
-                                            "name",
-                                            "technologies",
-                                            "categories",
-                                            "maximum_active_power"
+                                            "name"
                                         ]
                                     }
                                 }

@@ -206,7 +206,7 @@ BEGIN
             (
                 SELECT coalesce(jsonb_agg(row_to_json(tr)), '[]'::jsonb)
                 FROM (
-                    SELECT tr.id, tr.name, tr.details
+                    SELECT tr.id, tr.name
                     FROM flex.technical_resource AS tr
                     WHERE tr.controllable_unit_id = cu.id
                 ) AS tr

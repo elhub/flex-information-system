@@ -39,16 +39,12 @@ const TechnicalResourceDetails = ({
           <Table.ColumnHeader scope="col">
             {translate("field.technical_resource.name")}
           </Table.ColumnHeader>
-          <Table.ColumnHeader scope="col">
-            {translate("field.technical_resource.maximum_active_power")}
-          </Table.ColumnHeader>
         </Table.Header>
         <Table.Body>
           {technicalResources.map((tr) => (
             <Table.Row key={tr.id}>
               <Table.DataCell>{tr.id}</Table.DataCell>
               <Table.DataCell>{tr.name}</Table.DataCell>
-              <Table.DataCell>{tr.maximum_active_power}</Table.DataCell>
             </Table.Row>
           ))}
         </Table.Body>

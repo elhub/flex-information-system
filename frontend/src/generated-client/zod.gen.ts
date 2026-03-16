@@ -109,13 +109,6 @@ export const zControllableUnitLookup = z.object({
         z.object({
           id: z.coerce.number(),
           name: z.string(),
-          technologies: z.array(zTechnology),
-          categories: z.array(zCategory),
-          maximum_active_power: z.coerce.number(),
-          device_type: zDeviceType.optional(),
-          make: z.string().optional(),
-          model: z.string().optional(),
-          device_unique_identifier: z.string().optional(),
         }),
       ),
     }),

@@ -147,34 +147,6 @@ export type ControllableUnitLookup = {
        * The name of the technical resource.
        */
       name: string;
-      /**
-       * Technologies of the technical resource.
-       */
-      technologies: Array<Technology>;
-      /**
-       * Categories derived from the technologies.
-       */
-      categories: Array<Category>;
-      /**
-       * Maximum continuous active power of the technical resource in kilowatts.
-       */
-      maximum_active_power: number;
-      /**
-       * The type of device.
-       */
-      device_type?: DeviceType;
-      /**
-       * The manufacturer of the device.
-       */
-      make?: string;
-      /**
-       * The model of the device.
-       */
-      model?: string;
-      /**
-       * Unique identifier of the device.
-       */
-      device_unique_identifier?: string;
     }>;
   }>;
 };
