@@ -16,7 +16,7 @@ import java.util.UUID
 class ControllableUnitRepositoryTest : FunSpec({
 
     val repo = ControllableUnitRepositoryImpl()
-    val token = systemToken(scope = listOf("use:data:controllable_unit:lookup"))
+    val token = systemToken()
 
     beforeTest {
         PostgresTestContainer.withConnection { conn ->
