@@ -19,7 +19,7 @@ class EndUser:
     """
     Attributes:
         business_id (str): Business ID of the end user. Norwegian organization number or fødselsnummer, depending on
-            `business_id_type``.
+            `entity_type`.
              Example: 123456789.
         valid_from (datetime.datetime): Start of the validity period Example: 2024-01-01T00:00:00+01:00.
         entity_type (EndUserEntityType | Unset): Type of the end user entity, either a person or an organisation.

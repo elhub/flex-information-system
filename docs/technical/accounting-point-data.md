@@ -50,7 +50,7 @@ sourced from different places with widely different source formats/APIs.
 ### API Contract
 
 The adapter service must implement the OpenAPI document defined in
-[backend/accountingpoint](https://github.com/elhub/flex-information-system/tree/main/backend/accountingpoint/static/openapi.yml).
+[backend/accountingpoint](https://github.com/elhub/flex-information-system/blob/main/kbackend/src/main/kotlin/no/elhub/flex/integration/accountingpointadapter/openapi.yaml).
 
 ### Authorization
 
