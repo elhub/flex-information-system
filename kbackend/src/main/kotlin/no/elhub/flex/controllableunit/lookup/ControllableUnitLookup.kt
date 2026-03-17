@@ -12,15 +12,16 @@ import io.ktor.server.routing.RoutingCall
 import no.elhub.flex.auth.AccessToken
 import no.elhub.flex.auth.AccessTokenKey
 import no.elhub.flex.controllableunit.db.ControllableUnitRepository
-import no.elhub.flex.controllableunit.dto.AccountingPointSummary
-import no.elhub.flex.controllableunit.dto.ControllableUnit
-import no.elhub.flex.controllableunit.dto.ControllableUnitLookupRequest
-import no.elhub.flex.controllableunit.dto.ControllableUnitLookupResponse
-import no.elhub.flex.controllableunit.dto.EndUserSummary
-import no.elhub.flex.controllableunit.dto.ErrorMessage
-import no.elhub.flex.domain.AccountingPoint
-import no.elhub.flex.domain.GSRN
 import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterService
+import no.elhub.flex.model.domain.AccountingPoint
+import no.elhub.flex.model.domain.ControllableUnit
+import no.elhub.flex.model.domain.GSRN
+import no.elhub.flex.model.dto.generated.models.AccountingPointEndUser
+import no.elhub.flex.model.dto.generated.models.ControllableUnitAccountingPoint
+import no.elhub.flex.model.dto.generated.models.ControllableUnitLookupRequest
+import no.elhub.flex.model.dto.generated.models.ControllableUnitLookupResponse
+import no.elhub.flex.model.dto.generated.models.ErrorMessage
+import no.elhub.flex.model.dto.toDtos
 import org.koin.core.annotation.Single
 import no.elhub.flex.integration.accountingpointadapter.NotFoundError as AdapterNotFoundError
 import no.elhub.flex.integration.accountingpointadapter.generated.models.AccountingPoint as AdapterAccountingPoint
@@ -54,13 +55,22 @@ class ControllableUnitLookup(
 
             with(token) {
                 val accountingPoint = resolveAccountingPoint(validatedRequest).bind()
-                val endUserId = verifyEndUserMatchesAccountingPoint(validatedRequest.endUser, accountingPoint.businessId).bind()
-                val controllableUnits = fetchControllableUnits(validatedRequest.controllableUnitBusinessId, accountingPoint.businessId).bind()
+                val endUserId = verifyEndUserMatchesAccountingPoint(
+                    validatedRequest.endUser,
+                    accountingPoint.businessId
+                ).bind()
+                val controllableUnits = fetchControllableUnits(
+                    validatedRequest.controllableUnitBusinessId,
+                    accountingPoint.businessId
+                ).bind()
 
                 ControllableUnitLookupResponse(
-                    accountingPoint = AccountingPointSummary(id = accountingPoint.id, businessId = accountingPoint.businessId),
-                    endUser = EndUserSummary(id = endUserId),
-                    controllableUnits = controllableUnits,
+                    accountingPoint = ControllableUnitAccountingPoint(
+                        id = accountingPoint.id,
+                        businessId = accountingPoint.businessId
+                    ),
+                    endUser = AccountingPointEndUser(id = endUserId),
+                    controllableUnits = controllableUnits.toDtos(),
                 )
             }
         }
@@ -111,7 +121,7 @@ class ControllableUnitLookup(
      * Resolves the Accounting Point from either the CU path or the AP path.
      *
      * - **CU path**: looks up the current accounting point for the given CU business ID.
-     * - **AP path**: fetches the AP from the database; if absent, sync with the Accounting Point Adapter — a [Left] from the adapter → 404.
+     * - **AP path**: fetches the AP from the database; if absent, sync with the Accounting Point Adapter — a [arrow.core.Either.Left] from the adapter → 404.
      */
     context(token: AccessToken)
     private suspend fun resolveAccountingPoint(
@@ -181,7 +191,7 @@ class ControllableUnitLookup(
 
 /** Validates the request body and returns a sanitised copy or an [ErrorMessage]. */
 private fun validateInput(req: ControllableUnitLookupRequest): Either<ErrorMessage, ValidatedRequest> = either {
-    val endUser = req.endUser.orEmpty()
+    val endUser = req.endUser
 
     if (endUser.isEmpty()) raise(ErrorMessage(code = "HTTP400", message = "missing end user business ID"))
     if (!END_USER_REGEX.matches(endUser)) raise(ErrorMessage(code = "HTTP400", message = "ill formed end user business ID"))

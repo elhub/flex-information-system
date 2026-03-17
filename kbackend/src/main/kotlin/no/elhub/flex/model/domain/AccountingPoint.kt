@@ -1,4 +1,4 @@
-package no.elhub.flex.domain
+package no.elhub.flex.model.domain
 
 /**
  * Internal domain representation of an accounting point row from the database.

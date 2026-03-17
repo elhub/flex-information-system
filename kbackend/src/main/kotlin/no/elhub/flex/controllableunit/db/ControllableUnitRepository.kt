@@ -2,8 +2,8 @@ package no.elhub.flex.controllableunit.db
 
 import arrow.core.Either
 import no.elhub.flex.auth.AccessToken
-import no.elhub.flex.controllableunit.dto.ControllableUnit
-import no.elhub.flex.domain.AccountingPoint
+import no.elhub.flex.model.domain.AccountingPoint
+import no.elhub.flex.model.domain.ControllableUnit
 
 /** Database errors raised by [ControllableUnitRepository]. */
 sealed class RepositoryError(val message: String)

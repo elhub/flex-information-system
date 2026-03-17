@@ -9,7 +9,7 @@ import io.ktor.server.application.hooks.CallSetup
 import io.ktor.server.request.uri
 import io.ktor.server.response.respond
 import io.ktor.util.AttributeKey
-import no.elhub.flex.controllableunit.dto.ErrorMessage
+import no.elhub.flex.model.dto.generated.models.ErrorMessage
 
 private val logger = KotlinLogging.logger {}
 

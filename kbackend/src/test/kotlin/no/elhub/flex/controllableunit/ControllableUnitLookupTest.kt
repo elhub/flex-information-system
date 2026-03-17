@@ -23,9 +23,9 @@ import no.elhub.flex.auth.FlexAuthentication
 import no.elhub.flex.config.configureSerialization
 import no.elhub.flex.controllableunit.db.ControllableUnitRepository
 import no.elhub.flex.controllableunit.db.NotFoundError
-import no.elhub.flex.controllableunit.dto.ControllableUnit
 import no.elhub.flex.controllableunit.lookup.ControllableUnitLookup
 import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterService
+import no.elhub.flex.model.domain.ControllableUnit
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 import java.util.Date
