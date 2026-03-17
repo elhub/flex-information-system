@@ -27,10 +27,14 @@ export type EnumLabel =
   | "controllable_unit.status.terminated"
   | "controllable_unit_suspension.reason.compromises_safe_operation"
   | "controllable_unit_suspension.reason.other"
+  | "device_type.boiler"
+  | "device_type.energy_management_system"
   | "device_type.ev_charging_device"
   | "device_type.hvac"
   | "device_type.inverter"
   | "device_type.other"
+  | "device_type.socket"
+  | "device_type.water_heater"
   | "entity.business_id_type.email"
   | "entity.business_id_type.org"
   | "entity.business_id_type.pid"
@@ -115,7 +119,6 @@ export type EnumLabel =
   | "technology.ev_charging_device.v2g"
   | "technology.heat_power_plant"
   | "technology.heat_power_plant.chp"
-  | "technology.hot_water_heater"
   | "technology.hvac"
   | "technology.hvac.heat"
   | "technology.hvac.heat_pump"
@@ -127,6 +130,7 @@ export type EnumLabel =
   | "technology.other.energy_storage"
   | "technology.other.production"
   | "technology.solar"
+  | "technology.water_heater"
   | "technology.wind";
 
 export const enumLabels: Record<string, Record<EnumLabel, string>> = {
@@ -261,8 +265,12 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "category.production": "Production",
     "category.energy_storage": "Energy storage",
     "device_type.inverter": "Inverter",
+    "device_type.boiler": "Boiler",
+    "device_type.water_heater": "Hot water heater",
+    "device_type.socket": "Socket",
     "device_type.hvac": "HVAC",
     "device_type.ev_charging_device": "EV Charger",
+    "device_type.energy_management_system": "Energy management system",
     "device_type.other": "Other",
     "technology.hydropower": "Hydropower",
     "technology.hydropower.pumped": "Hydropower - Pumped",
@@ -277,7 +285,7 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "technology.hvac.heat": "HVAC - Heat",
     "technology.hvac.heat_pump": "HVAC - Heat pump",
     "technology.lighting": "Lighting",
-    "technology.hot_water_heater": "Hot water heater",
+    "technology.water_heater": "Hot water heater",
     "technology.boiler": "Boiler",
     "technology.ev_charging_device": "Electric vehicle charger",
     "technology.ev_charging_device.v2g":
@@ -420,8 +428,12 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "category.production": "Produksjon",
     "category.energy_storage": "Energilager",
     "device_type.inverter": "Inverter",
+    "device_type.boiler": "Kjele",
+    "device_type.water_heater": "Varmtvannsbereder",
+    "device_type.socket": "Stikkontakt",
     "device_type.hvac": "HVAC",
     "device_type.ev_charging_device": "Elbillader",
+    "device_type.energy_management_system": "Energistyringssystem",
     "device_type.other": "Annet",
     "technology.hydropower": "Vannkraft",
     "technology.hydropower.pumped": "Vannkraft - Pumpe",
@@ -435,7 +447,7 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "technology.hvac.heat": "HVAC - Varme",
     "technology.hvac.heat_pump": "HVAC - Varmepumpe",
     "technology.lighting": "Belysning",
-    "technology.hot_water_heater": "Varmtvannsbereder",
+    "technology.water_heater": "Varmtvannsbereder",
     "technology.boiler": "Kjele",
     "technology.ev_charging_device": "Elbillader",
     "technology.ev_charging_device.v2g": "Elbillader - Vehicle to grid",
@@ -576,8 +588,12 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "category.production": "Produksjon",
     "category.energy_storage": "Energilager",
     "device_type.inverter": "Inverter",
+    "device_type.boiler": "Kjele",
+    "device_type.water_heater": "Varmtvannsbereder",
+    "device_type.socket": "Stikkontakt",
     "device_type.hvac": "HVAC",
     "device_type.ev_charging_device": "Elbilladar",
+    "device_type.energy_management_system": "Energistyringssystem",
     "device_type.other": "Anna",
     "technology.hydropower": "Vasskraft",
     "technology.hydropower.pumped": "Vasskraft - Pumpe",
@@ -591,7 +607,7 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "technology.hvac.heat": "HVAC - Varme",
     "technology.hvac.heat_pump": "HVAC - Varmepumpe",
     "technology.lighting": "Belysning",
-    "technology.hot_water_heater": "Varmtvannsbereder",
+    "technology.water_heater": "Varmtvannsbereder",
     "technology.boiler": "Kjele",
     "technology.ev_charging_device": "Elbilladar",
     "technology.ev_charging_device.v2g": "Elbilladar - Vehicle to grid",

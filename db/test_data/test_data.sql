@@ -971,7 +971,7 @@ BEGIN
     entity_first_name || ' SPG', sp_id, 'NO3'
   ) RETURNING id INTO spg_id;
 
-  FOREACH technology_id in ARRAY ARRAY['ev_charging_device','hot_water_heater','solar']::text[]
+  FOREACH technology_id in ARRAY ARRAY['ev_charging_device','water_heater','solar']::text[]
   LOOP
 
     SELECT name INTO technology_name FROM flex.technology WHERE id = technology_id;

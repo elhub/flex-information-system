@@ -9,7 +9,6 @@ class Technology(str, Enum):
     EV_CHARGING_DEVICE_V2G = "ev_charging_device.v2g"
     HEAT_POWER_PLANT = "heat_power_plant"
     HEAT_POWER_PLANT_CHP = "heat_power_plant.chp"
-    HOT_WATER_HEATER = "hot_water_heater"
     HVAC = "hvac"
     HVAC_HEAT = "hvac.heat"
     HVAC_HEAT_PUMP = "hvac.heat_pump"
@@ -21,6 +20,7 @@ class Technology(str, Enum):
     OTHER_ENERGY_STORAGE = "other.energy_storage"
     OTHER_PRODUCTION = "other.production"
     SOLAR = "solar"
+    WATER_HEATER = "water_heater"
     WIND = "wind"
 
     def __str__(self) -> str:

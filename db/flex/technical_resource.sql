@@ -42,6 +42,12 @@ CREATE TABLE IF NOT EXISTS technical_resource (
     CONSTRAINT check_technical_resource_business_id_length CHECK (
         (char_length(business_id) <= 256)
     ),
+    CONSTRAINT check_technical_resource_device_type CHECK (
+        device_type IN (
+            'inverter', 'boiler', 'water_heater', 'socket',
+            'hvac', 'ev_charging_device', 'energy_management_system', 'other'
+        )
+    ),
     CONSTRAINT check_technical_resource_business_id_type CHECK (
         business_id_type IN ('serial_number', 'mac', 'other')
     ),

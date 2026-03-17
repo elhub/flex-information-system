@@ -158,6 +158,16 @@ DROP COLUMN IF EXISTS details;
 UPDATE flex.technical_resource SET category = '{}'
 WHERE TRUE;
 
+-- changeset flex:technical-resource-device-type-check-constraint runOnChange:true endDelimiter:;
+--preconditions onFail:MARK_RAN
+--precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM information_schema.table_constraints WHERE table_schema = 'flex' AND table_name = 'technical_resource' AND constraint_name = 'check_technical_resource_device_type'
+ALTER TABLE flex.technical_resource
+ADD CONSTRAINT check_technical_resource_device_type
+CHECK (device_type IN (
+    'inverter', 'boiler', 'water_heater', 'socket',
+    'hvac', 'ev_charging_device', 'energy_management_system', 'other'
+));
+
 -- changeset flex:technical-resource-technology-check-constraint runOnChange:true endDelimiter:;
 --preconditions onFail:MARK_RAN
 --precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM information_schema.table_constraints WHERE table_schema = 'flex' AND table_name = 'technical_resource' AND constraint_name = 'check_technical_resource_technology'

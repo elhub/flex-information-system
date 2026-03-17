@@ -102,6 +102,21 @@ components:
             en: Inverter
             nb: Inverter
             nn: Inverter
+        - id: boiler
+          x-intl:
+            en: Boiler
+            nb: Kjele
+            nn: Kjele
+        - id: water_heater
+          x-intl:
+            en: Hot water heater
+            nb: Varmtvannsbereder
+            nn: Varmtvannsbereder
+        - id: socket
+          x-intl:
+            en: Socket
+            nb: Stikkontakt
+            nn: Stikkontakt
         - id: hvac
           x-intl:
             en: HVAC
@@ -112,6 +127,11 @@ components:
             en: EV Charger
             nb: Elbillader
             nn: Elbilladar
+        - id: energy_management_system
+          x-intl:
+            en: Energy management system
+            nb: Energistyringssystem
+            nn: Energistyringssystem
         - id: other
           x-intl:
             en: Other
@@ -185,7 +205,7 @@ components:
             en: Lighting
             nb: Belysning
             nn: Belysning
-        - id: hot_water_heater
+        - id: water_heater
           x-intl:
             en: Hot water heater
             nb: Varmtvannsbereder

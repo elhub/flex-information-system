@@ -41,8 +41,12 @@ export const zCategory = z.enum([
  */
 export const zDeviceType = z.enum([
   "inverter",
+  "boiler",
+  "water_heater",
+  "socket",
   "hvac",
   "ev_charging_device",
+  "energy_management_system",
   "other",
 ]);
 
@@ -62,7 +66,7 @@ export const zTechnology = z.enum([
   "hvac.heat",
   "hvac.heat_pump",
   "lighting",
-  "hot_water_heater",
+  "water_heater",
   "boiler",
   "ev_charging_device",
   "ev_charging_device.v2g",

@@ -6,7 +6,7 @@ ev_charging_device,consumption,Electric vehicle charger
 ev_charging_device.v2g,energy_storage,Electric vehicle charger - Vehicle to grid
 heat_power_plant,production,Heat power plant
 heat_power_plant.chp,production,Heat power plant - Combined heat and power
-hot_water_heater,consumption,Hot water heater
+water_heater,consumption,Hot water heater
 hvac,consumption,HVAC
 hvac.heat_pump,consumption,HVAC - Heat pump
 hvac.heat,consumption,HVAC - Heat

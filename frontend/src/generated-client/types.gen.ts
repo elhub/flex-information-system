@@ -48,7 +48,15 @@ export type Category = "consumption" | "production" | "energy_storage";
 /**
  * Type of device for technical resources.
  */
-export type DeviceType = "inverter" | "hvac" | "ev_charging_device" | "other";
+export type DeviceType =
+  | "inverter"
+  | "boiler"
+  | "water_heater"
+  | "socket"
+  | "hvac"
+  | "ev_charging_device"
+  | "energy_management_system"
+  | "other";
 
 /**
  * Technology classification using ltree path notation. Technologies are hierarchical (e.g., hydropower.pumped, hvac.heat_pump). Use the most specific technology applicable to the technical resource.
@@ -66,7 +74,7 @@ export type Technology =
   | "hvac.heat"
   | "hvac.heat_pump"
   | "lighting"
-  | "hot_water_heater"
+  | "water_heater"
   | "boiler"
   | "ev_charging_device"
   | "ev_charging_device.v2g"
