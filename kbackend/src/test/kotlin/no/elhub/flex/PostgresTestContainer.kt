@@ -95,9 +95,7 @@ object PostgresTestContainer {
 
             val resourceAccessor = DirectoryResourceAccessor(dbDir)
             Liquibase(changelogFile, resourceAccessor, database).use { liquibase ->
-                // Pass "test" context so changesets tagged context:local (e.g. pg_cron schedule)
-                // are skipped in the test container.
-                liquibase.update("test")
+                liquibase.update("")
             }
         }
     }
