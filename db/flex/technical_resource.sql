@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS technical_resource (
     recorded_by bigint NOT NULL DEFAULT current_identity(),
 
     CONSTRAINT check_technical_resource_technology CHECK (
-        technology_ids_exists(technology)
+        flex.technology_ids_exists(technology)
     ),
     CONSTRAINT fk_technical_resource_controllable_unit_id FOREIGN KEY (
         controllable_unit_id
