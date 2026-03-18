@@ -148,7 +148,12 @@ export const TechnicalResourceShow = () => {
         <TextField source="make" label tooltip />
         <TextField source="model" label tooltip />
         <TextField source="business_id" label tooltip />
-        <TextField source="business_id_type" label tooltip />
+        <EnumField
+          source="business_id_type"
+          enumKey="technical_resource.business_id_type"
+          label
+          tooltip
+        />
         <TextField source="additional_information" label tooltip />
       </div>
 
