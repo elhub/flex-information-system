@@ -499,11 +499,13 @@ openapi-client-accounting-point-adapter:
     rm -rf local/accounting-point/client/* ./out/openapi-client-accounting-point-adapter
 
     ./.venv/bin/openapi-python-client generate \
-        --path ./backend/accountingpoint/static/openapi.yml \
+        --path ./kbackend/src/main/kotlin/no/elhub/flex/integration/accountingpointadapter/openapi.yaml \
         --output-path ./out/openapi-client-accounting-point-adapter \
         --config ./openapi/openapi-client-config.yml
     mv ./out/openapi-client-accounting-point-adapter/flex/models local/accounting-point/client/models
     mv ./out/openapi-client-accounting-point-adapter/flex/types.py local/accounting-point/client/types.py
+
+    ruff format local/accounting-point/client
 
 openapi-client-test:
     #!/usr/bin/env bash
