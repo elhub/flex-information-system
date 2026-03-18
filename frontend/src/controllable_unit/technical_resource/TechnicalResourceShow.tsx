@@ -13,6 +13,7 @@ import {
   Link,
 } from "../../components/ui";
 import {
+  BaseField,
   DateField,
   EnumField,
   FieldTooltip,
@@ -49,6 +50,19 @@ const EnumTagsField = ({
         <FieldTooltip resource={resource} field={source} />
       </div>
     </div>
+  );
+};
+
+const TechnicalResourceLink = () => {
+  const record = useRecordContext();
+  if (!record) return null;
+  return (
+    <Link
+      to={`/controllable_unit/${record.controllable_unit_id}/technical_resource/${record.technical_resource_id}/show`}
+      as={RouterLink}
+    >
+      {record.technical_resource_id}
+    </Link>
   );
 };
 
@@ -116,7 +130,9 @@ export const TechnicalResourceShow = () => {
       <div className="grid grid-cols-[1fr_5fr] gap-2">
         <TextField source="id" label tooltip />
         {isHistoryResource && (
-          <TextField source="technical_resource_id" label tooltip />
+          <BaseField source="technical_resource_id" label tooltip>
+            <TechnicalResourceLink />
+          </BaseField>
         )}
         <TextField source="name" label tooltip />
         <ReferenceField
