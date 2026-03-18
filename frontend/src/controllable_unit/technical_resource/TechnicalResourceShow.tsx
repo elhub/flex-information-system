@@ -105,6 +105,9 @@ const HistoryButton = () => {
 };
 
 export const TechnicalResourceShow = () => {
+  const resource = useResourceContext();
+  const isHistoryResource = resource?.endsWith("_history");
+
   return (
     <Show editButton={<EditButton />} historyButton={<HistoryButton />}>
       <Heading level={2} size="small" spacing>
@@ -112,7 +115,9 @@ export const TechnicalResourceShow = () => {
       </Heading>
       <div className="grid grid-cols-[1fr_5fr] gap-2">
         <TextField source="id" label tooltip />
-        <TextField source="technical_resource_id" label tooltip />
+        {isHistoryResource && (
+          <TextField source="technical_resource_id" label tooltip />
+        )}
         <TextField source="name" label tooltip />
         <ReferenceField
           source="controllable_unit_id"
@@ -154,8 +159,12 @@ export const TechnicalResourceShow = () => {
       <div className="grid grid-cols-[1fr_5fr] gap-2">
         <DateField source="recorded_at" showTime label tooltip />
         <IdentityField source="recorded_by" label tooltip />
-        <DateField source="replaced_at" showTime label tooltip />
-        <IdentityField source="replaced_by" label tooltip />
+        {isHistoryResource && (
+          <>
+            <DateField source="replaced_at" showTime label tooltip />
+            <IdentityField source="replaced_by" label tooltip />
+          </>
+        )}
       </div>
     </Show>
   );
