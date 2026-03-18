@@ -6,17 +6,17 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * A technical resource belonging to a controllable unit.
+ * The technical resources belonging to the controllable unit.
  */
 @Serializable
-public data class TechnicalResource(
+public data class ControllableUnitLookupResponseTechnicalResources(
   /**
-   * Surrogate key of the technical resource.
+   * The surrogate key of the technical resource.
    */
   @SerialName("id")
   public val id: Int,
   /**
-   * Name of the technical resource.
+   * The name of the technical resource.
    */
   @SerialName("name")
   public val name: String,

@@ -2,8 +2,8 @@ package no.elhub.flex.model.dto
 
 import no.elhub.flex.model.domain.ControllableUnit
 import no.elhub.flex.model.domain.TechnicalResource
-import no.elhub.flex.model.dto.generated.models.ControllableUnit as ControllableUnitDto
-import no.elhub.flex.model.dto.generated.models.TechnicalResource as TechnicalResourceDto
+import no.elhub.flex.model.dto.generated.models.ControllableUnitLookupResponseControllableUnits as ControllableUnitDto
+import no.elhub.flex.model.dto.generated.models.ControllableUnitLookupResponseTechnicalResources as TechnicalResourceDto
 
 @JvmName("toControllableUnitDtos")
 fun List<ControllableUnit>.toDtos(): List<ControllableUnitDto> =

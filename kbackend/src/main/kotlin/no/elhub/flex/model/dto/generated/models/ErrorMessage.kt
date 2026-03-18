@@ -5,28 +5,28 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * Error response body
+ * Error message returned from the API.
  */
 @Serializable
 public data class ErrorMessage(
   /**
-   * Short machine-readable error code, e.g. "HTTP400".
+   * The error code.
    */
   @SerialName("code")
   public val code: String,
   /**
-   * Human-readable description of the error.
-   */
-  @SerialName("message")
-  public val message: String,
-  /**
-   * Optional extended detail.
+   * Detailed information about the error.
    */
   @SerialName("details")
   public val details: String? = null,
   /**
-   * Optional hint for the caller.
+   * A hint to help resolve the error.
    */
   @SerialName("hint")
   public val hint: String? = null,
+  /**
+   * The error message.
+   */
+  @SerialName("message")
+  public val message: String,
 )

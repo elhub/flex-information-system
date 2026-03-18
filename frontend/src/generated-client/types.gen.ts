@@ -211,10 +211,18 @@ export type NoticeDataProductTypeNotQualified = {
 };
 
 export type NoticeData =
-  | NoticeDataValidTimeOutsideContract
-  | NoticeDataPartyMissing
-  | NoticeDataPartyOutdated
-  | NoticeDataProductTypeNotQualified;
+  | ({
+      kind: "notice_data_valid_time_outside_contract";
+    } & NoticeDataValidTimeOutsideContract)
+  | ({
+      kind: "notice_data_party_missing";
+    } & NoticeDataPartyMissing)
+  | ({
+      kind: "notice_data_party_outdated";
+    } & NoticeDataPartyOutdated)
+  | ({
+      kind: "notice_data_product_type_not_qualified";
+    } & NoticeDataProductTypeNotQualified);
 
 /**
  * An empty object
@@ -2944,10 +2952,18 @@ export type NoticeDataPartyOutdatedWritable = {
 };
 
 export type NoticeDataWritable =
-  | NoticeDataValidTimeOutsideContract
-  | NoticeDataPartyMissingWritable
-  | NoticeDataPartyOutdatedWritable
-  | NoticeDataProductTypeNotQualified;
+  | ({
+      kind: "notice_data_valid_time_outside_contract";
+    } & NoticeDataValidTimeOutsideContract)
+  | ({
+      kind: "notice_data_party_missing";
+    } & NoticeDataPartyMissingWritable)
+  | ({
+      kind: "notice_data_party_outdated";
+    } & NoticeDataPartyOutdatedWritable)
+  | ({
+      kind: "notice_data_product_type_not_qualified";
+    } & NoticeDataProductTypeNotQualified);
 
 /**
  * An empty object

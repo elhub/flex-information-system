@@ -8,9 +8,9 @@ import kotlinx.serialization.Serializable
  * The end user on the accounting point where the controllable units are located.
  */
 @Serializable
-public data class AccountingPointEndUser(
+public data class ControllableUnitLookupResponseEndUser(
   /**
-   * Surrogate key of the end user.
+   * The surrogate key of the end user.
    */
   @SerialName("id")
   public val id: Int,

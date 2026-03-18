@@ -16,10 +16,10 @@ import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterSe
 import no.elhub.flex.model.domain.AccountingPoint
 import no.elhub.flex.model.domain.ControllableUnit
 import no.elhub.flex.model.domain.GSRN
-import no.elhub.flex.model.dto.generated.models.AccountingPointEndUser
-import no.elhub.flex.model.dto.generated.models.ControllableUnitAccountingPoint
 import no.elhub.flex.model.dto.generated.models.ControllableUnitLookupRequest
 import no.elhub.flex.model.dto.generated.models.ControllableUnitLookupResponse
+import no.elhub.flex.model.dto.generated.models.ControllableUnitLookupResponseAccountingPoint
+import no.elhub.flex.model.dto.generated.models.ControllableUnitLookupResponseEndUser
 import no.elhub.flex.model.dto.generated.models.ErrorMessage
 import no.elhub.flex.model.dto.toDtos
 import org.koin.core.annotation.Single
@@ -65,11 +65,11 @@ class ControllableUnitLookup(
                 ).bind()
 
                 ControllableUnitLookupResponse(
-                    accountingPoint = ControllableUnitAccountingPoint(
+                    accountingPoint = ControllableUnitLookupResponseAccountingPoint(
                         id = accountingPoint.id,
                         businessId = accountingPoint.businessId
                     ),
-                    endUser = AccountingPointEndUser(id = endUserId),
+                    endUser = ControllableUnitLookupResponseEndUser(id = endUserId),
                     controllableUnits = controllableUnits.toDtos(),
                 )
             }

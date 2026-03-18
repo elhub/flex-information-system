@@ -7,28 +7,28 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * A controllable unit returned in the lookup response.
+ * The controllable units that were found for the given end user or accounting point.
  */
 @Serializable
-public data class ControllableUnit(
+public data class ControllableUnitLookupResponseControllableUnits(
   /**
-   * Surrogate key of the controllable unit.
+   * The surrogate key of the controllable unit.
    */
   @SerialName("id")
   public val id: Int,
   /**
-   * UUID v4 business ID of the controllable unit.
+   * The business ID of the controllable unit.
    */
   @SerialName("business_id")
   public val businessId: String,
   /**
-   * Human-readable name of the controllable unit.
+   * The name of the controllable unit.
    */
   @SerialName("name")
   public val name: String,
   /**
-   * Technical resources belonging to this controllable unit.
+   * The technical resources belonging to the controllable unit.
    */
   @SerialName("technical_resources")
-  public val technicalResources: List<TechnicalResource>,
+  public val technicalResources: List<ControllableUnitLookupResponseTechnicalResources>,
 )

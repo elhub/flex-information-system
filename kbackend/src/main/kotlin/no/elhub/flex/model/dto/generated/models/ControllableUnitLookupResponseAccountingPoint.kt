@@ -9,14 +9,14 @@ import kotlinx.serialization.Serializable
  * The accounting point behind which the controllable units are located.
  */
 @Serializable
-public data class ControllableUnitAccountingPoint(
+public data class ControllableUnitLookupResponseAccountingPoint(
   /**
-   * Surrogate key of the accounting point.
+   * The surrogate key of the accounting point.
    */
   @SerialName("id")
   public val id: Int,
   /**
-   * GSRN metering point ID of the accounting point.
+   * The GSRN metering point ID of the accounting point.
    */
   @SerialName("business_id")
   public val businessId: String,

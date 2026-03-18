@@ -494,7 +494,7 @@
                     }
                 }
             },
-            "notice_data": {
+            "NoticeData": {
                 "oneOf": [
                     {
                         "$ref": "#/components/schemas/notice_data_valid_time_outside_contract"
@@ -508,7 +508,16 @@
                     {
                         "$ref": "#/components/schemas/notice_data_product_type_not_qualified"
                     }
-                ]
+                ],
+                "discriminator": {
+                    "propertyName": "kind",
+                    "mapping": {
+                        "notice_data_valid_time_outside_contract": "#/components/schemas/notice_data_valid_time_outside_contract",
+                        "notice_data_party_missing": "#/components/schemas/notice_data_party_missing",
+                        "notice_data_party_outdated": "#/components/schemas/notice_data_party_outdated",
+                        "notice_data_product_type_not_qualified": "#/components/schemas/notice_data_product_type_not_qualified"
+                    }
+                }
             },
             "empty_object": {
                 "description": "An empty object",
@@ -4606,7 +4615,7 @@
                     "data": {
                         "description": "The data of the notice.",
                         "type": "object",
-                        "$ref": "#/components/schemas/notice_data",
+                        "$ref": "#/components/schemas/NoticeData",
                         "readOnly": true,
                         "nullable": true,
                         "example": null
