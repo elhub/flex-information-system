@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import yaml
 import json
-import sys
+import argparse
 from copy import deepcopy
 
 """
@@ -313,12 +313,21 @@ def generate_enum_translations(resources, base_schemas=None):
 
 if __name__ == "__main__":
     yaml.SafeDumper.ignore_aliases = lambda self, data: True
-    resources = yaml.safe_load(sys.stdin)
+
+    parser = argparse.ArgumentParser(
+        description="Generate intl labels from the resources YAML file"
+    )
+    parser.add_argument("base", help="The base OpenAPI schema file")
+    parser.add_argument("resources", help="The OpenAPI resources file")
+    args = parser.parse_args()
+
+    with open(args.base) as f:
+        base = yaml.safe_load(f)
+
+    with open(args.resources) as f:
+        resources = yaml.safe_load(f)
     resources = resources["resources"]
 
-    # also load global schemas from openapi-api-base.yml for enum translations
-    with open("openapi/openapi-api-base.yml", "r") as base_f:
-        base = yaml.safe_load(base_f)
     base_schemas = base.get("components", {}).get("schemas", {})
 
     generate_field_translations(resources)
