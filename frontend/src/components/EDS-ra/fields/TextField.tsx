@@ -12,6 +12,7 @@ export const TextField = ({
   emptyText,
   label,
   tooltip,
+  unit,
 }: TextFieldProps) => {
   const record = useRecordContext();
   const value = record?.[source];
@@ -25,7 +26,7 @@ export const TextField = ({
     );
 
   return (
-    <BaseField source={source} label={label} tooltip={tooltip}>
+    <BaseField source={source} label={label} tooltip={tooltip} unit={unit}>
       {content}
     </BaseField>
   );

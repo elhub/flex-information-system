@@ -131,7 +131,14 @@ export const TechnicalResourceShow = () => {
       <div className="grid grid-cols-[1fr_5fr] gap-2">
         <EnumTagsField source="technology" enumKey="technology" />
         <EnumTagsField source="category" enumKey="category" />
-        <TextField source="maximum_active_power" label tooltip />
+        <TextField source="maximum_active_power" label tooltip unit="kW" />
+      </div>
+      <VerticalSpace />
+      <Heading level={2} size="small" spacing>
+        Device information
+      </Heading>
+      <VerticalSpace />
+      <div className="grid grid-cols-[1fr_5fr] gap-2">
         <EnumField source="device_type" enumKey="device_type" label tooltip />
         <TextField source="make" label tooltip />
         <TextField source="model" label tooltip />
@@ -142,7 +149,7 @@ export const TechnicalResourceShow = () => {
 
       <VerticalSpace />
       <Heading level={2} size="small" spacing>
-        Registration
+        Audit
       </Heading>
       <div className="grid grid-cols-[1fr_5fr] gap-2">
         <DateField source="recorded_at" showTime label tooltip />
