@@ -81,3 +81,8 @@ docker run --rm --user "$(id -u):$(id -g)" -v "$topdir":/workspace ghcr.io/fabri
 	--instant-library 'kotlin_time_instant' \
 	--validation-library 'no_validation' \
 	--targets 'http_models'
+
+# TODO: https://elhub.atlassian.net/browse/FLEX-1101
+# Remove Notice* models — the notice data field has no discriminator property in
+# the API response, so the generated classes cannot be used for deserialisation.
+rm -f "$topdir/kbackend/src/main/kotlin/no/elhub/flex/model/dto/generated/models/Notice"*.kt

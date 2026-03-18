@@ -3130,7 +3130,7 @@ resources:
       data:
         description: The data of the notice.
         type: object
-        $ref: '#/components/schemas/NoticeData'
+        $ref: '#/components/schemas/notice_data'
         readOnly: true
         nullable: true
         example: null

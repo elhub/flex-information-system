@@ -153,32 +153,32 @@ class NoticeResponse:
             try:
                 if not isinstance(data, dict):
                     raise TypeError()
-                componentsschemas_notice_data_type_0 = NoticeDataValidTimeOutsideContract.from_dict(data)
+                componentsschemasnotice_data_type_0 = NoticeDataValidTimeOutsideContract.from_dict(data)
 
-                return componentsschemas_notice_data_type_0
+                return componentsschemasnotice_data_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             try:
                 if not isinstance(data, dict):
                     raise TypeError()
-                componentsschemas_notice_data_type_1 = NoticeDataPartyMissing.from_dict(data)
+                componentsschemasnotice_data_type_1 = NoticeDataPartyMissing.from_dict(data)
 
-                return componentsschemas_notice_data_type_1
+                return componentsschemasnotice_data_type_1
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             try:
                 if not isinstance(data, dict):
                     raise TypeError()
-                componentsschemas_notice_data_type_2 = NoticeDataPartyOutdated.from_dict(data)
+                componentsschemasnotice_data_type_2 = NoticeDataPartyOutdated.from_dict(data)
 
-                return componentsschemas_notice_data_type_2
+                return componentsschemasnotice_data_type_2
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             if not isinstance(data, dict):
                 raise TypeError()
-            componentsschemas_notice_data_type_3 = NoticeDataProductTypeNotQualified.from_dict(data)
+            componentsschemasnotice_data_type_3 = NoticeDataProductTypeNotQualified.from_dict(data)
 
-            return componentsschemas_notice_data_type_3
+            return componentsschemasnotice_data_type_3
 
         data = _parse_data(d.pop("data", UNSET))
 
