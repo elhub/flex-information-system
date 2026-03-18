@@ -30,22 +30,6 @@ export default defineConfig({
   define: {
     "process.env": {},
   },
-  build: {
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          // Separate React Admin and MUI into a single chunk (they share dependencies)
-          "react-admin": ["react-admin", "ra-core", "@mui/material"],
-          // Separate data provider
-          "data-provider": ["@raphiniert/ra-data-postgrest"],
-          // Separate query devtools (only for dev)
-          "react-query-devtools": ["@tanstack/react-query-devtools"],
-        },
-      },
-    },
-    // Increase chunk size warning limit since react-admin is quite large
-    chunkSizeWarningLimit: 600,
-  },
   server: {
     host: "dev.flex.internal",
     port: 5443,
