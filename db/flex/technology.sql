@@ -5,7 +5,10 @@
 CREATE TABLE IF NOT EXISTS technology (
     id text PRIMARY KEY,
     category text NOT NULL,
-    name text NOT NULL
+    name text NOT NULL,
+    CONSTRAINT check_technology_category CHECK (
+        category IN ('production', 'energy_storage', 'consumption')
+    )
 );
 
 -- changeset flex:technology-ids-exists runOnChange:true endDelimiter:--
