@@ -9,7 +9,7 @@ import {
 import { DataProvider } from "ra-core";
 
 import { Route } from "react-router-dom";
-import { apiURL, serverURL, httpClient, authURL, docsURL } from "./httpConfig";
+import { apiURL, httpClient } from "./httpConfig";
 
 import { authProvider } from "./auth";
 import { elhubTheme } from "./theme";
@@ -55,33 +55,11 @@ const dataProvider: DataProvider = {
     }),
 };
 
-const FooterButton = ({ href, label }: any) => (
-  <a
-    style={{
-      display: "inline-block",
-      padding: "2px 8px",
-      border: `1px solid ${elhubTheme.palette.background.default}`,
-      color: elhubTheme.palette.background.default,
-      borderRadius: "3px",
-      textDecoration: "none",
-    }}
-    href={href}
-  >
-    {label}
-  </a>
-);
-
 const Layout = ({ children }: LayoutProps) => (
   <>
     <Header />
     <div className="py-8 px-6 ">{children}</div>
     <ReactQueryDevtools initialIsOpen={false} />
-    <footer className="fixed z-10 bottom-0 left-0 w-full flex justify-center items-center p-2 bg-semantic-background-action-primary">
-      <FooterButton href={serverURL} label="Portal" />
-      <FooterButton href={docsURL} label="Project documentation" />
-      <FooterButton href={apiURL} label="Main API documentation" />
-      <FooterButton href={authURL} label="Auth API documentation" />
-    </footer>
   </>
 );
 
