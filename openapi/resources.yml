@@ -1682,20 +1682,136 @@ resources:
           en: Controllable Unit
           nb: Kontrollerbar enhet
           nn: Kontrollerbar eining
-      details:
+      technology:
         description: >-
-          Free text details about the technical resource.
+          Technologies of the technical resource using ltree path notation.
+          Multiple technologies can be specified for hybrid resources (e.g., solar + battery).
+        type: array
+        items:
+          $ref: "#/components/schemas/technology"
+        minItems: 1
+        example: ['solar', 'battery']
+        x-intl:
+          en: Technology
+          nb: Teknologi
+          nn: Teknologi
+      category:
+        description: >-
+          Categories derived from the technologies of the technical resource.
+          Automatically computed based on the selected technologies.
+        type: array
+        items:
+          $ref: "#/components/schemas/category"
+        x-no-update: true
+        readOnly: true
+        example: ['production', 'energy_storage']
+        x-intl:
+          en: Category
+          nb: Kategori
+          nn: Kategori
+      maximum_active_power:
+        description: >-
+          Maximum continuous active power (rated power) of the technical resource in kilowatts.
+        format: decimal
+        type: number
+        minimum: 0
+        maximum: 999999.999
+        required: true
+        nullable: false
+        multipleOf: 0.001
+        example: 120.0
+        x-intl:
+          en: Maximum active power
+          nb: Maksimal aktiv effekt
+          nn: Maksimal aktiv effekt
+      device_type:
+        description: >-
+          The type of device.
+        allOf:
+          - $ref: "#/components/schemas/device_type"
+        nullable: false
+        required: true
+        example: 'inverter'
+        x-intl:
+          en: Device type
+          nb: Enhetstype
+          nn: Einingstype
+      make:
+        description: >-
+          The manufacturer of the device. Required if model or business_id is provided.
         format: text
         type: string
-        maxLength: 1024
+        maxLength: 128
         nullable: true
-        example: |-
-          Make: ACME
-          Model: Car Charger 3000
+        example: 'SolarEdge'
+        x-details: >-
+          Must be provided if model or business_id is specified.
         x-intl:
-          en: Details
-          nb: Detaljer
-          nn: Detaljar
+          en: Make
+          nb: Produsent
+          nn: Produsent
+      model:
+        description: >-
+          The model of the device.
+        format: text
+        type: string
+        maxLength: 128
+        nullable: true
+        example: 'SE10K-RWS'
+        x-intl:
+          en: Model
+          nb: Modell
+          nn: Modell
+      business_id:
+        description: >-
+          Business identifier of the device, such as a serial number or MAC address.
+        format: text
+        type: string
+        maxLength: 256
+        nullable: true
+        example: 'SE10K123456789'
+        x-intl:
+          en: Business ID
+          nb: Forretnings-ID
+          nn: Forretnings-ID
+      business_id_type:
+        description: >-
+          The type of business identifier used for the device.
+        format: text
+        type: string
+        nullable: true
+        enum:
+          - id: serial_number
+            x-intl:
+              en: Serial number
+              nb: Serienummer
+              nn: Serienummer
+          - id: mac
+            x-intl:
+              en: MAC address
+              nb: MAC-adresse
+              nn: MAC-adresse
+          - id: other
+            x-intl:
+              en: Other
+              nb: Annet
+              nn: Anna
+        example: 'serial_number'
+        x-intl:
+          en: Business ID type
+          nb: Forretnings-ID-type
+          nn: Forretnings-ID-type
+      additional_information:
+        description: >-
+          Free text field for extra information about the technical resource if needed.
+        format: text
+        type: string
+        nullable: true
+        example: null
+        x-intl:
+          en: Additional information
+          nb: Tilleggsinformasjon
+          nn: Tilleggsinformasjon
 
   - id: event
     acronym: EVENT

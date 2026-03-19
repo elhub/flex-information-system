@@ -9,6 +9,7 @@ export type BaseFieldProps = {
   label?: boolean;
   tooltip?: boolean;
   descriptionOverride?: string;
+  unit?: string;
 };
 
 type BaseFieldPropsWithChildren = BaseFieldProps & {
@@ -19,6 +20,7 @@ export const BaseField = ({
   source,
   label,
   tooltip,
+  unit,
   children,
 }: BaseFieldPropsWithChildren) => {
   const resource = useResourceContext();
@@ -38,12 +40,15 @@ export const BaseField = ({
   }
 
   return (
-    <div className="flex gap-2 items-center">
+    <div className="contents">
       {label === true ? <BodyText weight="bold">{labelText} :</BodyText> : null}
-      {children}
-      {shouldShowTooltip ? (
-        <FieldTooltip resource={resource} field={source} />
-      ) : null}
+      <div className="flex gap-2 items-center">
+        {children}
+        {unit ? <BodyText>{unit}</BodyText> : null}
+        {shouldShowTooltip ? (
+          <FieldTooltip resource={resource} field={source} />
+        ) : null}
+      </div>
     </div>
   );
 };

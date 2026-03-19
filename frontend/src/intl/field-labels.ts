@@ -486,21 +486,37 @@ export type FieldLabel =
   | "system_operator_product_type_history.status"
   | "system_operator_product_type_history.system_operator_id"
   | "system_operator_product_type_history.system_operator_product_type_id"
+  | "technical_resource.additional_information"
+  | "technical_resource.business_id"
+  | "technical_resource.business_id_type"
+  | "technical_resource.category"
   | "technical_resource.controllable_unit_id"
-  | "technical_resource.details"
+  | "technical_resource.device_type"
   | "technical_resource.id"
+  | "technical_resource.make"
+  | "technical_resource.maximum_active_power"
+  | "technical_resource.model"
   | "technical_resource.name"
   | "technical_resource.recorded_at"
   | "technical_resource.recorded_by"
+  | "technical_resource.technology"
+  | "technical_resource_history.additional_information"
+  | "technical_resource_history.business_id"
+  | "technical_resource_history.business_id_type"
+  | "technical_resource_history.category"
   | "technical_resource_history.controllable_unit_id"
-  | "technical_resource_history.details"
+  | "technical_resource_history.device_type"
   | "technical_resource_history.id"
+  | "technical_resource_history.make"
+  | "technical_resource_history.maximum_active_power"
+  | "technical_resource_history.model"
   | "technical_resource_history.name"
   | "technical_resource_history.recorded_at"
   | "technical_resource_history.recorded_by"
   | "technical_resource_history.replaced_at"
   | "technical_resource_history.replaced_by"
-  | "technical_resource_history.technical_resource_id";
+  | "technical_resource_history.technical_resource_id"
+  | "technical_resource_history.technology";
 
 export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
   en: {
@@ -837,13 +853,30 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "technical_resource.id": "ID",
     "technical_resource.name": "Name",
     "technical_resource.controllable_unit_id": "Controllable Unit",
-    "technical_resource.details": "Details",
+    "technical_resource.technology": "Technology",
+    "technical_resource.category": "Category",
+    "technical_resource.maximum_active_power": "Maximum active power",
+    "technical_resource.device_type": "Device type",
+    "technical_resource.make": "Make",
+    "technical_resource.model": "Model",
+    "technical_resource.business_id": "Business ID",
+    "technical_resource.business_id_type": "Business ID type",
+    "technical_resource.additional_information": "Additional information",
     "technical_resource.recorded_at": "Recorded at",
     "technical_resource.recorded_by": "Recorded by",
     "technical_resource_history.id": "ID",
     "technical_resource_history.name": "Name",
     "technical_resource_history.controllable_unit_id": "Controllable Unit",
-    "technical_resource_history.details": "Details",
+    "technical_resource_history.technology": "Technology",
+    "technical_resource_history.category": "Category",
+    "technical_resource_history.maximum_active_power": "Maximum active power",
+    "technical_resource_history.device_type": "Device type",
+    "technical_resource_history.make": "Make",
+    "technical_resource_history.model": "Model",
+    "technical_resource_history.business_id": "Business ID",
+    "technical_resource_history.business_id_type": "Business ID type",
+    "technical_resource_history.additional_information":
+      "Additional information",
     "technical_resource_history.recorded_at": "Recorded at",
     "technical_resource_history.recorded_by": "Recorded by",
     "technical_resource_history.technical_resource_id": "Technical Resource",
@@ -1507,13 +1540,29 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "technical_resource.id": "ID",
     "technical_resource.name": "Navn",
     "technical_resource.controllable_unit_id": "Kontrollerbar enhet",
-    "technical_resource.details": "Detaljer",
+    "technical_resource.technology": "Teknologi",
+    "technical_resource.category": "Kategori",
+    "technical_resource.maximum_active_power": "Maksimal aktiv effekt",
+    "technical_resource.device_type": "Enhetstype",
+    "technical_resource.make": "Produsent",
+    "technical_resource.model": "Modell",
+    "technical_resource.business_id": "Forretnings-ID",
+    "technical_resource.business_id_type": "Forretnings-ID-type",
+    "technical_resource.additional_information": "Tilleggsinformasjon",
     "technical_resource.recorded_at": "Registrert",
     "technical_resource.recorded_by": "Registrert av",
     "technical_resource_history.id": "ID",
     "technical_resource_history.name": "Navn",
     "technical_resource_history.controllable_unit_id": "Kontrollerbar enhet",
-    "technical_resource_history.details": "Detaljer",
+    "technical_resource_history.technology": "Teknologi",
+    "technical_resource_history.category": "Kategori",
+    "technical_resource_history.maximum_active_power": "Maksimal aktiv effekt",
+    "technical_resource_history.device_type": "Enhetstype",
+    "technical_resource_history.make": "Produsent",
+    "technical_resource_history.model": "Modell",
+    "technical_resource_history.business_id": "Forretnings-ID",
+    "technical_resource_history.business_id_type": "Forretnings-ID-type",
+    "technical_resource_history.additional_information": "Tilleggsinformasjon",
     "technical_resource_history.recorded_at": "Registrert",
     "technical_resource_history.recorded_by": "Registrert av",
     "technical_resource_history.technical_resource_id": "Teknisk ressurs",
@@ -2173,13 +2222,29 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "technical_resource.id": "ID",
     "technical_resource.name": "Namn",
     "technical_resource.controllable_unit_id": "Kontrollerbar eining",
-    "technical_resource.details": "Detaljar",
+    "technical_resource.technology": "Teknologi",
+    "technical_resource.category": "Kategori",
+    "technical_resource.maximum_active_power": "Maksimal aktiv effekt",
+    "technical_resource.device_type": "Einingstype",
+    "technical_resource.make": "Produsent",
+    "technical_resource.model": "Modell",
+    "technical_resource.business_id": "Forretnings-ID",
+    "technical_resource.business_id_type": "Forretnings-ID-type",
+    "technical_resource.additional_information": "Tilleggsinformasjon",
     "technical_resource.recorded_at": "Registrert",
     "technical_resource.recorded_by": "Registrert av",
     "technical_resource_history.id": "ID",
     "technical_resource_history.name": "Namn",
     "technical_resource_history.controllable_unit_id": "Kontrollerbar eining",
-    "technical_resource_history.details": "Detaljar",
+    "technical_resource_history.technology": "Teknologi",
+    "technical_resource_history.category": "Kategori",
+    "technical_resource_history.maximum_active_power": "Maksimal aktiv effekt",
+    "technical_resource_history.device_type": "Einingstype",
+    "technical_resource_history.make": "Produsent",
+    "technical_resource_history.model": "Modell",
+    "technical_resource_history.business_id": "Forretnings-ID",
+    "technical_resource_history.business_id_type": "Forretnings-ID-type",
+    "technical_resource_history.additional_information": "Tilleggsinformasjon",
     "technical_resource_history.recorded_at": "Registrert",
     "technical_resource_history.recorded_by": "Registrert av",
     "technical_resource_history.technical_resource_id": "Teknisk ressurs",

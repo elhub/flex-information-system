@@ -362,15 +362,25 @@ $$ LANGUAGE plpgsql SECURITY DEFINER VOLATILE;
 CREATE OR REPLACE FUNCTION test_data.add_technical_resource(
     l_name text,
     l_controllable_unit_id bigint,
-    l_details text
+    l_technology text [],
+    l_maximum_active_power decimal,
+    l_device_type text,
+    l_make text,
+    l_model text
 )
 RETURNS void
 AS $$
 DECLARE
     l_tr record;
 BEGIN
-    INSERT INTO flex.technical_resource (name, controllable_unit_id, details)
-    VALUES (l_name, l_controllable_unit_id, l_details)
+    INSERT INTO flex.technical_resource (
+        name, controllable_unit_id, technology, maximum_active_power,
+        device_type, make, model
+    )
+    VALUES (
+        l_name, l_controllable_unit_id, l_technology, l_maximum_active_power,
+        l_device_type, l_make, l_model
+    )
     RETURNING * INTO l_tr;
 
     -- insert a previous version of that TR valid for the previous EU/BRP/ES
@@ -379,7 +389,12 @@ BEGIN
       id,
       name,
       controllable_unit_id,
-      details,
+      technology,
+      category,
+      maximum_active_power,
+      device_type,
+      make,
+      model,
       record_time_range,
       recorded_by,
       replaced_by
@@ -387,7 +402,12 @@ BEGIN
       l_tr.id,
       l_tr.name || ' COMMON-EU-ES-2023', -- this string will be searched in tests
       l_tr.controllable_unit_id,
-      l_tr.details,
+      l_tr.technology,
+      l_tr.category,
+      l_tr.maximum_active_power,
+      l_tr.device_type,
+      l_tr.make,
+      l_tr.model,
     -- the record must exist fully during the contract of the former end user
     -- on the AP
       tstzrange(
@@ -401,7 +421,12 @@ BEGIN
       l_tr.id,
       l_tr.name || ' TEST-SP-2024-07',
       l_tr.controllable_unit_id,
-      l_tr.details,
+      l_tr.technology,
+      l_tr.category,
+      l_tr.maximum_active_power,
+      l_tr.device_type,
+      l_tr.make,
+      l_tr.model,
       -- the record must have overlap with the first CUSP of Test SP
       tstzrange(
         '2023-11-01 00:00:00 Europe/Oslo',
@@ -414,7 +439,12 @@ BEGIN
       l_tr.id,
       l_tr.name || ' COMMON-BRP-CUSP-2024',
       l_tr.controllable_unit_id,
-      l_tr.details,
+      l_tr.technology,
+      l_tr.category,
+      l_tr.maximum_active_power,
+      l_tr.device_type,
+      l_tr.make,
+      l_tr.model,
       -- the record must exist while Common BRP is BRP on the AP
       -- and while Common SP manages the CU
       tstzrange(
@@ -428,7 +458,12 @@ BEGIN
       l_tr.id,
       l_tr.name || ' COMMON-SP-AS-OF-2024',
       l_tr.controllable_unit_id,
-      l_tr.details,
+      l_tr.technology,
+      l_tr.category,
+      l_tr.maximum_active_power,
+      l_tr.device_type,
+      l_tr.make,
+      l_tr.model,
       -- the record must contain the as-of timestamp of Common SP
       tstzrange(
         '2024-08-11 00:00:00 Europe/Oslo',
@@ -441,7 +476,12 @@ BEGIN
       l_tr.id,
       l_tr.name || ' TEST-SP-2025',
       l_tr.controllable_unit_id,
-      l_tr.details,
+      l_tr.technology,
+      l_tr.category,
+      l_tr.maximum_active_power,
+      l_tr.device_type,
+      l_tr.make,
+      l_tr.model,
       -- the record acts as a newer version that Common SP cannot see
       tstzrange(
         '2025-01-01 00:00:00 Europe/Oslo',
@@ -632,7 +672,8 @@ DECLARE
   so_mga_business_id text;
   so_mga_id bigint;
 
-  asset_type text;
+  technology_id text;
+  technology_name text;
   accounting_point_prefix text := '1337000000' || user_seq_id_text;
   accounting_point_seq bigint := rpad(accounting_point_prefix, 17, '0')::bigint;
   ap_id bigint;
@@ -930,15 +971,17 @@ BEGIN
     entity_first_name || ' SPG', sp_id, 'NO3'
   ) RETURNING id INTO spg_id;
 
-  FOREACH asset_type in ARRAY ARRAY['Car Charger','Water Heater','Solar Panel']::text[]
+  FOREACH technology_id in ARRAY ARRAY['ev_charging_device','water_heater','solar']::text[]
   LOOP
+
+    SELECT name INTO technology_name FROM flex.technology WHERE id = technology_id;
 
     SELECT id INTO ap_id
     FROM flex.accounting_point
     WHERE business_id = gs1.add_check_digit(accounting_point_seq::text);
 
     SELECT test_data.add_controllable_unit(
-      entity_first_name || ' ' || asset_type,
+      entity_first_name || ' ' || technology_name,
       so_id,
       ap_id,
       eu_id,
@@ -958,19 +1001,31 @@ BEGIN
     );
 
     PERFORM test_data.add_technical_resource(
-      entity_first_name || ' ' || asset_type || ' Unit #1',
+      entity_first_name || ' ' || technology_name || ' Unit #1',
       cu_id,
-      E'Make: ACME\nModel: ' || asset_type || ' 2000'
+      ARRAY[technology_id],
+      5.0,
+      'other',
+      'ACME',
+      technology_name || ' 2000'
     );
     PERFORM test_data.add_technical_resource(
-      entity_first_name || ' ' || asset_type || ' Unit #2',
+      entity_first_name || ' ' || technology_name || ' Unit #2',
       cu_id,
-      E'Make: ACME\nModel: ' || asset_type || ' 2000'
+      ARRAY[technology_id],
+      5.0,
+      'other',
+      'ACME',
+      technology_name || ' 2000'
     );
     PERFORM test_data.add_technical_resource(
-      entity_first_name || ' ' || asset_type || ' Unit #3',
+      entity_first_name || ' ' || technology_name || ' Unit #3',
       cu_id,
-      E'Make: ACME\nModel: ' || asset_type || ' 2000'
+      ARRAY[technology_id],
+      5.0,
+      'other',
+      'ACME',
+      technology_name || ' 2000'
     );
 
     accounting_point_seq := accounting_point_seq + 1;

@@ -11,6 +11,7 @@ from .accounting_point_energy_supplier_response import AccountingPointEnergySupp
 from .accounting_point_metering_grid_area_response import AccountingPointMeteringGridAreaResponse
 from .accounting_point_response import AccountingPointResponse
 from .auth_scope import AuthScope
+from .category import Category
 from .controllable_unit_create_request import ControllableUnitCreateRequest
 from .controllable_unit_grid_validation_status import ControllableUnitGridValidationStatus
 from .controllable_unit_history_response import ControllableUnitHistoryResponse
@@ -42,6 +43,7 @@ from .controllable_unit_suspension_reason import ControllableUnitSuspensionReaso
 from .controllable_unit_suspension_response import ControllableUnitSuspensionResponse
 from .controllable_unit_suspension_update_request import ControllableUnitSuspensionUpdateRequest
 from .controllable_unit_update_request import ControllableUnitUpdateRequest
+from .device_type import DeviceType
 from .empty_object import EmptyObject
 from .entity_business_id_type import EntityBusinessIdType
 from .entity_client_create_request import EntityClientCreateRequest
@@ -224,10 +226,12 @@ from .system_operator_product_type_history_response import SystemOperatorProduct
 from .system_operator_product_type_response import SystemOperatorProductTypeResponse
 from .system_operator_product_type_status import SystemOperatorProductTypeStatus
 from .system_operator_product_type_update_request import SystemOperatorProductTypeUpdateRequest
+from .technical_resource_business_id_type import TechnicalResourceBusinessIdType
 from .technical_resource_create_request import TechnicalResourceCreateRequest
 from .technical_resource_history_response import TechnicalResourceHistoryResponse
 from .technical_resource_response import TechnicalResourceResponse
 from .technical_resource_update_request import TechnicalResourceUpdateRequest
+from .technology import Technology
 from .timeline_multi_range_item import TimelineMultiRangeItem
 
 __all__ = (
@@ -240,6 +244,7 @@ __all__ = (
     "AccountingPointMeteringGridAreaResponse",
     "AccountingPointResponse",
     "AuthScope",
+    "Category",
     "ControllableUnitCreateRequest",
     "ControllableUnitGridValidationStatus",
     "ControllableUnitHistoryResponse",
@@ -267,6 +272,7 @@ __all__ = (
     "ControllableUnitSuspensionResponse",
     "ControllableUnitSuspensionUpdateRequest",
     "ControllableUnitUpdateRequest",
+    "DeviceType",
     "EmptyObject",
     "EntityBusinessIdType",
     "EntityClientCreateRequest",
@@ -381,9 +387,11 @@ __all__ = (
     "SystemOperatorProductTypeResponse",
     "SystemOperatorProductTypeStatus",
     "SystemOperatorProductTypeUpdateRequest",
+    "TechnicalResourceBusinessIdType",
     "TechnicalResourceCreateRequest",
     "TechnicalResourceHistoryResponse",
     "TechnicalResourceResponse",
     "TechnicalResourceUpdateRequest",
+    "Technology",
     "TimelineMultiRangeItem",
 )

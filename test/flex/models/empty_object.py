@@ -13,7 +13,6 @@ class EmptyObject:
     """An empty object"""
 
     def to_dict(self) -> dict[str, Any]:
-
         field_dict: dict[str, Any] = {}
 
         return field_dict
