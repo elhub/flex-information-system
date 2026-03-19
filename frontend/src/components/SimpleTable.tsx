@@ -77,6 +77,7 @@ export const SimpleTable = <T extends { id?: unknown }>({
           <Table.Row
             key={String(row.id ?? i)}
             onClick={(e) => handleRowClick(e, row)}
+            style={{ cursor: rowClick ? "pointer" : "default" }}
           >
             {checkbox && (
               <Table.DataCell>{checkbox.render(row)}</Table.DataCell>

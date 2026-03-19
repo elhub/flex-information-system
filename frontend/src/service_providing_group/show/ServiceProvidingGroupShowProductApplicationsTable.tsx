@@ -4,6 +4,7 @@ import {
   SpgProductApplicationRow,
   useSpgProductApplications,
 } from "./useSpgProductApplications";
+import { useNavigate } from "react-admin";
 
 type Props = {
   spgId: number;
@@ -27,6 +28,7 @@ export const ServiceProvidingGroupShowProductApplicationsTable = ({
   spgId,
 }: Props) => {
   const { data, isLoading } = useSpgProductApplications(spgId);
+  const navigate = useNavigate();
 
   if (isLoading) {
     return <Loader />;
@@ -34,6 +36,11 @@ export const ServiceProvidingGroupShowProductApplicationsTable = ({
 
   return (
     <SimpleTable
+      rowClick={(row) =>
+        navigate(
+          `/service_providing_group/${spgId}/product_application/${row.id}/show`,
+        )
+      }
       size="small"
       data={data ?? []}
       columns={columns}
