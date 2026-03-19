@@ -5,26 +5,41 @@ import {
   useSpgGridPrequalifications,
 } from "./useSpgGridPrequalifications";
 import { useNavigate } from "react-admin";
+import { useTranslateField } from "../../intl/intl";
 
 type Props = {
   spgId: number;
 };
-
-const columns: Column<SpgGridPrequalificationRow>[] = [
-  { key: "id", header: "ID" },
-  {
-    key: "impactedSystemOperatorName",
-    header: "Impacted system operator",
-  },
-  { key: "status", header: "Status" },
-  { key: "prequalifiedAt", header: "Prequalified at" },
-];
 
 export const ServiceProvidingGroupShowGridPrequalificationsTable = ({
   spgId,
 }: Props) => {
   const { data, isLoading } = useSpgGridPrequalifications(spgId);
   const navigate = useNavigate();
+  const t = useTranslateField();
+
+  const columns: Column<SpgGridPrequalificationRow>[] = [
+    {
+      key: "id",
+      header: t("service_providing_group_grid_prequalification.id"),
+    },
+    {
+      key: "impactedSystemOperatorName",
+      header: t(
+        "service_providing_group_grid_prequalification.impacted_system_operator_id",
+      ),
+    },
+    {
+      key: "status",
+      header: t("service_providing_group_grid_prequalification.status"),
+    },
+    {
+      key: "prequalifiedAt",
+      header: t(
+        "service_providing_group_grid_prequalification.prequalified_at",
+      ),
+    },
+  ];
 
   if (isLoading) {
     return <Loader />;

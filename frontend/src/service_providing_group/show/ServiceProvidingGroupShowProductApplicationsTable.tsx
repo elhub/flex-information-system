@@ -5,30 +5,40 @@ import {
   useSpgProductApplications,
 } from "./useSpgProductApplications";
 import { useNavigate } from "react-admin";
+import { useTranslateField } from "../../intl/intl";
 
 type Props = {
   spgId: number;
 };
-
-const columns: Column<SpgProductApplicationRow>[] = [
-  { key: "id", header: "ID" },
-  {
-    key: "procuringSystemOperatorName",
-    header: "Procuring system operator",
-  },
-  {
-    key: "productTypeIds",
-    header: "Product type IDs",
-    render: (value) => String(value),
-  },
-  { key: "status", header: "Status" },
-];
 
 export const ServiceProvidingGroupShowProductApplicationsTable = ({
   spgId,
 }: Props) => {
   const { data, isLoading } = useSpgProductApplications(spgId);
   const navigate = useNavigate();
+  const t = useTranslateField();
+
+  const columns: Column<SpgProductApplicationRow>[] = [
+    {
+      key: "id",
+      header: t("service_providing_group_product_application.id"),
+    },
+    {
+      key: "procuringSystemOperatorName",
+      header: t(
+        "service_providing_group_product_application.procuring_system_operator_id",
+      ),
+    },
+    {
+      key: "productTypeIds",
+      header: t("service_providing_group_product_application.product_type_ids"),
+      render: (value) => String(value),
+    },
+    {
+      key: "status",
+      header: t("service_providing_group_product_application.status"),
+    },
+  ];
 
   if (isLoading) {
     return <Loader />;
