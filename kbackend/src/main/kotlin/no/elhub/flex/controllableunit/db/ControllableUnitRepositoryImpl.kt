@@ -6,10 +6,9 @@ import arrow.core.right
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.serialization.json.Json
 import no.elhub.flex.auth.AccessToken
-import no.elhub.flex.controllableunit.dto.ControllableUnit
-import no.elhub.flex.db.FlexTransaction
 import no.elhub.flex.db.FlexTransaction.flexTransaction
-import no.elhub.flex.domain.AccountingPoint
+import no.elhub.flex.model.domain.AccountingPoint
+import no.elhub.flex.model.domain.ControllableUnit
 import org.koin.core.annotation.Single
 
 private val logger = KotlinLogging.logger {}

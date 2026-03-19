@@ -1,4 +1,4 @@
-package no.elhub.flex.domain
+package no.elhub.flex.model.domain
 
 import arrow.core.Either
 import arrow.core.getOrElse

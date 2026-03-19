@@ -36,6 +36,8 @@ object FlexTransaction {
         transaction(db) {
             val conn = this.connection.connection as java.sql.Connection
 
+            conn.prepareStatement("SET LOCAL ROLE \"$role\"").use { it.execute() }
+
             if (extId == "0") {
                 conn.prepareStatement(
                     """
@@ -59,8 +61,6 @@ object FlexTransaction {
                     stmt.execute()
                 }
             }
-
-            conn.prepareStatement("SET LOCAL ROLE \"$role\"").use { it.execute() }
 
             block(conn)
         }
