@@ -492,14 +492,16 @@ def test_spgpa_fiso_sp_so(data):
     assert isinstance(u, ErrorMessage)
 
     # rejected -> requested : ok
-    u = update_service_providing_group_product_application.sync(
-        client=client_sp,
-        id=cast(int, spgpa.id),
-        body=ServiceProvidingGroupProductApplicationUpdateRequest(
-            status=ServiceProvidingGroupProductApplicationStatus.REQUESTED,
-        ),
-    )
-    assert not isinstance(u, ErrorMessage)
+    # TODO - this test is disabled since we have remove the
+    # SPs permission (FLA) to update the status (for the time being)
+    # u = update_service_providing_group_product_application.sync(
+    #     client=client_sp,
+    #     id=cast(int, spgpa.id),
+    #     body=ServiceProvidingGroupProductApplicationUpdateRequest(
+    #         status=ServiceProvidingGroupProductApplicationStatus.REQUESTED,
+    #     ),
+    # )
+    # assert not isinstance(u, ErrorMessage)
 
     # just to trigger notification to SO
     for spgm_id in spgm_ids:
