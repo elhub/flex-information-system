@@ -5,19 +5,29 @@ import { BaseField, BaseFieldProps } from "./BaseField";
 type IdentityFieldProps = BaseFieldProps;
 
 export const IdentityField = (props: IdentityFieldProps) => {
-  const { source, label, tooltip, ...rest } = props;
+  const { source, label, tooltip, textSize = "small", ...rest } = props;
   const record = useRecordContext();
 
   if (record?.[source] === 0) {
     return (
-      <BaseField source={source} label={label} tooltip={tooltip}>
-        <BodyText>System</BodyText>
+      <BaseField
+        textSize={textSize}
+        source={source}
+        label={label}
+        tooltip={tooltip}
+      >
+        <BodyText size={textSize}>System</BodyText>
       </BaseField>
     );
   }
 
   return (
-    <BaseField source={source} label={label} tooltip={tooltip}>
+    <BaseField
+      textSize={textSize}
+      source={source}
+      label={label}
+      tooltip={tooltip}
+    >
       <ReferenceFieldBase
         reference="identity"
         source={source}
@@ -30,7 +40,9 @@ export const IdentityField = (props: IdentityFieldProps) => {
           const partyName = referenceRecord.party_name
             ? ` as ${referenceRecord.party_name}`
             : "";
-          return <BodyText>{`${entityName}${partyName}`}</BodyText>;
+          return (
+            <BodyText size={textSize}>{`${entityName}${partyName}`}</BodyText>
+          );
         }}
         {...rest}
       />

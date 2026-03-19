@@ -11,17 +11,27 @@ export const EnumField = ({
   source,
   label,
   tooltip,
+  labelDirection = "row",
+  textSize = "small",
 }: EnumFieldProps) => {
   const translate = useTranslate();
   const record = useRecordContext();
   const value = record?.[source];
   const content =
     value == null || value === "" ? null : (
-      <BodyText>{translate(`enum.${enumKey}.${value}`)}</BodyText>
+      <BodyText size={textSize}>
+        {translate(`enum.${enumKey}.${value}`)}
+      </BodyText>
     );
 
   return (
-    <BaseField source={source} label={label} tooltip={tooltip}>
+    <BaseField
+      source={source}
+      label={label}
+      tooltip={tooltip}
+      labelDirection={labelDirection}
+      textSize={textSize}
+    >
       {content}
     </BaseField>
   );

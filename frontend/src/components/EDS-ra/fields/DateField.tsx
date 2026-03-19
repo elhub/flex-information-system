@@ -14,6 +14,7 @@ export const DateField = ({
   emptyText,
   label,
   tooltip,
+  textSize = "medium",
 }: DateFieldProps) => {
   const record = useRecordContext();
   const value = record?.[source];
@@ -23,14 +24,23 @@ export const DateField = ({
       const options: Intl.DateTimeFormatOptions = showTime
         ? { dateStyle: "medium", timeStyle: "short", hour12: false }
         : { dateStyle: "medium" };
-      return <BodyText>{date.toLocaleString("no-NO", options)}</BodyText>;
+      return (
+        <BodyText size="small">
+          {date.toLocaleString("no-NO", options)}
+        </BodyText>
+      );
     })()
   ) : emptyText ? (
-    <BodyText>{emptyText}</BodyText>
+    <BodyText size="small">{emptyText}</BodyText>
   ) : null;
 
   return (
-    <BaseField source={source} label={label} tooltip={tooltip}>
+    <BaseField
+      source={source}
+      label={label}
+      tooltip={tooltip}
+      textSize={textSize}
+    >
       {content}
     </BaseField>
   );

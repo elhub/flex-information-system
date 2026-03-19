@@ -18,6 +18,7 @@ type SimpleTableProps<T extends { id?: unknown }> = {
   empty?: ReactNode;
   action?: { render: (row: T) => ReactNode; header?: string };
   checkbox?: { render: (row: T) => ReactNode; header?: ReactNode };
+  className?: string;
 };
 
 export const SimpleTable = <T extends { id?: unknown }>({
@@ -27,10 +28,11 @@ export const SimpleTable = <T extends { id?: unknown }>({
   empty = "No results",
   action,
   checkbox,
+  className,
 }: SimpleTableProps<T>) => {
   if (!data.length) return <BodyText>{empty}</BodyText>;
   return (
-    <Table size={size}>
+    <Table className={className} size={size}>
       <Table.Header>
         <Table.Row>
           {checkbox && (

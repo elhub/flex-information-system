@@ -13,7 +13,15 @@ type ReferenceFieldProps = ReferenceFieldBaseProps &
   };
 
 export const ReferenceField = (props: ReferenceFieldProps) => {
-  const { children, emptyText, label, tooltip, ...rest } = props;
+  const {
+    children,
+    emptyText,
+    label,
+    tooltip,
+    labelDirection = "row",
+    textSize = "small",
+    ...rest
+  } = props;
   const getRecordRepresentation = useGetRecordRepresentation(rest.reference);
 
   const content = children ? (
@@ -30,13 +38,21 @@ export const ReferenceField = (props: ReferenceFieldProps) => {
       empty={emptyText ? <BodyText>{emptyText}</BodyText> : undefined}
       loading={<Loader size="small" />}
       render={({ referenceRecord }) => (
-        <BodyText>{getRecordRepresentation(referenceRecord)}</BodyText>
+        <BodyText size={textSize}>
+          {getRecordRepresentation(referenceRecord)}
+        </BodyText>
       )}
     />
   );
 
   return (
-    <BaseField source={rest.source} label={label} tooltip={tooltip}>
+    <BaseField
+      textSize={textSize}
+      source={rest.source}
+      label={label}
+      tooltip={tooltip}
+      labelDirection={labelDirection}
+    >
       {content}
     </BaseField>
   );
