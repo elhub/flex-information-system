@@ -4,6 +4,7 @@ import {
   useSpgShowViewModel,
   type SpgMembershipRow,
 } from "./useSpgShowViewModel";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   spgId: number;
@@ -11,6 +12,7 @@ type Props = {
 
 export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
   const { data, isLoading } = useSpgShowViewModel(spgId);
+  const navigate = useNavigate();
 
   if (isLoading) {
     return <Loader />;
@@ -39,6 +41,7 @@ export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
   return (
     <div>
       <SimpleTable
+        rowClick={(row) => navigate(`/controllable_unit/${row.id}/show`)}
         size="small"
         data={data?.rows ?? []}
         columns={columns}
