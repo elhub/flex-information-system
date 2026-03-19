@@ -4,7 +4,7 @@ import { usePermissions } from "ra-core";
 import { Permissions } from "../../auth/permissions";
 import { Link as RouterLink, useParams } from "react-router-dom";
 import { ServiceProvidingGroupShowSummary } from "./ServiceProvidingGroupShowSummary";
-import { ServiceProvidingGroupShowTable } from "./ServiceProvidingGroupShowTable";
+import { ServiceProvidingGroupShowTabs } from "./ServiceProvidingGroupShowTabs";
 import { readServiceProvidingGroup } from "../../generated-client";
 import { throwOnError } from "../../util";
 import { useQuery } from "@tanstack/react-query";
@@ -64,7 +64,7 @@ export const ServiceProvidingGroupShow = () => {
 
       <div className="grid grid-cols-1 gap-4 xl:grid-cols-[475px_minmax(0,1fr)]">
         <ServiceProvidingGroupShowSummary spg={spg} />
-        <ServiceProvidingGroupShowTable spgId={spg.id} />
+        <ServiceProvidingGroupShowTabs spgId={spg.id} />
       </div>
     </div>
   );
