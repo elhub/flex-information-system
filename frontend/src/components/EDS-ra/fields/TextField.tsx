@@ -12,20 +12,26 @@ export const TextField = ({
   emptyText,
   label,
   tooltip,
+  textSize = "small",
 }: TextFieldProps) => {
   const record = useRecordContext();
   const value = record?.[source];
   const content =
     value == null || value === "" ? (
       emptyText ? (
-        <BodyText>{emptyText}</BodyText>
+        <BodyText size={textSize}>{emptyText}</BodyText>
       ) : null
     ) : (
-      <BodyText>{String(value)}</BodyText>
+      <BodyText size={textSize}>{String(value)}</BodyText>
     );
 
   return (
-    <BaseField source={source} label={label} tooltip={tooltip}>
+    <BaseField
+      textSize={textSize}
+      source={source}
+      label={label}
+      tooltip={tooltip}
+    >
       {content}
     </BaseField>
   );

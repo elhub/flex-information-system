@@ -9,6 +9,8 @@ export type BaseFieldProps = {
   label?: boolean;
   tooltip?: boolean;
   descriptionOverride?: string;
+  labelDirection?: "row" | "column";
+  textSize?: "small" | "medium" | "large";
 };
 
 type BaseFieldPropsWithChildren = BaseFieldProps & {
@@ -20,6 +22,8 @@ export const BaseField = ({
   label,
   tooltip,
   children,
+  labelDirection = "row",
+  textSize = "small",
 }: BaseFieldPropsWithChildren) => {
   const resource = useResourceContext();
   const { permissions } = usePermissions<Permissions>();
@@ -32,14 +36,22 @@ export const BaseField = ({
       false;
 
   const labelText = translate(`field.${resource}.${source}`);
+  const formattedLabelText =
+    labelDirection === "column" ? labelText : `${labelText} :`;
 
   if (!allowed) {
     return null;
   }
 
   return (
-    <div className="flex gap-2 items-center">
-      {label === true ? <BodyText weight="bold">{labelText} :</BodyText> : null}
+    <div
+      className={`flex gap-2 ${labelDirection === "column" ? "flex-col justify-start items-start" : "flex-row items-center"}`}
+    >
+      {label === true ? (
+        <BodyText weight="bold" size={textSize}>
+          {formattedLabelText}
+        </BodyText>
+      ) : null}
       {children}
       {shouldShowTooltip ? (
         <FieldTooltip resource={resource} field={source} />

@@ -2,6 +2,7 @@ import { EmptyObject } from "react-hook-form";
 import { ErrorMessage } from "./generated-client";
 import { twMerge } from "tailwind-merge";
 import clsx from "clsx";
+import { formatDate } from "date-fns";
 
 // split an array into chunks of given size
 export function chunksOf(size: number, t: any[]): any[][] {
@@ -54,4 +55,10 @@ export const throwOnError = <T>(response: Response<T>): T => {
 // CN is a standard utility function for merging classes
 export const cn = (...classes: (string | undefined)[]): string => {
   return twMerge(clsx(classes));
+};
+
+// Format a date string (ISO) to "dd.MM.yyyy", or "-" if absent
+export const toDateString = (value: string | undefined): string => {
+  if (!value) return "-";
+  return formatDate(value, "dd.MM.yyyy");
 };
