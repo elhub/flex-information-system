@@ -1,32 +1,58 @@
-import { BodyText, Loader } from "../../components/ui";
+import { BodyText, Button, Loader } from "../../components/ui";
 import { Column, SimpleTable } from "../../components/SimpleTable";
 import {
   useSpgShowViewModel,
   type SpgMembershipRow,
 } from "./useSpgShowViewModel";
-import { useNavigate } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useTranslateField } from "../../intl/intl";
+import { IconUser } from "@elhub/ds-icons";
+import { usePermissions } from "ra-core";
+import { Permissions } from "../../auth/permissions";
 
 type Props = {
   spgId: number;
 };
 
 export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
-  const { data, isLoading } = useSpgShowViewModel(spgId);
+  const { data, isLoading, error } = useSpgShowViewModel(spgId);
   const navigate = useNavigate();
   const t = useTranslateField();
+  const { permissions } = usePermissions<Permissions>();
+  const canManageMembers = permissions?.allow(
+    "service_providing_group_membership",
+    "create",
+  );
 
   if (isLoading) {
     return <Loader />;
   }
 
+  if (error) {
+    throw error;
+  }
+
   if (!data || data.rows.length === 0) {
-    return <BodyText>No controllable units in this group yet.</BodyText>;
+    return (
+      <div className="flex flex-col items-start gap-2">
+        <BodyText>No controllable units in this group yet.</BodyText>
+        {canManageMembers ? (
+          <Button
+            as={RouterLink}
+            to={`/service_providing_group/${spgId}/manage-members`}
+            variant="invisible"
+            icon={IconUser}
+          >
+            Manage members
+          </Button>
+        ) : null}
+      </div>
+    );
   }
 
   const columns: Column<SpgMembershipRow>[] = [
     {
-      key: "controllableUnitName",
+      key: "name",
       header: t("controllable_unit.name"),
     },
     {
@@ -38,12 +64,12 @@ export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
       header: t("service_providing_group_membership.valid_to"),
     },
     {
-      key: "capacityKw",
+      key: "maximum_active_power",
       header: t("controllable_unit.maximum_active_power"),
       render: (value) => <div className="text-right">{String(value)}</div>,
     },
     {
-      key: "direction",
+      key: "regulation_direction",
       header: t("controllable_unit.regulation_direction"),
     },
     { key: "mpid", header: t("controllable_unit.accounting_point_id") },

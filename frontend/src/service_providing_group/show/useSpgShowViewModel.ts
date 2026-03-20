@@ -9,11 +9,11 @@ import { throwOnError, toDateString } from "../../util";
 
 export type SpgMembershipRow = {
   id: number;
-  controllableUnitName: string;
+  name: string;
   validFrom: string;
   validTo: string;
-  capacityKw: number;
-  direction: string;
+  maximum_active_power: number;
+  regulation_direction: string;
   mpid: string;
   status: string;
 };
@@ -81,47 +81,43 @@ const fetchSpgShowData = async (serviceProvidingGroupId: number) => {
 
   const apMap = Object.fromEntries(accountingPoints.map((ap) => [ap.id, ap]));
 
-  const rows: SpgMembershipRow[] = controllableUnits.map((controllableUnit) => {
-    const accountingPoint = apMap[controllableUnit.accounting_point_id];
+  const rows: SpgMembershipRow[] = controllableUnits.map((cu) => {
+    const ap = apMap[cu.accounting_point_id];
     const membership = memberships.find(
-      (value) => value.controllable_unit_id === controllableUnit.id,
+      (m) => m.controllable_unit_id === cu.id,
     );
 
     return {
-      id: controllableUnit.id,
-      controllableUnitName: controllableUnit.name,
+      id: cu.id,
+      name: cu.name,
       validFrom: toDateString(membership?.valid_from),
       validTo: toDateString(membership?.valid_to),
-      capacityKw: controllableUnit.maximum_active_power,
-      direction: controllableUnit.regulation_direction,
-      mpid: accountingPoint?.business_id ?? "-",
-      status: controllableUnit.status,
+      maximum_active_power: cu.maximum_active_power,
+      regulation_direction: cu.regulation_direction,
+      mpid: ap?.business_id ?? "-",
+      status: cu.status,
     };
   });
 
-  const totalCapacityKw = rows.reduce((sum, row) => sum + row.capacityKw, 0);
+  const totalCapacityKw = controllableUnits.reduce(
+    (sum, cu) => sum + cu.maximum_active_power,
+    0,
+  );
 
   const productionCapacityKw = controllableUnits
     .filter(
-      (controllableUnit) =>
-        controllableUnit.regulation_direction === "up" ||
-        controllableUnit.regulation_direction === "both",
+      (cu) =>
+        cu.regulation_direction === "up" || cu.regulation_direction === "both",
     )
-    .reduce(
-      (sum, controllableUnit) => sum + controllableUnit.maximum_active_power,
-      0,
-    );
+    .reduce((sum, cu) => sum + cu.maximum_active_power, 0);
 
   const consumptionCapacityKw = controllableUnits
     .filter(
-      (controllableUnit) =>
-        controllableUnit.regulation_direction === "down" ||
-        controllableUnit.regulation_direction === "both",
+      (cu) =>
+        cu.regulation_direction === "down" ||
+        cu.regulation_direction === "both",
     )
-    .reduce(
-      (sum, controllableUnit) => sum + controllableUnit.maximum_active_power,
-      0,
-    );
+    .reduce((sum, cu) => sum + cu.maximum_active_power, 0);
 
   return {
     rows,

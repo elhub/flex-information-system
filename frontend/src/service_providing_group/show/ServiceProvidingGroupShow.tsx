@@ -11,7 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 
 export const ServiceProvidingGroupShow = () => {
   const { permissions } = usePermissions<Permissions>();
-  const spgId = useParams<{ id: string }>().id;
+  const spgId = Number(useParams<{ id: string }>().id);
   const canManageMembers = permissions?.allow(
     "service_providing_group_membership",
     "create",
@@ -24,9 +24,7 @@ export const ServiceProvidingGroupShow = () => {
   } = useQuery({
     queryKey: ["service_providing_group", spgId],
     queryFn: () =>
-      readServiceProvidingGroup({ path: { id: Number(spgId) } }).then(
-        throwOnError,
-      ),
+      readServiceProvidingGroup({ path: { id: spgId } }).then(throwOnError),
     enabled: !!spgId,
   });
 

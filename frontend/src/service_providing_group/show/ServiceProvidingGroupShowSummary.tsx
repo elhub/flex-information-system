@@ -18,7 +18,7 @@ const formatUnit = (value: number | undefined, unit: string) => {
     return "-";
   }
 
-  return `${Math.round(value)} ${unit}`;
+  return `${value.toFixed(3)} ${unit}`;
 };
 
 export const ServiceProvidingGroupShowSummary = ({
@@ -26,10 +26,14 @@ export const ServiceProvidingGroupShowSummary = ({
 }: {
   spg: ServiceProvidingGroup;
 }) => {
-  const { data, isLoading } = useSpgShowViewModel(spg.id);
+  const { data, isLoading, error } = useSpgShowViewModel(spg.id);
 
   if (isLoading) {
     return <Loader size="small" />;
+  }
+
+  if (error) {
+    throw error;
   }
 
   return (
