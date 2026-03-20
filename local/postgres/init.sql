@@ -59,7 +59,7 @@ GRANT flex_operation_readonly TO local_operator;
 GRANT flex_operation_update TO local_operator;
 GRANT flex_operation_readwrite TO local_operator;
 
--- interal roles
+-- internal roles
 CREATE ROLE flex_internal_event_notification WITH NOLOGIN;
 CREATE ROLE flex_internal_data WITH NOLOGIN;
 GRANT flex_internal TO
