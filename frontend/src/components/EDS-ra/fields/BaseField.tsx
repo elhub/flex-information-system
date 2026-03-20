@@ -45,7 +45,7 @@ export const BaseField = ({
 
   return (
     <div
-      className={`flex gap-2 text-body-size-small ${labelDirection === "column" ? "flex-col justify-start items-start" : "flex-row items-center"}`}
+      className={`flex gap-2 ${labelDirection === "column" ? "flex-col justify-start items-start" : "flex-row items-center"}`}
     >
       {label === true ? (
         <BodyText weight="bold" size={textSize}>

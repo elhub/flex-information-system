@@ -11,7 +11,7 @@ export type Column<T> = {
   render?: (value: T[keyof T], row: T) => ReactNode;
 };
 
-type SimpleTableProps<T extends { id?: unknown }> = {
+type SimpleTableProps<T extends { id?: string | number }> = {
   columns: Column<T>[];
   data: T[];
   size?: "medium" | "small";
@@ -22,7 +22,7 @@ type SimpleTableProps<T extends { id?: unknown }> = {
   rowClick?: (record: T) => void;
 };
 
-export const SimpleTable = <T extends { id?: unknown }>({
+export const SimpleTable = <T extends { id?: string | number }>({
   columns,
   data,
   size,
@@ -38,7 +38,7 @@ export const SimpleTable = <T extends { id?: unknown }>({
   ) => {
     if (!rowClick) return;
     const target = e.target as HTMLElement;
-    // We dont want to navigate if the target is a button or a link, or a modal
+    // We don't want to navigate if the target is a button or a link, or a modal
     // overlay, because it's handled by the button or link itself.
     if (target.closest("button, a, .eds-modal__overlay")) {
       return;
@@ -77,7 +77,7 @@ export const SimpleTable = <T extends { id?: unknown }>({
           <Table.Row
             key={String(row.id ?? i)}
             onClick={(e) => handleRowClick(e, row)}
-            style={{ cursor: rowClick ? "pointer" : "default" }}
+            className={rowClick ? "cursor-pointer" : undefined}
           >
             {checkbox && (
               <Table.DataCell>{checkbox.render(row)}</Table.DataCell>

@@ -44,7 +44,7 @@ export const ServiceProvidingGroupShowSummary = ({
             source="service_provider_id"
             reference="party"
             label
-          ></ReferenceField>
+          />
 
           <div className="flex flex-col gap-1">
             <EnumField
@@ -67,7 +67,6 @@ export const ServiceProvidingGroupShowSummary = ({
           label="Total capacity"
           value={formatUnit(data?.totalCapacityKw, "kW")}
         />
-        <FieldItem label="Notes" value="-" />
       </div>
     </Panel>
   );

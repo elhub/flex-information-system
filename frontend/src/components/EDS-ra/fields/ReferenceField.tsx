@@ -27,7 +27,9 @@ export const ReferenceField = (props: ReferenceFieldProps) => {
   const content = children ? (
     <ReferenceFieldBase
       {...rest}
-      empty={emptyText ? <BodyText>{emptyText}</BodyText> : undefined}
+      empty={
+        emptyText ? <BodyText size={textSize}>{emptyText}</BodyText> : undefined
+      }
       loading={<Loader size="small" />}
     >
       {children}
@@ -35,7 +37,9 @@ export const ReferenceField = (props: ReferenceFieldProps) => {
   ) : (
     <ReferenceFieldBase
       {...rest}
-      empty={emptyText ? <BodyText>{emptyText}</BodyText> : undefined}
+      empty={
+        emptyText ? <BodyText size={textSize}>{emptyText}</BodyText> : undefined
+      }
       loading={<Loader size="small" />}
       render={({ referenceRecord }) => (
         <BodyText size={textSize}>

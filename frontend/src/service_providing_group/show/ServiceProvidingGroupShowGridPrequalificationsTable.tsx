@@ -4,7 +4,7 @@ import {
   SpgGridPrequalificationRow,
   useSpgGridPrequalifications,
 } from "./useSpgGridPrequalifications";
-import { useNavigate } from "react-admin";
+import { useNavigate } from "react-router-dom";
 import { useTranslateField } from "../../intl/intl";
 
 type Props = {
@@ -14,7 +14,7 @@ type Props = {
 export const ServiceProvidingGroupShowGridPrequalificationsTable = ({
   spgId,
 }: Props) => {
-  const { data, isLoading } = useSpgGridPrequalifications(spgId);
+  const { data, isLoading, error } = useSpgGridPrequalifications(spgId);
   const navigate = useNavigate();
   const t = useTranslateField();
 
@@ -43,6 +43,10 @@ export const ServiceProvidingGroupShowGridPrequalificationsTable = ({
 
   if (isLoading) {
     return <Loader />;
+  }
+
+  if (error) {
+    throw error;
   }
 
   return (

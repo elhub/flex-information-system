@@ -4,7 +4,7 @@ import {
   SpgProductApplicationRow,
   useSpgProductApplications,
 } from "./useSpgProductApplications";
-import { useNavigate } from "react-admin";
+import { useNavigate } from "react-router-dom";
 import { useTranslateField } from "../../intl/intl";
 
 type Props = {
@@ -14,7 +14,7 @@ type Props = {
 export const ServiceProvidingGroupShowProductApplicationsTable = ({
   spgId,
 }: Props) => {
-  const { data, isLoading } = useSpgProductApplications(spgId);
+  const { data, isLoading, error } = useSpgProductApplications(spgId);
   const navigate = useNavigate();
   const t = useTranslateField();
 
@@ -42,6 +42,10 @@ export const ServiceProvidingGroupShowProductApplicationsTable = ({
 
   if (isLoading) {
     return <Loader />;
+  }
+
+  if (error) {
+    throw error;
   }
 
   return (

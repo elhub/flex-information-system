@@ -1,12 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import {
+  listAccountingPoint,
   listControllableUnit,
   listServiceProvidingGroupMembership,
-  readAccountingPoint,
   readServiceProvidingGroup,
 } from "../../generated-client";
-import { throwOnError } from "../../util";
-import { formatDate } from "date-fns";
+import { throwOnError, toDateString } from "../../util";
 
 export type SpgMembershipRow = {
   id: number;
@@ -40,14 +39,6 @@ export const useServiceProvidingGroup = (spgId: number | undefined) =>
     enabled: !!spgId,
   });
 
-const toDateString = (value: string | undefined) => {
-  if (!value) {
-    return "-";
-  }
-
-  return formatDate(value, "dd.MM.yyyy");
-};
-
 const fetchSpgShowData = async (serviceProvidingGroupId: number) => {
   const memberships = await listServiceProvidingGroupMembership({
     query: {
@@ -77,30 +68,36 @@ const fetchSpgShowData = async (serviceProvidingGroupId: number) => {
     },
   }).then(throwOnError);
 
-  const rows = await Promise.all(
-    controllableUnits.map(async (controllableUnit) => {
-      const [accountingPoint] = await Promise.all([
-        readAccountingPoint({
-          path: { id: controllableUnit.accounting_point_id },
-        }).then(throwOnError),
-      ]);
-
-      const membership = memberships.find(
-        (value) => value.controllable_unit_id === controllableUnit.id,
-      );
-
-      return {
-        id: controllableUnit.id,
-        controllableUnitName: controllableUnit.name,
-        validFrom: toDateString(membership?.valid_from),
-        validTo: toDateString(membership?.valid_to),
-        capacityKw: controllableUnit.maximum_active_power,
-        direction: controllableUnit.regulation_direction,
-        mpid: accountingPoint.business_id,
-        status: controllableUnit.status,
-      };
-    }),
+  const accountingPointIds = Array.from(
+    new Set(controllableUnits.map((cu) => cu.accounting_point_id)),
   );
+
+  const accountingPoints = await listAccountingPoint({
+    query: {
+      id: `in.(${accountingPointIds.join(",")})`,
+      limit: "500",
+    },
+  }).then(throwOnError);
+
+  const apMap = Object.fromEntries(accountingPoints.map((ap) => [ap.id, ap]));
+
+  const rows: SpgMembershipRow[] = controllableUnits.map((controllableUnit) => {
+    const accountingPoint = apMap[controllableUnit.accounting_point_id];
+    const membership = memberships.find(
+      (value) => value.controllable_unit_id === controllableUnit.id,
+    );
+
+    return {
+      id: controllableUnit.id,
+      controllableUnitName: controllableUnit.name,
+      validFrom: toDateString(membership?.valid_from),
+      validTo: toDateString(membership?.valid_to),
+      capacityKw: controllableUnit.maximum_active_power,
+      direction: controllableUnit.regulation_direction,
+      mpid: accountingPoint?.business_id ?? "-",
+      status: controllableUnit.status,
+    };
+  });
 
   const totalCapacityKw = rows.reduce((sum, row) => sum + row.capacityKw, 0);
 

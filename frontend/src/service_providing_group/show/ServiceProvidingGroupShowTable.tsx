@@ -20,7 +20,7 @@ export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
     return <Loader />;
   }
 
-  if (data?.rows.length === 0) {
+  if (!data || data.rows.length === 0) {
     return <BodyText>No controllable units in this group yet.</BodyText>;
   }
 
@@ -50,14 +50,12 @@ export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
   ];
 
   return (
-    <div>
-      <SimpleTable
-        rowClick={(row) => navigate(`/controllable_unit/${row.id}/show`)}
-        size="small"
-        data={data?.rows ?? []}
-        columns={columns}
-        className="w-full"
-      />
-    </div>
+    <SimpleTable
+      rowClick={(row) => navigate(`/controllable_unit/${row.id}/show`)}
+      size="small"
+      data={data?.rows ?? []}
+      columns={columns}
+      className="w-full"
+    />
   );
 };

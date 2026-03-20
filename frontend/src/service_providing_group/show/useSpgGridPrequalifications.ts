@@ -1,22 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import {
   listServiceProvidingGroupGridPrequalification,
-  readParty,
+  listParty,
   ServiceProvidingGroupGridPrequalificationStatus,
 } from "../../generated-client";
-import { throwOnError } from "../../util";
-import { formatDate } from "date-fns";
+import { throwOnError, toDateString } from "../../util";
 
 export type SpgGridPrequalificationRow = {
   id: number;
   impactedSystemOperatorName: string;
   status: ServiceProvidingGroupGridPrequalificationStatus;
   prequalifiedAt: string;
-};
-
-const toDateString = (value: string | undefined) => {
-  if (!value) return "-";
-  return formatDate(value, "dd.MM.yyyy");
 };
 
 const fetchSpgGridPrequalifications = async (
@@ -37,9 +31,11 @@ const fetchSpgGridPrequalifications = async (
     ...new Set(prequalifications.map((p) => p.impacted_system_operator_id)),
   ];
 
-  const parties = await Promise.all(
-    uniquePartyIds.map((id) => readParty({ path: { id } }).then(throwOnError)),
-  );
+  const parties = await listParty({
+    query: {
+      id: `in.(${uniquePartyIds.join(",")})`,
+    },
+  }).then(throwOnError);
 
   const partyMap = Object.fromEntries(parties.map((p) => [p.id, p.name]));
 

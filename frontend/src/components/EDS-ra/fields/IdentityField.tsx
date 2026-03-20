@@ -5,13 +5,22 @@ import { BaseField, BaseFieldProps } from "./BaseField";
 type IdentityFieldProps = BaseFieldProps;
 
 export const IdentityField = (props: IdentityFieldProps) => {
-  const { source, label, tooltip, textSize = "small", ...rest } = props;
+  const {
+    source,
+    label,
+    tooltip,
+    textSize = "small",
+    labelDirection = "row",
+    ...rest
+  } = props;
   const record = useRecordContext();
 
+  // id === 0 is the reserved "System" identity (automated/internal changes)
   if (record?.[source] === 0) {
     return (
       <BaseField
         textSize={textSize}
+        labelDirection={labelDirection}
         source={source}
         label={label}
         tooltip={tooltip}
@@ -24,6 +33,7 @@ export const IdentityField = (props: IdentityFieldProps) => {
   return (
     <BaseField
       textSize={textSize}
+      labelDirection={labelDirection}
       source={source}
       label={label}
       tooltip={tooltip}

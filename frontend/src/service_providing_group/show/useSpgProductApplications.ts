@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import {
   listServiceProvidingGroupProductApplication,
-  readParty,
+  listParty,
   ServiceProvidingGroupProductApplicationStatus,
 } from "../../generated-client";
 import { throwOnError } from "../../util";
@@ -29,9 +29,11 @@ const fetchSpgProductApplications = async (
     ...new Set(applications.map((a) => a.procuring_system_operator_id)),
   ];
 
-  const parties = await Promise.all(
-    uniquePartyIds.map((id) => readParty({ path: { id } }).then(throwOnError)),
-  );
+  const parties = await listParty({
+    query: {
+      id: `in.(${uniquePartyIds.join(",")})`,
+    },
+  }).then(throwOnError);
 
   const partyMap = Object.fromEntries(parties.map((p) => [p.id, p.name]));
 

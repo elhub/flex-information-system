@@ -14,24 +14,21 @@ export const DateField = ({
   emptyText,
   label,
   tooltip,
-  textSize = "medium",
+  textSize = "small",
 }: DateFieldProps) => {
   const record = useRecordContext();
   const value = record?.[source];
   const content = value ? (
-    (() => {
-      const date = new Date(value);
-      const options: Intl.DateTimeFormatOptions = showTime
-        ? { dateStyle: "medium", timeStyle: "short", hour12: false }
-        : { dateStyle: "medium" };
-      return (
-        <BodyText size="small">
-          {date.toLocaleString("no-NO", options)}
-        </BodyText>
-      );
-    })()
+    <BodyText size={textSize}>
+      {new Date(value).toLocaleString(
+        "no-NO",
+        showTime
+          ? { dateStyle: "medium", timeStyle: "short", hour12: false }
+          : { dateStyle: "medium" },
+      )}
+    </BodyText>
   ) : emptyText ? (
-    <BodyText size="small">{emptyText}</BodyText>
+    <BodyText size={textSize}>{emptyText}</BodyText>
   ) : null;
 
   return (

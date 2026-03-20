@@ -2,7 +2,7 @@ import { IconArrowLeft, IconPencil, IconUser } from "@elhub/ds-icons";
 import { Button, Heading, Loader } from "../../components/ui";
 import { usePermissions } from "ra-core";
 import { Permissions } from "../../auth/permissions";
-import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
+import { Link as RouterLink, useParams } from "react-router-dom";
 import { ServiceProvidingGroupShowSummary } from "./ServiceProvidingGroupShowSummary";
 import { ServiceProvidingGroupShowTabs } from "./ServiceProvidingGroupShowTabs";
 import { readServiceProvidingGroup } from "../../generated-client";
@@ -17,8 +17,11 @@ export const ServiceProvidingGroupShow = () => {
     "create",
   );
   const canEdit = permissions?.allow("service_providing_group", "update");
-  const navigate = useNavigate();
-  const { data: spg } = useQuery({
+  const {
+    data: spg,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["service_providing_group", spgId],
     queryFn: () =>
       readServiceProvidingGroup({ path: { id: Number(spgId) } }).then(
@@ -27,8 +30,16 @@ export const ServiceProvidingGroupShow = () => {
     enabled: !!spgId,
   });
 
-  if (!spg) {
+  if (isLoading) {
     return <Loader />;
+  }
+
+  if (error) {
+    throw error;
+  }
+
+  if (!spg) {
+    return null;
   }
 
   return (
@@ -36,10 +47,11 @@ export const ServiceProvidingGroupShow = () => {
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <Button
+            as={RouterLink}
+            to="/service_providing_group"
             variant="invisible"
             icon={IconArrowLeft}
-            onClick={() => navigate(`/service_providing_group`)}
-          ></Button>
+          />
           <Heading level={2} size="medium">
             Group Details - {spg.name}
           </Heading>
