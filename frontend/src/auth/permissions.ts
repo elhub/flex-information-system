@@ -50,46 +50,30 @@ export type PermissionTarget =
   | "controllable_unit"
   | "controllable_unit.accounting_point_id"
   | "controllable_unit.business_id"
-  | "controllable_unit.grid_node_id"
-  | "controllable_unit.grid_validation_notes"
-  | "controllable_unit.grid_validation_status"
   | "controllable_unit.id"
   | "controllable_unit.is_small"
   | "controllable_unit.maximum_active_power"
-  | "controllable_unit.maximum_duration"
-  | "controllable_unit.minimum_duration"
   | "controllable_unit.name"
-  | "controllable_unit.ramp_rate"
   | "controllable_unit.recorded_at"
   | "controllable_unit.recorded_by"
-  | "controllable_unit.recovery_duration"
   | "controllable_unit.regulation_direction"
   | "controllable_unit.start_date"
   | "controllable_unit.status"
-  | "controllable_unit.validated_at"
   | "controllable_unit_history"
   | "controllable_unit_history.accounting_point_id"
   | "controllable_unit_history.business_id"
   | "controllable_unit_history.controllable_unit_id"
-  | "controllable_unit_history.grid_node_id"
-  | "controllable_unit_history.grid_validation_notes"
-  | "controllable_unit_history.grid_validation_status"
   | "controllable_unit_history.id"
   | "controllable_unit_history.is_small"
   | "controllable_unit_history.maximum_active_power"
-  | "controllable_unit_history.maximum_duration"
-  | "controllable_unit_history.minimum_duration"
   | "controllable_unit_history.name"
-  | "controllable_unit_history.ramp_rate"
   | "controllable_unit_history.recorded_at"
   | "controllable_unit_history.recorded_by"
-  | "controllable_unit_history.recovery_duration"
   | "controllable_unit_history.regulation_direction"
   | "controllable_unit_history.replaced_at"
   | "controllable_unit_history.replaced_by"
   | "controllable_unit_history.start_date"
   | "controllable_unit_history.status"
-  | "controllable_unit_history.validated_at"
   | "controllable_unit_service_provider"
   | "controllable_unit_service_provider.contract_reference"
   | "controllable_unit_service_provider.controllable_unit_id"
@@ -745,18 +729,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.grid_node_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_validation_notes",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_validation_status",
-      operation: "read",
-    },
-    {
       target: "controllable_unit.id",
       operation: "read",
     },
@@ -769,19 +741,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.maximum_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.minimum_duration",
-      operation: "read",
-    },
-    {
       target: "controllable_unit.name",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.ramp_rate",
       operation: "read",
     },
     {
@@ -797,10 +757,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.recovery_duration",
-      operation: "read",
-    },
-    {
       target: "controllable_unit.regulation_direction",
       operation: "read",
     },
@@ -810,10 +766,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit.status",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.validated_at",
       operation: "read",
     },
     {
@@ -829,18 +781,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.grid_node_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.grid_validation_notes",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.grid_validation_status",
-      operation: "read",
-    },
-    {
       target: "controllable_unit_history.id",
       operation: "read",
     },
@@ -853,19 +793,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.maximum_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.minimum_duration",
-      operation: "read",
-    },
-    {
       target: "controllable_unit_history.name",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.ramp_rate",
       operation: "read",
     },
     {
@@ -878,10 +806,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.recorded_by",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.recovery_duration",
       operation: "read",
     },
     {
@@ -902,10 +826,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.status",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.validated_at",
       operation: "read",
     },
     {
@@ -3157,18 +3077,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.grid_node_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_validation_notes",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_validation_status",
-      operation: "read",
-    },
-    {
       target: "controllable_unit.id",
       operation: "read",
     },
@@ -3181,19 +3089,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.maximum_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.minimum_duration",
-      operation: "read",
-    },
-    {
       target: "controllable_unit.name",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.ramp_rate",
       operation: "read",
     },
     {
@@ -3209,10 +3105,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.recovery_duration",
-      operation: "read",
-    },
-    {
       target: "controllable_unit.regulation_direction",
       operation: "read",
     },
@@ -3222,10 +3114,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit.status",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.validated_at",
       operation: "read",
     },
     {
@@ -3241,18 +3129,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.grid_node_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.grid_validation_notes",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.grid_validation_status",
-      operation: "read",
-    },
-    {
       target: "controllable_unit_history.id",
       operation: "read",
     },
@@ -3265,19 +3141,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.maximum_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.minimum_duration",
-      operation: "read",
-    },
-    {
       target: "controllable_unit_history.name",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.ramp_rate",
       operation: "read",
     },
     {
@@ -3290,10 +3154,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.recorded_by",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.recovery_duration",
       operation: "read",
     },
     {
@@ -3314,10 +3174,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.status",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.validated_at",
       operation: "read",
     },
     {
@@ -5569,18 +5425,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.grid_node_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_validation_notes",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_validation_status",
-      operation: "read",
-    },
-    {
       target: "controllable_unit.id",
       operation: "read",
     },
@@ -5593,19 +5437,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.maximum_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.minimum_duration",
-      operation: "read",
-    },
-    {
       target: "controllable_unit.name",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.ramp_rate",
       operation: "read",
     },
     {
@@ -5621,10 +5453,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.recovery_duration",
-      operation: "read",
-    },
-    {
       target: "controllable_unit.regulation_direction",
       operation: "read",
     },
@@ -5634,10 +5462,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit.status",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.validated_at",
       operation: "read",
     },
     {
@@ -5653,18 +5477,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.grid_node_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.grid_validation_notes",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.grid_validation_status",
-      operation: "read",
-    },
-    {
       target: "controllable_unit_history.id",
       operation: "read",
     },
@@ -5677,19 +5489,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.maximum_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.minimum_duration",
-      operation: "read",
-    },
-    {
       target: "controllable_unit_history.name",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.ramp_rate",
       operation: "read",
     },
     {
@@ -5702,10 +5502,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.recorded_by",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.recovery_duration",
       operation: "read",
     },
     {
@@ -5726,10 +5522,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.status",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.validated_at",
       operation: "read",
     },
     {
@@ -7989,42 +7781,6 @@ const rawPermissions: Record<
       operation: "create",
     },
     {
-      target: "controllable_unit.grid_node_id",
-      operation: "create",
-    },
-    {
-      target: "controllable_unit.grid_node_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_node_id",
-      operation: "update",
-    },
-    {
-      target: "controllable_unit.grid_validation_notes",
-      operation: "create",
-    },
-    {
-      target: "controllable_unit.grid_validation_notes",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_validation_notes",
-      operation: "update",
-    },
-    {
-      target: "controllable_unit.grid_validation_status",
-      operation: "create",
-    },
-    {
-      target: "controllable_unit.grid_validation_status",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_validation_status",
-      operation: "update",
-    },
-    {
       target: "controllable_unit.id",
       operation: "read",
     },
@@ -8049,30 +7805,6 @@ const rawPermissions: Record<
       operation: "update",
     },
     {
-      target: "controllable_unit.maximum_duration",
-      operation: "create",
-    },
-    {
-      target: "controllable_unit.maximum_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.maximum_duration",
-      operation: "update",
-    },
-    {
-      target: "controllable_unit.minimum_duration",
-      operation: "create",
-    },
-    {
-      target: "controllable_unit.minimum_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.minimum_duration",
-      operation: "update",
-    },
-    {
       target: "controllable_unit.name",
       operation: "create",
     },
@@ -8082,18 +7814,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit.name",
-      operation: "update",
-    },
-    {
-      target: "controllable_unit.ramp_rate",
-      operation: "create",
-    },
-    {
-      target: "controllable_unit.ramp_rate",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.ramp_rate",
       operation: "update",
     },
     {
@@ -8109,18 +7829,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.recovery_duration",
-      operation: "create",
-    },
-    {
-      target: "controllable_unit.recovery_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.recovery_duration",
-      operation: "update",
-    },
-    {
       target: "controllable_unit.regulation_direction",
       operation: "create",
     },
@@ -8161,18 +7869,6 @@ const rawPermissions: Record<
       operation: "update",
     },
     {
-      target: "controllable_unit.validated_at",
-      operation: "create",
-    },
-    {
-      target: "controllable_unit.validated_at",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.validated_at",
-      operation: "update",
-    },
-    {
       target: "controllable_unit_history.accounting_point_id",
       operation: "read",
     },
@@ -8182,18 +7878,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.controllable_unit_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.grid_node_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.grid_validation_notes",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.grid_validation_status",
       operation: "read",
     },
     {
@@ -8209,19 +7893,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.maximum_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.minimum_duration",
-      operation: "read",
-    },
-    {
       target: "controllable_unit_history.name",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.ramp_rate",
       operation: "read",
     },
     {
@@ -8234,10 +7906,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.recorded_by",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.recovery_duration",
       operation: "read",
     },
     {
@@ -8258,10 +7926,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.status",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.validated_at",
       operation: "read",
     },
     {
@@ -11255,18 +10919,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.grid_node_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_validation_notes",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_validation_status",
-      operation: "read",
-    },
-    {
       target: "controllable_unit.id",
       operation: "read",
     },
@@ -11279,19 +10931,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.maximum_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.minimum_duration",
-      operation: "read",
-    },
-    {
       target: "controllable_unit.name",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.ramp_rate",
       operation: "read",
     },
     {
@@ -11307,10 +10947,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.recovery_duration",
-      operation: "read",
-    },
-    {
       target: "controllable_unit.regulation_direction",
       operation: "read",
     },
@@ -11320,10 +10956,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit.status",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.validated_at",
       operation: "read",
     },
     {
@@ -11339,18 +10971,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.grid_node_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.grid_validation_notes",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.grid_validation_status",
-      operation: "read",
-    },
-    {
       target: "controllable_unit_history.id",
       operation: "read",
     },
@@ -11363,19 +10983,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.maximum_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.minimum_duration",
-      operation: "read",
-    },
-    {
       target: "controllable_unit_history.name",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.ramp_rate",
       operation: "read",
     },
     {
@@ -11388,10 +10996,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.recorded_by",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.recovery_duration",
       operation: "read",
     },
     {
@@ -11412,10 +11016,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.status",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.validated_at",
       operation: "read",
     },
     {
@@ -13667,30 +13267,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.grid_node_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_node_id",
-      operation: "update",
-    },
-    {
-      target: "controllable_unit.grid_validation_notes",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_validation_notes",
-      operation: "update",
-    },
-    {
-      target: "controllable_unit.grid_validation_status",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_validation_status",
-      operation: "update",
-    },
-    {
       target: "controllable_unit.id",
       operation: "read",
     },
@@ -13703,19 +13279,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.maximum_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.minimum_duration",
-      operation: "read",
-    },
-    {
       target: "controllable_unit.name",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.ramp_rate",
       operation: "read",
     },
     {
@@ -13731,10 +13295,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.recovery_duration",
-      operation: "read",
-    },
-    {
       target: "controllable_unit.regulation_direction",
       operation: "read",
     },
@@ -13747,18 +13307,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit",
-      operation: "update",
-    },
-    {
-      target: "controllable_unit.validated_at",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.validated_at",
-      operation: "update",
-    },
-    {
       target: "controllable_unit_history.accounting_point_id",
       operation: "read",
     },
@@ -13768,18 +13316,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.controllable_unit_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.grid_node_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.grid_validation_notes",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.grid_validation_status",
       operation: "read",
     },
     {
@@ -13795,19 +13331,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.maximum_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.minimum_duration",
-      operation: "read",
-    },
-    {
       target: "controllable_unit_history.name",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.ramp_rate",
       operation: "read",
     },
     {
@@ -13820,10 +13344,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.recorded_by",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.recovery_duration",
       operation: "read",
     },
     {
@@ -13844,10 +13364,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.status",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.validated_at",
       operation: "read",
     },
     {
@@ -16509,22 +16025,6 @@ const rawPermissions: Record<
       operation: "create",
     },
     {
-      target: "controllable_unit.grid_node_id",
-      operation: "create",
-    },
-    {
-      target: "controllable_unit.grid_node_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_validation_notes",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_validation_status",
-      operation: "read",
-    },
-    {
       target: "controllable_unit.id",
       operation: "read",
     },
@@ -16549,30 +16049,6 @@ const rawPermissions: Record<
       operation: "update",
     },
     {
-      target: "controllable_unit.maximum_duration",
-      operation: "create",
-    },
-    {
-      target: "controllable_unit.maximum_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.maximum_duration",
-      operation: "update",
-    },
-    {
-      target: "controllable_unit.minimum_duration",
-      operation: "create",
-    },
-    {
-      target: "controllable_unit.minimum_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.minimum_duration",
-      operation: "update",
-    },
-    {
       target: "controllable_unit.name",
       operation: "create",
     },
@@ -16582,18 +16058,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit.name",
-      operation: "update",
-    },
-    {
-      target: "controllable_unit.ramp_rate",
-      operation: "create",
-    },
-    {
-      target: "controllable_unit.ramp_rate",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.ramp_rate",
       operation: "update",
     },
     {
@@ -16609,18 +16073,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.recovery_duration",
-      operation: "create",
-    },
-    {
-      target: "controllable_unit.recovery_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.recovery_duration",
-      operation: "update",
-    },
-    {
       target: "controllable_unit.regulation_direction",
       operation: "create",
     },
@@ -16661,10 +16113,6 @@ const rawPermissions: Record<
       operation: "update",
     },
     {
-      target: "controllable_unit.validated_at",
-      operation: "read",
-    },
-    {
       target: "controllable_unit_history.accounting_point_id",
       operation: "read",
     },
@@ -16674,18 +16122,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.controllable_unit_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.grid_node_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.grid_validation_notes",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.grid_validation_status",
       operation: "read",
     },
     {
@@ -16701,19 +16137,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.maximum_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.minimum_duration",
-      operation: "read",
-    },
-    {
       target: "controllable_unit_history.name",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.ramp_rate",
       operation: "read",
     },
     {
@@ -16726,10 +16150,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.recorded_by",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.recovery_duration",
       operation: "read",
     },
     {
@@ -16750,10 +16170,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.status",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.validated_at",
       operation: "read",
     },
     {
@@ -19492,18 +18908,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.grid_node_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_validation_notes",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_validation_status",
-      operation: "read",
-    },
-    {
       target: "controllable_unit.id",
       operation: "read",
     },
@@ -19516,19 +18920,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.maximum_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.minimum_duration",
-      operation: "read",
-    },
-    {
       target: "controllable_unit.name",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.ramp_rate",
       operation: "read",
     },
     {
@@ -19544,10 +18936,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.recovery_duration",
-      operation: "read",
-    },
-    {
       target: "controllable_unit.regulation_direction",
       operation: "read",
     },
@@ -19557,10 +18945,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit.status",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.validated_at",
       operation: "read",
     },
     {
@@ -19576,18 +18960,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.grid_node_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.grid_validation_notes",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.grid_validation_status",
-      operation: "read",
-    },
-    {
       target: "controllable_unit_history.id",
       operation: "read",
     },
@@ -19600,19 +18972,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.maximum_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.minimum_duration",
-      operation: "read",
-    },
-    {
       target: "controllable_unit_history.name",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.ramp_rate",
       operation: "read",
     },
     {
@@ -19625,10 +18985,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.recorded_by",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.recovery_duration",
       operation: "read",
     },
     {
@@ -19649,10 +19005,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.status",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.validated_at",
       operation: "read",
     },
     {

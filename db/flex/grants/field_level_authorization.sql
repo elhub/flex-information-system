@@ -387,10 +387,6 @@ GRANT SELECT ON TABLE
 flex.controllable_unit
 TO flex_system_operator;
 
-GRANT UPDATE ON TABLE
-flex.controllable_unit
-TO flex_system_operator;
-
 GRANT INSERT ON TABLE
 flex.controllable_unit
 TO flex_service_provider;

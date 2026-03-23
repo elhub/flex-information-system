@@ -174,24 +174,16 @@ No policies.
 For party type abbreviations, check
 [the authentication docs](../technical/auth/authn-model.md#party-market-actors).
 
-| FIELD                  | ANON | BRP | ES | EU | FISO | SO | SP  | TP | ORG |
-|------------------------|------|-----|----|----|------|----|-----|----|-----|
-| id                     |      | R   | R  | R  | R    | R  | R   | R  |     |
-| business_id            |      | R   | R  | R  | R    | R  | R   | R  |     |
-| name                   |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
-| regulation_direction   |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
-| maximum_active_power   |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
-| is_small               |      | R   | R  | R  | R    | R  | R   | R  |     |
-| start_date             |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
-| status                 |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
-| minimum_duration       |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
-| maximum_duration       |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
-| recovery_duration      |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
-| ramp_rate              |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
-| accounting_point_id    |      | R   | R  | R  | RC   | R  | RC  | R  |     |
-| grid_node_id           |      | R   | R  | R  | RCU  | RU | RC  | R  |     |
-| grid_validation_status |      | R   | R  | R  | RCU  | RU | R   | R  |     |
-| grid_validation_notes  |      | R   | R  | R  | RCU  | RU | R   | R  |     |
-| validated_at           |      | R   | R  | R  | RCU  | RU | R   | R  |     |
-| recorded_at            |      | R   | R  | R  | R    | R  | R   | R  |     |
-| recorded_by            |      | R   | R  | R  | R    | R  | R   | R  |     |
+| FIELD                | ANON | BRP | ES | EU | FISO | SO | SP  | TP | ORG |
+|----------------------|------|-----|----|----|------|----|-----|----|-----|
+| id                   |      | R   | R  | R  | R    | R  | R   | R  |     |
+| business_id          |      | R   | R  | R  | R    | R  | R   | R  |     |
+| name                 |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
+| regulation_direction |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
+| maximum_active_power |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
+| is_small             |      | R   | R  | R  | R    | R  | R   | R  |     |
+| start_date           |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
+| status               |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
+| accounting_point_id  |      | R   | R  | R  | RC   | R  | RC  | R  |     |
+| recorded_at          |      | R   | R  | R  | R    | R  | R   | R  |     |
+| recorded_by          |      | R   | R  | R  | R    | R  | R   | R  |     |
