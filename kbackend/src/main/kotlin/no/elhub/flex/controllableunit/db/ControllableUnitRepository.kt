@@ -1,72 +1,75 @@
 package no.elhub.flex.controllableunit.db
 
 import arrow.core.Either
-import no.elhub.flex.auth.AccessToken
-import no.elhub.flex.model.domain.AccountingPoint
+import arrow.core.left
+import arrow.core.right
+import io.github.oshai.kotlinlogging.KotlinLogging
+import kotlinx.serialization.json.Json
+import no.elhub.flex.auth.FlexPrincipal
+import no.elhub.flex.db.FlexTransaction.flexTransaction
 import no.elhub.flex.model.domain.ControllableUnit
-
-/** Database errors raised by [ControllableUnitRepository]. */
-sealed class RepositoryError(val message: String)
-
-data class NotFoundError(val detail: String) : RepositoryError(detail)
-data class DatabaseError(val detail: String) : RepositoryError(detail)
+import no.elhub.flex.model.domain.db.DatabaseError
+import no.elhub.flex.model.domain.db.RepositoryError
+import org.koin.core.annotation.Single
 
 /**
- * Repository interface for the controllable-unit lookup flow.
+ * Repository interface for controllable units.
  *
- * All functions receive the caller's [AccessToken] via context parameter so
+ * All functions receive the caller's [FlexPrincipal] via context parameter so
  * implementations can apply the per-request RLS preamble without it being
  * threaded explicitly through every call site.
  */
 interface ControllableUnitRepository {
 
     /**
-     * Calls `api.current_controllable_unit_accounting_point($controllableUnitBusinessId)`.
-     *
-     * Returns an [AccountingPoint] or [NotFoundError] when the controllable unit does not exist.
-     */
-    context(token: AccessToken)
-    fun getCurrentAccountingPoint(controllableUnitBusinessId: String): Either<RepositoryError, AccountingPoint>
-
-    /**
-     * Looks up an accounting point ID by its business ID from `api.accounting_point`.
-     *
-     * Returns [NotFoundError] when no row matches.
-     */
-    context(token: AccessToken)
-    fun getAccountingPointIdByBusinessId(accountingPointBusinessId: String): Either<RepositoryError, Int>
-
-    /**
-     * Calls `api.controllable_unit_lookup_sync_accounting_point`.
-     *
-     * Returns the newly-synced accounting point ID, or [DatabaseError] on failure.
-     */
-    context(token: AccessToken)
-    fun upsertAccountingPoint(
-        accountingPointBusinessId: String,
-        meteringGridAreaBusinessId: String,
-        endUserBusinessId: String,
-    ): Either<RepositoryError, Int>
-
-    /**
-     * Calls `api.controllable_unit_lookup_check_end_user_matches_accounting_point`.
-     *
-     * Returns the end-user ID, or [NotFoundError] when the check fails.
-     */
-    context(token: AccessToken)
-    fun checkEndUserMatchesAccountingPoint(
-        endUserBusinessId: String,
-        accountingPointBusinessId: String,
-    ): Either<RepositoryError, Int>
-
-    /**
      * Calls `api.controllable_unit_lookup` and deserialises the returned JSONB array.
      *
-     * Returns [DatabaseError] when the query fails.
+     * Returns [RepositoryError] when the query fails.
      */
-    context(token: AccessToken)
+    context(principal: FlexPrincipal)
     fun lookupControllableUnits(
         controllableUnitBusinessId: String,
         accountingPointBusinessId: String,
     ): Either<RepositoryError, List<ControllableUnit>>
+}
+
+private val logger = KotlinLogging.logger {}
+
+private val json = Json { ignoreUnknownKeys = true }
+
+@Single(createdAtStart = true)
+class ControllableUnitRepositoryImpl : ControllableUnitRepository {
+
+    context(principal: FlexPrincipal)
+    override fun lookupControllableUnits(
+        controllableUnitBusinessId: String,
+        accountingPointBusinessId: String,
+    ): Either<RepositoryError, List<ControllableUnit>> =
+        flexTransaction { conn ->
+            runCatching {
+                conn.prepareStatement(GET_BY_CU_OR_AP_BUSINESS_ID)
+                    .use { stmt ->
+                        stmt.setString(1, controllableUnitBusinessId)
+                        stmt.setString(2, accountingPointBusinessId)
+                        stmt.executeQuery().use { rs -> if (rs.next()) rs.getString(1) else null }
+                    }
+            }.fold(
+                onSuccess = { jsonStr ->
+                    if (jsonStr == null) {
+                        emptyList<ControllableUnit>().right()
+                    } else {
+                        runCatching { json.decodeFromString<List<ControllableUnit>>(jsonStr) }.fold(
+                            onSuccess = { it.right() },
+                            onFailure = { e ->
+                                DatabaseError("failed to parse CU lookup result: ${e.message}").left()
+                            },
+                        )
+                    }
+                },
+                onFailure = { e ->
+                    logger.error { "lookupControllableUnits failed: ${e.message}" }
+                    DatabaseError("controllable unit lookup query failed: ${e.message}").left()
+                },
+            )
+        }
 }

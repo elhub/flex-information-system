@@ -10,9 +10,11 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 import io.ktor.http.HttpStatusCode
+import kotlinx.datetime.LocalDateTime
 
 private const val GSRN = "133700000000000053"
 private const val API_KEY = "secret-key"
+private val VALID_FROM = LocalDateTime(2024, 1, 1, 0, 0)
 
 class AccountingPointAdapterServiceTest : FunSpec({
     extensions(AccountingPointAdapterWireMockServer)
@@ -40,7 +42,7 @@ class AccountingPointAdapterServiceTest : FunSpec({
                     ),
             )
 
-            val result = service.getAccountingPoint(GSRN)
+            val result = service.getAccountingPoint(GSRN, VALID_FROM)
 
             val accountingPoint = result.shouldBeRight()
             accountingPoint.gsrn shouldBe GSRN
@@ -53,7 +55,7 @@ class AccountingPointAdapterServiceTest : FunSpec({
                     .willReturn(aResponse().withStatus(HttpStatusCode.NotFound.value)),
             )
 
-            val result = service.getAccountingPoint(GSRN)
+            val result = service.getAccountingPoint(GSRN, VALID_FROM)
 
             result.shouldBeLeft().shouldBeInstanceOf<NotFoundError>()
         }
@@ -64,7 +66,7 @@ class AccountingPointAdapterServiceTest : FunSpec({
                     .willReturn(aResponse().withStatus(HttpStatusCode.InternalServerError.value)),
             )
 
-            val result = service.getAccountingPoint(GSRN)
+            val result = service.getAccountingPoint(GSRN, VALID_FROM)
 
             val error = result.shouldBeLeft().shouldBeInstanceOf<HttpError>()
             error.statusCode shouldBe HttpStatusCode.InternalServerError.value

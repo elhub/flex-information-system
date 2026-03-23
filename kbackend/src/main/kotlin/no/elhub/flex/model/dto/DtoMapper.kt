@@ -23,6 +23,5 @@ fun List<TechnicalResource>.toDtos(): List<TechnicalResourceDto> =
         TechnicalResourceDto(
             id = tr.id,
             name = tr.name,
-            details = tr.details,
         )
     }

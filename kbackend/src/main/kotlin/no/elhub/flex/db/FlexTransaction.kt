@@ -1,6 +1,7 @@
 package no.elhub.flex.db
 
 import arrow.core.Either
+import no.elhub.flex.auth.FlexPrincipal
 import org.jetbrains.exposed.v1.jdbc.Database
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
@@ -25,20 +26,20 @@ object FlexTransaction {
     /**
      * Runs [block] inside an Exposed transaction after applying the RLS preamble.
      *
-     * When [extId] is `"0"` the user is a system role and all entity IDs are set to `0`.
-     * Otherwise `auth.eid_details($eid)` is called to resolve them from the identity table.
+     * When the principal's [FlexPrincipal.eid] is `"0"` the caller is a system role and all
+     * entity IDs are set to `0`. Otherwise `auth.eid_details($eid)` is called to resolve them
+     * from the identity table.
      *
-     * @param role the Postgres role name from the JWT
-     * @param extId the external identity ID (`eid`) from the JWT
      * @param block the transactional work; receives the raw [java.sql.Connection]
      */
-    fun <L, R> flexTransaction(role: String, extId: String, block: (java.sql.Connection) -> Either<L, R>): Either<L, R> =
+    context(principal: FlexPrincipal)
+    fun <L, R> flexTransaction(block: (java.sql.Connection) -> Either<L, R>): Either<L, R> =
         transaction(db) {
             val conn = this.connection.connection as java.sql.Connection
 
-            conn.prepareStatement("SET LOCAL ROLE \"$role\"").use { it.execute() }
+            conn.prepareStatement("SET LOCAL ROLE \"${principal.role}\"").use { it.execute() }
 
-            if (extId == "0") {
+            if (principal.eid == "0") {
                 conn.prepareStatement(
                     """
                     SELECT
@@ -57,7 +58,7 @@ object FlexTransaction {
                     FROM auth.eid_details(?)
                     """.trimIndent(),
                 ).use { stmt ->
-                    stmt.setString(1, extId)
+                    stmt.setString(1, principal.eid)
                     stmt.execute()
                 }
             }

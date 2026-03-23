@@ -4,10 +4,12 @@ import io.kotest.assertions.arrow.core.shouldBeRight
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
+import kotlinx.datetime.LocalDate
 import no.elhub.flex.PostgresTestContainer
+import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.model.domain.ControllableUnit
 import no.elhub.flex.model.domain.TechnicalResource
-import no.elhub.flex.util.systemToken
+import no.elhub.flex.util.now
 import no.elhub.flex.util.uniqueGsrn
 import java.sql.Connection
 import java.util.UUID
@@ -16,7 +18,10 @@ import java.util.UUID
 class ControllableUnitRepositoryTest : FunSpec({
 
     val repo = ControllableUnitRepositoryImpl()
-    val token = systemToken()
+    // flex_internal lacks SELECT on flex.controllable_unit (direct table queries).
+    // flex_flexibility_information_system_operator has USING(true) RLS on both
+    // controllable_unit and technical_resource, and is granted to flex_authenticator.
+    val principal = FlexPrincipal(role = "flex_flexibility_information_system_operator", eid = "0")
 
     beforeTest {
         PostgresTestContainer.withConnection { conn ->
@@ -38,20 +43,21 @@ class ControllableUnitRepositoryTest : FunSpec({
                         id = 0,
                         businessId = uniqueUuid(),
                         name = "CU Beta",
+                        startDate = LocalDate.now(),
                         technicalResources = listOf(
-                            TechnicalResource(id = 0, name = "TR One", details = "detail one"),
-                            TechnicalResource(id = 0, name = "TR Two", details = null),
+                            TechnicalResource(id = 0, name = "TR One"),
+                            TechnicalResource(id = 0, name = "TR Two"),
                         ),
                     ),
                 ),
             )
             seedControllableUnits(
                 apBusinessId = uniqueGsrn(),
-                cus = listOf(ControllableUnit(id = 0, businessId = uniqueUuid(), name = "Noise CU", technicalResources = emptyList())),
+                cus = listOf(ControllableUnit(id = 0, businessId = uniqueUuid(), name = "Noise CU", startDate = LocalDate.now(), technicalResources = emptyList())),
             )
 
             // when
-            val result = with(token) {
+            val result = with(principal) {
                 repo.lookupControllableUnits(
                     controllableUnitBusinessId = expected.first().businessId,
                     accountingPointBusinessId = "",
@@ -68,17 +74,17 @@ class ControllableUnitRepositoryTest : FunSpec({
             val expected = seedControllableUnits(
                 apBusinessId = apBusinessId,
                 cus = listOf(
-                    ControllableUnit(id = 0, businessId = uniqueUuid(), name = "CU One", technicalResources = emptyList()),
-                    ControllableUnit(id = 0, businessId = uniqueUuid(), name = "CU Two", technicalResources = emptyList()),
+                    ControllableUnit(id = 0, businessId = uniqueUuid(), name = "CU One", startDate = LocalDate.now(), technicalResources = emptyList()),
+                    ControllableUnit(id = 0, businessId = uniqueUuid(), name = "CU Two", startDate = LocalDate.now(), technicalResources = emptyList()),
                 ),
             )
             seedControllableUnits(
                 apBusinessId = uniqueGsrn(),
-                cus = listOf(ControllableUnit(id = 0, businessId = uniqueUuid(), name = "Noise CU", technicalResources = emptyList())),
+                cus = listOf(ControllableUnit(id = 0, businessId = uniqueUuid(), name = "Noise CU", startDate = LocalDate.now(), technicalResources = emptyList())),
             )
 
             // when
-            val result = with(token) {
+            val result = with(principal) {
                 repo.lookupControllableUnits(controllableUnitBusinessId = "", accountingPointBusinessId = apBusinessId)
             }.shouldBeRight()
 
@@ -89,7 +95,7 @@ class ControllableUnitRepositoryTest : FunSpec({
 
         test("returns empty list when CU business ID does not exist") {
             // when
-            val result = with(token) {
+            val result = with(principal) {
                 repo.lookupControllableUnits(
                     controllableUnitBusinessId = uniqueUuid(),
                     accountingPointBusinessId = "",
@@ -140,14 +146,15 @@ private fun seedControllableUnits(
 private fun insertControllableUnit(conn: Connection, cu: ControllableUnit, apId: Long): Long =
     conn.prepareStatement(
         """
-        INSERT INTO flex.controllable_unit (business_id, name, regulation_direction, maximum_active_power, accounting_point_id)
-        VALUES (?::uuid, ?, 'up', 100.0, ?)
+        INSERT INTO flex.controllable_unit (business_id, name, start_date, regulation_direction, maximum_active_power, accounting_point_id)
+        VALUES (?::uuid, ?, ?::date, 'up', 100.0, ?)
         RETURNING id
         """.trimIndent(),
     ).use { stmt ->
         stmt.setString(1, cu.businessId)
         stmt.setString(2, cu.name)
-        stmt.setLong(3, apId)
+        stmt.setString(3, cu.startDate.toString())
+        stmt.setLong(4, apId)
         stmt.executeQuery().use { rs ->
             rs.next()
             rs.getLong(1)
@@ -156,11 +163,10 @@ private fun insertControllableUnit(conn: Connection, cu: ControllableUnit, apId:
 
 private fun insertTechnicalResource(conn: Connection, tr: TechnicalResource, cuId: Long): TechnicalResource =
     conn.prepareStatement(
-        "INSERT INTO flex.technical_resource (name, details, controllable_unit_id) VALUES (?, ?, ?) RETURNING id",
+        "INSERT INTO flex.technical_resource (name, controllable_unit_id) VALUES (?, ?) RETURNING id",
     ).use { stmt ->
         stmt.setString(1, tr.name)
-        stmt.setString(2, tr.details)
-        stmt.setLong(3, cuId)
+        stmt.setLong(2, cuId)
         stmt.executeQuery().use { rs ->
             rs.next()
             tr.copy(id = rs.getInt(1))

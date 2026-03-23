@@ -11,7 +11,7 @@ import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import no.elhub.flex.util.ParsingError
+import no.elhub.flex.model.error.ParsingError
 import no.elhub.flex.util.isValidGsrn
 
 /**
