@@ -19,30 +19,6 @@ export const TechnicalInformation = ({
         labelKey="controllable_unit.regulation_direction"
         value={controllableUnit?.regulation_direction}
       />
-      <LabelValue
-        tooltip={true}
-        labelKey="controllable_unit.minimum_duration"
-        value={controllableUnit?.minimum_duration}
-        unit="s"
-      />
-      <LabelValue
-        tooltip={true}
-        labelKey="controllable_unit.maximum_duration"
-        value={controllableUnit?.maximum_duration}
-        unit="s"
-      />
-      <LabelValue
-        tooltip={true}
-        labelKey="controllable_unit.recovery_duration"
-        value={controllableUnit?.recovery_duration?.toString()}
-        unit="s"
-      />
-      <LabelValue
-        tooltip={true}
-        labelKey="controllable_unit.ramp_rate"
-        value={controllableUnit?.ramp_rate}
-        unit="kW/min"
-      />
     </div>
   );
 };

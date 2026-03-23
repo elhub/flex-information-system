@@ -87,11 +87,6 @@ export const ControllableUnitList = () => {
         >
           <TextField source="business_id" />
         </ReferenceField>
-        <TextField source={fields.grid_node_id.source} />
-        <EnumField
-          source={fields.grid_validation_status.source}
-          enumKey="controllable_unit.grid_validation_status"
-        />
         <DateField source={fields.recorded_at.source} showTime />
       </Datagrid>
     </List>

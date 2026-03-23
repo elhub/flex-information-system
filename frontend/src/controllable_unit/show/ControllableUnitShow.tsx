@@ -8,7 +8,6 @@ import { useParams } from "react-router-dom";
 import { Header } from "./components/Header";
 import { Connections } from "./components/Connections";
 import { TechnicalInformation } from "./components/TechnicalInformation";
-import { GridValidation } from "./components/GridValidation";
 import { ControllableUnitShowActions } from "./ControllableUnitShowActions";
 import { ControllableUnitAlerts } from "./components/ControllableUnitAlerts";
 import { LabelValue } from "../../components/LabelValue";
@@ -47,10 +46,6 @@ const Layout = () => {
       </div>
 
       <TechnicalInformation
-        controllableUnit={controllableUnitViewModel?.controllableUnit}
-      />
-
-      <GridValidation
         controllableUnit={controllableUnitViewModel?.controllableUnit}
       />
 
