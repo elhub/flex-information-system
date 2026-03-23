@@ -201,7 +201,6 @@ export type {
   ClientOptions,
   ControllableUnit,
   ControllableUnitCreateRequest,
-  ControllableUnitGridValidationStatus,
   ControllableUnitHistory,
   ControllableUnitHistoryWritable,
   ControllableUnitLookup,

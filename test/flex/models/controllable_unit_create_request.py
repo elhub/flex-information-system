@@ -8,7 +8,6 @@ from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
-from ..models.controllable_unit_grid_validation_status import ControllableUnitGridValidationStatus
 from ..models.controllable_unit_regulation_direction import ControllableUnitRegulationDirection
 from ..models.controllable_unit_status import ControllableUnitStatus
 from ..types import UNSET, Unset
@@ -32,19 +31,6 @@ class ControllableUnitCreateRequest:
         start_date (datetime.date | None | Unset): The usage date when the controllable unit is first active. Example:
             2024-05-17.
         status (ControllableUnitStatus | Unset): The status of the controllable unit. Example: active.
-        minimum_duration (int | None | Unset): The minimum activation duration in seconds. Example: 30.
-        maximum_duration (int | None | Unset): The maximum activation duration in seconds. Example: 1200.
-        recovery_duration (int | None | Unset): The minimum recovery duration between activations in seconds. Example:
-            3600.
-        ramp_rate (float | None | Unset): The rate of power per unit of time to reach empty or full power for the
-            controllable unit, in kilowatts per minute. Example: 0.1.
-        grid_node_id (None | str | Unset): Reference to the node that the controllable unit is connected to. Example:
-            53919b79-876f-4dad-8bde-b29368367604.
-        grid_validation_status (ControllableUnitGridValidationStatus | Unset): The grid validation status of the
-            controllable unit. Example: validated.
-        grid_validation_notes (None | str | Unset): Free text notes on the current grid validation status.
-        validated_at (datetime.datetime | None | Unset): When the controllable unit was last validated. Example:
-            2022-08-08T12:00:00+02.
     """
 
     name: str
@@ -53,14 +39,6 @@ class ControllableUnitCreateRequest:
     accounting_point_id: int
     start_date: datetime.date | None | Unset = UNSET
     status: ControllableUnitStatus | Unset = UNSET
-    minimum_duration: int | None | Unset = UNSET
-    maximum_duration: int | None | Unset = UNSET
-    recovery_duration: int | None | Unset = UNSET
-    ramp_rate: float | None | Unset = UNSET
-    grid_node_id: None | str | Unset = UNSET
-    grid_validation_status: ControllableUnitGridValidationStatus | Unset = UNSET
-    grid_validation_notes: None | str | Unset = UNSET
-    validated_at: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -84,54 +62,6 @@ class ControllableUnitCreateRequest:
         if not isinstance(self.status, Unset):
             status = self.status.value
 
-        minimum_duration: int | None | Unset
-        if isinstance(self.minimum_duration, Unset):
-            minimum_duration = UNSET
-        else:
-            minimum_duration = self.minimum_duration
-
-        maximum_duration: int | None | Unset
-        if isinstance(self.maximum_duration, Unset):
-            maximum_duration = UNSET
-        else:
-            maximum_duration = self.maximum_duration
-
-        recovery_duration: int | None | Unset
-        if isinstance(self.recovery_duration, Unset):
-            recovery_duration = UNSET
-        else:
-            recovery_duration = self.recovery_duration
-
-        ramp_rate: float | None | Unset
-        if isinstance(self.ramp_rate, Unset):
-            ramp_rate = UNSET
-        else:
-            ramp_rate = self.ramp_rate
-
-        grid_node_id: None | str | Unset
-        if isinstance(self.grid_node_id, Unset):
-            grid_node_id = UNSET
-        else:
-            grid_node_id = self.grid_node_id
-
-        grid_validation_status: str | Unset = UNSET
-        if not isinstance(self.grid_validation_status, Unset):
-            grid_validation_status = self.grid_validation_status.value
-
-        grid_validation_notes: None | str | Unset
-        if isinstance(self.grid_validation_notes, Unset):
-            grid_validation_notes = UNSET
-        else:
-            grid_validation_notes = self.grid_validation_notes
-
-        validated_at: None | str | Unset
-        if isinstance(self.validated_at, Unset):
-            validated_at = UNSET
-        elif isinstance(self.validated_at, datetime.datetime):
-            validated_at = self.validated_at.isoformat()
-        else:
-            validated_at = self.validated_at
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -146,22 +76,6 @@ class ControllableUnitCreateRequest:
             field_dict["start_date"] = start_date
         if status is not UNSET:
             field_dict["status"] = status
-        if minimum_duration is not UNSET:
-            field_dict["minimum_duration"] = minimum_duration
-        if maximum_duration is not UNSET:
-            field_dict["maximum_duration"] = maximum_duration
-        if recovery_duration is not UNSET:
-            field_dict["recovery_duration"] = recovery_duration
-        if ramp_rate is not UNSET:
-            field_dict["ramp_rate"] = ramp_rate
-        if grid_node_id is not UNSET:
-            field_dict["grid_node_id"] = grid_node_id
-        if grid_validation_status is not UNSET:
-            field_dict["grid_validation_status"] = grid_validation_status
-        if grid_validation_notes is not UNSET:
-            field_dict["grid_validation_notes"] = grid_validation_notes
-        if validated_at is not UNSET:
-            field_dict["validated_at"] = validated_at
 
         return field_dict
 
@@ -200,84 +114,6 @@ class ControllableUnitCreateRequest:
         else:
             status = ControllableUnitStatus(_status)
 
-        def _parse_minimum_duration(data: object) -> int | None | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            return cast(int | None | Unset, data)
-
-        minimum_duration = _parse_minimum_duration(d.pop("minimum_duration", UNSET))
-
-        def _parse_maximum_duration(data: object) -> int | None | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            return cast(int | None | Unset, data)
-
-        maximum_duration = _parse_maximum_duration(d.pop("maximum_duration", UNSET))
-
-        def _parse_recovery_duration(data: object) -> int | None | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            return cast(int | None | Unset, data)
-
-        recovery_duration = _parse_recovery_duration(d.pop("recovery_duration", UNSET))
-
-        def _parse_ramp_rate(data: object) -> float | None | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            return cast(float | None | Unset, data)
-
-        ramp_rate = _parse_ramp_rate(d.pop("ramp_rate", UNSET))
-
-        def _parse_grid_node_id(data: object) -> None | str | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            return cast(None | str | Unset, data)
-
-        grid_node_id = _parse_grid_node_id(d.pop("grid_node_id", UNSET))
-
-        _grid_validation_status = d.pop("grid_validation_status", UNSET)
-        grid_validation_status: ControllableUnitGridValidationStatus | Unset
-        if isinstance(_grid_validation_status, Unset):
-            grid_validation_status = UNSET
-        else:
-            grid_validation_status = ControllableUnitGridValidationStatus(_grid_validation_status)
-
-        def _parse_grid_validation_notes(data: object) -> None | str | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            return cast(None | str | Unset, data)
-
-        grid_validation_notes = _parse_grid_validation_notes(d.pop("grid_validation_notes", UNSET))
-
-        def _parse_validated_at(data: object) -> datetime.datetime | None | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            try:
-                if not isinstance(data, str):
-                    raise TypeError()
-                validated_at_type_0 = isoparse(data)
-
-                return validated_at_type_0
-            except (TypeError, ValueError, AttributeError, KeyError):
-                pass
-            return cast(datetime.datetime | None | Unset, data)
-
-        validated_at = _parse_validated_at(d.pop("validated_at", UNSET))
-
         controllable_unit_create_request = cls(
             name=name,
             regulation_direction=regulation_direction,
@@ -285,14 +121,6 @@ class ControllableUnitCreateRequest:
             accounting_point_id=accounting_point_id,
             start_date=start_date,
             status=status,
-            minimum_duration=minimum_duration,
-            maximum_duration=maximum_duration,
-            recovery_duration=recovery_duration,
-            ramp_rate=ramp_rate,
-            grid_node_id=grid_node_id,
-            grid_validation_status=grid_validation_status,
-            grid_validation_notes=grid_validation_notes,
-            validated_at=validated_at,
         )
 
         controllable_unit_create_request.additional_properties = d

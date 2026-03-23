@@ -184,17 +184,6 @@ export const zControllableUnitRegulationDirection = z.enum([
 ]);
 
 /**
- * The grid validation status of the controllable unit.
- */
-export const zControllableUnitGridValidationStatus = z.enum([
-  "pending",
-  "in_progress",
-  "incomplete_information",
-  "validated",
-  "validation_failed",
-]);
-
-/**
  * The reason for the suspension.
  */
 export const zControllableUnitSuspensionReason = z.enum([
@@ -448,19 +437,6 @@ export const zControllableUnitUpdateRequest = z.object({
   status: zControllableUnitStatus.optional(),
   regulation_direction: zControllableUnitRegulationDirection.optional(),
   maximum_active_power: z.coerce.number().gte(0).lte(999999.999).optional(),
-  minimum_duration: z.coerce.number().gte(0).optional(),
-  maximum_duration: z.coerce.number().gte(0).optional(),
-  recovery_duration: z.coerce.number().gte(0).optional(),
-  ramp_rate: z.coerce.number().gte(0.001).optional(),
-  grid_node_id: z
-    .string()
-    .regex(
-      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
-    )
-    .optional(),
-  grid_validation_status: zControllableUnitGridValidationStatus.optional(),
-  grid_validation_notes: z.string().max(512).optional(),
-  validated_at: z.iso.datetime({ offset: true }).optional(),
 });
 
 /**
@@ -472,20 +448,7 @@ export const zControllableUnitCreateRequest = z.object({
   status: zControllableUnitStatus.optional(),
   regulation_direction: zControllableUnitRegulationDirection,
   maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
-  minimum_duration: z.coerce.number().gte(0).optional(),
-  maximum_duration: z.coerce.number().gte(0).optional(),
-  recovery_duration: z.coerce.number().gte(0).optional(),
-  ramp_rate: z.coerce.number().gte(0.001).optional(),
   accounting_point_id: z.coerce.number(),
-  grid_node_id: z
-    .string()
-    .regex(
-      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
-    )
-    .optional(),
-  grid_validation_status: zControllableUnitGridValidationStatus.optional(),
-  grid_validation_notes: z.string().max(512).optional(),
-  validated_at: z.iso.datetime({ offset: true }).optional(),
 });
 
 /**
@@ -505,20 +468,7 @@ export const zControllableUnit = z.object({
   regulation_direction: zControllableUnitRegulationDirection,
   maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
   is_small: z.boolean().readonly(),
-  minimum_duration: z.coerce.number().gte(0).optional(),
-  maximum_duration: z.coerce.number().gte(0).optional(),
-  recovery_duration: z.coerce.number().gte(0).optional(),
-  ramp_rate: z.coerce.number().gte(0.001).optional(),
   accounting_point_id: z.coerce.number(),
-  grid_node_id: z
-    .string()
-    .regex(
-      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
-    )
-    .optional(),
-  grid_validation_status: zControllableUnitGridValidationStatus,
-  grid_validation_notes: z.string().max(512).optional(),
-  validated_at: z.iso.datetime({ offset: true }).optional(),
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
 });
@@ -1814,20 +1764,7 @@ export const zControllableUnitWritable = z.object({
   status: zControllableUnitStatus,
   regulation_direction: zControllableUnitRegulationDirection,
   maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
-  minimum_duration: z.coerce.number().gte(0).optional(),
-  maximum_duration: z.coerce.number().gte(0).optional(),
-  recovery_duration: z.coerce.number().gte(0).optional(),
-  ramp_rate: z.coerce.number().gte(0.001).optional(),
   accounting_point_id: z.coerce.number(),
-  grid_node_id: z
-    .string()
-    .regex(
-      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
-    )
-    .optional(),
-  grid_validation_status: zControllableUnitGridValidationStatus,
-  grid_validation_notes: z.string().max(512).optional(),
-  validated_at: z.iso.datetime({ offset: true }).optional(),
 });
 
 /**

@@ -14,24 +14,8 @@ export const tooltips = {
     "Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
   "controllable_unit.is_small":
     "Whether the controllable unit is small or not, following NCDR.",
-  "controllable_unit.minimum_duration":
-    "The minimum activation duration in seconds.",
-  "controllable_unit.maximum_duration":
-    "The maximum activation duration in seconds.",
-  "controllable_unit.recovery_duration":
-    "The minimum recovery duration between activations in seconds.",
-  "controllable_unit.ramp_rate":
-    "The rate of power per unit of time to reach empty or full power for the controllable unit, in kilowatts per minute.",
   "controllable_unit.accounting_point_id":
     "Reference to the accounting point that the controllable unit is connected to.",
-  "controllable_unit.grid_node_id":
-    "Reference to the node that the controllable unit is connected to.",
-  "controllable_unit.grid_validation_status":
-    "The grid validation status of the controllable unit.",
-  "controllable_unit.grid_validation_notes":
-    "Free text notes on the current grid validation status.",
-  "controllable_unit.validated_at":
-    "When the controllable unit was last validated.",
   "controllable_unit.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "controllable_unit.recorded_by": "The identity that recorded the resource.",
@@ -48,24 +32,8 @@ export const tooltips = {
     "Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
   "controllable_unit_history.is_small":
     "Whether the controllable unit is small or not, following NCDR.",
-  "controllable_unit_history.minimum_duration":
-    "The minimum activation duration in seconds.",
-  "controllable_unit_history.maximum_duration":
-    "The maximum activation duration in seconds.",
-  "controllable_unit_history.recovery_duration":
-    "The minimum recovery duration between activations in seconds.",
-  "controllable_unit_history.ramp_rate":
-    "The rate of power per unit of time to reach empty or full power for the controllable unit, in kilowatts per minute.",
   "controllable_unit_history.accounting_point_id":
     "Reference to the accounting point that the controllable unit is connected to.",
-  "controllable_unit_history.grid_node_id":
-    "Reference to the node that the controllable unit is connected to.",
-  "controllable_unit_history.grid_validation_status":
-    "The grid validation status of the controllable unit.",
-  "controllable_unit_history.grid_validation_notes":
-    "Free text notes on the current grid validation status.",
-  "controllable_unit_history.validated_at":
-    "When the controllable unit was last validated.",
   "controllable_unit_history.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "controllable_unit_history.recorded_by":

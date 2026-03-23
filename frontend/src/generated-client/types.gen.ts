@@ -277,16 +277,6 @@ export type ControllableUnitStatus =
 export type ControllableUnitRegulationDirection = "up" | "down" | "both";
 
 /**
- * The grid validation status of the controllable unit.
- */
-export type ControllableUnitGridValidationStatus =
-  | "pending"
-  | "in_progress"
-  | "incomplete_information"
-  | "validated"
-  | "validation_failed";
-
-/**
  * The reason for the suspension.
  */
 export type ControllableUnitSuspensionReason =
@@ -527,35 +517,6 @@ export type ControllableUnitUpdateRequest = {
    * Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
    */
   maximum_active_power?: number;
-  /**
-   * The minimum activation duration in seconds.
-   */
-  minimum_duration?: number;
-  /**
-   * The maximum activation duration in seconds.
-   */
-  maximum_duration?: number;
-  /**
-   * The minimum recovery duration between activations in seconds.
-   */
-  recovery_duration?: number;
-  /**
-   * The rate of power per unit of time to reach empty or full power for the controllable unit, in kilowatts per minute.
-   */
-  ramp_rate?: number;
-  /**
-   * Reference to the node that the controllable unit is connected to.
-   */
-  grid_node_id?: string;
-  grid_validation_status?: ControllableUnitGridValidationStatus;
-  /**
-   * Free text notes on the current grid validation status.
-   */
-  grid_validation_notes?: string;
-  /**
-   * When the controllable unit was last validated.
-   */
-  validated_at?: string;
 };
 
 /**
@@ -577,38 +538,9 @@ export type ControllableUnitCreateRequest = {
    */
   maximum_active_power: number;
   /**
-   * The minimum activation duration in seconds.
-   */
-  minimum_duration?: number;
-  /**
-   * The maximum activation duration in seconds.
-   */
-  maximum_duration?: number;
-  /**
-   * The minimum recovery duration between activations in seconds.
-   */
-  recovery_duration?: number;
-  /**
-   * The rate of power per unit of time to reach empty or full power for the controllable unit, in kilowatts per minute.
-   */
-  ramp_rate?: number;
-  /**
    * Reference to the accounting point that the controllable unit is connected to.
    */
   accounting_point_id: number;
-  /**
-   * Reference to the node that the controllable unit is connected to.
-   */
-  grid_node_id?: string;
-  grid_validation_status?: ControllableUnitGridValidationStatus;
-  /**
-   * Free text notes on the current grid validation status.
-   */
-  grid_validation_notes?: string;
-  /**
-   * When the controllable unit was last validated.
-   */
-  validated_at?: string;
 };
 
 /**
@@ -642,38 +574,9 @@ export type ControllableUnit = {
    */
   readonly is_small: boolean;
   /**
-   * The minimum activation duration in seconds.
-   */
-  minimum_duration?: number;
-  /**
-   * The maximum activation duration in seconds.
-   */
-  maximum_duration?: number;
-  /**
-   * The minimum recovery duration between activations in seconds.
-   */
-  recovery_duration?: number;
-  /**
-   * The rate of power per unit of time to reach empty or full power for the controllable unit, in kilowatts per minute.
-   */
-  ramp_rate?: number;
-  /**
    * Reference to the accounting point that the controllable unit is connected to.
    */
   accounting_point_id: number;
-  /**
-   * Reference to the node that the controllable unit is connected to.
-   */
-  grid_node_id?: string;
-  grid_validation_status: ControllableUnitGridValidationStatus;
-  /**
-   * Free text notes on the current grid validation status.
-   */
-  grid_validation_notes?: string;
-  /**
-   * When the controllable unit was last validated.
-   */
-  validated_at?: string;
   /**
    * When the resource was recorded (created or updated) in the system.
    */
@@ -3098,38 +3001,9 @@ export type ControllableUnitWritable = {
    */
   maximum_active_power: number;
   /**
-   * The minimum activation duration in seconds.
-   */
-  minimum_duration?: number;
-  /**
-   * The maximum activation duration in seconds.
-   */
-  maximum_duration?: number;
-  /**
-   * The minimum recovery duration between activations in seconds.
-   */
-  recovery_duration?: number;
-  /**
-   * The rate of power per unit of time to reach empty or full power for the controllable unit, in kilowatts per minute.
-   */
-  ramp_rate?: number;
-  /**
    * Reference to the accounting point that the controllable unit is connected to.
    */
   accounting_point_id: number;
-  /**
-   * Reference to the node that the controllable unit is connected to.
-   */
-  grid_node_id?: string;
-  grid_validation_status: ControllableUnitGridValidationStatus;
-  /**
-   * Free text notes on the current grid validation status.
-   */
-  grid_validation_notes?: string;
-  /**
-   * When the controllable unit was last validated.
-   */
-  validated_at?: string;
 };
 
 /**
