@@ -1353,6 +1353,10 @@ GRANT SELECT ON TABLE
 api.controllable_unit
 TO flex_internal_event_notification;
 
+GRANT SELECT ON TABLE
+api.controllable_unit
+TO flex_internal_data;
+
 GRANT SELECT (
     id,
     controllable_unit_id,
@@ -1572,6 +1576,10 @@ TO flex_third_party;
 GRANT SELECT ON TABLE
 api.controllable_unit_history
 TO flex_internal_event_notification;
+
+GRANT SELECT ON TABLE
+api.controllable_unit_history
+TO flex_internal_data;
 
 GRANT SELECT (
     id,
@@ -4206,6 +4214,10 @@ GRANT SELECT ON TABLE
 api.technical_resource
 TO flex_internal_event_notification;
 
+GRANT SELECT ON TABLE
+api.technical_resource
+TO flex_internal_data;
+
 GRANT SELECT (
     id,
     technical_resource_id,
@@ -4385,6 +4397,10 @@ TO flex_third_party;
 GRANT SELECT ON TABLE
 api.technical_resource_history
 TO flex_internal_event_notification;
+
+GRANT SELECT ON TABLE
+api.technical_resource_history
+TO flex_internal_data;
 
 GRANT SELECT (
     id,
