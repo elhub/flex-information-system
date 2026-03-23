@@ -16,6 +16,8 @@ from flex.models import (
     TechnicalResourceCreateRequest,
     TechnicalResourceUpdateRequest,
     TechnicalResourceHistoryResponse,
+    Technology,
+    DeviceType,
 )
 from flex.api.controllable_unit import (
     create_controllable_unit,
@@ -243,7 +245,9 @@ def test_tr_fiso(sts):
         body=TechnicalResourceCreateRequest(
             name="New TR",
             controllable_unit_id=1,
-            details="Details of the new TR",
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=1.0,
+            device_type=DeviceType.OTHER,
         ),
     )
     assert isinstance(tr, TechnicalResourceResponse)
@@ -254,7 +258,7 @@ def test_tr_fiso(sts):
         id=cast(int, tr.id),
         body=TechnicalResourceUpdateRequest(
             name="New TR2",
-            details="updated",
+            additional_information="updated",
         ),
     )
     assert not (isinstance(u, ErrorMessage))
@@ -368,7 +372,9 @@ def test_tr_sp(sts):
         body=TechnicalResourceCreateRequest(
             name="New TR",
             controllable_unit_id=cu_id,
-            details="Details of the new TR",
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=1.0,
+            device_type=DeviceType.OTHER,
         ),
     )
     assert isinstance(tr, TechnicalResourceResponse)
@@ -381,7 +387,9 @@ def test_tr_sp(sts):
         body=TechnicalResourceCreateRequest(
             name="New TR",
             controllable_unit_id=cu_id,
-            details="Details of the new TR",
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=1.0,
+            device_type=DeviceType.OTHER,
         ),
     )
     assert isinstance(tr, ErrorMessage)
@@ -390,7 +398,7 @@ def test_tr_sp(sts):
         client=client_common_sp,
         id=tr_id,
         body=TechnicalResourceUpdateRequest(
-            details="updated",
+            additional_information="updated",
         ),
     )
     assert isinstance(u, ErrorMessage)
@@ -399,7 +407,7 @@ def test_tr_sp(sts):
         client=client_sp,
         id=tr_id,
         body=TechnicalResourceUpdateRequest(
-            details="updated",
+            additional_information="updated",
         ),
     )
     assert isinstance(u, ErrorMessage)
@@ -430,7 +438,9 @@ def test_tr_sp(sts):
         body=TechnicalResourceCreateRequest(
             name="TRSP45",
             controllable_unit_id=cu_id,
-            details="Details of the new TR",
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=1.0,
+            device_type=DeviceType.OTHER,
         ),
     )
     assert isinstance(tr, TechnicalResourceResponse)
@@ -439,7 +449,7 @@ def test_tr_sp(sts):
         client=client_common_sp,
         id=tr_id,
         body=TechnicalResourceUpdateRequest(
-            details="updated TRSP45",
+            additional_information="updated TRSP45",
         ),
     )
     assert not (isinstance(u, ErrorMessage))
@@ -455,6 +465,9 @@ def test_tr_sp(sts):
         body=TechnicalResourceCreateRequest(
             name="fail",
             controllable_unit_id=cu_id,
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=1.0,
+            device_type=DeviceType.OTHER,
         ),
     )
     assert isinstance(failtr, ErrorMessage)
@@ -463,7 +476,7 @@ def test_tr_sp(sts):
         client=client_sp,
         id=tr_id,
         body=TechnicalResourceUpdateRequest(
-            details="fail update",
+            additional_information="fail update",
         ),
     )
     assert isinstance(u, ErrorMessage)
@@ -487,7 +500,10 @@ def test_tr_sp(sts):
         body=TechnicalResourceCreateRequest(
             name="MAGIC",
             controllable_unit_id=cu_id,
-            details="This addition makes the CU go back to PENDING",
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=1.0,
+            device_type=DeviceType.OTHER,
+            additional_information="This addition makes the CU go back to PENDING",
         ),
     )
     assert not isinstance(i, ErrorMessage)

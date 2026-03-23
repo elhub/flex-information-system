@@ -16,6 +16,8 @@ from flex.models import (
     EmptyObject,
     TechnicalResourceCreateRequest,
     TechnicalResourceResponse,
+    Technology,
+    DeviceType,
 )
 from flex.models import (
     ControllableUnitSuspensionCreateRequest,
@@ -132,6 +134,9 @@ def data():
         body=TechnicalResourceCreateRequest(
             name="TEST-TR-FOR-ACTIVATION",
             controllable_unit_id=cast(int, cu.id),
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=1.0,
+            device_type=DeviceType.OTHER,
         ),
     )
     assert isinstance(tr, TechnicalResourceResponse)
@@ -291,6 +296,9 @@ def test_cus_so(data):
         body=TechnicalResourceCreateRequest(
             name="TEST-TR-FOR-ACTIVATION",
             controllable_unit_id=cast(int, cu.id),
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=1.0,
+            device_type=DeviceType.OTHER,
         ),
     )
     assert isinstance(tr, TechnicalResourceResponse)
@@ -505,6 +513,9 @@ def test_cus_sp(data):
         body=TechnicalResourceCreateRequest(
             name="TEST-TR-FOR-ACTIVATION",
             controllable_unit_id=cast(int, cu.id),
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=1.0,
+            device_type=DeviceType.OTHER,
         ),
     )
     assert isinstance(tr, TechnicalResourceResponse)

@@ -41,6 +41,49 @@ export type AuthScope =
   | "manage:auth";
 
 /**
+ * Resource category classification. Derived from technologies.
+ */
+export type Category = "consumption" | "production" | "energy_storage";
+
+/**
+ * Type of device for technical resources.
+ */
+export type DeviceType =
+  | "inverter"
+  | "boiler"
+  | "water_heater"
+  | "socket"
+  | "hvac"
+  | "ev_charging_device"
+  | "energy_management_system"
+  | "other";
+
+/**
+ * Technology classification using ltree path notation. Technologies are hierarchical (e.g., hydropower.pumped, hvac.heat_pump). Use the most specific technology applicable to the technical resource.
+ */
+export type Technology =
+  | "hydropower"
+  | "hydropower.pumped"
+  | "hydropower.run_of_river"
+  | "heat_power_plant"
+  | "heat_power_plant.chp"
+  | "solar"
+  | "wind"
+  | "backup_generator"
+  | "hvac"
+  | "hvac.heat"
+  | "hvac.heat_pump"
+  | "lighting"
+  | "water_heater"
+  | "boiler"
+  | "ev_charging_device"
+  | "ev_charging_device.v2g"
+  | "battery"
+  | "other.consumption"
+  | "other.production"
+  | "other.energy_storage";
+
+/**
  * Request schema for controllable unit lookup operations
  */
 export type ControllableUnitLookupRequest = {
@@ -112,10 +155,6 @@ export type ControllableUnitLookup = {
        * The name of the technical resource.
        */
       name: string;
-      /**
-       * Additional details about the technical resource.
-       */
-      details?: string;
     }>;
   }>;
 };
@@ -364,6 +403,11 @@ export type PartyStatus =
   | "inactive"
   | "suspended"
   | "terminated";
+
+/**
+ * The type of business identifier used for the device.
+ */
+export type TechnicalResourceBusinessIdType = "serial_number" | "mac" | "other";
 
 /**
  * The direction of the effect on the balance that the BRP takes responsibility for.
@@ -1570,9 +1614,34 @@ export type TechnicalResourceUpdateRequest = {
    */
   name?: string;
   /**
-   * Free text details about the technical resource.
+   * Technologies of the technical resource using ltree path notation. Multiple technologies can be specified for hybrid resources (e.g., solar + battery).
    */
-  details?: string;
+  technology?: Array<Technology>;
+  /**
+   * Maximum continuous active power (rated power) of the technical resource in kilowatts.
+   */
+  maximum_active_power?: number;
+  /**
+   * The type of device.
+   */
+  device_type?: DeviceType;
+  /**
+   * The manufacturer of the device. Required if model or business_id is provided.
+   */
+  make?: string;
+  /**
+   * The model of the device.
+   */
+  model?: string;
+  /**
+   * Business identifier of the device, such as a serial number or MAC address.
+   */
+  business_id?: string;
+  business_id_type?: TechnicalResourceBusinessIdType | null;
+  /**
+   * Free text field for extra information about the technical resource if needed.
+   */
+  additional_information?: string;
 };
 
 /**
@@ -1588,9 +1657,34 @@ export type TechnicalResourceCreateRequest = {
    */
   controllable_unit_id: number;
   /**
-   * Free text details about the technical resource.
+   * Technologies of the technical resource using ltree path notation. Multiple technologies can be specified for hybrid resources (e.g., solar + battery).
    */
-  details?: string;
+  technology: Array<Technology>;
+  /**
+   * Maximum continuous active power (rated power) of the technical resource in kilowatts.
+   */
+  maximum_active_power: number;
+  /**
+   * The type of device.
+   */
+  device_type: DeviceType;
+  /**
+   * The manufacturer of the device. Required if model or business_id is provided.
+   */
+  make?: string;
+  /**
+   * The model of the device.
+   */
+  model?: string;
+  /**
+   * Business identifier of the device, such as a serial number or MAC address.
+   */
+  business_id?: string;
+  business_id_type?: TechnicalResourceBusinessIdType | null;
+  /**
+   * Free text field for extra information about the technical resource if needed.
+   */
+  additional_information?: string;
 };
 
 /**
@@ -1610,9 +1704,38 @@ export type TechnicalResource = {
    */
   controllable_unit_id: number;
   /**
-   * Free text details about the technical resource.
+   * Technologies of the technical resource using ltree path notation. Multiple technologies can be specified for hybrid resources (e.g., solar + battery).
    */
-  details?: string;
+  technology: Array<Technology>;
+  /**
+   * Categories derived from the technologies of the technical resource. Automatically computed based on the selected technologies.
+   */
+  readonly category: Array<Category>;
+  /**
+   * Maximum continuous active power (rated power) of the technical resource in kilowatts.
+   */
+  maximum_active_power: number;
+  /**
+   * The type of device.
+   */
+  device_type: DeviceType;
+  /**
+   * The manufacturer of the device. Required if model or business_id is provided.
+   */
+  make?: string;
+  /**
+   * The model of the device.
+   */
+  model?: string;
+  /**
+   * Business identifier of the device, such as a serial number or MAC address.
+   */
+  business_id?: string;
+  business_id_type?: TechnicalResourceBusinessIdType | null;
+  /**
+   * Free text field for extra information about the technical resource if needed.
+   */
+  additional_information?: string;
   /**
    * When the resource was recorded (created or updated) in the system.
    */
@@ -3286,9 +3409,34 @@ export type TechnicalResourceWritable = {
    */
   controllable_unit_id: number;
   /**
-   * Free text details about the technical resource.
+   * Technologies of the technical resource using ltree path notation. Multiple technologies can be specified for hybrid resources (e.g., solar + battery).
    */
-  details?: string;
+  technology: Array<Technology>;
+  /**
+   * Maximum continuous active power (rated power) of the technical resource in kilowatts.
+   */
+  maximum_active_power: number;
+  /**
+   * The type of device.
+   */
+  device_type: DeviceType;
+  /**
+   * The manufacturer of the device. Required if model or business_id is provided.
+   */
+  make?: string;
+  /**
+   * The model of the device.
+   */
+  model?: string;
+  /**
+   * Business identifier of the device, such as a serial number or MAC address.
+   */
+  business_id?: string;
+  business_id_type?: TechnicalResourceBusinessIdType | null;
+  /**
+   * Free text field for extra information about the technical resource if needed.
+   */
+  additional_information?: string;
 };
 
 /**

@@ -6,7 +6,7 @@ import { BaseInput, BaseInputProps } from "./BaseInput";
 type EnumInputProps = BaseInputProps & {
   enumKey: string;
   defaultValue?: string;
-  onChange?: (value: string) => void;
+  onChange?: (value: string | undefined) => void;
   placeholder?: string;
 };
 
@@ -37,9 +37,12 @@ export const EnumInput = ({
     name: translate(`enum.${value}`),
   }));
 
+  const CLEAR_VALUE = "__clear__";
+
   const handleValueChange = (value: string) => {
-    field.onChange(value);
-    onChange?.(value);
+    const normalized = value === CLEAR_VALUE ? undefined : value;
+    field.onChange(normalized);
+    onChange?.(normalized);
   };
 
   return (
@@ -61,6 +64,11 @@ export const EnumInput = ({
         placeholder={placeholder}
       >
         <SelectContent>
+          {!required && (
+            <SelectItem value={CLEAR_VALUE}>
+              {translate("ra.action.clear_input_value")}
+            </SelectItem>
+          )}
           {choices.map((choice) => (
             <SelectItem key={choice.id} value={choice.id}>
               {choice.name}

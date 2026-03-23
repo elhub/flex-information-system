@@ -6,8 +6,6 @@ from typing import Any, TypeVar
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
 T = TypeVar("T", bound="ControllableUnitLookupResponseControllableUnitsItemTechnicalResourcesItem")
 
 
@@ -17,20 +15,16 @@ class ControllableUnitLookupResponseControllableUnitsItemTechnicalResourcesItem:
     Attributes:
         id (int): The surrogate key of the technical resource. Example: 17.
         name (str): The name of the technical resource. Example: Battery Unit A.
-        details (str | Unset): Additional details about the technical resource. Example: 16A.
     """
 
     id: int
     name: str
-    details: str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         id = self.id
 
         name = self.name
-
-        details = self.details
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -40,8 +34,6 @@ class ControllableUnitLookupResponseControllableUnitsItemTechnicalResourcesItem:
                 "name": name,
             }
         )
-        if details is not UNSET:
-            field_dict["details"] = details
 
         return field_dict
 
@@ -52,12 +44,9 @@ class ControllableUnitLookupResponseControllableUnitsItemTechnicalResourcesItem:
 
         name = d.pop("name")
 
-        details = d.pop("details", UNSET)
-
         controllable_unit_lookup_response_controllable_units_item_technical_resources_item = cls(
             id=id,
             name=name,
-            details=details,
         )
 
         controllable_unit_lookup_response_controllable_units_item_technical_resources_item.additional_properties = d

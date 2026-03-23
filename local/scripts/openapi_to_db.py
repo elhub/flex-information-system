@@ -22,6 +22,9 @@ output_file_backend_schema = "backend/api.sql"
 
 
 def sql_type_of_field_attr(attr):
+    # allOf with a single $ref means a referenced enum type — treat as text
+    if "allOf" in attr:
+        return "text"
     if attr["type"] == "array":
         if "$ref" in attr["items"]:
             # if the item is a reference, we assume it is a text enum

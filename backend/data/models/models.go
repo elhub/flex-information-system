@@ -662,22 +662,38 @@ type ApiSystemOperatorProductTypeHistory struct {
 }
 
 type ApiTechnicalResource struct {
-	ID                 int
-	Name               string
-	ControllableUnitID int
-	Details            *string
-	RecordedBy         int
-	RecordedAt         pgtype.Timestamptz
+	ID                    int
+	Name                  string
+	ControllableUnitID    int
+	Technology            []string
+	Category              []string
+	MaximumActivePower    float64
+	DeviceType            string
+	Make                  *string
+	Model                 *string
+	BusinessID            *string
+	BusinessIDType        *string
+	AdditionalInformation *string
+	RecordedBy            int
+	RecordedAt            pgtype.Timestamptz
 }
 
 type ApiTechnicalResourceHistory struct {
-	TechnicalResourceID int
-	ID                  int
-	Name                string
-	ControllableUnitID  int
-	Details             *string
-	RecordedBy          int
-	RecordedAt          pgtype.Timestamptz
-	ReplacedBy          *int
-	ReplacedAt          pgtype.Timestamptz
+	TechnicalResourceID   int
+	ID                    int
+	Name                  string
+	ControllableUnitID    int
+	Technology            []string
+	Category              []string
+	MaximumActivePower    float64
+	DeviceType            string
+	Make                  *string
+	Model                 *string
+	BusinessID            *string
+	BusinessIDType        *string
+	AdditionalInformation *string
+	RecordedBy            int
+	RecordedAt            pgtype.Timestamptz
+	ReplacedBy            *int
+	ReplacedAt            pgtype.Timestamptz
 }

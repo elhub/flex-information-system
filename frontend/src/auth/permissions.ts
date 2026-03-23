@@ -557,22 +557,38 @@ export type PermissionTarget =
   | "system_operator_product_type_history.system_operator_id"
   | "system_operator_product_type_history.system_operator_product_type_id"
   | "technical_resource"
+  | "technical_resource.additional_information"
+  | "technical_resource.business_id"
+  | "technical_resource.business_id_type"
+  | "technical_resource.category"
   | "technical_resource.controllable_unit_id"
-  | "technical_resource.details"
+  | "technical_resource.device_type"
   | "technical_resource.id"
+  | "technical_resource.make"
+  | "technical_resource.maximum_active_power"
+  | "technical_resource.model"
   | "technical_resource.name"
   | "technical_resource.recorded_at"
   | "technical_resource.recorded_by"
+  | "technical_resource.technology"
   | "technical_resource_history"
+  | "technical_resource_history.additional_information"
+  | "technical_resource_history.business_id"
+  | "technical_resource_history.business_id_type"
+  | "technical_resource_history.category"
   | "technical_resource_history.controllable_unit_id"
-  | "technical_resource_history.details"
+  | "technical_resource_history.device_type"
   | "technical_resource_history.id"
+  | "technical_resource_history.make"
+  | "technical_resource_history.maximum_active_power"
+  | "technical_resource_history.model"
   | "technical_resource_history.name"
   | "technical_resource_history.recorded_at"
   | "technical_resource_history.recorded_by"
   | "technical_resource_history.replaced_at"
   | "technical_resource_history.replaced_by"
-  | "technical_resource_history.technical_resource_id";
+  | "technical_resource_history.technical_resource_id"
+  | "technical_resource_history.technology";
 
 export type PermissionOperation =
   | "create"
@@ -2870,15 +2886,43 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "technical_resource.additional_information",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.business_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.category",
+      operation: "read",
+    },
+    {
       target: "technical_resource.controllable_unit_id",
       operation: "read",
     },
     {
-      target: "technical_resource.details",
+      target: "technical_resource.device_type",
       operation: "read",
     },
     {
       target: "technical_resource.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.make",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.model",
       operation: "read",
     },
     {
@@ -2898,15 +2942,47 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "technical_resource.technology",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.additional_information",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.business_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.category",
+      operation: "read",
+    },
+    {
       target: "technical_resource_history.controllable_unit_id",
       operation: "read",
     },
     {
-      target: "technical_resource_history.details",
+      target: "technical_resource_history.device_type",
       operation: "read",
     },
     {
       target: "technical_resource_history.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.make",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.model",
       operation: "read",
     },
     {
@@ -2935,6 +3011,10 @@ const rawPermissions: Record<
     },
     {
       target: "technical_resource_history.technical_resource_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.technology",
       operation: "read",
     },
   ],
@@ -5218,15 +5298,43 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "technical_resource.additional_information",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.business_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.category",
+      operation: "read",
+    },
+    {
       target: "technical_resource.controllable_unit_id",
       operation: "read",
     },
     {
-      target: "technical_resource.details",
+      target: "technical_resource.device_type",
       operation: "read",
     },
     {
       target: "technical_resource.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.make",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.model",
       operation: "read",
     },
     {
@@ -5246,15 +5354,47 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "technical_resource.technology",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.additional_information",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.business_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.category",
+      operation: "read",
+    },
+    {
       target: "technical_resource_history.controllable_unit_id",
       operation: "read",
     },
     {
-      target: "technical_resource_history.details",
+      target: "technical_resource_history.device_type",
       operation: "read",
     },
     {
       target: "technical_resource_history.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.make",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.model",
       operation: "read",
     },
     {
@@ -5283,6 +5423,10 @@ const rawPermissions: Record<
     },
     {
       target: "technical_resource_history.technical_resource_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.technology",
       operation: "read",
     },
   ],
@@ -7566,15 +7710,43 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "technical_resource.additional_information",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.business_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.category",
+      operation: "read",
+    },
+    {
       target: "technical_resource.controllable_unit_id",
       operation: "read",
     },
     {
-      target: "technical_resource.details",
+      target: "technical_resource.device_type",
       operation: "read",
     },
     {
       target: "technical_resource.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.make",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.model",
       operation: "read",
     },
     {
@@ -7594,15 +7766,47 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "technical_resource.technology",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.additional_information",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.business_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.category",
+      operation: "read",
+    },
+    {
       target: "technical_resource_history.controllable_unit_id",
       operation: "read",
     },
     {
-      target: "technical_resource_history.details",
+      target: "technical_resource_history.device_type",
       operation: "read",
     },
     {
       target: "technical_resource_history.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.make",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.model",
       operation: "read",
     },
     {
@@ -7631,6 +7835,10 @@ const rawPermissions: Record<
     },
     {
       target: "technical_resource_history.technical_resource_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.technology",
       operation: "read",
     },
   ],
@@ -10688,6 +10896,46 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "technical_resource.additional_information",
+      operation: "create",
+    },
+    {
+      target: "technical_resource.additional_information",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.additional_information",
+      operation: "update",
+    },
+    {
+      target: "technical_resource.business_id",
+      operation: "create",
+    },
+    {
+      target: "technical_resource.business_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.business_id",
+      operation: "update",
+    },
+    {
+      target: "technical_resource.business_id_type",
+      operation: "create",
+    },
+    {
+      target: "technical_resource.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.business_id_type",
+      operation: "update",
+    },
+    {
+      target: "technical_resource.category",
+      operation: "read",
+    },
+    {
       target: "technical_resource.controllable_unit_id",
       operation: "create",
     },
@@ -10704,20 +10952,56 @@ const rawPermissions: Record<
       operation: "delete",
     },
     {
-      target: "technical_resource.details",
+      target: "technical_resource.device_type",
       operation: "create",
     },
     {
-      target: "technical_resource.details",
+      target: "technical_resource.device_type",
       operation: "read",
     },
     {
-      target: "technical_resource.details",
+      target: "technical_resource.device_type",
       operation: "update",
     },
     {
       target: "technical_resource.id",
       operation: "read",
+    },
+    {
+      target: "technical_resource.make",
+      operation: "create",
+    },
+    {
+      target: "technical_resource.make",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.make",
+      operation: "update",
+    },
+    {
+      target: "technical_resource.maximum_active_power",
+      operation: "create",
+    },
+    {
+      target: "technical_resource.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.maximum_active_power",
+      operation: "update",
+    },
+    {
+      target: "technical_resource.model",
+      operation: "create",
+    },
+    {
+      target: "technical_resource.model",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.model",
+      operation: "update",
     },
     {
       target: "technical_resource.name",
@@ -10744,19 +11028,59 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "technical_resource.technology",
+      operation: "create",
+    },
+    {
+      target: "technical_resource.technology",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.technology",
+      operation: "update",
+    },
+    {
       target: "technical_resource",
       operation: "update",
+    },
+    {
+      target: "technical_resource_history.additional_information",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.business_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.category",
+      operation: "read",
     },
     {
       target: "technical_resource_history.controllable_unit_id",
       operation: "read",
     },
     {
-      target: "technical_resource_history.details",
+      target: "technical_resource_history.device_type",
       operation: "read",
     },
     {
       target: "technical_resource_history.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.make",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.model",
       operation: "read",
     },
     {
@@ -10785,6 +11109,10 @@ const rawPermissions: Record<
     },
     {
       target: "technical_resource_history.technical_resource_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.technology",
       operation: "read",
     },
   ],
@@ -13068,15 +13396,43 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "technical_resource.additional_information",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.business_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.category",
+      operation: "read",
+    },
+    {
       target: "technical_resource.controllable_unit_id",
       operation: "read",
     },
     {
-      target: "technical_resource.details",
+      target: "technical_resource.device_type",
       operation: "read",
     },
     {
       target: "technical_resource.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.make",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.model",
       operation: "read",
     },
     {
@@ -13096,15 +13452,47 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "technical_resource.technology",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.additional_information",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.business_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.category",
+      operation: "read",
+    },
+    {
       target: "technical_resource_history.controllable_unit_id",
       operation: "read",
     },
     {
-      target: "technical_resource_history.details",
+      target: "technical_resource_history.device_type",
       operation: "read",
     },
     {
       target: "technical_resource_history.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.make",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.model",
       operation: "read",
     },
     {
@@ -13133,6 +13521,10 @@ const rawPermissions: Record<
     },
     {
       target: "technical_resource_history.technical_resource_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.technology",
       operation: "read",
     },
   ],
@@ -15838,15 +16230,43 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "technical_resource.additional_information",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.business_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.category",
+      operation: "read",
+    },
+    {
       target: "technical_resource.controllable_unit_id",
       operation: "read",
     },
     {
-      target: "technical_resource.details",
+      target: "technical_resource.device_type",
       operation: "read",
     },
     {
       target: "technical_resource.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.make",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.model",
       operation: "read",
     },
     {
@@ -15866,15 +16286,47 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "technical_resource.technology",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.additional_information",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.business_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.category",
+      operation: "read",
+    },
+    {
       target: "technical_resource_history.controllable_unit_id",
       operation: "read",
     },
     {
-      target: "technical_resource_history.details",
+      target: "technical_resource_history.device_type",
       operation: "read",
     },
     {
       target: "technical_resource_history.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.make",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.model",
       operation: "read",
     },
     {
@@ -15903,6 +16355,10 @@ const rawPermissions: Record<
     },
     {
       target: "technical_resource_history.technical_resource_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.technology",
       operation: "read",
     },
   ],
@@ -18677,6 +19133,46 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "technical_resource.additional_information",
+      operation: "create",
+    },
+    {
+      target: "technical_resource.additional_information",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.additional_information",
+      operation: "update",
+    },
+    {
+      target: "technical_resource.business_id",
+      operation: "create",
+    },
+    {
+      target: "technical_resource.business_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.business_id",
+      operation: "update",
+    },
+    {
+      target: "technical_resource.business_id_type",
+      operation: "create",
+    },
+    {
+      target: "technical_resource.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.business_id_type",
+      operation: "update",
+    },
+    {
+      target: "technical_resource.category",
+      operation: "read",
+    },
+    {
       target: "technical_resource.controllable_unit_id",
       operation: "create",
     },
@@ -18693,20 +19189,56 @@ const rawPermissions: Record<
       operation: "delete",
     },
     {
-      target: "technical_resource.details",
+      target: "technical_resource.device_type",
       operation: "create",
     },
     {
-      target: "technical_resource.details",
+      target: "technical_resource.device_type",
       operation: "read",
     },
     {
-      target: "technical_resource.details",
+      target: "technical_resource.device_type",
       operation: "update",
     },
     {
       target: "technical_resource.id",
       operation: "read",
+    },
+    {
+      target: "technical_resource.make",
+      operation: "create",
+    },
+    {
+      target: "technical_resource.make",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.make",
+      operation: "update",
+    },
+    {
+      target: "technical_resource.maximum_active_power",
+      operation: "create",
+    },
+    {
+      target: "technical_resource.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.maximum_active_power",
+      operation: "update",
+    },
+    {
+      target: "technical_resource.model",
+      operation: "create",
+    },
+    {
+      target: "technical_resource.model",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.model",
+      operation: "update",
     },
     {
       target: "technical_resource.name",
@@ -18733,19 +19265,59 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "technical_resource.technology",
+      operation: "create",
+    },
+    {
+      target: "technical_resource.technology",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.technology",
+      operation: "update",
+    },
+    {
       target: "technical_resource",
       operation: "update",
+    },
+    {
+      target: "technical_resource_history.additional_information",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.business_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.category",
+      operation: "read",
     },
     {
       target: "technical_resource_history.controllable_unit_id",
       operation: "read",
     },
     {
-      target: "technical_resource_history.details",
+      target: "technical_resource_history.device_type",
       operation: "read",
     },
     {
       target: "technical_resource_history.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.make",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.model",
       operation: "read",
     },
     {
@@ -18774,6 +19346,10 @@ const rawPermissions: Record<
     },
     {
       target: "technical_resource_history.technical_resource_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.technology",
       operation: "read",
     },
   ],
@@ -21057,15 +21633,43 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "technical_resource.additional_information",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.business_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.category",
+      operation: "read",
+    },
+    {
       target: "technical_resource.controllable_unit_id",
       operation: "read",
     },
     {
-      target: "technical_resource.details",
+      target: "technical_resource.device_type",
       operation: "read",
     },
     {
       target: "technical_resource.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.make",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.model",
       operation: "read",
     },
     {
@@ -21085,15 +21689,47 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "technical_resource.technology",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.additional_information",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.business_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.category",
+      operation: "read",
+    },
+    {
       target: "technical_resource_history.controllable_unit_id",
       operation: "read",
     },
     {
-      target: "technical_resource_history.details",
+      target: "technical_resource_history.device_type",
       operation: "read",
     },
     {
       target: "technical_resource_history.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.make",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.model",
       operation: "read",
     },
     {
@@ -21122,6 +21758,10 @@ const rawPermissions: Record<
     },
     {
       target: "technical_resource_history.technical_resource_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.technology",
       operation: "read",
     },
   ],

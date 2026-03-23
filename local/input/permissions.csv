@@ -140,7 +140,15 @@ technical_resource;;;;;;D;;;D;;;;R
 technical_resource;id;;R;R;R;R;R;R;R;R;;;
 technical_resource;name;;R;R;R;RCU;R;R;RCU;R;;;
 technical_resource;controllable_unit_id;;R;R;R;RC;R;R;RC;R;;;
-technical_resource;details;;R;R;R;RCU;R;R;RCU;R;;;
+technical_resource;technology;;R;R;R;RCU;R;R;RCU;R;;;
+technical_resource;category;;R;R;R;R;R;R;R;R;;;
+technical_resource;maximum_active_power;;R;R;R;RCU;R;R;RCU;R;;;
+technical_resource;device_type;;R;R;R;RCU;R;R;RCU;R;;;
+technical_resource;make;;R;R;R;RCU;R;R;RCU;R;;;
+technical_resource;model;;R;R;R;RCU;R;R;RCU;R;;;
+technical_resource;business_id;;R;R;R;RCU;R;R;RCU;R;;;
+technical_resource;business_id_type;;R;R;R;RCU;R;R;RCU;R;;;
+technical_resource;additional_information;;R;R;R;RCU;R;R;RCU;R;;;
 technical_resource;recorded_at;;R;R;R;R;R;R;R;R;;;
 technical_resource;recorded_by;;R;R;R;R;R;R;R;R;;;
 event;;;;;;;;;;;;;R

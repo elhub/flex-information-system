@@ -9,6 +9,9 @@ import {
   TextInput,
   TextAreaInput,
   AutocompleteReferenceInput,
+  EnumInput,
+  EnumArrayInput,
+  UnitInput,
   FormToolbar,
 } from "../../components/EDS-ra/inputs";
 
@@ -42,13 +45,58 @@ export const TechnicalResourceInput = () => {
         </Heading>
 
         <FlexDiv style={{ gap: "var(--eds-size-3)", flexDirection: "column" }}>
-          <TextInput {...fields.name} />
+          <TextInput {...fields.name} description tooltip={false} />
           <AutocompleteReferenceInput
             {...fields.controllable_unit_id}
             reference="controllable_unit"
+            description
+            tooltip={false}
             readOnly
           />
-          <TextAreaInput {...fields.details} rows={3} />
+        </FlexDiv>
+
+        <Heading level={3} size="medium">
+          Technical information
+        </Heading>
+
+        <FlexDiv style={{ gap: "var(--eds-size-3)", flexDirection: "column" }}>
+          <EnumArrayInput
+            {...fields.technology}
+            enumKey="technology"
+            description
+            tooltip={false}
+          />
+
+          <UnitInput
+            {...fields.maximum_active_power}
+            units={[
+              { label: "kW", scale: 1 },
+              { label: "MW", scale: 1000 },
+            ]}
+            description
+            tooltip={false}
+          />
+          <EnumInput
+            {...fields.device_type}
+            enumKey="device_type"
+            description
+            tooltip={false}
+          />
+          <TextInput {...fields.make} description tooltip={false} />
+          <TextInput {...fields.model} description tooltip={false} />
+          <TextInput {...fields.business_id} description tooltip={false} />
+          <EnumInput
+            {...fields.business_id_type}
+            enumKey="technical_resource.business_id_type"
+            description
+            tooltip={false}
+          />
+          <TextAreaInput
+            {...fields.additional_information}
+            rows={8}
+            description
+            tooltip={false}
+          />
         </FlexDiv>
 
         <FormToolbar />

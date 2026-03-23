@@ -474,8 +474,22 @@ export const tooltips = {
     "Name of the technical resource. Maximum 128 characters.",
   "technical_resource.controllable_unit_id":
     "Reference to the controllable unit that this technical resource belongs to.",
-  "technical_resource.details":
-    "Free text details about the technical resource.",
+  "technical_resource.technology":
+    "Technologies of the technical resource using ltree path notation. Multiple technologies can be specified for hybrid resources (e.g., solar + battery).",
+  "technical_resource.category":
+    "Categories derived from the technologies of the technical resource. Automatically computed based on the selected technologies.",
+  "technical_resource.maximum_active_power":
+    "Maximum continuous active power (rated power) of the technical resource in kilowatts.",
+  "technical_resource.device_type": "The type of device.",
+  "technical_resource.make":
+    "The manufacturer of the device. Required if model or business_id is provided.",
+  "technical_resource.model": "The model of the device.",
+  "technical_resource.business_id":
+    "Business identifier of the device, such as a serial number or MAC address.",
+  "technical_resource.business_id_type":
+    "The type of business identifier used for the device.",
+  "technical_resource.additional_information":
+    "Free text field for extra information about the technical resource if needed.",
   "technical_resource.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "technical_resource.recorded_by": "The identity that recorded the resource.",
@@ -484,8 +498,22 @@ export const tooltips = {
     "Name of the technical resource. Maximum 128 characters.",
   "technical_resource_history.controllable_unit_id":
     "Reference to the controllable unit that this technical resource belongs to.",
-  "technical_resource_history.details":
-    "Free text details about the technical resource.",
+  "technical_resource_history.technology":
+    "Technologies of the technical resource using ltree path notation. Multiple technologies can be specified for hybrid resources (e.g., solar + battery).",
+  "technical_resource_history.category":
+    "Categories derived from the technologies of the technical resource. Automatically computed based on the selected technologies.",
+  "technical_resource_history.maximum_active_power":
+    "Maximum continuous active power (rated power) of the technical resource in kilowatts.",
+  "technical_resource_history.device_type": "The type of device.",
+  "technical_resource_history.make":
+    "The manufacturer of the device. Required if model or business_id is provided.",
+  "technical_resource_history.model": "The model of the device.",
+  "technical_resource_history.business_id":
+    "Business identifier of the device, such as a serial number or MAC address.",
+  "technical_resource_history.business_id_type":
+    "The type of business identifier used for the device.",
+  "technical_resource_history.additional_information":
+    "Free text field for extra information about the technical resource if needed.",
   "technical_resource_history.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "technical_resource_history.recorded_by":
