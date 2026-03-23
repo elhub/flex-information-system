@@ -47,8 +47,6 @@ def test_entity(keys, key, client_id, expected_status, error):
     payload = {
         # Audience
         "aud": "https://test.flex.internal:6443/auth/v0/",
-        # Issuer
-        "iss": client_id,  # Test Suite
         # JWT ID
         "jti": str(uuid.uuid4()),
         # Issued at
@@ -56,6 +54,9 @@ def test_entity(keys, key, client_id, expected_status, error):
         # Expiration time
         "exp": dt.now(tz.utc) + timedelta(seconds=120),  # Token expires in 30 seconds
     }
+    # Omit iss entirely when client_id is None (PyJWT rejects None as iss value)
+    if client_id is not None:
+        payload["iss"] = client_id
 
     token = jwt.encode(payload, keys[key], algorithm="RS256")
 
@@ -232,29 +233,25 @@ def test_malformed(keys, aud, iss, sub, expected_status):
 
 
 @pytest.mark.parametrize(
-    "expected_status, iat, exp",
+    "expected_status, iat_offset, exp_offset",
     [
         # The only valid case
-        (200, dt.now(tz.utc), dt.now(tz.utc) + timedelta(seconds=120)),
+        (200, 0, 120),
         # Token expired
-        (
-            400,
-            dt.now(tz.utc) - timedelta(seconds=240),
-            dt.now(tz.utc) - timedelta(seconds=120),
-        ),
+        (400, -240, -120),
         # Token not yet valid
-        (
-            400,
-            dt.now(tz.utc) + timedelta(seconds=240),
-            dt.now(tz.utc) + timedelta(seconds=120),
-        ),
+        (400, 240, 120),
         # Lifetime of token is 0
-        (400, dt.now(tz.utc), dt.now(tz.utc)),
+        (400, 0, 0),
         # Lifetime of token is more than 120 seconds
-        (400, dt.now(tz.utc), dt.now(tz.utc) + timedelta(seconds=240)),
+        (400, 0, 240),
     ],
 )
-def test_timing(keys, expected_status, iat, exp):
+def test_timing(keys, expected_status, iat_offset, exp_offset):
+    # Compute timestamps at test execution time to avoid staleness from parametrize collection
+    now = dt.now(tz.utc)
+    iat = now + timedelta(seconds=iat_offset)
+    exp = now + timedelta(seconds=exp_offset)
     payload = {
         # Audience
         "aud": "https://test.flex.internal:6443/auth/v0/",
@@ -267,7 +264,7 @@ def test_timing(keys, expected_status, iat, exp):
         # Issued at
         "iat": iat,
         # Expiration time
-        "exp": exp,  # Token expires in 30 seconds
+        "exp": exp,
     }
 
     token = jwt.encode(payload, keys["test"], algorithm="RS256")

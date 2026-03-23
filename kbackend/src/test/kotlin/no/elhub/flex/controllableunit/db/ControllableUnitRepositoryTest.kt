@@ -5,8 +5,8 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
 import no.elhub.flex.PostgresTestContainer
-import no.elhub.flex.controllableunit.dto.ControllableUnit
-import no.elhub.flex.controllableunit.dto.TechnicalResource
+import no.elhub.flex.model.domain.ControllableUnit
+import no.elhub.flex.model.domain.TechnicalResource
 import no.elhub.flex.util.systemToken
 import no.elhub.flex.util.uniqueGsrn
 import java.sql.Connection

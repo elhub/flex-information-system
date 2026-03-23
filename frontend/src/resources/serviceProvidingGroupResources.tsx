@@ -7,7 +7,7 @@ import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import { EditRedirectPreviousPage, CreateRedirectPreviousPage } from "./shared";
 import { Permissions } from "../auth/permissions";
 import { ServiceProvidingGroupList } from "../service_providing_group/ServiceProvidingGroupList";
-import { ServiceProvidingGroupShow } from "../service_providing_group/ServiceProvidingGroupShow";
+import { ServiceProvidingGroupShow } from "../service_providing_group/show/ServiceProvidingGroupShow";
 import { ServiceProvidingGroupInput } from "../service_providing_group/input/ServiceProvidingGroupInput";
 import { ServiceProvidingGroupCreate } from "../service_providing_group/input/ServiceProvidingGroupCreate";
 import { ServiceProvidingGroupManageMembers } from "../service_providing_group/input/ServiceProvidingGroupManageMembers";

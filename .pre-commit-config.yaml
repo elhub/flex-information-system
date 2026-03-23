@@ -116,7 +116,7 @@ repos:
   ## Markdown
   #
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.17.2
+    rev: v0.21.0
     hooks:
       - id: markdownlint-cli2
         language_version: lts
@@ -212,6 +212,7 @@ repos:
           - css
           - scss
         exclude: "(local/mkdocs/.*|frontend/src/intl/.*-labels.ts|frontend/src/generated-client/.*)"
+        stages: [pre-push]
 
   - repo: local
     hooks:
@@ -222,6 +223,7 @@ repos:
         language: script
         types_or: [ts, tsx, javascript]
         pass_filenames: false
+        stages: [pre-push]
 
   - repo: local
     hooks:

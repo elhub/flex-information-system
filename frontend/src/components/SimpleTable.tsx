@@ -11,26 +11,45 @@ export type Column<T> = {
   render?: (value: T[keyof T], row: T) => ReactNode;
 };
 
-type SimpleTableProps<T extends { id?: unknown }> = {
+type SimpleTableProps<T extends { id?: string | number }> = {
   columns: Column<T>[];
   data: T[];
   size?: "medium" | "small";
   empty?: ReactNode;
   action?: { render: (row: T) => ReactNode; header?: string };
   checkbox?: { render: (row: T) => ReactNode; header?: ReactNode };
+  className?: string;
+  rowClick?: (record: T) => void;
 };
 
-export const SimpleTable = <T extends { id?: unknown }>({
+export const SimpleTable = <T extends { id?: string | number }>({
   columns,
   data,
   size,
   empty = "No results",
   action,
   checkbox,
+  className,
+  rowClick,
 }: SimpleTableProps<T>) => {
+  const handleRowClick = (
+    e: React.MouseEvent<HTMLTableRowElement>,
+    record: T,
+  ) => {
+    if (!rowClick) return;
+    const target = e.target as HTMLElement;
+    // We don't want to navigate if the target is a button or a link, or a modal
+    // overlay, because it's handled by the button or link itself.
+    if (target.closest("button, a, .eds-modal__overlay")) {
+      return;
+    }
+
+    rowClick(record);
+  };
+
   if (!data.length) return <BodyText>{empty}</BodyText>;
   return (
-    <Table size={size}>
+    <Table className={className} size={size}>
       <Table.Header>
         <Table.Row>
           {checkbox && (
@@ -55,7 +74,11 @@ export const SimpleTable = <T extends { id?: unknown }>({
       </Table.Header>
       <Table.Body>
         {data.map((row, i) => (
-          <Table.Row key={String(row.id ?? i)}>
+          <Table.Row
+            key={String(row.id ?? i)}
+            onClick={(e) => handleRowClick(e, row)}
+            className={rowClick ? "cursor-pointer" : undefined}
+          >
             {checkbox && (
               <Table.DataCell>{checkbox.render(row)}</Table.DataCell>
             )}
