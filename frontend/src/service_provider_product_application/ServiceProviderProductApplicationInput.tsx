@@ -82,11 +82,13 @@ export const ServiceProviderProductApplicationInput = () => {
           Application process
         </Heading>
         <VerticalSpace size="small" />
-        <EnumInput
-          {...fields.status}
-          enumKey="service_provider_product_application.status"
-          placeholder="Select status"
-        />
+        {createOrUpdate === "update" && (
+          <EnumInput
+            {...fields.status}
+            enumKey="service_provider_product_application.status"
+            placeholder="Select status"
+          />
+        )}
         <DateTimeInput {...fields.qualified_at} showNow />
         <FormToolbar />
       </FormContainer>

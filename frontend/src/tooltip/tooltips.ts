@@ -14,24 +14,8 @@ export const tooltips = {
     "Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
   "controllable_unit.is_small":
     "Whether the controllable unit is small or not, following NCDR.",
-  "controllable_unit.minimum_duration":
-    "The minimum activation duration in seconds.",
-  "controllable_unit.maximum_duration":
-    "The maximum activation duration in seconds.",
-  "controllable_unit.recovery_duration":
-    "The minimum recovery duration between activations in seconds.",
-  "controllable_unit.ramp_rate":
-    "The rate of power per unit of time to reach empty or full power for the controllable unit, in kilowatts per minute.",
   "controllable_unit.accounting_point_id":
     "Reference to the accounting point that the controllable unit is connected to.",
-  "controllable_unit.grid_node_id":
-    "Reference to the node that the controllable unit is connected to.",
-  "controllable_unit.grid_validation_status":
-    "The grid validation status of the controllable unit.",
-  "controllable_unit.grid_validation_notes":
-    "Free text notes on the current grid validation status.",
-  "controllable_unit.validated_at":
-    "When the controllable unit was last validated.",
   "controllable_unit.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "controllable_unit.recorded_by": "The identity that recorded the resource.",
@@ -48,24 +32,8 @@ export const tooltips = {
     "Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
   "controllable_unit_history.is_small":
     "Whether the controllable unit is small or not, following NCDR.",
-  "controllable_unit_history.minimum_duration":
-    "The minimum activation duration in seconds.",
-  "controllable_unit_history.maximum_duration":
-    "The maximum activation duration in seconds.",
-  "controllable_unit_history.recovery_duration":
-    "The minimum recovery duration between activations in seconds.",
-  "controllable_unit_history.ramp_rate":
-    "The rate of power per unit of time to reach empty or full power for the controllable unit, in kilowatts per minute.",
   "controllable_unit_history.accounting_point_id":
     "Reference to the accounting point that the controllable unit is connected to.",
-  "controllable_unit_history.grid_node_id":
-    "Reference to the node that the controllable unit is connected to.",
-  "controllable_unit_history.grid_validation_status":
-    "The grid validation status of the controllable unit.",
-  "controllable_unit_history.grid_validation_notes":
-    "Free text notes on the current grid validation status.",
-  "controllable_unit_history.validated_at":
-    "When the controllable unit was last validated.",
   "controllable_unit_history.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "controllable_unit_history.recorded_by":
@@ -474,8 +442,22 @@ export const tooltips = {
     "Name of the technical resource. Maximum 128 characters.",
   "technical_resource.controllable_unit_id":
     "Reference to the controllable unit that this technical resource belongs to.",
-  "technical_resource.details":
-    "Free text details about the technical resource.",
+  "technical_resource.technology":
+    "Technologies of the technical resource using ltree path notation. Multiple technologies can be specified for hybrid resources (e.g., solar + battery).",
+  "technical_resource.category":
+    "Categories derived from the technologies of the technical resource. Automatically computed based on the selected technologies.",
+  "technical_resource.maximum_active_power":
+    "Maximum continuous active power (rated power) of the technical resource in kilowatts.",
+  "technical_resource.device_type": "The type of device.",
+  "technical_resource.make":
+    "The manufacturer of the device. Required if model or business_id is provided.",
+  "technical_resource.model": "The model of the device.",
+  "technical_resource.business_id":
+    "Business identifier of the device, such as a serial number or MAC address.",
+  "technical_resource.business_id_type":
+    "The type of business identifier used for the device.",
+  "technical_resource.additional_information":
+    "Free text field for extra information about the technical resource if needed.",
   "technical_resource.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "technical_resource.recorded_by": "The identity that recorded the resource.",
@@ -484,8 +466,22 @@ export const tooltips = {
     "Name of the technical resource. Maximum 128 characters.",
   "technical_resource_history.controllable_unit_id":
     "Reference to the controllable unit that this technical resource belongs to.",
-  "technical_resource_history.details":
-    "Free text details about the technical resource.",
+  "technical_resource_history.technology":
+    "Technologies of the technical resource using ltree path notation. Multiple technologies can be specified for hybrid resources (e.g., solar + battery).",
+  "technical_resource_history.category":
+    "Categories derived from the technologies of the technical resource. Automatically computed based on the selected technologies.",
+  "technical_resource_history.maximum_active_power":
+    "Maximum continuous active power (rated power) of the technical resource in kilowatts.",
+  "technical_resource_history.device_type": "The type of device.",
+  "technical_resource_history.make":
+    "The manufacturer of the device. Required if model or business_id is provided.",
+  "technical_resource_history.model": "The model of the device.",
+  "technical_resource_history.business_id":
+    "Business identifier of the device, such as a serial number or MAC address.",
+  "technical_resource_history.business_id_type":
+    "The type of business identifier used for the device.",
+  "technical_resource_history.additional_information":
+    "Free text field for extra information about the technical resource if needed.",
   "technical_resource_history.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "technical_resource_history.recorded_by":

@@ -387,10 +387,6 @@ GRANT SELECT ON TABLE
 flex.controllable_unit
 TO flex_system_operator;
 
-GRANT UPDATE ON TABLE
-flex.controllable_unit
-TO flex_system_operator;
-
 GRANT INSERT ON TABLE
 flex.controllable_unit
 TO flex_service_provider;
@@ -412,6 +408,10 @@ flex.controllable_unit
 TO flex_internal_event_notification;
 
 GRANT SELECT ON TABLE
+flex.controllable_unit
+TO flex_internal_data;
+
+GRANT SELECT ON TABLE
 flex.controllable_unit_history
 TO flex_balance_responsible_party;
 
@@ -446,6 +446,10 @@ TO flex_third_party;
 GRANT SELECT ON TABLE
 flex.controllable_unit_history
 TO flex_internal_event_notification;
+
+GRANT SELECT ON TABLE
+flex.controllable_unit_history
+TO flex_internal_data;
 
 GRANT SELECT ON TABLE
 flex.controllable_unit_service_provider
@@ -1352,6 +1356,10 @@ flex.technical_resource
 TO flex_internal_event_notification;
 
 GRANT SELECT ON TABLE
+flex.technical_resource
+TO flex_internal_data;
+
+GRANT SELECT ON TABLE
 flex.technical_resource_history
 TO flex_balance_responsible_party;
 
@@ -1386,6 +1394,10 @@ TO flex_third_party;
 GRANT SELECT ON TABLE
 flex.technical_resource_history
 TO flex_internal_event_notification;
+
+GRANT SELECT ON TABLE
+flex.technical_resource_history
+TO flex_internal_data;
 
 GRANT SELECT ON TABLE
 flex.event

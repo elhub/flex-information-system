@@ -1090,15 +1090,7 @@ GRANT SELECT (
     is_small,
     start_date,
     status,
-    minimum_duration,
-    maximum_duration,
-    recovery_duration,
-    ramp_rate,
     accounting_point_id,
-    grid_node_id,
-    grid_validation_status,
-    grid_validation_notes,
-    validated_at,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -1114,15 +1106,7 @@ GRANT SELECT (
     is_small,
     start_date,
     status,
-    minimum_duration,
-    maximum_duration,
-    recovery_duration,
-    ramp_rate,
     accounting_point_id,
-    grid_node_id,
-    grid_validation_status,
-    grid_validation_notes,
-    validated_at,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -1138,15 +1122,7 @@ GRANT SELECT (
     is_small,
     start_date,
     status,
-    minimum_duration,
-    maximum_duration,
-    recovery_duration,
-    ramp_rate,
     accounting_point_id,
-    grid_node_id,
-    grid_validation_status,
-    grid_validation_notes,
-    validated_at,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -1159,15 +1135,7 @@ GRANT INSERT (
     maximum_active_power,
     start_date,
     status,
-    minimum_duration,
-    maximum_duration,
-    recovery_duration,
-    ramp_rate,
-    accounting_point_id,
-    grid_node_id,
-    grid_validation_status,
-    grid_validation_notes,
-    validated_at
+    accounting_point_id
 ) ON TABLE
 api.controllable_unit
 TO flex_flexibility_information_system_operator;
@@ -1181,15 +1149,7 @@ GRANT SELECT (
     is_small,
     start_date,
     status,
-    minimum_duration,
-    maximum_duration,
-    recovery_duration,
-    ramp_rate,
     accounting_point_id,
-    grid_node_id,
-    grid_validation_status,
-    grid_validation_notes,
-    validated_at,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -1201,15 +1161,7 @@ GRANT UPDATE (
     regulation_direction,
     maximum_active_power,
     start_date,
-    status,
-    minimum_duration,
-    maximum_duration,
-    recovery_duration,
-    ramp_rate,
-    grid_node_id,
-    grid_validation_status,
-    grid_validation_notes,
-    validated_at
+    status
 ) ON TABLE
 api.controllable_unit
 TO flex_flexibility_information_system_operator;
@@ -1223,15 +1175,7 @@ GRANT SELECT (
     is_small,
     start_date,
     status,
-    minimum_duration,
-    maximum_duration,
-    recovery_duration,
-    ramp_rate,
     accounting_point_id,
-    grid_node_id,
-    grid_validation_status,
-    grid_validation_notes,
-    validated_at,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -1247,26 +1191,9 @@ GRANT SELECT (
     is_small,
     start_date,
     status,
-    minimum_duration,
-    maximum_duration,
-    recovery_duration,
-    ramp_rate,
     accounting_point_id,
-    grid_node_id,
-    grid_validation_status,
-    grid_validation_notes,
-    validated_at,
     recorded_at,
     recorded_by
-) ON TABLE
-api.controllable_unit
-TO flex_system_operator;
-
-GRANT UPDATE (
-    grid_node_id,
-    grid_validation_status,
-    grid_validation_notes,
-    validated_at
 ) ON TABLE
 api.controllable_unit
 TO flex_system_operator;
@@ -1277,12 +1204,7 @@ GRANT INSERT (
     maximum_active_power,
     start_date,
     status,
-    minimum_duration,
-    maximum_duration,
-    recovery_duration,
-    ramp_rate,
-    accounting_point_id,
-    grid_node_id
+    accounting_point_id
 ) ON TABLE
 api.controllable_unit
 TO flex_service_provider;
@@ -1296,15 +1218,7 @@ GRANT SELECT (
     is_small,
     start_date,
     status,
-    minimum_duration,
-    maximum_duration,
-    recovery_duration,
-    ramp_rate,
     accounting_point_id,
-    grid_node_id,
-    grid_validation_status,
-    grid_validation_notes,
-    validated_at,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -1316,11 +1230,7 @@ GRANT UPDATE (
     regulation_direction,
     maximum_active_power,
     start_date,
-    status,
-    minimum_duration,
-    maximum_duration,
-    recovery_duration,
-    ramp_rate
+    status
 ) ON TABLE
 api.controllable_unit
 TO flex_service_provider;
@@ -1334,15 +1244,7 @@ GRANT SELECT (
     is_small,
     start_date,
     status,
-    minimum_duration,
-    maximum_duration,
-    recovery_duration,
-    ramp_rate,
     accounting_point_id,
-    grid_node_id,
-    grid_validation_status,
-    grid_validation_notes,
-    validated_at,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -1352,6 +1254,10 @@ TO flex_third_party;
 GRANT SELECT ON TABLE
 api.controllable_unit
 TO flex_internal_event_notification;
+
+GRANT SELECT ON TABLE
+api.controllable_unit
+TO flex_internal_data;
 
 GRANT SELECT (
     id,
@@ -1363,15 +1269,7 @@ GRANT SELECT (
     is_small,
     start_date,
     status,
-    minimum_duration,
-    maximum_duration,
-    recovery_duration,
-    ramp_rate,
     accounting_point_id,
-    grid_node_id,
-    grid_validation_status,
-    grid_validation_notes,
-    validated_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -1390,15 +1288,7 @@ GRANT SELECT (
     is_small,
     start_date,
     status,
-    minimum_duration,
-    maximum_duration,
-    recovery_duration,
-    ramp_rate,
     accounting_point_id,
-    grid_node_id,
-    grid_validation_status,
-    grid_validation_notes,
-    validated_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -1417,15 +1307,7 @@ GRANT SELECT (
     is_small,
     start_date,
     status,
-    minimum_duration,
-    maximum_duration,
-    recovery_duration,
-    ramp_rate,
     accounting_point_id,
-    grid_node_id,
-    grid_validation_status,
-    grid_validation_notes,
-    validated_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -1444,15 +1326,7 @@ GRANT SELECT (
     is_small,
     start_date,
     status,
-    minimum_duration,
-    maximum_duration,
-    recovery_duration,
-    ramp_rate,
     accounting_point_id,
-    grid_node_id,
-    grid_validation_status,
-    grid_validation_notes,
-    validated_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -1471,15 +1345,7 @@ GRANT SELECT (
     is_small,
     start_date,
     status,
-    minimum_duration,
-    maximum_duration,
-    recovery_duration,
-    ramp_rate,
     accounting_point_id,
-    grid_node_id,
-    grid_validation_status,
-    grid_validation_notes,
-    validated_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -1498,15 +1364,7 @@ GRANT SELECT (
     is_small,
     start_date,
     status,
-    minimum_duration,
-    maximum_duration,
-    recovery_duration,
-    ramp_rate,
     accounting_point_id,
-    grid_node_id,
-    grid_validation_status,
-    grid_validation_notes,
-    validated_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -1525,15 +1383,7 @@ GRANT SELECT (
     is_small,
     start_date,
     status,
-    minimum_duration,
-    maximum_duration,
-    recovery_duration,
-    ramp_rate,
     accounting_point_id,
-    grid_node_id,
-    grid_validation_status,
-    grid_validation_notes,
-    validated_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -1552,15 +1402,7 @@ GRANT SELECT (
     is_small,
     start_date,
     status,
-    minimum_duration,
-    maximum_duration,
-    recovery_duration,
-    ramp_rate,
     accounting_point_id,
-    grid_node_id,
-    grid_validation_status,
-    grid_validation_notes,
-    validated_at,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -1572,6 +1414,10 @@ TO flex_third_party;
 GRANT SELECT ON TABLE
 api.controllable_unit_history
 TO flex_internal_event_notification;
+
+GRANT SELECT ON TABLE
+api.controllable_unit_history
+TO flex_internal_data;
 
 GRANT SELECT (
     id,
@@ -3988,7 +3834,15 @@ GRANT SELECT (
     id,
     name,
     controllable_unit_id,
-    details,
+    technology,
+    category,
+    maximum_active_power,
+    device_type,
+    make,
+    model,
+    business_id,
+    business_id_type,
+    additional_information,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -3999,7 +3853,15 @@ GRANT SELECT (
     id,
     name,
     controllable_unit_id,
-    details,
+    technology,
+    category,
+    maximum_active_power,
+    device_type,
+    make,
+    model,
+    business_id,
+    business_id_type,
+    additional_information,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -4010,7 +3872,15 @@ GRANT SELECT (
     id,
     name,
     controllable_unit_id,
-    details,
+    technology,
+    category,
+    maximum_active_power,
+    device_type,
+    make,
+    model,
+    business_id,
+    business_id_type,
+    additional_information,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -4020,7 +3890,14 @@ TO flex_end_user;
 GRANT INSERT (
     name,
     controllable_unit_id,
-    details
+    technology,
+    maximum_active_power,
+    device_type,
+    make,
+    model,
+    business_id,
+    business_id_type,
+    additional_information
 ) ON TABLE
 api.technical_resource
 TO flex_flexibility_information_system_operator;
@@ -4029,7 +3906,15 @@ GRANT SELECT (
     id,
     name,
     controllable_unit_id,
-    details,
+    technology,
+    category,
+    maximum_active_power,
+    device_type,
+    make,
+    model,
+    business_id,
+    business_id_type,
+    additional_information,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -4038,7 +3923,14 @@ TO flex_flexibility_information_system_operator;
 
 GRANT UPDATE (
     name,
-    details
+    technology,
+    maximum_active_power,
+    device_type,
+    make,
+    model,
+    business_id,
+    business_id_type,
+    additional_information
 ) ON TABLE
 api.technical_resource
 TO flex_flexibility_information_system_operator;
@@ -4051,7 +3943,15 @@ GRANT SELECT (
     id,
     name,
     controllable_unit_id,
-    details,
+    technology,
+    category,
+    maximum_active_power,
+    device_type,
+    make,
+    model,
+    business_id,
+    business_id_type,
+    additional_information,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -4062,7 +3962,15 @@ GRANT SELECT (
     id,
     name,
     controllable_unit_id,
-    details,
+    technology,
+    category,
+    maximum_active_power,
+    device_type,
+    make,
+    model,
+    business_id,
+    business_id_type,
+    additional_information,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -4072,7 +3980,14 @@ TO flex_system_operator;
 GRANT INSERT (
     name,
     controllable_unit_id,
-    details
+    technology,
+    maximum_active_power,
+    device_type,
+    make,
+    model,
+    business_id,
+    business_id_type,
+    additional_information
 ) ON TABLE
 api.technical_resource
 TO flex_service_provider;
@@ -4081,7 +3996,15 @@ GRANT SELECT (
     id,
     name,
     controllable_unit_id,
-    details,
+    technology,
+    category,
+    maximum_active_power,
+    device_type,
+    make,
+    model,
+    business_id,
+    business_id_type,
+    additional_information,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -4090,7 +4013,14 @@ TO flex_service_provider;
 
 GRANT UPDATE (
     name,
-    details
+    technology,
+    maximum_active_power,
+    device_type,
+    make,
+    model,
+    business_id,
+    business_id_type,
+    additional_information
 ) ON TABLE
 api.technical_resource
 TO flex_service_provider;
@@ -4103,7 +4033,15 @@ GRANT SELECT (
     id,
     name,
     controllable_unit_id,
-    details,
+    technology,
+    category,
+    maximum_active_power,
+    device_type,
+    make,
+    model,
+    business_id,
+    business_id_type,
+    additional_information,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -4114,12 +4052,24 @@ GRANT SELECT ON TABLE
 api.technical_resource
 TO flex_internal_event_notification;
 
+GRANT SELECT ON TABLE
+api.technical_resource
+TO flex_internal_data;
+
 GRANT SELECT (
     id,
     technical_resource_id,
     name,
     controllable_unit_id,
-    details,
+    technology,
+    category,
+    maximum_active_power,
+    device_type,
+    make,
+    model,
+    business_id,
+    business_id_type,
+    additional_information,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -4133,7 +4083,15 @@ GRANT SELECT (
     technical_resource_id,
     name,
     controllable_unit_id,
-    details,
+    technology,
+    category,
+    maximum_active_power,
+    device_type,
+    make,
+    model,
+    business_id,
+    business_id_type,
+    additional_information,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -4147,7 +4105,15 @@ GRANT SELECT (
     technical_resource_id,
     name,
     controllable_unit_id,
-    details,
+    technology,
+    category,
+    maximum_active_power,
+    device_type,
+    make,
+    model,
+    business_id,
+    business_id_type,
+    additional_information,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -4161,7 +4127,15 @@ GRANT SELECT (
     technical_resource_id,
     name,
     controllable_unit_id,
-    details,
+    technology,
+    category,
+    maximum_active_power,
+    device_type,
+    make,
+    model,
+    business_id,
+    business_id_type,
+    additional_information,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -4175,7 +4149,15 @@ GRANT SELECT (
     technical_resource_id,
     name,
     controllable_unit_id,
-    details,
+    technology,
+    category,
+    maximum_active_power,
+    device_type,
+    make,
+    model,
+    business_id,
+    business_id_type,
+    additional_information,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -4189,7 +4171,15 @@ GRANT SELECT (
     technical_resource_id,
     name,
     controllable_unit_id,
-    details,
+    technology,
+    category,
+    maximum_active_power,
+    device_type,
+    make,
+    model,
+    business_id,
+    business_id_type,
+    additional_information,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -4203,7 +4193,15 @@ GRANT SELECT (
     technical_resource_id,
     name,
     controllable_unit_id,
-    details,
+    technology,
+    category,
+    maximum_active_power,
+    device_type,
+    make,
+    model,
+    business_id,
+    business_id_type,
+    additional_information,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -4217,7 +4215,15 @@ GRANT SELECT (
     technical_resource_id,
     name,
     controllable_unit_id,
-    details,
+    technology,
+    category,
+    maximum_active_power,
+    device_type,
+    make,
+    model,
+    business_id,
+    business_id_type,
+    additional_information,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -4229,6 +4235,10 @@ TO flex_third_party;
 GRANT SELECT ON TABLE
 api.technical_resource_history
 TO flex_internal_event_notification;
+
+GRANT SELECT ON TABLE
+api.technical_resource_history
+TO flex_internal_data;
 
 GRANT SELECT (
     id,

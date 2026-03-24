@@ -59,10 +59,12 @@ GRANT flex_operation_readonly TO local_operator;
 GRANT flex_operation_update TO local_operator;
 GRANT flex_operation_readwrite TO local_operator;
 
--- interal roles
+-- internal roles
 CREATE ROLE flex_internal_event_notification WITH NOLOGIN;
-GRANT flex_internal TO flex_internal_event_notification;
-
+CREATE ROLE flex_internal_data WITH NOLOGIN;
+GRANT flex_internal TO
+flex_internal_event_notification,
+flex_internal_data;
 
 -- authenticator will set role to any of the party and internal roles
 GRANT flex_anonymous TO flex_authenticator;
@@ -79,6 +81,7 @@ GRANT flex_third_party TO flex_authenticator;
 
 -- internal system roles
 GRANT flex_internal_event_notification TO flex_authenticator;
+GRANT flex_internal_data TO flex_authenticator;
 
 -- common and anonymous inherits from common
 GRANT flex_anonymous TO

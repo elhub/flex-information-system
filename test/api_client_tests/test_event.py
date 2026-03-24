@@ -15,6 +15,8 @@ from flex.models import (
     ControllableUnitLookupResponse,
     TechnicalResourceCreateRequest,
     TechnicalResourceResponse,
+    Technology,
+    DeviceType,
     SystemOperatorProductTypeCreateRequest,
     SystemOperatorProductTypeResponse,
     ServiceProviderProductApplicationCreateRequest,
@@ -146,6 +148,9 @@ def test_event_eu(sts):
         body=TechnicalResourceCreateRequest(
             name="EVENT TR",
             controllable_unit_id=cast(int, cu.id),
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=1.0,
+            device_type=DeviceType.OTHER,
         ),
     )
     assert isinstance(tr, TechnicalResourceResponse)
@@ -232,6 +237,9 @@ def test_event_sp(sts):
         body=TechnicalResourceCreateRequest(
             name="EVENT TR",
             controllable_unit_id=cast(int, cu.id),
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=1.0,
+            device_type=DeviceType.OTHER,
         ),
     )
     assert isinstance(tr, TechnicalResourceResponse)

@@ -380,7 +380,10 @@ openapi-postgrest:
 
     rm -rf out/*
 
-openapi: resources-to-diagram template-to-openapi openapi-to-md openapi-to-db sqlc openapi-client-test openapi-client-frontend resources-to-intl-and-tooltips
+openapi: resources-to-diagram template-to-openapi openapi-to-md openapi-to-db sqlc openapi-client-test openapi-client-frontend resources-to-intl-and-tooltips kbackend-models
+
+kbackend-models:
+    kbackend/scripts/generate-openapi-models.sh
 
 template-to-openapi:
     #!/usr/bin/env bash
@@ -458,10 +461,13 @@ openapi-to-md:
 
     echo "Generating markdown tables"
 
+    base=openapi/openapi-api-base.yml
+    resources=openapi/resources.yml
+
     for resource in $(find docs/resources/ -type f -not -name "index.md" -exec basename {} \; | cut -d. -f1); do
         echo ".. ${resource}"
 
-        table=$(cat openapi/resources.yml | .venv/bin/python3 local/scripts/openapi_to_markdown.py ${resource} )
+        table=$(.venv/bin/python3 local/scripts/openapi_to_markdown.py ${base} ${resources} ${resource} )
 
         api_link="../api/v0/index.html#/operations/list_$resource"
         docx_link="../download/${resource}.docx"
@@ -553,8 +559,7 @@ openapi-client-frontend:
 
 resources-to-intl-and-tooltips:
     #!/usr/bin/env bash
-    cat openapi/resources.yml \
-        | .venv/bin/python3 local/scripts/resources_to_intl.py
+    .venv/bin/python3 local/scripts/resources_to_intl.py openapi/openapi-api-base.yml openapi/resources.yml
     npx prettier --write frontend/src/intl/field-labels.ts frontend/src/intl/enum-labels.ts frontend/src/tooltip/tooltips.ts
 
 permissions: permissions-to-frontend permissions-to-md permissions-to-db

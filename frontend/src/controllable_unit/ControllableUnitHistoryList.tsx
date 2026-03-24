@@ -56,15 +56,6 @@ export const ControllableUnitHistoryList = () => {
           source="accounting_point_id"
           label="field.controllable_unit_history.accounting_point_id"
         />
-        <TextField
-          source="grid_node_id"
-          label="field.controllable_unit_history.grid_node_id"
-        />
-        <EnumField
-          source="grid_validation_status"
-          label="field.controllable_unit_history.grid_validation_status"
-          enumKey="controllable_unit.grid_validation_status"
-        />
         <DateField
           source="recorded_at"
           showTime

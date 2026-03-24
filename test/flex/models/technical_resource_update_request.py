@@ -6,6 +6,9 @@ from typing import Any, TypeVar, cast
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
+from ..models.device_type import DeviceType
+from ..models.technical_resource_business_id_type import TechnicalResourceBusinessIdType
+from ..models.technology import Technology
 from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="TechnicalResourceUpdateRequest")
@@ -17,30 +20,102 @@ class TechnicalResourceUpdateRequest:
 
     Attributes:
         name (str | Unset): Name of the technical resource. Maximum 128 characters. Example: Battery Unit #1.
-        details (None | str | Unset): Free text details about the technical resource. Example: Make: ACME
-            Model: Car Charger 3000.
+        technology (list[Technology] | Unset): Technologies of the technical resource using ltree path notation.
+            Multiple technologies can be specified for hybrid resources (e.g., solar + battery). Example: ['solar',
+            'battery'].
+        maximum_active_power (float | Unset): Maximum continuous active power (rated power) of the technical resource in
+            kilowatts. Example: 120.0.
+        device_type (DeviceType | Unset): Type of device for technical resources.
+        make (None | str | Unset): The manufacturer of the device. Required if model or business_id is provided.
+            Example: SolarEdge.
+        model (None | str | Unset): The model of the device. Example: SE10K-RWS.
+        business_id (None | str | Unset): Business identifier of the device, such as a serial number or MAC address.
+            Example: SE10K123456789.
+        business_id_type (None | TechnicalResourceBusinessIdType | Unset):
+        additional_information (None | str | Unset): Free text field for extra information about the technical resource
+            if needed.
     """
 
     name: str | Unset = UNSET
-    details: None | str | Unset = UNSET
+    technology: list[Technology] | Unset = UNSET
+    maximum_active_power: float | Unset = UNSET
+    device_type: DeviceType | Unset = UNSET
+    make: None | str | Unset = UNSET
+    model: None | str | Unset = UNSET
+    business_id: None | str | Unset = UNSET
+    business_id_type: None | TechnicalResourceBusinessIdType | Unset = UNSET
+    additional_information: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         name = self.name
 
-        details: None | str | Unset
-        if isinstance(self.details, Unset):
-            details = UNSET
+        technology: list[str] | Unset = UNSET
+        if not isinstance(self.technology, Unset):
+            technology = []
+            for technology_item_data in self.technology:
+                technology_item = technology_item_data.value
+                technology.append(technology_item)
+
+        maximum_active_power = self.maximum_active_power
+
+        device_type: str | Unset = UNSET
+        if not isinstance(self.device_type, Unset):
+            device_type = self.device_type.value
+
+        make: None | str | Unset
+        if isinstance(self.make, Unset):
+            make = UNSET
         else:
-            details = self.details
+            make = self.make
+
+        model: None | str | Unset
+        if isinstance(self.model, Unset):
+            model = UNSET
+        else:
+            model = self.model
+
+        business_id: None | str | Unset
+        if isinstance(self.business_id, Unset):
+            business_id = UNSET
+        else:
+            business_id = self.business_id
+
+        business_id_type: None | str | Unset
+        if isinstance(self.business_id_type, Unset):
+            business_id_type = UNSET
+        elif isinstance(self.business_id_type, TechnicalResourceBusinessIdType):
+            business_id_type = self.business_id_type.value
+        else:
+            business_id_type = self.business_id_type
+
+        additional_information: None | str | Unset
+        if isinstance(self.additional_information, Unset):
+            additional_information = UNSET
+        else:
+            additional_information = self.additional_information
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
         if name is not UNSET:
             field_dict["name"] = name
-        if details is not UNSET:
-            field_dict["details"] = details
+        if technology is not UNSET:
+            field_dict["technology"] = technology
+        if maximum_active_power is not UNSET:
+            field_dict["maximum_active_power"] = maximum_active_power
+        if device_type is not UNSET:
+            field_dict["device_type"] = device_type
+        if make is not UNSET:
+            field_dict["make"] = make
+        if model is not UNSET:
+            field_dict["model"] = model
+        if business_id is not UNSET:
+            field_dict["business_id"] = business_id
+        if business_id_type is not UNSET:
+            field_dict["business_id_type"] = business_id_type
+        if additional_information is not UNSET:
+            field_dict["additional_information"] = additional_information
 
         return field_dict
 
@@ -49,18 +124,87 @@ class TechnicalResourceUpdateRequest:
         d = dict(src_dict)
         name = d.pop("name", UNSET)
 
-        def _parse_details(data: object) -> None | str | Unset:
+        _technology = d.pop("technology", UNSET)
+        technology: list[Technology] | Unset = UNSET
+        if _technology is not UNSET:
+            technology = []
+            for technology_item_data in _technology:
+                technology_item = Technology(technology_item_data)
+
+                technology.append(technology_item)
+
+        maximum_active_power = d.pop("maximum_active_power", UNSET)
+
+        _device_type = d.pop("device_type", UNSET)
+        device_type: DeviceType | Unset
+        if isinstance(_device_type, Unset):
+            device_type = UNSET
+        else:
+            device_type = DeviceType(_device_type)
+
+        def _parse_make(data: object) -> None | str | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             return cast(None | str | Unset, data)
 
-        details = _parse_details(d.pop("details", UNSET))
+        make = _parse_make(d.pop("make", UNSET))
+
+        def _parse_model(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        model = _parse_model(d.pop("model", UNSET))
+
+        def _parse_business_id(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        business_id = _parse_business_id(d.pop("business_id", UNSET))
+
+        def _parse_business_id_type(data: object) -> None | TechnicalResourceBusinessIdType | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                business_id_type_type_0 = TechnicalResourceBusinessIdType(data)
+
+                return business_id_type_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(None | TechnicalResourceBusinessIdType | Unset, data)
+
+        business_id_type = _parse_business_id_type(d.pop("business_id_type", UNSET))
+
+        def _parse_additional_information(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        additional_information = _parse_additional_information(d.pop("additional_information", UNSET))
 
         technical_resource_update_request = cls(
             name=name,
-            details=details,
+            technology=technology,
+            maximum_active_power=maximum_active_power,
+            device_type=device_type,
+            make=make,
+            model=model,
+            business_id=business_id,
+            business_id_type=business_id_type,
+            additional_information=additional_information,
         )
 
         technical_resource_update_request.additional_properties = d

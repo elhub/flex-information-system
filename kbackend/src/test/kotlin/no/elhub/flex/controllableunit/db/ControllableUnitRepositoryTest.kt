@@ -161,7 +161,11 @@ private fun insertControllableUnit(conn: Connection, cu: ControllableUnit, apId:
 
 private fun insertTechnicalResource(conn: Connection, tr: TechnicalResource, cuId: Long): TechnicalResource =
     conn.prepareStatement(
-        "INSERT INTO flex.technical_resource (name, controllable_unit_id) VALUES (?, ?) RETURNING id",
+        """
+        INSERT INTO flex.technical_resource (name, controllable_unit_id, technology, maximum_active_power, device_type)
+        VALUES (?, ?, '{other.consumption}', 0.001, 'other')
+        RETURNING id
+        """.trimIndent(),
     ).use { stmt ->
         stmt.setString(1, tr.name)
         stmt.setLong(2, cuId)

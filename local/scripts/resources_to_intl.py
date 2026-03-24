@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import yaml
 import json
-import sys
+import argparse
 from copy import deepcopy
 
 """
@@ -273,7 +273,7 @@ comment_visibility_enum_translation = {
 
 
 # generate enum translations and write them to output file
-def generate_enum_translations(resources):
+def generate_enum_translations(resources, base_schemas=None):
     translations = comment_visibility_enum_translation
     for resource in resources:
         for field, attr in resource["properties"].items():
@@ -282,6 +282,16 @@ def generate_enum_translations(resources):
                     translations[f"{resource['id']}.{field}.{enum_value['id']}"] = (
                         enum_value["x-intl"]
                     )
+
+    # also process global enums from openapi-api-base.yml
+    if base_schemas:
+        for schema_name, schema_data in base_schemas.items():
+            if "enum" in schema_data and isinstance(schema_data["enum"], list):
+                if schema_data["enum"] and isinstance(schema_data["enum"][0], dict):
+                    for enum_value in schema_data["enum"]:
+                        translations[f"{schema_name}.{enum_value['id']}"] = enum_value[
+                            "x-intl"
+                        ]
 
     transposed = transpose_enum_translations(translations)
 
@@ -303,8 +313,22 @@ def generate_enum_translations(resources):
 
 if __name__ == "__main__":
     yaml.SafeDumper.ignore_aliases = lambda self, data: True
-    resources = yaml.safe_load(sys.stdin)
+
+    parser = argparse.ArgumentParser(
+        description="Generate intl labels from the resources YAML file"
+    )
+    parser.add_argument("base", help="The base OpenAPI schema file")
+    parser.add_argument("resources", help="The OpenAPI resources file")
+    args = parser.parse_args()
+
+    with open(args.base) as f:
+        base = yaml.safe_load(f)
+
+    with open(args.resources) as f:
+        resources = yaml.safe_load(f)
     resources = resources["resources"]
 
+    base_schemas = base.get("components", {}).get("schemas", {})
+
     generate_field_translations(resources)
-    generate_enum_translations(resources)
+    generate_enum_translations(resources, base_schemas)

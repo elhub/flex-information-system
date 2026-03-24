@@ -41,10 +41,62 @@ databaseChangeLog:
       file: ./current_user_setting.sql
       relativeToChangelogFile: true
 
-  # Enums & custom types
+  # Enums and reference data
   - include:
       file: ./business_id_type.sql
       relativeToChangelogFile: true
+
+  - changeSet:
+      id: business-id-type-reference-data
+      author: flex
+      runOnChange: true
+      changes:
+        - loadUpdateData:
+            file: ./reference_data/business_id_type.csv
+            relativeToChangelogFile: true
+            schemaName: flex
+            tableName: business_id_type
+            separator: ","
+            primaryKey: NAME
+            header: true
+
+  - include:
+      file: ./product_type.sql
+      relativeToChangelogFile: true
+
+  - changeSet:
+      id: product-type-reference-data
+      author: flex
+      runOnChange: true
+      changes:
+        - loadUpdateData:
+            file: ./reference_data/product_type.csv
+            relativeToChangelogFile: true
+            schemaName: flex
+            tableName: product_type
+            separator: ","
+            primaryKey: BUSINESS_ID
+            header: true
+
+  - include:
+      file: ./technology.sql
+      relativeToChangelogFile: true
+
+  - changeSet:
+      id: technology-reference-data
+      author: flex
+      runOnChange: true
+      changes:
+        - loadUpdateData:
+            file: ./reference_data/technology.csv
+            relativeToChangelogFile: true
+            schemaName: flex
+            tableName: technology
+            separator: ","
+            primaryKey: ID
+            header: true
+
+  # Custom types
   - include:
       file: ./scope.sql
       relativeToChangelogFile: true
@@ -142,12 +194,6 @@ databaseChangeLog:
       relativeToChangelogFile: true
   - include:
       file: ./notification.sql
-      relativeToChangelogFile: true
-  - include:
-      file: ./product_type.sql
-      relativeToChangelogFile: true
-  - include:
-      file: ./product_type_migrations.sql
       relativeToChangelogFile: true
   - include:
       file: ./service_provider_product_application.sql
@@ -275,7 +321,9 @@ databaseChangeLog:
   - include:
       file: ./service_providing_group_product_application_migrations.sql
       relativeToChangelogFile: true
-
+  - include:
+      file: ./technical_resource_migrations.sql
+      relativeToChangelogFile: true
   - include:
       file: ./service_provider_product_application_involved_parties.sql
       relativeToChangelogFile: true
@@ -314,34 +362,6 @@ databaseChangeLog:
   - include:
       file: ./controllable_unit_service_provider_migrations.sql
       relativeToChangelogFile: true
-
-  # Reference Data
-  - changeSet:
-      id: business-id-type-reference-data
-      author: flex
-      runOnChange: true
-      changes:
-        - loadUpdateData:
-            file: ./reference_data/business_id_type.csv
-            relativeToChangelogFile: true
-            schemaName: flex
-            tableName: business_id_type
-            separator: ","
-            primaryKey: NAME
-            header: true
-  - changeSet:
-      id: product-type-reference-data
-      author: flex
-      runOnChange: true
-      changes:
-        - loadUpdateData:
-            file: ./reference_data/product_type.csv
-            relativeToChangelogFile: true
-            schemaName: flex
-            tableName: product_type
-            separator: ","
-            primaryKey: BUSINESS_ID
-            header: true
 
   # Replication slots
   - include:
