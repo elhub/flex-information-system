@@ -39,8 +39,8 @@ class ControllableUnitRepositoryTest : FunSpec({
                         businessId = uniqueUuid(),
                         name = "CU Beta",
                         technicalResources = listOf(
-                            TechnicalResource(id = 0, name = "TR One", details = "detail one"),
-                            TechnicalResource(id = 0, name = "TR Two", details = null),
+                            TechnicalResource(id = 0, name = "TR One"),
+                            TechnicalResource(id = 0, name = "TR Two"),
                         ),
                     ),
                 ),
@@ -156,11 +156,14 @@ private fun insertControllableUnit(conn: Connection, cu: ControllableUnit, apId:
 
 private fun insertTechnicalResource(conn: Connection, tr: TechnicalResource, cuId: Long): TechnicalResource =
     conn.prepareStatement(
-        "INSERT INTO flex.technical_resource (name, details, controllable_unit_id) VALUES (?, ?, ?) RETURNING id",
+        """
+        INSERT INTO flex.technical_resource (name, controllable_unit_id, technology, maximum_active_power, device_type)
+        VALUES (?, ?, '{other.consumption}', 0.001, 'other')
+        RETURNING id
+        """.trimIndent(),
     ).use { stmt ->
         stmt.setString(1, tr.name)
-        stmt.setString(2, tr.details)
-        stmt.setLong(3, cuId)
+        stmt.setLong(2, cuId)
         stmt.executeQuery().use { rs ->
             rs.next()
             tr.copy(id = rs.getInt(1))

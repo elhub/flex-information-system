@@ -8,7 +8,6 @@ import kotlinx.serialization.Serializable
 data class TechnicalResource(
     val id: Int,
     val name: String,
-    val details: String? = null,
 )
 
 @Serializable
