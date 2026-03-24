@@ -130,7 +130,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
                 gradleVerify {
                     workingDir = "kbackend"
                     enablePublishMetrics = true
-                }.triggerOnVcsChange {
+                }.buildType.triggerOnVcsChange {
                     triggerRules = """
                         -:*
                         +:kbackend/**
