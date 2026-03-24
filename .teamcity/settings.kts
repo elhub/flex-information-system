@@ -3,14 +3,14 @@ import no.elhub.devxp.build.configuration.pipeline.constants.Group
 import no.elhub.devxp.build.configuration.pipeline.constants.KubeCluster
 import no.elhub.devxp.build.configuration.pipeline.dsl.elhubProject
 import no.elhub.devxp.build.configuration.pipeline.extensions.triggerOnVcsChange
+import no.elhub.devxp.build.configuration.pipeline.jobs.common.Source
 import no.elhub.devxp.build.configuration.pipeline.jobs.dockerBuild
 import no.elhub.devxp.build.configuration.pipeline.jobs.gitOps
+import no.elhub.devxp.build.configuration.pipeline.jobs.gradleJib
+import no.elhub.devxp.build.configuration.pipeline.jobs.gradleVerify
 import no.elhub.devxp.build.configuration.pipeline.jobs.liquiBuild
 import no.elhub.devxp.build.configuration.pipeline.jobs.makeVerify
 import no.elhub.devxp.build.configuration.pipeline.jobs.npmVerify
-import no.elhub.devxp.build.configuration.pipeline.jobs.common.Source
-import no.elhub.devxp.build.configuration.pipeline.jobs.gradleJib
-import no.elhub.devxp.build.configuration.pipeline.jobs.gradleVerify
 
 elhubProject(Group.FLEX, "flex-information-system") {
 
@@ -19,7 +19,6 @@ elhubProject(Group.FLEX, "flex-information-system") {
     val imageRepoFrontend = "$imageRepoPrefix-frontend"
     val imageRepoBackend = "$imageRepoPrefix-backend"
     val imageRepoKotlinBackend = "$imageRepoPrefix-kbackend"
-
 
     pipeline {
         parallel {
@@ -131,6 +130,12 @@ elhubProject(Group.FLEX, "flex-information-system") {
                 gradleVerify {
                     workingDir = "kbackend"
                     enablePublishMetrics = true
+                }.triggerOnVcsChange {
+                    triggerRules = """
+                        -:*
+                        +:kbackend/**
+                        +:db/**
+                    """.trimIndent()
                 }
 
                 gradleJib {
