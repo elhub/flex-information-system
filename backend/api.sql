@@ -12,6 +12,7 @@ CREATE TABLE api.controllable_unit (
     maximum_active_power decimal NOT NULL,
     is_small boolean NOT NULL,
     accounting_point_id bigint NOT NULL,
+    additional_information text NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
@@ -26,6 +27,7 @@ CREATE TABLE api.controllable_unit_history (
     maximum_active_power decimal NOT NULL,
     is_small boolean NOT NULL,
     accounting_point_id bigint NOT NULL,
+    additional_information text NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL,
     replaced_by bigint NULL,

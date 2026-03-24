@@ -16,6 +16,8 @@ export const tooltips = {
     "Whether the controllable unit is small or not, following NCDR.",
   "controllable_unit.accounting_point_id":
     "Reference to the accounting point that the controllable unit is connected to.",
+  "controllable_unit.additional_information":
+    "Free text field for extra information about the controllable unit if needed.",
   "controllable_unit.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "controllable_unit.recorded_by": "The identity that recorded the resource.",
@@ -34,6 +36,8 @@ export const tooltips = {
     "Whether the controllable unit is small or not, following NCDR.",
   "controllable_unit_history.accounting_point_id":
     "Reference to the accounting point that the controllable unit is connected to.",
+  "controllable_unit_history.additional_information":
+    "Free text field for extra information about the controllable unit if needed.",
   "controllable_unit_history.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "controllable_unit_history.recorded_by":

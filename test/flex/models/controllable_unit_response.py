@@ -38,6 +38,8 @@ class ControllableUnitResponse:
         recorded_by (int): The identity that recorded the resource. Example: 145.
         start_date (datetime.date | None | Unset): The usage date when the controllable unit is first active. Example:
             2024-05-17.
+        additional_information (None | str | Unset): Free text field for extra information about the controllable unit
+            if needed.
     """
 
     id: int
@@ -51,6 +53,7 @@ class ControllableUnitResponse:
     recorded_at: datetime.datetime
     recorded_by: int
     start_date: datetime.date | None | Unset = UNSET
+    additional_information: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -82,6 +85,12 @@ class ControllableUnitResponse:
         else:
             start_date = self.start_date
 
+        additional_information: None | str | Unset
+        if isinstance(self.additional_information, Unset):
+            additional_information = UNSET
+        else:
+            additional_information = self.additional_information
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -100,6 +109,8 @@ class ControllableUnitResponse:
         )
         if start_date is not UNSET:
             field_dict["start_date"] = start_date
+        if additional_information is not UNSET:
+            field_dict["additional_information"] = additional_information
 
         return field_dict
 
@@ -143,6 +154,15 @@ class ControllableUnitResponse:
 
         start_date = _parse_start_date(d.pop("start_date", UNSET))
 
+        def _parse_additional_information(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        additional_information = _parse_additional_information(d.pop("additional_information", UNSET))
+
         controllable_unit_response = cls(
             id=id,
             business_id=business_id,
@@ -155,6 +175,7 @@ class ControllableUnitResponse:
             recorded_at=recorded_at,
             recorded_by=recorded_by,
             start_date=start_date,
+            additional_information=additional_information,
         )
 
         controllable_unit_response.additional_properties = d

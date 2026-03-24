@@ -517,6 +517,10 @@ export type ControllableUnitUpdateRequest = {
    * Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
    */
   maximum_active_power?: number;
+  /**
+   * Free text field for extra information about the controllable unit if needed.
+   */
+  additional_information?: string;
 };
 
 /**
@@ -541,6 +545,10 @@ export type ControllableUnitCreateRequest = {
    * Reference to the accounting point that the controllable unit is connected to.
    */
   accounting_point_id: number;
+  /**
+   * Free text field for extra information about the controllable unit if needed.
+   */
+  additional_information?: string;
 };
 
 /**
@@ -577,6 +585,10 @@ export type ControllableUnit = {
    * Reference to the accounting point that the controllable unit is connected to.
    */
   accounting_point_id: number;
+  /**
+   * Free text field for extra information about the controllable unit if needed.
+   */
+  additional_information?: string;
   /**
    * When the resource was recorded (created or updated) in the system.
    */
@@ -3004,6 +3016,10 @@ export type ControllableUnitWritable = {
    * Reference to the accounting point that the controllable unit is connected to.
    */
   accounting_point_id: number;
+  /**
+   * Free text field for extra information about the controllable unit if needed.
+   */
+  additional_information?: string;
 };
 
 /**

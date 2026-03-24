@@ -437,6 +437,7 @@ export const zControllableUnitUpdateRequest = z.object({
   status: zControllableUnitStatus.optional(),
   regulation_direction: zControllableUnitRegulationDirection.optional(),
   maximum_active_power: z.coerce.number().gte(0).lte(999999.999).optional(),
+  additional_information: z.string().optional(),
 });
 
 /**
@@ -449,6 +450,7 @@ export const zControllableUnitCreateRequest = z.object({
   regulation_direction: zControllableUnitRegulationDirection,
   maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
   accounting_point_id: z.coerce.number(),
+  additional_information: z.string().optional(),
 });
 
 /**
@@ -469,6 +471,7 @@ export const zControllableUnit = z.object({
   maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
   is_small: z.boolean().readonly(),
   accounting_point_id: z.coerce.number(),
+  additional_information: z.string().optional(),
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
 });
@@ -1765,6 +1768,7 @@ export const zControllableUnitWritable = z.object({
   regulation_direction: zControllableUnitRegulationDirection,
   maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
   accounting_point_id: z.coerce.number(),
+  additional_information: z.string().optional(),
 });
 
 /**
