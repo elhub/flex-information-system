@@ -6,7 +6,6 @@ import io.ktor.server.application.install
 import io.ktor.server.testing.TestApplication
 import io.mockk.coEvery
 import io.mockk.mockk
-import kotlinx.datetime.LocalDateTime
 import no.elhub.flex.accountingpoint.AccountingPointService
 import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.config.Tracing
@@ -20,10 +19,11 @@ import no.elhub.flex.model.error.DataFetchError
 import no.elhub.flex.routes.controllableunit.ControllableUnitLookup
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
+import kotlin.time.Instant
 
 fun defaultTestApplication(): TestApplication {
     val mockAccountingPointService = mockk<AccountingPointService>().also { svc ->
-        coEvery { svc.synchronizeAccountingPoint(any(), any<LocalDateTime>()) } returns Unit.right()
+        coEvery { svc.synchronizeAccountingPoint(any(), any<Instant>()) } returns Unit.right()
         coEvery { with(any<FlexPrincipal>()) { svc.getCurrentAccountingPoint(any()) } } returns
             DataFetchError("stub").left()
         coEvery { with(any<FlexPrincipal>()) { svc.getAccountingPointByBusinessId(any()) } } returns

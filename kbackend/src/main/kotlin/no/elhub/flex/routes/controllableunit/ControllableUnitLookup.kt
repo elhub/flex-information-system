@@ -8,7 +8,6 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
 import io.ktor.server.routing.RoutingCall
-import kotlinx.datetime.LocalDate
 import no.elhub.flex.accountingpoint.AccountingPointService
 import no.elhub.flex.auth.AccessTokenKey
 import no.elhub.flex.auth.FlexPrincipal
@@ -25,10 +24,11 @@ import no.elhub.flex.model.error.AppError
 import no.elhub.flex.model.error.BadInputError
 import no.elhub.flex.model.error.DataFetchError
 import no.elhub.flex.model.error.ParsingError
-import no.elhub.flex.util.atStartOfDay
-import no.elhub.flex.util.now
+import no.elhub.flex.util.asLocalStartOfDayInstant
+import no.elhub.flex.util.atLocalStartOfToday
 import no.elhub.flex.util.respondJson
 import org.koin.core.annotation.Single
+import kotlin.time.Instant
 
 private val logger = KotlinLogging.logger {}
 
@@ -57,8 +57,8 @@ class ControllableUnitLookup(
                     accountingPointBusinessId
                 ).bind()
 
-                val validFrom = controllableUnits.minByOrNull { it.startDate }?.startDate?.atStartOfDay()
-                    ?: LocalDate.now().atStartOfDay()
+                val validFrom = controllableUnits.minByOrNull { it.startDate }?.startDate?.asLocalStartOfDayInstant()
+                    ?: Instant.atLocalStartOfToday()
 
                 accountingPointService.synchronizeAccountingPoint(accountingPointBusinessId, validFrom).bind()
 

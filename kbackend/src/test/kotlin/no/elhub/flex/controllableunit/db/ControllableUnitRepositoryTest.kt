@@ -4,15 +4,16 @@ import io.kotest.assertions.arrow.core.shouldBeRight
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
-import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.todayIn
 import no.elhub.flex.PostgresTestContainer
 import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.model.domain.ControllableUnit
 import no.elhub.flex.model.domain.TechnicalResource
-import no.elhub.flex.util.now
 import no.elhub.flex.util.uniqueGsrn
 import java.sql.Connection
 import java.util.UUID
+import kotlin.time.Clock
 
 @Suppress("MagicNumber")
 class ControllableUnitRepositoryTest : FunSpec({
@@ -41,7 +42,7 @@ class ControllableUnitRepositoryTest : FunSpec({
                         id = 0,
                         businessId = uniqueUuid(),
                         name = "CU Beta",
-                        startDate = LocalDate.now(),
+                        startDate = Clock.System.todayIn(TimeZone.currentSystemDefault()),
                         technicalResources = listOf(
                             TechnicalResource(id = 0, name = "TR One"),
                             TechnicalResource(id = 0, name = "TR Two"),
@@ -51,7 +52,7 @@ class ControllableUnitRepositoryTest : FunSpec({
             )
             seedControllableUnits(
                 apBusinessId = uniqueGsrn(),
-                cus = listOf(ControllableUnit(id = 0, businessId = uniqueUuid(), name = "Noise CU", startDate = LocalDate.now(), technicalResources = emptyList())),
+                cus = listOf(ControllableUnit(id = 0, businessId = uniqueUuid(), name = "Noise CU", startDate = Clock.System.todayIn(TimeZone.currentSystemDefault()), technicalResources = emptyList())),
             )
 
             // when
@@ -72,13 +73,13 @@ class ControllableUnitRepositoryTest : FunSpec({
             val expected = seedControllableUnits(
                 apBusinessId = apBusinessId,
                 cus = listOf(
-                    ControllableUnit(id = 0, businessId = uniqueUuid(), name = "CU One", startDate = LocalDate.now(), technicalResources = emptyList()),
-                    ControllableUnit(id = 0, businessId = uniqueUuid(), name = "CU Two", startDate = LocalDate.now(), technicalResources = emptyList()),
+                    ControllableUnit(id = 0, businessId = uniqueUuid(), name = "CU One", startDate = Clock.System.todayIn(TimeZone.currentSystemDefault()), technicalResources = emptyList()),
+                    ControllableUnit(id = 0, businessId = uniqueUuid(), name = "CU Two", startDate = Clock.System.todayIn(TimeZone.currentSystemDefault()), technicalResources = emptyList()),
                 ),
             )
             seedControllableUnits(
                 apBusinessId = uniqueGsrn(),
-                cus = listOf(ControllableUnit(id = 0, businessId = uniqueUuid(), name = "Noise CU", startDate = LocalDate.now(), technicalResources = emptyList())),
+                cus = listOf(ControllableUnit(id = 0, businessId = uniqueUuid(), name = "Noise CU", startDate = Clock.System.todayIn(TimeZone.currentSystemDefault()), technicalResources = emptyList())),
             )
 
             // when

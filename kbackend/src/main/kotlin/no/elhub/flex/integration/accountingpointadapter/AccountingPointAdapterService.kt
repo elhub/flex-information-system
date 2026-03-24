@@ -9,7 +9,6 @@ import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
-import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.json.Json
 import no.elhub.flex.integration.accountingpointadapter.generated.client.AccountingPointClient
 import no.elhub.flex.integration.accountingpointadapter.generated.client.ApiConfiguration
@@ -17,12 +16,13 @@ import no.elhub.flex.integration.accountingpointadapter.generated.client.Network
 import no.elhub.flex.integration.accountingpointadapter.generated.models.AccountingPoint
 import org.koin.core.annotation.Property
 import org.koin.core.annotation.Single
+import kotlin.time.Instant
 import no.elhub.flex.integration.accountingpointadapter.generated.client.NetworkError as ClientNetworkError
 
 interface AccountingPointAdapterService {
     suspend fun getAccountingPoint(
         accountingPointId: String,
-        validFrom: LocalDateTime
+        validFrom: Instant
     ): Either<AccountingPointAdapterError, AccountingPoint>
 }
 
@@ -53,8 +53,8 @@ class AccountingPointAdapterHttpService(
         customHeaders = mapOf("Authorization" to "Bearer $apiKey")
     )
 
-    override suspend fun getAccountingPoint(accountingPointId: String, validFrom: LocalDateTime): Either<AccountingPointAdapterError, AccountingPoint> =
-        when (val result = client.readAccountingPoint(accountingPointId, config)) {
+    override suspend fun getAccountingPoint(accountingPointId: String, validFrom: Instant): Either<AccountingPointAdapterError, AccountingPoint> =
+        when (val result = client.readAccountingPoint(accountingPointId, validFrom, apiConfiguration = config)) {
             is NetworkResult.Success -> result.data.right()
 
             is NetworkResult.Failure -> when (val error = result.error) {

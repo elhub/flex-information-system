@@ -17,7 +17,8 @@ import io.ktor.server.application.install
 import io.ktor.server.testing.TestApplication
 import io.mockk.coEvery
 import io.mockk.mockk
-import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.todayIn
 import no.elhub.flex.accountingpoint.AccountingPointService
 import no.elhub.flex.auth.FlexAuthentication
 import no.elhub.flex.auth.FlexPrincipal
@@ -28,10 +29,10 @@ import no.elhub.flex.model.domain.ControllableUnit
 import no.elhub.flex.model.error.ResourceNotFoundError
 import no.elhub.flex.routes.controllableunit.ControllableUnitLookup
 import no.elhub.flex.routes.controllableunit.controllableUnitRoutes
-import no.elhub.flex.util.now
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 import java.util.Date
+import kotlin.time.Clock
 
 class ControllableUnitLookupTest :
     FunSpec({
@@ -374,7 +375,7 @@ class ControllableUnitLookupTest :
                         businessId = controllableUnitBusinessId,
                         name = "My CU",
                         technicalResources = emptyList(),
-                        startDate = LocalDate.now(),
+                        startDate = Clock.System.todayIn(TimeZone.currentSystemDefault()),
                     ),
                 ).right()
 

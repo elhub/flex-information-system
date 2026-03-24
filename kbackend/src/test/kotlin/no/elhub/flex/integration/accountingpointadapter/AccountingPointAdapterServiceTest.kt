@@ -10,11 +10,11 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 import io.ktor.http.HttpStatusCode
-import kotlinx.datetime.LocalDateTime
+import kotlin.time.Instant
 
 private const val GSRN = "133700000000000053"
 private const val API_KEY = "secret-key"
-private val VALID_FROM = LocalDateTime(2024, 1, 1, 0, 0)
+private val VALID_FROM = Instant.parse("2024-01-01T00:00:00+01:00")
 
 class AccountingPointAdapterServiceTest : FunSpec({
     extensions(AccountingPointAdapterWireMockServer)

@@ -12,6 +12,7 @@ import io.ktor.http.isSuccess
 import io.ktor.serialization.ContentConvertException
 import java.io.IOException
 import kotlin.String
+import kotlin.time.Instant
 import kotlinx.coroutines.CancellationException
 import no.elhub.flex.integration.accountingpointadapter.generated.models.AccountingPoint
 
@@ -26,6 +27,10 @@ public class AccountingPointClient(
    *
    * Parameters:
    * 	 @param gsrn Global Service Relation Number (18-digit GSRN)
+   * 	 @param validFrom Filter results to include only data valid from this date/time. ISO 8601
+   * format.
+   * 	 @param validTo Filter results to include only data valid up to this date/time. ISO 8601
+   * format.
    *
    * Returns:
    * 	[NetworkResult.Success] with
@@ -33,10 +38,22 @@ public class AccountingPointClient(
    * was successful.
    * 	[NetworkResult.Failure] with a [NetworkError] if the request failed.
    */
-  public suspend fun readAccountingPoint(gsrn: String, apiConfiguration: ApiConfiguration =
-      ApiConfiguration()): NetworkResult<AccountingPoint> {
+  public suspend fun readAccountingPoint(
+    gsrn: String,
+    validFrom: Instant,
+    validTo: Instant? = null,
+    apiConfiguration: ApiConfiguration = ApiConfiguration(),
+  ): NetworkResult<AccountingPoint> {
     val basePath = apiConfiguration.basePath.trimEnd('/')
-    val url = basePath + """/accounting_point/${gsrn}"""
+    val url = buildString {
+      append(basePath)
+      append("""/accounting_point/${gsrn}""")
+      val params = buildList {
+        add("valid_from=${validFrom}")
+        validTo?.let { add("valid_to=${it}") }
+      }
+      if (params.isNotEmpty()) append("?").append(params.joinToString("&"))
+    }
 
     return try {
       val response = httpClient.`get`(url) {

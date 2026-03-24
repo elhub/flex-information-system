@@ -4,7 +4,6 @@ import arrow.core.Either
 import arrow.core.right
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.http.HttpStatusCode
-import kotlinx.datetime.LocalDateTime
 import no.elhub.flex.accountingpoint.db.AccountingPointRepository
 import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterService
@@ -15,6 +14,7 @@ import no.elhub.flex.model.error.DataFetchError
 import no.elhub.flex.model.error.EndUserError
 import no.elhub.flex.model.error.ResourceNotFoundError
 import org.koin.core.annotation.Single
+import kotlin.time.Instant
 import no.elhub.flex.integration.accountingpointadapter.NotFoundError as AdapterNotFoundError
 import no.elhub.flex.integration.accountingpointadapter.generated.models.AccountingPoint as AdapterAccountingPoint
 
@@ -29,7 +29,7 @@ interface AccountingPointService {
      */
     suspend fun synchronizeAccountingPoint(
         accountingPointBusinessId: String,
-        validFrom: LocalDateTime
+        validFrom: Instant
     ): Either<AppError, Unit>
 
     /**
@@ -68,7 +68,7 @@ class AccountingPointServiceImpl(
     }
     override suspend fun synchronizeAccountingPoint(
         accountingPointBusinessId: String,
-        validFrom: LocalDateTime
+        validFrom: Instant
     ): Either<AppError, Unit> {
         val adapterAccountingPoint = fetchAccountingPointData(accountingPointBusinessId, validFrom).mapLeft {
             logger.warn { "Failed to fetch accounting point data for synchronization: ${it.message}" }
@@ -110,7 +110,7 @@ class AccountingPointServiceImpl(
 
     private suspend fun fetchAccountingPointData(
         accountingPointBusinessId: String,
-        validFrom: LocalDateTime
+        validFrom: Instant
     ): Either<DataFetchError, AdapterAccountingPoint> =
         accountingPointAdapter.getAccountingPoint(accountingPointBusinessId, validFrom)
             .mapLeft { err ->
