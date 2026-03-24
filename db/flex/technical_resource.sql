@@ -69,47 +69,6 @@ CREATE OR REPLACE TRIGGER a_technical_resource_suppress_redundant_updates
 BEFORE UPDATE ON technical_resource
 FOR EACH ROW EXECUTE FUNCTION suppress_redundant_updates_trigger();
 
--- changeset flex:technical-resource-grid-validation-status-reset-function runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION technical_resource_grid_validation_status_reset()
-RETURNS trigger
-SECURITY DEFINER
-LANGUAGE plpgsql
-AS
-$$
-DECLARE
-    lv_controllable_unit_id bigint;
-BEGIN
-
-    IF TG_OP = 'DELETE' THEN
-        lv_controllable_unit_id := OLD.controllable_unit_id;
-    ELSE
-        lv_controllable_unit_id := NEW.controllable_unit_id;
-    END IF;
-
-    UPDATE controllable_unit
-    SET grid_validation_status = 'pending',
-        recorded_by = 0
-    WHERE id = lv_controllable_unit_id
-    AND grid_validation_status not in ('pending', 'in_progress','validated');
-
-    IF TG_OP = 'DELETE' THEN
-        RETURN OLD;
-    END IF;
-    RETURN NEW;
-END;
-$$;
-
--- changeset flex:technical-resource-grid-validation-status-reset-trigger-on-add-remove runOnChange:true endDelimiter:--
-CREATE OR REPLACE
-TRIGGER technical_resource_grid_validation_status_reset_on_add_remove
-BEFORE INSERT OR DELETE
-ON technical_resource
-FOR EACH ROW
-WHEN (
-    current_user = 'flex_service_provider' -- noqa
-)
-EXECUTE FUNCTION technical_resource_grid_validation_status_reset();
-
 
 -- changeset flex:technical-resource-capture-event runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER technical_resource_event

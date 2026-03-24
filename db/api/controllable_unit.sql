@@ -75,10 +75,6 @@ WITH (security_invoker = true) AS (
     WHERE cu.rn = 1
 );
 
--- changeset flex:api-controllable-unit-grid-validation-status-default endDelimiter:-- runAlways:true
-ALTER VIEW IF EXISTS api.controllable_unit
-ALTER COLUMN grid_validation_status SET DEFAULT 'pending';
-
 -- changeset flex:api-controllable-unit-status-default endDelimiter:-- runAlways:true
 ALTER VIEW IF EXISTS api.controllable_unit
 ALTER COLUMN status SET DEFAULT 'new';

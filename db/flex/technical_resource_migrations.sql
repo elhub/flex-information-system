@@ -197,28 +197,11 @@ ON technical_resource
 FOR EACH ROW
 EXECUTE FUNCTION technical_resource_category_compute();
 
--- changeset flex:technical-resource-grid-validation-status-reset-trigger runOnChange:true endDelimiter:--
-CREATE OR REPLACE TRIGGER technical_resource_grid_validation_status_reset
-BEFORE UPDATE OF
-technology,
-maximum_active_power,
-device_type,
-make,
-model,
-business_id,
-business_id_type
-ON technical_resource
-FOR EACH ROW
-WHEN (
-    (
-        old.technology IS DISTINCT FROM new.technology
-        OR old.maximum_active_power IS DISTINCT FROM new.maximum_active_power
-        OR old.device_type IS DISTINCT FROM new.device_type
-        OR old.make IS DISTINCT FROM new.make
-        OR old.model IS DISTINCT FROM new.model
-        OR old.business_id IS DISTINCT FROM new.business_id
-        OR old.business_id_type IS DISTINCT FROM new.business_id_type
-    )
-    AND current_user = 'flex_service_provider' -- noqa
-)
-EXECUTE FUNCTION technical_resource_grid_validation_status_reset();
+-- changeset flex:technical-resource-grid-validation-status-reset-trigger-drop runOnChange:true endDelimiter:--
+DROP TRIGGER IF EXISTS
+technical_resource_grid_validation_status_reset
+ON flex.technical_resource;
+DROP TRIGGER IF EXISTS
+technical_resource_grid_validation_status_reset_on_add_remove
+ON flex.technical_resource;
+DROP FUNCTION IF EXISTS technical_resource_grid_validation_status_reset();
