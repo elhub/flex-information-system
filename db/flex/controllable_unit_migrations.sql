@@ -134,3 +134,10 @@ DROP COLUMN IF EXISTS ramp_rate,
 DROP COLUMN IF EXISTS minimum_duration,
 DROP COLUMN IF EXISTS maximum_duration,
 DROP COLUMN IF EXISTS recovery_duration;
+
+
+-- changeset flex:controllable-unit-grid-node-id-drop runOnChange:false endDelimiter:--
+ALTER TABLE flex.controllable_unit
+DROP COLUMN IF EXISTS grid_node_id CASCADE;
+ALTER TABLE flex.controllable_unit_history
+DROP COLUMN IF EXISTS grid_node_id;
