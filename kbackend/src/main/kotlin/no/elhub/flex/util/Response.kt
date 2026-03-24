@@ -6,6 +6,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.response.respondText
 import kotlinx.serialization.json.Json
+import no.elhub.flex.model.dto.generated.models.ErrorMessage
 import no.elhub.flex.model.error.AppError
 
 /**
@@ -18,22 +19,27 @@ import no.elhub.flex.model.error.AppError
  */
 suspend inline fun <reified T> Either<AppError, T>.respondJson(
     call: ApplicationCall,
-    status: HttpStatusCode = HttpStatusCode.OK
+    status: HttpStatusCode = HttpStatusCode.OK,
 ) {
     this.fold(
         { error ->
             call.respondText(
-                Json.encodeToString(error),
+                Json.encodeToString(
+                    ErrorMessage(
+                        code = "HTTP${error.code.value}",
+                        message = error.message,
+                    ),
+                ),
                 ContentType.Application.Json,
-                error.code
+                error.code,
             )
         },
         { value ->
             call.respondText(
                 Json.encodeToString(value),
                 ContentType.Application.Json,
-                status
+                status,
             )
-        }
+        },
     )
 }
