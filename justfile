@@ -380,7 +380,10 @@ openapi-postgrest:
 
     rm -rf out/*
 
-openapi: resources-to-diagram template-to-openapi openapi-to-md openapi-to-db sqlc openapi-client-test openapi-client-frontend resources-to-intl-and-tooltips
+openapi: resources-to-diagram template-to-openapi openapi-to-md openapi-to-db sqlc openapi-client-test openapi-client-frontend resources-to-intl-and-tooltips kbackend-models
+
+kbackend-models:
+    kbackend/scripts/generate-openapi-models.sh
 
 template-to-openapi:
     #!/usr/bin/env bash

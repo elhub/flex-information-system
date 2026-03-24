@@ -20,9 +20,4 @@ public data class ControllableUnitLookupResponseTechnicalResources(
    */
   @SerialName("name")
   public val name: String,
-  /**
-   * Additional details about the technical resource.
-   */
-  @SerialName("details")
-  public val details: String? = null,
 )
