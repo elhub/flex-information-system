@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS controllable_unit (
     is_small boolean GENERATED ALWAYS AS (
         maximum_active_power <= 50
     ) STORED,
+    additional_information text,
     accounting_point_id bigint NOT NULL,
     -- created_by_party_id is used to track the party that created the controllable unit.
     -- We use this in RLS policies to support the CU registration process - the party that creates the CU should be able to see it,
