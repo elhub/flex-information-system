@@ -33,7 +33,7 @@ fun defaultTestApplication(): TestApplication {
             DataFetchError("stub").left()
     }
     val mockRepo = mockk<ControllableUnitRepository>().also { repo ->
-        every { with(any<FlexPrincipal>()) { repo.lookupControllableUnits(any(), any()) } } returns
+        coEvery { with(any<FlexPrincipal>()) { repo.lookupControllableUnits(any(), any()) } } returns
             DatabaseError("stub").left()
     }
 

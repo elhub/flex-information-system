@@ -19,7 +19,9 @@ interface AccountingPointRepository {
      * Returns an [AccountingPoint] or [NotFoundError] when the controllable unit does not exist.
      */
     context(principal: FlexPrincipal)
-    suspend fun getCurrentAccountingPoint(controllableUnitBusinessId: String): Either<RepositoryError, AccountingPoint>
+    suspend fun getCurrentAccountingPoint(
+        controllableUnitBusinessId: String
+    ): Either<RepositoryError, AccountingPoint>
 
     /**
      * Looks up an accounting point by its business ID.
@@ -27,7 +29,9 @@ interface AccountingPointRepository {
      * Returns [NotFoundError] when no row matches.
      */
     context(principal: FlexPrincipal)
-    suspend fun getAccountingPointByBusinessId(accountingPointBusinessId: String): Either<RepositoryError, AccountingPoint>
+    suspend fun getAccountingPointByBusinessId(
+        accountingPointBusinessId: String
+    ): Either<RepositoryError, AccountingPoint>
 
     /**
      * Calls `api.controllable_unit_lookup_check_end_user_matches_accounting_point`.
@@ -35,18 +39,9 @@ interface AccountingPointRepository {
      * Returns the end-user ID, or [NotFoundError] when the check fails.
      */
     context(principal: FlexPrincipal)
-    suspend fun checkEndUserMatchesAccountingPoint(endUserBusinessId: String, accountingPointBusinessId: String): Either<RepositoryError, Int>
-
-    /**
-     * Calls `api.controllable_unit_lookup_sync_accounting_point`.
-     *
-     * Returns the newly-synced accounting point ID, or [RepositoryError] on failure.
-     */
-    context(principal: FlexPrincipal)
-    suspend fun upsertAccountingPoint(
-        accountingPointBusinessId: String,
-        meteringGridAreaBusinessId: String,
+    suspend fun checkEndUserMatchesAccountingPoint(
         endUserBusinessId: String,
+        accountingPointBusinessId: String
     ): Either<RepositoryError, Int>
 }
 
@@ -133,36 +128,6 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
                 onFailure = { e ->
                     logger.error { "checkEndUserMatchesAccountingPoint failed: ${e.message}" }
                     DatabaseError("end user does not match accounting point / controllable unit").left()
-                },
-            )
-        }
-
-    context(principal: FlexPrincipal)
-    override suspend fun upsertAccountingPoint(
-        accountingPointBusinessId: String,
-        meteringGridAreaBusinessId: String,
-        endUserBusinessId: String,
-    ): Either<RepositoryError, Int> =
-        flexTransaction { conn ->
-            runCatching {
-                conn.prepareStatement(
-                    """
-                    SELECT accounting_point_id::bigint
-                    FROM api.controllable_unit_lookup_sync_accounting_point(?::text, ?::text, ?::text)
-                    """.trimIndent(),
-                ).use { stmt ->
-                    stmt.setString(1, accountingPointBusinessId)
-                    stmt.setString(2, meteringGridAreaBusinessId)
-                    stmt.setString(3, endUserBusinessId)
-                    stmt.executeQuery().use { rs -> if (rs.next()) rs.getInt(1) else null }
-                }
-            }.fold(
-                onSuccess = { id ->
-                    id?.right() ?: DatabaseError("accounting point sync returned no result").left()
-                },
-                onFailure = { e ->
-                    logger.error { "syncAccountingPoint failed: ${e.message}" }
-                    DatabaseError("failed accounting point sync: ${e.message}").left()
                 },
             )
         }
