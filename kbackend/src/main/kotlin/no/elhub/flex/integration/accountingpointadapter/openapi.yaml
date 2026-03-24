@@ -209,6 +209,27 @@ paths:
             type: string
             pattern: "^[0-9]{18}$"
           example: "707057500012345678"
+        - name: valid_from
+          in: query
+          required: true
+          description: >-
+            Filter results to include only data valid from this date/time.
+            ISO 8601 format.
+          schema:
+            type: string
+            format: date-time
+          example: "2024-01-01T00:00:00+01:00"
+        - name: valid_to
+          in: query
+          required: false
+          description: >-
+            Filter results to include only data valid up to this date/time.
+            ISO 8601 format. Defaults to tomorrow midnight in the Norwegian
+            time zone.
+          schema:
+            type: string
+            format: date-time
+          example: "2024-12-31T00:00:00+01:00"
       responses:
         '200':
           description: Accounting point data retrieved successfully
