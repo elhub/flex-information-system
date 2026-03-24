@@ -131,7 +131,7 @@ class AccountingPointRepositoryTest : FunSpec({
             }
 
             // then
-            result.shouldBeLeft() shouldBe NotFoundError("end user does not match accounting point / controllable unit")
+            result.shouldBeLeft() shouldBe NotFoundError("End user does not match accounting point / controllable unit")
         }
 
         test("returns NotFoundError when accounting point does not exist") {
@@ -145,7 +145,7 @@ class AccountingPointRepositoryTest : FunSpec({
             }
 
             // then
-            result.shouldBeLeft() shouldBe NotFoundError("end user does not match accounting point / controllable unit")
+            result.shouldBeLeft() shouldBe NotFoundError("End user does not match accounting point / controllable unit")
         }
     }
 })
