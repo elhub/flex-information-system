@@ -131,7 +131,7 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
                     id?.right()
                         ?: run {
                             logger.info { "No match for end user $endUserBusinessId and accounting point $accountingPointBusinessId" }
-                            NotFoundError("end user does not match accounting point / controllable unit").left()
+                            NotFoundError("End user does not match accounting point / controllable unit").left()
                         }
                 },
                 onFailure = { e ->

@@ -104,7 +104,8 @@ class AccountingPointRepositoryTest : FunSpec({
             val noiseApId = insertAccountingPoint(uniqueGsrn())
             linkApToEndUser(noiseApId, insertEndUserParty(uniquePid()))
             val targetApId = insertAccountingPoint(targetApBusinessId)
-            linkApToEndUser(targetApId, insertEndUserParty(targetEntityBusinessId))
+            val expectedEndUser = insertEndUserParty(targetEntityBusinessId)
+            linkApToEndUser(targetApId, expectedEndUser)
 
             // when
             val result = with(principal) {
@@ -112,7 +113,7 @@ class AccountingPointRepositoryTest : FunSpec({
             }.shouldBeRight()
 
             // then
-            result shouldBe result
+            result shouldBe expectedEndUser
         }
 
         test("returns NotFoundError when end user does not match accounting point") {

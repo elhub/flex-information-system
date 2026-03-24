@@ -374,7 +374,7 @@ class ControllableUnitLookupTest :
                         businessId = controllableUnitBusinessId,
                         name = "My CU",
                         technicalResources = emptyList(),
-                        LocalDate.now(),
+                        startDate = LocalDate.now(),
                     ),
                 ).right()
 

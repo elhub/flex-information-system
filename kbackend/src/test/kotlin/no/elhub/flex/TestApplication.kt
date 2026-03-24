@@ -5,7 +5,6 @@ import arrow.core.right
 import io.ktor.server.application.install
 import io.ktor.server.testing.TestApplication
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.datetime.LocalDateTime
 import no.elhub.flex.accountingpoint.AccountingPointService
