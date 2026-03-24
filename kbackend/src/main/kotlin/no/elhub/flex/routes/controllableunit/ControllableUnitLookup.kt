@@ -10,7 +10,6 @@ import io.ktor.server.request.receive
 import io.ktor.server.routing.RoutingCall
 import kotlinx.datetime.LocalDate
 import no.elhub.flex.accountingpoint.AccountingPointService
-import no.elhub.flex.auth.AccessToken
 import no.elhub.flex.auth.AccessTokenKey
 import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.auth.toFlexPrincipal
@@ -23,7 +22,6 @@ import no.elhub.flex.model.dto.generated.models.ControllableUnitLookupResponseAc
 import no.elhub.flex.model.dto.generated.models.ControllableUnitLookupResponseEndUser
 import no.elhub.flex.model.dto.toDtos
 import no.elhub.flex.model.error.AppError
-import no.elhub.flex.model.error.AuthenticationError
 import no.elhub.flex.model.error.BadInputError
 import no.elhub.flex.model.error.DataFetchError
 import no.elhub.flex.model.error.ParsingError
@@ -33,11 +31,6 @@ import no.elhub.flex.util.respondJson
 import org.koin.core.annotation.Single
 
 private val logger = KotlinLogging.logger {}
-
-private val ALLOWED_ROLES = setOf(
-    "flex_service_provider",
-    "flex_flexibility_information_system_operator",
-)
 
 private val END_USER_REGEX = Regex("^[1-9]([0-9]{8}|[0-9]{10})$")
 private val CONTROLLABLE_UNIT_BUSINESS_ID_REGEX =
@@ -53,8 +46,7 @@ class ControllableUnitLookup(
         val principal = token.toFlexPrincipal()
         with(principal) {
             either {
-                val request = checkRole(token).bind()
-                    .let { parseBody(call).bind() }
+                val request = parseBody(call).bind()
                     .let { validateInput(it).bind() }
 
                 val accountingPointBusinessId = request.accountingPointBusinessId?.value
@@ -87,16 +79,6 @@ class ControllableUnitLookup(
             }
         }.respondJson(call)
     }
-
-    private fun checkRole(token: AccessToken): Either<AppError, Unit> =
-        if (token.role in ALLOWED_ROLES) {
-            Unit.right()
-        } else {
-            AuthenticationError(
-                "User role '${token.role}' is not authorized to perform this operation",
-                HttpStatusCode.Unauthorized
-            ).left()
-        }
 
     private suspend fun parseBody(call: RoutingCall): Either<ParsingError, ControllableUnitLookupRequest> =
         runCatching { call.receive<ControllableUnitLookupRequest>() }.fold(

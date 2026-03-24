@@ -117,14 +117,14 @@ class ControllableUnitLookupTest :
                 app.stop()
             }
 
-            test("disallowed role returns HTTP 401") {
+            test("disallowed role returns HTTP 403") {
                 val app = testApp(mockRepo, mockAccountingPointService)
                 val response = app.client.post("/controllable_unit/lookup") {
                     contentType(ContentType.Application.Json)
                     header("Authorization", "Bearer ${makeJwt(role = "flex_organisation")}")
                     setBody("""{"end_user":"123456789","accounting_point":"133700000000000053"}""")
                 }
-                response.status shouldBe HttpStatusCode.Unauthorized
+                response.status shouldBe HttpStatusCode.Forbidden
                 app.stop()
             }
 
