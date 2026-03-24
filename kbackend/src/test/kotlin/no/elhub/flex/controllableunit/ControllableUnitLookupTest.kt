@@ -16,7 +16,6 @@ import io.ktor.http.contentType
 import io.ktor.server.application.install
 import io.ktor.server.testing.TestApplication
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.datetime.LocalDate
 import no.elhub.flex.accountingpoint.AccountingPointService
@@ -70,7 +69,7 @@ class ControllableUnitLookupTest :
                         mockAccountingPointService.getAccountingPointByBusinessId(accountingPointBusinessId)
                     }
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
-                every {
+                coEvery {
                     with(any<FlexPrincipal>()) { mockRepo.lookupControllableUnits(any(), any()) }
                 } returns emptyList<ControllableUnit>().right()
 
@@ -103,7 +102,7 @@ class ControllableUnitLookupTest :
                         mockAccountingPointService.getAccountingPointByBusinessId(accountingPointBusinessId)
                     }
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
-                every {
+                coEvery {
                     with(any<FlexPrincipal>()) { mockRepo.lookupControllableUnits(any(), any()) }
                 } returns emptyList<ControllableUnit>().right()
 
@@ -219,7 +218,7 @@ class ControllableUnitLookupTest :
                         mockAccountingPointService.checkEndUserMatchesAccountingPoint(endUserBusinessId, accountingPointBusinessId)
                     }
                 } returns ResourceNotFoundError("end user does not match accounting point / controllable unit").left()
-                every {
+                coEvery {
                     with(any<FlexPrincipal>()) { mockRepo.lookupControllableUnits(any(), any()) }
                 } returns emptyList<ControllableUnit>().right()
 
@@ -249,7 +248,7 @@ class ControllableUnitLookupTest :
                         mockAccountingPointService.getAccountingPointByBusinessId(accountingPointBusinessId)
                     }
                 } returns ResourceNotFoundError("AP not found").left()
-                every {
+                coEvery {
                     with(any<FlexPrincipal>()) { mockRepo.lookupControllableUnits(any(), any()) }
                 } returns emptyList<ControllableUnit>().right()
 
@@ -282,7 +281,7 @@ class ControllableUnitLookupTest :
                         mockAccountingPointService.getAccountingPointByBusinessId(accountingPointBusinessId)
                     }
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
-                every {
+                coEvery {
                     with(any<FlexPrincipal>()) { mockRepo.lookupControllableUnits(any(), any()) }
                 } returns emptyList<ControllableUnit>().right()
 
@@ -316,7 +315,7 @@ class ControllableUnitLookupTest :
                         mockAccountingPointService.getAccountingPointByBusinessId(accountingPointBusinessId)
                     }
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
-                every {
+                coEvery {
                     with(any<FlexPrincipal>()) { mockRepo.lookupControllableUnits(any(), any()) }
                 } returns emptyList<ControllableUnit>().right()
 
@@ -367,7 +366,7 @@ class ControllableUnitLookupTest :
                         mockAccountingPointService.getAccountingPointByBusinessId(accountingPointBusinessId)
                     }
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
-                every {
+                coEvery {
                     with(any<FlexPrincipal>()) { mockRepo.lookupControllableUnits(any(), any()) }
                 } returns listOf(
                     ControllableUnit(

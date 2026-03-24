@@ -108,7 +108,7 @@ class ControllableUnitLookup(
         )
 
     context(principal: FlexPrincipal)
-    private fun fetchControllableUnits(
+    private suspend fun fetchControllableUnits(
         controllableUnitBusinessId: String,
         accountingPointBusinessId: String,
     ): Either<AppError, List<ControllableUnit>> =

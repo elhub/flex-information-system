@@ -27,7 +27,7 @@ interface ControllableUnitRepository {
      * Returns [RepositoryError] when the query fails.
      */
     context(principal: FlexPrincipal)
-    fun lookupControllableUnits(
+    suspend fun lookupControllableUnits(
         controllableUnitBusinessId: String,
         accountingPointBusinessId: String,
     ): Either<RepositoryError, List<ControllableUnit>>
@@ -41,7 +41,7 @@ private val json = Json { ignoreUnknownKeys = true }
 class ControllableUnitRepositoryImpl : ControllableUnitRepository {
 
     context(principal: FlexPrincipal)
-    override fun lookupControllableUnits(
+    override suspend fun lookupControllableUnits(
         controllableUnitBusinessId: String,
         accountingPointBusinessId: String,
     ): Either<RepositoryError, List<ControllableUnit>> =

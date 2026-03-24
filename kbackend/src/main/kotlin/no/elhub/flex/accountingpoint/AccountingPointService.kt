@@ -1,11 +1,9 @@
 package no.elhub.flex.accountingpoint
 
 import arrow.core.Either
-import arrow.core.raise.context.bind
 import arrow.core.right
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.http.HttpStatusCode
-import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import no.elhub.flex.accountingpoint.db.AccountingPointRepository
 import no.elhub.flex.auth.FlexPrincipal
