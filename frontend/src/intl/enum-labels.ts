@@ -13,11 +13,6 @@ export type EnumLabel =
   | "category.production"
   | "comment.visibility.any_involved_party"
   | "comment.visibility.same_party"
-  | "controllable_unit.grid_validation_status.in_progress"
-  | "controllable_unit.grid_validation_status.incomplete_information"
-  | "controllable_unit.grid_validation_status.pending"
-  | "controllable_unit.grid_validation_status.validated"
-  | "controllable_unit.grid_validation_status.validation_failed"
   | "controllable_unit.regulation_direction.both"
   | "controllable_unit.regulation_direction.down"
   | "controllable_unit.regulation_direction.up"
@@ -144,13 +139,6 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "controllable_unit.regulation_direction.up": "Up",
     "controllable_unit.regulation_direction.down": "Down",
     "controllable_unit.regulation_direction.both": "Both",
-    "controllable_unit.grid_validation_status.pending": "Pending",
-    "controllable_unit.grid_validation_status.in_progress": "In progress",
-    "controllable_unit.grid_validation_status.incomplete_information":
-      "Incomplete information",
-    "controllable_unit.grid_validation_status.validated": "Validated",
-    "controllable_unit.grid_validation_status.validation_failed":
-      "Validation failed",
     "controllable_unit_suspension.reason.compromises_safe_operation":
       "Compromises safe operation",
     "controllable_unit_suspension.reason.other": "Other",
@@ -305,13 +293,6 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "controllable_unit.regulation_direction.up": "Opp",
     "controllable_unit.regulation_direction.down": "Ned",
     "controllable_unit.regulation_direction.both": "Begge",
-    "controllable_unit.grid_validation_status.pending": "Venter",
-    "controllable_unit.grid_validation_status.in_progress": "Under behandling",
-    "controllable_unit.grid_validation_status.incomplete_information":
-      "Ufullstendig informasjon",
-    "controllable_unit.grid_validation_status.validated": "Validert",
-    "controllable_unit.grid_validation_status.validation_failed":
-      "Feilet validering",
     "controllable_unit_suspension.reason.compromises_safe_operation":
       "Truer sikker drift",
     "controllable_unit_suspension.reason.other": "Annet",
@@ -466,13 +447,6 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "controllable_unit.regulation_direction.up": "Opp",
     "controllable_unit.regulation_direction.down": "Ned",
     "controllable_unit.regulation_direction.both": "Begge",
-    "controllable_unit.grid_validation_status.pending": "Ventar",
-    "controllable_unit.grid_validation_status.in_progress": "Under behandling",
-    "controllable_unit.grid_validation_status.incomplete_information":
-      "Ufullstendig informasjon",
-    "controllable_unit.grid_validation_status.validated": "Validert",
-    "controllable_unit.grid_validation_status.validation_failed":
-      "Feila validering",
     "controllable_unit_suspension.reason.compromises_safe_operation":
       "Truar sikker drift",
     "controllable_unit_suspension.reason.other": "Anna",

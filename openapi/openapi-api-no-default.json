@@ -585,19 +585,6 @@
                 ],
                 "example": "up"
             },
-            "controllable_unit_grid_validation_status": {
-                "description": "The grid validation status of the controllable unit.",
-                "format": "text",
-                "type": "string",
-                "enum": [
-                    "pending",
-                    "in_progress",
-                    "incomplete_information",
-                    "validated",
-                    "validation_failed"
-                ],
-                "example": "validated"
-            },
             "controllable_unit_suspension_reason": {
                 "description": "The reason for the suspension.",
                 "format": "text",
@@ -958,65 +945,6 @@
                         "maximum": 999999.999,
                         "multipleOf": 0.001,
                         "example": 3.5
-                    },
-                    "minimum_duration": {
-                        "description": "The minimum activation duration in seconds.",
-                        "format": "bigint",
-                        "type": "integer",
-                        "minimum": 0,
-                        "nullable": true,
-                        "example": 30
-                    },
-                    "maximum_duration": {
-                        "description": "The maximum activation duration in seconds.",
-                        "format": "bigint",
-                        "type": "integer",
-                        "minimum": 0,
-                        "nullable": true,
-                        "example": 1200
-                    },
-                    "recovery_duration": {
-                        "description": "The minimum recovery duration between activations in seconds.",
-                        "format": "bigint",
-                        "type": "integer",
-                        "minimum": 0,
-                        "nullable": true,
-                        "example": 3600
-                    },
-                    "ramp_rate": {
-                        "description": "The rate of power per unit of time to reach empty or full power for the controllable unit, in kilowatts per minute.",
-                        "type": "number",
-                        "format": "decimal",
-                        "minimum": 0.001,
-                        "multipleOf": 0.001,
-                        "nullable": true,
-                        "example": 0.1
-                    },
-                    "grid_node_id": {
-                        "description": "Reference to the node that the controllable unit is connected to.",
-                        "format": "text",
-                        "type": "string",
-                        "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
-                        "nullable": true,
-                        "example": "53919b79-876f-4dad-8bde-b29368367604"
-                    },
-                    "grid_validation_status": {
-                        "$ref": "#/components/schemas/controllable_unit_grid_validation_status"
-                    },
-                    "grid_validation_notes": {
-                        "description": "Free text notes on the current grid validation status.",
-                        "format": "text",
-                        "type": "string",
-                        "maxLength": 512,
-                        "nullable": true,
-                        "example": null
-                    },
-                    "validated_at": {
-                        "description": "When the controllable unit was last validated.",
-                        "format": "date-time",
-                        "type": "string",
-                        "nullable": true,
-                        "example": "2022-08-08T12:00:00+02"
                     }
                 }
             },
@@ -1054,71 +982,12 @@
                         "multipleOf": 0.001,
                         "example": 3.5
                     },
-                    "minimum_duration": {
-                        "description": "The minimum activation duration in seconds.",
-                        "format": "bigint",
-                        "type": "integer",
-                        "minimum": 0,
-                        "nullable": true,
-                        "example": 30
-                    },
-                    "maximum_duration": {
-                        "description": "The maximum activation duration in seconds.",
-                        "format": "bigint",
-                        "type": "integer",
-                        "minimum": 0,
-                        "nullable": true,
-                        "example": 1200
-                    },
-                    "recovery_duration": {
-                        "description": "The minimum recovery duration between activations in seconds.",
-                        "format": "bigint",
-                        "type": "integer",
-                        "minimum": 0,
-                        "nullable": true,
-                        "example": 3600
-                    },
-                    "ramp_rate": {
-                        "description": "The rate of power per unit of time to reach empty or full power for the controllable unit, in kilowatts per minute.",
-                        "type": "number",
-                        "format": "decimal",
-                        "minimum": 0.001,
-                        "multipleOf": 0.001,
-                        "nullable": true,
-                        "example": 0.1
-                    },
                     "accounting_point_id": {
                         "description": "Reference to the accounting point that the controllable unit is connected to.",
                         "format": "bigint",
                         "type": "integer",
                         "nullable": false,
                         "example": 10289
-                    },
-                    "grid_node_id": {
-                        "description": "Reference to the node that the controllable unit is connected to.",
-                        "format": "text",
-                        "type": "string",
-                        "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
-                        "nullable": true,
-                        "example": "53919b79-876f-4dad-8bde-b29368367604"
-                    },
-                    "grid_validation_status": {
-                        "$ref": "#/components/schemas/controllable_unit_grid_validation_status"
-                    },
-                    "grid_validation_notes": {
-                        "description": "Free text notes on the current grid validation status.",
-                        "format": "text",
-                        "type": "string",
-                        "maxLength": 512,
-                        "nullable": true,
-                        "example": null
-                    },
-                    "validated_at": {
-                        "description": "When the controllable unit was last validated.",
-                        "format": "date-time",
-                        "type": "string",
-                        "nullable": true,
-                        "example": "2022-08-08T12:00:00+02"
                     }
                 },
                 "required": [
@@ -1184,71 +1053,12 @@
                         "readOnly": true,
                         "example": true
                     },
-                    "minimum_duration": {
-                        "description": "The minimum activation duration in seconds.",
-                        "format": "bigint",
-                        "type": "integer",
-                        "minimum": 0,
-                        "nullable": true,
-                        "example": 30
-                    },
-                    "maximum_duration": {
-                        "description": "The maximum activation duration in seconds.",
-                        "format": "bigint",
-                        "type": "integer",
-                        "minimum": 0,
-                        "nullable": true,
-                        "example": 1200
-                    },
-                    "recovery_duration": {
-                        "description": "The minimum recovery duration between activations in seconds.",
-                        "format": "bigint",
-                        "type": "integer",
-                        "minimum": 0,
-                        "nullable": true,
-                        "example": 3600
-                    },
-                    "ramp_rate": {
-                        "description": "The rate of power per unit of time to reach empty or full power for the controllable unit, in kilowatts per minute.",
-                        "type": "number",
-                        "format": "decimal",
-                        "minimum": 0.001,
-                        "multipleOf": 0.001,
-                        "nullable": true,
-                        "example": 0.1
-                    },
                     "accounting_point_id": {
                         "description": "Reference to the accounting point that the controllable unit is connected to.",
                         "format": "bigint",
                         "type": "integer",
                         "nullable": false,
                         "example": 10289
-                    },
-                    "grid_node_id": {
-                        "description": "Reference to the node that the controllable unit is connected to.",
-                        "format": "text",
-                        "type": "string",
-                        "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
-                        "nullable": true,
-                        "example": "53919b79-876f-4dad-8bde-b29368367604"
-                    },
-                    "grid_validation_status": {
-                        "$ref": "#/components/schemas/controllable_unit_grid_validation_status"
-                    },
-                    "grid_validation_notes": {
-                        "description": "Free text notes on the current grid validation status.",
-                        "format": "text",
-                        "type": "string",
-                        "maxLength": 512,
-                        "nullable": true,
-                        "example": null
-                    },
-                    "validated_at": {
-                        "description": "When the controllable unit was last validated.",
-                        "format": "date-time",
-                        "type": "string",
-                        "nullable": true,
-                        "example": "2022-08-08T12:00:00+02"
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
@@ -1274,7 +1084,6 @@
                     "maximum_active_power",
                     "is_small",
                     "accounting_point_id",
-                    "grid_validation_status",
                     "recorded_at",
                     "recorded_by"
                 ]

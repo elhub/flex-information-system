@@ -12,6 +12,7 @@ WITH (security_invoker = true) AS (
         lower(ap.record_time_range) AS recorded_at
     FROM flex.accounting_point AS ap
         INNER JOIN flex.accounting_point_system_operator AS ap_so
-            ON ap.id = ap_so.accounting_point_id
+            ON
+                ap.id = ap_so.accounting_point_id
                 AND ap_so.valid_time_range @> current_timestamp
 );

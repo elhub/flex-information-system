@@ -1,17 +1,5 @@
 const noticeTypes = [
   {
-    id: "no.elhub.flex.controllable_unit.grid_node_id.missing",
-    label: "controllable_unit.grid_node_id.missing",
-  },
-  {
-    id: "no.elhub.flex.controllable_unit.grid_validation_status.incomplete_information",
-    label: "controllable_unit.grid_validation_status.incomplete_information",
-  },
-  {
-    id: "no.elhub.flex.controllable_unit.grid_validation_status.pending",
-    label: "controllable_unit.grid_validation_status.pending",
-  },
-  {
     id: "no.elhub.flex.controllable_unit_service_provider.valid_time.outside_contract",
     label: "controllable_unit_service_provider.valid_time.outside_contract",
   },

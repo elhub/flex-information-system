@@ -29,45 +29,29 @@ export type FieldLabel =
   | "accounting_point_metering_grid_area.valid_to"
   | "controllable_unit.accounting_point_id"
   | "controllable_unit.business_id"
-  | "controllable_unit.grid_node_id"
-  | "controllable_unit.grid_validation_notes"
-  | "controllable_unit.grid_validation_status"
   | "controllable_unit.id"
   | "controllable_unit.is_small"
   | "controllable_unit.maximum_active_power"
-  | "controllable_unit.maximum_duration"
-  | "controllable_unit.minimum_duration"
   | "controllable_unit.name"
-  | "controllable_unit.ramp_rate"
   | "controllable_unit.recorded_at"
   | "controllable_unit.recorded_by"
-  | "controllable_unit.recovery_duration"
   | "controllable_unit.regulation_direction"
   | "controllable_unit.start_date"
   | "controllable_unit.status"
-  | "controllable_unit.validated_at"
   | "controllable_unit_history.accounting_point_id"
   | "controllable_unit_history.business_id"
   | "controllable_unit_history.controllable_unit_id"
-  | "controllable_unit_history.grid_node_id"
-  | "controllable_unit_history.grid_validation_notes"
-  | "controllable_unit_history.grid_validation_status"
   | "controllable_unit_history.id"
   | "controllable_unit_history.is_small"
   | "controllable_unit_history.maximum_active_power"
-  | "controllable_unit_history.maximum_duration"
-  | "controllable_unit_history.minimum_duration"
   | "controllable_unit_history.name"
-  | "controllable_unit_history.ramp_rate"
   | "controllable_unit_history.recorded_at"
   | "controllable_unit_history.recorded_by"
-  | "controllable_unit_history.recovery_duration"
   | "controllable_unit_history.regulation_direction"
   | "controllable_unit_history.replaced_at"
   | "controllable_unit_history.replaced_by"
   | "controllable_unit_history.start_date"
   | "controllable_unit_history.status"
-  | "controllable_unit_history.validated_at"
   | "controllable_unit_service_provider.contract_reference"
   | "controllable_unit_service_provider.controllable_unit_id"
   | "controllable_unit_service_provider.end_user_id"
@@ -528,15 +512,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit.regulation_direction": "Regulation direction",
     "controllable_unit.maximum_active_power": "Maximum active power",
     "controllable_unit.is_small": "Small",
-    "controllable_unit.minimum_duration": "Minimum duration",
-    "controllable_unit.maximum_duration": "Maximum duration",
-    "controllable_unit.recovery_duration": "Recovery duration",
-    "controllable_unit.ramp_rate": "Ramp rate",
     "controllable_unit.accounting_point_id": "Accounting point ID",
-    "controllable_unit.grid_node_id": "Grid node ID",
-    "controllable_unit.grid_validation_status": "Grid validation status",
-    "controllable_unit.grid_validation_notes": "Grid validation notes",
-    "controllable_unit.validated_at": "Validated at",
     "controllable_unit.recorded_at": "Recorded at",
     "controllable_unit.recorded_by": "Recorded by",
     "controllable_unit_history.id": "ID",
@@ -547,16 +523,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit_history.regulation_direction": "Regulation direction",
     "controllable_unit_history.maximum_active_power": "Maximum active power",
     "controllable_unit_history.is_small": "Small",
-    "controllable_unit_history.minimum_duration": "Minimum duration",
-    "controllable_unit_history.maximum_duration": "Maximum duration",
-    "controllable_unit_history.recovery_duration": "Recovery duration",
-    "controllable_unit_history.ramp_rate": "Ramp rate",
     "controllable_unit_history.accounting_point_id": "Accounting point ID",
-    "controllable_unit_history.grid_node_id": "Grid node ID",
-    "controllable_unit_history.grid_validation_status":
-      "Grid validation status",
-    "controllable_unit_history.grid_validation_notes": "Grid validation notes",
-    "controllable_unit_history.validated_at": "Validated at",
     "controllable_unit_history.recorded_at": "Recorded at",
     "controllable_unit_history.recorded_by": "Recorded by",
     "controllable_unit_history.controllable_unit_id": "Controllable Unit",
@@ -1217,15 +1184,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit.regulation_direction": "Reguleringsretning",
     "controllable_unit.maximum_active_power": "Maksimal aktiv effekt",
     "controllable_unit.is_small": "Liten",
-    "controllable_unit.minimum_duration": "Minimumsvarighet",
-    "controllable_unit.maximum_duration": "Maksimumsvarighet",
-    "controllable_unit.recovery_duration": "Gjenopprettingsvarighet",
-    "controllable_unit.ramp_rate": "Ramping",
     "controllable_unit.accounting_point_id": "Avregningspunkt-ID",
-    "controllable_unit.grid_node_id": "Nettnode-ID",
-    "controllable_unit.grid_validation_status": "Nettvalideringsstatus",
-    "controllable_unit.grid_validation_notes": "Nettvalideringsnotater",
-    "controllable_unit.validated_at": "Validert",
     "controllable_unit.recorded_at": "Registrert",
     "controllable_unit.recorded_by": "Registrert av",
     "controllable_unit_history.id": "ID",
@@ -1236,15 +1195,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit_history.regulation_direction": "Reguleringsretning",
     "controllable_unit_history.maximum_active_power": "Maksimal aktiv effekt",
     "controllable_unit_history.is_small": "Liten",
-    "controllable_unit_history.minimum_duration": "Minimumsvarighet",
-    "controllable_unit_history.maximum_duration": "Maksimumsvarighet",
-    "controllable_unit_history.recovery_duration": "Gjenopprettingsvarighet",
-    "controllable_unit_history.ramp_rate": "Ramping",
     "controllable_unit_history.accounting_point_id": "Avregningspunkt-ID",
-    "controllable_unit_history.grid_node_id": "Nettnode-ID",
-    "controllable_unit_history.grid_validation_status": "Nettvalideringsstatus",
-    "controllable_unit_history.grid_validation_notes": "Nettvalideringsnotater",
-    "controllable_unit_history.validated_at": "Validert",
     "controllable_unit_history.recorded_at": "Registrert",
     "controllable_unit_history.recorded_by": "Registrert av",
     "controllable_unit_history.controllable_unit_id": "Kontrollerbar enhet",
@@ -1900,15 +1851,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit.regulation_direction": "Reguleringsretning",
     "controllable_unit.maximum_active_power": "Maksimal aktiv effekt",
     "controllable_unit.is_small": "Liten",
-    "controllable_unit.minimum_duration": "Minimumsvarigheit",
-    "controllable_unit.maximum_duration": "Maksimumsvarigheit",
-    "controllable_unit.recovery_duration": "Gjenopprettingsvarigheit",
-    "controllable_unit.ramp_rate": "Ramping",
     "controllable_unit.accounting_point_id": "Avregningspunkt-ID",
-    "controllable_unit.grid_node_id": "Nettnode-ID",
-    "controllable_unit.grid_validation_status": "Nettvalideringsstatus",
-    "controllable_unit.grid_validation_notes": "Nettvalideringsnotat",
-    "controllable_unit.validated_at": "Validert",
     "controllable_unit.recorded_at": "Registrert",
     "controllable_unit.recorded_by": "Registrert av",
     "controllable_unit_history.id": "ID",
@@ -1919,15 +1862,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit_history.regulation_direction": "Reguleringsretning",
     "controllable_unit_history.maximum_active_power": "Maksimal aktiv effekt",
     "controllable_unit_history.is_small": "Liten",
-    "controllable_unit_history.minimum_duration": "Minimumsvarigheit",
-    "controllable_unit_history.maximum_duration": "Maksimumsvarigheit",
-    "controllable_unit_history.recovery_duration": "Gjenopprettingsvarigheit",
-    "controllable_unit_history.ramp_rate": "Ramping",
     "controllable_unit_history.accounting_point_id": "Avregningspunkt-ID",
-    "controllable_unit_history.grid_node_id": "Nettnode-ID",
-    "controllable_unit_history.grid_validation_status": "Nettvalideringsstatus",
-    "controllable_unit_history.grid_validation_notes": "Nettvalideringsnotat",
-    "controllable_unit_history.validated_at": "Validert",
     "controllable_unit_history.recorded_at": "Registrert",
     "controllable_unit_history.recorded_by": "Registrert av",
     "controllable_unit_history.controllable_unit_id": "Kontrollerbar eining",
