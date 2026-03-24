@@ -15,7 +15,7 @@ data class FlexPrincipal(
 ) {
     companion object {
         /** A system principal that bypasses RLS by using role `flex_internal_data` and eid `"0"`. */
-        fun internalData(): FlexPrincipal = FlexPrincipal(role = "flex_internal", eid = "0")
+        fun internalData(): FlexPrincipal = FlexPrincipal(role = "flex_internal_data", eid = "0")
     }
 }
 

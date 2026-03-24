@@ -18,9 +18,7 @@ import java.util.UUID
 class ControllableUnitRepositoryTest : FunSpec({
 
     val repo = ControllableUnitRepositoryImpl()
-    // flex_internal lacks SELECT on flex.controllable_unit (direct table queries).
-    // flex_flexibility_information_system_operator has USING(true) RLS on both
-    // controllable_unit and technical_resource, and is granted to flex_authenticator.
+
     val principal = FlexPrincipal(role = "flex_flexibility_information_system_operator", eid = "0")
 
     beforeTest {
