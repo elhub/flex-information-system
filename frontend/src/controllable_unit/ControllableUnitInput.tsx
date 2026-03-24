@@ -101,11 +101,9 @@ export const ControllableUnitInput = () => {
                   description
                   tooltip={false}
                 />
-
               </FlexDiv>
             </Accordion.Content>
           </Accordion.Item>
-
         </Accordion>
 
         <FormToolbar />
