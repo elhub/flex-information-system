@@ -15,6 +15,9 @@ set -euo pipefail
 #     field as Any? instead of following the $ref to the correct type)
 #   - oneOf: [$ref, {type: null}] collapsed to $ref + nullable: true (OAS 3.1
 #     nullable $ref pattern; Kaizen resolves this as Any? without the fix)
+#   - allOf: [$ref] (single entry) collapsed to a direct $ref (OAS 3.1 pattern
+#     for a $ref with sibling constraints; Kaizen resolves this as String without
+#     the fix)
 
 topdir="$(git rev-parse --show-toplevel)"
 source_spec="backend/data/static/openapi.json"
@@ -70,6 +73,17 @@ def fix_node(obj):
                 obj.pop("oneOf")
                 obj["$ref"] = refs[0]["$ref"]
                 obj["nullable"] = True
+
+        # 7. Collapse allOf: [{ "$ref": "..." }] (single entry) to a direct $ref
+        #    (OAS 3.1 pattern for a $ref with sibling constraints; Kaizen resolves
+        #    this as String instead of following the $ref to the correct type)
+        all_of = obj.get("allOf")
+        if isinstance(all_of, list) and len(all_of) == 1 and "$ref" in all_of[0] and len(all_of[0]) == 1:
+            nullable = obj.pop("nullable", None)
+            obj.pop("allOf")
+            obj["$ref"] = all_of[0]["$ref"]
+            if nullable is not None:
+                obj["nullable"] = nullable
 
         for v in obj.values():
             fix_node(v)

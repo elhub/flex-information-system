@@ -30,10 +30,10 @@ public data class TechnicalResourceUpdateRequest(
   @SerialName("maximum_active_power")
   public val maximumActivePower: BigDecimal? = null,
   /**
-   * The type of device.
+   * Type of device for technical resources.
    */
   @SerialName("device_type")
-  public val deviceType: String? = null,
+  public val deviceType: DeviceType? = null,
   /**
    * The manufacturer of the device. Required if model or business_id is provided.
    */
