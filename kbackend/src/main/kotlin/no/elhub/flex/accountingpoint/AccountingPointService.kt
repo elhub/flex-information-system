@@ -85,8 +85,8 @@ class AccountingPointServiceImpl(
         accountingPointBusinessId: String
     ): Either<AppError, Int> = accountingPointRepository.checkEndUserMatchesAccountingPoint(endUserBusinessId, accountingPointBusinessId).mapLeft { error ->
         when (error) {
-            is NotFoundError -> EndUserError("end user $endUserBusinessId does not match accounting point $accountingPointBusinessId")
-            else -> DataFetchError("failed to check end user matches accounting point: ${error.message}")
+            is NotFoundError -> EndUserError("Accounting point not found")
+            else -> DataFetchError("Failed to fetch accounting point data")
         }
     }
 
@@ -96,15 +96,15 @@ class AccountingPointServiceImpl(
     ): Either<AppError, AccountingPoint> = accountingPointRepository.getAccountingPointByBusinessId(accountingPointBusinessId).mapLeft { error ->
         when (error) {
             is NotFoundError -> ResourceNotFoundError("accounting point with business ID $accountingPointBusinessId not found")
-            else -> DataFetchError("failed to fetch accounting point: ${error.message}")
+            else -> DataFetchError("Failed to fetch accounting point data")
         }
     }
 
     context(principal: FlexPrincipal)
     override suspend fun getCurrentAccountingPoint(controllableUnitBusinessId: String): Either<AppError, AccountingPoint> = accountingPointRepository.getCurrentAccountingPoint(controllableUnitBusinessId).mapLeft { error ->
         when (error) {
-            is NotFoundError -> ResourceNotFoundError("accounting point for controllable unit $controllableUnitBusinessId not found")
-            else -> DataFetchError("failed to fetch current accounting point: ${error.message}")
+            is NotFoundError -> ResourceNotFoundError("Accounting point not found")
+            else -> DataFetchError("Failed to fetch accounting point data")
         }
     }
 
@@ -122,7 +122,7 @@ class AccountingPointServiceImpl(
 
                     else -> {
                         logger.warn { "Failed to fetch accounting point $accountingPointBusinessId from adapter: $err" }
-                        DataFetchError("Unexpected error", HttpStatusCode.InternalServerError)
+                        DataFetchError("Failed to fetch accounting point data")
                     }
                 }
             }

@@ -91,7 +91,7 @@ class AccountingPointRepositoryTest : FunSpec({
             }
 
             // then
-            result.shouldBeLeft() shouldBe NotFoundError("controllable unit does not exist")
+            result.shouldBeLeft() shouldBe NotFoundError("Current accounting point not found")
         }
     }
 

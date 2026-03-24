@@ -69,7 +69,10 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
                 }
             }.fold(
                 onSuccess = { row ->
-                    row?.right() ?: NotFoundError("controllable unit does not exist").left()
+                    row?.right() ?: run {
+                        logger.info { "Current AP not found for CU $controllableUnitBusinessId." }
+                        NotFoundError("Current accounting point not found").left()
+                    }
                 },
                 onFailure = { e ->
                     logger.error { "getCurrentAccountingPoint failed: ${e.message}" }
@@ -94,7 +97,10 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
                 }
             }.fold(
                 onSuccess = { id ->
-                    id?.right() ?: NotFoundError("accounting point does not exist in database").left()
+                    id?.right() ?: run {
+                        logger.info { "Accounting point $accountingPointBusinessId not found." }
+                        NotFoundError("accounting point does not exist in database").left()
+                    }
                 },
                 onFailure = { e ->
                     logger.error { "getAccountingPointIdByBusinessId failed: ${e.message}" }
@@ -123,11 +129,14 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
             }.fold(
                 onSuccess = { id ->
                     id?.right()
-                        ?: NotFoundError("end user does not match accounting point / controllable unit").left()
+                        ?: run {
+                            logger.info { "No match for end user $endUserBusinessId and accounting point $accountingPointBusinessId" }
+                            NotFoundError("end user does not match accounting point / controllable unit").left()
+                        }
                 },
                 onFailure = { e ->
                     logger.error { "checkEndUserMatchesAccountingPoint failed: ${e.message}" }
-                    DatabaseError("end user does not match accounting point / controllable unit").left()
+                    DatabaseError("Failed to check end user").left()
                 },
             )
         }
