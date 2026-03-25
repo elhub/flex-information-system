@@ -10,10 +10,7 @@ import no.elhub.flex.util.header
 import java.security.SecureRandom
 import kotlin.ByteArray
 
-/** Ktor plugin for handling W3C Trace Context headers.
- *
- * As this adapter is an internal component, we trust the traceparent and continue the trace if it is valid.
- * */
+/** Ktor plugin for handling W3C Trace Context headers. **/
 object Tracing {
 
     /** The [io.ktor.server.application.ApplicationPlugin] for [Tracing]. */

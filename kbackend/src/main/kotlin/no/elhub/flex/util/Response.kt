@@ -1,6 +1,7 @@
 package no.elhub.flex.util
 
 import arrow.core.Either
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.ApplicationCall
@@ -8,6 +9,9 @@ import io.ktor.server.response.respondText
 import kotlinx.serialization.json.Json
 import no.elhub.flex.model.dto.generated.models.ErrorMessage
 import no.elhub.flex.model.error.AppError
+import no.elhub.flex.model.error.InternalServerError
+
+val logger = KotlinLogging.logger {}
 
 /**
  * Extension function to respond with a JSON body from either an error or a successful serializable value.
@@ -23,6 +27,9 @@ suspend inline fun <reified T> Either<AppError, T>.respondJson(
 ) {
     this.fold(
         { error ->
+            if (error is InternalServerError) {
+                logger.error { error.message }
+            }
             call.respondText(
                 Json.encodeToString(
                     ErrorMessage(

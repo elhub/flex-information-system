@@ -12,7 +12,9 @@ import no.elhub.flex.model.domain.db.NotFoundError
 import no.elhub.flex.model.error.AppError
 import no.elhub.flex.model.error.DataFetchError
 import no.elhub.flex.model.error.EndUserError
+import no.elhub.flex.model.error.InternalServerError
 import no.elhub.flex.model.error.ResourceNotFoundError
+import no.elhub.flex.util.TraceIdUtil.Companion.traceIdOrUnknown
 import org.koin.core.annotation.Single
 import kotlin.time.Instant
 import no.elhub.flex.integration.accountingpointadapter.NotFoundError as AdapterNotFoundError
@@ -86,7 +88,7 @@ class AccountingPointServiceImpl(
     ): Either<AppError, Int> = accountingPointRepository.checkEndUserMatchesAccountingPoint(endUserBusinessId, accountingPointBusinessId).mapLeft { error ->
         when (error) {
             is NotFoundError -> EndUserError("Accounting point not found")
-            else -> DataFetchError("Failed to fetch accounting point data")
+            else -> InternalServerError(traceIdOrUnknown())
         }
     }
 
@@ -96,7 +98,7 @@ class AccountingPointServiceImpl(
     ): Either<AppError, AccountingPoint> = accountingPointRepository.getAccountingPointByBusinessId(accountingPointBusinessId).mapLeft { error ->
         when (error) {
             is NotFoundError -> ResourceNotFoundError("accounting point with business ID $accountingPointBusinessId not found")
-            else -> DataFetchError("Failed to fetch accounting point data")
+            else -> InternalServerError(traceIdOrUnknown())
         }
     }
 
@@ -104,14 +106,14 @@ class AccountingPointServiceImpl(
     override suspend fun getCurrentAccountingPoint(controllableUnitBusinessId: String): Either<AppError, AccountingPoint> = accountingPointRepository.getCurrentAccountingPoint(controllableUnitBusinessId).mapLeft { error ->
         when (error) {
             is NotFoundError -> ResourceNotFoundError("Accounting point not found")
-            else -> DataFetchError("Failed to fetch accounting point data")
+            else -> InternalServerError(traceIdOrUnknown())
         }
     }
 
     private suspend fun fetchAccountingPointData(
         accountingPointBusinessId: String,
         validFrom: Instant
-    ): Either<DataFetchError, AdapterAccountingPoint> =
+    ): Either<AppError, AdapterAccountingPoint> =
         accountingPointAdapter.getAccountingPoint(accountingPointBusinessId, validFrom)
             .mapLeft { err ->
                 when (err) {
@@ -122,7 +124,7 @@ class AccountingPointServiceImpl(
 
                     else -> {
                         logger.warn { "Failed to fetch accounting point $accountingPointBusinessId from adapter: $err" }
-                        DataFetchError("Failed to fetch accounting point data")
+                        InternalServerError(traceIdOrUnknown())
                     }
                 }
             }

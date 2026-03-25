@@ -22,10 +22,14 @@ import kotlinx.datetime.todayIn
 import no.elhub.flex.accountingpoint.AccountingPointService
 import no.elhub.flex.auth.FlexAuthentication
 import no.elhub.flex.auth.FlexPrincipal
+import no.elhub.flex.config.Tracing
+import no.elhub.flex.config.configureLogging
+import no.elhub.flex.config.configureMonitoring
 import no.elhub.flex.config.configureSerialization
 import no.elhub.flex.controllableunit.db.ControllableUnitRepository
 import no.elhub.flex.model.domain.AccountingPoint
 import no.elhub.flex.model.domain.ControllableUnit
+import no.elhub.flex.model.error.InternalServerError
 import no.elhub.flex.model.error.ResourceNotFoundError
 import no.elhub.flex.routes.controllableunit.ControllableUnitLookup
 import no.elhub.flex.routes.controllableunit.controllableUnitRoutes
@@ -392,6 +396,23 @@ class ControllableUnitLookupTest :
                 body.contains("controllable_units") shouldBe true
                 app.stop()
             }
+
+            test("InternalServerError returns HTTP 500") {
+                val endUserBusinessId = "123456789"
+                val accountingPointBusinessId = "133700000000000053"
+                coEvery {
+                    mockAccountingPointService.synchronizeAccountingPoint(any(), any())
+                } returns InternalServerError("traceId").left()
+
+                val app = testApp(mockRepo, mockAccountingPointService)
+                val response = app.client.post("/controllable_unit/lookup") {
+                    contentType(ContentType.Application.Json)
+                    header("Authorization", "Bearer ${makeJwt()}")
+                    setBody("""{"end_user":"$endUserBusinessId","accounting_point":"$accountingPointBusinessId"}""")
+                }
+                response.status shouldBe HttpStatusCode.InternalServerError
+                app.stop()
+            }
         }
     })
 
@@ -414,8 +435,10 @@ private fun testApp(
 ): TestApplication =
     TestApplication {
         application {
+            install(Tracing.plugin)
             install(FlexAuthentication) { jwtSecret = TEST_SECRET }
             configureSerialization()
+            configureLogging()
             install(Koin) {
                 modules(
                     module {

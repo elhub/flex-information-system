@@ -152,7 +152,6 @@ class AccountingPointRepositoryTest : FunSpec({
 
 private val pidCounter = AtomicLong(10_000_000_000L)
 
-@Suppress("MagicNumber")
 private fun uniquePid(): String = pidCounter.getAndIncrement().toString()
 
 private fun insertAccountingPoint(apBusinessId: String): Long =

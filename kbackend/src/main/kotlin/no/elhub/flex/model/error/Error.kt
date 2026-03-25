@@ -156,3 +156,14 @@ data class ResourceNotFoundError(
 ) : AppError() {
     override val message: String = details
 }
+
+/**
+ * Error used when an unexpected error occurs.
+ * Responds with a generic message to avoid leaking internal details.
+ */
+data class InternalServerError(
+    val traceId: String,
+) : AppError() {
+    override val code: HttpStatusCode = HttpStatusCode.InternalServerError
+    override val message: String = "An unexpected error occurred. If the issue persist, give this Trace ID to support: $traceId"
+}

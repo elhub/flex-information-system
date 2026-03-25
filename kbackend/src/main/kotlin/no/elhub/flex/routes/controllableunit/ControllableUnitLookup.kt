@@ -5,7 +5,6 @@ import arrow.core.left
 import arrow.core.raise.either
 import arrow.core.right
 import io.github.oshai.kotlinlogging.KotlinLogging
-import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
 import io.ktor.server.routing.RoutingCall
 import no.elhub.flex.accountingpoint.AccountingPointService
@@ -22,7 +21,8 @@ import no.elhub.flex.model.dto.generated.models.ControllableUnitLookupResponseEn
 import no.elhub.flex.model.dto.toDtos
 import no.elhub.flex.model.error.AppError
 import no.elhub.flex.model.error.BadRequestError
-import no.elhub.flex.model.error.DataFetchError
+import no.elhub.flex.model.error.InternalServerError
+import no.elhub.flex.util.TraceIdUtil.Companion.traceIdOrUnknown
 import no.elhub.flex.util.asLocalStartOfDayInstant
 import no.elhub.flex.util.atLocalStartOfToday
 import no.elhub.flex.util.respondJson
@@ -94,9 +94,8 @@ class ControllableUnitLookup(
         accountingPointBusinessId: String,
     ): Either<AppError, List<ControllableUnit>> =
         repo.lookupControllableUnits(controllableUnitBusinessId, accountingPointBusinessId)
-            .mapLeft { err ->
-                logger.error { "CU lookup query failed: ${err.message}" }
-                DataFetchError("Failed to load data", HttpStatusCode.InternalServerError)
+            .mapLeft { _ ->
+                InternalServerError(traceIdOrUnknown())
             }
 }
 
