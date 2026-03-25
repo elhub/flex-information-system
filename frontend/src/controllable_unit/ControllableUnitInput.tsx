@@ -15,8 +15,10 @@ import {
   DateInput,
   UnitInput,
   FormToolbar,
+  TextAreaInput,
 } from "../components/EDS-ra/inputs";
 import { formatDateToMidnightISO } from "../components/datetime";
+import { TextField } from "../components/EDS-ra";
 
 export type ControllableUnitInputLocationState = {
   controllableUnit: Partial<ControllableUnit>;
@@ -48,6 +50,7 @@ export const ControllableUnitInput = () => {
 
   const fields = getFields(zControllableUnitCreateRequest.shape);
 
+  console.log(fields);
   return (
     <Form
       record={overridenRecord}
@@ -77,6 +80,7 @@ export const ControllableUnitInput = () => {
             description
             tooltip={false}
           />
+          <TextAreaInput {...fields.additional_information} rows={5} description tooltip={false} />
         </FlexDiv>
 
         <Accordion border>

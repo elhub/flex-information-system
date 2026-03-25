@@ -12,7 +12,7 @@ import { ControllableUnitShowActions } from "./ControllableUnitShowActions";
 import { ControllableUnitAlerts } from "./components/ControllableUnitAlerts";
 import { LabelValue } from "../../components/LabelValue";
 import { TechnicalResourceList } from "../technical_resource/TechnicalResourceList";
-import { Show } from "../../components/EDS-ra";
+import { Show, TextField } from "../../components/EDS-ra";
 import { Loader } from "../../components/ui";
 import { formatDate } from "date-fns";
 
