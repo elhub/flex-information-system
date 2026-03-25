@@ -1,8 +1,12 @@
-import { Button } from "@mui/material";
 import { useQueryClient } from "@tanstack/react-query";
 import { useConfirmAction } from "../../../components/ConfirmAction";
 import { updateControllableUnit } from "../../../generated-client";
+<<<<<<< HEAD
 import { throwOnError } from "../../../util";
+||||||| parent of 7e1ce025 (feat: align CU show page with SPG show page pattern (FLEX-1107))
+=======
+import { Button } from "../../../components/ui";
+>>>>>>> 7e1ce025 (feat: align CU show page with SPG show page pattern (FLEX-1107))
 
 export const ActivateControllableUnitButton = ({
   controllableUnitId,
@@ -26,11 +30,7 @@ export const ActivateControllableUnitButton = ({
         }).then(throwOnError),
       onSettled: () => {
         queryClient.invalidateQueries({
-          queryKey: [
-            "controllable_unit",
-            "getOne",
-            { id: String(controllableUnitId) },
-          ],
+          queryKey: ["controllable_unit", controllableUnitId],
         });
       },
     },
@@ -38,7 +38,7 @@ export const ActivateControllableUnitButton = ({
 
   return (
     <>
-      <Button disabled={disabled} {...buttonProps}>
+      <Button variant="invisible" disabled={disabled} {...buttonProps}>
         Activate
       </Button>
       {dialog}
