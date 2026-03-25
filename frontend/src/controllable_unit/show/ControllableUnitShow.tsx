@@ -12,11 +12,10 @@ import { ControllableUnitShowSummary } from "./ControllableUnitShowSummary";
 import { ControllableUnitShowTabs } from "./ControllableUnitShowTabs";
 import { ControllableUnitShowActions } from "./ControllableUnitShowActions";
 import { ControllableUnitAlerts } from "./components/ControllableUnitAlerts";
-import { readControllableUnit } from "../../generated-client";
+import { readControllableUnit, ControllableUnitStatus } from "../../generated-client";
 import { throwOnError } from "../../util";
 import { useQuery } from "@tanstack/react-query";
 import { useControllableUnitViewModel } from "./useControllableUnitViewModel";
-import { ControllableUnitStatus } from "../../generated-client";
 
 const statusVariantMap: Record<
   ControllableUnitStatus,
@@ -75,7 +74,7 @@ export const ControllableUnitShow = () => {
 
   const eventFilter =
     "?filter=" +
-    encodeURIComponent(`{ "source@like": "/controllable_unit/${cuId}" }`);
+    encodeURIComponent(JSON.stringify({ "source@like": `/controllable_unit/${cuId}` }));
 
   return (
     <div className="flex flex-col gap-4 p-2">
@@ -90,17 +89,17 @@ export const ControllableUnitShow = () => {
           <Heading level={2} size="medium">
             Controllable Unit - {cu.name}
           </Heading>
-          <Tag variant={statusVariantMap[cu.status ?? "active"]}>
+          <Tag variant={statusVariantMap[cu.status]}>
             {cu.status}
           </Tag>
         </div>
 
         <div className="flex items-center gap-2">
-          <ControllableUnitShowActions controllableUnitId={id} />
+          <ControllableUnitShowActions controllableUnitId={String(cu.id)} />
           {canEdit && (
             <Button
               as={RouterLink}
-              to={`/controllable_unit/${cuId}/edit`}
+              to={`/controllable_unit/${cu.id}/edit`}
               variant="invisible"
               icon={IconPencil}
             >
@@ -110,7 +109,7 @@ export const ControllableUnitShow = () => {
           {canReadHistory && (
             <Button
               as={RouterLink}
-              to={`/controllable_unit/${cuId}/history`}
+              to={`/controllable_unit/${cu.id}/history`}
               variant="invisible"
               icon={IconClockReset}
             >
