@@ -18,7 +18,6 @@ import {
   TextAreaInput,
 } from "../components/EDS-ra/inputs";
 import { formatDateToMidnightISO } from "../components/datetime";
-import { TextField } from "../components/EDS-ra";
 
 export type ControllableUnitInputLocationState = {
   controllableUnit: Partial<ControllableUnit>;
@@ -80,7 +79,12 @@ export const ControllableUnitInput = () => {
             description
             tooltip={false}
           />
-          <TextAreaInput {...fields.additional_information} rows={5} description tooltip={false} />
+          <TextAreaInput
+            {...fields.additional_information}
+            rows={5}
+            description
+            tooltip={false}
+          />
         </FlexDiv>
 
         <Accordion border>
