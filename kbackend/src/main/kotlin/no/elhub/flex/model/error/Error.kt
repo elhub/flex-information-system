@@ -85,7 +85,7 @@ data class MissingPathParameterError(
  * @property name the parameter name of the bad input
  * @property code the HTTP status code
  */
-data class BadInputError(
+data class BadRequestError(
     val name: String,
     override val code: HttpStatusCode = HttpStatusCode.BadRequest,
 ) : AppError() {

@@ -21,9 +21,8 @@ import no.elhub.flex.model.dto.generated.models.ControllableUnitLookupResponseAc
 import no.elhub.flex.model.dto.generated.models.ControllableUnitLookupResponseEndUser
 import no.elhub.flex.model.dto.toDtos
 import no.elhub.flex.model.error.AppError
-import no.elhub.flex.model.error.BadInputError
+import no.elhub.flex.model.error.BadRequestError
 import no.elhub.flex.model.error.DataFetchError
-import no.elhub.flex.model.error.ParsingError
 import no.elhub.flex.util.asLocalStartOfDayInstant
 import no.elhub.flex.util.atLocalStartOfToday
 import no.elhub.flex.util.respondJson
@@ -80,12 +79,12 @@ class ControllableUnitLookup(
         }.respondJson(call)
     }
 
-    private suspend fun parseBody(call: RoutingCall): Either<ParsingError, ControllableUnitLookupRequest> =
+    private suspend fun parseBody(call: RoutingCall): Either<BadRequestError, ControllableUnitLookupRequest> =
         runCatching { call.receive<ControllableUnitLookupRequest>() }.fold(
             onSuccess = { it.right() },
             onFailure = { e ->
-                logger.debug { "Could not parse CU lookup request body: ${e.message}" }
-                ParsingError("Could not parse request body: ${e.message}", HttpStatusCode.BadRequest).left()
+                logger.info { "Could not parse CU lookup request body: ${e.message}" }
+                BadRequestError("Could not parse request body.").left()
             },
         )
 
@@ -101,30 +100,30 @@ class ControllableUnitLookup(
             }
 }
 
-/** Validates the request body and returns a sanitised copy or an [BadInputError]. */
-private fun validateInput(req: ControllableUnitLookupRequest): Either<BadInputError, ValidatedRequest> = either {
+/** Validates the request body and returns a sanitised copy or an [BadRequestError]. */
+private fun validateInput(req: ControllableUnitLookupRequest): Either<BadRequestError, ValidatedRequest> = either {
     val endUser = req.endUser
 
-    if (endUser.isEmpty()) raise(BadInputError("missing end user business ID"))
-    if (!END_USER_REGEX.matches(endUser)) raise(BadInputError("ill formed end user business ID"))
+    if (endUser.isEmpty()) raise(BadRequestError("missing end user business ID"))
+    if (!END_USER_REGEX.matches(endUser)) raise(BadRequestError("ill formed end user business ID"))
 
     val controllableUnitId = req.controllableUnit.orEmpty()
     if (controllableUnitId.isNotEmpty() && !CONTROLLABLE_UNIT_BUSINESS_ID_REGEX.matches(controllableUnitId)) {
-        raise(BadInputError("ill formed controllable unit business ID"))
+        raise(BadRequestError("ill formed controllable unit business ID"))
     }
 
     val accountingPointId = req.accountingPoint.orEmpty()
 
     if (accountingPointId.isEmpty() && controllableUnitId.isEmpty()) {
-        raise(BadInputError("missing business ID for accounting point or controllable unit"))
+        raise(BadRequestError("missing business ID for accounting point or controllable unit"))
     }
     if (accountingPointId.isNotEmpty() && controllableUnitId.isNotEmpty()) {
-        raise(BadInputError("request contains business IDs for both accounting point and controllable unit"))
+        raise(BadRequestError("request contains business IDs for both accounting point and controllable unit"))
     }
 
     val gsrn = if (accountingPointId.isNotEmpty()) {
         GSRN.parse(accountingPointId)
-            .mapLeft { BadInputError("ill formed accounting point business ID") }
+            .mapLeft { BadRequestError("ill formed accounting point business ID") }
             .bind()
     } else {
         null
