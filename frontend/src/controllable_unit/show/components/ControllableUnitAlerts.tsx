@@ -1,7 +1,7 @@
 import { usePermissions } from "ra-core";
 import { Link as RouterLink } from "react-router-dom";
-import { ControllableUnitShowViewModel } from "../useControllableUnitViewModel";
-import { ReactNode } from "react";
+import type { ControllableUnitShowViewModel } from "../useControllableUnitViewModel";
+import type { ReactNode } from "react";
 import { Permissions } from "../../../auth/permissions";
 import { ActivateControllableUnitButton } from "./ActivateControllableUnitButton";
 import { TechnicalResourceInputLocationState } from "../../technical_resource/TechnicalResourceInput";
@@ -57,17 +57,16 @@ const useControllableUnitAlerts = (
       title: "No technical resources",
       content:
         "To set the controllable unit as active, one technical resource is required.",
-      action: (
+      action: canCreateTechnicalResource ? (
         <Button
           as={RouterLink}
-          disabled={!canCreateTechnicalResource}
           state={locationState}
           variant="invisible"
           to={`/controllable_unit/${controllableUnit.id}/technical_resource/create`}
         >
           Add technical resource
         </Button>
-      ),
+      ) : undefined,
     };
   }
 
@@ -99,14 +98,14 @@ export const ControllableUnitAlerts = ({
   }
   return (
     <Alert variant={alert.severity} className="max-w-3xl gap-4">
-      <div className="flex flex-row items-center justify-between w-full ">
-        <div className="flex-5 flex flex-col gap-2">
+      <div className="flex flex-row items-center justify-between w-full">
+        <div className="grow flex flex-col gap-2">
           <Heading level={5} size="small">
             {alert.title}
           </Heading>
           <BodyText>{alert.content}</BodyText>
         </div>
-        <div className="flex-1">{alert.action && <>{alert.action}</>}</div>
+        {alert.action && <div className="flex-1">{alert.action}</div>}
       </div>
     </Alert>
   );

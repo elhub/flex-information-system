@@ -1,6 +1,6 @@
 import { Panel } from "../../components/ui";
 import { LabelValue } from "../../components/LabelValue";
-import { ControllableUnitShowViewModel } from "./useControllableUnitViewModel";
+import type { ControllableUnitShowViewModel } from "./useControllableUnitViewModel";
 import { formatDate } from "date-fns";
 
 const formatRange = (start: string | undefined, end: string | undefined) => {
@@ -50,13 +50,19 @@ export const ControllableUnitShowSummary = ({
         />
         <LabelValue
           label="Accounting point"
-          value={`${accountingPoint?.business_id} (${systemOperator?.name})`}
+          value={
+            accountingPoint && systemOperator
+              ? `${accountingPoint.business_id} (${systemOperator.name})`
+              : undefined
+          }
         />
         <LabelValue
           label="Service provider"
           value={
             serviceProvider
-              ? `${serviceProvider.name} (${serviceProviderRange})`
+              ? serviceProviderRange
+                ? `${serviceProvider.name} (${serviceProviderRange})`
+                : serviceProvider.name
               : "No service provider"
           }
           link={
@@ -83,13 +89,13 @@ export const ControllableUnitShowSummary = ({
           }
         />
         <LabelValue
-          tooltip={true}
+          tooltip
           labelKey="controllable_unit.maximum_active_power"
           value={controllableUnit.maximum_active_power}
           unit="kW"
         />
         <LabelValue
-          tooltip={true}
+          tooltip
           labelKey="controllable_unit.regulation_direction"
           value={controllableUnit.regulation_direction}
         />
