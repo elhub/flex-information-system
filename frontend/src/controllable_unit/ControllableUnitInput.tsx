@@ -49,7 +49,6 @@ export const ControllableUnitInput = () => {
 
   const fields = getFields(zControllableUnitCreateRequest.shape);
 
-  console.log(fields);
   return (
     <Form
       record={overridenRecord}
