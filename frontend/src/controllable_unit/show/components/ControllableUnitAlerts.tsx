@@ -1,4 +1,5 @@
-import { Link, usePermissions } from "react-admin";
+import { usePermissions } from "ra-core";
+import { Link as RouterLink } from "react-router-dom";
 import { ControllableUnitShowViewModel } from "../useControllableUnitViewModel";
 import { ReactNode } from "react";
 import { Permissions } from "../../../auth/permissions";
@@ -35,7 +36,7 @@ const useControllableUnitAlerts = (
       content: `The controllable unit is suspended. Reason: ${suspension.reason}`,
       action: (
         <Button
-          as={Link}
+          as={RouterLink}
           variant="invisible"
           to={`/controllable_unit/${controllableUnit.id}/suspension/${suspension.id}/show`}
         >
@@ -58,7 +59,7 @@ const useControllableUnitAlerts = (
         "To set the controllable unit as active, one technical resource is required.",
       action: (
         <Button
-          as={Link}
+          as={RouterLink}
           disabled={!canCreateTechnicalResource}
           state={locationState}
           variant="invisible"

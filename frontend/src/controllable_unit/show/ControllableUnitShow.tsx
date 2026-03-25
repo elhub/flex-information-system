@@ -1,78 +1,141 @@
-import { useRecordContext } from "ra-core";
 import {
-  ControllableUnit,
-  ControllableUnitHistory,
-} from "../../generated-client";
-import { useControllableUnitViewModel } from "./useControllableUnitViewModel";
-import { useParams } from "react-router-dom";
-import { Header } from "./components/Header";
-import { Connections } from "./components/Connections";
-import { TechnicalInformation } from "./components/TechnicalInformation";
+  IconArrowLeft,
+  IconPencil,
+  IconClockReset,
+  IconAlarmBell,
+} from "@elhub/ds-icons";
+import { Button, Heading, Loader, Tag } from "../../components/ui";
+import { usePermissions } from "ra-core";
+import { Permissions } from "../../auth/permissions";
+import { Link as RouterLink, useParams } from "react-router-dom";
+import { ControllableUnitShowSummary } from "./ControllableUnitShowSummary";
+import { ControllableUnitShowTabs } from "./ControllableUnitShowTabs";
 import { ControllableUnitShowActions } from "./ControllableUnitShowActions";
 import { ControllableUnitAlerts } from "./components/ControllableUnitAlerts";
-import { LabelValue } from "../../components/LabelValue";
-import { TechnicalResourceList } from "../technical_resource/TechnicalResourceList";
-import { Show } from "../../components/EDS-ra";
-import { Loader } from "../../components/ui";
-import { formatDate } from "date-fns";
+import { readControllableUnit } from "../../generated-client";
+import { throwOnError } from "../../util";
+import { useQuery } from "@tanstack/react-query";
+import { useControllableUnitViewModel } from "./useControllableUnitViewModel";
+import { ControllableUnitStatus } from "../../generated-client";
 
-const Layout = () => {
-  const record = useRecordContext<ControllableUnit | ControllableUnitHistory>();
-  const {
-    data: controllableUnitViewModel,
-    isPending,
-    error,
-  } = useControllableUnitViewModel(record);
-
-  if (isPending) {
-    return <Loader />;
-  }
-
-  if (error) {
-    throw error;
-  }
-
-  return (
-    <div className="flex flex-col gap-5">
-      <Header controllableUnit={controllableUnitViewModel?.controllableUnit} />
-      <ControllableUnitAlerts
-        controllableUnitViewModel={controllableUnitViewModel}
-      />
-
-      <Connections controllableUnitViewModel={controllableUnitViewModel} />
-
-      <div className="max-w-2xl">
-        <TechnicalResourceList />
-      </div>
-
-      <TechnicalInformation
-        controllableUnit={controllableUnitViewModel?.controllableUnit}
-      />
-
-      <LabelValue
-        labelKey="controllable_unit.recorded_at"
-        className="flex gap-2 items-center"
-        value={
-          controllableUnitViewModel?.controllableUnit?.recorded_at
-            ? formatDate(
-                controllableUnitViewModel?.controllableUnit?.recorded_at,
-                "dd.MM.yyyy HH:mm",
-              )
-            : undefined
-        }
-      />
-    </div>
-  );
+const statusVariantMap: Record<
+  ControllableUnitStatus,
+  "info" | "success" | "warning" | "error"
+> = {
+  new: "info",
+  active: "success",
+  inactive: "warning",
+  terminated: "error",
 };
 
 export const ControllableUnitShow = () => {
   const { id } = useParams<{ id: string }>();
+  const cuId = Number(id);
+
+  const { permissions } = usePermissions<Permissions>();
+  const canEdit = permissions?.allow("controllable_unit", "update");
+  const canReadHistory = permissions?.allow(
+    "controllable_unit_history",
+    "read",
+  );
+  const canReadEvents = permissions?.allow("event", "read");
+
+  const {
+    data: cu,
+    isLoading: isCuLoading,
+    error: cuError,
+  } = useQuery({
+    queryKey: ["controllable_unit", cuId],
+    queryFn: () =>
+      readControllableUnit({ path: { id: cuId } }).then(throwOnError),
+    enabled: !!cuId,
+  });
+
+  const {
+    data: viewModel,
+    isPending: isViewModelPending,
+    error: viewModelError,
+  } = useControllableUnitViewModel(cu);
+
+  if (isCuLoading || isViewModelPending) {
+    return <Loader />;
+  }
+
+  if (cuError) {
+    throw cuError;
+  }
+
+  if (viewModelError) {
+    throw viewModelError;
+  }
+
+  if (!cu || !viewModel) {
+    return null;
+  }
+
+  const eventFilter =
+    "?filter=" +
+    encodeURIComponent(`{ "source@like": "/controllable_unit/${cuId}" }`);
 
   return (
-    <Show
-      extraActions={<ControllableUnitShowActions controllableUnitId={id} />}
-    >
-      <Layout />
-    </Show>
+    <div className="flex flex-col gap-4 p-2">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div className="flex items-center gap-2">
+          <Button
+            as={RouterLink}
+            to="/controllable_unit"
+            variant="invisible"
+            icon={IconArrowLeft}
+          />
+          <Heading level={2} size="medium">
+            Controllable Unit - {cu.name}
+          </Heading>
+          <Tag variant={statusVariantMap[cu.status ?? "active"]}>
+            {cu.status}
+          </Tag>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <ControllableUnitShowActions controllableUnitId={id} />
+          {canEdit && (
+            <Button
+              as={RouterLink}
+              to={`/controllable_unit/${cuId}/edit`}
+              variant="invisible"
+              icon={IconPencil}
+            >
+              Edit
+            </Button>
+          )}
+          {canReadHistory && (
+            <Button
+              as={RouterLink}
+              to={`/controllable_unit/${cuId}/history`}
+              variant="invisible"
+              icon={IconClockReset}
+            >
+              View History
+            </Button>
+          )}
+          {canReadEvents && (
+            <Button
+              as={RouterLink}
+              to={`/event${eventFilter}`}
+              variant="invisible"
+              icon={IconAlarmBell}
+            >
+              Events
+            </Button>
+          )}
+        </div>
+      </div>
+
+      <ControllableUnitAlerts controllableUnitViewModel={viewModel} />
+
+      <div className="grid grid-cols-1 gap-4 xl:grid-cols-[475px_minmax(0,1fr)]">
+        <ControllableUnitShowSummary viewModel={viewModel} />
+        <ControllableUnitShowTabs cuId={cu.id} />
+      </div>
+    </div>
   );
 };
