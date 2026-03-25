@@ -101,6 +101,7 @@ BEGIN
             name,
             regulation_direction,
             start_date,
+            additional_information,
             status )
         VALUES (
             NEW.accounting_point_id,
