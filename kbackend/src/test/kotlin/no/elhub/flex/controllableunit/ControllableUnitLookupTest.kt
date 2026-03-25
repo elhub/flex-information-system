@@ -24,7 +24,6 @@ import no.elhub.flex.auth.FlexAuthentication
 import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.config.Tracing
 import no.elhub.flex.config.configureLogging
-import no.elhub.flex.config.configureMonitoring
 import no.elhub.flex.config.configureSerialization
 import no.elhub.flex.controllableunit.db.ControllableUnitRepository
 import no.elhub.flex.model.domain.AccountingPoint

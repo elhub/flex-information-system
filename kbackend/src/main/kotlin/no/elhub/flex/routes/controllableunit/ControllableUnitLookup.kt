@@ -1,11 +1,7 @@
 package no.elhub.flex.routes.controllableunit
 
 import arrow.core.Either
-import arrow.core.left
 import arrow.core.raise.either
-import arrow.core.right
-import io.github.oshai.kotlinlogging.KotlinLogging
-import io.ktor.server.request.receive
 import io.ktor.server.routing.RoutingCall
 import no.elhub.flex.accountingpoint.AccountingPointService
 import no.elhub.flex.auth.AccessTokenKey
@@ -25,11 +21,10 @@ import no.elhub.flex.model.error.InternalServerError
 import no.elhub.flex.util.TraceIdUtil.Companion.traceIdOrUnknown
 import no.elhub.flex.util.asLocalStartOfDayInstant
 import no.elhub.flex.util.atLocalStartOfToday
+import no.elhub.flex.util.body
 import no.elhub.flex.util.respondJson
 import org.koin.core.annotation.Single
 import kotlin.time.Instant
-
-private val logger = KotlinLogging.logger {}
 
 private val END_USER_REGEX = Regex("^[1-9]([0-9]{8}|[0-9]{10})$")
 private val CONTROLLABLE_UNIT_BUSINESS_ID_REGEX =
@@ -45,7 +40,7 @@ class ControllableUnitLookup(
         val principal = token.toFlexPrincipal()
         with(principal) {
             either {
-                val request = parseBody(call).bind()
+                val request = call.body<ControllableUnitLookupRequest>().bind()
                     .let { validateInput(it).bind() }
 
                 val accountingPointBusinessId = request.accountingPointBusinessId?.value
@@ -78,15 +73,6 @@ class ControllableUnitLookup(
             }
         }.respondJson(call)
     }
-
-    private suspend fun parseBody(call: RoutingCall): Either<BadRequestError, ControllableUnitLookupRequest> =
-        runCatching { call.receive<ControllableUnitLookupRequest>() }.fold(
-            onSuccess = { it.right() },
-            onFailure = { e ->
-                logger.info { "Could not parse CU lookup request body: ${e.message}" }
-                BadRequestError("Could not parse request body.").left()
-            },
-        )
 
     context(principal: FlexPrincipal)
     private suspend fun fetchControllableUnits(
