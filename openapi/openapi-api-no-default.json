@@ -945,6 +945,13 @@
                         "maximum": 999999.999,
                         "multipleOf": 0.001,
                         "example": 3.5
+                    },
+                    "additional_information": {
+                        "description": "Free text field for extra information about the controllable unit if needed.",
+                        "format": "text",
+                        "type": "string",
+                        "nullable": true,
+                        "example": null
                     }
                 }
             },
@@ -988,6 +995,13 @@
                         "type": "integer",
                         "nullable": false,
                         "example": 10289
+                    },
+                    "additional_information": {
+                        "description": "Free text field for extra information about the controllable unit if needed.",
+                        "format": "text",
+                        "type": "string",
+                        "nullable": true,
+                        "example": null
                     }
                 },
                 "required": [
@@ -1059,6 +1073,13 @@
                         "type": "integer",
                         "nullable": false,
                         "example": 10289
+                    },
+                    "additional_information": {
+                        "description": "Free text field for extra information about the controllable unit if needed.",
+                        "format": "text",
+                        "type": "string",
+                        "nullable": true,
+                        "example": null
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",

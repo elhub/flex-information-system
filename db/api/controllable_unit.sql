@@ -16,6 +16,7 @@ CREATE OR REPLACE VIEW api.controllable_unit_history WITH (
         cu.regulation_direction,
         cu.start_date,
         cu.status,
+        cu.additional_information,
         cu.recorded_by,
         lower(cu.record_time_range) AS recorded_at,
         null AS replaced_by,
@@ -33,6 +34,7 @@ CREATE OR REPLACE VIEW api.controllable_unit_history WITH (
         cu.regulation_direction,
         cu.start_date,
         cu.status,
+        cu.additional_information,
         cu.recorded_by,
         lower(cu.record_time_range) AS recorded_at,
         cu.replaced_by,
@@ -53,6 +55,7 @@ WITH (security_invoker = true) AS (
         cu.regulation_direction,
         cu.start_date,
         cu.status,
+        cu.additional_information,
         cu.recorded_by,
         cu.recorded_at
     FROM (
@@ -98,6 +101,7 @@ BEGIN
             name,
             regulation_direction,
             start_date,
+            additional_information,
             status )
         VALUES (
             NEW.accounting_point_id,
@@ -105,6 +109,7 @@ BEGIN
             NEW.name,
             NEW.regulation_direction,
             NEW.start_date,
+            NEW.additional_information,
             NEW.status
         ) RETURNING id INTO l_id;
 
@@ -127,6 +132,7 @@ BEGIN
             cu.regulation_direction,
             cu.start_date,
             cu.status,
+            cu.additional_information,
             cu.recorded_by,
             lower(cu.record_time_range) AS recorded_at
         FROM flex.controllable_unit INTO l_old AS cu
@@ -151,7 +157,8 @@ BEGIN
             name = NEW.name,
             regulation_direction = NEW.regulation_direction,
             start_date = NEW.start_date,
-            status = NEW.status
+            status = NEW.status,
+            additional_information = NEW.additional_information
         where id = NEW.id;
 
 

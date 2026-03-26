@@ -28,6 +28,7 @@ export type FieldLabel =
   | "accounting_point_metering_grid_area.valid_from"
   | "accounting_point_metering_grid_area.valid_to"
   | "controllable_unit.accounting_point_id"
+  | "controllable_unit.additional_information"
   | "controllable_unit.business_id"
   | "controllable_unit.id"
   | "controllable_unit.is_small"
@@ -39,6 +40,7 @@ export type FieldLabel =
   | "controllable_unit.start_date"
   | "controllable_unit.status"
   | "controllable_unit_history.accounting_point_id"
+  | "controllable_unit_history.additional_information"
   | "controllable_unit_history.business_id"
   | "controllable_unit_history.controllable_unit_id"
   | "controllable_unit_history.id"
@@ -513,6 +515,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit.maximum_active_power": "Maximum active power",
     "controllable_unit.is_small": "Small",
     "controllable_unit.accounting_point_id": "Accounting point ID",
+    "controllable_unit.additional_information": "Additional information",
     "controllable_unit.recorded_at": "Recorded at",
     "controllable_unit.recorded_by": "Recorded by",
     "controllable_unit_history.id": "ID",
@@ -524,6 +527,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit_history.maximum_active_power": "Maximum active power",
     "controllable_unit_history.is_small": "Small",
     "controllable_unit_history.accounting_point_id": "Accounting point ID",
+    "controllable_unit_history.additional_information":
+      "Additional information",
     "controllable_unit_history.recorded_at": "Recorded at",
     "controllable_unit_history.recorded_by": "Recorded by",
     "controllable_unit_history.controllable_unit_id": "Controllable Unit",
@@ -1185,6 +1190,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit.maximum_active_power": "Maksimal aktiv effekt",
     "controllable_unit.is_small": "Liten",
     "controllable_unit.accounting_point_id": "Avregningspunkt-ID",
+    "controllable_unit.additional_information": "Tilleggsinformasjon",
     "controllable_unit.recorded_at": "Registrert",
     "controllable_unit.recorded_by": "Registrert av",
     "controllable_unit_history.id": "ID",
@@ -1196,6 +1202,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit_history.maximum_active_power": "Maksimal aktiv effekt",
     "controllable_unit_history.is_small": "Liten",
     "controllable_unit_history.accounting_point_id": "Avregningspunkt-ID",
+    "controllable_unit_history.additional_information": "Tilleggsinformasjon",
     "controllable_unit_history.recorded_at": "Registrert",
     "controllable_unit_history.recorded_by": "Registrert av",
     "controllable_unit_history.controllable_unit_id": "Kontrollerbar enhet",
@@ -1852,6 +1859,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit.maximum_active_power": "Maksimal aktiv effekt",
     "controllable_unit.is_small": "Liten",
     "controllable_unit.accounting_point_id": "Avregningspunkt-ID",
+    "controllable_unit.additional_information": "Tilleggsinformasjon",
     "controllable_unit.recorded_at": "Registrert",
     "controllable_unit.recorded_by": "Registrert av",
     "controllable_unit_history.id": "ID",
@@ -1863,6 +1871,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit_history.maximum_active_power": "Maksimal aktiv effekt",
     "controllable_unit_history.is_small": "Liten",
     "controllable_unit_history.accounting_point_id": "Avregningspunkt-ID",
+    "controllable_unit_history.additional_information": "Tilleggsinformasjon",
     "controllable_unit_history.recorded_at": "Registrert",
     "controllable_unit_history.recorded_by": "Registrert av",
     "controllable_unit_history.controllable_unit_id": "Kontrollerbar eining",

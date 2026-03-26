@@ -29,6 +29,8 @@ class ControllableUnitUpdateRequest:
             production or increase consumption. Example: up.
         maximum_active_power (float | Unset): Maximum continuous active power that the controllable unit can produce or
             consume, i.e. deliver for balancing and congestion services, in kilowatts. Example: 3.5.
+        additional_information (None | str | Unset): Free text field for extra information about the controllable unit
+            if needed.
     """
 
     name: str | Unset = UNSET
@@ -36,6 +38,7 @@ class ControllableUnitUpdateRequest:
     status: ControllableUnitStatus | Unset = UNSET
     regulation_direction: ControllableUnitRegulationDirection | Unset = UNSET
     maximum_active_power: float | Unset = UNSET
+    additional_information: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -59,6 +62,12 @@ class ControllableUnitUpdateRequest:
 
         maximum_active_power = self.maximum_active_power
 
+        additional_information: None | str | Unset
+        if isinstance(self.additional_information, Unset):
+            additional_information = UNSET
+        else:
+            additional_information = self.additional_information
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
@@ -72,6 +81,8 @@ class ControllableUnitUpdateRequest:
             field_dict["regulation_direction"] = regulation_direction
         if maximum_active_power is not UNSET:
             field_dict["maximum_active_power"] = maximum_active_power
+        if additional_information is not UNSET:
+            field_dict["additional_information"] = additional_information
 
         return field_dict
 
@@ -113,12 +124,22 @@ class ControllableUnitUpdateRequest:
 
         maximum_active_power = d.pop("maximum_active_power", UNSET)
 
+        def _parse_additional_information(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        additional_information = _parse_additional_information(d.pop("additional_information", UNSET))
+
         controllable_unit_update_request = cls(
             name=name,
             start_date=start_date,
             status=status,
             regulation_direction=regulation_direction,
             maximum_active_power=maximum_active_power,
+            additional_information=additional_information,
         )
 
         controllable_unit_update_request.additional_properties = d

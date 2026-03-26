@@ -172,6 +172,17 @@ resources:
           en: Accounting point ID
           nb: Avregningspunkt-ID
           nn: Avregningspunkt-ID
+      additional_information:
+        description: >-
+          Free text field for extra information about the controllable unit if needed.
+        format: text
+        type: string
+        nullable: true
+        example: null
+        x-intl:
+          en: Additional information
+          nb: Tilleggsinformasjon
+          nn: Tilleggsinformasjon
 
 
   - id: controllable_unit_suspension

@@ -49,6 +49,7 @@ export type PermissionTarget =
   | "accounting_point_metering_grid_area.valid_to"
   | "controllable_unit"
   | "controllable_unit.accounting_point_id"
+  | "controllable_unit.additional_information"
   | "controllable_unit.business_id"
   | "controllable_unit.id"
   | "controllable_unit.is_small"
@@ -61,6 +62,7 @@ export type PermissionTarget =
   | "controllable_unit.status"
   | "controllable_unit_history"
   | "controllable_unit_history.accounting_point_id"
+  | "controllable_unit_history.additional_information"
   | "controllable_unit_history.business_id"
   | "controllable_unit_history.controllable_unit_id"
   | "controllable_unit_history.id"
@@ -725,6 +727,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "controllable_unit.additional_information",
+      operation: "read",
+    },
+    {
       target: "controllable_unit.business_id",
       operation: "read",
     },
@@ -770,6 +776,10 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.additional_information",
       operation: "read",
     },
     {
@@ -3073,6 +3083,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "controllable_unit.additional_information",
+      operation: "read",
+    },
+    {
       target: "controllable_unit.business_id",
       operation: "read",
     },
@@ -3118,6 +3132,10 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.additional_information",
       operation: "read",
     },
     {
@@ -5421,6 +5439,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "controllable_unit.additional_information",
+      operation: "read",
+    },
+    {
       target: "controllable_unit.business_id",
       operation: "read",
     },
@@ -5466,6 +5488,10 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.additional_information",
       operation: "read",
     },
     {
@@ -7773,6 +7799,18 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "controllable_unit.additional_information",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit.additional_information",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.additional_information",
+      operation: "update",
+    },
+    {
       target: "controllable_unit.business_id",
       operation: "read",
     },
@@ -7870,6 +7908,10 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.additional_information",
       operation: "read",
     },
     {
@@ -10915,6 +10957,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "controllable_unit.additional_information",
+      operation: "read",
+    },
+    {
       target: "controllable_unit.business_id",
       operation: "read",
     },
@@ -10960,6 +11006,10 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.additional_information",
       operation: "read",
     },
     {
@@ -13263,6 +13313,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "controllable_unit.additional_information",
+      operation: "read",
+    },
+    {
       target: "controllable_unit.business_id",
       operation: "read",
     },
@@ -13308,6 +13362,10 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.additional_information",
       operation: "read",
     },
     {
@@ -16017,6 +16075,18 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "controllable_unit.additional_information",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit.additional_information",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.additional_information",
+      operation: "update",
+    },
+    {
       target: "controllable_unit.business_id",
       operation: "read",
     },
@@ -16114,6 +16184,10 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.additional_information",
       operation: "read",
     },
     {
@@ -18904,6 +18978,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "controllable_unit.additional_information",
+      operation: "read",
+    },
+    {
       target: "controllable_unit.business_id",
       operation: "read",
     },
@@ -18949,6 +19027,10 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_history.additional_information",
       operation: "read",
     },
     {

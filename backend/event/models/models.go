@@ -53,34 +53,36 @@ type ApiAccountingPointMeteringGridArea struct {
 }
 
 type ApiControllableUnit struct {
-	ID                  int
-	BusinessID          string
-	Name                string
-	StartDate           pgtype.Date
-	Status              string
-	RegulationDirection string
-	MaximumActivePower  float64
-	IsSmall             bool
-	AccountingPointID   int
-	RecordedBy          int
-	RecordedAt          pgtype.Timestamptz
+	ID                    int
+	BusinessID            string
+	Name                  string
+	StartDate             pgtype.Date
+	Status                string
+	RegulationDirection   string
+	MaximumActivePower    float64
+	IsSmall               bool
+	AccountingPointID     int
+	AdditionalInformation *string
+	RecordedBy            int
+	RecordedAt            pgtype.Timestamptz
 }
 
 type ApiControllableUnitHistory struct {
-	ControllableUnitID  int
-	ID                  int
-	BusinessID          string
-	Name                string
-	StartDate           pgtype.Date
-	Status              string
-	RegulationDirection string
-	MaximumActivePower  float64
-	IsSmall             bool
-	AccountingPointID   int
-	RecordedBy          int
-	RecordedAt          pgtype.Timestamptz
-	ReplacedBy          *int
-	ReplacedAt          pgtype.Timestamptz
+	ControllableUnitID    int
+	ID                    int
+	BusinessID            string
+	Name                  string
+	StartDate             pgtype.Date
+	Status                string
+	RegulationDirection   string
+	MaximumActivePower    float64
+	IsSmall               bool
+	AccountingPointID     int
+	AdditionalInformation *string
+	RecordedBy            int
+	RecordedAt            pgtype.Timestamptz
+	ReplacedBy            *int
+	ReplacedAt            pgtype.Timestamptz
 }
 
 type ApiControllableUnitServiceProvider struct {
