@@ -110,6 +110,8 @@ DROP TRIGGER IF EXISTS
 controllable_unit_grid_validation_status_approved ON flex.controllable_unit;
 DROP FUNCTION IF EXISTS
 controllable_unit_grid_validation_status_approved();
+DROP TRIGGER IF EXISTS
+controllable_unit_check_timestamp_on_status_update ON flex.controllable_unit;
 
 
 -- changeset flex:controllable-unit-grid-validation-drop-columns runOnChange:false endDelimiter:--
