@@ -15,9 +15,8 @@ type controllableUnitLookupRequest struct {
 // technicalResource represents technical resource information as part of the
 // data returned in the controllable unit lookup operation.
 type technicalResource struct {
-	ID      int     `json:"id"`
-	Name    string  `json:"name"`
-	Details *string `json:"details,omitempty"`
+	ID   int    `json:"id"`
+	Name string `json:"name"`
 }
 
 // accountingPoint represents accounting point information as part of the

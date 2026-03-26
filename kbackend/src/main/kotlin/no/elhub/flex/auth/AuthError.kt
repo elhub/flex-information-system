@@ -1,9 +1,7 @@
 package no.elhub.flex.auth
 
-import no.elhub.flex.util.AppError
-
 /** Errors that can occur during authentication and authorisation. */
-sealed class AuthError(message: String) : AppError(message)
+sealed class AuthError(val message: String)
 
 /** The request is missing an `Authorization: Bearer` header. */
 data object MissingTokenError : AuthError("Missing Authorization header")

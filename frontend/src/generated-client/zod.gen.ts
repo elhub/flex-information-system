@@ -28,6 +28,55 @@ export const zAuthScope = z.enum([
 ]);
 
 /**
+ * Resource category classification. Derived from technologies.
+ */
+export const zCategory = z.enum([
+  "consumption",
+  "production",
+  "energy_storage",
+]);
+
+/**
+ * Type of device for technical resources.
+ */
+export const zDeviceType = z.enum([
+  "inverter",
+  "boiler",
+  "water_heater",
+  "socket",
+  "hvac",
+  "ev_charging_device",
+  "energy_management_system",
+  "other",
+]);
+
+/**
+ * Technology classification using ltree path notation. Technologies are hierarchical (e.g., hydropower.pumped, hvac.heat_pump). Use the most specific technology applicable to the technical resource.
+ */
+export const zTechnology = z.enum([
+  "hydropower",
+  "hydropower.pumped",
+  "hydropower.run_of_river",
+  "heat_power_plant",
+  "heat_power_plant.chp",
+  "solar",
+  "wind",
+  "backup_generator",
+  "hvac",
+  "hvac.heat",
+  "hvac.heat_pump",
+  "lighting",
+  "water_heater",
+  "boiler",
+  "ev_charging_device",
+  "ev_charging_device.v2g",
+  "battery",
+  "other.consumption",
+  "other.production",
+  "other.energy_storage",
+]);
+
+/**
  * Request schema for controllable unit lookup operations
  */
 export const zControllableUnitLookupRequest = z.object({
@@ -64,7 +113,6 @@ export const zControllableUnitLookup = z.object({
         z.object({
           id: z.coerce.number(),
           name: z.string(),
-          details: z.string().optional(),
         }),
       ),
     }),
@@ -133,17 +181,6 @@ export const zControllableUnitRegulationDirection = z.enum([
   "up",
   "down",
   "both",
-]);
-
-/**
- * The grid validation status of the controllable unit.
- */
-export const zControllableUnitGridValidationStatus = z.enum([
-  "pending",
-  "in_progress",
-  "incomplete_information",
-  "validated",
-  "validation_failed",
 ]);
 
 /**
@@ -274,6 +311,15 @@ export const zPartyStatus = z.enum([
 ]);
 
 /**
+ * The type of business identifier used for the device.
+ */
+export const zTechnicalResourceBusinessIdType = z.enum([
+  "serial_number",
+  "mac",
+  "other",
+]);
+
+/**
  * The direction of the effect on the balance that the BRP takes responsibility for.
  */
 export const zAccountingPointBalanceResponsiblePartyEnergyDirection = z.enum([
@@ -391,19 +437,7 @@ export const zControllableUnitUpdateRequest = z.object({
   status: zControllableUnitStatus.optional(),
   regulation_direction: zControllableUnitRegulationDirection.optional(),
   maximum_active_power: z.coerce.number().gte(0).lte(999999.999).optional(),
-  minimum_duration: z.coerce.number().gte(0).optional(),
-  maximum_duration: z.coerce.number().gte(0).optional(),
-  recovery_duration: z.coerce.number().gte(0).optional(),
-  ramp_rate: z.coerce.number().gte(0.001).optional(),
-  grid_node_id: z
-    .string()
-    .regex(
-      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
-    )
-    .optional(),
-  grid_validation_status: zControllableUnitGridValidationStatus.optional(),
-  grid_validation_notes: z.string().max(512).optional(),
-  validated_at: z.iso.datetime({ offset: true }).optional(),
+  additional_information: z.string().optional(),
 });
 
 /**
@@ -415,20 +449,8 @@ export const zControllableUnitCreateRequest = z.object({
   status: zControllableUnitStatus.optional(),
   regulation_direction: zControllableUnitRegulationDirection,
   maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
-  minimum_duration: z.coerce.number().gte(0).optional(),
-  maximum_duration: z.coerce.number().gte(0).optional(),
-  recovery_duration: z.coerce.number().gte(0).optional(),
-  ramp_rate: z.coerce.number().gte(0.001).optional(),
   accounting_point_id: z.coerce.number(),
-  grid_node_id: z
-    .string()
-    .regex(
-      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
-    )
-    .optional(),
-  grid_validation_status: zControllableUnitGridValidationStatus.optional(),
-  grid_validation_notes: z.string().max(512).optional(),
-  validated_at: z.iso.datetime({ offset: true }).optional(),
+  additional_information: z.string().optional(),
 });
 
 /**
@@ -448,20 +470,8 @@ export const zControllableUnit = z.object({
   regulation_direction: zControllableUnitRegulationDirection,
   maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
   is_small: z.boolean().readonly(),
-  minimum_duration: z.coerce.number().gte(0).optional(),
-  maximum_duration: z.coerce.number().gte(0).optional(),
-  recovery_duration: z.coerce.number().gte(0).optional(),
-  ramp_rate: z.coerce.number().gte(0.001).optional(),
   accounting_point_id: z.coerce.number(),
-  grid_node_id: z
-    .string()
-    .regex(
-      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
-    )
-    .optional(),
-  grid_validation_status: zControllableUnitGridValidationStatus,
-  grid_validation_notes: z.string().max(512).optional(),
-  validated_at: z.iso.datetime({ offset: true }).optional(),
+  additional_information: z.string().optional(),
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
 });
@@ -995,7 +1005,14 @@ export const zIdentity = z.object({
  */
 export const zTechnicalResourceUpdateRequest = z.object({
   name: z.string().optional(),
-  details: z.string().max(1024).optional(),
+  technology: z.array(zTechnology).min(1).optional(),
+  maximum_active_power: z.coerce.number().gte(0).lte(999999.999).optional(),
+  device_type: zDeviceType.optional(),
+  make: z.string().max(128).optional(),
+  model: z.string().max(128).optional(),
+  business_id: z.string().max(256).optional(),
+  business_id_type: zTechnicalResourceBusinessIdType.nullish(),
+  additional_information: z.string().optional(),
 });
 
 /**
@@ -1004,7 +1021,14 @@ export const zTechnicalResourceUpdateRequest = z.object({
 export const zTechnicalResourceCreateRequest = z.object({
   name: z.string(),
   controllable_unit_id: z.coerce.number(),
-  details: z.string().max(1024).optional(),
+  technology: z.array(zTechnology).min(1),
+  maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
+  device_type: zDeviceType,
+  make: z.string().max(128).optional(),
+  model: z.string().max(128).optional(),
+  business_id: z.string().max(256).optional(),
+  business_id_type: zTechnicalResourceBusinessIdType.nullish(),
+  additional_information: z.string().optional(),
 });
 
 /**
@@ -1014,7 +1038,15 @@ export const zTechnicalResource = z.object({
   id: z.coerce.number().readonly(),
   name: z.string(),
   controllable_unit_id: z.coerce.number(),
-  details: z.string().max(1024).optional(),
+  technology: z.array(zTechnology).min(1),
+  category: z.array(zCategory).readonly(),
+  maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
+  device_type: zDeviceType,
+  make: z.string().max(128).optional(),
+  model: z.string().max(128).optional(),
+  business_id: z.string().max(256).optional(),
+  business_id_type: zTechnicalResourceBusinessIdType.nullish(),
+  additional_information: z.string().optional(),
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
 });
@@ -1735,20 +1767,8 @@ export const zControllableUnitWritable = z.object({
   status: zControllableUnitStatus,
   regulation_direction: zControllableUnitRegulationDirection,
   maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
-  minimum_duration: z.coerce.number().gte(0).optional(),
-  maximum_duration: z.coerce.number().gte(0).optional(),
-  recovery_duration: z.coerce.number().gte(0).optional(),
-  ramp_rate: z.coerce.number().gte(0.001).optional(),
   accounting_point_id: z.coerce.number(),
-  grid_node_id: z
-    .string()
-    .regex(
-      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
-    )
-    .optional(),
-  grid_validation_status: zControllableUnitGridValidationStatus,
-  grid_validation_notes: z.string().max(512).optional(),
-  validated_at: z.iso.datetime({ offset: true }).optional(),
+  additional_information: z.string().optional(),
 });
 
 /**
@@ -1932,7 +1952,14 @@ export const zPartyMembershipWritable = z.object({
 export const zTechnicalResourceWritable = z.object({
   name: z.string(),
   controllable_unit_id: z.coerce.number(),
-  details: z.string().max(1024).optional(),
+  technology: z.array(zTechnology).min(1),
+  maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
+  device_type: zDeviceType,
+  make: z.string().max(128).optional(),
+  model: z.string().max(128).optional(),
+  business_id: z.string().max(256).optional(),
+  business_id_type: zTechnicalResourceBusinessIdType.nullish(),
+  additional_information: z.string().optional(),
 });
 
 /**

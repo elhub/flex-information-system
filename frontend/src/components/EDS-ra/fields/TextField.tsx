@@ -12,6 +12,7 @@ export const TextField = ({
   emptyText,
   label,
   tooltip,
+  unit,
   textSize = "small",
 }: TextFieldProps) => {
   const record = useRecordContext();
@@ -31,6 +32,7 @@ export const TextField = ({
       source={source}
       label={label}
       tooltip={tooltip}
+      unit={unit}
     >
       {content}
     </BaseField>

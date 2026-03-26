@@ -11,7 +11,6 @@ from flex.models import (
     ControllableUnitServiceProviderCreateRequest,
     ControllableUnitRegulationDirection,
     ControllableUnitStatus,
-    ControllableUnitGridValidationStatus,
     ServiceProvidingGroupCreateRequest,
     ServiceProvidingGroupResponse,
     ServiceProvidingGroupBiddingZone,
@@ -23,6 +22,8 @@ from flex.models import (
     TechnicalResourceResponse,
     ErrorMessage,
     EmptyObject,
+    Technology,
+    DeviceType,
 )
 from flex.api.controllable_unit import (
     create_controllable_unit,
@@ -157,6 +158,9 @@ def test_controllable_unit_fiso(sts):
         body=TechnicalResourceCreateRequest(
             name="TEST-TR-FOR-ACTIVATION",
             controllable_unit_id=cast(int, cu.id),
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=1.0,
+            device_type=DeviceType.OTHER,
         ),
     )
     assert isinstance(tr, TechnicalResourceResponse)
@@ -166,52 +170,9 @@ def test_controllable_unit_fiso(sts):
         id=cast(int, cu.id),
         body=ControllableUnitUpdateRequest(
             status=ControllableUnitStatus.ACTIVE,
-            validated_at=None,  # resetting for next test below
         ),
     )
     assert not (isinstance(u, ErrorMessage))
-
-    # RLS: CU-VAL002
-    # check validation time is required when status is validated
-    u = update_controllable_unit.sync(
-        client=client_fiso,
-        id=cast(int, cu.id),
-        body=ControllableUnitUpdateRequest(
-            grid_validation_status=ControllableUnitGridValidationStatus.VALIDATED,
-        ),
-    )
-    assert isinstance(u, ErrorMessage)
-
-    u = update_controllable_unit.sync(
-        client=client_fiso,
-        id=cast(int, cu.id),
-        body=ControllableUnitUpdateRequest(
-            grid_validation_status=ControllableUnitGridValidationStatus.VALIDATED,
-            validated_at=datetime.datetime.fromisoformat("2024-01-01T08:00:00"),
-        ),
-    )
-    assert not isinstance(u, ErrorMessage)
-
-    # RLS: CU-VAL003
-    # validation failed requires timestamp reset
-    u = update_controllable_unit.sync(
-        client=client_fiso,
-        id=cast(int, cu.id),
-        body=ControllableUnitUpdateRequest(
-            grid_validation_status=ControllableUnitGridValidationStatus.VALIDATION_FAILED,
-        ),
-    )
-    assert isinstance(u, ErrorMessage)
-
-    u = update_controllable_unit.sync(
-        client=client_fiso,
-        id=cast(int, cu.id),
-        body=ControllableUnitUpdateRequest(
-            grid_validation_status=ControllableUnitGridValidationStatus.VALIDATION_FAILED,
-            validated_at=None,
-        ),
-    )
-    assert not isinstance(u, ErrorMessage)
 
 
 def test_controllable_unit_so(sts):
@@ -242,27 +203,6 @@ def test_controllable_unit_so(sts):
     # CUs due to SPG grid prequalification targeting them, opening visibility of
     # what is in the SPG
     assert len(cus) >= n_cus_so
-
-    # check SO can update the last validation of a CU
-    cu = cus[0]
-    u = update_controllable_unit.sync(
-        client=client_so,
-        id=cast(int, cu.id),
-        body=ControllableUnitUpdateRequest(
-            validated_at=datetime.datetime.fromisoformat("2024-01-01T08:00:00"),
-        ),
-    )
-    assert not (isinstance(u, ErrorMessage))
-
-    # but the other SO cannot
-    u = update_controllable_unit.sync(
-        client=client_iso,
-        id=cast(int, cu.id),
-        body=ControllableUnitUpdateRequest(
-            validated_at=datetime.datetime.fromisoformat("2024-04-04T08:00:00"),
-        ),
-    )
-    assert isinstance(u, ErrorMessage)
 
     # RLS: CU-SO002
 
@@ -544,7 +484,6 @@ def test_controllable_unit_sp(sts):
             accounting_point_id=1002,
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
             maximum_active_power=3.5,
-            grid_node_id="92a7d3bf-fee5-4abc-9130-75c8067ea78c",
         ),
     )
     assert isinstance(cu, ControllableUnitResponse)
@@ -656,6 +595,9 @@ def test_controllable_unit_sp(sts):
         body=TechnicalResourceCreateRequest(
             name="TEST-TR-FOR-ACTIVATION",
             controllable_unit_id=cast(int, cu.id),
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=1.0,
+            device_type=DeviceType.OTHER,
         ),
     )
     assert isinstance(tr, TechnicalResourceResponse)
@@ -709,30 +651,6 @@ def test_controllable_unit_sp(sts):
         )
         assert isinstance(hist_sp1, list)
         assert len(hist_sp1) > 0
-
-    # verify that CU status is changed to "pending" when a CU is updated by SP
-    # must first set it to a state where it will be changed
-    u = update_controllable_unit.sync(
-        client=client_fiso,
-        id=cast(int, cu.id),
-        body=ControllableUnitUpdateRequest(
-            grid_validation_status=ControllableUnitGridValidationStatus.VALIDATION_FAILED,
-        ),
-    )
-    assert not (isinstance(u, ErrorMessage))
-    assert isinstance(u, ControllableUnitResponse)
-    assert (
-        u.grid_validation_status
-        == ControllableUnitGridValidationStatus.VALIDATION_FAILED
-    )
-
-    u = update_controllable_unit.sync(
-        client=client_sp2,
-        id=cast(int, cu.id),
-        body=ControllableUnitUpdateRequest(maximum_active_power=500),
-    )
-    assert isinstance(u, ControllableUnitResponse)
-    assert u.grid_validation_status == ControllableUnitGridValidationStatus.PENDING
 
 
 def test_rla_absence(sts):

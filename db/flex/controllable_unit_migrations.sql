@@ -82,30 +82,6 @@ ADD CONSTRAINT controllable_unit_status_check CHECK (
     )
 );
 
--- changeset flex:controllable-unit-grid-validation-status-approved-function runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION controllable_unit_grid_validation_status_approved()
-RETURNS trigger
-SECURITY INVOKER
-LANGUAGE plpgsql
-AS
-$$
-BEGIN
-    NEW.validated_at := current_timestamp;
-    RETURN NEW;
-END;
-$$;
-
--- changeset flex:controllable-unit-grid-validation-status-approved-trigger runOnChange:true endDelimiter:--
-CREATE OR REPLACE TRIGGER controllable_unit_grid_validation_status_approved
-BEFORE UPDATE OF grid_validation_status ON controllable_unit
-FOR EACH ROW
-WHEN (
-    OLD.grid_validation_status IS DISTINCT FROM NEW.grid_validation_status -- noqa
-    AND NEW.grid_validation_status = 'validated' -- noqa
-    AND OLD.validated_at IS NULL AND NEW.validated_at IS NULL -- noqa
-)
-EXECUTE FUNCTION controllable_unit_grid_validation_status_approved();
-
 -- changeset flex:controllable-unit-maximum-active-power-rename runOnChange:false endDelimiter:;
 --preconditions onFail:MARK_RAN
 --precondition-sql-check expectedResult:1 SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = 'flex' AND table_name = 'controllable_unit' AND column_name = 'maximum_available_capacity'
@@ -125,21 +101,51 @@ TO controllable_unit_maximum_active_power_check;
 ALTER TABLE flex.controllable_unit
 ENABLE TRIGGER USER;
 
--- changeset flex:controllable-unit-grid-validation-status-reset-trigger runOnChange:true endDelimiter:--
-CREATE OR REPLACE TRIGGER controllable_unit_grid_validation_status_reset
-BEFORE UPDATE OF
-regulation_direction,
-maximum_active_power,
-minimum_duration,
-maximum_duration,
-recovery_duration,
-ramp_rate,
-accounting_point_id
-ON controllable_unit
-FOR EACH ROW
-WHEN (
-    OLD.grid_validation_status IS NOT DISTINCT FROM NEW.grid_validation_status -- noqa
-    AND NEW.grid_validation_status not in ('pending', 'in_progress','validated') -- noqa
-    AND current_user = 'flex_service_provider' -- noqa
-)
-EXECUTE FUNCTION controllable_unit_grid_validation_status_reset();
+-- changeset flex:controllable-unit-grid-validation-status-reset-trigger-drop runOnChange:true endDelimiter:--
+DROP TRIGGER IF EXISTS
+controllable_unit_grid_validation_status_reset ON flex.controllable_unit;
+DROP FUNCTION IF EXISTS
+controllable_unit_grid_validation_status_reset();
+DROP TRIGGER IF EXISTS
+controllable_unit_grid_validation_status_approved ON flex.controllable_unit;
+DROP FUNCTION IF EXISTS
+controllable_unit_grid_validation_status_approved();
+DROP TRIGGER IF EXISTS
+controllable_unit_check_timestamp_on_status_update ON flex.controllable_unit;
+
+
+-- changeset flex:controllable-unit-grid-validation-drop-columns runOnChange:false endDelimiter:--
+ALTER TABLE flex.controllable_unit
+DROP COLUMN IF EXISTS grid_validation_status CASCADE,
+DROP COLUMN IF EXISTS grid_validation_notes CASCADE,
+DROP COLUMN IF EXISTS validated_at CASCADE;
+ALTER TABLE flex.controllable_unit_history
+DROP COLUMN IF EXISTS grid_validation_status,
+DROP COLUMN IF EXISTS grid_validation_notes,
+DROP COLUMN IF EXISTS validated_at;
+
+
+-- changeset flex:controllable-unit-ramp-rate-minimum-duration-maximum-duration-recovery-duration-drop runOnChange:false endDelimiter:--
+ALTER TABLE flex.controllable_unit
+DROP COLUMN IF EXISTS ramp_rate CASCADE,
+DROP COLUMN IF EXISTS minimum_duration CASCADE,
+DROP COLUMN IF EXISTS maximum_duration CASCADE,
+DROP COLUMN IF EXISTS recovery_duration CASCADE;
+ALTER TABLE flex.controllable_unit_history
+DROP COLUMN IF EXISTS ramp_rate,
+DROP COLUMN IF EXISTS minimum_duration,
+DROP COLUMN IF EXISTS maximum_duration,
+DROP COLUMN IF EXISTS recovery_duration;
+
+
+-- changeset flex:controllable-unit-grid-node-id-drop runOnChange:false endDelimiter:--
+ALTER TABLE flex.controllable_unit
+DROP COLUMN IF EXISTS grid_node_id CASCADE;
+ALTER TABLE flex.controllable_unit_history
+DROP COLUMN IF EXISTS grid_node_id;
+
+-- changeset flex:controllable-unit-additional-information-add runOnChange:false endDelimiter:--
+ALTER TABLE flex.controllable_unit
+ADD COLUMN IF NOT EXISTS additional_information text;
+ALTER TABLE flex.controllable_unit_history
+ADD COLUMN IF NOT EXISTS additional_information text;

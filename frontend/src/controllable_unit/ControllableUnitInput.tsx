@@ -15,6 +15,7 @@ import {
   DateInput,
   UnitInput,
   FormToolbar,
+  TextAreaInput,
 } from "../components/EDS-ra/inputs";
 import { formatDateToMidnightISO } from "../components/datetime";
 
@@ -77,6 +78,12 @@ export const ControllableUnitInput = () => {
             description
             tooltip={false}
           />
+          <TextAreaInput
+            {...fields.additional_information}
+            rows={5}
+            description
+            tooltip={false}
+          />
         </FlexDiv>
 
         <Accordion border>
@@ -98,62 +105,6 @@ export const ControllableUnitInput = () => {
                 <EnumInput
                   {...fields.regulation_direction}
                   enumKey="controllable_unit.regulation_direction"
-                  description
-                  tooltip={false}
-                />
-                <TextInput
-                  {...fields.minimum_duration}
-                  type="number"
-                  description
-                  tooltip={false}
-                />
-                <TextInput
-                  {...fields.maximum_duration}
-                  type="number"
-                  description
-                  tooltip={false}
-                />
-                <TextInput
-                  {...fields.recovery_duration}
-                  type="number"
-                  description
-                  tooltip={false}
-                />
-                <TextInput
-                  {...fields.ramp_rate}
-                  type="number"
-                  description
-                  tooltip={false}
-                />
-              </FlexDiv>
-            </Accordion.Content>
-          </Accordion.Item>
-
-          <Accordion.Item>
-            <Accordion.Header>Grid Validation</Accordion.Header>
-            <Accordion.Content>
-              <FlexDiv
-                style={{ gap: "var(--eds-size-3)", flexDirection: "column" }}
-              >
-                <TextInput
-                  {...fields.grid_node_id}
-                  description
-                  tooltip={false}
-                />
-                <EnumInput
-                  {...fields.grid_validation_status}
-                  enumKey="controllable_unit.grid_validation_status"
-                  description
-                  tooltip={false}
-                />
-                <TextInput
-                  {...fields.grid_validation_notes}
-                  description
-                  tooltip={false}
-                />
-                <DateInput
-                  {...fields.validated_at}
-                  outputFormat="date-time"
                   description
                   tooltip={false}
                 />

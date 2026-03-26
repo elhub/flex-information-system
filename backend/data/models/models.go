@@ -53,50 +53,36 @@ type ApiAccountingPointMeteringGridArea struct {
 }
 
 type ApiControllableUnit struct {
-	ID                   int
-	BusinessID           string
-	Name                 string
-	StartDate            pgtype.Date
-	Status               string
-	RegulationDirection  string
-	MaximumActivePower   float64
-	IsSmall              bool
-	MinimumDuration      *int
-	MaximumDuration      *int
-	RecoveryDuration     *int
-	RampRate             *float64
-	AccountingPointID    int
-	GridNodeID           *string
-	GridValidationStatus string
-	GridValidationNotes  *string
-	ValidatedAt          pgtype.Timestamptz
-	RecordedBy           int
-	RecordedAt           pgtype.Timestamptz
+	ID                    int
+	BusinessID            string
+	Name                  string
+	StartDate             pgtype.Date
+	Status                string
+	RegulationDirection   string
+	MaximumActivePower    float64
+	IsSmall               bool
+	AccountingPointID     int
+	AdditionalInformation *string
+	RecordedBy            int
+	RecordedAt            pgtype.Timestamptz
 }
 
 type ApiControllableUnitHistory struct {
-	ControllableUnitID   int
-	ID                   int
-	BusinessID           string
-	Name                 string
-	StartDate            pgtype.Date
-	Status               string
-	RegulationDirection  string
-	MaximumActivePower   float64
-	IsSmall              bool
-	MinimumDuration      *int
-	MaximumDuration      *int
-	RecoveryDuration     *int
-	RampRate             *float64
-	AccountingPointID    int
-	GridNodeID           *string
-	GridValidationStatus string
-	GridValidationNotes  *string
-	ValidatedAt          pgtype.Timestamptz
-	RecordedBy           int
-	RecordedAt           pgtype.Timestamptz
-	ReplacedBy           *int
-	ReplacedAt           pgtype.Timestamptz
+	ControllableUnitID    int
+	ID                    int
+	BusinessID            string
+	Name                  string
+	StartDate             pgtype.Date
+	Status                string
+	RegulationDirection   string
+	MaximumActivePower    float64
+	IsSmall               bool
+	AccountingPointID     int
+	AdditionalInformation *string
+	RecordedBy            int
+	RecordedAt            pgtype.Timestamptz
+	ReplacedBy            *int
+	ReplacedAt            pgtype.Timestamptz
 }
 
 type ApiControllableUnitServiceProvider struct {
@@ -662,22 +648,38 @@ type ApiSystemOperatorProductTypeHistory struct {
 }
 
 type ApiTechnicalResource struct {
-	ID                 int
-	Name               string
-	ControllableUnitID int
-	Details            *string
-	RecordedBy         int
-	RecordedAt         pgtype.Timestamptz
+	ID                    int
+	Name                  string
+	ControllableUnitID    int
+	Technology            []string
+	Category              []string
+	MaximumActivePower    float64
+	DeviceType            string
+	Make                  *string
+	Model                 *string
+	BusinessID            *string
+	BusinessIDType        *string
+	AdditionalInformation *string
+	RecordedBy            int
+	RecordedAt            pgtype.Timestamptz
 }
 
 type ApiTechnicalResourceHistory struct {
-	TechnicalResourceID int
-	ID                  int
-	Name                string
-	ControllableUnitID  int
-	Details             *string
-	RecordedBy          int
-	RecordedAt          pgtype.Timestamptz
-	ReplacedBy          *int
-	ReplacedAt          pgtype.Timestamptz
+	TechnicalResourceID   int
+	ID                    int
+	Name                  string
+	ControllableUnitID    int
+	Technology            []string
+	Category              []string
+	MaximumActivePower    float64
+	DeviceType            string
+	Make                  *string
+	Model                 *string
+	BusinessID            *string
+	BusinessIDType        *string
+	AdditionalInformation *string
+	RecordedBy            int
+	RecordedAt            pgtype.Timestamptz
+	ReplacedBy            *int
+	ReplacedAt            pgtype.Timestamptz
 }

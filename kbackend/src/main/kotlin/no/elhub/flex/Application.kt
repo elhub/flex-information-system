@@ -10,14 +10,7 @@ import no.elhub.flex.config.configureLogging
 import no.elhub.flex.config.configureMonitoring
 import no.elhub.flex.config.configureRouting
 import no.elhub.flex.config.configureSerialization
-import no.elhub.flex.controllableunit.db.ControllableUnitRepository
-import no.elhub.flex.controllableunit.db.ControllableUnitRepositoryImpl
-import no.elhub.flex.controllableunit.lookup.ControllableUnitLookup
-import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterHttpService
-import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterService
-import org.koin.dsl.module
 import org.koin.environmentProperties
-import org.koin.fileProperties
 import org.koin.ksp.generated.defaultModule
 import org.koin.ktor.plugin.Koin
 import org.koin.logger.slf4jLogger

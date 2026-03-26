@@ -155,56 +155,6 @@ resources:
           en: Small
           nb: Liten
           nn: Liten
-      minimum_duration:
-        description: >-
-          The minimum activation duration in seconds.
-        format: bigint
-        type: integer
-        minimum: 0
-        nullable: true
-        example: 30
-        x-intl:
-          en: Minimum duration
-          nb: Minimumsvarighet
-          nn: Minimumsvarigheit
-      maximum_duration:
-        description: >-
-          The maximum activation duration in seconds.
-        format: bigint
-        type: integer
-        minimum: 0
-        nullable: true
-        example: 1200
-        x-intl:
-          en: Maximum duration
-          nb: Maksimumsvarighet
-          nn: Maksimumsvarigheit
-      recovery_duration:
-        description: >-
-          The minimum recovery duration between activations in seconds.
-        format: bigint
-        type: integer
-        minimum: 0
-        nullable: true
-        example: 3600
-        x-intl:
-          en: Recovery duration
-          nb: Gjenopprettingsvarighet
-          nn: Gjenopprettingsvarigheit
-      ramp_rate:
-        description: >-
-          The rate of power per unit of time to reach empty or full power
-          for the controllable unit, in kilowatts per minute.
-        type: number
-        format: decimal
-        minimum: 0.001
-        multipleOf: 0.001
-        nullable: true
-        example: 0.1
-        x-intl:
-          en: Ramp rate
-          nb: Ramping
-          nn: Ramping
       accounting_point_id:
         description: >-
           Reference to the accounting point that the controllable unit is
@@ -222,80 +172,18 @@ resources:
           en: Accounting point ID
           nb: Avregningspunkt-ID
           nn: Avregningspunkt-ID
-      grid_node_id:
+      additional_information:
         description: >-
-          Reference to the node that the controllable unit is connected to.
+          Free text field for extra information about the controllable unit if needed.
         format: text
         type: string
-        # yamllint disable-line rule:line-length
-        pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$'
-        nullable: true
-        example: '53919b79-876f-4dad-8bde-b29368367604'
-        x-details: >-
-          This field is controlled by the system operator, but can be set by the
-          service provider when creating the controllable unit if they have the
-          information.
-        x-intl:
-          en: Grid node ID
-          nb: Nettnode-ID
-          nn: Nettnode-ID
-      grid_validation_status:
-        description: The grid validation status of the controllable unit.
-        format: text
-        type: string
-        default: pending
-        enum:
-          - id: pending
-            x-intl:
-              en: Pending
-              nb: Venter
-              nn: Ventar
-          - id: in_progress
-            x-intl:
-              en: In progress
-              nb: Under behandling
-              nn: Under behandling
-          - id: incomplete_information
-            x-intl:
-              en: Incomplete information
-              nb: Ufullstendig informasjon
-              nn: Ufullstendig informasjon
-          - id: validated
-            x-intl:
-              en: Validated
-              nb: Validert
-              nn: Validert
-          - id: validation_failed
-            x-intl:
-              en: Validation failed
-              nb: Feilet validering
-              nn: Feila validering
-        example: validated
-        x-intl:
-          en: Grid validation status
-          nb: Nettvalideringsstatus
-          nn: Nettvalideringsstatus
-      grid_validation_notes:
-        description: Free text notes on the current grid validation status.
-        format: text
-        type: string
-        maxLength: 512
         nullable: true
         example: null
         x-intl:
-          en: Grid validation notes
-          nb: Nettvalideringsnotater
-          nn: Nettvalideringsnotat
-      validated_at:
-        description: When the controllable unit was last validated.
-        format: date-time
-        type: string
-        nullable: true
-        example: '2022-08-08T12:00:00+02'
-        x-intl:
-          en: Validated at
-          nb: Validert
-          nn: Validert
+          en: Additional information
+          nb: Tilleggsinformasjon
+          nn: Tilleggsinformasjon
+
 
   - id: controllable_unit_suspension
     acronym: CUS
@@ -1682,20 +1570,136 @@ resources:
           en: Controllable Unit
           nb: Kontrollerbar enhet
           nn: Kontrollerbar eining
-      details:
+      technology:
         description: >-
-          Free text details about the technical resource.
+          Technologies of the technical resource using ltree path notation.
+          Multiple technologies can be specified for hybrid resources (e.g., solar + battery).
+        type: array
+        items:
+          $ref: "#/components/schemas/technology"
+        minItems: 1
+        example: ['solar', 'battery']
+        x-intl:
+          en: Technology
+          nb: Teknologi
+          nn: Teknologi
+      category:
+        description: >-
+          Categories derived from the technologies of the technical resource.
+          Automatically computed based on the selected technologies.
+        type: array
+        items:
+          $ref: "#/components/schemas/category"
+        x-no-update: true
+        readOnly: true
+        example: ['production', 'energy_storage']
+        x-intl:
+          en: Category
+          nb: Kategori
+          nn: Kategori
+      maximum_active_power:
+        description: >-
+          Maximum continuous active power (rated power) of the technical resource in kilowatts.
+        format: decimal
+        type: number
+        minimum: 0
+        maximum: 999999.999
+        required: true
+        nullable: false
+        multipleOf: 0.001
+        example: 120.0
+        x-intl:
+          en: Maximum active power
+          nb: Maksimal aktiv effekt
+          nn: Maksimal aktiv effekt
+      device_type:
+        description: >-
+          The type of device.
+        allOf:
+          - $ref: "#/components/schemas/device_type"
+        nullable: false
+        required: true
+        example: 'inverter'
+        x-intl:
+          en: Device type
+          nb: Enhetstype
+          nn: Einingstype
+      make:
+        description: >-
+          The manufacturer of the device. Required if model or business_id is provided.
         format: text
         type: string
-        maxLength: 1024
+        maxLength: 128
         nullable: true
-        example: |-
-          Make: ACME
-          Model: Car Charger 3000
+        example: 'SolarEdge'
+        x-details: >-
+          Must be provided if model or business_id is specified.
         x-intl:
-          en: Details
-          nb: Detaljer
-          nn: Detaljar
+          en: Make
+          nb: Produsent
+          nn: Produsent
+      model:
+        description: >-
+          The model of the device.
+        format: text
+        type: string
+        maxLength: 128
+        nullable: true
+        example: 'SE10K-RWS'
+        x-intl:
+          en: Model
+          nb: Modell
+          nn: Modell
+      business_id:
+        description: >-
+          Business identifier of the device, such as a serial number or MAC address.
+        format: text
+        type: string
+        maxLength: 256
+        nullable: true
+        example: 'SE10K123456789'
+        x-intl:
+          en: Business ID
+          nb: Forretnings-ID
+          nn: Forretnings-ID
+      business_id_type:
+        description: >-
+          The type of business identifier used for the device.
+        format: text
+        type: string
+        nullable: true
+        enum:
+          - id: serial_number
+            x-intl:
+              en: Serial number
+              nb: Serienummer
+              nn: Serienummer
+          - id: mac
+            x-intl:
+              en: MAC address
+              nb: MAC-adresse
+              nn: MAC-adresse
+          - id: other
+            x-intl:
+              en: Other
+              nb: Annet
+              nn: Anna
+        example: 'serial_number'
+        x-intl:
+          en: Business ID type
+          nb: Forretnings-ID-type
+          nn: Forretnings-ID-type
+      additional_information:
+        description: >-
+          Free text field for extra information about the technical resource if needed.
+        format: text
+        type: string
+        nullable: true
+        example: null
+        x-intl:
+          en: Additional information
+          nb: Tilleggsinformasjon
+          nn: Tilleggsinformasjon
 
   - id: event
     acronym: EVENT

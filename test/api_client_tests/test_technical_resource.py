@@ -6,22 +6,21 @@ from flex.models import (
     ErrorMessage,
     EmptyObject,
     ControllableUnitCreateRequest,
-    ControllableUnitUpdateRequest,
     ControllableUnitRegulationDirection,
     ControllableUnitResponse,
     ControllableUnitServiceProviderCreateRequest,
     ControllableUnitServiceProviderResponse,
-    ControllableUnitGridValidationStatus,
     TechnicalResourceResponse,
     TechnicalResourceCreateRequest,
     TechnicalResourceUpdateRequest,
     TechnicalResourceHistoryResponse,
+    Technology,
+    DeviceType,
 )
 from flex.api.controllable_unit import (
     create_controllable_unit,
     read_controllable_unit,
     list_controllable_unit,
-    update_controllable_unit,
 )
 from flex.api.controllable_unit_service_provider import (
     create_controllable_unit_service_provider,
@@ -243,7 +242,9 @@ def test_tr_fiso(sts):
         body=TechnicalResourceCreateRequest(
             name="New TR",
             controllable_unit_id=1,
-            details="Details of the new TR",
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=1.0,
+            device_type=DeviceType.OTHER,
         ),
     )
     assert isinstance(tr, TechnicalResourceResponse)
@@ -254,7 +255,7 @@ def test_tr_fiso(sts):
         id=cast(int, tr.id),
         body=TechnicalResourceUpdateRequest(
             name="New TR2",
-            details="updated",
+            additional_information="updated",
         ),
     )
     assert not (isinstance(u, ErrorMessage))
@@ -368,7 +369,9 @@ def test_tr_sp(sts):
         body=TechnicalResourceCreateRequest(
             name="New TR",
             controllable_unit_id=cu_id,
-            details="Details of the new TR",
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=1.0,
+            device_type=DeviceType.OTHER,
         ),
     )
     assert isinstance(tr, TechnicalResourceResponse)
@@ -381,7 +384,9 @@ def test_tr_sp(sts):
         body=TechnicalResourceCreateRequest(
             name="New TR",
             controllable_unit_id=cu_id,
-            details="Details of the new TR",
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=1.0,
+            device_type=DeviceType.OTHER,
         ),
     )
     assert isinstance(tr, ErrorMessage)
@@ -390,7 +395,7 @@ def test_tr_sp(sts):
         client=client_common_sp,
         id=tr_id,
         body=TechnicalResourceUpdateRequest(
-            details="updated",
+            additional_information="updated",
         ),
     )
     assert isinstance(u, ErrorMessage)
@@ -399,7 +404,7 @@ def test_tr_sp(sts):
         client=client_sp,
         id=tr_id,
         body=TechnicalResourceUpdateRequest(
-            details="updated",
+            additional_information="updated",
         ),
     )
     assert isinstance(u, ErrorMessage)
@@ -430,7 +435,9 @@ def test_tr_sp(sts):
         body=TechnicalResourceCreateRequest(
             name="TRSP45",
             controllable_unit_id=cu_id,
-            details="Details of the new TR",
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=1.0,
+            device_type=DeviceType.OTHER,
         ),
     )
     assert isinstance(tr, TechnicalResourceResponse)
@@ -439,7 +446,7 @@ def test_tr_sp(sts):
         client=client_common_sp,
         id=tr_id,
         body=TechnicalResourceUpdateRequest(
-            details="updated TRSP45",
+            additional_information="updated TRSP45",
         ),
     )
     assert not (isinstance(u, ErrorMessage))
@@ -455,6 +462,9 @@ def test_tr_sp(sts):
         body=TechnicalResourceCreateRequest(
             name="fail",
             controllable_unit_id=cu_id,
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=1.0,
+            device_type=DeviceType.OTHER,
         ),
     )
     assert isinstance(failtr, ErrorMessage)
@@ -463,41 +473,10 @@ def test_tr_sp(sts):
         client=client_sp,
         id=tr_id,
         body=TechnicalResourceUpdateRequest(
-            details="fail update",
+            additional_information="fail update",
         ),
     )
     assert isinstance(u, ErrorMessage)
-
-    # sp changes to TR should affect the CU validation status
-    u = update_controllable_unit.sync(
-        client=client_fiso,
-        id=cu_id,
-        body=ControllableUnitUpdateRequest(
-            grid_validation_status=ControllableUnitGridValidationStatus.VALIDATION_FAILED,
-        ),
-    )
-    assert isinstance(u, ControllableUnitResponse)
-    assert (
-        u.grid_validation_status
-        == ControllableUnitGridValidationStatus.VALIDATION_FAILED
-    )
-
-    i = create_technical_resource.sync(
-        client=client_common_sp,
-        body=TechnicalResourceCreateRequest(
-            name="MAGIC",
-            controllable_unit_id=cu_id,
-            details="This addition makes the CU go back to PENDING",
-        ),
-    )
-    assert not isinstance(i, ErrorMessage)
-
-    cu = read_controllable_unit.sync(
-        client=client_fiso,
-        id=cu_id,
-    )
-    assert isinstance(cu, ControllableUnitResponse)
-    assert cu.grid_validation_status == ControllableUnitGridValidationStatus.PENDING
 
     # SP can delete their TR
     d = delete_technical_resource.sync(

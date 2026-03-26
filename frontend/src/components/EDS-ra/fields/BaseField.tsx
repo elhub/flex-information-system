@@ -9,6 +9,7 @@ export type BaseFieldProps = {
   label?: boolean;
   tooltip?: boolean;
   descriptionOverride?: string;
+  unit?: string;
   labelDirection?: "row" | "column";
   textSize?: "small" | "medium" | "large";
 };
@@ -21,6 +22,7 @@ export const BaseField = ({
   source,
   label,
   tooltip,
+  unit,
   children,
   labelDirection = "row",
   textSize = "small",
@@ -53,6 +55,7 @@ export const BaseField = ({
         </BodyText>
       ) : null}
       {children}
+      {unit ? <BodyText>{unit}</BodyText> : null}
       {shouldShowTooltip ? (
         <FieldTooltip resource={resource} field={source} />
       ) : null}

@@ -5,15 +5,12 @@ import arrow.core.flatMap
 import arrow.core.raise.either
 import io.ktor.server.application.createApplicationPlugin
 import io.ktor.util.AttributeKey
-import no.elhub.flex.util.ParsingError
+import no.elhub.flex.model.error.ParsingError
 import no.elhub.flex.util.header
 import java.security.SecureRandom
 import kotlin.ByteArray
 
-/** Ktor plugin for handling W3C Trace Context headers.
- *
- * As this adapter is an internal component, we trust the traceparent and continue the trace if it is valid.
- * */
+/** Ktor plugin for handling W3C Trace Context headers. **/
 object Tracing {
 
     /** The [io.ktor.server.application.ApplicationPlugin] for [Tracing]. */

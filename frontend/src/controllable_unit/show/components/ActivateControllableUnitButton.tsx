@@ -2,6 +2,7 @@ import { Button } from "@mui/material";
 import { useQueryClient } from "@tanstack/react-query";
 import { useConfirmAction } from "../../../components/ConfirmAction";
 import { updateControllableUnit } from "../../../generated-client";
+import { throwOnError } from "../../../util";
 
 export const ActivateControllableUnitButton = ({
   controllableUnitId,
@@ -22,7 +23,7 @@ export const ActivateControllableUnitButton = ({
         updateControllableUnit({
           path: { id: controllableUnitId },
           body: { status: "active" },
-        }),
+        }).then(throwOnError),
       onSettled: () => {
         queryClient.invalidateQueries({
           queryKey: [

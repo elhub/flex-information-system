@@ -4,7 +4,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { Permissions } from "../../auth/permissions";
 import { TechnicalResourceInputLocationState } from "./TechnicalResourceInput";
 import { List, Datagrid } from "../../components/EDS-ra/list";
-import { TextField } from "../../components/EDS-ra/fields";
+import { TextField, EnumField } from "../../components/EDS-ra/fields";
 import { DeleteButton } from "../../components/EDS-ra";
 import { Button, Heading } from "../../components/ui";
 import { zTechnicalResource } from "../../generated-client/zod.gen";
@@ -74,7 +74,11 @@ export const TechnicalResourceList = () => {
           >
             <TextField source={fields.id.source} />
             <TextField source={fields.name.source} />
-            <TextField source={fields.details.source} />
+            <TextField source={fields.maximum_active_power.source} />
+            <EnumField
+              source={fields.device_type.source}
+              enumKey="device_type"
+            />
             {canDelete && <DeleteButton label="Delete" />}
           </Datagrid>
         </List>

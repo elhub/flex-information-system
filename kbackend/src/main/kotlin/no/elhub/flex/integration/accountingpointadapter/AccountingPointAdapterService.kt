@@ -16,10 +16,14 @@ import no.elhub.flex.integration.accountingpointadapter.generated.client.Network
 import no.elhub.flex.integration.accountingpointadapter.generated.models.AccountingPoint
 import org.koin.core.annotation.Property
 import org.koin.core.annotation.Single
+import kotlin.time.Instant
 import no.elhub.flex.integration.accountingpointadapter.generated.client.NetworkError as ClientNetworkError
 
 interface AccountingPointAdapterService {
-    suspend fun getAccountingPoint(accountingPointId: String): Either<AccountingPointAdapterError, AccountingPoint>
+    suspend fun getAccountingPoint(
+        accountingPointId: String,
+        validFrom: Instant
+    ): Either<AccountingPointAdapterError, AccountingPoint>
 }
 
 @Single(createdAtStart = true)
@@ -49,8 +53,8 @@ class AccountingPointAdapterHttpService(
         customHeaders = mapOf("Authorization" to "Bearer $apiKey")
     )
 
-    override suspend fun getAccountingPoint(accountingPointId: String): Either<AccountingPointAdapterError, AccountingPoint> =
-        when (val result = client.readAccountingPoint(accountingPointId, config)) {
+    override suspend fun getAccountingPoint(accountingPointId: String, validFrom: Instant): Either<AccountingPointAdapterError, AccountingPoint> =
+        when (val result = client.readAccountingPoint(accountingPointId, validFrom, apiConfiguration = config)) {
             is NetworkResult.Success -> result.data.right()
 
             is NetworkResult.Failure -> when (val error = result.error) {

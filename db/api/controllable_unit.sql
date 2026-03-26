@@ -10,20 +10,13 @@ CREATE OR REPLACE VIEW api.controllable_unit_history WITH (
         cu.id AS controllable_unit_id,
         cu.accounting_point_id,
         cu.business_id,
-        cu.grid_node_id,
-        cu.grid_validation_notes,
-        cu.grid_validation_status,
-        cu.validated_at,
         cu.maximum_active_power,
         cu.is_small,
-        cu.maximum_duration,
-        cu.minimum_duration,
         cu.name,
-        cu.ramp_rate,
-        cu.recovery_duration,
         cu.regulation_direction,
         cu.start_date,
         cu.status,
+        cu.additional_information,
         cu.recorded_by,
         lower(cu.record_time_range) AS recorded_at,
         null AS replaced_by,
@@ -35,20 +28,13 @@ CREATE OR REPLACE VIEW api.controllable_unit_history WITH (
         cu.id AS controllable_unit_id,
         cu.accounting_point_id,
         cu.business_id,
-        cu.grid_node_id,
-        cu.grid_validation_notes,
-        cu.grid_validation_status,
-        cu.validated_at,
         cu.maximum_active_power,
         cu.is_small,
-        cu.maximum_duration,
-        cu.minimum_duration,
         cu.name,
-        cu.ramp_rate,
-        cu.recovery_duration,
         cu.regulation_direction,
         cu.start_date,
         cu.status,
+        cu.additional_information,
         cu.recorded_by,
         lower(cu.record_time_range) AS recorded_at,
         cu.replaced_by,
@@ -63,20 +49,13 @@ WITH (security_invoker = true) AS (
         cu.controllable_unit_id AS id,
         cu.accounting_point_id,
         cu.business_id,
-        cu.grid_node_id,
-        cu.grid_validation_notes,
-        cu.grid_validation_status,
-        cu.validated_at,
         cu.maximum_active_power,
         cu.is_small,
-        cu.maximum_duration,
-        cu.minimum_duration,
         cu.name,
-        cu.ramp_rate,
-        cu.recovery_duration,
         cu.regulation_direction,
         cu.start_date,
         cu.status,
+        cu.additional_information,
         cu.recorded_by,
         cu.recorded_at
     FROM (
@@ -99,10 +78,6 @@ WITH (security_invoker = true) AS (
     WHERE cu.rn = 1
 );
 
--- changeset flex:api-controllable-unit-grid-validation-status-default endDelimiter:-- runAlways:true
-ALTER VIEW IF EXISTS api.controllable_unit
-ALTER COLUMN grid_validation_status SET DEFAULT 'pending';
-
 -- changeset flex:api-controllable-unit-status-default endDelimiter:-- runAlways:true
 ALTER VIEW IF EXISTS api.controllable_unit
 ALTER COLUMN status SET DEFAULT 'new';
@@ -122,33 +97,19 @@ BEGIN
     IF TG_OP = 'INSERT' THEN
         INSERT INTO flex.controllable_unit(
             accounting_point_id,
-            grid_node_id,
-            grid_validation_notes,
-            grid_validation_status,
-            validated_at,
             maximum_active_power,
-            maximum_duration,
-            minimum_duration,
             name,
-            ramp_rate,
-            recovery_duration,
             regulation_direction,
             start_date,
+            additional_information,
             status )
         VALUES (
             NEW.accounting_point_id,
-            NEW.grid_node_id,
-            NEW.grid_validation_notes,
-            NEW.grid_validation_status,
-            NEW.validated_at,
             NEW.maximum_active_power,
-            NEW.maximum_duration,
-            NEW.minimum_duration,
             NEW.name,
-            NEW.ramp_rate,
-            NEW.recovery_duration,
             NEW.regulation_direction,
             NEW.start_date,
+            NEW.additional_information,
             NEW.status
         ) RETURNING id INTO l_id;
 
@@ -165,20 +126,13 @@ BEGIN
             cu.id,
             cu.accounting_point_id,
             cu.business_id,
-            cu.grid_node_id,
-            cu.grid_validation_notes,
-            cu.grid_validation_status,
-            cu.validated_at,
             cu.maximum_active_power,
             cu.is_small,
-            cu.maximum_duration,
-            cu.minimum_duration,
             cu.name,
-            cu.ramp_rate,
-            cu.recovery_duration,
             cu.regulation_direction,
             cu.start_date,
             cu.status,
+            cu.additional_information,
             cu.recorded_by,
             lower(cu.record_time_range) AS recorded_at
         FROM flex.controllable_unit INTO l_old AS cu
@@ -199,19 +153,12 @@ BEGIN
         UPDATE flex.controllable_unit SET
             accounting_point_id = NEW.accounting_point_id,
             business_id = NEW.business_id,
-            grid_node_id = NEW.grid_node_id,
-            grid_validation_notes = NEW.grid_validation_notes,
-            grid_validation_status = NEW.grid_validation_status,
-            validated_at = NEW.validated_at,
             maximum_active_power = NEW.maximum_active_power,
-            maximum_duration = NEW.maximum_duration,
-            minimum_duration = NEW.minimum_duration,
             name = NEW.name,
-            ramp_rate = NEW.ramp_rate,
-            recovery_duration = NEW.recovery_duration,
             regulation_direction = NEW.regulation_direction,
             start_date = NEW.start_date,
-            status = NEW.status
+            status = NEW.status,
+            additional_information = NEW.additional_information
         where id = NEW.id;
 
 

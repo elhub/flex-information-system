@@ -21,6 +21,7 @@ party_type_abbr = {
     "SP": "service_provider",
     "TP": "third_party",
     "IEN": "internal_event_notification",
+    "ID": "internal_data",
 }
 
 history_enabled = [

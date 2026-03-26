@@ -23,6 +23,7 @@
 !.dockerignore
 *.dot
 !.air.toml
+!.editorconfig
 
 # Intellij
 *.iml

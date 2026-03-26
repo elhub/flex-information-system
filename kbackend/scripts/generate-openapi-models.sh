@@ -13,6 +13,11 @@ set -euo pipefail
 #   - type removed from any object that also has a $ref sibling (in OAS 3.0,
 #     $ref replaces all siblings; keeping type causes Fabrikt to resolve the
 #     field as Any? instead of following the $ref to the correct type)
+#   - oneOf: [$ref, {type: null}] collapsed to $ref + nullable: true (OAS 3.1
+#     nullable $ref pattern; Kaizen resolves this as Any? without the fix)
+#   - allOf: [$ref] (single entry) collapsed to a direct $ref (OAS 3.1 pattern
+#     for a $ref with sibling constraints; Kaizen resolves this as String without
+#     the fix)
 
 topdir="$(git rev-parse --show-toplevel)"
 source_spec="backend/data/static/openapi.json"
@@ -56,6 +61,29 @@ def fix_node(obj):
         #    field as Any? instead of following the $ref to the correct type)
         if "$ref" in obj:
             obj.pop("type", None)
+
+        # 6. Collapse oneOf: [$ref, {type: null}] to $ref + nullable: true
+        #    (OAS 3.1 nullable $ref pattern; Kaizen resolves this as Any? without
+        #    the fix, because it cannot follow a $ref inside a oneOf)
+        one_of = obj.get("oneOf")
+        if isinstance(one_of, list) and len(one_of) == 2:
+            refs = [e for e in one_of if "$ref" in e]
+            nulls = [e for e in one_of if e == {"type": "null"} or e.get("type") == "null"]
+            if len(refs) == 1 and len(nulls) == 1:
+                obj.pop("oneOf")
+                obj["$ref"] = refs[0]["$ref"]
+                obj["nullable"] = True
+
+        # 7. Collapse allOf: [{ "$ref": "..." }] (single entry) to a direct $ref
+        #    (OAS 3.1 pattern for a $ref with sibling constraints; Kaizen resolves
+        #    this as String instead of following the $ref to the correct type)
+        all_of = obj.get("allOf")
+        if isinstance(all_of, list) and len(all_of) == 1 and "$ref" in all_of[0] and len(all_of[0]) == 1:
+            nullable = obj.pop("nullable", None)
+            obj.pop("allOf")
+            obj["$ref"] = all_of[0]["$ref"]
+            if nullable is not None:
+                obj["nullable"] = nullable
 
         for v in obj.values():
             fix_node(v)
