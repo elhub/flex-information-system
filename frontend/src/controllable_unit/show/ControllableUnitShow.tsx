@@ -1,44 +1,39 @@
 import {
   IconArrowLeft,
-  IconPencil,
-  IconClockReset,
-  IconAlarmBell,
+  IconCross,
+  IconCrossCircle,
+  IconQualitiesCircle,
+  IconStopWatch15,
+  SvgIconProps,
 } from "@elhub/ds-icons";
-import { Button, Heading, Loader, Tag } from "../../components/ui";
-import { usePermissions } from "ra-core";
-import { Permissions } from "../../auth/permissions";
+import { Badge, Button, Heading, Loader } from "../../components/ui";
 import { Link as RouterLink, useParams } from "react-router-dom";
 import { ControllableUnitShowSummary } from "./ControllableUnitShowSummary";
 import { ControllableUnitShowTabs } from "./ControllableUnitShowTabs";
-import { ControllableUnitShowActions } from "./ControllableUnitShowActions";
 import { ControllableUnitAlerts } from "./components/ControllableUnitAlerts";
 import { readControllableUnit, ControllableUnitStatus } from "../../generated-client";
 import { throwOnError } from "../../util";
 import { useQuery } from "@tanstack/react-query";
 import { useControllableUnitViewModel } from "./useControllableUnitViewModel";
+import { useTranslateEnum, useTranslateField } from "../../intl/intl";
 
 const statusVariantMap: Record<
   ControllableUnitStatus,
-  "info" | "success" | "warning" | "error"
+  {
+    status: "ongoing" | "failed" | "approved-with-warning" | "approved" | "stopped" | "temporarily-stopped" | "pending" | "rejected",
+    icon: React.ComponentType<SvgIconProps>,
+  }
 > = {
-  new: "info",
-  active: "success",
-  inactive: "warning",
-  terminated: "error",
+  new: { status: "pending", icon: IconStopWatch15 },
+  active: { status: "ongoing", icon: IconQualitiesCircle },
+  inactive: { status: "stopped", icon: IconCross },
+  terminated: { status: "rejected", icon: IconCrossCircle },
 };
 
 export const ControllableUnitShow = () => {
   const { id } = useParams<{ id: string }>();
   const cuId = Number(id);
-
-  const { permissions } = usePermissions<Permissions>();
-  const canEdit = permissions?.allow("controllable_unit", "update");
-  const canReadHistory = permissions?.allow(
-    "controllable_unit_history",
-    "read",
-  );
-  const canReadEvents = permissions?.allow("event", "read");
-
+  const translateEnum = useTranslateEnum();
   const {
     data: cu,
     isLoading: isCuLoading,
@@ -72,10 +67,6 @@ export const ControllableUnitShow = () => {
     return null;
   }
 
-  const eventFilter =
-    "?filter=" +
-    encodeURIComponent(JSON.stringify({ "source@like": `/controllable_unit/${cuId}` }));
-
   return (
     <div className="flex flex-col gap-4 p-2">
       <div className="flex flex-wrap items-center justify-between gap-2">
@@ -89,44 +80,11 @@ export const ControllableUnitShow = () => {
           <Heading level={2} size="medium">
             Controllable Unit - {cu.name}
           </Heading>
-          <Tag variant={statusVariantMap[cu.status]}>
-            {cu.status}
-          </Tag>
+          <Badge size="small" status={statusVariantMap[cu.status].status} variant="block" icon={statusVariantMap[cu.status].icon}>
+            {translateEnum(`controllable_unit.status.${cu.status}`)}
+          </Badge>
         </div>
 
-        <div className="flex items-center gap-2">
-          <ControllableUnitShowActions controllableUnitId={String(cu.id)} />
-          {canEdit && (
-            <Button
-              as={RouterLink}
-              to={`/controllable_unit/${cu.id}/edit`}
-              variant="invisible"
-              icon={IconPencil}
-            >
-              Edit
-            </Button>
-          )}
-          {canReadHistory && (
-            <Button
-              as={RouterLink}
-              to={`/controllable_unit/${cu.id}/history`}
-              variant="invisible"
-              icon={IconClockReset}
-            >
-              View History
-            </Button>
-          )}
-          {canReadEvents && (
-            <Button
-              as={RouterLink}
-              to={`/event${eventFilter}`}
-              variant="invisible"
-              icon={IconAlarmBell}
-            >
-              Events
-            </Button>
-          )}
-        </div>
       </div>
 
       <ControllableUnitAlerts controllableUnitViewModel={viewModel} />
