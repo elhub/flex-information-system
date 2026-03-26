@@ -1,11 +1,9 @@
 package no.elhub.flex.integration.accountingpointadapter
 
-import no.elhub.flex.util.AppError
-
 /** Errors raised when communicating with the Accounting Point Adapter. */
-sealed class AccountingPointAdapterError(message: String) : AppError(message)
+sealed class AccountingPointAdapterError(message: String)
 
-/** The adapter returned a 404 — the accounting point is not known to the datahub. */
+/** The adapter returned a 404 — the accounting point is not known. */
 data class NotFoundError(val accountingPointId: String) :
     AccountingPointAdapterError("Accounting point not found: $accountingPointId")
 

@@ -1,5 +1,6 @@
 package no.elhub.flex.model.domain
 
+import kotlinx.datetime.LocalDate
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -16,4 +17,5 @@ data class ControllableUnit(
     @SerialName("business_id") val businessId: String,
     val name: String,
     @SerialName("technical_resources") val technicalResources: List<TechnicalResource>,
+    @SerialName("start_date") val startDate: LocalDate,
 )

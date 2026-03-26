@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
 public data class EndUser(
   /**
    * Business ID of the end user. Norwegian organization number or fødselsnummer, depending on
-   * `business_id_type``.
+   * `entity_type`.
    */
   @SerialName("business_id")
   public val businessId: String,
