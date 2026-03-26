@@ -2,8 +2,8 @@ plugins {
     alias(libs.plugins.elhub.gradle.plugin)
     alias(libs.plugins.ktor.plugin)
     alias(libs.plugins.kotlin.plugin.serialization)
-    alias(libs.plugins.ksp.plugin)
     alias(libs.plugins.gradle.docker)
+    alias(libs.plugins.koin.compiler)
 }
 
 buildscript {
@@ -18,7 +18,6 @@ dependencies {
     implementation(libs.bundles.functional.programming)
     // Koin
     implementation(libs.bundles.dependency.injection)
-    ksp(libs.di.koin.ksp.compiler)
     // Serialization
     implementation(libs.bundles.serialization)
     // Database
@@ -53,9 +52,8 @@ kotlin {
     }
 }
 
-ksp {
-    arg("KOIN_CONFIG_CHECK", "true")
-    arg("KOIN_DEFAULT_MODULE", "true")
+koinCompiler {
+    userLogs = true  // Log component detection
 }
 
 application {

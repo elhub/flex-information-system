@@ -10,15 +10,24 @@ import no.elhub.flex.config.configureLogging
 import no.elhub.flex.config.configureMonitoring
 import no.elhub.flex.config.configureRouting
 import no.elhub.flex.config.configureSerialization
+import org.koin.core.annotation.ComponentScan
+import org.koin.core.annotation.KoinApplication
+import org.koin.core.annotation.Module
 import org.koin.environmentProperties
-import org.koin.ksp.generated.defaultModule
-import org.koin.ktor.plugin.Koin
 import org.koin.logger.slf4jLogger
+import org.koin.plugin.module.dsl.startKoin
 
 /** Entry point for the application. */
 fun main(args: Array<String>) {
     EngineMain.main(args)
 }
+
+@Module
+@ComponentScan("no.elhub.flex")
+class AppModule
+
+@KoinApplication(modules = [AppModule::class])
+class FlexApp
 
 /**
  * Configures the main application module with logging, serialization, routing,
@@ -43,10 +52,10 @@ fun Application.module() {
         "accounting-point-adapter.base-url",
         "accounting-point-adapter.api-key",
     )
-    install(Koin) {
+
+    startKoin<FlexApp> {
         environmentProperties()
         properties(propertiesForKoin.associateWith { environment.config.property(it).getString() })
         slf4jLogger()
-        modules(defaultModule)
     }
 }
