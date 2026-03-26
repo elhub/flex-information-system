@@ -65,3 +65,9 @@ export const useTranslateField = () => {
   return (key: FieldLabel, options?: unknown) =>
     translate(`field.${key}`, options);
 };
+
+export const useTranslateEnum = () => {
+  const { translate } = useI18nProvider();
+  return (key: EnumLabel, options?: unknown) =>
+    translate(`enum.${key}`, options);
+};

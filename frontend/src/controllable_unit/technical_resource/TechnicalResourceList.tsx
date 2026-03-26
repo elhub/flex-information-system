@@ -28,10 +28,10 @@ const CreateButton = ({
       as={RouterLink}
       to={`/controllable_unit/${controllableUnitId}/technical_resource/create`}
       state={locationState}
-      variant="invisible"
+      variant="primary"
       icon={IconPlus}
     >
-      Create
+      Create technical resource
     </Button>
   );
 };
@@ -43,24 +43,22 @@ export const TechnicalResourceList = () => {
 
   // Permission checks
   const canRead = permissions?.allow("technical_resource", "read");
-  const canCreate = permissions?.allow("technical_resource", "create");
   const canDelete = permissions?.allow("technical_resource", "delete");
+  const canCreate = permissions?.allow("technical_resource", "create");
 
   const actions = canCreate
     ? [<CreateButton key="create" controllableUnitId={id} />]
     : [];
+
   const fields = getFields(zTechnicalResource.shape);
 
   return (
     canRead && (
       <ResourceContextProvider value="technical_resource">
-        <Heading level={3} size="medium" className="mb-2">
-          Technical resources
-        </Heading>
         <List
+          actions={actions}
           pagination={false}
           perPage={10}
-          actions={actions}
           exporter={false}
           empty={false}
           filter={{ controllable_unit_id: id }}
@@ -79,7 +77,7 @@ export const TechnicalResourceList = () => {
               source={fields.device_type.source}
               enumKey="device_type"
             />
-            {canDelete && <DeleteButton label="Delete" />}
+            {canDelete && <DeleteButton />}
           </Datagrid>
         </List>
       </ResourceContextProvider>

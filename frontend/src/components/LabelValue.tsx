@@ -38,7 +38,7 @@ export const LabelValue = ({
     : "No value";
 
   return (
-    <div className={cn("contents", className)}>
+    <div className={cn("flex flex-col gap-1", className)}>
       <BodyText weight="bold" {...props}>
         {labelKey ? translateLabel(labelKey) : label}:
       </BodyText>

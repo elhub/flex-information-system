@@ -1,6 +1,7 @@
 import {
   Alert,
   Accordion,
+  Badge,
   BodyText,
   BodyTextProps,
   Button,
@@ -13,6 +14,7 @@ import {
   CardFooter,
   Chips,
   Combobox,
+  Checkbox,
   Content,
   Container,
   FlexDiv,
@@ -47,6 +49,7 @@ import { Stepper } from "./stepper/Stepper";
 export {
   Alert,
   Accordion,
+  Badge,
   BodyText,
   type BodyTextProps,
   Button,
@@ -59,6 +62,7 @@ export {
   CardFooter,
   Chips,
   Combobox,
+  Checkbox,
   Content,
   Container,
   Datepicker,
@@ -89,6 +93,3 @@ export {
   FormContainer,
   Textarea,
 };
-
-// Export all the types from the ds-components package
-export * from "@elhub/ds-components/dist/ds-components";

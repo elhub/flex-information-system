@@ -17,12 +17,14 @@ import { BodyText, Loader, Table } from "../../ui";
 type DatagridProps = {
   children: ReactNode;
   empty?: boolean;
+  emptyNode?: ReactNode;
   rowClick?: false | ((record: RaRecord) => string);
 };
 
 export const Datagrid = <T extends RaRecord>({
   children,
   empty,
+  emptyNode,
   rowClick,
 }: DatagridProps) => {
   const { data: listData, isLoading } = useListContext<T>();
@@ -33,7 +35,7 @@ export const Datagrid = <T extends RaRecord>({
   }
 
   return (
-    <DataTable<T> data={data} empty={empty} rowClick={rowClick}>
+    <DataTable<T> data={data} empty={empty} emptyNode={emptyNode} rowClick={rowClick}>
       {children}
     </DataTable>
   );
@@ -42,6 +44,7 @@ export const Datagrid = <T extends RaRecord>({
 type DataTableProps<T extends RaRecord = RaRecord> = {
   children: ReactNode;
   empty?: boolean;
+  emptyNode?: ReactNode;
   rowClick?: false | ((record: RaRecord) => string);
   data: T[];
 };
@@ -49,6 +52,7 @@ type DataTableProps<T extends RaRecord = RaRecord> = {
 export const DataTable = <T extends RaRecord>({
   children,
   empty,
+  emptyNode,
   rowClick,
   data,
 }: DataTableProps<T>) => {
@@ -82,7 +86,7 @@ export const DataTable = <T extends RaRecord>({
   // Only show loading when using list context (not when data is passed directly)
 
   if (data.length === 0 && empty !== false) {
-    return <BodyText>No results</BodyText>;
+    return emptyNode ?? <BodyText>No results</BodyText>;
   }
 
   return (
