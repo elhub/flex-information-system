@@ -1091,6 +1091,7 @@ GRANT SELECT (
     start_date,
     status,
     accounting_point_id,
+    additional_information,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -1107,6 +1108,7 @@ GRANT SELECT (
     start_date,
     status,
     accounting_point_id,
+    additional_information,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -1123,6 +1125,7 @@ GRANT SELECT (
     start_date,
     status,
     accounting_point_id,
+    additional_information,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -1135,7 +1138,8 @@ GRANT INSERT (
     maximum_active_power,
     start_date,
     status,
-    accounting_point_id
+    accounting_point_id,
+    additional_information
 ) ON TABLE
 api.controllable_unit
 TO flex_flexibility_information_system_operator;
@@ -1150,6 +1154,7 @@ GRANT SELECT (
     start_date,
     status,
     accounting_point_id,
+    additional_information,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -1161,7 +1166,8 @@ GRANT UPDATE (
     regulation_direction,
     maximum_active_power,
     start_date,
-    status
+    status,
+    additional_information
 ) ON TABLE
 api.controllable_unit
 TO flex_flexibility_information_system_operator;
@@ -1176,6 +1182,7 @@ GRANT SELECT (
     start_date,
     status,
     accounting_point_id,
+    additional_information,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -1192,6 +1199,7 @@ GRANT SELECT (
     start_date,
     status,
     accounting_point_id,
+    additional_information,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -1204,7 +1212,8 @@ GRANT INSERT (
     maximum_active_power,
     start_date,
     status,
-    accounting_point_id
+    accounting_point_id,
+    additional_information
 ) ON TABLE
 api.controllable_unit
 TO flex_service_provider;
@@ -1219,6 +1228,7 @@ GRANT SELECT (
     start_date,
     status,
     accounting_point_id,
+    additional_information,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -1230,7 +1240,8 @@ GRANT UPDATE (
     regulation_direction,
     maximum_active_power,
     start_date,
-    status
+    status,
+    additional_information
 ) ON TABLE
 api.controllable_unit
 TO flex_service_provider;
@@ -1245,6 +1256,7 @@ GRANT SELECT (
     start_date,
     status,
     accounting_point_id,
+    additional_information,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -1270,6 +1282,7 @@ GRANT SELECT (
     start_date,
     status,
     accounting_point_id,
+    additional_information,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -1289,6 +1302,7 @@ GRANT SELECT (
     start_date,
     status,
     accounting_point_id,
+    additional_information,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -1308,6 +1322,7 @@ GRANT SELECT (
     start_date,
     status,
     accounting_point_id,
+    additional_information,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -1327,6 +1342,7 @@ GRANT SELECT (
     start_date,
     status,
     accounting_point_id,
+    additional_information,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -1346,6 +1362,7 @@ GRANT SELECT (
     start_date,
     status,
     accounting_point_id,
+    additional_information,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -1365,6 +1382,7 @@ GRANT SELECT (
     start_date,
     status,
     accounting_point_id,
+    additional_information,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -1384,6 +1402,7 @@ GRANT SELECT (
     start_date,
     status,
     accounting_point_id,
+    additional_information,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -1403,6 +1422,7 @@ GRANT SELECT (
     start_date,
     status,
     accounting_point_id,
+    additional_information,
     recorded_at,
     replaced_at,
     recorded_by,

@@ -15,6 +15,7 @@ import {
   DateInput,
   UnitInput,
   FormToolbar,
+  TextAreaInput,
 } from "../components/EDS-ra/inputs";
 import { formatDateToMidnightISO } from "../components/datetime";
 
@@ -74,6 +75,12 @@ export const ControllableUnitInput = () => {
             {...fields.status}
             enumKey="controllable_unit.status"
             required={createOrUpdate == "update"}
+            description
+            tooltip={false}
+          />
+          <TextAreaInput
+            {...fields.additional_information}
+            rows={5}
             description
             tooltip={false}
           />

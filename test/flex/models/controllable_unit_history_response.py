@@ -39,6 +39,8 @@ class ControllableUnitHistoryResponse:
         controllable_unit_id (int): Reference to the resource that was updated. Example: 48.
         start_date (datetime.date | None | Unset): The usage date when the controllable unit is first active. Example:
             2024-05-17.
+        additional_information (None | str | Unset): Free text field for extra information about the controllable unit
+            if needed.
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (datetime.datetime | None | Unset): When the resource was replaced in the system. Example:
             2024-07-07T10:00:00+00:00.
@@ -56,6 +58,7 @@ class ControllableUnitHistoryResponse:
     recorded_by: int
     controllable_unit_id: int
     start_date: datetime.date | None | Unset = UNSET
+    additional_information: None | str | Unset = UNSET
     replaced_by: int | None | Unset = UNSET
     replaced_at: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
@@ -91,6 +94,12 @@ class ControllableUnitHistoryResponse:
         else:
             start_date = self.start_date
 
+        additional_information: None | str | Unset
+        if isinstance(self.additional_information, Unset):
+            additional_information = UNSET
+        else:
+            additional_information = self.additional_information
+
         replaced_by: int | None | Unset
         if isinstance(self.replaced_by, Unset):
             replaced_by = UNSET
@@ -124,6 +133,8 @@ class ControllableUnitHistoryResponse:
         )
         if start_date is not UNSET:
             field_dict["start_date"] = start_date
+        if additional_information is not UNSET:
+            field_dict["additional_information"] = additional_information
         if replaced_by is not UNSET:
             field_dict["replaced_by"] = replaced_by
         if replaced_at is not UNSET:
@@ -173,6 +184,15 @@ class ControllableUnitHistoryResponse:
 
         start_date = _parse_start_date(d.pop("start_date", UNSET))
 
+        def _parse_additional_information(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        additional_information = _parse_additional_information(d.pop("additional_information", UNSET))
+
         def _parse_replaced_by(data: object) -> int | None | Unset:
             if data is None:
                 return data
@@ -212,6 +232,7 @@ class ControllableUnitHistoryResponse:
             recorded_by=recorded_by,
             controllable_unit_id=controllable_unit_id,
             start_date=start_date,
+            additional_information=additional_information,
             replaced_by=replaced_by,
             replaced_at=replaced_at,
         )

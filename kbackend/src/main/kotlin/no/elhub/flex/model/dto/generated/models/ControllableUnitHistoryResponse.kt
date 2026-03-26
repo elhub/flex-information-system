@@ -60,52 +60,15 @@ public data class ControllableUnitHistoryResponse(
   @SerialName("is_small")
   public val isSmall: Boolean? = null,
   /**
-   * The minimum activation duration in seconds.
-   */
-  @SerialName("minimum_duration")
-  public val minimumDuration: Int? = null,
-  /**
-   * The maximum activation duration in seconds.
-   */
-  @SerialName("maximum_duration")
-  public val maximumDuration: Int? = null,
-  /**
-   * The minimum recovery duration between activations in seconds.
-   */
-  @SerialName("recovery_duration")
-  public val recoveryDuration: Int? = null,
-  /**
-   * The rate of power per unit of time to reach empty or full power for the controllable unit, in
-   * kilowatts per minute.
-   */
-  @Contextual
-  @SerialName("ramp_rate")
-  public val rampRate: BigDecimal? = null,
-  /**
    * Reference to the accounting point that the controllable unit is connected to.
    */
   @SerialName("accounting_point_id")
   public val accountingPointId: Int,
   /**
-   * Reference to the node that the controllable unit is connected to.
+   * Free text field for extra information about the controllable unit if needed.
    */
-  @SerialName("grid_node_id")
-  public val gridNodeId: String? = null,
-  /**
-   * The grid validation status of the controllable unit.
-   */
-  @SerialName("grid_validation_status")
-  public val gridValidationStatus: ControllableUnitGridValidationStatus,
-  /**
-   * Free text notes on the current grid validation status.
-   */
-  @SerialName("grid_validation_notes")
-  public val gridValidationNotes: String? = null,
-  /**
-   * When the controllable unit was last validated.
-   */
-  @SerialName("validated_at")
-  public val validatedAt: Instant? = null,
+  @SerialName("additional_information")
+  public val additionalInformation: String? = null,
   /**
    * When the resource was recorded (created or updated) in the system.
    */

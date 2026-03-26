@@ -141,3 +141,9 @@ ALTER TABLE flex.controllable_unit
 DROP COLUMN IF EXISTS grid_node_id CASCADE;
 ALTER TABLE flex.controllable_unit_history
 DROP COLUMN IF EXISTS grid_node_id;
+
+-- changeset flex:controllable-unit-additional-information-add runOnChange:false endDelimiter:--
+ALTER TABLE flex.controllable_unit
+ADD COLUMN IF NOT EXISTS additional_information text;
+ALTER TABLE flex.controllable_unit_history
+ADD COLUMN IF NOT EXISTS additional_information text;

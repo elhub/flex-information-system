@@ -19,6 +19,11 @@ export const TechnicalInformation = ({
         labelKey="controllable_unit.regulation_direction"
         value={controllableUnit?.regulation_direction}
       />
+      <LabelValue
+        label="Additional information"
+        value={controllableUnit?.additional_information}
+        tooltip={true}
+      />
     </div>
   );
 };
