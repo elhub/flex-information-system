@@ -224,8 +224,7 @@ paths:
           required: false
           description: >-
             Filter results to include only data valid up to this date/time.
-            ISO 8601 format. Defaults to tomorrow midnight in the Norwegian
-            time zone.
+            ISO 8601 format. Defaults to open end if not provided.
           schema:
             type: string
             format: date-time
