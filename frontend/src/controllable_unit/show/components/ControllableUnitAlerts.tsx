@@ -1,11 +1,7 @@
-import { usePermissions } from "ra-core";
-import { Link as RouterLink } from "react-router-dom";
 import type { ControllableUnitShowViewModel } from "../useControllableUnitViewModel";
 import type { ReactNode } from "react";
-import { Permissions } from "../../../auth/permissions";
-import { ActivateControllableUnitButton } from "./ActivateControllableUnitButton";
 import { TechnicalResourceInputLocationState } from "../../technical_resource/TechnicalResourceInput";
-import { BodyText, Heading, Alert, Button } from "../../../components/ui";
+import { BodyText, Alert } from "../../../components/ui";
 
 type AlertType = {
   severity: "info" | "success" | "warning" | "error";
@@ -19,54 +15,22 @@ const useControllableUnitAlerts = (
 ): AlertType | null => {
   const { controllableUnit, suspensions, technicalResources } =
     controllableUnitViewModel;
-  const { permissions } = usePermissions<Permissions>();
-  const canCreateTechnicalResource = permissions?.allow(
-    "technical_resource",
-    "create",
-  );
-  const canUpdateControllableUnit = permissions?.allow(
-    "controllable_unit",
-    "update",
-  );
+
   if (suspensions?.length) {
     const suspension = suspensions[0];
     return {
       severity: "error",
       title: "Suspension",
       content: `The controllable unit is suspended. Reason: ${suspension.reason}`,
-      action: (
-        <Button
-          as={RouterLink}
-          variant="invisible"
-          to={`/controllable_unit/${controllableUnit.id}/suspension/${suspension.id}/show`}
-        >
-          See suspension
-        </Button>
-      ),
     };
   }
 
   if (technicalResources?.length === 0) {
-    const locationState: TechnicalResourceInputLocationState = {
-      technicalResource: {
-        controllable_unit_id: controllableUnit.id,
-      },
-    };
     return {
       severity: "info",
       title: "No technical resources",
       content:
         "To set the controllable unit as active, one technical resource is required.",
-      action: canCreateTechnicalResource ? (
-        <Button
-          as={RouterLink}
-          state={locationState}
-          variant="invisible"
-          to={`/controllable_unit/${controllableUnit.id}/technical_resource/create`}
-        >
-          Add technical resource
-        </Button>
-      ) : undefined,
     };
   }
 
@@ -75,13 +39,7 @@ const useControllableUnitAlerts = (
       severity: "info",
       title: "Not active",
       content:
-        "The controllable unit is not active. Please set it as active to use it.",
-      action: (
-        <ActivateControllableUnitButton
-          controllableUnitId={controllableUnit.id}
-          disabled={!canUpdateControllableUnit}
-        />
-      ),
+        "The controllable unit is not active.",
     };
   }
   return null;
@@ -98,15 +56,7 @@ export const ControllableUnitAlerts = ({
   }
   return (
     <Alert variant={alert.severity} className="max-w-3xl gap-4">
-      <div className="flex flex-row items-center justify-between w-full">
-        <div className="grow flex flex-col gap-2">
-          <Heading level={5} size="small">
-            {alert.title}
-          </Heading>
-          <BodyText>{alert.content}</BodyText>
-        </div>
-        {alert.action && <div className="flex-1">{alert.action}</div>}
-      </div>
+        <BodyText>{alert.content}</BodyText>
     </Alert>
   );
 };

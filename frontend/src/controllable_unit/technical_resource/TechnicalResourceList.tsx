@@ -28,10 +28,10 @@ const CreateButton = ({
       as={RouterLink}
       to={`/controllable_unit/${controllableUnitId}/technical_resource/create`}
       state={locationState}
-      variant="invisible"
+      variant="primary"
       icon={IconPlus}
     >
-      Create
+      Create technical resource
     </Button>
   );
 };
@@ -50,26 +50,9 @@ export const TechnicalResourceList = () => {
 
   const fields = getFields(zTechnicalResource.shape);
 
-  const locationState: TechnicalResourceInputLocationState = {
-    technicalResource: {
-      controllable_unit_id: Number(id),
-    },
-  };
-
   const emptyNode = (
-    <div className="flex flex-col items-start gap-2">
-      <BodyText>No technical resources yet.</BodyText>
-      {canCreate ? (
-        <Button
-          as={RouterLink}
-          to={`/controllable_unit/${id}/technical_resource/create`}
-          state={locationState}
-          variant="invisible"
-          icon={IconPlus}
-        >
-          Create technical resource
-        </Button>
-      ) : null}
+    <div className="flex flex-col justify-center gap-2">
+      <BodyText>No technical resources yet. To set the controllable unit as active, one technical resource is required.</BodyText>
     </div>
   );
 
@@ -98,7 +81,7 @@ export const TechnicalResourceList = () => {
               source={fields.device_type.source}
               enumKey="device_type"
             />
-            {canDelete && <DeleteButton label="Delete" />}
+            {canDelete && <DeleteButton />}
           </Datagrid>
         </List>
       </ResourceContextProvider>
