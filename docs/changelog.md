@@ -3,6 +3,11 @@
 This changelog tracks all changes that are visible in our API.
 
 <!-- markdownlint-disable MD013 -->
+## 27.03.2026
+
+* **Added the `additional_information` field to the _Service Providing Group_ resource.**  
+  Free text field for extra information about the service providing group.
+
 ## 04.02.2026
 
 * **Added the `id`, `status` and audit fields to the _Notice_ resource.**  

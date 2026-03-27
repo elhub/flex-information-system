@@ -4,6 +4,7 @@ import { getFields } from "../../zod";
 import {
   EnumInput,
   PartyReferenceInput,
+  TextAreaInput,
   TextInput,
 } from "../../components/EDS-ra/inputs";
 
@@ -42,6 +43,12 @@ export const ServiceProvidingGroupFields = ({ isEdit }: Props) => {
           description
         />
       )}
+      <TextAreaInput
+        {...fields.additional_information}
+        rows={5}
+        description
+        tooltip={false}
+      />
     </>
   );
 };

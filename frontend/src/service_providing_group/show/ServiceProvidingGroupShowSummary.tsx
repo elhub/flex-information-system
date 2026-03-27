@@ -9,7 +9,9 @@ const FieldItem = ({ label, value }: { label: string; value: string }) => (
     <BodyText size="small" weight="bold">
       {label}
     </BodyText>
-    <BodyText size="small">{value}</BodyText>
+    <BodyText size="small" className="whitespace-pre-wrap">
+      {value}
+    </BodyText>
   </div>
 );
 
@@ -71,6 +73,12 @@ export const ServiceProvidingGroupShowSummary = ({
           label="Total capacity"
           value={formatUnit(data?.totalCapacityKw, "kW")}
         />
+        {spg.additional_information && (
+          <FieldItem
+            label="Additional information"
+            value={spg.additional_information}
+          />
+        )}
       </div>
     </Panel>
   );

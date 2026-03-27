@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS service_providing_group (
             'terminated'
         )
     ),
+    additional_information text,
     record_time_range tstzrange NOT NULL DEFAULT tstzrange(
         localtimestamp, null, '[)'
     ),

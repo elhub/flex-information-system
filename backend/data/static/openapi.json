@@ -1505,6 +1505,13 @@
                     "status": {
                         "$ref": "#/components/schemas/service_providing_group_status",
                         "default": "new"
+                    },
+                    "additional_information": {
+                        "description": "Free text field for extra information about the service providing group if needed.",
+                        "format": "text",
+                        "type": "string",
+                        "nullable": true,
+                        "example": null
                     }
                 }
             },
@@ -1532,6 +1539,13 @@
                     "status": {
                         "$ref": "#/components/schemas/service_providing_group_status",
                         "default": "new"
+                    },
+                    "additional_information": {
+                        "description": "Free text field for extra information about the service providing group if needed.",
+                        "format": "text",
+                        "type": "string",
+                        "nullable": true,
+                        "example": null
                     }
                 },
                 "required": [
@@ -1571,6 +1585,13 @@
                     "status": {
                         "$ref": "#/components/schemas/service_providing_group_status",
                         "default": "new"
+                    },
+                    "additional_information": {
+                        "description": "Free text field for extra information about the service providing group if needed.",
+                        "format": "text",
+                        "type": "string",
+                        "nullable": true,
+                        "example": null
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",

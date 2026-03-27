@@ -809,6 +809,10 @@ export type ServiceProvidingGroupUpdateRequest = {
   name?: string;
   bidding_zone?: ServiceProvidingGroupBiddingZone;
   status?: ServiceProvidingGroupStatus;
+  /**
+   * Free text field for extra information about the service providing group if needed.
+   */
+  additional_information?: string;
 };
 
 /**
@@ -825,6 +829,10 @@ export type ServiceProvidingGroupCreateRequest = {
   service_provider_id: number;
   bidding_zone: ServiceProvidingGroupBiddingZone;
   status?: ServiceProvidingGroupStatus;
+  /**
+   * Free text field for extra information about the service providing group if needed.
+   */
+  additional_information?: string;
 };
 
 /**
@@ -845,6 +853,10 @@ export type ServiceProvidingGroup = {
   service_provider_id: number;
   bidding_zone: ServiceProvidingGroupBiddingZone;
   status: ServiceProvidingGroupStatus;
+  /**
+   * Free text field for extra information about the service providing group if needed.
+   */
+  additional_information?: string;
   /**
    * When the resource was recorded (created or updated) in the system.
    */
@@ -3096,6 +3108,10 @@ export type ServiceProvidingGroupWritable = {
   service_provider_id: number;
   bidding_zone: ServiceProvidingGroupBiddingZone;
   status: ServiceProvidingGroupStatus;
+  /**
+   * Free text field for extra information about the service providing group if needed.
+   */
+  additional_information?: string;
 };
 
 /**
