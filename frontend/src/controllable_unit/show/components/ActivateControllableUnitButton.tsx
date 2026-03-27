@@ -38,7 +38,12 @@ export const ActivateControllableUnitButton = ({
 
   return (
     <>
-      <Button variant="primary" size="small" disabled={disabled} {...buttonProps}>
+      <Button
+        variant="primary"
+        size="small"
+        disabled={disabled}
+        {...buttonProps}
+      >
         Activate
       </Button>
       {dialog}

@@ -35,7 +35,10 @@ export const ControllableUnitShowSummary = ({
 
   const { permissions } = usePermissions<Permissions>();
   const canEdit = permissions?.allow("controllable_unit", "update");
-  const canReadHistory = permissions?.allow("controllable_unit_history", "read");
+  const canReadHistory = permissions?.allow(
+    "controllable_unit_history",
+    "read",
+  );
   const canReadEvents = permissions?.allow("event", "read");
   const serviceProviderRange = formatRange(
     controllableUnitServiceProvider?.valid_from,
@@ -43,7 +46,11 @@ export const ControllableUnitShowSummary = ({
   );
   const eventFilter =
     "?filter=" +
-    encodeURIComponent(JSON.stringify({ "source@like": `/controllable_unit/${controllableUnit.id}` }));
+    encodeURIComponent(
+      JSON.stringify({
+        "source@like": `/controllable_unit/${controllableUnit.id}`,
+      }),
+    );
 
   return (
     <div className="flex flex-col gap-4">
@@ -51,7 +58,6 @@ export const ControllableUnitShowSummary = ({
         border
         className="bg-semantic-background-alternative h-fit p-4 sm:p-5"
       >
-
         {canEdit && (
           <div className="flex justify-end">
             <Button
@@ -135,7 +141,6 @@ export const ControllableUnitShowSummary = ({
         </div>
       </Panel>
       <div className="flex items-center gap-2">
-
         {canReadHistory && (
           <Button
             as={RouterLink}
@@ -155,8 +160,6 @@ export const ControllableUnitShowSummary = ({
           </Button>
         )}
       </div>
-
-
     </div>
   );
 };
