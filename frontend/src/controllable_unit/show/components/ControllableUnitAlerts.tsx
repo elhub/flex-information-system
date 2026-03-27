@@ -38,8 +38,7 @@ const useControllableUnitAlerts = (
     return {
       severity: "info",
       title: "Not active",
-      content:
-        "The controllable unit is not active.",
+      content: "The controllable unit is not active.",
     };
   }
   return null;
@@ -56,7 +55,7 @@ export const ControllableUnitAlerts = ({
   }
   return (
     <Alert variant={alert.severity} className="max-w-3xl gap-4">
-        <BodyText>{alert.content}</BodyText>
+      <BodyText>{alert.content}</BodyText>
     </Alert>
   );
 };
