@@ -16,6 +16,9 @@ import { throwOnError } from "../../util";
 import { useQuery } from "@tanstack/react-query";
 import { useControllableUnitViewModel } from "./useControllableUnitViewModel";
 import { useTranslateEnum, useTranslateField } from "../../intl/intl";
+import { ActivateControllableUnitButton } from "./components/ActivateControllableUnitButton";
+import { Permissions } from "../../auth/permissions";
+import { usePermissions } from "react-admin";
 
 const statusVariantMap: Record<
   ControllableUnitStatus,
@@ -24,8 +27,8 @@ const statusVariantMap: Record<
     icon: React.ComponentType<SvgIconProps>,
   }
 > = {
-  new: { status: "pending", icon: IconStopWatch15 },
-  active: { status: "ongoing", icon: IconQualitiesCircle },
+  new: { status: "ongoing", icon: IconStopWatch15 },
+  active: { status: "approved", icon: IconQualitiesCircle },
   inactive: { status: "stopped", icon: IconCross },
   terminated: { status: "rejected", icon: IconCrossCircle },
 };
@@ -33,6 +36,8 @@ const statusVariantMap: Record<
 export const ControllableUnitShow = () => {
   const { id } = useParams<{ id: string }>();
   const cuId = Number(id);
+  const { permissions } = usePermissions<Permissions>();
+
   const translateEnum = useTranslateEnum();
   const {
     data: cu,
@@ -50,6 +55,8 @@ export const ControllableUnitShow = () => {
     isPending: isViewModelPending,
     error: viewModelError,
   } = useControllableUnitViewModel(cu);
+
+  const canUpdateControllableUnit = permissions?.allow("controllable_unit", "update") && viewModel?.technicalResources?.length;
 
   if (isCuLoading || isViewModelPending) {
     return <Loader />;
@@ -69,6 +76,7 @@ export const ControllableUnitShow = () => {
 
   return (
     <div className="flex flex-col gap-4 p-2">
+      <ControllableUnitAlerts controllableUnitViewModel={viewModel} />
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <Button
@@ -80,14 +88,19 @@ export const ControllableUnitShow = () => {
           <Heading level={2} size="medium">
             Controllable Unit - {cu.name}
           </Heading>
-          <Badge size="small" status={statusVariantMap[cu.status].status} variant="block" icon={statusVariantMap[cu.status].icon}>
-            {translateEnum(`controllable_unit.status.${cu.status}`)}
-          </Badge>
+          <div className="flex items-center gap-1" >
+            <Badge size="small" status={statusVariantMap[cu.status].status} variant="block" icon={statusVariantMap[cu.status].icon}>
+              {translateEnum(`controllable_unit.status.${cu.status}`)}
+            </Badge>
+            {cu.status === "new" && (
+            <ActivateControllableUnitButton
+              controllableUnitId={cu.id}
+              disabled={!canUpdateControllableUnit}
+            />
+            )}
+          </div>
         </div>
-
       </div>
-
-      <ControllableUnitAlerts controllableUnitViewModel={viewModel} />
 
       <div className="grid grid-cols-1 gap-4 xl:grid-cols-[475px_minmax(0,1fr)]">
         <ControllableUnitShowSummary viewModel={viewModel} />

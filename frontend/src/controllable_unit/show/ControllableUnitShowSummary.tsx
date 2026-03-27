@@ -2,7 +2,7 @@ import { Button, Panel } from "../../components/ui";
 import { LabelValue } from "../../components/LabelValue";
 import type { ControllableUnitShowViewModel } from "./useControllableUnitViewModel";
 import { formatDate } from "date-fns";
-import { IconAlarmBell, IconPencil } from "@elhub/ds-icons";
+import { IconPencil } from "@elhub/ds-icons";
 import { usePermissions } from "react-admin";
 import { Link as RouterLink } from "react-router-dom";
 import { Permissions } from "../../auth/permissions";
@@ -51,6 +51,7 @@ export const ControllableUnitShowSummary = ({
         border
         className="bg-semantic-background-alternative h-fit p-4 sm:p-5"
       >
+
         {canEdit && (
           <div className="flex justify-end">
             <Button
