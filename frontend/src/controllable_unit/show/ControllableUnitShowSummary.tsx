@@ -3,7 +3,7 @@ import { LabelValue } from "../../components/LabelValue";
 import type { ControllableUnitShowViewModel } from "./useControllableUnitViewModel";
 import { formatDate } from "date-fns";
 import { IconPencil } from "@elhub/ds-icons";
-import { usePermissions } from "react-admin";
+import { usePermissions } from "ra-core";
 import { Link as RouterLink } from "react-router-dom";
 import { Permissions } from "../../auth/permissions";
 
