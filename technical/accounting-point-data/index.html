@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.4">
     
     
       
@@ -325,6 +325,8 @@
       
         
       
+        
+      
     
     
     
@@ -557,6 +559,34 @@
     
   
     Suspension
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/technologies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resources and technologies
   
 
     
@@ -2726,6 +2756,45 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Data synchronization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lookup-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lookup flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#background-sync-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Background sync flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#incoming-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Incoming events
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -3217,6 +3286,45 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Data synchronization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lookup-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lookup flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#background-sync-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Background sync flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#incoming-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Incoming events
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -3277,7 +3385,7 @@ depending on what country/context the system is deployed in, the data may be
 sourced from different places with widely different source formats/APIs.</p>
 <h3 id="api-contract">API Contract</h3>
 <p>The adapter service must implement the OpenAPI document defined in
-<a href="https://github.com/elhub/flex-information-system/tree/main/backend/accountingpoint/static/openapi.yml">backend/accountingpoint</a>.</p>
+<a href="https://github.com/elhub/flex-information-system/blob/main/kbackend/src/main/kotlin/no/elhub/flex/integration/accountingpointadapter/openapi.yaml">kbackend/src/main/kotlin/no/elhub/flex/integration/accountingpointadapter/openapi.yaml</a>.</p>
 <h3 id="authorization">Authorization</h3>
 <p>Since the adapter service is assumed to be specifically deployed for the FIS, a
 shared API Bearer key is configured on both sides.</p>
@@ -3288,28 +3396,108 @@ provisioning</a>
 of data. But the strategy that we will follow is that <em>thin</em> events will be made
 available to the FIS, which then is required to fetch the actual data, using the
 adapter.</p>
-<p>Wether these events will be pushed to FIS by the adapter or made available for
+<p>Whether these events will be pushed to FIS by the adapter or made available for
 pull based mechanisms will be part of a future design.</p>
 <h2 id="data-synchronization">Data synchronization</h2>
-<p>Data synchronization happen "one accounting point at a time". It will
+<p>Data synchronization happens "one accounting point at a time". It will
 happen ad hoc (lookup) and on a regular basis (background job).</p>
 <p>Data is fetched from the adapter and <em>merged</em> into the FIS database
 directly in the <code>flex.accounting_point*</code> tables.</p>
-<p>Since data is fetched per metering point, pessimistic locking must be done to
-avoid concurrent syncs of the same metering point. This is done with <code>SELECT FOR
-UPDATE SKIP LOCKED</code> semantics on the relevant accounting points in
-<code>flex.accounting_point</code>.</p>
-<p>To faciliate batch synchronization, the <code>flex.accounting_point</code> table has a
-<code>last_synced_at</code> timestamp column that is updated on each sync. This allows us
-to identify which accounting points need to be synced in the background job.
-This column is not tracked in the <code>flex.accounting_point_history</code> table since it
-is just noise.</p>
-<p>A nullable <code>last_sync_start</code> timestamp is used to track if a sync is currently
-in progress. This is used to avoid starting multiple syncs of the same
-accounting point, and to be able to identify "dead" syncs that have been
-running for too long.</p>
-<p>This shows diagram tries to show how the synchronization process works.</p>
-<p><img alt="Accounting point data synchronization" src="../../diagrams/accounting-point-sync.drawio.png" /></p>
+<p>There are a number of things that can happen concurrently that we need to take
+into account when doing the sync. These are:</p>
+<ol>
+<li>Multiple lookups, possibly on the same accounting point, on both new and
+   previously synced accounting points. Lookup must write to the database to be
+   able to return internal identifiers (AP and EU) to the caller.</li>
+<li>Incoming events that tell us that accounting points have been updated in the
+   datahub and should be synced.</li>
+<li>Multiple background syncs that are running on a schedule, from separate
+   workers/instances. These should pick up accounting points that we know have
+   been updated in source (priority) or have not been synced in a while, and
+   sync them.</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The design here does not take into account removal of accounting points. It is
+not expected to happen on any time soon. Removal of accounting points from FIS
+is only relevant if we need to delete data for privacy reasons, e.g. old data
+that we no longer have a legal basis to keep or possibly due to data deletion
+requests from data subjects. This is not expected to be a common occurrence
+and will not be discussed in this document/design as of now.</p>
+</div>
+<p>To enable this concurrent processing, we utilise a combination of <a href="https://www.postgresql.org/docs/current/transaction-iso.html">isolation
+levels</a> and
+pessimistic locking. The locks are held on a separate locking table using
+different
+<a href="https://www.postgresql.org/docs/16/sql-select.html#SQL-FOR-UPDATE-SHARE">clauses</a>
+and
+<a href="https://www.postgresql.org/docs/16/explicit-locking.html#LOCKING-ROWS">modes</a>
+depending on the use case. We avoid deadlocks using
+<code>SET LOCAL lock_timeout = '1s'</code> and/or <code>NOWAIT|SKIP LOCKED</code>.</p>
+<ol>
+<li><code>Update lock</code> - When actually writing updates to the database, to avoid
+   concurrent writes of the same accounting point. This lock is held for the
+   duration of the transaction/update. Lock timeouts are used to avoid deadlocks.</li>
+<li><code>Selection lock</code> - When picking up accounting points to sync in the
+   background job, to avoid picking up the same accounting point in multiple
+   workers/instances. This uses a standard <code>SELECT FOR UPDATE SKIP LOCKED</code>
+   clause with CTE. This lock is held only for the duration of the selection
+   where we mark the accounting points as in progress.</li>
+</ol>
+<p>In addition to this, we use optimistic locking with a version column to detect
+races between lookups and background syncs.</p>
+<p>Since data is fetched per accounting point, pessimistic locking must be used to
+avoid concurrent syncs of the same accounting point.</p>
+<p>We use a separate synchronization table for this process:</p>
+<ul>
+<li><code>flex.accounting_point_sync</code> - handles update and selection locks for the
+  accounting point sync process, tracks sync status (<code>last_synced_at</code>,
+  <code>last_sync_start</code>), and stores event priority signal (<code>last_event_at</code>).</li>
+</ul>
+<p>We keep this state separate from the main accounting point data to keep the
+sync flow and locking logic isolated.</p>
+<p>To facilitate batch synchronization, the <code>flex.accounting_point_sync</code> table has
+a <code>last_synced_at</code> timestamp column that is updated on each sync. A nullable
+<code>last_sync_start</code> timestamp is used to track whether a sync is currently in
+progress. This is used to avoid starting multiple syncs of the same accounting
+point, and to be able to identify "dead" syncs that have been running for too
+long. The version column is used for optimistic locking to detect races.</p>
+<p>The following sections outline how the different flows work and how the locking
+is used in each of them.</p>
+<p>The following participants are involved in the flows:</p>
+<ul>
+<li><code>Service Provider</code> - the external caller</li>
+<li><code>CU Lookup</code> - the functionality in FIS that provides CU lookup</li>
+<li><code>Batch Sync</code> - the background sync process that runs on a schedule to keep
+  data in sync</li>
+<li><code>AP</code> - the <code>flex.accounting_point</code> table</li>
+<li><code>AP Sync</code> - the <code>flex.accounting_point_sync</code> table</li>
+<li><code>AP &lt;sub&gt;</code> - tables that hold time dependent AP data - e.g.
+  <code>flex.accounting_point_energy_supplier</code></li>
+<li><code>AP Adapter</code> - the adapter service that provides AP data from the datahub</li>
+<li><code>Receiver</code> - the functionality in the FIS that receives incoming events about
+  AP updates from the AP adapter</li>
+</ul>
+<h3 id="lookup-flow">Lookup flow</h3>
+<p><img alt="Accounting point internal lookup flow" src="../../diagrams/accounting-point-sync-lookup.png" /></p>
+<h3 id="background-sync-flow">Background sync flow</h3>
+<p>The batch size for the background sync can be established upon application
+startup. We generally want all accounting points to be synced within 24 hours.
+The batch size should be configured as follows. We can use startup since
+we assume that we will deploy/recycle the application quite often.</p>
+<div class="highlight"><pre><span></span><code>Batch size = nb_accounting_points / ((24h / interval) * nb_workers)
+</code></pre></div>
+<p>We can make this better in the future, but for now we can live with this simple
+approach.</p>
+<p>Our goal is either way that we want to spread the load out during the whole day,
+and not have a big batch of syncs running at the same time. This is to avoid
+putting too much load on the source system.</p>
+<p><img alt="Accounting point sync background flow" src="../../diagrams/accounting-point-sync-background.png" /></p>
+<h3 id="incoming-events">Incoming events</h3>
+<p>Incoming events update <code>last_event_at</code> in <code>flex.accounting_point_sync</code>, which
+is used to prioritize accounting points in the background sync. Event processing
+is lightweight and only updates this sync metadata.</p>
+<p><img alt="Accounting point sync incoming events flow" src="../../diagrams/accounting-point-sync-incoming-event.png" /></p>
 
 
 

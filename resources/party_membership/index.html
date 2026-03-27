@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.4">
     
     
       
@@ -325,6 +325,8 @@
       
         
       
+        
+      
     
     
     
@@ -557,6 +559,34 @@
     
   
     Suspension
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/technologies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resources and technologies
   
 
     
@@ -3574,7 +3604,7 @@ persons or organisations to parties.</p>
 <tr>
 <td><a name="field-scopes" href="#field-scopes">scopes</a></td>
 <td>List of scopes granted to the entity when it acts as the party. Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.</td>
-<td><br/>Required<br/>Array</td>
+<td><br/>Required<br/>Array<br/>One of: <code>read:data</code>, <code>use:data</code>, <code>use:data:entity:lookup</code>, <code>manage:data</code>, <code>manage:data:party_membership</code>, <code>manage:data:entity_client</code>, <code>read:auth</code>, <code>use:auth</code>, <code>manage:auth</code></td>
 <td></td>
 </tr>
 <tr>

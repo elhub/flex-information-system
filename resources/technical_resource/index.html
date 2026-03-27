@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.4">
     
     
       
@@ -325,6 +325,8 @@
       
         
       
+        
+      
     
     
     
@@ -557,6 +559,34 @@
     
   
     Suspension
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/technologies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resources and technologies
   
 
     
@@ -3575,9 +3605,57 @@ flexibility structure, see <a href="../../concepts/conceptual-model/">Conceptual
 <td><a href="../controllable_unit/#field-id">controllable_unit.id</a></td>
 </tr>
 <tr>
-<td><a name="field-details" href="#field-details">details</a></td>
-<td>Free text details about the technical resource.</td>
-<td>text<br/>Max length: <code>1024</code></td>
+<td><a name="field-technology" href="#field-technology">technology</a></td>
+<td>Technologies of the technical resource using ltree path notation. Multiple technologies can be specified for hybrid resources (e.g., solar + battery).</td>
+<td><br/>Required<br/>Array<br/>One of: <code>hydropower</code>, <code>hydropower.pumped</code>, <code>hydropower.run_of_river</code>, <code>heat_power_plant</code>, <code>heat_power_plant.chp</code>, <code>solar</code>, <code>wind</code>, <code>backup_generator</code>, <code>hvac</code>, <code>hvac.heat</code>, <code>hvac.heat_pump</code>, <code>lighting</code>, <code>water_heater</code>, <code>boiler</code>, <code>ev_charging_device</code>, <code>ev_charging_device.v2g</code>, <code>battery</code>, <code>other.consumption</code>, <code>other.production</code>, <code>other.energy_storage</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a name="field-category" href="#field-category">category</a></td>
+<td>Categories derived from the technologies of the technical resource. Automatically computed based on the selected technologies.</td>
+<td><br/>Array<br/>One of: <code>consumption</code>, <code>production</code>, <code>energy_storage</code><br/>Read only<br/>Non-updatable</td>
+<td></td>
+</tr>
+<tr>
+<td><a name="field-maximum_active_power" href="#field-maximum_active_power">maximum_active_power</a></td>
+<td>Maximum continuous active power (rated power) of the technical resource in kilowatts.</td>
+<td>decimal<br/>Required<br/>Min: <code>0</code><br/>Max: <code>999999.999</code><br/>Multiple of: <code>0.001</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a name="field-device_type" href="#field-device_type">device_type</a></td>
+<td>The type of device.</td>
+<td><br/>Required</td>
+<td></td>
+</tr>
+<tr>
+<td><a name="field-make" href="#field-make">make</a></td>
+<td>The manufacturer of the device. Required if model or business_id is provided.</td>
+<td>text<br/>Max length: <code>128</code><br/><br/>Must be provided if model or business_id is specified.</td>
+<td></td>
+</tr>
+<tr>
+<td><a name="field-model" href="#field-model">model</a></td>
+<td>The model of the device.</td>
+<td>text<br/>Max length: <code>128</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a name="field-business_id" href="#field-business_id">business_id</a></td>
+<td>Business identifier of the device, such as a serial number or MAC address.</td>
+<td>text<br/>Max length: <code>256</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a name="field-business_id_type" href="#field-business_id_type">business_id_type</a></td>
+<td>The type of business identifier used for the device.</td>
+<td>text<br/>One of: <code>serial_number</code>, <code>mac</code>, <code>other</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a name="field-additional_information" href="#field-additional_information">additional_information</a></td>
+<td>Free text field for extra information about the technical resource if needed.</td>
+<td>text</td>
 <td></td>
 </tr>
 <tr>
@@ -3595,7 +3673,22 @@ flexibility structure, see <a href="../../concepts/conceptual-model/">Conceptual
 </tbody>
 </table>
 <h2 id="validation-rules">Validation Rules</h2>
-<p>No validation rules.</p>
+<table>
+<thead>
+<tr>
+<th>Validation rule key</th>
+<th>Validation rule</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TR-VAL001</td>
+<td><code>make</code> is required if <code>model</code> or <code>business_id</code> is provided.</td>
+<td>TODO</td>
+</tr>
+</tbody>
+</table>
 <h2 id="notifications">Notifications</h2>
 <table>
 <thead>
@@ -3825,7 +3918,103 @@ for the resource. The default policy is <strong>deny</strong>.</p>
 <td></td>
 </tr>
 <tr>
-<td>details</td>
+<td>technology</td>
+<td></td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>RCU</td>
+<td>R</td>
+<td>RCU</td>
+<td>R</td>
+<td></td>
+</tr>
+<tr>
+<td>category</td>
+<td></td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td></td>
+</tr>
+<tr>
+<td>maximum_active_power</td>
+<td></td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>RCU</td>
+<td>R</td>
+<td>RCU</td>
+<td>R</td>
+<td></td>
+</tr>
+<tr>
+<td>device_type</td>
+<td></td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>RCU</td>
+<td>R</td>
+<td>RCU</td>
+<td>R</td>
+<td></td>
+</tr>
+<tr>
+<td>make</td>
+<td></td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>RCU</td>
+<td>R</td>
+<td>RCU</td>
+<td>R</td>
+<td></td>
+</tr>
+<tr>
+<td>model</td>
+<td></td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>RCU</td>
+<td>R</td>
+<td>RCU</td>
+<td>R</td>
+<td></td>
+</tr>
+<tr>
+<td>business_id</td>
+<td></td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>RCU</td>
+<td>R</td>
+<td>RCU</td>
+<td>R</td>
+<td></td>
+</tr>
+<tr>
+<td>business_id_type</td>
+<td></td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>RCU</td>
+<td>R</td>
+<td>RCU</td>
+<td>R</td>
+<td></td>
+</tr>
+<tr>
+<td>additional_information</td>
 <td></td>
 <td>R</td>
 <td>R</td>
