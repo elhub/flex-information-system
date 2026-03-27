@@ -117,7 +117,9 @@ export const TechnicalResourceList = () => {
   return (
     canRead && (
       <div className="flex flex-col gap-4">
-        {canCreate && <CreateButton controllableUnitId={id} />}
+        <div className="flex justify-end">
+          {canCreate && <CreateButton controllableUnitId={id} />}
+        </div>
         <SimpleTable
           columns={columns}
           data={data ?? []}
