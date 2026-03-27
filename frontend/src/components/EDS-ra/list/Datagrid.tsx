@@ -33,11 +33,7 @@ export const Datagrid = <T extends RaRecord>({
   }
 
   return (
-    <DataTable<T>
-      data={data}
-      empty={empty}
-      rowClick={rowClick}
-    >
+    <DataTable<T> data={data} empty={empty} rowClick={rowClick}>
       {children}
     </DataTable>
   );

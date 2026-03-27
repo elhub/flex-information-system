@@ -2,10 +2,7 @@ import { useMemo, useState } from "react";
 import { fieldLabels as allFieldLabels, FieldLabel } from "./field-labels";
 import { enumLabels as allEnumLabels, EnumLabel } from "./enum-labels";
 import { defaultI18nProvider } from "react-admin";
-import {
-  I18nProvider as RAI18nProvider,
-  useTranslate,
-} from "ra-core";
+import { I18nProvider as RAI18nProvider, useTranslate } from "ra-core";
 import { text, TextKey } from "./text";
 
 type AppLanguage = "en" | "nb" | "nn";
