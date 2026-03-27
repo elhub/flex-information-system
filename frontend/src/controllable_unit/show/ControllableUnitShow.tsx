@@ -18,10 +18,10 @@ import {
 import { throwOnError } from "../../util";
 import { useQuery } from "@tanstack/react-query";
 import { useControllableUnitViewModel } from "./useControllableUnitViewModel";
-import { useTranslateEnum, useTranslateField } from "../../intl/intl";
+import { useTranslateEnum } from "../../intl/intl";
 import { ActivateControllableUnitButton } from "./components/ActivateControllableUnitButton";
 import { Permissions } from "../../auth/permissions";
-import { usePermissions } from "react-admin";
+import { usePermissions } from "ra-core";
 
 const statusVariantMap: Record<
   ControllableUnitStatus,
@@ -68,12 +68,8 @@ export const ControllableUnitShow = () => {
   } = useControllableUnitViewModel(cu);
 
   const canUpdateControllableUnit =
-    permissions?.allow("controllable_unit", "update") &&
-    viewModel?.technicalResources?.length;
-
-  if (isCuLoading || isViewModelPending) {
-    return <Loader />;
-  }
+    !!permissions?.allow("controllable_unit", "update") &&
+    (viewModel?.technicalResources?.length ?? 0) > 0;
 
   if (cuError) {
     throw cuError;
@@ -81,6 +77,10 @@ export const ControllableUnitShow = () => {
 
   if (viewModelError) {
     throw viewModelError;
+  }
+
+  if (isCuLoading || isViewModelPending) {
+    return <Loader />;
   }
 
   if (!cu || !viewModel) {

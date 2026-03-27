@@ -34,8 +34,6 @@ export const TechnicalResourceInput = () => {
 
   const fields = getFields(zTechnicalResourceCreateRequest.shape);
 
-  console.log(overriddenRecord);
-
   return (
     <Form
       record={overriddenRecord}

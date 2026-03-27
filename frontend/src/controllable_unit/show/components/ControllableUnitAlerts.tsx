@@ -1,13 +1,10 @@
 import type { ControllableUnitShowViewModel } from "../useControllableUnitViewModel";
-import type { ReactNode } from "react";
-import { TechnicalResourceInputLocationState } from "../../technical_resource/TechnicalResourceInput";
-import { BodyText, Alert } from "../../../components/ui";
+import { BodyText, Alert, Heading } from "../../../components/ui";
 
 type AlertType = {
   severity: "info" | "success" | "warning" | "error";
   title: string;
-  content: ReactNode;
-  action?: ReactNode;
+  content: string;
 };
 
 const useControllableUnitAlerts = (
@@ -54,8 +51,13 @@ export const ControllableUnitAlerts = ({
     return null;
   }
   return (
-    <Alert variant={alert.severity} className="max-w-3xl gap-4">
-      <BodyText>{alert.content}</BodyText>
+    <Alert variant={alert.severity} className="max-w-3xl">
+      <div className="flex flex-col gap-2">
+        <Heading level={5} size="small">
+          {alert.title}
+        </Heading>
+        <BodyText>{alert.content}</BodyText>
+      </div>
     </Alert>
   );
 };

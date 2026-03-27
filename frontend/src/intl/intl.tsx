@@ -1,10 +1,11 @@
 import { useMemo, useState } from "react";
 import { fieldLabels as allFieldLabels, FieldLabel } from "./field-labels";
 import { enumLabels as allEnumLabels, EnumLabel } from "./enum-labels";
+import { defaultI18nProvider } from "react-admin";
 import {
-  defaultI18nProvider,
   I18nProvider as RAI18nProvider,
-} from "react-admin";
+  useTranslate,
+} from "ra-core";
 import { text, TextKey } from "./text";
 
 type AppLanguage = "en" | "nb" | "nn";
@@ -61,13 +62,13 @@ export const useI18nProvider = () => {
 };
 
 export const useTranslateField = () => {
-  const { translate } = useI18nProvider();
+  const translate = useTranslate();
   return (key: FieldLabel, options?: unknown) =>
     translate(`field.${key}`, options);
 };
 
 export const useTranslateEnum = () => {
-  const { translate } = useI18nProvider();
+  const translate = useTranslate();
   return (key: EnumLabel, options?: unknown) =>
     translate(`enum.${key}`, options);
 };

@@ -8,14 +8,18 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { Permissions } from "../../auth/permissions";
 import { TechnicalResourceInputLocationState } from "./TechnicalResourceInput";
-import { TechnicalResource } from "../../generated-client";
-import { deleteTechnicalResource } from "../../generated-client";
+import {
+  TechnicalResource,
+  deleteTechnicalResource,
+} from "../../generated-client";
 import { SimpleTable, ColumnOf } from "../../components/SimpleTable";
 import { BodyText, Button } from "../../components/ui";
 import { IconPlus, IconTrash } from "@elhub/ds-icons";
 import { useConfirmAction } from "../../components/ConfirmAction";
 import { throwOnError } from "../../util";
 import { useTechnicalResources } from "./useTechnicalResources";
+import { useTranslateEnum } from "../../intl/intl";
+import { EnumLabel } from "../../intl/enum-labels";
 
 const CreateButton = ({
   controllableUnitId,
@@ -87,6 +91,7 @@ export const TechnicalResourceList = () => {
   const { permissions } = usePermissions<Permissions>();
   const navigate = useNavigate();
   const translate = useTranslate();
+  const translateEnum = useTranslateEnum();
 
   const canRead = permissions?.allow("technical_resource", "read");
   const canDelete = permissions?.allow("technical_resource", "delete");
@@ -104,7 +109,8 @@ export const TechnicalResourceList = () => {
     {
       key: "device_type",
       header: translate("field.technical_resource.device_type"),
-      render: (value) => translate(`enum.device_type.${value}`),
+      render: (value) =>
+        translateEnum(`device_type.${value as string}` as EnumLabel),
     },
   ];
 
