@@ -1,10 +1,6 @@
 import { ReactNode } from "react";
-import {
-  FormItem,
-  FormItemLabel,
-  FlexDiv,
-  FormItemDescription,
-} from "../../ui";
+import { FormItem, FormItemLabel, FlexDiv } from "../../ui";
+import { FormItemDescription } from "../../ui/types";
 import { usePermissions, useResourceContext, useTranslate } from "ra-core";
 import { Permissions, PermissionTarget } from "../../../auth/permissions";
 import { useCreateOrUpdate } from "../../../auth/useCreateOrUpdate";

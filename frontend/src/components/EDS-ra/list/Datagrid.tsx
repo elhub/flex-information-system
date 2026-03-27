@@ -14,17 +14,17 @@ import {
 } from "ra-core";
 import { BodyText, Loader, Table } from "../../ui";
 
-type DatagridProps = {
+type DatagridProps<T extends RaRecord = RaRecord> = {
   children: ReactNode;
   empty?: boolean;
-  rowClick?: false | ((record: RaRecord) => string);
+  rowClick?: false | ((record: T) => string);
 };
 
 export const Datagrid = <T extends RaRecord>({
   children,
   empty,
   rowClick,
-}: DatagridProps) => {
+}: DatagridProps<T>) => {
   const { data: listData, isLoading } = useListContext<T>();
   const data = listData ?? [];
 
@@ -42,7 +42,8 @@ export const Datagrid = <T extends RaRecord>({
 type DataTableProps<T extends RaRecord = RaRecord> = {
   children: ReactNode;
   empty?: boolean;
-  rowClick?: false | ((record: RaRecord) => string);
+  emptyNode?: ReactNode;
+  rowClick?: false | ((record: T) => string);
   data: T[];
 };
 
@@ -60,7 +61,7 @@ export const DataTable = <T extends RaRecord>({
 
   const handleRowClick = (
     e: React.MouseEvent<HTMLTableRowElement>,
-    record: RaRecord,
+    record: T,
   ) => {
     if (!hasRowClick) return;
 

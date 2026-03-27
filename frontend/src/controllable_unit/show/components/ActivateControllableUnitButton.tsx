@@ -1,15 +1,16 @@
-import { Button } from "@mui/material";
 import { useQueryClient } from "@tanstack/react-query";
 import { useConfirmAction } from "../../../components/ConfirmAction";
 import { updateControllableUnit } from "../../../generated-client";
+import { Button } from "../../../components/ui";
 import { throwOnError } from "../../../util";
+import { controllableUnitViewModelQueryKey } from "../useControllableUnitViewModel";
 
 export const ActivateControllableUnitButton = ({
   controllableUnitId,
   disabled,
 }: {
   controllableUnitId: number;
-  disabled: boolean;
+  disabled?: boolean;
 }) => {
   const queryClient = useQueryClient();
 
@@ -26,11 +27,10 @@ export const ActivateControllableUnitButton = ({
         }).then(throwOnError),
       onSettled: () => {
         queryClient.invalidateQueries({
-          queryKey: [
-            "controllable_unit",
-            "getOne",
-            { id: String(controllableUnitId) },
-          ],
+          queryKey: ["controllable_unit", controllableUnitId],
+        });
+        queryClient.invalidateQueries({
+          queryKey: controllableUnitViewModelQueryKey(controllableUnitId),
         });
       },
     },
@@ -38,7 +38,12 @@ export const ActivateControllableUnitButton = ({
 
   return (
     <>
-      <Button disabled={disabled} {...buttonProps}>
+      <Button
+        variant="primary"
+        size="small"
+        disabled={disabled}
+        {...buttonProps}
+      >
         Activate
       </Button>
       {dialog}
