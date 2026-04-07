@@ -42,6 +42,21 @@ interface AccountingPointRepository {
     ): Either<RepositoryError, AccountingPoint>
 
     /**
+     * Looks up an accounting point by its business ID, acquiring a row-level lock for the
+     * duration of the current transaction.
+     *
+     * Uses `FOR UPDATE SKIP LOCKED` — returns `null` when the row is already locked by another
+     * transaction (indicating a concurrent sync is in progress; the caller should skip).
+     *
+     * Must be called within an existing [no.elhub.flex.db.FlexTransaction.flexTransaction] so
+     * that the lock is held until the outer transaction commits.
+     */
+    context(principal: FlexPrincipal)
+    suspend fun getAccountingPointByBusinessIdForUpdate(
+        accountingPointBusinessId: String
+    ): Either<RepositoryError, AccountingPoint?>
+
+    /**
      * Calls `api.controllable_unit_lookup_check_end_user_matches_accounting_point`.
      *
      * Returns the end-user ID, or [NotFoundError] when the check fails.
@@ -145,6 +160,24 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
                     logger.info { "Accounting point $accountingPointBusinessId not found." }
                     NotFoundError("accounting point does not exist in database").left()
                 }
+            }
+        }
+
+    context(principal: FlexPrincipal)
+    override suspend fun getAccountingPointByBusinessIdForUpdate(
+        accountingPointBusinessId: String,
+    ): Either<RepositoryError, AccountingPoint?> =
+        flexTransaction { conn ->
+            Either.catch {
+                conn.prepareStatement(GET_ACCOUNTING_POINT_BY_BUSINESS_ID_FOR_UPDATE_SKIP_LOCKED).use { stmt ->
+                    stmt.setString(1, accountingPointBusinessId)
+                    stmt.executeQuery().use { rs ->
+                        if (rs.next()) AccountingPoint(id = rs.getInt(1), businessId = rs.getString(2)) else null
+                    }
+                }
+            }.mapLeft { e ->
+                logger.error { "getAccountingPointByBusinessIdForUpdate failed: ${e.message}" }
+                DatabaseError("Failed to acquire lock on accounting point")
             }
         }
 

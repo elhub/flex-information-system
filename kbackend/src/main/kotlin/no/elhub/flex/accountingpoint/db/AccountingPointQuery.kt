@@ -8,6 +8,9 @@ val CURRENT_CONTROLLABLE_UNIT_ACCOUNTING_POINT = """
 const val GET_ACCOUNTING_POINT_BY_BUSINESS_ID =
     "SELECT id, business_id FROM flex.accounting_point WHERE business_id = ?"
 
+const val GET_ACCOUNTING_POINT_BY_BUSINESS_ID_FOR_UPDATE_SKIP_LOCKED =
+    "SELECT id, business_id FROM flex.accounting_point WHERE business_id = ? FOR UPDATE SKIP LOCKED"
+
 val CHECK_END_USER_MATCHES_ACCOUNTING_POINT = """
     SELECT end_user_id::bigint
     FROM api.controllable_unit_lookup_check_end_user_matches_accounting_point(?::text, ?::text)

@@ -10,6 +10,7 @@ import io.mockk.clearMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import no.elhub.flex.PostgresTestContainer
 import no.elhub.flex.accountingpoint.db.AccountingPointRepository
 import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterService
@@ -27,6 +28,9 @@ private val VALID_FROM = Instant.parse("2024-01-01T00:00:00Z")
 private const val GSRN = "133700000000000053"
 
 class AccountingPointServiceTest : FunSpec({
+
+    @Suppress("UnusedPrivateProperty")
+    val db = PostgresTestContainer // ensure FlexTransaction is initialised
 
     val mockAdapter = mockk<AccountingPointAdapterService>()
     val mockRepo = mockk<AccountingPointRepository>()
@@ -79,7 +83,7 @@ class AccountingPointServiceTest : FunSpec({
             coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns adapterAccountingPoint.right()
             with(internalPrincipal) {
                 coEvery { mockRepo.upsertAccountingPoints(any()) } returns Unit.right()
-                coEvery { mockRepo.getAccountingPointByBusinessId(GSRN) } returns dbAccountingPoint.right()
+                coEvery { mockRepo.getAccountingPointByBusinessIdForUpdate(GSRN) } returns dbAccountingPoint.right()
                 coEvery { mockRepo.upsertAccountingPointEndUsers(any()) } returns Unit.right()
                 coEvery { mockRepo.upsertAccountingPointEnergySupplier(any()) } returns Unit.right()
             }
@@ -91,9 +95,28 @@ class AccountingPointServiceTest : FunSpec({
             result.shouldBeRight()
             with(internalPrincipal) {
                 coVerify(exactly = 1) { mockRepo.upsertAccountingPoints(any()) }
-                coVerify(exactly = 1) { mockRepo.getAccountingPointByBusinessId(GSRN) }
+                coVerify(exactly = 1) { mockRepo.getAccountingPointByBusinessIdForUpdate(GSRN) }
                 coVerify(exactly = 1) { mockRepo.upsertAccountingPointEndUsers(any()) }
                 coVerify(exactly = 1) { mockRepo.upsertAccountingPointEnergySupplier(any()) }
+            }
+        }
+
+        test("concurrent sync is skipped and returns Right(Unit)") {
+            // given
+            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns adapterAccountingPoint.right()
+            with(internalPrincipal) {
+                coEvery { mockRepo.upsertAccountingPoints(any()) } returns Unit.right()
+                coEvery { mockRepo.getAccountingPointByBusinessIdForUpdate(GSRN) } returns null.right()
+            }
+
+            // when
+            val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM)
+
+            // then
+            result.shouldBeRight()
+            with(internalPrincipal) {
+                coVerify(exactly = 0) { mockRepo.upsertAccountingPointEndUsers(any()) }
+                coVerify(exactly = 0) { mockRepo.upsertAccountingPointEnergySupplier(any()) }
             }
         }
 
@@ -102,7 +125,7 @@ class AccountingPointServiceTest : FunSpec({
             coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns adapterAccountingPoint.right()
             with(internalPrincipal) {
                 coEvery { mockRepo.upsertAccountingPoints(any()) } returns Unit.right()
-                coEvery { mockRepo.getAccountingPointByBusinessId(GSRN) } returns dbAccountingPoint.right()
+                coEvery { mockRepo.getAccountingPointByBusinessIdForUpdate(GSRN) } returns dbAccountingPoint.right()
                 coEvery { mockRepo.upsertAccountingPointEndUsers(any()) } returns Unit.right()
                 coEvery { mockRepo.upsertAccountingPointEnergySupplier(any()) } returns Unit.right()
             }
@@ -152,7 +175,7 @@ class AccountingPointServiceTest : FunSpec({
             coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns adapterAccountingPoint.right()
             with(internalPrincipal) {
                 coEvery { mockRepo.upsertAccountingPoints(any()) } returns Unit.right()
-                coEvery { mockRepo.getAccountingPointByBusinessId(GSRN) } returns dbAccountingPoint.right()
+                coEvery { mockRepo.getAccountingPointByBusinessIdForUpdate(GSRN) } returns dbAccountingPoint.right()
                 coEvery { mockRepo.upsertAccountingPointEndUsers(any()) } returns DatabaseError("constraint violation").left()
             }
 
@@ -168,7 +191,7 @@ class AccountingPointServiceTest : FunSpec({
             coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns adapterAccountingPoint.right()
             with(internalPrincipal) {
                 coEvery { mockRepo.upsertAccountingPoints(any()) } returns Unit.right()
-                coEvery { mockRepo.getAccountingPointByBusinessId(GSRN) } returns dbAccountingPoint.right()
+                coEvery { mockRepo.getAccountingPointByBusinessIdForUpdate(GSRN) } returns dbAccountingPoint.right()
                 coEvery { mockRepo.upsertAccountingPointEndUsers(any()) } returns Unit.right()
                 coEvery { mockRepo.upsertAccountingPointEnergySupplier(any()) } returns DatabaseError("not found").left()
             }
@@ -185,7 +208,7 @@ class AccountingPointServiceTest : FunSpec({
             coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns adapterAccountingPoint.right()
             with(internalPrincipal) {
                 coEvery { mockRepo.upsertAccountingPoints(any()) } returns Unit.right()
-                coEvery { mockRepo.getAccountingPointByBusinessId(GSRN) } returns dbAccountingPoint.right()
+                coEvery { mockRepo.getAccountingPointByBusinessIdForUpdate(GSRN) } returns dbAccountingPoint.right()
                 coEvery { mockRepo.upsertAccountingPointEndUsers(any()) } returns DatabaseError("error").left()
             }
 
