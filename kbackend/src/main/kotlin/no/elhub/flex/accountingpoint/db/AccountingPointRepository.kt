@@ -110,6 +110,15 @@ interface AccountingPointRepository {
     suspend fun upsertAccountingPointEnergySupplier(
         accountingPointEnergySuppliers: List<AccountingPointEnergySupplier>
     ): Either<RepositoryError, Unit>
+
+    /**
+     * Marks a sync as complete for the given accounting point.
+     *
+     * Returns [DatabaseError] if no sync row exists for the given accounting point ID,
+     * which indicates a data inconsistency.
+     */
+    context(principal: FlexPrincipal)
+    suspend fun markSyncComplete(accountingPointId: Int): Either<RepositoryError, Unit>
 }
 
 private val logger = KotlinLogging.logger {}
@@ -345,6 +354,21 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
             }.mapLeft { e ->
                 logger.error { "upsertAccountingPointEnergySupplier failed: ${e.message}" }
                 DatabaseError("Failed to upsert accounting point energy suppliers")
+            }
+        }
+
+    context(principal: FlexPrincipal)
+    override suspend fun markSyncComplete(accountingPointId: Int): Either<RepositoryError, Unit> =
+        flexTransaction { conn ->
+            Either.catch {
+                conn.prepareStatement(MARK_SYNC_COMPLETE).use { stmt ->
+                    stmt.setInt(1, accountingPointId)
+                    val updated = stmt.executeUpdate()
+                    if (updated == 0) error("No sync row found for accounting point $accountingPointId")
+                }
+            }.mapLeft { e ->
+                logger.error { "markSyncComplete failed: ${e.message}" }
+                DatabaseError("No sync row found for accounting point $accountingPointId")
             }
         }
 }

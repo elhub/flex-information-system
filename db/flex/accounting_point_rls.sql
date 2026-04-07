@@ -35,3 +35,5 @@ ON accounting_point
 FOR ALL
 TO flex_internal_data
 USING (true);
+
+GRANT SELECT, UPDATE ON accounting_point_sync TO flex_internal_data;

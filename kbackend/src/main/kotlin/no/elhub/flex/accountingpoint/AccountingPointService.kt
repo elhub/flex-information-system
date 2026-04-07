@@ -107,6 +107,9 @@ class AccountingPointServiceImpl(
 
                             accountingPointRepository.upsertAccountingPointEnergySupplier(energySuppliers)
                                 .mapLeft { it.toInternalServerError("upsertAccountingPointEnergySupplier") }.bind()
+
+                            accountingPointRepository.markSyncComplete(accountingPoint.id)
+                                .mapLeft { it.toInternalServerError("markSyncComplete") }.bind()
                         }
                     }
                 }

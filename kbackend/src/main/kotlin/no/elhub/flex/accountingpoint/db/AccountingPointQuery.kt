@@ -88,6 +88,9 @@ val UPDATE_CHANGED_AP_ENERGY_SUPPLIER = """
     )
 """.trimIndent()
 
+const val MARK_SYNC_COMPLETE =
+    "UPDATE flex.accounting_point_sync SET last_synced_at = now(), last_sync_start = NULL, version = version + 1 WHERE accounting_point_id = ?"
+
 val INSERT_NEW_AP_ENERGY_SUPPLIER = """
     INSERT INTO flex.accounting_point_energy_supplier (accounting_point_id, energy_supplier_id, valid_time_range)
     SELECT ?, ?, tstzrange(?::timestamptz, ?::timestamptz, '[)')

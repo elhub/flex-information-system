@@ -86,6 +86,7 @@ class AccountingPointServiceTest : FunSpec({
                 coEvery { mockRepo.getAccountingPointByBusinessIdForUpdate(GSRN) } returns dbAccountingPoint.right()
                 coEvery { mockRepo.upsertAccountingPointEndUsers(any()) } returns Unit.right()
                 coEvery { mockRepo.upsertAccountingPointEnergySupplier(any()) } returns Unit.right()
+                coEvery { mockRepo.markSyncComplete(any()) } returns Unit.right()
             }
 
             // when
@@ -98,6 +99,7 @@ class AccountingPointServiceTest : FunSpec({
                 coVerify(exactly = 1) { mockRepo.getAccountingPointByBusinessIdForUpdate(GSRN) }
                 coVerify(exactly = 1) { mockRepo.upsertAccountingPointEndUsers(any()) }
                 coVerify(exactly = 1) { mockRepo.upsertAccountingPointEnergySupplier(any()) }
+                coVerify(exactly = 1) { mockRepo.markSyncComplete(dbAccountingPoint.id) }
             }
         }
 
@@ -117,6 +119,7 @@ class AccountingPointServiceTest : FunSpec({
             with(internalPrincipal) {
                 coVerify(exactly = 0) { mockRepo.upsertAccountingPointEndUsers(any()) }
                 coVerify(exactly = 0) { mockRepo.upsertAccountingPointEnergySupplier(any()) }
+                coVerify(exactly = 0) { mockRepo.markSyncComplete(any()) }
             }
         }
 
@@ -128,6 +131,7 @@ class AccountingPointServiceTest : FunSpec({
                 coEvery { mockRepo.getAccountingPointByBusinessIdForUpdate(GSRN) } returns dbAccountingPoint.right()
                 coEvery { mockRepo.upsertAccountingPointEndUsers(any()) } returns Unit.right()
                 coEvery { mockRepo.upsertAccountingPointEnergySupplier(any()) } returns Unit.right()
+                coEvery { mockRepo.markSyncComplete(any()) } returns Unit.right()
             }
 
             // when
@@ -184,6 +188,9 @@ class AccountingPointServiceTest : FunSpec({
 
             // then
             result.shouldBeLeft().shouldBeInstanceOf<InternalServerError>()
+            with(internalPrincipal) {
+                coVerify(exactly = 0) { mockRepo.markSyncComplete(any()) }
+            }
         }
 
         test("upsertAccountingPointEnergySupplier failure returns InternalServerError") {
@@ -194,6 +201,27 @@ class AccountingPointServiceTest : FunSpec({
                 coEvery { mockRepo.getAccountingPointByBusinessIdForUpdate(GSRN) } returns dbAccountingPoint.right()
                 coEvery { mockRepo.upsertAccountingPointEndUsers(any()) } returns Unit.right()
                 coEvery { mockRepo.upsertAccountingPointEnergySupplier(any()) } returns DatabaseError("not found").left()
+            }
+
+            // when
+            val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM)
+
+            // then
+            result.shouldBeLeft().shouldBeInstanceOf<InternalServerError>()
+            with(internalPrincipal) {
+                coVerify(exactly = 0) { mockRepo.markSyncComplete(any()) }
+            }
+        }
+
+        test("markSyncComplete failure returns InternalServerError") {
+            // given
+            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns adapterAccountingPoint.right()
+            with(internalPrincipal) {
+                coEvery { mockRepo.upsertAccountingPoints(any()) } returns Unit.right()
+                coEvery { mockRepo.getAccountingPointByBusinessIdForUpdate(GSRN) } returns dbAccountingPoint.right()
+                coEvery { mockRepo.upsertAccountingPointEndUsers(any()) } returns Unit.right()
+                coEvery { mockRepo.upsertAccountingPointEnergySupplier(any()) } returns Unit.right()
+                coEvery { mockRepo.markSyncComplete(any()) } returns DatabaseError("No sync row found for accounting point 42").left()
             }
 
             // when
@@ -218,6 +246,7 @@ class AccountingPointServiceTest : FunSpec({
             // then
             with(internalPrincipal) {
                 coVerify(exactly = 0) { mockRepo.upsertAccountingPointEnergySupplier(any()) }
+                coVerify(exactly = 0) { mockRepo.markSyncComplete(any()) }
             }
         }
     }

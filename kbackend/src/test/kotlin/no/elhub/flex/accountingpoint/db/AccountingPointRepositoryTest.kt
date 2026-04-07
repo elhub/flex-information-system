@@ -575,6 +575,53 @@ class AccountingPointRepositoryTest : FunSpec({
             result.shouldBeLeft() shouldBe DatabaseError("Failed to upsert accounting point energy suppliers")
         }
     }
+
+    context("markSyncComplete") {
+
+        test("sets last_synced_at, clears last_sync_start, and increments version") {
+            // given — insertAccountingPoint triggers accounting_point_insert_sync
+            val apId = insertAccountingPoint(uniqueGsrn()).toInt()
+
+            // when
+            with(internalDataPrincipal) {
+                repo.markSyncComplete(apId)
+            }.shouldBeRight()
+
+            // then
+            val row = querySyncRow(apId)
+            check(row != null) { "Expected sync row for ap $apId" }
+            check(row.lastSyncedAt != null) { "Expected last_synced_at to be set" }
+            check(row.lastSyncStart == null) { "Expected last_sync_start to be NULL" }
+            row.version shouldBe 1L
+        }
+
+        test("increments version on repeated calls") {
+            // given
+            val apId = insertAccountingPoint(uniqueGsrn()).toInt()
+
+            // when — called twice
+            with(internalDataPrincipal) { repo.markSyncComplete(apId) }.shouldBeRight()
+            with(internalDataPrincipal) { repo.markSyncComplete(apId) }.shouldBeRight()
+
+            // then
+            val row = querySyncRow(apId)
+            check(row != null) { "Expected sync row for ap $apId" }
+            row.version shouldBe 2L
+        }
+
+        test("returns DatabaseError when no sync row exists for the accounting point") {
+            // given — use an ID that has no row in flex.accounting_point_sync
+            val missingApId = Int.MAX_VALUE
+
+            // when
+            val result = with(internalDataPrincipal) {
+                repo.markSyncComplete(missingApId)
+            }
+
+            // then
+            result.shouldBeLeft() shouldBe DatabaseError("No sync row found for accounting point $missingApId")
+        }
+    }
 })
 
 private val pidCounter = AtomicLong(10_000_000_000L)
@@ -600,6 +647,28 @@ private fun uniqueGln(): String {
 private data class EndUserRow(val endUserPartyId: Long, val validFrom: Instant, val validTo: Instant?)
 
 private data class EnergySupplierRow(val energySupplierPartyId: Long, val validFrom: Instant, val validTo: Instant?)
+
+private data class SyncRow(val lastSyncedAt: java.sql.Timestamp?, val lastSyncStart: java.sql.Timestamp?, val version: Long)
+
+private fun querySyncRow(apId: Int): SyncRow? =
+    PostgresTestContainer.withConnection { conn ->
+        conn.prepareStatement(
+            "SELECT last_synced_at, last_sync_start, version FROM flex.accounting_point_sync WHERE accounting_point_id = ?"
+        ).use { stmt ->
+            stmt.setInt(1, apId)
+            stmt.executeQuery().use { rs ->
+                if (rs.next()) {
+                    SyncRow(
+                        lastSyncedAt = rs.getTimestamp(1),
+                        lastSyncStart = rs.getTimestamp(2),
+                        version = rs.getLong(3),
+                    )
+                } else {
+                    null
+                }
+            }
+        }
+    }
 
 private fun queryEndUserRows(apId: Int): List<EndUserRow> =
     PostgresTestContainer.withConnection { conn ->
