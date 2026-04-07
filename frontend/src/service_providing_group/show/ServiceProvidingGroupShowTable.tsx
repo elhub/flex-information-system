@@ -76,12 +76,26 @@ export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
   ];
 
   return (
-    <SimpleTable
-      rowClick={(row) => navigate(`/controllable_unit/${row.id}/show`)}
-      size="small"
-      data={data?.rows ?? []}
-      columns={columns}
-      className="w-full"
-    />
+    <div className="flex flex-col gap-4">
+      <div className="flex justify-end">
+        {canManageMembers && (
+          <Button
+            as={RouterLink}
+            to={`/service_providing_group/${spgId}/manage-members`}
+            variant="primary"
+            icon={IconUser}
+          >
+            Manage members
+          </Button>
+        )}
+      </div>
+      <SimpleTable
+        rowClick={(row) => navigate(`/controllable_unit/${row.id}/show`)}
+        size="small"
+        data={data?.rows ?? []}
+        columns={columns}
+        className="w-full"
+      />
+    </div>
   );
 };

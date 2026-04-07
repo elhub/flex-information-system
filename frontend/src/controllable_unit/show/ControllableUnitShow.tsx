@@ -1,13 +1,12 @@
 import {
-  IconArrowLeft,
   IconCross,
   IconCrossCircle,
   IconQualitiesCircle,
   IconStopWatch15,
   SvgIconProps,
 } from "@elhub/ds-icons";
-import { Badge, Button, Heading, Loader } from "../../components/ui";
-import { Link as RouterLink, useParams } from "react-router-dom";
+import { Badge, Loader } from "../../components/ui";
+import { useParams } from "react-router-dom";
 import { ControllableUnitShowSummary } from "./ControllableUnitShowSummary";
 import { ControllableUnitShowTabs } from "./ControllableUnitShowTabs";
 import { ControllableUnitAlerts } from "./components/ControllableUnitAlerts";
@@ -22,6 +21,7 @@ import { useTranslateEnum } from "../../intl/intl";
 import { ActivateControllableUnitButton } from "./components/ActivateControllableUnitButton";
 import { Permissions } from "../../auth/permissions";
 import { usePermissions } from "ra-core";
+import { ShowPageLayout } from "../../components/ShowPageLayout";
 
 const statusVariantMap: Record<
   ControllableUnitStatus,
@@ -88,42 +88,31 @@ export const ControllableUnitShow = () => {
   }
 
   return (
-    <div className="flex flex-col gap-4 p-2">
-      <ControllableUnitAlerts controllableUnitViewModel={viewModel} />
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="flex items-center gap-2">
-          <Button
-            as={RouterLink}
-            to="/controllable_unit"
-            variant="invisible"
-            icon={IconArrowLeft}
-          />
-          <Heading level={2} size="medium">
-            Controllable Unit - {cu.name}
-          </Heading>
-          <div className="flex items-center gap-1">
-            <Badge
-              size="small"
-              status={statusVariantMap[cu.status].status}
-              variant="block"
-              icon={statusVariantMap[cu.status].icon}
-            >
-              {translateEnum(`controllable_unit.status.${cu.status}`)}
-            </Badge>
-            {cu.status === "new" && (
-              <ActivateControllableUnitButton
-                controllableUnitId={cu.id}
-                disabled={!canUpdateControllableUnit}
-              />
-            )}
-          </div>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 gap-4 xl:grid-cols-[475px_minmax(0,1fr)]">
-        <ControllableUnitShowSummary viewModel={viewModel} />
-        <ControllableUnitShowTabs cuId={cu.id} />
-      </div>
-    </div>
+    <ShowPageLayout
+      backTo="/controllable_unit"
+      title={`Controllable Unit - ${cu.name}`}
+      alerts={<ControllableUnitAlerts controllableUnitViewModel={viewModel} />}
+      badge={
+        <>
+          <Badge
+            size="small"
+            status={statusVariantMap[cu.status].status}
+            variant="block"
+            icon={statusVariantMap[cu.status].icon}
+          >
+            {translateEnum(`controllable_unit.status.${cu.status}`)}
+          </Badge>
+          {cu.status === "new" && (
+            <ActivateControllableUnitButton
+              controllableUnitId={cu.id}
+              disabled={!canUpdateControllableUnit}
+            />
+          )}
+        </>
+      }
+    >
+      <ControllableUnitShowSummary viewModel={viewModel} />
+      <ControllableUnitShowTabs cuId={cu.id} />
+    </ShowPageLayout>
   );
 };
