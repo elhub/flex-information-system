@@ -1,6 +1,7 @@
 package no.elhub.flex.accountingpoint
 
 import arrow.core.Either
+import arrow.core.raise.either
 import arrow.core.right
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.http.HttpStatusCode
@@ -8,7 +9,10 @@ import no.elhub.flex.accountingpoint.db.AccountingPointRepository
 import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterService
 import no.elhub.flex.model.domain.AccountingPoint
+import no.elhub.flex.model.domain.AccountingPointEndUser
+import no.elhub.flex.model.domain.AccountingPointEnergySupplier
 import no.elhub.flex.model.domain.db.NotFoundError
+import no.elhub.flex.model.domain.db.RepositoryError
 import no.elhub.flex.model.error.AppError
 import no.elhub.flex.model.error.DataFetchError
 import no.elhub.flex.model.error.EndUserError
@@ -24,7 +28,7 @@ interface AccountingPointService {
 
     /**
      * Synchronizes the accounting point with the given business ID from the adapter,
-     * and updates the local database accordingly.
+     * and updates the database accordingly.
      *
      * @param accountingPointBusinessId the business ID of the accounting point to synchronize.
      * @param validFrom the date from which we will fetch data for the accounting point.
@@ -71,15 +75,59 @@ class AccountingPointServiceImpl(
     override suspend fun synchronizeAccountingPoint(
         accountingPointBusinessId: String,
         validFrom: Instant
-    ): Either<AppError, Unit> {
-        val adapterAccountingPoint = fetchAccountingPointData(accountingPointBusinessId, validFrom).mapLeft {
-            logger.warn { "Failed to fetch accounting point data for synchronization: ${it.message}" }
-        }
-        with(FlexPrincipal.internalData()) {
-            logger.warn { "SYNC IS NOT IMPLEMENTED YET" }
-            return Unit.right()
-        }
+    ): Either<AppError, Unit> = fetchAccountingPointData(accountingPointBusinessId, validFrom)
+        .fold(
+            ifLeft = {
+                logger.warn { "Failed to fetch accounting point data for $accountingPointBusinessId — skipping sync" }
+                Unit.right()
+            },
+            ifRight = { adapterAccountingPoint ->
+                with(FlexPrincipal.internalData()) {
+                    either {
+                        accountingPointRepository.upsertAccountingPoints(
+                            listOf(AccountingPoint(id = 0, businessId = accountingPointBusinessId))
+                        ).mapLeft { it.toInternalServerError("upsertAccountingPoints") }.bind()
+
+                        val accountingPoint = accountingPointRepository.getAccountingPointByBusinessId(accountingPointBusinessId)
+                            .mapLeft { it.toInternalServerError("getAccountingPointByBusinessId") }.bind()
+
+                        val endUsers = adapterAccountingPoint.toAccountingPointEndUsers(accountingPoint.id)
+                        val energySuppliers = adapterAccountingPoint.toAccountingPointEnergySuppliers(accountingPoint.id)
+
+                        accountingPointRepository.upsertAccountingPointEndUsers(endUsers)
+                            .mapLeft { it.toInternalServerError("upsertAccountingPointEndUsers") }.bind()
+
+                        accountingPointRepository.upsertAccountingPointEnergySupplier(energySuppliers)
+                            .mapLeft { it.toInternalServerError("upsertAccountingPointEnergySupplier") }.bind()
+                    }
+                }
+            },
+        )
+
+    private fun RepositoryError.toInternalServerError(context: String): AppError {
+        logger.error { "$context failed: $this" }
+        return InternalServerError(traceIdOrUnknown())
     }
+
+    private fun AdapterAccountingPoint.toAccountingPointEndUsers(accountingPointId: Int): List<AccountingPointEndUser> =
+        endUser.map { eu ->
+            AccountingPointEndUser(
+                accountingPointId = accountingPointId,
+                endUserBusinessId = eu.businessId,
+                validFrom = eu.validFrom,
+                validTo = eu.validTo,
+            )
+        }
+
+    private fun AdapterAccountingPoint.toAccountingPointEnergySuppliers(accountingPointId: Int): List<AccountingPointEnergySupplier> =
+        energySupplier.map { es ->
+            AccountingPointEnergySupplier(
+                accountingPointId = accountingPointId,
+                energySupplierBusinessId = es.businessId,
+                validFrom = es.validFrom,
+                validTo = es.validTo,
+            )
+        }
 
     context(principal: FlexPrincipal)
     override suspend fun checkEndUserMatchesAccountingPoint(

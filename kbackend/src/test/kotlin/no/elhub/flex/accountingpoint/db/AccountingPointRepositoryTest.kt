@@ -7,11 +7,18 @@ import io.kotest.matchers.shouldBe
 import no.elhub.flex.PostgresTestContainer
 import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.model.domain.AccountingPoint
+import no.elhub.flex.model.domain.AccountingPointEndUser
+import no.elhub.flex.model.domain.AccountingPointEnergySupplier
+import no.elhub.flex.model.domain.db.DatabaseError
 import no.elhub.flex.model.domain.db.NotFoundError
+import no.elhub.flex.util.gs1CheckDigit
+import no.elhub.flex.util.toKotlinInstant
+import no.elhub.flex.util.toKotlinInstantOrNull
 import no.elhub.flex.util.uniqueGsrn
 import java.sql.Connection
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicLong
+import kotlin.time.Instant
 
 @Suppress("MagicNumber")
 class AccountingPointRepositoryTest : FunSpec({
@@ -19,6 +26,7 @@ class AccountingPointRepositoryTest : FunSpec({
     val repo = AccountingPointRepositoryImpl()
 
     val principal = FlexPrincipal(role = "flex_flexibility_information_system_operator", eid = "0")
+    val internalDataPrincipal = FlexPrincipal.internalData()
 
     beforeTest {
         PostgresTestContainer.withConnection { conn ->
@@ -148,11 +156,500 @@ class AccountingPointRepositoryTest : FunSpec({
             result.shouldBeLeft() shouldBe NotFoundError("End user does not match accounting point / controllable unit")
         }
     }
+
+    context("upsertAccountingPoints") {
+
+        test("inserts a new accounting point") {
+            // given
+            val businessId = uniqueGsrn()
+
+            // when
+            with(internalDataPrincipal) {
+                repo.upsertAccountingPoints(listOf(AccountingPoint(id = 0, businessId = businessId)))
+            }.shouldBeRight()
+
+            // then
+            val result = with(principal) { repo.getAccountingPointByBusinessId(businessId) }.shouldBeRight()
+            result.businessId shouldBe businessId
+        }
+
+        test("is idempotent on conflict") {
+            // given
+            val businessId = uniqueGsrn()
+            val ap = AccountingPoint(id = 0, businessId = businessId)
+
+            // when — called twice
+            with(internalDataPrincipal) { repo.upsertAccountingPoints(listOf(ap)) }.shouldBeRight()
+            with(internalDataPrincipal) { repo.upsertAccountingPoints(listOf(ap)) }.shouldBeRight()
+
+            // then — exactly one row exists
+            val count = PostgresTestContainer.withConnection { conn ->
+                conn.prepareStatement("SELECT count(*) FROM flex.accounting_point WHERE business_id = ?").use { stmt ->
+                    stmt.setString(1, businessId)
+                    stmt.executeQuery().use { rs ->
+                        rs.next()
+                        rs.getLong(1)
+                    }
+                }
+            }
+            count shouldBe 1L
+        }
+
+        test("does not affect unrelated accounting points") {
+            // given
+            val noiseBusinessId = uniqueGsrn()
+            val noiseId = insertAccountingPoint(noiseBusinessId)
+            val newBusinessId = uniqueGsrn()
+
+            // when
+            with(internalDataPrincipal) {
+                repo.upsertAccountingPoints(listOf(AccountingPoint(id = 0, businessId = newBusinessId)))
+            }.shouldBeRight()
+
+            // then — noise row still present and unchanged
+            val noiseResult = with(principal) { repo.getAccountingPointByBusinessId(noiseBusinessId) }.shouldBeRight()
+            noiseResult.id shouldBe noiseId.toInt()
+        }
+    }
+
+    context("upsertAccountingPointEndUsers") {
+
+        test("inserts new end-user rows") {
+            // given
+            val apId = insertAccountingPoint(uniqueGsrn()).toInt()
+            val pid = uniquePid()
+            val validFrom = Instant.parse("2023-12-31T23:00:00Z")
+
+            // when
+            with(internalDataPrincipal) {
+                repo.upsertAccountingPointEndUsers(
+                    listOf(AccountingPointEndUser(apId, pid, validFrom, null)),
+                )
+            }.shouldBeRight()
+
+            // then
+            val rows = queryEndUserRows(apId)
+            rows.size shouldBe 1
+            rows[0].validFrom shouldBe validFrom
+            rows[0].validTo shouldBe null
+        }
+
+        test("creates entity and party on demand for a PID end user") {
+            // given
+            val apId = insertAccountingPoint(uniqueGsrn()).toInt()
+            val pid = uniquePid()
+
+            // when
+            with(internalDataPrincipal) {
+                repo.upsertAccountingPointEndUsers(
+                    listOf(AccountingPointEndUser(apId, pid, Instant.parse("2023-12-31T23:00:00Z"), null)),
+                )
+            }.shouldBeRight()
+
+            // then — entity and party rows exist
+            val entityCount = PostgresTestContainer.withConnection { conn ->
+                conn.prepareStatement("SELECT count(*) FROM flex.entity WHERE business_id = ?").use { stmt ->
+                    stmt.setString(1, pid)
+                    stmt.executeQuery().use { rs ->
+                        rs.next()
+                        rs.getLong(1)
+                    }
+                }
+            }
+            entityCount shouldBe 1L
+
+            val partyCount = PostgresTestContainer.withConnection { conn ->
+                conn.prepareStatement(
+                    "SELECT count(*) FROM flex.party p JOIN flex.entity e ON e.id = p.entity_id WHERE e.business_id = ? AND p.type = 'end_user'",
+                ).use { stmt ->
+                    stmt.setString(1, pid)
+                    stmt.executeQuery().use { rs ->
+                        rs.next()
+                        rs.getLong(1)
+                    }
+                }
+            }
+            partyCount shouldBe 1L
+        }
+
+        test("creates entity and party on demand for an org end user") {
+            // given
+            val apId = insertAccountingPoint(uniqueGsrn()).toInt()
+            val orgNumber = uniqueOrgNumber()
+
+            // when
+            with(internalDataPrincipal) {
+                repo.upsertAccountingPointEndUsers(
+                    listOf(AccountingPointEndUser(apId, orgNumber, Instant.parse("2023-12-31T23:00:00Z"), null)),
+                )
+            }.shouldBeRight()
+
+            // then
+            val entityType = PostgresTestContainer.withConnection { conn ->
+                conn.prepareStatement("SELECT type FROM flex.entity WHERE business_id = ?").use { stmt ->
+                    stmt.setString(1, orgNumber)
+                    stmt.executeQuery().use { rs ->
+                        rs.next()
+                        rs.getString(1)
+                    }
+                }
+            }
+            entityType shouldBe "organisation"
+        }
+
+        test("updates a changed end-user ID (same start, different party)") {
+            // given
+            val apId = insertAccountingPoint(uniqueGsrn()).toInt()
+            val originalPid = uniquePid()
+            val newPid = uniquePid()
+            val validFrom = Instant.parse("2023-12-31T23:00:00Z")
+
+            with(internalDataPrincipal) {
+                repo.upsertAccountingPointEndUsers(
+                    listOf(AccountingPointEndUser(apId, originalPid, validFrom, null)),
+                )
+            }.shouldBeRight()
+
+            // when — same start, different end user
+            with(internalDataPrincipal) {
+                repo.upsertAccountingPointEndUsers(
+                    listOf(AccountingPointEndUser(apId, newPid, validFrom, null)),
+                )
+            }.shouldBeRight()
+
+            // then — still exactly one row, pointing to the new party
+            val rows = queryEndUserRows(apId)
+            rows.size shouldBe 1
+            rows[0].validFrom shouldBe validFrom
+
+            val newPartyId = PostgresTestContainer.withConnection { conn ->
+                conn.prepareStatement(
+                    "SELECT p.id FROM flex.party p JOIN flex.entity e ON e.id = p.entity_id WHERE e.business_id = ? AND p.type = 'end_user'",
+                ).use { stmt ->
+                    stmt.setString(1, newPid)
+                    stmt.executeQuery().use { rs ->
+                        rs.next()
+                        rs.getLong(1)
+                    }
+                }
+            }
+            rows[0].endUserPartyId shouldBe newPartyId
+        }
+
+        test("updates a changed valid_to (same start + party, different end)") {
+            // given
+            val apId = insertAccountingPoint(uniqueGsrn()).toInt()
+            val pid = uniquePid()
+            val validFrom = Instant.parse("2023-12-31T23:00:00Z")
+            val originalValidTo = Instant.parse("2024-05-31T22:00:00Z")
+            val newValidTo = Instant.parse("2024-12-31T23:00:00Z")
+
+            with(internalDataPrincipal) {
+                repo.upsertAccountingPointEndUsers(
+                    listOf(AccountingPointEndUser(apId, pid, validFrom, originalValidTo)),
+                )
+            }.shouldBeRight()
+
+            // when
+            with(internalDataPrincipal) {
+                repo.upsertAccountingPointEndUsers(
+                    listOf(AccountingPointEndUser(apId, pid, validFrom, newValidTo)),
+                )
+            }.shouldBeRight()
+
+            // then
+            val rows = queryEndUserRows(apId)
+            rows.size shouldBe 1
+            rows[0].validTo shouldBe newValidTo
+        }
+
+        test("deletes a stale row (start time absent from incoming)") {
+            // given
+            val apId = insertAccountingPoint(uniqueGsrn()).toInt()
+            val pid = uniquePid()
+            val oldStart = Instant.parse("2022-12-31T23:00:00Z")
+            val newStart = Instant.parse("2023-12-31T23:00:00Z")
+
+            with(internalDataPrincipal) {
+                repo.upsertAccountingPointEndUsers(
+                    listOf(AccountingPointEndUser(apId, pid, oldStart, null)),
+                )
+            }.shouldBeRight()
+
+            // when — incoming only contains newStart; oldStart should be deleted
+            with(internalDataPrincipal) {
+                repo.upsertAccountingPointEndUsers(
+                    listOf(AccountingPointEndUser(apId, pid, newStart, null)),
+                )
+            }.shouldBeRight()
+
+            // then
+            val rows = queryEndUserRows(apId)
+            rows.size shouldBe 1
+            rows[0].validFrom shouldBe newStart
+        }
+
+        test("does not touch rows for a different accounting point") {
+            // given
+            val noiseApId = insertAccountingPoint(uniqueGsrn()).toInt()
+            val noisePid = uniquePid()
+            val noiseStart = Instant.parse("2023-05-31T22:00:00Z")
+            val noisePartyId = insertEndUserParty(noisePid)
+            linkApToEndUserAt(noiseApId, noisePartyId, noiseStart)
+
+            val targetApId = insertAccountingPoint(uniqueGsrn()).toInt()
+            val targetPid = uniquePid()
+
+            // when
+            with(internalDataPrincipal) {
+                repo.upsertAccountingPointEndUsers(
+                    listOf(AccountingPointEndUser(targetApId, targetPid, Instant.parse("2023-12-31T23:00:00Z"), null)),
+                )
+            }.shouldBeRight()
+
+            // then — noise AP's row is untouched
+            val noiseRows = queryEndUserRows(noiseApId)
+            noiseRows.size shouldBe 1
+            noiseRows[0].validFrom shouldBe noiseStart
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // upsertAccountingPointEnergySupplier
+    // -------------------------------------------------------------------------
+
+    context("upsertAccountingPointEnergySupplier") {
+
+        test("inserts new energy-supplier rows") {
+            // given
+            val apId = insertAccountingPoint(uniqueGsrn()).toInt()
+            val gln = uniqueGln()
+            insertEnergySupplierParty(gln)
+            val validFrom = Instant.parse("2023-12-31T23:00:00Z")
+
+            // when
+            with(internalDataPrincipal) {
+                repo.upsertAccountingPointEnergySupplier(
+                    listOf(AccountingPointEnergySupplier(apId, gln, validFrom, null)),
+                )
+            }.shouldBeRight()
+
+            // then
+            val rows = queryEnergySupplierRows(apId)
+            rows.size shouldBe 1
+            rows[0].validFrom shouldBe validFrom
+            rows[0].validTo shouldBe null
+        }
+
+        test("updates a changed energy supplier (same start, different party)") {
+            // given
+            val apId = insertAccountingPoint(uniqueGsrn()).toInt()
+            val originalGln = uniqueGln()
+            val newGln = uniqueGln()
+            insertEnergySupplierParty(originalGln)
+            insertEnergySupplierParty(newGln)
+            val validFrom = Instant.parse("2023-12-31T23:00:00Z")
+
+            with(internalDataPrincipal) {
+                repo.upsertAccountingPointEnergySupplier(
+                    listOf(AccountingPointEnergySupplier(apId, originalGln, validFrom, null)),
+                )
+            }.shouldBeRight()
+
+            // when
+            with(internalDataPrincipal) {
+                repo.upsertAccountingPointEnergySupplier(
+                    listOf(AccountingPointEnergySupplier(apId, newGln, validFrom, null)),
+                )
+            }.shouldBeRight()
+
+            // then — still exactly one row, pointing to the new party
+            val rows = queryEnergySupplierRows(apId)
+            rows.size shouldBe 1
+            rows[0].validFrom shouldBe validFrom
+            val newPartyId = PostgresTestContainer.withConnection { conn ->
+                conn.prepareStatement("SELECT id FROM flex.party WHERE business_id = ? AND type = 'energy_supplier'").use { stmt ->
+                    stmt.setString(1, newGln)
+                    stmt.executeQuery().use { rs ->
+                        rs.next()
+                        rs.getLong(1)
+                    }
+                }
+            }
+            rows[0].energySupplierPartyId shouldBe newPartyId
+        }
+
+        test("updates a changed valid_to") {
+            // given
+            val apId = insertAccountingPoint(uniqueGsrn()).toInt()
+            val gln = uniqueGln()
+            insertEnergySupplierParty(gln)
+            val validFrom = Instant.parse("2023-12-31T23:00:00Z")
+            val originalValidTo = Instant.parse("2024-05-31T22:00:00Z")
+            val newValidTo = Instant.parse("2024-12-31T23:00:00Z")
+
+            with(internalDataPrincipal) {
+                repo.upsertAccountingPointEnergySupplier(
+                    listOf(AccountingPointEnergySupplier(apId, gln, validFrom, originalValidTo)),
+                )
+            }.shouldBeRight()
+
+            // when
+            with(internalDataPrincipal) {
+                repo.upsertAccountingPointEnergySupplier(
+                    listOf(AccountingPointEnergySupplier(apId, gln, validFrom, newValidTo)),
+                )
+            }.shouldBeRight()
+
+            // then
+            val rows = queryEnergySupplierRows(apId)
+            rows.size shouldBe 1
+            rows[0].validTo shouldBe newValidTo
+        }
+
+        test("deletes a stale row") {
+            // given
+            val apId = insertAccountingPoint(uniqueGsrn()).toInt()
+            val gln = uniqueGln()
+            insertEnergySupplierParty(gln)
+            val oldStart = Instant.parse("2022-12-31T23:00:00Z")
+            val newStart = Instant.parse("2023-12-31T23:00:00Z")
+
+            with(internalDataPrincipal) {
+                repo.upsertAccountingPointEnergySupplier(
+                    listOf(AccountingPointEnergySupplier(apId, gln, oldStart, null)),
+                )
+            }.shouldBeRight()
+
+            // when
+            with(internalDataPrincipal) {
+                repo.upsertAccountingPointEnergySupplier(
+                    listOf(AccountingPointEnergySupplier(apId, gln, newStart, null)),
+                )
+            }.shouldBeRight()
+
+            // then
+            val rows = queryEnergySupplierRows(apId)
+            rows.size shouldBe 1
+            rows[0].validFrom shouldBe newStart
+        }
+
+        test("does not touch rows for a different accounting point") {
+            // given
+            val noiseApId = insertAccountingPoint(uniqueGsrn()).toInt()
+            val noiseGln = uniqueGln()
+            val noisePartyId = insertEnergySupplierParty(noiseGln)
+            val noiseStart = Instant.parse("2023-05-31T22:00:00Z")
+            linkApToEnergySupplierAt(noiseApId, noisePartyId, noiseStart)
+
+            val targetApId = insertAccountingPoint(uniqueGsrn()).toInt()
+            val targetGln = uniqueGln()
+            insertEnergySupplierParty(targetGln)
+
+            // when
+            with(internalDataPrincipal) {
+                repo.upsertAccountingPointEnergySupplier(
+                    listOf(AccountingPointEnergySupplier(targetApId, targetGln, Instant.parse("2023-12-31T23:00:00Z"), null)),
+                )
+            }.shouldBeRight()
+
+            // then — noise AP's row is untouched
+            val noiseRows = queryEnergySupplierRows(noiseApId)
+            noiseRows.size shouldBe 1
+            noiseRows[0].validFrom shouldBe noiseStart
+        }
+
+        test("returns error when GLN is unknown") {
+            // given
+            val apId = insertAccountingPoint(uniqueGsrn()).toInt()
+            val unknownGln = uniqueGln() // never inserted into flex.party
+
+            // when
+            val result = with(internalDataPrincipal) {
+                repo.upsertAccountingPointEnergySupplier(
+                    listOf(AccountingPointEnergySupplier(apId, unknownGln, Instant.parse("2023-12-31T23:00:00Z"), null)),
+                )
+            }
+
+            // then
+            result.shouldBeLeft() shouldBe DatabaseError("Failed to upsert accounting point energy suppliers")
+        }
+    }
 })
 
 private val pidCounter = AtomicLong(10_000_000_000L)
+private val orgCounter = AtomicLong(100_000_000L)
+private val glnCounter = AtomicLong(10_000_000L)
 
 private fun uniquePid(): String = pidCounter.getAndIncrement().toString()
+
+private fun uniqueOrgNumber(): String {
+    val next = orgCounter.getAndIncrement()
+    require(next <= 999_999_999L) { "Exhausted unique org number values in this JVM" }
+    return next.toString()
+}
+
+private fun uniqueGln(): String {
+    val next = glnCounter.getAndIncrement()
+    require(next <= 99_999_999L) { "Exhausted unique GLN values in this JVM" }
+    // Build a 12-digit prefix: "7080" + 8-digit suffix, then append GS1 check digit → 13 digits total.
+    val prefix = "7080" + next.toString().padStart(8, '0')
+    return prefix + gs1CheckDigit(prefix)
+}
+
+private data class EndUserRow(val endUserPartyId: Long, val validFrom: Instant, val validTo: Instant?)
+
+private data class EnergySupplierRow(val energySupplierPartyId: Long, val validFrom: Instant, val validTo: Instant?)
+
+private fun queryEndUserRows(apId: Int): List<EndUserRow> =
+    PostgresTestContainer.withConnection { conn ->
+        conn.prepareStatement(
+            """
+            SELECT end_user_id, lower(valid_time_range), upper(valid_time_range)
+            FROM flex.accounting_point_end_user
+            WHERE accounting_point_id = ?
+            ORDER BY lower(valid_time_range)
+            """.trimIndent()
+        ).use { stmt ->
+            stmt.setInt(1, apId)
+            stmt.executeQuery().use { rs ->
+                val rows = mutableListOf<EndUserRow>()
+                while (rs.next()) {
+                    rows += EndUserRow(
+                        endUserPartyId = rs.getLong(1),
+                        validFrom = rs.getTimestamp(2).toKotlinInstant(),
+                        validTo = rs.getTimestamp(3).toKotlinInstantOrNull(),
+                    )
+                }
+                rows
+            }
+        }
+    }
+
+private fun queryEnergySupplierRows(apId: Int): List<EnergySupplierRow> =
+    PostgresTestContainer.withConnection { conn ->
+        conn.prepareStatement(
+            """
+            SELECT energy_supplier_id, lower(valid_time_range), upper(valid_time_range)
+            FROM flex.accounting_point_energy_supplier
+            WHERE accounting_point_id = ?
+            ORDER BY lower(valid_time_range)
+            """.trimIndent()
+        ).use { stmt ->
+            stmt.setInt(1, apId)
+            stmt.executeQuery().use { rs ->
+                val rows = mutableListOf<EnergySupplierRow>()
+                while (rs.next()) {
+                    rows += EnergySupplierRow(
+                        energySupplierPartyId = rs.getLong(1),
+                        validFrom = rs.getTimestamp(2).toKotlinInstant(),
+                        validTo = rs.getTimestamp(3).toKotlinInstantOrNull(),
+                    )
+                }
+                rows
+            }
+        }
+    }
 
 private fun insertAccountingPoint(apBusinessId: String): Long =
     PostgresTestContainer.withConnection { conn ->
@@ -229,6 +726,46 @@ private fun insertEndUserParty(entityBusinessId: String): Long =
         partyId
     }
 
+/** Inserts an organisation entity + energy_supplier party with the given GLN, activates it. Returns the party ID. */
+private fun insertEnergySupplierParty(gln: String): Long =
+    PostgresTestContainer.withConnection { conn ->
+        conn.autoCommit = false
+        conn.createStatement().use { it.execute("SELECT flex.set_entity_party_identity(0, 0, 0)") }
+
+        val orgNumber = uniqueOrgNumber()
+        val entityId = conn.prepareStatement(
+            "INSERT INTO flex.entity (name, type, business_id, business_id_type) VALUES (?, 'organisation', ?, 'org') RETURNING id",
+        ).use { stmt ->
+            stmt.setString(1, "Energy Supplier $gln")
+            stmt.setString(2, orgNumber)
+            stmt.executeQuery().use { rs ->
+                rs.next()
+                rs.getLong(1)
+            }
+        }
+
+        // flex.party holds the GLN as business_id with business_id_type='gln'.
+        val partyId = conn.prepareStatement(
+            "INSERT INTO flex.party (entity_id, name, type, role, business_id, business_id_type) VALUES (?, ?, 'energy_supplier', 'flex_energy_supplier', ?, 'gln') RETURNING id",
+        ).use { stmt ->
+            stmt.setLong(1, entityId)
+            stmt.setString(2, "Energy Supplier Party $gln")
+            stmt.setString(3, gln)
+            stmt.executeQuery().use { rs ->
+                rs.next()
+                rs.getLong(1)
+            }
+        }
+
+        conn.prepareStatement("UPDATE flex.party SET status = 'active' WHERE id = ?").use { stmt ->
+            stmt.setLong(1, partyId)
+            stmt.executeUpdate()
+        }
+
+        conn.commit()
+        partyId
+    }
+
 private fun linkApToEndUser(apId: Long, euPartyId: Long) {
     PostgresTestContainer.withConnection { conn ->
         conn.autoCommit = false
@@ -241,6 +778,40 @@ private fun linkApToEndUser(apId: Long, euPartyId: Long) {
         ).use { stmt ->
             stmt.setLong(1, apId)
             stmt.setLong(2, euPartyId)
+            stmt.executeUpdate()
+        }
+        conn.commit()
+    }
+}
+
+/** Inserts an end-user link with an explicit valid_from timestamp (for isolation/noise tests). */
+private fun linkApToEndUserAt(apId: Int, euPartyId: Long, validFrom: Instant) {
+    PostgresTestContainer.withConnection { conn ->
+        conn.autoCommit = false
+        conn.createStatement().use { it.execute("SELECT flex.set_entity_party_identity(0, 0, 0)") }
+        conn.prepareStatement(
+            "INSERT INTO flex.accounting_point_end_user (accounting_point_id, end_user_id, valid_time_range) VALUES (?, ?, tstzrange(?::timestamptz, null, '[)'))",
+        ).use { stmt ->
+            stmt.setInt(1, apId)
+            stmt.setLong(2, euPartyId)
+            stmt.setString(3, validFrom.toString())
+            stmt.executeUpdate()
+        }
+        conn.commit()
+    }
+}
+
+/** Inserts an energy-supplier link with an explicit valid_from timestamp (for isolation/noise tests). */
+private fun linkApToEnergySupplierAt(apId: Int, esPartyId: Long, validFrom: Instant) {
+    PostgresTestContainer.withConnection { conn ->
+        conn.autoCommit = false
+        conn.createStatement().use { it.execute("SELECT flex.set_entity_party_identity(0, 0, 0)") }
+        conn.prepareStatement(
+            "INSERT INTO flex.accounting_point_energy_supplier (accounting_point_id, energy_supplier_id, valid_time_range) VALUES (?, ?, tstzrange(?::timestamptz, null, '[)'))",
+        ).use { stmt ->
+            stmt.setInt(1, apId)
+            stmt.setLong(2, esPartyId)
+            stmt.setString(3, validFrom.toString())
             stmt.executeUpdate()
         }
         conn.commit()

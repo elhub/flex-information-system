@@ -28,3 +28,10 @@ ON accounting_point
 FOR SELECT
 TO flex_common
 USING (true);
+
+GRANT INSERT, SELECT ON accounting_point TO flex_internal_data;
+CREATE POLICY "AP_INTERNAL_DATA"
+ON accounting_point
+FOR ALL
+TO flex_internal_data
+USING (true);
