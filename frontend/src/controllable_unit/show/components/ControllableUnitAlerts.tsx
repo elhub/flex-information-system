@@ -3,7 +3,6 @@ import { BodyText, Alert, Heading } from "../../../components/ui";
 
 type AlertType = {
   severity: "info" | "success" | "warning" | "error";
-  title: string;
   content: string;
 };
 
@@ -17,7 +16,6 @@ const useControllableUnitAlerts = (
     const suspension = suspensions[0];
     return {
       severity: "error",
-      title: "Suspension",
       content: `The controllable unit is suspended. Reason: ${suspension.reason}`,
     };
   }
@@ -25,7 +23,6 @@ const useControllableUnitAlerts = (
   if (technicalResources?.length === 0) {
     return {
       severity: "info",
-      title: "No technical resources",
       content:
         "To set the controllable unit as active, one technical resource is required.",
     };
@@ -34,7 +31,6 @@ const useControllableUnitAlerts = (
   if (controllableUnit.status === "new") {
     return {
       severity: "info",
-      title: "Not active",
       content: "The controllable unit is not active.",
     };
   }
@@ -53,10 +49,7 @@ export const ControllableUnitAlerts = ({
   return (
     <Alert variant={alert.severity} className="max-w-3xl">
       <div className="flex flex-col gap-2">
-        <Heading level={5} size="small">
-          {alert.title}
-        </Heading>
-        <BodyText>{alert.content}</BodyText>
+        <BodyText> {alert.content}</BodyText>
       </div>
     </Alert>
   );
