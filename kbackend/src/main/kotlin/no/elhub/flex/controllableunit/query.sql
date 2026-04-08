@@ -1,7 +1,5 @@
-package no.elhub.flex.controllableunit.db
-
-const val GET_BY_CU_OR_AP_BUSINESS_ID = """
-SELECT coalesce(jsonb_agg(row_to_json(cu)), '[]'::jsonb)
+-- name: GetControllableUnitsByCUOrAPBusinessId :one
+SELECT coalesce(jsonb_agg(row_to_json(cu)), '[]'::jsonb)::jsonb
 FROM (
          SELECT
              cu.id,
@@ -19,7 +17,6 @@ FROM (
          FROM flex.controllable_unit AS cu
                   INNER JOIN flex.accounting_point AS ap
                              ON cu.accounting_point_id = ap.id
-                                 AND coalesce(cu.business_id = nullIf(?, '')::uuid, true)
-                                 AND coalesce(ap.business_id = nullIf(?, ''), true)
+                                 AND coalesce(cu.business_id = nullIf(@controllable_unit_business_id::text, '')::uuid, true)
+                                 AND coalesce(ap.business_id = nullIf(@accounting_point_business_id::text, ''), true)
      ) as cu;
-"""

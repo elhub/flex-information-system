@@ -47,12 +47,10 @@ class ControllableUnitRepositoryImpl : ControllableUnitRepository {
     ): Either<RepositoryError, List<ControllableUnit>> =
         flexTransaction { conn ->
             runCatching {
-                conn.prepareStatement(GET_BY_CU_OR_AP_BUSINESS_ID)
-                    .use { stmt ->
-                        stmt.setString(1, controllableUnitBusinessId)
-                        stmt.setString(2, accountingPointBusinessId)
-                        stmt.executeQuery().use { rs -> if (rs.next()) rs.getString(1) else null }
-                    }
+                QueriesImpl(conn).getControllableUnitsByCUOrAPBusinessId(
+                    controllableUnitBusinessId,
+                    accountingPointBusinessId,
+                )
             }.fold(
                 onSuccess = { jsonStr ->
                     if (jsonStr == null) {
