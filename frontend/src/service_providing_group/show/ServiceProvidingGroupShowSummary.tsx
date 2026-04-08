@@ -59,14 +59,12 @@ export const ServiceProvidingGroupShowSummary = ({
             label
           />
 
-          <div className="flex flex-col gap-1">
-            <EnumField
-              labelDirection="column"
-              label
-              source="bidding_zone"
-              enumKey="service_providing_group.bidding_zone"
-            />
-          </div>
+          <EnumField
+            labelDirection="column"
+            label
+            source="bidding_zone"
+            enumKey="service_providing_group.bidding_zone"
+          />
         </RecordContextProvider>
         <LabelValue
           size="small"

@@ -70,16 +70,19 @@ export const ControllableUnitShowSummary = ({
             </Button>
           </div>
         )}
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-4">
           <LabelValue
+            size="small"
             labelKey="controllable_unit.id"
             value={controllableUnit.id}
           />
           <LabelValue
+            size="small"
             labelKey="controllable_unit.business_id"
             value={controllableUnit.business_id}
           />
           <LabelValue
+            size="small"
             label="Accounting point"
             value={
               accountingPoint && systemOperator
@@ -88,6 +91,7 @@ export const ControllableUnitShowSummary = ({
             }
           />
           <LabelValue
+            size="small"
             label="Service provider"
             value={
               serviceProvider
@@ -104,6 +108,7 @@ export const ControllableUnitShowSummary = ({
             linkText={serviceProvider ? "See all contracts" : undefined}
           />
           <LabelValue
+            size="small"
             labelKey="accounting_point_balance_responsible_party.balance_responsible_party_id"
             value={
               balanceResponsibleParty?.name ?? "No balance responsible party"
@@ -120,17 +125,20 @@ export const ControllableUnitShowSummary = ({
             }
           />
           <LabelValue
+            size="small"
             tooltip
             labelKey="controllable_unit.maximum_active_power"
             value={controllableUnit.maximum_active_power}
             unit="kW"
           />
           <LabelValue
+            size="small"
             tooltip
             labelKey="controllable_unit.regulation_direction"
             value={controllableUnit.regulation_direction}
           />
           <LabelValue
+            size="small"
             labelKey="controllable_unit.recorded_at"
             value={
               controllableUnit.recorded_at
