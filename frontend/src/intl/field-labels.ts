@@ -273,6 +273,7 @@ export type FieldLabel =
   | "service_provider_product_suspension_history.replaced_by"
   | "service_provider_product_suspension_history.service_provider_id"
   | "service_provider_product_suspension_history.service_provider_product_suspension_id"
+  | "service_providing_group.additional_information"
   | "service_providing_group.bidding_zone"
   | "service_providing_group.id"
   | "service_providing_group.name"
@@ -350,6 +351,7 @@ export type FieldLabel =
   | "service_providing_group_grid_suspension_history.replaced_by"
   | "service_providing_group_grid_suspension_history.service_providing_group_grid_suspension_id"
   | "service_providing_group_grid_suspension_history.service_providing_group_id"
+  | "service_providing_group_history.additional_information"
   | "service_providing_group_history.bidding_zone"
   | "service_providing_group_history.id"
   | "service_providing_group_history.name"
@@ -608,6 +610,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group.service_provider_id": "Service provider",
     "service_providing_group.bidding_zone": "Bidding zone",
     "service_providing_group.status": "Status",
+    "service_providing_group.additional_information": "Additional information",
     "service_providing_group.recorded_at": "Recorded at",
     "service_providing_group.recorded_by": "Recorded by",
     "service_providing_group_history.id": "ID",
@@ -615,6 +618,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_history.service_provider_id": "Service provider",
     "service_providing_group_history.bidding_zone": "Bidding zone",
     "service_providing_group_history.status": "Status",
+    "service_providing_group_history.additional_information":
+      "Additional information",
     "service_providing_group_history.recorded_at": "Recorded at",
     "service_providing_group_history.recorded_by": "Recorded by",
     "service_providing_group_history.service_providing_group_id":
@@ -1282,6 +1287,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group.service_provider_id": "Tjenesteleverandør",
     "service_providing_group.bidding_zone": "Budområde",
     "service_providing_group.status": "Status",
+    "service_providing_group.additional_information": "Tilleggsinformasjon",
     "service_providing_group.recorded_at": "Registrert",
     "service_providing_group.recorded_by": "Registrert av",
     "service_providing_group_history.id": "ID",
@@ -1289,6 +1295,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_history.service_provider_id": "Tjenesteleverandør",
     "service_providing_group_history.bidding_zone": "Budområde",
     "service_providing_group_history.status": "Status",
+    "service_providing_group_history.additional_information":
+      "Tilleggsinformasjon",
     "service_providing_group_history.recorded_at": "Registrert",
     "service_providing_group_history.recorded_by": "Registrert av",
     "service_providing_group_history.service_providing_group_id":
@@ -1951,6 +1959,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group.service_provider_id": "Tenesteleverandør",
     "service_providing_group.bidding_zone": "Budområde",
     "service_providing_group.status": "Status",
+    "service_providing_group.additional_information": "Tilleggsinformasjon",
     "service_providing_group.recorded_at": "Registrert",
     "service_providing_group.recorded_by": "Registrert av",
     "service_providing_group_history.id": "ID",
@@ -1958,6 +1967,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_history.service_provider_id": "Tenesteleverandør",
     "service_providing_group_history.bidding_zone": "Budområde",
     "service_providing_group_history.status": "Status",
+    "service_providing_group_history.additional_information":
+      "Tilleggsinformasjon",
     "service_providing_group_history.recorded_at": "Registrert",
     "service_providing_group_history.recorded_by": "Registrert av",
     "service_providing_group_history.service_providing_group_id":

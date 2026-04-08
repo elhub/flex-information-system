@@ -38,6 +38,11 @@ public data class ServiceProvidingGroupHistoryResponse(
   @SerialName("status")
   public val status: ServiceProvidingGroupStatus,
   /**
+   * Free text field for extra information about the service providing group if needed.
+   */
+  @SerialName("additional_information")
+  public val additionalInformation: String? = null,
+  /**
    * When the resource was recorded (created or updated) in the system.
    */
   @SerialName("recorded_at")

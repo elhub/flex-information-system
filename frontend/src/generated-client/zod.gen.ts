@@ -578,6 +578,7 @@ export const zServiceProvidingGroupUpdateRequest = z.object({
   name: z.string().max(128).optional(),
   bidding_zone: zServiceProvidingGroupBiddingZone.optional(),
   status: zServiceProvidingGroupStatus.optional(),
+  additional_information: z.string().optional(),
 });
 
 /**
@@ -588,6 +589,7 @@ export const zServiceProvidingGroupCreateRequest = z.object({
   service_provider_id: z.coerce.number(),
   bidding_zone: zServiceProvidingGroupBiddingZone,
   status: zServiceProvidingGroupStatus.optional(),
+  additional_information: z.string().optional(),
 });
 
 /**
@@ -599,6 +601,7 @@ export const zServiceProvidingGroup = z.object({
   service_provider_id: z.coerce.number(),
   bidding_zone: zServiceProvidingGroupBiddingZone,
   status: zServiceProvidingGroupStatus,
+  additional_information: z.string().optional(),
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
 });
@@ -1809,6 +1812,7 @@ export const zServiceProvidingGroupWritable = z.object({
   service_provider_id: z.coerce.number(),
   bidding_zone: zServiceProvidingGroupBiddingZone,
   status: zServiceProvidingGroupStatus,
+  additional_information: z.string().optional(),
 });
 
 /**

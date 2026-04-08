@@ -2276,6 +2276,7 @@ GRANT SELECT (
     service_provider_id,
     bidding_zone,
     status,
+    additional_information,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -2288,6 +2289,7 @@ GRANT SELECT (
     service_provider_id,
     bidding_zone,
     status,
+    additional_information,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -2300,6 +2302,7 @@ GRANT SELECT (
     service_provider_id,
     bidding_zone,
     status,
+    additional_information,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -2310,7 +2313,8 @@ GRANT INSERT (
     name,
     service_provider_id,
     bidding_zone,
-    status
+    status,
+    additional_information
 ) ON TABLE
 api.service_providing_group
 TO flex_flexibility_information_system_operator;
@@ -2321,6 +2325,7 @@ GRANT SELECT (
     service_provider_id,
     bidding_zone,
     status,
+    additional_information,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -2329,7 +2334,8 @@ TO flex_flexibility_information_system_operator;
 
 GRANT UPDATE (
     name,
-    status
+    status,
+    additional_information
 ) ON TABLE
 api.service_providing_group
 TO flex_flexibility_information_system_operator;
@@ -2340,6 +2346,7 @@ GRANT SELECT (
     service_provider_id,
     bidding_zone,
     status,
+    additional_information,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -2352,6 +2359,7 @@ GRANT SELECT (
     service_provider_id,
     bidding_zone,
     status,
+    additional_information,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -2362,7 +2370,8 @@ GRANT INSERT (
     name,
     service_provider_id,
     bidding_zone,
-    status
+    status,
+    additional_information
 ) ON TABLE
 api.service_providing_group
 TO flex_service_provider;
@@ -2373,6 +2382,7 @@ GRANT SELECT (
     service_provider_id,
     bidding_zone,
     status,
+    additional_information,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -2381,7 +2391,8 @@ TO flex_service_provider;
 
 GRANT UPDATE (
     name,
-    status
+    status,
+    additional_information
 ) ON TABLE
 api.service_providing_group
 TO flex_service_provider;
@@ -2392,6 +2403,7 @@ GRANT SELECT (
     service_provider_id,
     bidding_zone,
     status,
+    additional_information,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -2409,6 +2421,7 @@ GRANT SELECT (
     service_provider_id,
     bidding_zone,
     status,
+    additional_information,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -2424,6 +2437,7 @@ GRANT SELECT (
     service_provider_id,
     bidding_zone,
     status,
+    additional_information,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -2439,6 +2453,7 @@ GRANT SELECT (
     service_provider_id,
     bidding_zone,
     status,
+    additional_information,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -2454,6 +2469,7 @@ GRANT SELECT (
     service_provider_id,
     bidding_zone,
     status,
+    additional_information,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -2469,6 +2485,7 @@ GRANT SELECT (
     service_provider_id,
     bidding_zone,
     status,
+    additional_information,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -2484,6 +2501,7 @@ GRANT SELECT (
     service_provider_id,
     bidding_zone,
     status,
+    additional_information,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -2499,6 +2517,7 @@ GRANT SELECT (
     service_provider_id,
     bidding_zone,
     status,
+    additional_information,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -2514,6 +2533,7 @@ GRANT SELECT (
     service_provider_id,
     bidding_zone,
     status,
+    additional_information,
     recorded_at,
     replaced_at,
     recorded_by,

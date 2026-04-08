@@ -30,6 +30,8 @@ class ServiceProvidingGroupHistoryResponse:
             2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
         service_providing_group_id (int): Reference to the resource that was updated. Example: 48.
+        additional_information (None | str | Unset): Free text field for extra information about the service providing
+            group if needed.
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (datetime.datetime | None | Unset): When the resource was replaced in the system. Example:
             2024-07-07T10:00:00+00:00.
@@ -43,6 +45,7 @@ class ServiceProvidingGroupHistoryResponse:
     recorded_at: datetime.datetime
     recorded_by: int
     service_providing_group_id: int
+    additional_information: None | str | Unset = UNSET
     replaced_by: int | None | Unset = UNSET
     replaced_at: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
@@ -63,6 +66,12 @@ class ServiceProvidingGroupHistoryResponse:
         recorded_by = self.recorded_by
 
         service_providing_group_id = self.service_providing_group_id
+
+        additional_information: None | str | Unset
+        if isinstance(self.additional_information, Unset):
+            additional_information = UNSET
+        else:
+            additional_information = self.additional_information
 
         replaced_by: int | None | Unset
         if isinstance(self.replaced_by, Unset):
@@ -92,6 +101,8 @@ class ServiceProvidingGroupHistoryResponse:
                 "service_providing_group_id": service_providing_group_id,
             }
         )
+        if additional_information is not UNSET:
+            field_dict["additional_information"] = additional_information
         if replaced_by is not UNSET:
             field_dict["replaced_by"] = replaced_by
         if replaced_at is not UNSET:
@@ -117,6 +128,15 @@ class ServiceProvidingGroupHistoryResponse:
         recorded_by = d.pop("recorded_by")
 
         service_providing_group_id = d.pop("service_providing_group_id")
+
+        def _parse_additional_information(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        additional_information = _parse_additional_information(d.pop("additional_information", UNSET))
 
         def _parse_replaced_by(data: object) -> int | None | Unset:
             if data is None:
@@ -153,6 +173,7 @@ class ServiceProvidingGroupHistoryResponse:
             recorded_at=recorded_at,
             recorded_by=recorded_by,
             service_providing_group_id=service_providing_group_id,
+            additional_information=additional_information,
             replaced_by=replaced_by,
             replaced_at=replaced_at,
         )

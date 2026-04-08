@@ -25,4 +25,9 @@ public data class ServiceProvidingGroupUpdateRequest(
    */
   @SerialName("status")
   public val status: ServiceProvidingGroupStatus = ServiceProvidingGroupStatus.NEW,
+  /**
+   * Free text field for extra information about the service providing group if needed.
+   */
+  @SerialName("additional_information")
+  public val additionalInformation: String? = null,
 )

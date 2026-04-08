@@ -106,6 +106,7 @@ CREATE TABLE api.service_providing_group (
     service_provider_id bigint NOT NULL,
     bidding_zone text NOT NULL,
     status text NOT NULL,
+    additional_information text NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
@@ -116,6 +117,7 @@ CREATE TABLE api.service_providing_group_history (
     service_provider_id bigint NOT NULL,
     bidding_zone text NOT NULL,
     status text NOT NULL,
+    additional_information text NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL,
     replaced_by bigint NULL,

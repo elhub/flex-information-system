@@ -383,13 +383,14 @@ type ApiServiceProviderProductSuspensionHistory struct {
 }
 
 type ApiServiceProvidingGroup struct {
-	ID                int
-	Name              string
-	ServiceProviderID int
-	BiddingZone       string
-	Status            string
-	RecordedBy        int
-	RecordedAt        pgtype.Timestamptz
+	ID                    int
+	Name                  string
+	ServiceProviderID     int
+	BiddingZone           string
+	Status                string
+	AdditionalInformation *string
+	RecordedBy            int
+	RecordedAt            pgtype.Timestamptz
 }
 
 type ApiServiceProvidingGroupGridPrequalification struct {
@@ -493,6 +494,7 @@ type ApiServiceProvidingGroupHistory struct {
 	ServiceProviderID       int
 	BiddingZone             string
 	Status                  string
+	AdditionalInformation   *string
 	RecordedBy              int
 	RecordedAt              pgtype.Timestamptz
 	ReplacedBy              *int

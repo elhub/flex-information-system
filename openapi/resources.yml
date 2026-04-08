@@ -525,6 +525,17 @@ resources:
           en: Status
           nb: Status
           nn: Status
+      additional_information:
+        description: >-
+          Free text field for extra information about the service providing group if needed.
+        format: text
+        type: string
+        nullable: true
+        example: null
+        x-intl:
+          en: Additional information
+          nb: Tilleggsinformasjon
+          nn: Tilleggsinformasjon
 
   - id: service_providing_group_membership
     acronym: SPGM
