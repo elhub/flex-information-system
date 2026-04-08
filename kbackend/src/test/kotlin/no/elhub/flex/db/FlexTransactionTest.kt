@@ -80,8 +80,8 @@ class FlexTransactionTest : FunSpec({
                     either {
                         // Nested call — joins the outer transaction.
                         with(internalPrincipal) {
-                            flexTransaction { _ ->
-                                outerConn.prepareStatement(
+                            flexTransaction { innerConn ->
+                                innerConn.prepareStatement(
                                     "INSERT INTO flex.accounting_point (business_id) VALUES (?)"
                                 ).use { stmt ->
                                     stmt.setString(1, businessId)

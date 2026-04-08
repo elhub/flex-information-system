@@ -104,7 +104,7 @@ interface AccountingPointRepository {
      * (accounting_point_id, lower(valid_time_range)).
      *
      * Energy supplier parties (type='energy_supplier') are looked up by GLN business_id and
-     * must already exist in flex.party; a [NotFoundError] is returned if any GLN is unknown.
+     * must already exist in flex.party; a [DatabaseError] is returned if any GLN is unknown.
      */
     context(principal: FlexPrincipal)
     suspend fun upsertAccountingPointEnergySupplier(
@@ -162,8 +162,8 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
                     }
                 }
             }.mapLeft { e ->
-                logger.error { "getAccountingPointIdByBusinessId failed: ${e.message}" }
-                DatabaseError("accounting point does not exist in database")
+                logger.error { "getAccountingPointIdByBusinessId($accountingPointBusinessId) failed: ${e.message}" }
+                DatabaseError("Failed to read accounting point by business ID $accountingPointBusinessId")
             }.flatMap { row ->
                 row?.right() ?: run {
                     logger.info { "Accounting point $accountingPointBusinessId not found." }
