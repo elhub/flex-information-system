@@ -15,7 +15,7 @@ export const ActivateServiceProvidingGroupButton = ({
   const { buttonProps, dialog } = useConfirmAction({
     title: "Activate service providing group",
     content:
-      "Activating the service providing group makes it eligible to participate in flexibility markets.",
+      "Activating the controllable unit will notify the system operator to validate the controllable unit.",
     confirmText: "Activate",
     onConfirmMutation: {
       mutationFn: () =>

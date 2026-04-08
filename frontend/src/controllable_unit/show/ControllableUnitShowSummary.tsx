@@ -70,7 +70,7 @@ export const ControllableUnitShowSummary = ({
             </Button>
           </div>
         )}
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
           <LabelValue
             labelKey="controllable_unit.id"
             value={controllableUnit.id}

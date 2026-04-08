@@ -10,12 +10,7 @@ import { useParams } from "react-router-dom";
 import { ControllableUnitShowSummary } from "./ControllableUnitShowSummary";
 import { ControllableUnitShowTabs } from "./ControllableUnitShowTabs";
 import { ControllableUnitAlerts } from "./components/ControllableUnitAlerts";
-import {
-  readControllableUnit,
-  ControllableUnitStatus,
-} from "../../generated-client";
-import { throwOnError } from "../../util";
-import { useQuery } from "@tanstack/react-query";
+import { ControllableUnitStatus } from "../../generated-client";
 import { useControllableUnitViewModel } from "./useControllableUnitViewModel";
 import { useTranslateEnum } from "../../intl/intl";
 import { ActivateControllableUnitButton } from "./components/ActivateControllableUnitButton";
@@ -51,35 +46,22 @@ export const ControllableUnitShow = () => {
 
   const translateEnum = useTranslateEnum();
   const {
-    data: cu,
-    isLoading: isCuLoading,
-    error: cuError,
-  } = useQuery({
-    queryKey: ["controllable_unit", cuId],
-    queryFn: () =>
-      readControllableUnit({ path: { id: cuId } }).then(throwOnError),
-    enabled: !!cuId,
-  });
-
-  const {
     data: viewModel,
     isPending: isViewModelPending,
     error: viewModelError,
-  } = useControllableUnitViewModel(cu);
+  } = useControllableUnitViewModel(cuId);
+
+  const cu = viewModel?.controllableUnit;
 
   const canUpdateControllableUnit =
     !!permissions?.allow("controllable_unit", "update") &&
     (viewModel?.technicalResources?.length ?? 0) > 0;
 
-  if (cuError) {
-    throw cuError;
-  }
-
   if (viewModelError) {
     throw viewModelError;
   }
 
-  if (isCuLoading || isViewModelPending) {
+  if (isViewModelPending) {
     return <Loader />;
   }
 
