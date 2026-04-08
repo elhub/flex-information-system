@@ -24,6 +24,7 @@ tbls-lint:
 
 gradle-docker-image:
     #!/usr/bin/env bash
+    set -euo pipefail
     cd kbackend
     ./gradlew jibDockerBuild --image=flex-kbackend
     cd ..
