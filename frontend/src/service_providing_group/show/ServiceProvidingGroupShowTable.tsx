@@ -7,7 +7,7 @@ import {
 } from "./useSpgShowViewModel";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useTranslateField } from "../../intl/intl";
-import { IconUser } from "@elhub/ds-icons";
+import { IconCross, IconCrossCircle, IconUser } from "@elhub/ds-icons";
 import { usePermissions } from "ra-core";
 import { Permissions } from "../../auth/permissions";
 import { useConfirmAction } from "../../components/ConfirmAction";
@@ -35,9 +35,13 @@ const DeleteButton = ({
 
   return (
     <>
-      <Button variant="caution" onClick={() => buttonProps.onClick()}>
-        Remove
-      </Button>
+      <Button
+        variant="invisible"
+        className="text-semantic-background-action-danger"
+        size="large"
+        icon={IconCrossCircle}
+        onClick={() => buttonProps.onClick()}
+      />
       {dialog}
     </>
   );
@@ -131,7 +135,7 @@ export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
         action={
           canDelete
             ? {
-                header: "",
+                header: "Remove from group",
                 render: (row) =>
                   row.membershipId !== undefined ? (
                     <DeleteButton

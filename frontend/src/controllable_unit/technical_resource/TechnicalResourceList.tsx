@@ -124,7 +124,7 @@ export const TechnicalResourceList = () => {
           columns={columns}
           data={data ?? []}
           empty={
-              "No technical resources yet. To set the controllable unit as active, one technical resource is required."
+            "No technical resources yet. To set the controllable unit as active, one technical resource is required."
           }
           rowClick={(record) => {
             navigate(
