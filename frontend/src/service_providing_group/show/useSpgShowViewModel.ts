@@ -1,5 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  deleteServiceProvidingGroupMembership,
   listAccountingPoint,
   listControllableUnit,
   listServiceProvidingGroupMembership,
@@ -9,6 +10,7 @@ import { throwOnError, toDateString } from "../../util";
 
 export type SpgMembershipRow = {
   id: number;
+  membershipId: number;
   name: string;
   validFrom: string;
   validTo: string;
@@ -89,6 +91,7 @@ const fetchSpgShowData = async (serviceProvidingGroupId: number) => {
 
     return {
       id: cu.id,
+      membershipId: membership!.id,
       name: cu.name,
       validFrom: toDateString(membership?.valid_from),
       validTo: toDateString(membership?.valid_to),
@@ -137,5 +140,20 @@ export const useSpgShowViewModel = (spgId: number | undefined) => {
     queryKey: spgShowViewModelQueryKey(spgId),
     queryFn: () => fetchSpgShowData(spgId ?? 0),
     enabled: !!spgId,
+  });
+};
+
+export const useRemoveMembershipFromShow = (spgId: number) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (membershipId: number) =>
+      deleteServiceProvidingGroupMembership({
+        path: { id: membershipId },
+      }).then(throwOnError),
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: spgShowViewModelQueryKey(spgId),
+      });
+    },
   });
 };

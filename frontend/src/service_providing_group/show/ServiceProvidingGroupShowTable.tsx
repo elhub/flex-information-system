@@ -3,15 +3,44 @@ import { Column, SimpleTable } from "../../components/SimpleTable";
 import {
   useSpgShowViewModel,
   type SpgMembershipRow,
+  useRemoveMembershipFromShow,
 } from "./useSpgShowViewModel";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useTranslateField } from "../../intl/intl";
 import { IconUser } from "@elhub/ds-icons";
 import { usePermissions } from "ra-core";
 import { Permissions } from "../../auth/permissions";
+import { useConfirmAction } from "../../components/ConfirmAction";
 
 type Props = {
   spgId: number;
+};
+
+const DeleteButton = ({
+  membershipId,
+  spgId,
+}: {
+  membershipId: number;
+  spgId: number;
+}) => {
+  const { mutateAsync: removeMembership } = useRemoveMembershipFromShow(spgId);
+  const { buttonProps, dialog } = useConfirmAction({
+    title: "Delete",
+    content:
+      "Are you sure you want to delete this item? This action cannot be undone.",
+    onConfirmMutation: {
+      mutationFn: () => removeMembership(membershipId),
+    },
+  });
+
+  return (
+    <>
+      <Button variant="caution" onClick={() => buttonProps.onClick()}>
+        Remove
+      </Button>
+      {dialog}
+    </>
+  );
 };
 
 export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
@@ -22,6 +51,10 @@ export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
   const canManageMembers = permissions?.allow(
     "service_providing_group_membership",
     "create",
+  );
+  const canDelete = permissions?.allow(
+    "service_providing_group_membership",
+    "delete",
   );
 
   if (isLoading) {
@@ -95,6 +128,20 @@ export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
         data={data?.rows ?? []}
         columns={columns}
         className="w-full"
+        action={
+          canDelete
+            ? {
+                header: "",
+                render: (row) =>
+                  row.membershipId ? (
+                    <DeleteButton
+                      membershipId={row.membershipId}
+                      spgId={spgId}
+                    />
+                  ) : null,
+              }
+            : undefined
+        }
       />
     </div>
   );
