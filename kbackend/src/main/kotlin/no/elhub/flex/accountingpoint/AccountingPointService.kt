@@ -1,6 +1,7 @@
 package no.elhub.flex.accountingpoint
 
 import arrow.core.Either
+import arrow.core.left
 import arrow.core.raise.either
 import arrow.core.right
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -12,6 +13,7 @@ import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterSe
 import no.elhub.flex.model.domain.AccountingPoint
 import no.elhub.flex.model.domain.AccountingPointEndUser
 import no.elhub.flex.model.domain.AccountingPointEnergySupplier
+import no.elhub.flex.model.domain.db.LockTimeoutError
 import no.elhub.flex.model.domain.db.NotFoundError
 import no.elhub.flex.model.domain.db.RepositoryError
 import no.elhub.flex.model.error.AppError
@@ -86,21 +88,15 @@ class AccountingPointServiceImpl(
                 with(FlexPrincipal.internalData()) {
                     flexTransaction { _ ->
                         either {
-                            accountingPointRepository.upsertAccountingPoints(
-                                listOf(AccountingPoint(id = 0, businessId = accountingPointBusinessId))
-                            ).mapLeft { it.toInternalServerError("upsertAccountingPoints") }.bind()
+                            val accountingPointId = accountingPointRepository.upsertAccountingPoint(
+                                AccountingPoint(id = 0, businessId = accountingPointBusinessId)
+                            ).mapLeft { it.toInternalServerError("upsertAccountingPoint") }.bind()
 
-                            val accountingPoint = accountingPointRepository
-                                .getAccountingPointByBusinessIdForUpdate(accountingPointBusinessId)
-                                .mapLeft { it.toInternalServerError("getAccountingPointByBusinessIdForUpdate") }
-                                .bind()
-                                ?: run {
-                                    logger.warn { "Accounting point $accountingPointBusinessId is locked by concurrent sync — skipping" }
-                                    return@flexTransaction Unit.right()
-                                }
+                            accountingPointRepository.lockSyncRowAndMarkStart(accountingPointId)
+                                .mapLeft { err -> err.toInternalServerError("lockSyncRowAndMarkStart") }.bind()
 
-                            val endUsers = adapterAccountingPoint.toAccountingPointEndUsers(accountingPoint.id)
-                            val energySuppliers = adapterAccountingPoint.toAccountingPointEnergySuppliers(accountingPoint.id)
+                            val endUsers = adapterAccountingPoint.toAccountingPointEndUsers(accountingPointId)
+                            val energySuppliers = adapterAccountingPoint.toAccountingPointEnergySuppliers(accountingPointId)
 
                             accountingPointRepository.upsertAccountingPointEndUsers(endUsers)
                                 .mapLeft { it.toInternalServerError("upsertAccountingPointEndUsers") }.bind()
@@ -108,7 +104,7 @@ class AccountingPointServiceImpl(
                             accountingPointRepository.upsertAccountingPointEnergySupplier(energySuppliers)
                                 .mapLeft { it.toInternalServerError("upsertAccountingPointEnergySupplier") }.bind()
 
-                            accountingPointRepository.markSyncComplete(accountingPoint.id)
+                            accountingPointRepository.markSyncComplete(accountingPointId)
                                 .mapLeft { it.toInternalServerError("markSyncComplete") }.bind()
                         }
                     }

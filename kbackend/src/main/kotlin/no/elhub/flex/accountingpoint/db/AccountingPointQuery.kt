@@ -8,16 +8,22 @@ val CURRENT_CONTROLLABLE_UNIT_ACCOUNTING_POINT = """
 const val GET_ACCOUNTING_POINT_BY_BUSINESS_ID =
     "SELECT id, business_id FROM flex.accounting_point WHERE business_id = ?"
 
-const val GET_ACCOUNTING_POINT_BY_BUSINESS_ID_FOR_UPDATE_SKIP_LOCKED =
-    "SELECT id, business_id FROM flex.accounting_point WHERE business_id = ? FOR UPDATE SKIP LOCKED"
-
 val CHECK_END_USER_MATCHES_ACCOUNTING_POINT = """
     SELECT end_user_id::bigint
     FROM api.controllable_unit_lookup_check_end_user_matches_accounting_point(?::text, ?::text)
 """.trimIndent()
 
-const val UPSERT_ACCOUNTING_POINT =
-    "INSERT INTO flex.accounting_point (business_id) VALUES (?) ON CONFLICT (business_id) DO NOTHING"
+val UPSERT_ACCOUNTING_POINT = """
+    WITH ins AS (
+        INSERT INTO flex.accounting_point (business_id)
+        VALUES (?)
+        ON CONFLICT (business_id) DO NOTHING
+        RETURNING id
+    )
+    SELECT id FROM ins
+    UNION ALL
+    SELECT id FROM flex.accounting_point WHERE business_id = ? AND NOT EXISTS (SELECT 1 FROM ins)
+""".trimIndent()
 
 const val SELECT_ENTITY_BY_BUSINESS_ID =
     "SELECT id FROM flex.entity WHERE business_id = ?"
@@ -90,6 +96,18 @@ val UPDATE_CHANGED_AP_ENERGY_SUPPLIER = """
 
 const val MARK_SYNC_COMPLETE =
     "UPDATE flex.accounting_point_sync SET last_synced_at = now(), last_sync_start = NULL, version = version + 1 WHERE accounting_point_id = ?"
+
+const val SET_LOCK_TIMEOUT_1S = "SET LOCAL lock_timeout = '1s'"
+
+val LOCK_SYNC_ROW_AND_MARK_START = """
+    WITH lock AS (
+        SELECT accounting_point_id FROM flex.accounting_point_sync WHERE accounting_point_id = ? FOR UPDATE
+    )
+    UPDATE flex.accounting_point_sync
+    SET last_sync_start = now()
+    WHERE accounting_point_id = ? AND EXISTS (SELECT 1 FROM lock)
+    RETURNING accounting_point_id
+""".trimIndent()
 
 val INSERT_NEW_AP_ENERGY_SUPPLIER = """
     INSERT INTO flex.accounting_point_energy_supplier (accounting_point_id, energy_supplier_id, valid_time_range)

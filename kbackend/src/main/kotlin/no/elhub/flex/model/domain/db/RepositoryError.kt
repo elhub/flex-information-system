@@ -4,3 +4,4 @@ sealed class RepositoryError(val message: String)
 
 data class NotFoundError(val detail: String) : RepositoryError(detail)
 data class DatabaseError(val detail: String) : RepositoryError(detail)
+data class LockTimeoutError(val detail: String) : RepositoryError(detail)

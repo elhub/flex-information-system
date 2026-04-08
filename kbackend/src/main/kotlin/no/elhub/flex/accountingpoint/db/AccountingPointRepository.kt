@@ -11,6 +11,7 @@ import no.elhub.flex.model.domain.AccountingPoint
 import no.elhub.flex.model.domain.AccountingPointEndUser
 import no.elhub.flex.model.domain.AccountingPointEnergySupplier
 import no.elhub.flex.model.domain.db.DatabaseError
+import no.elhub.flex.model.domain.db.LockTimeoutError
 import no.elhub.flex.model.domain.db.NotFoundError
 import no.elhub.flex.model.domain.db.RepositoryError
 import no.elhub.flex.util.toSqlTimestamp
@@ -18,6 +19,7 @@ import no.elhub.flex.util.toSqlTimestampOrNull
 import org.koin.core.annotation.Single
 import java.sql.Array
 import java.sql.Connection
+import java.sql.SQLException
 import kotlin.time.Instant
 
 interface AccountingPointRepository {
@@ -42,21 +44,6 @@ interface AccountingPointRepository {
     ): Either<RepositoryError, AccountingPoint>
 
     /**
-     * Looks up an accounting point by its business ID, acquiring a row-level lock for the
-     * duration of the current transaction.
-     *
-     * Uses `FOR UPDATE SKIP LOCKED` — returns `null` when the row is already locked by another
-     * transaction (indicating a concurrent sync is in progress; the caller should skip).
-     *
-     * Must be called within an existing [no.elhub.flex.db.FlexTransaction.flexTransaction] so
-     * that the lock is held until the outer transaction commits.
-     */
-    context(principal: FlexPrincipal)
-    suspend fun getAccountingPointByBusinessIdForUpdate(
-        accountingPointBusinessId: String
-    ): Either<RepositoryError, AccountingPoint?>
-
-    /**
      * Calls `api.controllable_unit_lookup_check_end_user_matches_accounting_point`.
      *
      * Returns the end-user ID, or [NotFoundError] when the check fails.
@@ -68,15 +55,15 @@ interface AccountingPointRepository {
     ): Either<RepositoryError, Long>
 
     /**
-     * Upserts accounting points into flex.accounting_point.
+     * Upserts a single accounting point into flex.accounting_point.
      *
-     * Inserts each accounting point by business ID, ignoring conflicts on business_id
-     * (i.e. already-existing rows are left untouched).
+     * Inserts by business ID, ignoring conflicts. Returns the id of the inserted row,
+     * or the id of the already-existing row if the business ID was already present.
      */
     context(principal: FlexPrincipal)
-    suspend fun upsertAccountingPoints(
-        accountingPoints: List<AccountingPoint>
-    ): Either<RepositoryError, Unit>
+    suspend fun upsertAccountingPoint(
+        accountingPoint: AccountingPoint
+    ): Either<RepositoryError, Long>
 
     /**
      * Upserts end-user timeline entries for accounting points into flex.accounting_point_end_user.
@@ -110,6 +97,21 @@ interface AccountingPointRepository {
     suspend fun upsertAccountingPointEnergySupplier(
         accountingPointEnergySuppliers: List<AccountingPointEnergySupplier>
     ): Either<RepositoryError, Unit>
+
+    /**
+     * Acquires a row-level lock on the sync row for [accountingPointId], waiting up to 1 second.
+     *
+     * On acquiring the lock, stamps [last_sync_start] with the current time so that in-progress
+     * syncs are visible to observers.
+     *
+     * Returns [LockTimeoutError] if the lock cannot be acquired within 1 second (another sync is
+     * already running), [DatabaseError] if no sync row exists for [accountingPointId].
+     *
+     * Must be called within an existing [no.elhub.flex.db.FlexTransaction.flexTransaction] so
+     * that the lock is held until the outer transaction commits.
+     */
+    context(principal: FlexPrincipal)
+    suspend fun lockSyncRowAndMarkStart(accountingPointId: Long): Either<RepositoryError, Unit>
 
     /**
      * Marks a sync as complete for the given accounting point.
@@ -173,24 +175,6 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
         }
 
     context(principal: FlexPrincipal)
-    override suspend fun getAccountingPointByBusinessIdForUpdate(
-        accountingPointBusinessId: String,
-    ): Either<RepositoryError, AccountingPoint?> =
-        flexTransaction { conn ->
-            Either.catch {
-                conn.prepareStatement(GET_ACCOUNTING_POINT_BY_BUSINESS_ID_FOR_UPDATE_SKIP_LOCKED).use { stmt ->
-                    stmt.setString(1, accountingPointBusinessId)
-                    stmt.executeQuery().use { rs ->
-                        if (rs.next()) AccountingPoint(id = rs.getLong(1), businessId = rs.getString(2)) else null
-                    }
-                }
-            }.mapLeft { e ->
-                logger.error { "getAccountingPointByBusinessIdForUpdate failed: ${e.message}" }
-                DatabaseError("Failed to acquire lock on accounting point")
-            }
-        }
-
-    context(principal: FlexPrincipal)
     override suspend fun checkEndUserMatchesAccountingPoint(
         endUserBusinessId: String,
         accountingPointBusinessId: String,
@@ -214,22 +198,22 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
         }
 
     context(principal: FlexPrincipal)
-    override suspend fun upsertAccountingPoints(
-        accountingPoints: List<AccountingPoint>
-    ): Either<RepositoryError, Unit> =
+    override suspend fun upsertAccountingPoint(
+        accountingPoint: AccountingPoint
+    ): Either<RepositoryError, Long> =
         flexTransaction { conn ->
             Either.catch {
                 conn.prepareStatement(UPSERT_ACCOUNTING_POINT).use { stmt ->
-                    for (ap in accountingPoints) {
-                        stmt.setString(1, ap.businessId)
-                        stmt.addBatch()
+                    stmt.setString(1, accountingPoint.businessId)
+                    stmt.setString(2, accountingPoint.businessId)
+                    stmt.executeQuery().use { rs ->
+                        check(rs.next()) { "No id returned from upsert for business_id=${accountingPoint.businessId}" }
+                        rs.getLong(1)
                     }
-                    stmt.executeBatch()
-                    Unit
                 }
             }.mapLeft { e ->
-                logger.error { "upsertAccountingPoints failed: ${e.message}" }
-                DatabaseError("Failed to upsert accounting points")
+                logger.error { "upsertAccountingPoint failed: ${e.message}" }
+                DatabaseError("Failed to upsert accounting point")
             }
         }
 
@@ -354,6 +338,29 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
             }.mapLeft { e ->
                 logger.error { "upsertAccountingPointEnergySupplier failed: ${e.message}" }
                 DatabaseError("Failed to upsert accounting point energy suppliers")
+            }
+        }
+
+    context(principal: FlexPrincipal)
+    override suspend fun lockSyncRowAndMarkStart(accountingPointId: Long): Either<RepositoryError, Unit> =
+        flexTransaction { conn ->
+            Either.catch {
+                conn.prepareStatement(SET_LOCK_TIMEOUT_1S).use { it.execute() }
+                conn.prepareStatement(LOCK_SYNC_ROW_AND_MARK_START).use { stmt ->
+                    stmt.setLong(1, accountingPointId)
+                    stmt.setLong(2, accountingPointId)
+                    stmt.executeQuery().use { rs ->
+                        if (!rs.next()) error("No sync row found for accounting point $accountingPointId")
+                    }
+                }
+            }.mapLeft { e ->
+                val sqlState = (e as? SQLException)?.sqlState
+                if (sqlState == "55P03") {
+                    LockTimeoutError("Lock timeout acquiring sync row for accounting point $accountingPointId")
+                } else {
+                    logger.error { "lockSyncRowAndMarkStart failed: ${e.message}" }
+                    DatabaseError("Failed to lock sync row for accounting point $accountingPointId")
+                }
             }
         }
 

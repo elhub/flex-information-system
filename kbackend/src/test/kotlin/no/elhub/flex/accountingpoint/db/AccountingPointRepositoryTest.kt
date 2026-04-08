@@ -157,32 +157,34 @@ class AccountingPointRepositoryTest : FunSpec({
         }
     }
 
-    context("upsertAccountingPoints") {
+    context("upsertAccountingPoint") {
 
-        test("inserts a new accounting point") {
+        test("inserts a new accounting point and returns its id") {
             // given
             val businessId = uniqueGsrn()
 
             // when
-            with(internalDataPrincipal) {
-                repo.upsertAccountingPoints(listOf(AccountingPoint(id = 0, businessId = businessId)))
+            val id = with(internalDataPrincipal) {
+                repo.upsertAccountingPoint(AccountingPoint(id = 0, businessId = businessId))
             }.shouldBeRight()
 
             // then
             val result = with(principal) { repo.getAccountingPointByBusinessId(businessId) }.shouldBeRight()
             result.businessId shouldBe businessId
+            result.id shouldBe id
         }
 
-        test("is idempotent on conflict") {
+        test("is idempotent on conflict — returns the existing id both times") {
             // given
             val businessId = uniqueGsrn()
             val ap = AccountingPoint(id = 0, businessId = businessId)
 
             // when — called twice
-            with(internalDataPrincipal) { repo.upsertAccountingPoints(listOf(ap)) }.shouldBeRight()
-            with(internalDataPrincipal) { repo.upsertAccountingPoints(listOf(ap)) }.shouldBeRight()
+            val firstId = with(internalDataPrincipal) { repo.upsertAccountingPoint(ap) }.shouldBeRight()
+            val secondId = with(internalDataPrincipal) { repo.upsertAccountingPoint(ap) }.shouldBeRight()
 
-            // then — exactly one row exists
+            // then — same id returned both times, exactly one row exists
+            firstId shouldBe secondId
             val count = PostgresTestContainer.withConnection { conn ->
                 conn.prepareStatement("SELECT count(*) FROM flex.accounting_point WHERE business_id = ?").use { stmt ->
                     stmt.setString(1, businessId)
@@ -203,7 +205,7 @@ class AccountingPointRepositoryTest : FunSpec({
 
             // when
             with(internalDataPrincipal) {
-                repo.upsertAccountingPoints(listOf(AccountingPoint(id = 0, businessId = newBusinessId)))
+                repo.upsertAccountingPoint(AccountingPoint(id = 0, businessId = newBusinessId))
             }.shouldBeRight()
 
             // then — noise row still present and unchanged
@@ -573,6 +575,39 @@ class AccountingPointRepositoryTest : FunSpec({
 
             // then
             result.shouldBeLeft() shouldBe DatabaseError("Failed to upsert accounting point energy suppliers")
+        }
+    }
+
+    context("lockSyncRowAndMarkStart") {
+
+        test("acquires the lock, stamps last_sync_start, and returns Right") {
+            // given
+            val apId = insertAccountingPoint(uniqueGsrn())
+
+            // when
+            val result = with(internalDataPrincipal) {
+                repo.lockSyncRowAndMarkStart(apId)
+            }
+
+            // then
+            result.shouldBeRight()
+            val row = querySyncRow(apId)
+            check(row != null) { "Expected sync row for ap $apId" }
+            check(row.lastSyncStart != null) { "Expected last_sync_start to be set after lockSyncRowAndMarkStart" }
+        }
+
+        test("returns DatabaseError when no sync row exists for the accounting point") {
+            // given — an ID that has no row in flex.accounting_point_sync
+            val missingApId = Long.MAX_VALUE
+
+            // when
+            val result = with(internalDataPrincipal) {
+                repo.lockSyncRowAndMarkStart(missingApId)
+            }
+
+            // then
+            result.shouldBeLeft() shouldBe
+                DatabaseError("Failed to lock sync row for accounting point $missingApId")
         }
     }
 
