@@ -160,6 +160,8 @@ export const tooltips = {
   "service_providing_group.bidding_zone":
     "The bidding zone that restricts which CUs that can be added to the group. Also known as scheduling area or price area for TSO.",
   "service_providing_group.status": "The status of the group.",
+  "service_providing_group.additional_information":
+    "Free text field for extra information about the service providing group if needed.",
   "service_providing_group.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group.recorded_by":
@@ -172,6 +174,8 @@ export const tooltips = {
   "service_providing_group_history.bidding_zone":
     "The bidding zone that restricts which CUs that can be added to the group. Also known as scheduling area or price area for TSO.",
   "service_providing_group_history.status": "The status of the group.",
+  "service_providing_group_history.additional_information":
+    "Free text field for extra information about the service providing group if needed.",
   "service_providing_group_history.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group_history.recorded_by":

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -10,6 +10,7 @@ from dateutil.parser import isoparse
 
 from ..models.service_providing_group_bidding_zone import ServiceProvidingGroupBiddingZone
 from ..models.service_providing_group_status import ServiceProvidingGroupStatus
+from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="ServiceProvidingGroupResponse")
 
@@ -28,6 +29,8 @@ class ServiceProvidingGroupResponse:
         recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
+        additional_information (None | str | Unset): Free text field for extra information about the service providing
+            group if needed.
     """
 
     id: int
@@ -37,6 +40,7 @@ class ServiceProvidingGroupResponse:
     status: ServiceProvidingGroupStatus
     recorded_at: datetime.datetime
     recorded_by: int
+    additional_information: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -54,6 +58,12 @@ class ServiceProvidingGroupResponse:
 
         recorded_by = self.recorded_by
 
+        additional_information: None | str | Unset
+        if isinstance(self.additional_information, Unset):
+            additional_information = UNSET
+        else:
+            additional_information = self.additional_information
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -67,6 +77,8 @@ class ServiceProvidingGroupResponse:
                 "recorded_by": recorded_by,
             }
         )
+        if additional_information is not UNSET:
+            field_dict["additional_information"] = additional_information
 
         return field_dict
 
@@ -87,6 +99,15 @@ class ServiceProvidingGroupResponse:
 
         recorded_by = d.pop("recorded_by")
 
+        def _parse_additional_information(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        additional_information = _parse_additional_information(d.pop("additional_information", UNSET))
+
         service_providing_group_response = cls(
             id=id,
             name=name,
@@ -95,6 +116,7 @@ class ServiceProvidingGroupResponse:
             status=status,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
+            additional_information=additional_information,
         )
 
         service_providing_group_response.additional_properties = d
