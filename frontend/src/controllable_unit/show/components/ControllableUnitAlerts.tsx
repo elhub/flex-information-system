@@ -1,5 +1,5 @@
 import type { ControllableUnitShowViewModel } from "../useControllableUnitViewModel";
-import { BodyText, Alert, Heading } from "../../../components/ui";
+import { BodyText, Alert } from "../../../components/ui";
 
 type AlertType = {
   severity: "info" | "success" | "warning" | "error";

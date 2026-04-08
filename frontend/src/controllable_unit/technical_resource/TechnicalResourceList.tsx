@@ -13,7 +13,7 @@ import {
   deleteTechnicalResource,
 } from "../../generated-client";
 import { SimpleTable, ColumnOf } from "../../components/SimpleTable";
-import { BodyText, Button } from "../../components/ui";
+import { Button } from "../../components/ui";
 import { IconPlus, IconTrash } from "@elhub/ds-icons";
 import { useConfirmAction } from "../../components/ConfirmAction";
 import { throwOnError } from "../../util";
