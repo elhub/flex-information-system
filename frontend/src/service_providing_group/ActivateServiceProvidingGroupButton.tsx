@@ -25,11 +25,7 @@ export const ActivateServiceProvidingGroupButton = ({
         }),
       onSettled: () => {
         queryClient.invalidateQueries({
-          queryKey: [
-            "service_providing_group",
-            "getOne",
-            { id: String(spgId) },
-          ],
+          queryKey: ["service_providing_group", spgId],
         });
       },
     },
