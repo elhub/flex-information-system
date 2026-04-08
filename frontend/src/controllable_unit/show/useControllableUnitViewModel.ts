@@ -5,6 +5,7 @@ import {
   ControllableUnitServiceProvider,
   ControllableUnitSuspension,
   listAccountingPointBalanceResponsibleParty,
+  listAccountingPointBiddingZone,
   listControllableUnitServiceProvider,
   listControllableUnitSuspension,
   listTechnicalResource,
@@ -15,7 +16,7 @@ import {
 } from "../../generated-client";
 
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
-import { throwOnError } from "../../util";
+import { findCurrentlyValidRecord, throwOnError } from "../../util";
 
 export type ControllableUnitShowViewModel = {
   controllableUnit: ControllableUnit | ControllableUnitHistory;
@@ -26,6 +27,7 @@ export type ControllableUnitShowViewModel = {
   accountingPoint: AccountingPoint | undefined;
   suspensions: ControllableUnitSuspension[] | undefined;
   balanceResponsibleParty: Party | undefined;
+  biddingZone: string | undefined;
 };
 
 const findCurrentCusp = async (controllableUnitId: number) => {
@@ -57,17 +59,12 @@ const getCurrentBalanceResponsibleParty = async (accountingPointId: number) => {
       query: { accounting_point_id: "eq." + accountingPointId },
     }).then(throwOnError);
 
-  const currentBalanceResponsibleParty = balanceResponsibleParties.find(
-    (brp) =>
-      brp.valid_from &&
-      new Date(brp.valid_from) <= new Date() &&
-      (!brp.valid_to || new Date(brp.valid_to) >= new Date()),
+  const currentBalanceResponsibleParty = findCurrentlyValidRecord(
+    balanceResponsibleParties,
   );
 
   if (!currentBalanceResponsibleParty) {
-    return {
-      balanceResponsibleParty: undefined,
-    };
+    return { balanceResponsibleParty: undefined };
   }
 
   const balanceResponsibleParty = await readParty({
@@ -76,9 +73,16 @@ const getCurrentBalanceResponsibleParty = async (accountingPointId: number) => {
     },
   }).then(throwOnError);
 
-  return {
-    balanceResponsibleParty,
-  };
+  return { balanceResponsibleParty };
+};
+
+const getCurrentBiddingZone = async (accountingPointId: number) => {
+  const biddingZones = await listAccountingPointBiddingZone({
+    query: { accounting_point_id: "eq." + accountingPointId },
+  }).then(throwOnError);
+
+  const currentBiddingZone = findCurrentlyValidRecord(biddingZones);
+  return currentBiddingZone?.bidding_zone;
 };
 
 const getAccountingPointData = async (
@@ -89,6 +93,7 @@ const getAccountingPointData = async (
       accountingPoint: undefined,
       systemOperator: undefined,
       balanceResponsibleParty: undefined,
+      biddingZone: undefined,
     };
   }
 
@@ -103,15 +108,20 @@ const getAccountingPointData = async (
   const balanceResponsiblePartyPromise =
     getCurrentBalanceResponsibleParty(accountingPointId);
 
-  const [systemOperator, balanceResponsibleParty] = await Promise.all([
-    systemOperatorPromise,
-    balanceResponsiblePartyPromise,
-  ]);
+  const biddingZonePromise = getCurrentBiddingZone(accountingPointId);
+
+  const [systemOperator, balanceResponsibleParty, biddingZone] =
+    await Promise.all([
+      systemOperatorPromise,
+      balanceResponsiblePartyPromise,
+      biddingZonePromise,
+    ]);
 
   return {
     accountingPoint,
     systemOperator,
     balanceResponsibleParty: balanceResponsibleParty?.balanceResponsibleParty,
+    biddingZone,
   };
 };
 
@@ -150,6 +160,7 @@ export const getControllableUnitData = async (
     systemOperator: accountingPoint.systemOperator,
     accountingPoint: accountingPoint.accountingPoint,
     balanceResponsibleParty: accountingPoint.balanceResponsibleParty,
+    biddingZone: accountingPoint.biddingZone,
     suspensions: suspensions,
     controllableUnitServiceProvider: cuspData.cusp,
   };

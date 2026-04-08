@@ -62,3 +62,22 @@ export const toDateString = (value: string | undefined): string => {
   if (!value) return "-";
   return formatDate(value, "dd.MM.yyyy");
 };
+
+// Find the currently valid record from a list of time-ranged records
+export const findCurrentlyValidRecord = <
+  T extends { valid_from?: string; valid_to?: string },
+>(
+  data: T[] | undefined,
+): T | undefined => {
+  if (!data) return undefined;
+
+  const now = new Date();
+  return data.find((record) => {
+    const validFrom = record.valid_from ? new Date(record.valid_from) : null;
+    const validTo = record.valid_to ? new Date(record.valid_to) : null;
+
+    if (validFrom === null || validFrom > now) return false;
+    if (validTo !== null && validTo <= now) return false;
+    return true;
+  });
+};

@@ -1,6 +1,7 @@
 import { LabelValue } from "../../../components/LabelValue";
 import { ControllableUnitShowViewModel } from "../useControllableUnitViewModel";
 import { formatDate } from "date-fns";
+import { useTranslate } from "ra-core";
 
 const formatRange = (start: string | undefined, end: string | undefined) => {
   if (!start) {
@@ -26,7 +27,9 @@ export const Connections = ({
     accountingPoint,
     systemOperator,
     controllableUnit,
+    biddingZone,
   } = controllableUnitViewModel;
+  const translate = useTranslate();
   const serviceProviderRange = formatRange(
     controllableUnitServiceProvider?.valid_from,
     controllableUnitServiceProvider?.valid_to,
@@ -42,6 +45,16 @@ export const Connections = ({
       <LabelValue
         label="Accounting point"
         value={`${accountingPoint?.business_id} (${systemOperator?.name})`}
+      />
+      <LabelValue
+        labelKey="accounting_point_bidding_zone.bidding_zone"
+        value={
+          biddingZone
+            ? translate(
+                `enum.accounting_point_bidding_zone.bidding_zone.${biddingZone}`,
+              )
+            : ""
+        }
       />
       <LabelValue
         label="Service provider"
