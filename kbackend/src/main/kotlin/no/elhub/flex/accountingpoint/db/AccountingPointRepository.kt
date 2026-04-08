@@ -381,11 +381,11 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
 }
 
 /**
- * Builds a PostgreSQL text array from a list of Instants representing valid_from values.
+ * Builds a PostgreSQL timestamptz array from a list of Instants representing valid_from values.
  * Used for the `!= ALL(?::timestamptz[])` clause in the stale-record DELETE.
  */
 private fun Connection.createTimestampArray(instants: List<Instant>): Array =
-    createArrayOf("text", instants.map { it.toSqlTimestamp().toString() }.toTypedArray())
+    createArrayOf("timestamptz", instants.map { it.toString() }.toTypedArray())
 
 private fun resolveOrCreateEntity(conn: Connection, endUserBusinessId: String): Long {
     val (entityType, businessIdType) = when {
