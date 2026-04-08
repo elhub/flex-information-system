@@ -1,3 +1,4 @@
+import { ComponentType } from "react";
 import {
   IconCross,
   IconCrossCircle,
@@ -30,7 +31,7 @@ const statusVariantMap: Record<
       | "temporarily-stopped"
       | "pending"
       | "rejected";
-    icon: React.ComponentType<SvgIconProps>;
+    icon: ComponentType<SvgIconProps>;
   }
 > = {
   new: { status: "ongoing", icon: IconStopWatch15 },
@@ -53,10 +54,6 @@ export const ControllableUnitShow = () => {
 
   const cu = viewModel?.controllableUnit;
 
-  const canUpdateControllableUnit =
-    !!permissions?.allow("controllable_unit", "update") &&
-    (viewModel?.technicalResources?.length ?? 0) > 0;
-
   if (viewModelError) {
     throw viewModelError;
   }
@@ -68,6 +65,10 @@ export const ControllableUnitShow = () => {
   if (!cu || !viewModel) {
     return null;
   }
+
+  const canUpdateControllableUnit =
+    !!permissions?.allow("controllable_unit", "update") &&
+    (viewModel.technicalResources?.length ?? 0) > 0;
 
   return (
     <ShowPageLayout

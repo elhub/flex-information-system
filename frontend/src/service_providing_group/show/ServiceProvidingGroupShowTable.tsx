@@ -40,7 +40,10 @@ const DeleteButton = ({
         className="text-semantic-background-action-danger"
         size="large"
         icon={IconCrossCircle}
-        onClick={() => buttonProps.onClick()}
+        onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+          e.stopPropagation();
+          buttonProps.onClick();
+        }}
       />
       {dialog}
     </>

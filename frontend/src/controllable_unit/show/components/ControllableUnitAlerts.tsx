@@ -48,9 +48,7 @@ export const ControllableUnitAlerts = ({
   }
   return (
     <Alert variant={alert.severity} className="max-w-3xl">
-      <div className="flex flex-col gap-2">
-        <BodyText> {alert.content}</BodyText>
-      </div>
+      <BodyText>{alert.content}</BodyText>
     </Alert>
   );
 };

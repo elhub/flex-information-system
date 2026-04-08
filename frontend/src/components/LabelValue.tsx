@@ -31,11 +31,12 @@ export const LabelValue = ({
 }: LabelValueProps) => {
   const translateLabel = useTranslateField();
 
-  const formattedValue = value
-    ? unit
-      ? `${value} ${unit}`
-      : value
-    : "No value";
+  const formattedValue =
+    value !== undefined && value !== null && value !== ""
+      ? unit && (typeof value === "string" || typeof value === "number")
+        ? `${value} ${unit}`
+        : value
+      : "No value";
 
   return (
     <div className={cn("flex flex-col gap-1", className)}>

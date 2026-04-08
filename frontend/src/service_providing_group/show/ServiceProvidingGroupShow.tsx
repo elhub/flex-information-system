@@ -1,3 +1,4 @@
+import { ComponentType } from "react";
 import {
   IconCross,
   IconCrossCircle,
@@ -33,7 +34,7 @@ const statusVariantMap: Record<
       | "temporarily-stopped"
       | "pending"
       | "rejected";
-    icon: React.ComponentType<SvgIconProps>;
+    icon: ComponentType<SvgIconProps>;
   }
 > = {
   new: { status: "ongoing", icon: IconStopWatch15 },
@@ -49,7 +50,7 @@ export const ServiceProvidingGroupShow = () => {
 
   const {
     data: spg,
-    isLoading,
+    isPending,
     error,
   } = useQuery({
     queryKey: ["service_providing_group", spgId],
@@ -58,7 +59,7 @@ export const ServiceProvidingGroupShow = () => {
     enabled: !!spgId,
   });
 
-  if (isLoading) {
+  if (isPending) {
     return <Loader />;
   }
 

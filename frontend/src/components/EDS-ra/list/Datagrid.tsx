@@ -50,6 +50,7 @@ type DataTableProps<T extends RaRecord = RaRecord> = {
 export const DataTable = <T extends RaRecord>({
   children,
   empty,
+  emptyNode,
   rowClick,
   data,
 }: DataTableProps<T>) => {
@@ -83,7 +84,7 @@ export const DataTable = <T extends RaRecord>({
   // Only show loading when using list context (not when data is passed directly)
 
   if (data.length === 0 && empty !== false) {
-    return <BodyText>No results</BodyText>;
+    return emptyNode ?? <BodyText>No results</BodyText>;
   }
 
   return (

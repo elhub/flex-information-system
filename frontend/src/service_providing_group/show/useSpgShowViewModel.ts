@@ -10,7 +10,7 @@ import { throwOnError, toDateString } from "../../util";
 
 export type SpgMembershipRow = {
   id: number;
-  membershipId: number;
+  membershipId: number | undefined;
   name: string;
   validFrom: string;
   validTo: string;
@@ -91,7 +91,7 @@ const fetchSpgShowData = async (serviceProvidingGroupId: number) => {
 
     return {
       id: cu.id,
-      membershipId: membership!.id,
+      membershipId: membership?.id,
       name: cu.name,
       validFrom: toDateString(membership?.valid_from),
       validTo: toDateString(membership?.valid_to),
