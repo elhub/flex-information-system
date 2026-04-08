@@ -11,7 +11,7 @@ import kotlin.time.Instant
  * @property validTo end of the validity period (exclusive, midnight-aligned), or null if open-ended
  */
 data class AccountingPointEndUser(
-    val accountingPointId: Int,
+    val accountingPointId: Long,
     val endUserBusinessId: String,
     val validFrom: Instant,
     val validTo: Instant?,

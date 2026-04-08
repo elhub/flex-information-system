@@ -1,6 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
-import kotlin.Int
+import kotlin.Long
 import kotlin.String
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -15,7 +15,7 @@ public data class ServiceProvidingGroupGridSuspensionCommentCreateRequest(
    * Reference to the service providing group grid suspension.
    */
   @SerialName("service_providing_group_grid_suspension_id")
-  public val serviceProvidingGroupGridSuspensionId: Int,
+  public val serviceProvidingGroupGridSuspensionId: Long,
   /**
    * The level of visibility of the comment.
    */

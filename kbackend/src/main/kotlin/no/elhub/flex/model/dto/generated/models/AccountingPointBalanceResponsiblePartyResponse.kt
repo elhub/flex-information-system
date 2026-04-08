@@ -1,6 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
-import kotlin.Int
+import kotlin.Long
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -14,12 +14,12 @@ public data class AccountingPointBalanceResponsiblePartyResponse(
    * The ID of the accounting point.
    */
   @SerialName("accounting_point_id")
-  public val accountingPointId: Int? = null,
+  public val accountingPointId: Long? = null,
   /**
    * The balance responsible party of the accounting point.
    */
   @SerialName("balance_responsible_party_id")
-  public val balanceResponsiblePartyId: Int? = null,
+  public val balanceResponsiblePartyId: Long? = null,
   /**
    * The direction of the effect on the balance that the BRP takes responsibility for.
    */

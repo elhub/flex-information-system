@@ -46,7 +46,7 @@ interface AccountingPointService {
     suspend fun checkEndUserMatchesAccountingPoint(
         endUserBusinessId: String,
         accountingPointBusinessId: String
-    ): Either<AppError, Int>
+    ): Either<AppError, Long>
 
     /**
      * Looks up an accounting point by its business ID
@@ -121,7 +121,7 @@ class AccountingPointServiceImpl(
         return InternalServerError(traceIdOrUnknown())
     }
 
-    private fun AdapterAccountingPoint.toAccountingPointEndUsers(accountingPointId: Int): List<AccountingPointEndUser> =
+    private fun AdapterAccountingPoint.toAccountingPointEndUsers(accountingPointId: Long): List<AccountingPointEndUser> =
         endUser.map { eu ->
             AccountingPointEndUser(
                 accountingPointId = accountingPointId,
@@ -131,7 +131,7 @@ class AccountingPointServiceImpl(
             )
         }
 
-    private fun AdapterAccountingPoint.toAccountingPointEnergySuppliers(accountingPointId: Int): List<AccountingPointEnergySupplier> =
+    private fun AdapterAccountingPoint.toAccountingPointEnergySuppliers(accountingPointId: Long): List<AccountingPointEnergySupplier> =
         energySupplier.map { es ->
             AccountingPointEnergySupplier(
                 accountingPointId = accountingPointId,
@@ -145,7 +145,7 @@ class AccountingPointServiceImpl(
     override suspend fun checkEndUserMatchesAccountingPoint(
         endUserBusinessId: String,
         accountingPointBusinessId: String
-    ): Either<AppError, Int> = accountingPointRepository.checkEndUserMatchesAccountingPoint(endUserBusinessId, accountingPointBusinessId).mapLeft { error ->
+    ): Either<AppError, Long> = accountingPointRepository.checkEndUserMatchesAccountingPoint(endUserBusinessId, accountingPointBusinessId).mapLeft { error ->
         when (error) {
             is NotFoundError -> EndUserError("Accounting point not found")
             else -> InternalServerError(traceIdOrUnknown())

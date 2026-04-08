@@ -1,7 +1,7 @@
 package no.elhub.flex.model.dto.generated.models
 
 import java.math.BigDecimal
-import kotlin.Int
+import kotlin.Long
 import kotlin.String
 import kotlin.collections.List
 import kotlin.time.Instant
@@ -18,22 +18,22 @@ public data class ServiceProvidingGroupProductApplicationHistoryResponse(
    * Unique surrogate identifier.
    */
   @SerialName("id")
-  public val id: Int? = null,
+  public val id: Long? = null,
   /**
    * Reference to the service providing group.
    */
   @SerialName("service_providing_group_id")
-  public val serviceProvidingGroupId: Int,
+  public val serviceProvidingGroupId: Long,
   /**
    * Reference to the procuring system operator.
    */
   @SerialName("procuring_system_operator_id")
-  public val procuringSystemOperatorId: Int,
+  public val procuringSystemOperatorId: Long,
   /**
    * References to the product types.
    */
   @SerialName("product_type_ids")
-  public val productTypeIds: List<Int>,
+  public val productTypeIds: List<Long>,
   /**
    * The status of the application.
    */
@@ -70,17 +70,17 @@ public data class ServiceProvidingGroupProductApplicationHistoryResponse(
    * The identity that recorded the resource.
    */
   @SerialName("recorded_by")
-  public val recordedBy: Int? = null,
+  public val recordedBy: Long? = null,
   /**
    * Reference to the resource that was updated.
    */
   @SerialName("service_providing_group_product_application_id")
-  public val serviceProvidingGroupProductApplicationId: Int,
+  public val serviceProvidingGroupProductApplicationId: Long,
   /**
    * The identity that updated the resource when it was replaced.
    */
   @SerialName("replaced_by")
-  public val replacedBy: Int? = null,
+  public val replacedBy: Long? = null,
   /**
    * When the resource was replaced in the system.
    */

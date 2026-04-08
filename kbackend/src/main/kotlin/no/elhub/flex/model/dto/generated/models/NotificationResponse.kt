@@ -1,7 +1,7 @@
 package no.elhub.flex.model.dto.generated.models
 
 import kotlin.Boolean
-import kotlin.Int
+import kotlin.Long
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -15,7 +15,7 @@ public data class NotificationResponse(
    * Unique surrogate identifier.
    */
   @SerialName("id")
-  public val id: Int? = null,
+  public val id: Long? = null,
   /**
    * Whether the notification was acknowledged by the target user.
    */
@@ -25,12 +25,12 @@ public data class NotificationResponse(
    * Reference to the event notified by this resource.
    */
   @SerialName("event_id")
-  public val eventId: Int,
+  public val eventId: Long,
   /**
    * Reference to the party concerned by this notification.
    */
   @SerialName("party_id")
-  public val partyId: Int,
+  public val partyId: Long,
   /**
    * When the resource was recorded (created or updated) in the system.
    */
@@ -40,5 +40,5 @@ public data class NotificationResponse(
    * The identity that recorded the resource.
    */
   @SerialName("recorded_by")
-  public val recordedBy: Int? = null,
+  public val recordedBy: Long? = null,
 )

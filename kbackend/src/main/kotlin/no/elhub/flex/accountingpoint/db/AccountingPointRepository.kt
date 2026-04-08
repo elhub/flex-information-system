@@ -65,7 +65,7 @@ interface AccountingPointRepository {
     suspend fun checkEndUserMatchesAccountingPoint(
         endUserBusinessId: String,
         accountingPointBusinessId: String
-    ): Either<RepositoryError, Int>
+    ): Either<RepositoryError, Long>
 
     /**
      * Upserts accounting points into flex.accounting_point.
@@ -118,7 +118,7 @@ interface AccountingPointRepository {
      * which indicates a data inconsistency.
      */
     context(principal: FlexPrincipal)
-    suspend fun markSyncComplete(accountingPointId: Int): Either<RepositoryError, Unit>
+    suspend fun markSyncComplete(accountingPointId: Long): Either<RepositoryError, Unit>
 }
 
 private val logger = KotlinLogging.logger {}
@@ -135,7 +135,7 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
                 conn.prepareStatement(CURRENT_CONTROLLABLE_UNIT_ACCOUNTING_POINT).use { stmt ->
                     stmt.setString(1, controllableUnitBusinessId)
                     stmt.executeQuery().use { rs ->
-                        if (rs.next()) AccountingPoint(id = rs.getInt(1), businessId = rs.getString(2)) else null
+                        if (rs.next()) AccountingPoint(id = rs.getLong(1), businessId = rs.getString(2)) else null
                     }
                 }
             }.mapLeft { e ->
@@ -158,7 +158,7 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
                 conn.prepareStatement(GET_ACCOUNTING_POINT_BY_BUSINESS_ID).use { stmt ->
                     stmt.setString(1, accountingPointBusinessId)
                     stmt.executeQuery().use { rs ->
-                        if (rs.next()) AccountingPoint(id = rs.getInt(1), businessId = rs.getString(2)) else null
+                        if (rs.next()) AccountingPoint(id = rs.getLong(1), businessId = rs.getString(2)) else null
                     }
                 }
             }.mapLeft { e ->
@@ -181,7 +181,7 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
                 conn.prepareStatement(GET_ACCOUNTING_POINT_BY_BUSINESS_ID_FOR_UPDATE_SKIP_LOCKED).use { stmt ->
                     stmt.setString(1, accountingPointBusinessId)
                     stmt.executeQuery().use { rs ->
-                        if (rs.next()) AccountingPoint(id = rs.getInt(1), businessId = rs.getString(2)) else null
+                        if (rs.next()) AccountingPoint(id = rs.getLong(1), businessId = rs.getString(2)) else null
                     }
                 }
             }.mapLeft { e ->
@@ -194,13 +194,13 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
     override suspend fun checkEndUserMatchesAccountingPoint(
         endUserBusinessId: String,
         accountingPointBusinessId: String,
-    ): Either<RepositoryError, Int> =
+    ): Either<RepositoryError, Long> =
         flexTransaction { conn ->
             Either.catch {
                 conn.prepareStatement(CHECK_END_USER_MATCHES_ACCOUNTING_POINT).use { stmt ->
                     stmt.setString(1, endUserBusinessId)
                     stmt.setString(2, accountingPointBusinessId)
-                    stmt.executeQuery().use { rs -> if (rs.next()) rs.getInt(1) else null }
+                    stmt.executeQuery().use { rs -> if (rs.next()) rs.getLong(1) else null }
                 }
             }.mapLeft { e ->
                 logger.error { "checkEndUserMatchesAccountingPoint failed: ${e.message}" }
@@ -256,9 +256,9 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
                     val incomingStarts = endUsers.map { it.validFrom }
                     val validFromDates = conn.createTimestampArray(incomingStarts)
 
-                    // Step 1 — delete stale records (start time no longer present in incoming data).
+                    // Delete stale records (start time no longer present in incoming data).
                     conn.prepareStatement(DELETE_STALE_AP_END_USERS).use { stmt ->
-                        stmt.setInt(1, accountingPointId)
+                        stmt.setLong(1, accountingPointId)
                         stmt.setArray(2, validFromDates)
                         stmt.execute()
                     }
@@ -268,25 +268,25 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
                         val validFrom = endUser.validFrom.toSqlTimestamp()
                         val validTo = endUser.validTo.toSqlTimestampOrNull()
 
-                        // Step 2 — update changed records (same start, different end_user or valid_to).
+                        // Update changed records (same start, different end_user or valid_to).
                         conn.prepareStatement(UPDATE_CHANGED_AP_END_USER).use { stmt ->
-                            stmt.setInt(1, endUserPartyId)
+                            stmt.setLong(1, endUserPartyId)
                             stmt.setTimestamp(2, validFrom)
                             stmt.setTimestamp(3, validTo)
-                            stmt.setInt(4, accountingPointId)
+                            stmt.setLong(4, accountingPointId)
                             stmt.setTimestamp(5, validFrom)
-                            stmt.setInt(6, endUserPartyId)
+                            stmt.setLong(6, endUserPartyId)
                             stmt.setTimestamp(7, validTo)
                             stmt.execute()
                         }
 
-                        // Step 3 — insert new records (start time not yet in target table).
+                        // Insert new records (start time not yet in target table).
                         conn.prepareStatement(INSERT_NEW_AP_END_USER).use { stmt ->
-                            stmt.setInt(1, accountingPointId)
-                            stmt.setInt(2, endUserPartyId)
+                            stmt.setLong(1, accountingPointId)
+                            stmt.setLong(2, endUserPartyId)
                             stmt.setTimestamp(3, validFrom)
                             stmt.setTimestamp(4, validTo)
-                            stmt.setInt(5, accountingPointId)
+                            stmt.setLong(5, accountingPointId)
                             stmt.setTimestamp(6, validFrom)
                             stmt.execute()
                         }
@@ -317,7 +317,7 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
 
                     // Delete stale records
                     conn.prepareStatement(DELETE_STALE_AP_ENERGY_SUPPLIERS).use { stmt ->
-                        stmt.setInt(1, accountingPointId)
+                        stmt.setLong(1, accountingPointId)
                         stmt.setArray(2, pgArray)
                         stmt.execute()
                     }
@@ -329,23 +329,23 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
 
                         // Update changed records
                         conn.prepareStatement(UPDATE_CHANGED_AP_ENERGY_SUPPLIER).use { stmt ->
-                            stmt.setInt(1, energySupplierPartyId)
+                            stmt.setLong(1, energySupplierPartyId)
                             stmt.setTimestamp(2, validFrom)
                             stmt.setTimestamp(3, validTo)
-                            stmt.setInt(4, accountingPointId)
+                            stmt.setLong(4, accountingPointId)
                             stmt.setTimestamp(5, validFrom)
-                            stmt.setInt(6, energySupplierPartyId)
+                            stmt.setLong(6, energySupplierPartyId)
                             stmt.setTimestamp(7, validTo)
                             stmt.execute()
                         }
 
                         // Insert new records.
                         conn.prepareStatement(INSERT_NEW_AP_ENERGY_SUPPLIER).use { stmt ->
-                            stmt.setInt(1, accountingPointId)
-                            stmt.setInt(2, energySupplierPartyId)
+                            stmt.setLong(1, accountingPointId)
+                            stmt.setLong(2, energySupplierPartyId)
                             stmt.setTimestamp(3, validFrom)
                             stmt.setTimestamp(4, validTo)
-                            stmt.setInt(5, accountingPointId)
+                            stmt.setLong(5, accountingPointId)
                             stmt.setTimestamp(6, validFrom)
                             stmt.execute()
                         }
@@ -358,11 +358,11 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
         }
 
     context(principal: FlexPrincipal)
-    override suspend fun markSyncComplete(accountingPointId: Int): Either<RepositoryError, Unit> =
+    override suspend fun markSyncComplete(accountingPointId: Long): Either<RepositoryError, Unit> =
         flexTransaction { conn ->
             Either.catch {
                 conn.prepareStatement(MARK_SYNC_COMPLETE).use { stmt ->
-                    stmt.setInt(1, accountingPointId)
+                    stmt.setLong(1, accountingPointId)
                     val updated = stmt.executeUpdate()
                     if (updated == 0) error("No sync row found for accounting point $accountingPointId")
                 }
@@ -380,7 +380,7 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
 private fun Connection.createTimestampArray(instants: List<Instant>): Array =
     createArrayOf("text", instants.map { it.toSqlTimestamp().toString() }.toTypedArray())
 
-private fun resolveOrCreateEntity(conn: Connection, endUserBusinessId: String): Int {
+private fun resolveOrCreateEntity(conn: Connection, endUserBusinessId: String): Long {
     val (entityType, businessIdType) = when {
         endUserBusinessId.matches(Regex("^[1-9][0-9]{10}$")) -> "person" to "pid"
         endUserBusinessId.matches(Regex("^[1-9][0-9]{8}$")) -> "organisation" to "org"
@@ -399,7 +399,7 @@ private fun resolveOrCreateEntity(conn: Connection, endUserBusinessId: String): 
         stmt.setString(1, endUserBusinessId)
         stmt.executeQuery().use { rs ->
             check(rs.next()) { "Entity not found after upsert for business_id=$endUserBusinessId" }
-            rs.getInt(1)
+            rs.getLong(1)
         }
     }
 }
@@ -409,16 +409,16 @@ private fun resolveOrCreateEntity(conn: Connection, endUserBusinessId: String): 
  *
  * If a new party is inserted it is immediately activated (status 'new' → 'active')
  */
-private fun resolveOrCreateEndUserParty(conn: Connection, entityId: Int, endUserBusinessId: String): Int {
+private fun resolveOrCreateEndUserParty(conn: Connection, entityId: Long, endUserBusinessId: String): Long {
     conn.prepareStatement(INSERT_END_USER_PARTY).use { stmt ->
-        stmt.setInt(1, entityId)
+        stmt.setLong(1, entityId)
         stmt.setString(2, "$endUserBusinessId - EU")
-        stmt.setInt(3, entityId)
+        stmt.setLong(3, entityId)
         stmt.executeQuery().use { rs ->
             if (rs.next()) {
-                val newPartyId = rs.getInt(1)
+                val newPartyId = rs.getLong(1)
                 conn.prepareStatement(ACTIVATE_PARTY).use { activate ->
-                    activate.setInt(1, newPartyId)
+                    activate.setLong(1, newPartyId)
                     activate.execute()
                 }
                 return newPartyId
@@ -428,10 +428,10 @@ private fun resolveOrCreateEndUserParty(conn: Connection, entityId: Int, endUser
 
     // Party already existed — fetch its ID.
     return conn.prepareStatement(SELECT_END_USER_PARTY_BY_ENTITY).use { stmt ->
-        stmt.setInt(1, entityId)
+        stmt.setLong(1, entityId)
         stmt.executeQuery().use { rs ->
             check(rs.next()) { "End-user party not found after upsert for entity_id=$entityId" }
-            rs.getInt(1)
+            rs.getLong(1)
         }
     }
 }
@@ -441,13 +441,13 @@ private fun resolveOrCreateEndUserParty(conn: Connection, entityId: Int, endUser
  *
  * Returns a map of GLN → party ID. Errors if any GLN has no matching party row.
  */
-private fun Connection.fetchEnergySupplierPartyIds(glns: List<String>): Map<String, Int> {
+private fun Connection.fetchEnergySupplierPartyIds(glns: List<String>): Map<String, Long> {
     val pgArray = createArrayOf("text", glns.toTypedArray())
     val result = prepareStatement(SELECT_ENERGY_SUPPLIER_PARTY_IDS_BY_BUSINESS_IDS).use { stmt ->
         stmt.setArray(1, pgArray)
         stmt.executeQuery().use { rs ->
-            val map = mutableMapOf<String, Int>()
-            while (rs.next()) map[rs.getString(1)] = rs.getInt(2)
+            val map = mutableMapOf<String, Long>()
+            while (rs.next()) map[rs.getString(1)] = rs.getLong(2)
             map
         }
     }

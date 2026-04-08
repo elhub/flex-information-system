@@ -1,6 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
-import kotlin.Int
+import kotlin.Long
 import kotlin.String
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
@@ -15,17 +15,17 @@ public data class ControllableUnitServiceProviderCreateRequest(
    * Reference to the controllable unit this relation links to a service provider.
    */
   @SerialName("controllable_unit_id")
-  public val controllableUnitId: Int,
+  public val controllableUnitId: Long,
   /**
    * Reference to the `party` (service provider) this relation links to a controllable unit.
    */
   @SerialName("service_provider_id")
-  public val serviceProviderId: Int,
+  public val serviceProviderId: Long,
   /**
    * Technical ID of the end user behind the accounting point.
    */
   @SerialName("end_user_id")
-  public val endUserId: Int,
+  public val endUserId: Long,
   /**
    * The service providers internal reference to the contract with the end user. Typically an
    * internal identifier to a stored document or consent record.

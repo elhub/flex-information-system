@@ -1,6 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
-import kotlin.Int
+import kotlin.Long
 import kotlin.String
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
@@ -15,7 +15,7 @@ public data class ServiceProvidingGroupHistoryResponse(
    * Unique surrogate key.
    */
   @SerialName("id")
-  public val id: Int? = null,
+  public val id: Long? = null,
   /**
    * Free text name of the service providing group.
    */
@@ -25,7 +25,7 @@ public data class ServiceProvidingGroupHistoryResponse(
    * Reference to the `party` (service provider) managing the group.
    */
   @SerialName("service_provider_id")
-  public val serviceProviderId: Int,
+  public val serviceProviderId: Long,
   /**
    * The bidding zone that restricts which CUs that can be added to the group. Also known as
    * scheduling area or price area for TSO.
@@ -46,17 +46,17 @@ public data class ServiceProvidingGroupHistoryResponse(
    * The identity that recorded the resource.
    */
   @SerialName("recorded_by")
-  public val recordedBy: Int? = null,
+  public val recordedBy: Long? = null,
   /**
    * Reference to the resource that was updated.
    */
   @SerialName("service_providing_group_id")
-  public val serviceProvidingGroupId: Int,
+  public val serviceProvidingGroupId: Long,
   /**
    * The identity that updated the resource when it was replaced.
    */
   @SerialName("replaced_by")
-  public val replacedBy: Int? = null,
+  public val replacedBy: Long? = null,
   /**
    * When the resource was replaced in the system.
    */

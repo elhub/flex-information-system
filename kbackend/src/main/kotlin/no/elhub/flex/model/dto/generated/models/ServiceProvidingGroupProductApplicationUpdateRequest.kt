@@ -1,7 +1,7 @@
 package no.elhub.flex.model.dto.generated.models
 
 import java.math.BigDecimal
-import kotlin.Int
+import kotlin.Long
 import kotlin.String
 import kotlin.collections.List
 import kotlin.time.Instant
@@ -19,7 +19,7 @@ public data class ServiceProvidingGroupProductApplicationUpdateRequest(
    * References to the product types.
    */
   @SerialName("product_type_ids")
-  public val productTypeIds: List<Int>? = null,
+  public val productTypeIds: List<Long>? = null,
   /**
    * The status of the application.
    */

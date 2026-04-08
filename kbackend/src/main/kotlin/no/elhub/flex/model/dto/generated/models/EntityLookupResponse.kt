@@ -1,6 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
-import kotlin.Int
+import kotlin.Long
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -13,5 +13,5 @@ public data class EntityLookupResponse(
    * The surrogate key of the entity.
    */
   @SerialName("entity_id")
-  public val entityId: Int? = null,
+  public val entityId: Long? = null,
 )
