@@ -1,7 +1,6 @@
 import { BooleanField, List, ReferenceField, TextField } from "react-admin";
 import { Datagrid } from "../auth";
 import { useParams } from "react-router-dom";
-import { historyRowClick } from "../components/history";
 import { DateField } from "../components/datetime";
 import { EnumField } from "../components/enum";
 
@@ -16,7 +15,7 @@ export const ControllableUnitHistoryList = () => {
       sort={{ field: "recorded_at", order: "DESC" }}
       empty={false}
     >
-      <Datagrid rowClick={historyRowClick}>
+      <Datagrid rowClick={false}>
         <TextField source="id" label="field.controllable_unit_history.id" />
         <TextField
           source="controllable_unit_id"
