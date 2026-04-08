@@ -134,6 +134,7 @@ export const TechnicalResourceList = () => {
           action={
             canDelete
               ? {
+                  header: "Delete",
                   render: (record) => (
                     <DeleteTechnicalResourceButton record={record} />
                   ),
