@@ -133,7 +133,7 @@ export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
             ? {
                 header: "",
                 render: (row) =>
-                  row.membershipId ? (
+                  row.membershipId !== undefined ? (
                     <DeleteButton
                       membershipId={row.membershipId}
                       spgId={spgId}
