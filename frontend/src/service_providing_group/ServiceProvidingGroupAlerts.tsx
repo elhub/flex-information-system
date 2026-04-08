@@ -48,7 +48,7 @@ const useServiceProvidingGroupAlerts = (): AlertType | null => {
     severity: "info",
     title: "Not active",
     content:
-      "The service providing group is not active. Please activate it to make it eligible for flexibility markets.",
+      "The service providing group is not active.",
     action: (
       <ActivateServiceProvidingGroupButton
         spgId={spgId!}
