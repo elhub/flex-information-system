@@ -22,15 +22,14 @@ megalinter:
 tbls-lint:
     tbls lint
 
-gradle-docker-image:
+build-kbackend:
     #!/usr/bin/env bash
     set -euo pipefail
     cd kbackend
     ./gradlew jibDockerBuild --image=flex-kbackend
-    cd ..
 
 # start the docker environment
-start: gradle-docker-image
+start: build-kbackend
     #!/usr/bin/env bash
     set -euo pipefail
     docker compose up -d
@@ -49,11 +48,11 @@ unload:
     ./db/unload.sh
 
 # docker compose pull
-pull: gradle-docker-image
+pull:
     docker compose pull
 
 # docker compose build
-build: gradle-docker-image
+build: build-kbackend
     docker compose build --pull
 
 # load the database
