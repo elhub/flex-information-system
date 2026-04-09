@@ -76,8 +76,14 @@ export const findCurrentlyValidRecord = <
     const validFrom = record.valid_from ? new Date(record.valid_from) : null;
     const validTo = record.valid_to ? new Date(record.valid_to) : null;
 
-    if (validFrom === null || validFrom > now) return false;
-    if (validTo !== null && validTo <= now) return false;
+    if (
+      validFrom === null ||
+      Number.isNaN(validFrom.getTime()) ||
+      validFrom > now
+    )
+      return false;
+    if (validTo !== null && (Number.isNaN(validTo.getTime()) || validTo <= now))
+      return false;
     return true;
   });
 };

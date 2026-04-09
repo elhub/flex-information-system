@@ -53,7 +53,7 @@ export const Connections = ({
             ? translate(
                 `enum.accounting_point_bidding_zone.bidding_zone.${biddingZone}`,
               )
-            : ""
+            : "-"
         }
       />
       <LabelValue
