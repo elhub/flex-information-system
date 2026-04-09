@@ -66,7 +66,7 @@ export const ControllableUnitShow = () => {
     return null;
   }
 
-  const canUpdateControllableUnit =
+  const canActivateControllableUnit =
     !!permissions?.allow("controllable_unit", "update") &&
     (viewModel.technicalResources?.length ?? 0) > 0;
 
@@ -88,7 +88,7 @@ export const ControllableUnitShow = () => {
           {cu.status === "new" && (
             <ActivateControllableUnitButton
               controllableUnitId={cu.id}
-              disabled={!canUpdateControllableUnit}
+              disabled={!canActivateControllableUnit}
             />
           )}
         </>
