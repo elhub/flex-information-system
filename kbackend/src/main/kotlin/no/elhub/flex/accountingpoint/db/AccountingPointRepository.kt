@@ -223,8 +223,6 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
     ): Either<RepositoryError, Unit> =
         flexTransaction { conn ->
             Either.catch {
-                conn.prepareStatement("SET CONSTRAINTS ALL DEFERRED").use { it.execute() }
-
                 val byAccountingPoint = accountingPointEndUsers.groupBy { it.accountingPointId }
 
                 for ((accountingPointId, endUsers) in byAccountingPoint) {
@@ -420,7 +418,6 @@ private fun resolveOrCreateEndUserParty(conn: Connection, entityId: Long, endUse
     conn.prepareStatement(INSERT_END_USER_PARTY).use { stmt ->
         stmt.setLong(1, entityId)
         stmt.setString(2, "$endUserBusinessId - EU")
-        stmt.setLong(3, entityId)
         stmt.executeQuery().use { rs ->
             if (rs.next()) {
                 val newPartyId = rs.getLong(1)

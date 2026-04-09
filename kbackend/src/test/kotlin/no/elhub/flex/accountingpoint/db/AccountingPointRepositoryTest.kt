@@ -299,6 +299,31 @@ class AccountingPointRepositoryTest : FunSpec({
             entityType shouldBe "organisation"
         }
 
+        test("does not create a duplicate party when called twice for the same end user") {
+            // given
+            val apId = insertAccountingPoint(uniqueGsrn())
+            val pid = uniquePid()
+            val endUsers = listOf(AccountingPointEndUser(apId, pid, Instant.parse("2023-12-31T23:00:00Z"), null))
+
+            // when — called twice with the same end user
+            with(internalDataPrincipal) { repo.upsertAccountingPointEndUsers(endUsers) }.shouldBeRight()
+            with(internalDataPrincipal) { repo.upsertAccountingPointEndUsers(endUsers) }.shouldBeRight()
+
+            // then — exactly one party row exists for this end user
+            val partyCount = PostgresTestContainer.withConnection { conn ->
+                conn.prepareStatement(
+                    "SELECT count(*) FROM flex.party p JOIN flex.entity e ON e.id = p.entity_id WHERE e.business_id = ? AND p.type = 'end_user'",
+                ).use { stmt ->
+                    stmt.setString(1, pid)
+                    stmt.executeQuery().use { rs ->
+                        rs.next()
+                        rs.getLong(1)
+                    }
+                }
+            }
+            partyCount shouldBe 1L
+        }
+
         test("updates a changed end-user ID (same start, different party)") {
             // given
             val apId = insertAccountingPoint(uniqueGsrn())

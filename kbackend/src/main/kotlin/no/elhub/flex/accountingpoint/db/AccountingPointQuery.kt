@@ -36,10 +36,8 @@ const val SELECT_END_USER_PARTY_BY_ENTITY =
 
 val INSERT_END_USER_PARTY = """
     INSERT INTO flex.party (entity_id, name, type, role)
-    SELECT ?, ?, 'end_user', 'flex_end_user'
-    WHERE NOT EXISTS (
-        SELECT 1 FROM flex.party WHERE entity_id = ? AND type = 'end_user'
-    )
+    VALUES (?, ?, 'end_user', 'flex_end_user')
+    ON CONFLICT (entity_id) WHERE type = 'end_user' DO NOTHING
     RETURNING id
 """.trimIndent()
 
