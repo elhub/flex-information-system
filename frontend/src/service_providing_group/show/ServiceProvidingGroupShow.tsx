@@ -1,25 +1,56 @@
-import { IconArrowLeft, IconPencil, IconUser } from "@elhub/ds-icons";
-import { Button, Heading, Loader } from "../../components/ui";
-import { usePermissions } from "ra-core";
-import { Permissions } from "../../auth/permissions";
-import { Link as RouterLink, useParams } from "react-router-dom";
+import { ComponentType } from "react";
+import {
+  IconCross,
+  IconCrossCircle,
+  IconQualitiesCircle,
+  IconStopWatch15,
+  SvgIconProps,
+} from "@elhub/ds-icons";
+import { Badge, Loader } from "../../components/ui";
+import { useParams } from "react-router-dom";
 import { ServiceProvidingGroupShowSummary } from "./ServiceProvidingGroupShowSummary";
 import { ServiceProvidingGroupShowTabs } from "./ServiceProvidingGroupShowTabs";
-import { readServiceProvidingGroup } from "../../generated-client";
+import {
+  readServiceProvidingGroup,
+  ServiceProvidingGroupStatus,
+} from "../../generated-client";
 import { throwOnError } from "../../util";
 import { useQuery } from "@tanstack/react-query";
+import { ShowPageLayout } from "../../components/ShowPageLayout";
+import { useTranslateEnum } from "../../intl/intl";
+import { usePermissions } from "ra-core";
+import { Permissions } from "../../auth/permissions";
+import { ActivateServiceProvidingGroupButton } from "../ActivateServiceProvidingGroupButton";
+
+const statusVariantMap: Record<
+  ServiceProvidingGroupStatus,
+  {
+    status:
+      | "ongoing"
+      | "failed"
+      | "approved-with-warning"
+      | "approved"
+      | "stopped"
+      | "temporarily-stopped"
+      | "pending"
+      | "rejected";
+    icon: ComponentType<SvgIconProps>;
+  }
+> = {
+  new: { status: "ongoing", icon: IconStopWatch15 },
+  active: { status: "approved", icon: IconQualitiesCircle },
+  inactive: { status: "stopped", icon: IconCross },
+  terminated: { status: "rejected", icon: IconCrossCircle },
+};
 
 export const ServiceProvidingGroupShow = () => {
-  const { permissions } = usePermissions<Permissions>();
   const spgId = Number(useParams<{ id: string }>().id);
-  const canManageMembers = permissions?.allow(
-    "service_providing_group_membership",
-    "create",
-  );
-  const canEdit = permissions?.allow("service_providing_group", "update");
+  const { permissions } = usePermissions<Permissions>();
+  const translateEnum = useTranslateEnum();
+
   const {
     data: spg,
-    isLoading,
+    isPending,
     error,
   } = useQuery({
     queryKey: ["service_providing_group", spgId],
@@ -28,7 +59,7 @@ export const ServiceProvidingGroupShow = () => {
     enabled: !!spgId,
   });
 
-  if (isLoading) {
+  if (isPending) {
     return <Loader />;
   }
 
@@ -40,49 +71,36 @@ export const ServiceProvidingGroupShow = () => {
     return null;
   }
 
+  const canUpdateSpg = !!permissions?.allow(
+    "service_providing_group",
+    "update",
+  );
+
   return (
-    <div className="flex flex-col gap-4 p-2">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="flex items-center gap-2">
-          <Button
-            as={RouterLink}
-            to="/service_providing_group"
-            variant="invisible"
-            icon={IconArrowLeft}
-          />
-          <Heading level={2} size="medium">
-            Group Details - {spg.name}
-          </Heading>
-        </div>
-
-        <div>
-          {canManageMembers ? (
-            <Button
-              as={RouterLink}
-              to={`/service_providing_group/${spgId}/manage-members`}
-              variant="invisible"
-              icon={IconUser}
-            >
-              Manage members
-            </Button>
-          ) : null}
-          {canEdit ? (
-            <Button
-              as={RouterLink}
-              to={`/service_providing_group/${spgId}/edit`}
-              variant="invisible"
-              icon={IconPencil}
-            >
-              Edit
-            </Button>
-          ) : null}
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 gap-4 xl:grid-cols-[475px_minmax(0,1fr)]">
-        <ServiceProvidingGroupShowSummary spg={spg} />
-        <ServiceProvidingGroupShowTabs spgId={spg.id} />
-      </div>
-    </div>
+    <ShowPageLayout
+      backTo="/service_providing_group"
+      title={`Group Details - ${spg.name}`}
+      badge={
+        <>
+          <Badge
+            size="small"
+            status={statusVariantMap[spg.status].status}
+            variant="block"
+            icon={statusVariantMap[spg.status].icon}
+          >
+            {translateEnum(`service_providing_group.status.${spg.status}`)}
+          </Badge>
+          {spg.status === "new" && (
+            <ActivateServiceProvidingGroupButton
+              spgId={spg.id}
+              disabled={!canUpdateSpg}
+            />
+          )}
+        </>
+      }
+    >
+      <ServiceProvidingGroupShowSummary spg={spg} />
+      <ServiceProvidingGroupShowTabs spgId={spg.id} />
+    </ShowPageLayout>
   );
 };

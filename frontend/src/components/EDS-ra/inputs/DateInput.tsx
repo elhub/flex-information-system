@@ -1,4 +1,5 @@
-import { Datepicker, DatepickerProps } from "../../ui";
+import { Datepicker } from "../../ui";
+import { DatepickerProps } from "../../ui/types";
 import { useInput } from "ra-core";
 import { BaseInput, BaseInputProps } from "./BaseInput";
 import { formatISO, parseISO } from "date-fns";
