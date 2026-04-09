@@ -43,7 +43,7 @@ function frontend() {
 	local env_short=$1
 	local env_long=$2
 	cd frontend
-	pnpm install
+	pnpm install --frozen-lockfile
 	pnpm run build -- --base / --mode "$env_long"
 	mv dist/* ../dist/
 	cd ..

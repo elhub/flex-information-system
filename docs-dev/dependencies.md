@@ -23,7 +23,7 @@ pnpm self-update
 
 ### NPM packages/dependencies
 
-We use both [pnpm audit](pnpm.io/cli/audit) and
+We use both [pnpm audit](https://pnpm.io/cli/audit) and
 [trivy](https://trivy.dev/latest/) to check for vulnerabilities in our
 dependencies. We have found that npm audit does not always find all issues so it
 is good practice to use trivy as well. Trivy can be installed via brew.

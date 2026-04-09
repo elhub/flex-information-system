@@ -42,8 +42,8 @@ WORKDIR /usr/src/app
 # install pnpm@latest-10
 RUN npm install -g pnpm@latest-10
 
-COPY package.json pnpm-lock.yaml .npmrc ./
-RUN pnpm install
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
+RUN pnpm install --frozen-lockfile
 
 COPY . .
 

@@ -1,5 +1,5 @@
 # https://pnpm.io/supply-chain-security
-# Dont allow packages newer than 24h ago
+# Don't allow packages newer than 24h ago
 minimumReleaseAge: 1440
 # Only allow transitive dependencies from trusted sources
 blockExoticSubDeps: true
