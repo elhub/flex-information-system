@@ -22,8 +22,14 @@ megalinter:
 tbls-lint:
     tbls lint
 
+build-kbackend:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    cd kbackend
+    ./gradlew jibDockerBuild --image=flex-kbackend
+
 # start the docker environment
-start:
+start: build-kbackend
     #!/usr/bin/env bash
     set -euo pipefail
     docker compose up -d
@@ -46,7 +52,7 @@ pull:
     docker compose pull
 
 # docker compose build
-build:
+build: build-kbackend
     docker compose build --pull
 
 # load the database
