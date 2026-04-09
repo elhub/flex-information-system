@@ -102,10 +102,10 @@ export const ServiceProvidingGroupActivate = () => {
 
       <div className="flex flex-col gap-5">
         <Alert variant="info">
-          Activating the service providing group makes it eligible to
-          participate in flexibility markets. You can activate later from the
-          group&apos;s detail page.
+          Activating the controllable unit will notify the system operator to
+          validate the controllable unit.
         </Alert>
+
         <div>
           <Heading level={4} size="xsmall">
             Group details

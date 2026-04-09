@@ -10,6 +10,7 @@ import {
   listTechnicalResource,
   Party,
   readAccountingPoint,
+  readControllableUnit,
   readParty,
   TechnicalResource,
 } from "../../generated-client";
@@ -116,24 +117,23 @@ const getAccountingPointData = async (
 };
 
 export const getControllableUnitData = async (
-  controllableUnit: ControllableUnit | undefined,
-): Promise<Omit<ControllableUnitShowViewModel, "controllableUnit">> => {
-  const controllableUnitIdInt = controllableUnit?.id ?? 0;
+  controllableUnitId: number,
+): Promise<ControllableUnitShowViewModel> => {
+  const controllableUnit = await readControllableUnit({
+    path: { id: controllableUnitId },
+  }).then(throwOnError);
 
-  if (!controllableUnit) {
-    throw new Error("Controllable unit not found");
-  }
   const technicalResourcesPromise = listTechnicalResource({
-    query: { controllable_unit_id: "eq." + controllableUnitIdInt },
+    query: { controllable_unit_id: "eq." + controllableUnitId },
   }).then(throwOnError);
 
   const accountingPointPromise = getAccountingPointData(
     controllableUnit?.accounting_point_id,
   );
-  const cuspPromise = findCurrentCusp(controllableUnitIdInt);
+  const cuspPromise = findCurrentCusp(controllableUnitId);
 
   const suspensionsPromise = listControllableUnitSuspension({
-    query: { controllable_unit_id: "eq." + controllableUnitIdInt },
+    query: { controllable_unit_id: "eq." + controllableUnitId },
   }).then(throwOnError);
 
   const [technicalResources, accountingPoint, cuspData, suspensions] =
@@ -145,6 +145,7 @@ export const getControllableUnitData = async (
     ]);
 
   return {
+    controllableUnit,
     serviceProvider: cuspData.systemProvider,
     technicalResources: technicalResources,
     systemOperator: accountingPoint.systemOperator,
@@ -158,25 +159,13 @@ export const getControllableUnitData = async (
 export const controllableUnitViewModelQueryKey = (
   controllableUnitId: number | undefined,
 ) => ["controllableUnitViewModel", controllableUnitId];
-export const useControllableUnitViewModel = (
-  controllableUnit: ControllableUnit | ControllableUnitHistory | undefined,
-): UseQueryResult<ControllableUnitShowViewModel> => {
-  const query = useQuery({
-    queryKey: controllableUnitViewModelQueryKey(controllableUnit?.id),
-    queryFn: () => getControllableUnitData(controllableUnit),
-    enabled: !!controllableUnit?.id,
-  });
 
-  return {
-    ...query,
-    data: query.data
-      ? {
-          ...query.data,
-          controllableUnit,
-        }
-      : undefined,
-    // Since controllable unit is prefetched, we dont want controllableUnit to be in the query logic, so we can partially invalidate the query when the controllable unit is updated
-    // but for simplicity we want the controllable unit to be available in the view model, so we add it to the data
-    // Thats why we return the query result and add the controllableUnit to the data, casting it manually since the types of useQuery are complex and not easily inferrable
-  } as UseQueryResult<ControllableUnitShowViewModel>;
+export const useControllableUnitViewModel = (
+  id: number | undefined,
+): UseQueryResult<ControllableUnitShowViewModel> => {
+  return useQuery({
+    queryKey: controllableUnitViewModelQueryKey(id),
+    queryFn: () => getControllableUnitData(id!),
+    enabled: !!id,
+  });
 };

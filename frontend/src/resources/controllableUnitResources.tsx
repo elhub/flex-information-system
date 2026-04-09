@@ -77,14 +77,6 @@ export const createControllableUnitResources = (permissions: Permissions) => {
           path=":controllable_unit_id/history"
           element={<ControllableUnitHistoryList />}
         />
-        <Route
-          path=":controllable_unit_id/history/:id/show"
-          element={
-            <ResourceContextProvider value="controllable_unit_history">
-              <ControllableUnitShow />
-            </ResourceContextProvider>
-          }
-        />
         {/* controllable unit suspension */}
         <Route
           path=":controllable_unit_id/suspension/create"

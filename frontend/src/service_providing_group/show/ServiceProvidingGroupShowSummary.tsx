@@ -1,19 +1,12 @@
 import { EnumField, ReferenceField } from "../../components/EDS-ra";
-import { BodyText, Loader, Panel } from "../../components/ui";
-import { RecordContextProvider } from "ra-core";
+import { Button, Loader, Panel } from "../../components/ui";
+import { LabelValue } from "../../components/LabelValue";
+import { RecordContextProvider, usePermissions } from "ra-core";
 import { useSpgShowViewModel } from "./useSpgShowViewModel";
 import { ServiceProvidingGroup } from "../../generated-client";
-
-const FieldItem = ({ label, value }: { label: string; value: string }) => (
-  <div className="flex flex-col gap-1">
-    <BodyText size="small" weight="bold">
-      {label}
-    </BodyText>
-    <BodyText size="small" className="whitespace-pre-wrap">
-      {value}
-    </BodyText>
-  </div>
-);
+import { IconPencil } from "@elhub/ds-icons";
+import { Link as RouterLink } from "react-router-dom";
+import { Permissions } from "../../auth/permissions";
 
 const formatUnit = (value: number | undefined, unit: string) => {
   if (value === undefined) {
@@ -29,6 +22,8 @@ export const ServiceProvidingGroupShowSummary = ({
   spg: ServiceProvidingGroup;
 }) => {
   const { data, isLoading, error } = useSpgShowViewModel(spg.id);
+  const { permissions } = usePermissions<Permissions>();
+  const canEdit = permissions?.allow("service_providing_group", "update");
 
   if (isLoading) {
     return <Loader size="small" />;
@@ -43,6 +38,18 @@ export const ServiceProvidingGroupShowSummary = ({
       border
       className="bg-semantic-background-alternative h-fit p-4 sm:p-5"
     >
+      {canEdit && (
+        <div className="flex justify-end">
+          <Button
+            as={RouterLink}
+            to={`/service_providing_group/${spg.id}/edit`}
+            variant="invisible"
+            icon={IconPencil}
+          >
+            Edit
+          </Button>
+        </div>
+      )}
       <div className="flex flex-col gap-4">
         <RecordContextProvider value={spg}>
           <ReferenceField
@@ -52,29 +59,30 @@ export const ServiceProvidingGroupShowSummary = ({
             label
           />
 
-          <div className="flex flex-col gap-1">
-            <EnumField
-              labelDirection="column"
-              label
-              source="bidding_zone"
-              enumKey="service_providing_group.bidding_zone"
-            />
-          </div>
+          <EnumField
+            labelDirection="column"
+            label
+            source="bidding_zone"
+            enumKey="service_providing_group.bidding_zone"
+          />
         </RecordContextProvider>
-        <FieldItem
+        <LabelValue
+          size="small"
           label="Capacity - Consumption"
           value={formatUnit(data?.consumptionCapacityKw, "kW")}
         />
-        <FieldItem
+        <LabelValue
+          size="small"
           label="Capacity - Production"
           value={formatUnit(data?.productionCapacityKw, "kW")}
         />
-        <FieldItem
+        <LabelValue
+          size="small"
           label="Total capacity"
           value={formatUnit(data?.totalCapacityKw, "kW")}
         />
         {spg.additional_information && (
-          <FieldItem
+          <LabelValue
             label="Additional information"
             value={spg.additional_information}
           />

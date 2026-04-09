@@ -3,15 +3,51 @@ import { Column, SimpleTable } from "../../components/SimpleTable";
 import {
   useSpgShowViewModel,
   type SpgMembershipRow,
+  useRemoveMembershipFromShow,
 } from "./useSpgShowViewModel";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useTranslateField } from "../../intl/intl";
-import { IconUser } from "@elhub/ds-icons";
+import { IconCrossCircle, IconUser } from "@elhub/ds-icons";
 import { usePermissions } from "ra-core";
 import { Permissions } from "../../auth/permissions";
+import { useConfirmAction } from "../../components/ConfirmAction";
 
 type Props = {
   spgId: number;
+};
+
+const DeleteButton = ({
+  membershipId,
+  spgId,
+}: {
+  membershipId: number;
+  spgId: number;
+}) => {
+  const { mutateAsync: removeMembership } = useRemoveMembershipFromShow(spgId);
+  const { buttonProps, dialog } = useConfirmAction({
+    title: "Delete",
+    content:
+      "Are you sure you want to delete this item? This action cannot be undone.",
+    onConfirmMutation: {
+      mutationFn: () => removeMembership(membershipId),
+    },
+  });
+
+  return (
+    <>
+      <Button
+        variant="invisible"
+        className="text-semantic-background-action-danger"
+        size="large"
+        icon={IconCrossCircle}
+        onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+          e.stopPropagation();
+          buttonProps.onClick();
+        }}
+      />
+      {dialog}
+    </>
+  );
 };
 
 export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
@@ -22,6 +58,10 @@ export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
   const canManageMembers = permissions?.allow(
     "service_providing_group_membership",
     "create",
+  );
+  const canDelete = permissions?.allow(
+    "service_providing_group_membership",
+    "delete",
   );
 
   if (isLoading) {
@@ -76,12 +116,40 @@ export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
   ];
 
   return (
-    <SimpleTable
-      rowClick={(row) => navigate(`/controllable_unit/${row.id}/show`)}
-      size="small"
-      data={data?.rows ?? []}
-      columns={columns}
-      className="w-full"
-    />
+    <div className="flex flex-col gap-4">
+      <div className="flex justify-end">
+        {canManageMembers && (
+          <Button
+            as={RouterLink}
+            to={`/service_providing_group/${spgId}/manage-members`}
+            variant="primary"
+            icon={IconUser}
+          >
+            Manage members
+          </Button>
+        )}
+      </div>
+      <SimpleTable
+        rowClick={(row) => navigate(`/controllable_unit/${row.id}/show`)}
+        size="small"
+        data={data?.rows ?? []}
+        columns={columns}
+        className="w-full"
+        action={
+          canDelete
+            ? {
+                header: "Remove from group",
+                render: (row) =>
+                  row.membershipId !== undefined ? (
+                    <DeleteButton
+                      membershipId={row.membershipId}
+                      spgId={spgId}
+                    />
+                  ) : null,
+              }
+            : undefined
+        }
+      />
+    </div>
   );
 };
