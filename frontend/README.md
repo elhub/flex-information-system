@@ -12,7 +12,7 @@ We therefore rely on [React-Admin](https://marmelab.com/react-admin/) for now.
 Install the application dependencies by running:
 
 ```sh
-npm install
+pnpm install
 ```
 
 ## Development
@@ -20,7 +20,7 @@ npm install
 Start the application in development mode by running:
 
 ```sh
-npm run dev
+pnpm run dev
 ```
 
 ## Production
@@ -28,5 +28,5 @@ npm run dev
 Build the application in production mode by running:
 
 ```sh
-npm run build
+pnpm run build
 ```

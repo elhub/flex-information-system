@@ -86,7 +86,7 @@ In VSCode, consider installing
 We rely on [spectral](https://github.com/stoplightio/spectral). `pre-commit` is
 configured to run a locally installed spectral binary. Follow the
 [install docs](https://github.com/stoplightio/spectral?tab=readme-ov-file#-installation)
-to install via npm.
+to install via pnpm.
 
 In VSCode, consider installing
 

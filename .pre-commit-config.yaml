@@ -93,12 +93,12 @@ repos:
     hooks:
       - id: check-yaml
         args: []
-        exclude: ^(local/scripts/templates/.*)|(mkdocs.yml)$
+        exclude: ^(local/scripts/templates/.*)|(mkdocs.yml)|(frontend/pnpm-lock.yaml)$
   - repo: https://github.com/adrienverge/yamllint.git
     rev: v1.37.1
     hooks:
       - id: yamllint
-        exclude: ^local/scripts/templates/.*$
+        exclude: ^(local/scripts/templates/.*)|(frontend/pnpm-lock.yaml)$
   #
   ## JSON
   #
@@ -219,7 +219,7 @@ repos:
       - id: eslint
         name: eslint
         entry: /usr/bin/bash
-        args: ['-c', 'cd frontend && npm run lint']
+        args: ['-c', 'cd frontend && pnpm run lint']
         language: script
         types_or: [ts, tsx, javascript]
         pass_filenames: false
@@ -228,17 +228,17 @@ repos:
   - repo: local
     hooks:
       - id: frontend-type-check
-        name: npm type-check
+        name: pnpm type-check
         # Yes, this is a pretty hacky way to go about it, but it works ;)
         entry: /usr/bin/bash
-        args: ['-c', 'cd frontend && npm run type-check']
+        args: ['-c', 'cd frontend && pnpm run type-check']
         language: script
         types_or: [ts, tsx]
         pass_filenames: false
       - id: frontend-dependency-check
-        name: npm audit fix
+        name: pnpm audit fix
         entry: /usr/bin/bash
-        args: ['-c', 'cd frontend && npm audit fix']
+        args: ['-c', 'cd frontend && pnpm audit fix']
         language: script
         types_or: [ts, tsx]
         pass_filenames: false

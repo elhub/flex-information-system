@@ -39,12 +39,15 @@ FROM docker.jfrog.elhub.cloud/node:lts AS builder
 
 WORKDIR /usr/src/app
 
-COPY package*.json .npmrc ./
-RUN npm install
+# install pnpm@latest-10
+RUN npm install -g pnpm@latest-10
+
+COPY package.json pnpm-lock.yaml .npmrc ./
+RUN pnpm install
 
 COPY . .
 
-RUN npm run build
+RUN pnpm run build
 
 FROM nginx-unpriv AS final
 COPY --from=builder --chown=nobody:nobody /usr/src/app/dist /usr/share/nginx/html

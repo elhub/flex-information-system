@@ -119,7 +119,7 @@ frontend:
     #!/usr/bin/env bash
     set -euo pipefail
     cd frontend
-    npm run dev
+    pnpm run dev
 
 # connect to local database (no password required)
 connect user="postgres":

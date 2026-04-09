@@ -13,35 +13,30 @@ just vet-licence
 
 ## Upgrades
 
-### NPM itself
+### PNPM itself
 
 Upgrade with
 
 ```bash
-npm install -g npm@latest
+pnpm self-update
 ```
 
 ### NPM packages/dependencies
 
-We use both [npm audit](https://docs.npmjs.com/cli/v10/commands/npm-audit) and
+We use both [pnpm audit](pnpm.io/cli/audit) and
 [trivy](https://trivy.dev/latest/) to check for vulnerabilities in our
 dependencies. We have found that npm audit does not always find all issues so it
 is good practice to use trivy as well. Trivy can be installed via brew.
 
 ```bash
-npm audit
+pnpm audit
 trivy fs --scanners vuln --include-dev-deps .
 ```
 
-To do a complete upgrade of all packages we can use
-[npm-check-updates](https://www.npmjs.com/package/npm-check-updates).
+To look for outdated packages we can do:
 
 ```bash
-# for all dependencies
-npx npm-check-updates --upgrade
-# for devDependencies only
-npx npm-check-updates --upgrade --dep dev
-npm install
+pnpm outdated
 ```
 
 ### Go version
