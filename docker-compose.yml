@@ -67,6 +67,15 @@ services:
         condition: service_healthy
     extra_hosts:
       - "idp.flex.internal:host-gateway"
+  kbackend:
+    image: flex-kbackend
+    pull_policy: never # the image is always built locally
+    ports:
+      - "7002:8080"
+    env_file: "./local/kbackend/test.env"
+    depends_on:
+      db:
+        condition: service_started
   frontend:
     build: ./frontend
     volumes:
