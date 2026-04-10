@@ -1,6 +1,6 @@
 import { ReactNode, useState } from "react";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
-import { useNotify } from "react-admin";
+import { useNotify } from "ra-core";
 import { Button, Modal } from "./ui";
 
 type UseConfirmActionOptions = {
