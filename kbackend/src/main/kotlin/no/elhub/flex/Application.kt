@@ -51,6 +51,7 @@ fun Application.module() {
     val propertiesForKoin = listOf(
         "accounting-point-adapter.base-url",
         "accounting-point-adapter.api-key",
+        "accounting-point-adapter.sync-enabled",
     )
 
     startKoin<FlexApp> {

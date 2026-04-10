@@ -23,6 +23,7 @@ import no.elhub.flex.util.asLocalStartOfDayInstant
 import no.elhub.flex.util.atLocalStartOfToday
 import no.elhub.flex.util.body
 import no.elhub.flex.util.respondJson
+import org.koin.core.annotation.Property
 import org.koin.core.annotation.Single
 import kotlin.time.Instant
 
@@ -34,6 +35,7 @@ private val CONTROLLABLE_UNIT_BUSINESS_ID_REGEX =
 class ControllableUnitLookup(
     private val repo: ControllableUnitRepository,
     private val accountingPointService: AccountingPointService,
+    @Property("accounting-point-adapter.sync-enabled") private val accountingPointAdapterSyncEnabled: Boolean = true,
 ) {
     suspend fun handle(call: RoutingCall) {
         val token = call.attributes[AccessTokenKey]
@@ -54,7 +56,9 @@ class ControllableUnitLookup(
                 val validFrom = controllableUnits.minByOrNull { it.startDate }?.startDate?.asLocalStartOfDayInstant()
                     ?: Instant.atLocalStartOfToday()
 
-                accountingPointService.synchronizeAccountingPoint(accountingPointBusinessId, validFrom).bind()
+                if (accountingPointAdapterSyncEnabled) {
+                    accountingPointService.synchronizeAccountingPoint(accountingPointBusinessId, validFrom).bind()
+                }
 
                 val endUserId = accountingPointService.checkEndUserMatchesAccountingPoint(
                     request.endUser,

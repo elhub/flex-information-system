@@ -18,3 +18,4 @@ flex:
 accounting-point-adapter:
   base-url: ${ACCOUNTING_POINT_ADAPTER_BASE_URL}
   api-key: ${ACCOUNTING_POINT_ADAPTER_API_KEY}
+  sync-enabled: ${ACCOUNTING_POINT_ADAPTER_SYNC_ENABLED:true}
