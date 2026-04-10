@@ -22,6 +22,7 @@ import no.elhub.flex.util.TraceIdUtil.Companion.traceIdOrUnknown
 import no.elhub.flex.util.asLocalStartOfDayInstant
 import no.elhub.flex.util.atLocalStartOfToday
 import no.elhub.flex.util.body
+import no.elhub.flex.util.logger
 import no.elhub.flex.util.respondJson
 import org.koin.core.annotation.Single
 import kotlin.time.Instant
@@ -46,13 +47,22 @@ class ControllableUnitLookup(
                 val accountingPointBusinessId = request.accountingPointBusinessId?.value
                     ?: accountingPointService.getCurrentAccountingPoint(request.controllableUnitBusinessId).bind().businessId
 
+                logger.debug { "Controllable unit used in lookup: ${request.controllableUnitBusinessId}" }
+                logger.debug { "Accounting point used in lookup: $accountingPointBusinessId" }
+
+                // TODO: fix role
+                // The underlying query does not call a security definer function. It is a direct query against CU/AP,
+                // so it cannot be called with user role, we need to either rewrite this as a DB function or switch to a
+                // system role for this handler (flex_internal_data).
                 val controllableUnits = fetchControllableUnits(
                     request.controllableUnitBusinessId,
                     accountingPointBusinessId
                 ).bind()
+                logger.debug { "Found ${controllableUnits.size} controllable units on accounting point $accountingPointBusinessId" }
 
-                val validFrom = controllableUnits.minByOrNull { it.startDate }?.startDate?.asLocalStartOfDayInstant()
+                val validFrom = controllableUnits.mapNotNull { it.startDate }.minByOrNull { it }?.asLocalStartOfDayInstant()
                     ?: Instant.atLocalStartOfToday()
+                logger.debug { "Using $validFrom as start date for accounting point sync" }
 
                 accountingPointService.synchronizeAccountingPoint(accountingPointBusinessId, validFrom).bind()
 
@@ -80,7 +90,8 @@ class ControllableUnitLookup(
         accountingPointBusinessId: String,
     ): Either<AppError, List<ControllableUnit>> =
         repo.lookupControllableUnits(controllableUnitBusinessId, accountingPointBusinessId)
-            .mapLeft { _ ->
+            .mapLeft { e ->
+                logger.error { "Failed to lookup controllable units: ${e.message}" }
                 InternalServerError(traceIdOrUnknown())
             }
 }

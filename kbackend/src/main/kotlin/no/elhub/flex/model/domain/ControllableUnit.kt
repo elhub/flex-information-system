@@ -17,5 +17,5 @@ data class ControllableUnit(
     @SerialName("business_id") val businessId: String,
     val name: String,
     @SerialName("technical_resources") val technicalResources: List<TechnicalResource>,
-    @SerialName("start_date") val startDate: LocalDate,
+    @SerialName("start_date") val startDate: LocalDate?,
 )
