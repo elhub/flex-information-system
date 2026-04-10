@@ -12,7 +12,10 @@ import { spgpaStatusVariantMap } from "./spgpaStatus";
 
 export const ServiceProvidingGroupProductApplicationShow = () => {
   const spgpaId = Number(useParams<{ id: string }>().id);
-  const spgId = Number(useParams<{ spg_id: string }>().spg_id);
+  const spgId = Number(
+    useParams<{ service_providing_group_id: string }>()
+      .service_providing_group_id,
+  );
   const { permissions } = usePermissions<Permissions>();
   const translateEnum = useTranslateEnum();
 
