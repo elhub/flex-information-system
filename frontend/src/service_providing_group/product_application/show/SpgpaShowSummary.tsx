@@ -1,11 +1,3 @@
-import { ComponentType } from "react";
-import {
-  IconCrossCircle,
-  IconQualitiesCircle,
-  IconStopWatch15,
-  IconWarningCircle,
-  SvgIconProps,
-} from "@elhub/ds-icons";
 import { Badge, Button, Link, Panel } from "../../../components/ui";
 import { LabelValue } from "../../../components/LabelValue";
 import { Link as RouterLink } from "react-router-dom";
@@ -13,40 +5,11 @@ import { IconPencil } from "@elhub/ds-icons";
 import { usePermissions } from "ra-core";
 import { Permissions } from "../../../auth/permissions";
 import { useTranslateEnum } from "../../../intl/intl";
-import {
-  ServiceProvidingGroupProductApplication,
-  ServiceProvidingGroupProductApplicationStatus,
-} from "../../../generated-client";
+import { ServiceProvidingGroupProductApplication } from "../../../generated-client";
 import { ProductTypeArrayField } from "../../../product_type/components";
 import { RecordContextProvider } from "ra-core";
 import { DateField } from "../../../components/datetime";
-
-const statusVariantMap: Record<
-  ServiceProvidingGroupProductApplicationStatus,
-  {
-    status:
-      | "ongoing"
-      | "failed"
-      | "approved-with-warning"
-      | "approved"
-      | "stopped"
-      | "temporarily-stopped"
-      | "pending"
-      | "rejected";
-    icon: ComponentType<SvgIconProps>;
-  }
-> = {
-  requested: { status: "pending", icon: IconStopWatch15 },
-  prequalification_pending: { status: "ongoing", icon: IconStopWatch15 },
-  in_progress: { status: "ongoing", icon: IconStopWatch15 },
-  temporary_qualified: {
-    status: "approved-with-warning",
-    icon: IconWarningCircle,
-  },
-  prequalified: { status: "approved", icon: IconQualitiesCircle },
-  verified: { status: "approved", icon: IconQualitiesCircle },
-  rejected: { status: "rejected", icon: IconCrossCircle },
-};
+import { spgpaStatusVariantMap } from "./spgpaStatus";
 
 type Props = {
   spgpa: ServiceProvidingGroupProductApplication;
@@ -60,7 +23,7 @@ export const SpgpaShowSummary = ({ spgpa }: Props) => {
     "update",
   );
 
-  const { status, icon } = statusVariantMap[spgpa.status];
+  const { status, icon } = spgpaStatusVariantMap[spgpa.status];
 
   return (
     <Panel
