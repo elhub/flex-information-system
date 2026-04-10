@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   readServiceProvidingGroupProductApplication,
   updateServiceProvidingGroupProductApplication,
@@ -9,7 +9,6 @@ import {
   useSpgShowViewModel,
   useServiceProvidingGroup,
 } from "../../show/useSpgShowViewModel";
-import { useMutation } from "@tanstack/react-query";
 
 export const spgpaQueryKey = (id: number | undefined) => [
   "service_providing_group_product_application",
@@ -42,6 +41,9 @@ export const useUpdateSpgpaStatus = (id: number, spgId: number) => {
       }).then(throwOnError),
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: spgpaQueryKey(id) });
+      queryClient.invalidateQueries({
+        queryKey: ["service_providing_group", spgId],
+      });
     },
   });
 };
