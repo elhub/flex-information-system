@@ -1,6 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
-import kotlin.Int
+import kotlin.Long
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -14,17 +14,17 @@ public data class SystemOperatorProductTypeResponse(
    * Unique surrogate identifier.
    */
   @SerialName("id")
-  public val id: Int? = null,
+  public val id: Long? = null,
   /**
    * Reference to the system operator.
    */
   @SerialName("system_operator_id")
-  public val systemOperatorId: Int,
+  public val systemOperatorId: Long,
   /**
    * Reference to the product type.
    */
   @SerialName("product_type_id")
-  public val productTypeId: Int,
+  public val productTypeId: Long,
   /**
    * The status of the relation.
    */
@@ -39,5 +39,5 @@ public data class SystemOperatorProductTypeResponse(
    * The identity that recorded the resource.
    */
   @SerialName("recorded_by")
-  public val recordedBy: Int? = null,
+  public val recordedBy: Long? = null,
 )

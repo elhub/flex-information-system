@@ -1,6 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
-import kotlin.Int
+import kotlin.Long
 import kotlin.String
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
@@ -25,7 +25,7 @@ public data class EntityResponse(
    * This is a Primary Key.
    */
   @SerialName("id")
-  public val id: Int? = null,
+  public val id: Long? = null,
   /**
    * The business identifier of the entity. Format depends on `business_id_type`.
    */
@@ -55,5 +55,5 @@ public data class EntityResponse(
    * The identity that recorded the resource.
    */
   @SerialName("recorded_by")
-  public val recordedBy: Int? = null,
+  public val recordedBy: Long? = null,
 )

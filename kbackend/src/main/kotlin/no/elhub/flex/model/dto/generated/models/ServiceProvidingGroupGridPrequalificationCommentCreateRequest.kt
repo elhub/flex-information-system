@@ -1,6 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
-import kotlin.Int
+import kotlin.Long
 import kotlin.String
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -15,7 +15,7 @@ public data class ServiceProvidingGroupGridPrequalificationCommentCreateRequest(
    * Reference to the service providing group grid prequalification.
    */
   @SerialName("service_providing_group_grid_prequalification_id")
-  public val serviceProvidingGroupGridPrequalificationId: Int,
+  public val serviceProvidingGroupGridPrequalificationId: Long,
   /**
    * The level of visibility of the comment.
    */

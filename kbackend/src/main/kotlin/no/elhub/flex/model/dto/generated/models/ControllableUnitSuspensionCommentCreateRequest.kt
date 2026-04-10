@@ -1,6 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
-import kotlin.Int
+import kotlin.Long
 import kotlin.String
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -15,7 +15,7 @@ public data class ControllableUnitSuspensionCommentCreateRequest(
    * Reference to the controllable unit suspension.
    */
   @SerialName("controllable_unit_suspension_id")
-  public val controllableUnitSuspensionId: Int,
+  public val controllableUnitSuspensionId: Long,
   /**
    * The level of visibility of the comment.
    */

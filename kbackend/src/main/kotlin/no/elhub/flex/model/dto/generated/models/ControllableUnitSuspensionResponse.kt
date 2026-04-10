@@ -1,6 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
-import kotlin.Int
+import kotlin.Long
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -15,17 +15,17 @@ public data class ControllableUnitSuspensionResponse(
    * Unique surrogate identifier.
    */
   @SerialName("id")
-  public val id: Int? = null,
+  public val id: Long? = null,
   /**
    * Reference to the suspended controllable unit.
    */
   @SerialName("controllable_unit_id")
-  public val controllableUnitId: Int,
+  public val controllableUnitId: Long,
   /**
    * Reference to the impacted system operator suspending the controllable unit.
    */
   @SerialName("impacted_system_operator_id")
-  public val impactedSystemOperatorId: Int,
+  public val impactedSystemOperatorId: Long,
   /**
    * The reason for the suspension.
    */
@@ -40,5 +40,5 @@ public data class ControllableUnitSuspensionResponse(
    * The identity that recorded the resource.
    */
   @SerialName("recorded_by")
-  public val recordedBy: Int? = null,
+  public val recordedBy: Long? = null,
 )

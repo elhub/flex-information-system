@@ -1,6 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
-import kotlin.Int
+import kotlin.Long
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -14,12 +14,12 @@ public data class ControllableUnitSuspensionCreateRequest(
    * Reference to the suspended controllable unit.
    */
   @SerialName("controllable_unit_id")
-  public val controllableUnitId: Int,
+  public val controllableUnitId: Long,
   /**
    * Reference to the impacted system operator suspending the controllable unit.
    */
   @SerialName("impacted_system_operator_id")
-  public val impactedSystemOperatorId: Int? = null,
+  public val impactedSystemOperatorId: Long? = null,
   /**
    * The reason for the suspension.
    */

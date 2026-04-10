@@ -1,6 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
-import kotlin.Int
+import kotlin.Long
 import kotlin.String
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -34,7 +34,7 @@ public data class PartyCreateRequest(
    * Reference to the entity that is the parent of the party.
    */
   @SerialName("entity_id")
-  public val entityId: Int,
+  public val entityId: Long,
   /**
    * Name of the party. Maximum 128 characters.
    */

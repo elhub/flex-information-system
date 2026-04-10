@@ -1,6 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
-import kotlin.Int
+import kotlin.Long
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -14,12 +14,12 @@ public data class AccountingPointEnergySupplierResponse(
    * The ID of the accounting point.
    */
   @SerialName("accounting_point_id")
-  public val accountingPointId: Int? = null,
+  public val accountingPointId: Long? = null,
   /**
    * The energy supplier of the accounting point.
    */
   @SerialName("energy_supplier_id")
-  public val energySupplierId: Int? = null,
+  public val energySupplierId: Long? = null,
   /**
    * The date from which the relation between the accounting point and the energy supplier is valid.
    * Midnight aligned on Norwegian timezone.

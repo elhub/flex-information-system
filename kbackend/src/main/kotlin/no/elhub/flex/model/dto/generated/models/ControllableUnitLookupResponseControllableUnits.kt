@@ -1,6 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
-import kotlin.Int
+import kotlin.Long
 import kotlin.String
 import kotlin.collections.List
 import kotlinx.serialization.SerialName
@@ -15,7 +15,7 @@ public data class ControllableUnitLookupResponseControllableUnits(
    * The surrogate key of the controllable unit.
    */
   @SerialName("id")
-  public val id: Int,
+  public val id: Long,
   /**
    * The business ID of the controllable unit.
    */

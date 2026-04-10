@@ -1,6 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
-import kotlin.Int
+import kotlin.Long
 import kotlin.String
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
@@ -16,17 +16,17 @@ public data class ServiceProvidingGroupProductSuspensionCommentResponse(
    * Unique surrogate identifier.
    */
   @SerialName("id")
-  public val id: Int? = null,
+  public val id: Long? = null,
   /**
    * Reference to the service providing group product suspension.
    */
   @SerialName("service_providing_group_product_suspension_id")
-  public val serviceProvidingGroupProductSuspensionId: Int,
+  public val serviceProvidingGroupProductSuspensionId: Long,
   /**
    * Reference to the identity that created the comment.
    */
   @SerialName("created_by")
-  public val createdBy: Int? = null,
+  public val createdBy: Long? = null,
   /**
    * When the comment was added to the SPGPS.
    */
@@ -51,5 +51,5 @@ public data class ServiceProvidingGroupProductSuspensionCommentResponse(
    * The identity that recorded the resource.
    */
   @SerialName("recorded_by")
-  public val recordedBy: Int? = null,
+  public val recordedBy: Long? = null,
 )

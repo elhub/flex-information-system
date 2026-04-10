@@ -1,6 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
-import kotlin.Int
+import kotlin.Long
 import kotlin.String
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -15,12 +15,12 @@ public data class IdentityResponse(
    * Unique surrogate identifier.
    */
   @SerialName("id")
-  public val id: Int? = null,
+  public val id: Long? = null,
   /**
    * Reference to the entity using the identity.
    */
   @SerialName("entity_id")
-  public val entityId: Int? = null,
+  public val entityId: Long? = null,
   /**
    * Name of the entity using the identity.
    */
@@ -30,7 +30,7 @@ public data class IdentityResponse(
    * Reference to the party assumed by the entity.
    */
   @SerialName("party_id")
-  public val partyId: Int? = null,
+  public val partyId: Long? = null,
   /**
    * Name of the party assumed by the entity.
    */

@@ -1,6 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
-import kotlin.Int
+import kotlin.Long
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -14,7 +14,7 @@ public data class AccountingPointBiddingZoneResponse(
    * The ID of the accounting point.
    */
   @SerialName("accounting_point_id")
-  public val accountingPointId: Int? = null,
+  public val accountingPointId: Long? = null,
   /**
    * The bidding zone of the accounting point.
    */
