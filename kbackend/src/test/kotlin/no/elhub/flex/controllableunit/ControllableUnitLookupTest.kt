@@ -132,6 +132,50 @@ class ControllableUnitLookupTest :
                 app.stop()
             }
 
+            test("insufficient scope returns HTTP 403") {
+                val app = testApp(mockRepo, mockAccountingPointService)
+                val response = app.client.post("/controllable_unit/lookup") {
+                    contentType(ContentType.Application.Json)
+                    header("Authorization", "Bearer ${makeJwt(scope = "read:data")}")
+                    setBody("""{"end_user":"123456789","accounting_point":"133700000000000053"}""")
+                }
+                response.status shouldBe HttpStatusCode.Forbidden
+                app.stop()
+            }
+
+            test("broader scope covering the required scope is accepted") {
+                val endUserBusinessId = "123456789"
+                val accountingPointBusinessId = "133700000000000053"
+                coEvery {
+                    with(any<FlexPrincipal>()) { mockAccountingPointService.getCurrentAccountingPoint(any()) }
+                } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
+                coEvery {
+                    mockAccountingPointService.synchronizeAccountingPoint(any(), any())
+                } returns Unit.right()
+                coEvery {
+                    with(any<FlexPrincipal>()) {
+                        mockAccountingPointService.checkEndUserMatchesAccountingPoint(endUserBusinessId, accountingPointBusinessId)
+                    }
+                } returns 7.right()
+                coEvery {
+                    with(any<FlexPrincipal>()) {
+                        mockAccountingPointService.getAccountingPointByBusinessId(accountingPointBusinessId)
+                    }
+                } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
+                coEvery {
+                    with(any<FlexPrincipal>()) { mockRepo.lookupControllableUnits(any(), any()) }
+                } returns emptyList<ControllableUnit>().right()
+
+                val app = testApp(mockRepo, mockAccountingPointService)
+                val response = app.client.post("/controllable_unit/lookup") {
+                    contentType(ContentType.Application.Json)
+                    header("Authorization", "Bearer ${makeJwt(scope = "manage:data")}")
+                    setBody("""{"end_user":"$endUserBusinessId","accounting_point":"$accountingPointBusinessId"}""")
+                }
+                response.status shouldBe HttpStatusCode.OK
+                app.stop()
+            }
+
             test("missing end_user returns HTTP 400") {
                 val app = testApp(mockRepo, mockAccountingPointService)
                 val response = app.client.post("/controllable_unit/lookup") {
@@ -418,13 +462,17 @@ class ControllableUnitLookupTest :
 private const val TEST_SECRET = "test-secret-key-at-least-256-bits-long-for-hs256"
 
 @Suppress("MagicNumber")
-private fun makeJwt(role: String = "flex_service_provider", eid: String = "12345678901"): String =
+private fun makeJwt(
+    role: String = "flex_service_provider",
+    eid: String = "12345678901",
+    scope: String = "use:data:controllable_unit:lookup",
+): String =
     JWT.create()
         .withClaim("entity_id", 1)
         .withClaim("eid", eid)
         .withClaim("party_id", 1)
         .withClaim("role", role)
-        .withClaim("scope", "use:data:controllable_unit:lookup")
+        .withClaim("scope", scope)
         .withExpiresAt(Date(System.currentTimeMillis() + 60_000))
         .sign(Algorithm.HMAC256(TEST_SECRET))
 

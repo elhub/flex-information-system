@@ -1,6 +1,7 @@
 package no.elhub.flex.accountingpoint
 
 import arrow.core.Either
+import arrow.core.raise.either
 import arrow.core.right
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.http.HttpStatusCode
@@ -8,6 +9,7 @@ import no.elhub.flex.accountingpoint.db.AccountingPointRepository
 import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterService
 import no.elhub.flex.model.domain.AccountingPoint
+import no.elhub.flex.model.domain.db.NoMatchError
 import no.elhub.flex.model.domain.db.NotFoundError
 import no.elhub.flex.model.error.AppError
 import no.elhub.flex.model.error.DataFetchError
@@ -71,15 +73,15 @@ class AccountingPointServiceImpl(
     override suspend fun synchronizeAccountingPoint(
         accountingPointBusinessId: String,
         validFrom: Instant
-    ): Either<AppError, Unit> {
-        val adapterAccountingPoint = fetchAccountingPointData(accountingPointBusinessId, validFrom).mapLeft {
-            logger.warn { "Failed to fetch accounting point data for synchronization: ${it.message}" }
+    ): Either<AppError, Unit> =
+        either {
+            val adapterAccountingPoint = fetchAccountingPointData(accountingPointBusinessId, validFrom).onLeft { e ->
+                logger.warn { "Failed to fetch accounting point data for synchronization: ${e.message}" }
+            }.bind()
+            with(FlexPrincipal.internalData()) {
+                logger.warn { "SYNC IS NOT IMPLEMENTED YET" }
+            }
         }
-        with(FlexPrincipal.internalData()) {
-            logger.warn { "SYNC IS NOT IMPLEMENTED YET" }
-            return Unit.right()
-        }
-    }
 
     context(principal: FlexPrincipal)
     override suspend fun checkEndUserMatchesAccountingPoint(
@@ -87,7 +89,8 @@ class AccountingPointServiceImpl(
         accountingPointBusinessId: String
     ): Either<AppError, Int> = accountingPointRepository.checkEndUserMatchesAccountingPoint(endUserBusinessId, accountingPointBusinessId).mapLeft { error ->
         when (error) {
-            is NotFoundError -> EndUserError("Accounting point not found")
+            is NotFoundError -> ResourceNotFoundError("Accounting point not found")
+            is NoMatchError -> EndUserError("End user does not match")
             else -> InternalServerError(traceIdOrUnknown())
         }
     }

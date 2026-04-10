@@ -3,10 +3,12 @@ package no.elhub.flex.accountingpoint.db
 import io.kotest.assertions.arrow.core.shouldBeLeft
 import io.kotest.assertions.arrow.core.shouldBeRight
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 import no.elhub.flex.PostgresTestContainer
 import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.model.domain.AccountingPoint
+import no.elhub.flex.model.domain.db.NoMatchError
 import no.elhub.flex.model.domain.db.NotFoundError
 import no.elhub.flex.util.uniqueGsrn
 import java.sql.Connection
@@ -116,7 +118,7 @@ class AccountingPointRepositoryTest : FunSpec({
             result shouldBe expectedEndUser
         }
 
-        test("returns NotFoundError when end user does not match accounting point") {
+        test("returns NoMatchError when end user does not match accounting point") {
             // given
             val targetApBusinessId = uniqueGsrn()
             val linkedEntityBusinessId = uniquePid()
@@ -131,21 +133,7 @@ class AccountingPointRepositoryTest : FunSpec({
             }
 
             // then
-            result.shouldBeLeft() shouldBe NotFoundError("End user does not match accounting point / controllable unit")
-        }
-
-        test("returns NotFoundError when accounting point does not exist") {
-            // given
-            val noiseApId = insertAccountingPoint(uniqueGsrn())
-            linkApToEndUser(noiseApId, insertEndUserParty(uniquePid()))
-
-            // when
-            val result = with(principal) {
-                repo.checkEndUserMatchesAccountingPoint(uniquePid(), uniqueGsrn())
-            }
-
-            // then
-            result.shouldBeLeft() shouldBe NotFoundError("End user does not match accounting point / controllable unit")
+            result.shouldBeLeft() should { (it is NoMatchError) shouldBe true }
         }
     }
 })

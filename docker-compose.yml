@@ -63,6 +63,8 @@ services:
         condition: service_started
       postgrest:
         condition: service_started
+      kbackend:
+        condition: service_started
       authelia:
         condition: service_healthy
     extra_hosts:

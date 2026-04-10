@@ -1544,6 +1544,10 @@ flex.accounting_point
 TO flex_internal_event_notification;
 
 GRANT SELECT ON TABLE
+flex.accounting_point
+TO flex_internal_data;
+
+GRANT SELECT ON TABLE
 flex.accounting_point_balance_responsible_party
 TO flex_balance_responsible_party;
 
