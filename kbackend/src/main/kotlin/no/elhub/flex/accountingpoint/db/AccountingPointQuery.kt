@@ -13,7 +13,7 @@ val CHECK_END_USER_MATCHES_ACCOUNTING_POINT = """
     FROM api.controllable_unit_lookup_check_end_user_matches_accounting_point(?::text, ?::text)
 """.trimIndent()
 
-val UPSERT_ACCOUNTING_POINT = """
+val INSERT_ACCOUNTING_POINT_IF_NOT_EXISTS = """
     WITH ins AS (
         INSERT INTO flex.accounting_point (business_id)
         VALUES (?)

@@ -55,13 +55,13 @@ interface AccountingPointRepository {
     ): Either<RepositoryError, Long>
 
     /**
-     * Upserts a single accounting point into flex.accounting_point.
+     * Inserts a single accounting point into flex.accounting_point if it does not already exist.
      *
      * Inserts by business ID, ignoring conflicts. Returns the id of the inserted row,
      * or the id of the already-existing row if the business ID was already present.
      */
     context(principal: FlexPrincipal)
-    suspend fun upsertAccountingPoint(
+    suspend fun insertAccountingPointIfNotExists(
         accountingPoint: AccountingPoint
     ): Either<RepositoryError, Long>
 
@@ -188,12 +188,12 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
         }
 
     context(principal: FlexPrincipal)
-    override suspend fun upsertAccountingPoint(
+    override suspend fun insertAccountingPointIfNotExists(
         accountingPoint: AccountingPoint
     ): Either<RepositoryError, Long> =
         flexTransaction { conn ->
             Either.catch {
-                conn.prepareStatement(UPSERT_ACCOUNTING_POINT).use { stmt ->
+                conn.prepareStatement(INSERT_ACCOUNTING_POINT_IF_NOT_EXISTS).use { stmt ->
                     stmt.setString(1, accountingPoint.businessId)
                     stmt.setString(2, accountingPoint.businessId)
                     stmt.executeQuery().use { rs ->
@@ -202,7 +202,7 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
                     }
                 }
             }.mapLeft { e ->
-                logger.error { "upsertAccountingPoint failed: ${e.message}" }
+                logger.error { "insertAccountingPointIfNotExists failed: ${e.message}" }
                 DatabaseError("Failed to upsert accounting point")
             }
         }

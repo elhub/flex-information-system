@@ -157,7 +157,7 @@ class AccountingPointRepositoryTest : FunSpec({
         }
     }
 
-    context("upsertAccountingPoint") {
+    context("insertAccountingPointIfNotExists") {
 
         test("inserts a new accounting point and returns its id") {
             // given
@@ -165,7 +165,7 @@ class AccountingPointRepositoryTest : FunSpec({
 
             // when
             val id = with(internalDataPrincipal) {
-                repo.upsertAccountingPoint(AccountingPoint(id = 0, businessId = businessId))
+                repo.insertAccountingPointIfNotExists(AccountingPoint(id = 0, businessId = businessId))
             }.shouldBeRight()
 
             // then
@@ -180,8 +180,8 @@ class AccountingPointRepositoryTest : FunSpec({
             val ap = AccountingPoint(id = 0, businessId = businessId)
 
             // when — called twice
-            val firstId = with(internalDataPrincipal) { repo.upsertAccountingPoint(ap) }.shouldBeRight()
-            val secondId = with(internalDataPrincipal) { repo.upsertAccountingPoint(ap) }.shouldBeRight()
+            val firstId = with(internalDataPrincipal) { repo.insertAccountingPointIfNotExists(ap) }.shouldBeRight()
+            val secondId = with(internalDataPrincipal) { repo.insertAccountingPointIfNotExists(ap) }.shouldBeRight()
 
             // then — same id returned both times, exactly one row exists
             firstId shouldBe secondId
@@ -205,7 +205,7 @@ class AccountingPointRepositoryTest : FunSpec({
 
             // when
             with(internalDataPrincipal) {
-                repo.upsertAccountingPoint(AccountingPoint(id = 0, businessId = newBusinessId))
+                repo.insertAccountingPointIfNotExists(AccountingPoint(id = 0, businessId = newBusinessId))
             }.shouldBeRight()
 
             // then — noise row still present and unchanged

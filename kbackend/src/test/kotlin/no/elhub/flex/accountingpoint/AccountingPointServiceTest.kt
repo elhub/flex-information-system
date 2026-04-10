@@ -62,7 +62,7 @@ class AccountingPointServiceTest : FunSpec({
 
             // then
             result.shouldBeRight()
-            coVerify(exactly = 0) { with(internalPrincipal) { mockRepo.upsertAccountingPoint(any()) } }
+            coVerify(exactly = 0) { with(internalPrincipal) { mockRepo.insertAccountingPointIfNotExists(any()) } }
         }
 
         test("adapter not-found is swallowed and returns Right(Unit)") {
@@ -75,14 +75,14 @@ class AccountingPointServiceTest : FunSpec({
 
             // then
             result.shouldBeRight()
-            coVerify(exactly = 0) { with(internalPrincipal) { mockRepo.upsertAccountingPoint(any()) } }
+            coVerify(exactly = 0) { with(internalPrincipal) { mockRepo.insertAccountingPointIfNotExists(any()) } }
         }
 
         test("happy path calls all repo methods in order and returns Right(Unit)") {
             // given
             coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns adapterAccountingPoint.right()
             with(internalPrincipal) {
-                coEvery { mockRepo.upsertAccountingPoint(any()) } returns AP_ID.right()
+                coEvery { mockRepo.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
                 coEvery { mockRepo.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
                 coEvery { mockRepo.upsertAccountingPointEndUsers(any()) } returns Unit.right()
                 coEvery { mockRepo.upsertAccountingPointEnergySupplier(any()) } returns Unit.right()
@@ -95,7 +95,7 @@ class AccountingPointServiceTest : FunSpec({
             // then
             result.shouldBeRight()
             with(internalPrincipal) {
-                coVerify(exactly = 1) { mockRepo.upsertAccountingPoint(any()) }
+                coVerify(exactly = 1) { mockRepo.insertAccountingPointIfNotExists(any()) }
                 coVerify(exactly = 1) { mockRepo.lockSyncRowAndMarkStart(AP_ID) }
                 coVerify(exactly = 1) { mockRepo.upsertAccountingPointEndUsers(any()) }
                 coVerify(exactly = 1) { mockRepo.upsertAccountingPointEnergySupplier(any()) }
@@ -107,7 +107,7 @@ class AccountingPointServiceTest : FunSpec({
             // given
             coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns adapterAccountingPoint.right()
             with(internalPrincipal) {
-                coEvery { mockRepo.upsertAccountingPoint(any()) } returns AP_ID.right()
+                coEvery { mockRepo.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
                 coEvery { mockRepo.lockSyncRowAndMarkStart(AP_ID) } returns
                     LockTimeoutError("locked").left()
             }
@@ -128,7 +128,7 @@ class AccountingPointServiceTest : FunSpec({
             // given
             coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns adapterAccountingPoint.right()
             with(internalPrincipal) {
-                coEvery { mockRepo.upsertAccountingPoint(any()) } returns AP_ID.right()
+                coEvery { mockRepo.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
                 coEvery { mockRepo.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
                 coEvery { mockRepo.upsertAccountingPointEndUsers(any()) } returns Unit.right()
                 coEvery { mockRepo.upsertAccountingPointEnergySupplier(any()) } returns Unit.right()
@@ -161,11 +161,11 @@ class AccountingPointServiceTest : FunSpec({
             }
         }
 
-        test("upsertAccountingPoint failure returns InternalServerError") {
+        test("insertAccountingPointIfNotExists failure returns InternalServerError") {
             // given
             coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns adapterAccountingPoint.right()
             with(internalPrincipal) {
-                coEvery { mockRepo.upsertAccountingPoint(any()) } returns DatabaseError("db down").left()
+                coEvery { mockRepo.insertAccountingPointIfNotExists(any()) } returns DatabaseError("db down").left()
             }
 
             // when
@@ -179,7 +179,7 @@ class AccountingPointServiceTest : FunSpec({
             // given
             coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns adapterAccountingPoint.right()
             with(internalPrincipal) {
-                coEvery { mockRepo.upsertAccountingPoint(any()) } returns AP_ID.right()
+                coEvery { mockRepo.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
                 coEvery { mockRepo.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
                 coEvery { mockRepo.upsertAccountingPointEndUsers(any()) } returns DatabaseError("constraint violation").left()
             }
@@ -198,7 +198,7 @@ class AccountingPointServiceTest : FunSpec({
             // given
             coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns adapterAccountingPoint.right()
             with(internalPrincipal) {
-                coEvery { mockRepo.upsertAccountingPoint(any()) } returns AP_ID.right()
+                coEvery { mockRepo.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
                 coEvery { mockRepo.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
                 coEvery { mockRepo.upsertAccountingPointEndUsers(any()) } returns Unit.right()
                 coEvery { mockRepo.upsertAccountingPointEnergySupplier(any()) } returns DatabaseError("not found").left()
@@ -218,7 +218,7 @@ class AccountingPointServiceTest : FunSpec({
             // given
             coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns adapterAccountingPoint.right()
             with(internalPrincipal) {
-                coEvery { mockRepo.upsertAccountingPoint(any()) } returns AP_ID.right()
+                coEvery { mockRepo.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
                 coEvery { mockRepo.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
                 coEvery { mockRepo.upsertAccountingPointEndUsers(any()) } returns Unit.right()
                 coEvery { mockRepo.upsertAccountingPointEnergySupplier(any()) } returns Unit.right()
@@ -236,7 +236,7 @@ class AccountingPointServiceTest : FunSpec({
             // given
             coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns adapterAccountingPoint.right()
             with(internalPrincipal) {
-                coEvery { mockRepo.upsertAccountingPoint(any()) } returns AP_ID.right()
+                coEvery { mockRepo.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
                 coEvery { mockRepo.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
                 coEvery { mockRepo.upsertAccountingPointEndUsers(any()) } returns DatabaseError("error").left()
             }
