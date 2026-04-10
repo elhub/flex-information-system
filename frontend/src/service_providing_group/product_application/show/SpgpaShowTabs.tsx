@@ -1,46 +1,17 @@
-import { ComponentType } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import {
-  IconCross,
-  IconCrossCircle,
-  IconQualitiesCircle,
-  IconStopWatch15,
-  SvgIconProps,
-} from "@elhub/ds-icons";
 import { Badge, Link, Loader, Tabs } from "../../../components/ui";
 import { LabelValue } from "../../../components/LabelValue";
 import { ServiceProvidingGroupShowTable } from "../../show/ServiceProvidingGroupShowTable";
 import { CommentList } from "../../../components/comments";
 import { useSpgpaSpgData } from "./useSpgpaShowViewModel";
 import { useTranslateEnum } from "../../../intl/intl";
-import { ServiceProvidingGroupStatus } from "../../../generated-client";
-
-const spgStatusVariantMap: Record<
-  ServiceProvidingGroupStatus,
-  {
-    status:
-      | "ongoing"
-      | "failed"
-      | "approved-with-warning"
-      | "approved"
-      | "stopped"
-      | "temporarily-stopped"
-      | "pending"
-      | "rejected";
-    icon: ComponentType<SvgIconProps>;
-  }
-> = {
-  new: { status: "ongoing", icon: IconStopWatch15 },
-  active: { status: "approved", icon: IconQualitiesCircle },
-  inactive: { status: "stopped", icon: IconCross },
-  terminated: { status: "rejected", icon: IconCrossCircle },
-};
+import { spgStatusVariantMap } from "../../serviceProvidingGroupStatus";
 
 const SpgInfoTab = ({ spgId }: { spgId: number }) => {
   const { spg, viewModel } = useSpgpaSpgData(spgId);
   const translateEnum = useTranslateEnum();
 
-  if (spg.isPending || viewModel.isLoading) {
+  if (spg.isPending || viewModel.isPending) {
     return <Loader size="small" />;
   }
 
@@ -63,12 +34,14 @@ const SpgInfoTab = ({ spgId }: { spgId: number }) => {
         }
       />
       <LabelValue label="Bidding zone" value={spg.data.bidding_zone} />
-      <div className="flex flex-col gap-1">
-        <span className="font-bold text-sm">Status:</span>
-        <Badge size="small" status={status} variant="block" icon={icon}>
-          {translateEnum(`service_providing_group.status.${spg.data.status}`)}
-        </Badge>
-      </div>
+      <LabelValue
+        label="Status"
+        value={
+          <Badge size="small" status={status} variant="block" icon={icon}>
+            {translateEnum(`service_providing_group.status.${spg.data.status}`)}
+          </Badge>
+        }
+      />
       <LabelValue
         label="Total capacity"
         value={viewModel.data?.totalCapacityKw}
