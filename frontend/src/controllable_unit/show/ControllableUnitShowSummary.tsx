@@ -29,6 +29,7 @@ export const ControllableUnitShowSummary = ({
     serviceProvider,
     controllableUnitServiceProvider,
     balanceResponsibleParty,
+    accountingPointBalanceResponsibleParty,
     accountingPoint,
     systemOperator,
     biddingZone,
@@ -45,6 +46,10 @@ export const ControllableUnitShowSummary = ({
   const serviceProviderRange = formatRange(
     controllableUnitServiceProvider?.valid_from,
     controllableUnitServiceProvider?.valid_to,
+  );
+  const balanceResponsiblePartyRange = formatRange(
+    accountingPointBalanceResponsibleParty?.valid_from,
+    accountingPointBalanceResponsibleParty?.valid_to,
   );
   const eventFilter =
     "?filter=" +
@@ -124,7 +129,11 @@ export const ControllableUnitShowSummary = ({
             size="small"
             labelKey="accounting_point_balance_responsible_party.balance_responsible_party_id"
             value={
-              balanceResponsibleParty?.name ?? "No balance responsible party"
+              balanceResponsibleParty
+                ? balanceResponsiblePartyRange
+                  ? `${balanceResponsibleParty.name} (${balanceResponsiblePartyRange})`
+                  : balanceResponsibleParty.name
+                : "No balance responsible party"
             }
             link={
               balanceResponsibleParty

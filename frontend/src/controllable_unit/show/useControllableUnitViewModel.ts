@@ -1,5 +1,6 @@
 import {
   AccountingPoint,
+  AccountingPointBalanceResponsibleParty,
   ControllableUnit,
   ControllableUnitHistory,
   ControllableUnitServiceProvider,
@@ -28,6 +29,9 @@ export type ControllableUnitShowViewModel = {
   accountingPoint: AccountingPoint | undefined;
   suspensions: ControllableUnitSuspension[] | undefined;
   balanceResponsibleParty: Party | undefined;
+  accountingPointBalanceResponsibleParty:
+    | AccountingPointBalanceResponsibleParty
+    | undefined;
   biddingZone: string | undefined;
 };
 
@@ -65,7 +69,10 @@ const getCurrentBalanceResponsibleParty = async (accountingPointId: number) => {
   );
 
   if (!currentBalanceResponsibleParty) {
-    return { balanceResponsibleParty: undefined };
+    return {
+      balanceResponsibleParty: undefined,
+      accountingPointBalanceResponsibleParty: undefined,
+    };
   }
 
   const balanceResponsibleParty = await readParty({
@@ -74,7 +81,10 @@ const getCurrentBalanceResponsibleParty = async (accountingPointId: number) => {
     },
   }).then(throwOnError);
 
-  return { balanceResponsibleParty };
+  return {
+    balanceResponsibleParty,
+    accountingPointBalanceResponsibleParty: currentBalanceResponsibleParty,
+  };
 };
 
 const getCurrentBiddingZone = async (accountingPointId: number) => {
@@ -94,6 +104,7 @@ const getAccountingPointData = async (
       accountingPoint: undefined,
       systemOperator: undefined,
       balanceResponsibleParty: undefined,
+      accountingPointBalanceResponsibleParty: undefined,
       biddingZone: undefined,
     };
   }
@@ -122,6 +133,8 @@ const getAccountingPointData = async (
     accountingPoint,
     systemOperator,
     balanceResponsibleParty: balanceResponsibleParty?.balanceResponsibleParty,
+    accountingPointBalanceResponsibleParty:
+      balanceResponsibleParty?.accountingPointBalanceResponsibleParty,
     biddingZone,
   };
 };
@@ -161,6 +174,8 @@ export const getControllableUnitData = async (
     systemOperator: accountingPoint.systemOperator,
     accountingPoint: accountingPoint.accountingPoint,
     balanceResponsibleParty: accountingPoint.balanceResponsibleParty,
+    accountingPointBalanceResponsibleParty:
+      accountingPoint.accountingPointBalanceResponsibleParty,
     biddingZone: accountingPoint.biddingZone,
     suspensions: suspensions,
     controllableUnitServiceProvider: cuspData.cusp,
