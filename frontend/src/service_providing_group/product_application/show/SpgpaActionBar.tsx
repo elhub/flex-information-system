@@ -1,10 +1,13 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { useConfirmAction } from "../../../components/ConfirmAction";
 import { Button } from "../../../components/ui";
 import {
   ServiceProvidingGroupProductApplication,
   ServiceProvidingGroupProductApplicationStatus,
+  updateServiceProvidingGroupProductApplication,
 } from "../../../generated-client";
-import { useUpdateSpgpaStatus } from "./useSpgpaShowViewModel";
+import { throwOnError } from "../../../util";
+import { spgpaQueryKey } from "./useSpgpaShowViewModel";
 
 type ActionConfig = {
   label: string;
@@ -13,6 +16,17 @@ type ActionConfig = {
   confirmContent: string;
   variant: "primary" | "secondary";
   className?: string;
+};
+
+const REJECT_ACTION: ActionConfig = {
+  label: "Reject",
+  nextStatus: "rejected",
+  confirmTitle: "Reject application",
+  confirmContent:
+    "Are you sure you want to reject this application? The service provider will be notified.",
+  variant: "secondary",
+  className:
+    "text-semantic-background-action-danger border-semantic-background-action-danger",
 };
 
 const ACTIONS_BY_STATUS: Partial<
@@ -27,16 +41,7 @@ const ACTIONS_BY_STATUS: Partial<
         "This will move the application to in progress. The service provider will be notified.",
       variant: "primary",
     },
-    {
-      label: "Reject",
-      nextStatus: "rejected",
-      confirmTitle: "Reject application",
-      confirmContent:
-        "Are you sure you want to reject this application? The service provider will be notified.",
-      variant: "secondary",
-      className:
-        "text-semantic-background-action-danger border-semantic-background-action-danger",
-    },
+    REJECT_ACTION,
   ],
   in_progress: [
     {
@@ -46,16 +51,7 @@ const ACTIONS_BY_STATUS: Partial<
       confirmContent: "This will mark the application as prequalified.",
       variant: "primary",
     },
-    {
-      label: "Reject",
-      nextStatus: "rejected",
-      confirmTitle: "Reject application",
-      confirmContent:
-        "Are you sure you want to reject this application? The service provider will be notified.",
-      variant: "secondary",
-      className:
-        "text-semantic-background-action-danger border-semantic-background-action-danger",
-    },
+    REJECT_ACTION,
   ],
   prequalified: [
     {
@@ -65,16 +61,7 @@ const ACTIONS_BY_STATUS: Partial<
       confirmContent: "This will mark the application as verified.",
       variant: "primary",
     },
-    {
-      label: "Reject",
-      nextStatus: "rejected",
-      confirmTitle: "Reject application",
-      confirmContent:
-        "Are you sure you want to reject this application? The service provider will be notified.",
-      variant: "secondary",
-      className:
-        "text-semantic-background-action-danger border-semantic-background-action-danger",
-    },
+    REJECT_ACTION,
   ],
 };
 
@@ -87,13 +74,25 @@ const ActionButton = ({
   spgpaId: number;
   spgId: number;
 }) => {
-  const { mutateAsync } = useUpdateSpgpaStatus(spgpaId, spgId);
+  const queryClient = useQueryClient();
   const { buttonProps, dialog } = useConfirmAction({
     title: config.confirmTitle,
     content: config.confirmContent,
     confirmText: config.label,
     onConfirmMutation: {
-      mutationFn: () => mutateAsync(config.nextStatus),
+      mutationFn: () =>
+        updateServiceProvidingGroupProductApplication({
+          path: { id: spgpaId },
+          body: { status: config.nextStatus },
+        }).then(throwOnError),
+      onSettled: () => {
+        void queryClient.invalidateQueries({
+          queryKey: spgpaQueryKey(spgpaId),
+        });
+        void queryClient.invalidateQueries({
+          queryKey: ["service_providing_group", spgId],
+        });
+      },
     },
   });
 
