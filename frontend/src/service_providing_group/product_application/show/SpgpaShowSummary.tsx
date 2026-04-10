@@ -6,7 +6,7 @@ import {
   IconWarningCircle,
   SvgIconProps,
 } from "@elhub/ds-icons";
-import { Badge, Button, Panel } from "../../../components/ui";
+import { Badge, Button, Link, Panel } from "../../../components/ui";
 import { LabelValue } from "../../../components/LabelValue";
 import { Link as RouterLink } from "react-router-dom";
 import { IconPencil } from "@elhub/ds-icons";
@@ -80,29 +80,44 @@ export const SpgpaShowSummary = ({ spgpa }: Props) => {
         </div>
       )}
       <div className="flex flex-col gap-4">
-        {/* Application fields */}
         <RecordContextProvider value={spgpa}>
+          {/* Application fields */}
+          <LabelValue
+            size="small"
+            label="Service providing group"
+            value={
+              <Link
+                as={RouterLink}
+                to={`/service_providing_group/${spgpa.service_providing_group_id}/show`}
+              >
+                #{spgpa.service_providing_group_id}
+              </Link>
+            }
+          />
+          <LabelValue
+            size="small"
+            label="System Operator / PSO"
+            value={spgpa.procuring_system_operator_id}
+          />
           <ProductTypeArrayField
             label="Product types"
             source="product_type_ids"
           />
-        </RecordContextProvider>
-        <LabelValue
-          size="small"
-          label="Max active power"
-          value={spgpa.maximum_active_power}
-          unit="kW"
-        />
+          <LabelValue
+            size="small"
+            label="Max active power"
+            value={spgpa.maximum_active_power}
+            unit="kW"
+          />
 
-        <hr className="border-semantic-border-default" />
+          <hr className="border-semantic-border-default" />
 
-        {/* Application process fields */}
-        <Badge size="small" status={status} variant="block" icon={icon}>
-          {translateEnum(
-            `service_providing_group_product_application.status.${spgpa.status}`,
-          )}
-        </Badge>
-        <RecordContextProvider value={spgpa}>
+          {/* Application process fields */}
+          <Badge size="small" status={status} variant="block" icon={icon}>
+            {translateEnum(
+              `service_providing_group_product_application.status.${spgpa.status}`,
+            )}
+          </Badge>
           <DateField
             source="prequalified_at"
             showTime
@@ -113,18 +128,16 @@ export const SpgpaShowSummary = ({ spgpa }: Props) => {
             showTime
             label="field.service_providing_group_product_application.verified_at"
           />
-        </RecordContextProvider>
-        {spgpa.additional_information && (
-          <LabelValue
-            label="Additional information"
-            value={spgpa.additional_information}
-          />
-        )}
+          {spgpa.additional_information && (
+            <LabelValue
+              label="Additional information"
+              value={spgpa.additional_information}
+            />
+          )}
 
-        <hr className="border-semantic-border-default" />
+          <hr className="border-semantic-border-default" />
 
-        {/* Registration */}
-        <RecordContextProvider value={spgpa}>
+          {/* Registration */}
           <DateField
             source="recorded_at"
             showTime
