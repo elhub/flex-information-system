@@ -37,9 +37,7 @@ class ControllableUnitLookup(
     private val accountingPointService: AccountingPointService,
 ) {
     suspend fun handle(call: RoutingCall) {
-        val token = call.attributes[AccessTokenKey]
-        val principal = token.toFlexPrincipal()
-        with(principal) {
+        with(FlexPrincipal.internalData()) {
             either {
                 val request = call.body<ControllableUnitLookupRequest>().bind()
                     .let { validateInput(it).bind() }
