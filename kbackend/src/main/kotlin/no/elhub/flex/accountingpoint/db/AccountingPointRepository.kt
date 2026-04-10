@@ -68,15 +68,8 @@ interface AccountingPointRepository {
     /**
      * Upserts end-user timeline entries for accounting points into flex.accounting_point_end_user.
      *
-     * For each unique accounting point in the list, applies a 3-step ESBR-style merge keyed on
-     * (accounting_point_id, lower(valid_time_range)):
-     * 1. Delete rows whose valid_time_range start is no longer present in the incoming data.
-     * 2. Update rows whose start time matches but whose end_user_id or valid_to has changed.
-     * 3. Insert rows whose start time is not yet present in the target table.
-     *
      * The flex.entity and flex.party (type='end_user') rows for each end user are created
-     * on demand if they do not already exist, mirroring the behaviour of
-     * api.controllable_unit_lookup_sync_accounting_point.
+     * on demand if they do not already exist.
      */
     context(principal: FlexPrincipal)
     suspend fun upsertAccountingPointEndUsers(
@@ -86,9 +79,6 @@ interface AccountingPointRepository {
     /**
      * Upserts energy-supplier timeline entries for accounting points into
      * flex.accounting_point_energy_supplier.
-     *
-     * Applies the same 3-step merge as [upsertAccountingPointEndUsers], keyed on
-     * (accounting_point_id, lower(valid_time_range)).
      *
      * Energy supplier parties (type='energy_supplier') are looked up by GLN business_id and
      * must already exist in flex.party; a [DatabaseError] is returned if any GLN is unknown.
@@ -250,26 +240,11 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
                         val validFrom = endUser.validFrom.toSqlTimestamp()
                         val validTo = endUser.validTo.toSqlTimestampOrNull()
 
-                        // Update changed records (same start, different end_user or valid_to).
-                        conn.prepareStatement(UPDATE_CHANGED_AP_END_USER).use { stmt ->
-                            stmt.setLong(1, endUserPartyId)
-                            stmt.setTimestamp(2, validFrom)
-                            stmt.setTimestamp(3, validTo)
-                            stmt.setLong(4, accountingPointId)
-                            stmt.setTimestamp(5, validFrom)
-                            stmt.setLong(6, endUserPartyId)
-                            stmt.setTimestamp(7, validTo)
-                            stmt.execute()
-                        }
-
-                        // Insert new records (start time not yet in target table).
-                        conn.prepareStatement(INSERT_NEW_AP_END_USER).use { stmt ->
+                        conn.prepareStatement(MERGE_AP_END_USER).use { stmt ->
                             stmt.setLong(1, accountingPointId)
                             stmt.setLong(2, endUserPartyId)
                             stmt.setTimestamp(3, validFrom)
                             stmt.setTimestamp(4, validTo)
-                            stmt.setLong(5, accountingPointId)
-                            stmt.setTimestamp(6, validFrom)
                             stmt.execute()
                         }
                     }
@@ -309,26 +284,11 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
                         val validFrom = energySupplier.validFrom.toSqlTimestamp()
                         val validTo = energySupplier.validTo.toSqlTimestampOrNull()
 
-                        // Update changed records
-                        conn.prepareStatement(UPDATE_CHANGED_AP_ENERGY_SUPPLIER).use { stmt ->
-                            stmt.setLong(1, energySupplierPartyId)
-                            stmt.setTimestamp(2, validFrom)
-                            stmt.setTimestamp(3, validTo)
-                            stmt.setLong(4, accountingPointId)
-                            stmt.setTimestamp(5, validFrom)
-                            stmt.setLong(6, energySupplierPartyId)
-                            stmt.setTimestamp(7, validTo)
-                            stmt.execute()
-                        }
-
-                        // Insert new records.
-                        conn.prepareStatement(INSERT_NEW_AP_ENERGY_SUPPLIER).use { stmt ->
+                        conn.prepareStatement(MERGE_AP_ENERGY_SUPPLIER).use { stmt ->
                             stmt.setLong(1, accountingPointId)
                             stmt.setLong(2, energySupplierPartyId)
                             stmt.setTimestamp(3, validFrom)
                             stmt.setTimestamp(4, validTo)
-                            stmt.setLong(5, accountingPointId)
-                            stmt.setTimestamp(6, validFrom)
                             stmt.execute()
                         }
                     }
