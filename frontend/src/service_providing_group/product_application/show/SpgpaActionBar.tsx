@@ -3,66 +3,99 @@ import { useConfirmAction } from "../../../components/ConfirmAction";
 import { Button } from "../../../components/ui";
 import {
   ServiceProvidingGroupProductApplication,
-  ServiceProvidingGroupProductApplicationStatus,
+  ServiceProvidingGroupProductApplicationUpdateRequest,
   updateServiceProvidingGroupProductApplication,
 } from "../../../generated-client";
 import { throwOnError } from "../../../util";
 import { spgpaQueryKey } from "./useSpgpaShowViewModel";
 
+// The generated type does not model nullable timestamp fields, but the DB
+// accepts null to clear them (required by the status transition trigger).
+type SpgpaPayload = Omit<
+  ServiceProvidingGroupProductApplicationUpdateRequest,
+  "prequalified_at" | "verified_at"
+> & {
+  prequalified_at?: string | null;
+  verified_at?: string | null;
+};
+
 type ActionConfig = {
   label: string;
-  nextStatus: ServiceProvidingGroupProductApplicationStatus;
+  payload: SpgpaPayload;
   confirmTitle: string;
   confirmContent: string;
   variant: "primary" | "secondary";
   className?: string;
 };
 
-const REJECT_ACTION: ActionConfig = {
+const rejectAction = (
+  spgpa: ServiceProvidingGroupProductApplication,
+): ActionConfig => ({
   label: "Reject",
-  nextStatus: "rejected",
+  payload: {
+    status: "rejected",
+    // DB requires clearing timestamp fields when status becomes rejected
+    ...(spgpa.prequalified_at && { prequalified_at: null }),
+    ...(spgpa.verified_at && { verified_at: null }),
+  },
   confirmTitle: "Reject application",
   confirmContent:
     "Are you sure you want to reject this application? The service provider will be notified.",
   variant: "secondary",
   className:
     "text-semantic-background-action-danger border-semantic-background-action-danger",
-};
+});
 
-const ACTIONS_BY_STATUS: Partial<
-  Record<ServiceProvidingGroupProductApplicationStatus, ActionConfig[]>
-> = {
-  requested: [
-    {
-      label: "Start prequalification",
-      nextStatus: "in_progress",
-      confirmTitle: "Start prequalification",
-      confirmContent:
-        "This will move the application to in progress. The service provider will be notified.",
-      variant: "primary",
-    },
-    REJECT_ACTION,
-  ],
-  in_progress: [
-    {
-      label: "Mark prequalified",
-      nextStatus: "prequalified",
-      confirmTitle: "Mark as prequalified",
-      confirmContent: "This will mark the application as prequalified.",
-      variant: "primary",
-    },
-    REJECT_ACTION,
-  ],
-  prequalified: [
-    {
-      label: "Verify",
-      nextStatus: "verified",
-      confirmTitle: "Verify application",
-      confirmContent: "This will mark the application as verified.",
-      variant: "primary",
-    },
-    REJECT_ACTION,
-  ],
+const getActionsForStatus = (
+  spgpa: ServiceProvidingGroupProductApplication,
+): ActionConfig[] => {
+  const reject = rejectAction(spgpa);
+  switch (spgpa.status) {
+    case "requested":
+      return [
+        {
+          label: "Start prequalification",
+          payload: { status: "in_progress" },
+          confirmTitle: "Start prequalification",
+          confirmContent:
+            "This will move the application to in progress. The service provider will be notified.",
+          variant: "primary",
+        },
+        reject,
+      ];
+    case "in_progress":
+      return [
+        {
+          label: "Mark prequalified",
+          // DB requires prequalified_at to be set when status becomes prequalified
+          payload: {
+            status: "prequalified",
+            prequalified_at: new Date().toISOString(),
+          },
+          confirmTitle: "Mark as prequalified",
+          confirmContent: "This will mark the application as prequalified.",
+          variant: "primary",
+        },
+        reject,
+      ];
+    case "prequalified":
+      return [
+        {
+          label: "Verify",
+          // DB requires verified_at to be set when status becomes verified
+          payload: {
+            status: "verified",
+            verified_at: new Date().toISOString(),
+          },
+          confirmTitle: "Verify application",
+          confirmContent: "This will mark the application as verified.",
+          variant: "primary",
+        },
+        reject,
+      ];
+    default:
+      return [];
+  }
 };
 
 const ActionButton = ({
@@ -83,7 +116,7 @@ const ActionButton = ({
       mutationFn: () =>
         updateServiceProvidingGroupProductApplication({
           path: { id: spgpaId },
-          body: { status: config.nextStatus },
+          body: config.payload as ServiceProvidingGroupProductApplicationUpdateRequest,
         }).then(throwOnError),
       onSettled: () => {
         void queryClient.invalidateQueries({
@@ -115,16 +148,16 @@ type Props = {
 };
 
 export const SpgpaActionBar = ({ spgpa }: Props) => {
-  const actions = ACTIONS_BY_STATUS[spgpa.status];
+  const actions = getActionsForStatus(spgpa);
 
-  if (!actions || actions.length === 0) {
+  if (actions.length === 0) {
     return null;
   }
 
   return (
     <div
       className="flex items-center justify-between rounded-md border
-      border-semantic-border-default bg-semantic-background-default
+      border-semantic-border-default bg-global-color-white
       px-4 py-3"
     >
       <span className="text-sm font-semibold text-semantic-text-default">
@@ -133,7 +166,7 @@ export const SpgpaActionBar = ({ spgpa }: Props) => {
       <div className="flex gap-2">
         {actions.map((config) => (
           <ActionButton
-            key={config.nextStatus}
+            key={config.payload.status}
             config={config}
             spgpaId={spgpa.id}
             spgId={spgpa.service_providing_group_id}

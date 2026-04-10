@@ -1,11 +1,14 @@
 import { Link as RouterLink } from "react-router-dom";
-import { Badge, Link, Loader, Tabs } from "../../../components/ui";
+import { Badge, Link, Loader, Panel, Tabs } from "../../../components/ui";
 import { LabelValue } from "../../../components/LabelValue";
-import { ServiceProvidingGroupShowTable } from "../../show/ServiceProvidingGroupShowTable";
 import { CommentList } from "../../../components/comments";
 import { useSpgpaSpgData } from "./useSpgpaShowViewModel";
 import { useTranslateEnum } from "../../../intl/intl";
 import { spgStatusVariantMap } from "../../serviceProvidingGroupStatus";
+import {
+  EventButton,
+  NestedResourceHistoryButton,
+} from "../../../components/EDS-ra/buttons";
 
 const SpgInfoTab = ({ spgId }: { spgId: number }) => {
   const { spg, viewModel } = useSpgpaSpgData(spgId);
@@ -21,7 +24,7 @@ const SpgInfoTab = ({ spgId }: { spgId: number }) => {
   const { status, icon } = spgStatusVariantMap[spg.data.status];
 
   return (
-    <div className="flex flex-col gap-4 p-4">
+    <Panel border className="flex flex-col gap-4 p-4">
       <LabelValue
         label="Name"
         value={
@@ -57,7 +60,7 @@ const SpgInfoTab = ({ spgId }: { spgId: number }) => {
         value={viewModel.data?.consumptionCapacityKw}
         unit="kW"
       />
-    </div>
+    </Panel>
   );
 };
 
@@ -67,25 +70,27 @@ type Props = {
 };
 
 export const SpgpaShowTabs = ({ spgId, spgpaId }: Props) => (
-  <Tabs defaultValue="spg_info" className="relative top-[-24px]">
-    <Tabs.List>
-      <Tabs.Tab label="SPG info" value="spg_info" />
-      <Tabs.Tab label="Controllable units" value="controllable_units" />
-      <Tabs.Tab label="Comments" value="comments" />
-    </Tabs.List>
-    <Tabs.Panel value="spg_info">
-      <SpgInfoTab spgId={spgId} />
-    </Tabs.Panel>
-    <Tabs.Panel value="controllable_units">
-      <ServiceProvidingGroupShowTable spgId={spgId} />
-    </Tabs.Panel>
-    <Tabs.Panel value="comments">
-      <CommentList
-        parentPath={[
-          { resource: "service_providing_group", id: spgId },
-          { resource: "product_application", id: spgpaId },
-        ]}
-      />
-    </Tabs.Panel>
-  </Tabs>
+  <>
+    <Tabs defaultValue="spg_info" className="relative top-[-24px]">
+      <Tabs.List>
+        <Tabs.Tab label="SPG info" value="spg_info" />
+        <Tabs.Tab label="Comments" value="comments" />
+      </Tabs.List>
+      <Tabs.Panel value="spg_info">
+        <SpgInfoTab spgId={spgId} />
+      </Tabs.Panel>
+      <Tabs.Panel value="comments">
+        <CommentList
+          parentPath={[
+            { resource: "service_providing_group", id: spgId },
+            { resource: "product_application", id: spgpaId },
+          ]}
+        />
+      </Tabs.Panel>
+    </Tabs>
+    <div className="flex gap-4 mt-2">
+      <NestedResourceHistoryButton child="product_application" />
+      <EventButton filterOnSubject recordId={String(spgpaId)} />
+    </div>
+  </>
 );
