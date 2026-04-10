@@ -14,3 +14,6 @@ data object ExpiredTokenError : AuthError("Token has expired")
 
 /** The token's role is not permitted to call the requested endpoint. */
 data class InsufficientRoleError(val role: String) : AuthError("Role '$role' cannot perform this operation")
+
+/** The token's scopes do not cover the scope required by the endpoint. */
+data class InsufficientScopeError(val required: String) : AuthError("Insufficient scope for this operation: required '$required'")

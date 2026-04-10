@@ -6,6 +6,7 @@ import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
 import no.elhub.flex.auth.FlexRole
 import no.elhub.flex.auth.requireRoles
+import no.elhub.flex.auth.requireScope
 import org.koin.ktor.ext.inject
 
 /** Registers all `controllable_unit` routes on [Application]. */
@@ -15,6 +16,7 @@ fun Application.controllableUnitRoutes() {
         route("/controllable_unit") {
             route("/lookup") {
                 requireRoles(FlexRole.SERVICE_PROVIDER, FlexRole.FLEXIBILITY_INFORMATION_SYSTEM_OPERATOR)
+                requireScope("use:data:controllable_unit:lookup")
                 post { lookup.handle(call) }
             }
         }
