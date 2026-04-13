@@ -273,38 +273,39 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
                         ),
                     ).use { stmt -> stmt.execute() }
 
-                    for (endUser in endUsers) {
-                        val endUserPartyId = partyIdByBusinessId.getValue(endUser.endUserBusinessId)
-                        val validFrom = endUser.validFrom.toSqlTimestamp()
-                        val validTo = endUser.validTo.toSqlTimestampOrNull()
-
-                        conn.prepareNamed(
-                            """
-                            MERGE INTO flex.accounting_point_end_user AS apeu
-                            USING (VALUES (:accountingPointId::bigint, :endUserId::bigint, :validFrom::timestamptz, :validTo::timestamptz))
-                                AS src(accounting_point_id, end_user_id, valid_from, valid_to)
-                            ON (
-                                apeu.accounting_point_id = src.accounting_point_id
-                                AND lower(apeu.valid_time_range) = src.valid_from
-                            )
-                            WHEN MATCHED AND (
-                                apeu.end_user_id IS DISTINCT FROM src.end_user_id
-                                OR upper(apeu.valid_time_range) IS DISTINCT FROM src.valid_to
-                            ) THEN UPDATE SET
-                                end_user_id      = src.end_user_id,
-                                valid_time_range = tstzrange(src.valid_from, src.valid_to, '[)')
-                            WHEN NOT MATCHED
-                            THEN INSERT (accounting_point_id, end_user_id, valid_time_range)
-                            VALUES (src.accounting_point_id, src.end_user_id, tstzrange(src.valid_from, src.valid_to, '[)'))
-                            """,
+                    conn.prepareNamed(
+                        """
+                        MERGE INTO flex.accounting_point_end_user AS apeu
+                        USING (
+                            SELECT
+                                unnest(:accountingPointId::bigint[])   AS accounting_point_id,
+                                unnest(:endUserId::bigint[])            AS end_user_id,
+                                unnest(:validFrom::timestamptz[])       AS valid_from,
+                                unnest(:validTo::timestamptz[])         AS valid_to
+                        ) AS src
+                        ON (
+                            apeu.accounting_point_id = src.accounting_point_id
+                            AND lower(apeu.valid_time_range) = src.valid_from
+                        )
+                        WHEN MATCHED AND (
+                            apeu.end_user_id IS DISTINCT FROM src.end_user_id
+                            OR upper(apeu.valid_time_range) IS DISTINCT FROM src.valid_to
+                        ) THEN UPDATE SET
+                            end_user_id      = src.end_user_id,
+                            valid_time_range = tstzrange(src.valid_from, src.valid_to, '[)')
+                        WHEN NOT MATCHED
+                        THEN INSERT (accounting_point_id, end_user_id, valid_time_range)
+                        VALUES (src.accounting_point_id, src.end_user_id, tstzrange(src.valid_from, src.valid_to, '[)'))
+                        """,
+                        endUsers.map { endUser ->
                             mapOf(
                                 "accountingPointId" to accountingPointId,
-                                "endUserId" to endUserPartyId,
-                                "validFrom" to validFrom,
-                                "validTo" to validTo,
-                            ),
-                        ).use { stmt -> stmt.execute() }
-                    }
+                                "endUserId" to partyIdByBusinessId.getValue(endUser.endUserBusinessId),
+                                "validFrom" to endUser.validFrom.toSqlTimestamp(),
+                                "validTo" to endUser.validTo.toSqlTimestampOrNull(),
+                            )
+                        },
+                    ).use { stmt -> stmt.execute() }
                 }
             }.mapLeft { e ->
                 logger.error { "upsertAccountingPointEndUsers failed: ${e.message}" }
@@ -318,8 +319,6 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
     ): Either<RepositoryError, Unit> =
         flexTransaction { conn ->
             Either.catch {
-                conn.prepareStatement("SET CONSTRAINTS ALL DEFERRED").use { it.execute() }
-
                 val byAccountingPoint = accountingPointEnergySuppliers.groupBy { it.accountingPointId }
 
                 for ((accountingPointId, energySuppliers) in byAccountingPoint) {
@@ -342,38 +341,39 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
                         ),
                     ).use { stmt -> stmt.execute() }
 
-                    for (energySupplier in energySuppliers) {
-                        val energySupplierPartyId = partyIdByBusinessId.getValue(energySupplier.energySupplierBusinessId)
-                        val validFrom = energySupplier.validFrom.toSqlTimestamp()
-                        val validTo = energySupplier.validTo.toSqlTimestampOrNull()
-
-                        conn.prepareNamed(
-                            """
-                            MERGE INTO flex.accounting_point_energy_supplier AS apes
-                            USING (VALUES (:accountingPointId::bigint, :energySupplierId::bigint, :validFrom::timestamptz, :validTo::timestamptz))
-                                AS src(accounting_point_id, energy_supplier_id, valid_from, valid_to)
-                            ON (
-                                apes.accounting_point_id = src.accounting_point_id
-                                AND lower(apes.valid_time_range) = src.valid_from
-                            )
-                            WHEN MATCHED AND (
-                                apes.energy_supplier_id IS DISTINCT FROM src.energy_supplier_id
-                                OR upper(apes.valid_time_range) IS DISTINCT FROM src.valid_to
-                            ) THEN UPDATE SET
-                                energy_supplier_id = src.energy_supplier_id,
-                                valid_time_range   = tstzrange(src.valid_from, src.valid_to, '[)')
-                            WHEN NOT MATCHED
-                            THEN INSERT (accounting_point_id, energy_supplier_id, valid_time_range)
-                            VALUES (src.accounting_point_id, src.energy_supplier_id, tstzrange(src.valid_from, src.valid_to, '[)'))
-                            """,
+                    conn.prepareNamed(
+                        """
+                        MERGE INTO flex.accounting_point_energy_supplier AS apes
+                        USING (
+                            SELECT
+                                unnest(:accountingPointId::bigint[])   AS accounting_point_id,
+                                unnest(:energySupplierId::bigint[])    AS energy_supplier_id,
+                                unnest(:validFrom::timestamptz[])      AS valid_from,
+                                unnest(:validTo::timestamptz[])        AS valid_to
+                        ) AS src
+                        ON (
+                            apes.accounting_point_id = src.accounting_point_id
+                            AND lower(apes.valid_time_range) = src.valid_from
+                        )
+                        WHEN MATCHED AND (
+                            apes.energy_supplier_id IS DISTINCT FROM src.energy_supplier_id
+                            OR upper(apes.valid_time_range) IS DISTINCT FROM src.valid_to
+                        ) THEN UPDATE SET
+                            energy_supplier_id = src.energy_supplier_id,
+                            valid_time_range   = tstzrange(src.valid_from, src.valid_to, '[)')
+                        WHEN NOT MATCHED
+                        THEN INSERT (accounting_point_id, energy_supplier_id, valid_time_range)
+                        VALUES (src.accounting_point_id, src.energy_supplier_id, tstzrange(src.valid_from, src.valid_to, '[)'))
+                        """,
+                        energySuppliers.map { energySupplier ->
                             mapOf(
                                 "accountingPointId" to accountingPointId,
-                                "energySupplierId" to energySupplierPartyId,
-                                "validFrom" to validFrom,
-                                "validTo" to validTo,
-                            ),
-                        ).use { stmt -> stmt.execute() }
-                    }
+                                "energySupplierId" to partyIdByBusinessId.getValue(energySupplier.energySupplierBusinessId),
+                                "validFrom" to energySupplier.validFrom.toSqlTimestamp(),
+                                "validTo" to energySupplier.validTo.toSqlTimestampOrNull(),
+                            )
+                        },
+                    ).use { stmt -> stmt.execute() }
                 }
             }.mapLeft { e ->
                 logger.error { "upsertAccountingPointEnergySupplier failed: ${e.message}" }

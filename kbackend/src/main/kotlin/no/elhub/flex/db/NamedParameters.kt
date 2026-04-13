@@ -12,6 +12,14 @@ import java.sql.ResultSet
 private val NAMED_PARAM_REGEX = Regex("""(?<!:):([a-zA-Z_][a-zA-Z0-9_]*)""")
 
 /**
+ * Regex matching named parameters followed by a PostgreSQL array cast of the form `:paramName::type[]`.
+ * Captures group 1 = parameter name, group 2 = element type (e.g. `bigint`, `text`, `timestamptz`).
+ * The `[]` suffix is required — this regex is only used in the multi-row overload where every
+ * parameter must carry an explicit array cast so the element type can be extracted for [Connection.createArrayOf].
+ */
+private val NAMED_PARAM_WITH_ARRAY_CAST_REGEX = Regex("""(?<!:):([a-zA-Z_][a-zA-Z0-9_]*)::([a-zA-Z0-9_ ]+)\[]""")
+
+/**
  * Prepares a [PreparedStatement] from a SQL string that uses named parameters (`:paramName` syntax).
  *
  * Named parameters are substituted with positional `?` markers and values from [params] are
@@ -44,6 +52,75 @@ fun Connection.prepareNamed(
     return prepareStatement(positionalSql).also { stmt ->
         paramNames.forEachIndexed { index, name ->
             stmt.setObject(index + 1, params[name])
+        }
+    }
+}
+
+/**
+ * Prepares a [PreparedStatement] from a SQL string that uses named parameters (`:paramName` syntax),
+ * binding multiple rows as PostgreSQL arrays.
+ *
+ * The SQL is written exactly as it will execute — named parameters appear inside `unnest(…)` calls
+ * with explicit array casts (e.g. `:id::bigint[]`). Each `:paramName::type[]` token is substituted
+ * with `?::type[]`, preserving the cast. The element type is extracted from the cast and used for
+ * [Connection.createArrayOf]; the values from all rows are collected into a [java.sql.Array] and
+ * bound in positional order. All rows must have the same set of keys.
+ *
+ * Example:
+ * ```kotlin
+ * conn.prepareNamed(
+ *     """
+ *     MERGE INTO flex.some_table AS t
+ *     USING (
+ *         SELECT
+ *             unnest(:id::bigint[])    AS id,
+ *             unnest(:name::text[])    AS name
+ *     ) AS src
+ *     ON t.id = src.id
+ *     WHEN NOT MATCHED THEN INSERT (id, name) VALUES (src.id, src.name)
+ *     """,
+ *     listOf(
+ *         mapOf("id" to 1L, "name" to "foo"),
+ *         mapOf("id" to 2L, "name" to "bar"),
+ *     ),
+ * ).use { stmt -> stmt.execute() }
+ * ```
+ *
+ * @param sql SQL string with named parameters used inside `unnest(…)` array expressions;
+ *   every parameter must be followed by an explicit `::type[]` cast (e.g. `:id::bigint[]`)
+ *   so the element type can be used for [Connection.createArrayOf]
+ * @param rows list of parameter maps, one per row; all maps must contain the same keys
+ * @throws IllegalArgumentException if [rows] is empty, keys are inconsistent, a parameter in
+ *   [sql] has no matching key in the row maps, or a parameter is missing its `::type[]` cast
+ */
+fun Connection.prepareNamed(
+    sql: String,
+    rows: List<Map<String, Any?>>,
+): PreparedStatement {
+    require(rows.isNotEmpty()) { "rows must not be empty" }
+    val firstKeys = rows.first().keys
+    require(rows.all { it.keys == firstKeys }) { "All rows must have the same keys" }
+
+    val paramNames = mutableListOf<String>()
+    val paramTypes = mutableMapOf<String, String>()
+    val positionalSql = NAMED_PARAM_WITH_ARRAY_CAST_REGEX.replace(sql.trimIndent()) { match ->
+        val name = match.groupValues[1]
+        val type = match.groupValues[2]
+        require(name in firstKeys) { "Named parameter ':$name' is not present in the row maps" }
+        paramNames += name
+        paramTypes[name] = type
+        "?::$type[]"
+    }
+
+    val unresolved = NAMED_PARAM_REGEX.find(positionalSql)?.groupValues?.get(1)
+    require(unresolved == null) {
+        "Named parameter ':$unresolved' in the multi-row overload must be followed by an explicit ::type[] cast"
+    }
+
+    return prepareStatement(positionalSql).also { stmt ->
+        paramNames.forEachIndexed { index, name ->
+            val values = rows.map { it[name] }.toTypedArray()
+            stmt.setObject(index + 1, createArrayOf(paramTypes.getValue(name), values))
         }
     }
 }
