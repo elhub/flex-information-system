@@ -60,28 +60,21 @@ interface AccountingPointRepository {
     ): Either<RepositoryError, Long>
 
     /**
-     * Upserts a single accounting point into flex.accounting_point.
+     * Inserts a single accounting point into flex.accounting_point if it does not already exist.
      *
      * Inserts by business ID, ignoring conflicts. Returns the id of the inserted row,
      * or the id of the already-existing row if the business ID was already present.
      */
     context(principal: FlexPrincipal)
-    suspend fun upsertAccountingPoint(
+    suspend fun insertAccountingPointIfNotExists(
         accountingPoint: AccountingPoint
     ): Either<RepositoryError, Long>
 
     /**
      * Upserts end-user timeline entries for accounting points into flex.accounting_point_end_user.
      *
-     * For each unique accounting point in the list, applies a 3-step ESBR-style merge keyed on
-     * (accounting_point_id, lower(valid_time_range)):
-     * 1. Delete rows whose valid_time_range start is no longer present in the incoming data.
-     * 2. Update rows whose start time matches but whose end_user_id or valid_to has changed.
-     * 3. Insert rows whose start time is not yet present in the target table.
-     *
      * The flex.entity and flex.party (type='end_user') rows for each end user are created
-     * on demand if they do not already exist, mirroring the behaviour of
-     * api.controllable_unit_lookup_sync_accounting_point.
+     * on demand if they do not already exist.
      */
     context(principal: FlexPrincipal)
     suspend fun upsertAccountingPointEndUsers(
@@ -91,9 +84,6 @@ interface AccountingPointRepository {
     /**
      * Upserts energy-supplier timeline entries for accounting points into
      * flex.accounting_point_energy_supplier.
-     *
-     * Applies the same 3-step merge as [upsertAccountingPointEndUsers], keyed on
-     * (accounting_point_id, lower(valid_time_range)).
      *
      * Energy supplier parties (type='energy_supplier') are looked up by GLN business_id and
      * must already exist in flex.party; a [DatabaseError] is returned if any GLN is unknown.
@@ -224,7 +214,7 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
         }
 
     context(principal: FlexPrincipal)
-    override suspend fun upsertAccountingPoint(
+    override suspend fun insertAccountingPointIfNotExists(
         accountingPoint: AccountingPoint
     ): Either<RepositoryError, Long> =
         flexTransaction { conn ->
@@ -244,7 +234,7 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
                     mapOf("businessId" to accountingPoint.businessId),
                 ).queryRequiredSingle { rs -> rs.getLong("id") }
             }.mapLeft { e ->
-                logger.error { "upsertAccountingPoint failed: ${e.message}" }
+                logger.error { "insertAccountingPointIfNotExists failed: ${e.message}" }
                 DatabaseError("Failed to upsert accounting point")
             }
         }
@@ -288,44 +278,13 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
                         val validFrom = endUser.validFrom.toSqlTimestamp()
                         val validTo = endUser.validTo.toSqlTimestampOrNull()
 
-                        // Update changed records (same start, different end_user or valid_to).
-                        conn.prepareNamed(
-                            """
-                            UPDATE flex.accounting_point_end_user
-                            SET end_user_id = :endUserPartyId,
-                                valid_time_range = tstzrange(:validFrom::timestamptz, :validTo::timestamptz, '[)')
-                            WHERE accounting_point_id = :accountingPointId
-                            AND lower(valid_time_range) = :validFrom::timestamptz
-                            AND (
-                                end_user_id IS DISTINCT FROM :endUserPartyId
-                                OR upper(valid_time_range) IS DISTINCT FROM :validTo::timestamptz
-                            )
-                            """,
-                            mapOf(
-                                "endUserPartyId" to endUserPartyId,
-                                "validFrom" to validFrom,
-                                "validTo" to validTo,
-                                "accountingPointId" to accountingPointId,
-                            ),
-                        ).use { stmt -> stmt.execute() }
-
-                        // Insert new records (start time not yet in target table).
-                        conn.prepareNamed(
-                            """
-                            INSERT INTO flex.accounting_point_end_user (accounting_point_id, end_user_id, valid_time_range)
-                            SELECT :accountingPointId, :endUserPartyId, tstzrange(:validFrom::timestamptz, :validTo::timestamptz, '[)')
-                            WHERE NOT EXISTS (
-                                SELECT 1 FROM flex.accounting_point_end_user
-                                WHERE accounting_point_id = :accountingPointId AND lower(valid_time_range) = :validFrom::timestamptz
-                            )
-                            """,
-                            mapOf(
-                                "accountingPointId" to accountingPointId,
-                                "endUserPartyId" to endUserPartyId,
-                                "validFrom" to validFrom,
-                                "validTo" to validTo,
-                            ),
-                        ).use { stmt -> stmt.execute() }
+                        conn.prepareStatement(MERGE_AP_END_USER).use { stmt ->
+                            stmt.setLong(1, accountingPointId)
+                            stmt.setLong(2, endUserPartyId)
+                            stmt.setTimestamp(3, validFrom)
+                            stmt.setTimestamp(4, validTo)
+                            stmt.execute()
+                        }
                     }
                 }
             }.mapLeft { e ->
@@ -369,44 +328,13 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
                         val validFrom = energySupplier.validFrom.toSqlTimestamp()
                         val validTo = energySupplier.validTo.toSqlTimestampOrNull()
 
-                        // Update changed records
-                        conn.prepareNamed(
-                            """
-                            UPDATE flex.accounting_point_energy_supplier
-                            SET energy_supplier_id = :energySupplierPartyId,
-                                valid_time_range = tstzrange(:validFrom::timestamptz, :validTo::timestamptz, '[)')
-                            WHERE accounting_point_id = :accountingPointId
-                            AND lower(valid_time_range) = :validFrom::timestamptz
-                            AND (
-                                energy_supplier_id IS DISTINCT FROM :energySupplierPartyId
-                                OR upper(valid_time_range) IS DISTINCT FROM :validTo::timestamptz
-                            )
-                            """,
-                            mapOf(
-                                "energySupplierPartyId" to energySupplierPartyId,
-                                "validFrom" to validFrom,
-                                "validTo" to validTo,
-                                "accountingPointId" to accountingPointId,
-                            ),
-                        ).use { stmt -> stmt.execute() }
-
-                        // Insert new records.
-                        conn.prepareNamed(
-                            """
-                            INSERT INTO flex.accounting_point_energy_supplier (accounting_point_id, energy_supplier_id, valid_time_range)
-                            SELECT :accountingPointId, :energySupplierPartyId, tstzrange(:validFrom::timestamptz, :validTo::timestamptz, '[)')
-                            WHERE NOT EXISTS (
-                                SELECT 1 FROM flex.accounting_point_energy_supplier
-                                WHERE accounting_point_id = :accountingPointId AND lower(valid_time_range) = :validFrom::timestamptz
-                            )
-                            """,
-                            mapOf(
-                                "accountingPointId" to accountingPointId,
-                                "energySupplierPartyId" to energySupplierPartyId,
-                                "validFrom" to validFrom,
-                                "validTo" to validTo,
-                            ),
-                        ).use { stmt -> stmt.execute() }
+                        conn.prepareStatement(MERGE_AP_ENERGY_SUPPLIER).use { stmt ->
+                            stmt.setLong(1, accountingPointId)
+                            stmt.setLong(2, energySupplierPartyId)
+                            stmt.setTimestamp(3, validFrom)
+                            stmt.setTimestamp(4, validTo)
+                            stmt.execute()
+                        }
                     }
                 }
             }.mapLeft { e ->

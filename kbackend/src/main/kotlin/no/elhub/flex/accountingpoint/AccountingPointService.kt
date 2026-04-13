@@ -88,9 +88,9 @@ class AccountingPointServiceImpl(
                 with(FlexPrincipal.internalData()) {
                     flexTransaction { _ ->
                         either {
-                            val accountingPointId = accountingPointRepository.upsertAccountingPoint(
+                            val accountingPointId = accountingPointRepository.insertAccountingPointIfNotExists(
                                 AccountingPoint(id = 0, businessId = accountingPointBusinessId)
-                            ).mapLeft { it.toInternalServerError("upsertAccountingPoint") }.bind()
+                            ).mapLeft { it.toInternalServerError("insertAccountingPointIfNotExists") }.bind()
 
                             accountingPointRepository.lockSyncRowAndMarkStart(accountingPointId)
                                 .mapLeft { err -> err.toInternalServerError("lockSyncRowAndMarkStart") }.bind()

@@ -13,7 +13,7 @@ val CHECK_END_USER_MATCHES_ACCOUNTING_POINT = """
     FROM api.controllable_unit_lookup_check_end_user_matches_accounting_point(?::text, ?::text)
 """.trimIndent()
 
-val UPSERT_ACCOUNTING_POINT = """
+val INSERT_ACCOUNTING_POINT_IF_NOT_EXISTS = """
     WITH ins AS (
         INSERT INTO flex.accounting_point (business_id)
         VALUES (?)
@@ -53,25 +53,23 @@ val DELETE_STALE_AP_END_USERS = """
     AND lower(valid_time_range) != ALL(?::timestamptz[])
 """.trimIndent()
 
-val UPDATE_CHANGED_AP_END_USER = """
-    UPDATE flex.accounting_point_end_user
-    SET end_user_id = ?,
-        valid_time_range = tstzrange(?::timestamptz, ?::timestamptz, '[)')
-    WHERE accounting_point_id = ?
-    AND lower(valid_time_range) = ?::timestamptz
-    AND (
-        end_user_id IS DISTINCT FROM ?
-        OR upper(valid_time_range) IS DISTINCT FROM ?::timestamptz
+val MERGE_AP_END_USER = """
+    MERGE INTO flex.accounting_point_end_user AS apeu
+    USING (VALUES (?::bigint, ?::bigint, ?::timestamptz, ?::timestamptz))
+        AS src(accounting_point_id, end_user_id, valid_from, valid_to)
+    ON (
+        apeu.accounting_point_id = src.accounting_point_id
+        AND lower(apeu.valid_time_range) = src.valid_from
     )
-""".trimIndent()
-
-val INSERT_NEW_AP_END_USER = """
-    INSERT INTO flex.accounting_point_end_user (accounting_point_id, end_user_id, valid_time_range)
-    SELECT ?, ?, tstzrange(?::timestamptz, ?::timestamptz, '[)')
-    WHERE NOT EXISTS (
-        SELECT 1 FROM flex.accounting_point_end_user
-        WHERE accounting_point_id = ? AND lower(valid_time_range) = ?::timestamptz
-    )
+    WHEN MATCHED AND (
+        apeu.end_user_id IS DISTINCT FROM src.end_user_id
+        OR upper(apeu.valid_time_range) IS DISTINCT FROM src.valid_to
+    ) THEN UPDATE SET
+        end_user_id      = src.end_user_id,
+        valid_time_range = tstzrange(src.valid_from, src.valid_to, '[)')
+    WHEN NOT MATCHED
+    THEN INSERT (accounting_point_id, end_user_id, valid_time_range)
+    VALUES (src.accounting_point_id, src.end_user_id, tstzrange(src.valid_from, src.valid_to, '[)'))
 """.trimIndent()
 
 val DELETE_STALE_AP_ENERGY_SUPPLIERS = """
@@ -80,16 +78,23 @@ val DELETE_STALE_AP_ENERGY_SUPPLIERS = """
     AND lower(valid_time_range) != ALL(?::timestamptz[])
 """.trimIndent()
 
-val UPDATE_CHANGED_AP_ENERGY_SUPPLIER = """
-    UPDATE flex.accounting_point_energy_supplier
-    SET energy_supplier_id = ?,
-        valid_time_range = tstzrange(?::timestamptz, ?::timestamptz, '[)')
-    WHERE accounting_point_id = ?
-    AND lower(valid_time_range) = ?::timestamptz
-    AND (
-        energy_supplier_id IS DISTINCT FROM ?
-        OR upper(valid_time_range) IS DISTINCT FROM ?::timestamptz
+val MERGE_AP_ENERGY_SUPPLIER = """
+    MERGE INTO flex.accounting_point_energy_supplier AS apes
+    USING (VALUES (?::bigint, ?::bigint, ?::timestamptz, ?::timestamptz))
+        AS src(accounting_point_id, energy_supplier_id, valid_from, valid_to)
+    ON (
+        apes.accounting_point_id = src.accounting_point_id
+        AND lower(apes.valid_time_range) = src.valid_from
     )
+    WHEN MATCHED AND (
+        apes.energy_supplier_id IS DISTINCT FROM src.energy_supplier_id
+        OR upper(apes.valid_time_range) IS DISTINCT FROM src.valid_to
+    ) THEN UPDATE SET
+        energy_supplier_id = src.energy_supplier_id,
+        valid_time_range   = tstzrange(src.valid_from, src.valid_to, '[)')
+    WHEN NOT MATCHED
+    THEN INSERT (accounting_point_id, energy_supplier_id, valid_time_range)
+    VALUES (src.accounting_point_id, src.energy_supplier_id, tstzrange(src.valid_from, src.valid_to, '[)'))
 """.trimIndent()
 
 const val MARK_SYNC_COMPLETE =
@@ -105,13 +110,4 @@ val LOCK_SYNC_ROW_AND_MARK_START = """
     SET last_sync_start = now()
     WHERE accounting_point_id = ? AND EXISTS (SELECT 1 FROM lock)
     RETURNING accounting_point_id
-""".trimIndent()
-
-val INSERT_NEW_AP_ENERGY_SUPPLIER = """
-    INSERT INTO flex.accounting_point_energy_supplier (accounting_point_id, energy_supplier_id, valid_time_range)
-    SELECT ?, ?, tstzrange(?::timestamptz, ?::timestamptz, '[)')
-    WHERE NOT EXISTS (
-        SELECT 1 FROM flex.accounting_point_energy_supplier
-        WHERE accounting_point_id = ? AND lower(valid_time_range) = ?::timestamptz
-    )
 """.trimIndent()
