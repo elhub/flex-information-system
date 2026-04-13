@@ -3,10 +3,15 @@ package no.elhub.flex.accountingpoint.db
 import arrow.core.Either
 import arrow.core.flatMap
 import arrow.core.left
+import arrow.core.raise.either
 import arrow.core.right
 import io.github.oshai.kotlinlogging.KotlinLogging
 import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.db.FlexTransaction.flexTransaction
+import no.elhub.flex.db.prepareNamed
+import no.elhub.flex.db.query
+import no.elhub.flex.db.queryRequiredSingle
+import no.elhub.flex.db.querySingle
 import no.elhub.flex.model.domain.AccountingPoint
 import no.elhub.flex.model.domain.AccountingPointEndUser
 import no.elhub.flex.model.domain.AccountingPointEnergySupplier
@@ -123,20 +128,28 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
         controllableUnitBusinessId: String,
     ): Either<RepositoryError, AccountingPoint> =
         flexTransaction { conn ->
-            Either.catch {
-                conn.prepareStatement(CURRENT_CONTROLLABLE_UNIT_ACCOUNTING_POINT).use { stmt ->
-                    stmt.setString(1, controllableUnitBusinessId)
-                    stmt.executeQuery().use { rs ->
-                        if (rs.next()) AccountingPoint(id = rs.getLong(1), businessId = rs.getString(2)) else null
+            either {
+                val row = runCatching {
+                    conn.prepareNamed(
+                        """
+                        SELECT accounting_point_id::bigint, accounting_point_business_id::text
+                        FROM api.current_controllable_unit_accounting_point(:controllableUnitBusinessId::text)
+                        """,
+                        mapOf("controllableUnitBusinessId" to controllableUnitBusinessId),
+                    ).querySingle { rs ->
+                        AccountingPoint(
+                            id = rs.getLong("accounting_point_id"),
+                            businessId = rs.getString("accounting_point_business_id")
+                        )
                     }
+                }.getOrElse { e ->
+                    logger.error { "getCurrentAccountingPoint failed: ${e.message}" }
+                    raise(DatabaseError("Failed to read Accounting Point data"))
                 }
-            }.mapLeft { e ->
-                logger.error { "getCurrentAccountingPoint failed: ${e.message}" }
-                DatabaseError("Failed to read Accounting Point data")
-            }.flatMap { row ->
-                row?.right() ?: run {
+
+                row ?: run {
                     logger.info { "Current AP not found for CU $controllableUnitBusinessId." }
-                    NotFoundError("Current accounting point not found").left()
+                    raise(NotFoundError("Current accounting point not found"))
                 }
             }
         }
@@ -146,20 +159,25 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
         accountingPointBusinessId: String,
     ): Either<RepositoryError, AccountingPoint> =
         flexTransaction { conn ->
-            Either.catch {
-                conn.prepareStatement(GET_ACCOUNTING_POINT_BY_BUSINESS_ID).use { stmt ->
-                    stmt.setString(1, accountingPointBusinessId)
-                    stmt.executeQuery().use { rs ->
-                        if (rs.next()) AccountingPoint(id = rs.getLong(1), businessId = rs.getString(2)) else null
+            either {
+                val row = runCatching {
+                    conn.prepareNamed(
+                        "SELECT id, business_id FROM flex.accounting_point WHERE business_id = :businessId",
+                        mapOf("businessId" to accountingPointBusinessId),
+                    ).querySingle { rs ->
+                        AccountingPoint(
+                            id = rs.getLong("id"),
+                            businessId = rs.getString("business_id")
+                        )
                     }
+                }.getOrElse { e ->
+                    logger.error { "getAccountingPointIdByBusinessId($accountingPointBusinessId) failed: ${e.message}" }
+                    raise(DatabaseError("Failed to read accounting point by business ID $accountingPointBusinessId"))
                 }
-            }.mapLeft { e ->
-                logger.error { "getAccountingPointIdByBusinessId($accountingPointBusinessId) failed: ${e.message}" }
-                DatabaseError("Failed to read accounting point by business ID $accountingPointBusinessId")
-            }.flatMap { row ->
-                row?.right() ?: run {
+
+                row ?: run {
                     logger.info { "Accounting point $accountingPointBusinessId not found." }
-                    NotFoundError("accounting point does not exist in database").left()
+                    raise(NotFoundError("accounting point does not exist in database"))
                 }
             }
         }
@@ -171,11 +189,19 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
     ): Either<RepositoryError, Long> =
         flexTransaction { conn ->
             Either.catch {
-                conn.prepareStatement(CHECK_END_USER_MATCHES_ACCOUNTING_POINT).use { stmt ->
-                    stmt.setString(1, endUserBusinessId)
-                    stmt.setString(2, accountingPointBusinessId)
-                    stmt.executeQuery().use { rs -> if (rs.next()) rs.getLong(1) else null }
-                }
+                conn.prepareNamed(
+                    """
+                    SELECT end_user_id::bigint
+                    FROM api.controllable_unit_lookup_check_end_user_matches_accounting_point(
+                        :endUserBusinessId::text,
+                        :accountingPointBusinessId::text
+                    )
+                    """,
+                    mapOf(
+                        "endUserBusinessId" to endUserBusinessId,
+                        "accountingPointBusinessId" to accountingPointBusinessId,
+                    ),
+                ).querySingle { rs -> rs.getLong("end_user_id") }
             }.mapLeft { e ->
                 logger.error { "checkEndUserMatchesAccountingPoint failed: ${e.message}" }
                 DatabaseError("Failed to check end user")
@@ -193,14 +219,20 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
     ): Either<RepositoryError, Long> =
         flexTransaction { conn ->
             Either.catch {
-                conn.prepareStatement(INSERT_ACCOUNTING_POINT_IF_NOT_EXISTS).use { stmt ->
-                    stmt.setString(1, accountingPoint.businessId)
-                    stmt.setString(2, accountingPoint.businessId)
-                    stmt.executeQuery().use { rs ->
-                        check(rs.next()) { "No id returned from upsert for business_id=${accountingPoint.businessId}" }
-                        rs.getLong(1)
-                    }
-                }
+                conn.prepareNamed(
+                    """
+                    WITH ins AS (
+                        INSERT INTO flex.accounting_point (business_id)
+                        VALUES (:businessId)
+                        ON CONFLICT (business_id) DO NOTHING
+                        RETURNING id
+                    )
+                    SELECT id FROM ins
+                    UNION ALL
+                    SELECT id FROM flex.accounting_point WHERE business_id = :businessId AND NOT EXISTS (SELECT 1 FROM ins)
+                    """,
+                    mapOf("businessId" to accountingPoint.businessId),
+                ).queryRequiredSingle { rs -> rs.getLong("id") }
             }.mapLeft { e ->
                 logger.error { "insertAccountingPointIfNotExists failed: ${e.message}" }
                 DatabaseError("Failed to upsert accounting point")
@@ -229,24 +261,49 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
                     val validFromDates = conn.createTimestampArray(incomingStarts)
 
                     // Delete stale records (start time no longer present in incoming data).
-                    conn.prepareStatement(DELETE_STALE_AP_END_USERS).use { stmt ->
-                        stmt.setLong(1, accountingPointId)
-                        stmt.setArray(2, validFromDates)
-                        stmt.execute()
-                    }
+                    conn.prepareNamed(
+                        """
+                        DELETE FROM flex.accounting_point_end_user
+                        WHERE accounting_point_id = :accountingPointId
+                        AND lower(valid_time_range) != ALL(:validFromDates::timestamptz[])
+                        """,
+                        mapOf(
+                            "accountingPointId" to accountingPointId,
+                            "validFromDates" to validFromDates,
+                        ),
+                    ).use { stmt -> stmt.execute() }
 
                     for (endUser in endUsers) {
                         val endUserPartyId = partyIdByBusinessId.getValue(endUser.endUserBusinessId)
                         val validFrom = endUser.validFrom.toSqlTimestamp()
                         val validTo = endUser.validTo.toSqlTimestampOrNull()
 
-                        conn.prepareStatement(MERGE_AP_END_USER).use { stmt ->
-                            stmt.setLong(1, accountingPointId)
-                            stmt.setLong(2, endUserPartyId)
-                            stmt.setTimestamp(3, validFrom)
-                            stmt.setTimestamp(4, validTo)
-                            stmt.execute()
-                        }
+                        conn.prepareNamed(
+                            """
+                            MERGE INTO flex.accounting_point_end_user AS apeu
+                            USING (VALUES (:accountingPointId::bigint, :endUserId::bigint, :validFrom::timestamptz, :validTo::timestamptz))
+                                AS src(accounting_point_id, end_user_id, valid_from, valid_to)
+                            ON (
+                                apeu.accounting_point_id = src.accounting_point_id
+                                AND lower(apeu.valid_time_range) = src.valid_from
+                            )
+                            WHEN MATCHED AND (
+                                apeu.end_user_id IS DISTINCT FROM src.end_user_id
+                                OR upper(apeu.valid_time_range) IS DISTINCT FROM src.valid_to
+                            ) THEN UPDATE SET
+                                end_user_id      = src.end_user_id,
+                                valid_time_range = tstzrange(src.valid_from, src.valid_to, '[)')
+                            WHEN NOT MATCHED
+                            THEN INSERT (accounting_point_id, end_user_id, valid_time_range)
+                            VALUES (src.accounting_point_id, src.end_user_id, tstzrange(src.valid_from, src.valid_to, '[)'))
+                            """,
+                            mapOf(
+                                "accountingPointId" to accountingPointId,
+                                "endUserId" to endUserPartyId,
+                                "validFrom" to validFrom,
+                                "validTo" to validTo,
+                            ),
+                        ).use { stmt -> stmt.execute() }
                     }
                 }
             }.mapLeft { e ->
@@ -273,24 +330,49 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
                     val pgArray = conn.createTimestampArray(incomingStarts)
 
                     // Delete stale records
-                    conn.prepareStatement(DELETE_STALE_AP_ENERGY_SUPPLIERS).use { stmt ->
-                        stmt.setLong(1, accountingPointId)
-                        stmt.setArray(2, pgArray)
-                        stmt.execute()
-                    }
+                    conn.prepareNamed(
+                        """
+                        DELETE FROM flex.accounting_point_energy_supplier
+                        WHERE accounting_point_id = :accountingPointId
+                        AND lower(valid_time_range) != ALL(:validFromDates::timestamptz[])
+                        """,
+                        mapOf(
+                            "accountingPointId" to accountingPointId,
+                            "validFromDates" to pgArray,
+                        ),
+                    ).use { stmt -> stmt.execute() }
 
                     for (energySupplier in energySuppliers) {
                         val energySupplierPartyId = partyIdByBusinessId.getValue(energySupplier.energySupplierBusinessId)
                         val validFrom = energySupplier.validFrom.toSqlTimestamp()
                         val validTo = energySupplier.validTo.toSqlTimestampOrNull()
 
-                        conn.prepareStatement(MERGE_AP_ENERGY_SUPPLIER).use { stmt ->
-                            stmt.setLong(1, accountingPointId)
-                            stmt.setLong(2, energySupplierPartyId)
-                            stmt.setTimestamp(3, validFrom)
-                            stmt.setTimestamp(4, validTo)
-                            stmt.execute()
-                        }
+                        conn.prepareNamed(
+                            """
+                            MERGE INTO flex.accounting_point_energy_supplier AS apes
+                            USING (VALUES (:accountingPointId::bigint, :energySupplierId::bigint, :validFrom::timestamptz, :validTo::timestamptz))
+                                AS src(accounting_point_id, energy_supplier_id, valid_from, valid_to)
+                            ON (
+                                apes.accounting_point_id = src.accounting_point_id
+                                AND lower(apes.valid_time_range) = src.valid_from
+                            )
+                            WHEN MATCHED AND (
+                                apes.energy_supplier_id IS DISTINCT FROM src.energy_supplier_id
+                                OR upper(apes.valid_time_range) IS DISTINCT FROM src.valid_to
+                            ) THEN UPDATE SET
+                                energy_supplier_id = src.energy_supplier_id,
+                                valid_time_range   = tstzrange(src.valid_from, src.valid_to, '[)')
+                            WHEN NOT MATCHED
+                            THEN INSERT (accounting_point_id, energy_supplier_id, valid_time_range)
+                            VALUES (src.accounting_point_id, src.energy_supplier_id, tstzrange(src.valid_from, src.valid_to, '[)'))
+                            """,
+                            mapOf(
+                                "accountingPointId" to accountingPointId,
+                                "energySupplierId" to energySupplierPartyId,
+                                "validFrom" to validFrom,
+                                "validTo" to validTo,
+                            ),
+                        ).use { stmt -> stmt.execute() }
                     }
                 }
             }.mapLeft { e ->
@@ -303,14 +385,20 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
     override suspend fun lockSyncRowAndMarkStart(accountingPointId: Long): Either<RepositoryError, Unit> =
         flexTransaction { conn ->
             Either.catch {
-                conn.prepareStatement(SET_LOCK_TIMEOUT_1S).use { it.execute() }
-                conn.prepareStatement(LOCK_SYNC_ROW_AND_MARK_START).use { stmt ->
-                    stmt.setLong(1, accountingPointId)
-                    stmt.setLong(2, accountingPointId)
-                    stmt.executeQuery().use { rs ->
-                        if (!rs.next()) error("No sync row found for accounting point $accountingPointId")
-                    }
-                }
+                conn.prepareStatement("SET LOCAL lock_timeout = '1s'").use { it.execute() }
+                conn.prepareNamed(
+                    """
+                    WITH lock AS (
+                        SELECT accounting_point_id FROM flex.accounting_point_sync
+                        WHERE accounting_point_id = :accountingPointId FOR UPDATE
+                    )
+                    UPDATE flex.accounting_point_sync
+                    SET last_sync_start = now()
+                    WHERE accounting_point_id = :accountingPointId AND EXISTS (SELECT 1 FROM lock)
+                    RETURNING accounting_point_id
+                    """,
+                    mapOf("accountingPointId" to accountingPointId),
+                ).querySingle { } ?: error("No sync row found for accounting point $accountingPointId")
             }.mapLeft { e ->
                 val sqlState = (e as? SQLException)?.sqlState
                 if (sqlState == "55P03") {
@@ -326,8 +414,14 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
     override suspend fun markSyncComplete(accountingPointId: Long): Either<RepositoryError, Unit> =
         flexTransaction { conn ->
             Either.catch {
-                conn.prepareStatement(MARK_SYNC_COMPLETE).use { stmt ->
-                    stmt.setLong(1, accountingPointId)
+                conn.prepareNamed(
+                    """
+                    UPDATE flex.accounting_point_sync
+                    SET last_synced_at = now(), last_sync_start = NULL, version = version + 1
+                    WHERE accounting_point_id = :accountingPointId
+                    """,
+                    mapOf("accountingPointId" to accountingPointId),
+                ).use { stmt ->
                     val updated = stmt.executeUpdate()
                     if (updated == 0) error("No sync row found for accounting point $accountingPointId")
                 }
@@ -352,21 +446,20 @@ private fun resolveOrCreateEntity(conn: Connection, endUserBusinessId: String): 
         else -> error("Cannot determine entity type for end user business ID: $endUserBusinessId")
     }
 
-    conn.prepareStatement(INSERT_ENTITY).use { stmt ->
-        stmt.setString(1, "$endUserBusinessId - ENT")
-        stmt.setString(2, entityType)
-        stmt.setString(3, endUserBusinessId)
-        stmt.setString(4, businessIdType)
-        stmt.execute()
-    }
+    conn.prepareNamed(
+        "INSERT INTO flex.entity (name, type, business_id, business_id_type) VALUES (:name, :type, :businessId, :businessIdType) ON CONFLICT (business_id) DO NOTHING",
+        mapOf(
+            "name" to "$endUserBusinessId - ENT",
+            "type" to entityType,
+            "businessId" to endUserBusinessId,
+            "businessIdType" to businessIdType,
+        ),
+    ).use { stmt -> stmt.execute() }
 
-    return conn.prepareStatement(SELECT_ENTITY_BY_BUSINESS_ID).use { stmt ->
-        stmt.setString(1, endUserBusinessId)
-        stmt.executeQuery().use { rs ->
-            check(rs.next()) { "Entity not found after upsert for business_id=$endUserBusinessId" }
-            rs.getLong(1)
-        }
-    }
+    return conn.prepareNamed(
+        "SELECT id FROM flex.entity WHERE business_id = :businessId",
+        mapOf("businessId" to endUserBusinessId),
+    ).queryRequiredSingle { rs -> rs.getLong("id") }
 }
 
 /**
@@ -375,29 +468,30 @@ private fun resolveOrCreateEntity(conn: Connection, endUserBusinessId: String): 
  * If a new party is inserted it is immediately activated (status 'new' → 'active')
  */
 private fun resolveOrCreateEndUserParty(conn: Connection, entityId: Long, endUserBusinessId: String): Long {
-    conn.prepareStatement(INSERT_END_USER_PARTY).use { stmt ->
-        stmt.setLong(1, entityId)
-        stmt.setString(2, "$endUserBusinessId - EU")
-        stmt.executeQuery().use { rs ->
-            if (rs.next()) {
-                val newPartyId = rs.getLong(1)
-                conn.prepareStatement(ACTIVATE_PARTY).use { activate ->
-                    activate.setLong(1, newPartyId)
-                    activate.execute()
-                }
-                return newPartyId
-            }
-        }
+    conn.prepareNamed(
+        """
+        INSERT INTO flex.party (entity_id, name, type, role)
+        VALUES (:entityId, :name, 'end_user', 'flex_end_user')
+        ON CONFLICT (entity_id) WHERE type = 'end_user' DO NOTHING
+        RETURNING id
+        """,
+        mapOf(
+            "entityId" to entityId,
+            "name" to "$endUserBusinessId - EU",
+        ),
+    ).querySingle { rs -> rs.getLong("id") }?.let { newPartyId ->
+        conn.prepareNamed(
+            "UPDATE flex.party SET status = 'active' WHERE id = :partyId AND status = 'new'",
+            mapOf("partyId" to newPartyId),
+        ).use { activate -> activate.execute() }
+        return newPartyId
     }
 
     // Party already existed — fetch its ID.
-    return conn.prepareStatement(SELECT_END_USER_PARTY_BY_ENTITY).use { stmt ->
-        stmt.setLong(1, entityId)
-        stmt.executeQuery().use { rs ->
-            check(rs.next()) { "End-user party not found after upsert for entity_id=$entityId" }
-            rs.getLong(1)
-        }
-    }
+    return conn.prepareNamed(
+        "SELECT id FROM flex.party WHERE entity_id = :entityId AND type = 'end_user'",
+        mapOf("entityId" to entityId),
+    ).queryRequiredSingle { rs -> rs.getLong("id") }
 }
 
 /**
@@ -407,14 +501,12 @@ private fun resolveOrCreateEndUserParty(conn: Connection, entityId: Long, endUse
  */
 private fun Connection.fetchEnergySupplierPartyIds(glns: List<String>): Map<String, Long> {
     val pgArray = createArrayOf("text", glns.toTypedArray())
-    val result = prepareStatement(SELECT_ENERGY_SUPPLIER_PARTY_IDS_BY_BUSINESS_IDS).use { stmt ->
-        stmt.setArray(1, pgArray)
-        stmt.executeQuery().use { rs ->
-            val map = mutableMapOf<String, Long>()
-            while (rs.next()) map[rs.getString(1)] = rs.getLong(2)
-            map
-        }
-    }
+    val result = prepareNamed(
+        "SELECT business_id, id FROM flex.party WHERE business_id = ANY(:glns) AND type = 'energy_supplier'",
+        mapOf("glns" to pgArray),
+    ).query { rs ->
+        rs.getString("business_id") to rs.getLong("id")
+    }.toMap()
     val missing = glns - result.keys
     check(missing.isEmpty()) { "Energy supplier party not found for business_id(s): $missing" }
     return result
