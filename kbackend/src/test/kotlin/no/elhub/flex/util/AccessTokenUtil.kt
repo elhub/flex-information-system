@@ -1,6 +1,7 @@
 package no.elhub.flex.util
 
 import no.elhub.flex.auth.AccessToken
+import no.elhub.flex.auth.Scope
 import java.util.Date
 
 @Suppress("MagicNumber")
@@ -13,6 +14,6 @@ fun systemToken(
     extId = "0",
     partyId = 0,
     role = role,
-    scope = scope,
+    scope = scope.mapNotNull { Scope.fromString(it) },
     exp = Date(System.currentTimeMillis() + ttlSeconds * 1000L).time / 1000L,
 )

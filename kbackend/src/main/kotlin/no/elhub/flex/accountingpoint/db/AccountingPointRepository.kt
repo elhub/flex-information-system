@@ -8,6 +8,7 @@ import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.db.FlexTransaction.flexTransaction
 import no.elhub.flex.model.domain.AccountingPoint
 import no.elhub.flex.model.domain.db.DatabaseError
+import no.elhub.flex.model.domain.db.NoMatchError
 import no.elhub.flex.model.domain.db.NotFoundError
 import no.elhub.flex.model.domain.db.RepositoryError
 import org.koin.core.annotation.Single
@@ -131,7 +132,7 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
                     id?.right()
                         ?: run {
                             logger.info { "No match for end user $endUserBusinessId and accounting point $accountingPointBusinessId" }
-                            NotFoundError("End user does not match accounting point / controllable unit").left()
+                            NoMatchError("End user does not match accounting point / controllable unit").left()
                         }
                 },
                 onFailure = { e ->
