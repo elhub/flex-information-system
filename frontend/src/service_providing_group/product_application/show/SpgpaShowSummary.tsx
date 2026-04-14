@@ -1,30 +1,37 @@
-import { Badge, Button, Link, Panel } from "../../../components/ui";
+import { Button, Link, Panel } from "../../../components/ui";
 import { LabelValue } from "../../../components/LabelValue";
 import { Link as RouterLink } from "react-router-dom";
 import { IconPencil } from "@elhub/ds-icons";
-import { RecordContextProvider, usePermissions } from "ra-core";
+import { usePermissions } from "ra-core";
 import { Permissions } from "../../../auth/permissions";
-import { ServiceProvidingGroupProductApplication } from "../../../generated-client";
-import { ProductTypeArrayField, useGetAllProductTypes } from "../../../product_type/components";
+import {
+  ServiceProvidingGroup,
+  ServiceProvidingGroupProductApplication,
+} from "../../../generated-client";
+import { useGetAllProductTypes } from "../../../product_type/components";
 import { useParty } from "../../../hooks/party";
-import { useServiceProvidingGroup } from "../../show/useSpgShowViewModel";
 
 type Props = {
   spgpa: ServiceProvidingGroupProductApplication;
+  spg: ServiceProvidingGroup | undefined;
 };
 
-export const SpgpaShowSummary = ({ spgpa }: Props) => {
+export const SpgpaShowSummary = ({ spgpa, spg }: Props) => {
   const { permissions } = usePermissions<Permissions>();
   const canEdit = permissions?.allow(
     "service_providing_group_product_application",
     "update",
   );
 
-  const spg = useServiceProvidingGroup(spgpa.service_providing_group_id);
   const procuringServiceProvider = useParty(spgpa.procuring_system_operator_id);
-
   const productTypes = useGetAllProductTypes();
 
+  if (procuringServiceProvider.error) throw procuringServiceProvider.error;
+
+  const productTypeNames = productTypes
+    ?.filter((pt) => spgpa.product_type_ids.includes(pt.id))
+    .map((pt) => pt.name)
+    .join(", ");
 
   return (
     <Panel
@@ -53,7 +60,7 @@ export const SpgpaShowSummary = ({ spgpa }: Props) => {
               as={RouterLink}
               to={`/service_providing_group/${spgpa.service_providing_group_id}/show`}
             >
-              {spg.data?.name} (#{spg.data?.id})
+              {spg?.name} (#{spg?.id})
             </Link>
           }
         />
@@ -61,13 +68,20 @@ export const SpgpaShowSummary = ({ spgpa }: Props) => {
         <LabelValue
           size="small"
           label="System Operator / PSO"
-          value={<Link to={`/party/${spgpa.procuring_system_operator_id}`}>{procuringServiceProvider.data?.name}</Link>}
+          value={
+            <Link
+              as={RouterLink}
+              to={`/party/${spgpa.procuring_system_operator_id}/show`}
+            >
+              {procuringServiceProvider.data?.name}
+            </Link>
+          }
         />
 
         <LabelValue
           size="small"
           label="Product types"
-          value={productTypes?.filter((pt) => spgpa.product_type_ids.includes(pt.id)).map((pt) => pt.name).join(", ")}
+          value={productTypeNames}
         />
 
         <LabelValue
@@ -94,7 +108,6 @@ export const SpgpaShowSummary = ({ spgpa }: Props) => {
             value={spgpa.additional_information}
           />
         )}
-
       </div>
     </Panel>
   );

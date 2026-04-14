@@ -13,10 +13,6 @@ import { useServiceProvidingGroup } from "../../show/useSpgShowViewModel";
 
 export const ServiceProvidingGroupProductApplicationShow = () => {
   const spgpaId = Number(useParams<{ id: string }>().id);
-  const spgId = Number(
-    useParams<{ service_providing_group_id: string }>()
-      .service_providing_group_id,
-  );
   const { permissions } = usePermissions<Permissions>();
   const translateEnum = useTranslateEnum();
 
@@ -28,17 +24,17 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
     "update",
   );
 
-
   if (isPending) return <Loader />;
   if (error) throw error;
   if (!spgpa) return null;
+  if (spg.error) throw spg.error;
 
   const { status, icon } = spgpaStatusVariantMap[spgpa.status];
 
   return (
     <ShowPageLayout
-      backTo={`/service_providing_group/${spgId}/show`}
-      title={`Product Application #${spgpa.id} for ${spg.data?.name}`}
+      backTo={`/service_providing_group/${spgpa.service_providing_group_id}/show`}
+      title={`Product Application #${spgpa.id}${spg.data ? ` for ${spg.data.name}` : ""}`}
       badge={
         <Badge size="small" status={status} variant="block" icon={icon}>
           {translateEnum(
@@ -48,10 +44,11 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
       }
       actionBar={canUpdateStatus ? <SpgpaActionBar spgpa={spgpa} /> : undefined}
     >
-      <SpgpaShowSummary spgpa={spgpa} />
+      <SpgpaShowSummary spgpa={spgpa} spg={spg.data} />
       <SpgpaShowTabs
         spgId={spgpa.service_providing_group_id}
         spgpaId={spgpa.id}
+        spg={spg.data}
       />
     </ShowPageLayout>
   );

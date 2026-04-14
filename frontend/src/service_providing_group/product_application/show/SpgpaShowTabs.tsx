@@ -5,14 +5,15 @@ import {
   NestedResourceHistoryButton,
 } from "../../../components/EDS-ra/buttons";
 import { SpgInfoTab } from "./SpgInfoTab";
-
+import { ServiceProvidingGroup } from "../../../generated-client";
 
 type Props = {
   spgId: number;
   spgpaId: number;
+  spg: ServiceProvidingGroup | undefined;
 };
 
-export const SpgpaShowTabs = ({ spgId, spgpaId }: Props) => (
+export const SpgpaShowTabs = ({ spgId, spgpaId, spg }: Props) => (
   <>
     <Tabs defaultValue="spg_info" className="relative top-[-24px]">
       <Tabs.List>
@@ -20,7 +21,7 @@ export const SpgpaShowTabs = ({ spgId, spgpaId }: Props) => (
         <Tabs.Tab label="Comments" value="comments" />
       </Tabs.List>
       <Tabs.Panel value="spg_info">
-        <SpgInfoTab spgId={spgId} />
+        <SpgInfoTab spgId={spgId} spg={spg} />
       </Tabs.Panel>
       <Tabs.Panel value="comments">
         <CommentList
