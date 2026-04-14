@@ -48,15 +48,19 @@ fun Application.module() {
     }
 
     // Properties injected with @Property
-    val propertiesForKoin = listOf(
-        "accounting-point-adapter.base-url",
-        "accounting-point-adapter.api-key",
-        "accounting-point-adapter.sync-enabled",
+    val propertiesForKoin: List<Pair<String, (String) -> Any>> = listOf(
+        "accounting-point-adapter.base-url" to { it },
+        "accounting-point-adapter.api-key" to { it },
+        "accounting-point-adapter.sync-enabled" to { it.toBoolean() },
     )
 
     startKoin<FlexApp> {
         environmentProperties()
-        properties(propertiesForKoin.associateWith { environment.config.property(it).getString() })
+        properties(
+            propertiesForKoin.associate { (id, transform) ->
+                id to transform(environment.config.property(id).getString())
+            }
+        )
         slf4jLogger()
     }
 }

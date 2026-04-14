@@ -510,7 +510,7 @@ private fun testApp(
                     module {
                         single<ControllableUnitRepository> { repo }
                         single<AccountingPointService> { accountingPointService }
-                        single { ControllableUnitLookup(get(), get(), syncEnabled.toString()) }
+                        single { ControllableUnitLookup(get(), get(), syncEnabled) }
                     },
                 )
             }

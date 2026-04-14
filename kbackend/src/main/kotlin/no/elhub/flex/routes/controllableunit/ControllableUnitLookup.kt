@@ -2,6 +2,7 @@ package no.elhub.flex.routes.controllableunit
 
 import arrow.core.Either
 import arrow.core.raise.either
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.server.routing.RoutingCall
 import no.elhub.flex.accountingpoint.AccountingPointService
 import no.elhub.flex.auth.AccessTokenKey
@@ -35,9 +36,9 @@ private val CONTROLLABLE_UNIT_BUSINESS_ID_REGEX =
 class ControllableUnitLookup(
     private val repo: ControllableUnitRepository,
     private val accountingPointService: AccountingPointService,
-    @Property("accounting-point-adapter.sync-enabled") private val accountingPointAdapterSyncEnabledStr: String = "true",
+    @Property("accounting-point-adapter.sync-enabled") private val accountingPointAdapterSyncEnabled: Boolean = true,
 ) {
-    private val accountingPointAdapterSyncEnabled = accountingPointAdapterSyncEnabledStr.toBoolean()
+    private val logger = KotlinLogging.logger {}
 
     suspend fun handle(call: RoutingCall) {
         val token = call.attributes[AccessTokenKey]
@@ -60,6 +61,8 @@ class ControllableUnitLookup(
 
                 if (accountingPointAdapterSyncEnabled) {
                     accountingPointService.synchronizeAccountingPoint(accountingPointBusinessId, validFrom).bind()
+                } else {
+                    logger.info { "Accounting point sync disabled, not calling adapter." }
                 }
 
                 val endUserId = accountingPointService.checkEndUserMatchesAccountingPoint(
