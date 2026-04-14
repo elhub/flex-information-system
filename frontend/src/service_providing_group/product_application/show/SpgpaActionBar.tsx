@@ -9,7 +9,6 @@ import {
 import { throwOnError } from "../../../util";
 import { spgpaQueryKey } from "./useSpgpaShowViewModel";
 
-
 type ActionConfig = {
   label: string;
   payload: ServiceProvidingGroupProductApplicationUpdateRequest;
@@ -23,7 +22,8 @@ const rejectAction: ActionConfig = {
   label: "Reject",
   payload: { status: "rejected" },
   confirmTitle: "Reject application",
-  confirmContent: "Are you sure you want to reject this application? The service provider will be notified.",
+  confirmContent:
+    "Are you sure you want to reject this application? The service provider will be notified.",
   variant: "secondary",
 };
 
