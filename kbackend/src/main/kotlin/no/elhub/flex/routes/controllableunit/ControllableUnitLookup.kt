@@ -2,6 +2,7 @@ package no.elhub.flex.routes.controllableunit
 
 import arrow.core.Either
 import arrow.core.raise.either
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.server.routing.RoutingCall
 import no.elhub.flex.accountingpoint.AccountingPointService
 import no.elhub.flex.auth.AccessTokenKey
@@ -24,6 +25,7 @@ import no.elhub.flex.util.atLocalStartOfToday
 import no.elhub.flex.util.body
 import no.elhub.flex.util.logger
 import no.elhub.flex.util.respondJson
+import org.koin.core.annotation.Property
 import org.koin.core.annotation.Single
 import kotlin.time.Instant
 
@@ -35,7 +37,10 @@ private val CONTROLLABLE_UNIT_BUSINESS_ID_REGEX =
 class ControllableUnitLookup(
     private val repo: ControllableUnitRepository,
     private val accountingPointService: AccountingPointService,
+    @Property("accounting-point-adapter.sync-enabled") private val accountingPointAdapterSyncEnabled: Boolean = true,
 ) {
+    private val logger = KotlinLogging.logger {}
+
     suspend fun handle(call: RoutingCall) {
         with(FlexPrincipal.internalData()) {
             either {
@@ -62,7 +67,11 @@ class ControllableUnitLookup(
                     ?: Instant.atLocalStartOfToday()
                 logger.debug { "Using $validFrom as start date for accounting point sync" }
 
-                accountingPointService.synchronizeAccountingPoint(accountingPointBusinessId, validFrom).bind()
+                if (accountingPointAdapterSyncEnabled) {
+                    accountingPointService.synchronizeAccountingPoint(accountingPointBusinessId, validFrom).bind()
+                } else {
+                    logger.info { "Accounting point sync disabled, not calling adapter." }
+                }
 
                 val endUserId = accountingPointService.checkEndUserMatchesAccountingPoint(
                     request.endUser,
