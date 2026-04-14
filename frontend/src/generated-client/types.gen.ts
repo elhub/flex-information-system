@@ -2241,9 +2241,13 @@ export type ServiceProvidingGroupProductApplicationUpdateRequest = {
   product_type_ids?: Array<number>;
   status?: ServiceProvidingGroupProductApplicationStatus;
   /**
-   * The maximum active power applied for. Stored in kilowatts.
+   * The maximum active power applied for in the upward direction. Stored in kilowatts.
    */
-  maximum_active_power?: number;
+  maximum_active_power_up?: number;
+  /**
+   * The maximum active power applied for in the downward direction. Stored in kilowatts.
+   */
+  maximum_active_power_down?: number;
   /**
    * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
    */
@@ -2276,9 +2280,13 @@ export type ServiceProvidingGroupProductApplicationCreateRequest = {
   product_type_ids: Array<number>;
   status?: ServiceProvidingGroupProductApplicationStatus;
   /**
-   * The maximum active power applied for. Stored in kilowatts.
+   * The maximum active power applied for in the upward direction. Stored in kilowatts.
    */
-  maximum_active_power: number;
+  maximum_active_power_up: number;
+  /**
+   * The maximum active power applied for in the downward direction. Stored in kilowatts.
+   */
+  maximum_active_power_down: number;
   /**
    * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
    */
@@ -2315,9 +2323,13 @@ export type ServiceProvidingGroupProductApplication = {
   product_type_ids: Array<number>;
   status: ServiceProvidingGroupProductApplicationStatus;
   /**
-   * The maximum active power applied for. Stored in kilowatts.
+   * The maximum active power applied for in the upward direction. Stored in kilowatts.
    */
-  maximum_active_power: number;
+  maximum_active_power_up: number;
+  /**
+   * The maximum active power applied for in the downward direction. Stored in kilowatts.
+   */
+  maximum_active_power_down: number;
   /**
    * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
    */
@@ -3489,9 +3501,13 @@ export type ServiceProvidingGroupProductApplicationWritable = {
   product_type_ids: Array<number>;
   status: ServiceProvidingGroupProductApplicationStatus;
   /**
-   * The maximum active power applied for. Stored in kilowatts.
+   * The maximum active power applied for in the upward direction. Stored in kilowatts.
    */
-  maximum_active_power: number;
+  maximum_active_power_up: number;
+  /**
+   * The maximum active power applied for in the downward direction. Stored in kilowatts.
+   */
+  maximum_active_power_down: number;
   /**
    * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
    */

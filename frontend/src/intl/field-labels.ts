@@ -381,7 +381,8 @@ export type FieldLabel =
   | "service_providing_group_membership_history.valid_to"
   | "service_providing_group_product_application.additional_information"
   | "service_providing_group_product_application.id"
-  | "service_providing_group_product_application.maximum_active_power"
+  | "service_providing_group_product_application.maximum_active_power_down"
+  | "service_providing_group_product_application.maximum_active_power_up"
   | "service_providing_group_product_application.prequalified_at"
   | "service_providing_group_product_application.procuring_system_operator_id"
   | "service_providing_group_product_application.product_type_ids"
@@ -411,7 +412,8 @@ export type FieldLabel =
   | "service_providing_group_product_application_comment_history.visibility"
   | "service_providing_group_product_application_history.additional_information"
   | "service_providing_group_product_application_history.id"
-  | "service_providing_group_product_application_history.maximum_active_power"
+  | "service_providing_group_product_application_history.maximum_active_power_down"
+  | "service_providing_group_product_application_history.maximum_active_power_up"
   | "service_providing_group_product_application_history.prequalified_at"
   | "service_providing_group_product_application_history.procuring_system_operator_id"
   | "service_providing_group_product_application_history.product_type_ids"
@@ -1043,8 +1045,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application.product_type_ids":
       "Product types",
     "service_providing_group_product_application.status": "Status",
-    "service_providing_group_product_application.maximum_active_power":
-      "Maximum active power",
+    "service_providing_group_product_application.maximum_active_power_up":
+      "Maximum active power (up)",
+    "service_providing_group_product_application.maximum_active_power_down":
+      "Maximum active power (down)",
     "service_providing_group_product_application.additional_information":
       "Additional information",
     "service_providing_group_product_application.prequalified_at":
@@ -1060,8 +1064,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application_history.product_type_ids":
       "Product types",
     "service_providing_group_product_application_history.status": "Status",
-    "service_providing_group_product_application_history.maximum_active_power":
-      "Maximum active power",
+    "service_providing_group_product_application_history.maximum_active_power_up":
+      "Maximum active power (up)",
+    "service_providing_group_product_application_history.maximum_active_power_down":
+      "Maximum active power (down)",
     "service_providing_group_product_application_history.additional_information":
       "Additional information",
     "service_providing_group_product_application_history.prequalified_at":
@@ -1715,8 +1721,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application.product_type_ids":
       "Produkttyper",
     "service_providing_group_product_application.status": "Status",
-    "service_providing_group_product_application.maximum_active_power":
-      "Maksimal aktiv effekt",
+    "service_providing_group_product_application.maximum_active_power_up":
+      "Maksimal aktiv effekt (opp)",
+    "service_providing_group_product_application.maximum_active_power_down":
+      "Maksimal aktiv effekt (ned)",
     "service_providing_group_product_application.additional_information":
       "Tilleggsinformasjon",
     "service_providing_group_product_application.prequalified_at":
@@ -1732,8 +1740,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application_history.product_type_ids":
       "Produkttyper",
     "service_providing_group_product_application_history.status": "Status",
-    "service_providing_group_product_application_history.maximum_active_power":
-      "Maksimal aktiv effekt",
+    "service_providing_group_product_application_history.maximum_active_power_up":
+      "Maksimal aktiv effekt (opp)",
+    "service_providing_group_product_application_history.maximum_active_power_down":
+      "Maksimal aktiv effekt (ned)",
     "service_providing_group_product_application_history.additional_information":
       "Tilleggsinformasjon",
     "service_providing_group_product_application_history.prequalified_at":
@@ -2386,8 +2396,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application.product_type_ids":
       "Produkttypar",
     "service_providing_group_product_application.status": "Status",
-    "service_providing_group_product_application.maximum_active_power":
-      "Maksimal aktiv effekt",
+    "service_providing_group_product_application.maximum_active_power_up":
+      "Maksimal aktiv effekt (opp)",
+    "service_providing_group_product_application.maximum_active_power_down":
+      "Maksimal aktiv effekt (ned)",
     "service_providing_group_product_application.additional_information":
       "Tilleggsinformasjon",
     "service_providing_group_product_application.prequalified_at":
@@ -2403,8 +2415,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application_history.product_type_ids":
       "Produkttypar",
     "service_providing_group_product_application_history.status": "Status",
-    "service_providing_group_product_application_history.maximum_active_power":
-      "Maksimal aktiv effekt",
+    "service_providing_group_product_application_history.maximum_active_power_up":
+      "Maksimal aktiv effekt (opp)",
+    "service_providing_group_product_application_history.maximum_active_power_down":
+      "Maksimal aktiv effekt (ned)",
     "service_providing_group_product_application_history.additional_information":
       "Tilleggsinformasjon",
     "service_providing_group_product_application_history.prequalified_at":

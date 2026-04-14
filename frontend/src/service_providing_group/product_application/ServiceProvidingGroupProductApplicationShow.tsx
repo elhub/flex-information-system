@@ -159,8 +159,13 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
               source="product_type_ids"
             />
             <UnitField
-              source="maximum_active_power"
-              label="field.service_providing_group_product_application.maximum_active_power"
+              source="maximum_active_power_up"
+              label="field.service_providing_group_product_application.maximum_active_power_up"
+              unit="kW"
+            />
+            <UnitField
+              source="maximum_active_power_down"
+              label="field.service_providing_group_product_application.maximum_active_power_down"
               unit="kW"
             />
           </FieldStack>

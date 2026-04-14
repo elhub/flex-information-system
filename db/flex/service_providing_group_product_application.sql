@@ -24,7 +24,8 @@ CREATE TABLE IF NOT EXISTS service_providing_group_product_application (
             'rejected'
         )
     ),
-    maximum_active_power decimal(9, 3) NOT NULL,
+    maximum_active_power_up decimal(9, 3) NOT NULL,
+    maximum_active_power_down decimal(9, 3) NOT NULL,
     additional_information text NULL,
     prequalified_at timestamp with time zone NULL,
     verified_at timestamp with time zone NULL,
@@ -33,8 +34,11 @@ CREATE TABLE IF NOT EXISTS service_providing_group_product_application (
     ),
     recorded_by bigint NOT NULL DEFAULT current_identity(),
 
-    CONSTRAINT spg_product_application_maximum_active_power_check CHECK (
-        maximum_active_power >= 0
+    CONSTRAINT spg_product_application_maximum_active_power_up_check CHECK (
+        maximum_active_power_up >= 0
+    ),
+    CONSTRAINT spg_product_application_maximum_active_power_down_check CHECK (
+        maximum_active_power_down >= 0
     ),
     CONSTRAINT spg_product_application_additional_information_check CHECK (
         char_length(additional_information) <= 512
