@@ -5,10 +5,7 @@ import {
   ServiceProvidingGroupProductApplication,
 } from "../../../generated-client";
 import { throwOnError } from "../../../util";
-import {
-  useSpgShowViewModel,
-  useServiceProvidingGroup,
-} from "../../show/useSpgShowViewModel";
+import { useServiceProvidingGroup, useSpgShowViewModel } from "../../show/useSpgShowViewModel";
 
 export const spgpaQueryKey = (id: number | undefined) => [
   "service_providing_group_product_application",

@@ -2,10 +2,12 @@ import { Badge, Button, Link, Panel } from "../../../components/ui";
 import { LabelValue } from "../../../components/LabelValue";
 import { Link as RouterLink } from "react-router-dom";
 import { IconPencil } from "@elhub/ds-icons";
-import { usePermissions } from "ra-core";
+import { RecordContextProvider, usePermissions } from "ra-core";
 import { Permissions } from "../../../auth/permissions";
 import { ServiceProvidingGroupProductApplication } from "../../../generated-client";
-import { ProductTypeArrayField } from "../../../product_type/components";
+import { ProductTypeArrayField, useGetAllProductTypes } from "../../../product_type/components";
+import { useParty } from "../../../hooks/party";
+import { useServiceProvidingGroup } from "../../show/useSpgShowViewModel";
 
 type Props = {
   spgpa: ServiceProvidingGroupProductApplication;
@@ -17,6 +19,12 @@ export const SpgpaShowSummary = ({ spgpa }: Props) => {
     "service_providing_group_product_application",
     "update",
   );
+
+  const spg = useServiceProvidingGroup(spgpa.service_providing_group_id);
+  const procuringServiceProvider = useParty(spgpa.procuring_system_operator_id);
+
+  const productTypes = useGetAllProductTypes();
+
 
   return (
     <Panel
@@ -45,28 +53,29 @@ export const SpgpaShowSummary = ({ spgpa }: Props) => {
               as={RouterLink}
               to={`/service_providing_group/${spgpa.service_providing_group_id}/show`}
             >
-              #{spgpa.service_providing_group_id}
+              {spg.data?.name} (#{spg.data?.id})
             </Link>
           }
         />
+
         <LabelValue
           size="small"
           label="System Operator / PSO"
-          value={spgpa.procuring_system_operator_id}
+          value={<Link to={`/party/${spgpa.procuring_system_operator_id}`}>{procuringServiceProvider.data?.name}</Link>}
         />
-        <ProductTypeArrayField
+
+        <LabelValue
+          size="small"
           label="Product types"
-          source="product_type_ids"
+          value={productTypes?.filter((pt) => spgpa.product_type_ids.includes(pt.id)).map((pt) => pt.name).join(", ")}
         />
+
         <LabelValue
           size="small"
           label="Max active power"
           value={spgpa.maximum_active_power}
           unit="kW"
         />
-
-        <hr className="border-semantic-border-default" />
-
 
         <LabelValue
           size="small"
@@ -86,19 +95,6 @@ export const SpgpaShowSummary = ({ spgpa }: Props) => {
           />
         )}
 
-        <hr className="border-semantic-border-default" />
-
-        {/* Registration */}
-        <LabelValue
-          size="small"
-          label="Recorded at"
-          value={spgpa.recorded_at}
-        />
-        <LabelValue
-          size="small"
-          label="Recorded by"
-          value={spgpa.recorded_by}
-        />
       </div>
     </Panel>
   );

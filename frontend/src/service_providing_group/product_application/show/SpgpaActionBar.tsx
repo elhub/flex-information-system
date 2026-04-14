@@ -78,21 +78,6 @@ const getActionsForStatus = (
         },
         reject,
       ];
-    case "prequalified":
-      return [
-        {
-          label: "Verify",
-          // DB requires verified_at to be set when status becomes verified
-          payload: {
-            status: "verified",
-            verified_at: new Date().toISOString(),
-          },
-          confirmTitle: "Verify application",
-          confirmContent: "This will mark the application as verified.",
-          variant: "primary",
-        },
-        reject,
-      ];
     default:
       return [];
   }
@@ -156,13 +141,10 @@ export const SpgpaActionBar = ({ spgpa }: Props) => {
 
   return (
     <div
-      className="flex items-center justify-between rounded-md border
+      className="flex items-center justify-end rounded-md border
       border-semantic-border-default bg-global-color-white
       px-4 py-3"
     >
-      <span className="text-sm font-semibold text-semantic-text-default">
-        System Operator actions
-      </span>
       <div className="flex gap-2">
         {actions.map((config) => (
           <ActionButton
