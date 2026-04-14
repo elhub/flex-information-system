@@ -45,9 +45,13 @@ for grid connection requests that affects more than one grid owner. Tilko has
 been rolled out to allmost all of Norway as of writing this. We are taking a lot
 inspiration from Tilko in how we exchange grid location.
 
-## Condensed data model
+## Grid model service
 
-We model two resources in our system, based on Nemo.
+Grid model data will be made available as its own service in the flexibility register.
+The grid model service will serve data as an aid in picking the grid location.
+
+We model a condensed data model with the following resources in this service,
+based on Nemo.
 
 * `substation` from `Substation` and `SubstationPart`
 * `line` from `Line`
@@ -122,6 +126,15 @@ displayed on top of a map.
 > use different colors and icons/letters for different kinds of substations. See
 > example below.
 
+### Provisioning of data
+
+We do a full load of the grid model data follwing the [structure data loading
+mechanisms](./structure-data.md). We load using merge and update using the
+automatic strategy.
+
+Resources that we have previously loaded but is now not present in the current
+load will be soft-deleted using a specific field on the resources.
+
 ## Location = Substation + Voltage level
 
 The grid owners registers the electrical grid location of an accounting point.
@@ -130,15 +143,16 @@ The information is given in a dedicated resource
 
 > [!NOTE]
 >
-> Note that transformer is part of the location but not discussed above. We are
-> still debating if/when transformers should be part of the grid location.
+> We are using business id here on purpose. This is because we believe that in
+> general system operators will communicate grid location directly, using NEMO
+> as reference, not the FIS surrogate keys.
 
 * `substation_name` - the name of the substation - free text
 * `substation_business_id` - the business ID (mRID) of the substation,
-  referencing NEMO
+  referencing national grid model
 * `transformer_name` - the name of the transformer - free text
 * `transformer_business_id` - the business ID (mRID) of the transformer,
-  referencing NEMO
+  referencing national grid model
 * `nominal_voltage` - voltage level in kV
 * `additional_information` - free text field
 * `determined_by` - Who the grid location was
@@ -157,6 +171,11 @@ current information is determined by system or by impacted system operator
 The system will guess the grid location based on the geographical location of
 the accounting point and the grid model. The system will only guess the grid
 location if it is missing or the current information is determined by system.
+
+> [!NOTE]
+>
+> Note that transformer is part of the location but not discussed above. We are
+> still debating if/when transformers should be part of the grid location.
 
 ## Guessing grid location
 
