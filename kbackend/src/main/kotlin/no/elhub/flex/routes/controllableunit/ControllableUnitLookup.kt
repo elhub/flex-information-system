@@ -35,8 +35,10 @@ private val CONTROLLABLE_UNIT_BUSINESS_ID_REGEX =
 class ControllableUnitLookup(
     private val repo: ControllableUnitRepository,
     private val accountingPointService: AccountingPointService,
-    @Property("accounting-point-adapter.sync-enabled") private val accountingPointAdapterSyncEnabled: Boolean = true,
+    @Property("accounting-point-adapter.sync-enabled") private val accountingPointAdapterSyncEnabledStr: String = "true",
 ) {
+    private val accountingPointAdapterSyncEnabled = accountingPointAdapterSyncEnabledStr.toBoolean()
+
     suspend fun handle(call: RoutingCall) {
         val token = call.attributes[AccessTokenKey]
         val principal = token.toFlexPrincipal()
