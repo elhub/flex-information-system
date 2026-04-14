@@ -178,7 +178,7 @@ ADD CONSTRAINT spg_product_application_additional_information_check CHECK (
 
 -- changeset flex:service-providing-group-product-application-split-maximum-active-power runOnChange:false endDelimiter:;
 --preconditions onFail:MARK_RAN
---precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = 'flex' AND table_name = 'service_providing_group_product_application' AND column_name = 'maximum_active_power_up'
+--precondition-sql-check expectedResult:1 SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = 'flex' AND table_name = 'service_providing_group_product_application' AND column_name = 'maximum_active_power'
 ALTER TABLE flex.service_providing_group_product_application
 DISABLE TRIGGER USER;
 
