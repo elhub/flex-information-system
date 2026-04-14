@@ -1,6 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
-import kotlin.Int
+import kotlin.Long
 import kotlin.String
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -19,7 +19,7 @@ public data class ServiceProvidingGroupCreateRequest(
    * Reference to the `party` (service provider) managing the group.
    */
   @SerialName("service_provider_id")
-  public val serviceProviderId: Int,
+  public val serviceProviderId: Long,
   /**
    * The bidding zone that restricts which CUs that can be added to the group. Also known as
    * scheduling area or price area for TSO.

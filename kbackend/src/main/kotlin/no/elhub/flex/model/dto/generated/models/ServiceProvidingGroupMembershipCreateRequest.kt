@@ -1,6 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
-import kotlin.Int
+import kotlin.Long
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -15,12 +15,12 @@ public data class ServiceProvidingGroupMembershipCreateRequest(
    * Reference to the controllable unit this relation links to a service providing group.
    */
   @SerialName("controllable_unit_id")
-  public val controllableUnitId: Int,
+  public val controllableUnitId: Long,
   /**
    * Reference to the service providing group this relation links to a controllable unit.
    */
   @SerialName("service_providing_group_id")
-  public val serviceProvidingGroupId: Int,
+  public val serviceProvidingGroupId: Long,
   /**
    * The date from which the relation between the controllable unit and the service providing group
    * is valid. Midnight aligned on Norwegian timezone.

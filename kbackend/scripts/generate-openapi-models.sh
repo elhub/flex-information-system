@@ -18,6 +18,7 @@ set -euo pipefail
 #   - allOf: [$ref] (single entry) collapsed to a direct $ref (OAS 3.1 pattern
 #     for a $ref with sibling constraints; Kaizen resolves this as String without
 #     the fix)
+#   - format: "bigint" rewritten to format: "int64" so Fabrikt maps the field to kotlin.Long
 
 topdir="$(git rev-parse --show-toplevel)"
 source_spec="backend/data/static/openapi.json"
@@ -84,6 +85,10 @@ def fix_node(obj):
             obj["$ref"] = all_of[0]["$ref"]
             if nullable is not None:
                 obj["nullable"] = nullable
+
+        # 8. Rewrite format: "bigint" to format: "int64" so Fabrikt maps the field to kotlin.Long.
+        if obj.get("format") == "bigint":
+            obj["format"] = "int64"
 
         for v in obj.values():
             fix_node(v)

@@ -1,6 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
-import kotlin.Int
+import kotlin.Long
 import kotlin.String
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
@@ -15,17 +15,17 @@ public data class ServiceProvidingGroupProductApplicationCommentHistoryResponse(
    * Unique surrogate identifier.
    */
   @SerialName("id")
-  public val id: Int? = null,
+  public val id: Long? = null,
   /**
    * Reference to the service providing group product application.
    */
   @SerialName("service_providing_group_product_application_id")
-  public val serviceProvidingGroupProductApplicationId: Int,
+  public val serviceProvidingGroupProductApplicationId: Long,
   /**
    * Reference to the identity that created the comment.
    */
   @SerialName("created_by")
-  public val createdBy: Int? = null,
+  public val createdBy: Long? = null,
   /**
    * When the comment was added to the SPGPA.
    */
@@ -50,17 +50,17 @@ public data class ServiceProvidingGroupProductApplicationCommentHistoryResponse(
    * The identity that recorded the resource.
    */
   @SerialName("recorded_by")
-  public val recordedBy: Int? = null,
+  public val recordedBy: Long? = null,
   /**
    * Reference to the resource that was updated.
    */
   @SerialName("service_providing_group_product_application_comment_id")
-  public val serviceProvidingGroupProductApplicationCommentId: Int,
+  public val serviceProvidingGroupProductApplicationCommentId: Long,
   /**
    * The identity that updated the resource when it was replaced.
    */
   @SerialName("replaced_by")
-  public val replacedBy: Int? = null,
+  public val replacedBy: Long? = null,
   /**
    * When the resource was replaced in the system.
    */

@@ -67,7 +67,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) {
                         mockAccountingPointService.checkEndUserMatchesAccountingPoint(endUserBusinessId, accountingPointBusinessId)
                     }
-                } returns 7.right()
+                } returns 7L.right()
                 coEvery {
                     with(any<FlexPrincipal>()) {
                         mockAccountingPointService.getAccountingPointByBusinessId(accountingPointBusinessId)
@@ -100,7 +100,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) {
                         mockAccountingPointService.checkEndUserMatchesAccountingPoint(endUserBusinessId, accountingPointBusinessId)
                     }
-                } returns 7.right()
+                } returns 7L.right()
                 coEvery {
                     with(any<FlexPrincipal>()) {
                         mockAccountingPointService.getAccountingPointByBusinessId(accountingPointBusinessId)
@@ -156,7 +156,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) {
                         mockAccountingPointService.checkEndUserMatchesAccountingPoint(endUserBusinessId, accountingPointBusinessId)
                     }
-                } returns 7.right()
+                } returns 7L.right()
                 coEvery {
                     with(any<FlexPrincipal>()) {
                         mockAccountingPointService.getAccountingPointByBusinessId(accountingPointBusinessId)
@@ -290,7 +290,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) {
                         mockAccountingPointService.checkEndUserMatchesAccountingPoint(endUserBusinessId, accountingPointBusinessId)
                     }
-                } returns 7.right()
+                } returns 7L.right()
                 coEvery {
                     with(any<FlexPrincipal>()) {
                         mockAccountingPointService.getAccountingPointByBusinessId(accountingPointBusinessId)
@@ -323,7 +323,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) {
                         mockAccountingPointService.checkEndUserMatchesAccountingPoint(endUserBusinessId, accountingPointBusinessId)
                     }
-                } returns 7.right()
+                } returns 7L.right()
                 coEvery {
                     with(any<FlexPrincipal>()) {
                         mockAccountingPointService.getAccountingPointByBusinessId(accountingPointBusinessId)
@@ -357,7 +357,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) {
                         mockAccountingPointService.checkEndUserMatchesAccountingPoint(endUserBusinessId, accountingPointBusinessId)
                     }
-                } returns 7.right()
+                } returns 7L.right()
                 coEvery {
                     with(any<FlexPrincipal>()) {
                         mockAccountingPointService.getAccountingPointByBusinessId(accountingPointBusinessId)
@@ -408,7 +408,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) {
                         mockAccountingPointService.checkEndUserMatchesAccountingPoint(endUserBusinessId, accountingPointBusinessId)
                     }
-                } returns 7.right()
+                } returns 7L.right()
                 coEvery {
                     with(any<FlexPrincipal>()) {
                         mockAccountingPointService.getAccountingPointByBusinessId(accountingPointBusinessId)

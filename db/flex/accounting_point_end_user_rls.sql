@@ -26,3 +26,10 @@ USING (true);
 -- (but we do not define policies, so selects will yield 0 rows anyway)
 GRANT SELECT ON accounting_point_end_user
 TO flex_common;
+
+GRANT INSERT, SELECT, UPDATE, DELETE ON accounting_point_end_user TO flex_internal_data;
+CREATE POLICY "APEU_INTERNAL_DATA"
+ON accounting_point_end_user
+FOR ALL
+TO flex_internal_data
+USING (true);

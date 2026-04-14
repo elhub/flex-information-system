@@ -1,7 +1,7 @@
 package no.elhub.flex.model.dto.generated.models
 
 import java.math.BigDecimal
-import kotlin.Int
+import kotlin.Long
 import kotlin.String
 import kotlin.collections.List
 import kotlin.time.Instant
@@ -19,22 +19,22 @@ public data class ServiceProvidingGroupProductApplicationResponse(
    * Unique surrogate identifier.
    */
   @SerialName("id")
-  public val id: Int? = null,
+  public val id: Long? = null,
   /**
    * Reference to the service providing group.
    */
   @SerialName("service_providing_group_id")
-  public val serviceProvidingGroupId: Int,
+  public val serviceProvidingGroupId: Long,
   /**
    * Reference to the procuring system operator.
    */
   @SerialName("procuring_system_operator_id")
-  public val procuringSystemOperatorId: Int,
+  public val procuringSystemOperatorId: Long,
   /**
    * References to the product types.
    */
   @SerialName("product_type_ids")
-  public val productTypeIds: List<Int>,
+  public val productTypeIds: List<Long>,
   /**
    * The status of the application.
    */
@@ -71,5 +71,5 @@ public data class ServiceProvidingGroupProductApplicationResponse(
    * The identity that recorded the resource.
    */
   @SerialName("recorded_by")
-  public val recordedBy: Int? = null,
+  public val recordedBy: Long? = null,
 )

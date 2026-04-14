@@ -1,6 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
-import kotlin.Int
+import kotlin.Long
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -14,18 +14,18 @@ public data class ServiceProvidingGroupGridPrequalificationResponse(
    * Unique surrogate key.
    */
   @SerialName("id")
-  public val id: Int? = null,
+  public val id: Long? = null,
   /**
    * Reference to the service providing group whose grid prequalification is tracked by the current
    * resource.
    */
   @SerialName("service_providing_group_id")
-  public val serviceProvidingGroupId: Int,
+  public val serviceProvidingGroupId: Long,
   /**
    * Reference to the `party` that is the impacted system operator.
    */
   @SerialName("impacted_system_operator_id")
-  public val impactedSystemOperatorId: Int,
+  public val impactedSystemOperatorId: Long,
   /**
    * The status of the grid prequalification for this service providing group.
    */
@@ -45,5 +45,5 @@ public data class ServiceProvidingGroupGridPrequalificationResponse(
    * The identity that recorded the resource.
    */
   @SerialName("recorded_by")
-  public val recordedBy: Int? = null,
+  public val recordedBy: Long? = null,
 )

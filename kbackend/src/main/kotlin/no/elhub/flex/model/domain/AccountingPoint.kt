@@ -6,4 +6,4 @@ package no.elhub.flex.model.domain
  * @property id surrogate primary key
  * @property businessId GSRN identifier
  */
-data class AccountingPoint(val id: Int, val businessId: String)
+data class AccountingPoint(val id: Long, val businessId: String)

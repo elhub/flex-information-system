@@ -9,4 +9,4 @@ To spin it up, run the following command in the root of the repository:
 ```
 
 You can then access the API at
-[http://127.0.0.1:8080/accounting_point/133700000000020068](http://127.0.0.1:8080/accounting_point/133700000000020068)
+[http://127.0.0.1:5001/accounting_point/133700000000020068](http://127.0.0.1:5001/accounting_point/133700000000020068)

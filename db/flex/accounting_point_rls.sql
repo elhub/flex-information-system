@@ -21,12 +21,6 @@ FOR SELECT
 TO flex_internal_event_notification
 USING (true);
 
-GRANT SELECT ON accounting_point TO flex_internal_data;
-CREATE POLICY "AP_INTERNAL_DATA" ON accounting_point
-FOR SELECT
-TO flex_internal_data
-USING (true);
-
 -- RLS: AP-COM001
 GRANT SELECT ON accounting_point TO flex_common;
 CREATE POLICY "AP_COM001"
@@ -34,3 +28,12 @@ ON accounting_point
 FOR SELECT
 TO flex_common
 USING (true);
+
+GRANT INSERT, SELECT, UPDATE, DELETE ON accounting_point TO flex_internal_data;
+CREATE POLICY "AP_INTERNAL_DATA"
+ON accounting_point
+FOR ALL
+TO flex_internal_data
+USING (true);
+
+GRANT SELECT, UPDATE, DELETE ON accounting_point_sync TO flex_internal_data;

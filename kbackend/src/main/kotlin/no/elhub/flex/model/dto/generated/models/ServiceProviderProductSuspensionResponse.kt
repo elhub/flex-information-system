@@ -1,6 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
-import kotlin.Int
+import kotlin.Long
 import kotlin.collections.List
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
@@ -16,22 +16,22 @@ public data class ServiceProviderProductSuspensionResponse(
    * Unique surrogate identifier.
    */
   @SerialName("id")
-  public val id: Int? = null,
+  public val id: Long? = null,
   /**
    * Reference to the procuring system operator suspending the service provider.
    */
   @SerialName("procuring_system_operator_id")
-  public val procuringSystemOperatorId: Int,
+  public val procuringSystemOperatorId: Long,
   /**
    * Reference to the service provider being suspended.
    */
   @SerialName("service_provider_id")
-  public val serviceProviderId: Int,
+  public val serviceProviderId: Long,
   /**
    * References to the suspended product types.
    */
   @SerialName("product_type_ids")
-  public val productTypeIds: List<Int>,
+  public val productTypeIds: List<Long>,
   /**
    * The reason for the suspension.
    */
@@ -46,5 +46,5 @@ public data class ServiceProviderProductSuspensionResponse(
    * The identity that recorded the resource.
    */
   @SerialName("recorded_by")
-  public val recordedBy: Int? = null,
+  public val recordedBy: Long? = null,
 )
