@@ -8,7 +8,6 @@ import (
 	"flex/auth"
 	"flex/auth/scope"
 	"flex/data/models"
-	"flex/internal/gs1"
 	"flex/internal/middleware"
 	"flex/internal/openapi"
 	"flex/internal/validate"
@@ -39,6 +38,7 @@ type MeteringPointDatahubService interface {
 // api gathers handlers for all endpoints of the data API.
 type api struct {
 	postgRESTURL *url.URL
+	kbackendURL  *url.URL
 	db           *pgpool.Pool
 	ctxKey       string
 	mux          *http.ServeMux
@@ -54,6 +54,7 @@ var _ http.Handler = &api{} //nolint:exhaustruct
 func NewAPIHandler(
 	baseURL string,
 	postgRESTUpstream string,
+	kbackendUpstream string,
 	db *pgpool.Pool,
 	ctxKey string,
 	meteringPointDatahubService MeteringPointDatahubService,
@@ -63,10 +64,16 @@ func NewAPIHandler(
 		return nil, fmt.Errorf("invalid PostgREST URL: %w", err)
 	}
 
+	kbackendURL, err := url.Parse(kbackendUpstream)
+	if err != nil {
+		return nil, fmt.Errorf("invalid kbackend URL: %w", err)
+	}
+
 	mux := http.NewServeMux()
 
 	data := &api{
 		postgRESTURL:                postgRESTURL,
+		kbackendURL:                 kbackendURL,
 		db:                          db,
 		mux:                         mux,
 		ctxKey:                      ctxKey,
@@ -82,10 +89,10 @@ func NewAPIHandler(
 		"Flex Data API",
 	))
 
-	// controllable unit lookup
-	mux.Handle(
+	// controllable unit lookup — reverse-proxied to the Kotlin backend
+	mux.HandleFunc(
 		"POST /controllable_unit/lookup",
-		auth.CheckScope(scope.Scope{Verb: scope.Use, Asset: "data:controllable_unit:lookup"}, http.HandlerFunc(data.controllableUnitLookupHandler)),
+		data.kbackendProxyHandler,
 	)
 
 	// entity lookup
@@ -333,264 +340,31 @@ func (data *api) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	data.mux.ServeHTTP(w, req)
 }
 
-//nolint:funlen,cyclop
-func (data *api) controllableUnitLookupHandler(
-	w http.ResponseWriter, req *http.Request,
-) {
-	ctx := req.Context()
+func (data *api) kbackendProxyHandler(w http.ResponseWriter, req *http.Request) {
+	proxy := &httputil.ReverseProxy{ //nolint:exhaustruct
+		Rewrite: func(pr *httputil.ProxyRequest) {
+			pr.Out.URL.Scheme = data.kbackendURL.Scheme
+			pr.Out.URL.Host = data.kbackendURL.Host
+			pr.Out.URL.Path = req.URL.Path
+			pr.Out.Host = data.kbackendURL.Host
 
-	rd, err := auth.RequestDetailsFromContextKey(ctx, data.ctxKey)
-	if err != nil {
-		slog.ErrorContext(ctx, "no request details in context", "error", err)
-		writeInternalServerError(w)
+			// Forward Authorization and Content-Type headers.
+			pr.Out.Header.Set("Authorization", req.Header.Get("Authorization"))
+			pr.Out.Header.Set("Content-Type", req.Header.Get("Content-Type"))
 
-		return
-	}
-
-	allowedRoles := []string{
-		"flex_service_provider",
-		"flex_flexibility_information_system_operator",
-	}
-
-	if !slices.Contains(allowedRoles, rd.Role()) {
-		writeErrorToResponseWriter(w, http.StatusUnauthorized, errorMessage{ //nolint:exhaustruct
-			Message: "user cannot perform this operation",
-		})
-
-		return
-	}
-
-	var cuLookupRequestBody controllableUnitLookupRequest
-	if err = json.NewDecoder(req.Body).Decode(&cuLookupRequestBody); err != nil {
-		slog.ErrorContext(ctx, "could not read request body", "error", err)
-		writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
-			Message: "ill formed request body",
-		})
-
-		return
-	}
-
-	errorMsg := controllableUnitLookupValidateInput(&cuLookupRequestBody)
-	if errorMsg != nil {
-		writeErrorToResponseWriter(w, http.StatusBadRequest, *errorMsg)
-		return
-	}
-
-	endUserBusinessID := *cuLookupRequestBody.EndUserBusinessID
-	controllableUnitBusinessID := *cuLookupRequestBody.ControllableUnitBusinessID
-	accountingPointBusinessID := *cuLookupRequestBody.AccountingPointBusinessID
-
-	tx, err := data.db.Begin(ctx)
-	if err != nil {
-		slog.ErrorContext(ctx, "could not start transaction", "error", err)
-		writeInternalServerError(w)
-
-		return
-	}
-	defer tx.Rollback(ctx)
-
-	queries := models.New(tx)
-
-	var accountingPointID int
-
-	// try to get accounting point data from database
-
-	accountingPointFoundInDatabase := false
-
-	if controllableUnitBusinessID != "" {
-		currentAP, err := queries.GetCurrentControllableUnitAccountingPoint(
-			ctx, controllableUnitBusinessID,
-		)
-		if err != nil {
-			slog.InfoContext(
-				ctx, "controllable unit does not exist",
-				"business_id", controllableUnitBusinessID,
-			)
-			writeErrorToResponseWriter(w, http.StatusNotFound, errorMessage{ //nolint:exhaustruct
-				Message: "controllable unit does not exist",
-			})
-
-			return
-		}
-
-		accountingPointID = currentAP.AccountingPointID
-		accountingPointBusinessID = currentAP.AccountingPointBusinessID
-		accountingPointFoundInDatabase = true
-	} else {
-		apID, err := queries.GetAccountingPointIDFromBusinessID(
-			ctx, accountingPointBusinessID,
-		)
-		if err != nil {
-			slog.InfoContext(
-				ctx, "accounting point does not exist in database",
-				"business_id", accountingPointBusinessID,
-			)
-		} else {
-			accountingPointID = apID
-			accountingPointFoundInDatabase = true
-		}
-	}
-
-	// not found in the database, need to sync some data from the outside
-	if !accountingPointFoundInDatabase {
-		if data.meteringPointDatahubService == nil {
-			writeErrorToResponseWriter(w, http.StatusNotFound, errorMessage{ //nolint:exhaustruct
-				Message: "accounting point does not exist",
-			})
-
-			return
-		}
-
-		meteringGridAreaBusinessID, err := data.meteringPointDatahubService.FetchAccountingPointMeteringGridArea(
-			ctx, accountingPointBusinessID,
-		)
-		if err != nil {
-			slog.ErrorContext(
-				ctx, "accounting point does not exist in datahub",
-				"business_id", accountingPointBusinessID,
-				"error", err,
-			)
-			writeErrorToResponseWriter(w, http.StatusNotFound, errorMessage{ //nolint:exhaustruct
-				Message: "accounting point does not exist",
-			})
-
-			return
-		}
-
-		// the AP exists, we can complete the database when data is missing
-		apID, err := queries.ControllableUnitLookupSyncAccountingPoint(
-			ctx,
-			accountingPointBusinessID,
-			meteringGridAreaBusinessID,
-			endUserBusinessID,
-		)
-		if err != nil {
-			slog.ErrorContext(
-				ctx, "failed accounting point sync",
-				"business_id", accountingPointBusinessID,
-				"metering_grid_area_business_id", meteringGridAreaBusinessID,
-				"end_user_business_id", endUserBusinessID,
-				"error", err,
-			)
+			// Forward the session cookie if present (the Kotlin backend
+			// also supports cookie-based authentication).
+			if cookie := req.Header.Get("Cookie"); cookie != "" {
+				pr.Out.Header.Set("Cookie", cookie)
+			}
+		},
+		ErrorHandler: func(w http.ResponseWriter, _ *http.Request, err error) {
+			slog.ErrorContext(req.Context(), "kbackend proxy error", "error", err)
 			writeInternalServerError(w)
-			return
-		}
-		accountingPointID = apID
+		},
 	}
 
-	// check end user matches and get their ID
-
-	endUserID, err := queries.ControllableUnitLookupCheckEndUserMatchesAccountingPoint(
-		ctx, endUserBusinessID, accountingPointBusinessID,
-	)
-	if err != nil {
-		writeErrorToResponseWriter(w, http.StatusForbidden, errorMessage{ //nolint:exhaustruct
-			Message: "end user does not match accounting point / controllable unit",
-		})
-
-		return
-	}
-
-	// get controllable unit(s)
-
-	controllableUnits, err := queries.ControllableUnitLookup(
-		ctx,
-		controllableUnitBusinessID,
-		accountingPointBusinessID,
-	)
-	if err != nil {
-		slog.ErrorContext(ctx, "CU lookup query failed", "error", err)
-		writeInternalServerError(w)
-
-		return
-	}
-
-	if err = tx.Commit(ctx); err != nil {
-		slog.ErrorContext(ctx, "could not commit CU lookup transaction", "error", err)
-		writeInternalServerError(w)
-
-		return
-	}
-
-	// build response from all the data
-
-	reformattedCULookup, err := ReformatControllableUnitLookupResult(
-		accountingPointID, accountingPointBusinessID, endUserID, controllableUnits,
-	)
-	if err != nil {
-		slog.ErrorContext(
-			ctx, "could not reformat controllable unit lookup result", "error", err,
-		)
-		writeInternalServerError(w)
-
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-
-	body, _ := json.Marshal(reformattedCULookup)
-	w.Write(body)
-}
-
-// controllableUnitLookupValidateInput checks that the given fields in the CU
-// lookup request body respect the OpenAPI specification of fields. At this
-// point, we just check the general format for HTTP 400 errors, regardless of
-// whether the values have meaning in the database.
-func controllableUnitLookupValidateInput( //nolint:cyclop
-	cuLookupRequestBody *controllableUnitLookupRequest,
-) *errorMessage {
-	endUserBusinessID := ""
-	if cuLookupRequestBody.EndUserBusinessID != nil {
-		endUserBusinessID = *cuLookupRequestBody.EndUserBusinessID
-	}
-
-	if endUserBusinessID == "" {
-		return &errorMessage{Message: "missing end user business ID"} //nolint:exhaustruct
-	}
-
-	regexEndUserBusinessID := regexp.MustCompile("^[1-9]([0-9]{8}|[0-9]{10})$")
-	if !regexEndUserBusinessID.MatchString(endUserBusinessID) {
-		return &errorMessage{Message: "ill formed end user business ID"} //nolint:exhaustruct
-	}
-
-	controllableUnitBusinessID := ""
-	if cuLookupRequestBody.ControllableUnitBusinessID != nil {
-		controllableUnitBusinessID = *cuLookupRequestBody.ControllableUnitBusinessID
-
-		regexControllableUnitBusinessID := regexp.MustCompile("^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$")
-		if !regexControllableUnitBusinessID.MatchString(controllableUnitBusinessID) {
-			return &errorMessage{Message: "ill formed controllable unit business ID"} //nolint:exhaustruct
-		}
-	}
-
-	accountingPointBusinessID := ""
-	if cuLookupRequestBody.AccountingPointBusinessID != nil {
-		accountingPointBusinessID = *cuLookupRequestBody.AccountingPointBusinessID
-	}
-
-	if accountingPointBusinessID == "" && controllableUnitBusinessID == "" {
-		return &errorMessage{ //nolint:exhaustruct
-			Message: "missing business ID for accounting point or controllable unit",
-		}
-	}
-
-	if accountingPointBusinessID != "" && controllableUnitBusinessID != "" {
-		return &errorMessage{ //nolint:exhaustruct
-			Message: "request contains business IDs for both accounting point and controllable unit",
-		}
-	}
-
-	if accountingPointBusinessID != "" && !gs1.IsValidGSRN(accountingPointBusinessID) {
-		return &errorMessage{Message: "ill formed accounting point business ID"} //nolint:exhaustruct
-	}
-
-	// no nil pointers so we can trust the (now validated) input for the rest of
-	// the CU lookup process
-	cuLookupRequestBody.EndUserBusinessID = &endUserBusinessID
-	cuLookupRequestBody.ControllableUnitBusinessID = &controllableUnitBusinessID
-	cuLookupRequestBody.AccountingPointBusinessID = &accountingPointBusinessID
-
-	return nil
+	proxy.ServeHTTP(w, req)
 }
 
 // writeErrorToResponseWriter writes an error message as JSON in the response

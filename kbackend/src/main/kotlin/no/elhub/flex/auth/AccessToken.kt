@@ -6,8 +6,6 @@ import arrow.core.raise.ensure
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.exceptions.JWTVerificationException
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
 import java.util.Date
 
 /**
@@ -20,13 +18,12 @@ import java.util.Date
  * @property scope the list of granted scopes
  * @property exp the expiry time as a Unix timestamp (seconds)
  */
-@Serializable
 data class AccessToken(
-    @SerialName("entity_id") val entityId: Int,
-    @SerialName("eid") val extId: String,
-    @SerialName("party_id") val partyId: Int = 0,
+    val entityId: Int,
+    val extId: String,
+    val partyId: Int = 0,
     val role: String,
-    val scope: List<String>,
+    val scope: List<Scope>,
     val exp: Long,
 ) {
     /** Returns true when the token's expiry time is in the past. */
@@ -67,6 +64,7 @@ data class AccessToken(
                     ?: raise(InvalidTokenError("missing role claim"))
                 val scope = decoded.getClaim("scope").asString()
                     ?.split(" ")
+                    ?.mapNotNull { Scope.fromString(it) }
                     ?: raise(InvalidTokenError("missing scope claim"))
                 val exp = decoded.expiresAt?.time?.div(MILLIS_PER_SECOND)
                     ?: raise(InvalidTokenError("missing exp claim"))
