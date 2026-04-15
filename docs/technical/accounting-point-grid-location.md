@@ -135,7 +135,7 @@ This is how we derive the geometry.
 | Line           | LineString    | Line from center to center of to/from Substations. Center is the average of the SubstationPart locations. |
 
 This allows us to display the three things. Shown in the example below. The
-example shows two main substations. One has three childs and a few connecting
+example shows two main substations. One has three children and a few connecting
 lines. The other one has just one and no connections. This should of course be
 displayed on top of a map.
 
