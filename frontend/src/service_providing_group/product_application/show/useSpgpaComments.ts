@@ -5,13 +5,14 @@ import {
   listIdentity,
   listServiceProvidingGroupProductApplicationComment,
 } from "../../../generated-client";
+import type { ServiceProvidingGroupProductApplicationCommentVisibility } from "../../../generated-client/types.gen";
 import { throwOnError } from "../../../util";
 
 export type CommentRow = {
   id: number;
   authorId: number;
   content: string;
-  visibility: "same_party" | "any_involved_party";
+  visibility: ServiceProvidingGroupProductApplicationCommentVisibility;
   createdAt: string;
   authorName: string;
   authorParty: string;
@@ -21,10 +22,13 @@ export type CommentRow = {
 
 export type PostCommentInput = {
   content: string;
-  visibility: "same_party" | "any_involved_party";
+  visibility: ServiceProvidingGroupProductApplicationCommentVisibility;
 };
 
-const spgpaCommentsQueryKey = (spgpaId: number) => ["spgpa_comments", spgpaId];
+const spgpaCommentsQueryKey = (
+  spgpaId: number,
+  entityId: number | undefined,
+) => ["spgpa_comments", spgpaId, entityId];
 
 function deriveInitials(name: string): string {
   return name
@@ -73,14 +77,15 @@ async function fetchSpgpaComments(
   });
 }
 
-export function useSpgpaComments(spgpaId: number) {
+export function useSpgpaComments(spgpaId: number | undefined) {
   const queryClient = useQueryClient();
   const { data: identity } = useGetIdentity();
-  const currentEntityId = identity?.entityID as number | undefined;
+  const currentEntityId =
+    identity?.entityID !== undefined ? Number(identity.entityID) : undefined;
 
   const commentsQuery = useQuery({
-    queryKey: spgpaCommentsQueryKey(spgpaId),
-    queryFn: () => fetchSpgpaComments(spgpaId, currentEntityId),
+    queryKey: spgpaCommentsQueryKey(spgpaId ?? 0, currentEntityId),
+    queryFn: () => fetchSpgpaComments(spgpaId ?? 0, currentEntityId),
     enabled: !!spgpaId,
   });
 
@@ -88,14 +93,14 @@ export function useSpgpaComments(spgpaId: number) {
     mutationFn: ({ content, visibility }: PostCommentInput) =>
       createServiceProvidingGroupProductApplicationComment({
         body: {
-          service_providing_group_product_application_id: spgpaId,
+          service_providing_group_product_application_id: spgpaId ?? 0,
           content,
           visibility,
         },
       }).then(throwOnError),
     onSettled: () =>
       queryClient.invalidateQueries({
-        queryKey: spgpaCommentsQueryKey(spgpaId),
+        queryKey: spgpaCommentsQueryKey(spgpaId ?? 0, currentEntityId),
       }),
   });
 
