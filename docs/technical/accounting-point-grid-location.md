@@ -231,7 +231,7 @@ The table shows that the priority order of the source is `grid_model` > `cso` >
 Since we know the geographical location of the accounting point and substations,
 we can make an educated guess on the grid location.
 
-The first implementation just pick the closest. But we assume that we will
+The first implementation just picks the closest. But we assume that we will
 create more elaborate strategies once we see it in action.
 
 ## Example user interface
