@@ -10,6 +10,7 @@ import no.elhub.flex.model.domain.AccountingPoint
 import no.elhub.flex.model.domain.AccountingPointEndUser
 import no.elhub.flex.model.domain.AccountingPointEnergySupplier
 import no.elhub.flex.model.domain.db.DatabaseError
+import no.elhub.flex.model.domain.db.NoMatchError
 import no.elhub.flex.model.domain.db.NotFoundError
 import no.elhub.flex.util.gs1CheckDigit
 import no.elhub.flex.util.toKotlinInstant
@@ -124,7 +125,7 @@ class AccountingPointRepositoryTest : FunSpec({
             result shouldBe expectedEndUser
         }
 
-        test("returns NotFoundError when end user does not match accounting point") {
+        test("returns NoMatchError when end user does not match accounting point") {
             // given
             val targetApBusinessId = uniqueGsrn()
             val linkedEntityBusinessId = uniquePid()
@@ -139,10 +140,12 @@ class AccountingPointRepositoryTest : FunSpec({
             }
 
             // then
-            result.shouldBeLeft() shouldBe NotFoundError("End user does not match accounting point / controllable unit")
+            (result.shouldBeLeft() is NoMatchError) shouldBe true
         }
 
-        test("returns NotFoundError when accounting point does not exist") {
+        // the SQL function does not distinguish the cases so we always return 'no match', but the following case should
+        // not happen because a missing accounting point should be caught earlier in the handler (before calling this)
+        test("returns NoMatchError when accounting point does not exist") {
             // given
             val noiseApId = insertAccountingPoint(uniqueGsrn())
             linkApToEndUser(noiseApId, insertEndUserParty(uniquePid()))
@@ -153,7 +156,7 @@ class AccountingPointRepositoryTest : FunSpec({
             }
 
             // then
-            result.shouldBeLeft() shouldBe NotFoundError("End user does not match accounting point / controllable unit")
+            (result.shouldBeLeft() is NoMatchError) shouldBe true
         }
     }
 

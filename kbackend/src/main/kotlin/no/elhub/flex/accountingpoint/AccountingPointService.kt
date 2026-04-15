@@ -14,6 +14,7 @@ import no.elhub.flex.model.domain.AccountingPoint
 import no.elhub.flex.model.domain.AccountingPointEndUser
 import no.elhub.flex.model.domain.AccountingPointEnergySupplier
 import no.elhub.flex.model.domain.db.LockTimeoutError
+import no.elhub.flex.model.domain.db.NoMatchError
 import no.elhub.flex.model.domain.db.NotFoundError
 import no.elhub.flex.model.domain.db.RepositoryError
 import no.elhub.flex.model.error.AppError
@@ -80,11 +81,17 @@ class AccountingPointServiceImpl(
         validFrom: Instant
     ): Either<AppError, Unit> = fetchAccountingPointData(accountingPointBusinessId, validFrom)
         .fold(
-            ifLeft = {
-                logger.warn { "Failed to fetch accounting point data for $accountingPointBusinessId — skipping sync" }
-                Unit.right()
+            ifLeft = { e ->
+                if (e.code == HttpStatusCode.NotFound) {
+                    logger.warn { "Accounting point not found in adapter: $accountingPointBusinessId" }
+                    e.left()
+                } else {
+                    logger.warn { "Failed to fetch accounting point data for $accountingPointBusinessId — skipping sync" }
+                    Unit.right()
+                }
             },
             ifRight = { adapterAccountingPoint ->
+                logger.debug { "Raw data from adapter: $adapterAccountingPoint" }
                 with(FlexPrincipal.internalData()) {
                     flexTransaction { _ ->
                         either {
@@ -143,7 +150,8 @@ class AccountingPointServiceImpl(
         accountingPointBusinessId: String
     ): Either<AppError, Long> = accountingPointRepository.checkEndUserMatchesAccountingPoint(endUserBusinessId, accountingPointBusinessId).mapLeft { error ->
         when (error) {
-            is NotFoundError -> EndUserError("Accounting point not found")
+            is NotFoundError -> ResourceNotFoundError("Accounting point not found")
+            is NoMatchError -> EndUserError("End user does not match")
             else -> InternalServerError(traceIdOrUnknown())
         }
     }

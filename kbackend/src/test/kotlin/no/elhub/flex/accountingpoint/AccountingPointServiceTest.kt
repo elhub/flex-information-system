@@ -5,7 +5,9 @@ import arrow.core.right
 import io.kotest.assertions.arrow.core.shouldBeLeft
 import io.kotest.assertions.arrow.core.shouldBeRight
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
+import io.ktor.http.HttpStatusCode
 import io.mockk.clearMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -65,7 +67,7 @@ class AccountingPointServiceTest : FunSpec({
             coVerify(exactly = 0) { with(internalPrincipal) { mockRepo.insertAccountingPointIfNotExists(any()) } }
         }
 
-        test("adapter not-found is swallowed and returns Right(Unit)") {
+        test("adapter not-found is not swallowed") {
             // given
             coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns
                 NotFoundError(GSRN).left()
@@ -74,7 +76,7 @@ class AccountingPointServiceTest : FunSpec({
             val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM)
 
             // then
-            result.shouldBeRight()
+            result.shouldBeLeft().code shouldBe HttpStatusCode.NotFound
             coVerify(exactly = 0) { with(internalPrincipal) { mockRepo.insertAccountingPointIfNotExists(any()) } }
         }
 
