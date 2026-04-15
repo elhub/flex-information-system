@@ -82,7 +82,7 @@ based on Nemo.
 The `substation` resource is modelling
 [elb:SubstationPart](https://nemo.elbits.no/modell/Dokumentasjon/substationpart/)
 and [cim:Substation](https://nemo.elbits.no/modell/Dokumentasjon/substation/) as
-a single resource. This is based on a understanding that the substationpart as a
+a single resource. This is based on an understanding that the substationpart as a
 name/concept will not be used in future versions of a common grid model.
 
 We use substation kind and a foreign key to distinguish between the two. If the
