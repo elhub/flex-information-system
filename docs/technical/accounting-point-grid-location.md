@@ -10,7 +10,7 @@ is different from the geographical location, given as coordinates or address.
 Since a controllable unit is always "behind" an accounting point, the grid
 location on accounting point will give the location for the CUs as well.
 
-## Accouting point geographical location
+## Accounting point geographical location
 
 The accounting point geographical location is loaded as part of the [accounting
 point data sync](../accounting-point-data-sync.md). This location is used for
