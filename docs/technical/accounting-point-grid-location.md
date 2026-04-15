@@ -45,6 +45,27 @@ for grid connection requests that affects more than one grid owner. Tilko has
 been rolled out to allmost all of Norway as of writing this. We are taking a lot
 inspiration from Tilko in how we exchange grid location.
 
+### Accounting points in grid model
+
+Work is ongoing to add accounting points to the common grid model. This will be
+done in one of two ways:
+
+* combining the individual grid models of TSO and DSO and traversing the grid to
+  set location
+* DSOs doing the mapping in their NIS and exporting the grid location directly
+  for inclusion in the common grid model
+
+Once this is in place, this will become the authoritative source of grid
+location for accounting points. It is assumed that the information will be added
+gradually - system operator by system operator.
+
+Accounting points will point to the most specific point in the grid model as
+possible. This could be a substation, transformer or feeder.
+
+The flow of information can be visualised as follows.
+
+![Grid model data flow](../diagrams/grid-model-data-flow.drawio.png)
+
 ## Grid model service
 
 Grid model data will be made available as its own service in the flexibility register.
@@ -70,34 +91,34 @@ substation will also have a foreign key to its parent substation.
 
 The following fields exist on the substation resource
 
-| Field name             | Description                                                               | Nullable | Example                                   | Note                       |
-|------------------------|---------------------------------------------------------------------------|----------|-------------------------------------------|----------------------------|
-| id                     | Surrogate identifier                                                      | no       | 1234                                      |                            |
-| name                   | Name of the substation.                                                   | no       | Snilldal 1                                |                            |
-| business_id            | Business identifier for the substation - mRID                             | no       | 1234                                      |                            |
-| business_id_type       | Type of business identifier. Just `uuid`                                  | no       | uuid                                      |                            |
-| kind                   | Kind of substation. One of `coupling`, `junction`, `power`, `transformer` | yes      | coupling                                  |                            |
-| substation_id          | Foreign key to parent substation.                                         | yes      | 1234                                      |                            |
-| longitude              | Longitude of the substation.                                              | yes      | 10.1234                                   | Center for parent          |
-| latitude               | Latitude of the substation.                                               | yes      | 63.1234                                   | Center for parent          |
-| nominal_voltage_levels | List of voltage levels on the substation and parent. kV.                  | yes      | [22, 33]                                  | Extracted from BaseVoltage |
-| consessionaires        | Name and org number of the main consessionaires.                          | yes      | ["SønderEnergi Nett (987654321)"]         |                            |
-| geometry               | For displaying on a map. GeoJSON Polygon or Point.                        | yes      | See [GeoJSON Geometry](#geojson-geometry) |                            |
+| Field name             | Description                                          | Format                                         | Example                                   | Nullable | Note                       |
+|------------------------|------------------------------------------------------|------------------------------------------------|-------------------------------------------|----------|----------------------------|
+| id                     | Surrogate identifier                                 | Integer                                        | 1234                                      | no       |                            |
+| name                   | Name of the substation.                              | Free text                                      | Snilldal 1 KRA                            | no       |                            |
+| business_id            | Business identifier for the substation - mRID        | UUID                                           | 1234                                      | no       |                            |
+| business_id_type       | Type of business identifier.                         | `uuid`                                         | uuid                                      | no       |                            |
+| kind                   | Kind of substation                                   | `coupling`, `junction`, `power`, `transformer` | coupling                                  | yes      |                            |
+| substation_id          | Foreign key to parent substation.                    | Integer                                        | 1234                                      | yes      |                            |
+| longitude              | Longitude of the substation.                         | Numeric                                        | 10.1234                                   | yes      | Center for parent          |
+| latitude               | Latitude of the substation.                          | Numeric                                        | 63.1234                                   | yes      | Center for parent          |
+| nominal_voltage_levels | List of voltage levels on the substation and parent. | Array of numeric. kV with three decimals.      | [22, 33]                                  | yes      | Extracted from BaseVoltage |
+| consessionaires        | Name and org number of the main consessionaires.     | Array of free text                             | ["SønderEnergi Nett (987654321)"]         | yes      |                            |
+| geometry               | For displaying on a map. GeoJSON Polygon or Point.   | GeoJSON Polygon or Point                       | See [GeoJSON Geometry](#geojson-geometry) | yes      |                            |
 
 ### line
 
-| Field name           | Description                                      | Nullable | Example                                   | Note                       |
-|----------------------|--------------------------------------------------|----------|-------------------------------------------|----------------------------|
-| id                   | Surrogate identifier                             | no       | 1234                                      |                            |
-| name                 | Name of the line.                                | no       | Snilldal 1                                |                            |
-| business_id          | Business identifier for the line - mRID          | no       | 1234                                      |                            |
-| business_id_type     | Type of business identifier. Just `uuid`         | no       | uuid                                      |                            |
-| from_substation_id   | Foreign key to the substation the line starts at | no       | 1234                                      |                            |
-| from_nominal_voltage | Voltage level on the line. kV.                   | no       | 22                                        | Extracted from BaseVoltage |
-| to_substation_id     | Foreign key to the substation the line ends at   | no       | 1234                                      |                            |
-| to_nominal_voltage   | Voltage level on the line. kV.                   | no       | 22                                        | Extracted from BaseVoltage |
-| consessionaires      | Name and org number of the main consessionaires. | yes      | ["SønderEnergi Nett (987654321)"]         |                            |
-| geometry             | For displaying on a map. GeoJSON LineString.     | yes      | See [GeoJSON Geometry](#geojson-geometry) |                            |
+| Field name           | Description                                      | Format             | Example                                   | Nullable | Note                       |
+|----------------------|--------------------------------------------------|--------------------|-------------------------------------------|----------|----------------------------|
+| id                   | Surrogate identifier                             | Integer            | 1234                                      | no       |                            |
+| name                 | Name of the line.                                | Free text          | Snilldal-Høyeng                           | no       |                            |
+| business_id          | Business identifier for the line - mRID          | UUID               | 1234                                      | no       |                            |
+| business_id_type     | Type of business identifier. Just `uuid`         | `uuid`             | uuid                                      | no       |                            |
+| from_substation_id   | Foreign key to the substation the line starts at | Integer            | 1234                                      | no       |                            |
+| from_nominal_voltage | Voltage level on the line. kV.                   | Numeric            | 22                                        | no       | Extracted from BaseVoltage |
+| to_substation_id     | Foreign key to the substation the line ends at   | Integer            | 1234                                      | no       |                            |
+| to_nominal_voltage   | Voltage level on the line. kV.                   | Numeric            | 22                                        | no       | Extracted from BaseVoltage |
+| consessionaires      | Name and org number of the main consessionaires. | Array of free text | ["SønderEnergi Nett (987654321)"]         | yes      |                            |
+| geometry             | For displaying on a map. GeoJSON LineString.     | GeoJSON LineString | See [GeoJSON Geometry](#geojson-geometry) | yes      |                            |
 
 ### GeoJSON Geometry
 
@@ -135,42 +156,70 @@ automatic strategy.
 Resources that we have previously loaded but is now not present in the current
 load will be soft-deleted using a specific field on the resources.
 
-## Location = Substation + Voltage level
+## Location = Grid model reference + Voltage level
 
 The grid owners registers the electrical grid location of an accounting point.
+The location should be given as a reference to the common grid model. The
+reference should also be given to the most specific point in the grid as
+available.
+
 The information is given in a dedicated resource
 `accounting_point_grid_location` containing the following fields.
 
 > [!NOTE]
 >
-> We are using business id here on purpose. This is because we believe that in
-> general system operators will communicate grid location directly, using NEMO
-> as reference, not the FIS surrogate keys.
+> We are using business ids and free text names here on purpose. This is because
+> we believe that in general system operators will communicate grid location
+> directly, using NEMO as reference. Using FIS surrogate keys is not recommended
+> in this context.
 
-* `substation_name` - the name of the substation - free text
-* `substation_business_id` - the business ID (mRID) of the substation,
-  referencing national grid model
-* `transformer_name` - the name of the transformer - free text
-* `transformer_business_id` - the business ID (mRID) of the transformer,
-  referencing national grid model
-* `nominal_voltage` - voltage level in kV
-* `additional_information` - free text field
-* `determined_by` - Who the grid location was
-  determined by. One of `cso`, `iso`, `system`
-* `quality` - the quality of the grid location
-  registration - One of `confirmed` or `guessed`
+| Field name               | Description                                        | Format                               | Example        | Nullable | Note |
+|--------------------------|----------------------------------------------------|--------------------------------------|----------------|----------|------|
+| `grid_model_type`        | The type of object in the grid model               | `substation`, `transformer`          | substation     | no       |      |
+| `grid_model_business_id` | Business ID (mRID) referencing national grid model | UUID                                 | 1234           | no       |      |
+| `grid_model_name`        | Name of the grid model object                      | Free text                            | Snilldal 1 KRA | no       |      |
+| `nominal_voltage`        | Voltage level in kV                                | Numeric value                        | 22             | no       |      |
+| `additional_information` | Additional information about the grid location     | Free text                            |                | yes      |      |
+| `source`                 | Who the grid location was determined by            | `cso`, `iso`, `grid_model`, `system` | cso            | no       |      |
+| `quality`                | The quality of the grid location registration      | `confirmed`, `guessed`               | confirmed      | no       |      |
 
-Registering the grid location of the accounting point is done by system
-operators. The connecting system operator (CSO) is responsible for registering
-and updating the grid location.
+### Location source
 
-A PSO can also register the grid location, but only if it is missing or the
-current information is determined by system or by impacted system operator
-(ISO).
+As seen by the `source` field in the table above, we also want to keep track of
+how the grid location was determined. The enum values are as follows.
+
+* `cso` - registered by connecting system operator (CSO)
+* `iso` - registered by impacted system operator (ISO)
+* `grid_model` - given from common/national grid model
+* `system` - (guessed) by the flexibility information system
+
+The CSO is responsible for registering and updating the grid location. This is
+done directly in the flexibility register or via the national grid model.
+
+A impacted system operator (ISO) can also register the grid location, but only
+if it is missing or the current information is determined by system or guessed
+by another impacted system operator (ISO). The purpose of this is to allow the
+ISO to improve on system-guessed location while waiting for confirmation from
+the CSO. The procuring system operator (PSO) is considered to be a ISO in this
+context.
 
 The system will guess the grid location based on the geographical location of
 the accounting point and the grid model. The system will only guess the grid
 location if it is missing or the current information is determined by system.
+
+The following table shows what transitions are allowed to update the grid
+location based on the current source.
+
+| Current ↓ \ New → | `grid_model` | `cso` | `iso`                 | `system` |
+|-------------------|--------------|-------|-----------------------|----------|
+| `grid_model`      | yes          | no    | no                    | no       |
+| `cso`             | yes          | yes   | no                    | no       |
+| `iso`             | yes          | yes   | if current is guessed | no       |
+| `system`          | yes          | yes   | yes                   | yes      |
+| missing           | yes          | yes   | yes                   | yes      |
+
+The table shows that the priority order of the source is `grid_model` > `cso` >
+`iso` > `system`.
 
 > [!NOTE]
 >
