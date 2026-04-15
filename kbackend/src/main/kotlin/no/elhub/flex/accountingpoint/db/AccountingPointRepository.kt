@@ -12,7 +12,6 @@ import no.elhub.flex.db.prepareNamed
 import no.elhub.flex.db.query
 import no.elhub.flex.db.queryRequiredSingle
 import no.elhub.flex.db.querySingle
-import no.elhub.flex.integration.accountingpointadapter.generated.models.EndUser
 import no.elhub.flex.model.domain.AccountingPoint
 import no.elhub.flex.model.domain.AccountingPointEndUser
 import no.elhub.flex.model.domain.AccountingPointEnergySupplier
@@ -21,7 +20,6 @@ import no.elhub.flex.model.domain.db.LockTimeoutError
 import no.elhub.flex.model.domain.db.NoMatchError
 import no.elhub.flex.model.domain.db.NotFoundError
 import no.elhub.flex.model.domain.db.RepositoryError
-import no.elhub.flex.model.error.EndUserError
 import no.elhub.flex.util.toSqlTimestamp
 import no.elhub.flex.util.toSqlTimestampOrNull
 import org.koin.core.annotation.Single

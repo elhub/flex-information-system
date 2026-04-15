@@ -91,7 +91,7 @@ class AccountingPointServiceImpl(
                 }
             },
             ifRight = { adapterAccountingPoint ->
-                logger.debug { "Raw data from adapter: $adapterAccountingPoint" }
+                logger.debug { "Raw data from adapter: ${adapterAccountingPoint.hidingEndUserIDs()}" }
                 with(FlexPrincipal.internalData()) {
                     flexTransaction { _ ->
                         either {
@@ -123,6 +123,9 @@ class AccountingPointServiceImpl(
         logger.error { "$context failed: $this" }
         return InternalServerError(traceIdOrUnknown())
     }
+
+    private fun AdapterAccountingPoint.hidingEndUserIDs(): AdapterAccountingPoint =
+        copy(endUser = endUser.map { it.copy(businessId = "<HIDDEN>") })
 
     private fun AdapterAccountingPoint.toAccountingPointEndUsers(accountingPointId: Long): List<AccountingPointEndUser> =
         endUser.map { eu ->

@@ -22,7 +22,7 @@ app = Flask(__name__)
 TEST_DATA_SUFFIX_TO_EU_ES_MGA = {
     "000": ("13370000000", "1337000000020", "42Y-COMMON-SHA-W"),
     "001": ("13370000001", "1337000100027", "42Y-TEST-SUITE-6"),
-    "002": ("emil.post@example.com", "1337000200024", "42Y-EMIL-POST--Q"),
+    # "002": ("emil.post@example.com", "1337000200024", "42Y-EMIL-POST--Q"),
 }
 
 
