@@ -1,5 +1,12 @@
 import { Link } from "react-router-dom";
-import { useGetIdentity, usePermissions } from "ra-core";
+import {
+  useGetIdentity,
+  useGetList,
+  useGetOne,
+  usePermissions,
+  useRecordContext,
+  useTranslate,
+} from "ra-core";
 import { ExportButton } from "react-admin";
 import { Datagrid, List } from "../components/EDS-ra/list";
 import {
@@ -9,11 +16,16 @@ import {
   TextField,
 } from "../components/EDS-ra/fields";
 import { EnumArrayInput } from "../components/EDS-ra/inputs";
-import { Button } from "../components/ui";
+import { BodyText, Button } from "../components/ui";
 import { Permissions } from "../auth/permissions";
 import { zControllableUnit } from "../generated-client/zod.gen";
 import { getFields } from "../zod";
 import { IconPlus } from "@elhub/ds-icons";
+import { findCurrentlyValidRecord } from "../util";
+import type {
+  AccountingPointBiddingZone,
+  AccountingPointBalanceResponsibleParty,
+} from "../generated-client";
 
 const CULookupButton = () => (
   <Button
@@ -36,6 +48,66 @@ const CreateButton = () => (
     Create manually
   </Button>
 );
+
+// custom component resolving the bidding zone through the accounting point
+// (keeping source for React-Admin behaviour)
+const BiddingZoneField = ({ source: _source }: { source: string }) => {
+  const record = useRecordContext();
+  const translate = useTranslate();
+  const { data } = useGetList(
+    "accounting_point_bidding_zone",
+    {
+      filter: { accounting_point_id: record?.accounting_point_id },
+      // default sort is on `id` which does not exist on AP-BZ
+      sort: { field: "valid_from", order: "DESC" },
+    },
+    { enabled: !!record?.accounting_point_id },
+  );
+
+  const current = findCurrentlyValidRecord(
+    data as AccountingPointBiddingZone[] | undefined,
+  );
+
+  if (!current) return <BodyText size="small">-</BodyText>;
+  return (
+    <BodyText size="small">
+      {translate(
+        `enum.accounting_point_bidding_zone.bidding_zone.${current.bidding_zone}`,
+      )}
+    </BodyText>
+  );
+};
+
+// custom component resolving the BRP through the accounting point
+const BalanceResponsiblePartyField = ({
+  source: _source,
+}: {
+  source: string;
+}) => {
+  const record = useRecordContext();
+  const { data } = useGetList(
+    "accounting_point_balance_responsible_party",
+    {
+      filter: { accounting_point_id: record?.accounting_point_id },
+      // default sort is on `id` which does not exist on AP-BRP either
+      sort: { field: "valid_from", order: "DESC" },
+    },
+    { enabled: !!record?.accounting_point_id },
+  );
+
+  const current = findCurrentlyValidRecord(
+    data as AccountingPointBalanceResponsibleParty[] | undefined,
+  );
+
+  const { data: party } = useGetOne(
+    "party",
+    { id: current?.balance_responsible_party_id },
+    { enabled: !!current?.balance_responsible_party_id },
+  );
+
+  if (!party) return <BodyText size="small">-</BodyText>;
+  return <BodyText size="small">{party.name}</BodyText>;
+};
 
 export const ControllableUnitList = () => {
   const { permissions } = usePermissions<Permissions>();
@@ -87,6 +159,8 @@ export const ControllableUnitList = () => {
         >
           <TextField source="business_id" />
         </ReferenceField>
+        <BiddingZoneField source="bidding_zone" />
+        <BalanceResponsiblePartyField source="balance_responsible_party" />
         <DateField source={fields.recorded_at.source} showTime />
       </Datagrid>
     </List>
