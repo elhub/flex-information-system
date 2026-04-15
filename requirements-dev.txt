@@ -10,7 +10,7 @@ openpyxl
 pandas
 psycopg[binary,pool]
 pyjwt
-pytest==9.0.2
+pytest==9.0.3
 python-dotenv
 schemathesis==4.15.0
 tabulate
