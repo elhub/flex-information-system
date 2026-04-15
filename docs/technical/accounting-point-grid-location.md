@@ -42,7 +42,7 @@ The Norwegian common grid model is [Nemo](https://nemo.elbits.no/modell/) from
 
 Nemo is used by [Tilko](https://www.elbits.no/tjenester/tilko), a digital portal
 for grid connection requests that affects more than one grid owner. Tilko has
-been rolled out to allmost all of Norway as of writing this. We are taking a lot
+been rolled out to almost all of Norway as of writing this. We are taking a lot
 inspiration from Tilko in how we exchange grid location.
 
 ### Accounting points in grid model
