@@ -13,7 +13,7 @@ location on accounting point will give the location for the CUs as well.
 ## Accounting point geographical location
 
 The accounting point geographical location is loaded as part of the [accounting
-point data sync](../accounting-point-data-sync.md). This location is used for
+point data sync](./accounting-point-data.md). This location is used for
 displaying the accounting point on a map to visually aid the DSO in picking the
 right grid location.
 
