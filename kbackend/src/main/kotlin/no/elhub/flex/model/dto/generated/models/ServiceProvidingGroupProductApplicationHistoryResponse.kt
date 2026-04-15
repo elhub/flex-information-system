@@ -40,11 +40,17 @@ public data class ServiceProvidingGroupProductApplicationHistoryResponse(
   @SerialName("status")
   public val status: ServiceProvidingGroupProductApplicationStatus,
   /**
-   * The maximum active power applied for. Stored in kilowatts.
+   * The maximum active power applied for in regulation direction up. Stored in kilowatts.
    */
   @Contextual
-  @SerialName("maximum_active_power")
-  public val maximumActivePower: BigDecimal,
+  @SerialName("maximum_active_power_up")
+  public val maximumActivePowerUp: BigDecimal,
+  /**
+   * The maximum active power applied for in regulation direction down. Stored in kilowatts.
+   */
+  @Contextual
+  @SerialName("maximum_active_power_down")
+  public val maximumActivePowerDown: BigDecimal,
   /**
    * Free text field for extra information about the application if needed (bidding periods,
    * unavailabilities, etc).

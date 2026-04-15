@@ -442,7 +442,8 @@ export type PermissionTarget =
   | "service_providing_group_product_application"
   | "service_providing_group_product_application.additional_information"
   | "service_providing_group_product_application.id"
-  | "service_providing_group_product_application.maximum_active_power"
+  | "service_providing_group_product_application.maximum_active_power_down"
+  | "service_providing_group_product_application.maximum_active_power_up"
   | "service_providing_group_product_application.prequalified_at"
   | "service_providing_group_product_application.procuring_system_operator_id"
   | "service_providing_group_product_application.product_type_ids"
@@ -475,7 +476,8 @@ export type PermissionTarget =
   | "service_providing_group_product_application_history"
   | "service_providing_group_product_application_history.additional_information"
   | "service_providing_group_product_application_history.id"
-  | "service_providing_group_product_application_history.maximum_active_power"
+  | "service_providing_group_product_application_history.maximum_active_power_down"
+  | "service_providing_group_product_application_history.maximum_active_power_up"
   | "service_providing_group_product_application_history.prequalified_at"
   | "service_providing_group_product_application_history.procuring_system_operator_id"
   | "service_providing_group_product_application_history.product_type_ids"
@@ -2376,7 +2378,12 @@ const rawPermissions: Record<
     },
     {
       target:
-        "service_providing_group_product_application.maximum_active_power",
+        "service_providing_group_product_application.maximum_active_power_down",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.maximum_active_power_up",
       operation: "read",
     },
     {
@@ -2523,7 +2530,12 @@ const rawPermissions: Record<
     },
     {
       target:
-        "service_providing_group_product_application_history.maximum_active_power",
+        "service_providing_group_product_application_history.maximum_active_power_down",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.maximum_active_power_up",
       operation: "read",
     },
     {
@@ -4740,7 +4752,12 @@ const rawPermissions: Record<
     },
     {
       target:
-        "service_providing_group_product_application.maximum_active_power",
+        "service_providing_group_product_application.maximum_active_power_down",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.maximum_active_power_up",
       operation: "read",
     },
     {
@@ -4887,7 +4904,12 @@ const rawPermissions: Record<
     },
     {
       target:
-        "service_providing_group_product_application_history.maximum_active_power",
+        "service_providing_group_product_application_history.maximum_active_power_down",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.maximum_active_power_up",
       operation: "read",
     },
     {
@@ -7104,7 +7126,12 @@ const rawPermissions: Record<
     },
     {
       target:
-        "service_providing_group_product_application.maximum_active_power",
+        "service_providing_group_product_application.maximum_active_power_down",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.maximum_active_power_up",
       operation: "read",
     },
     {
@@ -7251,7 +7278,12 @@ const rawPermissions: Record<
     },
     {
       target:
-        "service_providing_group_product_application_history.maximum_active_power",
+        "service_providing_group_product_application_history.maximum_active_power_down",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.maximum_active_power_up",
       operation: "read",
     },
     {
@@ -10053,12 +10085,22 @@ const rawPermissions: Record<
     },
     {
       target:
-        "service_providing_group_product_application.maximum_active_power",
+        "service_providing_group_product_application.maximum_active_power_down",
       operation: "read",
     },
     {
       target:
-        "service_providing_group_product_application.maximum_active_power",
+        "service_providing_group_product_application.maximum_active_power_down",
+      operation: "update",
+    },
+    {
+      target:
+        "service_providing_group_product_application.maximum_active_power_up",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.maximum_active_power_up",
       operation: "update",
     },
     {
@@ -10254,7 +10296,12 @@ const rawPermissions: Record<
     },
     {
       target:
-        "service_providing_group_product_application_history.maximum_active_power",
+        "service_providing_group_product_application_history.maximum_active_power_down",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.maximum_active_power_up",
       operation: "read",
     },
     {
@@ -12646,7 +12693,12 @@ const rawPermissions: Record<
     },
     {
       target:
-        "service_providing_group_product_application.maximum_active_power",
+        "service_providing_group_product_application.maximum_active_power_down",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.maximum_active_power_up",
       operation: "read",
     },
     {
@@ -12793,7 +12845,12 @@ const rawPermissions: Record<
     },
     {
       target:
-        "service_providing_group_product_application_history.maximum_active_power",
+        "service_providing_group_product_application_history.maximum_active_power_down",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.maximum_active_power_up",
       operation: "read",
     },
     {
@@ -15276,7 +15333,12 @@ const rawPermissions: Record<
     },
     {
       target:
-        "service_providing_group_product_application.maximum_active_power",
+        "service_providing_group_product_application.maximum_active_power_down",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.maximum_active_power_up",
       operation: "read",
     },
     {
@@ -15472,7 +15534,12 @@ const rawPermissions: Record<
     },
     {
       target:
-        "service_providing_group_product_application_history.maximum_active_power",
+        "service_providing_group_product_application_history.maximum_active_power_down",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.maximum_active_power_up",
       operation: "read",
     },
     {
@@ -18153,17 +18220,32 @@ const rawPermissions: Record<
     },
     {
       target:
-        "service_providing_group_product_application.maximum_active_power",
+        "service_providing_group_product_application.maximum_active_power_down",
       operation: "create",
     },
     {
       target:
-        "service_providing_group_product_application.maximum_active_power",
+        "service_providing_group_product_application.maximum_active_power_down",
       operation: "read",
     },
     {
       target:
-        "service_providing_group_product_application.maximum_active_power",
+        "service_providing_group_product_application.maximum_active_power_down",
+      operation: "update",
+    },
+    {
+      target:
+        "service_providing_group_product_application.maximum_active_power_up",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_application.maximum_active_power_up",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.maximum_active_power_up",
       operation: "update",
     },
     {
@@ -18365,7 +18447,12 @@ const rawPermissions: Record<
     },
     {
       target:
-        "service_providing_group_product_application_history.maximum_active_power",
+        "service_providing_group_product_application_history.maximum_active_power_down",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.maximum_active_power_up",
       operation: "read",
     },
     {
@@ -20699,7 +20786,12 @@ const rawPermissions: Record<
     },
     {
       target:
-        "service_providing_group_product_application.maximum_active_power",
+        "service_providing_group_product_application.maximum_active_power_down",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.maximum_active_power_up",
       operation: "read",
     },
     {
@@ -20846,7 +20938,12 @@ const rawPermissions: Record<
     },
     {
       target:
-        "service_providing_group_product_application_history.maximum_active_power",
+        "service_providing_group_product_application_history.maximum_active_power_down",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.maximum_active_power_up",
       operation: "read",
     },
     {
