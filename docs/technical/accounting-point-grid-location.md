@@ -111,14 +111,14 @@ The following fields exist on the substation resource
 |----------------------|--------------------------------------------------|--------------------|-------------------------------------------|----------|----------------------------|
 | id                   | Surrogate identifier                             | Integer            | 1234                                      | no       |                            |
 | name                 | Name of the line.                                | Free text          | Snilldal-Høyeng                           | no       |                            |
-| business_id          | Business identifier for the line - mRID          | UUID               | 1234                                      | no       |                            |
+| business_id          | Business identifier for the line - mRID          | UUID               | 123e4567-e89b-12d3-a456-426614174000      | no       |                            |
 | business_id_type     | Type of business identifier. Just `uuid`         | `uuid`             | uuid                                      | no       |                            |
 | from_substation_id   | Foreign key to the substation the line starts at | Integer            | 1234                                      | no       |                            |
 | from_nominal_voltage | Voltage level on the line. kV.                   | Numeric            | 22                                        | no       | Extracted from BaseVoltage |
 | to_substation_id     | Foreign key to the substation the line ends at   | Integer            | 1234                                      | no       |                            |
 | to_nominal_voltage   | Voltage level on the line. kV.                   | Numeric            | 22                                        | no       | Extracted from BaseVoltage |
-| concessionaires      | Name and org number of the main concessionaires. | Array of free text | ["SønderEnergi Nett (987654321)"]         | yes      |                            |
-| geometry             | For displaying on a map. GeoJSON LineString.     | GeoJSON LineString | See [GeoJSON Geometry](#geojson-geometry) | yes      |                            |
+| consessionaires      | Name and org number of the main consessionaires. | Array of free text | ["SønderEnergi Nett (987654321)"]         | yes      |                            |
+| geometry             | For displaying on a map. GeoJSON LineString.     | See [GeoJSON Geometry](#geojson-geometry) | yes      |                            |
 
 ### GeoJSON Geometry
 
