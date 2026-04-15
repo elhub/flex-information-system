@@ -322,7 +322,7 @@ class ControllableUnitLookupTest :
                         with(any<FlexPrincipal>()) {
                             syncDisabledAccountingPointService.checkEndUserMatchesAccountingPoint(endUserBusinessId, accountingPointBusinessId)
                         }
-                    } returns 7.right()
+                    } returns 7L.right()
                     coEvery {
                         with(any<FlexPrincipal>()) {
                             syncDisabledAccountingPointService.getAccountingPointByBusinessId(accountingPointBusinessId)
@@ -354,7 +354,7 @@ class ControllableUnitLookupTest :
                         with(any<FlexPrincipal>()) {
                             syncDisabledAccountingPointService.checkEndUserMatchesAccountingPoint(endUserBusinessId, accountingPointBusinessId)
                         }
-                    } returns 7.right()
+                    } returns 7L.right()
                     coEvery {
                         with(any<FlexPrincipal>()) {
                             syncDisabledAccountingPointService.getAccountingPointByBusinessId(accountingPointBusinessId)
