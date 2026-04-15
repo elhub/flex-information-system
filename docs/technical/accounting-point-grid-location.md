@@ -243,11 +243,11 @@ This shows an example of how the grid location UI can be in a flexibility regist
 ## Voltage level standardisation
 
 Voltage levels in Nemo are all-over-the-place. For simpler user interaction, we
-might want to standardise voltage levels. The way we do it it is by combining
+might want to standardise voltage levels. The way we do it is by combining
 ranges into a single nominal voltage level. The following table shows the
 thresholds and which nominal voltage level it maps to. If a voltage level equal
 or higher than a threshold, and lower than the next, then it maps to the given
-nominal voltage. All voltages are given as as kilovolt (kV).
+nominal voltage. All voltages are given as kilovolt (kV).
 
 | Threshold | Nominal |
 |-----------|---------|
