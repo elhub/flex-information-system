@@ -102,7 +102,7 @@ The following fields exist on the substation resource
 | longitude              | Longitude of the substation.                         | Numeric                                        | 10.1234                                   | yes      | Center for parent          |
 | latitude               | Latitude of the substation.                          | Numeric                                        | 63.1234                                   | yes      | Center for parent          |
 | nominal_voltage_levels | List of voltage levels on the substation and parent. | Array of numeric. kV with three decimals.      | [22, 33]                                  | yes      | Extracted from BaseVoltage |
-| consessionaires        | Name and org number of the main consessionaires.     | Array of free text                             | ["SønderEnergi Nett (987654321)"]         | yes      |                            |
+| concessionaires        | Name and org number of the main concessionaires.     | Array of free text                             | ["SønderEnergi Nett (987654321)"]         | yes      |                            |
 | geometry               | For displaying on a map. GeoJSON Polygon or Point.   | GeoJSON Polygon or Point                       | See [GeoJSON Geometry](#geojson-geometry) | yes      |                            |
 
 ### line
