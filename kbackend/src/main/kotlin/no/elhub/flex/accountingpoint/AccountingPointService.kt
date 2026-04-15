@@ -124,6 +124,7 @@ class AccountingPointServiceImpl(
         return InternalServerError(traceIdOrUnknown())
     }
 
+    // useful for logging the structure without showing sensitive data
     private fun AdapterAccountingPoint.hidingEndUserIDs(): AdapterAccountingPoint =
         copy(endUser = endUser.map { it.copy(businessId = "<HIDDEN>") })
 
