@@ -30,7 +30,7 @@ controllable unit connected in a distribution system operators grid to be able
 to assess if activation of flexibility services will compromise safe operation
 of their grid.
 
-To be able to communicate efficently, both the connecting and impacted/procuring
+To be able to communicate efficiently, both the connecting and impacted/procuring
 system operator must have a common reference - a common grid model that they can
 use to communicate location.
 
