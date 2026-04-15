@@ -37,13 +37,13 @@ public data class ServiceProvidingGroupProductApplicationCreateRequest(
   public val status: ServiceProvidingGroupProductApplicationStatus =
       ServiceProvidingGroupProductApplicationStatus.REQUESTED,
   /**
-   * The maximum active power applied for in the upward direction. Stored in kilowatts.
+   * The maximum active power applied for in regulation direction up. Stored in kilowatts.
    */
   @Contextual
   @SerialName("maximum_active_power_up")
   public val maximumActivePowerUp: BigDecimal,
   /**
-   * The maximum active power applied for in the downward direction. Stored in kilowatts.
+   * The maximum active power applied for in regulation direction down. Stored in kilowatts.
    */
   @Contextual
   @SerialName("maximum_active_power_down")

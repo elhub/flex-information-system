@@ -24,9 +24,9 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
         procuring_system_operator_id (int): Reference to the procuring system operator. Example: 39.
         product_type_ids (list[int]): References to the product types. Example: [2, 4, 5].
         status (ServiceProvidingGroupProductApplicationStatus): The status of the application. Example: in_progress.
-        maximum_active_power_up (float): The maximum active power applied for in the upward direction. Stored in
+        maximum_active_power_up (float): The maximum active power applied for in regulation direction up. Stored in
             kilowatts. Example: 150.5.
-        maximum_active_power_down (float): The maximum active power applied for in the downward direction. Stored in
+        maximum_active_power_down (float): The maximum active power applied for in regulation direction down. Stored in
             kilowatts. Example: 150.5.
         recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31T23:59:00+00:00.

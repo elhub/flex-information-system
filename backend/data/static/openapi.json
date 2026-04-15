@@ -4193,7 +4193,7 @@
                         "default": "requested"
                     },
                     "maximum_active_power_up": {
-                        "description": "The maximum active power applied for in the upward direction. Stored in kilowatts.",
+                        "description": "The maximum active power applied for in regulation direction up. Stored in kilowatts.",
                         "format": "decimal",
                         "type": "number",
                         "minimum": 0,
@@ -4202,7 +4202,7 @@
                         "example": 150.5
                     },
                     "maximum_active_power_down": {
-                        "description": "The maximum active power applied for in the downward direction. Stored in kilowatts.",
+                        "description": "The maximum active power applied for in regulation direction down. Stored in kilowatts.",
                         "format": "decimal",
                         "type": "number",
                         "minimum": 0,
@@ -4269,7 +4269,7 @@
                         "default": "requested"
                     },
                     "maximum_active_power_up": {
-                        "description": "The maximum active power applied for in the upward direction. Stored in kilowatts.",
+                        "description": "The maximum active power applied for in regulation direction up. Stored in kilowatts.",
                         "format": "decimal",
                         "type": "number",
                         "minimum": 0,
@@ -4278,7 +4278,7 @@
                         "example": 150.5
                     },
                     "maximum_active_power_down": {
-                        "description": "The maximum active power applied for in the downward direction. Stored in kilowatts.",
+                        "description": "The maximum active power applied for in regulation direction down. Stored in kilowatts.",
                         "format": "decimal",
                         "type": "number",
                         "minimum": 0,
@@ -4359,7 +4359,7 @@
                         "default": "requested"
                     },
                     "maximum_active_power_up": {
-                        "description": "The maximum active power applied for in the upward direction. Stored in kilowatts.",
+                        "description": "The maximum active power applied for in regulation direction up. Stored in kilowatts.",
                         "format": "decimal",
                         "type": "number",
                         "minimum": 0,
@@ -4368,7 +4368,7 @@
                         "example": 150.5
                     },
                     "maximum_active_power_down": {
-                        "description": "The maximum active power applied for in the downward direction. Stored in kilowatts.",
+                        "description": "The maximum active power applied for in regulation direction down. Stored in kilowatts.",
                         "format": "decimal",
                         "type": "number",
                         "minimum": 0,

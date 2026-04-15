@@ -761,9 +761,9 @@ export const tooltips = {
   "service_providing_group_product_application.status":
     "The status of the application.",
   "service_providing_group_product_application.maximum_active_power_up":
-    "The maximum active power applied for in the upward direction. Stored in kilowatts.",
+    "The maximum active power applied for in regulation direction up. Stored in kilowatts.",
   "service_providing_group_product_application.maximum_active_power_down":
-    "The maximum active power applied for in the downward direction. Stored in kilowatts.",
+    "The maximum active power applied for in regulation direction down. Stored in kilowatts.",
   "service_providing_group_product_application.additional_information":
     "Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).",
   "service_providing_group_product_application.prequalified_at":
@@ -785,9 +785,9 @@ export const tooltips = {
   "service_providing_group_product_application_history.status":
     "The status of the application.",
   "service_providing_group_product_application_history.maximum_active_power_up":
-    "The maximum active power applied for in the upward direction. Stored in kilowatts.",
+    "The maximum active power applied for in regulation direction up. Stored in kilowatts.",
   "service_providing_group_product_application_history.maximum_active_power_down":
-    "The maximum active power applied for in the downward direction. Stored in kilowatts.",
+    "The maximum active power applied for in regulation direction down. Stored in kilowatts.",
   "service_providing_group_product_application_history.additional_information":
     "Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).",
   "service_providing_group_product_application_history.prequalified_at":

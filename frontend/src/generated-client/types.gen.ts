@@ -2241,11 +2241,11 @@ export type ServiceProvidingGroupProductApplicationUpdateRequest = {
   product_type_ids?: Array<number>;
   status?: ServiceProvidingGroupProductApplicationStatus;
   /**
-   * The maximum active power applied for in the upward direction. Stored in kilowatts.
+   * The maximum active power applied for in regulation direction up. Stored in kilowatts.
    */
   maximum_active_power_up?: number;
   /**
-   * The maximum active power applied for in the downward direction. Stored in kilowatts.
+   * The maximum active power applied for in regulation direction down. Stored in kilowatts.
    */
   maximum_active_power_down?: number;
   /**
@@ -2280,11 +2280,11 @@ export type ServiceProvidingGroupProductApplicationCreateRequest = {
   product_type_ids: Array<number>;
   status?: ServiceProvidingGroupProductApplicationStatus;
   /**
-   * The maximum active power applied for in the upward direction. Stored in kilowatts.
+   * The maximum active power applied for in regulation direction up. Stored in kilowatts.
    */
   maximum_active_power_up: number;
   /**
-   * The maximum active power applied for in the downward direction. Stored in kilowatts.
+   * The maximum active power applied for in regulation direction down. Stored in kilowatts.
    */
   maximum_active_power_down: number;
   /**
@@ -2323,11 +2323,11 @@ export type ServiceProvidingGroupProductApplication = {
   product_type_ids: Array<number>;
   status: ServiceProvidingGroupProductApplicationStatus;
   /**
-   * The maximum active power applied for in the upward direction. Stored in kilowatts.
+   * The maximum active power applied for in regulation direction up. Stored in kilowatts.
    */
   maximum_active_power_up: number;
   /**
-   * The maximum active power applied for in the downward direction. Stored in kilowatts.
+   * The maximum active power applied for in regulation direction down. Stored in kilowatts.
    */
   maximum_active_power_down: number;
   /**
@@ -3501,11 +3501,11 @@ export type ServiceProvidingGroupProductApplicationWritable = {
   product_type_ids: Array<number>;
   status: ServiceProvidingGroupProductApplicationStatus;
   /**
-   * The maximum active power applied for in the upward direction. Stored in kilowatts.
+   * The maximum active power applied for in regulation direction up. Stored in kilowatts.
    */
   maximum_active_power_up: number;
   /**
-   * The maximum active power applied for in the downward direction. Stored in kilowatts.
+   * The maximum active power applied for in regulation direction down. Stored in kilowatts.
    */
   maximum_active_power_down: number;
   /**
