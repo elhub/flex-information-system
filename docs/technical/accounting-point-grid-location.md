@@ -196,11 +196,11 @@ how the grid location was determined. The enum values are as follows.
 The CSO is responsible for registering and updating the grid location. This is
 done directly in the flexibility register or via the national grid model.
 
-A impacted system operator (ISO) can also register the grid location, but only
+An impacted system operator (ISO) can also register the grid location, but only
 if it is missing or the current information is determined by system or guessed
 by another impacted system operator (ISO). The purpose of this is to allow the
 ISO to improve on system-guessed location while waiting for confirmation from
-the CSO. The procuring system operator (PSO) is considered to be a ISO in this
+the CSO. The procuring system operator (PSO) is considered to be an ISO in this
 context.
 
 The system will guess the grid location based on the geographical location of
