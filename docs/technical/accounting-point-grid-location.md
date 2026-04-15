@@ -95,7 +95,7 @@ The following fields exist on the substation resource
 |------------------------|------------------------------------------------------|------------------------------------------------|-------------------------------------------|----------|----------------------------|
 | id                     | Surrogate identifier                                 | Integer                                        | 1234                                      | no       |                            |
 | name                   | Name of the substation.                              | Free text                                      | Snilldal 1 KRA                            | no       |                            |
-| business_id            | Business identifier for the substation - mRID        | UUID                                           | 1234                                      | no       |                            |
+| business_id            | Business identifier for the substation - mRID        | UUID                                           | 550e8400-e29b-41d4-a716-446655440000      | no       |                            |
 | business_id_type       | Type of business identifier.                         | `uuid`                                         | uuid                                      | no       |                            |
 | kind                   | Kind of substation                                   | `coupling`, `junction`, `power`, `transformer` | coupling                                  | yes      |                            |
 | substation_id          | Foreign key to parent substation.                    | Integer                                        | 1234                                      | yes      |                            |
