@@ -173,13 +173,13 @@ The information is given in a dedicated resource
 > directly, using NEMO as reference. Using FIS surrogate keys is not recommended
 > in this context.
 
-| Field name               | Description                                        | Format                               | Example        | Nullable | Note |
-|--------------------------|----------------------------------------------------|--------------------------------------|----------------|----------|------|
-| `grid_model_type`        | The type of object in the grid model               | `substation`, `transformer`          | substation     | no       |      |
-| `grid_model_business_id` | Business ID (mRID) referencing national grid model | UUID                                 | 1234           | no       |      |
-| `grid_model_name`        | Name of the grid model object                      | Free text                            | Snilldal 1 KRA | no       |      |
-| `nominal_voltage`        | Voltage level in kV                                | Numeric value                        | 22             | no       |      |
-| `additional_information` | Additional information about the grid location     | Free text                            |                | yes      |      |
+| Field name               | Description                                        | Format                               | Example                              | Nullable | Note |
+|--------------------------|----------------------------------------------------|--------------------------------------|--------------------------------------|----------|------|
+| `grid_model_type`        | The type of object in the grid model               | `substation`, `transformer`          | substation                           | no       |      |
+| `grid_model_business_id` | Business ID (mRID) referencing national grid model | UUID                                 | 123e4567-e89b-12d3-a456-426614174000 | no       |      |
+| `grid_model_name`        | Name of the grid model object                      | Free text                            | Snilldal 1 KRA                       | no       |      |
+| `nominal_voltage`        | Voltage level in kV                                | Numeric value                        | 22                                   | no       |      |
+| `additional_information` | Additional information about the grid location     | Free text                            |                                      | yes      |      |
 | `source`                 | Who the grid location was determined by            | `cso`, `iso`, `grid_model`, `system` | cso            | no       |      |
 | `quality`                | The quality of the grid location registration      | `confirmed`, `guessed`               | confirmed      | no       |      |
 
