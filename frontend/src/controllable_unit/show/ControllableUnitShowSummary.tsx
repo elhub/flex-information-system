@@ -3,7 +3,7 @@ import { LabelValue } from "../../components/LabelValue";
 import type { ControllableUnitShowViewModel } from "./useControllableUnitViewModel";
 import { formatDate } from "date-fns";
 import { IconPencil } from "@elhub/ds-icons";
-import { usePermissions } from "ra-core";
+import { usePermissions, useTranslate } from "ra-core";
 import { Link as RouterLink } from "react-router-dom";
 import { Permissions } from "../../auth/permissions";
 
@@ -29,10 +29,13 @@ export const ControllableUnitShowSummary = ({
     serviceProvider,
     controllableUnitServiceProvider,
     balanceResponsibleParty,
+    accountingPointBalanceResponsibleParty,
     accountingPoint,
     systemOperator,
+    biddingZone,
   } = viewModel;
 
+  const translate = useTranslate();
   const { permissions } = usePermissions<Permissions>();
   const canEdit = permissions?.allow("controllable_unit", "update");
   const canReadHistory = permissions?.allow(
@@ -43,6 +46,10 @@ export const ControllableUnitShowSummary = ({
   const serviceProviderRange = formatRange(
     controllableUnitServiceProvider?.valid_from,
     controllableUnitServiceProvider?.valid_to,
+  );
+  const balanceResponsiblePartyRange = formatRange(
+    accountingPointBalanceResponsibleParty?.valid_from,
+    accountingPointBalanceResponsibleParty?.valid_to,
   );
   const eventFilter =
     "?filter=" +
@@ -92,6 +99,17 @@ export const ControllableUnitShowSummary = ({
           />
           <LabelValue
             size="small"
+            labelKey="accounting_point_bidding_zone.bidding_zone"
+            value={
+              biddingZone
+                ? translate(
+                    `enum.accounting_point_bidding_zone.bidding_zone.${biddingZone}`,
+                  )
+                : "-"
+            }
+          />
+          <LabelValue
+            size="small"
             label="Service provider"
             value={
               serviceProvider
@@ -111,7 +129,11 @@ export const ControllableUnitShowSummary = ({
             size="small"
             labelKey="accounting_point_balance_responsible_party.balance_responsible_party_id"
             value={
-              balanceResponsibleParty?.name ?? "No balance responsible party"
+              balanceResponsibleParty
+                ? balanceResponsiblePartyRange
+                  ? `${balanceResponsibleParty.name} (${balanceResponsiblePartyRange})`
+                  : balanceResponsibleParty.name
+                : "No balance responsible party"
             }
             link={
               balanceResponsibleParty

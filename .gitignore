@@ -24,6 +24,7 @@
 *.dot
 !.air.toml
 !.editorconfig
+!.devxp/
 
 # Intellij
 *.iml
