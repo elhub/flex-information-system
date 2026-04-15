@@ -45,9 +45,13 @@ export function CommentBubble({ comment }: CommentBubbleProps) {
             {comment.authorName}
           </span>
           {comment.authorParty && (
-            <span className="text-xs text-gray-500">{comment.authorParty}</span>
+            <>
+              <span className="text-xs text-gray-500">
+                {comment.authorParty}
+              </span>
+              <span className="text-xs text-gray-400">·</span>
+            </>
           )}
-          <span className="text-xs text-gray-400">·</span>
           <span className="text-xs text-gray-400">
             {formatDate(comment.createdAt)}
           </span>
