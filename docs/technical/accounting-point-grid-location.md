@@ -82,8 +82,8 @@ based on Nemo.
 The `substation` resource is modelling
 [elb:SubstationPart](https://nemo.elbits.no/modell/Dokumentasjon/substationpart/)
 and [cim:Substation](https://nemo.elbits.no/modell/Dokumentasjon/substation/) as
-a single resource. This is based on an understanding that the substationpart as a
-name/concept will not be used in future versions of a common grid model.
+a single resource. This is based on an understanding that the substationpart as
+a name/concept will not be used in future versions of a common grid model.
 
 We use substation kind and a foreign key to distinguish between the two. If the
 substation does not have a kind, then it is a child substation. A child
@@ -118,7 +118,7 @@ The following fields exist on the substation resource
 | to_substation_id     | Foreign key to the substation the line ends at   | Integer            | 1234                                      | no       |                            |
 | to_nominal_voltage   | Voltage level on the line. kV.                   | Numeric            | 22                                        | no       | Extracted from BaseVoltage |
 | consessionaires      | Name and org number of the main consessionaires. | Array of free text | ["SønderEnergi Nett (987654321)"]         | yes      |                            |
-| geometry             | For displaying on a map. GeoJSON LineString.     | See [GeoJSON Geometry](#geojson-geometry) | yes      |                            |
+| geometry             | For displaying on a map. GeoJSON LineString.     | GeoJSON LineString | See [GeoJSON Geometry](#geojson-geometry) | yes      |                            |
 
 ### GeoJSON Geometry
 
@@ -173,15 +173,15 @@ The information is given in a dedicated resource
 > directly, using NEMO as reference. Using FIS surrogate keys is not recommended
 > in this context.
 
-| Field name               | Description                                        | Format                               | Example                              | Nullable | Note |
-|--------------------------|----------------------------------------------------|--------------------------------------|--------------------------------------|----------|------|
-| `grid_model_type`        | The type of object in the grid model               | `substation`, `transformer`          | substation                           | no       |      |
-| `grid_model_business_id` | Business ID (mRID) referencing national grid model | UUID                                 | 123e4567-e89b-12d3-a456-426614174000 | no       |      |
-| `grid_model_name`        | Name of the grid model object                      | Free text                            | Snilldal 1 KRA                       | no       |      |
-| `nominal_voltage`        | Voltage level in kV                                | Numeric value                        | 22                                   | no       |      |
-| `additional_information` | Additional information about the grid location     | Free text                            |                                      | yes      |      |
-| `source`                 | Who the grid location was determined by            | `cso`, `iso`, `grid_model`, `system` | cso            | no       |      |
-| `quality`                | The quality of the grid location registration      | `confirmed`, `guessed`               | confirmed      | no       |      |
+| Field name               | Description                                        | Format                              | Example                              | Nullable | Note |
+|--------------------------|----------------------------------------------------|-------------------------------------|--------------------------------------|----------|------|
+| `object_type`            | The type of object in the grid model               | `substation`, `transformer`         | substation                           | no       |      |
+| `business_id`            | Business ID (mRID) referencing national grid model | UUID                                | 123e4567-e89b-12d3-a456-426614174000 | yes      |      |
+| `name`                   | Name of the grid model object                      | Free text                           | Snilldal 1 KRA                       | no       |      |
+| `nominal_voltage`        | Voltage level in kV                                | Numeric value                       | 22                                   | no       |      |
+| `additional_information` | Additional information about the grid location     | Free text                           |                                      | yes      |      |
+| `source`                 | Who the grid location was determined by            | `cso`, `so`, `grid_model`, `system` | cso                                  | no       |      |
+| `quality`                | The quality of the grid location registration      | `confirmed`, `guessed`              | confirmed                            | no       |      |
 
 ### Location source
 
@@ -189,19 +189,17 @@ As seen by the `source` field in the table above, we also want to keep track of
 how the grid location was determined. The enum values are as follows.
 
 * `cso` - registered by connecting system operator (CSO)
-* `iso` - registered by impacted system operator (ISO)
+* `so` - registered by impacted or procuring system operator
 * `grid_model` - given from common/national grid model
 * `system` - (guessed) by the flexibility information system
 
 The CSO is responsible for registering and updating the grid location. This is
 done directly in the flexibility register or via the national grid model.
 
-An impacted system operator (ISO) can also register the grid location, but only
-if it is missing or the current information is determined by system or guessed
-by another impacted system operator (ISO). The purpose of this is to allow the
-ISO to improve on system-guessed location while waiting for confirmation from
-the CSO. The procuring system operator (PSO) is considered to be an ISO in this
-context.
+Another system operator can also register the grid location, but only if it is
+missing or the current information is determined by system or guessed by another
+system operator. The purpose of this is to allow the other system operators to
+improve on system-guessed location while waiting for confirmation from the CSO.
 
 The system will guess the grid location based on the geographical location of
 the accounting point and the grid model. The system will only guess the grid
@@ -210,16 +208,16 @@ location if it is missing or the current information is determined by system.
 The following table shows what transitions are allowed to update the grid
 location based on the current source.
 
-| Current ↓ \ New → | `grid_model` | `cso` | `iso`                 | `system` |
-|-------------------|--------------|-------|-----------------------|----------|
-| `grid_model`      | yes          | no    | no                    | no       |
-| `cso`             | yes          | yes   | no                    | no       |
-| `iso`             | yes          | yes   | if current is guessed | no       |
-| `system`          | yes          | yes   | yes                   | yes      |
-| missing           | yes          | yes   | yes                   | yes      |
+| Current ↓ \ New → | `grid_model` | `cso` | `so`                                         | `system` |
+|-------------------|--------------|-------|----------------------------------------------|----------|
+| `grid_model`      | yes          | no    | no                                           | no       |
+| `cso`             | yes          | yes   | no                                           | no       |
+| `so`              | yes          | yes   | yes but not transition `confirmed`→`guessed` | no       |
+| `system`          | yes          | yes   | yes                                          | yes      |
+| missing           | yes          | yes   | yes                                          | yes      |
 
 The table shows that the priority order of the source is `grid_model` > `cso` >
-`iso` > `system`.
+`so` > `system`.
 
 > [!NOTE]
 >
@@ -269,4 +267,7 @@ nominal voltage. All voltages are given as kilovolt (kV).
 | 200       | 300     |
 | 350       | 420     |
 
-This topic is still up for discussion.
+> [!WARNING]
+>
+> This topic is still up for discussion and we might never do any
+> standardisation at all.
