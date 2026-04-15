@@ -158,7 +158,7 @@ load will be soft-deleted using a specific field on the resources.
 
 ## Location = Grid model reference + Voltage level
 
-The grid owners registers the electrical grid location of an accounting point.
+The grid owner registers the electrical grid location of an accounting point.
 The location should be given as a reference to the common grid model. The
 reference should also be given to the most specific point in the grid as
 available.
