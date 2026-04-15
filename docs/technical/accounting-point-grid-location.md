@@ -117,7 +117,7 @@ The following fields exist on the substation resource
 | from_nominal_voltage | Voltage level on the line. kV.                   | Numeric            | 22                                        | no       | Extracted from BaseVoltage |
 | to_substation_id     | Foreign key to the substation the line ends at   | Integer            | 1234                                      | no       |                            |
 | to_nominal_voltage   | Voltage level on the line. kV.                   | Numeric            | 22                                        | no       | Extracted from BaseVoltage |
-| consessionaires      | Name and org number of the main consessionaires. | Array of free text | ["SønderEnergi Nett (987654321)"]         | yes      |                            |
+| concessionaires      | Name and org number of the main concessionaires. | Array of free text | ["SønderEnergi Nett (987654321)"]         | yes      |                            |
 | geometry             | For displaying on a map. GeoJSON LineString.     | GeoJSON LineString | See [GeoJSON Geometry](#geojson-geometry) | yes      |                            |
 
 ### GeoJSON Geometry
