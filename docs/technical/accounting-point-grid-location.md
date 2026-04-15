@@ -139,7 +139,7 @@ example shows two main substations. One has three children and a few connecting
 lines. The other one has just one and no connections. This should of course be
 displayed on top of a map.
 
-![NEMO display](../diagrams/nemo-display.png)
+![Nemo display](../diagrams/nemo-display.png)
 
 > [!NOTE]
 >
@@ -170,7 +170,7 @@ The information is given in a dedicated resource
 >
 > We are using business ids and free text names here on purpose. This is because
 > we believe that in general system operators will communicate grid location
-> directly, using NEMO as reference. Using FIS surrogate keys is not recommended
+> directly, using Nemo as reference. Using FIS surrogate keys is not recommended
 > in this context.
 
 | Field name               | Description                                        | Format                              | Example                              | Nullable | Note |
