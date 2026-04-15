@@ -1,10 +1,10 @@
 import { Tabs } from "../../../components/ui";
-import { CommentList } from "../../../components/comments";
 import {
   EventButton,
   NestedResourceHistoryButton,
 } from "../../../components/EDS-ra/buttons";
 import { SpgInfoTab } from "./SpgInfoTab";
+import { SpgpaCommentFeed } from "./SpgpaCommentFeed";
 import { ServiceProvidingGroup } from "../../../generated-client";
 
 type Props = {
@@ -24,12 +24,7 @@ export const SpgpaShowTabs = ({ spgId, spgpaId, spg }: Props) => (
         <SpgInfoTab spgId={spgId} spg={spg} />
       </Tabs.Panel>
       <Tabs.Panel value="comments">
-        <CommentList
-          parentPath={[
-            { resource: "service_providing_group", id: spgId },
-            { resource: "product_application", id: spgpaId },
-          ]}
-        />
+        <SpgpaCommentFeed spgpaId={spgpaId} />
       </Tabs.Panel>
     </Tabs>
     <div className="flex gap-4 mt-2">
