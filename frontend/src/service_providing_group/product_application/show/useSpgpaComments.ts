@@ -5,25 +5,13 @@ import {
   listIdentity,
   listServiceProvidingGroupProductApplicationComment,
 } from "../../../generated-client";
-import type { ServiceProvidingGroupProductApplicationCommentVisibility } from "../../../generated-client/types.gen";
 import { throwOnError } from "../../../util";
+import type {
+  CommentRow,
+  PostCommentInput,
+} from "../../../components/commentTypes";
 
-export type CommentRow = {
-  id: number;
-  authorId: number;
-  content: string;
-  visibility: ServiceProvidingGroupProductApplicationCommentVisibility;
-  createdAt: string;
-  authorName: string;
-  authorParty: string;
-  authorInitials: string;
-  isCurrentUser: boolean;
-};
-
-export type PostCommentInput = {
-  content: string;
-  visibility: ServiceProvidingGroupProductApplicationCommentVisibility;
-};
+export type { CommentRow, PostCommentInput };
 
 const spgpaCommentsQueryKey = (
   spgpaId: number,

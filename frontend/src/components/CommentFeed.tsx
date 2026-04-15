@@ -13,7 +13,8 @@ import { CommentBubble } from "./CommentBubble";
 import type {
   CommentRow,
   PostCommentInput,
-} from "../service_providing_group/product_application/show/useSpgpaComments";
+  ServiceProvidingGroupProductApplicationCommentVisibility,
+} from "./commentTypes";
 
 type CommentFeedProps = {
   commentsQuery: UseQueryResult<CommentRow[]>;
@@ -27,9 +28,10 @@ export function CommentFeed({
   canCreate,
 }: CommentFeedProps) {
   const [text, setText] = useState("");
-  const [visibility, setVisibility] = useState<
-    "same_party" | "any_involved_party"
-  >("same_party");
+  const [visibility, setVisibility] =
+    useState<ServiceProvidingGroupProductApplicationCommentVisibility>(
+      "same_party",
+    );
 
   if (commentsQuery.error) throw commentsQuery.error;
 
@@ -58,11 +60,18 @@ export function CommentFeed({
             placeholder="Write a comment…"
             rows={4}
           />
+          {postComment.isError && (
+            <p className="text-sm text-red-600 mt-1">
+              Failed to post comment. Please try again.
+            </p>
+          )}
           <div className="flex justify-end items-center gap-2 mt-2">
             <Select
               value={visibility}
               onValueChange={(v) =>
-                setVisibility(v as "same_party" | "any_involved_party")
+                setVisibility(
+                  v as ServiceProvidingGroupProductApplicationCommentVisibility,
+                )
               }
               placeholder="Visibility"
             >

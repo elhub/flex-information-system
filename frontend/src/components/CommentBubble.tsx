@@ -1,5 +1,5 @@
 // frontend/src/components/CommentBubble.tsx
-import type { CommentRow } from "../service_providing_group/product_application/show/useSpgpaComments";
+import type { CommentRow } from "./commentTypes";
 
 const AVATAR_COLORS = [
   { bg: "bg-indigo-200", text: "text-indigo-900" },
