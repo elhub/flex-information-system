@@ -149,7 +149,7 @@ displayed on top of a map.
 
 ### Provisioning of data
 
-We do a full load of the grid model data follwing the [structure data loading
+We do a full load of the grid model data following the [structure data loading
 mechanisms](./structure-data.md). We load using merge and update using the
 automatic strategy.
 
