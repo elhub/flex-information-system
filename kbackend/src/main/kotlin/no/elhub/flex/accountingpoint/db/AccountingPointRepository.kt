@@ -52,7 +52,7 @@ interface AccountingPointRepository {
     /**
      * Calls `api.controllable_unit_lookup_check_end_user_matches_accounting_point`.
      *
-     * Returns the end-user ID, or [NotFoundError] when the check fails.
+     * Returns the end-user ID, or [NoMatchError] when the check fails.
      */
     context(principal: FlexPrincipal)
     suspend fun checkEndUserMatchesAccountingPoint(
