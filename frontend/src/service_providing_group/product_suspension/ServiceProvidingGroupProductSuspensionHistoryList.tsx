@@ -6,13 +6,13 @@ import {
   useGetOne,
 } from "react-admin";
 import { Datagrid } from "../../auth";
-import { useParams } from "react-router-dom";
+import { useTypedParams, buildPath } from "../../routes";
 import { DateField } from "../../components/datetime";
 import { IdentityField } from "../../components/IdentityField";
 import { EnumField } from "../../components/enum";
 
 export const ServiceProvidingGroupProductSuspensionHistoryList = () => {
-  const params = useParams();
+  const params = useTypedParams("spg_product_suspension_history");
   const filter: any = {
     service_providing_group_id: params.service_providing_group_id,
   };
@@ -42,7 +42,12 @@ export const ServiceProvidingGroupProductSuspensionHistoryList = () => {
     >
       <Datagrid
         rowClick={(_id, _res, record) =>
-          `/service_providing_group/${record.service_providing_group_id}/product_suspension_history/${record.id}/show`
+          buildPath("spg_product_suspension_history_show", {
+            service_providing_group_id: String(
+              record.service_providing_group_id,
+            ),
+            id: String(record.id),
+          })
         }
       >
         <TextField

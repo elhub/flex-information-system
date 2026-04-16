@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useTypedParams, buildPath } from "../routes";
 import { Datagrid, List } from "../components/EDS-ra/list";
 import {
   DateField,
@@ -13,7 +13,7 @@ import {
 import { getFields } from "../zod";
 
 export const ServiceProvidingGroupHistoryList = () => {
-  const { service_providing_group_id } = useParams();
+  const { service_providing_group_id } = useTypedParams("spg_history");
 
   const spgFields = getFields(zServiceProvidingGroup.shape);
   const historyFields = getFields(
@@ -30,7 +30,12 @@ export const ServiceProvidingGroupHistoryList = () => {
     >
       <Datagrid
         rowClick={(record) =>
-          `/service_providing_group/${record.service_providing_group_id}/history/${record.id}/show`
+          buildPath("spg_history_show", {
+            service_providing_group_id: String(
+              record.service_providing_group_id,
+            ),
+            id: String(record.id),
+          })
         }
       >
         <TextField {...spgFields.id} />

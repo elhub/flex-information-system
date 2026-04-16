@@ -1,4 +1,5 @@
-import { useParams, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useTypedParams, buildPath } from "../../routes";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNotify } from "ra-core";
 import {
@@ -21,7 +22,7 @@ import { SimpleTable } from "../../components/SimpleTable";
 import { useTranslateField } from "../../intl/intl";
 
 export const ServiceProvidingGroupActivate = () => {
-  const { id } = useParams<{ id: string }>();
+  const { id } = useTypedParams("spg_activate");
   const navigate = useNavigate();
   const notify = useNotify();
   const queryClient = useQueryClient();
@@ -57,7 +58,7 @@ export const ServiceProvidingGroupActivate = () => {
       queryClient.invalidateQueries({
         queryKey: ["service_providing_group", spgId],
       });
-      navigate(`/service_providing_group/${spgId}/show`);
+      navigate(buildPath("spg_show", { id: String(spgId) }));
     },
     onError: (err: Error) => {
       notify(err.message, { type: "error" });
@@ -65,7 +66,7 @@ export const ServiceProvidingGroupActivate = () => {
   });
 
   const handleActivateLater = () => {
-    navigate(`/service_providing_group/${spgId}/show`);
+    navigate(buildPath("spg_show", { id: String(spgId) }));
   };
 
   if (spgLoading || partyLoading) return <Loader />;

@@ -15,6 +15,7 @@ import {
   NestedResourceHistoryButton,
 } from "../../components/EDS-ra";
 import { Button } from "../../components/ui";
+import { buildPath } from "../../routes";
 import { useNavigate } from "react-router-dom";
 import { Permissions } from "../../auth/permissions";
 import { IconPlus, IconSearch } from "@elhub/ds-icons";
@@ -25,7 +26,12 @@ const CreateButton = ({ id }: { id: Identifier }) => {
   return (
     <>
       <Button
-        onClick={() => navigate(`/party/${id}/membership/create`, { state })}
+        onClick={() =>
+          navigate(
+            buildPath("party_membership_create", { party_id: String(id) }),
+            { state },
+          )
+        }
         variant="invisible"
         icon={IconPlus}
       >
@@ -41,7 +47,7 @@ const CreateViaLookupButton = ({ id }: { id: Identifier }) => {
   return (
     <>
       <Button
-        onClick={() => navigate(`/entity/lookup`, { state })}
+        onClick={() => navigate(buildPath("entity_lookup"), { state })}
         variant="invisible"
         icon={IconSearch}
       >
@@ -94,7 +100,10 @@ export const PartyMembershipList = () => {
         >
           <Datagrid
             rowClick={(record) => {
-              return `/party/${record.party_id}/membership/${record.id}/show`;
+              return buildPath("party_membership_show", {
+                party_id: String(record.party_id),
+                id: String(record.id),
+              });
             }}
           >
             <TextField source="id" />

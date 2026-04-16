@@ -34,10 +34,16 @@ export const ControllableUnitLookupInput = () => {
     }
 
     if (response.data.controllable_units.length === 0) {
-      typedNavigate({ to: "cu_lookup_create" })
+      typedNavigate({ to: "cu_lookup_create" });
     }
 
-    return typedNavigate({ to: "controllable_unit_create", state: { controllableUnit: response.data.controllable_units[0], endUserId: response.data.end_user.id } });
+    return typedNavigate({
+      to: "controllable_unit_create",
+      state: {
+        controllableUnit: response.data.controllable_units[0],
+        endUserId: response.data.end_user.id,
+      },
+    });
   };
 
   return (

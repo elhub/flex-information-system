@@ -1,12 +1,12 @@
 import { List, TextField, ReferenceField } from "react-admin";
 import { Datagrid } from "../auth";
-import { useParams } from "react-router-dom";
+import { useTypedParams } from "../routes";
 import { historyRowClick } from "../components/history";
 import { DateField } from "../components/datetime";
 import { EnumField } from "../components/enum";
 
 export const PartyHistoryList = () => {
-  const { party_id } = useParams();
+  const { party_id } = useTypedParams("party_history");
   return (
     <List
       resource="party_history"

@@ -1,12 +1,12 @@
 import { List, ReferenceField, TextField } from "react-admin";
 import { Datagrid } from "../auth";
-import { useParams } from "react-router-dom";
+import { useTypedParams } from "../routes";
 import { historyRowClick } from "../components/history";
 import { DateField } from "../components/datetime";
 import { EnumField } from "../components/enum";
 
 export const SystemOperatorProductTypeHistoryList = () => {
-  const { system_operator_product_type_id } = useParams();
+  const { system_operator_product_type_id } = useTypedParams("sopt_history");
   return (
     <List
       resource="system_operator_product_type_history"

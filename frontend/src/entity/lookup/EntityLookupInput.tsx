@@ -12,6 +12,7 @@ import UndoIcon from "@mui/icons-material/Undo";
 import { apiURL } from "../../httpConfig";
 import { useFormContext } from "react-hook-form";
 import { InputStack } from "../../auth";
+import { buildPath } from "../../routes";
 
 const Toolbar = () => {
   const navigate = useNavigate();
@@ -49,16 +50,19 @@ const Toolbar = () => {
       notify(lookupResult.message, { type: "error" });
     } else {
       // navigate to the create party membership page with all information
-      navigate(`/party/${party_id}/membership/create`, {
-        state: {
-          party_id: party_id,
-          entity_id: lookupResult?.entity_id,
-          // tell the party membership input page not to try to read the name
-          // of the entity: since it is looked up, we have no idea whether
-          // the party doing the lookup has permission to see its details
-          showTechnicalEntityID: true,
+      navigate(
+        buildPath("party_membership_create", { party_id: String(party_id) }),
+        {
+          state: {
+            party_id: party_id,
+            entity_id: lookupResult?.entity_id,
+            // tell the party membership input page not to try to read the name
+            // of the entity: since it is looked up, we have no idea whether
+            // the party doing the lookup has permission to see its details
+            showTechnicalEntityID: true,
+          },
         },
-      });
+      );
     }
   };
 

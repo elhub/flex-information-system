@@ -6,12 +6,12 @@ import {
   useGetOne,
 } from "react-admin";
 import { Datagrid } from "../../auth";
-import { useParams } from "react-router-dom";
+import { useTypedParams, buildPath } from "../../routes";
 import { DateField } from "../../components/datetime";
 import { IdentityField } from "../../components/IdentityField";
 
 export const ServiceProvidingGroupMembershipHistoryList = () => {
-  const params = useParams();
+  const params = useTypedParams("spg_membership_history");
   const filter: any = {
     service_providing_group_id: params.service_providing_group_id,
   };
@@ -41,7 +41,12 @@ export const ServiceProvidingGroupMembershipHistoryList = () => {
     >
       <Datagrid
         rowClick={(_id, _res, record) =>
-          `/service_providing_group/${record.service_providing_group_id}/membership_history/${record.id}/show`
+          buildPath("spg_membership_history_show", {
+            service_providing_group_id: String(
+              record.service_providing_group_id,
+            ),
+            id: String(record.id),
+          })
         }
       >
         <TextField

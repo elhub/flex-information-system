@@ -8,7 +8,7 @@ import type {
 } from "./types";
 
 /** Helper to lazy-load a named export as if it were a default export. */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 function lazyNamed<T extends Record<string, any>>(
   factory: () => Promise<T>,
   name: keyof T,
@@ -74,11 +74,10 @@ export const routeDefs = {
   cu_lookup_result: {
     path: "/controllable_unit/lookup/result",
     access: "controllable_unit.lookup",
-    locationState:
-      z.object({
-        controllableUnit: z.record(z.string(), z.unknown()).optional(),
-        endUserId: z.number().optional(),
-      }),
+    locationState: z.object({
+      controllableUnit: z.record(z.string(), z.unknown()).optional(),
+      endUserId: z.number().optional(),
+    }),
     component: lazyNamed(
       () => import("../controllable_unit/lookup/ControllableUnitLookupResult"),
       "ControllableUnitLookupResult",
@@ -86,13 +85,11 @@ export const routeDefs = {
   },
   cu_lookup_create: {
     path: "/controllable_unit/lookup/create",
-    locationState:
-      z.object({
-        accounting_point_id: z.string(),
-        end_user_id: z.string(),
-        accounting_point_business_id: z.string(),
-
-      }),
+    locationState: z.object({
+      accounting_point_id: z.string(),
+      end_user_id: z.string(),
+      accounting_point_business_id: z.string(),
+    }),
     access: "controllable_unit.create",
     component: lazy(
       () => import("../controllable_unit/ControllableUnitCreate"),
@@ -1943,7 +1940,7 @@ export const routeDefs = {
     path: "/login/assumeParty",
     component: lazyNamed(() => import("../AssumePartyPage"), "AssumePartyPage"),
   },
-} as const
+} as const;
 
 export type RouteDefs = typeof routeDefs;
 export type RouteName = keyof RouteDefs;

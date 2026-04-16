@@ -1,12 +1,12 @@
 import { List, NumberInput, ReferenceField, TextField } from "react-admin";
 import { Datagrid } from "../../auth";
-import { useParams } from "react-router-dom";
+import { useTypedParams, buildPath } from "../../routes";
 import { DateField } from "../../components/datetime";
 import { IdentityField } from "../../components/IdentityField";
 import { ScopesField } from "../../components/scopes";
 
 export const PartyMembershipHistoryList = () => {
-  const params = useParams();
+  const params = useTypedParams("party_membership_history");
   const filter: any = {
     party_id: params.party_id,
   };
@@ -31,7 +31,10 @@ export const PartyMembershipHistoryList = () => {
     >
       <Datagrid
         rowClick={(_id, _res, record) =>
-          `/party/${record.party_id}/membership_history/${record.id}/show`
+          buildPath("party_membership_history_show", {
+            party_id: String(record.party_id),
+            id: String(record.id),
+          })
         }
       >
         <TextField source="id" label="field.party_membership_history.id" />

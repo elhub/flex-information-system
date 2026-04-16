@@ -6,13 +6,13 @@ import {
   useGetOne,
 } from "react-admin";
 import { Datagrid } from "../../auth";
-import { useParams } from "react-router-dom";
+import { buildPath, useTypedParams } from "../../routes";
 import { DateField } from "../../components/datetime";
 import { IdentityField } from "../../components/IdentityField";
 import { EnumField } from "../../components/enum";
 
 export const ServiceProvidingGroupGridPrequalificationHistoryList = () => {
-  const params = useParams();
+  const params = useTypedParams("spg_grid_prequalification_history");
   const filter: any = {
     service_providing_group_id: params.service_providing_group_id,
   };
@@ -42,7 +42,12 @@ export const ServiceProvidingGroupGridPrequalificationHistoryList = () => {
     >
       <Datagrid
         rowClick={(_id, _res, record) =>
-          `/service_providing_group/${record.service_providing_group_id}/grid_prequalification_history/${record.id}/show`
+          buildPath("spg_grid_prequalification_history_show", {
+            service_providing_group_id: String(
+              record.service_providing_group_id,
+            ),
+            id: String(record.id),
+          })
         }
       >
         <TextField
