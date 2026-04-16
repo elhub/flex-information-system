@@ -1,8 +1,4 @@
 import { Tabs } from "../../../components/ui";
-import {
-  EventButton,
-  NestedResourceHistoryButton,
-} from "../../../components/EDS-ra/buttons";
 import { SpgInfoTab } from "./SpgInfoTab";
 import { SpgpaCommentFeed } from "./SpgpaCommentFeed";
 import { ServiceProvidingGroup } from "../../../generated-client";
@@ -27,9 +23,5 @@ export const SpgpaShowTabs = ({ spgId, spgpaId, spg }: Props) => (
         <SpgpaCommentFeed spgpaId={spgpaId} />
       </Tabs.Panel>
     </Tabs>
-    <div className="flex gap-4 mt-2">
-      <NestedResourceHistoryButton child="product_application" />
-      <EventButton filterOnSubject recordId={String(spgpaId)} />
-    </div>
   </>
 );

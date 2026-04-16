@@ -35,7 +35,7 @@ export const ShowPageLayout = ({
       {badge && <div className="flex items-center gap-1">{badge}</div>}
     </div>
     {actionBar}
-    <div className="grid grid-cols-1 gap-4 xl:grid-cols-[475px_minmax(0,1fr)]">
+    <div className="grid grid-cols-1 gap-4 xl:grid-cols-[25%_minmax(0,1fr)]">
       {leftPanel}
       {rightPanel}
     </div>

@@ -1,14 +1,9 @@
 // frontend/src/components/CommentBubble.tsx
-import type { CommentRow } from "./commentTypes";
-
-const AVATAR_COLORS = [
-  { bg: "bg-indigo-200", text: "text-indigo-900" },
-  { bg: "bg-green-200", text: "text-green-900" },
-  { bg: "bg-violet-200", text: "text-violet-900" },
-  { bg: "bg-amber-200", text: "text-amber-900" },
-  { bg: "bg-pink-200", text: "text-pink-900" },
-  { bg: "bg-cyan-200", text: "text-cyan-900" },
-];
+import { Tag } from "./ui";
+import type {
+  ServiceProvidingGroupProductApplicationComment,
+  Identity,
+} from "../generated-client/types.gen";
 
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleString("en-GB", {
@@ -21,62 +16,50 @@ function formatDate(iso: string): string {
 }
 
 type CommentBubbleProps = {
-  comment: CommentRow;
+  comment: ServiceProvidingGroupProductApplicationComment;
+  identity: Identity | undefined;
+  isCurrentUser: boolean;
 };
 
-export function CommentBubble({ comment }: CommentBubbleProps) {
-  const color = AVATAR_COLORS[comment.authorId % AVATAR_COLORS.length];
+export function CommentBubble({
+  comment,
+  identity,
+  isCurrentUser,
+}: CommentBubbleProps) {
   const isInternal = comment.visibility === "same_party";
+  const authorName = identity?.entity_name ?? String(comment.created_by);
+
+  const bodyClass = `border-b px-3 py-1 text-base text-gray-700 leading-relaxed whitespace-pre-wrap ${
+    isCurrentUser ? "bg-semantic-background-action-selected" : "bg-white"
+  }`;
 
   return (
-    <div className="flex gap-3 items-start">
-      {/* Avatar */}
-      <div
-        className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 ${color.bg} ${color.text}`}
-      >
-        {comment.authorInitials}
+    <div className="flex flex-col">
+      {/* Header */}
+      <div className="flex flex-wrap items-center gap-2 mb-1">
+        <span className="text-xs font-bold text-gray-900">{authorName}</span>
+        {identity?.party_name && (
+          <>
+            <span className="text-xs text-gray-500">{identity.party_name}</span>
+            <span className="text-xs text-gray-400">·</span>
+          </>
+        )}
+        <span className="text-xs text-gray-400">
+          {formatDate(comment.created_at)}
+        </span>
+        {isInternal ? (
+          <Tag size="small" variant="warning">
+            Internal
+          </Tag>
+        ) : (
+          <Tag size="small" variant="success">
+            Shared
+          </Tag>
+        )}
       </div>
 
-      {/* Content */}
-      <div className="flex-1 min-w-0">
-        {/* Header */}
-        <div className="flex flex-wrap items-center gap-2 mb-1">
-          <span className="text-sm font-bold text-gray-900">
-            {comment.authorName}
-          </span>
-          {comment.authorParty && (
-            <>
-              <span className="text-xs text-gray-500">
-                {comment.authorParty}
-              </span>
-              <span className="text-xs text-gray-400">·</span>
-            </>
-          )}
-          <span className="text-xs text-gray-400">
-            {formatDate(comment.createdAt)}
-          </span>
-          {isInternal ? (
-            <span className="text-xs bg-amber-100 text-amber-800 rounded px-1.5 py-0.5 font-semibold">
-              Internal
-            </span>
-          ) : (
-            <span className="text-xs bg-green-100 text-green-800 rounded px-1.5 py-0.5 font-semibold">
-              Shared
-            </span>
-          )}
-        </div>
-
-        {/* Body */}
-        <div
-          className={`rounded-tr-lg rounded-b-lg border px-3 py-2.5 text-sm text-gray-700 leading-relaxed whitespace-pre-wrap ${
-            comment.isCurrentUser
-              ? "bg-blue-50 border-blue-200"
-              : "bg-white border-gray-200"
-          }`}
-        >
-          {comment.content}
-        </div>
-      </div>
+      {/* Body */}
+      <div className={bodyClass}>{comment.content}</div>
     </div>
   );
 }
