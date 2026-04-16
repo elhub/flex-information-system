@@ -152,7 +152,6 @@ class AccountingPointServiceImpl(
         accountingPointBusinessId: String
     ): Either<AppError, Long> = accountingPointRepository.checkEndUserMatchesAccountingPoint(endUserBusinessId, accountingPointBusinessId).mapLeft { error ->
         when (error) {
-            is NotFoundError -> ResourceNotFoundError("Accounting point not found")
             is NoMatchError -> EndUserError("End user does not match")
             else -> InternalServerError(traceIdOrUnknown())
         }
