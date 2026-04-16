@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import type { ReactNode } from "react";
 import { routeDefs } from "./routeDefs";
+import { resolvePath } from "./helpers";
 import type { RouteName, RouteParams, RouteState } from "./routeDefs";
 
 type TypedLinkProps<K extends RouteName> = {
@@ -19,13 +20,7 @@ export function TypedLink<K extends RouteName>(props: TypedLinkProps<K>) {
   const state = "state" in rest ? rest.state : undefined;
 
   const def = routeDefs[to];
-  const path = def.path.replace(/:([a-zA-Z_]+)/g, (_, key: string) => {
-    const value = params[key];
-    if (value === undefined) {
-      throw new Error(`Missing param "${key}" for route "${to}"`);
-    }
-    return encodeURIComponent(value);
-  });
+  const path = resolvePath(def.path, params);
 
   return (
     <Link to={path} state={state} className={className}>

@@ -1,5 +1,6 @@
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { routeDefs } from "./routeDefs";
+import { resolvePath } from "./helpers";
 import type { RouteName, RouteParams, RouteState } from "./routeDefs";
 
 /**
@@ -71,13 +72,7 @@ export function useTypedNavigate() {
       | undefined;
     const def = routeDefs[route];
     const params = (options?.params ?? {}) as Record<string, string>;
-    const path = def.path.replace(/:([a-zA-Z_]+)/g, (_, key: string) => {
-      const value = params[key];
-      if (value === undefined) {
-        throw new Error(`Missing param "${key}" for route "${route}"`);
-      }
-      return encodeURIComponent(value);
-    });
+    const path = resolvePath(def.path, params);
     navigate(path, { state: options?.state });
   };
 }
