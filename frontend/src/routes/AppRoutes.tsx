@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import { routeDefs } from "./routeDefs";
+import type { RouteDef } from "./types";
 import { AccessGate } from "./AccessGate";
 import { Loader } from "../components/ui";
 
@@ -11,7 +12,7 @@ import { Loader } from "../components/ui";
  */
 export const AppRoutes = () => (
   <Routes>
-    {Object.entries(routeDefs).map(([key, def]) => (
+    {(Object.entries(routeDefs) as [string, RouteDef][]).map(([key, def]) => (
       <Route
         key={key}
         path={def.path}
