@@ -17,6 +17,7 @@ import no.elhub.flex.model.domain.AccountingPointEndUser
 import no.elhub.flex.model.domain.AccountingPointEnergySupplier
 import no.elhub.flex.model.domain.db.DatabaseError
 import no.elhub.flex.model.domain.db.LockTimeoutError
+import no.elhub.flex.model.domain.db.NoMatchError
 import no.elhub.flex.model.domain.db.NotFoundError
 import no.elhub.flex.model.domain.db.RepositoryError
 import no.elhub.flex.util.toSqlTimestamp
@@ -51,7 +52,7 @@ interface AccountingPointRepository {
     /**
      * Calls `api.controllable_unit_lookup_check_end_user_matches_accounting_point`.
      *
-     * Returns the end-user ID, or [NotFoundError] when the check fails.
+     * Returns the end-user ID, or [NoMatchError] when the check fails.
      */
     context(principal: FlexPrincipal)
     suspend fun checkEndUserMatchesAccountingPoint(
@@ -207,8 +208,8 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
                 DatabaseError("Failed to check end user")
             }.flatMap { id ->
                 id?.right() ?: run {
-                    logger.info { "No match for end user $endUserBusinessId and accounting point $accountingPointBusinessId" }
-                    NotFoundError("End user does not match accounting point / controllable unit").left()
+                    logger.info { "No match between end user and accounting point $accountingPointBusinessId" }
+                    NoMatchError("End user does not match accounting point / controllable unit").left()
                 }
             }
         }
@@ -443,7 +444,7 @@ private fun resolveOrCreateEntity(conn: Connection, endUserBusinessId: String): 
     val (entityType, businessIdType) = when {
         endUserBusinessId.matches(Regex("^[1-9][0-9]{10}$")) -> "person" to "pid"
         endUserBusinessId.matches(Regex("^[1-9][0-9]{8}$")) -> "organisation" to "org"
-        else -> error("Cannot determine entity type for end user business ID: $endUserBusinessId")
+        else -> error("Cannot determine entity type for end user business ID")
     }
 
     conn.prepareNamed(
