@@ -8,3 +8,5 @@ export {
   useTypedNavigate,
 } from "./hooks";
 export { TypedLink } from "./TypedLink";
+export { AppRoutes } from "./AppRoutes";
+export { AccessGate } from "./AccessGate";
