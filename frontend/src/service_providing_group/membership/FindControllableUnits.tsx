@@ -87,6 +87,13 @@ export const FindControllableUnits = ({ spgId }: Props) => {
       render: (v) => (v as string | undefined) ?? "—",
     },
     {
+      key: "brp_name",
+      header: t(
+        "accounting_point_balance_responsible_party.balance_responsible_party_id",
+      ),
+      render: (v) => (v as string | undefined) ?? "—",
+    },
+    {
       key: "technical_resource_count",
       header: "Number of Technical Resources",
     },
