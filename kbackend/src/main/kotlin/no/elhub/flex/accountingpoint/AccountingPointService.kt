@@ -83,15 +83,14 @@ class AccountingPointServiceImpl(
         .fold(
             ifLeft = { e ->
                 if (e.code == HttpStatusCode.NotFound) {
-                    logger.warn { "Accounting point not found in adapter: $accountingPointBusinessId" }
                     e.left()
                 } else {
-                    logger.warn { "Failed to fetch accounting point data for $accountingPointBusinessId — skipping sync" }
+                    logger.warn { "Skipping sync" }
                     Unit.right()
                 }
             },
             ifRight = { adapterAccountingPoint ->
-                logger.debug { "Raw data from adapter: ${adapterAccountingPoint.hidingEndUserIDs()}" }
+                logger.debug { "Raw data from adapter: ${adapterAccountingPoint.anonymizedForLogging()}" }
                 with(FlexPrincipal.internalData()) {
                     flexTransaction { _ ->
                         either {
@@ -124,8 +123,7 @@ class AccountingPointServiceImpl(
         return InternalServerError(traceIdOrUnknown())
     }
 
-    // useful for logging the structure without showing sensitive data
-    private fun AdapterAccountingPoint.hidingEndUserIDs(): AdapterAccountingPoint =
+    private fun AdapterAccountingPoint.anonymizedForLogging(): AdapterAccountingPoint =
         copy(endUser = endUser.map { it.copy(businessId = "<HIDDEN>") })
 
     private fun AdapterAccountingPoint.toAccountingPointEndUsers(accountingPointId: Long): List<AccountingPointEndUser> =
