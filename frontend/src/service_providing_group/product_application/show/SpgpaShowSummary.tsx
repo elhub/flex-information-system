@@ -1,6 +1,5 @@
 import { Button, Link, Panel } from "../../../components/ui";
 import { LabelValue } from "../../../components/LabelValue";
-import { Link as RouterLink } from "react-router-dom";
 import { IconPencil } from "@elhub/ds-icons";
 import { usePermissions } from "ra-core";
 import { Permissions } from "../../../auth/permissions";
@@ -10,6 +9,7 @@ import {
 } from "../../../generated-client";
 import { useGetAllProductTypes } from "../../../product_type/components";
 import { useParty } from "../../../hooks/party";
+import { buildPath, TypedLink } from "../../../routes";
 
 type Props = {
   spgpa: ServiceProvidingGroupProductApplication;
@@ -41,8 +41,13 @@ export const SpgpaShowSummary = ({ spgpa, spg }: Props) => {
       {canEdit && (
         <div className="flex justify-end">
           <Button
-            as={RouterLink}
-            to={`/service_providing_group/${spgpa.service_providing_group_id}/product_application/${spgpa.id}`}
+            as={TypedLink}
+            to={buildPath("spg_product_application_edit", {
+              id: String(spgpa.id),
+              service_providing_group_id: String(
+                spgpa.service_providing_group_id,
+              ),
+            })}
             variant="invisible"
             icon={IconPencil}
           >
@@ -57,8 +62,10 @@ export const SpgpaShowSummary = ({ spgpa, spg }: Props) => {
           label="Service providing group"
           value={
             <Link
-              as={RouterLink}
-              to={`/service_providing_group/${spgpa.service_providing_group_id}/show`}
+              as={TypedLink}
+              to={buildPath("spg_show", {
+                id: String(spgpa.service_providing_group_id),
+              })}
             >
               {spg?.name} (#{spg?.id})
             </Link>
@@ -70,8 +77,10 @@ export const SpgpaShowSummary = ({ spgpa, spg }: Props) => {
           label="System Operator / PSO"
           value={
             <Link
-              as={RouterLink}
-              to={`/party/${spgpa.procuring_system_operator_id}/show`}
+              as={TypedLink}
+              to={buildPath("party_show", {
+                id: String(spgpa.procuring_system_operator_id),
+              })}
             >
               {procuringServiceProvider.data?.name}
             </Link>

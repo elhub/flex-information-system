@@ -5,7 +5,7 @@ import {
   useTranslate,
 } from "ra-core";
 import { Link as RouterLink } from "react-router-dom";
-import { useTypedNavigate, TypedLink, buildPath } from "../../routes";
+import { useTypedNavigate, buildPath } from "../../routes";
 import {
   Heading,
   Tag,

@@ -1,7 +1,6 @@
 import { z } from "zod";
 import { lazy, type ComponentType } from "react";
 import type {
-  RouteDef,
   ExtractParams,
   ExtractState,
   RouteOpts as RouteOptsBase,
@@ -1839,7 +1838,7 @@ export const routeDefs = {
     ),
   },
 
-  // === system_operator_product_type ===
+  // === system_operator_product_type. ===
   sopt_list: {
     path: "/system_operator_product_type",
     access: "system_operator_product_type.read",

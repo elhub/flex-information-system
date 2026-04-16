@@ -44,9 +44,11 @@ export type ExtractState<T extends RouteDef> = T extends {
  * Usage: `RouteOpts<K> & { to: K }` for navigate, or
  *        `RouteOpts<K> & { to: K; children: ReactNode }` for links.
  */
-export type RouteOpts<K extends string, TDef extends RouteDef = RouteDef> = ([
+export type RouteOpts<_K extends string, TDef extends RouteDef = RouteDef> = ([
   ExtractParams<TDef>,
 ] extends [never]
-  ? {}
+  ? object
   : { params: ExtractParams<TDef> }) &
-  ([ExtractState<TDef>] extends [never] ? {} : { state?: ExtractState<TDef> });
+  ([ExtractState<TDef>] extends [never]
+    ? object
+    : { state?: ExtractState<TDef> });

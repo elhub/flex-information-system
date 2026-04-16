@@ -1,11 +1,10 @@
 import { Form, useNotify } from "ra-core";
-import { useNavigate } from "react-router-dom";
 import { callControllableUnitLookup } from "../../generated-client";
 import { zControllableUnitLookupRequest } from "../../generated-client/zod.gen";
 import { getFields, unTypedZodResolver } from "../../zod";
 import { FormContainer, Heading } from "../../components/ui";
 import { TextInput, FormToolbar } from "../../components/EDS-ra/inputs";
-import { RouteOpts, useTypedNavigate } from "../../routes";
+import { useTypedNavigate } from "../../routes";
 
 export const ControllableUnitLookupInput = () => {
   const typedNavigate = useTypedNavigate();
