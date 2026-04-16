@@ -1,6 +1,6 @@
 import { Form, useRecordContext } from "ra-core";
 import { ControllableUnit } from "../generated-client";
-import useLocationState from "../hooks/useLocationState";
+import { useTypedLocationState } from "../routes";
 import {
   zControllableUnit,
   zControllableUnitCreateRequest,
@@ -26,7 +26,7 @@ export type ControllableUnitInputLocationState = {
 
 export const ControllableUnitInput = () => {
   const createOrUpdate = useCreateOrUpdate();
-  const locationState = useLocationState<ControllableUnitInputLocationState>();
+  const locationState = useTypedLocationState("controllable_unit_edit");
 
   const controllableUnitOverride: Partial<ControllableUnit> = zControllableUnit
     .partial()

@@ -1,4 +1,5 @@
 import { Link as RouterLink } from "react-router-dom";
+import { buildPath } from "../../routes";
 import { usePermissions } from "ra-core";
 import { ControllableUnitServiceProviderLocationState } from "../service_provider/ControllableUnitServiceProviderInput";
 import { ControllableUnitSuspensionLocationState } from "../suspension/ControllableUnitSuspensionInput";
@@ -18,7 +19,9 @@ const CreateCUSPButton = ({
   return (
     <Button
       as={RouterLink}
-      to={`/controllable_unit/${controllableUnitId}/service_provider/create`}
+      to={buildPath("cu_service_provider_create", {
+        controllable_unit_id: controllableUnitId ?? "",
+      })}
       state={locationState}
       icon={IconPlus}
       variant="invisible"
@@ -40,7 +43,9 @@ const CreateSuspensionButton = ({
   return (
     <Button
       as={RouterLink}
-      to={`/controllable_unit/${controllableUnitId}/suspension/create`}
+      to={buildPath("cu_suspension_create", {
+        controllable_unit_id: controllableUnitId ?? "",
+      })}
       state={locationState}
       icon={IconWarningTriangle}
       variant="invisible"

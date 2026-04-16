@@ -6,13 +6,13 @@ import {
   useGetOne,
 } from "react-admin";
 import { Datagrid } from "../../auth";
-import { useParams } from "react-router-dom";
+import { useTypedParams, buildPath } from "../../routes";
 import { DateField } from "../../components/datetime";
 import { IdentityField } from "../../components/IdentityField";
 import { EnumField } from "../../components/enum";
 
 export const ControllableUnitSuspensionHistoryList = () => {
-  const params = useParams();
+  const params = useTypedParams("cu_suspension_history");
   const filter: any = {
     controllable_unit_id: params.controllable_unit_id,
   };
@@ -42,7 +42,10 @@ export const ControllableUnitSuspensionHistoryList = () => {
     >
       <Datagrid
         rowClick={(_id, _res, record) =>
-          `/controllable_unit/${record.controllable_unit_id}/suspension_history/${record.id}/show`
+          buildPath("cu_suspension_history_show", {
+            controllable_unit_id: String(record.controllable_unit_id),
+            id: String(record.id),
+          })
         }
       >
         <TextField

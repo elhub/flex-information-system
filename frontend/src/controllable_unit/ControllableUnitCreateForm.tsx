@@ -1,6 +1,6 @@
 import { Form, useGetIdentity, UserIdentity } from "ra-core";
 import { useNotify } from "react-admin";
-import { useNavigate } from "react-router-dom";
+import { useTypedNavigate } from "../routes";
 import {
   createControllableUnit,
   createControllableUnitServiceProvider,
@@ -62,7 +62,7 @@ export const ControllableUnitCreateForm = ({
   accountingPointBusinessId,
 }: ControllableUnitCreateFormProps) => {
   const notify = useNotify();
-  const navigate = useNavigate();
+  const navigate = useTypedNavigate();
 
   // We need to save the id if the cu is created successfully but the cusp fails.
   const [savedControllableUnitId, setSavedControllableUnitId] = useState<
@@ -127,7 +127,10 @@ export const ControllableUnitCreateForm = ({
     }
 
     notify("Controllable Unit created successfully", { type: "success" });
-    navigate(`/controllable_unit/${createdControllableUnit.data.id}/show`);
+    navigate({
+      to: "controllable_unit_show",
+      params: { id: String(createdControllableUnit.data.id) },
+    });
   };
 
   return (

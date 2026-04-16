@@ -1,4 +1,5 @@
 import { Form, useGetIdentity, useRecordContext, UserIdentity } from "ra-core";
+import { useTypedNavigate, useTypedLocationState } from "../../routes";
 import { useNavigate } from "react-router-dom";
 import { ValidTimeTooltip } from "../../components/ValidTimeTooltip";
 import { getFields, unTypedZodResolver } from "../../zod";
@@ -8,7 +9,6 @@ import {
   zControllableUnitServiceProviderCreateRequest,
 } from "../../generated-client/zod.gen";
 import { ControllableUnitServiceProvider } from "../../generated-client";
-import useLocationState from "../../hooks/useLocationState";
 import { FormContainer, Heading, FlexDiv } from "../../components/ui";
 import {
   TextInput,
@@ -28,8 +28,7 @@ export type ControllableUnitServiceProviderLocationState = {
 };
 
 export const ControllableUnitServiceProviderInput = () => {
-  const locationState =
-    useLocationState<ControllableUnitServiceProviderLocationState>();
+  const locationState = useTypedLocationState("cu_service_provider_create");
   const { cusp, cuIDAsNumber } = locationState ?? {};
   const actualRecord = useRecordContext<ControllableUnitServiceProvider>();
 
@@ -38,7 +37,7 @@ export const ControllableUnitServiceProviderInput = () => {
     // if valid_from is given by CU create page, it will be a date (YYYY-MM-DD)
     // and needs to be converted to a locally midnight-aligned datetime
     valid_from: cusp?.valid_from
-      ? formatISO(parse(cusp.valid_from, "yyyy-MM-dd", new Date()))
+      ? formatISO(parse(cusp.valid_from as string, "yyyy-MM-dd", new Date()))
       : undefined,
   });
 
@@ -74,7 +73,8 @@ const ControllableUnitServiceProviderForm = ({
   cuIDAsNumber: boolean;
   identity: UserIdentity | undefined;
 }) => {
-  const navigate = useNavigate();
+  const navigate = useTypedNavigate();
+  const navigateBack = useNavigate();
   const isServiceProvider = identity?.role == "flex_service_provider";
   const recordWithPartyId = isServiceProvider
     ? {
@@ -85,11 +85,14 @@ const ControllableUnitServiceProviderForm = ({
 
   const onCancel = () => {
     if (!record.controllable_unit_id) {
-      navigate(-1);
+      navigateBack(-1);
       return;
     }
 
-    navigate(`/controllable_unit/${record.controllable_unit_id}/show`);
+    navigate({
+      to: "controllable_unit_show",
+      params: { id: String(record.controllable_unit_id) },
+    });
   };
 
   const fields = getFields(zControllableUnitServiceProviderCreateRequest.shape);

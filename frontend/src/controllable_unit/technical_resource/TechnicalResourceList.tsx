@@ -5,7 +5,8 @@ import {
   useTranslate,
 } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
+import { useTypedNavigate, buildPath } from "../../routes";
 import { Permissions } from "../../auth/permissions";
 import { TechnicalResourceInputLocationState } from "./TechnicalResourceInput";
 import {
@@ -34,7 +35,9 @@ const CreateButton = ({
   return (
     <Button
       as={RouterLink}
-      to={`/controllable_unit/${controllableUnitId}/technical_resource/create`}
+      to={buildPath("cu_technical_resource_create", {
+        controllable_unit_id: String(controllableUnitId),
+      })}
       state={locationState}
       variant="primary"
       icon={IconPlus}
@@ -89,7 +92,7 @@ const DeleteTechnicalResourceButton = ({
 export const TechnicalResourceList = () => {
   const { id } = useRecordContext()!;
   const { permissions } = usePermissions<Permissions>();
-  const navigate = useNavigate();
+  const navigate = useTypedNavigate();
   const translate = useTranslate();
   const translateEnum = useTranslateEnum();
 
@@ -127,9 +130,13 @@ export const TechnicalResourceList = () => {
             "No technical resources yet. To set the controllable unit as active, one technical resource is required."
           }
           rowClick={(record) => {
-            navigate(
-              `/controllable_unit/${record.controllable_unit_id}/technical_resource/${record.id}/show`,
-            );
+            navigate({
+              to: "cu_technical_resource_show",
+              params: {
+                controllable_unit_id: String(record.controllable_unit_id),
+                id: String(record.id),
+              },
+            });
           }}
           action={
             canDelete

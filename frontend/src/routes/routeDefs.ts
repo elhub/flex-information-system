@@ -74,6 +74,11 @@ export const routeDefs = {
   cu_lookup_result: {
     path: "/controllable_unit/lookup/result",
     access: "controllable_unit.lookup",
+    locationState:
+      z.object({
+        controllableUnit: z.record(z.string(), z.unknown()).optional(),
+        endUserId: z.number().optional(),
+      }),
     component: lazyNamed(
       () => import("../controllable_unit/lookup/ControllableUnitLookupResult"),
       "ControllableUnitLookupResult",
@@ -81,6 +86,13 @@ export const routeDefs = {
   },
   cu_lookup_create: {
     path: "/controllable_unit/lookup/create",
+    locationState:
+      z.object({
+        accounting_point_id: z.string(),
+        end_user_id: z.string(),
+        accounting_point_business_id: z.string(),
+
+      }),
     access: "controllable_unit.create",
     component: lazy(
       () => import("../controllable_unit/ControllableUnitCreate"),
@@ -1931,7 +1943,7 @@ export const routeDefs = {
     path: "/login/assumeParty",
     component: lazyNamed(() => import("../AssumePartyPage"), "AssumePartyPage"),
   },
-} satisfies Record<string, RouteDef>;
+} as const
 
 export type RouteDefs = typeof routeDefs;
 export type RouteName = keyof RouteDefs;

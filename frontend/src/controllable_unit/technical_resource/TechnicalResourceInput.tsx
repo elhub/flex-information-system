@@ -1,7 +1,7 @@
 import { Form, useRecordContext } from "ra-core";
 import { zTechnicalResource } from "../../generated-client/zod.gen";
 import { TechnicalResource } from "../../generated-client";
-import useLocationState from "../../hooks/useLocationState";
+import { useTypedLocationState } from "../../routes";
 import { zTechnicalResourceCreateRequest } from "../../generated-client/zod.gen";
 import { getFields, unTypedZodResolver } from "../../zod";
 import { FormContainer, Heading, FlexDiv } from "../../components/ui";
@@ -20,7 +20,7 @@ export type TechnicalResourceInputLocationState = {
 };
 
 export const TechnicalResourceInput = () => {
-  const locationState = useLocationState<TechnicalResourceInputLocationState>();
+  const locationState = useTypedLocationState("cu_technical_resource_create");
   const technicalResourceOverride = zTechnicalResource
     .partial()
     .parse(locationState?.technicalResource ?? {});

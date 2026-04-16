@@ -12,6 +12,7 @@ import {
 import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
 import { Link, useLocation } from "react-router-dom";
+import { buildPath } from "../../routes";
 import { Permissions } from "../../auth/permissions";
 import { DateField } from "../../components/datetime";
 import { IdentityField } from "../../components/IdentityField";
@@ -22,8 +23,10 @@ const CreateButton = ({ id }: { id: any }) => (
     component={Link}
     to={
       id
-        ? `/controllable_unit/${id}/suspension/create`
-        : "/controllable_unit_suspension/create"
+        ? buildPath("cu_suspension_create", {
+            controllable_unit_id: String(id),
+          })
+        : buildPath("cu_suspension_standalone_create")
     }
     startIcon={<AddIcon />}
     state={{ controllable_unit_id: id }}
@@ -85,7 +88,10 @@ export const ControllableUnitSuspensionList = () => {
           <Datagrid
             bulkActionButtons={false}
             rowClick={(_id, _res, record) =>
-              `/controllable_unit/${record.controllable_unit_id}/suspension/${record.id}/show`
+              buildPath("cu_suspension_show", {
+                controllable_unit_id: String(record.controllable_unit_id),
+                id: String(record.id),
+              })
             }
           >
             {isURLFlat && (

@@ -12,13 +12,13 @@ import { DateField } from "../../components/datetime";
 import { Permissions } from "../../auth/permissions";
 import { EnumField } from "../../components/enum";
 import { ControllableUnit } from "../../generated-client";
-import { useParams } from "react-router-dom";
+import { useTypedParams } from "../../routes";
 
 export const ControllableUnitBalanceResponsiblePartyList = () => {
   // accounting point id of the controllable unit whose BRPs we want to get
-  const { controllable_unit_id } = useParams<{
-    controllable_unit_id: string;
-  }>();
+  const { controllable_unit_id } = useTypedParams(
+    "cu_balance_responsible_party",
+  );
   const { data: cu, isLoading } = useGetOne<ControllableUnit & { id: number }>(
     "controllable_unit",
     { id: Number(controllable_unit_id) },

@@ -13,7 +13,8 @@ import {
 import { Typography } from "@mui/material";
 import { Datagrid } from "../../auth";
 import AddIcon from "@mui/icons-material/Add";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useTypedParams, buildPath } from "../../routes";
 import { DateField } from "../../components/datetime";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import { Permissions } from "../../auth/permissions";
@@ -28,7 +29,9 @@ const CreateButton = ({ id }: { id: number | undefined }) => {
   return (
     <Button
       component={Link}
-      to={`/controllable_unit/${id}/service_provider/create`}
+      to={buildPath("cu_service_provider_create", {
+        controllable_unit_id: String(id),
+      })}
       startIcon={<AddIcon />}
       state={id ? locationState : undefined}
       label="Create"
@@ -43,7 +46,7 @@ const CULookupButton = ({
 }) => (
   <Button
     component={Link}
-    to="/controllable_unit/lookup"
+    to={buildPath("cu_lookup")}
     startIcon={<TravelExploreIcon />}
     state={business_id ? { controllable_unit: business_id } : undefined}
     label="Lookup this controllable unit"
@@ -76,9 +79,7 @@ const ListActions = ({
 };
 
 export const ControllableUnitServiceProviderList = () => {
-  const { controllable_unit_id } = useParams<{
-    controllable_unit_id: string;
-  }>();
+  const { controllable_unit_id } = useTypedParams("cu_service_provider_list");
   const { data: cu, isLoading } = useGetOne<ControllableUnit & { id: number }>(
     "controllable_unit",
     { id: Number(controllable_unit_id) },
@@ -131,7 +132,10 @@ export const ControllableUnitServiceProviderList = () => {
         <Datagrid
           bulkActionButtons={false}
           rowClick={(_id, _res, record) =>
-            `/controllable_unit/${record.controllable_unit_id}/service_provider/${record.id}/show`
+            buildPath("cu_service_provider_show", {
+              controllable_unit_id: String(record.controllable_unit_id),
+              id: String(record.id),
+            })
           }
         >
           <TextField

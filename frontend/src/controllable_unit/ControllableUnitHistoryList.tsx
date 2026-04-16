@@ -1,11 +1,11 @@
 import { BooleanField, List, ReferenceField, TextField } from "react-admin";
 import { Datagrid } from "../auth";
-import { useParams } from "react-router-dom";
+import { useTypedParams } from "../routes";
 import { DateField } from "../components/datetime";
 import { EnumField } from "../components/enum";
 
 export const ControllableUnitHistoryList = () => {
-  const { controllable_unit_id } = useParams();
+  const { controllable_unit_id } = useTypedParams("cu_history");
   return (
     <List
       title={`Full history of controllable unit #${controllable_unit_id}`}

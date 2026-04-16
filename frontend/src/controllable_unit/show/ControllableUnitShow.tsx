@@ -7,7 +7,7 @@ import {
   SvgIconProps,
 } from "@elhub/ds-icons";
 import { Badge, Loader } from "../../components/ui";
-import { useParams } from "react-router-dom";
+import { useTypedParams } from "../../routes";
 import { ControllableUnitShowSummary } from "./ControllableUnitShowSummary";
 import { ControllableUnitShowTabs } from "./ControllableUnitShowTabs";
 import { ControllableUnitAlerts } from "./components/ControllableUnitAlerts";
@@ -41,7 +41,7 @@ const statusVariantMap: Record<
 };
 
 export const ControllableUnitShow = () => {
-  const { id } = useParams<{ id: string }>();
+  const { id } = useTypedParams("controllable_unit_show");
   const cuId = Number(id);
   const { permissions } = usePermissions<Permissions>();
 

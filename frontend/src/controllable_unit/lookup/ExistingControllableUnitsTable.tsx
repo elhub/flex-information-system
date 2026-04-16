@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { buildPath } from "../../routes";
 import { useTranslate } from "ra-core";
 import { ControllableUnitLookup } from "../../generated-client";
 import { ControllableUnitServiceProviderLocationState } from "../service_provider/ControllableUnitServiceProviderInput";
@@ -103,7 +104,7 @@ export const ExistingControllableUnitsTable = ({
                 <Table.DataCell>
                   <Button
                     as={Link}
-                    to="/controllable_unit_service_provider/create"
+                    to={buildPath("cu_sp_standalone_create")}
                     state={cuspState}
                     variant="primary"
                     size="small"

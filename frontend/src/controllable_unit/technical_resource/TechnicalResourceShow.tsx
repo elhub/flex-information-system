@@ -4,7 +4,8 @@ import {
   useResourceContext,
   useTranslate,
 } from "ra-core";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
+import { useTypedNavigate, TypedLink, buildPath } from "../../routes";
 import {
   Heading,
   Tag,
@@ -58,7 +59,10 @@ const TechnicalResourceLink = () => {
   if (!record) return null;
   return (
     <Link
-      to={`/controllable_unit/${record.controllable_unit_id}/technical_resource/${record.technical_resource_id}/show`}
+      to={buildPath("cu_technical_resource_show", {
+        controllable_unit_id: String(record.controllable_unit_id),
+        id: String(record.technical_resource_id),
+      })}
       as={RouterLink}
     >
       {record.technical_resource_id}
@@ -70,7 +74,10 @@ const ControllableUnitLink = () => {
   const record = useRecordContext();
   if (!record) return null;
   return (
-    <Link to={`/controllable_unit/${record.id}/show`} as={RouterLink}>
+    <Link
+      to={buildPath("controllable_unit_show", { id: String(record.id) })}
+      as={RouterLink}
+    >
       {record.name}
     </Link>
   );
@@ -78,7 +85,7 @@ const ControllableUnitLink = () => {
 
 const EditButton = () => {
   const record = useRecordContext<TechnicalResource>();
-  const navigate = useNavigate();
+  const navigate = useTypedNavigate();
   return (
     <Button
       variant="invisible"
@@ -86,9 +93,13 @@ const EditButton = () => {
       icon={IconPencil}
       onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
-        navigate(
-          `/controllable_unit/${record?.controllable_unit_id}/technical_resource/${record?.id}`,
-        );
+        navigate({
+          to: "cu_technical_resource_edit",
+          params: {
+            controllable_unit_id: String(record?.controllable_unit_id),
+            id: String(record?.id),
+          },
+        });
       }}
     >
       Edit
@@ -109,7 +120,7 @@ const HistoryButton = () => {
   return (
     <Button
       as={RouterLink}
-      to={`/controllable_unit/${record.controllable_unit_id}/technical_resource_history${filter}`}
+      to={`${buildPath("cu_technical_resource_history", { controllable_unit_id: String(record.controllable_unit_id) })}${filter}`}
       variant="invisible"
       icon={IconClockReset}
     >

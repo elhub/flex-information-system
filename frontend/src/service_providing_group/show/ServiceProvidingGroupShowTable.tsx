@@ -5,7 +5,8 @@ import {
   type SpgMembershipRow,
   useRemoveMembershipFromShow,
 } from "./useSpgShowViewModel";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
+import { useTypedNavigate } from "../../routes";
 import { useTranslateField } from "../../intl/intl";
 import { IconCrossCircle, IconUser } from "@elhub/ds-icons";
 import { usePermissions } from "ra-core";
@@ -52,7 +53,7 @@ const DeleteButton = ({
 
 export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
   const { data, isLoading, error } = useSpgShowViewModel(spgId);
-  const navigate = useNavigate();
+  const navigate = useTypedNavigate();
   const t = useTranslateField();
   const { permissions } = usePermissions<Permissions>();
   const canManageMembers = permissions?.allow(
@@ -130,7 +131,12 @@ export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
         )}
       </div>
       <SimpleTable
-        rowClick={(row) => navigate(`/controllable_unit/${row.id}/show`)}
+        rowClick={(row) =>
+          navigate({
+            to: "controllable_unit_show",
+            params: { id: String(row.id) },
+          })
+        }
         size="small"
         data={data?.rows ?? []}
         columns={columns}

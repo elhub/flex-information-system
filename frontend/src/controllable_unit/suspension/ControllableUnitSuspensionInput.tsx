@@ -12,7 +12,7 @@ import {
   AutocompleteReferenceInput,
 } from "../../auth";
 import { ControllableUnitSuspension } from "../../generated-client";
-import useLocationState from "../../hooks/useLocationState";
+import { useTypedLocationState } from "../../routes";
 import {
   zControllableUnitSuspension,
   zControllableUnitSuspensionCreateRequest,
@@ -26,8 +26,7 @@ export type ControllableUnitSuspensionLocationState = {
 
 // common layout to create and edit pages
 export const ControllableUnitSuspensionInput = () => {
-  const locationState =
-    useLocationState<ControllableUnitSuspensionLocationState>();
+  const locationState = useTypedLocationState("cu_suspension_create");
   const overrideRecord = zControllableUnitSuspension
     .partial()
     .parse(locationState?.cus);

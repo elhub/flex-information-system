@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
+import { buildPath } from "../../routes";
 import { ControllableUnitLookup } from "../../generated-client";
 import { zControllableUnitLookup } from "../../generated-client/zod.gen";
 import {
@@ -61,7 +62,7 @@ export const ControllableUnitLookupResult = () => {
               </BodyText>
               <Button
                 as={Link}
-                to={`/controllable_unit/lookup/create?${searchParams.toString()}`}
+                to={`${buildPath("cu_lookup_create")}?${searchParams.toString()}`}
                 variant="primary"
               >
                 Create new unit

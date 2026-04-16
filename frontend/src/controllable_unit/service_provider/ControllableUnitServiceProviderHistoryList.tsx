@@ -6,12 +6,12 @@ import {
   useGetOne,
 } from "react-admin";
 import { Datagrid } from "../../auth";
-import { useParams } from "react-router-dom";
+import { useTypedParams, buildPath } from "../../routes";
 import { DateField } from "../../components/datetime";
 import { IdentityField } from "../../components/IdentityField";
 
 export const ControllableUnitServiceProviderHistoryList = () => {
-  const params = useParams();
+  const params = useTypedParams("cu_service_provider_history");
   const filter: any = {
     controllable_unit_id: params.controllable_unit_id,
   };
@@ -41,7 +41,10 @@ export const ControllableUnitServiceProviderHistoryList = () => {
     >
       <Datagrid
         rowClick={(_id, _res, record) =>
-          `/controllable_unit/${record.controllable_unit_id}/service_provider_history/${record.id}/show`
+          buildPath("cu_service_provider_history_show", {
+            controllable_unit_id: String(record.controllable_unit_id),
+            id: String(record.id),
+          })
         }
       >
         <TextField

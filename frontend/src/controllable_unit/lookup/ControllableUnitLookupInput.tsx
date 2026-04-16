@@ -5,9 +5,10 @@ import { zControllableUnitLookupRequest } from "../../generated-client/zod.gen";
 import { getFields, unTypedZodResolver } from "../../zod";
 import { FormContainer, Heading } from "../../components/ui";
 import { TextInput, FormToolbar } from "../../components/EDS-ra/inputs";
+import { RouteOpts, useTypedNavigate } from "../../routes";
 
 export const ControllableUnitLookupInput = () => {
-  const navigate = useNavigate();
+  const typedNavigate = useTypedNavigate();
   const notify = useNotify();
 
   const keys = getFields(zControllableUnitLookupRequest.shape);
@@ -33,19 +34,10 @@ export const ControllableUnitLookupInput = () => {
     }
 
     if (response.data.controllable_units.length === 0) {
-      const params = new URLSearchParams({
-        accounting_point_id: String(response.data.accounting_point.id),
-        end_user_id: String(response.data.end_user.id),
-        accounting_point_business_id:
-          response.data.accounting_point.business_id,
-      });
-      navigate(`/controllable_unit/lookup/create?${params.toString()}`);
-      return;
+      typedNavigate({ to: "cu_lookup_create" })
     }
 
-    return navigate("/controllable_unit/lookup/result", {
-      state: { result: response.data },
-    });
+    return typedNavigate({ to: "controllable_unit_create", state: { controllableUnit: response.data.controllable_units[0], endUserId: response.data.end_user.id } });
   };
 
   return (
