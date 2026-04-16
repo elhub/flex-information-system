@@ -10,3 +10,5 @@ export {
 export { TypedLink } from "./TypedLink";
 export { AppRoutes } from "./AppRoutes";
 export { AccessGate } from "./AccessGate";
+export { menuConfig } from "./menu";
+export type { MenuItem, MenuGroup } from "./menu";
