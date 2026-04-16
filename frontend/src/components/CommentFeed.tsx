@@ -36,7 +36,9 @@ type CommentFeedProps = {
 function useIdentityMap(
   comments: ServiceProvidingGroupProductApplicationComment[] | undefined,
 ): Record<number, Identity> {
-  const ids = [...new Set((comments ?? []).map((c) => c.created_by))];
+  const ids = [...new Set((comments ?? []).map((c) => c.created_by))].sort(
+    (a, b) => a - b,
+  );
 
   const { data } = useQuery({
     queryKey: ["identities", ids],
