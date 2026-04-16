@@ -1,6 +1,11 @@
 import { z } from "zod";
 import { lazy, type ComponentType } from "react";
-import type { RouteDef, ExtractParams, ExtractState } from "./types";
+import type {
+  RouteDef,
+  ExtractParams,
+  ExtractState,
+  RouteOpts as RouteOptsBase,
+} from "./types";
 
 /** Helper to lazy-load a named export as if it were a default export. */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -1934,3 +1939,10 @@ export type RouteName = keyof RouteDefs;
 // Convenience types parameterized on the actual defs
 export type RouteParams<K extends RouteName> = ExtractParams<RouteDefs[K]>;
 export type RouteState<K extends RouteName> = ExtractState<RouteDefs[K]>;
+
+/**
+ * Navigation options for a given route.
+ * Includes `params` (required if route has URL params) and `state` (optional
+ * if route has a locationState schema).
+ */
+export type RouteOpts<K extends RouteName> = RouteOptsBase<K, RouteDefs[K]>;

@@ -1,5 +1,10 @@
 export { routeDefs } from "./routeDefs";
-export type { RouteName, RouteParams, RouteState } from "./routeDefs";
+export type {
+  RouteName,
+  RouteParams,
+  RouteState,
+  RouteOpts,
+} from "./routeDefs";
 export { buildPath } from "./helpers";
 export type { RouteDef } from "./types";
 export {

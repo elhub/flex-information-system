@@ -1,7 +1,12 @@
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { routeDefs } from "./routeDefs";
 import { resolvePath } from "./helpers";
-import type { RouteName, RouteParams, RouteState } from "./routeDefs";
+import type {
+  RouteName,
+  RouteParams,
+  RouteState,
+  RouteOpts,
+} from "./routeDefs";
 
 /**
  * Typed wrapper around useParams(). Validates params against the route's Zod
@@ -58,19 +63,16 @@ export function useTypedNavigate() {
   const navigate = useNavigate();
 
   return function typedNavigate<K extends RouteName>(
-    opts: { to: K } & (RouteParams<K> extends never
-      ? {}
-      : { params: RouteParams<K> }) &
-      (RouteState<K> extends never ? {} : { state?: RouteState<K> }),
+    opts: { to: K } & RouteOpts<K>,
   ) {
     const { to, ...rest } = opts as {
       to: K;
       params?: Record<string, string>;
       state?: unknown;
     };
+
     const def = routeDefs[to];
-    const params = (rest.params ?? {}) as Record<string, string>;
-    const path = resolvePath(def.path, params);
+    const path = resolvePath(def.path, rest.params ?? {});
     navigate(path, { state: rest.state });
   };
 }

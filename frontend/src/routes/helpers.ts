@@ -1,5 +1,5 @@
 import { routeDefs } from "./routeDefs";
-import type { RouteName, RouteParams } from "./routeDefs";
+import type { RouteName, RouteOpts } from "./routeDefs";
 
 /**
  * Replace :param segments in a path template with values from params.
@@ -23,7 +23,7 @@ export function resolvePath(
  */
 export function buildPath<K extends RouteName>(
   route: K,
-  ...args: RouteParams<K> extends never ? [] : [params: RouteParams<K>]
+  ...args: RouteOpts<K> extends { params: infer P } ? [params: P] : []
 ): string {
   const def = routeDefs[route];
   return resolvePath(def.path, (args[0] ?? {}) as Record<string, string>);

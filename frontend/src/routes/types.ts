@@ -32,3 +32,21 @@ export type ExtractState<T extends RouteDef> = T extends {
 }
   ? S
   : never;
+
+/**
+ * Builds the props/options shape for navigating to a route.
+ *
+ * - If the route has URL params, `params` is required.
+ * - If the route has no params, `params` is omitted.
+ * - If the route has a locationState schema, `state` is optional.
+ * - If the route has no locationState, `state` is omitted.
+ *
+ * Usage: `RouteOpts<K> & { to: K }` for navigate, or
+ *        `RouteOpts<K> & { to: K; children: ReactNode }` for links.
+ */
+export type RouteOpts<K extends string, TDef extends RouteDef = RouteDef> = ([
+  ExtractParams<TDef>,
+] extends [never]
+  ? {}
+  : { params: ExtractParams<TDef> }) &
+  ([ExtractState<TDef>] extends [never] ? {} : { state?: ExtractState<TDef> });
