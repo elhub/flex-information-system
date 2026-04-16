@@ -7,3 +7,4 @@ export {
   useTypedLocationState,
   useTypedNavigate,
 } from "./hooks";
+export { TypedLink } from "./TypedLink";
