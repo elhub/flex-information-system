@@ -45,6 +45,27 @@ for grid connection requests that affects more than one grid owner. Tilko has
 been rolled out to almost all of Norway as of writing this. We are taking a lot
 inspiration from Tilko in how we exchange grid location.
 
+### Common grid model basics
+
+The Nemo model is modelled in [Resource Description Framework
+(RDF)](https://no.wikipedia.org/wiki/Resource_Description_Framework), allowing
+for a representation of a graph as a set of triples.
+
+The main objects are
+
+* [Substation](https://nemo.elbits.no/modell/Dokumentasjon/substation/) : the
+  "main" station - hovedstasjon
+* [SubstationPart](https://nemo.elbits.no/modell/Dokumentasjon/substationpart/)
+  : a part of a substation - understasjon
+* [Line](https://nemo.elbits.no/modell/Dokumentasjon/line/) : grid connections
+  between substations
+
+An important field on these objects are their unique business identifiers -
+mRID. mRID is the [Master resource identifier issued by a model
+authority](https://ontology.tno.nl/cerise/cim-profile/cim_IdentifiedObject.mRID.html),
+in this case Elbits/Nemo. This unique identifier allows us to reference the
+objects in the common grid model.
+
 ### Accounting points in grid model
 
 Work is ongoing to add accounting points to the common grid model. This will be
