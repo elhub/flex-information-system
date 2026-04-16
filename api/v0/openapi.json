@@ -1505,6 +1505,13 @@
           "status": {
             "$ref": "#/components/schemas/service_providing_group_status",
             "default": "new"
+          },
+          "additional_information": {
+            "description": "Free text field for extra information about the service providing group if needed.",
+            "format": "text",
+            "type": "string",
+            "nullable": true,
+            "example": null
           }
         }
       },
@@ -1532,6 +1539,13 @@
           "status": {
             "$ref": "#/components/schemas/service_providing_group_status",
             "default": "new"
+          },
+          "additional_information": {
+            "description": "Free text field for extra information about the service providing group if needed.",
+            "format": "text",
+            "type": "string",
+            "nullable": true,
+            "example": null
           }
         },
         "required": [
@@ -1571,6 +1585,13 @@
           "status": {
             "$ref": "#/components/schemas/service_providing_group_status",
             "default": "new"
+          },
+          "additional_information": {
+            "description": "Free text field for extra information about the service providing group if needed.",
+            "format": "text",
+            "type": "string",
+            "nullable": true,
+            "example": null
           },
           "recorded_at": {
             "description": "When the resource was recorded (created or updated) in the system.",
@@ -4171,8 +4192,17 @@
             "$ref": "#/components/schemas/service_providing_group_product_application_status",
             "default": "requested"
           },
-          "maximum_active_power": {
-            "description": "The maximum active power applied for. Stored in kilowatts.",
+          "maximum_active_power_up": {
+            "description": "The maximum active power applied for in regulation direction up. Stored in kilowatts.",
+            "format": "decimal",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 999999.999,
+            "multipleOf": 0.001,
+            "example": 150.5
+          },
+          "maximum_active_power_down": {
+            "description": "The maximum active power applied for in regulation direction down. Stored in kilowatts.",
             "format": "decimal",
             "type": "number",
             "minimum": 0,
@@ -4238,8 +4268,17 @@
             "$ref": "#/components/schemas/service_providing_group_product_application_status",
             "default": "requested"
           },
-          "maximum_active_power": {
-            "description": "The maximum active power applied for. Stored in kilowatts.",
+          "maximum_active_power_up": {
+            "description": "The maximum active power applied for in regulation direction up. Stored in kilowatts.",
+            "format": "decimal",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 999999.999,
+            "multipleOf": 0.001,
+            "example": 150.5
+          },
+          "maximum_active_power_down": {
+            "description": "The maximum active power applied for in regulation direction down. Stored in kilowatts.",
             "format": "decimal",
             "type": "number",
             "minimum": 0,
@@ -4274,7 +4313,8 @@
           "service_providing_group_id",
           "procuring_system_operator_id",
           "product_type_ids",
-          "maximum_active_power"
+          "maximum_active_power_up",
+          "maximum_active_power_down"
         ]
       },
       "service_providing_group_product_application_response": {
@@ -4318,8 +4358,17 @@
             "$ref": "#/components/schemas/service_providing_group_product_application_status",
             "default": "requested"
           },
-          "maximum_active_power": {
-            "description": "The maximum active power applied for. Stored in kilowatts.",
+          "maximum_active_power_up": {
+            "description": "The maximum active power applied for in regulation direction up. Stored in kilowatts.",
+            "format": "decimal",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 999999.999,
+            "multipleOf": 0.001,
+            "example": 150.5
+          },
+          "maximum_active_power_down": {
+            "description": "The maximum active power applied for in regulation direction down. Stored in kilowatts.",
             "format": "decimal",
             "type": "number",
             "minimum": 0,
@@ -4370,7 +4419,8 @@
           "procuring_system_operator_id",
           "product_type_ids",
           "status",
-          "maximum_active_power",
+          "maximum_active_power_up",
+          "maximum_active_power_down",
           "recorded_at",
           "recorded_by"
         ]
