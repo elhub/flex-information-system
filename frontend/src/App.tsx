@@ -1,6 +1,7 @@
 import {
   Admin,
   CustomRoutes,
+  Resource,
   ResourceContextProvider,
   LayoutProps,
   localStorageStore,
@@ -16,7 +17,7 @@ import { elhubTheme } from "./theme";
 import { LoginPage } from "./LoginPage";
 import { AssumePartyPage } from "./AssumePartyPage";
 
-import { createAllResources } from "./resources";
+import { AppRoutes } from "./routes";
 
 import { Dashboard } from "./Dashboard";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -76,10 +77,32 @@ export const App = () => (
     store={localStorageStore(undefined, "Flex")}
     theme={elhubTheme}
   >
-    {(permissions) =>
-      permissions.allow ? <>{createAllResources(permissions)}</> : null
-    }
+    {/* Register resource names for react-admin data provider without creating routes */}
+    <Resource name="controllable_unit" />
+    <Resource name="controllable_unit_service_provider" />
+    <Resource name="controllable_unit_suspension" />
+    <Resource name="technical_resource" />
+    <Resource name="party" />
+    <Resource name="party_membership" />
+    <Resource name="party_membership_history" />
+    <Resource name="entity" />
+    <Resource name="entity_client" />
+    <Resource name="accounting_point" />
+    <Resource name="service_providing_group" />
+    <Resource name="service_providing_group_membership" />
+    <Resource name="service_providing_group_grid_prequalification" />
+    <Resource name="service_providing_group_product_application" />
+    <Resource name="service_providing_group_grid_suspension" />
+    <Resource name="service_providing_group_product_suspension" />
+    <Resource name="service_provider_product_application" />
+    <Resource name="service_provider_product_suspension" />
+    <Resource name="product_type" />
+    <Resource name="system_operator_product_type" />
+    <Resource name="event" />
+    <Resource name="notification" />
+    <Resource name="notice" />
     <CustomRoutes>
+      <AppRoutes />
       <Route
         path="/login/assumeParty"
         element={
