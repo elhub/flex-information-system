@@ -16,7 +16,7 @@ import {
   ServiceProvidingGroupGridSuspensionCreateRequest,
   ServiceProvidingGroupGridSuspensionUpdateRequest,
 } from "../../generated-client";
-import useLocationState from "../../hooks/useLocationState";
+import { useTypedLocationState } from "../../routes";
 import {
   zServiceProvidingGroupGridSuspension,
   zServiceProvidingGroupGridSuspensionCreateRequest,
@@ -24,14 +24,9 @@ import {
 import { EnumInput } from "../../components/enum";
 import { unTypedZodResolver } from "../../zod";
 
-export type ServiceProvidingGroupGridSuspensionLocationState = {
-  spggs: Partial<ServiceProvidingGroupGridSuspension>;
-};
-
 // common layout to create and edit pages
 export const ServiceProvidingGroupGridSuspensionInput = () => {
-  const locationState =
-    useLocationState<ServiceProvidingGroupGridSuspensionLocationState>();
+  const locationState = useTypedLocationState("spg_grid_suspension_create");
   const overrideRecord = zServiceProvidingGroupGridSuspension
     .partial()
     .safeParse(locationState?.spggs ?? {});

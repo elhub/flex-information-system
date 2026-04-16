@@ -17,7 +17,7 @@ import {
 } from "../components/ui";
 import { DateField, EnumField, TextField } from "../components/EDS-ra";
 import { ProductTypeArrayField } from "../product_type/components";
-import { PartyInputLocationState } from "../party/PartyInput";
+import { RouteState } from "../routes";
 import { DiffTextField } from "../components/EDS-ra/fields/DiffTextField";
 import { Party, Notice as GNotice } from "../generated-client";
 import {
@@ -67,7 +67,7 @@ type PartyCreateButtonProps = {
 
 // button to jump to the party input page in create mode with autofilled form
 const PartyCreateButton = ({ partyData, disabled }: PartyCreateButtonProps) => {
-  const locationState: PartyInputLocationState = { party: partyData };
+  const locationState: RouteState<"party_create"> = { party: partyData };
 
   return (
     <Button

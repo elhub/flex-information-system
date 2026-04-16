@@ -499,12 +499,18 @@ export const routeDefs = {
   party_create: {
     path: "/party/create",
     access: "party.create",
+    locationState: z.object({
+      party: z.record(z.string(), z.unknown()).optional(),
+    }),
     component: lazyNamed(() => import("../party/PartyInput"), "PartyInput"),
   },
   party_edit: {
     path: "/party/:id",
     params: z.object({ id: z.string() }),
     access: "party.update",
+    locationState: z.object({
+      party: z.record(z.string(), z.unknown()).optional(),
+    }),
     component: lazyNamed(() => import("../party/PartyInput"), "PartyInput"),
   },
 
@@ -1055,6 +1061,9 @@ export const routeDefs = {
     path: "/service_providing_group/:service_providing_group_id/grid_suspension/create",
     params: z.object({ service_providing_group_id: z.string() }),
     access: "service_providing_group_grid_suspension.create",
+    locationState: z.object({
+      spggs: z.record(z.string(), z.unknown()).optional(),
+    }),
     component: lazyNamed(
       () =>
         import("../service_providing_group/grid_suspension/ServiceProvidingGroupGridSuspensionInput"),
@@ -1068,6 +1077,9 @@ export const routeDefs = {
       id: z.string(),
     }),
     access: "service_providing_group_grid_suspension.update",
+    locationState: z.object({
+      spggs: z.record(z.string(), z.unknown()).optional(),
+    }),
     component: lazyNamed(
       () =>
         import("../service_providing_group/grid_suspension/ServiceProvidingGroupGridSuspensionInput"),

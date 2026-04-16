@@ -14,8 +14,7 @@ import {
   AutocompleteReferenceInput,
   FormToolbar,
 } from "../components/EDS-ra/inputs";
-import { Party } from "../generated-client/types.gen";
-import useLocationState from "../hooks/useLocationState";
+import { useTypedLocationState } from "../routes";
 
 // component updating the role field automatically based on the type field
 const PartyTypeInput = (props: { source: string; required: boolean }) => {
@@ -76,14 +75,10 @@ const PartyBusinessIDTypeInput = (props: {
   );
 };
 
-export type PartyInputLocationState = {
-  party?: Partial<Party>;
-};
-
 // common layout to create and edit pages
 export const PartyInput = () => {
   const actualRecord = useRecordContext();
-  const locationState = useLocationState<PartyInputLocationState>();
+  const locationState = useTypedLocationState("party_create");
   const createOrUpdate = useCreateOrUpdate();
   const overrideRecord = zPartyUpdateRequest
     .partial()
