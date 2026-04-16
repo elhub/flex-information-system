@@ -58,21 +58,19 @@ export function useTypedNavigate() {
   const navigate = useNavigate();
 
   return function typedNavigate<K extends RouteName>(
-    route: K,
-    ...args: RouteParams<K> extends never
-      ? RouteState<K> extends never
-        ? []
-        : [options?: { state?: RouteState<K> }]
-      : RouteState<K> extends never
-        ? [options: { params: RouteParams<K> }]
-        : [options: { params: RouteParams<K>; state?: RouteState<K> }]
+    opts: { to: K } & (RouteParams<K> extends never
+      ? {}
+      : { params: RouteParams<K> }) &
+      (RouteState<K> extends never ? {} : { state?: RouteState<K> }),
   ) {
-    const options = args[0] as
-      | { params?: Record<string, string>; state?: unknown }
-      | undefined;
-    const def = routeDefs[route];
-    const params = (options?.params ?? {}) as Record<string, string>;
+    const { to, ...rest } = opts as {
+      to: K;
+      params?: Record<string, string>;
+      state?: unknown;
+    };
+    const def = routeDefs[to];
+    const params = (rest.params ?? {}) as Record<string, string>;
     const path = resolvePath(def.path, params);
-    navigate(path, { state: options?.state });
+    navigate(path, { state: rest.state });
   };
 }

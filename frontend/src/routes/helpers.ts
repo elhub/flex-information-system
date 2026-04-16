@@ -1,4 +1,5 @@
-import type { RouteDef, ExtractParams } from "./types";
+import { routeDefs } from "./routeDefs";
+import type { RouteName, RouteParams } from "./routeDefs";
 
 /**
  * Replace :param segments in a path template with values from params.
@@ -17,20 +18,13 @@ export function resolvePath(
 }
 
 /**
- * Build a resolved URL path from a route definition and params.
+ * Build a resolved URL path from a route name and params.
  * Replaces :param segments with provided values.
  */
-export function buildPath<
-  TDefs extends Record<string, RouteDef>,
-  K extends keyof TDefs & string,
->(
-  defs: TDefs,
+export function buildPath<K extends RouteName>(
   route: K,
-  ...args: ExtractParams<TDefs[K]> extends never
-    ? []
-    : [params: ExtractParams<TDefs[K]>]
+  ...args: RouteParams<K> extends never ? [] : [params: RouteParams<K>]
 ): string {
-  const def = defs[route];
-  const params = (args[0] ?? {}) as Record<string, string>;
-  return resolvePath(def.path, params);
+  const def = routeDefs[route];
+  return resolvePath(def.path, (args[0] ?? {}) as Record<string, string>);
 }
