@@ -449,7 +449,8 @@ def test_event_sp(sts):
             service_providing_group_id=cast(int, spg.id),
             procuring_system_operator_id=so_id,
             product_type_ids=[1],
-            maximum_active_power=3.5,
+            maximum_active_power_up=3.5,
+            maximum_active_power_down=3.5,
         ),
     )
     assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
