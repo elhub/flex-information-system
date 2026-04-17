@@ -53,10 +53,6 @@ class ControllableUnitLookup(
                 logger.debug { "Controllable unit used in lookup: ${request.controllableUnitBusinessId}" }
                 logger.debug { "Accounting point used in lookup: $accountingPointBusinessId" }
 
-                // TODO: fix role
-                // The underlying query does not call a security definer function. It is a direct query against CU/AP,
-                // so it cannot be called with user role, we need to either rewrite this as a DB function or switch to a
-                // system role for this handler (flex_internal_data).
                 val controllableUnits = fetchControllableUnits(
                     request.controllableUnitBusinessId,
                     accountingPointBusinessId
