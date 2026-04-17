@@ -1,5 +1,26 @@
-import { ControllableUnitSuspensionComment, ControllableUnitSuspensionCommentVisibility, ServiceProviderProductApplicationComment, ServiceProviderProductApplicationCommentVisibility, ServiceProviderProductSuspensionComment, ServiceProviderProductSuspensionCommentVisibility, ServiceProvidingGroupProductApplicationComment, ServiceProvidingGroupProductApplicationCommentVisibility, ServiceProvidingGroupProductSuspensionComment, ServiceProvidingGroupProductSuspensionCommentVisibility } from "../../generated-client/types.gen";
+import {
+  ControllableUnitSuspensionComment,
+  ControllableUnitSuspensionCommentVisibility,
+  ServiceProviderProductApplicationComment,
+  ServiceProviderProductApplicationCommentVisibility,
+  ServiceProviderProductSuspensionComment,
+  ServiceProviderProductSuspensionCommentVisibility,
+  ServiceProvidingGroupProductApplicationComment,
+  ServiceProvidingGroupProductApplicationCommentVisibility,
+  ServiceProvidingGroupProductSuspensionComment,
+  ServiceProvidingGroupProductSuspensionCommentVisibility,
+} from "../../generated-client/types.gen";
 
-export type Comment = ServiceProviderProductApplicationComment | ServiceProviderProductSuspensionComment | ServiceProvidingGroupProductApplicationComment | ServiceProvidingGroupProductSuspensionComment | ControllableUnitSuspensionComment;
+export type Comment =
+  | ServiceProviderProductApplicationComment
+  | ServiceProviderProductSuspensionComment
+  | ServiceProvidingGroupProductApplicationComment
+  | ServiceProvidingGroupProductSuspensionComment
+  | ControllableUnitSuspensionComment;
 
-export type Visibility = ServiceProviderProductApplicationCommentVisibility | ServiceProviderProductSuspensionCommentVisibility | ServiceProvidingGroupProductApplicationCommentVisibility | ServiceProvidingGroupProductSuspensionCommentVisibility | ControllableUnitSuspensionCommentVisibility;
+export type Visibility =
+  | ServiceProviderProductApplicationCommentVisibility
+  | ServiceProviderProductSuspensionCommentVisibility
+  | ServiceProvidingGroupProductApplicationCommentVisibility
+  | ServiceProvidingGroupProductSuspensionCommentVisibility
+  | ControllableUnitSuspensionCommentVisibility;

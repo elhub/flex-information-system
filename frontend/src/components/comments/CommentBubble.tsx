@@ -1,8 +1,6 @@
 // frontend/src/components/CommentBubble.tsx
 import { Tag } from "../ui";
-import type {
-  Identity,
-} from "../../generated-client/types.gen";
+import type { Identity } from "../../generated-client/types.gen";
 import { Comment } from "./types";
 import { useTranslateEnum } from "../../intl/intl";
 
@@ -30,8 +28,9 @@ export function CommentBubble({
   const isInternal = comment.visibility === "same_party";
   const authorName = identity?.entity_name ?? String(comment.created_by);
   const enumTranslation = useTranslateEnum();
-  const bodyClass = `border-b px-3 py-1 text-base text-gray-700 leading-relaxed whitespace-pre-wrap ${isCurrentUser ? "bg-semantic-background-action-selected" : "bg-white"
-    }`;
+  const bodyClass = `border-b px-3 py-1 text-base text-gray-700 leading-relaxed whitespace-pre-wrap ${
+    isCurrentUser ? "bg-semantic-background-action-selected" : "bg-white"
+  }`;
 
   return (
     <div className="flex flex-col">

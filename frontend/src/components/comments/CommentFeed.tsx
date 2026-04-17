@@ -13,9 +13,7 @@ import {
 } from "../ui";
 import { CommentBubble } from "./CommentBubble";
 import { listIdentity } from "../../generated-client";
-import type {
-  Identity,
-} from "../../generated-client/types.gen";
+import type { Identity } from "../../generated-client/types.gen";
 import { throwOnError } from "../../util";
 import { Comment, Visibility } from "./types";
 import { useTranslateEnum } from "../../intl/intl";
@@ -26,9 +24,7 @@ type PostInput = {
 };
 
 type CommentFeedProps = {
-  commentsQuery: UseQueryResult<
-    Comment[]
-  >;
+  commentsQuery: UseQueryResult<Comment[]>;
   postComment: UseMutationResult<unknown, Error, PostInput>;
   canCreate: boolean;
 };
@@ -58,10 +54,7 @@ export function CommentFeed({
   canCreate,
 }: CommentFeedProps) {
   const [text, setText] = useState("");
-  const [visibility, setVisibility] =
-    useState<Visibility>(
-      "same_party",
-    );
+  const [visibility, setVisibility] = useState<Visibility>("same_party");
 
   const { data: identity } = useGetIdentity();
   const currentEntityId =
@@ -105,11 +98,7 @@ export function CommentFeed({
           <div className="flex justify-end items-center gap-2 mt-2">
             <Select
               value={visibility}
-              onValueChange={(v) =>
-                setVisibility(
-                  v as Visibility,
-                )
-              }
+              onValueChange={(v) => setVisibility(v as Visibility)}
               placeholder="Visibility"
             >
               <SelectContent>
