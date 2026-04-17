@@ -104,6 +104,9 @@ def sync_detailed(
 ) -> Response[ControllableUnitResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Read Controllable unit
 
+     Read [Controllable unit](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit/)
+
     Args:
         id (int):
 
@@ -133,6 +136,9 @@ def sync(
 ) -> ControllableUnitResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Read Controllable unit
 
+     Read [Controllable unit](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit/)
+
     Args:
         id (int):
 
@@ -156,6 +162,9 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
 ) -> Response[ControllableUnitResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Read Controllable unit
+
+     Read [Controllable unit](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit/)
 
     Args:
         id (int):
@@ -183,6 +192,9 @@ async def asyncio(
     client: AuthenticatedClient,
 ) -> ControllableUnitResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Read Controllable unit
+
+     Read [Controllable unit](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit/)
 
     Args:
         id (int):

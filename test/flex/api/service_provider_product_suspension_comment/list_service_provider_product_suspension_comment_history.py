@@ -155,6 +155,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProviderProductSuspensionCommentHistoryResponse]]:
     """List Service Provider Product Suspension Comment - history
 
+     List [Service Provider Product Suspension Comment - history](https://elhub.github.io/flex-
+    information-system/resources/service_provider_product_suspension_comment/)
+
     Args:
         id (str | Unset):
         service_provider_product_suspension_id (str | Unset):
@@ -202,6 +205,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProviderProductSuspensionCommentHistoryResponse] | None:
     """List Service Provider Product Suspension Comment - history
 
+     List [Service Provider Product Suspension Comment - history](https://elhub.github.io/flex-
+    information-system/resources/service_provider_product_suspension_comment/)
+
     Args:
         id (str | Unset):
         service_provider_product_suspension_id (str | Unset):
@@ -243,6 +249,9 @@ async def asyncio_detailed(
     service_provider_product_suspension_comment_id: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProviderProductSuspensionCommentHistoryResponse]]:
     """List Service Provider Product Suspension Comment - history
+
+     List [Service Provider Product Suspension Comment - history](https://elhub.github.io/flex-
+    information-system/resources/service_provider_product_suspension_comment/)
 
     Args:
         id (str | Unset):
@@ -288,6 +297,9 @@ async def asyncio(
     service_provider_product_suspension_comment_id: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProviderProductSuspensionCommentHistoryResponse] | None:
     """List Service Provider Product Suspension Comment - history
+
+     List [Service Provider Product Suspension Comment - history](https://elhub.github.io/flex-
+    information-system/resources/service_provider_product_suspension_comment/)
 
     Args:
         id (str | Unset):

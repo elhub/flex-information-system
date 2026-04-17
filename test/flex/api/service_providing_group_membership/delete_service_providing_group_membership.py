@@ -107,6 +107,10 @@ def sync_detailed(
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage]:
     """Delete Membership relation of controllable unit in service providing group
 
+     Delete [Membership relation of controllable unit in service providing
+    group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_membership/)
+
     Args:
         id (int):
         body (EmptyObject | Unset): An empty object
@@ -139,6 +143,10 @@ def sync(
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Delete Membership relation of controllable unit in service providing group
 
+     Delete [Membership relation of controllable unit in service providing
+    group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_membership/)
+
     Args:
         id (int):
         body (EmptyObject | Unset): An empty object
@@ -165,6 +173,10 @@ async def asyncio_detailed(
     body: EmptyObject | Unset = UNSET,
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage]:
     """Delete Membership relation of controllable unit in service providing group
+
+     Delete [Membership relation of controllable unit in service providing
+    group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_membership/)
 
     Args:
         id (int):
@@ -195,6 +207,10 @@ async def asyncio(
     body: EmptyObject | Unset = UNSET,
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Delete Membership relation of controllable unit in service providing group
+
+     Delete [Membership relation of controllable unit in service providing
+    group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_membership/)
 
     Args:
         id (int):

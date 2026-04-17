@@ -122,6 +122,9 @@ def sync_detailed(
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationCommentResponse]:
     """Update Service Providing Group Product Application Comment
 
+     Update [Service Providing Group Product Application Comment](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_product_application_comment/)
+
     Args:
         id (int):
         body (ServiceProvidingGroupProductApplicationCommentUpdateRequest): Request schema for
@@ -156,6 +159,9 @@ def sync(
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationCommentResponse | None:
     """Update Service Providing Group Product Application Comment
 
+     Update [Service Providing Group Product Application Comment](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_product_application_comment/)
+
     Args:
         id (int):
         body (ServiceProvidingGroupProductApplicationCommentUpdateRequest): Request schema for
@@ -184,6 +190,9 @@ async def asyncio_detailed(
     body: ServiceProvidingGroupProductApplicationCommentUpdateRequest,
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationCommentResponse]:
     """Update Service Providing Group Product Application Comment
+
+     Update [Service Providing Group Product Application Comment](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_product_application_comment/)
 
     Args:
         id (int):
@@ -216,6 +225,9 @@ async def asyncio(
     body: ServiceProvidingGroupProductApplicationCommentUpdateRequest,
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationCommentResponse | None:
     """Update Service Providing Group Product Application Comment
+
+     Update [Service Providing Group Product Application Comment](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_product_application_comment/)
 
     Args:
         id (int):

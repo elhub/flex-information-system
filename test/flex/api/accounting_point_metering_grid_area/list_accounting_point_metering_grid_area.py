@@ -157,6 +157,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[AccountingPointMeteringGridAreaResponse]]:
     """List Accounting Point Metering Grid Area
 
+     List [Accounting Point Metering Grid Area](https://elhub.github.io/flex-information-
+    system/resources/accounting_point_metering_grid_area/)
+
     Args:
         accounting_point_id (str | Unset):
         metering_grid_area_id (str | Unset):
@@ -207,6 +210,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[AccountingPointMeteringGridAreaResponse] | None:
     """List Accounting Point Metering Grid Area
 
+     List [Accounting Point Metering Grid Area](https://elhub.github.io/flex-information-
+    system/resources/accounting_point_metering_grid_area/)
+
     Args:
         accounting_point_id (str | Unset):
         metering_grid_area_id (str | Unset):
@@ -251,6 +257,9 @@ async def asyncio_detailed(
     limit: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[AccountingPointMeteringGridAreaResponse]]:
     """List Accounting Point Metering Grid Area
+
+     List [Accounting Point Metering Grid Area](https://elhub.github.io/flex-information-
+    system/resources/accounting_point_metering_grid_area/)
 
     Args:
         accounting_point_id (str | Unset):
@@ -299,6 +308,9 @@ async def asyncio(
     limit: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[AccountingPointMeteringGridAreaResponse] | None:
     """List Accounting Point Metering Grid Area
+
+     List [Accounting Point Metering Grid Area](https://elhub.github.io/flex-information-
+    system/resources/accounting_point_metering_grid_area/)
 
     Args:
         accounting_point_id (str | Unset):

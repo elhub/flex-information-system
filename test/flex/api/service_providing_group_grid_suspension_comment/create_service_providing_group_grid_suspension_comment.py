@@ -119,6 +119,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionCommentResponse]:
     """Create Service Providing Group Grid Suspension Comment
 
+     Create [Service Providing Group Grid Suspension Comment](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_suspension_comment/)
+
     Args:
         body (ServiceProvidingGroupGridSuspensionCommentCreateRequest | Unset): Request schema for
             create operations - Comment made by a party involved in a service providing group grid
@@ -150,6 +153,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionCommentResponse | None:
     """Create Service Providing Group Grid Suspension Comment
 
+     Create [Service Providing Group Grid Suspension Comment](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_suspension_comment/)
+
     Args:
         body (ServiceProvidingGroupGridSuspensionCommentCreateRequest | Unset): Request schema for
             create operations - Comment made by a party involved in a service providing group grid
@@ -175,6 +181,9 @@ async def asyncio_detailed(
     body: ServiceProvidingGroupGridSuspensionCommentCreateRequest | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionCommentResponse]:
     """Create Service Providing Group Grid Suspension Comment
+
+     Create [Service Providing Group Grid Suspension Comment](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_suspension_comment/)
 
     Args:
         body (ServiceProvidingGroupGridSuspensionCommentCreateRequest | Unset): Request schema for
@@ -204,6 +213,9 @@ async def asyncio(
     body: ServiceProvidingGroupGridSuspensionCommentCreateRequest | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionCommentResponse | None:
     """Create Service Providing Group Grid Suspension Comment
+
+     Create [Service Providing Group Grid Suspension Comment](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_suspension_comment/)
 
     Args:
         body (ServiceProvidingGroupGridSuspensionCommentCreateRequest | Unset): Request schema for

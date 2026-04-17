@@ -104,6 +104,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | MeteringGridAreaResponse]:
     """Read Metering Grid Area
 
+     Read [Metering Grid Area](https://elhub.github.io/flex-information-
+    system/resources/metering_grid_area/)
+
     Args:
         id (int):
 
@@ -133,6 +136,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | MeteringGridAreaResponse | None:
     """Read Metering Grid Area
 
+     Read [Metering Grid Area](https://elhub.github.io/flex-information-
+    system/resources/metering_grid_area/)
+
     Args:
         id (int):
 
@@ -156,6 +162,9 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | MeteringGridAreaResponse]:
     """Read Metering Grid Area
+
+     Read [Metering Grid Area](https://elhub.github.io/flex-information-
+    system/resources/metering_grid_area/)
 
     Args:
         id (int):
@@ -183,6 +192,9 @@ async def asyncio(
     client: AuthenticatedClient,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | MeteringGridAreaResponse | None:
     """Read Metering Grid Area
+
+     Read [Metering Grid Area](https://elhub.github.io/flex-information-
+    system/resources/metering_grid_area/)
 
     Args:
         id (int):

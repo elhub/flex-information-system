@@ -118,6 +118,9 @@ def sync_detailed(
 ) -> Response[Any | ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Update Relation between controllable unit and service provider
 
+     Update [Relation between controllable unit and service provider](https://elhub.github.io/flex-
+    information-system/resources/controllable_unit_service_provider/)
+
     Args:
         id (int):
         body (ControllableUnitServiceProviderUpdateRequest): Request schema for update operations
@@ -151,6 +154,9 @@ def sync(
 ) -> Any | ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Update Relation between controllable unit and service provider
 
+     Update [Relation between controllable unit and service provider](https://elhub.github.io/flex-
+    information-system/resources/controllable_unit_service_provider/)
+
     Args:
         id (int):
         body (ControllableUnitServiceProviderUpdateRequest): Request schema for update operations
@@ -178,6 +184,9 @@ async def asyncio_detailed(
     body: ControllableUnitServiceProviderUpdateRequest,
 ) -> Response[Any | ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Update Relation between controllable unit and service provider
+
+     Update [Relation between controllable unit and service provider](https://elhub.github.io/flex-
+    information-system/resources/controllable_unit_service_provider/)
 
     Args:
         id (int):
@@ -209,6 +218,9 @@ async def asyncio(
     body: ControllableUnitServiceProviderUpdateRequest,
 ) -> Any | ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Update Relation between controllable unit and service provider
+
+     Update [Relation between controllable unit and service provider](https://elhub.github.io/flex-
+    information-system/resources/controllable_unit_service_provider/)
 
     Args:
         id (int):

@@ -115,6 +115,9 @@ def sync_detailed(
 ) -> Response[ControllableUnitSuspensionResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Create Controllable Unit Suspension
 
+     Create [Controllable Unit Suspension](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_suspension/)
+
     Args:
         body (ControllableUnitSuspensionCreateRequest | Unset): Request schema for create
             operations - The relation allowing an impacted system operator to temporarily suspend a
@@ -146,6 +149,9 @@ def sync(
 ) -> ControllableUnitSuspensionResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Create Controllable Unit Suspension
 
+     Create [Controllable Unit Suspension](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_suspension/)
+
     Args:
         body (ControllableUnitSuspensionCreateRequest | Unset): Request schema for create
             operations - The relation allowing an impacted system operator to temporarily suspend a
@@ -171,6 +177,9 @@ async def asyncio_detailed(
     body: ControllableUnitSuspensionCreateRequest | Unset = UNSET,
 ) -> Response[ControllableUnitSuspensionResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Create Controllable Unit Suspension
+
+     Create [Controllable Unit Suspension](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_suspension/)
 
     Args:
         body (ControllableUnitSuspensionCreateRequest | Unset): Request schema for create
@@ -200,6 +209,9 @@ async def asyncio(
     body: ControllableUnitSuspensionCreateRequest | Unset = UNSET,
 ) -> ControllableUnitSuspensionResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Create Controllable Unit Suspension
+
+     Create [Controllable Unit Suspension](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_suspension/)
 
     Args:
         body (ControllableUnitSuspensionCreateRequest | Unset): Request schema for create

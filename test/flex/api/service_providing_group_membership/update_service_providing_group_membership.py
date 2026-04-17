@@ -118,6 +118,10 @@ def sync_detailed(
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupMembershipResponse]:
     """Update Membership relation of controllable unit in service providing group
 
+     Update [Membership relation of controllable unit in service providing
+    group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_membership/)
+
     Args:
         id (int):
         body (ServiceProvidingGroupMembershipUpdateRequest): Request schema for update operations
@@ -151,6 +155,10 @@ def sync(
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupMembershipResponse | None:
     """Update Membership relation of controllable unit in service providing group
 
+     Update [Membership relation of controllable unit in service providing
+    group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_membership/)
+
     Args:
         id (int):
         body (ServiceProvidingGroupMembershipUpdateRequest): Request schema for update operations
@@ -178,6 +186,10 @@ async def asyncio_detailed(
     body: ServiceProvidingGroupMembershipUpdateRequest,
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupMembershipResponse]:
     """Update Membership relation of controllable unit in service providing group
+
+     Update [Membership relation of controllable unit in service providing
+    group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_membership/)
 
     Args:
         id (int):
@@ -209,6 +221,10 @@ async def asyncio(
     body: ServiceProvidingGroupMembershipUpdateRequest,
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupMembershipResponse | None:
     """Update Membership relation of controllable unit in service providing group
+
+     Update [Membership relation of controllable unit in service providing
+    group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_membership/)
 
     Args:
         id (int):
