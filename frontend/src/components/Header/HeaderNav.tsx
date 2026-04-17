@@ -123,17 +123,15 @@ export const HeaderNav = () => {
               <Dropdown.Menu placement="bottom-start" arrow>
                 <Dropdown.Menu.GroupedList>
                   {group.items.map((item) => (
-                    <Dropdown.Menu.GroupedList.Item key={item.resource}>
-                      <Link
-                        as={NavLink}
-                        to={createPath({
-                          resource: item.resource,
-                          type: "list",
-                        })}
-                        className="w-full no-underline"
-                      >
-                        <BodyText>{item.label}</BodyText>
-                      </Link>
+                    <Dropdown.Menu.GroupedList.Item
+                      as={NavLink}
+                      to={createPath({
+                        resource: item.resource,
+                        type: "list",
+                      })}
+                      className="w-full no-underline"
+                      key={item.resource}>
+                      {item.label}
                     </Dropdown.Menu.GroupedList.Item>
                   ))}
                 </Dropdown.Menu.GroupedList>
