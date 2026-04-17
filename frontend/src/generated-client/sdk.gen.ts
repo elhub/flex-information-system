@@ -560,7 +560,7 @@ export const readOpenapiJson = <ThrowOnError extends boolean = false>(
 /**
  * Call - Controllable unit lookup
  *
- * Lookup a controllable unit from end user ID and business and/or accounting point ID.
+ * Lookup a [controllable unit](https://elhub.github.io/flex-information-system/resources/controllable_unit/) from end user ID and business and/or accounting point ID.
  */
 export const callControllableUnitLookup = <
   ThrowOnError extends boolean = false,
@@ -584,7 +584,7 @@ export const callControllableUnitLookup = <
 /**
  * Call - Entity lookup
  *
- * Lookup an entity from its business ID. Creates the entity if missing.
+ * Lookup an [entity](https://elhub.github.io/flex-information-system/resources/entity/) from its business ID. Creates the entity if missing.
  */
 export const callEntityLookup = <ThrowOnError extends boolean = false>(
   options: Options<CallEntityLookupData, ThrowOnError>,
