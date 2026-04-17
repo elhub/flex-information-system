@@ -113,6 +113,12 @@ export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
       header: t("controllable_unit.regulation_direction"),
     },
     { key: "mpid", header: t("controllable_unit.accounting_point_id") },
+    {
+      key: "brpName",
+      header: t(
+        "accounting_point_balance_responsible_party.balance_responsible_party_id",
+      ),
+    },
   ];
 
   return (

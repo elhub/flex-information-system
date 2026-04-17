@@ -63,6 +63,13 @@ export const ExistingControllableUnitsTable = ({
       header: t("accounting_point_bidding_zone.bidding_zone"),
       render: (v) => (v as string | undefined) ?? "—",
     },
+    {
+      key: "brp_name",
+      header: t(
+        "accounting_point_balance_responsible_party.balance_responsible_party_id",
+      ),
+      render: (v) => (v as string | undefined) ?? "—",
+    },
     { key: "technical_resource_count", header: "Nr. of Technical Resources" },
     {
       key: "maximum_active_power",
