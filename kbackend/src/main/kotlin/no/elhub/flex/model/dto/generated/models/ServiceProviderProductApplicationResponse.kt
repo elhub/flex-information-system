@@ -1,6 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
-import kotlin.Int
+import kotlin.Long
 import kotlin.collections.List
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
@@ -16,22 +16,22 @@ public data class ServiceProviderProductApplicationResponse(
    * Unique surrogate identifier.
    */
   @SerialName("id")
-  public val id: Int? = null,
+  public val id: Long? = null,
   /**
    * Reference to the service provider.
    */
   @SerialName("service_provider_id")
-  public val serviceProviderId: Int,
+  public val serviceProviderId: Long,
   /**
    * Reference to the system operator.
    */
   @SerialName("system_operator_id")
-  public val systemOperatorId: Int,
+  public val systemOperatorId: Long,
   /**
    * References to the product types.
    */
   @SerialName("product_type_ids")
-  public val productTypeIds: List<Int>,
+  public val productTypeIds: List<Long>,
   /**
    * The status of the application.
    */
@@ -51,5 +51,5 @@ public data class ServiceProviderProductApplicationResponse(
    * The identity that recorded the resource.
    */
   @SerialName("recorded_by")
-  public val recordedBy: Int? = null,
+  public val recordedBy: Long? = null,
 )

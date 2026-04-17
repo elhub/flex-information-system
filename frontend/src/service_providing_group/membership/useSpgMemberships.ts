@@ -4,13 +4,15 @@ import {
   ControllableUnit,
   createServiceProvidingGroupMembership,
   deleteServiceProvidingGroupMembership,
+  listAccountingPointBalanceResponsibleParty,
   listAccountingPointBiddingZone,
   listControllableUnit,
   listServiceProvidingGroupMembership,
   listTechnicalResource,
   readAccountingPoint,
+  readParty,
 } from "../../generated-client";
-import { throwOnError } from "../../util";
+import { findCurrentlyValidRecord, throwOnError } from "../../util";
 
 const fetchCurrentBiddingZone = async (
   accountingPointId: number,
@@ -32,11 +34,28 @@ const fetchCurrentBiddingZone = async (
   return record;
 };
 
+const fetchCurrentBrpName = async (
+  accountingPointId: number,
+): Promise<string | undefined> => {
+  const apBrps = await listAccountingPointBalanceResponsibleParty({
+    query: { accounting_point_id: "eq." + accountingPointId },
+  }).then(throwOnError);
+
+  const current = findCurrentlyValidRecord(apBrps);
+  if (!current?.balance_responsible_party_id) return undefined;
+
+  const party = await readParty({
+    path: { id: current.balance_responsible_party_id },
+  }).then(throwOnError);
+
+  return party.name;
+};
+
 const enrichControllableUnit = async (
   cu: ControllableUnit,
   membershipId: number | undefined,
 ) => {
-  const [accountingPoint, technicalResources, currentBiddingZone] =
+  const [accountingPoint, technicalResources, currentBiddingZone, brpName] =
     await Promise.all([
       readAccountingPoint({
         path: { id: cu.accounting_point_id },
@@ -45,6 +64,7 @@ const enrichControllableUnit = async (
         query: { controllable_unit_id: "eq." + cu.id },
       }).then(throwOnError),
       fetchCurrentBiddingZone(cu.accounting_point_id),
+      fetchCurrentBrpName(cu.accounting_point_id),
     ]);
 
   return {
@@ -52,6 +72,7 @@ const enrichControllableUnit = async (
     membershipId,
     accounting_point_business_id: accountingPoint.business_id,
     bidding_zone: currentBiddingZone?.bidding_zone,
+    brp_name: brpName,
     technical_resource_count: technicalResources.length,
   };
 };

@@ -2,7 +2,7 @@ package no.elhub.flex.model.dto.generated.models
 
 import java.math.BigDecimal
 import kotlin.Boolean
-import kotlin.Int
+import kotlin.Long
 import kotlin.String
 import kotlin.time.Instant
 import kotlinx.datetime.LocalDate
@@ -19,7 +19,7 @@ public data class ControllableUnitHistoryResponse(
    * Unique surrogate key.
    */
   @SerialName("id")
-  public val id: Int? = null,
+  public val id: Long? = null,
   /**
    * Unique business identifier for the controllable unit.
    */
@@ -63,7 +63,7 @@ public data class ControllableUnitHistoryResponse(
    * Reference to the accounting point that the controllable unit is connected to.
    */
   @SerialName("accounting_point_id")
-  public val accountingPointId: Int,
+  public val accountingPointId: Long,
   /**
    * Free text field for extra information about the controllable unit if needed.
    */
@@ -78,17 +78,17 @@ public data class ControllableUnitHistoryResponse(
    * The identity that recorded the resource.
    */
   @SerialName("recorded_by")
-  public val recordedBy: Int? = null,
+  public val recordedBy: Long? = null,
   /**
    * Reference to the resource that was updated.
    */
   @SerialName("controllable_unit_id")
-  public val controllableUnitId: Int,
+  public val controllableUnitId: Long,
   /**
    * The identity that updated the resource when it was replaced.
    */
   @SerialName("replaced_by")
-  public val replacedBy: Int? = null,
+  public val replacedBy: Long? = null,
   /**
    * When the resource was replaced in the system.
    */

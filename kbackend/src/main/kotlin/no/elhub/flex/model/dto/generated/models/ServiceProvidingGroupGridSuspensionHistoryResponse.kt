@@ -1,6 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
-import kotlin.Int
+import kotlin.Long
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -14,17 +14,17 @@ public data class ServiceProvidingGroupGridSuspensionHistoryResponse(
    * Unique surrogate identifier.
    */
   @SerialName("id")
-  public val id: Int? = null,
+  public val id: Long? = null,
   /**
    * Reference to the impacted system operator suspending the service providing group.
    */
   @SerialName("impacted_system_operator_id")
-  public val impactedSystemOperatorId: Int,
+  public val impactedSystemOperatorId: Long,
   /**
    * Reference to the service providing group being suspended.
    */
   @SerialName("service_providing_group_id")
-  public val serviceProvidingGroupId: Int,
+  public val serviceProvidingGroupId: Long,
   /**
    * The reason for the suspension.
    */
@@ -39,17 +39,17 @@ public data class ServiceProvidingGroupGridSuspensionHistoryResponse(
    * The identity that recorded the resource.
    */
   @SerialName("recorded_by")
-  public val recordedBy: Int? = null,
+  public val recordedBy: Long? = null,
   /**
    * Reference to the resource that was updated.
    */
   @SerialName("service_providing_group_grid_suspension_id")
-  public val serviceProvidingGroupGridSuspensionId: Int,
+  public val serviceProvidingGroupGridSuspensionId: Long,
   /**
    * The identity that updated the resource when it was replaced.
    */
   @SerialName("replaced_by")
-  public val replacedBy: Int? = null,
+  public val replacedBy: Long? = null,
   /**
    * When the resource was replaced in the system.
    */

@@ -2,6 +2,7 @@ package no.elhub.flex.routes.controllableunit
 
 import arrow.core.Either
 import arrow.core.raise.either
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.server.routing.RoutingCall
 import no.elhub.flex.accountingpoint.AccountingPointService
 import no.elhub.flex.auth.AccessTokenKey
@@ -22,7 +23,9 @@ import no.elhub.flex.util.TraceIdUtil.Companion.traceIdOrUnknown
 import no.elhub.flex.util.asLocalStartOfDayInstant
 import no.elhub.flex.util.atLocalStartOfToday
 import no.elhub.flex.util.body
+import no.elhub.flex.util.logger
 import no.elhub.flex.util.respondJson
+import org.koin.core.annotation.Property
 import org.koin.core.annotation.Single
 import kotlin.time.Instant
 
@@ -34,11 +37,12 @@ private val CONTROLLABLE_UNIT_BUSINESS_ID_REGEX =
 class ControllableUnitLookup(
     private val repo: ControllableUnitRepository,
     private val accountingPointService: AccountingPointService,
+    @Property("accounting-point-adapter.sync-enabled") private val accountingPointAdapterSyncEnabled: Boolean = true,
 ) {
+    private val logger = KotlinLogging.logger {}
+
     suspend fun handle(call: RoutingCall) {
-        val token = call.attributes[AccessTokenKey]
-        val principal = token.toFlexPrincipal()
-        with(principal) {
+        with(FlexPrincipal.internalData()) {
             either {
                 val request = call.body<ControllableUnitLookupRequest>().bind()
                     .let { validateInput(it).bind() }
@@ -46,15 +50,24 @@ class ControllableUnitLookup(
                 val accountingPointBusinessId = request.accountingPointBusinessId?.value
                     ?: accountingPointService.getCurrentAccountingPoint(request.controllableUnitBusinessId).bind().businessId
 
+                logger.debug { "Controllable unit used in lookup: ${request.controllableUnitBusinessId}" }
+                logger.debug { "Accounting point used in lookup: $accountingPointBusinessId" }
+
                 val controllableUnits = fetchControllableUnits(
                     request.controllableUnitBusinessId,
                     accountingPointBusinessId
                 ).bind()
+                logger.debug { "Found ${controllableUnits.size} controllable units on accounting point $accountingPointBusinessId" }
 
-                val validFrom = controllableUnits.minByOrNull { it.startDate }?.startDate?.asLocalStartOfDayInstant()
+                val validFrom = controllableUnits.mapNotNull { it.startDate }.minByOrNull { it }?.asLocalStartOfDayInstant()
                     ?: Instant.atLocalStartOfToday()
+                logger.debug { "Using $validFrom as start date for accounting point sync" }
 
-                accountingPointService.synchronizeAccountingPoint(accountingPointBusinessId, validFrom).bind()
+                if (accountingPointAdapterSyncEnabled) {
+                    accountingPointService.synchronizeAccountingPoint(accountingPointBusinessId, validFrom).bind()
+                } else {
+                    logger.info { "Accounting point sync disabled, not calling adapter." }
+                }
 
                 val endUserId = accountingPointService.checkEndUserMatchesAccountingPoint(
                     request.endUser,
@@ -80,7 +93,8 @@ class ControllableUnitLookup(
         accountingPointBusinessId: String,
     ): Either<AppError, List<ControllableUnit>> =
         repo.lookupControllableUnits(controllableUnitBusinessId, accountingPointBusinessId)
-            .mapLeft { _ ->
+            .mapLeft { e ->
+                logger.error { "Failed to lookup controllable units: ${e.message}" }
                 InternalServerError(traceIdOrUnknown())
             }
 }

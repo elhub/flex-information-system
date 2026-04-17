@@ -77,6 +77,13 @@ CREATE INDEX IF NOT EXISTS uk_entity_end_user ON party (entity_id) WHERE (
     type = 'end_user'
 );
 
+-- changeset flex:party-entity-end-user-uk-unique runOnChange:false endDelimiter:--
+-- enforce uniqueness at DB level to prevent race conditions
+DROP INDEX IF EXISTS uk_entity_end_user;
+CREATE UNIQUE INDEX IF NOT EXISTS uk_entity_end_user ON party (entity_id) WHERE (
+    type = 'end_user'
+);
+
 -- changeset flex:party-status-insert-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER party_status_insert
 BEFORE INSERT ON flex.party

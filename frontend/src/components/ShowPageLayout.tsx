@@ -8,6 +8,7 @@ type ShowPageLayoutProps = {
   title: string;
   badge?: ReactNode;
   alerts?: ReactNode;
+  actionBar?: ReactNode;
   children: [ReactNode, ReactNode];
 };
 
@@ -16,6 +17,7 @@ export const ShowPageLayout = ({
   title,
   badge,
   alerts,
+  actionBar,
   children: [leftPanel, rightPanel],
 }: ShowPageLayoutProps) => (
   <div className="flex flex-col gap-4 p-2">
@@ -32,6 +34,7 @@ export const ShowPageLayout = ({
       </Heading>
       {badge && <div className="flex items-center gap-1">{badge}</div>}
     </div>
+    {actionBar}
     <div className="grid grid-cols-1 gap-4 xl:grid-cols-[475px_minmax(0,1fr)]">
       {leftPanel}
       {rightPanel}

@@ -1013,11 +1013,13 @@ BEGIN
     service_providing_group_id,
     procuring_system_operator_id,
     product_type_ids,
-    maximum_active_power
+    maximum_active_power_up,
+    maximum_active_power_down
   ) VALUES (
     spg_id,
     so_id,
     array[pt_id],
+    7,
     7
   ) RETURNING id INTO spgpa_id;
 

@@ -105,7 +105,16 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
           tooltip={false}
         />
         <UnitInput
-          {...fields.maximum_active_power}
+          {...fields.maximum_active_power_up}
+          units={[
+            { label: "kW", scale: 1 },
+            { label: "MW", scale: 1000 },
+          ]}
+          description
+          tooltip={false}
+        />
+        <UnitInput
+          {...fields.maximum_active_power_down}
           units={[
             { label: "kW", scale: 1 },
             { label: "MW", scale: 1000 },

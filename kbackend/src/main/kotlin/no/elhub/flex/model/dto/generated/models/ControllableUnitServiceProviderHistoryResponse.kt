@@ -1,6 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
-import kotlin.Int
+import kotlin.Long
 import kotlin.String
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
@@ -15,22 +15,22 @@ public data class ControllableUnitServiceProviderHistoryResponse(
    * Unique surrogate key.
    */
   @SerialName("id")
-  public val id: Int? = null,
+  public val id: Long? = null,
   /**
    * Reference to the controllable unit this relation links to a service provider.
    */
   @SerialName("controllable_unit_id")
-  public val controllableUnitId: Int,
+  public val controllableUnitId: Long,
   /**
    * Reference to the `party` (service provider) this relation links to a controllable unit.
    */
   @SerialName("service_provider_id")
-  public val serviceProviderId: Int,
+  public val serviceProviderId: Long,
   /**
    * Technical ID of the end user behind the accounting point.
    */
   @SerialName("end_user_id")
-  public val endUserId: Int,
+  public val endUserId: Long,
   /**
    * The service providers internal reference to the contract with the end user. Typically an
    * internal identifier to a stored document or consent record.
@@ -58,17 +58,17 @@ public data class ControllableUnitServiceProviderHistoryResponse(
    * The identity that recorded the resource.
    */
   @SerialName("recorded_by")
-  public val recordedBy: Int? = null,
+  public val recordedBy: Long? = null,
   /**
    * Reference to the resource that was updated.
    */
   @SerialName("controllable_unit_service_provider_id")
-  public val controllableUnitServiceProviderId: Int,
+  public val controllableUnitServiceProviderId: Long,
   /**
    * The identity that updated the resource when it was replaced.
    */
   @SerialName("replaced_by")
-  public val replacedBy: Int? = null,
+  public val replacedBy: Long? = null,
   /**
    * When the resource was replaced in the system.
    */

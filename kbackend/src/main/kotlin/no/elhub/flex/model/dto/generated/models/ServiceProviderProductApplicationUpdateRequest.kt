@@ -1,6 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
-import kotlin.Int
+import kotlin.Long
 import kotlin.collections.List
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
@@ -17,7 +17,7 @@ public data class ServiceProviderProductApplicationUpdateRequest(
    * References to the product types.
    */
   @SerialName("product_type_ids")
-  public val productTypeIds: List<Int>? = null,
+  public val productTypeIds: List<Long>? = null,
   /**
    * The status of the application.
    */

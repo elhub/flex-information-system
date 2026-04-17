@@ -2,11 +2,17 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   deleteServiceProvidingGroupMembership,
   listAccountingPoint,
+  listAccountingPointBalanceResponsibleParty,
   listControllableUnit,
   listServiceProvidingGroupMembership,
+  readParty,
   readServiceProvidingGroup,
 } from "../../generated-client";
-import { throwOnError, toDateString } from "../../util";
+import {
+  findCurrentlyValidRecord,
+  throwOnError,
+  toDateString,
+} from "../../util";
 
 export type SpgMembershipRow = {
   id: number;
@@ -17,6 +23,7 @@ export type SpgMembershipRow = {
   maximum_active_power: number;
   regulation_direction: string;
   mpid: string;
+  brpName: string;
   status: string;
 };
 
@@ -83,6 +90,33 @@ const fetchSpgShowData = async (serviceProvidingGroupId: number) => {
 
   const apMap = Object.fromEntries(accountingPoints.map((ap) => [ap.id, ap]));
 
+  const apBrpResults = await Promise.all(
+    accountingPointIds.map((apId) =>
+      listAccountingPointBalanceResponsibleParty({
+        query: { accounting_point_id: `eq.${apId}` },
+      }).then(throwOnError),
+    ),
+  );
+
+  const currentBrps = new Map<number, number | undefined>();
+  const brpPartyIds = new Set<number>();
+  accountingPointIds.forEach((apId, index) => {
+    const current = findCurrentlyValidRecord(apBrpResults[index]);
+    const brpId = current?.balance_responsible_party_id ?? undefined;
+    currentBrps.set(apId, brpId);
+    if (brpId) brpPartyIds.add(brpId);
+  });
+
+  const brpParties =
+    brpPartyIds.size > 0
+      ? await Promise.all(
+          Array.from(brpPartyIds).map((id) =>
+            readParty({ path: { id } }).then(throwOnError),
+          ),
+        )
+      : [];
+  const brpPartyMap = Object.fromEntries(brpParties.map((p) => [p.id, p]));
+
   const rows: SpgMembershipRow[] = controllableUnits.map((cu) => {
     const ap = apMap[cu.accounting_point_id];
     const membership = memberships.find(
@@ -98,6 +132,10 @@ const fetchSpgShowData = async (serviceProvidingGroupId: number) => {
       maximum_active_power: cu.maximum_active_power,
       regulation_direction: cu.regulation_direction,
       mpid: ap?.business_id ?? "-",
+      brpName: (() => {
+        const brpId = currentBrps.get(cu.accounting_point_id);
+        return brpId ? (brpPartyMap[brpId]?.name ?? "-") : "-";
+      })(),
       status: cu.status,
     };
   });

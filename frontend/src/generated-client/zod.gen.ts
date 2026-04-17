@@ -1339,7 +1339,12 @@ export const zServiceProviderProductSuspensionComment = z.object({
 export const zServiceProvidingGroupProductApplicationUpdateRequest = z.object({
   product_type_ids: z.array(z.coerce.number()).optional(),
   status: zServiceProvidingGroupProductApplicationStatus.optional(),
-  maximum_active_power: z.coerce.number().gte(0).lte(999999.999).optional(),
+  maximum_active_power_up: z.coerce.number().gte(0).lte(999999.999).optional(),
+  maximum_active_power_down: z.coerce
+    .number()
+    .gte(0)
+    .lte(999999.999)
+    .optional(),
   additional_information: z.string().max(512).optional(),
   prequalified_at: z.iso.datetime({ offset: true }).optional(),
   verified_at: z.iso.datetime({ offset: true }).optional(),
@@ -1353,7 +1358,8 @@ export const zServiceProvidingGroupProductApplicationCreateRequest = z.object({
   procuring_system_operator_id: z.coerce.number(),
   product_type_ids: z.array(z.coerce.number()),
   status: zServiceProvidingGroupProductApplicationStatus.optional(),
-  maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
+  maximum_active_power_up: z.coerce.number().gte(0).lte(999999.999),
+  maximum_active_power_down: z.coerce.number().gte(0).lte(999999.999),
   additional_information: z.string().max(512).optional(),
   prequalified_at: z.iso.datetime({ offset: true }).optional(),
   verified_at: z.iso.datetime({ offset: true }).optional(),
@@ -1368,7 +1374,8 @@ export const zServiceProvidingGroupProductApplication = z.object({
   procuring_system_operator_id: z.coerce.number(),
   product_type_ids: z.array(z.coerce.number()),
   status: zServiceProvidingGroupProductApplicationStatus,
-  maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
+  maximum_active_power_up: z.coerce.number().gte(0).lte(999999.999),
+  maximum_active_power_down: z.coerce.number().gte(0).lte(999999.999),
   additional_information: z.string().max(512).optional(),
   prequalified_at: z.iso.datetime({ offset: true }).optional(),
   verified_at: z.iso.datetime({ offset: true }).optional(),
@@ -2051,7 +2058,8 @@ export const zServiceProvidingGroupProductApplicationWritable = z.object({
   procuring_system_operator_id: z.coerce.number(),
   product_type_ids: z.array(z.coerce.number()),
   status: zServiceProvidingGroupProductApplicationStatus,
-  maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
+  maximum_active_power_up: z.coerce.number().gte(0).lte(999999.999),
+  maximum_active_power_down: z.coerce.number().gte(0).lte(999999.999),
   additional_information: z.string().max(512).optional(),
   prequalified_at: z.iso.datetime({ offset: true }).optional(),
   verified_at: z.iso.datetime({ offset: true }).optional(),

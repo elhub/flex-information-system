@@ -1,19 +1,8 @@
-import { ComponentType } from "react";
-import {
-  IconCross,
-  IconCrossCircle,
-  IconQualitiesCircle,
-  IconStopWatch15,
-  SvgIconProps,
-} from "@elhub/ds-icons";
 import { Badge, Loader } from "../../components/ui";
 import { useParams } from "react-router-dom";
 import { ServiceProvidingGroupShowSummary } from "./ServiceProvidingGroupShowSummary";
 import { ServiceProvidingGroupShowTabs } from "./ServiceProvidingGroupShowTabs";
-import {
-  readServiceProvidingGroup,
-  ServiceProvidingGroupStatus,
-} from "../../generated-client";
+import { readServiceProvidingGroup } from "../../generated-client";
 import { throwOnError } from "../../util";
 import { useQuery } from "@tanstack/react-query";
 import { ShowPageLayout } from "../../components/ShowPageLayout";
@@ -21,27 +10,7 @@ import { useTranslateEnum } from "../../intl/intl";
 import { usePermissions } from "ra-core";
 import { Permissions } from "../../auth/permissions";
 import { ActivateServiceProvidingGroupButton } from "../ActivateServiceProvidingGroupButton";
-
-const statusVariantMap: Record<
-  ServiceProvidingGroupStatus,
-  {
-    status:
-      | "ongoing"
-      | "failed"
-      | "approved-with-warning"
-      | "approved"
-      | "stopped"
-      | "temporarily-stopped"
-      | "pending"
-      | "rejected";
-    icon: ComponentType<SvgIconProps>;
-  }
-> = {
-  new: { status: "ongoing", icon: IconStopWatch15 },
-  active: { status: "approved", icon: IconQualitiesCircle },
-  inactive: { status: "stopped", icon: IconCross },
-  terminated: { status: "rejected", icon: IconCrossCircle },
-};
+import { spgStatusVariantMap } from "../serviceProvidingGroupStatus";
 
 export const ServiceProvidingGroupShow = () => {
   const spgId = Number(useParams<{ id: string }>().id);
@@ -84,9 +53,9 @@ export const ServiceProvidingGroupShow = () => {
         <>
           <Badge
             size="small"
-            status={statusVariantMap[spg.status].status}
+            status={spgStatusVariantMap[spg.status].status}
             variant="block"
-            icon={statusVariantMap[spg.status].icon}
+            icon={spgStatusVariantMap[spg.status].icon}
           >
             {translateEnum(`service_providing_group.status.${spg.status}`)}
           </Badge>

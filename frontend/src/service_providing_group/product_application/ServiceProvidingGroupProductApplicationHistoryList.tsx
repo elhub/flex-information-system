@@ -1,105 +1,75 @@
+import { useParams } from "react-router-dom";
+import { Datagrid, List } from "../../components/EDS-ra/list";
 import {
-  List,
-  NumberInput,
+  DateField,
+  EnumField,
+  IdentityField,
   ReferenceField,
   TextField,
-  useGetOne,
-} from "react-admin";
-import { Datagrid } from "../../auth";
-import { useParams } from "react-router-dom";
-import { DateField } from "../../components/datetime";
-import { IdentityField } from "../../components/IdentityField";
+} from "../../components/EDS-ra/fields";
+import { TextInput } from "../../components/EDS-ra/inputs";
 import { ProductTypeArrayField } from "../../product_type/components";
-import { EnumField } from "../../components/enum";
+import { ListServiceProvidingGroupProductApplicationHistoryData } from "../../generated-client";
+import { getFields } from "../../zod";
+import {
+  zParty,
+  zServiceProvidingGroupProductApplication,
+  zServiceProvidingGroupProductApplicationHistory,
+} from "../../generated-client/zod.gen";
 
 export const ServiceProvidingGroupProductApplicationHistoryList = () => {
   const params = useParams();
-  const filter: any = {
-    service_providing_group_id: params.service_providing_group_id,
-  };
+  const filter: ListServiceProvidingGroupProductApplicationHistoryData["query"] =
+    {
+      service_providing_group_id: params.service_providing_group_id,
+    };
 
-  const { data } = useGetOne("service_providing_group", {
-    id: params.service_providing_group_id,
-  });
-
-  const ServiceProvidingGroupProductApplicationHistoryListFilters = [
-    <NumberInput
+  const filters = [
+    <TextInput
       key="service_providing_group_product_application_id"
-      min="0"
-      label="field.service_providing_group_product_application_history.service_providing_group_product_application_id"
+      type="number"
       source="service_providing_group_product_application_id"
     />,
   ];
+  const spgpaFields = getFields(zServiceProvidingGroupProductApplication.shape);
+  // Since history is an intersection of spgpa and a few other fields, we need to get the fields for the right side of the intersection.
+  const historyFields = getFields(
+    zServiceProvidingGroupProductApplicationHistory._zod.def.right.shape,
+  );
+  const procuringSystemOperatorIdFields = getFields(zParty.shape);
 
   return (
     <List
       resource="service_providing_group_product_application_history"
-      title={`Service providing group product application history for ${data.name}`}
       filter={filter}
-      filters={ServiceProvidingGroupProductApplicationHistoryListFilters}
+      filters={filters}
       perPage={25}
       sort={{ field: "recorded_at", order: "DESC" }}
       empty={false}
     >
       <Datagrid
-        rowClick={(_id, _res, record) =>
+        rowClick={(record) =>
           `/service_providing_group/${record.service_providing_group_id}/product_application_history/${record.id}/show`
         }
       >
-        <TextField
-          source="id"
-          label="field.service_providing_group_product_application_history.id"
-        />
-        <TextField
-          source="service_provider_product_application_id"
-          label="field.service_providing_group_product_application_history.service_provider_product_application_id"
-        />
+        <TextField {...spgpaFields.id} />
         <ReferenceField
-          source="procuring_system_operator_id"
+          {...spgpaFields.procuring_system_operator_id}
           reference="party"
-          sortable={false}
-          label="field.service_providing_group_product_application_history.procuring_system_operator_id"
         >
-          <TextField source="name" />
+          <TextField {...procuringSystemOperatorIdFields.name} />
         </ReferenceField>
-        <ProductTypeArrayField
-          label="field.service_providing_group_product_application_history.product_type_ids"
-          source="product_type_ids"
-          sortable={false}
-        />
+        <ProductTypeArrayField source="product_type_ids" sortable={false} />
         <EnumField
-          source="status"
+          {...spgpaFields.status}
           enumKey="service_providing_group_product_application.status"
-          label="field.service_providing_group_product_application_history.status"
         />
-        <DateField
-          source="prequalified_at"
-          showTime
-          label="field.service_providing_group_product_application_history.prequalified_at"
-        />
-        <DateField
-          source="verified_at"
-          showTime
-          label="field.service_providing_group_product_application_history.verified_at"
-        />
-        <DateField
-          source="recorded_at"
-          showTime
-          label="field.service_providing_group_product_application_history.recorded_at"
-        />
-        <IdentityField
-          source="recorded_by"
-          label="field.service_providing_group_product_application_history.recorded_by"
-        />
-        <DateField
-          source="replaced_at"
-          showTime
-          label="field.service_providing_group_product_application_history.replaced_at"
-        />
-        <IdentityField
-          source="replaced_by"
-          label="field.service_providing_group_product_application_history.replaced_by"
-        />
+        <DateField {...spgpaFields.prequalified_at} showTime />
+        <DateField {...spgpaFields.verified_at} showTime />
+        <DateField {...spgpaFields.recorded_at} showTime />
+        <IdentityField {...spgpaFields.recorded_by} />
+        <DateField {...historyFields.replaced_at} showTime />
+        <IdentityField {...historyFields.replaced_by} />
       </Datagrid>
     </List>
   );

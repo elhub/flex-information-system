@@ -135,7 +135,7 @@ private fun seedControllableUnits(
         val result = cus.map { cu ->
             val cuId = insertControllableUnit(conn, cu, apId)
             val trs = cu.technicalResources.map { tr -> insertTechnicalResource(conn, tr, cuId) }
-            cu.copy(id = cuId.toInt(), technicalResources = trs)
+            cu.copy(id = cuId, technicalResources = trs)
         }
 
         conn.commit()
@@ -172,6 +172,6 @@ private fun insertTechnicalResource(conn: Connection, tr: TechnicalResource, cuI
         stmt.setLong(2, cuId)
         stmt.executeQuery().use { rs ->
             rs.next()
-            tr.copy(id = rs.getInt(1))
+            tr.copy(id = rs.getLong(1))
         }
     }

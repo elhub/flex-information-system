@@ -2,7 +2,6 @@ from security_token_service import (
     SecurityTokenService,
     TestEntity,
 )
-from flex import AuthenticatedClient
 from flex.models import (
     PartyResponse,
     PartyHistoryResponse,
@@ -13,6 +12,13 @@ from flex.models import (
     PartyRole,
     PartyType,
     PartyStatus,
+    EntityCreateRequest,
+    EntityBusinessIdType,
+    EntityType,
+    EntityResponse,
+)
+from flex.api.entity import (
+    create_entity,
 )
 from flex.api.party import (
     create_party,
@@ -28,6 +34,7 @@ from flex.api.party_membership import (
 import time
 from typing import cast
 import pytest
+from test_entity import random_email
 
 
 def unique_gln() -> str:
@@ -106,12 +113,18 @@ def sts():
 
 # RLS: PTY-FISO001
 def test_party_fiso(sts):
-    client_entity = sts.get_client(TestEntity.TEST)
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
-    ent_id = sts.get_userinfo(
-        cast(AuthenticatedClient, client_entity),
-    )["entity_id"]
+    ent = create_entity.sync(
+        client=client_fiso,
+        body=EntityCreateRequest(
+            business_id=random_email(),
+            business_id_type=EntityBusinessIdType.EMAIL,
+            name="Test Entity",
+            type_=EntityType.PERSON,
+        ),
+    )
+    assert isinstance(ent, EntityResponse)
 
     # FISO can do everything on parties
 
@@ -126,7 +139,7 @@ def test_party_fiso(sts):
             name="New End User",
             role=PartyRole.FLEX_END_USER,
             type_=PartyType.END_USER,
-            entity_id=ent_id,
+            entity_id=ent.id,
             status=PartyStatus.ACTIVE,
         ),
     )
@@ -140,7 +153,7 @@ def test_party_fiso(sts):
             name="New End User",
             role=PartyRole.FLEX_END_USER,
             type_=PartyType.END_USER,
-            entity_id=ent_id,
+            entity_id=ent.id,
             status=PartyStatus.NEW,
         ),
     )
@@ -158,7 +171,7 @@ def test_party_fiso(sts):
             business_id_type=PartyBusinessIdType.EIC_X,
             role=PartyRole.FLEX_SERVICE_PROVIDER,
             type_=PartyType.SERVICE_PROVIDER,
-            entity_id=ent_id,
+            entity_id=ent.id,
         ),
     )
     assert isinstance(p, PartyResponse)
@@ -172,7 +185,7 @@ def test_party_fiso(sts):
             business_id_type=PartyBusinessIdType.GLN,
             role=PartyRole.FLEX_FLEXIBILITY_INFORMATION_SYSTEM_OPERATOR,
             type_=PartyType.FLEXIBILITY_INFORMATION_SYSTEM_OPERATOR,
-            entity_id=ent_id,
+            entity_id=ent.id,
         ),
     )
     assert isinstance(p, PartyResponse)
