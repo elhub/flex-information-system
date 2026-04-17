@@ -1,6 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
-import kotlin.Int
+import kotlin.Long
 import kotlin.String
 import kotlin.collections.List
 import kotlinx.serialization.SerialName
@@ -22,7 +22,7 @@ public data class EntityClientUpdateRequest(
    * assume any party.
    */
   @SerialName("party_id")
-  public val partyId: Int? = null,
+  public val partyId: Long? = null,
   /**
    * List of scopes granted to the user when it logs in as an entity or when it acts as the party.
    * When assuming a party through party membership, the least privileged set of scopes will be kept.

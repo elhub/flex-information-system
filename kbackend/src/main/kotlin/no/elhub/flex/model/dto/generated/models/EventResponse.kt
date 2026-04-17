@@ -1,6 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
-import kotlin.Int
+import kotlin.Long
 import kotlin.String
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
@@ -15,7 +15,7 @@ public data class EventResponse(
    * Unique surrogate identifier.
    */
   @SerialName("id")
-  public val id: Int? = null,
+  public val id: Long? = null,
   /**
    * The version of the CloudEvents specification followed by the resource.
    */

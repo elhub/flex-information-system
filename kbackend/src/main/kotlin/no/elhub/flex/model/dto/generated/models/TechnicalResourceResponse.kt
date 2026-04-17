@@ -1,7 +1,7 @@
 package no.elhub.flex.model.dto.generated.models
 
 import java.math.BigDecimal
-import kotlin.Int
+import kotlin.Long
 import kotlin.String
 import kotlin.collections.List
 import kotlin.time.Instant
@@ -18,7 +18,7 @@ public data class TechnicalResourceResponse(
    * Unique surrogate identifier.
    */
   @SerialName("id")
-  public val id: Int? = null,
+  public val id: Long? = null,
   /**
    * Name of the technical resource. Maximum 128 characters.
    */
@@ -28,7 +28,7 @@ public data class TechnicalResourceResponse(
    * Reference to the controllable unit that this technical resource belongs to.
    */
   @SerialName("controllable_unit_id")
-  public val controllableUnitId: Int,
+  public val controllableUnitId: Long,
   /**
    * Technologies of the technical resource using ltree path notation. Multiple technologies can be
    * specified for hybrid resources (e.g., solar + battery).
@@ -86,5 +86,5 @@ public data class TechnicalResourceResponse(
    * The identity that recorded the resource.
    */
   @SerialName("recorded_by")
-  public val recordedBy: Int? = null,
+  public val recordedBy: Long? = null,
 )

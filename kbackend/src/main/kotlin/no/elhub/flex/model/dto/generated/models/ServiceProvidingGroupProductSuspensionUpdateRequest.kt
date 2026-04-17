@@ -1,6 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
-import kotlin.Int
+import kotlin.Long
 import kotlin.collections.List
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -15,7 +15,7 @@ public data class ServiceProvidingGroupProductSuspensionUpdateRequest(
    * References to the suspended product types.
    */
   @SerialName("product_type_ids")
-  public val productTypeIds: List<Int>? = null,
+  public val productTypeIds: List<Long>? = null,
   /**
    * The reason for the suspension.
    */

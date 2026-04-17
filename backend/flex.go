@@ -217,6 +217,11 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		return fmt.Errorf("%w: FLEX_UPSTREAM_POSTGREST", errMissingEnv)
 	}
 
+	kbackendUpstream, exists := lookupenv("FLEX_UPSTREAM_KBACKEND")
+	if !exists {
+		return fmt.Errorf("%w: FLEX_UPSTREAM_KBACKEND", errMissingEnv)
+	}
+
 	baseURL, exists := lookupenv("FLEX_BASE_URL")
 	if !exists {
 		return fmt.Errorf("%w: FLEX_BASE_URL", errMissingEnv)
@@ -335,6 +340,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	dataAPIHandler, err := data.NewAPIHandler(
 		dataAPIBaseURL,
 		postgRESTUpstream,
+		kbackendUpstream,
 		dbPool,
 		requestDetailsContextKey,
 		meteringPointDatahubService,

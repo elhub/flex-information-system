@@ -40,6 +40,12 @@ FOR ALL
 TO flex_flexibility_information_system_operator
 USING (true);
 
+GRANT SELECT, INSERT ON entity TO flex_internal_data;
+CREATE POLICY "ENT_INTERNAL_DATA" ON entity
+FOR ALL
+TO flex_internal_data
+USING (true);
+
 -- RLS: ENT-ORG001
 GRANT SELECT ON entity TO flex_organisation;
 CREATE POLICY "ENT_ORG001" ON entity

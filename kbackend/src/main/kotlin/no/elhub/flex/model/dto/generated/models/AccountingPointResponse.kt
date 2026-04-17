@@ -1,6 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
-import kotlin.Int
+import kotlin.Long
 import kotlin.String
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
@@ -15,7 +15,7 @@ public data class AccountingPointResponse(
    * Unique surrogate identifier.
    */
   @SerialName("id")
-  public val id: Int? = null,
+  public val id: Long? = null,
   /**
    * The GSRN metering point id of the accounting point.
    */
@@ -25,7 +25,7 @@ public data class AccountingPointResponse(
    * The system operator of the accounting point.
    */
   @SerialName("system_operator_id")
-  public val systemOperatorId: Int? = null,
+  public val systemOperatorId: Long? = null,
   /**
    * When the resource was recorded (created or updated) in the system.
    */
@@ -35,5 +35,5 @@ public data class AccountingPointResponse(
    * The identity that recorded the resource.
    */
   @SerialName("recorded_by")
-  public val recordedBy: Int? = null,
+  public val recordedBy: Long? = null,
 )

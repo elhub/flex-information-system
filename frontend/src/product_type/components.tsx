@@ -28,7 +28,7 @@ export const displayProductType = (productType: ProductType) =>
   productType.name + (productType.products ? ` (${productType.products})` : "");
 
 // hook to get all possible product types sorted by ID
-function useGetAllProductTypes() {
+export function useGetAllProductTypes() {
   const { data } = useGetList("product_type");
 
   const productTypes = data?.map((product_type) => {

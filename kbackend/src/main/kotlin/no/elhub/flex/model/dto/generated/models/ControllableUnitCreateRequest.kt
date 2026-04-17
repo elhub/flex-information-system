@@ -1,7 +1,7 @@
 package no.elhub.flex.model.dto.generated.models
 
 import java.math.BigDecimal
-import kotlin.Int
+import kotlin.Long
 import kotlin.String
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Contextual
@@ -46,7 +46,7 @@ public data class ControllableUnitCreateRequest(
    * Reference to the accounting point that the controllable unit is connected to.
    */
   @SerialName("accounting_point_id")
-  public val accountingPointId: Int,
+  public val accountingPointId: Long,
   /**
    * Free text field for extra information about the controllable unit if needed.
    */

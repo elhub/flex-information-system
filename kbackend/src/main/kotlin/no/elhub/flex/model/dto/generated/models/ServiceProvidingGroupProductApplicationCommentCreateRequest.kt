@@ -1,6 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
-import kotlin.Int
+import kotlin.Long
 import kotlin.String
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -15,7 +15,7 @@ public data class ServiceProvidingGroupProductApplicationCommentCreateRequest(
    * Reference to the service providing group product application.
    */
   @SerialName("service_providing_group_product_application_id")
-  public val serviceProvidingGroupProductApplicationId: Int,
+  public val serviceProvidingGroupProductApplicationId: Long,
   /**
    * The level of visibility of the comment.
    */

@@ -29,3 +29,13 @@ ON accounting_point_energy_supplier
 FOR SELECT
 TO flex_common
 USING (true);
+
+GRANT INSERT,
+SELECT,
+UPDATE,
+DELETE ON accounting_point_energy_supplier TO flex_internal_data;
+CREATE POLICY "APES_INTERNAL_DATA"
+ON accounting_point_energy_supplier
+FOR ALL
+TO flex_internal_data
+USING (true);

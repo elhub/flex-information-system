@@ -2,7 +2,7 @@ package no.elhub.flex.model.dto.generated.models
 
 import java.math.BigDecimal
 import kotlin.Boolean
-import kotlin.Int
+import kotlin.Long
 import kotlin.String
 import kotlin.time.Instant
 import kotlinx.datetime.LocalDate
@@ -19,7 +19,7 @@ public data class ControllableUnitResponse(
    * Unique surrogate key.
    */
   @SerialName("id")
-  public val id: Int? = null,
+  public val id: Long? = null,
   /**
    * Unique business identifier for the controllable unit.
    */
@@ -63,7 +63,7 @@ public data class ControllableUnitResponse(
    * Reference to the accounting point that the controllable unit is connected to.
    */
   @SerialName("accounting_point_id")
-  public val accountingPointId: Int,
+  public val accountingPointId: Long,
   /**
    * Free text field for extra information about the controllable unit if needed.
    */
@@ -78,5 +78,5 @@ public data class ControllableUnitResponse(
    * The identity that recorded the resource.
    */
   @SerialName("recorded_by")
-  public val recordedBy: Int? = null,
+  public val recordedBy: Long? = null,
 )

@@ -58,6 +58,7 @@ class ControllableUnitRepositoryImpl : ControllableUnitRepository {
                     if (jsonStr == null) {
                         emptyList<ControllableUnit>().right()
                     } else {
+                        logger.debug { "Raw lookup query result: $jsonStr" }
                         runCatching { json.decodeFromString<List<ControllableUnit>>(jsonStr) }.fold(
                             onSuccess = { it.right() },
                             onFailure = { e ->

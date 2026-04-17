@@ -126,7 +126,7 @@ data class NetworkError(
  */
 data class EndUserError(
     val details: String,
-    override val code: HttpStatusCode = HttpStatusCode.NotFound,
+    override val code: HttpStatusCode = HttpStatusCode.Forbidden,
 ) : AppError() {
     override val message: String = details
 }

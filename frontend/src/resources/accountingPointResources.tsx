@@ -21,6 +21,10 @@ export const createAccountingPointResources = (permissions: Permissions) => {
     "read",
   );
   const canReadAPEU = permissions.allow("accounting_point_end_user", "read");
+  const canReadAPBZ = permissions.allow(
+    "accounting_point_bidding_zone",
+    "read",
+  );
 
   if (canReadAP) {
     resources.push(
@@ -59,6 +63,13 @@ export const createAccountingPointResources = (permissions: Permissions) => {
       <Resource
         key="accounting_point_end_user"
         name="accounting_point_end_user"
+      />,
+    );
+  if (canReadAPBZ)
+    resources.push(
+      <Resource
+        key="accounting_point_bidding_zone"
+        name="accounting_point_bidding_zone"
       />,
     );
 
