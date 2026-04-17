@@ -122,6 +122,9 @@ def sync_detailed(
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionCommentResponse]:
     """Update Service Providing Group Grid Suspension Comment
 
+     Update [Service Providing Group Grid Suspension Comment](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_suspension_comment/)
+
     Args:
         id (int):
         body (ServiceProvidingGroupGridSuspensionCommentUpdateRequest): Request schema for update
@@ -156,6 +159,9 @@ def sync(
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionCommentResponse | None:
     """Update Service Providing Group Grid Suspension Comment
 
+     Update [Service Providing Group Grid Suspension Comment](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_suspension_comment/)
+
     Args:
         id (int):
         body (ServiceProvidingGroupGridSuspensionCommentUpdateRequest): Request schema for update
@@ -184,6 +190,9 @@ async def asyncio_detailed(
     body: ServiceProvidingGroupGridSuspensionCommentUpdateRequest,
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionCommentResponse]:
     """Update Service Providing Group Grid Suspension Comment
+
+     Update [Service Providing Group Grid Suspension Comment](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_suspension_comment/)
 
     Args:
         id (int):
@@ -216,6 +225,9 @@ async def asyncio(
     body: ServiceProvidingGroupGridSuspensionCommentUpdateRequest,
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionCommentResponse | None:
     """Update Service Providing Group Grid Suspension Comment
+
+     Update [Service Providing Group Grid Suspension Comment](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_suspension_comment/)
 
     Args:
         id (int):

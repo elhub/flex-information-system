@@ -153,6 +153,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[SystemOperatorProductTypeResponse]]:
     """List System Operator Product Type
 
+     List [System Operator Product Type](https://elhub.github.io/flex-information-
+    system/resources/system_operator_product_type/)
+
     Args:
         id (str | Unset):
         system_operator_id (str | Unset):
@@ -200,6 +203,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[SystemOperatorProductTypeResponse] | None:
     """List System Operator Product Type
 
+     List [System Operator Product Type](https://elhub.github.io/flex-information-
+    system/resources/system_operator_product_type/)
+
     Args:
         id (str | Unset):
         system_operator_id (str | Unset):
@@ -241,6 +247,9 @@ async def asyncio_detailed(
     limit: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[SystemOperatorProductTypeResponse]]:
     """List System Operator Product Type
+
+     List [System Operator Product Type](https://elhub.github.io/flex-information-
+    system/resources/system_operator_product_type/)
 
     Args:
         id (str | Unset):
@@ -286,6 +295,9 @@ async def asyncio(
     limit: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[SystemOperatorProductTypeResponse] | None:
     """List System Operator Product Type
+
+     List [System Operator Product Type](https://elhub.github.io/flex-information-
+    system/resources/system_operator_product_type/)
 
     Args:
         id (str | Unset):

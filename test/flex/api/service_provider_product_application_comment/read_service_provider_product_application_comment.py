@@ -106,6 +106,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationCommentResponse]:
     """Read Service Provider Product Application Comment
 
+     Read [Service Provider Product Application Comment](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_application_comment/)
+
     Args:
         id (int):
 
@@ -135,6 +138,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationCommentResponse | None:
     """Read Service Provider Product Application Comment
 
+     Read [Service Provider Product Application Comment](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_application_comment/)
+
     Args:
         id (int):
 
@@ -158,6 +164,9 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationCommentResponse]:
     """Read Service Provider Product Application Comment
+
+     Read [Service Provider Product Application Comment](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_application_comment/)
 
     Args:
         id (int):
@@ -185,6 +194,9 @@ async def asyncio(
     client: AuthenticatedClient,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationCommentResponse | None:
     """Read Service Provider Product Application Comment
+
+     Read [Service Provider Product Application Comment](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_application_comment/)
 
     Args:
         id (int):

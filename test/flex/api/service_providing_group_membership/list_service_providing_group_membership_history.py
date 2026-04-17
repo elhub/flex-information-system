@@ -165,6 +165,10 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupMembershipHistoryResponse]]:
     """List Membership relation of controllable unit in service providing group - history
 
+     List [Membership relation of controllable unit in service providing group -
+    history](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_membership/)
+
     Args:
         id (str | Unset):
         controllable_unit_id (str | Unset):
@@ -221,6 +225,10 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupMembershipHistoryResponse] | None:
     """List Membership relation of controllable unit in service providing group - history
 
+     List [Membership relation of controllable unit in service providing group -
+    history](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_membership/)
+
     Args:
         id (str | Unset):
         controllable_unit_id (str | Unset):
@@ -271,6 +279,10 @@ async def asyncio_detailed(
     service_providing_group_membership_id: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupMembershipHistoryResponse]]:
     """List Membership relation of controllable unit in service providing group - history
+
+     List [Membership relation of controllable unit in service providing group -
+    history](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_membership/)
 
     Args:
         id (str | Unset):
@@ -325,6 +337,10 @@ async def asyncio(
     service_providing_group_membership_id: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupMembershipHistoryResponse] | None:
     """List Membership relation of controllable unit in service providing group - history
+
+     List [Membership relation of controllable unit in service providing group -
+    history](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_membership/)
 
     Args:
         id (str | Unset):

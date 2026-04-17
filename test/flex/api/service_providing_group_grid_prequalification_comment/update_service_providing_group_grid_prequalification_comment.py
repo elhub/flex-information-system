@@ -126,6 +126,9 @@ def sync_detailed(
 ]:
     """Update Grid prequalification for service providing group Comment
 
+     Update [Grid prequalification for service providing group Comment](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_grid_prequalification_comment/)
+
     Args:
         id (int):
         body (ServiceProvidingGroupGridPrequalificationCommentUpdateRequest): Request schema for
@@ -160,6 +163,9 @@ def sync(
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentResponse | None:
     """Update Grid prequalification for service providing group Comment
 
+     Update [Grid prequalification for service providing group Comment](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_grid_prequalification_comment/)
+
     Args:
         id (int):
         body (ServiceProvidingGroupGridPrequalificationCommentUpdateRequest): Request schema for
@@ -190,6 +196,9 @@ async def asyncio_detailed(
     Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentResponse
 ]:
     """Update Grid prequalification for service providing group Comment
+
+     Update [Grid prequalification for service providing group Comment](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_grid_prequalification_comment/)
 
     Args:
         id (int):
@@ -222,6 +231,9 @@ async def asyncio(
     body: ServiceProvidingGroupGridPrequalificationCommentUpdateRequest,
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentResponse | None:
     """Update Grid prequalification for service providing group Comment
+
+     Update [Grid prequalification for service providing group Comment](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_grid_prequalification_comment/)
 
     Args:
         id (int):

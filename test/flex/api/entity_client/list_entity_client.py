@@ -157,6 +157,8 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[EntityClientResponse]]:
     """List Entity client
 
+     List [Entity client](https://elhub.github.io/flex-information-system/resources/entity_client/)
+
     Args:
         id (str | Unset):
         entity_id (str | Unset):
@@ -207,6 +209,8 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[EntityClientResponse] | None:
     """List Entity client
 
+     List [Entity client](https://elhub.github.io/flex-information-system/resources/entity_client/)
+
     Args:
         id (str | Unset):
         entity_id (str | Unset):
@@ -251,6 +255,8 @@ async def asyncio_detailed(
     limit: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[EntityClientResponse]]:
     """List Entity client
+
+     List [Entity client](https://elhub.github.io/flex-information-system/resources/entity_client/)
 
     Args:
         id (str | Unset):
@@ -299,6 +305,8 @@ async def asyncio(
     limit: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[EntityClientResponse] | None:
     """List Entity client
+
+     List [Entity client](https://elhub.github.io/flex-information-system/resources/entity_client/)
 
     Args:
         id (str | Unset):

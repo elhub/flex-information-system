@@ -115,6 +115,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductTypeResponse]:
     """Create System Operator Product Type
 
+     Create [System Operator Product Type](https://elhub.github.io/flex-information-
+    system/resources/system_operator_product_type/)
+
     Args:
         body (SystemOperatorProductTypeCreateRequest | Unset): Request schema for create
             operations - Relation between a system operator and a product type they want to buy.
@@ -145,6 +148,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductTypeResponse | None:
     """Create System Operator Product Type
 
+     Create [System Operator Product Type](https://elhub.github.io/flex-information-
+    system/resources/system_operator_product_type/)
+
     Args:
         body (SystemOperatorProductTypeCreateRequest | Unset): Request schema for create
             operations - Relation between a system operator and a product type they want to buy.
@@ -169,6 +175,9 @@ async def asyncio_detailed(
     body: SystemOperatorProductTypeCreateRequest | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductTypeResponse]:
     """Create System Operator Product Type
+
+     Create [System Operator Product Type](https://elhub.github.io/flex-information-
+    system/resources/system_operator_product_type/)
 
     Args:
         body (SystemOperatorProductTypeCreateRequest | Unset): Request schema for create
@@ -197,6 +206,9 @@ async def asyncio(
     body: SystemOperatorProductTypeCreateRequest | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductTypeResponse | None:
     """Create System Operator Product Type
+
+     Create [System Operator Product Type](https://elhub.github.io/flex-information-
+    system/resources/system_operator_product_type/)
 
     Args:
         body (SystemOperatorProductTypeCreateRequest | Unset): Request schema for create

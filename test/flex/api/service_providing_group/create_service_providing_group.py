@@ -115,6 +115,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse]:
     """Create Service providing group
 
+     Create [Service providing group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group/)
+
     Args:
         body (ServiceProvidingGroupCreateRequest | Unset): Request schema for create operations -
             Group of controllable units
@@ -145,6 +148,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse | None:
     """Create Service providing group
 
+     Create [Service providing group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group/)
+
     Args:
         body (ServiceProvidingGroupCreateRequest | Unset): Request schema for create operations -
             Group of controllable units
@@ -169,6 +175,9 @@ async def asyncio_detailed(
     body: ServiceProvidingGroupCreateRequest | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse]:
     """Create Service providing group
+
+     Create [Service providing group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group/)
 
     Args:
         body (ServiceProvidingGroupCreateRequest | Unset): Request schema for create operations -
@@ -197,6 +206,9 @@ async def asyncio(
     body: ServiceProvidingGroupCreateRequest | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse | None:
     """Create Service providing group
+
+     Create [Service providing group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group/)
 
     Args:
         body (ServiceProvidingGroupCreateRequest | Unset): Request schema for create operations -

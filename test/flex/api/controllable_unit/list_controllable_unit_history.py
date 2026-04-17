@@ -161,6 +161,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitHistoryResponse]]:
     """List Controllable unit - history
 
+     List [Controllable unit - history](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit/)
+
     Args:
         id (str | Unset):
         business_id (str | Unset):
@@ -214,6 +217,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitHistoryResponse] | None:
     """List Controllable unit - history
 
+     List [Controllable unit - history](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit/)
+
     Args:
         id (str | Unset):
         business_id (str | Unset):
@@ -261,6 +267,9 @@ async def asyncio_detailed(
     controllable_unit_id: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitHistoryResponse]]:
     """List Controllable unit - history
+
+     List [Controllable unit - history](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit/)
 
     Args:
         id (str | Unset):
@@ -312,6 +321,9 @@ async def asyncio(
     controllable_unit_id: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitHistoryResponse] | None:
     """List Controllable unit - history
+
+     List [Controllable unit - history](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit/)
 
     Args:
         id (str | Unset):

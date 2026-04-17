@@ -119,6 +119,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationResponse]:
     """Create Service Providing Group Product Application
 
+     Create [Service Providing Group Product Application](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_product_application/)
+
     Args:
         body (ServiceProvidingGroupProductApplicationCreateRequest | Unset): Request schema for
             create operations - Relation between a service providing group and a system operator for a
@@ -150,6 +153,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationResponse | None:
     """Create Service Providing Group Product Application
 
+     Create [Service Providing Group Product Application](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_product_application/)
+
     Args:
         body (ServiceProvidingGroupProductApplicationCreateRequest | Unset): Request schema for
             create operations - Relation between a service providing group and a system operator for a
@@ -175,6 +181,9 @@ async def asyncio_detailed(
     body: ServiceProvidingGroupProductApplicationCreateRequest | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationResponse]:
     """Create Service Providing Group Product Application
+
+     Create [Service Providing Group Product Application](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_product_application/)
 
     Args:
         body (ServiceProvidingGroupProductApplicationCreateRequest | Unset): Request schema for
@@ -204,6 +213,9 @@ async def asyncio(
     body: ServiceProvidingGroupProductApplicationCreateRequest | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationResponse | None:
     """Create Service Providing Group Product Application
+
+     Create [Service Providing Group Product Application](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_product_application/)
 
     Args:
         body (ServiceProvidingGroupProductApplicationCreateRequest | Unset): Request schema for

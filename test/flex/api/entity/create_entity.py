@@ -115,6 +115,8 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | EntityResponse | ErrorMessage]:
     """Create Entity
 
+     Create [Entity](https://elhub.github.io/flex-information-system/resources/entity/)
+
     Args:
         body (EntityCreateRequest | Unset): Request schema for create operations - Entity -
             Natural or legal person
@@ -153,6 +155,8 @@ def sync(
 ) -> EmptyObject | ErrorMessage | EntityResponse | ErrorMessage | None:
     """Create Entity
 
+     Create [Entity](https://elhub.github.io/flex-information-system/resources/entity/)
+
     Args:
         body (EntityCreateRequest | Unset): Request schema for create operations - Entity -
             Natural or legal person
@@ -185,6 +189,8 @@ async def asyncio_detailed(
     body: EntityCreateRequest | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | EntityResponse | ErrorMessage]:
     """Create Entity
+
+     Create [Entity](https://elhub.github.io/flex-information-system/resources/entity/)
 
     Args:
         body (EntityCreateRequest | Unset): Request schema for create operations - Entity -
@@ -221,6 +227,8 @@ async def asyncio(
     body: EntityCreateRequest | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | EntityResponse | ErrorMessage | None:
     """Create Entity
+
+     Create [Entity](https://elhub.github.io/flex-information-system/resources/entity/)
 
     Args:
         body (EntityCreateRequest | Unset): Request schema for create operations - Entity -

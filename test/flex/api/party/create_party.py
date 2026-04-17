@@ -115,6 +115,8 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | PartyResponse]:
     """Create Party
 
+     Create [Party](https://elhub.github.io/flex-information-system/resources/party/)
+
     Args:
         body (PartyCreateRequest | Unset): Request schema for create operations - The body that
             interacts with the Flexibility Information System
@@ -154,6 +156,8 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | PartyResponse | None:
     """Create Party
 
+     Create [Party](https://elhub.github.io/flex-information-system/resources/party/)
+
     Args:
         body (PartyCreateRequest | Unset): Request schema for create operations - The body that
             interacts with the Flexibility Information System
@@ -187,6 +191,8 @@ async def asyncio_detailed(
     body: PartyCreateRequest | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | PartyResponse]:
     """Create Party
+
+     Create [Party](https://elhub.github.io/flex-information-system/resources/party/)
 
     Args:
         body (PartyCreateRequest | Unset): Request schema for create operations - The body that
@@ -224,6 +230,8 @@ async def asyncio(
     body: PartyCreateRequest | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | PartyResponse | None:
     """Create Party
+
+     Create [Party](https://elhub.github.io/flex-information-system/resources/party/)
 
     Args:
         body (PartyCreateRequest | Unset): Request schema for create operations - The body that

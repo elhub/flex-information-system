@@ -188,14 +188,14 @@ endpoint_templates = {
     "list": lambda base_resource, resource, resource_summary: {
         "operationId": f"list_{resource}",
         "summary": f"List {resource_summary}",
-        "description": "",
+        "description": f"List [{resource_summary}](https://elhub.github.io/flex-information-system/resources/{base_resource}/)",
         "tags": [base_resource],
         "g-responses": [200, 206, 400, 401, 403, 404, 406, 416, 500],
     },
     "create": lambda _base_resource, resource, resource_summary: {
         "operationId": f"create_{resource}",
         "summary": f"Create {resource_summary}",
-        "description": "",
+        "description": f"Create [{resource_summary}](https://elhub.github.io/flex-information-system/resources/{resource}/)",
         "tags": [resource],
         "requestBody": {
             "content": {
@@ -213,14 +213,14 @@ endpoint_templates = {
     "read": lambda base_resource, resource, resource_summary: {
         "operationId": f"read_{resource}",
         "summary": f"Read {resource_summary}",
-        "description": "",
+        "description": f"Read [{resource_summary}](https://elhub.github.io/flex-information-system/resources/{base_resource}/)",
         "tags": [base_resource],
         "g-responses": [200, 400, 401, 403, 404, 406, 500],
     },
     "update": lambda _base_resource, resource, resource_summary: {
         "operationId": f"update_{resource}",
         "summary": f"Update {resource_summary}",
-        "description": "",
+        "description": f"Update [{resource_summary}](https://elhub.github.io/flex-information-system/resources/{resource}/)",
         "tags": [resource],
         "requestBody": {
             "content": {
@@ -238,7 +238,7 @@ endpoint_templates = {
     "delete": lambda _base_resource, resource, resource_summary: {
         "operationId": f"delete_{resource}",
         "summary": f"Delete {resource_summary}",
-        "description": "",
+        "description": f"Delete [{resource_summary}](https://elhub.github.io/flex-information-system/resources/{resource}/)",
         "tags": [resource],
         "requestBody": {
             "content": {

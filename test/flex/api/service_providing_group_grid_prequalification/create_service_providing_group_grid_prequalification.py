@@ -119,6 +119,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationResponse]:
     """Create Grid prequalification for service providing group
 
+     Create [Grid prequalification for service providing group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_prequalification/)
+
     Args:
         body (ServiceProvidingGroupGridPrequalificationCreateRequest | Unset): Request schema for
             create operations - Grid prequalification for service providing group
@@ -149,6 +152,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationResponse | None:
     """Create Grid prequalification for service providing group
 
+     Create [Grid prequalification for service providing group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_prequalification/)
+
     Args:
         body (ServiceProvidingGroupGridPrequalificationCreateRequest | Unset): Request schema for
             create operations - Grid prequalification for service providing group
@@ -173,6 +179,9 @@ async def asyncio_detailed(
     body: ServiceProvidingGroupGridPrequalificationCreateRequest | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationResponse]:
     """Create Grid prequalification for service providing group
+
+     Create [Grid prequalification for service providing group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_prequalification/)
 
     Args:
         body (ServiceProvidingGroupGridPrequalificationCreateRequest | Unset): Request schema for
@@ -201,6 +210,9 @@ async def asyncio(
     body: ServiceProvidingGroupGridPrequalificationCreateRequest | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationResponse | None:
     """Create Grid prequalification for service providing group
+
+     Create [Grid prequalification for service providing group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_prequalification/)
 
     Args:
         body (ServiceProvidingGroupGridPrequalificationCreateRequest | Unset): Request schema for

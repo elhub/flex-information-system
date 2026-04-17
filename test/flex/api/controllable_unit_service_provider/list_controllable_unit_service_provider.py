@@ -165,6 +165,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitServiceProviderResponse]]:
     """List Relation between controllable unit and service provider
 
+     List [Relation between controllable unit and service provider](https://elhub.github.io/flex-
+    information-system/resources/controllable_unit_service_provider/)
+
     Args:
         id (str | Unset):
         controllable_unit_id (str | Unset):
@@ -221,6 +224,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitServiceProviderResponse] | None:
     """List Relation between controllable unit and service provider
 
+     List [Relation between controllable unit and service provider](https://elhub.github.io/flex-
+    information-system/resources/controllable_unit_service_provider/)
+
     Args:
         id (str | Unset):
         controllable_unit_id (str | Unset):
@@ -271,6 +277,9 @@ async def asyncio_detailed(
     limit: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitServiceProviderResponse]]:
     """List Relation between controllable unit and service provider
+
+     List [Relation between controllable unit and service provider](https://elhub.github.io/flex-
+    information-system/resources/controllable_unit_service_provider/)
 
     Args:
         id (str | Unset):
@@ -325,6 +334,9 @@ async def asyncio(
     limit: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitServiceProviderResponse] | None:
     """List Relation between controllable unit and service provider
+
+     List [Relation between controllable unit and service provider](https://elhub.github.io/flex-
+    information-system/resources/controllable_unit_service_provider/)
 
     Args:
         id (str | Unset):

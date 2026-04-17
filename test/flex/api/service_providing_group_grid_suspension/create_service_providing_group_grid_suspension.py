@@ -117,6 +117,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionResponse]:
     """Create Service Providing Group Grid Suspension
 
+     Create [Service Providing Group Grid Suspension](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_suspension/)
+
     Args:
         body (ServiceProvidingGroupGridSuspensionCreateRequest | Unset): Request schema for create
             operations - The relation allowing an impacted system operator to temporarily suspend a
@@ -148,6 +151,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionResponse | None:
     """Create Service Providing Group Grid Suspension
 
+     Create [Service Providing Group Grid Suspension](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_suspension/)
+
     Args:
         body (ServiceProvidingGroupGridSuspensionCreateRequest | Unset): Request schema for create
             operations - The relation allowing an impacted system operator to temporarily suspend a
@@ -173,6 +179,9 @@ async def asyncio_detailed(
     body: ServiceProvidingGroupGridSuspensionCreateRequest | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionResponse]:
     """Create Service Providing Group Grid Suspension
+
+     Create [Service Providing Group Grid Suspension](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_suspension/)
 
     Args:
         body (ServiceProvidingGroupGridSuspensionCreateRequest | Unset): Request schema for create
@@ -202,6 +211,9 @@ async def asyncio(
     body: ServiceProvidingGroupGridSuspensionCreateRequest | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionResponse | None:
     """Create Service Providing Group Grid Suspension
+
+     Create [Service Providing Group Grid Suspension](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_suspension/)
 
     Args:
         body (ServiceProvidingGroupGridSuspensionCreateRequest | Unset): Request schema for create

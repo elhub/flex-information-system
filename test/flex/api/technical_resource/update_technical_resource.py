@@ -118,6 +118,9 @@ def sync_detailed(
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | TechnicalResourceResponse]:
     """Update Technical Resource
 
+     Update [Technical Resource](https://elhub.github.io/flex-information-
+    system/resources/technical_resource/)
+
     Args:
         id (int):
         body (TechnicalResourceUpdateRequest): Request schema for update operations - Technical
@@ -151,6 +154,9 @@ def sync(
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | TechnicalResourceResponse | None:
     """Update Technical Resource
 
+     Update [Technical Resource](https://elhub.github.io/flex-information-
+    system/resources/technical_resource/)
+
     Args:
         id (int):
         body (TechnicalResourceUpdateRequest): Request schema for update operations - Technical
@@ -178,6 +184,9 @@ async def asyncio_detailed(
     body: TechnicalResourceUpdateRequest,
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | TechnicalResourceResponse]:
     """Update Technical Resource
+
+     Update [Technical Resource](https://elhub.github.io/flex-information-
+    system/resources/technical_resource/)
 
     Args:
         id (int):
@@ -209,6 +218,9 @@ async def asyncio(
     body: TechnicalResourceUpdateRequest,
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | TechnicalResourceResponse | None:
     """Update Technical Resource
+
+     Update [Technical Resource](https://elhub.github.io/flex-information-
+    system/resources/technical_resource/)
 
     Args:
         id (int):

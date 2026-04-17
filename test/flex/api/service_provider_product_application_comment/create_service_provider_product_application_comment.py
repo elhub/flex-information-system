@@ -119,6 +119,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationCommentResponse]:
     """Create Service Provider Product Application Comment
 
+     Create [Service Provider Product Application Comment](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_application_comment/)
+
     Args:
         body (ServiceProviderProductApplicationCommentCreateRequest | Unset): Request schema for
             create operations - Comment made by a party involved in a service provider product
@@ -150,6 +153,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationCommentResponse | None:
     """Create Service Provider Product Application Comment
 
+     Create [Service Provider Product Application Comment](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_application_comment/)
+
     Args:
         body (ServiceProviderProductApplicationCommentCreateRequest | Unset): Request schema for
             create operations - Comment made by a party involved in a service provider product
@@ -175,6 +181,9 @@ async def asyncio_detailed(
     body: ServiceProviderProductApplicationCommentCreateRequest | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationCommentResponse]:
     """Create Service Provider Product Application Comment
+
+     Create [Service Provider Product Application Comment](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_application_comment/)
 
     Args:
         body (ServiceProviderProductApplicationCommentCreateRequest | Unset): Request schema for
@@ -204,6 +213,9 @@ async def asyncio(
     body: ServiceProviderProductApplicationCommentCreateRequest | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationCommentResponse | None:
     """Create Service Provider Product Application Comment
+
+     Create [Service Provider Product Application Comment](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_application_comment/)
 
     Args:
         body (ServiceProviderProductApplicationCommentCreateRequest | Unset): Request schema for

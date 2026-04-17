@@ -104,6 +104,9 @@ def sync_detailed(
 ) -> Response[ControllableUnitSuspensionHistoryResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Read Controllable Unit Suspension - history
 
+     Read [Controllable Unit Suspension - history](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_suspension/)
+
     Args:
         id (int):
 
@@ -133,6 +136,9 @@ def sync(
 ) -> ControllableUnitSuspensionHistoryResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Read Controllable Unit Suspension - history
 
+     Read [Controllable Unit Suspension - history](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_suspension/)
+
     Args:
         id (int):
 
@@ -156,6 +162,9 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
 ) -> Response[ControllableUnitSuspensionHistoryResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Read Controllable Unit Suspension - history
+
+     Read [Controllable Unit Suspension - history](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_suspension/)
 
     Args:
         id (int):
@@ -183,6 +192,9 @@ async def asyncio(
     client: AuthenticatedClient,
 ) -> ControllableUnitSuspensionHistoryResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Read Controllable Unit Suspension - history
+
+     Read [Controllable Unit Suspension - history](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_suspension/)
 
     Args:
         id (int):

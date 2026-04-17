@@ -104,6 +104,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupHistoryResponse]:
     """Read Service providing group - history
 
+     Read [Service providing group - history](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group/)
+
     Args:
         id (int):
 
@@ -133,6 +136,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupHistoryResponse | None:
     """Read Service providing group - history
 
+     Read [Service providing group - history](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group/)
+
     Args:
         id (int):
 
@@ -156,6 +162,9 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupHistoryResponse]:
     """Read Service providing group - history
+
+     Read [Service providing group - history](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group/)
 
     Args:
         id (int):
@@ -183,6 +192,9 @@ async def asyncio(
     client: AuthenticatedClient,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupHistoryResponse | None:
     """Read Service providing group - history
+
+     Read [Service providing group - history](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group/)
 
     Args:
         id (int):

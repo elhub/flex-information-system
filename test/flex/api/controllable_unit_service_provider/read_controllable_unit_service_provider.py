@@ -104,6 +104,9 @@ def sync_detailed(
 ) -> Response[ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Read Relation between controllable unit and service provider
 
+     Read [Relation between controllable unit and service provider](https://elhub.github.io/flex-
+    information-system/resources/controllable_unit_service_provider/)
+
     Args:
         id (int):
 
@@ -133,6 +136,9 @@ def sync(
 ) -> ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Read Relation between controllable unit and service provider
 
+     Read [Relation between controllable unit and service provider](https://elhub.github.io/flex-
+    information-system/resources/controllable_unit_service_provider/)
+
     Args:
         id (int):
 
@@ -156,6 +162,9 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
 ) -> Response[ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Read Relation between controllable unit and service provider
+
+     Read [Relation between controllable unit and service provider](https://elhub.github.io/flex-
+    information-system/resources/controllable_unit_service_provider/)
 
     Args:
         id (int):
@@ -183,6 +192,9 @@ async def asyncio(
     client: AuthenticatedClient,
 ) -> ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Read Relation between controllable unit and service provider
+
+     Read [Relation between controllable unit and service provider](https://elhub.github.io/flex-
+    information-system/resources/controllable_unit_service_provider/)
 
     Args:
         id (int):
