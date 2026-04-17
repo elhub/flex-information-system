@@ -10,31 +10,31 @@ import {
   SelectContent,
   SelectItem,
   Textarea,
-} from "./ui";
+} from "../ui";
 import { CommentBubble } from "./CommentBubble";
-import { listIdentity } from "../generated-client";
+import { listIdentity } from "../../generated-client";
 import type {
-  ServiceProvidingGroupProductApplicationComment,
-  ServiceProvidingGroupProductApplicationCommentVisibility,
   Identity,
-} from "../generated-client/types.gen";
-import { throwOnError } from "../util";
+} from "../../generated-client/types.gen";
+import { throwOnError } from "../../util";
+import { Comment, Visibility } from "./types";
+import { useTranslateEnum } from "../../intl/intl";
 
 type PostInput = {
   content: string;
-  visibility: ServiceProvidingGroupProductApplicationCommentVisibility;
+  visibility: Visibility;
 };
 
 type CommentFeedProps = {
   commentsQuery: UseQueryResult<
-    ServiceProvidingGroupProductApplicationComment[]
+    Comment[]
   >;
   postComment: UseMutationResult<unknown, Error, PostInput>;
   canCreate: boolean;
 };
 
 function useIdentityMap(
-  comments: ServiceProvidingGroupProductApplicationComment[] | undefined,
+  comments: Comment[] | undefined,
 ): Record<number, Identity> {
   const ids = [...new Set((comments ?? []).map((c) => c.created_by))].sort(
     (a, b) => a - b,
@@ -59,7 +59,7 @@ export function CommentFeed({
 }: CommentFeedProps) {
   const [text, setText] = useState("");
   const [visibility, setVisibility] =
-    useState<ServiceProvidingGroupProductApplicationCommentVisibility>(
+    useState<Visibility>(
       "same_party",
     );
 
@@ -68,6 +68,7 @@ export function CommentFeed({
     identity?.entityID !== undefined ? Number(identity.entityID) : undefined;
 
   const identityMap = useIdentityMap(commentsQuery.data);
+  const enumTranslation = useTranslateEnum();
 
   if (commentsQuery.error) throw commentsQuery.error;
 
@@ -106,17 +107,17 @@ export function CommentFeed({
               value={visibility}
               onValueChange={(v) =>
                 setVisibility(
-                  v as ServiceProvidingGroupProductApplicationCommentVisibility,
+                  v as Visibility,
                 )
               }
               placeholder="Visibility"
             >
               <SelectContent>
                 <SelectItem value="same_party">
-                  Internal (same party)
+                  {enumTranslation("comment.visibility.same_party")}
                 </SelectItem>
                 <SelectItem value="any_involved_party">
-                  Shared (all involved parties)
+                  {enumTranslation("comment.visibility.any_involved_party")}
                 </SelectItem>
               </SelectContent>
             </Select>

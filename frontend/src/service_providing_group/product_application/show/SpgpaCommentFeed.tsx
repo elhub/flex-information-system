@@ -1,7 +1,7 @@
 // frontend/src/service_providing_group/product_application/show/SpgpaCommentFeed.tsx
 import { usePermissions } from "ra-core";
 import type { Permissions } from "../../../auth/permissions";
-import { CommentFeed } from "../../../components/CommentFeed";
+import { CommentFeed } from "../../../components/comments/CommentFeed";
 import { useSpgpaComments } from "./useSpgpaComments";
 
 type SpgpaCommentFeedProps = {

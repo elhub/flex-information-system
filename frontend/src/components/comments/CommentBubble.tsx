@@ -1,9 +1,10 @@
 // frontend/src/components/CommentBubble.tsx
-import { Tag } from "./ui";
+import { Tag } from "../ui";
 import type {
-  ServiceProvidingGroupProductApplicationComment,
   Identity,
-} from "../generated-client/types.gen";
+} from "../../generated-client/types.gen";
+import { Comment } from "./types";
+import { useTranslateEnum } from "../../intl/intl";
 
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleString("en-GB", {
@@ -16,7 +17,7 @@ function formatDate(iso: string): string {
 }
 
 type CommentBubbleProps = {
-  comment: ServiceProvidingGroupProductApplicationComment;
+  comment: Comment;
   identity: Identity | undefined;
   isCurrentUser: boolean;
 };
@@ -28,10 +29,9 @@ export function CommentBubble({
 }: CommentBubbleProps) {
   const isInternal = comment.visibility === "same_party";
   const authorName = identity?.entity_name ?? String(comment.created_by);
-
-  const bodyClass = `border-b px-3 py-1 text-base text-gray-700 leading-relaxed whitespace-pre-wrap ${
-    isCurrentUser ? "bg-semantic-background-action-selected" : "bg-white"
-  }`;
+  const enumTranslation = useTranslateEnum();
+  const bodyClass = `border-b px-3 py-1 text-base text-gray-700 leading-relaxed whitespace-pre-wrap ${isCurrentUser ? "bg-semantic-background-action-selected" : "bg-white"
+    }`;
 
   return (
     <div className="flex flex-col">
@@ -49,11 +49,11 @@ export function CommentBubble({
         </span>
         {isInternal ? (
           <Tag size="small" variant="warning">
-            Internal
+            {enumTranslation("comment.visibility.same_party")}
           </Tag>
         ) : (
           <Tag size="small" variant="success">
-            Shared
+            {enumTranslation("comment.visibility.any_involved_party")}
           </Tag>
         )}
       </div>
