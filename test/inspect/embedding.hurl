@@ -18,3 +18,12 @@ controllable_unit.accounting_point.balance_responsible_party.balance_responsible
 #controllable_unit.accounting_point.balance_responsible_party.or: (valid_to.gte.{{ today }},valid_to.is.null)
 valid_from: lte.{{ today }}
 or: (valid_to.gte.{{ today }},valid_to.is.null)
+
+
+GET {{ api_url }}/service_providing_group_membership
+Authorization: Bearer {{ access_token }}
+[Query]
+id: eq.1
+embed: controllable_unit(accounting_point(bidding_zone,balance_responsible_party(balance_responsible_party)))
+valid_at: now
+controllable_unit.accounting_point.balance_responsible_party.valid_at: now
