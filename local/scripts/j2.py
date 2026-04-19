@@ -1,4 +1,5 @@
 import jinja2
+
 # This is a helper "module" to hide some of the weird "environment" stuff
 # that Jinja2 does.
 
@@ -10,21 +11,21 @@ env = jinja2.Environment(
 )
 
 
-def template_str(resource, template):
+def template_str(context, template):
     """
     Templates to a string using the resource object
     """
     # Load the template
     template = env.get_template(template)
     # Render the template with the resource data
-    return template.render(resource=resource["id"], data=resource)
+    return template.render(**context)
 
 
-def template(resource, template, outfile):
+def template(context, template, outfile):
     """
     Templates to a file using the resource object
     """
-    rendered = template_str(resource, template)
+    rendered = template_str(context, template)
     with open(outfile, "w") as f:
         # Write the rendered content to the file
         f.write(rendered)

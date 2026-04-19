@@ -20,3 +20,7 @@ databaseChangeLog:
       path: ./grants/
       relativeToChangelogFile: true
       endsWithFilter: .sql
+  - includeAll:
+      path: ./embedding/
+      relativeToChangelogFile: true
+      endsWithFilter: .sql

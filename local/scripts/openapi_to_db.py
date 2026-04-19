@@ -12,6 +12,7 @@ risk of making a copy-paste mistake.
 
 DB_DIR = "./db"
 output_file_backend_schema = "backend/api.sql"
+output_file_embedding = f"{DB_DIR}/api/embedding/embedding.sql"
 # ------------------------------------------------------------------------------
 
 # this part generates the api.sql input file for sqlc in the backend
@@ -85,6 +86,82 @@ CREATE TABLE api.{resource}_history (
 """
 
 
+def embedding_name_from_field(child_field_name):
+    """
+    Derive the name of the embed field name.
+    """
+    if child_field_name.endswith("_id"):
+        return child_field_name[:-3]
+    return child_field_name
+
+
+def embedding_name_inverse(child, parent):
+    """
+    Derive the name of the embed field name.
+    """
+    prefix = parent + "_"
+    if child.startswith(prefix):
+        return child[len(prefix) :]
+    return child
+
+
+def collect_embeds(resources):
+    """
+    Collect all FK relationships that have a cardinality annotation.
+    Returns a list of dicts with the relationship metadata needed for the template.
+    """
+    embeds = []
+    for resource in resources:
+        child = resource["id"]
+        props = resource.get("properties", {})
+        for field, attr in props.items():
+            if not field.endswith("_id"):
+                continue
+            if not isinstance(attr, dict):
+                continue
+            fk = attr.get("x-foreign-key")
+            if not fk or "cardinality" not in fk:
+                continue
+            child_field = field
+            parent = fk["resource"]
+            parent_field = fk["field"]
+
+            # cardinality is on the format one|many-to-one|many
+            cardinality = fk["cardinality"].split("-to-")
+            if len(cardinality) != 2:
+                continue
+            parent_cardinality, child_cardinality = cardinality
+
+            # add fk relationship
+            embeds.append(
+                {
+                    "child": child,
+                    "child_field": child_field,
+                    "parent": parent,
+                    "parent_field": parent_field,
+                    "cardinality": child_cardinality,
+                    "embedding_name": embedding_name_from_field(child_field),
+                }
+            )
+
+            # no inverse relationships for party
+            if parent == "party":
+                continue
+
+            # add inverse relationship
+            embeds.append(
+                {
+                    "child": parent,
+                    "child_field": parent_field,
+                    "parent": child,
+                    "parent_field": child_field,
+                    "cardinality": parent_cardinality,
+                    "embedding_name": embedding_name_inverse(child, parent),
+                }
+            )
+    return embeds
+
+
 if __name__ == "__main__":
     yaml.SafeDumper.ignore_aliases = lambda self, data: True
     resources = yaml.safe_load(sys.stdin)
@@ -122,7 +199,7 @@ if __name__ == "__main__":
             # generate sql for history table and audit triggers
             if resource.get("audit"):
                 j2.template(
-                    resource,
+                    {"resource": resource["id"], "data": resource},
                     "resource_history_audit.j2.sql",
                     f"{DB_DIR}/flex/{resource['id']}_history_audit.sql",
                 )
@@ -130,7 +207,7 @@ if __name__ == "__main__":
             # generate views and history views
             if resource.get("generate_views", False):
                 j2.template(
-                    resource,
+                    {"resource": resource["id"], "data": resource},
                     "resource_api.j2.sql",
                     f"{DB_DIR}/api/{resource['id']}.sql",
                 )
@@ -138,19 +215,22 @@ if __name__ == "__main__":
             # generate files for the comment resource
             if resource.get("comments", False):
                 j2.template(
-                    resource,
+                    {"resource": resource["id"], "data": resource},
                     "comment_resource.j2.sql",
                     f"{DB_DIR}/flex/{resource['id']}_comment.sql",
                 )
 
                 j2.template(
-                    resource,
+                    {"resource": resource["id"], "data": resource},
                     "comment_rls.j2.sql",
                     f"{DB_DIR}/flex/{resource['id']}_comment_rls.sql",
                 )
 
                 resource = yaml.safe_load(
-                    j2.template_str(resource, "comment_resource.j2.yml"),
+                    j2.template_str(
+                        {"resource": resource["id"], "data": resource},
+                        "comment_resource.j2.yml",
+                    ),
                 )["data"]
 
                 print(
@@ -171,13 +251,21 @@ if __name__ == "__main__":
                 )
 
                 j2.template(
-                    resource,
+                    {"resource": resource["id"], "data": resource},
                     "resource_history_audit.j2.sql",
                     f"{DB_DIR}/flex/{resource['id']}_history_audit.sql",
                 )
 
                 j2.template(
-                    resource,
+                    {"resource": resource["id"], "data": resource},
                     "resource_api.j2.sql",
                     f"{DB_DIR}/api/{resource['id']}.sql",
                 )
+
+        # generate embedding functions for all FK relationships with cardinality
+        embeds = collect_embeds(resources)
+        j2.template(
+            {"embeds": embeds},
+            "embedding.j2.sql",
+            output_file_embedding,
+        )
