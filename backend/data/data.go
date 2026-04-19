@@ -510,6 +510,42 @@ func (data *api) entityLookupHandler(
 	w.Write(body)
 }
 
+// embedQueryRewrite rewrites the query parameters of the request to match the PostgREST format.
+func embedQueryRewrite(query url.Values) {
+	// first we disallow select
+	query.Del("select")
+
+	if embed := query.Get("embed"); embed != "" {
+		// TODO THIS IS A REAAAAAALLY POOR IMPLEMENTATION ! MUST BE DONE PROPERLY
+		sel := strings.ReplaceAll(embed, " ", "")
+		sel = strings.ReplaceAll(sel, "(", "(*,")
+		sel = "*," + sel
+		query.Set("select", sel)
+		query.Del("embed")
+	}
+}
+
+// validAtQueryRewrite rewrites the "valid_at" query parameter into "valid_from" and "valid_to".
+func validAtQueryRewrite(query url.Values) {
+	for key := range query {
+		if key == "valid_at" || strings.HasSuffix(key, ".valid_at") {
+			keyFrom := key[:len(key)-len("valid_at")] + "valid_from"
+			keyOr := key[:len(key)-len("valid_at")] + "or"
+			query.Del(keyFrom)
+			query.Del(keyOr)
+			if validAt := query.Get(key); validAt != "" {
+				// if validAt == "now" {
+				// dont think we need to do this because postgREST can handle now
+				// 	validAt = time.Now().UTC().Format(time.RFC3339)
+				// }
+				query.Del(key)
+				query.Set(keyFrom, "lte."+validAt)
+				query.Add(keyOr, "(valid_to.gte."+validAt+",valid_to.is.null)")
+			}
+		}
+	}
+}
+
 // postgRESTHandler forwards the request to the PostgREST API.
 func (data *api) postgRESTHandler(w http.ResponseWriter, req *http.Request) {
 	// regex for calls targeting single ID pages, not a valid format in PostgREST
@@ -546,6 +582,9 @@ func (data *api) postgRESTHandler(w http.ResponseWriter, req *http.Request) {
 			"new url", url, "new query", query.Encode(),
 		)
 	}
+
+	embedQueryRewrite(query)
+	validAtQueryRewrite(query)
 
 	proxy := &httputil.ReverseProxy{ //nolint:exhaustruct
 		Rewrite: func(req *httputil.ProxyRequest) {
