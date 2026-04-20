@@ -4,7 +4,7 @@ import { Link as NavLink } from "react-router-dom";
 import { IconChevronDown } from "@elhub/ds-icons";
 
 import type { Permissions, PermissionTarget } from "../../auth/permissions";
-import { BodyText, Button, Dropdown, Link, Nav } from "../ui";
+import { BodyText, Button, Dropdown, Nav } from "../ui";
 
 type MenuEntry = {
   resource: PermissionTarget;
@@ -130,7 +130,8 @@ export const HeaderNav = () => {
                         type: "list",
                       })}
                       className="w-full no-underline"
-                      key={item.resource}>
+                      key={item.resource}
+                    >
                       {item.label}
                     </Dropdown.Menu.GroupedList.Item>
                   ))}

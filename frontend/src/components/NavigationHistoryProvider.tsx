@@ -76,10 +76,12 @@ export const NavigationHistoryProvider = ({
   children: ReactNode;
 }) => <InnerProvider>{children}</InnerProvider>;
 
-export const usePreviousPage = (): {
-  pathname: string;
-  label: string;
-} | undefined => {
+export const usePreviousPage = ():
+  | {
+      pathname: string;
+      label: string;
+    }
+  | undefined => {
   const { stack } = useContext(NavigationHistoryContext);
   if (stack.length < 2) return undefined;
 
