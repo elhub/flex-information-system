@@ -2,7 +2,6 @@ package data
 
 import (
 	"bytes"
-	"context"
 	_ "embed"
 	"encoding/json"
 	"flex/auth"
@@ -27,14 +26,6 @@ import (
 //go:embed static/openapi.json
 var openapiInput []byte
 
-// MeteringPointDatahubService defines the data fetching operations we can
-// execute thanks to an external Metering Point Datahub.
-type MeteringPointDatahubService interface {
-	FetchAccountingPointMeteringGridArea(
-		ctx context.Context, accountingPointBusinessID string,
-	) (string, error)
-}
-
 // api gathers handlers for all endpoints of the data API.
 type api struct {
 	postgRESTURL *url.URL
@@ -42,8 +33,6 @@ type api struct {
 	db           *pgpool.Pool
 	ctxKey       string
 	mux          *http.ServeMux
-	// external datahub used to sync accounting point data when missing
-	meteringPointDatahubService MeteringPointDatahubService
 }
 
 var _ http.Handler = &api{} //nolint:exhaustruct
@@ -57,7 +46,6 @@ func NewAPIHandler(
 	kbackendUpstream string,
 	db *pgpool.Pool,
 	ctxKey string,
-	meteringPointDatahubService MeteringPointDatahubService,
 ) (http.Handler, error) {
 	postgRESTURL, err := url.Parse(postgRESTUpstream)
 	if err != nil {
@@ -72,12 +60,11 @@ func NewAPIHandler(
 	mux := http.NewServeMux()
 
 	data := &api{
-		postgRESTURL:                postgRESTURL,
-		kbackendURL:                 kbackendURL,
-		db:                          db,
-		mux:                         mux,
-		ctxKey:                      ctxKey,
-		meteringPointDatahubService: meteringPointDatahubService,
+		postgRESTURL: postgRESTURL,
+		kbackendURL:  kbackendURL,
+		db:           db,
+		mux:          mux,
+		ctxKey:       ctxKey,
 	}
 
 	// OpenAPI documentation handlers
