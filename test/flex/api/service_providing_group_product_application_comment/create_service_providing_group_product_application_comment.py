@@ -119,6 +119,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationCommentResponse]:
     """Create Service Providing Group Product Application Comment
 
+     Create [Service Providing Group Product Application Comment](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_product_application_comment/)
+
     Args:
         body (ServiceProvidingGroupProductApplicationCommentCreateRequest | Unset): Request schema
             for create operations - Comment made by a party involved in a service providing group
@@ -150,6 +153,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationCommentResponse | None:
     """Create Service Providing Group Product Application Comment
 
+     Create [Service Providing Group Product Application Comment](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_product_application_comment/)
+
     Args:
         body (ServiceProvidingGroupProductApplicationCommentCreateRequest | Unset): Request schema
             for create operations - Comment made by a party involved in a service providing group
@@ -175,6 +181,9 @@ async def asyncio_detailed(
     body: ServiceProvidingGroupProductApplicationCommentCreateRequest | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationCommentResponse]:
     """Create Service Providing Group Product Application Comment
+
+     Create [Service Providing Group Product Application Comment](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_product_application_comment/)
 
     Args:
         body (ServiceProvidingGroupProductApplicationCommentCreateRequest | Unset): Request schema
@@ -204,6 +213,9 @@ async def asyncio(
     body: ServiceProvidingGroupProductApplicationCommentCreateRequest | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationCommentResponse | None:
     """Create Service Providing Group Product Application Comment
+
+     Create [Service Providing Group Product Application Comment](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_product_application_comment/)
 
     Args:
         body (ServiceProvidingGroupProductApplicationCommentCreateRequest | Unset): Request schema

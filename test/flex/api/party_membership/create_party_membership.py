@@ -115,6 +115,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | PartyMembershipResponse]:
     """Create Party Membership
 
+     Create [Party Membership](https://elhub.github.io/flex-information-
+    system/resources/party_membership/)
+
     Args:
         body (PartyMembershipCreateRequest | Unset): Request schema for create operations - The
             relation between a party and entity.
@@ -145,6 +148,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | PartyMembershipResponse | None:
     """Create Party Membership
 
+     Create [Party Membership](https://elhub.github.io/flex-information-
+    system/resources/party_membership/)
+
     Args:
         body (PartyMembershipCreateRequest | Unset): Request schema for create operations - The
             relation between a party and entity.
@@ -169,6 +175,9 @@ async def asyncio_detailed(
     body: PartyMembershipCreateRequest | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | PartyMembershipResponse]:
     """Create Party Membership
+
+     Create [Party Membership](https://elhub.github.io/flex-information-
+    system/resources/party_membership/)
 
     Args:
         body (PartyMembershipCreateRequest | Unset): Request schema for create operations - The
@@ -197,6 +206,9 @@ async def asyncio(
     body: PartyMembershipCreateRequest | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | PartyMembershipResponse | None:
     """Create Party Membership
+
+     Create [Party Membership](https://elhub.github.io/flex-information-
+    system/resources/party_membership/)
 
     Args:
         body (PartyMembershipCreateRequest | Unset): Request schema for create operations - The

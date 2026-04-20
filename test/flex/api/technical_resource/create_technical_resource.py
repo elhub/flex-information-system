@@ -115,6 +115,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | TechnicalResourceResponse]:
     """Create Technical Resource
 
+     Create [Technical Resource](https://elhub.github.io/flex-information-
+    system/resources/technical_resource/)
+
     Args:
         body (TechnicalResourceCreateRequest | Unset): Request schema for create operations -
             Technical unit being part of a controllable unit.
@@ -145,6 +148,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | TechnicalResourceResponse | None:
     """Create Technical Resource
 
+     Create [Technical Resource](https://elhub.github.io/flex-information-
+    system/resources/technical_resource/)
+
     Args:
         body (TechnicalResourceCreateRequest | Unset): Request schema for create operations -
             Technical unit being part of a controllable unit.
@@ -169,6 +175,9 @@ async def asyncio_detailed(
     body: TechnicalResourceCreateRequest | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | TechnicalResourceResponse]:
     """Create Technical Resource
+
+     Create [Technical Resource](https://elhub.github.io/flex-information-
+    system/resources/technical_resource/)
 
     Args:
         body (TechnicalResourceCreateRequest | Unset): Request schema for create operations -
@@ -197,6 +206,9 @@ async def asyncio(
     body: TechnicalResourceCreateRequest | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | TechnicalResourceResponse | None:
     """Create Technical Resource
+
+     Create [Technical Resource](https://elhub.github.io/flex-information-
+    system/resources/technical_resource/)
 
     Args:
         body (TechnicalResourceCreateRequest | Unset): Request schema for create operations -

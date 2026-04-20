@@ -171,6 +171,9 @@ def sync_detailed(
 ]:
     """List Service Providing Group Product Suspension Comment - history
 
+     List [Service Providing Group Product Suspension Comment - history](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_product_suspension_comment/)
+
     Args:
         id (str | Unset):
         service_providing_group_product_suspension_id (str | Unset):
@@ -224,6 +227,9 @@ def sync(
 ):
     """List Service Providing Group Product Suspension Comment - history
 
+     List [Service Providing Group Product Suspension Comment - history](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_product_suspension_comment/)
+
     Args:
         id (str | Unset):
         service_providing_group_product_suspension_id (str | Unset):
@@ -267,6 +273,9 @@ async def asyncio_detailed(
     EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductSuspensionCommentHistoryResponse]
 ]:
     """List Service Providing Group Product Suspension Comment - history
+
+     List [Service Providing Group Product Suspension Comment - history](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_product_suspension_comment/)
 
     Args:
         id (str | Unset):
@@ -318,6 +327,9 @@ async def asyncio(
     | None
 ):
     """List Service Providing Group Product Suspension Comment - history
+
+     List [Service Providing Group Product Suspension Comment - history](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_product_suspension_comment/)
 
     Args:
         id (str | Unset):

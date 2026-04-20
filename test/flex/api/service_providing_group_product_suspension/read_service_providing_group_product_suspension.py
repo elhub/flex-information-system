@@ -104,6 +104,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionResponse]:
     """Read Service Providing Group Product Suspension
 
+     Read [Service Providing Group Product Suspension](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_product_suspension/)
+
     Args:
         id (int):
 
@@ -133,6 +136,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionResponse | None:
     """Read Service Providing Group Product Suspension
 
+     Read [Service Providing Group Product Suspension](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_product_suspension/)
+
     Args:
         id (int):
 
@@ -156,6 +162,9 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionResponse]:
     """Read Service Providing Group Product Suspension
+
+     Read [Service Providing Group Product Suspension](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_product_suspension/)
 
     Args:
         id (int):
@@ -183,6 +192,9 @@ async def asyncio(
     client: AuthenticatedClient,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionResponse | None:
     """Read Service Providing Group Product Suspension
+
+     Read [Service Providing Group Product Suspension](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_product_suspension/)
 
     Args:
         id (int):

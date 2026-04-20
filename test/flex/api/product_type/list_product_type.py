@@ -153,6 +153,8 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ProductTypeResponse]]:
     """List Product Type
 
+     List [Product Type](https://elhub.github.io/flex-information-system/resources/product_type/)
+
     Args:
         id (str | Unset):
         business_id (str | Unset):
@@ -200,6 +202,8 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ProductTypeResponse] | None:
     """List Product Type
 
+     List [Product Type](https://elhub.github.io/flex-information-system/resources/product_type/)
+
     Args:
         id (str | Unset):
         business_id (str | Unset):
@@ -241,6 +245,8 @@ async def asyncio_detailed(
     limit: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ProductTypeResponse]]:
     """List Product Type
+
+     List [Product Type](https://elhub.github.io/flex-information-system/resources/product_type/)
 
     Args:
         id (str | Unset):
@@ -286,6 +292,8 @@ async def asyncio(
     limit: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ProductTypeResponse] | None:
     """List Product Type
+
+     List [Product Type](https://elhub.github.io/flex-information-system/resources/product_type/)
 
     Args:
         id (str | Unset):

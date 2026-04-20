@@ -118,6 +118,9 @@ def sync_detailed(
 ) -> Response[Any | ControllableUnitSuspensionResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Update Controllable Unit Suspension
 
+     Update [Controllable Unit Suspension](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_suspension/)
+
     Args:
         id (int):
         body (ControllableUnitSuspensionUpdateRequest): Request schema for update operations - The
@@ -151,6 +154,9 @@ def sync(
 ) -> Any | ControllableUnitSuspensionResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Update Controllable Unit Suspension
 
+     Update [Controllable Unit Suspension](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_suspension/)
+
     Args:
         id (int):
         body (ControllableUnitSuspensionUpdateRequest): Request schema for update operations - The
@@ -178,6 +184,9 @@ async def asyncio_detailed(
     body: ControllableUnitSuspensionUpdateRequest,
 ) -> Response[Any | ControllableUnitSuspensionResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Update Controllable Unit Suspension
+
+     Update [Controllable Unit Suspension](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_suspension/)
 
     Args:
         id (int):
@@ -209,6 +218,9 @@ async def asyncio(
     body: ControllableUnitSuspensionUpdateRequest,
 ) -> Any | ControllableUnitSuspensionResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Update Controllable Unit Suspension
+
+     Update [Controllable Unit Suspension](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_suspension/)
 
     Args:
         id (int):

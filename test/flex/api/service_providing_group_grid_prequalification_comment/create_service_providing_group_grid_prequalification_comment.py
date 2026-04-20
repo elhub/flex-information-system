@@ -119,6 +119,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentResponse]:
     """Create Grid prequalification for service providing group Comment
 
+     Create [Grid prequalification for service providing group Comment](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_grid_prequalification_comment/)
+
     Args:
         body (ServiceProvidingGroupGridPrequalificationCommentCreateRequest | Unset): Request
             schema for create operations - Comment made by a party involved in a service providing
@@ -150,6 +153,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentResponse | None:
     """Create Grid prequalification for service providing group Comment
 
+     Create [Grid prequalification for service providing group Comment](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_grid_prequalification_comment/)
+
     Args:
         body (ServiceProvidingGroupGridPrequalificationCommentCreateRequest | Unset): Request
             schema for create operations - Comment made by a party involved in a service providing
@@ -175,6 +181,9 @@ async def asyncio_detailed(
     body: ServiceProvidingGroupGridPrequalificationCommentCreateRequest | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentResponse]:
     """Create Grid prequalification for service providing group Comment
+
+     Create [Grid prequalification for service providing group Comment](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_grid_prequalification_comment/)
 
     Args:
         body (ServiceProvidingGroupGridPrequalificationCommentCreateRequest | Unset): Request
@@ -204,6 +213,9 @@ async def asyncio(
     body: ServiceProvidingGroupGridPrequalificationCommentCreateRequest | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentResponse | None:
     """Create Grid prequalification for service providing group Comment
+
+     Create [Grid prequalification for service providing group Comment](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_grid_prequalification_comment/)
 
     Args:
         body (ServiceProvidingGroupGridPrequalificationCommentCreateRequest | Unset): Request

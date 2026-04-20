@@ -122,6 +122,9 @@ def sync_detailed(
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationResponse]:
     """Update Service Providing Group Product Application
 
+     Update [Service Providing Group Product Application](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_product_application/)
+
     Args:
         id (int):
         body (ServiceProvidingGroupProductApplicationUpdateRequest): Request schema for update
@@ -156,6 +159,9 @@ def sync(
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationResponse | None:
     """Update Service Providing Group Product Application
 
+     Update [Service Providing Group Product Application](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_product_application/)
+
     Args:
         id (int):
         body (ServiceProvidingGroupProductApplicationUpdateRequest): Request schema for update
@@ -184,6 +190,9 @@ async def asyncio_detailed(
     body: ServiceProvidingGroupProductApplicationUpdateRequest,
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationResponse]:
     """Update Service Providing Group Product Application
+
+     Update [Service Providing Group Product Application](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_product_application/)
 
     Args:
         id (int):
@@ -216,6 +225,9 @@ async def asyncio(
     body: ServiceProvidingGroupProductApplicationUpdateRequest,
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationResponse | None:
     """Update Service Providing Group Product Application
+
+     Update [Service Providing Group Product Application](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_product_application/)
 
     Args:
         id (int):

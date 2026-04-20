@@ -157,6 +157,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProviderProductApplicationResponse]]:
     """List Service Provider Product Application
 
+     List [Service Provider Product Application](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_application/)
+
     Args:
         id (str | Unset):
         service_provider_id (str | Unset):
@@ -207,6 +210,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProviderProductApplicationResponse] | None:
     """List Service Provider Product Application
 
+     List [Service Provider Product Application](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_application/)
+
     Args:
         id (str | Unset):
         service_provider_id (str | Unset):
@@ -251,6 +257,9 @@ async def asyncio_detailed(
     limit: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProviderProductApplicationResponse]]:
     """List Service Provider Product Application
+
+     List [Service Provider Product Application](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_application/)
 
     Args:
         id (str | Unset):
@@ -299,6 +308,9 @@ async def asyncio(
     limit: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProviderProductApplicationResponse] | None:
     """List Service Provider Product Application
+
+     List [Service Provider Product Application](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_application/)
 
     Args:
         id (str | Unset):

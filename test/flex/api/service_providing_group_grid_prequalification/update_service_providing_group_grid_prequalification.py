@@ -122,6 +122,9 @@ def sync_detailed(
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationResponse]:
     """Update Grid prequalification for service providing group
 
+     Update [Grid prequalification for service providing group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_prequalification/)
+
     Args:
         id (int):
         body (ServiceProvidingGroupGridPrequalificationUpdateRequest): Request schema for update
@@ -155,6 +158,9 @@ def sync(
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationResponse | None:
     """Update Grid prequalification for service providing group
 
+     Update [Grid prequalification for service providing group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_prequalification/)
+
     Args:
         id (int):
         body (ServiceProvidingGroupGridPrequalificationUpdateRequest): Request schema for update
@@ -182,6 +188,9 @@ async def asyncio_detailed(
     body: ServiceProvidingGroupGridPrequalificationUpdateRequest,
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationResponse]:
     """Update Grid prequalification for service providing group
+
+     Update [Grid prequalification for service providing group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_prequalification/)
 
     Args:
         id (int):
@@ -213,6 +222,9 @@ async def asyncio(
     body: ServiceProvidingGroupGridPrequalificationUpdateRequest,
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationResponse | None:
     """Update Grid prequalification for service providing group
+
+     Update [Grid prequalification for service providing group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_prequalification/)
 
     Args:
         id (int):

@@ -115,6 +115,9 @@ def sync_detailed(
 ) -> Response[ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Create Relation between controllable unit and service provider
 
+     Create [Relation between controllable unit and service provider](https://elhub.github.io/flex-
+    information-system/resources/controllable_unit_service_provider/)
+
     Args:
         body (ControllableUnitServiceProviderCreateRequest | Unset): Request schema for create
             operations - Relation between controllable unit and service provider
@@ -145,6 +148,9 @@ def sync(
 ) -> ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Create Relation between controllable unit and service provider
 
+     Create [Relation between controllable unit and service provider](https://elhub.github.io/flex-
+    information-system/resources/controllable_unit_service_provider/)
+
     Args:
         body (ControllableUnitServiceProviderCreateRequest | Unset): Request schema for create
             operations - Relation between controllable unit and service provider
@@ -169,6 +175,9 @@ async def asyncio_detailed(
     body: ControllableUnitServiceProviderCreateRequest | Unset = UNSET,
 ) -> Response[ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Create Relation between controllable unit and service provider
+
+     Create [Relation between controllable unit and service provider](https://elhub.github.io/flex-
+    information-system/resources/controllable_unit_service_provider/)
 
     Args:
         body (ControllableUnitServiceProviderCreateRequest | Unset): Request schema for create
@@ -197,6 +206,9 @@ async def asyncio(
     body: ControllableUnitServiceProviderCreateRequest | Unset = UNSET,
 ) -> ControllableUnitServiceProviderResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Create Relation between controllable unit and service provider
+
+     Create [Relation between controllable unit and service provider](https://elhub.github.io/flex-
+    information-system/resources/controllable_unit_service_provider/)
 
     Args:
         body (ControllableUnitServiceProviderCreateRequest | Unset): Request schema for create

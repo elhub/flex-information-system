@@ -153,6 +153,8 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[PartyMembershipResponse]]:
     """List Party Membership
 
+     List [Party Membership](https://elhub.github.io/flex-information-system/resources/party_membership/)
+
     Args:
         id (str | Unset):
         party_id (str | Unset):
@@ -200,6 +202,8 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[PartyMembershipResponse] | None:
     """List Party Membership
 
+     List [Party Membership](https://elhub.github.io/flex-information-system/resources/party_membership/)
+
     Args:
         id (str | Unset):
         party_id (str | Unset):
@@ -241,6 +245,8 @@ async def asyncio_detailed(
     limit: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[PartyMembershipResponse]]:
     """List Party Membership
+
+     List [Party Membership](https://elhub.github.io/flex-information-system/resources/party_membership/)
 
     Args:
         id (str | Unset):
@@ -286,6 +292,8 @@ async def asyncio(
     limit: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[PartyMembershipResponse] | None:
     """List Party Membership
+
+     List [Party Membership](https://elhub.github.io/flex-information-system/resources/party_membership/)
 
     Args:
         id (str | Unset):
