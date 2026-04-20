@@ -104,6 +104,8 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | NoticeResponse]:
     """Read Notice
 
+     Read [Notice](https://elhub.github.io/flex-information-system/resources/notice/)
+
     Args:
         id (int):
 
@@ -133,6 +135,8 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | NoticeResponse | None:
     """Read Notice
 
+     Read [Notice](https://elhub.github.io/flex-information-system/resources/notice/)
+
     Args:
         id (int):
 
@@ -156,6 +160,8 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | NoticeResponse]:
     """Read Notice
+
+     Read [Notice](https://elhub.github.io/flex-information-system/resources/notice/)
 
     Args:
         id (int):
@@ -183,6 +189,8 @@ async def asyncio(
     client: AuthenticatedClient,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | NoticeResponse | None:
     """Read Notice
+
+     Read [Notice](https://elhub.github.io/flex-information-system/resources/notice/)
 
     Args:
         id (int):

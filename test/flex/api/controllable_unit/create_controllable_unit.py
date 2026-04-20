@@ -115,6 +115,9 @@ def sync_detailed(
 ) -> Response[ControllableUnitResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Create Controllable unit
 
+     Create [Controllable unit](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit/)
+
     Args:
         body (ControllableUnitCreateRequest | Unset): Request schema for create operations -
             Controllable unit
@@ -145,6 +148,9 @@ def sync(
 ) -> ControllableUnitResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Create Controllable unit
 
+     Create [Controllable unit](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit/)
+
     Args:
         body (ControllableUnitCreateRequest | Unset): Request schema for create operations -
             Controllable unit
@@ -169,6 +175,9 @@ async def asyncio_detailed(
     body: ControllableUnitCreateRequest | Unset = UNSET,
 ) -> Response[ControllableUnitResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Create Controllable unit
+
+     Create [Controllable unit](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit/)
 
     Args:
         body (ControllableUnitCreateRequest | Unset): Request schema for create operations -
@@ -197,6 +206,9 @@ async def asyncio(
     body: ControllableUnitCreateRequest | Unset = UNSET,
 ) -> ControllableUnitResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Create Controllable unit
+
+     Create [Controllable unit](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit/)
 
     Args:
         body (ControllableUnitCreateRequest | Unset): Request schema for create operations -

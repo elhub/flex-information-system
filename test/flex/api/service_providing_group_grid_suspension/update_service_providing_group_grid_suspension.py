@@ -120,6 +120,9 @@ def sync_detailed(
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionResponse]:
     """Update Service Providing Group Grid Suspension
 
+     Update [Service Providing Group Grid Suspension](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_suspension/)
+
     Args:
         id (int):
         body (ServiceProvidingGroupGridSuspensionUpdateRequest): Request schema for update
@@ -154,6 +157,9 @@ def sync(
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionResponse | None:
     """Update Service Providing Group Grid Suspension
 
+     Update [Service Providing Group Grid Suspension](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_suspension/)
+
     Args:
         id (int):
         body (ServiceProvidingGroupGridSuspensionUpdateRequest): Request schema for update
@@ -182,6 +188,9 @@ async def asyncio_detailed(
     body: ServiceProvidingGroupGridSuspensionUpdateRequest,
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionResponse]:
     """Update Service Providing Group Grid Suspension
+
+     Update [Service Providing Group Grid Suspension](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_suspension/)
 
     Args:
         id (int):
@@ -214,6 +223,9 @@ async def asyncio(
     body: ServiceProvidingGroupGridSuspensionUpdateRequest,
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionResponse | None:
     """Update Service Providing Group Grid Suspension
+
+     Update [Service Providing Group Grid Suspension](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_suspension/)
 
     Args:
         id (int):

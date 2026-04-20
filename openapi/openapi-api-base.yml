@@ -504,8 +504,8 @@ paths:
       operationId: call_controllable_unit_lookup
       summary: Call - Controllable unit lookup
       description: >-
-        Lookup a controllable unit from end user ID and business and/or
-        accounting point ID.
+        Lookup a [controllable unit](https://elhub.github.io/flex-information-system/resources/controllable_unit/)
+        from end user ID and business and/or accounting point ID.
       security:
         - bearerAuth: ["use:data:controllable_unit:lookup"]
       tags:
@@ -558,7 +558,8 @@ paths:
       operationId: call_entity_lookup
       summary: Call - Entity lookup
       description: >-
-        Lookup an entity from its business ID. Creates the entity if missing.
+        Lookup an [entity](https://elhub.github.io/flex-information-system/resources/entity/)
+        from its business ID. Creates the entity if missing.
       security:
         - bearerAuth: ["use:data:entity:lookup"]
       tags:

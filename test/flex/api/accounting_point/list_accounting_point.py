@@ -153,6 +153,8 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[AccountingPointResponse]]:
     """List Accounting Point
 
+     List [Accounting Point](https://elhub.github.io/flex-information-system/resources/accounting_point/)
+
     Args:
         id (str | Unset):
         business_id (str | Unset):
@@ -200,6 +202,8 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[AccountingPointResponse] | None:
     """List Accounting Point
 
+     List [Accounting Point](https://elhub.github.io/flex-information-system/resources/accounting_point/)
+
     Args:
         id (str | Unset):
         business_id (str | Unset):
@@ -241,6 +245,8 @@ async def asyncio_detailed(
     limit: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[AccountingPointResponse]]:
     """List Accounting Point
+
+     List [Accounting Point](https://elhub.github.io/flex-information-system/resources/accounting_point/)
 
     Args:
         id (str | Unset):
@@ -286,6 +292,8 @@ async def asyncio(
     limit: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[AccountingPointResponse] | None:
     """List Accounting Point
+
+     List [Accounting Point](https://elhub.github.io/flex-information-system/resources/accounting_point/)
 
     Args:
         id (str | Unset):

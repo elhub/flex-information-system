@@ -169,6 +169,10 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitServiceProviderHistoryResponse]]:
     """List Relation between controllable unit and service provider - history
 
+     List [Relation between controllable unit and service provider -
+    history](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_service_provider/)
+
     Args:
         id (str | Unset):
         controllable_unit_id (str | Unset):
@@ -228,6 +232,10 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitServiceProviderHistoryResponse] | None:
     """List Relation between controllable unit and service provider - history
 
+     List [Relation between controllable unit and service provider -
+    history](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_service_provider/)
+
     Args:
         id (str | Unset):
         controllable_unit_id (str | Unset):
@@ -281,6 +289,10 @@ async def asyncio_detailed(
     controllable_unit_service_provider_id: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitServiceProviderHistoryResponse]]:
     """List Relation between controllable unit and service provider - history
+
+     List [Relation between controllable unit and service provider -
+    history](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_service_provider/)
 
     Args:
         id (str | Unset):
@@ -338,6 +350,10 @@ async def asyncio(
     controllable_unit_service_provider_id: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitServiceProviderHistoryResponse] | None:
     """List Relation between controllable unit and service provider - history
+
+     List [Relation between controllable unit and service provider -
+    history](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_service_provider/)
 
     Args:
         id (str | Unset):

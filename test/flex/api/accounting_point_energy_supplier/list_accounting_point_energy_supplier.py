@@ -157,6 +157,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[AccountingPointEnergySupplierResponse]]:
     """List Accounting Point Energy Supplier
 
+     List [Accounting Point Energy Supplier](https://elhub.github.io/flex-information-
+    system/resources/accounting_point_energy_supplier/)
+
     Args:
         accounting_point_id (str | Unset):
         energy_supplier_id (str | Unset):
@@ -207,6 +210,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[AccountingPointEnergySupplierResponse] | None:
     """List Accounting Point Energy Supplier
 
+     List [Accounting Point Energy Supplier](https://elhub.github.io/flex-information-
+    system/resources/accounting_point_energy_supplier/)
+
     Args:
         accounting_point_id (str | Unset):
         energy_supplier_id (str | Unset):
@@ -251,6 +257,9 @@ async def asyncio_detailed(
     limit: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[AccountingPointEnergySupplierResponse]]:
     """List Accounting Point Energy Supplier
+
+     List [Accounting Point Energy Supplier](https://elhub.github.io/flex-information-
+    system/resources/accounting_point_energy_supplier/)
 
     Args:
         accounting_point_id (str | Unset):
@@ -299,6 +308,9 @@ async def asyncio(
     limit: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[AccountingPointEnergySupplierResponse] | None:
     """List Accounting Point Energy Supplier
+
+     List [Accounting Point Energy Supplier](https://elhub.github.io/flex-information-
+    system/resources/accounting_point_energy_supplier/)
 
     Args:
         accounting_point_id (str | Unset):

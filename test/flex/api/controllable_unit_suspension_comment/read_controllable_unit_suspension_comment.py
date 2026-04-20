@@ -104,6 +104,9 @@ def sync_detailed(
 ) -> Response[ControllableUnitSuspensionCommentResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Read Controllable Unit Suspension Comment
 
+     Read [Controllable Unit Suspension Comment](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_suspension_comment/)
+
     Args:
         id (int):
 
@@ -133,6 +136,9 @@ def sync(
 ) -> ControllableUnitSuspensionCommentResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Read Controllable Unit Suspension Comment
 
+     Read [Controllable Unit Suspension Comment](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_suspension_comment/)
+
     Args:
         id (int):
 
@@ -156,6 +162,9 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
 ) -> Response[ControllableUnitSuspensionCommentResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Read Controllable Unit Suspension Comment
+
+     Read [Controllable Unit Suspension Comment](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_suspension_comment/)
 
     Args:
         id (int):
@@ -183,6 +192,9 @@ async def asyncio(
     client: AuthenticatedClient,
 ) -> ControllableUnitSuspensionCommentResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Read Controllable Unit Suspension Comment
+
+     Read [Controllable Unit Suspension Comment](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_suspension_comment/)
 
     Args:
         id (int):

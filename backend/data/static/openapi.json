@@ -5691,7 +5691,7 @@
             "post": {
                 "operationId": "call_controllable_unit_lookup",
                 "summary": "Call - Controllable unit lookup",
-                "description": "Lookup a controllable unit from end user ID and business and/or accounting point ID.",
+                "description": "Lookup a [controllable unit](https://elhub.github.io/flex-information-system/resources/controllable_unit/) from end user ID and business and/or accounting point ID.",
                 "security": [
                     {
                         "bearerAuth": [
@@ -5780,7 +5780,7 @@
             "post": {
                 "operationId": "call_entity_lookup",
                 "summary": "Call - Entity lookup",
-                "description": "Lookup an entity from its business ID. Creates the entity if missing.",
+                "description": "Lookup an [entity](https://elhub.github.io/flex-information-system/resources/entity/) from its business ID. Creates the entity if missing.",
                 "security": [
                     {
                         "bearerAuth": [
@@ -5861,7 +5861,7 @@
             "get": {
                 "operationId": "list_controllable_unit",
                 "summary": "List Controllable unit",
-                "description": "",
+                "description": "List [Controllable unit](https://elhub.github.io/flex-information-system/resources/controllable_unit/)",
                 "tags": [
                     "controllable_unit"
                 ],
@@ -6054,7 +6054,7 @@
             "post": {
                 "operationId": "create_controllable_unit",
                 "summary": "Create Controllable unit",
-                "description": "",
+                "description": "Create [Controllable unit](https://elhub.github.io/flex-information-system/resources/controllable_unit/)",
                 "tags": [
                     "controllable_unit"
                 ],
@@ -6185,7 +6185,7 @@
             "get": {
                 "operationId": "read_controllable_unit",
                 "summary": "Read Controllable unit",
-                "description": "",
+                "description": "Read [Controllable unit](https://elhub.github.io/flex-information-system/resources/controllable_unit/)",
                 "tags": [
                     "controllable_unit"
                 ],
@@ -6289,7 +6289,7 @@
             "patch": {
                 "operationId": "update_controllable_unit",
                 "summary": "Update Controllable unit",
-                "description": "",
+                "description": "Update [Controllable unit](https://elhub.github.io/flex-information-system/resources/controllable_unit/)",
                 "tags": [
                     "controllable_unit"
                 ],
@@ -6424,7 +6424,7 @@
             "get": {
                 "operationId": "list_controllable_unit_history",
                 "summary": "List Controllable unit - history",
-                "description": "",
+                "description": "List [Controllable unit - history](https://elhub.github.io/flex-information-system/resources/controllable_unit/)",
                 "tags": [
                     "controllable_unit"
                 ],
@@ -6634,7 +6634,7 @@
             "get": {
                 "operationId": "read_controllable_unit_history",
                 "summary": "Read Controllable unit - history",
-                "description": "",
+                "description": "Read [Controllable unit - history](https://elhub.github.io/flex-information-system/resources/controllable_unit/)",
                 "tags": [
                     "controllable_unit"
                 ],
@@ -6733,7 +6733,7 @@
             "get": {
                 "operationId": "list_controllable_unit_suspension",
                 "summary": "List Controllable Unit Suspension",
-                "description": "",
+                "description": "List [Controllable Unit Suspension](https://elhub.github.io/flex-information-system/resources/controllable_unit_suspension/)",
                 "tags": [
                     "controllable_unit_suspension"
                 ],
@@ -6918,7 +6918,7 @@
             "post": {
                 "operationId": "create_controllable_unit_suspension",
                 "summary": "Create Controllable Unit Suspension",
-                "description": "",
+                "description": "Create [Controllable Unit Suspension](https://elhub.github.io/flex-information-system/resources/controllable_unit_suspension/)",
                 "tags": [
                     "controllable_unit_suspension"
                 ],
@@ -7049,7 +7049,7 @@
             "get": {
                 "operationId": "read_controllable_unit_suspension",
                 "summary": "Read Controllable Unit Suspension",
-                "description": "",
+                "description": "Read [Controllable Unit Suspension](https://elhub.github.io/flex-information-system/resources/controllable_unit_suspension/)",
                 "tags": [
                     "controllable_unit_suspension"
                 ],
@@ -7160,7 +7160,7 @@
             "patch": {
                 "operationId": "update_controllable_unit_suspension",
                 "summary": "Update Controllable Unit Suspension",
-                "description": "",
+                "description": "Update [Controllable Unit Suspension](https://elhub.github.io/flex-information-system/resources/controllable_unit_suspension/)",
                 "tags": [
                     "controllable_unit_suspension"
                 ],
@@ -7269,7 +7269,7 @@
             "delete": {
                 "operationId": "delete_controllable_unit_suspension",
                 "summary": "Delete Controllable Unit Suspension",
-                "description": "",
+                "description": "Delete [Controllable Unit Suspension](https://elhub.github.io/flex-information-system/resources/controllable_unit_suspension/)",
                 "tags": [
                     "controllable_unit_suspension"
                 ],
@@ -7382,7 +7382,7 @@
             "get": {
                 "operationId": "list_controllable_unit_suspension_history",
                 "summary": "List Controllable Unit Suspension - history",
-                "description": "",
+                "description": "List [Controllable Unit Suspension - history](https://elhub.github.io/flex-information-system/resources/controllable_unit_suspension/)",
                 "tags": [
                     "controllable_unit_suspension"
                 ],
@@ -7584,7 +7584,7 @@
             "get": {
                 "operationId": "read_controllable_unit_suspension_history",
                 "summary": "Read Controllable Unit Suspension - history",
-                "description": "",
+                "description": "Read [Controllable Unit Suspension - history](https://elhub.github.io/flex-information-system/resources/controllable_unit_suspension/)",
                 "tags": [
                     "controllable_unit_suspension"
                 ],
@@ -7683,7 +7683,7 @@
             "get": {
                 "operationId": "list_controllable_unit_suspension_comment",
                 "summary": "List Controllable Unit Suspension Comment",
-                "description": "",
+                "description": "List [Controllable Unit Suspension Comment](https://elhub.github.io/flex-information-system/resources/controllable_unit_suspension_comment/)",
                 "tags": [
                     "controllable_unit_suspension_comment"
                 ],
@@ -7858,7 +7858,7 @@
             "post": {
                 "operationId": "create_controllable_unit_suspension_comment",
                 "summary": "Create Controllable Unit Suspension Comment",
-                "description": "",
+                "description": "Create [Controllable Unit Suspension Comment](https://elhub.github.io/flex-information-system/resources/controllable_unit_suspension_comment/)",
                 "tags": [
                     "controllable_unit_suspension_comment"
                 ],
@@ -7989,7 +7989,7 @@
             "get": {
                 "operationId": "read_controllable_unit_suspension_comment",
                 "summary": "Read Controllable Unit Suspension Comment",
-                "description": "",
+                "description": "Read [Controllable Unit Suspension Comment](https://elhub.github.io/flex-information-system/resources/controllable_unit_suspension_comment/)",
                 "tags": [
                     "controllable_unit_suspension_comment"
                 ],
@@ -8093,7 +8093,7 @@
             "patch": {
                 "operationId": "update_controllable_unit_suspension_comment",
                 "summary": "Update Controllable Unit Suspension Comment",
-                "description": "",
+                "description": "Update [Controllable Unit Suspension Comment](https://elhub.github.io/flex-information-system/resources/controllable_unit_suspension_comment/)",
                 "tags": [
                     "controllable_unit_suspension_comment"
                 ],
@@ -8228,7 +8228,7 @@
             "get": {
                 "operationId": "list_controllable_unit_suspension_comment_history",
                 "summary": "List Controllable Unit Suspension Comment - history",
-                "description": "",
+                "description": "List [Controllable Unit Suspension Comment - history](https://elhub.github.io/flex-information-system/resources/controllable_unit_suspension_comment/)",
                 "tags": [
                     "controllable_unit_suspension_comment"
                 ],
@@ -8420,7 +8420,7 @@
             "get": {
                 "operationId": "read_controllable_unit_suspension_comment_history",
                 "summary": "Read Controllable Unit Suspension Comment - history",
-                "description": "",
+                "description": "Read [Controllable Unit Suspension Comment - history](https://elhub.github.io/flex-information-system/resources/controllable_unit_suspension_comment/)",
                 "tags": [
                     "controllable_unit_suspension_comment"
                 ],
@@ -8519,7 +8519,7 @@
             "get": {
                 "operationId": "list_controllable_unit_service_provider",
                 "summary": "List Relation between controllable unit and service provider",
-                "description": "",
+                "description": "List [Relation between controllable unit and service provider](https://elhub.github.io/flex-information-system/resources/controllable_unit_service_provider/)",
                 "tags": [
                     "controllable_unit_service_provider"
                 ],
@@ -8732,7 +8732,7 @@
             "post": {
                 "operationId": "create_controllable_unit_service_provider",
                 "summary": "Create Relation between controllable unit and service provider",
-                "description": "",
+                "description": "Create [Relation between controllable unit and service provider](https://elhub.github.io/flex-information-system/resources/controllable_unit_service_provider/)",
                 "tags": [
                     "controllable_unit_service_provider"
                 ],
@@ -8863,7 +8863,7 @@
             "get": {
                 "operationId": "read_controllable_unit_service_provider",
                 "summary": "Read Relation between controllable unit and service provider",
-                "description": "",
+                "description": "Read [Relation between controllable unit and service provider](https://elhub.github.io/flex-information-system/resources/controllable_unit_service_provider/)",
                 "tags": [
                     "controllable_unit_service_provider"
                 ],
@@ -8981,7 +8981,7 @@
             "patch": {
                 "operationId": "update_controllable_unit_service_provider",
                 "summary": "Update Relation between controllable unit and service provider",
-                "description": "",
+                "description": "Update [Relation between controllable unit and service provider](https://elhub.github.io/flex-information-system/resources/controllable_unit_service_provider/)",
                 "tags": [
                     "controllable_unit_service_provider"
                 ],
@@ -9090,7 +9090,7 @@
             "delete": {
                 "operationId": "delete_controllable_unit_service_provider",
                 "summary": "Delete Relation between controllable unit and service provider",
-                "description": "",
+                "description": "Delete [Relation between controllable unit and service provider](https://elhub.github.io/flex-information-system/resources/controllable_unit_service_provider/)",
                 "tags": [
                     "controllable_unit_service_provider"
                 ],
@@ -9203,7 +9203,7 @@
             "get": {
                 "operationId": "list_controllable_unit_service_provider_history",
                 "summary": "List Relation between controllable unit and service provider - history",
-                "description": "",
+                "description": "List [Relation between controllable unit and service provider - history](https://elhub.github.io/flex-information-system/resources/controllable_unit_service_provider/)",
                 "tags": [
                     "controllable_unit_service_provider"
                 ],
@@ -9433,7 +9433,7 @@
             "get": {
                 "operationId": "read_controllable_unit_service_provider_history",
                 "summary": "Read Relation between controllable unit and service provider - history",
-                "description": "",
+                "description": "Read [Relation between controllable unit and service provider - history](https://elhub.github.io/flex-information-system/resources/controllable_unit_service_provider/)",
                 "tags": [
                     "controllable_unit_service_provider"
                 ],
@@ -9532,7 +9532,7 @@
             "get": {
                 "operationId": "list_service_providing_group",
                 "summary": "List Service providing group",
-                "description": "",
+                "description": "List [Service providing group](https://elhub.github.io/flex-information-system/resources/service_providing_group/)",
                 "tags": [
                     "service_providing_group"
                 ],
@@ -9716,7 +9716,7 @@
             "post": {
                 "operationId": "create_service_providing_group",
                 "summary": "Create Service providing group",
-                "description": "",
+                "description": "Create [Service providing group](https://elhub.github.io/flex-information-system/resources/service_providing_group/)",
                 "tags": [
                     "service_providing_group"
                 ],
@@ -9847,7 +9847,7 @@
             "get": {
                 "operationId": "read_service_providing_group",
                 "summary": "Read Service providing group",
-                "description": "",
+                "description": "Read [Service providing group](https://elhub.github.io/flex-information-system/resources/service_providing_group/)",
                 "tags": [
                     "service_providing_group"
                 ],
@@ -9951,7 +9951,7 @@
             "patch": {
                 "operationId": "update_service_providing_group",
                 "summary": "Update Service providing group",
-                "description": "",
+                "description": "Update [Service providing group](https://elhub.github.io/flex-information-system/resources/service_providing_group/)",
                 "tags": [
                     "service_providing_group"
                 ],
@@ -10086,7 +10086,7 @@
             "get": {
                 "operationId": "list_service_providing_group_history",
                 "summary": "List Service providing group - history",
-                "description": "",
+                "description": "List [Service providing group - history](https://elhub.github.io/flex-information-system/resources/service_providing_group/)",
                 "tags": [
                     "service_providing_group"
                 ],
@@ -10287,7 +10287,7 @@
             "get": {
                 "operationId": "read_service_providing_group_history",
                 "summary": "Read Service providing group - history",
-                "description": "",
+                "description": "Read [Service providing group - history](https://elhub.github.io/flex-information-system/resources/service_providing_group/)",
                 "tags": [
                     "service_providing_group"
                 ],
@@ -10386,7 +10386,7 @@
             "get": {
                 "operationId": "list_service_providing_group_membership",
                 "summary": "List Membership relation of controllable unit in service providing group",
-                "description": "",
+                "description": "List [Membership relation of controllable unit in service providing group](https://elhub.github.io/flex-information-system/resources/service_providing_group_membership/)",
                 "tags": [
                     "service_providing_group_membership"
                 ],
@@ -10589,7 +10589,7 @@
             "post": {
                 "operationId": "create_service_providing_group_membership",
                 "summary": "Create Membership relation of controllable unit in service providing group",
-                "description": "",
+                "description": "Create [Membership relation of controllable unit in service providing group](https://elhub.github.io/flex-information-system/resources/service_providing_group_membership/)",
                 "tags": [
                     "service_providing_group_membership"
                 ],
@@ -10720,7 +10720,7 @@
             "get": {
                 "operationId": "read_service_providing_group_membership",
                 "summary": "Read Membership relation of controllable unit in service providing group",
-                "description": "",
+                "description": "Read [Membership relation of controllable unit in service providing group](https://elhub.github.io/flex-information-system/resources/service_providing_group_membership/)",
                 "tags": [
                     "service_providing_group_membership"
                 ],
@@ -10831,7 +10831,7 @@
             "patch": {
                 "operationId": "update_service_providing_group_membership",
                 "summary": "Update Membership relation of controllable unit in service providing group",
-                "description": "",
+                "description": "Update [Membership relation of controllable unit in service providing group](https://elhub.github.io/flex-information-system/resources/service_providing_group_membership/)",
                 "tags": [
                     "service_providing_group_membership"
                 ],
@@ -10940,7 +10940,7 @@
             "delete": {
                 "operationId": "delete_service_providing_group_membership",
                 "summary": "Delete Membership relation of controllable unit in service providing group",
-                "description": "",
+                "description": "Delete [Membership relation of controllable unit in service providing group](https://elhub.github.io/flex-information-system/resources/service_providing_group_membership/)",
                 "tags": [
                     "service_providing_group_membership"
                 ],
@@ -11053,7 +11053,7 @@
             "get": {
                 "operationId": "list_service_providing_group_membership_history",
                 "summary": "List Membership relation of controllable unit in service providing group - history",
-                "description": "",
+                "description": "List [Membership relation of controllable unit in service providing group - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_membership/)",
                 "tags": [
                     "service_providing_group_membership"
                 ],
@@ -11273,7 +11273,7 @@
             "get": {
                 "operationId": "read_service_providing_group_membership_history",
                 "summary": "Read Membership relation of controllable unit in service providing group - history",
-                "description": "",
+                "description": "Read [Membership relation of controllable unit in service providing group - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_membership/)",
                 "tags": [
                     "service_providing_group_membership"
                 ],
@@ -11372,7 +11372,7 @@
             "get": {
                 "operationId": "list_service_providing_group_grid_prequalification",
                 "summary": "List Grid prequalification for service providing group",
-                "description": "",
+                "description": "List [Grid prequalification for service providing group](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_prequalification/)",
                 "tags": [
                     "service_providing_group_grid_prequalification"
                 ],
@@ -11557,7 +11557,7 @@
             "post": {
                 "operationId": "create_service_providing_group_grid_prequalification",
                 "summary": "Create Grid prequalification for service providing group",
-                "description": "",
+                "description": "Create [Grid prequalification for service providing group](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_prequalification/)",
                 "tags": [
                     "service_providing_group_grid_prequalification"
                 ],
@@ -11688,7 +11688,7 @@
             "get": {
                 "operationId": "read_service_providing_group_grid_prequalification",
                 "summary": "Read Grid prequalification for service providing group",
-                "description": "",
+                "description": "Read [Grid prequalification for service providing group](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_prequalification/)",
                 "tags": [
                     "service_providing_group_grid_prequalification"
                 ],
@@ -11799,7 +11799,7 @@
             "patch": {
                 "operationId": "update_service_providing_group_grid_prequalification",
                 "summary": "Update Grid prequalification for service providing group",
-                "description": "",
+                "description": "Update [Grid prequalification for service providing group](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_prequalification/)",
                 "tags": [
                     "service_providing_group_grid_prequalification"
                 ],
@@ -11934,7 +11934,7 @@
             "get": {
                 "operationId": "list_service_providing_group_grid_prequalification_history",
                 "summary": "List Grid prequalification for service providing group - history",
-                "description": "",
+                "description": "List [Grid prequalification for service providing group - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_prequalification/)",
                 "tags": [
                     "service_providing_group_grid_prequalification"
                 ],
@@ -12136,7 +12136,7 @@
             "get": {
                 "operationId": "read_service_providing_group_grid_prequalification_history",
                 "summary": "Read Grid prequalification for service providing group - history",
-                "description": "",
+                "description": "Read [Grid prequalification for service providing group - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_prequalification/)",
                 "tags": [
                     "service_providing_group_grid_prequalification"
                 ],
@@ -12235,7 +12235,7 @@
             "get": {
                 "operationId": "list_service_providing_group_grid_prequalification_comment",
                 "summary": "List Grid prequalification for service providing group Comment",
-                "description": "",
+                "description": "List [Grid prequalification for service providing group Comment](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_prequalification_comment/)",
                 "tags": [
                     "service_providing_group_grid_prequalification_comment"
                 ],
@@ -12410,7 +12410,7 @@
             "post": {
                 "operationId": "create_service_providing_group_grid_prequalification_comment",
                 "summary": "Create Grid prequalification for service providing group Comment",
-                "description": "",
+                "description": "Create [Grid prequalification for service providing group Comment](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_prequalification_comment/)",
                 "tags": [
                     "service_providing_group_grid_prequalification_comment"
                 ],
@@ -12541,7 +12541,7 @@
             "get": {
                 "operationId": "read_service_providing_group_grid_prequalification_comment",
                 "summary": "Read Grid prequalification for service providing group Comment",
-                "description": "",
+                "description": "Read [Grid prequalification for service providing group Comment](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_prequalification_comment/)",
                 "tags": [
                     "service_providing_group_grid_prequalification_comment"
                 ],
@@ -12645,7 +12645,7 @@
             "patch": {
                 "operationId": "update_service_providing_group_grid_prequalification_comment",
                 "summary": "Update Grid prequalification for service providing group Comment",
-                "description": "",
+                "description": "Update [Grid prequalification for service providing group Comment](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_prequalification_comment/)",
                 "tags": [
                     "service_providing_group_grid_prequalification_comment"
                 ],
@@ -12780,7 +12780,7 @@
             "get": {
                 "operationId": "list_service_providing_group_grid_prequalification_comment_history",
                 "summary": "List Grid prequalification for service providing group Comment - history",
-                "description": "",
+                "description": "List [Grid prequalification for service providing group Comment - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_prequalification_comment/)",
                 "tags": [
                     "service_providing_group_grid_prequalification_comment"
                 ],
@@ -12972,7 +12972,7 @@
             "get": {
                 "operationId": "read_service_providing_group_grid_prequalification_comment_history",
                 "summary": "Read Grid prequalification for service providing group Comment - history",
-                "description": "",
+                "description": "Read [Grid prequalification for service providing group Comment - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_prequalification_comment/)",
                 "tags": [
                     "service_providing_group_grid_prequalification_comment"
                 ],
@@ -13071,7 +13071,7 @@
             "get": {
                 "operationId": "list_service_providing_group_grid_suspension",
                 "summary": "List Service Providing Group Grid Suspension",
-                "description": "",
+                "description": "List [Service Providing Group Grid Suspension](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_suspension/)",
                 "tags": [
                     "service_providing_group_grid_suspension"
                 ],
@@ -13256,7 +13256,7 @@
             "post": {
                 "operationId": "create_service_providing_group_grid_suspension",
                 "summary": "Create Service Providing Group Grid Suspension",
-                "description": "",
+                "description": "Create [Service Providing Group Grid Suspension](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_suspension/)",
                 "tags": [
                     "service_providing_group_grid_suspension"
                 ],
@@ -13387,7 +13387,7 @@
             "get": {
                 "operationId": "read_service_providing_group_grid_suspension",
                 "summary": "Read Service Providing Group Grid Suspension",
-                "description": "",
+                "description": "Read [Service Providing Group Grid Suspension](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_suspension/)",
                 "tags": [
                     "service_providing_group_grid_suspension"
                 ],
@@ -13498,7 +13498,7 @@
             "patch": {
                 "operationId": "update_service_providing_group_grid_suspension",
                 "summary": "Update Service Providing Group Grid Suspension",
-                "description": "",
+                "description": "Update [Service Providing Group Grid Suspension](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_suspension/)",
                 "tags": [
                     "service_providing_group_grid_suspension"
                 ],
@@ -13607,7 +13607,7 @@
             "delete": {
                 "operationId": "delete_service_providing_group_grid_suspension",
                 "summary": "Delete Service Providing Group Grid Suspension",
-                "description": "",
+                "description": "Delete [Service Providing Group Grid Suspension](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_suspension/)",
                 "tags": [
                     "service_providing_group_grid_suspension"
                 ],
@@ -13720,7 +13720,7 @@
             "get": {
                 "operationId": "list_service_providing_group_grid_suspension_history",
                 "summary": "List Service Providing Group Grid Suspension - history",
-                "description": "",
+                "description": "List [Service Providing Group Grid Suspension - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_suspension/)",
                 "tags": [
                     "service_providing_group_grid_suspension"
                 ],
@@ -13922,7 +13922,7 @@
             "get": {
                 "operationId": "read_service_providing_group_grid_suspension_history",
                 "summary": "Read Service Providing Group Grid Suspension - history",
-                "description": "",
+                "description": "Read [Service Providing Group Grid Suspension - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_suspension/)",
                 "tags": [
                     "service_providing_group_grid_suspension"
                 ],
@@ -14021,7 +14021,7 @@
             "get": {
                 "operationId": "list_service_providing_group_grid_suspension_comment",
                 "summary": "List Service Providing Group Grid Suspension Comment",
-                "description": "",
+                "description": "List [Service Providing Group Grid Suspension Comment](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_suspension_comment/)",
                 "tags": [
                     "service_providing_group_grid_suspension_comment"
                 ],
@@ -14196,7 +14196,7 @@
             "post": {
                 "operationId": "create_service_providing_group_grid_suspension_comment",
                 "summary": "Create Service Providing Group Grid Suspension Comment",
-                "description": "",
+                "description": "Create [Service Providing Group Grid Suspension Comment](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_suspension_comment/)",
                 "tags": [
                     "service_providing_group_grid_suspension_comment"
                 ],
@@ -14327,7 +14327,7 @@
             "get": {
                 "operationId": "read_service_providing_group_grid_suspension_comment",
                 "summary": "Read Service Providing Group Grid Suspension Comment",
-                "description": "",
+                "description": "Read [Service Providing Group Grid Suspension Comment](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_suspension_comment/)",
                 "tags": [
                     "service_providing_group_grid_suspension_comment"
                 ],
@@ -14431,7 +14431,7 @@
             "patch": {
                 "operationId": "update_service_providing_group_grid_suspension_comment",
                 "summary": "Update Service Providing Group Grid Suspension Comment",
-                "description": "",
+                "description": "Update [Service Providing Group Grid Suspension Comment](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_suspension_comment/)",
                 "tags": [
                     "service_providing_group_grid_suspension_comment"
                 ],
@@ -14566,7 +14566,7 @@
             "get": {
                 "operationId": "list_service_providing_group_grid_suspension_comment_history",
                 "summary": "List Service Providing Group Grid Suspension Comment - history",
-                "description": "",
+                "description": "List [Service Providing Group Grid Suspension Comment - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_suspension_comment/)",
                 "tags": [
                     "service_providing_group_grid_suspension_comment"
                 ],
@@ -14758,7 +14758,7 @@
             "get": {
                 "operationId": "read_service_providing_group_grid_suspension_comment_history",
                 "summary": "Read Service Providing Group Grid Suspension Comment - history",
-                "description": "",
+                "description": "Read [Service Providing Group Grid Suspension Comment - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_suspension_comment/)",
                 "tags": [
                     "service_providing_group_grid_suspension_comment"
                 ],
@@ -14857,7 +14857,7 @@
             "get": {
                 "operationId": "list_entity",
                 "summary": "List Entity",
-                "description": "",
+                "description": "List [Entity](https://elhub.github.io/flex-information-system/resources/entity/)",
                 "tags": [
                     "entity"
                 ],
@@ -15048,7 +15048,7 @@
             "post": {
                 "operationId": "create_entity",
                 "summary": "Create Entity",
-                "description": "",
+                "description": "Create [Entity](https://elhub.github.io/flex-information-system/resources/entity/)",
                 "tags": [
                     "entity"
                 ],
@@ -15179,7 +15179,7 @@
             "get": {
                 "operationId": "read_entity",
                 "summary": "Read Entity",
-                "description": "",
+                "description": "Read [Entity](https://elhub.github.io/flex-information-system/resources/entity/)",
                 "tags": [
                     "entity"
                 ],
@@ -15274,7 +15274,7 @@
             "patch": {
                 "operationId": "update_entity",
                 "summary": "Update Entity",
-                "description": "",
+                "description": "Update [Entity](https://elhub.github.io/flex-information-system/resources/entity/)",
                 "tags": [
                     "entity"
                 ],
@@ -15387,7 +15387,7 @@
             "get": {
                 "operationId": "list_entity_client",
                 "summary": "List Entity client",
-                "description": "",
+                "description": "List [Entity client](https://elhub.github.io/flex-information-system/resources/entity_client/)",
                 "tags": [
                     "entity_client"
                 ],
@@ -15581,7 +15581,7 @@
             "post": {
                 "operationId": "create_entity_client",
                 "summary": "Create Entity client",
-                "description": "",
+                "description": "Create [Entity client](https://elhub.github.io/flex-information-system/resources/entity_client/)",
                 "tags": [
                     "entity_client"
                 ],
@@ -15712,7 +15712,7 @@
             "get": {
                 "operationId": "read_entity_client",
                 "summary": "Read Entity client",
-                "description": "",
+                "description": "Read [Entity client](https://elhub.github.io/flex-information-system/resources/entity_client/)",
                 "tags": [
                     "entity_client"
                 ],
@@ -15823,7 +15823,7 @@
             "patch": {
                 "operationId": "update_entity_client",
                 "summary": "Update Entity client",
-                "description": "",
+                "description": "Update [Entity client](https://elhub.github.io/flex-information-system/resources/entity_client/)",
                 "tags": [
                     "entity_client"
                 ],
@@ -15932,7 +15932,7 @@
             "delete": {
                 "operationId": "delete_entity_client",
                 "summary": "Delete Entity client",
-                "description": "",
+                "description": "Delete [Entity client](https://elhub.github.io/flex-information-system/resources/entity_client/)",
                 "tags": [
                     "entity_client"
                 ],
@@ -16023,7 +16023,7 @@
             "get": {
                 "operationId": "list_party",
                 "summary": "List Party",
-                "description": "",
+                "description": "List [Party](https://elhub.github.io/flex-information-system/resources/party/)",
                 "tags": [
                     "party"
                 ],
@@ -16224,7 +16224,7 @@
             "post": {
                 "operationId": "create_party",
                 "summary": "Create Party",
-                "description": "",
+                "description": "Create [Party](https://elhub.github.io/flex-information-system/resources/party/)",
                 "tags": [
                     "party"
                 ],
@@ -16355,7 +16355,7 @@
             "get": {
                 "operationId": "read_party",
                 "summary": "Read Party",
-                "description": "",
+                "description": "Read [Party](https://elhub.github.io/flex-information-system/resources/party/)",
                 "tags": [
                     "party"
                 ],
@@ -16459,7 +16459,7 @@
             "patch": {
                 "operationId": "update_party",
                 "summary": "Update Party",
-                "description": "",
+                "description": "Update [Party](https://elhub.github.io/flex-information-system/resources/party/)",
                 "tags": [
                     "party"
                 ],
@@ -16594,7 +16594,7 @@
             "get": {
                 "operationId": "list_party_history",
                 "summary": "List Party - history",
-                "description": "",
+                "description": "List [Party - history](https://elhub.github.io/flex-information-system/resources/party/)",
                 "tags": [
                     "party"
                 ],
@@ -16812,7 +16812,7 @@
             "get": {
                 "operationId": "read_party_history",
                 "summary": "Read Party - history",
-                "description": "",
+                "description": "Read [Party - history](https://elhub.github.io/flex-information-system/resources/party/)",
                 "tags": [
                     "party"
                 ],
@@ -16911,7 +16911,7 @@
             "get": {
                 "operationId": "list_party_membership",
                 "summary": "List Party Membership",
-                "description": "",
+                "description": "List [Party Membership](https://elhub.github.io/flex-information-system/resources/party_membership/)",
                 "tags": [
                     "party_membership"
                 ],
@@ -17096,7 +17096,7 @@
             "post": {
                 "operationId": "create_party_membership",
                 "summary": "Create Party Membership",
-                "description": "",
+                "description": "Create [Party Membership](https://elhub.github.io/flex-information-system/resources/party_membership/)",
                 "tags": [
                     "party_membership"
                 ],
@@ -17227,7 +17227,7 @@
             "get": {
                 "operationId": "read_party_membership",
                 "summary": "Read Party Membership",
-                "description": "",
+                "description": "Read [Party Membership](https://elhub.github.io/flex-information-system/resources/party_membership/)",
                 "tags": [
                     "party_membership"
                 ],
@@ -17338,7 +17338,7 @@
             "patch": {
                 "operationId": "update_party_membership",
                 "summary": "Update Party Membership",
-                "description": "",
+                "description": "Update [Party Membership](https://elhub.github.io/flex-information-system/resources/party_membership/)",
                 "tags": [
                     "party_membership"
                 ],
@@ -17447,7 +17447,7 @@
             "delete": {
                 "operationId": "delete_party_membership",
                 "summary": "Delete Party Membership",
-                "description": "",
+                "description": "Delete [Party Membership](https://elhub.github.io/flex-information-system/resources/party_membership/)",
                 "tags": [
                     "party_membership"
                 ],
@@ -17560,7 +17560,7 @@
             "get": {
                 "operationId": "list_party_membership_history",
                 "summary": "List Party Membership - history",
-                "description": "",
+                "description": "List [Party Membership - history](https://elhub.github.io/flex-information-system/resources/party_membership/)",
                 "tags": [
                     "party_membership"
                 ],
@@ -17762,7 +17762,7 @@
             "get": {
                 "operationId": "read_party_membership_history",
                 "summary": "Read Party Membership - history",
-                "description": "",
+                "description": "Read [Party Membership - history](https://elhub.github.io/flex-information-system/resources/party_membership/)",
                 "tags": [
                     "party_membership"
                 ],
@@ -17861,7 +17861,7 @@
             "get": {
                 "operationId": "list_identity",
                 "summary": "List Identity",
-                "description": "",
+                "description": "List [Identity](https://elhub.github.io/flex-information-system/resources/identity/)",
                 "tags": [
                     "identity"
                 ],
@@ -18082,7 +18082,7 @@
             "get": {
                 "operationId": "read_identity",
                 "summary": "Read Identity",
-                "description": "",
+                "description": "Read [Identity](https://elhub.github.io/flex-information-system/resources/identity/)",
                 "tags": [
                     "identity"
                 ],
@@ -18211,7 +18211,7 @@
             "get": {
                 "operationId": "list_technical_resource",
                 "summary": "List Technical Resource",
-                "description": "",
+                "description": "List [Technical Resource](https://elhub.github.io/flex-information-system/resources/technical_resource/)",
                 "tags": [
                     "technical_resource"
                 ],
@@ -18395,7 +18395,7 @@
             "post": {
                 "operationId": "create_technical_resource",
                 "summary": "Create Technical Resource",
-                "description": "",
+                "description": "Create [Technical Resource](https://elhub.github.io/flex-information-system/resources/technical_resource/)",
                 "tags": [
                     "technical_resource"
                 ],
@@ -18526,7 +18526,7 @@
             "get": {
                 "operationId": "read_technical_resource",
                 "summary": "Read Technical Resource",
-                "description": "",
+                "description": "Read [Technical Resource](https://elhub.github.io/flex-information-system/resources/technical_resource/)",
                 "tags": [
                     "technical_resource"
                 ],
@@ -18630,7 +18630,7 @@
             "patch": {
                 "operationId": "update_technical_resource",
                 "summary": "Update Technical Resource",
-                "description": "",
+                "description": "Update [Technical Resource](https://elhub.github.io/flex-information-system/resources/technical_resource/)",
                 "tags": [
                     "technical_resource"
                 ],
@@ -18739,7 +18739,7 @@
             "delete": {
                 "operationId": "delete_technical_resource",
                 "summary": "Delete Technical Resource",
-                "description": "",
+                "description": "Delete [Technical Resource](https://elhub.github.io/flex-information-system/resources/technical_resource/)",
                 "tags": [
                     "technical_resource"
                 ],
@@ -18852,7 +18852,7 @@
             "get": {
                 "operationId": "list_technical_resource_history",
                 "summary": "List Technical Resource - history",
-                "description": "",
+                "description": "List [Technical Resource - history](https://elhub.github.io/flex-information-system/resources/technical_resource/)",
                 "tags": [
                     "technical_resource"
                 ],
@@ -19053,7 +19053,7 @@
             "get": {
                 "operationId": "read_technical_resource_history",
                 "summary": "Read Technical Resource - history",
-                "description": "",
+                "description": "Read [Technical Resource - history](https://elhub.github.io/flex-information-system/resources/technical_resource/)",
                 "tags": [
                     "technical_resource"
                 ],
@@ -19152,7 +19152,7 @@
             "get": {
                 "operationId": "list_event",
                 "summary": "List Event",
-                "description": "",
+                "description": "List [Event](https://elhub.github.io/flex-information-system/resources/event/)",
                 "tags": [
                     "event"
                 ],
@@ -19333,7 +19333,7 @@
             "get": {
                 "operationId": "read_event",
                 "summary": "Read Event",
-                "description": "",
+                "description": "Read [Event](https://elhub.github.io/flex-information-system/resources/event/)",
                 "tags": [
                     "event"
                 ],
@@ -19432,7 +19432,7 @@
             "get": {
                 "operationId": "list_notification",
                 "summary": "List Notification",
-                "description": "",
+                "description": "List [Notification](https://elhub.github.io/flex-information-system/resources/notification/)",
                 "tags": [
                     "notification"
                 ],
@@ -19633,7 +19633,7 @@
             "get": {
                 "operationId": "read_notification",
                 "summary": "Read Notification",
-                "description": "",
+                "description": "Read [Notification](https://elhub.github.io/flex-information-system/resources/notification/)",
                 "tags": [
                     "notification"
                 ],
@@ -19744,7 +19744,7 @@
             "patch": {
                 "operationId": "update_notification",
                 "summary": "Update Notification",
-                "description": "",
+                "description": "Update [Notification](https://elhub.github.io/flex-information-system/resources/notification/)",
                 "tags": [
                     "notification"
                 ],
@@ -19857,7 +19857,7 @@
             "get": {
                 "operationId": "list_accounting_point",
                 "summary": "List Accounting Point",
-                "description": "",
+                "description": "List [Accounting Point](https://elhub.github.io/flex-information-system/resources/accounting_point/)",
                 "tags": [
                     "accounting_point"
                 ],
@@ -20057,7 +20057,7 @@
             "get": {
                 "operationId": "read_accounting_point",
                 "summary": "Read Accounting Point",
-                "description": "",
+                "description": "Read [Accounting Point](https://elhub.github.io/flex-information-system/resources/accounting_point/)",
                 "tags": [
                     "accounting_point"
                 ],
@@ -20165,7 +20165,7 @@
             "get": {
                 "operationId": "list_accounting_point_balance_responsible_party",
                 "summary": "List Accounting Point Balance Responsible Party",
-                "description": "",
+                "description": "List [Accounting Point Balance Responsible Party](https://elhub.github.io/flex-information-system/resources/accounting_point_balance_responsible_party/)",
                 "tags": [
                     "accounting_point_balance_responsible_party"
                 ],
@@ -20362,7 +20362,7 @@
             "get": {
                 "operationId": "list_accounting_point_bidding_zone",
                 "summary": "List Accounting Point Bidding Zone",
-                "description": "",
+                "description": "List [Accounting Point Bidding Zone](https://elhub.github.io/flex-information-system/resources/accounting_point_bidding_zone/)",
                 "tags": [
                     "accounting_point_bidding_zone"
                 ],
@@ -20549,7 +20549,7 @@
             "get": {
                 "operationId": "list_accounting_point_end_user",
                 "summary": "List Accounting Point End User",
-                "description": "",
+                "description": "List [Accounting Point End User](https://elhub.github.io/flex-information-system/resources/accounting_point_end_user/)",
                 "tags": [
                     "accounting_point_end_user"
                 ],
@@ -20746,7 +20746,7 @@
             "get": {
                 "operationId": "list_accounting_point_energy_supplier",
                 "summary": "List Accounting Point Energy Supplier",
-                "description": "",
+                "description": "List [Accounting Point Energy Supplier](https://elhub.github.io/flex-information-system/resources/accounting_point_energy_supplier/)",
                 "tags": [
                     "accounting_point_energy_supplier"
                 ],
@@ -20943,7 +20943,7 @@
             "get": {
                 "operationId": "list_metering_grid_area",
                 "summary": "List Metering Grid Area",
-                "description": "",
+                "description": "List [Metering Grid Area](https://elhub.github.io/flex-information-system/resources/metering_grid_area/)",
                 "tags": [
                     "metering_grid_area"
                 ],
@@ -21150,7 +21150,7 @@
             "get": {
                 "operationId": "read_metering_grid_area",
                 "summary": "Read Metering Grid Area",
-                "description": "",
+                "description": "Read [Metering Grid Area](https://elhub.github.io/flex-information-system/resources/metering_grid_area/)",
                 "tags": [
                     "metering_grid_area"
                 ],
@@ -21249,7 +21249,7 @@
             "get": {
                 "operationId": "list_accounting_point_metering_grid_area",
                 "summary": "List Accounting Point Metering Grid Area",
-                "description": "",
+                "description": "List [Accounting Point Metering Grid Area](https://elhub.github.io/flex-information-system/resources/accounting_point_metering_grid_area/)",
                 "tags": [
                     "accounting_point_metering_grid_area"
                 ],
@@ -21446,7 +21446,7 @@
             "get": {
                 "operationId": "list_product_type",
                 "summary": "List Product Type",
-                "description": "",
+                "description": "List [Product Type](https://elhub.github.io/flex-information-system/resources/product_type/)",
                 "tags": [
                     "product_type"
                 ],
@@ -21645,7 +21645,7 @@
             "get": {
                 "operationId": "read_product_type",
                 "summary": "Read Product Type",
-                "description": "",
+                "description": "Read [Product Type](https://elhub.github.io/flex-information-system/resources/product_type/)",
                 "tags": [
                     "product_type"
                 ],
@@ -21744,7 +21744,7 @@
             "get": {
                 "operationId": "list_system_operator_product_type",
                 "summary": "List System Operator Product Type",
-                "description": "",
+                "description": "List [System Operator Product Type](https://elhub.github.io/flex-information-system/resources/system_operator_product_type/)",
                 "tags": [
                     "system_operator_product_type"
                 ],
@@ -21929,7 +21929,7 @@
             "post": {
                 "operationId": "create_system_operator_product_type",
                 "summary": "Create System Operator Product Type",
-                "description": "",
+                "description": "Create [System Operator Product Type](https://elhub.github.io/flex-information-system/resources/system_operator_product_type/)",
                 "tags": [
                     "system_operator_product_type"
                 ],
@@ -22060,7 +22060,7 @@
             "get": {
                 "operationId": "read_system_operator_product_type",
                 "summary": "Read System Operator Product Type",
-                "description": "",
+                "description": "Read [System Operator Product Type](https://elhub.github.io/flex-information-system/resources/system_operator_product_type/)",
                 "tags": [
                     "system_operator_product_type"
                 ],
@@ -22171,7 +22171,7 @@
             "patch": {
                 "operationId": "update_system_operator_product_type",
                 "summary": "Update System Operator Product Type",
-                "description": "",
+                "description": "Update [System Operator Product Type](https://elhub.github.io/flex-information-system/resources/system_operator_product_type/)",
                 "tags": [
                     "system_operator_product_type"
                 ],
@@ -22306,7 +22306,7 @@
             "get": {
                 "operationId": "list_system_operator_product_type_history",
                 "summary": "List System Operator Product Type - history",
-                "description": "",
+                "description": "List [System Operator Product Type - history](https://elhub.github.io/flex-information-system/resources/system_operator_product_type/)",
                 "tags": [
                     "system_operator_product_type"
                 ],
@@ -22508,7 +22508,7 @@
             "get": {
                 "operationId": "read_system_operator_product_type_history",
                 "summary": "Read System Operator Product Type - history",
-                "description": "",
+                "description": "Read [System Operator Product Type - history](https://elhub.github.io/flex-information-system/resources/system_operator_product_type/)",
                 "tags": [
                     "system_operator_product_type"
                 ],
@@ -22607,7 +22607,7 @@
             "get": {
                 "operationId": "list_service_provider_product_application",
                 "summary": "List Service Provider Product Application",
-                "description": "",
+                "description": "List [Service Provider Product Application](https://elhub.github.io/flex-information-system/resources/service_provider_product_application/)",
                 "tags": [
                     "service_provider_product_application"
                 ],
@@ -22802,7 +22802,7 @@
             "post": {
                 "operationId": "create_service_provider_product_application",
                 "summary": "Create Service Provider Product Application",
-                "description": "",
+                "description": "Create [Service Provider Product Application](https://elhub.github.io/flex-information-system/resources/service_provider_product_application/)",
                 "tags": [
                     "service_provider_product_application"
                 ],
@@ -22933,7 +22933,7 @@
             "get": {
                 "operationId": "read_service_provider_product_application",
                 "summary": "Read Service Provider Product Application",
-                "description": "",
+                "description": "Read [Service Provider Product Application](https://elhub.github.io/flex-information-system/resources/service_provider_product_application/)",
                 "tags": [
                     "service_provider_product_application"
                 ],
@@ -23051,7 +23051,7 @@
             "patch": {
                 "operationId": "update_service_provider_product_application",
                 "summary": "Update Service Provider Product Application",
-                "description": "",
+                "description": "Update [Service Provider Product Application](https://elhub.github.io/flex-information-system/resources/service_provider_product_application/)",
                 "tags": [
                     "service_provider_product_application"
                 ],
@@ -23186,7 +23186,7 @@
             "get": {
                 "operationId": "list_service_provider_product_application_history",
                 "summary": "List Service Provider Product Application - history",
-                "description": "",
+                "description": "List [Service Provider Product Application - history](https://elhub.github.io/flex-information-system/resources/service_provider_product_application/)",
                 "tags": [
                     "service_provider_product_application"
                 ],
@@ -23398,7 +23398,7 @@
             "get": {
                 "operationId": "read_service_provider_product_application_history",
                 "summary": "Read Service Provider Product Application - history",
-                "description": "",
+                "description": "Read [Service Provider Product Application - history](https://elhub.github.io/flex-information-system/resources/service_provider_product_application/)",
                 "tags": [
                     "service_provider_product_application"
                 ],
@@ -23497,7 +23497,7 @@
             "get": {
                 "operationId": "list_service_provider_product_application_comment",
                 "summary": "List Service Provider Product Application Comment",
-                "description": "",
+                "description": "List [Service Provider Product Application Comment](https://elhub.github.io/flex-information-system/resources/service_provider_product_application_comment/)",
                 "tags": [
                     "service_provider_product_application_comment"
                 ],
@@ -23672,7 +23672,7 @@
             "post": {
                 "operationId": "create_service_provider_product_application_comment",
                 "summary": "Create Service Provider Product Application Comment",
-                "description": "",
+                "description": "Create [Service Provider Product Application Comment](https://elhub.github.io/flex-information-system/resources/service_provider_product_application_comment/)",
                 "tags": [
                     "service_provider_product_application_comment"
                 ],
@@ -23803,7 +23803,7 @@
             "get": {
                 "operationId": "read_service_provider_product_application_comment",
                 "summary": "Read Service Provider Product Application Comment",
-                "description": "",
+                "description": "Read [Service Provider Product Application Comment](https://elhub.github.io/flex-information-system/resources/service_provider_product_application_comment/)",
                 "tags": [
                     "service_provider_product_application_comment"
                 ],
@@ -23907,7 +23907,7 @@
             "patch": {
                 "operationId": "update_service_provider_product_application_comment",
                 "summary": "Update Service Provider Product Application Comment",
-                "description": "",
+                "description": "Update [Service Provider Product Application Comment](https://elhub.github.io/flex-information-system/resources/service_provider_product_application_comment/)",
                 "tags": [
                     "service_provider_product_application_comment"
                 ],
@@ -24042,7 +24042,7 @@
             "get": {
                 "operationId": "list_service_provider_product_application_comment_history",
                 "summary": "List Service Provider Product Application Comment - history",
-                "description": "",
+                "description": "List [Service Provider Product Application Comment - history](https://elhub.github.io/flex-information-system/resources/service_provider_product_application_comment/)",
                 "tags": [
                     "service_provider_product_application_comment"
                 ],
@@ -24234,7 +24234,7 @@
             "get": {
                 "operationId": "read_service_provider_product_application_comment_history",
                 "summary": "Read Service Provider Product Application Comment - history",
-                "description": "",
+                "description": "Read [Service Provider Product Application Comment - history](https://elhub.github.io/flex-information-system/resources/service_provider_product_application_comment/)",
                 "tags": [
                     "service_provider_product_application_comment"
                 ],
@@ -24333,7 +24333,7 @@
             "get": {
                 "operationId": "list_service_provider_product_suspension",
                 "summary": "List Service Provider Product Suspension",
-                "description": "",
+                "description": "List [Service Provider Product Suspension](https://elhub.github.io/flex-information-system/resources/service_provider_product_suspension/)",
                 "tags": [
                     "service_provider_product_suspension"
                 ],
@@ -24528,7 +24528,7 @@
             "post": {
                 "operationId": "create_service_provider_product_suspension",
                 "summary": "Create Service Provider Product Suspension",
-                "description": "",
+                "description": "Create [Service Provider Product Suspension](https://elhub.github.io/flex-information-system/resources/service_provider_product_suspension/)",
                 "tags": [
                     "service_provider_product_suspension"
                 ],
@@ -24659,7 +24659,7 @@
             "get": {
                 "operationId": "read_service_provider_product_suspension",
                 "summary": "Read Service Provider Product Suspension",
-                "description": "",
+                "description": "Read [Service Provider Product Suspension](https://elhub.github.io/flex-information-system/resources/service_provider_product_suspension/)",
                 "tags": [
                     "service_provider_product_suspension"
                 ],
@@ -24777,7 +24777,7 @@
             "patch": {
                 "operationId": "update_service_provider_product_suspension",
                 "summary": "Update Service Provider Product Suspension",
-                "description": "",
+                "description": "Update [Service Provider Product Suspension](https://elhub.github.io/flex-information-system/resources/service_provider_product_suspension/)",
                 "tags": [
                     "service_provider_product_suspension"
                 ],
@@ -24886,7 +24886,7 @@
             "delete": {
                 "operationId": "delete_service_provider_product_suspension",
                 "summary": "Delete Service Provider Product Suspension",
-                "description": "",
+                "description": "Delete [Service Provider Product Suspension](https://elhub.github.io/flex-information-system/resources/service_provider_product_suspension/)",
                 "tags": [
                     "service_provider_product_suspension"
                 ],
@@ -24999,7 +24999,7 @@
             "get": {
                 "operationId": "list_service_provider_product_suspension_history",
                 "summary": "List Service Provider Product Suspension - history",
-                "description": "",
+                "description": "List [Service Provider Product Suspension - history](https://elhub.github.io/flex-information-system/resources/service_provider_product_suspension/)",
                 "tags": [
                     "service_provider_product_suspension"
                 ],
@@ -25211,7 +25211,7 @@
             "get": {
                 "operationId": "read_service_provider_product_suspension_history",
                 "summary": "Read Service Provider Product Suspension - history",
-                "description": "",
+                "description": "Read [Service Provider Product Suspension - history](https://elhub.github.io/flex-information-system/resources/service_provider_product_suspension/)",
                 "tags": [
                     "service_provider_product_suspension"
                 ],
@@ -25310,7 +25310,7 @@
             "get": {
                 "operationId": "list_service_provider_product_suspension_comment",
                 "summary": "List Service Provider Product Suspension Comment",
-                "description": "",
+                "description": "List [Service Provider Product Suspension Comment](https://elhub.github.io/flex-information-system/resources/service_provider_product_suspension_comment/)",
                 "tags": [
                     "service_provider_product_suspension_comment"
                 ],
@@ -25485,7 +25485,7 @@
             "post": {
                 "operationId": "create_service_provider_product_suspension_comment",
                 "summary": "Create Service Provider Product Suspension Comment",
-                "description": "",
+                "description": "Create [Service Provider Product Suspension Comment](https://elhub.github.io/flex-information-system/resources/service_provider_product_suspension_comment/)",
                 "tags": [
                     "service_provider_product_suspension_comment"
                 ],
@@ -25616,7 +25616,7 @@
             "get": {
                 "operationId": "read_service_provider_product_suspension_comment",
                 "summary": "Read Service Provider Product Suspension Comment",
-                "description": "",
+                "description": "Read [Service Provider Product Suspension Comment](https://elhub.github.io/flex-information-system/resources/service_provider_product_suspension_comment/)",
                 "tags": [
                     "service_provider_product_suspension_comment"
                 ],
@@ -25720,7 +25720,7 @@
             "patch": {
                 "operationId": "update_service_provider_product_suspension_comment",
                 "summary": "Update Service Provider Product Suspension Comment",
-                "description": "",
+                "description": "Update [Service Provider Product Suspension Comment](https://elhub.github.io/flex-information-system/resources/service_provider_product_suspension_comment/)",
                 "tags": [
                     "service_provider_product_suspension_comment"
                 ],
@@ -25855,7 +25855,7 @@
             "get": {
                 "operationId": "list_service_provider_product_suspension_comment_history",
                 "summary": "List Service Provider Product Suspension Comment - history",
-                "description": "",
+                "description": "List [Service Provider Product Suspension Comment - history](https://elhub.github.io/flex-information-system/resources/service_provider_product_suspension_comment/)",
                 "tags": [
                     "service_provider_product_suspension_comment"
                 ],
@@ -26047,7 +26047,7 @@
             "get": {
                 "operationId": "read_service_provider_product_suspension_comment_history",
                 "summary": "Read Service Provider Product Suspension Comment - history",
-                "description": "",
+                "description": "Read [Service Provider Product Suspension Comment - history](https://elhub.github.io/flex-information-system/resources/service_provider_product_suspension_comment/)",
                 "tags": [
                     "service_provider_product_suspension_comment"
                 ],
@@ -26146,7 +26146,7 @@
             "get": {
                 "operationId": "list_service_providing_group_product_application",
                 "summary": "List Service Providing Group Product Application",
-                "description": "",
+                "description": "List [Service Providing Group Product Application](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application/)",
                 "tags": [
                     "service_providing_group_product_application"
                 ],
@@ -26341,7 +26341,7 @@
             "post": {
                 "operationId": "create_service_providing_group_product_application",
                 "summary": "Create Service Providing Group Product Application",
-                "description": "",
+                "description": "Create [Service Providing Group Product Application](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application/)",
                 "tags": [
                     "service_providing_group_product_application"
                 ],
@@ -26472,7 +26472,7 @@
             "get": {
                 "operationId": "read_service_providing_group_product_application",
                 "summary": "Read Service Providing Group Product Application",
-                "description": "",
+                "description": "Read [Service Providing Group Product Application](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application/)",
                 "tags": [
                     "service_providing_group_product_application"
                 ],
@@ -26590,7 +26590,7 @@
             "patch": {
                 "operationId": "update_service_providing_group_product_application",
                 "summary": "Update Service Providing Group Product Application",
-                "description": "",
+                "description": "Update [Service Providing Group Product Application](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application/)",
                 "tags": [
                     "service_providing_group_product_application"
                 ],
@@ -26725,7 +26725,7 @@
             "get": {
                 "operationId": "list_service_providing_group_product_application_history",
                 "summary": "List Service Providing Group Product Application - history",
-                "description": "",
+                "description": "List [Service Providing Group Product Application - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application/)",
                 "tags": [
                     "service_providing_group_product_application"
                 ],
@@ -26937,7 +26937,7 @@
             "get": {
                 "operationId": "read_service_providing_group_product_application_history",
                 "summary": "Read Service Providing Group Product Application - history",
-                "description": "",
+                "description": "Read [Service Providing Group Product Application - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application/)",
                 "tags": [
                     "service_providing_group_product_application"
                 ],
@@ -27036,7 +27036,7 @@
             "get": {
                 "operationId": "list_service_providing_group_product_application_comment",
                 "summary": "List Service Providing Group Product Application Comment",
-                "description": "",
+                "description": "List [Service Providing Group Product Application Comment](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application_comment/)",
                 "tags": [
                     "service_providing_group_product_application_comment"
                 ],
@@ -27211,7 +27211,7 @@
             "post": {
                 "operationId": "create_service_providing_group_product_application_comment",
                 "summary": "Create Service Providing Group Product Application Comment",
-                "description": "",
+                "description": "Create [Service Providing Group Product Application Comment](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application_comment/)",
                 "tags": [
                     "service_providing_group_product_application_comment"
                 ],
@@ -27342,7 +27342,7 @@
             "get": {
                 "operationId": "read_service_providing_group_product_application_comment",
                 "summary": "Read Service Providing Group Product Application Comment",
-                "description": "",
+                "description": "Read [Service Providing Group Product Application Comment](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application_comment/)",
                 "tags": [
                     "service_providing_group_product_application_comment"
                 ],
@@ -27446,7 +27446,7 @@
             "patch": {
                 "operationId": "update_service_providing_group_product_application_comment",
                 "summary": "Update Service Providing Group Product Application Comment",
-                "description": "",
+                "description": "Update [Service Providing Group Product Application Comment](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application_comment/)",
                 "tags": [
                     "service_providing_group_product_application_comment"
                 ],
@@ -27581,7 +27581,7 @@
             "get": {
                 "operationId": "list_service_providing_group_product_application_comment_history",
                 "summary": "List Service Providing Group Product Application Comment - history",
-                "description": "",
+                "description": "List [Service Providing Group Product Application Comment - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application_comment/)",
                 "tags": [
                     "service_providing_group_product_application_comment"
                 ],
@@ -27773,7 +27773,7 @@
             "get": {
                 "operationId": "read_service_providing_group_product_application_comment_history",
                 "summary": "Read Service Providing Group Product Application Comment - history",
-                "description": "",
+                "description": "Read [Service Providing Group Product Application Comment - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application_comment/)",
                 "tags": [
                     "service_providing_group_product_application_comment"
                 ],
@@ -27872,7 +27872,7 @@
             "get": {
                 "operationId": "list_service_providing_group_product_suspension",
                 "summary": "List Service Providing Group Product Suspension",
-                "description": "",
+                "description": "List [Service Providing Group Product Suspension](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_suspension/)",
                 "tags": [
                     "service_providing_group_product_suspension"
                 ],
@@ -28067,7 +28067,7 @@
             "post": {
                 "operationId": "create_service_providing_group_product_suspension",
                 "summary": "Create Service Providing Group Product Suspension",
-                "description": "",
+                "description": "Create [Service Providing Group Product Suspension](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_suspension/)",
                 "tags": [
                     "service_providing_group_product_suspension"
                 ],
@@ -28198,7 +28198,7 @@
             "get": {
                 "operationId": "read_service_providing_group_product_suspension",
                 "summary": "Read Service Providing Group Product Suspension",
-                "description": "",
+                "description": "Read [Service Providing Group Product Suspension](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_suspension/)",
                 "tags": [
                     "service_providing_group_product_suspension"
                 ],
@@ -28316,7 +28316,7 @@
             "patch": {
                 "operationId": "update_service_providing_group_product_suspension",
                 "summary": "Update Service Providing Group Product Suspension",
-                "description": "",
+                "description": "Update [Service Providing Group Product Suspension](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_suspension/)",
                 "tags": [
                     "service_providing_group_product_suspension"
                 ],
@@ -28425,7 +28425,7 @@
             "delete": {
                 "operationId": "delete_service_providing_group_product_suspension",
                 "summary": "Delete Service Providing Group Product Suspension",
-                "description": "",
+                "description": "Delete [Service Providing Group Product Suspension](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_suspension/)",
                 "tags": [
                     "service_providing_group_product_suspension"
                 ],
@@ -28538,7 +28538,7 @@
             "get": {
                 "operationId": "list_service_providing_group_product_suspension_history",
                 "summary": "List Service Providing Group Product Suspension - history",
-                "description": "",
+                "description": "List [Service Providing Group Product Suspension - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_suspension/)",
                 "tags": [
                     "service_providing_group_product_suspension"
                 ],
@@ -28750,7 +28750,7 @@
             "get": {
                 "operationId": "read_service_providing_group_product_suspension_history",
                 "summary": "Read Service Providing Group Product Suspension - history",
-                "description": "",
+                "description": "Read [Service Providing Group Product Suspension - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_suspension/)",
                 "tags": [
                     "service_providing_group_product_suspension"
                 ],
@@ -28849,7 +28849,7 @@
             "get": {
                 "operationId": "list_service_providing_group_product_suspension_comment",
                 "summary": "List Service Providing Group Product Suspension Comment",
-                "description": "",
+                "description": "List [Service Providing Group Product Suspension Comment](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_suspension_comment/)",
                 "tags": [
                     "service_providing_group_product_suspension_comment"
                 ],
@@ -29024,7 +29024,7 @@
             "post": {
                 "operationId": "create_service_providing_group_product_suspension_comment",
                 "summary": "Create Service Providing Group Product Suspension Comment",
-                "description": "",
+                "description": "Create [Service Providing Group Product Suspension Comment](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_suspension_comment/)",
                 "tags": [
                     "service_providing_group_product_suspension_comment"
                 ],
@@ -29155,7 +29155,7 @@
             "get": {
                 "operationId": "read_service_providing_group_product_suspension_comment",
                 "summary": "Read Service Providing Group Product Suspension Comment",
-                "description": "",
+                "description": "Read [Service Providing Group Product Suspension Comment](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_suspension_comment/)",
                 "tags": [
                     "service_providing_group_product_suspension_comment"
                 ],
@@ -29259,7 +29259,7 @@
             "patch": {
                 "operationId": "update_service_providing_group_product_suspension_comment",
                 "summary": "Update Service Providing Group Product Suspension Comment",
-                "description": "",
+                "description": "Update [Service Providing Group Product Suspension Comment](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_suspension_comment/)",
                 "tags": [
                     "service_providing_group_product_suspension_comment"
                 ],
@@ -29394,7 +29394,7 @@
             "get": {
                 "operationId": "list_service_providing_group_product_suspension_comment_history",
                 "summary": "List Service Providing Group Product Suspension Comment - history",
-                "description": "",
+                "description": "List [Service Providing Group Product Suspension Comment - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_suspension_comment/)",
                 "tags": [
                     "service_providing_group_product_suspension_comment"
                 ],
@@ -29586,7 +29586,7 @@
             "get": {
                 "operationId": "read_service_providing_group_product_suspension_comment_history",
                 "summary": "Read Service Providing Group Product Suspension Comment - history",
-                "description": "",
+                "description": "Read [Service Providing Group Product Suspension Comment - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_suspension_comment/)",
                 "tags": [
                     "service_providing_group_product_suspension_comment"
                 ],
@@ -29685,7 +29685,7 @@
             "get": {
                 "operationId": "list_notice",
                 "summary": "List Notice",
-                "description": "",
+                "description": "List [Notice](https://elhub.github.io/flex-information-system/resources/notice/)",
                 "tags": [
                     "notice"
                 ],
@@ -29876,7 +29876,7 @@
             "get": {
                 "operationId": "read_notice",
                 "summary": "Read Notice",
-                "description": "",
+                "description": "Read [Notice](https://elhub.github.io/flex-information-system/resources/notice/)",
                 "tags": [
                     "notice"
                 ],

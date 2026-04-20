@@ -161,6 +161,10 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupMembershipResponse]]:
     """List Membership relation of controllable unit in service providing group
 
+     List [Membership relation of controllable unit in service providing
+    group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_membership/)
+
     Args:
         id (str | Unset):
         controllable_unit_id (str | Unset):
@@ -214,6 +218,10 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupMembershipResponse] | None:
     """List Membership relation of controllable unit in service providing group
 
+     List [Membership relation of controllable unit in service providing
+    group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_membership/)
+
     Args:
         id (str | Unset):
         controllable_unit_id (str | Unset):
@@ -261,6 +269,10 @@ async def asyncio_detailed(
     limit: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupMembershipResponse]]:
     """List Membership relation of controllable unit in service providing group
+
+     List [Membership relation of controllable unit in service providing
+    group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_membership/)
 
     Args:
         id (str | Unset):
@@ -312,6 +324,10 @@ async def asyncio(
     limit: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupMembershipResponse] | None:
     """List Membership relation of controllable unit in service providing group
+
+     List [Membership relation of controllable unit in service providing
+    group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_membership/)
 
     Args:
         id (str | Unset):

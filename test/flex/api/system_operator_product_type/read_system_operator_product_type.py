@@ -104,6 +104,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductTypeResponse]:
     """Read System Operator Product Type
 
+     Read [System Operator Product Type](https://elhub.github.io/flex-information-
+    system/resources/system_operator_product_type/)
+
     Args:
         id (int):
 
@@ -133,6 +136,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductTypeResponse | None:
     """Read System Operator Product Type
 
+     Read [System Operator Product Type](https://elhub.github.io/flex-information-
+    system/resources/system_operator_product_type/)
+
     Args:
         id (int):
 
@@ -156,6 +162,9 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductTypeResponse]:
     """Read System Operator Product Type
+
+     Read [System Operator Product Type](https://elhub.github.io/flex-information-
+    system/resources/system_operator_product_type/)
 
     Args:
         id (int):
@@ -183,6 +192,9 @@ async def asyncio(
     client: AuthenticatedClient,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductTypeResponse | None:
     """Read System Operator Product Type
+
+     Read [System Operator Product Type](https://elhub.github.io/flex-information-
+    system/resources/system_operator_product_type/)
 
     Args:
         id (int):

@@ -115,6 +115,8 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | EntityClientResponse | ErrorMessage]:
     """Create Entity client
 
+     Create [Entity client](https://elhub.github.io/flex-information-system/resources/entity_client/)
+
     Args:
         body (EntityClientCreateRequest | Unset): Request schema for create operations - Client
             linked to an entity for client credentials and JWT grant authentication methods.
@@ -145,6 +147,8 @@ def sync(
 ) -> EmptyObject | ErrorMessage | EntityClientResponse | ErrorMessage | None:
     """Create Entity client
 
+     Create [Entity client](https://elhub.github.io/flex-information-system/resources/entity_client/)
+
     Args:
         body (EntityClientCreateRequest | Unset): Request schema for create operations - Client
             linked to an entity for client credentials and JWT grant authentication methods.
@@ -169,6 +173,8 @@ async def asyncio_detailed(
     body: EntityClientCreateRequest | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | EntityClientResponse | ErrorMessage]:
     """Create Entity client
+
+     Create [Entity client](https://elhub.github.io/flex-information-system/resources/entity_client/)
 
     Args:
         body (EntityClientCreateRequest | Unset): Request schema for create operations - Client
@@ -197,6 +203,8 @@ async def asyncio(
     body: EntityClientCreateRequest | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | EntityClientResponse | ErrorMessage | None:
     """Create Entity client
+
+     Create [Entity client](https://elhub.github.io/flex-information-system/resources/entity_client/)
 
     Args:
         body (EntityClientCreateRequest | Unset): Request schema for create operations - Client

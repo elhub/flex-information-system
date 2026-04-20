@@ -107,6 +107,9 @@ def sync_detailed(
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage]:
     """Delete Party Membership
 
+     Delete [Party Membership](https://elhub.github.io/flex-information-
+    system/resources/party_membership/)
+
     Args:
         id (int):
         body (EmptyObject | Unset): An empty object
@@ -139,6 +142,9 @@ def sync(
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Delete Party Membership
 
+     Delete [Party Membership](https://elhub.github.io/flex-information-
+    system/resources/party_membership/)
+
     Args:
         id (int):
         body (EmptyObject | Unset): An empty object
@@ -165,6 +171,9 @@ async def asyncio_detailed(
     body: EmptyObject | Unset = UNSET,
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage]:
     """Delete Party Membership
+
+     Delete [Party Membership](https://elhub.github.io/flex-information-
+    system/resources/party_membership/)
 
     Args:
         id (int):
@@ -195,6 +204,9 @@ async def asyncio(
     body: EmptyObject | Unset = UNSET,
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Delete Party Membership
+
+     Delete [Party Membership](https://elhub.github.io/flex-information-
+    system/resources/party_membership/)
 
     Args:
         id (int):

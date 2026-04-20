@@ -106,6 +106,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionCommentResponse]:
     """Read Service Providing Group Grid Suspension Comment
 
+     Read [Service Providing Group Grid Suspension Comment](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_suspension_comment/)
+
     Args:
         id (int):
 
@@ -135,6 +138,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionCommentResponse | None:
     """Read Service Providing Group Grid Suspension Comment
 
+     Read [Service Providing Group Grid Suspension Comment](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_suspension_comment/)
+
     Args:
         id (int):
 
@@ -158,6 +164,9 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionCommentResponse]:
     """Read Service Providing Group Grid Suspension Comment
+
+     Read [Service Providing Group Grid Suspension Comment](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_suspension_comment/)
 
     Args:
         id (int):
@@ -185,6 +194,9 @@ async def asyncio(
     client: AuthenticatedClient,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridSuspensionCommentResponse | None:
     """Read Service Providing Group Grid Suspension Comment
+
+     Read [Service Providing Group Grid Suspension Comment](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_suspension_comment/)
 
     Args:
         id (int):
