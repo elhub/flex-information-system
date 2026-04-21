@@ -2,9 +2,9 @@ import { NavLink } from "react-router-dom";
 import { Nav } from "../ui";
 
 const navLinks = [
+  { label: "Dashboard", to: "/" },
   { label: "CUs", to: "/controllable_unit" },
   { label: "SPGs", to: "/service_providing_group" },
-  { label: "Applications", to: "/service_provider_product_application" },
 ];
 
 export const HeaderNav = () => {
@@ -16,7 +16,7 @@ export const HeaderNav = () => {
             key={to}
             to={to}
             end={false}
-            className={({ isActive }) =>
+            className={({ isActive }: { isActive: boolean }) =>
               [
                 "relative flex h-full items-center no-underline",
                 "text-sm font-bold text-semantic-text-default",

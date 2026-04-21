@@ -10,6 +10,7 @@ import {
     Loader,
     Tabs,
 } from "../components/ui";
+import { IconInformationCircle } from "@elhub/ds-icons";
 import { NoticeTable } from "./NoticeTable";
 import { useActiveNotices } from "./useActiveNotices";
 
@@ -86,6 +87,7 @@ export const Dashboard = () => {
                                     Inconsistencies
                                 </Heading>
                                 <Badge
+                                    icon={IconInformationCircle}
                                     status="pending"
                                     variant="block"
                                     size="small"
