@@ -30,7 +30,7 @@ export const ServiceProviderProductApplicationShow = () => {
 
   return (
     <ShowPageLayout
-      backTo="/service_provider_product_application"
+      backTo={{ pathname: "/service_provider_product_application", label: "Applications" }}
       title={`Product Application #${sppa.id}`}
       badge={
         <Badge size="small" status={status} variant="block" icon={icon}>
