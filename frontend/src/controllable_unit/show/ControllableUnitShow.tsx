@@ -72,7 +72,7 @@ export const ControllableUnitShow = () => {
 
   return (
     <ShowPageLayout
-      backTo="/controllable_unit"
+      backTo={{ pathname: "/controllable_unit", label: "Controllable units" }}
       title={`Controllable Unit - ${cu.name}`}
       alerts={<ControllableUnitAlerts controllableUnitViewModel={viewModel} />}
       badge={

@@ -47,7 +47,10 @@ export const ServiceProvidingGroupShow = () => {
 
   return (
     <ShowPageLayout
-      backTo="/service_providing_group"
+      backTo={{
+        pathname: "/service_providing_group",
+        label: "Service providing groups",
+      }}
       title={`Group Details - ${spg.name}`}
       badge={
         <>

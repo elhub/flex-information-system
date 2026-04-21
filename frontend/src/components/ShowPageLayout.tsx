@@ -1,10 +1,14 @@
 import { IconArrowLeft } from "@elhub/ds-icons";
 import { ReactNode } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { usePreviousPage } from "./NavigationHistoryProvider";
 import { Button, Heading } from "./ui";
 
 type ShowPageLayoutProps = {
-  backTo: string;
+  backTo: {
+    pathname: string;
+    label: string;
+  };
   title: string;
   badge?: ReactNode;
   alerts?: ReactNode;
@@ -19,25 +23,37 @@ export const ShowPageLayout = ({
   alerts,
   actionBar,
   children: [leftPanel, rightPanel],
-}: ShowPageLayoutProps) => (
-  <div className="flex flex-col gap-4 p-2">
-    {alerts}
-    <div className="flex items-center gap-2">
+}: ShowPageLayoutProps) => {
+  const navigate = useNavigate();
+  const previousPage = usePreviousPage();
+  const back = previousPage ? previousPage : backTo;
+
+  const handleBack = () => navigate(back.pathname, { replace: true });
+
+  return (
+    <div className="flex flex-col gap-4 p-2">
+      {alerts}
       <Button
-        as={RouterLink}
-        to={backTo}
+        onClick={handleBack}
         variant="invisible"
+        className="max-w-fit"
         icon={IconArrowLeft}
-      />
-      <Heading level={2} size="medium">
-        {title}
-      </Heading>
-      {badge && <div className="flex items-center gap-1">{badge}</div>}
+        iconPosition="left"
+      >
+        Go back to {back.label}
+      </Button>
+
+      <div className="flex items-center gap-2">
+        <Heading level={2} size="medium">
+          {title}
+        </Heading>
+        {badge && <div className="flex items-center gap-1">{badge}</div>}
+      </div>
+      {actionBar}
+      <div className="grid grid-cols-1 gap-4 xl:grid-cols-[25%_minmax(0,1fr)]">
+        {leftPanel}
+        {rightPanel}
+      </div>
     </div>
-    {actionBar}
-    <div className="grid grid-cols-1 gap-4 xl:grid-cols-[25%_minmax(0,1fr)]">
-      {leftPanel}
-      {rightPanel}
-    </div>
-  </div>
-);
+  );
+};
