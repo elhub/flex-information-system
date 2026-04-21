@@ -55,6 +55,5 @@ export const ShowPageLayout = ({
         {rightPanel}
       </div>
     </div>
-
   );
 };
