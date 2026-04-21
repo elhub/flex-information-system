@@ -13,7 +13,6 @@ import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterSe
 import no.elhub.flex.model.domain.AccountingPoint
 import no.elhub.flex.model.domain.AccountingPointEndUser
 import no.elhub.flex.model.domain.AccountingPointEnergySupplier
-import no.elhub.flex.model.domain.db.LockTimeoutError
 import no.elhub.flex.model.domain.db.NoMatchError
 import no.elhub.flex.model.domain.db.NotFoundError
 import no.elhub.flex.model.domain.db.RepositoryError
@@ -58,6 +57,14 @@ interface AccountingPointService {
      */
     context(principal: FlexPrincipal)
     suspend fun getAccountingPointByBusinessId(accountingPointBusinessId: String): Either<AppError, AccountingPoint>
+
+    /**
+     * Looks up an accounting point by its ID
+     *
+     * Returns [ResourceNotFoundError] if not found.
+     */
+    context(principal: FlexPrincipal)
+    suspend fun getById(id: Long): Either<AppError, AccountingPoint>
 
     /**
      * Gets the current accounting point for a given controllable unit.
@@ -163,6 +170,16 @@ class AccountingPointServiceImpl(
     ): Either<AppError, AccountingPoint> = accountingPointRepository.getAccountingPointByBusinessId(accountingPointBusinessId).mapLeft { error ->
         when (error) {
             is NotFoundError -> ResourceNotFoundError("accounting point with business ID $accountingPointBusinessId not found")
+            else -> InternalServerError(traceIdOrUnknown())
+        }
+    }
+
+    context(principal: FlexPrincipal)
+    override suspend fun getById(
+        id: Long
+    ): Either<AppError, AccountingPoint> = accountingPointRepository.getAccountingPointById(id).mapLeft { error ->
+        when (error) {
+            is NotFoundError -> ResourceNotFoundError("accounting point with ID $id not found")
             else -> InternalServerError(traceIdOrUnknown())
         }
     }

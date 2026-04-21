@@ -1,5 +1,6 @@
 package no.elhub.flex.db
 
+import org.intellij.lang.annotations.Language
 import java.sql.Connection
 import java.sql.PreparedStatement
 import java.sql.ResultSet
@@ -39,7 +40,7 @@ private val NAMED_PARAM_WITH_ARRAY_CAST_REGEX = Regex("""(?<!:):([a-zA-Z_][a-zA-
  * @throws IllegalArgumentException if a named parameter in [sql] has no matching key in [params]
  */
 fun Connection.prepareNamed(
-    sql: String,
+    @Language("SQL") sql: String,
     params: Map<String, Any?>,
 ): PreparedStatement {
     val paramNames = mutableListOf<String>()
@@ -94,7 +95,7 @@ fun Connection.prepareNamed(
  *   [sql] has no matching key in the row maps, or a parameter is missing its `::type[]` cast
  */
 fun Connection.prepareNamed(
-    sql: String,
+    @Language("SQL") sql: String,
     rows: List<Map<String, Any?>>,
 ): PreparedStatement {
     require(rows.isNotEmpty()) { "rows must not be empty" }

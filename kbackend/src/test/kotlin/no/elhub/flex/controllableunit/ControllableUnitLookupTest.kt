@@ -31,6 +31,8 @@ import no.elhub.flex.model.domain.AccountingPoint
 import no.elhub.flex.model.domain.ControllableUnit
 import no.elhub.flex.model.error.InternalServerError
 import no.elhub.flex.model.error.ResourceNotFoundError
+import no.elhub.flex.module
+import no.elhub.flex.routes.accountingpoint.accountingPointRoutes
 import no.elhub.flex.routes.controllableunit.ControllableUnitLookup
 import no.elhub.flex.routes.controllableunit.controllableUnitRoutes
 import org.koin.dsl.module
@@ -563,5 +565,6 @@ private fun testApp(
                 )
             }
             controllableUnitRoutes()
+            accountingPointRoutes()
         }
     }

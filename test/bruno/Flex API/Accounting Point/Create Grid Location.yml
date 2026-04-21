@@ -1,0 +1,28 @@
+info:
+  name: Create Grid Location
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{baseUrl}}/accounting_point/1/grid_location"
+  body:
+    type: json
+    data: |-
+      {
+        "object_type": "substation",
+        "name": "Snilldal 1 KRA",
+        "nominal_voltage": 22,
+        "quality": "confirmed",
+        "business_id": "53919b79-876f-4dad-8bde-b29368367604",
+        "additional_information": null
+      }
+  auth:
+    type: bearer
+    token: <token>
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

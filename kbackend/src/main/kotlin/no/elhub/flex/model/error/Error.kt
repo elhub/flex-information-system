@@ -167,3 +167,29 @@ data class InternalServerError(
     override val code: HttpStatusCode = HttpStatusCode.InternalServerError
     override val message: String = "An unexpected error occurred. If the issue persist, give this Trace ID to support: $traceId"
 }
+
+/**
+ * Error indicating that the caller does not have permission to perform this operation.
+ *
+ * @property details details about the problem
+ * @property code the HTTP status code
+ */
+data class ForbiddenError(
+    val details: String,
+    override val code: HttpStatusCode = HttpStatusCode.Forbidden,
+) : AppError() {
+    override val message: String = details
+}
+
+/**
+ * Error indicating that a resource already exists and cannot be created again.
+ *
+ * @property details details about the conflict
+ * @property code the HTTP status code
+ */
+data class ConflictError(
+    val details: String,
+    override val code: HttpStatusCode = HttpStatusCode.Conflict,
+) : AppError() {
+    override val message: String = details
+}

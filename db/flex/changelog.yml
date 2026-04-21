@@ -166,6 +166,9 @@ databaseChangeLog:
       file: ./accounting_point_metering_grid_area.sql
       relativeToChangelogFile: true
   - include:
+      file: ./accounting_point_grid_location.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./accounting_point_end_user.sql
       relativeToChangelogFile: true
   - include:

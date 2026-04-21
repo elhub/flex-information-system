@@ -473,6 +473,130 @@ components:
         - $ref: "#/components/schemas/notice_data_party_missing"
         - $ref: "#/components/schemas/notice_data_party_outdated"
         - $ref: "#/components/schemas/notice_data_product_type_not_qualified"
+    accounting_point_grid_location_create_request:
+      summary: Accounting Point Grid Location - Create
+      description: >-
+        Request schema for creating a grid location for an accounting point.
+        The accounting point is identified by the URL path parameter.
+        The source is derived from the requester's identity in the backend.
+      type: object
+      properties:
+        object_type:
+          description: >-
+            The type of object in the common grid model that the accounting
+            point is at.
+          format: text
+          type: string
+          enum:
+            - substation
+            - transformer
+          example: substation
+        business_id:
+          description: >-
+            Business identifier (mRID) referencing the object in the common
+            grid model.
+          format: text
+          type: string
+          nullable: true
+          # yamllint disable-line rule:line-length
+          pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          example: "53919b79-876f-4dad-8bde-b29368367604"
+        name:
+          description: Name of the grid model object at the location.
+          format: text
+          type: string
+          maxLength: 512
+          example: "Snilldal 1 KRA"
+        nominal_voltage:
+          description: >-
+            Nominal voltage level at the grid location, in kilovolt (kV).
+          format: decimal
+          type: number
+          minimum: 0
+          example: 22
+        additional_information:
+          description: >-
+            Free text field for extra information about the grid location if
+            needed.
+          format: text
+          type: string
+          nullable: true
+          example: null
+        quality:
+          description: >-
+            The quality of the grid location registration.
+          format: text
+          type: string
+          enum:
+            - confirmed
+            - guessed
+          example: confirmed
+      required:
+        - object_type
+        - name
+        - nominal_voltage
+        - quality
+    accounting_point_grid_location_update_request:
+      summary: Accounting Point Grid Location - Update
+      description: >-
+        Request schema for updating the grid location of an accounting point.
+        The accounting point is identified by the URL path parameter.
+        All fields are optional except quality. The source is derived from the
+        requester's identity in the backend.
+      type: object
+      properties:
+        object_type:
+          description: >-
+            The type of object in the common grid model that the accounting
+            point is at.
+          format: text
+          type: string
+          enum:
+            - substation
+            - transformer
+          example: substation
+        business_id:
+          description: >-
+            Business identifier (mRID) referencing the object in the common
+            grid model.
+          format: text
+          type: string
+          nullable: true
+          # yamllint disable-line rule:line-length
+          pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          example: "53919b79-876f-4dad-8bde-b29368367604"
+        name:
+          description: Name of the grid model object at the location.
+          format: text
+          type: string
+          maxLength: 512
+          example: "Snilldal 1 KRA"
+        nominal_voltage:
+          description: >-
+            Nominal voltage level at the grid location, in kilovolt (kV).
+          format: decimal
+          type: number
+          minimum: 0
+          example: 22
+        additional_information:
+          description: >-
+            Free text field for extra information about the grid location if
+            needed.
+          format: text
+          type: string
+          nullable: true
+          example: null
+        quality:
+          description: >-
+            The quality of the grid location registration.
+          format: text
+          type: string
+          enum:
+            - confirmed
+            - guessed
+          example: confirmed
+      required:
+        - quality
 paths:
   /openapi.json:
     get:
@@ -600,6 +724,169 @@ paths:
               schema:
                 $ref: "#/components/schemas/error_message"
           description: Internal Server Error
+  /accounting_point/{accounting_point_id}/grid_location:
+    summary: Accounting Point Grid Location
+    parameters:
+      - in: path
+        name: accounting_point_id
+        required: true
+        schema:
+          format: bigint
+          type: integer
+        example: 45
+    get:
+      operationId: read_accounting_point_grid_location_by_accounting_point
+      summary: Read - Accounting Point Grid Location
+      description: >-
+        Read the grid location for an accounting point. Returns 404 if the
+        accounting point does not exist or has no grid location.
+      security:
+        - bearerAuth: ["read:data:accounting_point_grid_location"]
+      tags:
+        - accounting_point_grid_location
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/accounting_point_grid_location_response"
+          description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_message"
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_message"
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_message"
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_message"
+          description: Internal Server Error
+    post:
+      operationId: create_accounting_point_grid_location
+      summary: Create - Accounting Point Grid Location
+      description: >-
+        Create a grid location for an accounting point. Returns 409 Conflict
+        if a grid location already exists for the accounting point.
+      security:
+        - bearerAuth: ["manage:data:accounting_point_grid_location"]
+      tags:
+        - accounting_point_grid_location
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/accounting_point_grid_location_create_request"
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/accounting_point_grid_location_response"
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_message"
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_message"
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_message"
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_message"
+          description: Not Found
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_message"
+          description: Conflict
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_message"
+          description: Internal Server Error
+    patch:
+      operationId: update_accounting_point_grid_location
+      summary: Update - Accounting Point Grid Location
+      description: >-
+        Update the grid location of an accounting point. Only provided fields
+        are updated.
+      security:
+        - bearerAuth: ["manage:data:accounting_point_grid_location"]
+      tags:
+        - accounting_point_grid_location
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/accounting_point_grid_location_update_request"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/accounting_point_grid_location_response"
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_message"
+          description: Bad Request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_message"
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_message"
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_message"
+          description: Not Found
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_message"
+          description: Conflict
 servers:
   - url: https://flex-test.elhub.no/api/v0
     description: External test environment

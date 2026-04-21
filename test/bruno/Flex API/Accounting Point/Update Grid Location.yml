@@ -1,0 +1,24 @@
+info:
+  name: Update Grid Location
+  type: http
+  seq: 3
+
+http:
+  method: PATCH
+  url: "{{baseUrl}}/accounting_point/1001/grid_location"
+  body:
+    type: json
+    data: |-
+      {
+        "quality": "guessed",
+        "nominal_voltage": 33
+      }
+  auth:
+    type: bearer
+    token: <token>
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

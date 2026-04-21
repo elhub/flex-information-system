@@ -1,5 +1,7 @@
 package no.elhub.flex.auth
 
+import io.ktor.server.routing.RoutingCall
+
 /**
  * Represents the database identity used to enforce row-level security on every transaction.
  *
@@ -21,3 +23,5 @@ data class FlexPrincipal(
 
 /** Derives a [FlexPrincipal] from this [AccessToken], extracting only the fields needed for RLS. */
 fun AccessToken.toFlexPrincipal(): FlexPrincipal = FlexPrincipal(role = role, eid = extId)
+
+fun RoutingCall.flexPrincipal(): FlexPrincipal = attributes[AccessTokenKey].toFlexPrincipal()

@@ -1,3 +1,5 @@
+@file:Suppress("TooManyFunctions")
+
 package no.elhub.flex.accountingpoint.db
 
 import arrow.core.Either
@@ -25,6 +27,7 @@ import no.elhub.flex.util.toSqlTimestampOrNull
 import org.koin.core.annotation.Single
 import java.sql.Array
 import java.sql.Connection
+import java.sql.ResultSet
 import java.sql.SQLException
 import kotlin.time.Instant
 
@@ -47,6 +50,16 @@ interface AccountingPointRepository {
     context(principal: FlexPrincipal)
     suspend fun getAccountingPointByBusinessId(
         accountingPointBusinessId: String
+    ): Either<RepositoryError, AccountingPoint>
+
+    /**
+     * Looks up an accounting point by its ID.
+     *
+     * Returns [NotFoundError] when no row matches.
+     */
+    context(principal: FlexPrincipal)
+    suspend fun getAccountingPointById(
+        id: Long
     ): Either<RepositoryError, AccountingPoint>
 
     /**
@@ -117,6 +130,20 @@ interface AccountingPointRepository {
      */
     context(principal: FlexPrincipal)
     suspend fun markSyncComplete(accountingPointId: Long): Either<RepositoryError, Unit>
+
+    /**
+     * Returns true if the current party is the connecting system operator for the given
+     * accounting point at the current timestamp.
+     */
+    context(principal: FlexPrincipal)
+    suspend fun isConnectingSystemOperator(accountingPointId: Long): Either<RepositoryError, Boolean>
+
+    /**
+     * Returns true if the current party is a procuring system operator on a service providing
+     * group that currently has a controllable unit behind the given accounting point as an active member.
+     */
+    context(principal: FlexPrincipal)
+    suspend fun isProcuringSystemOperator(accountingPointId: Long): Either<RepositoryError, Boolean>
 }
 
 private val logger = KotlinLogging.logger {}
@@ -165,12 +192,7 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
                     conn.prepareNamed(
                         "SELECT id, business_id FROM flex.accounting_point WHERE business_id = :businessId",
                         mapOf("businessId" to accountingPointBusinessId),
-                    ).querySingle { rs ->
-                        AccountingPoint(
-                            id = rs.getLong("id"),
-                            businessId = rs.getString("business_id")
-                        )
-                    }
+                    ).querySingle { rs -> mapAccountingPointRow(rs) }
                 }.getOrElse { e ->
                     logger.error { "getAccountingPointIdByBusinessId($accountingPointBusinessId) failed: ${e.message}" }
                     raise(DatabaseError("Failed to read accounting point by business ID $accountingPointBusinessId"))
@@ -182,6 +204,35 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
                 }
             }
         }
+
+    context(principal: FlexPrincipal)
+    override suspend fun getAccountingPointById(
+        id: Long,
+    ): Either<RepositoryError, AccountingPoint> =
+        flexTransaction { conn ->
+            either {
+                val row = runCatching {
+                    conn.prepareNamed(
+                        "SELECT id, business_id FROM flex.accounting_point WHERE id = :id",
+                        mapOf("id" to id),
+                    ).querySingle { rs -> mapAccountingPointRow(rs) }
+                }.getOrElse { e ->
+                    logger.error { "getAccountingPointIdByBusinessId($id) failed: ${e.message}" }
+                    raise(DatabaseError("Failed to read accounting point by ID $id"))
+                }
+
+                row ?: run {
+                    logger.info { "Accounting point $id not found." }
+                    raise(NotFoundError("accounting point does not exist in database"))
+                }
+            }
+        }
+
+    private fun mapAccountingPointRow(rs: ResultSet): AccountingPoint =
+        AccountingPoint(
+            id = rs.getLong("id"),
+            businessId = rs.getString("business_id")
+        )
 
     context(principal: FlexPrincipal)
     override suspend fun checkEndUserMatchesAccountingPoint(
@@ -429,6 +480,53 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
             }.mapLeft { e ->
                 logger.error { "markSyncComplete failed: ${e.message}" }
                 DatabaseError("No sync row found for accounting point $accountingPointId")
+            }
+        }
+
+    context(principal: FlexPrincipal)
+    override suspend fun isConnectingSystemOperator(accountingPointId: Long): Either<RepositoryError, Boolean> =
+        flexTransaction { conn ->
+            Either.catch {
+                conn.prepareNamed(
+                    """
+                    SELECT EXISTS (
+                        SELECT 1 FROM flex.accounting_point_system_operator
+                        WHERE accounting_point_id = :accountingPointId
+                          AND system_operator_id = flex.current_party()
+                          AND valid_time_range @> current_timestamp
+                    ) AS result
+                    """,
+                    mapOf("accountingPointId" to accountingPointId),
+                ).queryRequiredSingle { rs -> rs.getBoolean("result") }
+            }.mapLeft { e ->
+                logger.error { "isConnectingSystemOperator($accountingPointId) failed: ${e.message}" }
+                DatabaseError("Failed to check connecting system operator for accounting point $accountingPointId")
+            }
+        }
+
+    context(principal: FlexPrincipal)
+    override suspend fun isProcuringSystemOperator(accountingPointId: Long): Either<RepositoryError, Boolean> =
+        flexTransaction { conn ->
+            Either.catch {
+                conn.prepareNamed(
+                    """
+                    SELECT EXISTS (
+                        SELECT 1
+                        FROM flex.service_providing_group_product_application AS spgpa
+                        JOIN flex.service_providing_group_membership AS spgm
+                            ON spgm.service_providing_group_id = spgpa.service_providing_group_id
+                            AND spgm.valid_time_range @> current_timestamp
+                        JOIN flex.controllable_unit AS cu
+                            ON cu.id = spgm.controllable_unit_id
+                        WHERE spgpa.procuring_system_operator_id = flex.current_party()
+                          AND cu.accounting_point_id = :accountingPointId
+                    ) AS result
+                    """,
+                    mapOf("accountingPointId" to accountingPointId),
+                ).queryRequiredSingle { rs -> rs.getBoolean("result") }
+            }.mapLeft { e ->
+                logger.error { "isProcuringSystemOperator($accountingPointId) failed: ${e.message}" }
+                DatabaseError("Failed to check procuring system operator for accounting point $accountingPointId")
             }
         }
 }
