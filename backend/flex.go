@@ -11,7 +11,6 @@ import (
 	"flex/internal/middleware"
 	"flex/internal/openapi"
 	"flex/internal/trace"
-	"flex/meteringpointdatahub"
 	"flex/pgpool"
 	"fmt"
 	"log/slog"
@@ -266,21 +265,6 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		slog.InfoContext(ctx, "Default login limiting")
 	}
 
-	var meteringPointDatahubService data.MeteringPointDatahubService
-	meteringPointDatahubURL, exists := lookupenv("FLEX_METERING_POINT_DATAHUB_URL")
-	if !exists {
-		slog.InfoContext(
-			ctx,
-			"FLEX_METERING_POINT_DATAHUB_URL environment variable is not set, "+
-				"not using any metering point datahub",
-		)
-
-		meteringPointDatahubService = nil
-	} else {
-		service := meteringpointdatahub.NewService(meteringPointDatahubURL)
-		meteringPointDatahubService = &service
-	}
-
 	// first instantiate the database service implementation
 	slog.InfoContext(ctx, "Connecting to the database...")
 
@@ -343,7 +327,6 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		kbackendUpstream,
 		dbPool,
 		requestDetailsContextKey,
-		meteringPointDatahubService,
 	)
 	if err != nil {
 		return fmt.Errorf("could not create data API module: %w", err)
