@@ -358,8 +358,8 @@ func (data *api) kbackendProxyHandler(w http.ResponseWriter, req *http.Request) 
 				pr.Out.Header.Set("Cookie", cookie)
 			}
 		},
-		ErrorHandler: func(w http.ResponseWriter, _ *http.Request, err error) {
-			slog.ErrorContext(req.Context(), "kbackend proxy error", "error", err)
+		ErrorHandler: func(w http.ResponseWriter, r *http.Request, err error) {
+			slog.ErrorContext(r.Context(), "kbackend proxy error", "error", err)
 			writeInternalServerError(w)
 		},
 	}
@@ -510,21 +510,6 @@ func (data *api) entityLookupHandler(
 	w.Write(body)
 }
 
-// embedQueryRewrite rewrites the query parameters of the request to match the PostgREST format.
-func embedQueryRewrite(query url.Values) {
-	// first we disallow select
-	query.Del("select")
-
-	if embed := query.Get("embed"); embed != "" {
-		// TODO THIS IS A REAAAAAALLY POOR IMPLEMENTATION ! MUST BE DONE PROPERLY
-		sel := strings.ReplaceAll(embed, " ", "")
-		sel = strings.ReplaceAll(sel, "(", "(*,")
-		sel = "*," + sel
-		query.Set("select", sel)
-		query.Del("embed")
-	}
-}
-
 // postgRESTHandler forwards the request to the PostgREST API.
 func (data *api) postgRESTHandler(w http.ResponseWriter, req *http.Request) {
 	// regex for calls targeting single ID pages, not a valid format in PostgREST
@@ -562,7 +547,14 @@ func (data *api) postgRESTHandler(w http.ResponseWriter, req *http.Request) {
 		)
 	}
 
-	embedQueryRewrite(query)
+	if err := embedQueryRewrite(query); err != nil {
+		slog.WarnContext(ctx, "malformed embed query parameter", "error", err)
+		writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
+			Message: "malformed embed parameter: " + err.Error(),
+		})
+
+		return
+	}
 
 	proxy := &httputil.ReverseProxy{ //nolint:exhaustruct
 		Rewrite: func(req *httputil.ProxyRequest) {
