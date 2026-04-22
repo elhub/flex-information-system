@@ -52,6 +52,12 @@ public data class ServiceProviderProductApplicationCommentHistoryResponse(
   @SerialName("recorded_by")
   public val recordedBy: Long? = null,
   /**
+   * Response schema - Relation between a service provider and a system operator, for the SP to
+   * apply for delivering the SO some of the types of product they want to buy on a flexibility market.
+   */
+  @SerialName("service_provider_product_application")
+  public val serviceProviderProductApplication: ServiceProviderProductApplicationResponse? = null,
+  /**
    * Reference to the resource that was updated.
    */
   @SerialName("service_provider_product_application_comment_id")

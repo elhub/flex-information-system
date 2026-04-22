@@ -597,6 +597,26 @@ export type ControllableUnit = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded accounting_point
+   */
+  accounting_point?: AccountingPoint | null;
+  /**
+   * Embedded controllable_unit_suspension
+   */
+  suspension?: ControllableUnitSuspension | null;
+  /**
+   * Embedded controllable_unit_service_provider
+   */
+  service_provider?: ControllableUnitServiceProvider | null;
+  /**
+   * Embedded service_providing_group_membership
+   */
+  service_providing_group_membership?: ServiceProvidingGroupMembership | null;
+  /**
+   * Embedded technical_resource
+   */
+  technical_resource?: TechnicalResource | null;
 };
 
 /**
@@ -646,6 +666,18 @@ export type ControllableUnitSuspension = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded controllable_unit
+   */
+  controllable_unit?: ControllableUnit | null;
+  /**
+   * Embedded party
+   */
+  impacted_system_operator?: Party | null;
+  /**
+   * Embedded controllable_unit_suspension_comment
+   */
+  comment?: ControllableUnitSuspensionComment | null;
 };
 
 /**
@@ -707,6 +739,10 @@ export type ControllableUnitSuspensionComment = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded controllable_unit_suspension
+   */
+  controllable_unit_suspension?: ControllableUnitSuspension | null;
 };
 
 /**
@@ -797,6 +833,18 @@ export type ControllableUnitServiceProvider = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded controllable_unit
+   */
+  controllable_unit?: ControllableUnit | null;
+  /**
+   * Embedded party
+   */
+  service_provider?: Party | null;
+  /**
+   * Embedded party
+   */
+  end_user?: Party | null;
 };
 
 /**
@@ -865,6 +913,30 @@ export type ServiceProvidingGroup = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded party
+   */
+  service_provider?: Party | null;
+  /**
+   * Embedded service_providing_group_membership
+   */
+  membership?: ServiceProvidingGroupMembership | null;
+  /**
+   * Embedded service_providing_group_grid_prequalification
+   */
+  grid_prequalification?: ServiceProvidingGroupGridPrequalification | null;
+  /**
+   * Embedded service_providing_group_grid_suspension
+   */
+  grid_suspension?: ServiceProvidingGroupGridSuspension | null;
+  /**
+   * Embedded service_providing_group_product_application
+   */
+  product_application?: ServiceProvidingGroupProductApplication | null;
+  /**
+   * Embedded service_providing_group_product_suspension
+   */
+  product_suspension?: ServiceProvidingGroupProductSuspension | null;
 };
 
 /**
@@ -935,6 +1007,14 @@ export type ServiceProvidingGroupMembership = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded controllable_unit
+   */
+  controllable_unit?: ControllableUnit | null;
+  /**
+   * Embedded service_providing_group
+   */
+  service_providing_group?: ServiceProvidingGroup | null;
 };
 
 /**
@@ -996,6 +1076,18 @@ export type ServiceProvidingGroupGridPrequalification = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded service_providing_group
+   */
+  service_providing_group?: ServiceProvidingGroup | null;
+  /**
+   * Embedded party
+   */
+  impacted_system_operator?: Party | null;
+  /**
+   * Embedded service_providing_group_grid_prequalification_comment
+   */
+  comment?: ServiceProvidingGroupGridPrequalificationComment | null;
 };
 
 /**
@@ -1057,6 +1149,10 @@ export type ServiceProvidingGroupGridPrequalificationComment = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded service_providing_group_grid_prequalification
+   */
+  service_providing_group_grid_prequalification?: ServiceProvidingGroupGridPrequalification | null;
 };
 
 /**
@@ -1106,6 +1202,18 @@ export type ServiceProvidingGroupGridSuspension = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded party
+   */
+  impacted_system_operator?: Party | null;
+  /**
+   * Embedded service_providing_group
+   */
+  service_providing_group?: ServiceProvidingGroup | null;
+  /**
+   * Embedded service_providing_group_grid_suspension_comment
+   */
+  comment?: ServiceProvidingGroupGridSuspensionComment | null;
 };
 
 /**
@@ -1167,6 +1275,10 @@ export type ServiceProvidingGroupGridSuspensionComment = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded service_providing_group_grid_suspension
+   */
+  service_providing_group_grid_suspension?: ServiceProvidingGroupGridSuspension | null;
 };
 
 /**
@@ -1247,6 +1359,22 @@ export type Entity = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded entity_client
+   */
+  client?: EntityClient | null;
+  /**
+   * Embedded party
+   */
+  party?: Party | null;
+  /**
+   * Embedded party_membership
+   */
+  party_membership?: PartyMembership | null;
+  /**
+   * Embedded identity
+   */
+  identity?: Identity | null;
 };
 
 /**
@@ -1352,6 +1480,14 @@ export type EntityClient = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded entity
+   */
+  entity?: Entity | null;
+  /**
+   * Embedded party
+   */
+  party?: Party | null;
 };
 
 /**
@@ -1446,6 +1582,10 @@ export type Party = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded entity
+   */
+  entity?: Entity | null;
 };
 
 /**
@@ -1504,6 +1644,14 @@ export type PartyMembership = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded party
+   */
+  party?: Party | null;
+  /**
+   * Embedded entity
+   */
+  entity?: Entity | null;
 };
 
 /**
@@ -1530,6 +1678,14 @@ export type Identity = {
    * Name of the party assumed by the entity.
    */
   readonly party_name?: string;
+  /**
+   * Embedded entity
+   */
+  entity?: Entity | null;
+  /**
+   * Embedded party
+   */
+  party?: Party | null;
 };
 
 /**
@@ -1671,6 +1827,10 @@ export type TechnicalResource = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded controllable_unit
+   */
+  controllable_unit?: ControllableUnit | null;
 };
 
 /**
@@ -1705,6 +1865,10 @@ export type Event = {
    * The data of the event.
    */
   readonly data?: string;
+  /**
+   * Embedded notification
+   */
+  notification?: Notification | null;
 };
 
 /**
@@ -1745,6 +1909,14 @@ export type Notification = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded event
+   */
+  event?: Event | null;
+  /**
+   * Embedded party
+   */
+  party?: Party | null;
 };
 
 /**
@@ -1771,6 +1943,34 @@ export type AccountingPoint = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded controllable_unit
+   */
+  controllable_unit?: ControllableUnit | null;
+  /**
+   * Embedded party
+   */
+  system_operator?: Party | null;
+  /**
+   * Embedded accounting_point_balance_responsible_party
+   */
+  balance_responsible_party?: AccountingPointBalanceResponsibleParty | null;
+  /**
+   * Embedded accounting_point_bidding_zone
+   */
+  bidding_zone?: AccountingPointBiddingZone | null;
+  /**
+   * Embedded accounting_point_end_user
+   */
+  end_user?: AccountingPointEndUser | null;
+  /**
+   * Embedded accounting_point_energy_supplier
+   */
+  energy_supplier?: AccountingPointEnergySupplier | null;
+  /**
+   * Embedded accounting_point_metering_grid_area
+   */
+  metering_grid_area?: AccountingPointMeteringGridArea | null;
 };
 
 /**
@@ -1794,6 +1994,14 @@ export type AccountingPointBalanceResponsibleParty = {
    * The date until which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone.
    */
   readonly valid_to?: string;
+  /**
+   * Embedded accounting_point
+   */
+  accounting_point?: AccountingPoint | null;
+  /**
+   * Embedded party
+   */
+  balance_responsible_party?: Party | null;
 };
 
 /**
@@ -1813,6 +2021,10 @@ export type AccountingPointBiddingZone = {
    * The date until which the accounting point belongs to the bidding zone. Midnight aligned on Norwegian timezone.
    */
   readonly valid_to?: string;
+  /**
+   * Embedded accounting_point
+   */
+  accounting_point?: AccountingPoint | null;
 };
 
 /**
@@ -1835,6 +2047,14 @@ export type AccountingPointEndUser = {
    * The date until which the accounting point belongs to the end user. Midnight aligned on Norwegian timezone.
    */
   readonly valid_to?: string;
+  /**
+   * Embedded accounting_point
+   */
+  accounting_point?: AccountingPoint | null;
+  /**
+   * Embedded party
+   */
+  end_user?: Party | null;
 };
 
 /**
@@ -1857,6 +2077,14 @@ export type AccountingPointEnergySupplier = {
    * The date until which the relation between the accounting point and the energy supplier is valid. Midnight aligned on Norwegian timezone.
    */
   readonly valid_to?: string;
+  /**
+   * Embedded accounting_point
+   */
+  accounting_point?: AccountingPoint | null;
+  /**
+   * Embedded party
+   */
+  energy_supplier?: Party | null;
 };
 
 /**
@@ -1876,6 +2104,10 @@ export type MeteringGridArea = {
    * The name of the metering grid area.
    */
   readonly name: string;
+  /**
+   * Embedded accounting_point_metering_grid_area
+   */
+  accounting_point_metering_grid_area?: AccountingPointMeteringGridArea | null;
 };
 
 /**
@@ -1898,6 +2130,14 @@ export type AccountingPointMeteringGridArea = {
    * The date until which the accounting point belongs to the metering grid area. Midnight aligned on Norwegian timezone.
    */
   readonly valid_to?: string;
+  /**
+   * Embedded accounting_point
+   */
+  accounting_point?: AccountingPoint | null;
+  /**
+   * Embedded metering_grid_area
+   */
+  metering_grid_area?: MeteringGridArea | null;
 };
 
 /**
@@ -1924,6 +2164,10 @@ export type ProductType = {
    * Examples of products belonging to this product type.
    */
   readonly products: string;
+  /**
+   * Embedded system_operator_product_type
+   */
+  system_operator_product_type?: SystemOperatorProductType | null;
 };
 
 /**
@@ -1973,6 +2217,14 @@ export type SystemOperatorProductType = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded party
+   */
+  system_operator?: Party | null;
+  /**
+   * Embedded product_type
+   */
+  product_type?: ProductType | null;
 };
 
 /**
@@ -2046,6 +2298,18 @@ export type ServiceProviderProductApplication = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded party
+   */
+  service_provider?: Party | null;
+  /**
+   * Embedded party
+   */
+  system_operator?: Party | null;
+  /**
+   * Embedded service_provider_product_application_comment
+   */
+  comment?: ServiceProviderProductApplicationComment | null;
 };
 
 /**
@@ -2107,6 +2371,10 @@ export type ServiceProviderProductApplicationComment = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded service_provider_product_application
+   */
+  service_provider_product_application?: ServiceProviderProductApplication | null;
 };
 
 /**
@@ -2168,6 +2436,18 @@ export type ServiceProviderProductSuspension = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded party
+   */
+  procuring_system_operator?: Party | null;
+  /**
+   * Embedded party
+   */
+  service_provider?: Party | null;
+  /**
+   * Embedded service_provider_product_suspension_comment
+   */
+  comment?: ServiceProviderProductSuspensionComment | null;
 };
 
 /**
@@ -2229,6 +2509,10 @@ export type ServiceProviderProductSuspensionComment = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded service_provider_product_suspension
+   */
+  service_provider_product_suspension?: ServiceProviderProductSuspension | null;
 };
 
 /**
@@ -2350,6 +2634,18 @@ export type ServiceProvidingGroupProductApplication = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded service_providing_group
+   */
+  service_providing_group?: ServiceProvidingGroup | null;
+  /**
+   * Embedded party
+   */
+  procuring_system_operator?: Party | null;
+  /**
+   * Embedded service_providing_group_product_application_comment
+   */
+  comment?: ServiceProvidingGroupProductApplicationComment | null;
 };
 
 /**
@@ -2411,6 +2707,10 @@ export type ServiceProvidingGroupProductApplicationComment = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded service_providing_group_product_application
+   */
+  service_providing_group_product_application?: ServiceProvidingGroupProductApplication | null;
 };
 
 /**
@@ -2472,6 +2772,18 @@ export type ServiceProvidingGroupProductSuspension = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded party
+   */
+  procuring_system_operator?: Party | null;
+  /**
+   * Embedded service_providing_group
+   */
+  service_providing_group?: ServiceProvidingGroup | null;
+  /**
+   * Embedded service_providing_group_product_suspension_comment
+   */
+  comment?: ServiceProvidingGroupProductSuspensionComment | null;
 };
 
 /**
@@ -2533,6 +2845,10 @@ export type ServiceProvidingGroupProductSuspensionComment = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded service_providing_group_product_suspension
+   */
+  service_providing_group_product_suspension?: ServiceProvidingGroupProductSuspension | null;
 };
 
 /**
@@ -2564,6 +2880,10 @@ export type Notice = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded party
+   */
+  party?: Party | null;
 };
 
 /**
@@ -3044,6 +3364,26 @@ export type ControllableUnitWritable = {
    * Free text field for extra information about the controllable unit if needed.
    */
   additional_information?: string;
+  /**
+   * Embedded accounting_point
+   */
+  accounting_point?: AccountingPointWritable | null;
+  /**
+   * Embedded controllable_unit_suspension
+   */
+  suspension?: ControllableUnitSuspensionWritable | null;
+  /**
+   * Embedded controllable_unit_service_provider
+   */
+  service_provider?: ControllableUnitServiceProviderWritable | null;
+  /**
+   * Embedded service_providing_group_membership
+   */
+  service_providing_group_membership?: ServiceProvidingGroupMembershipWritable | null;
+  /**
+   * Embedded technical_resource
+   */
+  technical_resource?: TechnicalResourceWritable | null;
 };
 
 /**
@@ -3059,6 +3399,18 @@ export type ControllableUnitSuspensionWritable = {
    */
   impacted_system_operator_id: number;
   reason: ControllableUnitSuspensionReason;
+  /**
+   * Embedded controllable_unit
+   */
+  controllable_unit?: ControllableUnitWritable | null;
+  /**
+   * Embedded party
+   */
+  impacted_system_operator?: PartyWritable | null;
+  /**
+   * Embedded controllable_unit_suspension_comment
+   */
+  comment?: ControllableUnitSuspensionCommentWritable | null;
 };
 
 /**
@@ -3074,6 +3426,10 @@ export type ControllableUnitSuspensionCommentWritable = {
    * Free text content of the comment.
    */
   content: string;
+  /**
+   * Embedded controllable_unit_suspension
+   */
+  controllable_unit_suspension?: ControllableUnitSuspensionWritable | null;
 };
 
 /**
@@ -3104,6 +3460,18 @@ export type ControllableUnitServiceProviderWritable = {
    * The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.
    */
   valid_to?: string;
+  /**
+   * Embedded controllable_unit
+   */
+  controllable_unit?: ControllableUnitWritable | null;
+  /**
+   * Embedded party
+   */
+  service_provider?: PartyWritable | null;
+  /**
+   * Embedded party
+   */
+  end_user?: PartyWritable | null;
 };
 
 /**
@@ -3124,6 +3492,30 @@ export type ServiceProvidingGroupWritable = {
    * Free text field for extra information about the service providing group if needed.
    */
   additional_information?: string;
+  /**
+   * Embedded party
+   */
+  service_provider?: PartyWritable | null;
+  /**
+   * Embedded service_providing_group_membership
+   */
+  membership?: ServiceProvidingGroupMembershipWritable | null;
+  /**
+   * Embedded service_providing_group_grid_prequalification
+   */
+  grid_prequalification?: ServiceProvidingGroupGridPrequalificationWritable | null;
+  /**
+   * Embedded service_providing_group_grid_suspension
+   */
+  grid_suspension?: ServiceProvidingGroupGridSuspensionWritable | null;
+  /**
+   * Embedded service_providing_group_product_application
+   */
+  product_application?: ServiceProvidingGroupProductApplicationWritable | null;
+  /**
+   * Embedded service_providing_group_product_suspension
+   */
+  product_suspension?: ServiceProvidingGroupProductSuspensionWritable | null;
 };
 
 /**
@@ -3146,6 +3538,14 @@ export type ServiceProvidingGroupMembershipWritable = {
    * The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.
    */
   valid_to?: string;
+  /**
+   * Embedded controllable_unit
+   */
+  controllable_unit?: ControllableUnitWritable | null;
+  /**
+   * Embedded service_providing_group
+   */
+  service_providing_group?: ServiceProvidingGroupWritable | null;
 };
 
 /**
@@ -3165,6 +3565,18 @@ export type ServiceProvidingGroupGridPrequalificationWritable = {
    * When the current grid prequalification was last approved.
    */
   prequalified_at?: string;
+  /**
+   * Embedded service_providing_group
+   */
+  service_providing_group?: ServiceProvidingGroupWritable | null;
+  /**
+   * Embedded party
+   */
+  impacted_system_operator?: PartyWritable | null;
+  /**
+   * Embedded service_providing_group_grid_prequalification_comment
+   */
+  comment?: ServiceProvidingGroupGridPrequalificationCommentWritable | null;
 };
 
 /**
@@ -3180,6 +3592,10 @@ export type ServiceProvidingGroupGridPrequalificationCommentWritable = {
    * Free text content of the comment.
    */
   content: string;
+  /**
+   * Embedded service_providing_group_grid_prequalification
+   */
+  service_providing_group_grid_prequalification?: ServiceProvidingGroupGridPrequalificationWritable | null;
 };
 
 /**
@@ -3195,6 +3611,18 @@ export type ServiceProvidingGroupGridSuspensionWritable = {
    */
   service_providing_group_id: number;
   reason: ServiceProvidingGroupGridSuspensionReason;
+  /**
+   * Embedded party
+   */
+  impacted_system_operator?: PartyWritable | null;
+  /**
+   * Embedded service_providing_group
+   */
+  service_providing_group?: ServiceProvidingGroupWritable | null;
+  /**
+   * Embedded service_providing_group_grid_suspension_comment
+   */
+  comment?: ServiceProvidingGroupGridSuspensionCommentWritable | null;
 };
 
 /**
@@ -3210,6 +3638,10 @@ export type ServiceProvidingGroupGridSuspensionCommentWritable = {
    * Free text content of the comment.
    */
   content: string;
+  /**
+   * Embedded service_providing_group_grid_suspension
+   */
+  service_providing_group_grid_suspension?: ServiceProvidingGroupGridSuspensionWritable | null;
 };
 
 /**
@@ -3233,6 +3665,22 @@ export type EntityWritable = {
    */
   name: string;
   type: EntityType;
+  /**
+   * Embedded entity_client
+   */
+  client?: EntityClientWritable | null;
+  /**
+   * Embedded party
+   */
+  party?: PartyWritable | null;
+  /**
+   * Embedded party_membership
+   */
+  party_membership?: PartyMembershipWritable | null;
+  /**
+   * Embedded identity
+   */
+  identity?: IdentityWritable | null;
 };
 
 /**
@@ -3264,6 +3712,14 @@ export type EntityClientWritable = {
    * The public key of the entity (X.509 SubjectPublicKeyInfo). For use with JWT grant authentication method.
    */
   public_key?: string;
+  /**
+   * Embedded entity
+   */
+  entity?: EntityWritable | null;
+  /**
+   * Embedded party
+   */
+  party?: PartyWritable | null;
 };
 
 /**
@@ -3294,6 +3750,10 @@ export type PartyWritable = {
   role: PartyRole;
   type: PartyType;
   status: PartyStatus;
+  /**
+   * Embedded entity
+   */
+  entity?: EntityWritable | null;
 };
 
 /**
@@ -3312,6 +3772,28 @@ export type PartyMembershipWritable = {
    * List of scopes granted to the entity when it acts as the party. Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.
    */
   scopes: Array<AuthScope>;
+  /**
+   * Embedded party
+   */
+  party?: PartyWritable | null;
+  /**
+   * Embedded entity
+   */
+  entity?: EntityWritable | null;
+};
+
+/**
+ * Response schema - Resource uniquely identifying a user by linking its entity and the potentially assumed party.
+ */
+export type IdentityWritable = {
+  /**
+   * Embedded entity
+   */
+  entity?: EntityWritable | null;
+  /**
+   * Embedded party
+   */
+  party?: PartyWritable | null;
 };
 
 /**
@@ -3355,6 +3837,20 @@ export type TechnicalResourceWritable = {
    * Free text field for extra information about the technical resource if needed.
    */
   additional_information?: string;
+  /**
+   * Embedded controllable_unit
+   */
+  controllable_unit?: ControllableUnitWritable | null;
+};
+
+/**
+ * Response schema - Event happening in the system.
+ */
+export type EventWritable = {
+  /**
+   * Embedded notification
+   */
+  notification?: NotificationWritable | null;
 };
 
 /**
@@ -3373,13 +3869,62 @@ export type NotificationWritable = {
    * Reference to the party concerned by this notification.
    */
   party_id: number;
+  /**
+   * Embedded event
+   */
+  event?: EventWritable | null;
+  /**
+   * Embedded party
+   */
+  party?: PartyWritable | null;
+};
+
+/**
+ * Response schema - Accounting point for a controllable unit.
+ */
+export type AccountingPointWritable = {
+  /**
+   * Embedded controllable_unit
+   */
+  controllable_unit?: ControllableUnitWritable | null;
+  /**
+   * Embedded party
+   */
+  system_operator?: PartyWritable | null;
+  /**
+   * Embedded accounting_point_balance_responsible_party
+   */
+  balance_responsible_party?: AccountingPointBalanceResponsiblePartyWritable | null;
+  /**
+   * Embedded accounting_point_bidding_zone
+   */
+  bidding_zone?: AccountingPointBiddingZoneWritable | null;
+  /**
+   * Embedded accounting_point_end_user
+   */
+  end_user?: AccountingPointEndUserWritable | null;
+  /**
+   * Embedded accounting_point_energy_supplier
+   */
+  energy_supplier?: AccountingPointEnergySupplierWritable | null;
+  /**
+   * Embedded accounting_point_metering_grid_area
+   */
+  metering_grid_area?: AccountingPointMeteringGridAreaWritable | null;
 };
 
 /**
  * Response schema - Relation linking a balance responsible party to an accounting point.
  */
 export type AccountingPointBalanceResponsiblePartyWritable = {
-  [key: string]: unknown;
+  /**
+   * Embedded accounting_point
+   */
+  accounting_point?: AccountingPointWritable | null;
+  /**
+   * Embedded party
+   */
+  balance_responsible_party?: PartyWritable | null;
 };
 
 /**
@@ -3387,13 +3932,72 @@ export type AccountingPointBalanceResponsiblePartyWritable = {
  */
 export type AccountingPointBiddingZoneWritable = {
   bidding_zone: AccountingPointBiddingZoneBiddingZone;
+  /**
+   * Embedded accounting_point
+   */
+  accounting_point?: AccountingPointWritable | null;
+};
+
+/**
+ * Response schema - Relation telling which end user an accounting point belongs to.
+ */
+export type AccountingPointEndUserWritable = {
+  /**
+   * Embedded accounting_point
+   */
+  accounting_point?: AccountingPointWritable | null;
+  /**
+   * Embedded party
+   */
+  end_user?: PartyWritable | null;
+};
+
+/**
+ * Response schema - Relation linking an energy supplier to an accounting point.
+ */
+export type AccountingPointEnergySupplierWritable = {
+  /**
+   * Embedded accounting_point
+   */
+  accounting_point?: AccountingPointWritable | null;
+  /**
+   * Embedded party
+   */
+  energy_supplier?: PartyWritable | null;
 };
 
 /**
  * Response schema - Metering grid area to which accounting points belong.
  */
 export type MeteringGridAreaWritable = {
-  [key: string]: unknown;
+  /**
+   * Embedded accounting_point_metering_grid_area
+   */
+  accounting_point_metering_grid_area?: AccountingPointMeteringGridAreaWritable | null;
+};
+
+/**
+ * Response schema - Relation telling which metering grid area an accounting point belongs to.
+ */
+export type AccountingPointMeteringGridAreaWritable = {
+  /**
+   * Embedded accounting_point
+   */
+  accounting_point?: AccountingPointWritable | null;
+  /**
+   * Embedded metering_grid_area
+   */
+  metering_grid_area?: MeteringGridAreaWritable | null;
+};
+
+/**
+ * Response schema - Product type.
+ */
+export type ProductTypeWritable = {
+  /**
+   * Embedded system_operator_product_type
+   */
+  system_operator_product_type?: SystemOperatorProductTypeWritable | null;
 };
 
 /**
@@ -3409,6 +4013,14 @@ export type SystemOperatorProductTypeWritable = {
    */
   product_type_id: number;
   status: SystemOperatorProductTypeStatus;
+  /**
+   * Embedded party
+   */
+  system_operator?: PartyWritable | null;
+  /**
+   * Embedded product_type
+   */
+  product_type?: ProductTypeWritable | null;
 };
 
 /**
@@ -3432,6 +4044,18 @@ export type ServiceProviderProductApplicationWritable = {
    * When the product application was last validated.
    */
   qualified_at?: string;
+  /**
+   * Embedded party
+   */
+  service_provider?: PartyWritable | null;
+  /**
+   * Embedded party
+   */
+  system_operator?: PartyWritable | null;
+  /**
+   * Embedded service_provider_product_application_comment
+   */
+  comment?: ServiceProviderProductApplicationCommentWritable | null;
 };
 
 /**
@@ -3447,6 +4071,10 @@ export type ServiceProviderProductApplicationCommentWritable = {
    * Free text content of the comment.
    */
   content: string;
+  /**
+   * Embedded service_provider_product_application
+   */
+  service_provider_product_application?: ServiceProviderProductApplicationWritable | null;
 };
 
 /**
@@ -3466,6 +4094,18 @@ export type ServiceProviderProductSuspensionWritable = {
    */
   product_type_ids: Array<number>;
   reason: ServiceProviderProductSuspensionReason;
+  /**
+   * Embedded party
+   */
+  procuring_system_operator?: PartyWritable | null;
+  /**
+   * Embedded party
+   */
+  service_provider?: PartyWritable | null;
+  /**
+   * Embedded service_provider_product_suspension_comment
+   */
+  comment?: ServiceProviderProductSuspensionCommentWritable | null;
 };
 
 /**
@@ -3481,6 +4121,10 @@ export type ServiceProviderProductSuspensionCommentWritable = {
    * Free text content of the comment.
    */
   content: string;
+  /**
+   * Embedded service_provider_product_suspension
+   */
+  service_provider_product_suspension?: ServiceProviderProductSuspensionWritable | null;
 };
 
 /**
@@ -3520,6 +4164,18 @@ export type ServiceProvidingGroupProductApplicationWritable = {
    * When the product application was last verified.
    */
   verified_at?: string;
+  /**
+   * Embedded service_providing_group
+   */
+  service_providing_group?: ServiceProvidingGroupWritable | null;
+  /**
+   * Embedded party
+   */
+  procuring_system_operator?: PartyWritable | null;
+  /**
+   * Embedded service_providing_group_product_application_comment
+   */
+  comment?: ServiceProvidingGroupProductApplicationCommentWritable | null;
 };
 
 /**
@@ -3535,6 +4191,10 @@ export type ServiceProvidingGroupProductApplicationCommentWritable = {
    * Free text content of the comment.
    */
   content: string;
+  /**
+   * Embedded service_providing_group_product_application
+   */
+  service_providing_group_product_application?: ServiceProvidingGroupProductApplicationWritable | null;
 };
 
 /**
@@ -3554,6 +4214,18 @@ export type ServiceProvidingGroupProductSuspensionWritable = {
    */
   product_type_ids: Array<number>;
   reason: ServiceProvidingGroupProductSuspensionReason;
+  /**
+   * Embedded party
+   */
+  procuring_system_operator?: PartyWritable | null;
+  /**
+   * Embedded service_providing_group
+   */
+  service_providing_group?: ServiceProvidingGroupWritable | null;
+  /**
+   * Embedded service_providing_group_product_suspension_comment
+   */
+  comment?: ServiceProvidingGroupProductSuspensionCommentWritable | null;
 };
 
 /**
@@ -3569,6 +4241,10 @@ export type ServiceProvidingGroupProductSuspensionCommentWritable = {
    * Free text content of the comment.
    */
   content: string;
+  /**
+   * Embedded service_providing_group_product_suspension
+   */
+  service_providing_group_product_suspension?: ServiceProvidingGroupProductSuspensionWritable | null;
 };
 
 /**
@@ -3576,6 +4252,10 @@ export type ServiceProvidingGroupProductSuspensionCommentWritable = {
  */
 export type NoticeWritable = {
   status: NoticeStatus;
+  /**
+   * Embedded party
+   */
+  party?: PartyWritable | null;
 };
 
 /**

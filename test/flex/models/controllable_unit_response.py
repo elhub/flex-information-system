@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, cast
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -11,6 +11,14 @@ from dateutil.parser import isoparse
 from ..models.controllable_unit_regulation_direction import ControllableUnitRegulationDirection
 from ..models.controllable_unit_status import ControllableUnitStatus
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.accounting_point_response import AccountingPointResponse
+    from ..models.controllable_unit_service_provider_response import ControllableUnitServiceProviderResponse
+    from ..models.controllable_unit_suspension_response import ControllableUnitSuspensionResponse
+    from ..models.service_providing_group_membership_response import ServiceProvidingGroupMembershipResponse
+    from ..models.technical_resource_response import TechnicalResourceResponse
+
 
 T = TypeVar("T", bound="ControllableUnitResponse")
 
@@ -40,6 +48,13 @@ class ControllableUnitResponse:
             2024-05-17.
         additional_information (None | str | Unset): Free text field for extra information about the controllable unit
             if needed.
+        accounting_point (AccountingPointResponse | None | Unset): Embedded accounting_point
+        suspension (ControllableUnitSuspensionResponse | None | Unset): Embedded controllable_unit_suspension
+        service_provider (ControllableUnitServiceProviderResponse | None | Unset): Embedded
+            controllable_unit_service_provider
+        service_providing_group_membership (None | ServiceProvidingGroupMembershipResponse | Unset): Embedded
+            service_providing_group_membership
+        technical_resource (None | TechnicalResourceResponse | Unset): Embedded technical_resource
     """
 
     id: int
@@ -54,9 +69,20 @@ class ControllableUnitResponse:
     recorded_by: int
     start_date: datetime.date | None | Unset = UNSET
     additional_information: None | str | Unset = UNSET
+    accounting_point: AccountingPointResponse | None | Unset = UNSET
+    suspension: ControllableUnitSuspensionResponse | None | Unset = UNSET
+    service_provider: ControllableUnitServiceProviderResponse | None | Unset = UNSET
+    service_providing_group_membership: None | ServiceProvidingGroupMembershipResponse | Unset = UNSET
+    technical_resource: None | TechnicalResourceResponse | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        from ..models.accounting_point_response import AccountingPointResponse
+        from ..models.controllable_unit_service_provider_response import ControllableUnitServiceProviderResponse
+        from ..models.controllable_unit_suspension_response import ControllableUnitSuspensionResponse
+        from ..models.service_providing_group_membership_response import ServiceProvidingGroupMembershipResponse
+        from ..models.technical_resource_response import TechnicalResourceResponse
+
         id = self.id
 
         business_id = self.business_id
@@ -91,6 +117,46 @@ class ControllableUnitResponse:
         else:
             additional_information = self.additional_information
 
+        accounting_point: dict[str, Any] | None | Unset
+        if isinstance(self.accounting_point, Unset):
+            accounting_point = UNSET
+        elif isinstance(self.accounting_point, AccountingPointResponse):
+            accounting_point = self.accounting_point.to_dict()
+        else:
+            accounting_point = self.accounting_point
+
+        suspension: dict[str, Any] | None | Unset
+        if isinstance(self.suspension, Unset):
+            suspension = UNSET
+        elif isinstance(self.suspension, ControllableUnitSuspensionResponse):
+            suspension = self.suspension.to_dict()
+        else:
+            suspension = self.suspension
+
+        service_provider: dict[str, Any] | None | Unset
+        if isinstance(self.service_provider, Unset):
+            service_provider = UNSET
+        elif isinstance(self.service_provider, ControllableUnitServiceProviderResponse):
+            service_provider = self.service_provider.to_dict()
+        else:
+            service_provider = self.service_provider
+
+        service_providing_group_membership: dict[str, Any] | None | Unset
+        if isinstance(self.service_providing_group_membership, Unset):
+            service_providing_group_membership = UNSET
+        elif isinstance(self.service_providing_group_membership, ServiceProvidingGroupMembershipResponse):
+            service_providing_group_membership = self.service_providing_group_membership.to_dict()
+        else:
+            service_providing_group_membership = self.service_providing_group_membership
+
+        technical_resource: dict[str, Any] | None | Unset
+        if isinstance(self.technical_resource, Unset):
+            technical_resource = UNSET
+        elif isinstance(self.technical_resource, TechnicalResourceResponse):
+            technical_resource = self.technical_resource.to_dict()
+        else:
+            technical_resource = self.technical_resource
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -111,11 +177,27 @@ class ControllableUnitResponse:
             field_dict["start_date"] = start_date
         if additional_information is not UNSET:
             field_dict["additional_information"] = additional_information
+        if accounting_point is not UNSET:
+            field_dict["accounting_point"] = accounting_point
+        if suspension is not UNSET:
+            field_dict["suspension"] = suspension
+        if service_provider is not UNSET:
+            field_dict["service_provider"] = service_provider
+        if service_providing_group_membership is not UNSET:
+            field_dict["service_providing_group_membership"] = service_providing_group_membership
+        if technical_resource is not UNSET:
+            field_dict["technical_resource"] = technical_resource
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.accounting_point_response import AccountingPointResponse
+        from ..models.controllable_unit_service_provider_response import ControllableUnitServiceProviderResponse
+        from ..models.controllable_unit_suspension_response import ControllableUnitSuspensionResponse
+        from ..models.service_providing_group_membership_response import ServiceProvidingGroupMembershipResponse
+        from ..models.technical_resource_response import TechnicalResourceResponse
+
         d = dict(src_dict)
         id = d.pop("id")
 
@@ -163,6 +245,95 @@ class ControllableUnitResponse:
 
         additional_information = _parse_additional_information(d.pop("additional_information", UNSET))
 
+        def _parse_accounting_point(data: object) -> AccountingPointResponse | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                accounting_point_type_0 = AccountingPointResponse.from_dict(data)
+
+                return accounting_point_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(AccountingPointResponse | None | Unset, data)
+
+        accounting_point = _parse_accounting_point(d.pop("accounting_point", UNSET))
+
+        def _parse_suspension(data: object) -> ControllableUnitSuspensionResponse | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                suspension_type_0 = ControllableUnitSuspensionResponse.from_dict(data)
+
+                return suspension_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(ControllableUnitSuspensionResponse | None | Unset, data)
+
+        suspension = _parse_suspension(d.pop("suspension", UNSET))
+
+        def _parse_service_provider(data: object) -> ControllableUnitServiceProviderResponse | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                service_provider_type_0 = ControllableUnitServiceProviderResponse.from_dict(data)
+
+                return service_provider_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(ControllableUnitServiceProviderResponse | None | Unset, data)
+
+        service_provider = _parse_service_provider(d.pop("service_provider", UNSET))
+
+        def _parse_service_providing_group_membership(
+            data: object,
+        ) -> None | ServiceProvidingGroupMembershipResponse | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                service_providing_group_membership_type_0 = ServiceProvidingGroupMembershipResponse.from_dict(data)
+
+                return service_providing_group_membership_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(None | ServiceProvidingGroupMembershipResponse | Unset, data)
+
+        service_providing_group_membership = _parse_service_providing_group_membership(
+            d.pop("service_providing_group_membership", UNSET)
+        )
+
+        def _parse_technical_resource(data: object) -> None | TechnicalResourceResponse | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                technical_resource_type_0 = TechnicalResourceResponse.from_dict(data)
+
+                return technical_resource_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(None | TechnicalResourceResponse | Unset, data)
+
+        technical_resource = _parse_technical_resource(d.pop("technical_resource", UNSET))
+
         controllable_unit_response = cls(
             id=id,
             business_id=business_id,
@@ -176,6 +347,11 @@ class ControllableUnitResponse:
             recorded_by=recorded_by,
             start_date=start_date,
             additional_information=additional_information,
+            accounting_point=accounting_point,
+            suspension=suspension,
+            service_provider=service_provider,
+            service_providing_group_membership=service_providing_group_membership,
+            technical_resource=technical_resource,
         )
 
         controllable_unit_response.additional_properties = d

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, cast
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -10,6 +10,13 @@ from dateutil.parser import isoparse
 
 from ..models.service_provider_product_application_status import ServiceProviderProductApplicationStatus
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.party_response import PartyResponse
+    from ..models.service_provider_product_application_comment_response import (
+        ServiceProviderProductApplicationCommentResponse,
+    )
+
 
 T = TypeVar("T", bound="ServiceProviderProductApplicationHistoryResponse")
 
@@ -30,6 +37,10 @@ class ServiceProviderProductApplicationHistoryResponse:
         service_provider_product_application_id (int): Reference to the resource that was updated. Example: 48.
         qualified_at (datetime.datetime | None | Unset): When the product application was last validated. Example:
             2022-08-08T12:00:00+02.
+        service_provider (None | PartyResponse | Unset): Embedded party
+        system_operator (None | PartyResponse | Unset): Embedded party
+        comment (None | ServiceProviderProductApplicationCommentResponse | Unset): Embedded
+            service_provider_product_application_comment
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (datetime.datetime | None | Unset): When the resource was replaced in the system. Example:
             2024-07-07T10:00:00+00:00.
@@ -44,11 +55,19 @@ class ServiceProviderProductApplicationHistoryResponse:
     recorded_by: int
     service_provider_product_application_id: int
     qualified_at: datetime.datetime | None | Unset = UNSET
+    service_provider: None | PartyResponse | Unset = UNSET
+    system_operator: None | PartyResponse | Unset = UNSET
+    comment: None | ServiceProviderProductApplicationCommentResponse | Unset = UNSET
     replaced_by: int | None | Unset = UNSET
     replaced_at: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        from ..models.party_response import PartyResponse
+        from ..models.service_provider_product_application_comment_response import (
+            ServiceProviderProductApplicationCommentResponse,
+        )
+
         id = self.id
 
         service_provider_id = self.service_provider_id
@@ -72,6 +91,30 @@ class ServiceProviderProductApplicationHistoryResponse:
             qualified_at = self.qualified_at.isoformat()
         else:
             qualified_at = self.qualified_at
+
+        service_provider: dict[str, Any] | None | Unset
+        if isinstance(self.service_provider, Unset):
+            service_provider = UNSET
+        elif isinstance(self.service_provider, PartyResponse):
+            service_provider = self.service_provider.to_dict()
+        else:
+            service_provider = self.service_provider
+
+        system_operator: dict[str, Any] | None | Unset
+        if isinstance(self.system_operator, Unset):
+            system_operator = UNSET
+        elif isinstance(self.system_operator, PartyResponse):
+            system_operator = self.system_operator.to_dict()
+        else:
+            system_operator = self.system_operator
+
+        comment: dict[str, Any] | None | Unset
+        if isinstance(self.comment, Unset):
+            comment = UNSET
+        elif isinstance(self.comment, ServiceProviderProductApplicationCommentResponse):
+            comment = self.comment.to_dict()
+        else:
+            comment = self.comment
 
         replaced_by: int | None | Unset
         if isinstance(self.replaced_by, Unset):
@@ -103,6 +146,12 @@ class ServiceProviderProductApplicationHistoryResponse:
         )
         if qualified_at is not UNSET:
             field_dict["qualified_at"] = qualified_at
+        if service_provider is not UNSET:
+            field_dict["service_provider"] = service_provider
+        if system_operator is not UNSET:
+            field_dict["system_operator"] = system_operator
+        if comment is not UNSET:
+            field_dict["comment"] = comment
         if replaced_by is not UNSET:
             field_dict["replaced_by"] = replaced_by
         if replaced_at is not UNSET:
@@ -112,6 +161,11 @@ class ServiceProviderProductApplicationHistoryResponse:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.party_response import PartyResponse
+        from ..models.service_provider_product_application_comment_response import (
+            ServiceProviderProductApplicationCommentResponse,
+        )
+
         d = dict(src_dict)
         id = d.pop("id")
 
@@ -145,6 +199,57 @@ class ServiceProviderProductApplicationHistoryResponse:
             return cast(datetime.datetime | None | Unset, data)
 
         qualified_at = _parse_qualified_at(d.pop("qualified_at", UNSET))
+
+        def _parse_service_provider(data: object) -> None | PartyResponse | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                service_provider_type_0 = PartyResponse.from_dict(data)
+
+                return service_provider_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(None | PartyResponse | Unset, data)
+
+        service_provider = _parse_service_provider(d.pop("service_provider", UNSET))
+
+        def _parse_system_operator(data: object) -> None | PartyResponse | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                system_operator_type_0 = PartyResponse.from_dict(data)
+
+                return system_operator_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(None | PartyResponse | Unset, data)
+
+        system_operator = _parse_system_operator(d.pop("system_operator", UNSET))
+
+        def _parse_comment(data: object) -> None | ServiceProviderProductApplicationCommentResponse | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                comment_type_0 = ServiceProviderProductApplicationCommentResponse.from_dict(data)
+
+                return comment_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(None | ServiceProviderProductApplicationCommentResponse | Unset, data)
+
+        comment = _parse_comment(d.pop("comment", UNSET))
 
         def _parse_replaced_by(data: object) -> int | None | Unset:
             if data is None:
@@ -182,6 +287,9 @@ class ServiceProviderProductApplicationHistoryResponse:
             recorded_by=recorded_by,
             service_provider_product_application_id=service_provider_product_application_id,
             qualified_at=qualified_at,
+            service_provider=service_provider,
+            system_operator=system_operator,
+            comment=comment,
             replaced_by=replaced_by,
             replaced_at=replaced_at,
         )

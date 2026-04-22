@@ -52,4 +52,46 @@ public data class ServiceProvidingGroupResponse(
    */
   @SerialName("recorded_by")
   public val recordedBy: Long? = null,
+  /**
+   * Response schema - The body that interacts with the Flexibility Information System
+   *
+   * A party is the thing that is authorized to access or modify data in the Flexiblity Information
+   * System.
+   *
+   * Example party types:
+   *
+   * * Service Provider
+   * * System Operator
+   * * End User
+   */
+  @SerialName("service_provider")
+  public val serviceProvider: PartyResponse? = null,
+  /**
+   * Response schema - Membership relation of controllable unit in service providing group
+   */
+  @SerialName("membership")
+  public val membership: ServiceProvidingGroupMembershipResponse? = null,
+  /**
+   * Response schema - Grid prequalification for service providing group
+   */
+  @SerialName("grid_prequalification")
+  public val gridPrequalification: ServiceProvidingGroupGridPrequalificationResponse? = null,
+  /**
+   * Response schema - The relation allowing an impacted system operator to temporarily suspend a
+   * service providing group from delivering services.
+   */
+  @SerialName("grid_suspension")
+  public val gridSuspension: ServiceProvidingGroupGridSuspensionResponse? = null,
+  /**
+   * Response schema - Relation between a service providing group and a system operator for a
+   * product type, for the SPG to deliver a product to the SO later.
+   */
+  @SerialName("product_application")
+  public val productApplication: ServiceProvidingGroupProductApplicationResponse? = null,
+  /**
+   * Response schema - The relation allowing a procuring system operator to temporarily suspend a
+   * service providing group from delivering products of certain types.
+   */
+  @SerialName("product_suspension")
+  public val productSuspension: ServiceProvidingGroupProductSuspensionResponse? = null,
 )

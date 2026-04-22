@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, cast
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -13,6 +13,10 @@ from ..models.party_role import PartyRole
 from ..models.party_status import PartyStatus
 from ..models.party_type import PartyType
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.entity_response import EntityResponse
+
 
 T = TypeVar("T", bound="PartyHistoryResponse")
 
@@ -36,6 +40,7 @@ class PartyHistoryResponse:
             2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
         party_id (int): Reference to the resource that was updated. Example: 48.
+        entity (EntityResponse | None | Unset): Embedded entity
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (datetime.datetime | None | Unset): When the resource was replaced in the system. Example:
             2024-07-07T10:00:00+00:00.
@@ -52,11 +57,14 @@ class PartyHistoryResponse:
     recorded_at: datetime.datetime
     recorded_by: int
     party_id: int
+    entity: EntityResponse | None | Unset = UNSET
     replaced_by: int | None | Unset = UNSET
     replaced_at: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        from ..models.entity_response import EntityResponse
+
         id = self.id
 
         business_id = self.business_id
@@ -78,6 +86,14 @@ class PartyHistoryResponse:
         recorded_by = self.recorded_by
 
         party_id = self.party_id
+
+        entity: dict[str, Any] | None | Unset
+        if isinstance(self.entity, Unset):
+            entity = UNSET
+        elif isinstance(self.entity, EntityResponse):
+            entity = self.entity.to_dict()
+        else:
+            entity = self.entity
 
         replaced_by: int | None | Unset
         if isinstance(self.replaced_by, Unset):
@@ -110,6 +126,8 @@ class PartyHistoryResponse:
                 "party_id": party_id,
             }
         )
+        if entity is not UNSET:
+            field_dict["entity"] = entity
         if replaced_by is not UNSET:
             field_dict["replaced_by"] = replaced_by
         if replaced_at is not UNSET:
@@ -119,6 +137,8 @@ class PartyHistoryResponse:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.entity_response import EntityResponse
+
         d = dict(src_dict)
         id = d.pop("id")
 
@@ -141,6 +161,23 @@ class PartyHistoryResponse:
         recorded_by = d.pop("recorded_by")
 
         party_id = d.pop("party_id")
+
+        def _parse_entity(data: object) -> EntityResponse | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                entity_type_0 = EntityResponse.from_dict(data)
+
+                return entity_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(EntityResponse | None | Unset, data)
+
+        entity = _parse_entity(d.pop("entity", UNSET))
 
         def _parse_replaced_by(data: object) -> int | None | Unset:
             if data is None:
@@ -180,6 +217,7 @@ class PartyHistoryResponse:
             recorded_at=recorded_at,
             recorded_by=recorded_by,
             party_id=party_id,
+            entity=entity,
             replaced_by=replaced_by,
             replaced_at=replaced_at,
         )

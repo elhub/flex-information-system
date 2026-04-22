@@ -46,4 +46,9 @@ public data class EventResponse(
    */
   @SerialName("data")
   public val `data`: String? = null,
+  /**
+   * Response schema - Notification about an event happening in the system.
+   */
+  @SerialName("notification")
+  public val notification: NotificationResponse? = null,
 )

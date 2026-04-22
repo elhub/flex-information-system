@@ -51,4 +51,11 @@ public data class ServiceProvidingGroupGridSuspensionCommentResponse(
    */
   @SerialName("recorded_by")
   public val recordedBy: Long? = null,
+  /**
+   * Response schema - The relation allowing an impacted system operator to temporarily suspend a
+   * service providing group from delivering services.
+   */
+  @SerialName("service_providing_group_grid_suspension")
+  public val serviceProvidingGroupGridSuspension: ServiceProvidingGroupGridSuspensionResponse? =
+      null,
 )

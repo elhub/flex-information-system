@@ -322,10 +322,9 @@ export const zTechnicalResourceBusinessIdType = z.enum([
 /**
  * The direction of the effect on the balance that the BRP takes responsibility for.
  */
-export const zAccountingPointBalanceResponsiblePartyEnergyDirection = z.enum([
-  "consumption",
-  "production",
-]);
+export const zAccountingPointBalanceResponsiblePartyEnergyDirection = z
+  .enum(["consumption", "production"])
+  .readonly();
 
 /**
  * The bidding zone of the accounting point.
@@ -341,7 +340,7 @@ export const zAccountingPointBiddingZoneBiddingZone = z.enum([
 /**
  * The type of the business identifier.
  */
-export const zMeteringGridAreaBusinessIdType = z.enum(["eic_y"]);
+export const zMeteringGridAreaBusinessIdType = z.enum(["eic_y"]).readonly();
 
 /**
  * The status of the relation.
@@ -454,29 +453,6 @@ export const zControllableUnitCreateRequest = z.object({
 });
 
 /**
- * Response schema - Controllable unit
- */
-export const zControllableUnit = z.object({
-  id: z.coerce.number().readonly(),
-  business_id: z
-    .string()
-    .regex(
-      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
-    )
-    .readonly(),
-  name: z.string().max(512),
-  start_date: z.iso.date().optional(),
-  status: zControllableUnitStatus,
-  regulation_direction: zControllableUnitRegulationDirection,
-  maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
-  is_small: z.boolean().readonly(),
-  accounting_point_id: z.coerce.number(),
-  additional_information: z.string().optional(),
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-});
-
-/**
  * Request schema for update operations - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
  */
 export const zControllableUnitSuspensionUpdateRequest = z.object({
@@ -490,18 +466,6 @@ export const zControllableUnitSuspensionCreateRequest = z.object({
   controllable_unit_id: z.coerce.number(),
   impacted_system_operator_id: z.coerce.number().optional(),
   reason: zControllableUnitSuspensionReason,
-});
-
-/**
- * Response schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
- */
-export const zControllableUnitSuspension = z.object({
-  id: z.coerce.number().readonly(),
-  controllable_unit_id: z.coerce.number(),
-  impacted_system_operator_id: z.coerce.number(),
-  reason: zControllableUnitSuspensionReason,
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
 });
 
 /**
@@ -519,20 +483,6 @@ export const zControllableUnitSuspensionCommentCreateRequest = z.object({
   controllable_unit_suspension_id: z.coerce.number(),
   visibility: zControllableUnitSuspensionCommentVisibility.optional(),
   content: z.string().max(2048),
-});
-
-/**
- * Response schema - Comment made by a party involved in a controllable unit suspension.
- */
-export const zControllableUnitSuspensionComment = z.object({
-  id: z.coerce.number().readonly(),
-  controllable_unit_suspension_id: z.coerce.number(),
-  created_by: z.coerce.number().readonly(),
-  created_at: z.iso.datetime({ offset: true }).readonly(),
-  visibility: zControllableUnitSuspensionCommentVisibility,
-  content: z.string().max(2048),
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
 });
 
 /**
@@ -557,21 +507,6 @@ export const zControllableUnitServiceProviderCreateRequest = z.object({
 });
 
 /**
- * Response schema - Relation between controllable unit and service provider
- */
-export const zControllableUnitServiceProvider = z.object({
-  id: z.coerce.number().readonly(),
-  controllable_unit_id: z.coerce.number(),
-  service_provider_id: z.coerce.number(),
-  end_user_id: z.coerce.number(),
-  contract_reference: z.string().max(128),
-  valid_from: z.iso.datetime({ offset: true }).optional(),
-  valid_to: z.iso.datetime({ offset: true }).optional(),
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-});
-
-/**
  * Request schema for update operations - Group of controllable units
  */
 export const zServiceProvidingGroupUpdateRequest = z.object({
@@ -593,20 +528,6 @@ export const zServiceProvidingGroupCreateRequest = z.object({
 });
 
 /**
- * Response schema - Group of controllable units
- */
-export const zServiceProvidingGroup = z.object({
-  id: z.coerce.number().readonly(),
-  name: z.string().max(128),
-  service_provider_id: z.coerce.number(),
-  bidding_zone: zServiceProvidingGroupBiddingZone,
-  status: zServiceProvidingGroupStatus,
-  additional_information: z.string().optional(),
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-});
-
-/**
  * Request schema for update operations - Membership relation of controllable unit in service providing group
  */
 export const zServiceProvidingGroupMembershipUpdateRequest = z.object({
@@ -622,19 +543,6 @@ export const zServiceProvidingGroupMembershipCreateRequest = z.object({
   service_providing_group_id: z.coerce.number(),
   valid_from: z.iso.datetime({ offset: true }),
   valid_to: z.iso.datetime({ offset: true }).optional(),
-});
-
-/**
- * Response schema - Membership relation of controllable unit in service providing group
- */
-export const zServiceProvidingGroupMembership = z.object({
-  id: z.coerce.number().readonly(),
-  controllable_unit_id: z.coerce.number(),
-  service_providing_group_id: z.coerce.number(),
-  valid_from: z.iso.datetime({ offset: true }),
-  valid_to: z.iso.datetime({ offset: true }).optional(),
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
 });
 
 /**
@@ -660,19 +568,6 @@ export const zServiceProvidingGroupGridPrequalificationCreateRequest = z.object(
 );
 
 /**
- * Response schema - Grid prequalification for service providing group
- */
-export const zServiceProvidingGroupGridPrequalification = z.object({
-  id: z.coerce.number().readonly(),
-  service_providing_group_id: z.coerce.number(),
-  impacted_system_operator_id: z.coerce.number(),
-  status: zServiceProvidingGroupGridPrequalificationStatus,
-  prequalified_at: z.iso.datetime({ offset: true }).optional(),
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-});
-
-/**
  * Request schema for update operations - Comment made by a party involved in a service providing group grid prequalification.
  */
 export const zServiceProvidingGroupGridPrequalificationCommentUpdateRequest =
@@ -694,20 +589,6 @@ export const zServiceProvidingGroupGridPrequalificationCommentCreateRequest =
   });
 
 /**
- * Response schema - Comment made by a party involved in a service providing group grid prequalification.
- */
-export const zServiceProvidingGroupGridPrequalificationComment = z.object({
-  id: z.coerce.number().readonly(),
-  service_providing_group_grid_prequalification_id: z.coerce.number(),
-  created_by: z.coerce.number().readonly(),
-  created_at: z.iso.datetime({ offset: true }).readonly(),
-  visibility: zServiceProvidingGroupGridPrequalificationCommentVisibility,
-  content: z.string().max(2048),
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-});
-
-/**
  * Request schema for update operations - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
  */
 export const zServiceProvidingGroupGridSuspensionUpdateRequest = z.object({
@@ -721,18 +602,6 @@ export const zServiceProvidingGroupGridSuspensionCreateRequest = z.object({
   impacted_system_operator_id: z.coerce.number().optional(),
   service_providing_group_id: z.coerce.number(),
   reason: zServiceProvidingGroupGridSuspensionReason,
-});
-
-/**
- * Response schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
- */
-export const zServiceProvidingGroupGridSuspension = z.object({
-  id: z.coerce.number().readonly(),
-  impacted_system_operator_id: z.coerce.number(),
-  service_providing_group_id: z.coerce.number(),
-  reason: zServiceProvidingGroupGridSuspensionReason,
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
 });
 
 /**
@@ -755,20 +624,6 @@ export const zServiceProvidingGroupGridSuspensionCommentCreateRequest =
       zServiceProvidingGroupGridSuspensionCommentVisibility.optional(),
     content: z.string().max(2048),
   });
-
-/**
- * Response schema - Comment made by a party involved in a service providing group grid suspension.
- */
-export const zServiceProvidingGroupGridSuspensionComment = z.object({
-  id: z.coerce.number().readonly(),
-  service_providing_group_grid_suspension_id: z.coerce.number(),
-  created_by: z.coerce.number().readonly(),
-  created_at: z.iso.datetime({ offset: true }).readonly(),
-  visibility: zServiceProvidingGroupGridSuspensionCommentVisibility,
-  content: z.string().max(2048),
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-});
 
 /**
  * Request schema for update operations - Entity - Natural or legal person
@@ -804,26 +659,6 @@ export const zEntityCreateRequest = z.object({
 });
 
 /**
- * Response schema - Entity - Natural or legal person
- *
- * An entity is a natural or legal person that can be a party in the Flexibility Information System.
- *
- * Example entity types:
- *
- * * Person
- * * Organisation
- */
-export const zEntity = z.object({
-  id: z.coerce.number().readonly(),
-  business_id: z.string(),
-  business_id_type: zEntityBusinessIdType,
-  name: z.string(),
-  type: zEntityType,
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-});
-
-/**
  * Request schema for update operations - Client linked to an entity for client credentials and JWT grant authentication methods.
  */
 export const zEntityClientUpdateRequest = z.object({
@@ -854,27 +689,6 @@ export const zEntityClientCreateRequest = z.object({
       /^-----BEGIN PUBLIC KEY-----\nMIIB[-A-Za-z0-9+\/\n]*={0,3}\n-----END PUBLIC KEY-----$/,
     )
     .optional(),
-});
-
-/**
- * Response schema - Client linked to an entity for client credentials and JWT grant authentication methods.
- */
-export const zEntityClient = z.object({
-  id: z.coerce.number().readonly(),
-  entity_id: z.coerce.number(),
-  name: z.string().max(256).optional(),
-  client_id: z.string().readonly(),
-  party_id: z.coerce.number().optional(),
-  scopes: z.array(zAuthScope),
-  client_secret: z.string().min(12).optional(),
-  public_key: z
-    .string()
-    .regex(
-      /^-----BEGIN PUBLIC KEY-----\nMIIB[-A-Za-z0-9+\/\n]*={0,3}\n-----END PUBLIC KEY-----$/,
-    )
-    .optional(),
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
 });
 
 /**
@@ -918,53 +732,6 @@ export const zPartyCreateRequest = z.object({
 });
 
 /**
- * Response schema - The body that interacts with the Flexibility Information System
- *
- * A party is the thing that is authorized to access or modify data in the Flexiblity Information System.
- *
- * Example party types:
- *
- * * Service Provider
- * * System Operator
- * * End User
- */
-export const zParty = z.object({
-  id: z.coerce.number().readonly(),
-  business_id: z.string(),
-  business_id_type: zPartyBusinessIdType,
-  entity_id: z.coerce.number(),
-  name: z.string(),
-  role: zPartyRole,
-  type: zPartyType,
-  status: zPartyStatus,
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-});
-
-/**
- * Format of the data field in a notice of type no.elhub.flex.party.missing
- */
-export const zNoticeDataPartyMissing = z.object({
-  entity: zEntity.optional(),
-  party: zParty.optional(),
-});
-
-/**
- * Format of the data field in a notice of type no.elhub.flex.party.outdated
- */
-export const zNoticeDataPartyOutdated = z.object({
-  entity: zEntity.optional(),
-  party: zParty.optional(),
-});
-
-export const zNoticeData = z.union([
-  zNoticeDataValidTimeOutsideContract,
-  zNoticeDataPartyMissing,
-  zNoticeDataPartyOutdated,
-  zNoticeDataProductTypeNotQualified,
-]);
-
-/**
  * Request schema for update operations - The relation between a party and entity.
  */
 export const zPartyMembershipUpdateRequest = z.object({
@@ -978,29 +745,6 @@ export const zPartyMembershipCreateRequest = z.object({
   party_id: z.coerce.number(),
   entity_id: z.coerce.number(),
   scopes: z.array(zAuthScope),
-});
-
-/**
- * Response schema - The relation between a party and entity.
- */
-export const zPartyMembership = z.object({
-  id: z.coerce.number().readonly(),
-  party_id: z.coerce.number(),
-  entity_id: z.coerce.number(),
-  scopes: z.array(zAuthScope),
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-});
-
-/**
- * Response schema - Resource uniquely identifying a user by linking its entity and the potentially assumed party.
- */
-export const zIdentity = z.object({
-  id: z.coerce.number().readonly(),
-  entity_id: z.coerce.number().readonly(),
-  entity_name: z.string().readonly(),
-  party_id: z.coerce.number().readonly().optional(),
-  party_name: z.string().readonly().optional(),
 });
 
 /**
@@ -1035,147 +779,10 @@ export const zTechnicalResourceCreateRequest = z.object({
 });
 
 /**
- * Response schema - Technical unit being part of a controllable unit.
- */
-export const zTechnicalResource = z.object({
-  id: z.coerce.number().readonly(),
-  name: z.string(),
-  controllable_unit_id: z.coerce.number(),
-  technology: z.array(zTechnology).min(1),
-  category: z.array(zCategory).readonly(),
-  maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
-  device_type: zDeviceType,
-  make: z.string().max(128).optional(),
-  model: z.string().max(128).optional(),
-  business_id: z.string().max(256).optional(),
-  business_id_type: zTechnicalResourceBusinessIdType.nullish(),
-  additional_information: z.string().optional(),
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-});
-
-/**
- * Response schema - Event happening in the system.
- */
-export const zEvent = z.object({
-  id: z.coerce.number().readonly(),
-  specversion: z.string().readonly(),
-  time: z.iso.datetime({ offset: true }).readonly(),
-  type: z
-    .string()
-    .regex(/^no.elhub.flex./)
-    .readonly(),
-  source: z
-    .string()
-    .regex(/^(\/([a-z][a-z_]*|[0-9]+))+$/)
-    .readonly(),
-  subject: z.string().readonly().optional(),
-  data: z.string().readonly().optional(),
-});
-
-/**
  * Request schema for update operations - Notification about an event happening in the system.
  */
 export const zNotificationUpdateRequest = z.object({
   acknowledged: z.boolean().optional(),
-});
-
-/**
- * Response schema - Notification about an event happening in the system.
- */
-export const zNotification = z.object({
-  id: z.coerce.number().readonly(),
-  acknowledged: z.boolean(),
-  event_id: z.coerce.number(),
-  party_id: z.coerce.number(),
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-});
-
-/**
- * Response schema - Accounting point for a controllable unit.
- */
-export const zAccountingPoint = z.object({
-  id: z.coerce.number().readonly(),
-  business_id: z
-    .string()
-    .regex(/^[1-9][0-9]{17}$/)
-    .readonly(),
-  system_operator_id: z.coerce.number().readonly(),
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-});
-
-/**
- * Response schema - Relation linking a balance responsible party to an accounting point.
- */
-export const zAccountingPointBalanceResponsibleParty = z.object({
-  accounting_point_id: z.coerce.number().readonly(),
-  balance_responsible_party_id: z.coerce.number().readonly(),
-  energy_direction: zAccountingPointBalanceResponsiblePartyEnergyDirection,
-  valid_from: z.iso.datetime({ offset: true }).readonly(),
-  valid_to: z.iso.datetime({ offset: true }).readonly().optional(),
-});
-
-/**
- * Response schema - Relation telling which bidding zone an accounting point belongs to.
- */
-export const zAccountingPointBiddingZone = z.object({
-  accounting_point_id: z.coerce.number().readonly(),
-  bidding_zone: zAccountingPointBiddingZoneBiddingZone,
-  valid_from: z.iso.datetime({ offset: true }).readonly(),
-  valid_to: z.iso.datetime({ offset: true }).readonly().optional(),
-});
-
-/**
- * Response schema - Relation telling which end user an accounting point belongs to.
- */
-export const zAccountingPointEndUser = z.object({
-  accounting_point_id: z.coerce.number().readonly(),
-  end_user_id: z.coerce.number().readonly(),
-  valid_from: z.iso.datetime({ offset: true }).readonly(),
-  valid_to: z.iso.datetime({ offset: true }).readonly().optional(),
-});
-
-/**
- * Response schema - Relation linking an energy supplier to an accounting point.
- */
-export const zAccountingPointEnergySupplier = z.object({
-  accounting_point_id: z.coerce.number().readonly(),
-  energy_supplier_id: z.coerce.number().readonly(),
-  valid_from: z.iso.datetime({ offset: true }).readonly(),
-  valid_to: z.iso.datetime({ offset: true }).readonly().optional(),
-});
-
-/**
- * Response schema - Metering grid area to which accounting points belong.
- */
-export const zMeteringGridArea = z.object({
-  id: z.coerce.number().readonly(),
-  business_id: z.string().readonly(),
-  business_id_type: zMeteringGridAreaBusinessIdType,
-  name: z.string().max(128).readonly(),
-});
-
-/**
- * Response schema - Relation telling which metering grid area an accounting point belongs to.
- */
-export const zAccountingPointMeteringGridArea = z.object({
-  accounting_point_id: z.coerce.number().readonly(),
-  metering_grid_area_id: z.coerce.number().readonly(),
-  valid_from: z.iso.datetime({ offset: true }).readonly(),
-  valid_to: z.iso.datetime({ offset: true }).readonly().optional(),
-});
-
-/**
- * Response schema - Product type.
- */
-export const zProductType = z.object({
-  id: z.coerce.number().readonly(),
-  business_id: z.string().readonly(),
-  name: z.string().max(64).readonly(),
-  service: z.string().readonly(),
-  products: z.string().readonly(),
 });
 
 /**
@@ -1192,18 +799,6 @@ export const zSystemOperatorProductTypeCreateRequest = z.object({
   system_operator_id: z.coerce.number(),
   product_type_id: z.coerce.number(),
   status: zSystemOperatorProductTypeStatus.optional(),
-});
-
-/**
- * Response schema - Relation between a system operator and a product type they want to buy.
- */
-export const zSystemOperatorProductType = z.object({
-  id: z.coerce.number().readonly(),
-  system_operator_id: z.coerce.number(),
-  product_type_id: z.coerce.number(),
-  status: zSystemOperatorProductTypeStatus,
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
 });
 
 /**
@@ -1227,20 +822,6 @@ export const zServiceProviderProductApplicationCreateRequest = z.object({
 });
 
 /**
- * Response schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
- */
-export const zServiceProviderProductApplication = z.object({
-  id: z.coerce.number().readonly(),
-  service_provider_id: z.coerce.number(),
-  system_operator_id: z.coerce.number(),
-  product_type_ids: z.array(z.coerce.number()),
-  status: zServiceProviderProductApplicationStatus,
-  qualified_at: z.iso.datetime({ offset: true }).optional(),
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-});
-
-/**
  * Request schema for update operations - Comment made by a party involved in a service provider product application.
  */
 export const zServiceProviderProductApplicationCommentUpdateRequest = z.object({
@@ -1255,20 +836,6 @@ export const zServiceProviderProductApplicationCommentCreateRequest = z.object({
   service_provider_product_application_id: z.coerce.number(),
   visibility: zServiceProviderProductApplicationCommentVisibility.optional(),
   content: z.string().max(2048),
-});
-
-/**
- * Response schema - Comment made by a party involved in a service provider product application.
- */
-export const zServiceProviderProductApplicationComment = z.object({
-  id: z.coerce.number().readonly(),
-  service_provider_product_application_id: z.coerce.number(),
-  created_by: z.coerce.number().readonly(),
-  created_at: z.iso.datetime({ offset: true }).readonly(),
-  visibility: zServiceProviderProductApplicationCommentVisibility,
-  content: z.string().max(2048),
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
 });
 
 /**
@@ -1290,19 +857,6 @@ export const zServiceProviderProductSuspensionCreateRequest = z.object({
 });
 
 /**
- * Response schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
- */
-export const zServiceProviderProductSuspension = z.object({
-  id: z.coerce.number().readonly(),
-  procuring_system_operator_id: z.coerce.number(),
-  service_provider_id: z.coerce.number(),
-  product_type_ids: z.array(z.coerce.number()),
-  reason: zServiceProviderProductSuspensionReason,
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-});
-
-/**
  * Request schema for update operations - Comment made by a party involved in a service provider product suspension.
  */
 export const zServiceProviderProductSuspensionCommentUpdateRequest = z.object({
@@ -1317,20 +871,6 @@ export const zServiceProviderProductSuspensionCommentCreateRequest = z.object({
   service_provider_product_suspension_id: z.coerce.number(),
   visibility: zServiceProviderProductSuspensionCommentVisibility.optional(),
   content: z.string().max(2048),
-});
-
-/**
- * Response schema - Comment made by a party involved in a service provider product suspension.
- */
-export const zServiceProviderProductSuspensionComment = z.object({
-  id: z.coerce.number().readonly(),
-  service_provider_product_suspension_id: z.coerce.number(),
-  created_by: z.coerce.number().readonly(),
-  created_at: z.iso.datetime({ offset: true }).readonly(),
-  visibility: zServiceProviderProductSuspensionCommentVisibility,
-  content: z.string().max(2048),
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
 });
 
 /**
@@ -1366,24 +906,6 @@ export const zServiceProvidingGroupProductApplicationCreateRequest = z.object({
 });
 
 /**
- * Response schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
- */
-export const zServiceProvidingGroupProductApplication = z.object({
-  id: z.coerce.number().readonly(),
-  service_providing_group_id: z.coerce.number(),
-  procuring_system_operator_id: z.coerce.number(),
-  product_type_ids: z.array(z.coerce.number()),
-  status: zServiceProvidingGroupProductApplicationStatus,
-  maximum_active_power_up: z.coerce.number().gte(0).lte(999999.999),
-  maximum_active_power_down: z.coerce.number().gte(0).lte(999999.999),
-  additional_information: z.string().max(512).optional(),
-  prequalified_at: z.iso.datetime({ offset: true }).optional(),
-  verified_at: z.iso.datetime({ offset: true }).optional(),
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-});
-
-/**
  * Request schema for update operations - Comment made by a party involved in a service providing group product application.
  */
 export const zServiceProvidingGroupProductApplicationCommentUpdateRequest =
@@ -1405,20 +927,6 @@ export const zServiceProvidingGroupProductApplicationCommentCreateRequest =
   });
 
 /**
- * Response schema - Comment made by a party involved in a service providing group product application.
- */
-export const zServiceProvidingGroupProductApplicationComment = z.object({
-  id: z.coerce.number().readonly(),
-  service_providing_group_product_application_id: z.coerce.number(),
-  created_by: z.coerce.number().readonly(),
-  created_at: z.iso.datetime({ offset: true }).readonly(),
-  visibility: zServiceProvidingGroupProductApplicationCommentVisibility,
-  content: z.string().max(2048),
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
-});
-
-/**
  * Request schema for update operations - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
  */
 export const zServiceProvidingGroupProductSuspensionUpdateRequest = z.object({
@@ -1434,19 +942,6 @@ export const zServiceProvidingGroupProductSuspensionCreateRequest = z.object({
   service_providing_group_id: z.coerce.number(),
   product_type_ids: z.array(z.coerce.number()),
   reason: zServiceProvidingGroupProductSuspensionReason,
-});
-
-/**
- * Response schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
- */
-export const zServiceProvidingGroupProductSuspension = z.object({
-  id: z.coerce.number().readonly(),
-  procuring_system_operator_id: z.coerce.number(),
-  service_providing_group_id: z.coerce.number(),
-  product_type_ids: z.array(z.coerce.number()),
-  reason: zServiceProvidingGroupProductSuspensionReason,
-  recorded_at: z.iso.datetime({ offset: true }).readonly(),
-  recorded_by: z.coerce.number().readonly(),
 });
 
 /**
@@ -1471,6 +966,630 @@ export const zServiceProvidingGroupProductSuspensionCommentCreateRequest =
   });
 
 /**
+ * An empty object
+ */
+export const zEmptyObjectWritable = z.record(z.string(), z.never());
+
+/**
+ * Format of the data field in a notice of type no.elhub.flex.party.missing
+ */
+export const zNoticeDataPartyMissing = z.object({
+  entity: z.lazy((): any => zEntity).optional(),
+  party: z.lazy((): any => zParty).optional(),
+});
+
+/**
+ * Format of the data field in a notice of type no.elhub.flex.party.outdated
+ */
+export const zNoticeDataPartyOutdated = z.object({
+  entity: z.lazy((): any => zEntity).optional(),
+  party: z.lazy((): any => zParty).optional(),
+});
+
+export const zNoticeData = z.union([
+  zNoticeDataValidTimeOutsideContract,
+  zNoticeDataPartyMissing,
+  zNoticeDataPartyOutdated,
+  zNoticeDataProductTypeNotQualified,
+]);
+
+/**
+ * Response schema - Controllable unit
+ */
+export const zControllableUnit = z.object({
+  id: z.coerce.number().readonly(),
+  business_id: z
+    .string()
+    .regex(
+      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
+    )
+    .readonly(),
+  name: z.string().max(512),
+  start_date: z.iso.date().optional(),
+  status: zControllableUnitStatus,
+  regulation_direction: zControllableUnitRegulationDirection,
+  maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
+  is_small: z.boolean().readonly(),
+  accounting_point_id: z.coerce.number(),
+  additional_information: z.string().optional(),
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  accounting_point: z.lazy((): any => zAccountingPoint).nullish(),
+  suspension: z.lazy((): any => zControllableUnitSuspension).nullish(),
+  service_provider: z
+    .lazy((): any => zControllableUnitServiceProvider)
+    .nullish(),
+  service_providing_group_membership: z
+    .lazy((): any => zServiceProvidingGroupMembership)
+    .nullish(),
+  technical_resource: z.lazy((): any => zTechnicalResource).nullish(),
+});
+
+/**
+ * Response schema - The relation allowing an impacted system operator to temporarily suspend a controllable unit.
+ */
+export const zControllableUnitSuspension = z.object({
+  id: z.coerce.number().readonly(),
+  controllable_unit_id: z.coerce.number(),
+  impacted_system_operator_id: z.coerce.number(),
+  reason: zControllableUnitSuspensionReason,
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  controllable_unit: zControllableUnit.nullish(),
+  impacted_system_operator: z.lazy((): any => zParty).nullish(),
+  comment: z.lazy((): any => zControllableUnitSuspensionComment).nullish(),
+});
+
+/**
+ * Response schema - Comment made by a party involved in a controllable unit suspension.
+ */
+export const zControllableUnitSuspensionComment = z.object({
+  id: z.coerce.number().readonly(),
+  controllable_unit_suspension_id: z.coerce.number(),
+  created_by: z.coerce.number().readonly(),
+  created_at: z.iso.datetime({ offset: true }).readonly(),
+  visibility: zControllableUnitSuspensionCommentVisibility,
+  content: z.string().max(2048),
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  controllable_unit_suspension: zControllableUnitSuspension.nullish(),
+});
+
+/**
+ * Response schema - Relation between controllable unit and service provider
+ */
+export const zControllableUnitServiceProvider = z.object({
+  id: z.coerce.number().readonly(),
+  controllable_unit_id: z.coerce.number(),
+  service_provider_id: z.coerce.number(),
+  end_user_id: z.coerce.number(),
+  contract_reference: z.string().max(128),
+  valid_from: z.iso.datetime({ offset: true }).optional(),
+  valid_to: z.iso.datetime({ offset: true }).optional(),
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  controllable_unit: zControllableUnit.nullish(),
+  service_provider: z.lazy((): any => zParty).nullish(),
+  end_user: z.lazy((): any => zParty).nullish(),
+});
+
+/**
+ * Response schema - Group of controllable units
+ */
+export const zServiceProvidingGroup = z.object({
+  id: z.coerce.number().readonly(),
+  name: z.string().max(128),
+  service_provider_id: z.coerce.number(),
+  bidding_zone: zServiceProvidingGroupBiddingZone,
+  status: zServiceProvidingGroupStatus,
+  additional_information: z.string().optional(),
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  service_provider: z.lazy((): any => zParty).nullish(),
+  membership: z.lazy((): any => zServiceProvidingGroupMembership).nullish(),
+  grid_prequalification: z
+    .lazy((): any => zServiceProvidingGroupGridPrequalification)
+    .nullish(),
+  grid_suspension: z
+    .lazy((): any => zServiceProvidingGroupGridSuspension)
+    .nullish(),
+  product_application: z
+    .lazy((): any => zServiceProvidingGroupProductApplication)
+    .nullish(),
+  product_suspension: z
+    .lazy((): any => zServiceProvidingGroupProductSuspension)
+    .nullish(),
+});
+
+/**
+ * Response schema - Membership relation of controllable unit in service providing group
+ */
+export const zServiceProvidingGroupMembership = z.object({
+  id: z.coerce.number().readonly(),
+  controllable_unit_id: z.coerce.number(),
+  service_providing_group_id: z.coerce.number(),
+  valid_from: z.iso.datetime({ offset: true }),
+  valid_to: z.iso.datetime({ offset: true }).optional(),
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  controllable_unit: zControllableUnit.nullish(),
+  service_providing_group: zServiceProvidingGroup.nullish(),
+});
+
+/**
+ * Response schema - Grid prequalification for service providing group
+ */
+export const zServiceProvidingGroupGridPrequalification = z.object({
+  id: z.coerce.number().readonly(),
+  service_providing_group_id: z.coerce.number(),
+  impacted_system_operator_id: z.coerce.number(),
+  status: zServiceProvidingGroupGridPrequalificationStatus,
+  prequalified_at: z.iso.datetime({ offset: true }).optional(),
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  service_providing_group: zServiceProvidingGroup.nullish(),
+  impacted_system_operator: z.lazy((): any => zParty).nullish(),
+  comment: z
+    .lazy((): any => zServiceProvidingGroupGridPrequalificationComment)
+    .nullish(),
+});
+
+/**
+ * Response schema - Comment made by a party involved in a service providing group grid prequalification.
+ */
+export const zServiceProvidingGroupGridPrequalificationComment = z.object({
+  id: z.coerce.number().readonly(),
+  service_providing_group_grid_prequalification_id: z.coerce.number(),
+  created_by: z.coerce.number().readonly(),
+  created_at: z.iso.datetime({ offset: true }).readonly(),
+  visibility: zServiceProvidingGroupGridPrequalificationCommentVisibility,
+  content: z.string().max(2048),
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  service_providing_group_grid_prequalification:
+    zServiceProvidingGroupGridPrequalification.nullish(),
+});
+
+/**
+ * Response schema - The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
+ */
+export const zServiceProvidingGroupGridSuspension = z.object({
+  id: z.coerce.number().readonly(),
+  impacted_system_operator_id: z.coerce.number(),
+  service_providing_group_id: z.coerce.number(),
+  reason: zServiceProvidingGroupGridSuspensionReason,
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  impacted_system_operator: z.lazy((): any => zParty).nullish(),
+  service_providing_group: zServiceProvidingGroup.nullish(),
+  comment: z
+    .lazy((): any => zServiceProvidingGroupGridSuspensionComment)
+    .nullish(),
+});
+
+/**
+ * Response schema - Comment made by a party involved in a service providing group grid suspension.
+ */
+export const zServiceProvidingGroupGridSuspensionComment = z.object({
+  id: z.coerce.number().readonly(),
+  service_providing_group_grid_suspension_id: z.coerce.number(),
+  created_by: z.coerce.number().readonly(),
+  created_at: z.iso.datetime({ offset: true }).readonly(),
+  visibility: zServiceProvidingGroupGridSuspensionCommentVisibility,
+  content: z.string().max(2048),
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  service_providing_group_grid_suspension:
+    zServiceProvidingGroupGridSuspension.nullish(),
+});
+
+/**
+ * Response schema - Entity - Natural or legal person
+ *
+ * An entity is a natural or legal person that can be a party in the Flexibility Information System.
+ *
+ * Example entity types:
+ *
+ * * Person
+ * * Organisation
+ */
+export const zEntity = z.object({
+  id: z.coerce.number().readonly(),
+  business_id: z.string(),
+  business_id_type: zEntityBusinessIdType,
+  name: z.string(),
+  type: zEntityType,
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  client: z.lazy((): any => zEntityClient).nullish(),
+  party: z.lazy((): any => zParty).nullish(),
+  party_membership: z.lazy((): any => zPartyMembership).nullish(),
+  identity: z.lazy((): any => zIdentity).nullish(),
+});
+
+/**
+ * Response schema - Client linked to an entity for client credentials and JWT grant authentication methods.
+ */
+export const zEntityClient = z.object({
+  id: z.coerce.number().readonly(),
+  entity_id: z.coerce.number(),
+  name: z.string().max(256).optional(),
+  client_id: z.string().readonly(),
+  party_id: z.coerce.number().optional(),
+  scopes: z.array(zAuthScope),
+  client_secret: z.string().min(12).optional(),
+  public_key: z
+    .string()
+    .regex(
+      /^-----BEGIN PUBLIC KEY-----\nMIIB[-A-Za-z0-9+\/\n]*={0,3}\n-----END PUBLIC KEY-----$/,
+    )
+    .optional(),
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  entity: zEntity.nullish(),
+  party: z.lazy((): any => zParty).nullish(),
+});
+
+/**
+ * Response schema - The body that interacts with the Flexibility Information System
+ *
+ * A party is the thing that is authorized to access or modify data in the Flexiblity Information System.
+ *
+ * Example party types:
+ *
+ * * Service Provider
+ * * System Operator
+ * * End User
+ */
+export const zParty = z.object({
+  id: z.coerce.number().readonly(),
+  business_id: z.string(),
+  business_id_type: zPartyBusinessIdType,
+  entity_id: z.coerce.number(),
+  name: z.string(),
+  role: zPartyRole,
+  type: zPartyType,
+  status: zPartyStatus,
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  entity: zEntity.nullish(),
+});
+
+/**
+ * Response schema - The relation between a party and entity.
+ */
+export const zPartyMembership = z.object({
+  id: z.coerce.number().readonly(),
+  party_id: z.coerce.number(),
+  entity_id: z.coerce.number(),
+  scopes: z.array(zAuthScope),
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  party: zParty.nullish(),
+  entity: zEntity.nullish(),
+});
+
+/**
+ * Response schema - Resource uniquely identifying a user by linking its entity and the potentially assumed party.
+ */
+export const zIdentity = z.object({
+  id: z.coerce.number().readonly(),
+  entity_id: z.coerce.number().readonly(),
+  entity_name: z.string().readonly(),
+  party_id: z.coerce.number().readonly().optional(),
+  party_name: z.string().readonly().optional(),
+  entity: zEntity.nullish(),
+  party: zParty.nullish(),
+});
+
+/**
+ * Response schema - Technical unit being part of a controllable unit.
+ */
+export const zTechnicalResource = z.object({
+  id: z.coerce.number().readonly(),
+  name: z.string(),
+  controllable_unit_id: z.coerce.number(),
+  technology: z.array(zTechnology).min(1),
+  category: z.array(zCategory).readonly(),
+  maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
+  device_type: zDeviceType,
+  make: z.string().max(128).optional(),
+  model: z.string().max(128).optional(),
+  business_id: z.string().max(256).optional(),
+  business_id_type: zTechnicalResourceBusinessIdType.nullish(),
+  additional_information: z.string().optional(),
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  controllable_unit: zControllableUnit.nullish(),
+});
+
+/**
+ * Response schema - Event happening in the system.
+ */
+export const zEvent = z.object({
+  id: z.coerce.number().readonly(),
+  specversion: z.string().readonly(),
+  time: z.iso.datetime({ offset: true }).readonly(),
+  type: z
+    .string()
+    .regex(/^no.elhub.flex./)
+    .readonly(),
+  source: z
+    .string()
+    .regex(/^(\/([a-z][a-z_]*|[0-9]+))+$/)
+    .readonly(),
+  subject: z.string().readonly().optional(),
+  data: z.string().readonly().optional(),
+  notification: z.lazy((): any => zNotification).nullish(),
+});
+
+/**
+ * Response schema - Notification about an event happening in the system.
+ */
+export const zNotification = z.object({
+  id: z.coerce.number().readonly(),
+  acknowledged: z.boolean(),
+  event_id: z.coerce.number(),
+  party_id: z.coerce.number(),
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  event: zEvent.nullish(),
+  party: zParty.nullish(),
+});
+
+/**
+ * Response schema - Accounting point for a controllable unit.
+ */
+export const zAccountingPoint = z.object({
+  id: z.coerce.number().readonly(),
+  business_id: z
+    .string()
+    .regex(/^[1-9][0-9]{17}$/)
+    .readonly(),
+  system_operator_id: z.coerce.number().readonly(),
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  controllable_unit: zControllableUnit.nullish(),
+  system_operator: zParty.nullish(),
+  balance_responsible_party: z
+    .lazy((): any => zAccountingPointBalanceResponsibleParty)
+    .nullish(),
+  bidding_zone: z.lazy((): any => zAccountingPointBiddingZone).nullish(),
+  end_user: z.lazy((): any => zAccountingPointEndUser).nullish(),
+  energy_supplier: z.lazy((): any => zAccountingPointEnergySupplier).nullish(),
+  metering_grid_area: z
+    .lazy((): any => zAccountingPointMeteringGridArea)
+    .nullish(),
+});
+
+/**
+ * Response schema - Relation linking a balance responsible party to an accounting point.
+ */
+export const zAccountingPointBalanceResponsibleParty = z.object({
+  accounting_point_id: z.coerce.number().readonly(),
+  balance_responsible_party_id: z.coerce.number().readonly(),
+  energy_direction: zAccountingPointBalanceResponsiblePartyEnergyDirection,
+  valid_from: z.iso.datetime({ offset: true }).readonly(),
+  valid_to: z.iso.datetime({ offset: true }).readonly().optional(),
+  accounting_point: zAccountingPoint.nullish(),
+  balance_responsible_party: zParty.nullish(),
+});
+
+/**
+ * Response schema - Relation telling which bidding zone an accounting point belongs to.
+ */
+export const zAccountingPointBiddingZone = z.object({
+  accounting_point_id: z.coerce.number().readonly(),
+  bidding_zone: zAccountingPointBiddingZoneBiddingZone,
+  valid_from: z.iso.datetime({ offset: true }).readonly(),
+  valid_to: z.iso.datetime({ offset: true }).readonly().optional(),
+  accounting_point: zAccountingPoint.nullish(),
+});
+
+/**
+ * Response schema - Relation telling which end user an accounting point belongs to.
+ */
+export const zAccountingPointEndUser = z.object({
+  accounting_point_id: z.coerce.number().readonly(),
+  end_user_id: z.coerce.number().readonly(),
+  valid_from: z.iso.datetime({ offset: true }).readonly(),
+  valid_to: z.iso.datetime({ offset: true }).readonly().optional(),
+  accounting_point: zAccountingPoint.nullish(),
+  end_user: zParty.nullish(),
+});
+
+/**
+ * Response schema - Relation linking an energy supplier to an accounting point.
+ */
+export const zAccountingPointEnergySupplier = z.object({
+  accounting_point_id: z.coerce.number().readonly(),
+  energy_supplier_id: z.coerce.number().readonly(),
+  valid_from: z.iso.datetime({ offset: true }).readonly(),
+  valid_to: z.iso.datetime({ offset: true }).readonly().optional(),
+  accounting_point: zAccountingPoint.nullish(),
+  energy_supplier: zParty.nullish(),
+});
+
+/**
+ * Response schema - Metering grid area to which accounting points belong.
+ */
+export const zMeteringGridArea = z.object({
+  id: z.coerce.number().readonly(),
+  business_id: z.string().readonly(),
+  business_id_type: zMeteringGridAreaBusinessIdType,
+  name: z.string().max(128).readonly(),
+  accounting_point_metering_grid_area: z
+    .lazy((): any => zAccountingPointMeteringGridArea)
+    .nullish(),
+});
+
+/**
+ * Response schema - Relation telling which metering grid area an accounting point belongs to.
+ */
+export const zAccountingPointMeteringGridArea = z.object({
+  accounting_point_id: z.coerce.number().readonly(),
+  metering_grid_area_id: z.coerce.number().readonly(),
+  valid_from: z.iso.datetime({ offset: true }).readonly(),
+  valid_to: z.iso.datetime({ offset: true }).readonly().optional(),
+  accounting_point: zAccountingPoint.nullish(),
+  metering_grid_area: zMeteringGridArea.nullish(),
+});
+
+/**
+ * Response schema - Product type.
+ */
+export const zProductType = z.object({
+  id: z.coerce.number().readonly(),
+  business_id: z.string().readonly(),
+  name: z.string().max(64).readonly(),
+  service: z.string().readonly(),
+  products: z.string().readonly(),
+  system_operator_product_type: z
+    .lazy((): any => zSystemOperatorProductType)
+    .nullish(),
+});
+
+/**
+ * Response schema - Relation between a system operator and a product type they want to buy.
+ */
+export const zSystemOperatorProductType = z.object({
+  id: z.coerce.number().readonly(),
+  system_operator_id: z.coerce.number(),
+  product_type_id: z.coerce.number(),
+  status: zSystemOperatorProductTypeStatus,
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  system_operator: zParty.nullish(),
+  product_type: zProductType.nullish(),
+});
+
+/**
+ * Response schema - Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a flexibility market.
+ */
+export const zServiceProviderProductApplication = z.object({
+  id: z.coerce.number().readonly(),
+  service_provider_id: z.coerce.number(),
+  system_operator_id: z.coerce.number(),
+  product_type_ids: z.array(z.coerce.number()),
+  status: zServiceProviderProductApplicationStatus,
+  qualified_at: z.iso.datetime({ offset: true }).optional(),
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  service_provider: zParty.nullish(),
+  system_operator: zParty.nullish(),
+  comment: z
+    .lazy((): any => zServiceProviderProductApplicationComment)
+    .nullish(),
+});
+
+/**
+ * Response schema - Comment made by a party involved in a service provider product application.
+ */
+export const zServiceProviderProductApplicationComment = z.object({
+  id: z.coerce.number().readonly(),
+  service_provider_product_application_id: z.coerce.number(),
+  created_by: z.coerce.number().readonly(),
+  created_at: z.iso.datetime({ offset: true }).readonly(),
+  visibility: zServiceProviderProductApplicationCommentVisibility,
+  content: z.string().max(2048),
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  service_provider_product_application:
+    zServiceProviderProductApplication.nullish(),
+});
+
+/**
+ * Response schema - The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
+ */
+export const zServiceProviderProductSuspension = z.object({
+  id: z.coerce.number().readonly(),
+  procuring_system_operator_id: z.coerce.number(),
+  service_provider_id: z.coerce.number(),
+  product_type_ids: z.array(z.coerce.number()),
+  reason: zServiceProviderProductSuspensionReason,
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  procuring_system_operator: zParty.nullish(),
+  service_provider: zParty.nullish(),
+  comment: z
+    .lazy((): any => zServiceProviderProductSuspensionComment)
+    .nullish(),
+});
+
+/**
+ * Response schema - Comment made by a party involved in a service provider product suspension.
+ */
+export const zServiceProviderProductSuspensionComment = z.object({
+  id: z.coerce.number().readonly(),
+  service_provider_product_suspension_id: z.coerce.number(),
+  created_by: z.coerce.number().readonly(),
+  created_at: z.iso.datetime({ offset: true }).readonly(),
+  visibility: zServiceProviderProductSuspensionCommentVisibility,
+  content: z.string().max(2048),
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  service_provider_product_suspension:
+    zServiceProviderProductSuspension.nullish(),
+});
+
+/**
+ * Response schema - Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
+ */
+export const zServiceProvidingGroupProductApplication = z.object({
+  id: z.coerce.number().readonly(),
+  service_providing_group_id: z.coerce.number(),
+  procuring_system_operator_id: z.coerce.number(),
+  product_type_ids: z.array(z.coerce.number()),
+  status: zServiceProvidingGroupProductApplicationStatus,
+  maximum_active_power_up: z.coerce.number().gte(0).lte(999999.999),
+  maximum_active_power_down: z.coerce.number().gte(0).lte(999999.999),
+  additional_information: z.string().max(512).optional(),
+  prequalified_at: z.iso.datetime({ offset: true }).optional(),
+  verified_at: z.iso.datetime({ offset: true }).optional(),
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  service_providing_group: zServiceProvidingGroup.nullish(),
+  procuring_system_operator: zParty.nullish(),
+  comment: z
+    .lazy((): any => zServiceProvidingGroupProductApplicationComment)
+    .nullish(),
+});
+
+/**
+ * Response schema - Comment made by a party involved in a service providing group product application.
+ */
+export const zServiceProvidingGroupProductApplicationComment = z.object({
+  id: z.coerce.number().readonly(),
+  service_providing_group_product_application_id: z.coerce.number(),
+  created_by: z.coerce.number().readonly(),
+  created_at: z.iso.datetime({ offset: true }).readonly(),
+  visibility: zServiceProvidingGroupProductApplicationCommentVisibility,
+  content: z.string().max(2048),
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  service_providing_group_product_application:
+    zServiceProvidingGroupProductApplication.nullish(),
+});
+
+/**
+ * Response schema - The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
+ */
+export const zServiceProvidingGroupProductSuspension = z.object({
+  id: z.coerce.number().readonly(),
+  procuring_system_operator_id: z.coerce.number(),
+  service_providing_group_id: z.coerce.number(),
+  product_type_ids: z.array(z.coerce.number()),
+  reason: zServiceProvidingGroupProductSuspensionReason,
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  procuring_system_operator: zParty.nullish(),
+  service_providing_group: zServiceProvidingGroup.nullish(),
+  comment: z
+    .lazy((): any => zServiceProvidingGroupProductSuspensionComment)
+    .nullish(),
+});
+
+/**
  * Response schema - Comment made by a party involved in a service providing group product suspension.
  */
 export const zServiceProvidingGroupProductSuspensionComment = z.object({
@@ -1482,6 +1601,8 @@ export const zServiceProvidingGroupProductSuspensionComment = z.object({
   content: z.string().max(2048),
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
+  service_providing_group_product_suspension:
+    zServiceProvidingGroupProductSuspension.nullish(),
 });
 
 /**
@@ -1502,6 +1623,7 @@ export const zNotice = z.object({
     .optional(),
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
+  party: zParty.nullish(),
 });
 
 /**
@@ -1764,9 +1886,27 @@ export const zServiceProvidingGroupProductSuspensionCommentHistory =
   );
 
 /**
- * An empty object
+ * Format of the data field in a notice of type no.elhub.flex.party.missing
  */
-export const zEmptyObjectWritable = z.record(z.string(), z.never());
+export const zNoticeDataPartyMissingWritable = z.object({
+  entity: z.lazy((): any => zEntityWritable).optional(),
+  party: z.lazy((): any => zPartyWritable).optional(),
+});
+
+/**
+ * Format of the data field in a notice of type no.elhub.flex.party.outdated
+ */
+export const zNoticeDataPartyOutdatedWritable = z.object({
+  entity: z.lazy((): any => zEntityWritable).optional(),
+  party: z.lazy((): any => zPartyWritable).optional(),
+});
+
+export const zNoticeDataWritable = z.union([
+  zNoticeDataValidTimeOutsideContract,
+  zNoticeDataPartyMissingWritable,
+  zNoticeDataPartyOutdatedWritable,
+  zNoticeDataProductTypeNotQualified,
+]);
 
 /**
  * Response schema - Controllable unit
@@ -1779,6 +1919,15 @@ export const zControllableUnitWritable = z.object({
   maximum_active_power: z.coerce.number().gte(0).lte(999999.999),
   accounting_point_id: z.coerce.number(),
   additional_information: z.string().optional(),
+  accounting_point: z.lazy((): any => zAccountingPointWritable).nullish(),
+  suspension: z.lazy((): any => zControllableUnitSuspensionWritable).nullish(),
+  service_provider: z
+    .lazy((): any => zControllableUnitServiceProviderWritable)
+    .nullish(),
+  service_providing_group_membership: z
+    .lazy((): any => zServiceProvidingGroupMembershipWritable)
+    .nullish(),
+  technical_resource: z.lazy((): any => zTechnicalResourceWritable).nullish(),
 });
 
 /**
@@ -1788,6 +1937,11 @@ export const zControllableUnitSuspensionWritable = z.object({
   controllable_unit_id: z.coerce.number(),
   impacted_system_operator_id: z.coerce.number(),
   reason: zControllableUnitSuspensionReason,
+  controllable_unit: zControllableUnitWritable.nullish(),
+  impacted_system_operator: z.lazy((): any => zPartyWritable).nullish(),
+  comment: z
+    .lazy((): any => zControllableUnitSuspensionCommentWritable)
+    .nullish(),
 });
 
 /**
@@ -1797,6 +1951,7 @@ export const zControllableUnitSuspensionCommentWritable = z.object({
   controllable_unit_suspension_id: z.coerce.number(),
   visibility: zControllableUnitSuspensionCommentVisibility,
   content: z.string().max(2048),
+  controllable_unit_suspension: zControllableUnitSuspensionWritable.nullish(),
 });
 
 /**
@@ -1809,6 +1964,9 @@ export const zControllableUnitServiceProviderWritable = z.object({
   contract_reference: z.string().max(128),
   valid_from: z.iso.datetime({ offset: true }).optional(),
   valid_to: z.iso.datetime({ offset: true }).optional(),
+  controllable_unit: zControllableUnitWritable.nullish(),
+  service_provider: z.lazy((): any => zPartyWritable).nullish(),
+  end_user: z.lazy((): any => zPartyWritable).nullish(),
 });
 
 /**
@@ -1820,6 +1978,22 @@ export const zServiceProvidingGroupWritable = z.object({
   bidding_zone: zServiceProvidingGroupBiddingZone,
   status: zServiceProvidingGroupStatus,
   additional_information: z.string().optional(),
+  service_provider: z.lazy((): any => zPartyWritable).nullish(),
+  membership: z
+    .lazy((): any => zServiceProvidingGroupMembershipWritable)
+    .nullish(),
+  grid_prequalification: z
+    .lazy((): any => zServiceProvidingGroupGridPrequalificationWritable)
+    .nullish(),
+  grid_suspension: z
+    .lazy((): any => zServiceProvidingGroupGridSuspensionWritable)
+    .nullish(),
+  product_application: z
+    .lazy((): any => zServiceProvidingGroupProductApplicationWritable)
+    .nullish(),
+  product_suspension: z
+    .lazy((): any => zServiceProvidingGroupProductSuspensionWritable)
+    .nullish(),
 });
 
 /**
@@ -1830,6 +2004,8 @@ export const zServiceProvidingGroupMembershipWritable = z.object({
   service_providing_group_id: z.coerce.number(),
   valid_from: z.iso.datetime({ offset: true }),
   valid_to: z.iso.datetime({ offset: true }).optional(),
+  controllable_unit: zControllableUnitWritable.nullish(),
+  service_providing_group: zServiceProvidingGroupWritable.nullish(),
 });
 
 /**
@@ -1840,6 +2016,11 @@ export const zServiceProvidingGroupGridPrequalificationWritable = z.object({
   impacted_system_operator_id: z.coerce.number(),
   status: zServiceProvidingGroupGridPrequalificationStatus,
   prequalified_at: z.iso.datetime({ offset: true }).optional(),
+  service_providing_group: zServiceProvidingGroupWritable.nullish(),
+  impacted_system_operator: z.lazy((): any => zPartyWritable).nullish(),
+  comment: z
+    .lazy((): any => zServiceProvidingGroupGridPrequalificationCommentWritable)
+    .nullish(),
 });
 
 /**
@@ -1850,6 +2031,8 @@ export const zServiceProvidingGroupGridPrequalificationCommentWritable =
     service_providing_group_grid_prequalification_id: z.coerce.number(),
     visibility: zServiceProvidingGroupGridPrequalificationCommentVisibility,
     content: z.string().max(2048),
+    service_providing_group_grid_prequalification:
+      zServiceProvidingGroupGridPrequalificationWritable.nullish(),
   });
 
 /**
@@ -1859,6 +2042,11 @@ export const zServiceProvidingGroupGridSuspensionWritable = z.object({
   impacted_system_operator_id: z.coerce.number(),
   service_providing_group_id: z.coerce.number(),
   reason: zServiceProvidingGroupGridSuspensionReason,
+  impacted_system_operator: z.lazy((): any => zPartyWritable).nullish(),
+  service_providing_group: zServiceProvidingGroupWritable.nullish(),
+  comment: z
+    .lazy((): any => zServiceProvidingGroupGridSuspensionCommentWritable)
+    .nullish(),
 });
 
 /**
@@ -1868,6 +2056,8 @@ export const zServiceProvidingGroupGridSuspensionCommentWritable = z.object({
   service_providing_group_grid_suspension_id: z.coerce.number(),
   visibility: zServiceProvidingGroupGridSuspensionCommentVisibility,
   content: z.string().max(2048),
+  service_providing_group_grid_suspension:
+    zServiceProvidingGroupGridSuspensionWritable.nullish(),
 });
 
 /**
@@ -1885,6 +2075,10 @@ export const zEntityWritable = z.object({
   business_id_type: zEntityBusinessIdType,
   name: z.string(),
   type: zEntityType,
+  client: z.lazy((): any => zEntityClientWritable).nullish(),
+  party: z.lazy((): any => zPartyWritable).nullish(),
+  party_membership: z.lazy((): any => zPartyMembershipWritable).nullish(),
+  identity: z.lazy((): any => zIdentityWritable).nullish(),
 });
 
 /**
@@ -1902,6 +2096,8 @@ export const zEntityClientWritable = z.object({
       /^-----BEGIN PUBLIC KEY-----\nMIIB[-A-Za-z0-9+\/\n]*={0,3}\n-----END PUBLIC KEY-----$/,
     )
     .optional(),
+  entity: zEntityWritable.nullish(),
+  party: z.lazy((): any => zPartyWritable).nullish(),
 });
 
 /**
@@ -1923,30 +2119,8 @@ export const zPartyWritable = z.object({
   role: zPartyRole,
   type: zPartyType,
   status: zPartyStatus,
+  entity: zEntityWritable.nullish(),
 });
-
-/**
- * Format of the data field in a notice of type no.elhub.flex.party.missing
- */
-export const zNoticeDataPartyMissingWritable = z.object({
-  entity: zEntityWritable.optional(),
-  party: zPartyWritable.optional(),
-});
-
-/**
- * Format of the data field in a notice of type no.elhub.flex.party.outdated
- */
-export const zNoticeDataPartyOutdatedWritable = z.object({
-  entity: zEntityWritable.optional(),
-  party: zPartyWritable.optional(),
-});
-
-export const zNoticeDataWritable = z.union([
-  zNoticeDataValidTimeOutsideContract,
-  zNoticeDataPartyMissingWritable,
-  zNoticeDataPartyOutdatedWritable,
-  zNoticeDataProductTypeNotQualified,
-]);
 
 /**
  * Response schema - The relation between a party and entity.
@@ -1955,6 +2129,16 @@ export const zPartyMembershipWritable = z.object({
   party_id: z.coerce.number(),
   entity_id: z.coerce.number(),
   scopes: z.array(zAuthScope),
+  party: zPartyWritable.nullish(),
+  entity: zEntityWritable.nullish(),
+});
+
+/**
+ * Response schema - Resource uniquely identifying a user by linking its entity and the potentially assumed party.
+ */
+export const zIdentityWritable = z.object({
+  entity: zEntityWritable.nullish(),
+  party: zPartyWritable.nullish(),
 });
 
 /**
@@ -1971,6 +2155,14 @@ export const zTechnicalResourceWritable = z.object({
   business_id: z.string().max(256).optional(),
   business_id_type: zTechnicalResourceBusinessIdType.nullish(),
   additional_information: z.string().optional(),
+  controllable_unit: zControllableUnitWritable.nullish(),
+});
+
+/**
+ * Response schema - Event happening in the system.
+ */
+export const zEventWritable = z.object({
+  notification: z.lazy((): any => zNotificationWritable).nullish(),
 });
 
 /**
@@ -1980,27 +2172,88 @@ export const zNotificationWritable = z.object({
   acknowledged: z.boolean(),
   event_id: z.coerce.number(),
   party_id: z.coerce.number(),
+  event: zEventWritable.nullish(),
+  party: zPartyWritable.nullish(),
+});
+
+/**
+ * Response schema - Accounting point for a controllable unit.
+ */
+export const zAccountingPointWritable = z.object({
+  controllable_unit: zControllableUnitWritable.nullish(),
+  system_operator: zPartyWritable.nullish(),
+  balance_responsible_party: z
+    .lazy((): any => zAccountingPointBalanceResponsiblePartyWritable)
+    .nullish(),
+  bidding_zone: z
+    .lazy((): any => zAccountingPointBiddingZoneWritable)
+    .nullish(),
+  end_user: z.lazy((): any => zAccountingPointEndUserWritable).nullish(),
+  energy_supplier: z
+    .lazy((): any => zAccountingPointEnergySupplierWritable)
+    .nullish(),
+  metering_grid_area: z
+    .lazy((): any => zAccountingPointMeteringGridAreaWritable)
+    .nullish(),
 });
 
 /**
  * Response schema - Relation linking a balance responsible party to an accounting point.
  */
-export const zAccountingPointBalanceResponsiblePartyWritable = z.record(
-  z.string(),
-  z.unknown(),
-);
+export const zAccountingPointBalanceResponsiblePartyWritable = z.object({
+  accounting_point: zAccountingPointWritable.nullish(),
+  balance_responsible_party: zPartyWritable.nullish(),
+});
 
 /**
  * Response schema - Relation telling which bidding zone an accounting point belongs to.
  */
 export const zAccountingPointBiddingZoneWritable = z.object({
   bidding_zone: zAccountingPointBiddingZoneBiddingZone,
+  accounting_point: zAccountingPointWritable.nullish(),
+});
+
+/**
+ * Response schema - Relation telling which end user an accounting point belongs to.
+ */
+export const zAccountingPointEndUserWritable = z.object({
+  accounting_point: zAccountingPointWritable.nullish(),
+  end_user: zPartyWritable.nullish(),
+});
+
+/**
+ * Response schema - Relation linking an energy supplier to an accounting point.
+ */
+export const zAccountingPointEnergySupplierWritable = z.object({
+  accounting_point: zAccountingPointWritable.nullish(),
+  energy_supplier: zPartyWritable.nullish(),
 });
 
 /**
  * Response schema - Metering grid area to which accounting points belong.
  */
-export const zMeteringGridAreaWritable = z.record(z.string(), z.unknown());
+export const zMeteringGridAreaWritable = z.object({
+  accounting_point_metering_grid_area: z
+    .lazy((): any => zAccountingPointMeteringGridAreaWritable)
+    .nullish(),
+});
+
+/**
+ * Response schema - Relation telling which metering grid area an accounting point belongs to.
+ */
+export const zAccountingPointMeteringGridAreaWritable = z.object({
+  accounting_point: zAccountingPointWritable.nullish(),
+  metering_grid_area: zMeteringGridAreaWritable.nullish(),
+});
+
+/**
+ * Response schema - Product type.
+ */
+export const zProductTypeWritable = z.object({
+  system_operator_product_type: z
+    .lazy((): any => zSystemOperatorProductTypeWritable)
+    .nullish(),
+});
 
 /**
  * Response schema - Relation between a system operator and a product type they want to buy.
@@ -2009,6 +2262,8 @@ export const zSystemOperatorProductTypeWritable = z.object({
   system_operator_id: z.coerce.number(),
   product_type_id: z.coerce.number(),
   status: zSystemOperatorProductTypeStatus,
+  system_operator: zPartyWritable.nullish(),
+  product_type: zProductTypeWritable.nullish(),
 });
 
 /**
@@ -2020,6 +2275,11 @@ export const zServiceProviderProductApplicationWritable = z.object({
   product_type_ids: z.array(z.coerce.number()),
   status: zServiceProviderProductApplicationStatus,
   qualified_at: z.iso.datetime({ offset: true }).optional(),
+  service_provider: zPartyWritable.nullish(),
+  system_operator: zPartyWritable.nullish(),
+  comment: z
+    .lazy((): any => zServiceProviderProductApplicationCommentWritable)
+    .nullish(),
 });
 
 /**
@@ -2029,6 +2289,8 @@ export const zServiceProviderProductApplicationCommentWritable = z.object({
   service_provider_product_application_id: z.coerce.number(),
   visibility: zServiceProviderProductApplicationCommentVisibility,
   content: z.string().max(2048),
+  service_provider_product_application:
+    zServiceProviderProductApplicationWritable.nullish(),
 });
 
 /**
@@ -2039,6 +2301,11 @@ export const zServiceProviderProductSuspensionWritable = z.object({
   service_provider_id: z.coerce.number(),
   product_type_ids: z.array(z.coerce.number()),
   reason: zServiceProviderProductSuspensionReason,
+  procuring_system_operator: zPartyWritable.nullish(),
+  service_provider: zPartyWritable.nullish(),
+  comment: z
+    .lazy((): any => zServiceProviderProductSuspensionCommentWritable)
+    .nullish(),
 });
 
 /**
@@ -2048,6 +2315,8 @@ export const zServiceProviderProductSuspensionCommentWritable = z.object({
   service_provider_product_suspension_id: z.coerce.number(),
   visibility: zServiceProviderProductSuspensionCommentVisibility,
   content: z.string().max(2048),
+  service_provider_product_suspension:
+    zServiceProviderProductSuspensionWritable.nullish(),
 });
 
 /**
@@ -2063,6 +2332,11 @@ export const zServiceProvidingGroupProductApplicationWritable = z.object({
   additional_information: z.string().max(512).optional(),
   prequalified_at: z.iso.datetime({ offset: true }).optional(),
   verified_at: z.iso.datetime({ offset: true }).optional(),
+  service_providing_group: zServiceProvidingGroupWritable.nullish(),
+  procuring_system_operator: zPartyWritable.nullish(),
+  comment: z
+    .lazy((): any => zServiceProvidingGroupProductApplicationCommentWritable)
+    .nullish(),
 });
 
 /**
@@ -2073,6 +2347,8 @@ export const zServiceProvidingGroupProductApplicationCommentWritable = z.object(
     service_providing_group_product_application_id: z.coerce.number(),
     visibility: zServiceProvidingGroupProductApplicationCommentVisibility,
     content: z.string().max(2048),
+    service_providing_group_product_application:
+      zServiceProvidingGroupProductApplicationWritable.nullish(),
   },
 );
 
@@ -2084,6 +2360,11 @@ export const zServiceProvidingGroupProductSuspensionWritable = z.object({
   service_providing_group_id: z.coerce.number(),
   product_type_ids: z.array(z.coerce.number()),
   reason: zServiceProvidingGroupProductSuspensionReason,
+  procuring_system_operator: zPartyWritable.nullish(),
+  service_providing_group: zServiceProvidingGroupWritable.nullish(),
+  comment: z
+    .lazy((): any => zServiceProvidingGroupProductSuspensionCommentWritable)
+    .nullish(),
 });
 
 /**
@@ -2093,6 +2374,8 @@ export const zServiceProvidingGroupProductSuspensionCommentWritable = z.object({
   service_providing_group_product_suspension_id: z.coerce.number(),
   visibility: zServiceProvidingGroupProductSuspensionCommentVisibility,
   content: z.string().max(2048),
+  service_providing_group_product_suspension:
+    zServiceProvidingGroupProductSuspensionWritable.nullish(),
 });
 
 /**
@@ -2100,6 +2383,7 @@ export const zServiceProvidingGroupProductSuspensionCommentWritable = z.object({
  */
 export const zNoticeWritable = z.object({
   status: zNoticeStatus,
+  party: zPartyWritable.nullish(),
 });
 
 /**
@@ -2382,6 +2666,107 @@ export const zCallEntityLookupBody = zEntityLookupRequest;
  */
 export const zCallEntityLookupResponse = zEntityLookup;
 
+export const zDeleteControllableUnitSuspensionBody = zEmptyObjectWritable;
+
+export const zDeleteControllableUnitSuspensionPath = z.object({
+  id: z.coerce.number(),
+});
+
+/**
+ * No Content
+ */
+export const zDeleteControllableUnitSuspensionResponse = z.void();
+
+export const zDeleteControllableUnitServiceProviderBody = zEmptyObjectWritable;
+
+export const zDeleteControllableUnitServiceProviderPath = z.object({
+  id: z.coerce.number(),
+});
+
+/**
+ * No Content
+ */
+export const zDeleteControllableUnitServiceProviderResponse = z.void();
+
+export const zDeleteServiceProvidingGroupMembershipBody = zEmptyObjectWritable;
+
+export const zDeleteServiceProvidingGroupMembershipPath = z.object({
+  id: z.coerce.number(),
+});
+
+/**
+ * No Content
+ */
+export const zDeleteServiceProvidingGroupMembershipResponse = z.void();
+
+export const zDeleteServiceProvidingGroupGridSuspensionBody =
+  zEmptyObjectWritable;
+
+export const zDeleteServiceProvidingGroupGridSuspensionPath = z.object({
+  id: z.coerce.number(),
+});
+
+/**
+ * No Content
+ */
+export const zDeleteServiceProvidingGroupGridSuspensionResponse = z.void();
+
+export const zDeleteEntityClientBody = zEmptyObjectWritable;
+
+export const zDeleteEntityClientPath = z.object({
+  id: z.coerce.number(),
+});
+
+/**
+ * No Content
+ */
+export const zDeleteEntityClientResponse = z.void();
+
+export const zDeletePartyMembershipBody = zEmptyObjectWritable;
+
+export const zDeletePartyMembershipPath = z.object({
+  id: z.coerce.number(),
+});
+
+/**
+ * No Content
+ */
+export const zDeletePartyMembershipResponse = z.void();
+
+export const zDeleteTechnicalResourceBody = zEmptyObjectWritable;
+
+export const zDeleteTechnicalResourcePath = z.object({
+  id: z.coerce.number(),
+});
+
+/**
+ * No Content
+ */
+export const zDeleteTechnicalResourceResponse = z.void();
+
+export const zDeleteServiceProviderProductSuspensionBody = zEmptyObjectWritable;
+
+export const zDeleteServiceProviderProductSuspensionPath = z.object({
+  id: z.coerce.number(),
+});
+
+/**
+ * No Content
+ */
+export const zDeleteServiceProviderProductSuspensionResponse = z.void();
+
+export const zDeleteServiceProvidingGroupProductSuspensionBody =
+  zEmptyObjectWritable;
+
+export const zDeleteServiceProvidingGroupProductSuspensionPath = z.object({
+  id: z.coerce.number(),
+});
+
+/**
+ * No Content
+ */
+export const zDeleteServiceProvidingGroupProductSuspensionResponse = z.void();
+
 export const zListControllableUnitQuery = z.object({
   id: z
     .string()
@@ -2507,17 +2892,6 @@ export const zCreateControllableUnitSuspensionBody =
  */
 export const zCreateControllableUnitSuspensionResponse =
   zControllableUnitSuspension;
-
-export const zDeleteControllableUnitSuspensionBody = zEmptyObjectWritable;
-
-export const zDeleteControllableUnitSuspensionPath = z.object({
-  id: z.coerce.number(),
-});
-
-/**
- * No Content
- */
-export const zDeleteControllableUnitSuspensionResponse = z.void();
 
 export const zReadControllableUnitSuspensionPath = z.object({
   id: z.coerce.number(),
@@ -2714,17 +3088,6 @@ export const zCreateControllableUnitServiceProviderBody =
  */
 export const zCreateControllableUnitServiceProviderResponse =
   zControllableUnitServiceProvider;
-
-export const zDeleteControllableUnitServiceProviderBody = zEmptyObjectWritable;
-
-export const zDeleteControllableUnitServiceProviderPath = z.object({
-  id: z.coerce.number(),
-});
-
-/**
- * No Content
- */
-export const zDeleteControllableUnitServiceProviderResponse = z.void();
 
 export const zReadControllableUnitServiceProviderPath = z.object({
   id: z.coerce.number(),
@@ -2923,17 +3286,6 @@ export const zCreateServiceProvidingGroupMembershipBody =
  */
 export const zCreateServiceProvidingGroupMembershipResponse =
   zServiceProvidingGroupMembership;
-
-export const zDeleteServiceProvidingGroupMembershipBody = zEmptyObjectWritable;
-
-export const zDeleteServiceProvidingGroupMembershipPath = z.object({
-  id: z.coerce.number(),
-});
-
-/**
- * No Content
- */
-export const zDeleteServiceProvidingGroupMembershipResponse = z.void();
 
 export const zReadServiceProvidingGroupMembershipPath = z.object({
   id: z.coerce.number(),
@@ -3233,18 +3585,6 @@ export const zCreateServiceProvidingGroupGridSuspensionBody =
 export const zCreateServiceProvidingGroupGridSuspensionResponse =
   zServiceProvidingGroupGridSuspension;
 
-export const zDeleteServiceProvidingGroupGridSuspensionBody =
-  zEmptyObjectWritable;
-
-export const zDeleteServiceProvidingGroupGridSuspensionPath = z.object({
-  id: z.coerce.number(),
-});
-
-/**
- * No Content
- */
-export const zDeleteServiceProvidingGroupGridSuspensionResponse = z.void();
-
 export const zReadServiceProvidingGroupGridSuspensionPath = z.object({
   id: z.coerce.number(),
 });
@@ -3484,17 +3824,6 @@ export const zCreateEntityClientBody = zEntityClientCreateRequest;
  */
 export const zCreateEntityClientResponse = zEntityClient;
 
-export const zDeleteEntityClientBody = zEmptyObjectWritable;
-
-export const zDeleteEntityClientPath = z.object({
-  id: z.coerce.number(),
-});
-
-/**
- * No Content
- */
-export const zDeleteEntityClientResponse = z.void();
-
 export const zReadEntityClientPath = z.object({
   id: z.coerce.number(),
 });
@@ -3635,17 +3964,6 @@ export const zCreatePartyMembershipBody = zPartyMembershipCreateRequest;
  */
 export const zCreatePartyMembershipResponse = zPartyMembership;
 
-export const zDeletePartyMembershipBody = zEmptyObjectWritable;
-
-export const zDeletePartyMembershipPath = z.object({
-  id: z.coerce.number(),
-});
-
-/**
- * No Content
- */
-export const zDeletePartyMembershipResponse = z.void();
-
 export const zReadPartyMembershipPath = z.object({
   id: z.coerce.number(),
 });
@@ -3777,17 +4095,6 @@ export const zCreateTechnicalResourceBody = zTechnicalResourceCreateRequest;
  * Created
  */
 export const zCreateTechnicalResourceResponse = zTechnicalResource;
-
-export const zDeleteTechnicalResourceBody = zEmptyObjectWritable;
-
-export const zDeleteTechnicalResourcePath = z.object({
-  id: z.coerce.number(),
-});
-
-/**
- * No Content
- */
-export const zDeleteTechnicalResourceResponse = z.void();
 
 export const zReadTechnicalResourcePath = z.object({
   id: z.coerce.number(),
@@ -4443,17 +4750,6 @@ export const zCreateServiceProviderProductSuspensionBody =
 export const zCreateServiceProviderProductSuspensionResponse =
   zServiceProviderProductSuspension;
 
-export const zDeleteServiceProviderProductSuspensionBody = zEmptyObjectWritable;
-
-export const zDeleteServiceProviderProductSuspensionPath = z.object({
-  id: z.coerce.number(),
-});
-
-/**
- * No Content
- */
-export const zDeleteServiceProviderProductSuspensionResponse = z.void();
-
 export const zReadServiceProviderProductSuspensionPath = z.object({
   id: z.coerce.number(),
 });
@@ -4863,18 +5159,6 @@ export const zCreateServiceProvidingGroupProductSuspensionBody =
  */
 export const zCreateServiceProvidingGroupProductSuspensionResponse =
   zServiceProvidingGroupProductSuspension;
-
-export const zDeleteServiceProvidingGroupProductSuspensionBody =
-  zEmptyObjectWritable;
-
-export const zDeleteServiceProvidingGroupProductSuspensionPath = z.object({
-  id: z.coerce.number(),
-});
-
-/**
- * No Content
- */
-export const zDeleteServiceProvidingGroupProductSuspensionResponse = z.void();
 
 export const zReadServiceProvidingGroupProductSuspensionPath = z.object({
   id: z.coerce.number(),

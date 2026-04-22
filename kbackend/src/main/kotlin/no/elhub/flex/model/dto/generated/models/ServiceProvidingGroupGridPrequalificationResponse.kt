@@ -46,4 +46,29 @@ public data class ServiceProvidingGroupGridPrequalificationResponse(
    */
   @SerialName("recorded_by")
   public val recordedBy: Long? = null,
+  /**
+   * Response schema - Group of controllable units
+   */
+  @SerialName("service_providing_group")
+  public val serviceProvidingGroup: ServiceProvidingGroupResponse? = null,
+  /**
+   * Response schema - The body that interacts with the Flexibility Information System
+   *
+   * A party is the thing that is authorized to access or modify data in the Flexiblity Information
+   * System.
+   *
+   * Example party types:
+   *
+   * * Service Provider
+   * * System Operator
+   * * End User
+   */
+  @SerialName("impacted_system_operator")
+  public val impactedSystemOperator: PartyResponse? = null,
+  /**
+   * Response schema - Comment made by a party involved in a service providing group grid
+   * prequalification.
+   */
+  @SerialName("comment")
+  public val comment: ServiceProvidingGroupGridPrequalificationCommentResponse? = null,
 )

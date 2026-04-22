@@ -30,4 +30,9 @@ public data class MeteringGridAreaResponse(
    */
   @SerialName("name")
   public val name: String? = null,
+  /**
+   * Response schema - Relation telling which metering grid area an accounting point belongs to.
+   */
+  @SerialName("accounting_point_metering_grid_area")
+  public val accountingPointMeteringGridArea: AccountingPointMeteringGridAreaResponse? = null,
 )

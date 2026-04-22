@@ -52,4 +52,37 @@ public data class ServiceProviderProductApplicationResponse(
    */
   @SerialName("recorded_by")
   public val recordedBy: Long? = null,
+  /**
+   * Response schema - The body that interacts with the Flexibility Information System
+   *
+   * A party is the thing that is authorized to access or modify data in the Flexiblity Information
+   * System.
+   *
+   * Example party types:
+   *
+   * * Service Provider
+   * * System Operator
+   * * End User
+   */
+  @SerialName("service_provider")
+  public val serviceProvider: PartyResponse? = null,
+  /**
+   * Response schema - The body that interacts with the Flexibility Information System
+   *
+   * A party is the thing that is authorized to access or modify data in the Flexiblity Information
+   * System.
+   *
+   * Example party types:
+   *
+   * * Service Provider
+   * * System Operator
+   * * End User
+   */
+  @SerialName("system_operator")
+  public val systemOperator: PartyResponse? = null,
+  /**
+   * Response schema - Comment made by a party involved in a service provider product application.
+   */
+  @SerialName("comment")
+  public val comment: ServiceProviderProductApplicationCommentResponse? = null,
 )

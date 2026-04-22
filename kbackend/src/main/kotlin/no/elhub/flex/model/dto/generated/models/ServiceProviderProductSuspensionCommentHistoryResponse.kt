@@ -52,6 +52,12 @@ public data class ServiceProviderProductSuspensionCommentHistoryResponse(
   @SerialName("recorded_by")
   public val recordedBy: Long? = null,
   /**
+   * Response schema - The relation allowing a procuring system operator to temporarily suspend a
+   * service provider from delivering them products of the given types.
+   */
+  @SerialName("service_provider_product_suspension")
+  public val serviceProviderProductSuspension: ServiceProviderProductSuspensionResponse? = null,
+  /**
    * Reference to the resource that was updated.
    */
   @SerialName("service_provider_product_suspension_comment_id")

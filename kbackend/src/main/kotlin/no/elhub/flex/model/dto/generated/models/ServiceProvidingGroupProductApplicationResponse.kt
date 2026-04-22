@@ -78,4 +78,29 @@ public data class ServiceProvidingGroupProductApplicationResponse(
    */
   @SerialName("recorded_by")
   public val recordedBy: Long? = null,
+  /**
+   * Response schema - Group of controllable units
+   */
+  @SerialName("service_providing_group")
+  public val serviceProvidingGroup: ServiceProvidingGroupResponse? = null,
+  /**
+   * Response schema - The body that interacts with the Flexibility Information System
+   *
+   * A party is the thing that is authorized to access or modify data in the Flexiblity Information
+   * System.
+   *
+   * Example party types:
+   *
+   * * Service Provider
+   * * System Operator
+   * * End User
+   */
+  @SerialName("procuring_system_operator")
+  public val procuringSystemOperator: PartyResponse? = null,
+  /**
+   * Response schema - Comment made by a party involved in a service providing group product
+   * application.
+   */
+  @SerialName("comment")
+  public val comment: ServiceProvidingGroupProductApplicationCommentResponse? = null,
 )

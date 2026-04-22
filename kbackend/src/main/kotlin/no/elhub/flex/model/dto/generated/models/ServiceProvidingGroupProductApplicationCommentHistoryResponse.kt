@@ -52,6 +52,13 @@ public data class ServiceProvidingGroupProductApplicationCommentHistoryResponse(
   @SerialName("recorded_by")
   public val recordedBy: Long? = null,
   /**
+   * Response schema - Relation between a service providing group and a system operator for a
+   * product type, for the SPG to deliver a product to the SO later.
+   */
+  @SerialName("service_providing_group_product_application")
+  public val serviceProvidingGroupProductApplication:
+      ServiceProvidingGroupProductApplicationResponse? = null,
+  /**
    * Reference to the resource that was updated.
    */
   @SerialName("service_providing_group_product_application_comment_id")

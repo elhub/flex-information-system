@@ -80,6 +80,32 @@ public data class ControllableUnitHistoryResponse(
   @SerialName("recorded_by")
   public val recordedBy: Long? = null,
   /**
+   * Response schema - Accounting point for a controllable unit.
+   */
+  @SerialName("accounting_point")
+  public val accountingPoint: AccountingPointResponse? = null,
+  /**
+   * Response schema - The relation allowing an impacted system operator to temporarily suspend a
+   * controllable unit.
+   */
+  @SerialName("suspension")
+  public val suspension: ControllableUnitSuspensionResponse? = null,
+  /**
+   * Response schema - Relation between controllable unit and service provider
+   */
+  @SerialName("service_provider")
+  public val serviceProvider: ControllableUnitServiceProviderResponse? = null,
+  /**
+   * Response schema - Membership relation of controllable unit in service providing group
+   */
+  @SerialName("service_providing_group_membership")
+  public val serviceProvidingGroupMembership: ServiceProvidingGroupMembershipResponse? = null,
+  /**
+   * Response schema - Technical unit being part of a controllable unit.
+   */
+  @SerialName("technical_resource")
+  public val technicalResource: TechnicalResourceResponse? = null,
+  /**
    * Reference to the resource that was updated.
    */
   @SerialName("controllable_unit_id")

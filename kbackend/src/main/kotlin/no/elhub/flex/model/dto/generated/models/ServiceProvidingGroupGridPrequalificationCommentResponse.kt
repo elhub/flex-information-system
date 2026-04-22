@@ -52,4 +52,10 @@ public data class ServiceProvidingGroupGridPrequalificationCommentResponse(
    */
   @SerialName("recorded_by")
   public val recordedBy: Long? = null,
+  /**
+   * Response schema - Grid prequalification for service providing group
+   */
+  @SerialName("service_providing_group_grid_prequalification")
+  public val serviceProvidingGroupGridPrequalification:
+      ServiceProvidingGroupGridPrequalificationResponse? = null,
 )

@@ -2,13 +2,17 @@ from __future__ import annotations
 
 import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, cast
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.notification_response import NotificationResponse
+
 
 T = TypeVar("T", bound="EventResponse")
 
@@ -26,6 +30,7 @@ class EventResponse:
         subject (None | str | Unset): The URI of the specific subject of the event within the resource pointed by
             `source`. Example: /technical_resource/2.
         data (None | str | Unset): The data of the event.
+        notification (None | NotificationResponse | Unset): Embedded notification
     """
 
     id: int
@@ -35,9 +40,12 @@ class EventResponse:
     source: str
     subject: None | str | Unset = UNSET
     data: None | str | Unset = UNSET
+    notification: None | NotificationResponse | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        from ..models.notification_response import NotificationResponse
+
         id = self.id
 
         specversion = self.specversion
@@ -60,6 +68,14 @@ class EventResponse:
         else:
             data = self.data
 
+        notification: dict[str, Any] | None | Unset
+        if isinstance(self.notification, Unset):
+            notification = UNSET
+        elif isinstance(self.notification, NotificationResponse):
+            notification = self.notification.to_dict()
+        else:
+            notification = self.notification
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -75,11 +91,15 @@ class EventResponse:
             field_dict["subject"] = subject
         if data is not UNSET:
             field_dict["data"] = data
+        if notification is not UNSET:
+            field_dict["notification"] = notification
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.notification_response import NotificationResponse
+
         d = dict(src_dict)
         id = d.pop("id")
 
@@ -109,6 +129,23 @@ class EventResponse:
 
         data = _parse_data(d.pop("data", UNSET))
 
+        def _parse_notification(data: object) -> None | NotificationResponse | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                notification_type_0 = NotificationResponse.from_dict(data)
+
+                return notification_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(None | NotificationResponse | Unset, data)
+
+        notification = _parse_notification(d.pop("notification", UNSET))
+
         event_response = cls(
             id=id,
             specversion=specversion,
@@ -117,6 +154,7 @@ class EventResponse:
             source=source,
             subject=subject,
             data=data,
+            notification=notification,
         )
 
         event_response.additional_properties = d

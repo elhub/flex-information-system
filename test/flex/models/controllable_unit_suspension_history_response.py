@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, cast
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -10,6 +10,12 @@ from dateutil.parser import isoparse
 
 from ..models.controllable_unit_suspension_reason import ControllableUnitSuspensionReason
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.controllable_unit_response import ControllableUnitResponse
+    from ..models.controllable_unit_suspension_comment_response import ControllableUnitSuspensionCommentResponse
+    from ..models.party_response import PartyResponse
+
 
 T = TypeVar("T", bound="ControllableUnitSuspensionHistoryResponse")
 
@@ -28,6 +34,10 @@ class ControllableUnitSuspensionHistoryResponse:
             2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
         controllable_unit_suspension_id (int): Reference to the resource that was updated. Example: 48.
+        controllable_unit (ControllableUnitResponse | None | Unset): Embedded controllable_unit
+        impacted_system_operator (None | PartyResponse | Unset): Embedded party
+        comment (ControllableUnitSuspensionCommentResponse | None | Unset): Embedded
+            controllable_unit_suspension_comment
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (datetime.datetime | None | Unset): When the resource was replaced in the system. Example:
             2024-07-07T10:00:00+00:00.
@@ -40,11 +50,18 @@ class ControllableUnitSuspensionHistoryResponse:
     recorded_at: datetime.datetime
     recorded_by: int
     controllable_unit_suspension_id: int
+    controllable_unit: ControllableUnitResponse | None | Unset = UNSET
+    impacted_system_operator: None | PartyResponse | Unset = UNSET
+    comment: ControllableUnitSuspensionCommentResponse | None | Unset = UNSET
     replaced_by: int | None | Unset = UNSET
     replaced_at: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        from ..models.controllable_unit_response import ControllableUnitResponse
+        from ..models.controllable_unit_suspension_comment_response import ControllableUnitSuspensionCommentResponse
+        from ..models.party_response import PartyResponse
+
         id = self.id
 
         controllable_unit_id = self.controllable_unit_id
@@ -58,6 +75,30 @@ class ControllableUnitSuspensionHistoryResponse:
         recorded_by = self.recorded_by
 
         controllable_unit_suspension_id = self.controllable_unit_suspension_id
+
+        controllable_unit: dict[str, Any] | None | Unset
+        if isinstance(self.controllable_unit, Unset):
+            controllable_unit = UNSET
+        elif isinstance(self.controllable_unit, ControllableUnitResponse):
+            controllable_unit = self.controllable_unit.to_dict()
+        else:
+            controllable_unit = self.controllable_unit
+
+        impacted_system_operator: dict[str, Any] | None | Unset
+        if isinstance(self.impacted_system_operator, Unset):
+            impacted_system_operator = UNSET
+        elif isinstance(self.impacted_system_operator, PartyResponse):
+            impacted_system_operator = self.impacted_system_operator.to_dict()
+        else:
+            impacted_system_operator = self.impacted_system_operator
+
+        comment: dict[str, Any] | None | Unset
+        if isinstance(self.comment, Unset):
+            comment = UNSET
+        elif isinstance(self.comment, ControllableUnitSuspensionCommentResponse):
+            comment = self.comment.to_dict()
+        else:
+            comment = self.comment
 
         replaced_by: int | None | Unset
         if isinstance(self.replaced_by, Unset):
@@ -86,6 +127,12 @@ class ControllableUnitSuspensionHistoryResponse:
                 "controllable_unit_suspension_id": controllable_unit_suspension_id,
             }
         )
+        if controllable_unit is not UNSET:
+            field_dict["controllable_unit"] = controllable_unit
+        if impacted_system_operator is not UNSET:
+            field_dict["impacted_system_operator"] = impacted_system_operator
+        if comment is not UNSET:
+            field_dict["comment"] = comment
         if replaced_by is not UNSET:
             field_dict["replaced_by"] = replaced_by
         if replaced_at is not UNSET:
@@ -95,6 +142,10 @@ class ControllableUnitSuspensionHistoryResponse:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.controllable_unit_response import ControllableUnitResponse
+        from ..models.controllable_unit_suspension_comment_response import ControllableUnitSuspensionCommentResponse
+        from ..models.party_response import PartyResponse
+
         d = dict(src_dict)
         id = d.pop("id")
 
@@ -109,6 +160,57 @@ class ControllableUnitSuspensionHistoryResponse:
         recorded_by = d.pop("recorded_by")
 
         controllable_unit_suspension_id = d.pop("controllable_unit_suspension_id")
+
+        def _parse_controllable_unit(data: object) -> ControllableUnitResponse | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                controllable_unit_type_0 = ControllableUnitResponse.from_dict(data)
+
+                return controllable_unit_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(ControllableUnitResponse | None | Unset, data)
+
+        controllable_unit = _parse_controllable_unit(d.pop("controllable_unit", UNSET))
+
+        def _parse_impacted_system_operator(data: object) -> None | PartyResponse | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                impacted_system_operator_type_0 = PartyResponse.from_dict(data)
+
+                return impacted_system_operator_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(None | PartyResponse | Unset, data)
+
+        impacted_system_operator = _parse_impacted_system_operator(d.pop("impacted_system_operator", UNSET))
+
+        def _parse_comment(data: object) -> ControllableUnitSuspensionCommentResponse | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                comment_type_0 = ControllableUnitSuspensionCommentResponse.from_dict(data)
+
+                return comment_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(ControllableUnitSuspensionCommentResponse | None | Unset, data)
+
+        comment = _parse_comment(d.pop("comment", UNSET))
 
         def _parse_replaced_by(data: object) -> int | None | Unset:
             if data is None:
@@ -144,6 +246,9 @@ class ControllableUnitSuspensionHistoryResponse:
             recorded_at=recorded_at,
             recorded_by=recorded_by,
             controllable_unit_suspension_id=controllable_unit_suspension_id,
+            controllable_unit=controllable_unit,
+            impacted_system_operator=impacted_system_operator,
+            comment=comment,
             replaced_by=replaced_by,
             replaced_at=replaced_at,
         )

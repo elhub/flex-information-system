@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, cast
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -13,6 +13,10 @@ from ..models.device_type import DeviceType
 from ..models.technical_resource_business_id_type import TechnicalResourceBusinessIdType
 from ..models.technology import Technology
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.controllable_unit_response import ControllableUnitResponse
+
 
 T = TypeVar("T", bound="TechnicalResourceResponse")
 
@@ -44,6 +48,7 @@ class TechnicalResourceResponse:
         business_id_type (None | TechnicalResourceBusinessIdType | Unset):
         additional_information (None | str | Unset): Free text field for extra information about the technical resource
             if needed.
+        controllable_unit (ControllableUnitResponse | None | Unset): Embedded controllable_unit
     """
 
     id: int
@@ -60,9 +65,12 @@ class TechnicalResourceResponse:
     business_id: None | str | Unset = UNSET
     business_id_type: None | TechnicalResourceBusinessIdType | Unset = UNSET
     additional_information: None | str | Unset = UNSET
+    controllable_unit: ControllableUnitResponse | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        from ..models.controllable_unit_response import ControllableUnitResponse
+
         id = self.id
 
         name = self.name
@@ -119,6 +127,14 @@ class TechnicalResourceResponse:
         else:
             additional_information = self.additional_information
 
+        controllable_unit: dict[str, Any] | None | Unset
+        if isinstance(self.controllable_unit, Unset):
+            controllable_unit = UNSET
+        elif isinstance(self.controllable_unit, ControllableUnitResponse):
+            controllable_unit = self.controllable_unit.to_dict()
+        else:
+            controllable_unit = self.controllable_unit
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -144,11 +160,15 @@ class TechnicalResourceResponse:
             field_dict["business_id_type"] = business_id_type
         if additional_information is not UNSET:
             field_dict["additional_information"] = additional_information
+        if controllable_unit is not UNSET:
+            field_dict["controllable_unit"] = controllable_unit
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.controllable_unit_response import ControllableUnitResponse
+
         d = dict(src_dict)
         id = d.pop("id")
 
@@ -231,6 +251,23 @@ class TechnicalResourceResponse:
 
         additional_information = _parse_additional_information(d.pop("additional_information", UNSET))
 
+        def _parse_controllable_unit(data: object) -> ControllableUnitResponse | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                controllable_unit_type_0 = ControllableUnitResponse.from_dict(data)
+
+                return controllable_unit_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(ControllableUnitResponse | None | Unset, data)
+
+        controllable_unit = _parse_controllable_unit(d.pop("controllable_unit", UNSET))
+
         technical_resource_response = cls(
             id=id,
             name=name,
@@ -246,6 +283,7 @@ class TechnicalResourceResponse:
             business_id=business_id,
             business_id_type=business_id_type,
             additional_information=additional_information,
+            controllable_unit=controllable_unit,
         )
 
         technical_resource_response.additional_properties = d

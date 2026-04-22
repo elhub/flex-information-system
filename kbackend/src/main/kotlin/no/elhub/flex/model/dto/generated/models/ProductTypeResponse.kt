@@ -35,4 +35,9 @@ public data class ProductTypeResponse(
    */
   @SerialName("products")
   public val products: String? = null,
+  /**
+   * Response schema - Relation between a system operator and a product type they want to buy.
+   */
+  @SerialName("system_operator_product_type")
+  public val systemOperatorProductType: SystemOperatorProductTypeResponse? = null,
 )

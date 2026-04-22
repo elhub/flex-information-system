@@ -60,6 +60,39 @@ public data class ControllableUnitServiceProviderHistoryResponse(
   @SerialName("recorded_by")
   public val recordedBy: Long? = null,
   /**
+   * Response schema - Controllable unit
+   */
+  @SerialName("controllable_unit")
+  public val controllableUnit: ControllableUnitResponse? = null,
+  /**
+   * Response schema - The body that interacts with the Flexibility Information System
+   *
+   * A party is the thing that is authorized to access or modify data in the Flexiblity Information
+   * System.
+   *
+   * Example party types:
+   *
+   * * Service Provider
+   * * System Operator
+   * * End User
+   */
+  @SerialName("service_provider")
+  public val serviceProvider: PartyResponse? = null,
+  /**
+   * Response schema - The body that interacts with the Flexibility Information System
+   *
+   * A party is the thing that is authorized to access or modify data in the Flexiblity Information
+   * System.
+   *
+   * Example party types:
+   *
+   * * Service Provider
+   * * System Operator
+   * * End User
+   */
+  @SerialName("end_user")
+  public val endUser: PartyResponse? = null,
+  /**
    * Reference to the resource that was updated.
    */
   @SerialName("controllable_unit_service_provider_id")
