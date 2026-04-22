@@ -1094,6 +1094,66 @@
                         "type": "integer",
                         "readOnly": true,
                         "example": 145
+                    },
+                    "accounting_point": {
+                        "description": "Embedded accounting_point",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/accounting_point_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "suspension": {
+                        "description": "Embedded controllable_unit_suspension",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/controllable_unit_suspension_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "service_provider": {
+                        "description": "Embedded controllable_unit_service_provider",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/controllable_unit_service_provider_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "service_providing_group_membership": {
+                        "description": "Embedded service_providing_group_membership",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/service_providing_group_membership_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "technical_resource": {
+                        "description": "Embedded technical_resource",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/technical_resource_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -1185,6 +1245,42 @@
                         "type": "integer",
                         "readOnly": true,
                         "example": 145
+                    },
+                    "controllable_unit": {
+                        "description": "Embedded controllable_unit",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/controllable_unit_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "impacted_system_operator": {
+                        "description": "Embedded party",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/party_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "comment": {
+                        "description": "Embedded controllable_unit_suspension_comment",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/controllable_unit_suspension_comment_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -1295,6 +1391,18 @@
                         "type": "integer",
                         "readOnly": true,
                         "example": 145
+                    },
+                    "controllable_unit_suspension": {
+                        "description": "Embedded controllable_unit_suspension",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/controllable_unit_suspension_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -1453,6 +1561,42 @@
                         "type": "integer",
                         "readOnly": true,
                         "example": 145
+                    },
+                    "controllable_unit": {
+                        "description": "Embedded controllable_unit",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/controllable_unit_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "service_provider": {
+                        "description": "Embedded party",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/party_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "end_user": {
+                        "description": "Embedded party",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/party_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -1581,6 +1725,78 @@
                         "type": "integer",
                         "readOnly": true,
                         "example": 145
+                    },
+                    "service_provider": {
+                        "description": "Embedded party",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/party_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "membership": {
+                        "description": "Embedded service_providing_group_membership",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/service_providing_group_membership_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "grid_prequalification": {
+                        "description": "Embedded service_providing_group_grid_prequalification",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/service_providing_group_grid_prequalification_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "grid_suspension": {
+                        "description": "Embedded service_providing_group_grid_suspension",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/service_providing_group_grid_suspension_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "product_application": {
+                        "description": "Embedded service_providing_group_product_application",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/service_providing_group_product_application_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "product_suspension": {
+                        "description": "Embedded service_providing_group_product_suspension",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/service_providing_group_product_suspension_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -1700,6 +1916,30 @@
                         "type": "integer",
                         "readOnly": true,
                         "example": 145
+                    },
+                    "controllable_unit": {
+                        "description": "Embedded controllable_unit",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/controllable_unit_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "service_providing_group": {
+                        "description": "Embedded service_providing_group",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/service_providing_group_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -1808,6 +2048,42 @@
                         "type": "integer",
                         "readOnly": true,
                         "example": 145
+                    },
+                    "service_providing_group": {
+                        "description": "Embedded service_providing_group",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/service_providing_group_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "impacted_system_operator": {
+                        "description": "Embedded party",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/party_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "comment": {
+                        "description": "Embedded service_providing_group_grid_prequalification_comment",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/service_providing_group_grid_prequalification_comment_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -1918,6 +2194,18 @@
                         "type": "integer",
                         "readOnly": true,
                         "example": 145
+                    },
+                    "service_providing_group_grid_prequalification": {
+                        "description": "Embedded service_providing_group_grid_prequalification",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/service_providing_group_grid_prequalification_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -2007,6 +2295,42 @@
                         "type": "integer",
                         "readOnly": true,
                         "example": 145
+                    },
+                    "impacted_system_operator": {
+                        "description": "Embedded party",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/party_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "service_providing_group": {
+                        "description": "Embedded service_providing_group",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/service_providing_group_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "comment": {
+                        "description": "Embedded service_providing_group_grid_suspension_comment",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/service_providing_group_grid_suspension_comment_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -2117,6 +2441,18 @@
                         "type": "integer",
                         "readOnly": true,
                         "example": 145
+                    },
+                    "service_providing_group_grid_suspension": {
+                        "description": "Embedded service_providing_group_grid_suspension",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/service_providing_group_grid_suspension_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -2223,6 +2559,54 @@
                         "type": "integer",
                         "readOnly": true,
                         "example": 145
+                    },
+                    "client": {
+                        "description": "Embedded entity_client",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/entity_client_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "party": {
+                        "description": "Embedded party",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/party_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "party_membership": {
+                        "description": "Embedded party_membership",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/party_membership_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "identity": {
+                        "description": "Embedded identity",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/identity_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -2423,6 +2807,30 @@
                         "type": "integer",
                         "readOnly": true,
                         "example": 145
+                    },
+                    "entity": {
+                        "description": "Embedded entity",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/entity_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "party": {
+                        "description": "Embedded party",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/party_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -2557,6 +2965,18 @@
                         "type": "integer",
                         "readOnly": true,
                         "example": 145
+                    },
+                    "entity": {
+                        "description": "Embedded entity",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/entity_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -2673,6 +3093,30 @@
                         "type": "integer",
                         "readOnly": true,
                         "example": 145
+                    },
+                    "party": {
+                        "description": "Embedded party",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/party_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "entity": {
+                        "description": "Embedded entity",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/entity_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -2725,6 +3169,30 @@
                         "readOnly": true,
                         "nullable": true,
                         "example": "Andersen SO"
+                    },
+                    "entity": {
+                        "description": "Embedded entity",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/entity_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "party": {
+                        "description": "Embedded party",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/party_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -3043,6 +3511,18 @@
                         "type": "integer",
                         "readOnly": true,
                         "example": 145
+                    },
+                    "controllable_unit": {
+                        "description": "Embedded controllable_unit",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/controllable_unit_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -3114,6 +3594,18 @@
                         "readOnly": true,
                         "nullable": true,
                         "example": null
+                    },
+                    "notification": {
+                        "description": "Embedded notification",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/notification_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -3180,6 +3672,30 @@
                         "type": "integer",
                         "readOnly": true,
                         "example": 145
+                    },
+                    "event": {
+                        "description": "Embedded event",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/event_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "party": {
+                        "description": "Embedded party",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/party_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -3230,6 +3746,90 @@
                         "type": "integer",
                         "readOnly": true,
                         "example": 145
+                    },
+                    "controllable_unit": {
+                        "description": "Embedded controllable_unit",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/controllable_unit_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "system_operator": {
+                        "description": "Embedded party",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/party_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "balance_responsible_party": {
+                        "description": "Embedded accounting_point_balance_responsible_party",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/accounting_point_balance_responsible_party_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "bidding_zone": {
+                        "description": "Embedded accounting_point_bidding_zone",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/accounting_point_bidding_zone_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "end_user": {
+                        "description": "Embedded accounting_point_end_user",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/accounting_point_end_user_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "energy_supplier": {
+                        "description": "Embedded accounting_point_energy_supplier",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/accounting_point_energy_supplier_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "metering_grid_area": {
+                        "description": "Embedded accounting_point_metering_grid_area",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/accounting_point_metering_grid_area_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -3276,6 +3876,30 @@
                         "readOnly": true,
                         "nullable": true,
                         "example": null
+                    },
+                    "accounting_point": {
+                        "description": "Embedded accounting_point",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/accounting_point_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "balance_responsible_party": {
+                        "description": "Embedded party",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/party_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -3314,6 +3938,18 @@
                         "readOnly": true,
                         "nullable": true,
                         "example": null
+                    },
+                    "accounting_point": {
+                        "description": "Embedded accounting_point",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/accounting_point_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -3355,6 +3991,30 @@
                         "readOnly": true,
                         "nullable": true,
                         "example": null
+                    },
+                    "accounting_point": {
+                        "description": "Embedded accounting_point",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/accounting_point_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "end_user": {
+                        "description": "Embedded party",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/party_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -3396,6 +4056,30 @@
                         "readOnly": true,
                         "nullable": true,
                         "example": null
+                    },
+                    "accounting_point": {
+                        "description": "Embedded accounting_point",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/accounting_point_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "energy_supplier": {
+                        "description": "Embedded party",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/party_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -3433,6 +4117,18 @@
                         "maxLength": 128,
                         "readOnly": true,
                         "example": "VN04VESTNORGEDX12"
+                    },
+                    "accounting_point_metering_grid_area": {
+                        "description": "Embedded accounting_point_metering_grid_area",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/accounting_point_metering_grid_area_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -3475,6 +4171,30 @@
                         "readOnly": true,
                         "nullable": true,
                         "example": null
+                    },
+                    "accounting_point": {
+                        "description": "Embedded accounting_point",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/accounting_point_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "metering_grid_area": {
+                        "description": "Embedded metering_grid_area",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/metering_grid_area_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -3523,6 +4243,18 @@
                         "type": "string",
                         "readOnly": true,
                         "example": "LongFlex, ShortFlex"
+                    },
+                    "system_operator_product_type": {
+                        "description": "Embedded system_operator_product_type",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/system_operator_product_type_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -3609,6 +4341,30 @@
                         "type": "integer",
                         "readOnly": true,
                         "example": 145
+                    },
+                    "system_operator": {
+                        "description": "Embedded party",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/party_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "product_type": {
+                        "description": "Embedded product_type",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/product_type_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -3757,6 +4513,42 @@
                         "type": "integer",
                         "readOnly": true,
                         "example": 145
+                    },
+                    "service_provider": {
+                        "description": "Embedded party",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/party_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "system_operator": {
+                        "description": "Embedded party",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/party_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "comment": {
+                        "description": "Embedded service_provider_product_application_comment",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/service_provider_product_application_comment_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -3868,6 +4660,18 @@
                         "type": "integer",
                         "readOnly": true,
                         "example": 145
+                    },
+                    "service_provider_product_application": {
+                        "description": "Embedded service_provider_product_application",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/service_provider_product_application_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -3994,6 +4798,42 @@
                         "type": "integer",
                         "readOnly": true,
                         "example": 145
+                    },
+                    "procuring_system_operator": {
+                        "description": "Embedded party",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/party_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "service_provider": {
+                        "description": "Embedded party",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/party_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "comment": {
+                        "description": "Embedded service_provider_product_suspension_comment",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/service_provider_product_suspension_comment_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -4105,6 +4945,18 @@
                         "type": "integer",
                         "readOnly": true,
                         "example": 145
+                    },
+                    "service_provider_product_suspension": {
+                        "description": "Embedded service_provider_product_suspension",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/service_provider_product_suspension_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -4356,6 +5208,42 @@
                         "type": "integer",
                         "readOnly": true,
                         "example": 145
+                    },
+                    "service_providing_group": {
+                        "description": "Embedded service_providing_group",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/service_providing_group_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "procuring_system_operator": {
+                        "description": "Embedded party",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/party_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "comment": {
+                        "description": "Embedded service_providing_group_product_application_comment",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/service_providing_group_product_application_comment_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -4469,6 +5357,18 @@
                         "type": "integer",
                         "readOnly": true,
                         "example": 145
+                    },
+                    "service_providing_group_product_application": {
+                        "description": "Embedded service_providing_group_product_application",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/service_providing_group_product_application_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -4595,6 +5495,42 @@
                         "type": "integer",
                         "readOnly": true,
                         "example": 145
+                    },
+                    "procuring_system_operator": {
+                        "description": "Embedded party",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/party_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "service_providing_group": {
+                        "description": "Embedded service_providing_group",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/service_providing_group_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "comment": {
+                        "description": "Embedded service_providing_group_product_suspension_comment",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/service_providing_group_product_suspension_comment_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -4706,6 +5642,18 @@
                         "type": "integer",
                         "readOnly": true,
                         "example": 145
+                    },
+                    "service_providing_group_product_suspension": {
+                        "description": "Embedded service_providing_group_product_suspension",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/service_providing_group_product_suspension_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -4779,6 +5727,18 @@
                         "type": "integer",
                         "readOnly": true,
                         "example": 145
+                    },
+                    "party": {
+                        "description": "Embedded party",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/party_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [

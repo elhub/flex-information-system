@@ -30,6 +30,7 @@ import json
 import click
 from copy import deepcopy
 import j2
+import relationship
 
 # templates
 
@@ -403,7 +404,10 @@ def generate_openapi_document(base_file, resources_file, servers_file):
     for i, resource in enumerate(resources):
         if resource.get("comments"):
             comment_resource = yaml.safe_load(
-                j2.template_str(resource, "comment_resource.j2.yml"),
+                j2.template_str(
+                    {"resource": resource["id"], "data": resource},
+                    "comment_resource.j2.yml",
+                ),
             )["data"]
             comment_resources.append((i + 1 + shift, comment_resource))
             shift += 1
@@ -638,6 +642,7 @@ def generate_openapi_document(base_file, resources_file, servers_file):
     # returns, that a query is possible on another resource using the foreign key
     # as an id)
     links = {}
+    rels = []
 
     for resource in resources:
         # setup endpoint groups:
@@ -683,12 +688,37 @@ def generate_openapi_document(base_file, resources_file, servers_file):
             for field, field_info in resource["properties"].items()
             if field_info.get("x-foreign-key") is not None
         ]
+        for field, field_info in foreign_key_fields:
+            if not field.endswith("_id"):
+                continue
+            rels.extend(
+                relationship.from_foreign_key(
+                    resource["id"],
+                    field,
+                    field_info["x-foreign-key"]["resource"],
+                    field_info["x-foreign-key"]["field"],
+                    field_info["x-foreign-key"]["cardinality"],
+                )
+            )
 
         filter_fields = [
             (field, field_info)
             for field, field_info in resource["properties"].items()
             if field_info.get("x-filter") is True
         ]
+
+        # add foreign key relationships
+        for rel in rels:
+            base["components"]["schemas"][rel.child.resource + "_response"][
+                "properties"
+            ][rel.name] = {
+                "description": f"Embedded {rel.parent.resource}",
+                "oneOf": [
+                    {"$ref": f"#/components/schemas/{rel.parent.resource}_response"},
+                    {"type": "null"},
+                ],
+                "nullable": True,
+            }
 
         # generate endpoint for each operation
 

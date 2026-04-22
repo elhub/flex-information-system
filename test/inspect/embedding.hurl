@@ -14,10 +14,6 @@ Authorization: Bearer {{ access_token }}
 id: eq.1
 select: *,controllable_unit(*,accounting_point(*,bidding_zone,balance_responsible_party!inner(*,balance_responsible_party!inner(*))))
 controllable_unit.accounting_point.balance_responsible_party.balance_responsible_party.business_id: eq.1337000000006
-#controllable_unit.accounting_point.balance_responsible_party.valid_from: lte.{{ today }}
-#controllable_unit.accounting_point.balance_responsible_party.or: (valid_to.gte.{{ today }},valid_to.is.null)
-valid_from: lte.{{ today }}
-or: (valid_to.gte.{{ today }},valid_to.is.null)
 
 
 GET {{ api_url }}/service_providing_group_membership
@@ -25,5 +21,3 @@ Authorization: Bearer {{ access_token }}
 [Query]
 id: eq.1
 embed: controllable_unit(accounting_point(bidding_zone,balance_responsible_party(balance_responsible_party)))
-valid_at: now
-controllable_unit.accounting_point.balance_responsible_party.valid_at: now

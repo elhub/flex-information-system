@@ -2,6 +2,7 @@
 import yaml
 import sys
 import j2
+import relationship
 
 """
 This script generates SQL statements to create views in the `api` schema,
@@ -86,31 +87,12 @@ CREATE TABLE api.{resource}_history (
 """
 
 
-def embedding_name_from_field(child_field_name):
-    """
-    Derive the name of the embed field name.
-    """
-    if child_field_name.endswith("_id"):
-        return child_field_name[:-3]
-    return child_field_name
-
-
-def embedding_name_inverse(child, parent):
-    """
-    Derive the name of the embed field name.
-    """
-    prefix = parent + "_"
-    if child.startswith(prefix):
-        return child[len(prefix) :]
-    return child
-
-
-def collect_embeds(resources):
+def collect_relationships(resources):
     """
     Collect all FK relationships that have a cardinality annotation.
     Returns a list of dicts with the relationship metadata needed for the template.
     """
-    embeds = []
+    rels = []
     for resource in resources:
         child = resource["id"]
         props = resource.get("properties", {})
@@ -125,41 +107,13 @@ def collect_embeds(resources):
             child_field = field
             parent = fk["resource"]
             parent_field = fk["field"]
-
-            # cardinality is on the format one|many-to-one|many
-            cardinality = fk["cardinality"].split("-to-")
-            if len(cardinality) != 2:
-                continue
-            parent_cardinality, child_cardinality = cardinality
-
-            # add fk relationship
-            embeds.append(
-                {
-                    "child": child,
-                    "child_field": child_field,
-                    "parent": parent,
-                    "parent_field": parent_field,
-                    "cardinality": child_cardinality,
-                    "embedding_name": embedding_name_from_field(child_field),
-                }
+            cardinality = fk["cardinality"]
+            rels.extend(
+                relationship.from_foreign_key(
+                    child, child_field, parent, parent_field, cardinality
+                )
             )
-
-            # no inverse relationships for party
-            if parent == "party":
-                continue
-
-            # add inverse relationship
-            embeds.append(
-                {
-                    "child": parent,
-                    "child_field": parent_field,
-                    "parent": child,
-                    "parent_field": child_field,
-                    "cardinality": parent_cardinality,
-                    "embedding_name": embedding_name_inverse(child, parent),
-                }
-            )
-    return embeds
+    return rels
 
 
 if __name__ == "__main__":
@@ -263,9 +217,9 @@ if __name__ == "__main__":
                 )
 
         # generate embedding functions for all FK relationships with cardinality
-        embeds = collect_embeds(resources)
+        rels = collect_relationships(resources)
         j2.template(
-            {"embeds": embeds},
+            {"rels": rels},
             "embedding.j2.sql",
             output_file_embedding,
         )
