@@ -55,7 +55,15 @@ export const ServiceProvidingGroupGridPrequalificationShow = () => {
       }
     >
       <SpgpqShowSummary spgpq={spgpq} spg={spg.data} isHistory={isHistory} />
-      {!isHistory ? <SpgpqShowTabs spgpqId={spgpq.id} /> : <div />}
+      {!isHistory ? (
+        <SpgpqShowTabs
+          spgId={spgpq.service_providing_group_id}
+          spgpqId={spgpq.id}
+          spg={spg.data}
+        />
+      ) : (
+        <div />
+      )}
     </ShowPageLayout>
   );
 };
