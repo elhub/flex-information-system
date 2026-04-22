@@ -47,7 +47,8 @@ WITH (security_invoker = false) AS (
             0
         ) AS sum_maximum_active_power_energy_storage,
         -- average of TR MAP
-        AVG(tr.maximum_active_power) AS average_maximum_active_power
+        COALESCE(AVG(tr.maximum_active_power), 0)
+            AS average_maximum_active_power -- noqa
     FROM flex.controllable_unit AS cu
         LEFT JOIN flex.technical_resource AS tr
             ON cu.id = tr.controllable_unit_id

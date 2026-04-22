@@ -60,6 +60,8 @@ def test_controllable_unit_summary_aggregation(sts):
     assert isinstance(summary, ControllableUnitSummaryResponse)
     assert summary.count_technical_resource == 0
     assert summary.sum_maximum_active_power == pytest.approx(0.0)
+    assert summary.average_maximum_active_power == pytest.approx(0.0)
+    assert summary.count_technical_resource_by_technology.additional_properties == {}
 
     # add some TRs and check the summary values are correct
 
