@@ -497,6 +497,23 @@ func (data *api) entityLookupHandler(
 	w.Write(body)
 }
 
+// validAtQueryRewrite rewrites the "valid_at" query parameter into "valid_from" and "valid_to".
+func validAtQueryRewrite(query url.Values) {
+	for key := range query {
+		if key == "valid_at" || strings.HasSuffix(key, ".valid_at") {
+			keyFrom := key[:len(key)-len("valid_at")] + "valid_from"
+			keyOr := key[:len(key)-len("valid_at")] + "or"
+			query.Del(keyFrom)
+			query.Del(keyOr)
+			if validAt := query.Get(key); validAt != "" {
+				query.Del(key)
+				query.Set(keyFrom, "lte."+validAt)
+				query.Add(keyOr, "(valid_to.gt."+validAt+",valid_to.is.null)")
+			}
+		}
+	}
+}
+
 // postgRESTHandler forwards the request to the PostgREST API.
 func (data *api) postgRESTHandler(w http.ResponseWriter, req *http.Request) {
 	// regex for calls targeting single ID pages, not a valid format in PostgREST
@@ -533,6 +550,8 @@ func (data *api) postgRESTHandler(w http.ResponseWriter, req *http.Request) {
 			"new url", url, "new query", query.Encode(),
 		)
 	}
+
+	validAtQueryRewrite(query)
 
 	proxy := &httputil.ReverseProxy{ //nolint:exhaustruct
 		Rewrite: func(req *httputil.ProxyRequest) {

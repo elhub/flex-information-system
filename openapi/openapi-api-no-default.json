@@ -8513,6 +8513,16 @@
                     },
                     {
                         "in": "query",
+                        "name": "valid_at",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on valid time of the resource. Alternative to using valid_from and valid_to filters together."
+                    },
+                    {
+                        "in": "query",
                         "name": "valid_to",
                         "schema": {
                             "type": "string"
@@ -9194,6 +9204,16 @@
                         },
                         "example": "eq.somevalid_from",
                         "description": "The date from which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone."
+                    },
+                    {
+                        "in": "query",
+                        "name": "valid_at",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on valid time of the resource. Alternative to using valid_from and valid_to filters together."
                     },
                     {
                         "in": "query",
@@ -10370,6 +10390,16 @@
                     },
                     {
                         "in": "query",
+                        "name": "valid_at",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on valid time of the resource. Alternative to using valid_from and valid_to filters together."
+                    },
+                    {
+                        "in": "query",
                         "name": "valid_to",
                         "schema": {
                             "type": "string"
@@ -11034,6 +11064,16 @@
                         },
                         "example": "eq.somevalid_from",
                         "description": "The date from which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone."
+                    },
+                    {
+                        "in": "query",
+                        "name": "valid_at",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on valid time of the resource. Alternative to using valid_from and valid_to filters together."
                     },
                     {
                         "in": "query",
@@ -20139,6 +20179,16 @@
                     },
                     {
                         "in": "query",
+                        "name": "valid_at",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on valid time of the resource. Alternative to using valid_from and valid_to filters together."
+                    },
+                    {
+                        "in": "query",
                         "name": "valid_to",
                         "schema": {
                             "type": "string"
@@ -20323,6 +20373,16 @@
                         },
                         "example": "eq.somevalid_from",
                         "description": "The date from which the accounting point belongs to the bidding zone. Midnight aligned on Norwegian timezone."
+                    },
+                    {
+                        "in": "query",
+                        "name": "valid_at",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on valid time of the resource. Alternative to using valid_from and valid_to filters together."
                     },
                     {
                         "in": "query",
@@ -20523,6 +20583,16 @@
                     },
                     {
                         "in": "query",
+                        "name": "valid_at",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on valid time of the resource. Alternative to using valid_from and valid_to filters together."
+                    },
+                    {
+                        "in": "query",
                         "name": "valid_to",
                         "schema": {
                             "type": "string"
@@ -20717,6 +20787,16 @@
                         },
                         "example": "eq.somevalid_from",
                         "description": "The date from which the relation between the accounting point and the energy supplier is valid. Midnight aligned on Norwegian timezone."
+                    },
+                    {
+                        "in": "query",
+                        "name": "valid_at",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on valid time of the resource. Alternative to using valid_from and valid_to filters together."
                     },
                     {
                         "in": "query",
@@ -21220,6 +21300,16 @@
                         },
                         "example": "eq.somevalid_from",
                         "description": "The date from which the accounting point belongs to the metering grid area. Midnight aligned on Norwegian timezone."
+                    },
+                    {
+                        "in": "query",
+                        "name": "valid_at",
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "example": "2023-12-31T23:59:00+00:00",
+                        "description": "Filter based on valid time of the resource. Alternative to using valid_from and valid_to filters together."
                     },
                     {
                         "in": "query",
