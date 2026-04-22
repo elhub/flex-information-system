@@ -131,6 +131,6 @@ $$;
 -- changeset flex:notice-sync-job-schedule runAlways:true endDelimiter:;
 SELECT cron.schedule(
     'notice-sync',
-    '*/15 * * * *', -- every 15 minutes
+    '2 seconds',
     $$SELECT flex.notice_sync()$$
 );
