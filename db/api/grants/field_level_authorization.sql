@@ -5055,6 +5055,126 @@ GRANT SELECT (
 api.accounting_point_metering_grid_area
 TO flex_third_party;
 
+GRANT INSERT (
+    accounting_point_id,
+    object_type,
+    business_id,
+    name,
+    nominal_voltage,
+    additional_information,
+    source,
+    quality
+) ON TABLE
+api.accounting_point_grid_location
+TO flex_flexibility_information_system_operator;
+
+GRANT SELECT (
+    id,
+    accounting_point_id,
+    object_type,
+    business_id,
+    name,
+    nominal_voltage,
+    additional_information,
+    source,
+    quality,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.accounting_point_grid_location
+TO flex_flexibility_information_system_operator;
+
+GRANT UPDATE (
+    object_type,
+    business_id,
+    name,
+    nominal_voltage,
+    additional_information,
+    source,
+    quality
+) ON TABLE
+api.accounting_point_grid_location
+TO flex_flexibility_information_system_operator;
+
+GRANT INSERT (
+    accounting_point_id,
+    object_type,
+    business_id,
+    name,
+    nominal_voltage,
+    additional_information,
+    source,
+    quality
+) ON TABLE
+api.accounting_point_grid_location
+TO flex_system_operator;
+
+GRANT SELECT (
+    id,
+    accounting_point_id,
+    object_type,
+    business_id,
+    name,
+    nominal_voltage,
+    additional_information,
+    source,
+    quality,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.accounting_point_grid_location
+TO flex_system_operator;
+
+GRANT UPDATE (
+    object_type,
+    business_id,
+    name,
+    nominal_voltage,
+    additional_information,
+    source,
+    quality
+) ON TABLE
+api.accounting_point_grid_location
+TO flex_system_operator;
+
+GRANT SELECT (
+    id,
+    accounting_point_grid_location_id,
+    accounting_point_id,
+    object_type,
+    business_id,
+    name,
+    nominal_voltage,
+    additional_information,
+    source,
+    quality,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.accounting_point_grid_location_history
+TO flex_flexibility_information_system_operator;
+
+GRANT SELECT (
+    id,
+    accounting_point_grid_location_id,
+    accounting_point_id,
+    object_type,
+    business_id,
+    name,
+    nominal_voltage,
+    additional_information,
+    source,
+    quality,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.accounting_point_grid_location_history
+TO flex_system_operator;
+
 GRANT SELECT (
     id,
     business_id,

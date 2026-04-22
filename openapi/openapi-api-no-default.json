@@ -121,6 +121,10 @@
             "description": "Accounting Point Metering Grid Area"
         },
         {
+            "name": "accounting_point_grid_location",
+            "description": "Accounting Point Grid Location"
+        },
+        {
             "name": "product_type",
             "description": "Product Type"
         },
@@ -556,6 +560,110 @@
                     }
                 ]
             },
+            "accounting_point_grid_location_create_request": {
+                "summary": "Create - Accounting Point Grid Location",
+                "description": "Request schema for create operations - The electrical (topological) location of an accounting point in the common grid model (Nemo).",
+                "type": "object",
+                "properties": {
+                    "accounting_point_id": {
+                        "description": "The accounting point this grid location belongs to.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "example": 45
+                    },
+                    "object_type": {
+                        "$ref": "#/components/schemas/accounting_point_grid_location_object_type"
+                    },
+                    "business_id": {
+                        "description": "Business identifier (mRID) referencing the object in the common grid model.",
+                        "format": "text",
+                        "type": "string",
+                        "nullable": true,
+                        "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+                        "example": "53919b79-876f-4dad-8bde-b29368367604"
+                    },
+                    "name": {
+                        "description": "Name of the grid model object at the location.",
+                        "format": "text",
+                        "type": "string",
+                        "maxLength": 512,
+                        "example": "Snilldal 1 KRA"
+                    },
+                    "nominal_voltage": {
+                        "description": "Nominal voltage level at the grid location, in kilovolt (kV).",
+                        "format": "decimal",
+                        "type": "number",
+                        "minimum": 0,
+                        "example": 22
+                    },
+                    "additional_information": {
+                        "description": "Free text field for extra information about the grid location if needed.",
+                        "format": "text",
+                        "type": "string",
+                        "nullable": true,
+                        "example": null
+                    },
+                    "source": {
+                        "$ref": "#/components/schemas/accounting_point_grid_location_source"
+                    },
+                    "quality": {
+                        "$ref": "#/components/schemas/accounting_point_grid_location_quality"
+                    }
+                },
+                "required": [
+                    "accounting_point_id",
+                    "object_type",
+                    "name",
+                    "nominal_voltage",
+                    "source",
+                    "quality"
+                ]
+            },
+            "accounting_point_grid_location_update_request": {
+                "summary": "Update - Accounting Point Grid Location",
+                "description": "Request schema for update operations - The electrical (topological) location of an accounting point in the common grid model (Nemo).",
+                "type": "object",
+                "properties": {
+                    "object_type": {
+                        "$ref": "#/components/schemas/accounting_point_grid_location_object_type"
+                    },
+                    "business_id": {
+                        "description": "Business identifier (mRID) referencing the object in the common grid model.",
+                        "format": "text",
+                        "type": "string",
+                        "nullable": true,
+                        "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+                        "example": "53919b79-876f-4dad-8bde-b29368367604"
+                    },
+                    "name": {
+                        "description": "Name of the grid model object at the location.",
+                        "format": "text",
+                        "type": "string",
+                        "maxLength": 512,
+                        "example": "Snilldal 1 KRA"
+                    },
+                    "nominal_voltage": {
+                        "description": "Nominal voltage level at the grid location, in kilovolt (kV).",
+                        "format": "decimal",
+                        "type": "number",
+                        "minimum": 0,
+                        "example": 22
+                    },
+                    "additional_information": {
+                        "description": "Free text field for extra information about the grid location if needed.",
+                        "format": "text",
+                        "type": "string",
+                        "nullable": true,
+                        "example": null
+                    },
+                    "source": {
+                        "$ref": "#/components/schemas/accounting_point_grid_location_source"
+                    },
+                    "quality": {
+                        "$ref": "#/components/schemas/accounting_point_grid_location_quality"
+                    }
+                }
+            },
             "empty_object": {
                 "description": "An empty object",
                 "type": "object",
@@ -799,6 +907,38 @@
                     "eic_y"
                 ],
                 "example": "eic_y"
+            },
+            "accounting_point_grid_location_object_type": {
+                "description": "The type of object in the common grid model that the accounting point is at.",
+                "format": "text",
+                "type": "string",
+                "enum": [
+                    "substation",
+                    "transformer"
+                ],
+                "example": "substation"
+            },
+            "accounting_point_grid_location_source": {
+                "description": "How the grid location was determined.",
+                "format": "text",
+                "type": "string",
+                "enum": [
+                    "cso",
+                    "so",
+                    "grid_model",
+                    "system"
+                ],
+                "example": "cso"
+            },
+            "accounting_point_grid_location_quality": {
+                "description": "The quality of the grid location registration.",
+                "format": "text",
+                "type": "string",
+                "enum": [
+                    "confirmed",
+                    "guessed"
+                ],
+                "example": "confirmed"
             },
             "system_operator_product_type_status": {
                 "description": "The status of the relation.",
@@ -3483,6 +3623,89 @@
                     "valid_from"
                 ]
             },
+            "accounting_point_grid_location_response": {
+                "summary": "Response - Accounting Point Grid Location",
+                "description": "Response schema - The electrical (topological) location of an accounting point in the common grid model (Nemo).",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "Unique surrogate key.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "readOnly": true,
+                        "example": 1
+                    },
+                    "accounting_point_id": {
+                        "description": "The accounting point this grid location belongs to.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "example": 45
+                    },
+                    "object_type": {
+                        "$ref": "#/components/schemas/accounting_point_grid_location_object_type"
+                    },
+                    "business_id": {
+                        "description": "Business identifier (mRID) referencing the object in the common grid model.",
+                        "format": "text",
+                        "type": "string",
+                        "nullable": true,
+                        "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+                        "example": "53919b79-876f-4dad-8bde-b29368367604"
+                    },
+                    "name": {
+                        "description": "Name of the grid model object at the location.",
+                        "format": "text",
+                        "type": "string",
+                        "maxLength": 512,
+                        "example": "Snilldal 1 KRA"
+                    },
+                    "nominal_voltage": {
+                        "description": "Nominal voltage level at the grid location, in kilovolt (kV).",
+                        "format": "decimal",
+                        "type": "number",
+                        "minimum": 0,
+                        "example": 22
+                    },
+                    "additional_information": {
+                        "description": "Free text field for extra information about the grid location if needed.",
+                        "format": "text",
+                        "type": "string",
+                        "nullable": true,
+                        "example": null
+                    },
+                    "source": {
+                        "$ref": "#/components/schemas/accounting_point_grid_location_source"
+                    },
+                    "quality": {
+                        "$ref": "#/components/schemas/accounting_point_grid_location_quality"
+                    },
+                    "recorded_at": {
+                        "description": "When the resource was recorded (created or updated) in the system.",
+                        "format": "date-time",
+                        "type": "string",
+                        "readOnly": true,
+                        "example": "2023-12-31T23:59:00+00:00"
+                    },
+                    "recorded_by": {
+                        "description": "The identity that recorded the resource.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "readOnly": true,
+                        "example": 145
+                    }
+                },
+                "required": [
+                    "id",
+                    "accounting_point_id",
+                    "object_type",
+                    "name",
+                    "nominal_voltage",
+                    "source",
+                    "quality",
+                    "recorded_at",
+                    "recorded_by"
+                ]
+            },
             "product_type_response": {
                 "summary": "Response - Product Type",
                 "description": "Response schema - Product type.",
@@ -5254,6 +5477,42 @@
                         },
                         "required": [
                             "technical_resource_id"
+                        ]
+                    }
+                ]
+            },
+            "accounting_point_grid_location_history_response": {
+                "summary": "Accounting Point Grid Location - history",
+                "description": "Accounting Point Grid Location - history",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/accounting_point_grid_location_response"
+                    },
+                    {
+                        "properties": {
+                            "accounting_point_grid_location_id": {
+                                "description": "Reference to the resource that was updated.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "example": 48
+                            },
+                            "replaced_by": {
+                                "description": "The identity that updated the resource when it was replaced.",
+                                "format": "bigint",
+                                "type": "integer",
+                                "nullable": true,
+                                "example": 90
+                            },
+                            "replaced_at": {
+                                "description": "When the resource was replaced in the system.",
+                                "format": "date-time",
+                                "type": "string",
+                                "nullable": true,
+                                "example": "2024-07-07T10:00:00+00:00"
+                            }
+                        },
+                        "required": [
+                            "accounting_point_grid_location_id"
                         ]
                     }
                 ]
@@ -21372,6 +21631,842 @@
                     {
                         "bearerAuth": [
                             "read:data:accounting_point_metering_grid_area"
+                        ]
+                    },
+                    {}
+                ]
+            }
+        },
+        "/accounting_point_grid_location": {
+            "summary": "Accounting Point Grid Location",
+            "description": "",
+            "get": {
+                "operationId": "list_accounting_point_grid_location",
+                "summary": "List Accounting Point Grid Location",
+                "description": "",
+                "tags": [
+                    "accounting_point_grid_location"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "Unique surrogate key.",
+                        "name": "id"
+                    },
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "The accounting point this grid location belongs to.",
+                        "name": "accounting_point_id"
+                    },
+                    {
+                        "description": "Filtering Columns",
+                        "in": "query",
+                        "name": "select",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Ordering",
+                        "in": "query",
+                        "name": "order",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "offset",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/accounting_point_grid_location_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "206": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/accounting_point_grid_location_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "Partial Content"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "416": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Range Not Satisfiable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:accounting_point_grid_location"
+                        ]
+                    },
+                    {}
+                ]
+            },
+            "post": {
+                "operationId": "create_accounting_point_grid_location",
+                "summary": "Create Accounting Point Grid Location",
+                "description": "",
+                "tags": [
+                    "accounting_point_grid_location"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/accounting_point_grid_location_create_request"
+                            }
+                        }
+                    },
+                    "description": "accounting_point_grid_location",
+                    "required": false
+                },
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/accounting_point_grid_location_response"
+                                }
+                            }
+                        },
+                        "description": "Created"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "409": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Conflict"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:accounting_point_grid_location"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/accounting_point_grid_location/{id}": {
+            "summary": "Accounting Point Grid Location - single",
+            "description": "",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "schema": {
+                        "format": "bigint",
+                        "type": "integer"
+                    },
+                    "example": 14
+                }
+            ],
+            "get": {
+                "operationId": "read_accounting_point_grid_location",
+                "summary": "Read Accounting Point Grid Location",
+                "description": "",
+                "tags": [
+                    "accounting_point_grid_location"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/accounting_point_grid_location_response"
+                                }
+                            }
+                        },
+                        "description": "OK",
+                        "links": {
+                            "accounting_point_id": {
+                                "operationId": "read_accounting_point",
+                                "parameters": {
+                                    "path.id": "$response.body#/accounting_point_id"
+                                },
+                                "description": "The `accounting_point_id` value returned in the response can be used as the `id` parameter in `GET /accounting_point/{id}`."
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:accounting_point_grid_location"
+                        ]
+                    },
+                    {}
+                ]
+            },
+            "patch": {
+                "operationId": "update_accounting_point_grid_location",
+                "summary": "Update Accounting Point Grid Location",
+                "description": "",
+                "tags": [
+                    "accounting_point_grid_location"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/accounting_point_grid_location_update_request"
+                            }
+                        }
+                    },
+                    "description": "accounting_point_grid_location",
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/accounting_point_grid_location_response"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "204": {
+                        "content": {},
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "409": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Conflict"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:data:accounting_point_grid_location"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/accounting_point_grid_location_history": {
+            "summary": "Accounting Point Grid Location - history",
+            "description": "",
+            "parameters": [
+                {
+                    "in": "query",
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^eq\\.[0-9]+$"
+                    },
+                    "example": "eq.55",
+                    "description": "Identifier of the history record.",
+                    "name": "id"
+                },
+                {
+                    "in": "query",
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^eq\\.[0-9]+$"
+                    },
+                    "example": "eq.55",
+                    "description": "Identifier of the Accounting Point Grid Location whose history we want to inspect.",
+                    "name": "accounting_point_grid_location_id"
+                }
+            ],
+            "get": {
+                "operationId": "list_accounting_point_grid_location_history",
+                "summary": "List Accounting Point Grid Location - history",
+                "description": "",
+                "tags": [
+                    "accounting_point_grid_location"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "Unique surrogate key.",
+                        "name": "id"
+                    },
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "The accounting point this grid location belongs to.",
+                        "name": "accounting_point_id"
+                    },
+                    {
+                        "description": "Filtering Columns",
+                        "in": "query",
+                        "name": "select",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Ordering",
+                        "in": "query",
+                        "name": "order",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "offset",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/accounting_point_grid_location_history_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "206": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/accounting_point_grid_location_history_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "Partial Content"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "416": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Range Not Satisfiable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:accounting_point_grid_location_history"
+                        ]
+                    },
+                    {}
+                ]
+            }
+        },
+        "/accounting_point_grid_location_history/{id}": {
+            "summary": "Accounting Point Grid Location - history record",
+            "description": "",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "schema": {
+                        "format": "bigint",
+                        "type": "integer"
+                    },
+                    "example": 14,
+                    "description": "Identifier of the history record we want to inspect."
+                }
+            ],
+            "get": {
+                "operationId": "read_accounting_point_grid_location_history",
+                "summary": "Read Accounting Point Grid Location - history",
+                "description": "",
+                "tags": [
+                    "accounting_point_grid_location"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/accounting_point_grid_location_history_response"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:accounting_point_grid_location_history"
                         ]
                     },
                     {}

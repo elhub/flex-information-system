@@ -1739,6 +1739,38 @@ GRANT SELECT ON TABLE
 flex.accounting_point_metering_grid_area
 TO flex_third_party;
 
+GRANT INSERT ON TABLE
+flex.accounting_point_grid_location
+TO flex_flexibility_information_system_operator;
+
+GRANT SELECT ON TABLE
+flex.accounting_point_grid_location
+TO flex_flexibility_information_system_operator;
+
+GRANT UPDATE ON TABLE
+flex.accounting_point_grid_location
+TO flex_flexibility_information_system_operator;
+
+GRANT INSERT ON TABLE
+flex.accounting_point_grid_location
+TO flex_system_operator;
+
+GRANT SELECT ON TABLE
+flex.accounting_point_grid_location
+TO flex_system_operator;
+
+GRANT UPDATE ON TABLE
+flex.accounting_point_grid_location
+TO flex_system_operator;
+
+GRANT SELECT ON TABLE
+flex.accounting_point_grid_location_history
+TO flex_flexibility_information_system_operator;
+
+GRANT SELECT ON TABLE
+flex.accounting_point_grid_location_history
+TO flex_system_operator;
+
 GRANT SELECT ON TABLE
 flex.product_type
 TO flex_balance_responsible_party;

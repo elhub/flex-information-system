@@ -25,6 +25,7 @@ party_type_abbr = {
 }
 
 history_enabled = [
+    "accounting_point_grid_location",
     "controllable_unit",
     "controllable_unit_suspension",
     "controllable_unit_suspension_comment",

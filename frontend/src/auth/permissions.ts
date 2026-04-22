@@ -42,6 +42,18 @@ export type PermissionTarget =
   | "accounting_point_energy_supplier.energy_supplier_id"
   | "accounting_point_energy_supplier.valid_from"
   | "accounting_point_energy_supplier.valid_to"
+  | "accounting_point_grid_location"
+  | "accounting_point_grid_location.accounting_point_id"
+  | "accounting_point_grid_location.additional_information"
+  | "accounting_point_grid_location.business_id"
+  | "accounting_point_grid_location.id"
+  | "accounting_point_grid_location.name"
+  | "accounting_point_grid_location.nominal_voltage"
+  | "accounting_point_grid_location.object_type"
+  | "accounting_point_grid_location.quality"
+  | "accounting_point_grid_location.recorded_at"
+  | "accounting_point_grid_location.recorded_by"
+  | "accounting_point_grid_location.source"
   | "accounting_point_metering_grid_area"
   | "accounting_point_metering_grid_area.accounting_point_id"
   | "accounting_point_metering_grid_area.metering_grid_area_id"
@@ -7829,6 +7841,122 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "accounting_point_grid_location.accounting_point_id",
+      operation: "create",
+    },
+    {
+      target: "accounting_point_grid_location.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.additional_information",
+      operation: "create",
+    },
+    {
+      target: "accounting_point_grid_location.additional_information",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.additional_information",
+      operation: "update",
+    },
+    {
+      target: "accounting_point_grid_location.business_id",
+      operation: "create",
+    },
+    {
+      target: "accounting_point_grid_location.business_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.business_id",
+      operation: "update",
+    },
+    {
+      target: "accounting_point_grid_location",
+      operation: "create",
+    },
+    {
+      target: "accounting_point_grid_location.id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.name",
+      operation: "create",
+    },
+    {
+      target: "accounting_point_grid_location.name",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.name",
+      operation: "update",
+    },
+    {
+      target: "accounting_point_grid_location.nominal_voltage",
+      operation: "create",
+    },
+    {
+      target: "accounting_point_grid_location.nominal_voltage",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.nominal_voltage",
+      operation: "update",
+    },
+    {
+      target: "accounting_point_grid_location.object_type",
+      operation: "create",
+    },
+    {
+      target: "accounting_point_grid_location.object_type",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.object_type",
+      operation: "update",
+    },
+    {
+      target: "accounting_point_grid_location.quality",
+      operation: "create",
+    },
+    {
+      target: "accounting_point_grid_location.quality",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.quality",
+      operation: "update",
+    },
+    {
+      target: "accounting_point_grid_location",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.source",
+      operation: "create",
+    },
+    {
+      target: "accounting_point_grid_location.source",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.source",
+      operation: "update",
+    },
+    {
+      target: "accounting_point_grid_location",
+      operation: "update",
+    },
+    {
       target: "accounting_point_metering_grid_area.accounting_point_id",
       operation: "read",
     },
@@ -13394,6 +13522,122 @@ const rawPermissions: Record<
     {
       target: "accounting_point_energy_supplier.valid_to",
       operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.accounting_point_id",
+      operation: "create",
+    },
+    {
+      target: "accounting_point_grid_location.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.additional_information",
+      operation: "create",
+    },
+    {
+      target: "accounting_point_grid_location.additional_information",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.additional_information",
+      operation: "update",
+    },
+    {
+      target: "accounting_point_grid_location.business_id",
+      operation: "create",
+    },
+    {
+      target: "accounting_point_grid_location.business_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.business_id",
+      operation: "update",
+    },
+    {
+      target: "accounting_point_grid_location",
+      operation: "create",
+    },
+    {
+      target: "accounting_point_grid_location.id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.name",
+      operation: "create",
+    },
+    {
+      target: "accounting_point_grid_location.name",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.name",
+      operation: "update",
+    },
+    {
+      target: "accounting_point_grid_location.nominal_voltage",
+      operation: "create",
+    },
+    {
+      target: "accounting_point_grid_location.nominal_voltage",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.nominal_voltage",
+      operation: "update",
+    },
+    {
+      target: "accounting_point_grid_location.object_type",
+      operation: "create",
+    },
+    {
+      target: "accounting_point_grid_location.object_type",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.object_type",
+      operation: "update",
+    },
+    {
+      target: "accounting_point_grid_location.quality",
+      operation: "create",
+    },
+    {
+      target: "accounting_point_grid_location.quality",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.quality",
+      operation: "update",
+    },
+    {
+      target: "accounting_point_grid_location",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.source",
+      operation: "create",
+    },
+    {
+      target: "accounting_point_grid_location.source",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.source",
+      operation: "update",
+    },
+    {
+      target: "accounting_point_grid_location",
+      operation: "update",
     },
     {
       target: "accounting_point_metering_grid_area.accounting_point_id",

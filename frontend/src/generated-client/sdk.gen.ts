@@ -9,6 +9,9 @@ import type {
   CallEntityLookupData,
   CallEntityLookupErrors,
   CallEntityLookupResponses,
+  CreateAccountingPointGridLocationData,
+  CreateAccountingPointGridLocationErrors,
+  CreateAccountingPointGridLocationResponses,
   CreateControllableUnitData,
   CreateControllableUnitErrors,
   CreateControllableUnitResponses,
@@ -122,6 +125,12 @@ import type {
   ListAccountingPointEnergySupplierErrors,
   ListAccountingPointEnergySupplierResponses,
   ListAccountingPointErrors,
+  ListAccountingPointGridLocationData,
+  ListAccountingPointGridLocationErrors,
+  ListAccountingPointGridLocationHistoryData,
+  ListAccountingPointGridLocationHistoryErrors,
+  ListAccountingPointGridLocationHistoryResponses,
+  ListAccountingPointGridLocationResponses,
   ListAccountingPointMeteringGridAreaData,
   ListAccountingPointMeteringGridAreaErrors,
   ListAccountingPointMeteringGridAreaResponses,
@@ -284,6 +293,12 @@ import type {
   ListTechnicalResourceResponses,
   ReadAccountingPointData,
   ReadAccountingPointErrors,
+  ReadAccountingPointGridLocationData,
+  ReadAccountingPointGridLocationErrors,
+  ReadAccountingPointGridLocationHistoryData,
+  ReadAccountingPointGridLocationHistoryErrors,
+  ReadAccountingPointGridLocationHistoryResponses,
+  ReadAccountingPointGridLocationResponses,
   ReadAccountingPointResponses,
   ReadControllableUnitData,
   ReadControllableUnitErrors,
@@ -444,6 +459,9 @@ import type {
   ReadTechnicalResourceHistoryErrors,
   ReadTechnicalResourceHistoryResponses,
   ReadTechnicalResourceResponses,
+  UpdateAccountingPointGridLocationData,
+  UpdateAccountingPointGridLocationErrors,
+  UpdateAccountingPointGridLocationResponses,
   UpdateControllableUnitData,
   UpdateControllableUnitErrors,
   UpdateControllableUnitResponses,
@@ -2714,6 +2732,122 @@ export const listAccountingPointMeteringGridArea = <
   >({
     security: [{ scheme: "bearer", type: "http" }],
     url: "/accounting_point_metering_grid_area",
+    ...options,
+  });
+
+/**
+ * List Accounting Point Grid Location
+ */
+export const listAccountingPointGridLocation = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<ListAccountingPointGridLocationData, ThrowOnError>,
+) =>
+  (options?.client ?? client).get<
+    ListAccountingPointGridLocationResponses,
+    ListAccountingPointGridLocationErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/accounting_point_grid_location",
+    ...options,
+  });
+
+/**
+ * Create Accounting Point Grid Location
+ */
+export const createAccountingPointGridLocation = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<CreateAccountingPointGridLocationData, ThrowOnError>,
+) =>
+  (options?.client ?? client).post<
+    CreateAccountingPointGridLocationResponses,
+    CreateAccountingPointGridLocationErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/accounting_point_grid_location",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
+
+/**
+ * Read Accounting Point Grid Location
+ */
+export const readAccountingPointGridLocation = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<ReadAccountingPointGridLocationData, ThrowOnError>,
+) =>
+  (options.client ?? client).get<
+    ReadAccountingPointGridLocationResponses,
+    ReadAccountingPointGridLocationErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/accounting_point_grid_location/{id}",
+    ...options,
+  });
+
+/**
+ * Update Accounting Point Grid Location
+ */
+export const updateAccountingPointGridLocation = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<UpdateAccountingPointGridLocationData, ThrowOnError>,
+) =>
+  (options.client ?? client).patch<
+    UpdateAccountingPointGridLocationResponses,
+    UpdateAccountingPointGridLocationErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/accounting_point_grid_location/{id}",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+    },
+  });
+
+/**
+ * List Accounting Point Grid Location - history
+ */
+export const listAccountingPointGridLocationHistory = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<ListAccountingPointGridLocationHistoryData, ThrowOnError>,
+) =>
+  (options?.client ?? client).get<
+    ListAccountingPointGridLocationHistoryResponses,
+    ListAccountingPointGridLocationHistoryErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/accounting_point_grid_location_history",
+    ...options,
+  });
+
+/**
+ * Read Accounting Point Grid Location - history
+ */
+export const readAccountingPointGridLocationHistory = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<ReadAccountingPointGridLocationHistoryData, ThrowOnError>,
+) =>
+  (options.client ?? client).get<
+    ReadAccountingPointGridLocationHistoryResponses,
+    ReadAccountingPointGridLocationHistoryErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/accounting_point_grid_location_history/{id}",
     ...options,
   });
 

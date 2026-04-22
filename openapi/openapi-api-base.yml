@@ -473,6 +473,151 @@ components:
         - $ref: "#/components/schemas/notice_data_party_missing"
         - $ref: "#/components/schemas/notice_data_party_outdated"
         - $ref: "#/components/schemas/notice_data_product_type_not_qualified"
+    accounting_point_grid_location_create_request:
+      summary: Accounting Point Grid Location - Create
+      description: >-
+        Request schema for creating a grid location for an accounting point.
+      type: object
+      properties:
+        accounting_point_id:
+          description: The accounting point this grid location belongs to.
+          format: bigint
+          type: integer
+          example: 45
+        object_type:
+          description: >-
+            The type of object in the common grid model that the accounting
+            point is at.
+          format: text
+          type: string
+          enum:
+            - substation
+            - transformer
+          example: substation
+        business_id:
+          description: >-
+            Business identifier (mRID) referencing the object in the common
+            grid model.
+          format: text
+          type: string
+          nullable: true
+          # yamllint disable-line rule:line-length
+          pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          example: "53919b79-876f-4dad-8bde-b29368367604"
+        name:
+          description: Name of the grid model object at the location.
+          format: text
+          type: string
+          maxLength: 512
+          example: "Snilldal 1 KRA"
+        nominal_voltage:
+          description: >-
+            Nominal voltage level at the grid location, in kilovolt (kV).
+          format: decimal
+          type: number
+          minimum: 0
+          example: 22
+        additional_information:
+          description: >-
+            Free text field for extra information about the grid location if
+            needed.
+          format: text
+          type: string
+          nullable: true
+          example: null
+        source:
+          description: How the grid location was determined.
+          format: text
+          type: string
+          enum:
+            - cso
+            - so
+            - grid_model
+            - system
+          example: cso
+        quality:
+          description: The quality of the grid location registration.
+          format: text
+          type: string
+          enum:
+            - confirmed
+            - guessed
+          example: confirmed
+      required:
+        - accounting_point_id
+        - object_type
+        - name
+        - nominal_voltage
+        - source
+        - quality
+    accounting_point_grid_location_update_request:
+      summary: Accounting Point Grid Location - Update
+      description: >-
+        Request schema for updating the grid location of an accounting point.
+        All fields are optional except quality.
+      type: object
+      properties:
+        object_type:
+          description: >-
+            The type of object in the common grid model that the accounting
+            point is at.
+          format: text
+          type: string
+          enum:
+            - substation
+            - transformer
+          example: substation
+        business_id:
+          description: >-
+            Business identifier (mRID) referencing the object in the common
+            grid model.
+          format: text
+          type: string
+          nullable: true
+          # yamllint disable-line rule:line-length
+          pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          example: "53919b79-876f-4dad-8bde-b29368367604"
+        name:
+          description: Name of the grid model object at the location.
+          format: text
+          type: string
+          maxLength: 512
+          example: "Snilldal 1 KRA"
+        nominal_voltage:
+          description: >-
+            Nominal voltage level at the grid location, in kilovolt (kV).
+          format: decimal
+          type: number
+          minimum: 0
+          example: 22
+        additional_information:
+          description: >-
+            Free text field for extra information about the grid location if
+            needed.
+          format: text
+          type: string
+          nullable: true
+          example: null
+        source:
+          description: How the grid location was determined.
+          format: text
+          type: string
+          enum:
+            - cso
+            - so
+            - grid_model
+            - system
+          example: cso
+        quality:
+          description: The quality of the grid location registration.
+          format: text
+          type: string
+          enum:
+            - confirmed
+            - guessed
+          example: confirmed
+      required:
+        - quality
 paths:
   /openapi.json:
     get:

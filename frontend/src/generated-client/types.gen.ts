@@ -256,6 +256,60 @@ export type NoticeData =
   | NoticeDataProductTypeNotQualified;
 
 /**
+ * Request schema for create operations - The electrical (topological) location of an accounting point in the common grid model (Nemo).
+ */
+export type AccountingPointGridLocationCreateRequest = {
+  /**
+   * The accounting point this grid location belongs to.
+   */
+  accounting_point_id: number;
+  object_type: AccountingPointGridLocationObjectType;
+  /**
+   * Business identifier (mRID) referencing the object in the common grid model.
+   */
+  business_id?: string;
+  /**
+   * Name of the grid model object at the location.
+   */
+  name: string;
+  /**
+   * Nominal voltage level at the grid location, in kilovolt (kV).
+   */
+  nominal_voltage: number;
+  /**
+   * Free text field for extra information about the grid location if needed.
+   */
+  additional_information?: string;
+  source: AccountingPointGridLocationSource;
+  quality: AccountingPointGridLocationQuality;
+};
+
+/**
+ * Request schema for update operations - The electrical (topological) location of an accounting point in the common grid model (Nemo).
+ */
+export type AccountingPointGridLocationUpdateRequest = {
+  object_type?: AccountingPointGridLocationObjectType;
+  /**
+   * Business identifier (mRID) referencing the object in the common grid model.
+   */
+  business_id?: string;
+  /**
+   * Name of the grid model object at the location.
+   */
+  name?: string;
+  /**
+   * Nominal voltage level at the grid location, in kilovolt (kV).
+   */
+  nominal_voltage?: number;
+  /**
+   * Free text field for extra information about the grid location if needed.
+   */
+  additional_information?: string;
+  source?: AccountingPointGridLocationSource;
+  quality?: AccountingPointGridLocationQuality;
+};
+
+/**
  * An empty object
  */
 export type EmptyObject = {
@@ -420,6 +474,27 @@ export type AccountingPointBiddingZoneBiddingZone =
  * The type of the business identifier.
  */
 export type MeteringGridAreaBusinessIdType = "eic_y";
+
+/**
+ * The type of object in the common grid model that the accounting point is at.
+ */
+export type AccountingPointGridLocationObjectType =
+  | "substation"
+  | "transformer";
+
+/**
+ * How the grid location was determined.
+ */
+export type AccountingPointGridLocationSource =
+  | "cso"
+  | "so"
+  | "grid_model"
+  | "system";
+
+/**
+ * The quality of the grid location registration.
+ */
+export type AccountingPointGridLocationQuality = "confirmed" | "guessed";
 
 /**
  * The status of the relation.
@@ -1901,6 +1976,47 @@ export type AccountingPointMeteringGridArea = {
 };
 
 /**
+ * Response schema - The electrical (topological) location of an accounting point in the common grid model (Nemo).
+ */
+export type AccountingPointGridLocation = {
+  /**
+   * Unique surrogate key.
+   */
+  readonly id: number;
+  /**
+   * The accounting point this grid location belongs to.
+   */
+  accounting_point_id: number;
+  object_type: AccountingPointGridLocationObjectType;
+  /**
+   * Business identifier (mRID) referencing the object in the common grid model.
+   */
+  business_id?: string;
+  /**
+   * Name of the grid model object at the location.
+   */
+  name: string;
+  /**
+   * Nominal voltage level at the grid location, in kilovolt (kV).
+   */
+  nominal_voltage: number;
+  /**
+   * Free text field for extra information about the grid location if needed.
+   */
+  additional_information?: string;
+  source: AccountingPointGridLocationSource;
+  quality: AccountingPointGridLocationQuality;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+};
+
+/**
  * Response schema - Product type.
  */
 export type ProductType = {
@@ -2808,6 +2924,24 @@ export type TechnicalResourceHistory = TechnicalResource & {
 };
 
 /**
+ * Accounting Point Grid Location - history
+ */
+export type AccountingPointGridLocationHistory = AccountingPointGridLocation & {
+  /**
+   * Reference to the resource that was updated.
+   */
+  accounting_point_grid_location_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
+
+/**
  * System Operator Product Type - history
  */
 export type SystemOperatorProductTypeHistory = SystemOperatorProductType & {
@@ -3397,6 +3531,35 @@ export type MeteringGridAreaWritable = {
 };
 
 /**
+ * Response schema - The electrical (topological) location of an accounting point in the common grid model (Nemo).
+ */
+export type AccountingPointGridLocationWritable = {
+  /**
+   * The accounting point this grid location belongs to.
+   */
+  accounting_point_id: number;
+  object_type: AccountingPointGridLocationObjectType;
+  /**
+   * Business identifier (mRID) referencing the object in the common grid model.
+   */
+  business_id?: string;
+  /**
+   * Name of the grid model object at the location.
+   */
+  name: string;
+  /**
+   * Nominal voltage level at the grid location, in kilovolt (kV).
+   */
+  nominal_voltage: number;
+  /**
+   * Free text field for extra information about the grid location if needed.
+   */
+  additional_information?: string;
+  source: AccountingPointGridLocationSource;
+  quality: AccountingPointGridLocationQuality;
+};
+
+/**
  * Response schema - Relation between a system operator and a product type they want to buy.
  */
 export type SystemOperatorProductTypeWritable = {
@@ -3820,6 +3983,25 @@ export type TechnicalResourceHistoryWritable = TechnicalResourceWritable & {
    */
   replaced_at?: string;
 };
+
+/**
+ * Accounting Point Grid Location - history
+ */
+export type AccountingPointGridLocationHistoryWritable =
+  AccountingPointGridLocationWritable & {
+    /**
+     * Reference to the resource that was updated.
+     */
+    accounting_point_grid_location_id: number;
+    /**
+     * The identity that updated the resource when it was replaced.
+     */
+    replaced_by?: number;
+    /**
+     * When the resource was replaced in the system.
+     */
+    replaced_at?: string;
+  };
 
 /**
  * System Operator Product Type - history
@@ -11068,6 +11250,381 @@ export type ListAccountingPointMeteringGridAreaResponses = {
 
 export type ListAccountingPointMeteringGridAreaResponse =
   ListAccountingPointMeteringGridAreaResponses[keyof ListAccountingPointMeteringGridAreaResponses];
+
+export type ListAccountingPointGridLocationData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Unique surrogate key.
+     */
+    id?: string;
+    /**
+     * The accounting point this grid location belongs to.
+     */
+    accounting_point_id?: string;
+    /**
+     * Filtering Columns
+     */
+    select?: string;
+    /**
+     * Ordering
+     */
+    order?: string;
+    /**
+     * Limiting and Pagination
+     */
+    offset?: string;
+    /**
+     * Limiting and Pagination
+     */
+    limit?: string;
+  };
+  url: "/accounting_point_grid_location";
+};
+
+export type ListAccountingPointGridLocationErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Range Not Satisfiable
+   */
+  416: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type ListAccountingPointGridLocationError =
+  ListAccountingPointGridLocationErrors[keyof ListAccountingPointGridLocationErrors];
+
+export type ListAccountingPointGridLocationResponses = {
+  /**
+   * OK
+   */
+  200: Array<AccountingPointGridLocation>;
+  /**
+   * Partial Content
+   */
+  206: Array<AccountingPointGridLocation>;
+};
+
+export type ListAccountingPointGridLocationResponse =
+  ListAccountingPointGridLocationResponses[keyof ListAccountingPointGridLocationResponses];
+
+export type CreateAccountingPointGridLocationData = {
+  /**
+   * accounting_point_grid_location
+   */
+  body?: AccountingPointGridLocationCreateRequest;
+  path?: never;
+  query?: never;
+  url: "/accounting_point_grid_location";
+};
+
+export type CreateAccountingPointGridLocationErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Conflict
+   */
+  409: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type CreateAccountingPointGridLocationError =
+  CreateAccountingPointGridLocationErrors[keyof CreateAccountingPointGridLocationErrors];
+
+export type CreateAccountingPointGridLocationResponses = {
+  /**
+   * Created
+   */
+  201: AccountingPointGridLocation;
+};
+
+export type CreateAccountingPointGridLocationResponse =
+  CreateAccountingPointGridLocationResponses[keyof CreateAccountingPointGridLocationResponses];
+
+export type ReadAccountingPointGridLocationData = {
+  body?: never;
+  path: {
+    id: number;
+  };
+  query?: never;
+  url: "/accounting_point_grid_location/{id}";
+};
+
+export type ReadAccountingPointGridLocationErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type ReadAccountingPointGridLocationError =
+  ReadAccountingPointGridLocationErrors[keyof ReadAccountingPointGridLocationErrors];
+
+export type ReadAccountingPointGridLocationResponses = {
+  /**
+   * OK
+   */
+  200: AccountingPointGridLocation;
+};
+
+export type ReadAccountingPointGridLocationResponse =
+  ReadAccountingPointGridLocationResponses[keyof ReadAccountingPointGridLocationResponses];
+
+export type UpdateAccountingPointGridLocationData = {
+  /**
+   * accounting_point_grid_location
+   */
+  body: AccountingPointGridLocationUpdateRequest;
+  path: {
+    id: number;
+  };
+  query?: never;
+  url: "/accounting_point_grid_location/{id}";
+};
+
+export type UpdateAccountingPointGridLocationErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Conflict
+   */
+  409: ErrorMessage;
+};
+
+export type UpdateAccountingPointGridLocationError =
+  UpdateAccountingPointGridLocationErrors[keyof UpdateAccountingPointGridLocationErrors];
+
+export type UpdateAccountingPointGridLocationResponses = {
+  /**
+   * OK
+   */
+  200: AccountingPointGridLocation;
+  /**
+   * No Content
+   */
+  204: void;
+};
+
+export type UpdateAccountingPointGridLocationResponse =
+  UpdateAccountingPointGridLocationResponses[keyof UpdateAccountingPointGridLocationResponses];
+
+export type ListAccountingPointGridLocationHistoryData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Unique surrogate key.
+     */
+    id?: string;
+    /**
+     * Identifier of the Accounting Point Grid Location whose history we want to inspect.
+     */
+    accounting_point_grid_location_id?: string;
+    /**
+     * The accounting point this grid location belongs to.
+     */
+    accounting_point_id?: string;
+    /**
+     * Filtering Columns
+     */
+    select?: string;
+    /**
+     * Ordering
+     */
+    order?: string;
+    /**
+     * Limiting and Pagination
+     */
+    offset?: string;
+    /**
+     * Limiting and Pagination
+     */
+    limit?: string;
+  };
+  url: "/accounting_point_grid_location_history";
+};
+
+export type ListAccountingPointGridLocationHistoryErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Range Not Satisfiable
+   */
+  416: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type ListAccountingPointGridLocationHistoryError =
+  ListAccountingPointGridLocationHistoryErrors[keyof ListAccountingPointGridLocationHistoryErrors];
+
+export type ListAccountingPointGridLocationHistoryResponses = {
+  /**
+   * OK
+   */
+  200: Array<AccountingPointGridLocationHistory>;
+  /**
+   * Partial Content
+   */
+  206: Array<AccountingPointGridLocationHistory>;
+};
+
+export type ListAccountingPointGridLocationHistoryResponse =
+  ListAccountingPointGridLocationHistoryResponses[keyof ListAccountingPointGridLocationHistoryResponses];
+
+export type ReadAccountingPointGridLocationHistoryData = {
+  body?: never;
+  path: {
+    /**
+     * Identifier of the history record we want to inspect.
+     */
+    id: number;
+  };
+  query?: never;
+  url: "/accounting_point_grid_location_history/{id}";
+};
+
+export type ReadAccountingPointGridLocationHistoryErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type ReadAccountingPointGridLocationHistoryError =
+  ReadAccountingPointGridLocationHistoryErrors[keyof ReadAccountingPointGridLocationHistoryErrors];
+
+export type ReadAccountingPointGridLocationHistoryResponses = {
+  /**
+   * OK
+   */
+  200: AccountingPointGridLocationHistory;
+};
+
+export type ReadAccountingPointGridLocationHistoryResponse =
+  ReadAccountingPointGridLocationHistoryResponses[keyof ReadAccountingPointGridLocationHistoryResponses];
 
 export type ListProductTypeData = {
   body?: never;

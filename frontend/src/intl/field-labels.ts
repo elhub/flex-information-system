@@ -23,6 +23,31 @@ export type FieldLabel =
   | "accounting_point_energy_supplier.energy_supplier_id"
   | "accounting_point_energy_supplier.valid_from"
   | "accounting_point_energy_supplier.valid_to"
+  | "accounting_point_grid_location.accounting_point_id"
+  | "accounting_point_grid_location.additional_information"
+  | "accounting_point_grid_location.business_id"
+  | "accounting_point_grid_location.id"
+  | "accounting_point_grid_location.name"
+  | "accounting_point_grid_location.nominal_voltage"
+  | "accounting_point_grid_location.object_type"
+  | "accounting_point_grid_location.quality"
+  | "accounting_point_grid_location.recorded_at"
+  | "accounting_point_grid_location.recorded_by"
+  | "accounting_point_grid_location.source"
+  | "accounting_point_grid_location_history.accounting_point_grid_location_id"
+  | "accounting_point_grid_location_history.accounting_point_id"
+  | "accounting_point_grid_location_history.additional_information"
+  | "accounting_point_grid_location_history.business_id"
+  | "accounting_point_grid_location_history.id"
+  | "accounting_point_grid_location_history.name"
+  | "accounting_point_grid_location_history.nominal_voltage"
+  | "accounting_point_grid_location_history.object_type"
+  | "accounting_point_grid_location_history.quality"
+  | "accounting_point_grid_location_history.recorded_at"
+  | "accounting_point_grid_location_history.recorded_by"
+  | "accounting_point_grid_location_history.replaced_at"
+  | "accounting_point_grid_location_history.replaced_by"
+  | "accounting_point_grid_location_history.source"
   | "accounting_point_metering_grid_area.accounting_point_id"
   | "accounting_point_metering_grid_area.metering_grid_area_id"
   | "accounting_point_metering_grid_area.valid_from"
@@ -909,6 +934,35 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Metering grid area",
     "accounting_point_metering_grid_area.valid_from": "Valid from",
     "accounting_point_metering_grid_area.valid_to": "Valid to",
+    "accounting_point_grid_location.id": "ID",
+    "accounting_point_grid_location.accounting_point_id": "Accounting point",
+    "accounting_point_grid_location.object_type": "Object type",
+    "accounting_point_grid_location.business_id": "Business ID",
+    "accounting_point_grid_location.name": "Name",
+    "accounting_point_grid_location.nominal_voltage": "Nominal voltage",
+    "accounting_point_grid_location.additional_information":
+      "Additional information",
+    "accounting_point_grid_location.source": "Source",
+    "accounting_point_grid_location.quality": "Quality",
+    "accounting_point_grid_location.recorded_at": "Recorded at",
+    "accounting_point_grid_location.recorded_by": "Recorded by",
+    "accounting_point_grid_location_history.id": "ID",
+    "accounting_point_grid_location_history.accounting_point_id":
+      "Accounting point",
+    "accounting_point_grid_location_history.object_type": "Object type",
+    "accounting_point_grid_location_history.business_id": "Business ID",
+    "accounting_point_grid_location_history.name": "Name",
+    "accounting_point_grid_location_history.nominal_voltage": "Nominal voltage",
+    "accounting_point_grid_location_history.additional_information":
+      "Additional information",
+    "accounting_point_grid_location_history.source": "Source",
+    "accounting_point_grid_location_history.quality": "Quality",
+    "accounting_point_grid_location_history.recorded_at": "Recorded at",
+    "accounting_point_grid_location_history.recorded_by": "Recorded by",
+    "accounting_point_grid_location_history.accounting_point_grid_location_id":
+      "Accounting Point Grid Location",
+    "accounting_point_grid_location_history.replaced_at": "Replaced at",
+    "accounting_point_grid_location_history.replaced_by": "Replaced by",
     "product_type.id": "ID",
     "product_type.business_id": "Business ID",
     "product_type.name": "Name",
@@ -1587,6 +1641,36 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "accounting_point_metering_grid_area.metering_grid_area_id": "Nettområde",
     "accounting_point_metering_grid_area.valid_from": "Gyldig fra",
     "accounting_point_metering_grid_area.valid_to": "Gyldig til",
+    "accounting_point_grid_location.id": "ID",
+    "accounting_point_grid_location.accounting_point_id": "Avregningspunkt",
+    "accounting_point_grid_location.object_type": "Objekttype",
+    "accounting_point_grid_location.business_id": "Forretnings-ID",
+    "accounting_point_grid_location.name": "Navn",
+    "accounting_point_grid_location.nominal_voltage": "Nominell spenning",
+    "accounting_point_grid_location.additional_information":
+      "Tilleggsinformasjon",
+    "accounting_point_grid_location.source": "Kilde",
+    "accounting_point_grid_location.quality": "Kvalitet",
+    "accounting_point_grid_location.recorded_at": "Registrert",
+    "accounting_point_grid_location.recorded_by": "Registrert av",
+    "accounting_point_grid_location_history.id": "ID",
+    "accounting_point_grid_location_history.accounting_point_id":
+      "Avregningspunkt",
+    "accounting_point_grid_location_history.object_type": "Objekttype",
+    "accounting_point_grid_location_history.business_id": "Forretnings-ID",
+    "accounting_point_grid_location_history.name": "Navn",
+    "accounting_point_grid_location_history.nominal_voltage":
+      "Nominell spenning",
+    "accounting_point_grid_location_history.additional_information":
+      "Tilleggsinformasjon",
+    "accounting_point_grid_location_history.source": "Kilde",
+    "accounting_point_grid_location_history.quality": "Kvalitet",
+    "accounting_point_grid_location_history.recorded_at": "Registrert",
+    "accounting_point_grid_location_history.recorded_by": "Registrert av",
+    "accounting_point_grid_location_history.accounting_point_grid_location_id":
+      "Avregningspunktsgridlokasjon",
+    "accounting_point_grid_location_history.replaced_at": "Erstattet",
+    "accounting_point_grid_location_history.replaced_by": "Erstattet av",
     "product_type.id": "ID",
     "product_type.business_id": "Forretnings-ID",
     "product_type.name": "Navn",
@@ -2262,6 +2346,36 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "accounting_point_metering_grid_area.metering_grid_area_id": "Nettområde",
     "accounting_point_metering_grid_area.valid_from": "Gyldig frå",
     "accounting_point_metering_grid_area.valid_to": "Gyldig til",
+    "accounting_point_grid_location.id": "ID",
+    "accounting_point_grid_location.accounting_point_id": "Avregningspunkt",
+    "accounting_point_grid_location.object_type": "Objekttype",
+    "accounting_point_grid_location.business_id": "Forretnings-ID",
+    "accounting_point_grid_location.name": "Namn",
+    "accounting_point_grid_location.nominal_voltage": "Nominell spenning",
+    "accounting_point_grid_location.additional_information":
+      "Tilleggsinformasjon",
+    "accounting_point_grid_location.source": "Kjelde",
+    "accounting_point_grid_location.quality": "Kvalitet",
+    "accounting_point_grid_location.recorded_at": "Registrert",
+    "accounting_point_grid_location.recorded_by": "Registrert av",
+    "accounting_point_grid_location_history.id": "ID",
+    "accounting_point_grid_location_history.accounting_point_id":
+      "Avregningspunkt",
+    "accounting_point_grid_location_history.object_type": "Objekttype",
+    "accounting_point_grid_location_history.business_id": "Forretnings-ID",
+    "accounting_point_grid_location_history.name": "Namn",
+    "accounting_point_grid_location_history.nominal_voltage":
+      "Nominell spenning",
+    "accounting_point_grid_location_history.additional_information":
+      "Tilleggsinformasjon",
+    "accounting_point_grid_location_history.source": "Kjelde",
+    "accounting_point_grid_location_history.quality": "Kvalitet",
+    "accounting_point_grid_location_history.recorded_at": "Registrert",
+    "accounting_point_grid_location_history.recorded_by": "Registrert av",
+    "accounting_point_grid_location_history.accounting_point_grid_location_id":
+      "Avregningspunktsgridlokasjon",
+    "accounting_point_grid_location_history.replaced_at": "Erstattet",
+    "accounting_point_grid_location_history.replaced_by": "Erstattet av",
     "product_type.id": "ID",
     "product_type.business_id": "Forretnings-ID",
     "product_type.name": "Namn",

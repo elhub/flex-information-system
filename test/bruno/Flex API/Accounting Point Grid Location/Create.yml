@@ -1,0 +1,28 @@
+info:
+  name: Create
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{baseUrl}}/accounting_point_grid_location"
+  body:
+    type: json
+    data: |-
+      {
+        "accounting_point_id": 1001,
+        "object_type": "substation",
+        "business_id": "53919b79-876f-4dad-8bde-b29368367604",
+        "name": "Snilldal 1 KRA",
+        "nominal_voltage": 22,
+        "additional_information": null,
+        "source": "cso",
+        "quality": "confirmed"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
