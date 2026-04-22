@@ -11,4 +11,6 @@ SET
     business_id_type = 'email'
 WHERE business_id = '13370000002';
 
+SELECT test_data.generate_notices();
+
 COMMIT;

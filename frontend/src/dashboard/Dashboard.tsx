@@ -2,10 +2,10 @@ import {
     useAuthenticated,
     useGetIdentity,
 } from "ra-core";
-import { Title, Toolbar } from "react-admin";
 import {
     Alert,
     Badge,
+    BodyText,
     Heading,
     Loader,
     Tabs,
@@ -26,18 +26,15 @@ export const Dashboard = () => {
 
     return (
         <div id="flex-dashboard">
-            <Toolbar>
-                <Title title="Dashboard" />
-            </Toolbar>
             <div className="flex flex-col gap-5 p-4">
                 <Heading level={2} size="small">
                     Welcome to the Flexibility
                     Information System
                 </Heading>
-                <p>
+                <BodyText>
                     Use the menu on the left to list,
                     view, create and update resources.
-                </p>
+                </BodyText>
 
                 {isLoading && <Loader size="medium" />}
 

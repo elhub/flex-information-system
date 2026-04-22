@@ -3,16 +3,16 @@ import {
     applicationTypes,
     inconsistencyTypes,
 } from "./notice-groups";
+import { useQuery } from "@tanstack/react-query";
+import { listNotice } from "../generated-client";
+import { throwOnError } from "../util";
 
 export const useActiveNotices = () => {
-    const { data, isLoading, error } = useGetList(
-        "notice",
-        {
-            pagination: { page: 1, perPage: 500 },
-            sort: { field: "id", order: "ASC" },
-            filter: { status: "eq.active" },
-        },
-    );
+    const { data, isLoading, error } = useQuery({
+        queryFn: () => listNotice().then(throwOnError),
+        queryKey: ["active-notices"],
+    });
+
 
     const applications = (data ?? []).filter((n) =>
         applicationTypes.includes(n.type),
