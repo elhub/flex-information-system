@@ -11,6 +11,8 @@ WITH (security_invoker = false) AS (
         COALESCE(
             (
                 -- technology and number of TR, as a {tech: count_tr} object
+                -- NB: per-category aggregates can have their own field, but
+                --     per-technology aggregates have many more possible keys
                 SELECT JSONB_OBJECT_AGG(t.tech, t.count_tr)
                 FROM (
                     SELECT
