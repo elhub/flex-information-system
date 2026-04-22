@@ -502,7 +502,7 @@ func (data *api) entityLookupHandler(
 // errInvalidValidAt is returned when valid_at does not match an accepted datetime format.
 var errInvalidValidAt = errors.New("invalid valid_at format")
 
-// isValidDatetime reports whether value matches one of the accepted datetime input formats:.
+// isValidDatetime reports whether value matches one of the accepted datetime input formats.
 func isValidDatetime(value string) bool {
 	// Regular RFC 3339: YYYY-MM-DDTHH:MM:SS[.FFF](Z|±HH:MM)
 	if _, err := time.Parse(time.RFC3339Nano, value); err == nil {
