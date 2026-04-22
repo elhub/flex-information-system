@@ -5,6 +5,8 @@ import {
   ServiceProviderProductApplicationCommentVisibility,
   ServiceProviderProductSuspensionComment,
   ServiceProviderProductSuspensionCommentVisibility,
+  ServiceProvidingGroupGridPrequalificationComment,
+  ServiceProvidingGroupGridPrequalificationCommentVisibility,
   ServiceProvidingGroupProductApplicationComment,
   ServiceProvidingGroupProductApplicationCommentVisibility,
   ServiceProvidingGroupProductSuspensionComment,
@@ -14,6 +16,7 @@ import {
 export type Comment =
   | ServiceProviderProductApplicationComment
   | ServiceProviderProductSuspensionComment
+  | ServiceProvidingGroupGridPrequalificationComment
   | ServiceProvidingGroupProductApplicationComment
   | ServiceProvidingGroupProductSuspensionComment
   | ControllableUnitSuspensionComment;
@@ -21,6 +24,7 @@ export type Comment =
 export type Visibility =
   | ServiceProviderProductApplicationCommentVisibility
   | ServiceProviderProductSuspensionCommentVisibility
+  | ServiceProvidingGroupGridPrequalificationCommentVisibility
   | ServiceProvidingGroupProductApplicationCommentVisibility
   | ServiceProvidingGroupProductSuspensionCommentVisibility
   | ControllableUnitSuspensionCommentVisibility;
