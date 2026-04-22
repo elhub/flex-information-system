@@ -2272,6 +2272,110 @@ TO flex_internal_event_notification;
 
 GRANT SELECT (
     id,
+    count_technical_resource,
+    count_technical_resource_by_technology,
+    sum_maximum_active_power,
+    sum_maximum_active_power_production,
+    sum_maximum_active_power_consumption,
+    sum_maximum_active_power_energy_storage,
+    average_maximum_active_power
+) ON TABLE
+api.controllable_unit_summary
+TO flex_balance_responsible_party;
+
+GRANT SELECT (
+    id,
+    count_technical_resource,
+    count_technical_resource_by_technology,
+    sum_maximum_active_power,
+    sum_maximum_active_power_production,
+    sum_maximum_active_power_consumption,
+    sum_maximum_active_power_energy_storage,
+    average_maximum_active_power
+) ON TABLE
+api.controllable_unit_summary
+TO flex_energy_supplier;
+
+GRANT SELECT (
+    id,
+    count_technical_resource,
+    count_technical_resource_by_technology,
+    sum_maximum_active_power,
+    sum_maximum_active_power_production,
+    sum_maximum_active_power_consumption,
+    sum_maximum_active_power_energy_storage,
+    average_maximum_active_power
+) ON TABLE
+api.controllable_unit_summary
+TO flex_end_user;
+
+GRANT SELECT (
+    id,
+    count_technical_resource,
+    count_technical_resource_by_technology,
+    sum_maximum_active_power,
+    sum_maximum_active_power_production,
+    sum_maximum_active_power_consumption,
+    sum_maximum_active_power_energy_storage,
+    average_maximum_active_power
+) ON TABLE
+api.controllable_unit_summary
+TO flex_flexibility_information_system_operator;
+
+GRANT SELECT (
+    id,
+    count_technical_resource,
+    count_technical_resource_by_technology,
+    sum_maximum_active_power,
+    sum_maximum_active_power_production,
+    sum_maximum_active_power_consumption,
+    sum_maximum_active_power_energy_storage,
+    average_maximum_active_power
+) ON TABLE
+api.controllable_unit_summary
+TO flex_market_operator;
+
+GRANT SELECT (
+    id,
+    count_technical_resource,
+    count_technical_resource_by_technology,
+    sum_maximum_active_power,
+    sum_maximum_active_power_production,
+    sum_maximum_active_power_consumption,
+    sum_maximum_active_power_energy_storage,
+    average_maximum_active_power
+) ON TABLE
+api.controllable_unit_summary
+TO flex_system_operator;
+
+GRANT SELECT (
+    id,
+    count_technical_resource,
+    count_technical_resource_by_technology,
+    sum_maximum_active_power,
+    sum_maximum_active_power_production,
+    sum_maximum_active_power_consumption,
+    sum_maximum_active_power_energy_storage,
+    average_maximum_active_power
+) ON TABLE
+api.controllable_unit_summary
+TO flex_service_provider;
+
+GRANT SELECT (
+    id,
+    count_technical_resource,
+    count_technical_resource_by_technology,
+    sum_maximum_active_power,
+    sum_maximum_active_power_production,
+    sum_maximum_active_power_consumption,
+    sum_maximum_active_power_energy_storage,
+    average_maximum_active_power
+) ON TABLE
+api.controllable_unit_summary
+TO flex_third_party;
+
+GRANT SELECT (
+    id,
     name,
     service_provider_id,
     bidding_zone,

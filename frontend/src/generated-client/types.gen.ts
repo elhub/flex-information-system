@@ -800,6 +800,46 @@ export type ControllableUnitServiceProvider = {
 };
 
 /**
+ * Response schema - Aggregated summary of technical resources belonging to a controllable unit.
+ */
+export type ControllableUnitSummary = {
+  /**
+   * The ID of the controllable unit this resource is a summary of.
+   */
+  readonly id: number;
+  /**
+   * Total number of technical resources in the controllable unit.
+   */
+  readonly count_technical_resource: number;
+  /**
+   * Number of technical resources in the controllable unit, broken down by technology. Keys are technology IDs, values are counts.
+   */
+  readonly count_technical_resource_by_technology: {
+    [key: string]: number;
+  };
+  /**
+   * Sum of maximum active power of all technical resources in the controllable unit.
+   */
+  readonly sum_maximum_active_power: number;
+  /**
+   * Sum of maximum active power of all production technical resources in the controllable unit.
+   */
+  readonly sum_maximum_active_power_production: number;
+  /**
+   * Sum of maximum active power of all consumption technical resources in the controllable unit.
+   */
+  readonly sum_maximum_active_power_consumption: number;
+  /**
+   * Sum of maximum active power of all energy storage technical resources in the controllable unit.
+   */
+  readonly sum_maximum_active_power_energy_storage: number;
+  /**
+   * Average maximum active power across all technical resources in the controllable unit.
+   */
+  readonly average_maximum_active_power: number;
+};
+
+/**
  * Request schema for update operations - Group of controllable units
  */
 export type ServiceProvidingGroupUpdateRequest = {
@@ -5748,6 +5788,55 @@ export type ReadControllableUnitServiceProviderHistoryResponses = {
 
 export type ReadControllableUnitServiceProviderHistoryResponse =
   ReadControllableUnitServiceProviderHistoryResponses[keyof ReadControllableUnitServiceProviderHistoryResponses];
+
+export type ReadControllableUnitSummaryData = {
+  body?: never;
+  path: {
+    id: number;
+  };
+  query?: never;
+  url: "/controllable_unit_summary/{id}";
+};
+
+export type ReadControllableUnitSummaryErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type ReadControllableUnitSummaryError =
+  ReadControllableUnitSummaryErrors[keyof ReadControllableUnitSummaryErrors];
+
+export type ReadControllableUnitSummaryResponses = {
+  /**
+   * OK
+   */
+  200: ControllableUnitSummary;
+};
+
+export type ReadControllableUnitSummaryResponse =
+  ReadControllableUnitSummaryResponses[keyof ReadControllableUnitSummaryResponses];
 
 export type ListServiceProvidingGroupData = {
   body?: never;

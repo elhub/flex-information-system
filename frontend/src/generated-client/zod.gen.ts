@@ -322,10 +322,9 @@ export const zTechnicalResourceBusinessIdType = z.enum([
 /**
  * The direction of the effect on the balance that the BRP takes responsibility for.
  */
-export const zAccountingPointBalanceResponsiblePartyEnergyDirection = z.enum([
-  "consumption",
-  "production",
-]);
+export const zAccountingPointBalanceResponsiblePartyEnergyDirection = z
+  .enum(["consumption", "production"])
+  .readonly();
 
 /**
  * The bidding zone of the accounting point.
@@ -341,7 +340,7 @@ export const zAccountingPointBiddingZoneBiddingZone = z.enum([
 /**
  * The type of the business identifier.
  */
-export const zMeteringGridAreaBusinessIdType = z.enum(["eic_y"]);
+export const zMeteringGridAreaBusinessIdType = z.enum(["eic_y"]).readonly();
 
 /**
  * The status of the relation.
@@ -569,6 +568,22 @@ export const zControllableUnitServiceProvider = z.object({
   valid_to: z.iso.datetime({ offset: true }).optional(),
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
+});
+
+/**
+ * Response schema - Aggregated summary of technical resources belonging to a controllable unit.
+ */
+export const zControllableUnitSummary = z.object({
+  id: z.coerce.number().readonly(),
+  count_technical_resource: z.coerce.number().readonly(),
+  count_technical_resource_by_technology: z
+    .record(z.string(), z.coerce.number())
+    .readonly(),
+  sum_maximum_active_power: z.coerce.number().readonly(),
+  sum_maximum_active_power_production: z.coerce.number().readonly(),
+  sum_maximum_active_power_consumption: z.coerce.number().readonly(),
+  sum_maximum_active_power_energy_storage: z.coerce.number().readonly(),
+  average_maximum_active_power: z.coerce.number().readonly(),
 });
 
 /**
@@ -2794,6 +2809,15 @@ export const zReadControllableUnitServiceProviderHistoryPath = z.object({
  */
 export const zReadControllableUnitServiceProviderHistoryResponse =
   zControllableUnitServiceProviderHistory;
+
+export const zReadControllableUnitSummaryPath = z.object({
+  id: z.coerce.number(),
+});
+
+/**
+ * OK
+ */
+export const zReadControllableUnitSummaryResponse = zControllableUnitSummary;
 
 export const zListServiceProvidingGroupQuery = z.object({
   id: z

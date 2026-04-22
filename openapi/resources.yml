@@ -396,6 +396,124 @@ resources:
           nb: Gyldig til
           nn: Gyldig til
 
+  - id: controllable_unit_summary
+    acronym: CUSU
+    summary: Controllable Unit Summary
+    description: >-
+      Aggregated summary of technical resources belonging to a controllable
+      unit.
+    x-intl:
+      en: Controllable Unit Summary
+      nb: Sammendrag av kontrollerbar enhet
+      nn: Samandrag av kontrollerbar eining
+    operations:
+      - read
+    generate_views: false
+    audit: false
+    properties:
+      id:
+        description: >-
+          The ID of the controllable unit this resource is a summary of.
+        format: bigint
+        type: integer
+        readOnly: true
+        x-filter: true
+        x-foreign-key:
+          resource: controllable_unit
+          field: id
+        example: 12
+        x-intl:
+          en: ID
+          nb: ID
+          nn: ID
+      count_technical_resource:
+        description: >-
+          Total number of technical resources in the controllable unit.
+        format: bigint
+        type: integer
+        readOnly: true
+        example: 3
+        x-intl:
+          en: Technical resource count
+          nb: Antall tekniske ressurser
+          nn: Antal tekniske ressursar
+      count_technical_resource_by_technology:
+        description: >-
+          Number of technical resources in the controllable unit, broken down
+          by technology. Keys are technology IDs, values are counts.
+        type: object
+        additionalProperties:
+          type: integer
+          format: bigint
+        readOnly: true
+        example:
+          solar: 2
+          battery: 1
+        x-intl:
+          en: Technical resource count by technology
+          nb: Antall tekniske ressurser per teknologi
+          nn: Antal tekniske ressursar per teknologi
+      sum_maximum_active_power:
+        description: >-
+          Sum of maximum active power of all technical resources in the
+          controllable unit.
+        format: decimal
+        type: number
+        readOnly: true
+        example: 150.000
+        x-intl:
+          en: Sum of maximum active power
+          nb: Sum av maksimal aktiv effekt
+          nn: Sum av maksimal aktiv effekt
+      sum_maximum_active_power_production:
+        description: >-
+          Sum of maximum active power of all production technical resources in
+          the controllable unit.
+        format: decimal
+        type: number
+        readOnly: true
+        example: 150.000
+        x-intl:
+          en: Sum of maximum active power (production)
+          nb: Sum av maksimal aktiv effekt (produksjon)
+          nn: Sum av maksimal aktiv effekt (produksjon)
+      sum_maximum_active_power_consumption:
+        description: >-
+          Sum of maximum active power of all consumption technical resources in
+          the controllable unit.
+        format: decimal
+        type: number
+        readOnly: true
+        example: 150.000
+        x-intl:
+          en: Sum of maximum active power (consumption)
+          nb: Sum av maksimal aktiv effekt (forbruk)
+          nn: Sum av maksimal aktiv effekt (forbruk)
+      sum_maximum_active_power_energy_storage:
+        description: >-
+          Sum of maximum active power of all energy storage technical resources
+          in the controllable unit.
+        format: decimal
+        type: number
+        readOnly: true
+        example: 150.000
+        x-intl:
+          en: Sum of maximum active power (energy storage)
+          nb: Sum av maksimal aktiv effekt (energilagring)
+          nn: Sum av maksimal aktiv effekt (energilagring)
+      average_maximum_active_power:
+        description: >-
+          Average maximum active power across all technical resources in the
+          controllable unit.
+        format: decimal
+        type: number
+        readOnly: true
+        example: 50.000
+        x-intl:
+          en: Average maximum active power
+          nb: Gjennomsnittlig maksimal aktiv effekt
+          nn: Gjennomsnittleg maksimal aktiv effekt
+
   - id: service_providing_group
     acronym: SPG
     summary: Service providing group

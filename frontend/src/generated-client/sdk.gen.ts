@@ -297,6 +297,9 @@ import type {
   ReadControllableUnitServiceProviderHistoryErrors,
   ReadControllableUnitServiceProviderHistoryResponses,
   ReadControllableUnitServiceProviderResponses,
+  ReadControllableUnitSummaryData,
+  ReadControllableUnitSummaryErrors,
+  ReadControllableUnitSummaryResponses,
   ReadControllableUnitSuspensionCommentData,
   ReadControllableUnitSuspensionCommentErrors,
   ReadControllableUnitSuspensionCommentHistoryData,
@@ -1164,6 +1167,26 @@ export const readControllableUnitServiceProviderHistory = <
   >({
     security: [{ scheme: "bearer", type: "http" }],
     url: "/controllable_unit_service_provider_history/{id}",
+    ...options,
+  });
+
+/**
+ * Read Controllable Unit Summary
+ *
+ * Read [Controllable Unit Summary](https://elhub.github.io/flex-information-system/resources/controllable_unit_summary/)
+ */
+export const readControllableUnitSummary = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<ReadControllableUnitSummaryData, ThrowOnError>,
+) =>
+  (options.client ?? client).get<
+    ReadControllableUnitSummaryResponses,
+    ReadControllableUnitSummaryErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/controllable_unit_summary/{id}",
     ...options,
   });
 

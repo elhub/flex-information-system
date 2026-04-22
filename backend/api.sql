@@ -100,6 +100,16 @@ CREATE TABLE api.controllable_unit_service_provider_history (
     replaced_by bigint NULL,
     replaced_at timestamp with time zone NULL
 );
+CREATE TABLE api.controllable_unit_summary (
+    id bigint NOT NULL,
+    count_technical_resource bigint NOT NULL,
+    count_technical_resource_by_technology jsonb NOT NULL,
+    sum_maximum_active_power decimal NOT NULL,
+    sum_maximum_active_power_production decimal NOT NULL,
+    sum_maximum_active_power_consumption decimal NOT NULL,
+    sum_maximum_active_power_energy_storage decimal NOT NULL,
+    average_maximum_active_power decimal NOT NULL
+);
 CREATE TABLE api.service_providing_group (
     id bigint NOT NULL,
     name text NOT NULL,

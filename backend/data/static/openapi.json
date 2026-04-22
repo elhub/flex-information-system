@@ -41,6 +41,10 @@
             "description": "Relation between controllable unit and service provider"
         },
         {
+            "name": "controllable_unit_summary",
+            "description": "Controllable Unit Summary"
+        },
+        {
             "name": "service_providing_group",
             "description": "Service providing group"
         },
@@ -1485,6 +1489,85 @@
                     "contract_reference",
                     "recorded_at",
                     "recorded_by"
+                ]
+            },
+            "controllable_unit_summary_response": {
+                "summary": "Response - Controllable Unit Summary",
+                "description": "Response schema - Aggregated summary of technical resources belonging to a controllable unit.",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "The ID of the controllable unit this resource is a summary of.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "readOnly": true,
+                        "example": 12
+                    },
+                    "count_technical_resource": {
+                        "description": "Total number of technical resources in the controllable unit.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "readOnly": true,
+                        "example": 3
+                    },
+                    "count_technical_resource_by_technology": {
+                        "description": "Number of technical resources in the controllable unit, broken down by technology. Keys are technology IDs, values are counts.",
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "integer",
+                            "format": "bigint"
+                        },
+                        "readOnly": true,
+                        "example": {
+                            "solar": 2,
+                            "battery": 1
+                        }
+                    },
+                    "sum_maximum_active_power": {
+                        "description": "Sum of maximum active power of all technical resources in the controllable unit.",
+                        "format": "decimal",
+                        "type": "number",
+                        "readOnly": true,
+                        "example": 150.0
+                    },
+                    "sum_maximum_active_power_production": {
+                        "description": "Sum of maximum active power of all production technical resources in the controllable unit.",
+                        "format": "decimal",
+                        "type": "number",
+                        "readOnly": true,
+                        "example": 150.0
+                    },
+                    "sum_maximum_active_power_consumption": {
+                        "description": "Sum of maximum active power of all consumption technical resources in the controllable unit.",
+                        "format": "decimal",
+                        "type": "number",
+                        "readOnly": true,
+                        "example": 150.0
+                    },
+                    "sum_maximum_active_power_energy_storage": {
+                        "description": "Sum of maximum active power of all energy storage technical resources in the controllable unit.",
+                        "format": "decimal",
+                        "type": "number",
+                        "readOnly": true,
+                        "example": 150.0
+                    },
+                    "average_maximum_active_power": {
+                        "description": "Average maximum active power across all technical resources in the controllable unit.",
+                        "format": "decimal",
+                        "type": "number",
+                        "readOnly": true,
+                        "example": 50.0
+                    }
+                },
+                "required": [
+                    "id",
+                    "count_technical_resource",
+                    "count_technical_resource_by_technology",
+                    "sum_maximum_active_power",
+                    "sum_maximum_active_power_production",
+                    "sum_maximum_active_power_consumption",
+                    "sum_maximum_active_power_energy_storage",
+                    "average_maximum_active_power"
                 ]
             },
             "service_providing_group_update_request": {
@@ -9520,6 +9603,126 @@
                     {
                         "bearerAuth": [
                             "read:data:controllable_unit_service_provider_history"
+                        ]
+                    },
+                    {}
+                ]
+            }
+        },
+        "/controllable_unit_summary/{id}": {
+            "summary": "Controllable Unit Summary - single",
+            "description": "",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "schema": {
+                        "format": "bigint",
+                        "type": "integer"
+                    },
+                    "example": 14
+                }
+            ],
+            "get": {
+                "operationId": "read_controllable_unit_summary",
+                "summary": "Read Controllable Unit Summary",
+                "description": "Read [Controllable Unit Summary](https://elhub.github.io/flex-information-system/resources/controllable_unit_summary/)",
+                "tags": [
+                    "controllable_unit_summary"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/controllable_unit_summary_response"
+                                }
+                            }
+                        },
+                        "description": "OK",
+                        "links": {
+                            "id": {
+                                "operationId": "read_controllable_unit",
+                                "parameters": {
+                                    "path.id": "$response.body#/id"
+                                },
+                                "description": "The `id` value returned in the response can be used as the `id` parameter in `GET /controllable_unit/{id}`."
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:controllable_unit_summary"
                         ]
                     },
                     {}
