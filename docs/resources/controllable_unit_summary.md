@@ -4,7 +4,7 @@ Aggregated summary of technical resources belonging to a controllable unit.
 
 ## Relevant links
 
-* [API Documentation](../api/v0/index.html#/operations/list_controllable_unit_summary)
+* [API Documentation](../api/v0/index.html#/operations/read_controllable_unit_summary)
 * [Download docx](../download/controllable_unit_summary.docx)
 
 ## Fields
