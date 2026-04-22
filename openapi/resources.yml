@@ -2397,8 +2397,8 @@ resources:
       common grid model (Nemo).
     x-intl:
       en: Accounting Point Grid Location
-      nb: Avregningspunktsgridlokasjon
-      nn: Avregningspunktsgridlokasjon
+      nb: Nettlokasjon for avregningspunkt
+      nn: Nettlokasjon for avrekningspunkt
     operations:
       - list
       - read
