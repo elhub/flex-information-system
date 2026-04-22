@@ -20,70 +20,31 @@ type ActionConfig = {
 const getActionsForStatus = (
   sppa: ServiceProviderProductApplication,
 ): ActionConfig[] => {
-  switch (sppa.status) {
-    case "requested":
-      return [
-        {
-          label: "Start process",
-          payload: { status: "in_progress" },
-          confirmTitle: "Start qualification process",
-          confirmContent:
-            "This will move the application to in progress. The service provider will be notified.",
-          variant: "primary",
-        },
-        {
-          label: "Reject",
-          payload: { status: "not_qualified" },
-          confirmTitle: "Reject application",
-          confirmContent:
-            "Are you sure you want to reject this application? The service provider will be notified.",
-          variant: "secondary",
-        },
-      ];
-    case "in_progress":
-      return [
-        {
-          label: "Start communication test",
-          payload: { status: "communication_test" },
-          confirmTitle: "Start communication test",
-          confirmContent:
-            "This will move the application to communication test.",
-          variant: "primary",
-        },
-        {
-          label: "Reject",
-          payload: { status: "not_qualified" },
-          confirmTitle: "Reject application",
-          confirmContent:
-            "Are you sure you want to reject this application? The service provider will be notified.",
-          variant: "secondary",
-        },
-      ];
-    case "communication_test":
-      return [
-        {
-          label: "Mark qualified",
-          payload: {
-            status: "qualified",
-            qualified_at: new Date().toISOString(),
-          },
-          confirmTitle: "Mark as qualified",
-          confirmContent:
-            "This will mark the application as qualified. The service provider will be notified.",
-          variant: "primary",
-        },
-        {
-          label: "Reject",
-          payload: { status: "not_qualified" },
-          confirmTitle: "Reject application",
-          confirmContent:
-            "Are you sure you want to reject this application? The service provider will be notified.",
-          variant: "secondary",
-        },
-      ];
-    default:
-      return [];
+  if (sppa.status === "qualified" || sppa.status === "not_qualified") {
+    return [];
   }
+
+  return [
+    {
+      label: "Mark qualified",
+      payload: {
+        status: "qualified",
+        qualified_at: new Date().toISOString(),
+      },
+      confirmTitle: "Mark as qualified",
+      confirmContent:
+        "This will mark the application as qualified. The service provider will be notified.",
+      variant: "primary",
+    },
+    {
+      label: "Reject",
+      payload: { status: "not_qualified" },
+      confirmTitle: "Reject application",
+      confirmContent:
+        "Are you sure you want to reject this application? The service provider will be notified.",
+      variant: "secondary",
+    },
+  ];
 };
 
 const ActionButton = ({
