@@ -16,7 +16,7 @@ package oidc
 import (
 	"strings"
 
-	"github.com/lestrrat-go/jwx/v3/jwt/openid"
+	"github.com/lestrrat-go/jwx/v4/jwt/openid"
 )
 
 // GetIdentifier returns the identifier and type from the token.
