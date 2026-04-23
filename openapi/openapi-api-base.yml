@@ -473,6 +473,18 @@ components:
         - $ref: "#/components/schemas/notice_data_party_missing"
         - $ref: "#/components/schemas/notice_data_party_outdated"
         - $ref: "#/components/schemas/notice_data_product_type_not_qualified"
+    numeric_aggregation:
+      type: object
+      properties:
+        sum:
+          type: number
+        average:
+          type: number
+        min:
+          type: number
+        max:
+          type: number
+      additionalProperties: false
 paths:
   /openapi.json:
     get:

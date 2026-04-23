@@ -159,6 +159,13 @@ export const zNoticeDataProductTypeNotQualified = z.object({
   product_type_ids: z.array(z.coerce.number()).optional(),
 });
 
+export const zNumericAggregation = z.object({
+  sum: z.coerce.number().optional(),
+  average: z.coerce.number().optional(),
+  min: z.coerce.number().optional(),
+  max: z.coerce.number().optional(),
+});
+
 /**
  * An empty object
  */
@@ -575,15 +582,34 @@ export const zControllableUnitServiceProvider = z.object({
  */
 export const zControllableUnitSummary = z.object({
   id: z.coerce.number().readonly(),
-  count_technical_resource: z.coerce.number().readonly(),
-  count_technical_resource_by_technology: z
-    .record(z.string(), z.coerce.number())
+  aggregates: z
+    .object({
+      technical_resource: z
+        .object({
+          count: z.coerce.number().optional(),
+          maximum_active_power: zNumericAggregation.optional(),
+          by_category: z
+            .record(
+              z.string(),
+              z.object({
+                count: z.coerce.number().optional(),
+                maximum_active_power: zNumericAggregation.optional(),
+              }),
+            )
+            .optional(),
+          by_technology: z
+            .record(
+              z.string(),
+              z.object({
+                count: z.coerce.number().optional(),
+                maximum_active_power: zNumericAggregation.optional(),
+              }),
+            )
+            .optional(),
+        })
+        .optional(),
+    })
     .readonly(),
-  sum_maximum_active_power: z.coerce.number().readonly(),
-  sum_maximum_active_power_production: z.coerce.number().readonly(),
-  sum_maximum_active_power_consumption: z.coerce.number().readonly(),
-  sum_maximum_active_power_energy_storage: z.coerce.number().readonly(),
-  average_maximum_active_power: z.coerce.number().readonly(),
 });
 
 /**
@@ -1825,6 +1851,14 @@ export const zControllableUnitServiceProviderWritable = z.object({
   valid_from: z.iso.datetime({ offset: true }).optional(),
   valid_to: z.iso.datetime({ offset: true }).optional(),
 });
+
+/**
+ * Response schema - Aggregated summary of technical resources belonging to a controllable unit.
+ */
+export const zControllableUnitSummaryWritable = z.record(
+  z.string(),
+  z.unknown(),
+);
 
 /**
  * Response schema - Group of controllable units

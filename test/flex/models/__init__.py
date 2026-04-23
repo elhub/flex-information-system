@@ -32,8 +32,21 @@ from .controllable_unit_service_provider_response import ControllableUnitService
 from .controllable_unit_service_provider_update_request import ControllableUnitServiceProviderUpdateRequest
 from .controllable_unit_status import ControllableUnitStatus
 from .controllable_unit_summary_response import ControllableUnitSummaryResponse
-from .controllable_unit_summary_response_count_technical_resource_by_technology import (
-    ControllableUnitSummaryResponseCountTechnicalResourceByTechnology,
+from .controllable_unit_summary_response_aggregates import ControllableUnitSummaryResponseAggregates
+from .controllable_unit_summary_response_aggregates_technical_resource import (
+    ControllableUnitSummaryResponseAggregatesTechnicalResource,
+)
+from .controllable_unit_summary_response_aggregates_technical_resource_by_category import (
+    ControllableUnitSummaryResponseAggregatesTechnicalResourceByCategory,
+)
+from .controllable_unit_summary_response_aggregates_technical_resource_by_category_additional_property import (
+    ControllableUnitSummaryResponseAggregatesTechnicalResourceByCategoryAdditionalProperty,
+)
+from .controllable_unit_summary_response_aggregates_technical_resource_by_technology import (
+    ControllableUnitSummaryResponseAggregatesTechnicalResourceByTechnology,
+)
+from .controllable_unit_summary_response_aggregates_technical_resource_by_technology_additional_property import (
+    ControllableUnitSummaryResponseAggregatesTechnicalResourceByTechnologyAdditionalProperty,
 )
 from .controllable_unit_suspension_comment_create_request import ControllableUnitSuspensionCommentCreateRequest
 from .controllable_unit_suspension_comment_history_response import ControllableUnitSuspensionCommentHistoryResponse
@@ -72,6 +85,7 @@ from .notice_response import NoticeResponse
 from .notice_status import NoticeStatus
 from .notification_response import NotificationResponse
 from .notification_update_request import NotificationUpdateRequest
+from .numeric_aggregation import NumericAggregation
 from .party_business_id_type import PartyBusinessIdType
 from .party_create_request import PartyCreateRequest
 from .party_history_response import PartyHistoryResponse
@@ -264,7 +278,12 @@ __all__ = (
     "ControllableUnitServiceProviderUpdateRequest",
     "ControllableUnitStatus",
     "ControllableUnitSummaryResponse",
-    "ControllableUnitSummaryResponseCountTechnicalResourceByTechnology",
+    "ControllableUnitSummaryResponseAggregates",
+    "ControllableUnitSummaryResponseAggregatesTechnicalResource",
+    "ControllableUnitSummaryResponseAggregatesTechnicalResourceByCategory",
+    "ControllableUnitSummaryResponseAggregatesTechnicalResourceByCategoryAdditionalProperty",
+    "ControllableUnitSummaryResponseAggregatesTechnicalResourceByTechnology",
+    "ControllableUnitSummaryResponseAggregatesTechnicalResourceByTechnologyAdditionalProperty",
     "ControllableUnitSuspensionCommentCreateRequest",
     "ControllableUnitSuspensionCommentHistoryResponse",
     "ControllableUnitSuspensionCommentResponse",
@@ -302,6 +321,7 @@ __all__ = (
     "NoticeStatus",
     "NotificationResponse",
     "NotificationUpdateRequest",
+    "NumericAggregation",
     "PartyBusinessIdType",
     "PartyCreateRequest",
     "PartyHistoryResponse",

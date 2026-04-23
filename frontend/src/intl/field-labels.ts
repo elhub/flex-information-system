@@ -75,14 +75,8 @@ export type FieldLabel =
   | "controllable_unit_service_provider_history.service_provider_id"
   | "controllable_unit_service_provider_history.valid_from"
   | "controllable_unit_service_provider_history.valid_to"
-  | "controllable_unit_summary.average_maximum_active_power"
-  | "controllable_unit_summary.count_technical_resource"
-  | "controllable_unit_summary.count_technical_resource_by_technology"
+  | "controllable_unit_summary.aggregates"
   | "controllable_unit_summary.id"
-  | "controllable_unit_summary.sum_maximum_active_power"
-  | "controllable_unit_summary.sum_maximum_active_power_consumption"
-  | "controllable_unit_summary.sum_maximum_active_power_energy_storage"
-  | "controllable_unit_summary.sum_maximum_active_power_production"
   | "controllable_unit_suspension.controllable_unit_id"
   | "controllable_unit_suspension.id"
   | "controllable_unit_suspension.impacted_system_operator_id"
@@ -616,20 +610,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit_service_provider_history.replaced_at": "Replaced at",
     "controllable_unit_service_provider_history.replaced_by": "Replaced by",
     "controllable_unit_summary.id": "ID",
-    "controllable_unit_summary.count_technical_resource":
-      "Technical resource count",
-    "controllable_unit_summary.count_technical_resource_by_technology":
-      "Technical resource count by technology",
-    "controllable_unit_summary.sum_maximum_active_power":
-      "Sum of maximum active power",
-    "controllable_unit_summary.sum_maximum_active_power_production":
-      "Sum of maximum active power (production)",
-    "controllable_unit_summary.sum_maximum_active_power_consumption":
-      "Sum of maximum active power (consumption)",
-    "controllable_unit_summary.sum_maximum_active_power_energy_storage":
-      "Sum of maximum active power (energy storage)",
-    "controllable_unit_summary.average_maximum_active_power":
-      "Average maximum active power",
+    "controllable_unit_summary.aggregates": "Aggregates",
     "service_providing_group.id": "ID",
     "service_providing_group.name": "Name",
     "service_providing_group.service_provider_id": "Service provider",
@@ -1312,20 +1293,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit_service_provider_history.replaced_at": "Erstattet",
     "controllable_unit_service_provider_history.replaced_by": "Erstattet av",
     "controllable_unit_summary.id": "ID",
-    "controllable_unit_summary.count_technical_resource":
-      "Antall tekniske ressurser",
-    "controllable_unit_summary.count_technical_resource_by_technology":
-      "Antall tekniske ressurser per teknologi",
-    "controllable_unit_summary.sum_maximum_active_power":
-      "Sum av maksimal aktiv effekt",
-    "controllable_unit_summary.sum_maximum_active_power_production":
-      "Sum av maksimal aktiv effekt (produksjon)",
-    "controllable_unit_summary.sum_maximum_active_power_consumption":
-      "Sum av maksimal aktiv effekt (forbruk)",
-    "controllable_unit_summary.sum_maximum_active_power_energy_storage":
-      "Sum av maksimal aktiv effekt (energilagring)",
-    "controllable_unit_summary.average_maximum_active_power":
-      "Gjennomsnittlig maksimal aktiv effekt",
+    "controllable_unit_summary.aggregates": "Aggregeringer",
     "service_providing_group.id": "ID",
     "service_providing_group.name": "Navn",
     "service_providing_group.service_provider_id": "Tjenesteleverandør",
@@ -2003,20 +1971,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit_service_provider_history.replaced_at": "Erstattet",
     "controllable_unit_service_provider_history.replaced_by": "Erstattet av",
     "controllable_unit_summary.id": "ID",
-    "controllable_unit_summary.count_technical_resource":
-      "Antal tekniske ressursar",
-    "controllable_unit_summary.count_technical_resource_by_technology":
-      "Antal tekniske ressursar per teknologi",
-    "controllable_unit_summary.sum_maximum_active_power":
-      "Sum av maksimal aktiv effekt",
-    "controllable_unit_summary.sum_maximum_active_power_production":
-      "Sum av maksimal aktiv effekt (produksjon)",
-    "controllable_unit_summary.sum_maximum_active_power_consumption":
-      "Sum av maksimal aktiv effekt (forbruk)",
-    "controllable_unit_summary.sum_maximum_active_power_energy_storage":
-      "Sum av maksimal aktiv effekt (energilagring)",
-    "controllable_unit_summary.average_maximum_active_power":
-      "Gjennomsnittleg maksimal aktiv effekt",
+    "controllable_unit_summary.aggregates": "Aggregeringar",
     "service_providing_group.id": "ID",
     "service_providing_group.name": "Namn",
     "service_providing_group.service_provider_id": "Tenesteleverandør",

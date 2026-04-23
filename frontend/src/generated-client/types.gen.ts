@@ -255,6 +255,13 @@ export type NoticeData =
   | NoticeDataPartyOutdated
   | NoticeDataProductTypeNotQualified;
 
+export type NumericAggregation = {
+  sum?: number;
+  average?: number;
+  min?: number;
+  max?: number;
+};
+
 /**
  * An empty object
  */
@@ -808,35 +815,26 @@ export type ControllableUnitSummary = {
    */
   readonly id: number;
   /**
-   * Total number of technical resources in the controllable unit.
+   * Aggregated statistics on technical resources belonging to the controllable unit, including counts and maximum active power breakdowns (sum, average, min, max) by category and technology.
    */
-  readonly count_technical_resource: number;
-  /**
-   * Number of technical resources in the controllable unit, broken down by technology. Keys are technology IDs, values are counts.
-   */
-  readonly count_technical_resource_by_technology: {
-    [key: string]: number;
+  readonly aggregates: {
+    technical_resource?: {
+      count?: number;
+      maximum_active_power?: NumericAggregation;
+      by_category?: {
+        [key: string]: {
+          count?: number;
+          maximum_active_power?: NumericAggregation;
+        };
+      };
+      by_technology?: {
+        [key: string]: {
+          count?: number;
+          maximum_active_power?: NumericAggregation;
+        };
+      };
+    };
   };
-  /**
-   * Sum of maximum active power of all technical resources in the controllable unit.
-   */
-  readonly sum_maximum_active_power: number;
-  /**
-   * Sum of maximum active power of all production technical resources in the controllable unit.
-   */
-  readonly sum_maximum_active_power_production: number;
-  /**
-   * Sum of maximum active power of all consumption technical resources in the controllable unit.
-   */
-  readonly sum_maximum_active_power_consumption: number;
-  /**
-   * Sum of maximum active power of all energy storage technical resources in the controllable unit.
-   */
-  readonly sum_maximum_active_power_energy_storage: number;
-  /**
-   * Average maximum active power across all technical resources in the controllable unit.
-   */
-  readonly average_maximum_active_power: number;
 };
 
 /**
@@ -3144,6 +3142,13 @@ export type ControllableUnitServiceProviderWritable = {
    * The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.
    */
   valid_to?: string;
+};
+
+/**
+ * Response schema - Aggregated summary of technical resources belonging to a controllable unit.
+ */
+export type ControllableUnitSummaryWritable = {
+  [key: string]: unknown;
 };
 
 /**

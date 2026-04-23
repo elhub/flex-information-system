@@ -560,6 +560,24 @@
                     }
                 ]
             },
+            "numeric_aggregation": {
+                "type": "object",
+                "properties": {
+                    "sum": {
+                        "type": "number"
+                    },
+                    "average": {
+                        "type": "number"
+                    },
+                    "min": {
+                        "type": "number"
+                    },
+                    "max": {
+                        "type": "number"
+                    }
+                },
+                "additionalProperties": false
+            },
             "empty_object": {
                 "description": "An empty object",
                 "type": "object",
@@ -1503,71 +1521,138 @@
                         "readOnly": true,
                         "example": 12
                     },
-                    "count_technical_resource": {
-                        "description": "Total number of technical resources in the controllable unit.",
-                        "format": "bigint",
-                        "type": "integer",
-                        "readOnly": true,
-                        "example": 3
-                    },
-                    "count_technical_resource_by_technology": {
-                        "description": "Number of technical resources in the controllable unit, broken down by technology. Keys are technology IDs, values are counts.",
+                    "aggregates": {
+                        "description": "Aggregated statistics on technical resources belonging to the controllable unit, including counts and maximum active power breakdowns (sum, average, min, max) by category and technology.",
                         "type": "object",
-                        "additionalProperties": {
-                            "type": "integer",
-                            "format": "bigint"
+                        "readOnly": true,
+                        "properties": {
+                            "technical_resource": {
+                                "type": "object",
+                                "properties": {
+                                    "count": {
+                                        "type": "integer"
+                                    },
+                                    "maximum_active_power": {
+                                        "$ref": "#/components/schemas/numeric_aggregation"
+                                    },
+                                    "by_category": {
+                                        "type": "object",
+                                        "propertyNames": {
+                                            "enum": [
+                                                "production",
+                                                "consumption",
+                                                "energy_storage"
+                                            ]
+                                        },
+                                        "additionalProperties": {
+                                            "type": "object",
+                                            "properties": {
+                                                "count": {
+                                                    "type": "integer"
+                                                },
+                                                "maximum_active_power": {
+                                                    "$ref": "#/components/schemas/numeric_aggregation"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "by_technology": {
+                                        "type": "object",
+                                        "propertyNames": {
+                                            "enum": [
+                                                "hydropower",
+                                                "hydropower.pumped",
+                                                "hydropower.run_of_river",
+                                                "heat_power_plant",
+                                                "heat_power_plant.chp",
+                                                "solar",
+                                                "wind",
+                                                "backup_generator",
+                                                "hvac",
+                                                "hvac.heat",
+                                                "hvac.heat_pump",
+                                                "lighting",
+                                                "water_heater",
+                                                "boiler",
+                                                "ev_charging_device",
+                                                "ev_charging_device.v2g",
+                                                "battery",
+                                                "other.consumption",
+                                                "other.production",
+                                                "other.energy_storage"
+                                            ]
+                                        },
+                                        "additionalProperties": {
+                                            "type": "object",
+                                            "properties": {
+                                                "count": {
+                                                    "type": "integer"
+                                                },
+                                                "maximum_active_power": {
+                                                    "$ref": "#/components/schemas/numeric_aggregation"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         },
-                        "readOnly": true,
                         "example": {
-                            "solar": 2,
-                            "battery": 1
+                            "technical_resource": {
+                                "count": 3,
+                                "maximum_active_power": {
+                                    "sum": 150,
+                                    "average": 50,
+                                    "min": 20,
+                                    "max": 80
+                                },
+                                "by_category": {
+                                    "production": {
+                                        "count": 2,
+                                        "maximum_active_power": {
+                                            "sum": 130,
+                                            "average": 65,
+                                            "min": 50,
+                                            "max": 80
+                                        }
+                                    },
+                                    "consumption": {
+                                        "count": 1,
+                                        "maximum_active_power": {
+                                            "sum": 20,
+                                            "average": 20,
+                                            "min": 20,
+                                            "max": 20
+                                        }
+                                    }
+                                },
+                                "by_technology": {
+                                    "solar": {
+                                        "count": 2,
+                                        "maximum_active_power": {
+                                            "sum": 130,
+                                            "average": 65,
+                                            "min": 50,
+                                            "max": 80
+                                        }
+                                    },
+                                    "battery": {
+                                        "count": 1,
+                                        "maximum_active_power": {
+                                            "sum": 20,
+                                            "average": 20,
+                                            "min": 20,
+                                            "max": 20
+                                        }
+                                    }
+                                }
+                            }
                         }
-                    },
-                    "sum_maximum_active_power": {
-                        "description": "Sum of maximum active power of all technical resources in the controllable unit.",
-                        "format": "decimal",
-                        "type": "number",
-                        "readOnly": true,
-                        "example": 150.0
-                    },
-                    "sum_maximum_active_power_production": {
-                        "description": "Sum of maximum active power of all production technical resources in the controllable unit.",
-                        "format": "decimal",
-                        "type": "number",
-                        "readOnly": true,
-                        "example": 150.0
-                    },
-                    "sum_maximum_active_power_consumption": {
-                        "description": "Sum of maximum active power of all consumption technical resources in the controllable unit.",
-                        "format": "decimal",
-                        "type": "number",
-                        "readOnly": true,
-                        "example": 150.0
-                    },
-                    "sum_maximum_active_power_energy_storage": {
-                        "description": "Sum of maximum active power of all energy storage technical resources in the controllable unit.",
-                        "format": "decimal",
-                        "type": "number",
-                        "readOnly": true,
-                        "example": 150.0
-                    },
-                    "average_maximum_active_power": {
-                        "description": "Average maximum active power across all technical resources in the controllable unit.",
-                        "format": "decimal",
-                        "type": "number",
-                        "readOnly": true,
-                        "example": 50.0
                     }
                 },
                 "required": [
                     "id",
-                    "count_technical_resource",
-                    "count_technical_resource_by_technology",
-                    "sum_maximum_active_power",
-                    "sum_maximum_active_power_production",
-                    "sum_maximum_active_power_consumption",
-                    "sum_maximum_active_power_energy_storage",
-                    "average_maximum_active_power"
+                    "aggregates"
                 ]
             },
             "service_providing_group_update_request": {
