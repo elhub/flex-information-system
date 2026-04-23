@@ -39,7 +39,7 @@ func embedQueryRewrite(query url.Values) error {
 		return nil
 	}
 
-	// strip all whitespace before parsing
+	embed = strings.ToLower(embed)
 	embed = strings.ReplaceAll(embed, " ", "")
 
 	nodes, rest, err := parseEmbedList(embed)
@@ -129,7 +129,7 @@ func parseEmbedNode(input string) (embedNode, string, error) {
 	return embedNode{name: name, joinHint: joinHint, children: children}, rest, nil
 }
 
-// parseIdentifier reads a valid identifier ([a-zA-Z_][a-zA-Z0-9_]*) from the
+// parseIdentifier reads a valid identifier ([a-z_]*) from the
 // start of input and returns it together with the remaining string.
 func parseIdentifier(input string) (string, string, error) {
 	if input == "" {
@@ -154,8 +154,6 @@ func parseIdentifier(input string) (string, string, error) {
 
 func isIdentChar(c byte) bool {
 	return (c >= 'a' && c <= 'z') ||
-		(c >= 'A' && c <= 'Z') ||
-		(c >= '0' && c <= '9') ||
 		c == '_'
 }
 
