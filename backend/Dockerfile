@@ -9,7 +9,7 @@ RUN go mod download
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o /flex ./cmd/flex
+RUN CGO_ENABLED=0 GOOS=linux GOEXPERIMENT=jsonv2 go build -o /flex ./cmd/flex
 
 # --- Run Stage ---
 # Deploy the application binary into a lean image

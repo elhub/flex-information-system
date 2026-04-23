@@ -23,10 +23,10 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
-	"github.com/lestrrat-go/jwx/v3/jwa"
-	"github.com/lestrrat-go/jwx/v3/jws"
-	"github.com/lestrrat-go/jwx/v3/jwt"
-	"github.com/lestrrat-go/jwx/v3/jwt/openid"
+	"github.com/lestrrat-go/jwx/v4/jwa"
+	"github.com/lestrrat-go/jwx/v4/jws"
+	"github.com/lestrrat-go/jwx/v4/jwt"
+	"github.com/lestrrat-go/jwx/v4/jwt/openid"
 )
 
 const (
@@ -524,7 +524,7 @@ func (auth *API) GetCallbackHandler(ctx *gin.Context) { //nolint:funlen,cyclop
 
 	var returnedNonce string
 
-	err = token.Get("nonce", &returnedNonce)
+	returnedNonce, err = jwt.Get[string](token, "nonce")
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, newErrorMessage(http.StatusBadRequest, "no nonce in id_token", err))
 		return
