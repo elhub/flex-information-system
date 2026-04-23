@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/lestrrat-go/jwx/v3/jws"
+	"github.com/lestrrat-go/jwx/v4/jws"
 )
 
 // accessToken is the struct that holds the payload of the access JWT.
