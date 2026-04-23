@@ -12,13 +12,19 @@ import { useTranslateEnum } from "../intl/intl";
 import { EnumLabel } from "../intl/enum-labels";
 import { SimpleTable, Column } from "../components/SimpleTable";
 import { Badge } from "../components/ui";
-import { sppaStatusVariantMap } from "../service_provider_product_application/show/sppaStatus";
+import { sppaStatusVariantMap, SppaBadgeVariant } from "../service_provider_product_application/show/sppaStatus";
 import { spgpaStatusVariantMap } from "../service_providing_group/product_application/show/spgpaStatus";
 import { DashboardItem } from "./useDashboardApplications";
 
 type BadgeVariant = {
-    status: string;
+    status: SppaBadgeVariant["status"];
     icon: ComponentType<SvgIconProps>;
+};
+
+const ENUM_KEY_PREFIX: Record<DashboardItem["kind"], string> = {
+    sp_product_application: "service_provider_product_application.status",
+    spg_product_application: "service_providing_group_product_application.status",
+    spg_grid_prequalification: "service_providing_group_grid_prequalification.status",
 };
 
 // Grid prequalification statuses don't have a shared variant map yet,
@@ -59,12 +65,6 @@ export const ApplicationsTable = ({ items }: Props) => {
         return spggpStatusVariantMap[item.status] ?? fallbackVariant;
     };
 
-    const enumKeyPrefix: Record<DashboardItem["kind"], string> = {
-        sp_product_application: "service_provider_product_application.status",
-        spg_product_application: "service_providing_group_product_application.status",
-        spg_grid_prequalification: "service_providing_group_grid_prequalification.status",
-    };
-
     const columns: Column<DashboardItem>[] = [
         {
             key: "typeLabel",
@@ -99,11 +99,10 @@ export const ApplicationsTable = ({ items }: Props) => {
                     <Badge
                         size="small"
                         variant="block"
-                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        status={variant.status as any}
+                        status={variant.status}
                         icon={variant.icon}
                     >
-                        {translateEnum(`${enumKeyPrefix[row.kind]}.${row.status}` as EnumLabel)}
+                        {translateEnum(`${ENUM_KEY_PREFIX[row.kind]}.${row.status}` as EnumLabel)}
                     </Badge>
                 );
             },
