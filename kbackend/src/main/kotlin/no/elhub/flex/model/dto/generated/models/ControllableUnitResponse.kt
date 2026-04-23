@@ -1,10 +1,10 @@
 package no.elhub.flex.model.dto.generated.models
 
 import java.math.BigDecimal
-import kotlin.Any
 import kotlin.Boolean
 import kotlin.Long
 import kotlin.String
+import kotlin.collections.List
 import kotlin.time.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Contextual
@@ -89,20 +89,20 @@ public data class ControllableUnitResponse(
    * Embedded controllable_unit_suspension
    */
   @SerialName("suspension")
-  public val suspension: Any? = null,
+  public val suspension: List<ControllableUnitSuspensionResponse>? = null,
   /**
    * Embedded controllable_unit_service_provider
    */
   @SerialName("service_provider")
-  public val serviceProvider: Any? = null,
+  public val serviceProvider: List<ControllableUnitServiceProviderResponse>? = null,
   /**
    * Embedded service_providing_group_membership
    */
   @SerialName("service_providing_group_membership")
-  public val serviceProvidingGroupMembership: Any? = null,
+  public val serviceProvidingGroupMembership: List<ServiceProvidingGroupMembershipResponse>? = null,
   /**
    * Embedded technical_resource
    */
   @SerialName("technical_resource")
-  public val technicalResource: Any? = null,
+  public val technicalResource: List<TechnicalResourceResponse>? = null,
 )

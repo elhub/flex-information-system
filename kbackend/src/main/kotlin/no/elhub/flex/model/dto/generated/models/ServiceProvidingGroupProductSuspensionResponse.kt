@@ -1,6 +1,5 @@
 package no.elhub.flex.model.dto.generated.models
 
-import kotlin.Any
 import kotlin.Long
 import kotlin.collections.List
 import kotlin.time.Instant
@@ -71,5 +70,5 @@ public data class ServiceProvidingGroupProductSuspensionResponse(
    * Embedded service_providing_group_product_suspension_comment
    */
   @SerialName("comment")
-  public val comment: Any? = null,
+  public val comment: List<ServiceProvidingGroupProductSuspensionCommentResponse>? = null,
 )

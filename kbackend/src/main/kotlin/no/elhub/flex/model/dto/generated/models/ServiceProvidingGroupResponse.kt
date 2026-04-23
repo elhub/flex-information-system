@@ -1,8 +1,8 @@
 package no.elhub.flex.model.dto.generated.models
 
-import kotlin.Any
 import kotlin.Long
 import kotlin.String
+import kotlin.collections.List
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -71,25 +71,25 @@ public data class ServiceProvidingGroupResponse(
    * Embedded service_providing_group_membership
    */
   @SerialName("membership")
-  public val membership: Any? = null,
+  public val membership: List<ServiceProvidingGroupMembershipResponse>? = null,
   /**
    * Embedded service_providing_group_grid_prequalification
    */
   @SerialName("grid_prequalification")
-  public val gridPrequalification: Any? = null,
+  public val gridPrequalification: List<ServiceProvidingGroupGridPrequalificationResponse>? = null,
   /**
    * Embedded service_providing_group_grid_suspension
    */
   @SerialName("grid_suspension")
-  public val gridSuspension: Any? = null,
+  public val gridSuspension: List<ServiceProvidingGroupGridSuspensionResponse>? = null,
   /**
    * Embedded service_providing_group_product_application
    */
   @SerialName("product_application")
-  public val productApplication: Any? = null,
+  public val productApplication: List<ServiceProvidingGroupProductApplicationResponse>? = null,
   /**
    * Embedded service_providing_group_product_suspension
    */
   @SerialName("product_suspension")
-  public val productSuspension: Any? = null,
+  public val productSuspension: List<ServiceProvidingGroupProductSuspensionResponse>? = null,
 )

@@ -1,6 +1,5 @@
 package no.elhub.flex.model.dto.generated.models
 
-import kotlin.Any
 import kotlin.Long
 import kotlin.collections.List
 import kotlin.time.Instant
@@ -85,5 +84,5 @@ public data class ServiceProviderProductApplicationResponse(
    * Embedded service_provider_product_application_comment
    */
   @SerialName("comment")
-  public val comment: Any? = null,
+  public val comment: List<ServiceProviderProductApplicationCommentResponse>? = null,
 )

@@ -1,7 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
 import java.math.BigDecimal
-import kotlin.Any
 import kotlin.Long
 import kotlin.String
 import kotlin.collections.List
@@ -102,5 +101,5 @@ public data class ServiceProvidingGroupProductApplicationResponse(
    * Embedded service_providing_group_product_application_comment
    */
   @SerialName("comment")
-  public val comment: Any? = null,
+  public val comment: List<ServiceProvidingGroupProductApplicationCommentResponse>? = null,
 )

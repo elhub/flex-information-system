@@ -1,8 +1,8 @@
 package no.elhub.flex.model.dto.generated.models
 
-import kotlin.Any
 import kotlin.Long
 import kotlin.String
+import kotlin.collections.List
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -40,5 +40,5 @@ public data class ProductTypeResponse(
    * Embedded system_operator_product_type
    */
   @SerialName("system_operator_product_type")
-  public val systemOperatorProductType: Any? = null,
+  public val systemOperatorProductType: List<SystemOperatorProductTypeResponse>? = null,
 )
