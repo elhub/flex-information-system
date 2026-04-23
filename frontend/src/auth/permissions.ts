@@ -100,14 +100,8 @@ export type PermissionTarget =
   | "controllable_unit_service_provider_history.valid_from"
   | "controllable_unit_service_provider_history.valid_to"
   | "controllable_unit_summary"
-  | "controllable_unit_summary.average_maximum_active_power"
-  | "controllable_unit_summary.count_technical_resource"
-  | "controllable_unit_summary.count_technical_resource_by_technology"
+  | "controllable_unit_summary.aggregates"
   | "controllable_unit_summary.id"
-  | "controllable_unit_summary.sum_maximum_active_power"
-  | "controllable_unit_summary.sum_maximum_active_power_consumption"
-  | "controllable_unit_summary.sum_maximum_active_power_energy_storage"
-  | "controllable_unit_summary.sum_maximum_active_power_production"
   | "controllable_unit_suspension"
   | "controllable_unit_suspension.controllable_unit_id"
   | "controllable_unit_suspension.id"
@@ -945,16 +939,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_summary.average_maximum_active_power",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_summary.count_technical_resource",
-      operation: "read",
-    },
-    {
-      target:
-        "controllable_unit_summary.count_technical_resource_by_technology",
+      target: "controllable_unit_summary.aggregates",
       operation: "read",
     },
     {
@@ -963,23 +948,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_summary",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_summary.sum_maximum_active_power",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_summary.sum_maximum_active_power_consumption",
-      operation: "read",
-    },
-    {
-      target:
-        "controllable_unit_summary.sum_maximum_active_power_energy_storage",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_summary.sum_maximum_active_power_production",
       operation: "read",
     },
     {
@@ -3357,16 +3325,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_summary.average_maximum_active_power",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_summary.count_technical_resource",
-      operation: "read",
-    },
-    {
-      target:
-        "controllable_unit_summary.count_technical_resource_by_technology",
+      target: "controllable_unit_summary.aggregates",
       operation: "read",
     },
     {
@@ -3375,23 +3334,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_summary",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_summary.sum_maximum_active_power",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_summary.sum_maximum_active_power_consumption",
-      operation: "read",
-    },
-    {
-      target:
-        "controllable_unit_summary.sum_maximum_active_power_energy_storage",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_summary.sum_maximum_active_power_production",
       operation: "read",
     },
     {
@@ -5769,16 +5711,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_summary.average_maximum_active_power",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_summary.count_technical_resource",
-      operation: "read",
-    },
-    {
-      target:
-        "controllable_unit_summary.count_technical_resource_by_technology",
+      target: "controllable_unit_summary.aggregates",
       operation: "read",
     },
     {
@@ -5787,23 +5720,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_summary",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_summary.sum_maximum_active_power",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_summary.sum_maximum_active_power_consumption",
-      operation: "read",
-    },
-    {
-      target:
-        "controllable_unit_summary.sum_maximum_active_power_energy_storage",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_summary.sum_maximum_active_power_production",
       operation: "read",
     },
     {
@@ -8293,16 +8209,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_summary.average_maximum_active_power",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_summary.count_technical_resource",
-      operation: "read",
-    },
-    {
-      target:
-        "controllable_unit_summary.count_technical_resource_by_technology",
+      target: "controllable_unit_summary.aggregates",
       operation: "read",
     },
     {
@@ -8311,23 +8218,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_summary",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_summary.sum_maximum_active_power",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_summary.sum_maximum_active_power_consumption",
-      operation: "read",
-    },
-    {
-      target:
-        "controllable_unit_summary.sum_maximum_active_power_energy_storage",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_summary.sum_maximum_active_power_production",
       operation: "read",
     },
     {
@@ -11412,16 +11302,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_summary.average_maximum_active_power",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_summary.count_technical_resource",
-      operation: "read",
-    },
-    {
-      target:
-        "controllable_unit_summary.count_technical_resource_by_technology",
+      target: "controllable_unit_summary.aggregates",
       operation: "read",
     },
     {
@@ -11430,23 +11311,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_summary",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_summary.sum_maximum_active_power",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_summary.sum_maximum_active_power_consumption",
-      operation: "read",
-    },
-    {
-      target:
-        "controllable_unit_summary.sum_maximum_active_power_energy_storage",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_summary.sum_maximum_active_power_production",
       operation: "read",
     },
     {
@@ -13824,16 +13688,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_summary.average_maximum_active_power",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_summary.count_technical_resource",
-      operation: "read",
-    },
-    {
-      target:
-        "controllable_unit_summary.count_technical_resource_by_technology",
+      target: "controllable_unit_summary.aggregates",
       operation: "read",
     },
     {
@@ -13842,23 +13697,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_summary",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_summary.sum_maximum_active_power",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_summary.sum_maximum_active_power_consumption",
-      operation: "read",
-    },
-    {
-      target:
-        "controllable_unit_summary.sum_maximum_active_power_energy_storage",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_summary.sum_maximum_active_power_production",
       operation: "read",
     },
     {
@@ -16750,16 +16588,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_summary.average_maximum_active_power",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_summary.count_technical_resource",
-      operation: "read",
-    },
-    {
-      target:
-        "controllable_unit_summary.count_technical_resource_by_technology",
+      target: "controllable_unit_summary.aggregates",
       operation: "read",
     },
     {
@@ -16768,23 +16597,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_summary",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_summary.sum_maximum_active_power",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_summary.sum_maximum_active_power_consumption",
-      operation: "read",
-    },
-    {
-      target:
-        "controllable_unit_summary.sum_maximum_active_power_energy_storage",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_summary.sum_maximum_active_power_production",
       operation: "read",
     },
     {
@@ -19619,16 +19431,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_summary.average_maximum_active_power",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_summary.count_technical_resource",
-      operation: "read",
-    },
-    {
-      target:
-        "controllable_unit_summary.count_technical_resource_by_technology",
+      target: "controllable_unit_summary.aggregates",
       operation: "read",
     },
     {
@@ -19637,23 +19440,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_summary",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_summary.sum_maximum_active_power",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_summary.sum_maximum_active_power_consumption",
-      operation: "read",
-    },
-    {
-      target:
-        "controllable_unit_summary.sum_maximum_active_power_energy_storage",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_summary.sum_maximum_active_power_production",
       operation: "read",
     },
     {

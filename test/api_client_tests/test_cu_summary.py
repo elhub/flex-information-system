@@ -1,3 +1,4 @@
+# type: ignore[union-attr]
 from security_token_service import (
     SecurityTokenService,
     TestEntity,
@@ -58,10 +59,12 @@ def test_controllable_unit_summary_aggregation(sts):
 
     summary = read_controllable_unit_summary.sync(client=client_fiso, id=cu.id)
     assert isinstance(summary, ControllableUnitSummaryResponse)
-    assert summary.count_technical_resource == 0
-    assert summary.sum_maximum_active_power == pytest.approx(0.0)
-    assert summary.average_maximum_active_power == pytest.approx(0.0)
-    assert summary.count_technical_resource_by_technology.additional_properties == {}
+
+    agg = summary.aggregates.technical_resource
+    assert agg.count == 0
+    assert agg.maximum_active_power.sum_ == pytest.approx(0.0)
+    assert agg.maximum_active_power.average == pytest.approx(0.0)
+    assert agg.by_technology.additional_properties == {}
 
     # add some TRs and check the summary values are correct
 
@@ -135,26 +138,35 @@ def test_controllable_unit_summary_aggregation(sts):
     #   TR4 is hvac (consumption) with MAP=15.0
     #   TR5 is solar+battery (production+energy_storage) with MAP=25.0
 
-    # should be 5 TR in the summary
-    assert summary.count_technical_resource == 5
+    agg = summary.aggregates.technical_resource
 
-    # should be 3 solar, 2 battery, 1 hvac
-    count_by_tech = summary.count_technical_resource_by_technology
-    assert count_by_tech["solar"] == 3
-    assert count_by_tech["battery"] == 2
-    assert count_by_tech["hvac"] == 1
+    # should be 5 TR in the summary
+    assert agg.count == 5
 
     # sum MAP should be 100
-    assert summary.sum_maximum_active_power == pytest.approx(100.0)
-
-    # sum for production should be 55 (TR1+TR2+TR5)
-    assert summary.sum_maximum_active_power_production == pytest.approx(55.0)
-
-    # sum for consumption should be 15 (TR4)
-    assert summary.sum_maximum_active_power_consumption == pytest.approx(15.0)
-
-    # sum for energy_storage should be 55 (TR3+TR5)
-    assert summary.sum_maximum_active_power_energy_storage == pytest.approx(55.0)
+    assert agg.maximum_active_power.sum_ == pytest.approx(100.0)
 
     # average MAP should be total 100 for 5 TR = 20
-    assert summary.average_maximum_active_power == pytest.approx(20.0)
+    assert agg.maximum_active_power.average == pytest.approx(20.0)
+
+    # should be 3 solar, 2 battery, 1 hvac
+    by_tech = agg.by_technology
+    assert by_tech["solar"].count == 3
+    assert by_tech["battery"].count == 2
+    assert by_tech["hvac"].count == 1
+
+    # sum MAP for solar should be 55 (TR1+TR2+TR5)
+    assert by_tech["solar"].maximum_active_power.sum_ == pytest.approx(55.0)
+
+    # average MAP for solar should be 55 (TR1+TR2+TR5)
+    assert by_tech["solar"].maximum_active_power.average == pytest.approx(18.33333)
+
+    # sum for production should be 55 (TR1+TR2+TR5)
+    by_cat = agg.by_category
+    assert by_cat["production"].maximum_active_power.sum_ == pytest.approx(55.0)
+
+    # sum for consumption should be 15 (TR4)
+    assert by_cat["consumption"].maximum_active_power.sum_ == pytest.approx(15.0)
+
+    # sum for energy_storage should be 55 (TR3+TR5)
+    assert by_cat["energy_storage"].maximum_active_power.sum_ == pytest.approx(55.0)

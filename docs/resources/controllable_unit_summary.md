@@ -81,13 +81,7 @@ No policies.
 For party type abbreviations, check
 [the authentication docs](../technical/auth/authn-model.md#party-market-actors).
 
-| FIELD                                   | ANON | BRP | ES | EU | FISO | SO | SP | TP | ORG |
-|-----------------------------------------|------|-----|----|----|------|----|----|----|-----|
-| id                                      |      | R   | R  | R  | R    | R  | R  | R  |     |
-| count_technical_resource                |      | R   | R  | R  | R    | R  | R  | R  |     |
-| count_technical_resource_by_technology  |      | R   | R  | R  | R    | R  | R  | R  |     |
-| sum_maximum_active_power                |      | R   | R  | R  | R    | R  | R  | R  |     |
-| sum_maximum_active_power_production     |      | R   | R  | R  | R    | R  | R  | R  |     |
-| sum_maximum_active_power_consumption    |      | R   | R  | R  | R    | R  | R  | R  |     |
-| sum_maximum_active_power_energy_storage |      | R   | R  | R  | R    | R  | R  | R  |     |
-| average_maximum_active_power            |      | R   | R  | R  | R    | R  | R  | R  |     |
+| FIELD      | ANON | BRP | ES | EU | FISO | SO | SP | TP | ORG |
+|------------|------|-----|----|----|------|----|----|----|-----|
+| id         |      | R   | R  | R  | R    | R  | R  | R  |     |
+| aggregates |      | R   | R  | R  | R    | R  | R  | R  |     |
