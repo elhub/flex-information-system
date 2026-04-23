@@ -1,6 +1,7 @@
 package no.elhub.flex.model.dto.generated.models
 
 import kotlin.Long
+import kotlin.collections.List
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -41,4 +42,28 @@ public data class ControllableUnitSuspensionResponse(
    */
   @SerialName("recorded_by")
   public val recordedBy: Long? = null,
+  /**
+   * Response schema - Controllable unit
+   */
+  @SerialName("controllable_unit")
+  public val controllableUnit: ControllableUnitResponse? = null,
+  /**
+   * Response schema - The body that interacts with the Flexibility Information System
+   *
+   * A party is the thing that is authorized to access or modify data in the Flexiblity Information
+   * System.
+   *
+   * Example party types:
+   *
+   * * Service Provider
+   * * System Operator
+   * * End User
+   */
+  @SerialName("impacted_system_operator")
+  public val impactedSystemOperator: PartyResponse? = null,
+  /**
+   * Embedded controllable_unit_suspension_comment
+   */
+  @SerialName("comment")
+  public val comment: List<ControllableUnitSuspensionCommentResponse>? = null,
 )

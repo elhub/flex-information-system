@@ -32,4 +32,14 @@ public data class AccountingPointMeteringGridAreaResponse(
    */
   @SerialName("valid_to")
   public val validTo: Instant? = null,
+  /**
+   * Response schema - Accounting point for a controllable unit.
+   */
+  @SerialName("accounting_point")
+  public val accountingPoint: AccountingPointResponse? = null,
+  /**
+   * Response schema - Metering grid area to which accounting points belong.
+   */
+  @SerialName("metering_grid_area")
+  public val meteringGridArea: MeteringGridAreaResponse? = null,
 )

@@ -16,6 +16,7 @@ if TYPE_CHECKING:
     from ..models.notice_data_party_outdated import NoticeDataPartyOutdated
     from ..models.notice_data_product_type_not_qualified import NoticeDataProductTypeNotQualified
     from ..models.notice_data_valid_time_outside_contract import NoticeDataValidTimeOutsideContract
+    from ..models.party_response import PartyResponse
 
 
 T = TypeVar("T", bound="NoticeResponse")
@@ -38,6 +39,7 @@ class NoticeResponse:
             /service_providing_group_membership/4.
         data (NoticeDataPartyMissing | NoticeDataPartyOutdated | NoticeDataProductTypeNotQualified |
             NoticeDataValidTimeOutsideContract | Unset):
+        party (None | PartyResponse | Unset): Embedded party
     """
 
     id: int
@@ -54,12 +56,14 @@ class NoticeResponse:
         | NoticeDataValidTimeOutsideContract
         | Unset
     ) = UNSET
+    party: None | PartyResponse | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         from ..models.notice_data_party_missing import NoticeDataPartyMissing
         from ..models.notice_data_party_outdated import NoticeDataPartyOutdated
         from ..models.notice_data_valid_time_outside_contract import NoticeDataValidTimeOutsideContract
+        from ..models.party_response import PartyResponse
 
         id = self.id
 
@@ -91,6 +95,14 @@ class NoticeResponse:
         else:
             data = self.data.to_dict()
 
+        party: dict[str, Any] | None | Unset
+        if isinstance(self.party, Unset):
+            party = UNSET
+        elif isinstance(self.party, PartyResponse):
+            party = self.party.to_dict()
+        else:
+            party = self.party
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -107,6 +119,8 @@ class NoticeResponse:
             field_dict["source"] = source
         if data is not UNSET:
             field_dict["data"] = data
+        if party is not UNSET:
+            field_dict["party"] = party
 
         return field_dict
 
@@ -116,6 +130,7 @@ class NoticeResponse:
         from ..models.notice_data_party_outdated import NoticeDataPartyOutdated
         from ..models.notice_data_product_type_not_qualified import NoticeDataProductTypeNotQualified
         from ..models.notice_data_valid_time_outside_contract import NoticeDataValidTimeOutsideContract
+        from ..models.party_response import PartyResponse
 
         d = dict(src_dict)
         id = d.pop("id")
@@ -182,6 +197,23 @@ class NoticeResponse:
 
         data = _parse_data(d.pop("data", UNSET))
 
+        def _parse_party(data: object) -> None | PartyResponse | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                party_type_0 = PartyResponse.from_dict(data)
+
+                return party_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(None | PartyResponse | Unset, data)
+
+        party = _parse_party(d.pop("party", UNSET))
+
         notice_response = cls(
             id=id,
             status=status,
@@ -191,6 +223,7 @@ class NoticeResponse:
             recorded_by=recorded_by,
             source=source,
             data=data,
+            party=party,
         )
 
         notice_response.additional_properties = d

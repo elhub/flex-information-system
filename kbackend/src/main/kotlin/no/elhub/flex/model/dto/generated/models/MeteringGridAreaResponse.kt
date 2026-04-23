@@ -2,6 +2,7 @@ package no.elhub.flex.model.dto.generated.models
 
 import kotlin.Long
 import kotlin.String
+import kotlin.collections.List
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -30,4 +31,9 @@ public data class MeteringGridAreaResponse(
    */
   @SerialName("name")
   public val name: String? = null,
+  /**
+   * Embedded accounting_point_metering_grid_area
+   */
+  @SerialName("accounting_point_metering_grid_area")
+  public val accountingPointMeteringGridArea: List<AccountingPointMeteringGridAreaResponse>? = null,
 )

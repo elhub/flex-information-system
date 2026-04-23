@@ -347,8 +347,8 @@ func (data *api) kbackendProxyHandler(w http.ResponseWriter, req *http.Request) 
 				pr.Out.Header.Set("Cookie", cookie)
 			}
 		},
-		ErrorHandler: func(w http.ResponseWriter, _ *http.Request, err error) {
-			slog.ErrorContext(req.Context(), "kbackend proxy error", "error", err)
+		ErrorHandler: func(w http.ResponseWriter, r *http.Request, err error) {
+			slog.ErrorContext(r.Context(), "kbackend proxy error", "error", err)
 			writeInternalServerError(w)
 		},
 	}
@@ -585,6 +585,15 @@ func (data *api) postgRESTHandler(w http.ResponseWriter, req *http.Request) {
 			"API call targeting a single-ID record. Rewriting into PostgREST format.",
 			"new url", url, "new query", query.Encode(),
 		)
+	}
+
+	if err := embedQueryRewrite(query); err != nil {
+		slog.WarnContext(ctx, "malformed embed query parameter", "error", err)
+		writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
+			Message: "malformed embed parameter: " + err.Error(),
+		})
+
+		return
 	}
 
 	if err := validAtQueryRewrite(query); err != nil {

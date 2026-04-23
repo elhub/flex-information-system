@@ -11,17 +11,26 @@ from ...models.error_message import ErrorMessage
 from ...models.service_providing_group_product_application_comment_response import (
     ServiceProvidingGroupProductApplicationCommentResponse,
 )
-from ...types import Response
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     id: int,
+    *,
+    embed: str | Unset = UNSET,
 ) -> dict[str, Any]:
+    params: dict[str, Any] = {}
+
+    params["embed"] = embed
+
+    params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
+
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/service_providing_group_product_application_comment/{id}".format(
             id=quote(str(id), safe=""),
         ),
+        "params": params,
     }
 
     return _kwargs
@@ -102,6 +111,7 @@ def sync_detailed(
     id: int,
     *,
     client: AuthenticatedClient,
+    embed: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationCommentResponse]:
     """Read Service Providing Group Product Application Comment
 
@@ -110,6 +120,7 @@ def sync_detailed(
 
     Args:
         id (int):
+        embed (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -121,6 +132,7 @@ def sync_detailed(
 
     kwargs = _get_kwargs(
         id=id,
+        embed=embed,
     )
 
     response = client.get_httpx_client().request(
@@ -134,6 +146,7 @@ def sync(
     id: int,
     *,
     client: AuthenticatedClient,
+    embed: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationCommentResponse | None:
     """Read Service Providing Group Product Application Comment
 
@@ -142,6 +155,7 @@ def sync(
 
     Args:
         id (int):
+        embed (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -154,6 +168,7 @@ def sync(
     return sync_detailed(
         id=id,
         client=client,
+        embed=embed,
     ).parsed
 
 
@@ -161,6 +176,7 @@ async def asyncio_detailed(
     id: int,
     *,
     client: AuthenticatedClient,
+    embed: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationCommentResponse]:
     """Read Service Providing Group Product Application Comment
 
@@ -169,6 +185,7 @@ async def asyncio_detailed(
 
     Args:
         id (int):
+        embed (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -180,6 +197,7 @@ async def asyncio_detailed(
 
     kwargs = _get_kwargs(
         id=id,
+        embed=embed,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -191,6 +209,7 @@ async def asyncio(
     id: int,
     *,
     client: AuthenticatedClient,
+    embed: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationCommentResponse | None:
     """Read Service Providing Group Product Application Comment
 
@@ -199,6 +218,7 @@ async def asyncio(
 
     Args:
         id (int):
+        embed (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -212,5 +232,6 @@ async def asyncio(
         await asyncio_detailed(
             id=id,
             client=client,
+            embed=embed,
         )
     ).parsed

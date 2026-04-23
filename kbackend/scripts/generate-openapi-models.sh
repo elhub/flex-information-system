@@ -66,13 +66,14 @@ def fix_node(obj):
         # 6. Collapse oneOf: [$ref, {type: null}] to $ref + nullable: true
         #    (OAS 3.1 nullable $ref pattern; Kaizen resolves this as Any? without
         #    the fix, because it cannot follow a $ref inside a oneOf)
+        #    Also handle array
         one_of = obj.get("oneOf")
         if isinstance(one_of, list) and len(one_of) == 2:
-            refs = [e for e in one_of if "$ref" in e]
+            refs = [e for e in one_of if "$ref" in e or "items" in e]
             nulls = [e for e in one_of if e == {"type": "null"} or e.get("type") == "null"]
             if len(refs) == 1 and len(nulls) == 1:
                 obj.pop("oneOf")
-                obj["$ref"] = refs[0]["$ref"]
+                obj.update(refs[0])
                 obj["nullable"] = True
 
         # 7. Collapse allOf: [{ "$ref": "..." }] (single entry) to a direct $ref

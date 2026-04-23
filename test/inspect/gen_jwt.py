@@ -15,13 +15,13 @@ with open(sys.argv[1], "r") as f:
 # Define the payload
 payload = {
     # Audience
-    "aud": "https://test.flex.internal:6443/auth/v0/",
+    "aud": sys.argv[2],
     # Issuer
     "iss": "3733e21b-5def-400d-8133-06bcda02465e",  # Test Suite
     # JWT ID
     "jti": str(uuid.uuid4()),
     # Subject (the subject to get a token for)
-    "sub": "no:party:gln:1337000000051",  # Test Suite party
+    "sub": "no:party:gln:1337000100072",  # Test Suite party
     # Issued at
     "iat": dt.now(tz.utc),
     # Expiration time

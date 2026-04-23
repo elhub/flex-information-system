@@ -2,6 +2,7 @@ package no.elhub.flex.model.dto.generated.models
 
 import kotlin.Long
 import kotlin.String
+import kotlin.collections.List
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -56,4 +57,24 @@ public data class EntityResponse(
    */
   @SerialName("recorded_by")
   public val recordedBy: Long? = null,
+  /**
+   * Embedded entity_client
+   */
+  @SerialName("client")
+  public val client: List<EntityClientResponse>? = null,
+  /**
+   * Embedded party
+   */
+  @SerialName("party")
+  public val party: List<PartyResponse>? = null,
+  /**
+   * Embedded party_membership
+   */
+  @SerialName("party_membership")
+  public val partyMembership: List<PartyMembershipResponse>? = null,
+  /**
+   * Embedded identity
+   */
+  @SerialName("identity")
+  public val identity: List<IdentityResponse>? = null,
 )

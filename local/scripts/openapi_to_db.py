@@ -2,6 +2,7 @@
 import yaml
 import sys
 import j2
+import relationship
 
 """
 This script generates SQL statements to create views in the `api` schema,
@@ -12,6 +13,7 @@ risk of making a copy-paste mistake.
 
 DB_DIR = "./db"
 output_file_backend_schema = "backend/api.sql"
+output_file_embedding = f"{DB_DIR}/api/embedding/embedding.sql"
 # ------------------------------------------------------------------------------
 
 # this part generates the api.sql input file for sqlc in the backend
@@ -85,6 +87,35 @@ CREATE TABLE api.{resource}_history (
 """
 
 
+def collect_relationships(resources):
+    """
+    Collect all FK relationships that have a cardinality annotation.
+    Returns a list of dicts with the relationship metadata needed for the template.
+    """
+    rels = []
+    for resource in resources:
+        child = resource["id"]
+        props = resource.get("properties", {})
+        for field, attr in props.items():
+            if not field.endswith("_id"):
+                continue
+            if not isinstance(attr, dict):
+                continue
+            fk = attr.get("x-foreign-key")
+            if not fk or "cardinality" not in fk:
+                continue
+            child_field = field
+            parent = fk["resource"]
+            parent_field = fk["field"]
+            cardinality = fk["cardinality"]
+            rels.extend(
+                relationship.from_foreign_key(
+                    child, child_field, parent, parent_field, cardinality
+                )
+            )
+    return rels
+
+
 if __name__ == "__main__":
     yaml.SafeDumper.ignore_aliases = lambda self, data: True
     resources = yaml.safe_load(sys.stdin)
@@ -122,7 +153,7 @@ if __name__ == "__main__":
             # generate sql for history table and audit triggers
             if resource.get("audit"):
                 j2.template(
-                    resource,
+                    {"resource": resource["id"], "data": resource},
                     "resource_history_audit.j2.sql",
                     f"{DB_DIR}/flex/{resource['id']}_history_audit.sql",
                 )
@@ -130,7 +161,7 @@ if __name__ == "__main__":
             # generate views and history views
             if resource.get("generate_views", False):
                 j2.template(
-                    resource,
+                    {"resource": resource["id"], "data": resource},
                     "resource_api.j2.sql",
                     f"{DB_DIR}/api/{resource['id']}.sql",
                 )
@@ -138,19 +169,22 @@ if __name__ == "__main__":
             # generate files for the comment resource
             if resource.get("comments", False):
                 j2.template(
-                    resource,
+                    {"resource": resource["id"], "data": resource},
                     "comment_resource.j2.sql",
                     f"{DB_DIR}/flex/{resource['id']}_comment.sql",
                 )
 
                 j2.template(
-                    resource,
+                    {"resource": resource["id"], "data": resource},
                     "comment_rls.j2.sql",
                     f"{DB_DIR}/flex/{resource['id']}_comment_rls.sql",
                 )
 
                 resource = yaml.safe_load(
-                    j2.template_str(resource, "comment_resource.j2.yml"),
+                    j2.template_str(
+                        {"resource": resource["id"], "data": resource},
+                        "comment_resource.j2.yml",
+                    ),
                 )["data"]
 
                 print(
@@ -171,13 +205,21 @@ if __name__ == "__main__":
                 )
 
                 j2.template(
-                    resource,
+                    {"resource": resource["id"], "data": resource},
                     "resource_history_audit.j2.sql",
                     f"{DB_DIR}/flex/{resource['id']}_history_audit.sql",
                 )
 
                 j2.template(
-                    resource,
+                    {"resource": resource["id"], "data": resource},
                     "resource_api.j2.sql",
                     f"{DB_DIR}/api/{resource['id']}.sql",
                 )
+
+        # generate embedding functions for all FK relationships with cardinality
+        rels = collect_relationships(resources)
+        j2.template(
+            {"rels": rels},
+            "embedding.j2.sql",
+            output_file_embedding,
+        )
