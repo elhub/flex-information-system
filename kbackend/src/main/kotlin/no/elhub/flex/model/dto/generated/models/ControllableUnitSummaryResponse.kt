@@ -20,4 +20,9 @@ public data class ControllableUnitSummaryResponse(
    */
   @SerialName("aggregates")
   public val aggregates: ControllableUnitSummaryResponseAggregates? = null,
+  /**
+   * Response schema - Controllable unit
+   */
+  @SerialName("controllable_unit")
+  public val controllableUnit: ControllableUnitResponse? = null,
 )

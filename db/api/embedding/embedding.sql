@@ -73,6 +73,22 @@ RETURNS SETOF api.party ROWS 1 AS $$
   select * from api.party where id = $1.end_user_id
 $$ STABLE LANGUAGE sql;
 
+-- changeset flex:controllable_unit_summary-id-to-controllable_unit runAlways:true endDelimiter:--
+CREATE OR REPLACE FUNCTION api.controllable_unit(
+    api.controllable_unit_summary
+)
+RETURNS SETOF api.controllable_unit ROWS 1 AS $$
+  select * from api.controllable_unit where id = $1.id
+$$ STABLE LANGUAGE sql;
+
+-- changeset flex:controllable_unit-id-to-controllable_unit_summary runAlways:true endDelimiter:--
+CREATE OR REPLACE FUNCTION api.summary(
+    api.controllable_unit
+)
+RETURNS SETOF api.controllable_unit_summary ROWS 1 AS $$
+  select * from api.controllable_unit_summary where id = $1.id
+$$ STABLE LANGUAGE sql;
+
 -- changeset flex:service_providing_group-service_provider_id-to-party runAlways:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.service_provider(
     api.service_providing_group
@@ -528,4 +544,3 @@ CREATE OR REPLACE FUNCTION api.party(
 RETURNS SETOF api.party ROWS 1 AS $$
   select * from api.party where id = $1.party_id
 $$ STABLE LANGUAGE sql;
-

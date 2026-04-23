@@ -96,6 +96,11 @@ public data class ControllableUnitResponse(
   @SerialName("service_provider")
   public val serviceProvider: List<ControllableUnitServiceProviderResponse>? = null,
   /**
+   * Response schema - Aggregated summary of technical resources belonging to a controllable unit.
+   */
+  @SerialName("summary")
+  public val summary: ControllableUnitSummaryResponse? = null,
+  /**
    * Embedded service_providing_group_membership
    */
   @SerialName("service_providing_group_membership")

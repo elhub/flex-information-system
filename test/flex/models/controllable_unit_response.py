@@ -15,6 +15,7 @@ from ..types import UNSET, Unset
 if TYPE_CHECKING:
     from ..models.accounting_point_response import AccountingPointResponse
     from ..models.controllable_unit_service_provider_response import ControllableUnitServiceProviderResponse
+    from ..models.controllable_unit_summary_response import ControllableUnitSummaryResponse
     from ..models.controllable_unit_suspension_response import ControllableUnitSuspensionResponse
     from ..models.service_providing_group_membership_response import ServiceProvidingGroupMembershipResponse
     from ..models.technical_resource_response import TechnicalResourceResponse
@@ -52,6 +53,7 @@ class ControllableUnitResponse:
         suspension (list[ControllableUnitSuspensionResponse] | None | Unset): Embedded controllable_unit_suspension
         service_provider (list[ControllableUnitServiceProviderResponse] | None | Unset): Embedded
             controllable_unit_service_provider
+        summary (ControllableUnitSummaryResponse | None | Unset): Embedded controllable_unit_summary
         service_providing_group_membership (list[ServiceProvidingGroupMembershipResponse] | None | Unset): Embedded
             service_providing_group_membership
         technical_resource (list[TechnicalResourceResponse] | None | Unset): Embedded technical_resource
@@ -72,12 +74,14 @@ class ControllableUnitResponse:
     accounting_point: AccountingPointResponse | None | Unset = UNSET
     suspension: list[ControllableUnitSuspensionResponse] | None | Unset = UNSET
     service_provider: list[ControllableUnitServiceProviderResponse] | None | Unset = UNSET
+    summary: ControllableUnitSummaryResponse | None | Unset = UNSET
     service_providing_group_membership: list[ServiceProvidingGroupMembershipResponse] | None | Unset = UNSET
     technical_resource: list[TechnicalResourceResponse] | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         from ..models.accounting_point_response import AccountingPointResponse
+        from ..models.controllable_unit_summary_response import ControllableUnitSummaryResponse
 
         id = self.id
 
@@ -145,6 +149,14 @@ class ControllableUnitResponse:
         else:
             service_provider = self.service_provider
 
+        summary: dict[str, Any] | None | Unset
+        if isinstance(self.summary, Unset):
+            summary = UNSET
+        elif isinstance(self.summary, ControllableUnitSummaryResponse):
+            summary = self.summary.to_dict()
+        else:
+            summary = self.summary
+
         service_providing_group_membership: list[dict[str, Any]] | None | Unset
         if isinstance(self.service_providing_group_membership, Unset):
             service_providing_group_membership = UNSET
@@ -197,6 +209,8 @@ class ControllableUnitResponse:
             field_dict["suspension"] = suspension
         if service_provider is not UNSET:
             field_dict["service_provider"] = service_provider
+        if summary is not UNSET:
+            field_dict["summary"] = summary
         if service_providing_group_membership is not UNSET:
             field_dict["service_providing_group_membership"] = service_providing_group_membership
         if technical_resource is not UNSET:
@@ -208,6 +222,7 @@ class ControllableUnitResponse:
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.accounting_point_response import AccountingPointResponse
         from ..models.controllable_unit_service_provider_response import ControllableUnitServiceProviderResponse
+        from ..models.controllable_unit_summary_response import ControllableUnitSummaryResponse
         from ..models.controllable_unit_suspension_response import ControllableUnitSuspensionResponse
         from ..models.service_providing_group_membership_response import ServiceProvidingGroupMembershipResponse
         from ..models.technical_resource_response import TechnicalResourceResponse
@@ -322,6 +337,23 @@ class ControllableUnitResponse:
 
         service_provider = _parse_service_provider(d.pop("service_provider", UNSET))
 
+        def _parse_summary(data: object) -> ControllableUnitSummaryResponse | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                summary_type_0 = ControllableUnitSummaryResponse.from_dict(data)
+
+                return summary_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(ControllableUnitSummaryResponse | None | Unset, data)
+
+        summary = _parse_summary(d.pop("summary", UNSET))
+
         def _parse_service_providing_group_membership(
             data: object,
         ) -> list[ServiceProvidingGroupMembershipResponse] | None | Unset:
@@ -390,6 +422,7 @@ class ControllableUnitResponse:
             accounting_point=accounting_point,
             suspension=suspension,
             service_provider=service_provider,
+            summary=summary,
             service_providing_group_membership=service_providing_group_membership,
             technical_resource=technical_resource,
         )

@@ -698,7 +698,7 @@ def generate_openapi_document(base_file, resources_file, servers_file):
             if field_info.get("x-foreign-key") is not None
         ]
         for field, field_info in foreign_key_fields:
-            if not field.endswith("_id"):
+            if not field.endswith("id"):
                 continue
             rels.extend(
                 relationship.from_foreign_key(

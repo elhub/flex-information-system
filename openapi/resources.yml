@@ -415,6 +415,7 @@ resources:
         x-foreign-key:
           resource: controllable_unit
           field: id
+          cardinality: one-to-one
         example: 12
         x-intl:
           en: ID

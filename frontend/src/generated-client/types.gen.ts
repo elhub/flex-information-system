@@ -617,6 +617,10 @@ export type ControllableUnit = {
    */
   service_provider?: Array<ControllableUnitServiceProvider> | null;
   /**
+   * Embedded controllable_unit_summary
+   */
+  summary?: ControllableUnitSummary | null;
+  /**
    * Embedded service_providing_group_membership
    */
   service_providing_group_membership?: Array<ServiceProvidingGroupMembership> | null;
@@ -883,6 +887,10 @@ export type ControllableUnitSummary = {
       };
     };
   };
+  /**
+   * Embedded controllable_unit
+   */
+  controllable_unit?: ControllableUnit | null;
 };
 
 /**
@@ -4052,6 +4060,10 @@ export type ControllableUnitWritable = {
    */
   service_provider?: Array<ControllableUnitServiceProviderWritable> | null;
   /**
+   * Embedded controllable_unit_summary
+   */
+  summary?: ControllableUnitSummaryWritable | null;
+  /**
    * Embedded service_providing_group_membership
    */
   service_providing_group_membership?: Array<ServiceProvidingGroupMembershipWritable> | null;
@@ -4153,7 +4165,10 @@ export type ControllableUnitServiceProviderWritable = {
  * Response schema - Aggregated summary of technical resources belonging to a controllable unit.
  */
 export type ControllableUnitSummaryWritable = {
-  [key: string]: unknown;
+  /**
+   * Embedded controllable_unit
+   */
+  controllable_unit?: ControllableUnitWritable | null;
 };
 
 /**
@@ -7462,7 +7477,12 @@ export type ReadControllableUnitSummaryData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/controllable_unit_summary/{id}";
 };
 

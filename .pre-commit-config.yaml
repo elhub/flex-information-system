@@ -46,7 +46,7 @@ repos:
       - id: trailing-whitespace
         exclude: "(test/flex/.*)|(docs/.*)"
       - id: end-of-file-fixer
-        exclude: "test/flex/.*"
+        exclude: "(test/flex/.*)|(local/scripts/templates/.*)"
       - id: check-executables-have-shebangs
       - id: check-shebang-scripts-are-executable
       - id: check-added-large-files

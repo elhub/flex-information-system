@@ -33,7 +33,7 @@ def from_foreign_key(
     rels.append(
         Relationship(
             child=Field(resource=child, name=child_field),
-            name=name_from_field(child_field),
+            name=name_from_field(child_field, parent),
             parent=Field(resource=parent, name=parent_field),
             cardinality=child_cardinality,
         )
@@ -53,12 +53,14 @@ def from_foreign_key(
     return rels
 
 
-def name_from_field(child_field_name):
+def name_from_field(child_field_name, parent_resource=None):
     """
     Derive the name of the embed field name.
     """
     if child_field_name.endswith("_id"):
         return child_field_name[:-3]
+    if child_field_name == "id" and parent_resource:
+        return parent_resource
     return child_field_name
 
 

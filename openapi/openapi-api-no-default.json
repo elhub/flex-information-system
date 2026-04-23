@@ -1159,6 +1159,18 @@
                         ],
                         "nullable": true
                     },
+                    "summary": {
+                        "description": "Embedded controllable_unit_summary",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/controllable_unit_summary_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
                     "service_providing_group_membership": {
                         "description": "Embedded service_providing_group_membership",
                         "oneOf": [
@@ -1785,6 +1797,18 @@
                                 }
                             }
                         }
+                    },
+                    "controllable_unit": {
+                        "description": "Embedded controllable_unit",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/controllable_unit_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -12094,6 +12118,16 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
                 ]
             }
         },
