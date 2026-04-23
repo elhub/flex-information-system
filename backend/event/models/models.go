@@ -113,8 +113,8 @@ type ApiControllableUnitServiceProviderHistory struct {
 }
 
 type ApiControllableUnitSummary struct {
-	ID         int
-	Aggregates []byte
+	ID                int
+	TechnicalResource []byte
 }
 
 type ApiControllableUnitSuspension struct {

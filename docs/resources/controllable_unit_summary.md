@@ -9,10 +9,10 @@ Aggregated summary of technical resources belonging to a controllable unit.
 
 ## Fields
 
-| Name                                                               | Description                                                                                                                                                                                | Format                    | Reference                                             |
-|--------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------|-------------------------------------------------------|
-| <a name="field-id" href="#field-id">id</a>                         | The ID of the controllable unit this resource is a summary of.                                                                                                                             | bigint<br/>Read only      | [controllable_unit.id](controllable_unit.md#field-id) |
-| <a name="field-aggregates" href="#field-aggregates">aggregates</a> | Aggregated statistics on technical resources belonging to the controllable unit, including counts and maximum active power breakdowns (sum, average, min, max) by category and technology. | <br/>Object<br/>Read only |                                                       |
+| Name                                                                                       | Description                                                                                                                                                                                | Format                    | Reference                                             |
+|--------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------|-------------------------------------------------------|
+| <a name="field-id" href="#field-id">id</a>                                                 | The ID of the controllable unit this resource is a summary of.                                                                                                                             | bigint<br/>Read only      | [controllable_unit.id](controllable_unit.md#field-id) |
+| <a name="field-technical_resource" href="#field-technical_resource">technical_resource</a> | Aggregated statistics on technical resources belonging to the controllable unit, including counts and maximum active power breakdowns (sum, average, min, max) by category and technology. | <br/>Object<br/>Read only |                                                       |
 
 ## Validation Rules
 
@@ -81,7 +81,7 @@ No policies.
 For party type abbreviations, check
 [the authentication docs](../technical/auth/authn-model.md#party-market-actors).
 
-| FIELD      | ANON | BRP | ES | EU | FISO | SO | SP | TP | ORG |
-|------------|------|-----|----|----|------|----|----|----|-----|
-| id         |      | R   | R  | R  | R    | R  | R  | R  |     |
-| aggregates |      | R   | R  | R  | R    | R  | R  | R  |     |
+| FIELD              | ANON | BRP | ES | EU | FISO | SO | SP | TP | ORG |
+|--------------------|------|-----|----|----|------|----|----|----|-----|
+| id                 |      | R   | R  | R  | R    | R  | R  | R  |     |
+| technical_resource |      | R   | R  | R  | R    | R  | R  | R  |     |

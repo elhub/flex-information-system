@@ -1779,31 +1779,27 @@ export const zControllableUnitServiceProvider = z.object({
  */
 export const zControllableUnitSummary = z.object({
   id: z.coerce.number().readonly(),
-  aggregates: z
+  technical_resource: z
     .object({
-      technical_resource: z
-        .object({
-          count: z.coerce.number().optional(),
-          maximum_active_power: zNumericAggregation.optional(),
-          by_category: z
-            .record(
-              z.string(),
-              z.object({
-                count: z.coerce.number().optional(),
-                maximum_active_power: zNumericAggregation.optional(),
-              }),
-            )
-            .optional(),
-          by_technology: z
-            .record(
-              z.string(),
-              z.object({
-                count: z.coerce.number().optional(),
-                maximum_active_power: zNumericAggregation.optional(),
-              }),
-            )
-            .optional(),
-        })
+      count: z.coerce.number().optional(),
+      maximum_active_power: zNumericAggregation.optional(),
+      by_category: z
+        .record(
+          z.string(),
+          z.object({
+            count: z.coerce.number().optional(),
+            maximum_active_power: zNumericAggregation.optional(),
+          }),
+        )
+        .optional(),
+      by_technology: z
+        .record(
+          z.string(),
+          z.object({
+            count: z.coerce.number().optional(),
+            maximum_active_power: zNumericAggregation.optional(),
+          }),
+        )
         .optional(),
     })
     .readonly(),

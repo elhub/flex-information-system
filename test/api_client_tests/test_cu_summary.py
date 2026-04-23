@@ -60,7 +60,7 @@ def test_controllable_unit_summary_aggregation(sts):
     summary = read_controllable_unit_summary.sync(client=client_fiso, id=cu.id)
     assert isinstance(summary, ControllableUnitSummaryResponse)
 
-    agg = summary.aggregates.technical_resource
+    agg = summary.technical_resource
     assert agg.count == 0
     assert agg.maximum_active_power.sum_ == pytest.approx(0.0)
     assert agg.maximum_active_power.average == pytest.approx(0.0)
@@ -138,7 +138,7 @@ def test_controllable_unit_summary_aggregation(sts):
     #   TR4 is hvac (consumption) with MAP=15.0
     #   TR5 is solar+battery (production+energy_storage) with MAP=25.0
 
-    agg = summary.aggregates.technical_resource
+    agg = summary.technical_resource
 
     # should be 5 TR in the summary
     assert agg.count == 5

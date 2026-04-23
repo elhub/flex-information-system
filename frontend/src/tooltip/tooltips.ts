@@ -154,7 +154,7 @@ export const tooltips = {
     "The identity that replaced the resource.",
   "controllable_unit_summary.id":
     "The ID of the controllable unit this resource is a summary of.",
-  "controllable_unit_summary.aggregates":
+  "controllable_unit_summary.technical_resource":
     "Aggregated statistics on technical resources belonging to the controllable unit, including counts and maximum active power breakdowns (sum, average, min, max) by category and technology.",
   "service_providing_group.id": "Unique surrogate key.",
   "service_providing_group.name":

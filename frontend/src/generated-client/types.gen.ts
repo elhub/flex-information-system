@@ -869,21 +869,19 @@ export type ControllableUnitSummary = {
   /**
    * Aggregated statistics on technical resources belonging to the controllable unit, including counts and maximum active power breakdowns (sum, average, min, max) by category and technology.
    */
-  readonly aggregates: {
-    technical_resource?: {
-      count?: number;
-      maximum_active_power?: NumericAggregation;
-      by_category?: {
-        [key in Category]?: {
-          count?: number;
-          maximum_active_power?: NumericAggregation;
-        };
+  readonly technical_resource: {
+    count?: number;
+    maximum_active_power?: NumericAggregation;
+    by_category?: {
+      [key in Category]?: {
+        count?: number;
+        maximum_active_power?: NumericAggregation;
       };
-      by_technology?: {
-        [key in Technology]?: {
-          count?: number;
-          maximum_active_power?: NumericAggregation;
-        };
+    };
+    by_technology?: {
+      [key in Technology]?: {
+        count?: number;
+        maximum_active_power?: NumericAggregation;
       };
     };
   };

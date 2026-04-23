@@ -18,8 +18,8 @@ public data class ControllableUnitSummaryResponse(
    * Aggregated statistics on technical resources belonging to the controllable unit, including
    * counts and maximum active power breakdowns (sum, average, min, max) by category and technology.
    */
-  @SerialName("aggregates")
-  public val aggregates: ControllableUnitSummaryResponseAggregates? = null,
+  @SerialName("technical_resource")
+  public val technicalResource: ControllableUnitSummaryResponseTechnicalResource? = null,
   /**
    * Response schema - Controllable unit
    */

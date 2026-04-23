@@ -10,7 +10,9 @@ from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
     from ..models.controllable_unit_response import ControllableUnitResponse
-    from ..models.controllable_unit_summary_response_aggregates import ControllableUnitSummaryResponseAggregates
+    from ..models.controllable_unit_summary_response_technical_resource import (
+        ControllableUnitSummaryResponseTechnicalResource,
+    )
 
 
 T = TypeVar("T", bound="ControllableUnitSummaryResponse")
@@ -22,19 +24,19 @@ class ControllableUnitSummaryResponse:
 
     Attributes:
         id (int): The ID of the controllable unit this resource is a summary of. Example: 12.
-        aggregates (ControllableUnitSummaryResponseAggregates): Aggregated statistics on technical resources belonging
-            to the controllable unit, including counts and maximum active power breakdowns (sum, average, min, max) by
-            category and technology. Example: {'technical_resource': {'count': 3, 'maximum_active_power': {'sum': 150,
-            'average': 50, 'min': 20, 'max': 80}, 'by_category': {'production': {'count': 2, 'maximum_active_power': {'sum':
-            130, 'average': 65, 'min': 50, 'max': 80}}, 'consumption': {'count': 1, 'maximum_active_power': {'sum': 20,
-            'average': 20, 'min': 20, 'max': 20}}}, 'by_technology': {'solar': {'count': 2, 'maximum_active_power': {'sum':
-            130, 'average': 65, 'min': 50, 'max': 80}}, 'battery': {'count': 1, 'maximum_active_power': {'sum': 20,
-            'average': 20, 'min': 20, 'max': 20}}}}}.
+        technical_resource (ControllableUnitSummaryResponseTechnicalResource): Aggregated statistics on technical
+            resources belonging to the controllable unit, including counts and maximum active power breakdowns (sum,
+            average, min, max) by category and technology. Example: {'technical_resource': {'count': 3,
+            'maximum_active_power': {'sum': 150, 'average': 50, 'min': 20, 'max': 80}, 'by_category': {'production':
+            {'count': 2, 'maximum_active_power': {'sum': 130, 'average': 65, 'min': 50, 'max': 80}}, 'consumption':
+            {'count': 1, 'maximum_active_power': {'sum': 20, 'average': 20, 'min': 20, 'max': 20}}}, 'by_technology':
+            {'solar': {'count': 2, 'maximum_active_power': {'sum': 130, 'average': 65, 'min': 50, 'max': 80}}, 'battery':
+            {'count': 1, 'maximum_active_power': {'sum': 20, 'average': 20, 'min': 20, 'max': 20}}}}}.
         controllable_unit (ControllableUnitResponse | None | Unset): Embedded controllable_unit
     """
 
     id: int
-    aggregates: ControllableUnitSummaryResponseAggregates
+    technical_resource: ControllableUnitSummaryResponseTechnicalResource
     controllable_unit: ControllableUnitResponse | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -43,7 +45,7 @@ class ControllableUnitSummaryResponse:
 
         id = self.id
 
-        aggregates = self.aggregates.to_dict()
+        technical_resource = self.technical_resource.to_dict()
 
         controllable_unit: dict[str, Any] | None | Unset
         if isinstance(self.controllable_unit, Unset):
@@ -58,7 +60,7 @@ class ControllableUnitSummaryResponse:
         field_dict.update(
             {
                 "id": id,
-                "aggregates": aggregates,
+                "technical_resource": technical_resource,
             }
         )
         if controllable_unit is not UNSET:
@@ -69,12 +71,14 @@ class ControllableUnitSummaryResponse:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.controllable_unit_response import ControllableUnitResponse
-        from ..models.controllable_unit_summary_response_aggregates import ControllableUnitSummaryResponseAggregates
+        from ..models.controllable_unit_summary_response_technical_resource import (
+            ControllableUnitSummaryResponseTechnicalResource,
+        )
 
         d = dict(src_dict)
         id = d.pop("id")
 
-        aggregates = ControllableUnitSummaryResponseAggregates.from_dict(d.pop("aggregates"))
+        technical_resource = ControllableUnitSummaryResponseTechnicalResource.from_dict(d.pop("technical_resource"))
 
         def _parse_controllable_unit(data: object) -> ControllableUnitResponse | None | Unset:
             if data is None:
@@ -95,7 +99,7 @@ class ControllableUnitSummaryResponse:
 
         controllable_unit_summary_response = cls(
             id=id,
-            aggregates=aggregates,
+            technical_resource=technical_resource,
             controllable_unit=controllable_unit,
         )
 

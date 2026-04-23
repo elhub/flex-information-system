@@ -12,11 +12,11 @@ if TYPE_CHECKING:
     from ..models.numeric_aggregation import NumericAggregation
 
 
-T = TypeVar("T", bound="ControllableUnitSummaryResponseAggregatesTechnicalResourceByTechnologyAdditionalProperty")
+T = TypeVar("T", bound="ControllableUnitSummaryResponseTechnicalResourceByCategoryAdditionalProperty")
 
 
 @_attrs_define
-class ControllableUnitSummaryResponseAggregatesTechnicalResourceByTechnologyAdditionalProperty:
+class ControllableUnitSummaryResponseTechnicalResourceByCategoryAdditionalProperty:
     """
     Attributes:
         count (int | Unset):
@@ -58,13 +58,13 @@ class ControllableUnitSummaryResponseAggregatesTechnicalResourceByTechnologyAddi
         else:
             maximum_active_power = NumericAggregation.from_dict(_maximum_active_power)
 
-        controllable_unit_summary_response_aggregates_technical_resource_by_technology_additional_property = cls(
+        controllable_unit_summary_response_technical_resource_by_category_additional_property = cls(
             count=count,
             maximum_active_power=maximum_active_power,
         )
 
-        controllable_unit_summary_response_aggregates_technical_resource_by_technology_additional_property.additional_properties = d
-        return controllable_unit_summary_response_aggregates_technical_resource_by_technology_additional_property
+        controllable_unit_summary_response_technical_resource_by_category_additional_property.additional_properties = d
+        return controllable_unit_summary_response_technical_resource_by_category_additional_property
 
     @property
     def additional_keys(self) -> list[str]:

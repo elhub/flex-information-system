@@ -2272,56 +2272,56 @@ TO flex_internal_event_notification;
 
 GRANT SELECT (
     id,
-    aggregates
+    technical_resource
 ) ON TABLE
 api.controllable_unit_summary
 TO flex_balance_responsible_party;
 
 GRANT SELECT (
     id,
-    aggregates
+    technical_resource
 ) ON TABLE
 api.controllable_unit_summary
 TO flex_energy_supplier;
 
 GRANT SELECT (
     id,
-    aggregates
+    technical_resource
 ) ON TABLE
 api.controllable_unit_summary
 TO flex_end_user;
 
 GRANT SELECT (
     id,
-    aggregates
+    technical_resource
 ) ON TABLE
 api.controllable_unit_summary
 TO flex_flexibility_information_system_operator;
 
 GRANT SELECT (
     id,
-    aggregates
+    technical_resource
 ) ON TABLE
 api.controllable_unit_summary
 TO flex_market_operator;
 
 GRANT SELECT (
     id,
-    aggregates
+    technical_resource
 ) ON TABLE
 api.controllable_unit_summary
 TO flex_system_operator;
 
 GRANT SELECT (
     id,
-    aggregates
+    technical_resource
 ) ON TABLE
 api.controllable_unit_summary
 TO flex_service_provider;
 
 GRANT SELECT (
     id,
-    aggregates
+    technical_resource
 ) ON TABLE
 api.controllable_unit_summary
 TO flex_third_party;

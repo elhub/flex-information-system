@@ -8,7 +8,7 @@ WITH (security_invoker = true) AS (
     -- RLS: CUSU-COM001
     SELECT
         cusu.id,
-        cusu.aggregates
+        cusu.technical_resource
     FROM flex.controllable_unit_summary AS cusu
     WHERE
         EXISTS (

@@ -32,21 +32,18 @@ from .controllable_unit_service_provider_response import ControllableUnitService
 from .controllable_unit_service_provider_update_request import ControllableUnitServiceProviderUpdateRequest
 from .controllable_unit_status import ControllableUnitStatus
 from .controllable_unit_summary_response import ControllableUnitSummaryResponse
-from .controllable_unit_summary_response_aggregates import ControllableUnitSummaryResponseAggregates
-from .controllable_unit_summary_response_aggregates_technical_resource import (
-    ControllableUnitSummaryResponseAggregatesTechnicalResource,
+from .controllable_unit_summary_response_technical_resource import ControllableUnitSummaryResponseTechnicalResource
+from .controllable_unit_summary_response_technical_resource_by_category import (
+    ControllableUnitSummaryResponseTechnicalResourceByCategory,
 )
-from .controllable_unit_summary_response_aggregates_technical_resource_by_category import (
-    ControllableUnitSummaryResponseAggregatesTechnicalResourceByCategory,
+from .controllable_unit_summary_response_technical_resource_by_category_additional_property import (
+    ControllableUnitSummaryResponseTechnicalResourceByCategoryAdditionalProperty,
 )
-from .controllable_unit_summary_response_aggregates_technical_resource_by_category_additional_property import (
-    ControllableUnitSummaryResponseAggregatesTechnicalResourceByCategoryAdditionalProperty,
+from .controllable_unit_summary_response_technical_resource_by_technology import (
+    ControllableUnitSummaryResponseTechnicalResourceByTechnology,
 )
-from .controllable_unit_summary_response_aggregates_technical_resource_by_technology import (
-    ControllableUnitSummaryResponseAggregatesTechnicalResourceByTechnology,
-)
-from .controllable_unit_summary_response_aggregates_technical_resource_by_technology_additional_property import (
-    ControllableUnitSummaryResponseAggregatesTechnicalResourceByTechnologyAdditionalProperty,
+from .controllable_unit_summary_response_technical_resource_by_technology_additional_property import (
+    ControllableUnitSummaryResponseTechnicalResourceByTechnologyAdditionalProperty,
 )
 from .controllable_unit_suspension_comment_create_request import ControllableUnitSuspensionCommentCreateRequest
 from .controllable_unit_suspension_comment_history_response import ControllableUnitSuspensionCommentHistoryResponse
@@ -278,12 +275,11 @@ __all__ = (
     "ControllableUnitServiceProviderUpdateRequest",
     "ControllableUnitStatus",
     "ControllableUnitSummaryResponse",
-    "ControllableUnitSummaryResponseAggregates",
-    "ControllableUnitSummaryResponseAggregatesTechnicalResource",
-    "ControllableUnitSummaryResponseAggregatesTechnicalResourceByCategory",
-    "ControllableUnitSummaryResponseAggregatesTechnicalResourceByCategoryAdditionalProperty",
-    "ControllableUnitSummaryResponseAggregatesTechnicalResourceByTechnology",
-    "ControllableUnitSummaryResponseAggregatesTechnicalResourceByTechnologyAdditionalProperty",
+    "ControllableUnitSummaryResponseTechnicalResource",
+    "ControllableUnitSummaryResponseTechnicalResourceByCategory",
+    "ControllableUnitSummaryResponseTechnicalResourceByCategoryAdditionalProperty",
+    "ControllableUnitSummaryResponseTechnicalResourceByTechnology",
+    "ControllableUnitSummaryResponseTechnicalResourceByTechnologyAdditionalProperty",
     "ControllableUnitSuspensionCommentCreateRequest",
     "ControllableUnitSuspensionCommentHistoryResponse",
     "ControllableUnitSuspensionCommentResponse",

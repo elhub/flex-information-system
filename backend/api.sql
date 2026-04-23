@@ -102,7 +102,7 @@ CREATE TABLE api.controllable_unit_service_provider_history (
 );
 CREATE TABLE api.controllable_unit_summary (
     id bigint NOT NULL,
-    aggregates jsonb NOT NULL
+    technical_resource jsonb NOT NULL
 );
 CREATE TABLE api.service_providing_group (
     id bigint NOT NULL,

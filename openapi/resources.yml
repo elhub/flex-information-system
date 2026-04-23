@@ -421,7 +421,7 @@ resources:
           en: ID
           nb: ID
           nn: ID
-      aggregates:
+      technical_resource:
         description: >-
           Aggregated statistics on technical resources belonging to the
           controllable unit, including counts and maximum active power
@@ -429,39 +429,36 @@ resources:
         type: object
         readOnly: true
         x-intl:
-          en: Aggregates
-          nb: Aggregeringer
-          nn: Aggregeringar
+          en: Technical resource aggregates
+          nb: Aggregat om tekniske ressurser
+          nn: Aggregat om tekniske ressursar
         properties:
-          technical_resource:
+          count:
+            type: integer
+          maximum_active_power:
+            $ref: "#/components/schemas/numeric_aggregation"
+          by_category:
             type: object
-            properties:
-              count:
-                type: integer
-              maximum_active_power:
-                $ref: "#/components/schemas/numeric_aggregation"
-              by_category:
-                type: object
-                propertyNames:
-                  $ref: "#/components/schemas/category"
-                additionalProperties:
-                  type: object
-                  properties:
-                    count:
-                      type: integer
-                    maximum_active_power:
-                      $ref: "#/components/schemas/numeric_aggregation"
-              by_technology:
-                type: object
-                propertyNames:
-                  $ref: "#/components/schemas/technology"
-                additionalProperties:
-                  type: object
-                  properties:
-                    count:
-                      type: integer
-                    maximum_active_power:
-                      $ref: "#/components/schemas/numeric_aggregation"
+            propertyNames:
+              $ref: "#/components/schemas/category"
+            additionalProperties:
+              type: object
+              properties:
+                count:
+                  type: integer
+                maximum_active_power:
+                  $ref: "#/components/schemas/numeric_aggregation"
+          by_technology:
+            type: object
+            propertyNames:
+              $ref: "#/components/schemas/technology"
+            additionalProperties:
+              type: object
+              properties:
+                count:
+                  type: integer
+                maximum_active_power:
+                  $ref: "#/components/schemas/numeric_aggregation"
         example:
           technical_resource:
             count: 3
