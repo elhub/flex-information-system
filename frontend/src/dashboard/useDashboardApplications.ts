@@ -1,6 +1,7 @@
 // frontend/src/dashboard/useDashboardApplications.ts
 import { useGetIdentity } from "ra-core";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, } from "@tanstack/react-query";
+import { useMemo } from "react";
 import {
     listServiceProviderProductApplication,
     listServiceProvidingGroupProductApplication,
@@ -29,15 +30,22 @@ export type DashboardItem = {
 
 const addMonths = (dateStr: string, months: number): string => {
     const d = new Date(dateStr);
-    d.setMonth(d.getMonth() + months);
+    const originalDay = d.getDate();
+    const targetMonth = d.getMonth() + months;
+    d.setDate(1); // avoid overflow while setting month
+    d.setMonth(targetMonth);
+    // clamp to last day of target month
+    const lastDay = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
+    d.setDate(Math.min(originalDay, lastDay));
     return d.toISOString().split("T")[0];
 };
+
+// Only show applications that are not yet resolved
+const ACTIVE_STATUSES = new Set(["requested", "in_progress"]);
 
 export const useDashboardApplications = () => {
     const { data: identity } = useGetIdentity();
     const soId = identity?.id as number | undefined;
-
-    const activeStatuses = new Set(["requested", "in_progress"]);
 
     const sppaQuery = useQuery({
         queryKey: ["dashboard-sppa", soId],
@@ -73,11 +81,13 @@ export const useDashboardApplications = () => {
     });
 
     // Collect all SPG IDs needed for name + service_provider_id lookups
-    const spgIds = [
-        ...(spgpaQuery.data ?? []).map((r) => r.service_providing_group_id),
-        ...(spggpQuery.data ?? []).map((r) => r.service_providing_group_id),
-    ];
-    const uniqueSpgIds = [...new Set(spgIds)];
+    const uniqueSpgIds = useMemo(
+        () => [...new Set([
+            ...(spgpaQuery.data ?? []).map((r) => r.service_providing_group_id),
+            ...(spggpQuery.data ?? []).map((r) => r.service_providing_group_id),
+        ])],
+        [spgpaQuery.data, spggpQuery.data],
+    );
 
     const spgQuery = useQuery({
         queryKey: ["dashboard-spg", uniqueSpgIds],
@@ -89,9 +99,13 @@ export const useDashboardApplications = () => {
     });
 
     // Collect all party IDs needed for participant name resolution
-    const directSpIds = (sppaQuery.data ?? []).map((r) => r.service_provider_id);
-    const spgSpIds = (spgQuery.data ?? []).map((r) => r.service_provider_id);
-    const allPartyIds = [...new Set([...directSpIds, ...spgSpIds])];
+    const allPartyIds = useMemo(
+        () => [...new Set([
+            ...(sppaQuery.data ?? []).map((r) => r.service_provider_id),
+            ...(spgQuery.data ?? []).map((r) => r.service_provider_id),
+        ])],
+        [sppaQuery.data, spgQuery.data],
+    );
 
     const partyQuery = useQuery({
         queryKey: ["dashboard-parties", allPartyIds],
@@ -103,11 +117,13 @@ export const useDashboardApplications = () => {
     });
 
     // Collect all product type IDs
-    const ptIds = [
-        ...(sppaQuery.data ?? []).flatMap((r) => r.product_type_ids),
-        ...(spgpaQuery.data ?? []).flatMap((r) => r.product_type_ids),
-    ];
-    const uniquePtIds = [...new Set(ptIds)];
+    const uniquePtIds = useMemo(
+        () => [...new Set([
+            ...(sppaQuery.data ?? []).flatMap((r) => r.product_type_ids),
+            ...(spgpaQuery.data ?? []).flatMap((r) => r.product_type_ids),
+        ])],
+        [sppaQuery.data, spgpaQuery.data],
+    );
 
     const ptQuery = useQuery({
         queryKey: ["dashboard-product-types", uniquePtIds],
@@ -149,7 +165,7 @@ export const useDashboardApplications = () => {
         ids.map((id) => ptMap.get(id) ?? String(id)).join(", ");
 
     const items: DashboardItem[] = [
-        ...(sppaQuery.data ?? []).filter((r) => activeStatuses.has(r.status)).map((r) => ({
+        ...(sppaQuery.data ?? []).filter((r) => ACTIVE_STATUSES.has(r.status)).map((r) => ({
             id: r.id,
             kind: "sp_product_application" as DashboardItemKind,
             typeLabel: "Product Application",
@@ -159,7 +175,7 @@ export const useDashboardApplications = () => {
             status: r.status,
             route: `/service_provider_product_application/${r.id}/show`,
         })),
-        ...(spgpaQuery.data ?? []).filter((r) => activeStatuses.has(r.status)).map((r) => {
+        ...(spgpaQuery.data ?? []).filter((r) => ACTIVE_STATUSES.has(r.status)).map((r) => {
             const spg = spgMap.get(r.service_providing_group_id);
             const spgName = spg?.name ?? String(r.service_providing_group_id);
             const spId = spg?.service_provider_id;
@@ -174,7 +190,7 @@ export const useDashboardApplications = () => {
                 route: `/service_providing_group/${r.service_providing_group_id}/product_application/${r.id}/show`,
             };
         }),
-        ...(spggpQuery.data ?? []).filter((r) => activeStatuses.has(r.status)).map((r) => {
+        ...(spggpQuery.data ?? []).filter((r) => ACTIVE_STATUSES.has(r.status)).map((r) => {
             const spg = spgMap.get(r.service_providing_group_id);
             const spgName = spg?.name ?? String(r.service_providing_group_id);
             const spId = spg?.service_provider_id;
