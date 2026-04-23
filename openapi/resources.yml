@@ -443,10 +443,7 @@ resources:
               by_category:
                 type: object
                 propertyNames:
-                  enum:
-                    - production
-                    - consumption
-                    - energy_storage
+                  $ref: "#/components/schemas/category"
                 additionalProperties:
                   type: object
                   properties:
@@ -457,27 +454,7 @@ resources:
               by_technology:
                 type: object
                 propertyNames:
-                  enum:
-                    - hydropower
-                    - hydropower.pumped
-                    - hydropower.run_of_river
-                    - heat_power_plant
-                    - heat_power_plant.chp
-                    - solar
-                    - wind
-                    - backup_generator
-                    - hvac
-                    - hvac.heat
-                    - hvac.heat_pump
-                    - lighting
-                    - water_heater
-                    - boiler
-                    - ev_charging_device
-                    - ev_charging_device.v2g
-                    - battery
-                    - other.consumption
-                    - other.production
-                    - other.energy_storage
+                  $ref: "#/components/schemas/technology"
                 additionalProperties:
                   type: object
                   properties:

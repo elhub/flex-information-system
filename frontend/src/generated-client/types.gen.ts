@@ -874,13 +874,13 @@ export type ControllableUnitSummary = {
       count?: number;
       maximum_active_power?: NumericAggregation;
       by_category?: {
-        [key: string]: {
+        [key in Category]?: {
           count?: number;
           maximum_active_power?: NumericAggregation;
         };
       };
       by_technology?: {
-        [key: string]: {
+        [key in Technology]?: {
           count?: number;
           maximum_active_power?: NumericAggregation;
         };
