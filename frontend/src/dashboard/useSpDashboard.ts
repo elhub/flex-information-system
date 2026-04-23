@@ -12,6 +12,7 @@ import {
   listNotice,
 } from "../generated-client";
 import { throwOnError } from "../util";
+import { addMonths, ACTIVE_STATUSES } from "./dashboardUtils";
 import { DashboardItemKind } from "./useDashboardApplications";
 
 export type SpDashboardItem = {
@@ -24,19 +25,6 @@ export type SpDashboardItem = {
   status: string;
   route: string;
 };
-
-const addMonths = (dateStr: string, months: number): string => {
-  const d = new Date(dateStr);
-  const originalDay = d.getDate();
-  const targetMonth = d.getMonth() + months;
-  d.setDate(1);
-  d.setMonth(targetMonth);
-  const lastDay = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
-  d.setDate(Math.min(originalDay, lastDay));
-  return d.toISOString().split("T")[0];
-};
-
-const ACTIVE_STATUSES = new Set(["requested", "in_progress"]);
 
 const RESOLVED_SPPA = new Set(["qualified", "not_qualified", "communication_test"]);
 const RESOLVED_SPGPA = new Set([
