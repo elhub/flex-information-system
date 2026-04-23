@@ -75,6 +75,7 @@ export type FieldLabel =
   | "controllable_unit_service_provider_history.service_provider_id"
   | "controllable_unit_service_provider_history.valid_from"
   | "controllable_unit_service_provider_history.valid_to"
+  | "controllable_unit_summary.controllable_unit_id"
   | "controllable_unit_summary.id"
   | "controllable_unit_summary.technical_resource"
   | "controllable_unit_suspension.controllable_unit_id"
@@ -610,6 +611,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit_service_provider_history.replaced_at": "Replaced at",
     "controllable_unit_service_provider_history.replaced_by": "Replaced by",
     "controllable_unit_summary.id": "ID",
+    "controllable_unit_summary.controllable_unit_id": "ID",
     "controllable_unit_summary.technical_resource":
       "Technical resource aggregates",
     "service_providing_group.id": "ID",
@@ -1294,6 +1296,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit_service_provider_history.replaced_at": "Erstattet",
     "controllable_unit_service_provider_history.replaced_by": "Erstattet av",
     "controllable_unit_summary.id": "ID",
+    "controllable_unit_summary.controllable_unit_id": "ID",
     "controllable_unit_summary.technical_resource":
       "Aggregat om tekniske ressurser",
     "service_providing_group.id": "ID",
@@ -1973,6 +1976,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit_service_provider_history.replaced_at": "Erstattet",
     "controllable_unit_service_provider_history.replaced_by": "Erstattet av",
     "controllable_unit_summary.id": "ID",
+    "controllable_unit_summary.controllable_unit_id": "ID",
     "controllable_unit_summary.technical_resource":
       "Aggregat om tekniske ressursar",
     "service_providing_group.id": "ID",

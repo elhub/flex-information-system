@@ -97,7 +97,7 @@ def collect_relationships(resources):
         child = resource["id"]
         props = resource.get("properties", {})
         for field, attr in props.items():
-            if not field.endswith("id"):
+            if not field.endswith("_id"):
                 continue
             if not isinstance(attr, dict):
                 continue

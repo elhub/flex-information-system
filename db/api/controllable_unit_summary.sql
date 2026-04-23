@@ -8,12 +8,13 @@ WITH (security_invoker = true) AS (
     -- RLS: CUSU-COM001
     SELECT
         cusu.id,
+        cusu.controllable_unit_id,
         cusu.technical_resource
     FROM flex.controllable_unit_summary AS cusu
     WHERE
         EXISTS (
             SELECT 1
             FROM flex.controllable_unit AS cu
-            WHERE cu.id = cusu.id
+            WHERE cu.id = cusu.controllable_unit_id
         )
 );

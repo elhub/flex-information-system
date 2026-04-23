@@ -863,9 +863,13 @@ export type ControllableUnitServiceProvider = {
  */
 export type ControllableUnitSummary = {
   /**
-   * The ID of the controllable unit this resource is a summary of.
+   * Unique surrogate key.
    */
   readonly id: number;
+  /**
+   * The ID of the controllable unit this resource is a summary of.
+   */
+  readonly controllable_unit_id: number;
   /**
    * Aggregated statistics on technical resources belonging to the controllable unit, including counts and maximum active power breakdowns (sum, average, min, max) by category and technology.
    */

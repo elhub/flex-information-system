@@ -7,6 +7,7 @@ CREATE OR REPLACE VIEW controllable_unit_summary
 WITH (security_invoker = false) AS (
     SELECT
         cu.id,
+        cu.id AS controllable_unit_id, -- for foreign key consistency
         JSONB_BUILD_OBJECT(
             -- general TR aggregates
             'count', COUNT(tr1.id),

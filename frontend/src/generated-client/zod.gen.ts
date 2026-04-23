@@ -1779,6 +1779,7 @@ export const zControllableUnitServiceProvider = z.object({
  */
 export const zControllableUnitSummary = z.object({
   id: z.coerce.number().readonly(),
+  controllable_unit_id: z.coerce.number().readonly(),
   technical_resource: z
     .object({
       count: z.coerce.number().optional(),

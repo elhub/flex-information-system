@@ -1686,6 +1686,13 @@
                 "type": "object",
                 "properties": {
                     "id": {
+                        "description": "Unique surrogate key.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "readOnly": true,
+                        "example": 12
+                    },
+                    "controllable_unit_id": {
                         "description": "The ID of the controllable unit this resource is a summary of.",
                         "format": "bigint",
                         "type": "integer",
@@ -1805,6 +1812,7 @@
                 },
                 "required": [
                     "id",
+                    "controllable_unit_id",
                     "technical_resource"
                 ]
             },
@@ -12081,12 +12089,12 @@
                         },
                         "description": "OK",
                         "links": {
-                            "id": {
+                            "controllable_unit_id": {
                                 "operationId": "read_controllable_unit",
                                 "parameters": {
-                                    "path.id": "$response.body#/id"
+                                    "path.id": "$response.body#/controllable_unit_id"
                                 },
-                                "description": "The `id` value returned in the response can be used as the `id` parameter in `GET /controllable_unit/{id}`."
+                                "description": "The `controllable_unit_id` value returned in the response can be used as the `id` parameter in `GET /controllable_unit/{id}`."
                             }
                         }
                     },

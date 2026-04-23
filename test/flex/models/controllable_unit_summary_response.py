@@ -23,7 +23,8 @@ class ControllableUnitSummaryResponse:
     """Response schema - Aggregated summary of technical resources belonging to a controllable unit.
 
     Attributes:
-        id (int): The ID of the controllable unit this resource is a summary of. Example: 12.
+        id (int): Unique surrogate key. Example: 12.
+        controllable_unit_id (int): The ID of the controllable unit this resource is a summary of. Example: 12.
         technical_resource (ControllableUnitSummaryResponseTechnicalResource): Aggregated statistics on technical
             resources belonging to the controllable unit, including counts and maximum active power breakdowns (sum,
             average, min, max) by category and technology. Example: {'technical_resource': {'count': 3,
@@ -36,6 +37,7 @@ class ControllableUnitSummaryResponse:
     """
 
     id: int
+    controllable_unit_id: int
     technical_resource: ControllableUnitSummaryResponseTechnicalResource
     controllable_unit: ControllableUnitResponse | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
@@ -44,6 +46,8 @@ class ControllableUnitSummaryResponse:
         from ..models.controllable_unit_response import ControllableUnitResponse
 
         id = self.id
+
+        controllable_unit_id = self.controllable_unit_id
 
         technical_resource = self.technical_resource.to_dict()
 
@@ -60,6 +64,7 @@ class ControllableUnitSummaryResponse:
         field_dict.update(
             {
                 "id": id,
+                "controllable_unit_id": controllable_unit_id,
                 "technical_resource": technical_resource,
             }
         )
@@ -77,6 +82,8 @@ class ControllableUnitSummaryResponse:
 
         d = dict(src_dict)
         id = d.pop("id")
+
+        controllable_unit_id = d.pop("controllable_unit_id")
 
         technical_resource = ControllableUnitSummaryResponseTechnicalResource.from_dict(d.pop("technical_resource"))
 
@@ -99,6 +106,7 @@ class ControllableUnitSummaryResponse:
 
         controllable_unit_summary_response = cls(
             id=id,
+            controllable_unit_id=controllable_unit_id,
             technical_resource=technical_resource,
             controllable_unit=controllable_unit,
         )
