@@ -39,7 +39,7 @@ class ServiceProvidingGroupGridSuspensionHistoryResponse:
         service_providing_group_grid_suspension_id (int): Reference to the resource that was updated. Example: 48.
         impacted_system_operator (None | PartyResponse | Unset): Embedded party
         service_providing_group (None | ServiceProvidingGroupResponse | Unset): Embedded service_providing_group
-        comment (None | ServiceProvidingGroupGridSuspensionCommentResponse | Unset): Embedded
+        comment (list[ServiceProvidingGroupGridSuspensionCommentResponse] | None | Unset): Embedded
             service_providing_group_grid_suspension_comment
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (datetime.datetime | None | Unset): When the resource was replaced in the system. Example:
@@ -55,16 +55,13 @@ class ServiceProvidingGroupGridSuspensionHistoryResponse:
     service_providing_group_grid_suspension_id: int
     impacted_system_operator: None | PartyResponse | Unset = UNSET
     service_providing_group: None | ServiceProvidingGroupResponse | Unset = UNSET
-    comment: None | ServiceProvidingGroupGridSuspensionCommentResponse | Unset = UNSET
+    comment: list[ServiceProvidingGroupGridSuspensionCommentResponse] | None | Unset = UNSET
     replaced_by: int | None | Unset = UNSET
     replaced_at: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         from ..models.party_response import PartyResponse
-        from ..models.service_providing_group_grid_suspension_comment_response import (
-            ServiceProvidingGroupGridSuspensionCommentResponse,
-        )
         from ..models.service_providing_group_response import ServiceProvidingGroupResponse
 
         id = self.id
@@ -97,11 +94,15 @@ class ServiceProvidingGroupGridSuspensionHistoryResponse:
         else:
             service_providing_group = self.service_providing_group
 
-        comment: dict[str, Any] | None | Unset
+        comment: list[dict[str, Any]] | None | Unset
         if isinstance(self.comment, Unset):
             comment = UNSET
-        elif isinstance(self.comment, ServiceProvidingGroupGridSuspensionCommentResponse):
-            comment = self.comment.to_dict()
+        elif isinstance(self.comment, list):
+            comment = []
+            for comment_type_0_item_data in self.comment:
+                comment_type_0_item = comment_type_0_item_data.to_dict()
+                comment.append(comment_type_0_item)
+
         else:
             comment = self.comment
 
@@ -202,20 +203,27 @@ class ServiceProvidingGroupGridSuspensionHistoryResponse:
 
         service_providing_group = _parse_service_providing_group(d.pop("service_providing_group", UNSET))
 
-        def _parse_comment(data: object) -> None | ServiceProvidingGroupGridSuspensionCommentResponse | Unset:
+        def _parse_comment(data: object) -> list[ServiceProvidingGroupGridSuspensionCommentResponse] | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             try:
-                if not isinstance(data, dict):
+                if not isinstance(data, list):
                     raise TypeError()
-                comment_type_0 = ServiceProvidingGroupGridSuspensionCommentResponse.from_dict(data)
+                comment_type_0 = []
+                _comment_type_0 = data
+                for comment_type_0_item_data in _comment_type_0:
+                    comment_type_0_item = ServiceProvidingGroupGridSuspensionCommentResponse.from_dict(
+                        comment_type_0_item_data
+                    )
+
+                    comment_type_0.append(comment_type_0_item)
 
                 return comment_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(None | ServiceProvidingGroupGridSuspensionCommentResponse | Unset, data)
+            return cast(list[ServiceProvidingGroupGridSuspensionCommentResponse] | None | Unset, data)
 
         comment = _parse_comment(d.pop("comment", UNSET))
 

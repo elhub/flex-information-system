@@ -36,15 +36,15 @@ class AccountingPointResponse:
         recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
-        controllable_unit (ControllableUnitResponse | None | Unset): Embedded controllable_unit
+        controllable_unit (list[ControllableUnitResponse] | None | Unset): Embedded controllable_unit
         system_operator (None | PartyResponse | Unset): Embedded party
-        balance_responsible_party (AccountingPointBalanceResponsiblePartyResponse | None | Unset): Embedded
+        balance_responsible_party (list[AccountingPointBalanceResponsiblePartyResponse] | None | Unset): Embedded
             accounting_point_balance_responsible_party
-        bidding_zone (AccountingPointBiddingZoneResponse | None | Unset): Embedded accounting_point_bidding_zone
-        end_user (AccountingPointEndUserResponse | None | Unset): Embedded accounting_point_end_user
-        energy_supplier (AccountingPointEnergySupplierResponse | None | Unset): Embedded
+        bidding_zone (list[AccountingPointBiddingZoneResponse] | None | Unset): Embedded accounting_point_bidding_zone
+        end_user (list[AccountingPointEndUserResponse] | None | Unset): Embedded accounting_point_end_user
+        energy_supplier (list[AccountingPointEnergySupplierResponse] | None | Unset): Embedded
             accounting_point_energy_supplier
-        metering_grid_area (AccountingPointMeteringGridAreaResponse | None | Unset): Embedded
+        metering_grid_area (list[AccountingPointMeteringGridAreaResponse] | None | Unset): Embedded
             accounting_point_metering_grid_area
     """
 
@@ -53,24 +53,16 @@ class AccountingPointResponse:
     system_operator_id: int
     recorded_at: datetime.datetime
     recorded_by: int
-    controllable_unit: ControllableUnitResponse | None | Unset = UNSET
+    controllable_unit: list[ControllableUnitResponse] | None | Unset = UNSET
     system_operator: None | PartyResponse | Unset = UNSET
-    balance_responsible_party: AccountingPointBalanceResponsiblePartyResponse | None | Unset = UNSET
-    bidding_zone: AccountingPointBiddingZoneResponse | None | Unset = UNSET
-    end_user: AccountingPointEndUserResponse | None | Unset = UNSET
-    energy_supplier: AccountingPointEnergySupplierResponse | None | Unset = UNSET
-    metering_grid_area: AccountingPointMeteringGridAreaResponse | None | Unset = UNSET
+    balance_responsible_party: list[AccountingPointBalanceResponsiblePartyResponse] | None | Unset = UNSET
+    bidding_zone: list[AccountingPointBiddingZoneResponse] | None | Unset = UNSET
+    end_user: list[AccountingPointEndUserResponse] | None | Unset = UNSET
+    energy_supplier: list[AccountingPointEnergySupplierResponse] | None | Unset = UNSET
+    metering_grid_area: list[AccountingPointMeteringGridAreaResponse] | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        from ..models.accounting_point_balance_responsible_party_response import (
-            AccountingPointBalanceResponsiblePartyResponse,
-        )
-        from ..models.accounting_point_bidding_zone_response import AccountingPointBiddingZoneResponse
-        from ..models.accounting_point_end_user_response import AccountingPointEndUserResponse
-        from ..models.accounting_point_energy_supplier_response import AccountingPointEnergySupplierResponse
-        from ..models.accounting_point_metering_grid_area_response import AccountingPointMeteringGridAreaResponse
-        from ..models.controllable_unit_response import ControllableUnitResponse
         from ..models.party_response import PartyResponse
 
         id = self.id
@@ -83,11 +75,15 @@ class AccountingPointResponse:
 
         recorded_by = self.recorded_by
 
-        controllable_unit: dict[str, Any] | None | Unset
+        controllable_unit: list[dict[str, Any]] | None | Unset
         if isinstance(self.controllable_unit, Unset):
             controllable_unit = UNSET
-        elif isinstance(self.controllable_unit, ControllableUnitResponse):
-            controllable_unit = self.controllable_unit.to_dict()
+        elif isinstance(self.controllable_unit, list):
+            controllable_unit = []
+            for controllable_unit_type_0_item_data in self.controllable_unit:
+                controllable_unit_type_0_item = controllable_unit_type_0_item_data.to_dict()
+                controllable_unit.append(controllable_unit_type_0_item)
+
         else:
             controllable_unit = self.controllable_unit
 
@@ -99,43 +95,63 @@ class AccountingPointResponse:
         else:
             system_operator = self.system_operator
 
-        balance_responsible_party: dict[str, Any] | None | Unset
+        balance_responsible_party: list[dict[str, Any]] | None | Unset
         if isinstance(self.balance_responsible_party, Unset):
             balance_responsible_party = UNSET
-        elif isinstance(self.balance_responsible_party, AccountingPointBalanceResponsiblePartyResponse):
-            balance_responsible_party = self.balance_responsible_party.to_dict()
+        elif isinstance(self.balance_responsible_party, list):
+            balance_responsible_party = []
+            for balance_responsible_party_type_0_item_data in self.balance_responsible_party:
+                balance_responsible_party_type_0_item = balance_responsible_party_type_0_item_data.to_dict()
+                balance_responsible_party.append(balance_responsible_party_type_0_item)
+
         else:
             balance_responsible_party = self.balance_responsible_party
 
-        bidding_zone: dict[str, Any] | None | Unset
+        bidding_zone: list[dict[str, Any]] | None | Unset
         if isinstance(self.bidding_zone, Unset):
             bidding_zone = UNSET
-        elif isinstance(self.bidding_zone, AccountingPointBiddingZoneResponse):
-            bidding_zone = self.bidding_zone.to_dict()
+        elif isinstance(self.bidding_zone, list):
+            bidding_zone = []
+            for bidding_zone_type_0_item_data in self.bidding_zone:
+                bidding_zone_type_0_item = bidding_zone_type_0_item_data.to_dict()
+                bidding_zone.append(bidding_zone_type_0_item)
+
         else:
             bidding_zone = self.bidding_zone
 
-        end_user: dict[str, Any] | None | Unset
+        end_user: list[dict[str, Any]] | None | Unset
         if isinstance(self.end_user, Unset):
             end_user = UNSET
-        elif isinstance(self.end_user, AccountingPointEndUserResponse):
-            end_user = self.end_user.to_dict()
+        elif isinstance(self.end_user, list):
+            end_user = []
+            for end_user_type_0_item_data in self.end_user:
+                end_user_type_0_item = end_user_type_0_item_data.to_dict()
+                end_user.append(end_user_type_0_item)
+
         else:
             end_user = self.end_user
 
-        energy_supplier: dict[str, Any] | None | Unset
+        energy_supplier: list[dict[str, Any]] | None | Unset
         if isinstance(self.energy_supplier, Unset):
             energy_supplier = UNSET
-        elif isinstance(self.energy_supplier, AccountingPointEnergySupplierResponse):
-            energy_supplier = self.energy_supplier.to_dict()
+        elif isinstance(self.energy_supplier, list):
+            energy_supplier = []
+            for energy_supplier_type_0_item_data in self.energy_supplier:
+                energy_supplier_type_0_item = energy_supplier_type_0_item_data.to_dict()
+                energy_supplier.append(energy_supplier_type_0_item)
+
         else:
             energy_supplier = self.energy_supplier
 
-        metering_grid_area: dict[str, Any] | None | Unset
+        metering_grid_area: list[dict[str, Any]] | None | Unset
         if isinstance(self.metering_grid_area, Unset):
             metering_grid_area = UNSET
-        elif isinstance(self.metering_grid_area, AccountingPointMeteringGridAreaResponse):
-            metering_grid_area = self.metering_grid_area.to_dict()
+        elif isinstance(self.metering_grid_area, list):
+            metering_grid_area = []
+            for metering_grid_area_type_0_item_data in self.metering_grid_area:
+                metering_grid_area_type_0_item = metering_grid_area_type_0_item_data.to_dict()
+                metering_grid_area.append(metering_grid_area_type_0_item)
+
         else:
             metering_grid_area = self.metering_grid_area
 
@@ -190,20 +206,27 @@ class AccountingPointResponse:
 
         recorded_by = d.pop("recorded_by")
 
-        def _parse_controllable_unit(data: object) -> ControllableUnitResponse | None | Unset:
+        def _parse_controllable_unit(data: object) -> list[ControllableUnitResponse] | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             try:
-                if not isinstance(data, dict):
+                if not isinstance(data, list):
                     raise TypeError()
-                controllable_unit_type_0 = ControllableUnitResponse.from_dict(data)
+                controllable_unit_type_0 = []
+                _controllable_unit_type_0 = data
+                for controllable_unit_type_0_item_data in _controllable_unit_type_0:
+                    controllable_unit_type_0_item = ControllableUnitResponse.from_dict(
+                        controllable_unit_type_0_item_data
+                    )
+
+                    controllable_unit_type_0.append(controllable_unit_type_0_item)
 
                 return controllable_unit_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(ControllableUnitResponse | None | Unset, data)
+            return cast(list[ControllableUnitResponse] | None | Unset, data)
 
         controllable_unit = _parse_controllable_unit(d.pop("controllable_unit", UNSET))
 
@@ -226,88 +249,121 @@ class AccountingPointResponse:
 
         def _parse_balance_responsible_party(
             data: object,
-        ) -> AccountingPointBalanceResponsiblePartyResponse | None | Unset:
+        ) -> list[AccountingPointBalanceResponsiblePartyResponse] | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             try:
-                if not isinstance(data, dict):
+                if not isinstance(data, list):
                     raise TypeError()
-                balance_responsible_party_type_0 = AccountingPointBalanceResponsiblePartyResponse.from_dict(data)
+                balance_responsible_party_type_0 = []
+                _balance_responsible_party_type_0 = data
+                for balance_responsible_party_type_0_item_data in _balance_responsible_party_type_0:
+                    balance_responsible_party_type_0_item = AccountingPointBalanceResponsiblePartyResponse.from_dict(
+                        balance_responsible_party_type_0_item_data
+                    )
+
+                    balance_responsible_party_type_0.append(balance_responsible_party_type_0_item)
 
                 return balance_responsible_party_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(AccountingPointBalanceResponsiblePartyResponse | None | Unset, data)
+            return cast(list[AccountingPointBalanceResponsiblePartyResponse] | None | Unset, data)
 
         balance_responsible_party = _parse_balance_responsible_party(d.pop("balance_responsible_party", UNSET))
 
-        def _parse_bidding_zone(data: object) -> AccountingPointBiddingZoneResponse | None | Unset:
+        def _parse_bidding_zone(data: object) -> list[AccountingPointBiddingZoneResponse] | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             try:
-                if not isinstance(data, dict):
+                if not isinstance(data, list):
                     raise TypeError()
-                bidding_zone_type_0 = AccountingPointBiddingZoneResponse.from_dict(data)
+                bidding_zone_type_0 = []
+                _bidding_zone_type_0 = data
+                for bidding_zone_type_0_item_data in _bidding_zone_type_0:
+                    bidding_zone_type_0_item = AccountingPointBiddingZoneResponse.from_dict(
+                        bidding_zone_type_0_item_data
+                    )
+
+                    bidding_zone_type_0.append(bidding_zone_type_0_item)
 
                 return bidding_zone_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(AccountingPointBiddingZoneResponse | None | Unset, data)
+            return cast(list[AccountingPointBiddingZoneResponse] | None | Unset, data)
 
         bidding_zone = _parse_bidding_zone(d.pop("bidding_zone", UNSET))
 
-        def _parse_end_user(data: object) -> AccountingPointEndUserResponse | None | Unset:
+        def _parse_end_user(data: object) -> list[AccountingPointEndUserResponse] | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             try:
-                if not isinstance(data, dict):
+                if not isinstance(data, list):
                     raise TypeError()
-                end_user_type_0 = AccountingPointEndUserResponse.from_dict(data)
+                end_user_type_0 = []
+                _end_user_type_0 = data
+                for end_user_type_0_item_data in _end_user_type_0:
+                    end_user_type_0_item = AccountingPointEndUserResponse.from_dict(end_user_type_0_item_data)
+
+                    end_user_type_0.append(end_user_type_0_item)
 
                 return end_user_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(AccountingPointEndUserResponse | None | Unset, data)
+            return cast(list[AccountingPointEndUserResponse] | None | Unset, data)
 
         end_user = _parse_end_user(d.pop("end_user", UNSET))
 
-        def _parse_energy_supplier(data: object) -> AccountingPointEnergySupplierResponse | None | Unset:
+        def _parse_energy_supplier(data: object) -> list[AccountingPointEnergySupplierResponse] | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             try:
-                if not isinstance(data, dict):
+                if not isinstance(data, list):
                     raise TypeError()
-                energy_supplier_type_0 = AccountingPointEnergySupplierResponse.from_dict(data)
+                energy_supplier_type_0 = []
+                _energy_supplier_type_0 = data
+                for energy_supplier_type_0_item_data in _energy_supplier_type_0:
+                    energy_supplier_type_0_item = AccountingPointEnergySupplierResponse.from_dict(
+                        energy_supplier_type_0_item_data
+                    )
+
+                    energy_supplier_type_0.append(energy_supplier_type_0_item)
 
                 return energy_supplier_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(AccountingPointEnergySupplierResponse | None | Unset, data)
+            return cast(list[AccountingPointEnergySupplierResponse] | None | Unset, data)
 
         energy_supplier = _parse_energy_supplier(d.pop("energy_supplier", UNSET))
 
-        def _parse_metering_grid_area(data: object) -> AccountingPointMeteringGridAreaResponse | None | Unset:
+        def _parse_metering_grid_area(data: object) -> list[AccountingPointMeteringGridAreaResponse] | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             try:
-                if not isinstance(data, dict):
+                if not isinstance(data, list):
                     raise TypeError()
-                metering_grid_area_type_0 = AccountingPointMeteringGridAreaResponse.from_dict(data)
+                metering_grid_area_type_0 = []
+                _metering_grid_area_type_0 = data
+                for metering_grid_area_type_0_item_data in _metering_grid_area_type_0:
+                    metering_grid_area_type_0_item = AccountingPointMeteringGridAreaResponse.from_dict(
+                        metering_grid_area_type_0_item_data
+                    )
+
+                    metering_grid_area_type_0.append(metering_grid_area_type_0_item)
 
                 return metering_grid_area_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(AccountingPointMeteringGridAreaResponse | None | Unset, data)
+            return cast(list[AccountingPointMeteringGridAreaResponse] | None | Unset, data)
 
         metering_grid_area = _parse_metering_grid_area(d.pop("metering_grid_area", UNSET))
 

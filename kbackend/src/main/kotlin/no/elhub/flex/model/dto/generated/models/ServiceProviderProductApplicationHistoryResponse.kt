@@ -1,5 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
+import kotlin.Any
 import kotlin.Long
 import kotlin.collections.List
 import kotlin.time.Instant
@@ -80,10 +81,10 @@ public data class ServiceProviderProductApplicationHistoryResponse(
   @SerialName("system_operator")
   public val systemOperator: PartyResponse? = null,
   /**
-   * Response schema - Comment made by a party involved in a service provider product application.
+   * Embedded service_provider_product_application_comment
    */
   @SerialName("comment")
-  public val comment: ServiceProviderProductApplicationCommentResponse? = null,
+  public val comment: Any? = null,
   /**
    * Reference to the resource that was updated.
    */

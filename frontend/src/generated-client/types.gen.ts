@@ -604,19 +604,19 @@ export type ControllableUnit = {
   /**
    * Embedded controllable_unit_suspension
    */
-  suspension?: ControllableUnitSuspension | null;
+  suspension?: Array<ControllableUnitSuspension> | null;
   /**
    * Embedded controllable_unit_service_provider
    */
-  service_provider?: ControllableUnitServiceProvider | null;
+  service_provider?: Array<ControllableUnitServiceProvider> | null;
   /**
    * Embedded service_providing_group_membership
    */
-  service_providing_group_membership?: ServiceProvidingGroupMembership | null;
+  service_providing_group_membership?: Array<ServiceProvidingGroupMembership> | null;
   /**
    * Embedded technical_resource
    */
-  technical_resource?: TechnicalResource | null;
+  technical_resource?: Array<TechnicalResource> | null;
 };
 
 /**
@@ -677,7 +677,7 @@ export type ControllableUnitSuspension = {
   /**
    * Embedded controllable_unit_suspension_comment
    */
-  comment?: ControllableUnitSuspensionComment | null;
+  comment?: Array<ControllableUnitSuspensionComment> | null;
 };
 
 /**
@@ -920,23 +920,23 @@ export type ServiceProvidingGroup = {
   /**
    * Embedded service_providing_group_membership
    */
-  membership?: ServiceProvidingGroupMembership | null;
+  membership?: Array<ServiceProvidingGroupMembership> | null;
   /**
    * Embedded service_providing_group_grid_prequalification
    */
-  grid_prequalification?: ServiceProvidingGroupGridPrequalification | null;
+  grid_prequalification?: Array<ServiceProvidingGroupGridPrequalification> | null;
   /**
    * Embedded service_providing_group_grid_suspension
    */
-  grid_suspension?: ServiceProvidingGroupGridSuspension | null;
+  grid_suspension?: Array<ServiceProvidingGroupGridSuspension> | null;
   /**
    * Embedded service_providing_group_product_application
    */
-  product_application?: ServiceProvidingGroupProductApplication | null;
+  product_application?: Array<ServiceProvidingGroupProductApplication> | null;
   /**
    * Embedded service_providing_group_product_suspension
    */
-  product_suspension?: ServiceProvidingGroupProductSuspension | null;
+  product_suspension?: Array<ServiceProvidingGroupProductSuspension> | null;
 };
 
 /**
@@ -1087,7 +1087,7 @@ export type ServiceProvidingGroupGridPrequalification = {
   /**
    * Embedded service_providing_group_grid_prequalification_comment
    */
-  comment?: ServiceProvidingGroupGridPrequalificationComment | null;
+  comment?: Array<ServiceProvidingGroupGridPrequalificationComment> | null;
 };
 
 /**
@@ -1213,7 +1213,7 @@ export type ServiceProvidingGroupGridSuspension = {
   /**
    * Embedded service_providing_group_grid_suspension_comment
    */
-  comment?: ServiceProvidingGroupGridSuspensionComment | null;
+  comment?: Array<ServiceProvidingGroupGridSuspensionComment> | null;
 };
 
 /**
@@ -1362,19 +1362,19 @@ export type Entity = {
   /**
    * Embedded entity_client
    */
-  client?: EntityClient | null;
+  client?: Array<EntityClient> | null;
   /**
    * Embedded party
    */
-  party?: Party | null;
+  party?: Array<Party> | null;
   /**
    * Embedded party_membership
    */
-  party_membership?: PartyMembership | null;
+  party_membership?: Array<PartyMembership> | null;
   /**
    * Embedded identity
    */
-  identity?: Identity | null;
+  identity?: Array<Identity> | null;
 };
 
 /**
@@ -1868,7 +1868,7 @@ export type Event = {
   /**
    * Embedded notification
    */
-  notification?: Notification | null;
+  notification?: Array<Notification> | null;
 };
 
 /**
@@ -1946,7 +1946,7 @@ export type AccountingPoint = {
   /**
    * Embedded controllable_unit
    */
-  controllable_unit?: ControllableUnit | null;
+  controllable_unit?: Array<ControllableUnit> | null;
   /**
    * Embedded party
    */
@@ -1954,23 +1954,23 @@ export type AccountingPoint = {
   /**
    * Embedded accounting_point_balance_responsible_party
    */
-  balance_responsible_party?: AccountingPointBalanceResponsibleParty | null;
+  balance_responsible_party?: Array<AccountingPointBalanceResponsibleParty> | null;
   /**
    * Embedded accounting_point_bidding_zone
    */
-  bidding_zone?: AccountingPointBiddingZone | null;
+  bidding_zone?: Array<AccountingPointBiddingZone> | null;
   /**
    * Embedded accounting_point_end_user
    */
-  end_user?: AccountingPointEndUser | null;
+  end_user?: Array<AccountingPointEndUser> | null;
   /**
    * Embedded accounting_point_energy_supplier
    */
-  energy_supplier?: AccountingPointEnergySupplier | null;
+  energy_supplier?: Array<AccountingPointEnergySupplier> | null;
   /**
    * Embedded accounting_point_metering_grid_area
    */
-  metering_grid_area?: AccountingPointMeteringGridArea | null;
+  metering_grid_area?: Array<AccountingPointMeteringGridArea> | null;
 };
 
 /**
@@ -2107,7 +2107,7 @@ export type MeteringGridArea = {
   /**
    * Embedded accounting_point_metering_grid_area
    */
-  accounting_point_metering_grid_area?: AccountingPointMeteringGridArea | null;
+  accounting_point_metering_grid_area?: Array<AccountingPointMeteringGridArea> | null;
 };
 
 /**
@@ -2167,7 +2167,7 @@ export type ProductType = {
   /**
    * Embedded system_operator_product_type
    */
-  system_operator_product_type?: SystemOperatorProductType | null;
+  system_operator_product_type?: Array<SystemOperatorProductType> | null;
 };
 
 /**
@@ -2309,7 +2309,7 @@ export type ServiceProviderProductApplication = {
   /**
    * Embedded service_provider_product_application_comment
    */
-  comment?: ServiceProviderProductApplicationComment | null;
+  comment?: Array<ServiceProviderProductApplicationComment> | null;
 };
 
 /**
@@ -2447,7 +2447,7 @@ export type ServiceProviderProductSuspension = {
   /**
    * Embedded service_provider_product_suspension_comment
    */
-  comment?: ServiceProviderProductSuspensionComment | null;
+  comment?: Array<ServiceProviderProductSuspensionComment> | null;
 };
 
 /**
@@ -2645,7 +2645,7 @@ export type ServiceProvidingGroupProductApplication = {
   /**
    * Embedded service_providing_group_product_application_comment
    */
-  comment?: ServiceProvidingGroupProductApplicationComment | null;
+  comment?: Array<ServiceProvidingGroupProductApplicationComment> | null;
 };
 
 /**
@@ -2783,7 +2783,7 @@ export type ServiceProvidingGroupProductSuspension = {
   /**
    * Embedded service_providing_group_product_suspension_comment
    */
-  comment?: ServiceProvidingGroupProductSuspensionComment | null;
+  comment?: Array<ServiceProvidingGroupProductSuspensionComment> | null;
 };
 
 /**
@@ -3371,19 +3371,19 @@ export type ControllableUnitWritable = {
   /**
    * Embedded controllable_unit_suspension
    */
-  suspension?: ControllableUnitSuspensionWritable | null;
+  suspension?: Array<ControllableUnitSuspensionWritable> | null;
   /**
    * Embedded controllable_unit_service_provider
    */
-  service_provider?: ControllableUnitServiceProviderWritable | null;
+  service_provider?: Array<ControllableUnitServiceProviderWritable> | null;
   /**
    * Embedded service_providing_group_membership
    */
-  service_providing_group_membership?: ServiceProvidingGroupMembershipWritable | null;
+  service_providing_group_membership?: Array<ServiceProvidingGroupMembershipWritable> | null;
   /**
    * Embedded technical_resource
    */
-  technical_resource?: TechnicalResourceWritable | null;
+  technical_resource?: Array<TechnicalResourceWritable> | null;
 };
 
 /**
@@ -3410,7 +3410,7 @@ export type ControllableUnitSuspensionWritable = {
   /**
    * Embedded controllable_unit_suspension_comment
    */
-  comment?: ControllableUnitSuspensionCommentWritable | null;
+  comment?: Array<ControllableUnitSuspensionCommentWritable> | null;
 };
 
 /**
@@ -3499,23 +3499,23 @@ export type ServiceProvidingGroupWritable = {
   /**
    * Embedded service_providing_group_membership
    */
-  membership?: ServiceProvidingGroupMembershipWritable | null;
+  membership?: Array<ServiceProvidingGroupMembershipWritable> | null;
   /**
    * Embedded service_providing_group_grid_prequalification
    */
-  grid_prequalification?: ServiceProvidingGroupGridPrequalificationWritable | null;
+  grid_prequalification?: Array<ServiceProvidingGroupGridPrequalificationWritable> | null;
   /**
    * Embedded service_providing_group_grid_suspension
    */
-  grid_suspension?: ServiceProvidingGroupGridSuspensionWritable | null;
+  grid_suspension?: Array<ServiceProvidingGroupGridSuspensionWritable> | null;
   /**
    * Embedded service_providing_group_product_application
    */
-  product_application?: ServiceProvidingGroupProductApplicationWritable | null;
+  product_application?: Array<ServiceProvidingGroupProductApplicationWritable> | null;
   /**
    * Embedded service_providing_group_product_suspension
    */
-  product_suspension?: ServiceProvidingGroupProductSuspensionWritable | null;
+  product_suspension?: Array<ServiceProvidingGroupProductSuspensionWritable> | null;
 };
 
 /**
@@ -3576,7 +3576,7 @@ export type ServiceProvidingGroupGridPrequalificationWritable = {
   /**
    * Embedded service_providing_group_grid_prequalification_comment
    */
-  comment?: ServiceProvidingGroupGridPrequalificationCommentWritable | null;
+  comment?: Array<ServiceProvidingGroupGridPrequalificationCommentWritable> | null;
 };
 
 /**
@@ -3622,7 +3622,7 @@ export type ServiceProvidingGroupGridSuspensionWritable = {
   /**
    * Embedded service_providing_group_grid_suspension_comment
    */
-  comment?: ServiceProvidingGroupGridSuspensionCommentWritable | null;
+  comment?: Array<ServiceProvidingGroupGridSuspensionCommentWritable> | null;
 };
 
 /**
@@ -3668,19 +3668,19 @@ export type EntityWritable = {
   /**
    * Embedded entity_client
    */
-  client?: EntityClientWritable | null;
+  client?: Array<EntityClientWritable> | null;
   /**
    * Embedded party
    */
-  party?: PartyWritable | null;
+  party?: Array<PartyWritable> | null;
   /**
    * Embedded party_membership
    */
-  party_membership?: PartyMembershipWritable | null;
+  party_membership?: Array<PartyMembershipWritable> | null;
   /**
    * Embedded identity
    */
-  identity?: IdentityWritable | null;
+  identity?: Array<IdentityWritable> | null;
 };
 
 /**
@@ -3850,7 +3850,7 @@ export type EventWritable = {
   /**
    * Embedded notification
    */
-  notification?: NotificationWritable | null;
+  notification?: Array<NotificationWritable> | null;
 };
 
 /**
@@ -3886,7 +3886,7 @@ export type AccountingPointWritable = {
   /**
    * Embedded controllable_unit
    */
-  controllable_unit?: ControllableUnitWritable | null;
+  controllable_unit?: Array<ControllableUnitWritable> | null;
   /**
    * Embedded party
    */
@@ -3894,23 +3894,23 @@ export type AccountingPointWritable = {
   /**
    * Embedded accounting_point_balance_responsible_party
    */
-  balance_responsible_party?: AccountingPointBalanceResponsiblePartyWritable | null;
+  balance_responsible_party?: Array<AccountingPointBalanceResponsiblePartyWritable> | null;
   /**
    * Embedded accounting_point_bidding_zone
    */
-  bidding_zone?: AccountingPointBiddingZoneWritable | null;
+  bidding_zone?: Array<AccountingPointBiddingZoneWritable> | null;
   /**
    * Embedded accounting_point_end_user
    */
-  end_user?: AccountingPointEndUserWritable | null;
+  end_user?: Array<AccountingPointEndUserWritable> | null;
   /**
    * Embedded accounting_point_energy_supplier
    */
-  energy_supplier?: AccountingPointEnergySupplierWritable | null;
+  energy_supplier?: Array<AccountingPointEnergySupplierWritable> | null;
   /**
    * Embedded accounting_point_metering_grid_area
    */
-  metering_grid_area?: AccountingPointMeteringGridAreaWritable | null;
+  metering_grid_area?: Array<AccountingPointMeteringGridAreaWritable> | null;
 };
 
 /**
@@ -3973,7 +3973,7 @@ export type MeteringGridAreaWritable = {
   /**
    * Embedded accounting_point_metering_grid_area
    */
-  accounting_point_metering_grid_area?: AccountingPointMeteringGridAreaWritable | null;
+  accounting_point_metering_grid_area?: Array<AccountingPointMeteringGridAreaWritable> | null;
 };
 
 /**
@@ -3997,7 +3997,7 @@ export type ProductTypeWritable = {
   /**
    * Embedded system_operator_product_type
    */
-  system_operator_product_type?: SystemOperatorProductTypeWritable | null;
+  system_operator_product_type?: Array<SystemOperatorProductTypeWritable> | null;
 };
 
 /**
@@ -4055,7 +4055,7 @@ export type ServiceProviderProductApplicationWritable = {
   /**
    * Embedded service_provider_product_application_comment
    */
-  comment?: ServiceProviderProductApplicationCommentWritable | null;
+  comment?: Array<ServiceProviderProductApplicationCommentWritable> | null;
 };
 
 /**
@@ -4105,7 +4105,7 @@ export type ServiceProviderProductSuspensionWritable = {
   /**
    * Embedded service_provider_product_suspension_comment
    */
-  comment?: ServiceProviderProductSuspensionCommentWritable | null;
+  comment?: Array<ServiceProviderProductSuspensionCommentWritable> | null;
 };
 
 /**
@@ -4175,7 +4175,7 @@ export type ServiceProvidingGroupProductApplicationWritable = {
   /**
    * Embedded service_providing_group_product_application_comment
    */
-  comment?: ServiceProvidingGroupProductApplicationCommentWritable | null;
+  comment?: Array<ServiceProvidingGroupProductApplicationCommentWritable> | null;
 };
 
 /**
@@ -4225,7 +4225,7 @@ export type ServiceProvidingGroupProductSuspensionWritable = {
   /**
    * Embedded service_providing_group_product_suspension_comment
    */
-  comment?: ServiceProvidingGroupProductSuspensionCommentWritable | null;
+  comment?: Array<ServiceProvidingGroupProductSuspensionCommentWritable> | null;
 };
 
 /**
@@ -4819,6 +4819,10 @@ export type ListControllableUnitData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/controllable_unit";
 };
@@ -4930,7 +4934,12 @@ export type ReadControllableUnitData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/controllable_unit/{id}";
 };
 
@@ -5206,6 +5215,10 @@ export type ListControllableUnitSuspensionData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/controllable_unit_suspension";
 };
@@ -5362,7 +5375,12 @@ export type ReadControllableUnitSuspensionData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/controllable_unit_suspension/{id}";
 };
 
@@ -5630,6 +5648,10 @@ export type ListControllableUnitSuspensionCommentData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/controllable_unit_suspension_comment";
 };
@@ -5741,7 +5763,12 @@ export type ReadControllableUnitSuspensionCommentData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/controllable_unit_suspension_comment/{id}";
 };
 
@@ -6021,6 +6048,10 @@ export type ListControllableUnitServiceProviderData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/controllable_unit_service_provider";
 };
@@ -6177,7 +6208,12 @@ export type ReadControllableUnitServiceProviderData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/controllable_unit_service_provider/{id}";
 };
 
@@ -6461,6 +6497,10 @@ export type ListServiceProvidingGroupData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group";
 };
@@ -6572,7 +6612,12 @@ export type ReadServiceProvidingGroupData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group/{id}";
 };
 
@@ -6852,6 +6897,10 @@ export type ListServiceProvidingGroupMembershipData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_membership";
 };
@@ -7008,7 +7057,12 @@ export type ReadServiceProvidingGroupMembershipData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_membership/{id}";
 };
 
@@ -7288,6 +7342,10 @@ export type ListServiceProvidingGroupGridPrequalificationData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_grid_prequalification";
 };
@@ -7399,7 +7457,12 @@ export type ReadServiceProvidingGroupGridPrequalificationData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_grid_prequalification/{id}";
 };
 
@@ -7667,6 +7730,10 @@ export type ListServiceProvidingGroupGridPrequalificationCommentData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_grid_prequalification_comment";
 };
@@ -7778,7 +7845,12 @@ export type ReadServiceProvidingGroupGridPrequalificationCommentData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_grid_prequalification_comment/{id}";
 };
 
@@ -8050,6 +8122,10 @@ export type ListServiceProvidingGroupGridSuspensionData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_grid_suspension";
 };
@@ -8206,7 +8282,12 @@ export type ReadServiceProvidingGroupGridSuspensionData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_grid_suspension/{id}";
 };
 
@@ -8474,6 +8555,10 @@ export type ListServiceProvidingGroupGridSuspensionCommentData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_grid_suspension_comment";
 };
@@ -8585,7 +8670,12 @@ export type ReadServiceProvidingGroupGridSuspensionCommentData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_grid_suspension_comment/{id}";
 };
 
@@ -8857,6 +8947,10 @@ export type ListEntityData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/entity";
 };
@@ -8965,7 +9059,12 @@ export type ReadEntityData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/entity/{id}";
 };
 
@@ -9098,6 +9197,10 @@ export type ListEntityClientData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/entity_client";
 };
@@ -9254,7 +9357,12 @@ export type ReadEntityClientData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/entity_client/{id}";
 };
 
@@ -9391,6 +9499,10 @@ export type ListPartyData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/party";
 };
@@ -9499,7 +9611,12 @@ export type ReadPartyData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/party/{id}";
 };
 
@@ -9773,6 +9890,10 @@ export type ListPartyMembershipData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/party_membership";
 };
@@ -9929,7 +10050,12 @@ export type ReadPartyMembershipData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/party_membership/{id}";
 };
 
@@ -10209,6 +10335,10 @@ export type ListIdentityData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/identity";
 };
@@ -10265,7 +10395,12 @@ export type ReadIdentityData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/identity/{id}";
 };
 
@@ -10340,6 +10475,10 @@ export type ListTechnicalResourceData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/technical_resource";
 };
@@ -10496,7 +10635,12 @@ export type ReadTechnicalResourceData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/technical_resource/{id}";
 };
 
@@ -10760,6 +10904,10 @@ export type ListEventData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/event";
 };
@@ -10815,7 +10963,12 @@ export type ReadEventData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/event/{id}";
 };
 
@@ -10889,6 +11042,10 @@ export type ListNotificationData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/notification";
 };
@@ -10946,7 +11103,12 @@ export type ReadNotificationData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/notification/{id}";
 };
 
@@ -11078,6 +11240,10 @@ export type ListAccountingPointData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/accounting_point";
 };
@@ -11135,7 +11301,12 @@ export type ReadAccountingPointData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/accounting_point/{id}";
 };
 
@@ -11215,6 +11386,10 @@ export type ListAccountingPointBalanceResponsiblePartyData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/accounting_point_balance_responsible_party";
 };
@@ -11299,6 +11474,10 @@ export type ListAccountingPointBiddingZoneData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/accounting_point_bidding_zone";
 };
@@ -11387,6 +11566,10 @@ export type ListAccountingPointEndUserData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/accounting_point_end_user";
 };
@@ -11475,6 +11658,10 @@ export type ListAccountingPointEnergySupplierData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/accounting_point_energy_supplier";
 };
@@ -11560,6 +11747,10 @@ export type ListMeteringGridAreaData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/metering_grid_area";
 };
@@ -11617,7 +11808,12 @@ export type ReadMeteringGridAreaData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/metering_grid_area/{id}";
 };
 
@@ -11697,6 +11893,10 @@ export type ListAccountingPointMeteringGridAreaData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/accounting_point_metering_grid_area";
 };
@@ -11781,6 +11981,10 @@ export type ListProductTypeData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/product_type";
 };
@@ -11838,7 +12042,12 @@ export type ReadProductTypeData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/product_type/{id}";
 };
 
@@ -11914,6 +12123,10 @@ export type ListSystemOperatorProductTypeData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/system_operator_product_type";
 };
@@ -12025,7 +12238,12 @@ export type ReadSystemOperatorProductTypeData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/system_operator_product_type/{id}";
 };
 
@@ -12301,6 +12519,10 @@ export type ListServiceProviderProductApplicationData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_provider_product_application";
 };
@@ -12412,7 +12634,12 @@ export type ReadServiceProviderProductApplicationData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_provider_product_application/{id}";
 };
 
@@ -12684,6 +12911,10 @@ export type ListServiceProviderProductApplicationCommentData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_provider_product_application_comment";
 };
@@ -12795,7 +13026,12 @@ export type ReadServiceProviderProductApplicationCommentData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_provider_product_application_comment/{id}";
 };
 
@@ -13067,6 +13303,10 @@ export type ListServiceProviderProductSuspensionData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_provider_product_suspension";
 };
@@ -13223,7 +13463,12 @@ export type ReadServiceProviderProductSuspensionData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_provider_product_suspension/{id}";
 };
 
@@ -13495,6 +13740,10 @@ export type ListServiceProviderProductSuspensionCommentData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_provider_product_suspension_comment";
 };
@@ -13606,7 +13855,12 @@ export type ReadServiceProviderProductSuspensionCommentData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_provider_product_suspension_comment/{id}";
 };
 
@@ -13878,6 +14132,10 @@ export type ListServiceProvidingGroupProductApplicationData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_product_application";
 };
@@ -13989,7 +14247,12 @@ export type ReadServiceProvidingGroupProductApplicationData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_product_application/{id}";
 };
 
@@ -14261,6 +14524,10 @@ export type ListServiceProvidingGroupProductApplicationCommentData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_product_application_comment";
 };
@@ -14372,7 +14639,12 @@ export type ReadServiceProvidingGroupProductApplicationCommentData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_product_application_comment/{id}";
 };
 
@@ -14646,6 +14918,10 @@ export type ListServiceProvidingGroupProductSuspensionData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_product_suspension";
 };
@@ -14802,7 +15078,12 @@ export type ReadServiceProvidingGroupProductSuspensionData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_product_suspension/{id}";
 };
 
@@ -15074,6 +15355,10 @@ export type ListServiceProvidingGroupProductSuspensionCommentData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_product_suspension_comment";
 };
@@ -15185,7 +15470,12 @@ export type ReadServiceProvidingGroupProductSuspensionCommentData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_product_suspension_comment/{id}";
 };
 
@@ -15451,6 +15741,10 @@ export type ListNoticeData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/notice";
 };
@@ -15506,7 +15800,12 @@ export type ReadNoticeData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/notice/{id}";
 };
 

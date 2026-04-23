@@ -30,7 +30,7 @@ class EventResponse:
         subject (None | str | Unset): The URI of the specific subject of the event within the resource pointed by
             `source`. Example: /technical_resource/2.
         data (None | str | Unset): The data of the event.
-        notification (None | NotificationResponse | Unset): Embedded notification
+        notification (list[NotificationResponse] | None | Unset): Embedded notification
     """
 
     id: int
@@ -40,12 +40,10 @@ class EventResponse:
     source: str
     subject: None | str | Unset = UNSET
     data: None | str | Unset = UNSET
-    notification: None | NotificationResponse | Unset = UNSET
+    notification: list[NotificationResponse] | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        from ..models.notification_response import NotificationResponse
-
         id = self.id
 
         specversion = self.specversion
@@ -68,11 +66,15 @@ class EventResponse:
         else:
             data = self.data
 
-        notification: dict[str, Any] | None | Unset
+        notification: list[dict[str, Any]] | None | Unset
         if isinstance(self.notification, Unset):
             notification = UNSET
-        elif isinstance(self.notification, NotificationResponse):
-            notification = self.notification.to_dict()
+        elif isinstance(self.notification, list):
+            notification = []
+            for notification_type_0_item_data in self.notification:
+                notification_type_0_item = notification_type_0_item_data.to_dict()
+                notification.append(notification_type_0_item)
+
         else:
             notification = self.notification
 
@@ -129,20 +131,25 @@ class EventResponse:
 
         data = _parse_data(d.pop("data", UNSET))
 
-        def _parse_notification(data: object) -> None | NotificationResponse | Unset:
+        def _parse_notification(data: object) -> list[NotificationResponse] | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             try:
-                if not isinstance(data, dict):
+                if not isinstance(data, list):
                     raise TypeError()
-                notification_type_0 = NotificationResponse.from_dict(data)
+                notification_type_0 = []
+                _notification_type_0 = data
+                for notification_type_0_item_data in _notification_type_0:
+                    notification_type_0_item = NotificationResponse.from_dict(notification_type_0_item_data)
+
+                    notification_type_0.append(notification_type_0_item)
 
                 return notification_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(None | NotificationResponse | Unset, data)
+            return cast(list[NotificationResponse] | None | Unset, data)
 
         notification = _parse_notification(d.pop("notification", UNSET))
 

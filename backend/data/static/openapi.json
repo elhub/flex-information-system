@@ -1130,7 +1130,10 @@
                         "description": "Embedded controllable_unit_suspension",
                         "oneOf": [
                             {
-                                "$ref": "#/components/schemas/controllable_unit_suspension_response"
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/controllable_unit_suspension_response"
+                                }
                             },
                             {
                                 "type": "null"
@@ -1142,7 +1145,10 @@
                         "description": "Embedded controllable_unit_service_provider",
                         "oneOf": [
                             {
-                                "$ref": "#/components/schemas/controllable_unit_service_provider_response"
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/controllable_unit_service_provider_response"
+                                }
                             },
                             {
                                 "type": "null"
@@ -1154,7 +1160,10 @@
                         "description": "Embedded service_providing_group_membership",
                         "oneOf": [
                             {
-                                "$ref": "#/components/schemas/service_providing_group_membership_response"
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_membership_response"
+                                }
                             },
                             {
                                 "type": "null"
@@ -1166,7 +1175,10 @@
                         "description": "Embedded technical_resource",
                         "oneOf": [
                             {
-                                "$ref": "#/components/schemas/technical_resource_response"
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/technical_resource_response"
+                                }
                             },
                             {
                                 "type": "null"
@@ -1293,7 +1305,10 @@
                         "description": "Embedded controllable_unit_suspension_comment",
                         "oneOf": [
                             {
-                                "$ref": "#/components/schemas/controllable_unit_suspension_comment_response"
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/controllable_unit_suspension_comment_response"
+                                }
                             },
                             {
                                 "type": "null"
@@ -1767,7 +1782,10 @@
                         "description": "Embedded service_providing_group_membership",
                         "oneOf": [
                             {
-                                "$ref": "#/components/schemas/service_providing_group_membership_response"
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_membership_response"
+                                }
                             },
                             {
                                 "type": "null"
@@ -1779,7 +1797,10 @@
                         "description": "Embedded service_providing_group_grid_prequalification",
                         "oneOf": [
                             {
-                                "$ref": "#/components/schemas/service_providing_group_grid_prequalification_response"
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_grid_prequalification_response"
+                                }
                             },
                             {
                                 "type": "null"
@@ -1791,7 +1812,10 @@
                         "description": "Embedded service_providing_group_grid_suspension",
                         "oneOf": [
                             {
-                                "$ref": "#/components/schemas/service_providing_group_grid_suspension_response"
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_grid_suspension_response"
+                                }
                             },
                             {
                                 "type": "null"
@@ -1803,7 +1827,10 @@
                         "description": "Embedded service_providing_group_product_application",
                         "oneOf": [
                             {
-                                "$ref": "#/components/schemas/service_providing_group_product_application_response"
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_product_application_response"
+                                }
                             },
                             {
                                 "type": "null"
@@ -1815,7 +1842,10 @@
                         "description": "Embedded service_providing_group_product_suspension",
                         "oneOf": [
                             {
-                                "$ref": "#/components/schemas/service_providing_group_product_suspension_response"
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_product_suspension_response"
+                                }
                             },
                             {
                                 "type": "null"
@@ -2105,7 +2135,10 @@
                         "description": "Embedded service_providing_group_grid_prequalification_comment",
                         "oneOf": [
                             {
-                                "$ref": "#/components/schemas/service_providing_group_grid_prequalification_comment_response"
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_grid_prequalification_comment_response"
+                                }
                             },
                             {
                                 "type": "null"
@@ -2355,7 +2388,10 @@
                         "description": "Embedded service_providing_group_grid_suspension_comment",
                         "oneOf": [
                             {
-                                "$ref": "#/components/schemas/service_providing_group_grid_suspension_comment_response"
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_grid_suspension_comment_response"
+                                }
                             },
                             {
                                 "type": "null"
@@ -2598,7 +2634,10 @@
                         "description": "Embedded entity_client",
                         "oneOf": [
                             {
-                                "$ref": "#/components/schemas/entity_client_response"
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/entity_client_response"
+                                }
                             },
                             {
                                 "type": "null"
@@ -2610,7 +2649,10 @@
                         "description": "Embedded party",
                         "oneOf": [
                             {
-                                "$ref": "#/components/schemas/party_response"
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/party_response"
+                                }
                             },
                             {
                                 "type": "null"
@@ -2622,7 +2664,10 @@
                         "description": "Embedded party_membership",
                         "oneOf": [
                             {
-                                "$ref": "#/components/schemas/party_membership_response"
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/party_membership_response"
+                                }
                             },
                             {
                                 "type": "null"
@@ -2634,7 +2679,10 @@
                         "description": "Embedded identity",
                         "oneOf": [
                             {
-                                "$ref": "#/components/schemas/identity_response"
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/identity_response"
+                                }
                             },
                             {
                                 "type": "null"
@@ -3639,7 +3687,10 @@
                         "description": "Embedded notification",
                         "oneOf": [
                             {
-                                "$ref": "#/components/schemas/notification_response"
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/notification_response"
+                                }
                             },
                             {
                                 "type": "null"
@@ -3791,7 +3842,10 @@
                         "description": "Embedded controllable_unit",
                         "oneOf": [
                             {
-                                "$ref": "#/components/schemas/controllable_unit_response"
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/controllable_unit_response"
+                                }
                             },
                             {
                                 "type": "null"
@@ -3815,7 +3869,10 @@
                         "description": "Embedded accounting_point_balance_responsible_party",
                         "oneOf": [
                             {
-                                "$ref": "#/components/schemas/accounting_point_balance_responsible_party_response"
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/accounting_point_balance_responsible_party_response"
+                                }
                             },
                             {
                                 "type": "null"
@@ -3827,7 +3884,10 @@
                         "description": "Embedded accounting_point_bidding_zone",
                         "oneOf": [
                             {
-                                "$ref": "#/components/schemas/accounting_point_bidding_zone_response"
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/accounting_point_bidding_zone_response"
+                                }
                             },
                             {
                                 "type": "null"
@@ -3839,7 +3899,10 @@
                         "description": "Embedded accounting_point_end_user",
                         "oneOf": [
                             {
-                                "$ref": "#/components/schemas/accounting_point_end_user_response"
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/accounting_point_end_user_response"
+                                }
                             },
                             {
                                 "type": "null"
@@ -3851,7 +3914,10 @@
                         "description": "Embedded accounting_point_energy_supplier",
                         "oneOf": [
                             {
-                                "$ref": "#/components/schemas/accounting_point_energy_supplier_response"
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/accounting_point_energy_supplier_response"
+                                }
                             },
                             {
                                 "type": "null"
@@ -3863,7 +3929,10 @@
                         "description": "Embedded accounting_point_metering_grid_area",
                         "oneOf": [
                             {
-                                "$ref": "#/components/schemas/accounting_point_metering_grid_area_response"
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/accounting_point_metering_grid_area_response"
+                                }
                             },
                             {
                                 "type": "null"
@@ -4162,7 +4231,10 @@
                         "description": "Embedded accounting_point_metering_grid_area",
                         "oneOf": [
                             {
-                                "$ref": "#/components/schemas/accounting_point_metering_grid_area_response"
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/accounting_point_metering_grid_area_response"
+                                }
                             },
                             {
                                 "type": "null"
@@ -4288,7 +4360,10 @@
                         "description": "Embedded system_operator_product_type",
                         "oneOf": [
                             {
-                                "$ref": "#/components/schemas/system_operator_product_type_response"
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/system_operator_product_type_response"
+                                }
                             },
                             {
                                 "type": "null"
@@ -4588,7 +4663,10 @@
                         "description": "Embedded service_provider_product_application_comment",
                         "oneOf": [
                             {
-                                "$ref": "#/components/schemas/service_provider_product_application_comment_response"
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_provider_product_application_comment_response"
+                                }
                             },
                             {
                                 "type": "null"
@@ -4876,7 +4954,10 @@
                         "description": "Embedded service_provider_product_suspension_comment",
                         "oneOf": [
                             {
-                                "$ref": "#/components/schemas/service_provider_product_suspension_comment_response"
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_provider_product_suspension_comment_response"
+                                }
                             },
                             {
                                 "type": "null"
@@ -5292,7 +5373,10 @@
                         "description": "Embedded service_providing_group_product_application_comment",
                         "oneOf": [
                             {
-                                "$ref": "#/components/schemas/service_providing_group_product_application_comment_response"
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_product_application_comment_response"
+                                }
                             },
                             {
                                 "type": "null"
@@ -5582,7 +5666,10 @@
                         "description": "Embedded service_providing_group_product_suspension_comment",
                         "oneOf": [
                             {
-                                "$ref": "#/components/schemas/service_providing_group_product_suspension_comment_response"
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_product_suspension_comment_response"
+                                }
                             },
                             {
                                 "type": "null"
@@ -6895,6 +6982,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -7244,6 +7339,16 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
                 ]
             },
             "patch": {
@@ -7759,6 +7864,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -8115,6 +8228,16 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
                 ]
             },
             "patch": {
@@ -8699,6 +8822,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -9048,6 +9179,16 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
                 ]
             },
             "patch": {
@@ -9573,6 +9714,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -9936,6 +10085,16 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
                 ]
             },
             "patch": {
@@ -10557,6 +10716,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -10906,6 +11073,16 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
                 ]
             },
             "patch": {
@@ -11430,6 +11607,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -11786,6 +11971,16 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
                 ]
             },
             "patch": {
@@ -12398,6 +12593,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -12754,6 +12957,16 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
                 ]
             },
             "patch": {
@@ -13251,6 +13464,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -13600,6 +13821,16 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
                 ]
             },
             "patch": {
@@ -14097,6 +14328,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -14453,6 +14692,16 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
                 ]
             },
             "patch": {
@@ -15037,6 +15286,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -15386,6 +15643,16 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
                 ]
             },
             "patch": {
@@ -15889,6 +16156,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -16229,6 +16504,16 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
                 ]
             },
             "patch": {
@@ -16422,6 +16707,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -16778,6 +17071,16 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
                 ]
             },
             "patch": {
@@ -17065,6 +17368,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -17414,6 +17725,16 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
                 ]
             },
             "patch": {
@@ -17937,6 +18258,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -18293,6 +18622,16 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
                 ]
             },
             "patch": {
@@ -18907,6 +19246,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -19162,6 +19509,16 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
                 ]
             }
         },
@@ -19236,6 +19593,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -19585,6 +19950,16 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
                 ]
             },
             "patch": {
@@ -20158,6 +20533,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -20383,6 +20766,16 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
                 ]
             }
         },
@@ -20458,6 +20851,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -20699,6 +21100,16 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
                 ]
             },
             "patch": {
@@ -20882,6 +21293,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -21116,6 +21535,16 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
                 ]
             }
         },
@@ -21199,6 +21628,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -21386,6 +21823,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -21583,6 +22028,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -21780,6 +22233,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -21975,6 +22436,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -22200,6 +22669,16 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
                 ]
             }
         },
@@ -22283,6 +22762,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -22470,6 +22957,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -22695,6 +23190,16 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
                 ]
             }
         },
@@ -22770,6 +23275,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -23126,6 +23639,16 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
                 ]
             },
             "patch": {
@@ -23643,6 +24166,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -24006,6 +24537,16 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
                 ]
             },
             "patch": {
@@ -24513,6 +25054,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -24862,6 +25411,16 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
                 ]
             },
             "patch": {
@@ -25369,6 +25928,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -25732,6 +26299,16 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
                 ]
             },
             "patch": {
@@ -26326,6 +26903,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -26675,6 +27260,16 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
                 ]
             },
             "patch": {
@@ -27182,6 +27777,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -27545,6 +28148,16 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
                 ]
             },
             "patch": {
@@ -28052,6 +28665,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -28401,6 +29022,16 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
                 ]
             },
             "patch": {
@@ -28908,6 +29539,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -29271,6 +29910,16 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
                 ]
             },
             "patch": {
@@ -29865,6 +30514,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -30214,6 +30871,16 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
                 ]
             },
             "patch": {
@@ -30701,6 +31368,14 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ],
                 "responses": {
@@ -30935,6 +31610,16 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
                 ]
             }
         }

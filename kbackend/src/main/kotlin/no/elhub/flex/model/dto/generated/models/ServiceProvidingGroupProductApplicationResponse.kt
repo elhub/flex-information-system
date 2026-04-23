@@ -1,6 +1,7 @@
 package no.elhub.flex.model.dto.generated.models
 
 import java.math.BigDecimal
+import kotlin.Any
 import kotlin.Long
 import kotlin.String
 import kotlin.collections.List
@@ -98,9 +99,8 @@ public data class ServiceProvidingGroupProductApplicationResponse(
   @SerialName("procuring_system_operator")
   public val procuringSystemOperator: PartyResponse? = null,
   /**
-   * Response schema - Comment made by a party involved in a service providing group product
-   * application.
+   * Embedded service_providing_group_product_application_comment
    */
   @SerialName("comment")
-  public val comment: ServiceProvidingGroupProductApplicationCommentResponse? = null,
+  public val comment: Any? = null,
 )

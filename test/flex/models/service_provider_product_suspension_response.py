@@ -38,7 +38,7 @@ class ServiceProviderProductSuspensionResponse:
             recorded_by (int): The identity that recorded the resource. Example: 145.
             procuring_system_operator (None | PartyResponse | Unset): Embedded party
             service_provider (None | PartyResponse | Unset): Embedded party
-            comment (None | ServiceProviderProductSuspensionCommentResponse | Unset): Embedded
+            comment (list[ServiceProviderProductSuspensionCommentResponse] | None | Unset): Embedded
                 service_provider_product_suspension_comment
     """
 
@@ -51,14 +51,11 @@ class ServiceProviderProductSuspensionResponse:
     recorded_by: int
     procuring_system_operator: None | PartyResponse | Unset = UNSET
     service_provider: None | PartyResponse | Unset = UNSET
-    comment: None | ServiceProviderProductSuspensionCommentResponse | Unset = UNSET
+    comment: list[ServiceProviderProductSuspensionCommentResponse] | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         from ..models.party_response import PartyResponse
-        from ..models.service_provider_product_suspension_comment_response import (
-            ServiceProviderProductSuspensionCommentResponse,
-        )
 
         id = self.id
 
@@ -90,11 +87,15 @@ class ServiceProviderProductSuspensionResponse:
         else:
             service_provider = self.service_provider
 
-        comment: dict[str, Any] | None | Unset
+        comment: list[dict[str, Any]] | None | Unset
         if isinstance(self.comment, Unset):
             comment = UNSET
-        elif isinstance(self.comment, ServiceProviderProductSuspensionCommentResponse):
-            comment = self.comment.to_dict()
+        elif isinstance(self.comment, list):
+            comment = []
+            for comment_type_0_item_data in self.comment:
+                comment_type_0_item = comment_type_0_item_data.to_dict()
+                comment.append(comment_type_0_item)
+
         else:
             comment = self.comment
 
@@ -176,20 +177,27 @@ class ServiceProviderProductSuspensionResponse:
 
         service_provider = _parse_service_provider(d.pop("service_provider", UNSET))
 
-        def _parse_comment(data: object) -> None | ServiceProviderProductSuspensionCommentResponse | Unset:
+        def _parse_comment(data: object) -> list[ServiceProviderProductSuspensionCommentResponse] | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             try:
-                if not isinstance(data, dict):
+                if not isinstance(data, list):
                     raise TypeError()
-                comment_type_0 = ServiceProviderProductSuspensionCommentResponse.from_dict(data)
+                comment_type_0 = []
+                _comment_type_0 = data
+                for comment_type_0_item_data in _comment_type_0:
+                    comment_type_0_item = ServiceProviderProductSuspensionCommentResponse.from_dict(
+                        comment_type_0_item_data
+                    )
+
+                    comment_type_0.append(comment_type_0_item)
 
                 return comment_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(None | ServiceProviderProductSuspensionCommentResponse | Unset, data)
+            return cast(list[ServiceProviderProductSuspensionCommentResponse] | None | Unset, data)
 
         comment = _parse_comment(d.pop("comment", UNSET))
 

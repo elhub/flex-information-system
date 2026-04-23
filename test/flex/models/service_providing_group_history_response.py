@@ -48,14 +48,15 @@ class ServiceProvidingGroupHistoryResponse:
         additional_information (None | str | Unset): Free text field for extra information about the service providing
             group if needed.
         service_provider (None | PartyResponse | Unset): Embedded party
-        membership (None | ServiceProvidingGroupMembershipResponse | Unset): Embedded service_providing_group_membership
-        grid_prequalification (None | ServiceProvidingGroupGridPrequalificationResponse | Unset): Embedded
+        membership (list[ServiceProvidingGroupMembershipResponse] | None | Unset): Embedded
+            service_providing_group_membership
+        grid_prequalification (list[ServiceProvidingGroupGridPrequalificationResponse] | None | Unset): Embedded
             service_providing_group_grid_prequalification
-        grid_suspension (None | ServiceProvidingGroupGridSuspensionResponse | Unset): Embedded
+        grid_suspension (list[ServiceProvidingGroupGridSuspensionResponse] | None | Unset): Embedded
             service_providing_group_grid_suspension
-        product_application (None | ServiceProvidingGroupProductApplicationResponse | Unset): Embedded
+        product_application (list[ServiceProvidingGroupProductApplicationResponse] | None | Unset): Embedded
             service_providing_group_product_application
-        product_suspension (None | ServiceProvidingGroupProductSuspensionResponse | Unset): Embedded
+        product_suspension (list[ServiceProvidingGroupProductSuspensionResponse] | None | Unset): Embedded
             service_providing_group_product_suspension
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (datetime.datetime | None | Unset): When the resource was replaced in the system. Example:
@@ -72,30 +73,17 @@ class ServiceProvidingGroupHistoryResponse:
     service_providing_group_id: int
     additional_information: None | str | Unset = UNSET
     service_provider: None | PartyResponse | Unset = UNSET
-    membership: None | ServiceProvidingGroupMembershipResponse | Unset = UNSET
-    grid_prequalification: None | ServiceProvidingGroupGridPrequalificationResponse | Unset = UNSET
-    grid_suspension: None | ServiceProvidingGroupGridSuspensionResponse | Unset = UNSET
-    product_application: None | ServiceProvidingGroupProductApplicationResponse | Unset = UNSET
-    product_suspension: None | ServiceProvidingGroupProductSuspensionResponse | Unset = UNSET
+    membership: list[ServiceProvidingGroupMembershipResponse] | None | Unset = UNSET
+    grid_prequalification: list[ServiceProvidingGroupGridPrequalificationResponse] | None | Unset = UNSET
+    grid_suspension: list[ServiceProvidingGroupGridSuspensionResponse] | None | Unset = UNSET
+    product_application: list[ServiceProvidingGroupProductApplicationResponse] | None | Unset = UNSET
+    product_suspension: list[ServiceProvidingGroupProductSuspensionResponse] | None | Unset = UNSET
     replaced_by: int | None | Unset = UNSET
     replaced_at: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         from ..models.party_response import PartyResponse
-        from ..models.service_providing_group_grid_prequalification_response import (
-            ServiceProvidingGroupGridPrequalificationResponse,
-        )
-        from ..models.service_providing_group_grid_suspension_response import (
-            ServiceProvidingGroupGridSuspensionResponse,
-        )
-        from ..models.service_providing_group_membership_response import ServiceProvidingGroupMembershipResponse
-        from ..models.service_providing_group_product_application_response import (
-            ServiceProvidingGroupProductApplicationResponse,
-        )
-        from ..models.service_providing_group_product_suspension_response import (
-            ServiceProvidingGroupProductSuspensionResponse,
-        )
 
         id = self.id
 
@@ -127,43 +115,63 @@ class ServiceProvidingGroupHistoryResponse:
         else:
             service_provider = self.service_provider
 
-        membership: dict[str, Any] | None | Unset
+        membership: list[dict[str, Any]] | None | Unset
         if isinstance(self.membership, Unset):
             membership = UNSET
-        elif isinstance(self.membership, ServiceProvidingGroupMembershipResponse):
-            membership = self.membership.to_dict()
+        elif isinstance(self.membership, list):
+            membership = []
+            for membership_type_0_item_data in self.membership:
+                membership_type_0_item = membership_type_0_item_data.to_dict()
+                membership.append(membership_type_0_item)
+
         else:
             membership = self.membership
 
-        grid_prequalification: dict[str, Any] | None | Unset
+        grid_prequalification: list[dict[str, Any]] | None | Unset
         if isinstance(self.grid_prequalification, Unset):
             grid_prequalification = UNSET
-        elif isinstance(self.grid_prequalification, ServiceProvidingGroupGridPrequalificationResponse):
-            grid_prequalification = self.grid_prequalification.to_dict()
+        elif isinstance(self.grid_prequalification, list):
+            grid_prequalification = []
+            for grid_prequalification_type_0_item_data in self.grid_prequalification:
+                grid_prequalification_type_0_item = grid_prequalification_type_0_item_data.to_dict()
+                grid_prequalification.append(grid_prequalification_type_0_item)
+
         else:
             grid_prequalification = self.grid_prequalification
 
-        grid_suspension: dict[str, Any] | None | Unset
+        grid_suspension: list[dict[str, Any]] | None | Unset
         if isinstance(self.grid_suspension, Unset):
             grid_suspension = UNSET
-        elif isinstance(self.grid_suspension, ServiceProvidingGroupGridSuspensionResponse):
-            grid_suspension = self.grid_suspension.to_dict()
+        elif isinstance(self.grid_suspension, list):
+            grid_suspension = []
+            for grid_suspension_type_0_item_data in self.grid_suspension:
+                grid_suspension_type_0_item = grid_suspension_type_0_item_data.to_dict()
+                grid_suspension.append(grid_suspension_type_0_item)
+
         else:
             grid_suspension = self.grid_suspension
 
-        product_application: dict[str, Any] | None | Unset
+        product_application: list[dict[str, Any]] | None | Unset
         if isinstance(self.product_application, Unset):
             product_application = UNSET
-        elif isinstance(self.product_application, ServiceProvidingGroupProductApplicationResponse):
-            product_application = self.product_application.to_dict()
+        elif isinstance(self.product_application, list):
+            product_application = []
+            for product_application_type_0_item_data in self.product_application:
+                product_application_type_0_item = product_application_type_0_item_data.to_dict()
+                product_application.append(product_application_type_0_item)
+
         else:
             product_application = self.product_application
 
-        product_suspension: dict[str, Any] | None | Unset
+        product_suspension: list[dict[str, Any]] | None | Unset
         if isinstance(self.product_suspension, Unset):
             product_suspension = UNSET
-        elif isinstance(self.product_suspension, ServiceProvidingGroupProductSuspensionResponse):
-            product_suspension = self.product_suspension.to_dict()
+        elif isinstance(self.product_suspension, list):
+            product_suspension = []
+            for product_suspension_type_0_item_data in self.product_suspension:
+                product_suspension_type_0_item = product_suspension_type_0_item_data.to_dict()
+                product_suspension.append(product_suspension_type_0_item)
+
         else:
             product_suspension = self.product_suspension
 
@@ -276,90 +284,129 @@ class ServiceProvidingGroupHistoryResponse:
 
         service_provider = _parse_service_provider(d.pop("service_provider", UNSET))
 
-        def _parse_membership(data: object) -> None | ServiceProvidingGroupMembershipResponse | Unset:
+        def _parse_membership(data: object) -> list[ServiceProvidingGroupMembershipResponse] | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             try:
-                if not isinstance(data, dict):
+                if not isinstance(data, list):
                     raise TypeError()
-                membership_type_0 = ServiceProvidingGroupMembershipResponse.from_dict(data)
+                membership_type_0 = []
+                _membership_type_0 = data
+                for membership_type_0_item_data in _membership_type_0:
+                    membership_type_0_item = ServiceProvidingGroupMembershipResponse.from_dict(
+                        membership_type_0_item_data
+                    )
+
+                    membership_type_0.append(membership_type_0_item)
 
                 return membership_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(None | ServiceProvidingGroupMembershipResponse | Unset, data)
+            return cast(list[ServiceProvidingGroupMembershipResponse] | None | Unset, data)
 
         membership = _parse_membership(d.pop("membership", UNSET))
 
         def _parse_grid_prequalification(
             data: object,
-        ) -> None | ServiceProvidingGroupGridPrequalificationResponse | Unset:
+        ) -> list[ServiceProvidingGroupGridPrequalificationResponse] | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             try:
-                if not isinstance(data, dict):
+                if not isinstance(data, list):
                     raise TypeError()
-                grid_prequalification_type_0 = ServiceProvidingGroupGridPrequalificationResponse.from_dict(data)
+                grid_prequalification_type_0 = []
+                _grid_prequalification_type_0 = data
+                for grid_prequalification_type_0_item_data in _grid_prequalification_type_0:
+                    grid_prequalification_type_0_item = ServiceProvidingGroupGridPrequalificationResponse.from_dict(
+                        grid_prequalification_type_0_item_data
+                    )
+
+                    grid_prequalification_type_0.append(grid_prequalification_type_0_item)
 
                 return grid_prequalification_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(None | ServiceProvidingGroupGridPrequalificationResponse | Unset, data)
+            return cast(list[ServiceProvidingGroupGridPrequalificationResponse] | None | Unset, data)
 
         grid_prequalification = _parse_grid_prequalification(d.pop("grid_prequalification", UNSET))
 
-        def _parse_grid_suspension(data: object) -> None | ServiceProvidingGroupGridSuspensionResponse | Unset:
+        def _parse_grid_suspension(data: object) -> list[ServiceProvidingGroupGridSuspensionResponse] | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             try:
-                if not isinstance(data, dict):
+                if not isinstance(data, list):
                     raise TypeError()
-                grid_suspension_type_0 = ServiceProvidingGroupGridSuspensionResponse.from_dict(data)
+                grid_suspension_type_0 = []
+                _grid_suspension_type_0 = data
+                for grid_suspension_type_0_item_data in _grid_suspension_type_0:
+                    grid_suspension_type_0_item = ServiceProvidingGroupGridSuspensionResponse.from_dict(
+                        grid_suspension_type_0_item_data
+                    )
+
+                    grid_suspension_type_0.append(grid_suspension_type_0_item)
 
                 return grid_suspension_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(None | ServiceProvidingGroupGridSuspensionResponse | Unset, data)
+            return cast(list[ServiceProvidingGroupGridSuspensionResponse] | None | Unset, data)
 
         grid_suspension = _parse_grid_suspension(d.pop("grid_suspension", UNSET))
 
-        def _parse_product_application(data: object) -> None | ServiceProvidingGroupProductApplicationResponse | Unset:
+        def _parse_product_application(
+            data: object,
+        ) -> list[ServiceProvidingGroupProductApplicationResponse] | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             try:
-                if not isinstance(data, dict):
+                if not isinstance(data, list):
                     raise TypeError()
-                product_application_type_0 = ServiceProvidingGroupProductApplicationResponse.from_dict(data)
+                product_application_type_0 = []
+                _product_application_type_0 = data
+                for product_application_type_0_item_data in _product_application_type_0:
+                    product_application_type_0_item = ServiceProvidingGroupProductApplicationResponse.from_dict(
+                        product_application_type_0_item_data
+                    )
+
+                    product_application_type_0.append(product_application_type_0_item)
 
                 return product_application_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(None | ServiceProvidingGroupProductApplicationResponse | Unset, data)
+            return cast(list[ServiceProvidingGroupProductApplicationResponse] | None | Unset, data)
 
         product_application = _parse_product_application(d.pop("product_application", UNSET))
 
-        def _parse_product_suspension(data: object) -> None | ServiceProvidingGroupProductSuspensionResponse | Unset:
+        def _parse_product_suspension(
+            data: object,
+        ) -> list[ServiceProvidingGroupProductSuspensionResponse] | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             try:
-                if not isinstance(data, dict):
+                if not isinstance(data, list):
                     raise TypeError()
-                product_suspension_type_0 = ServiceProvidingGroupProductSuspensionResponse.from_dict(data)
+                product_suspension_type_0 = []
+                _product_suspension_type_0 = data
+                for product_suspension_type_0_item_data in _product_suspension_type_0:
+                    product_suspension_type_0_item = ServiceProvidingGroupProductSuspensionResponse.from_dict(
+                        product_suspension_type_0_item_data
+                    )
+
+                    product_suspension_type_0.append(product_suspension_type_0_item)
 
                 return product_suspension_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(None | ServiceProvidingGroupProductSuspensionResponse | Unset, data)
+            return cast(list[ServiceProvidingGroupProductSuspensionResponse] | None | Unset, data)
 
         product_suspension = _parse_product_suspension(d.pop("product_suspension", UNSET))
 

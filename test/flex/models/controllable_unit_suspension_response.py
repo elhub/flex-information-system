@@ -35,7 +35,7 @@ class ControllableUnitSuspensionResponse:
         recorded_by (int): The identity that recorded the resource. Example: 145.
         controllable_unit (ControllableUnitResponse | None | Unset): Embedded controllable_unit
         impacted_system_operator (None | PartyResponse | Unset): Embedded party
-        comment (ControllableUnitSuspensionCommentResponse | None | Unset): Embedded
+        comment (list[ControllableUnitSuspensionCommentResponse] | None | Unset): Embedded
             controllable_unit_suspension_comment
     """
 
@@ -47,12 +47,11 @@ class ControllableUnitSuspensionResponse:
     recorded_by: int
     controllable_unit: ControllableUnitResponse | None | Unset = UNSET
     impacted_system_operator: None | PartyResponse | Unset = UNSET
-    comment: ControllableUnitSuspensionCommentResponse | None | Unset = UNSET
+    comment: list[ControllableUnitSuspensionCommentResponse] | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         from ..models.controllable_unit_response import ControllableUnitResponse
-        from ..models.controllable_unit_suspension_comment_response import ControllableUnitSuspensionCommentResponse
         from ..models.party_response import PartyResponse
 
         id = self.id
@@ -83,11 +82,15 @@ class ControllableUnitSuspensionResponse:
         else:
             impacted_system_operator = self.impacted_system_operator
 
-        comment: dict[str, Any] | None | Unset
+        comment: list[dict[str, Any]] | None | Unset
         if isinstance(self.comment, Unset):
             comment = UNSET
-        elif isinstance(self.comment, ControllableUnitSuspensionCommentResponse):
-            comment = self.comment.to_dict()
+        elif isinstance(self.comment, list):
+            comment = []
+            for comment_type_0_item_data in self.comment:
+                comment_type_0_item = comment_type_0_item_data.to_dict()
+                comment.append(comment_type_0_item)
+
         else:
             comment = self.comment
 
@@ -165,20 +168,25 @@ class ControllableUnitSuspensionResponse:
 
         impacted_system_operator = _parse_impacted_system_operator(d.pop("impacted_system_operator", UNSET))
 
-        def _parse_comment(data: object) -> ControllableUnitSuspensionCommentResponse | None | Unset:
+        def _parse_comment(data: object) -> list[ControllableUnitSuspensionCommentResponse] | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             try:
-                if not isinstance(data, dict):
+                if not isinstance(data, list):
                     raise TypeError()
-                comment_type_0 = ControllableUnitSuspensionCommentResponse.from_dict(data)
+                comment_type_0 = []
+                _comment_type_0 = data
+                for comment_type_0_item_data in _comment_type_0:
+                    comment_type_0_item = ControllableUnitSuspensionCommentResponse.from_dict(comment_type_0_item_data)
+
+                    comment_type_0.append(comment_type_0_item)
 
                 return comment_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(ControllableUnitSuspensionCommentResponse | None | Unset, data)
+            return cast(list[ControllableUnitSuspensionCommentResponse] | None | Unset, data)
 
         comment = _parse_comment(d.pop("comment", UNSET))
 

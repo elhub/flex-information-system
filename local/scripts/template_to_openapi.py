@@ -707,19 +707,6 @@ def generate_openapi_document(base_file, resources_file, servers_file):
             if field_info.get("x-filter") is True
         ]
 
-        # add foreign key relationships
-        for rel in rels:
-            base["components"]["schemas"][rel.child.resource + "_response"][
-                "properties"
-            ][rel.name] = {
-                "description": f"Embedded {rel.parent.resource}",
-                "oneOf": [
-                    {"$ref": f"#/components/schemas/{rel.parent.resource}_response"},
-                    {"type": "null"},
-                ],
-                "nullable": True,
-            }
-
         # generate endpoint for each operation
 
         for operation in resource["operations"]:
@@ -818,7 +805,40 @@ def generate_openapi_document(base_file, resources_file, servers_file):
         # servers
         base["servers"] = [servers["api"]["dev"]]
 
-    # ---- export ----
+    for rel in rels:
+        # add foreign key relationships
+        schema = {"$ref": f"#/components/schemas/{rel.parent.resource}_response"}
+
+        base["components"]["schemas"][rel.child.resource + "_response"]["properties"][
+            rel.name
+        ] = {
+            "description": f"Embedded {rel.parent.resource}",
+            "oneOf": [
+                (
+                    schema
+                    if rel.cardinality == "one"
+                    else {"type": "array", "items": schema}
+                ),
+                {"type": "null"},
+            ],
+            "nullable": True,
+        }
+
+    # any resource with a relationship should also have the embed query parameter on list and read endpoints
+    for resource in set(rel.child.resource for rel in rels):
+        for endpoint in [f"/{resource}", f"/{resource}/{{id}}"]:
+            if endpoint in base["paths"] and "get" in base["paths"][endpoint]:
+                if "parameters" not in base["paths"][endpoint]["get"]:
+                    base["paths"][endpoint]["get"]["parameters"] = []
+                base["paths"][endpoint]["get"]["parameters"].append(
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {"type": "string"},
+                        "description": "Comma-separated list of related resources to embed in the response.",
+                    }
+                )
+        # ---- export ----
 
     print(json.dumps(base, indent=4, default=str))
 

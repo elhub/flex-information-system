@@ -1,5 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
+import kotlin.Any
 import kotlin.Long
 import kotlin.String
 import kotlin.time.Instant
@@ -67,33 +68,30 @@ public data class ServiceProvidingGroupHistoryResponse(
   @SerialName("service_provider")
   public val serviceProvider: PartyResponse? = null,
   /**
-   * Response schema - Membership relation of controllable unit in service providing group
+   * Embedded service_providing_group_membership
    */
   @SerialName("membership")
-  public val membership: ServiceProvidingGroupMembershipResponse? = null,
+  public val membership: Any? = null,
   /**
-   * Response schema - Grid prequalification for service providing group
+   * Embedded service_providing_group_grid_prequalification
    */
   @SerialName("grid_prequalification")
-  public val gridPrequalification: ServiceProvidingGroupGridPrequalificationResponse? = null,
+  public val gridPrequalification: Any? = null,
   /**
-   * Response schema - The relation allowing an impacted system operator to temporarily suspend a
-   * service providing group from delivering services.
+   * Embedded service_providing_group_grid_suspension
    */
   @SerialName("grid_suspension")
-  public val gridSuspension: ServiceProvidingGroupGridSuspensionResponse? = null,
+  public val gridSuspension: Any? = null,
   /**
-   * Response schema - Relation between a service providing group and a system operator for a
-   * product type, for the SPG to deliver a product to the SO later.
+   * Embedded service_providing_group_product_application
    */
   @SerialName("product_application")
-  public val productApplication: ServiceProvidingGroupProductApplicationResponse? = null,
+  public val productApplication: Any? = null,
   /**
-   * Response schema - The relation allowing a procuring system operator to temporarily suspend a
-   * service providing group from delivering products of certain types.
+   * Embedded service_providing_group_product_suspension
    */
   @SerialName("product_suspension")
-  public val productSuspension: ServiceProvidingGroupProductSuspensionResponse? = null,
+  public val productSuspension: Any? = null,
   /**
    * Reference to the resource that was updated.
    */

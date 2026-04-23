@@ -46,10 +46,10 @@ class EntityResponse:
             recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
                 2023-12-31T23:59:00+00:00.
             recorded_by (int): The identity that recorded the resource. Example: 145.
-            client (EntityClientResponse | None | Unset): Embedded entity_client
-            party (None | PartyResponse | Unset): Embedded party
-            party_membership (None | PartyMembershipResponse | Unset): Embedded party_membership
-            identity (IdentityResponse | None | Unset): Embedded identity
+            client (list[EntityClientResponse] | None | Unset): Embedded entity_client
+            party (list[PartyResponse] | None | Unset): Embedded party
+            party_membership (list[PartyMembershipResponse] | None | Unset): Embedded party_membership
+            identity (list[IdentityResponse] | None | Unset): Embedded identity
     """
 
     id: int
@@ -59,18 +59,13 @@ class EntityResponse:
     type_: EntityType
     recorded_at: datetime.datetime
     recorded_by: int
-    client: EntityClientResponse | None | Unset = UNSET
-    party: None | PartyResponse | Unset = UNSET
-    party_membership: None | PartyMembershipResponse | Unset = UNSET
-    identity: IdentityResponse | None | Unset = UNSET
+    client: list[EntityClientResponse] | None | Unset = UNSET
+    party: list[PartyResponse] | None | Unset = UNSET
+    party_membership: list[PartyMembershipResponse] | None | Unset = UNSET
+    identity: list[IdentityResponse] | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        from ..models.entity_client_response import EntityClientResponse
-        from ..models.identity_response import IdentityResponse
-        from ..models.party_membership_response import PartyMembershipResponse
-        from ..models.party_response import PartyResponse
-
         id = self.id
 
         business_id = self.business_id
@@ -85,35 +80,51 @@ class EntityResponse:
 
         recorded_by = self.recorded_by
 
-        client: dict[str, Any] | None | Unset
+        client: list[dict[str, Any]] | None | Unset
         if isinstance(self.client, Unset):
             client = UNSET
-        elif isinstance(self.client, EntityClientResponse):
-            client = self.client.to_dict()
+        elif isinstance(self.client, list):
+            client = []
+            for client_type_0_item_data in self.client:
+                client_type_0_item = client_type_0_item_data.to_dict()
+                client.append(client_type_0_item)
+
         else:
             client = self.client
 
-        party: dict[str, Any] | None | Unset
+        party: list[dict[str, Any]] | None | Unset
         if isinstance(self.party, Unset):
             party = UNSET
-        elif isinstance(self.party, PartyResponse):
-            party = self.party.to_dict()
+        elif isinstance(self.party, list):
+            party = []
+            for party_type_0_item_data in self.party:
+                party_type_0_item = party_type_0_item_data.to_dict()
+                party.append(party_type_0_item)
+
         else:
             party = self.party
 
-        party_membership: dict[str, Any] | None | Unset
+        party_membership: list[dict[str, Any]] | None | Unset
         if isinstance(self.party_membership, Unset):
             party_membership = UNSET
-        elif isinstance(self.party_membership, PartyMembershipResponse):
-            party_membership = self.party_membership.to_dict()
+        elif isinstance(self.party_membership, list):
+            party_membership = []
+            for party_membership_type_0_item_data in self.party_membership:
+                party_membership_type_0_item = party_membership_type_0_item_data.to_dict()
+                party_membership.append(party_membership_type_0_item)
+
         else:
             party_membership = self.party_membership
 
-        identity: dict[str, Any] | None | Unset
+        identity: list[dict[str, Any]] | None | Unset
         if isinstance(self.identity, Unset):
             identity = UNSET
-        elif isinstance(self.identity, IdentityResponse):
-            identity = self.identity.to_dict()
+        elif isinstance(self.identity, list):
+            identity = []
+            for identity_type_0_item_data in self.identity:
+                identity_type_0_item = identity_type_0_item_data.to_dict()
+                identity.append(identity_type_0_item)
+
         else:
             identity = self.identity
 
@@ -163,71 +174,91 @@ class EntityResponse:
 
         recorded_by = d.pop("recorded_by")
 
-        def _parse_client(data: object) -> EntityClientResponse | None | Unset:
+        def _parse_client(data: object) -> list[EntityClientResponse] | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             try:
-                if not isinstance(data, dict):
+                if not isinstance(data, list):
                     raise TypeError()
-                client_type_0 = EntityClientResponse.from_dict(data)
+                client_type_0 = []
+                _client_type_0 = data
+                for client_type_0_item_data in _client_type_0:
+                    client_type_0_item = EntityClientResponse.from_dict(client_type_0_item_data)
+
+                    client_type_0.append(client_type_0_item)
 
                 return client_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(EntityClientResponse | None | Unset, data)
+            return cast(list[EntityClientResponse] | None | Unset, data)
 
         client = _parse_client(d.pop("client", UNSET))
 
-        def _parse_party(data: object) -> None | PartyResponse | Unset:
+        def _parse_party(data: object) -> list[PartyResponse] | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             try:
-                if not isinstance(data, dict):
+                if not isinstance(data, list):
                     raise TypeError()
-                party_type_0 = PartyResponse.from_dict(data)
+                party_type_0 = []
+                _party_type_0 = data
+                for party_type_0_item_data in _party_type_0:
+                    party_type_0_item = PartyResponse.from_dict(party_type_0_item_data)
+
+                    party_type_0.append(party_type_0_item)
 
                 return party_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(None | PartyResponse | Unset, data)
+            return cast(list[PartyResponse] | None | Unset, data)
 
         party = _parse_party(d.pop("party", UNSET))
 
-        def _parse_party_membership(data: object) -> None | PartyMembershipResponse | Unset:
+        def _parse_party_membership(data: object) -> list[PartyMembershipResponse] | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             try:
-                if not isinstance(data, dict):
+                if not isinstance(data, list):
                     raise TypeError()
-                party_membership_type_0 = PartyMembershipResponse.from_dict(data)
+                party_membership_type_0 = []
+                _party_membership_type_0 = data
+                for party_membership_type_0_item_data in _party_membership_type_0:
+                    party_membership_type_0_item = PartyMembershipResponse.from_dict(party_membership_type_0_item_data)
+
+                    party_membership_type_0.append(party_membership_type_0_item)
 
                 return party_membership_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(None | PartyMembershipResponse | Unset, data)
+            return cast(list[PartyMembershipResponse] | None | Unset, data)
 
         party_membership = _parse_party_membership(d.pop("party_membership", UNSET))
 
-        def _parse_identity(data: object) -> IdentityResponse | None | Unset:
+        def _parse_identity(data: object) -> list[IdentityResponse] | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             try:
-                if not isinstance(data, dict):
+                if not isinstance(data, list):
                     raise TypeError()
-                identity_type_0 = IdentityResponse.from_dict(data)
+                identity_type_0 = []
+                _identity_type_0 = data
+                for identity_type_0_item_data in _identity_type_0:
+                    identity_type_0_item = IdentityResponse.from_dict(identity_type_0_item_data)
+
+                    identity_type_0.append(identity_type_0_item)
 
                 return identity_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(IdentityResponse | None | Unset, data)
+            return cast(list[IdentityResponse] | None | Unset, data)
 
         identity = _parse_identity(d.pop("identity", UNSET))
 

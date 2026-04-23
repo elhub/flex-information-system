@@ -1,6 +1,7 @@
 package no.elhub.flex.model.dto.generated.models
 
 import java.math.BigDecimal
+import kotlin.Any
 import kotlin.Boolean
 import kotlin.Long
 import kotlin.String
@@ -85,26 +86,25 @@ public data class ControllableUnitHistoryResponse(
   @SerialName("accounting_point")
   public val accountingPoint: AccountingPointResponse? = null,
   /**
-   * Response schema - The relation allowing an impacted system operator to temporarily suspend a
-   * controllable unit.
+   * Embedded controllable_unit_suspension
    */
   @SerialName("suspension")
-  public val suspension: ControllableUnitSuspensionResponse? = null,
+  public val suspension: Any? = null,
   /**
-   * Response schema - Relation between controllable unit and service provider
+   * Embedded controllable_unit_service_provider
    */
   @SerialName("service_provider")
-  public val serviceProvider: ControllableUnitServiceProviderResponse? = null,
+  public val serviceProvider: Any? = null,
   /**
-   * Response schema - Membership relation of controllable unit in service providing group
+   * Embedded service_providing_group_membership
    */
   @SerialName("service_providing_group_membership")
-  public val serviceProvidingGroupMembership: ServiceProvidingGroupMembershipResponse? = null,
+  public val serviceProvidingGroupMembership: Any? = null,
   /**
-   * Response schema - Technical unit being part of a controllable unit.
+   * Embedded technical_resource
    */
   @SerialName("technical_resource")
-  public val technicalResource: TechnicalResourceResponse? = null,
+  public val technicalResource: Any? = null,
   /**
    * Reference to the resource that was updated.
    */

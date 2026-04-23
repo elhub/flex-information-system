@@ -1,5 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
+import kotlin.Any
 import kotlin.Long
 import kotlin.String
 import kotlin.time.Instant
@@ -57,34 +58,23 @@ public data class EntityResponse(
   @SerialName("recorded_by")
   public val recordedBy: Long? = null,
   /**
-   * Response schema - Client linked to an entity for client credentials and JWT grant
-   * authentication methods.
+   * Embedded entity_client
    */
   @SerialName("client")
-  public val client: EntityClientResponse? = null,
+  public val client: Any? = null,
   /**
-   * Response schema - The body that interacts with the Flexibility Information System
-   *
-   * A party is the thing that is authorized to access or modify data in the Flexiblity Information
-   * System.
-   *
-   * Example party types:
-   *
-   * * Service Provider
-   * * System Operator
-   * * End User
+   * Embedded party
    */
   @SerialName("party")
-  public val party: PartyResponse? = null,
+  public val party: Any? = null,
   /**
-   * Response schema - The relation between a party and entity.
+   * Embedded party_membership
    */
   @SerialName("party_membership")
-  public val partyMembership: PartyMembershipResponse? = null,
+  public val partyMembership: Any? = null,
   /**
-   * Response schema - Resource uniquely identifying a user by linking its entity and the
-   * potentially assumed party.
+   * Embedded identity
    */
   @SerialName("identity")
-  public val identity: IdentityResponse? = null,
+  public val identity: Any? = null,
 )

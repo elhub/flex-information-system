@@ -1,5 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
+import kotlin.Any
 import kotlin.Long
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
@@ -60,11 +61,10 @@ public data class ServiceProvidingGroupGridSuspensionHistoryResponse(
   @SerialName("service_providing_group")
   public val serviceProvidingGroup: ServiceProvidingGroupResponse? = null,
   /**
-   * Response schema - Comment made by a party involved in a service providing group grid
-   * suspension.
+   * Embedded service_providing_group_grid_suspension_comment
    */
   @SerialName("comment")
-  public val comment: ServiceProvidingGroupGridSuspensionCommentResponse? = null,
+  public val comment: Any? = null,
   /**
    * Reference to the resource that was updated.
    */

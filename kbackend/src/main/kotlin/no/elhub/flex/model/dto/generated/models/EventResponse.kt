@@ -1,5 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
+import kotlin.Any
 import kotlin.Long
 import kotlin.String
 import kotlin.time.Instant
@@ -47,8 +48,8 @@ public data class EventResponse(
   @SerialName("data")
   public val `data`: String? = null,
   /**
-   * Response schema - Notification about an event happening in the system.
+   * Embedded notification
    */
   @SerialName("notification")
-  public val notification: NotificationResponse? = null,
+  public val notification: Any? = null,
 )

@@ -25,7 +25,7 @@ class ProductTypeResponse:
         name (str): The name of the product type. Example: Manual Congestion.
         service (str): The service offered by the product type. Example: congestion management.
         products (str): Examples of products belonging to this product type. Example: LongFlex, ShortFlex.
-        system_operator_product_type (None | SystemOperatorProductTypeResponse | Unset): Embedded
+        system_operator_product_type (list[SystemOperatorProductTypeResponse] | None | Unset): Embedded
             system_operator_product_type
     """
 
@@ -34,12 +34,10 @@ class ProductTypeResponse:
     name: str
     service: str
     products: str
-    system_operator_product_type: None | SystemOperatorProductTypeResponse | Unset = UNSET
+    system_operator_product_type: list[SystemOperatorProductTypeResponse] | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        from ..models.system_operator_product_type_response import SystemOperatorProductTypeResponse
-
         id = self.id
 
         business_id = self.business_id
@@ -50,11 +48,15 @@ class ProductTypeResponse:
 
         products = self.products
 
-        system_operator_product_type: dict[str, Any] | None | Unset
+        system_operator_product_type: list[dict[str, Any]] | None | Unset
         if isinstance(self.system_operator_product_type, Unset):
             system_operator_product_type = UNSET
-        elif isinstance(self.system_operator_product_type, SystemOperatorProductTypeResponse):
-            system_operator_product_type = self.system_operator_product_type.to_dict()
+        elif isinstance(self.system_operator_product_type, list):
+            system_operator_product_type = []
+            for system_operator_product_type_type_0_item_data in self.system_operator_product_type:
+                system_operator_product_type_type_0_item = system_operator_product_type_type_0_item_data.to_dict()
+                system_operator_product_type.append(system_operator_product_type_type_0_item)
+
         else:
             system_operator_product_type = self.system_operator_product_type
 
@@ -89,20 +91,27 @@ class ProductTypeResponse:
 
         products = d.pop("products")
 
-        def _parse_system_operator_product_type(data: object) -> None | SystemOperatorProductTypeResponse | Unset:
+        def _parse_system_operator_product_type(data: object) -> list[SystemOperatorProductTypeResponse] | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             try:
-                if not isinstance(data, dict):
+                if not isinstance(data, list):
                     raise TypeError()
-                system_operator_product_type_type_0 = SystemOperatorProductTypeResponse.from_dict(data)
+                system_operator_product_type_type_0 = []
+                _system_operator_product_type_type_0 = data
+                for system_operator_product_type_type_0_item_data in _system_operator_product_type_type_0:
+                    system_operator_product_type_type_0_item = SystemOperatorProductTypeResponse.from_dict(
+                        system_operator_product_type_type_0_item_data
+                    )
+
+                    system_operator_product_type_type_0.append(system_operator_product_type_type_0_item)
 
                 return system_operator_product_type_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(None | SystemOperatorProductTypeResponse | Unset, data)
+            return cast(list[SystemOperatorProductTypeResponse] | None | Unset, data)
 
         system_operator_product_type = _parse_system_operator_product_type(d.pop("system_operator_product_type", UNSET))
 

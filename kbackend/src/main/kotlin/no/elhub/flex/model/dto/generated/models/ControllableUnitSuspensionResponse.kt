@@ -1,5 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
+import kotlin.Any
 import kotlin.Long
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
@@ -61,8 +62,8 @@ public data class ControllableUnitSuspensionResponse(
   @SerialName("impacted_system_operator")
   public val impactedSystemOperator: PartyResponse? = null,
   /**
-   * Response schema - Comment made by a party involved in a controllable unit suspension.
+   * Embedded controllable_unit_suspension_comment
    */
   @SerialName("comment")
-  public val comment: ControllableUnitSuspensionCommentResponse? = null,
+  public val comment: Any? = null,
 )

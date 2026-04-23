@@ -39,7 +39,7 @@ class ServiceProviderProductApplicationHistoryResponse:
             2022-08-08T12:00:00+02.
         service_provider (None | PartyResponse | Unset): Embedded party
         system_operator (None | PartyResponse | Unset): Embedded party
-        comment (None | ServiceProviderProductApplicationCommentResponse | Unset): Embedded
+        comment (list[ServiceProviderProductApplicationCommentResponse] | None | Unset): Embedded
             service_provider_product_application_comment
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (datetime.datetime | None | Unset): When the resource was replaced in the system. Example:
@@ -57,16 +57,13 @@ class ServiceProviderProductApplicationHistoryResponse:
     qualified_at: datetime.datetime | None | Unset = UNSET
     service_provider: None | PartyResponse | Unset = UNSET
     system_operator: None | PartyResponse | Unset = UNSET
-    comment: None | ServiceProviderProductApplicationCommentResponse | Unset = UNSET
+    comment: list[ServiceProviderProductApplicationCommentResponse] | None | Unset = UNSET
     replaced_by: int | None | Unset = UNSET
     replaced_at: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         from ..models.party_response import PartyResponse
-        from ..models.service_provider_product_application_comment_response import (
-            ServiceProviderProductApplicationCommentResponse,
-        )
 
         id = self.id
 
@@ -108,11 +105,15 @@ class ServiceProviderProductApplicationHistoryResponse:
         else:
             system_operator = self.system_operator
 
-        comment: dict[str, Any] | None | Unset
+        comment: list[dict[str, Any]] | None | Unset
         if isinstance(self.comment, Unset):
             comment = UNSET
-        elif isinstance(self.comment, ServiceProviderProductApplicationCommentResponse):
-            comment = self.comment.to_dict()
+        elif isinstance(self.comment, list):
+            comment = []
+            for comment_type_0_item_data in self.comment:
+                comment_type_0_item = comment_type_0_item_data.to_dict()
+                comment.append(comment_type_0_item)
+
         else:
             comment = self.comment
 
@@ -234,20 +235,27 @@ class ServiceProviderProductApplicationHistoryResponse:
 
         system_operator = _parse_system_operator(d.pop("system_operator", UNSET))
 
-        def _parse_comment(data: object) -> None | ServiceProviderProductApplicationCommentResponse | Unset:
+        def _parse_comment(data: object) -> list[ServiceProviderProductApplicationCommentResponse] | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             try:
-                if not isinstance(data, dict):
+                if not isinstance(data, list):
                     raise TypeError()
-                comment_type_0 = ServiceProviderProductApplicationCommentResponse.from_dict(data)
+                comment_type_0 = []
+                _comment_type_0 = data
+                for comment_type_0_item_data in _comment_type_0:
+                    comment_type_0_item = ServiceProviderProductApplicationCommentResponse.from_dict(
+                        comment_type_0_item_data
+                    )
+
+                    comment_type_0.append(comment_type_0_item)
 
                 return comment_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(None | ServiceProviderProductApplicationCommentResponse | Unset, data)
+            return cast(list[ServiceProviderProductApplicationCommentResponse] | None | Unset, data)
 
         comment = _parse_comment(d.pop("comment", UNSET))
 

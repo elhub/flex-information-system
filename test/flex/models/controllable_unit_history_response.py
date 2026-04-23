@@ -50,12 +50,12 @@ class ControllableUnitHistoryResponse:
         additional_information (None | str | Unset): Free text field for extra information about the controllable unit
             if needed.
         accounting_point (AccountingPointResponse | None | Unset): Embedded accounting_point
-        suspension (ControllableUnitSuspensionResponse | None | Unset): Embedded controllable_unit_suspension
-        service_provider (ControllableUnitServiceProviderResponse | None | Unset): Embedded
+        suspension (list[ControllableUnitSuspensionResponse] | None | Unset): Embedded controllable_unit_suspension
+        service_provider (list[ControllableUnitServiceProviderResponse] | None | Unset): Embedded
             controllable_unit_service_provider
-        service_providing_group_membership (None | ServiceProvidingGroupMembershipResponse | Unset): Embedded
+        service_providing_group_membership (list[ServiceProvidingGroupMembershipResponse] | None | Unset): Embedded
             service_providing_group_membership
-        technical_resource (None | TechnicalResourceResponse | Unset): Embedded technical_resource
+        technical_resource (list[TechnicalResourceResponse] | None | Unset): Embedded technical_resource
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (datetime.datetime | None | Unset): When the resource was replaced in the system. Example:
             2024-07-07T10:00:00+00:00.
@@ -75,20 +75,16 @@ class ControllableUnitHistoryResponse:
     start_date: datetime.date | None | Unset = UNSET
     additional_information: None | str | Unset = UNSET
     accounting_point: AccountingPointResponse | None | Unset = UNSET
-    suspension: ControllableUnitSuspensionResponse | None | Unset = UNSET
-    service_provider: ControllableUnitServiceProviderResponse | None | Unset = UNSET
-    service_providing_group_membership: None | ServiceProvidingGroupMembershipResponse | Unset = UNSET
-    technical_resource: None | TechnicalResourceResponse | Unset = UNSET
+    suspension: list[ControllableUnitSuspensionResponse] | None | Unset = UNSET
+    service_provider: list[ControllableUnitServiceProviderResponse] | None | Unset = UNSET
+    service_providing_group_membership: list[ServiceProvidingGroupMembershipResponse] | None | Unset = UNSET
+    technical_resource: list[TechnicalResourceResponse] | None | Unset = UNSET
     replaced_by: int | None | Unset = UNSET
     replaced_at: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         from ..models.accounting_point_response import AccountingPointResponse
-        from ..models.controllable_unit_service_provider_response import ControllableUnitServiceProviderResponse
-        from ..models.controllable_unit_suspension_response import ControllableUnitSuspensionResponse
-        from ..models.service_providing_group_membership_response import ServiceProvidingGroupMembershipResponse
-        from ..models.technical_resource_response import TechnicalResourceResponse
 
         id = self.id
 
@@ -134,35 +130,53 @@ class ControllableUnitHistoryResponse:
         else:
             accounting_point = self.accounting_point
 
-        suspension: dict[str, Any] | None | Unset
+        suspension: list[dict[str, Any]] | None | Unset
         if isinstance(self.suspension, Unset):
             suspension = UNSET
-        elif isinstance(self.suspension, ControllableUnitSuspensionResponse):
-            suspension = self.suspension.to_dict()
+        elif isinstance(self.suspension, list):
+            suspension = []
+            for suspension_type_0_item_data in self.suspension:
+                suspension_type_0_item = suspension_type_0_item_data.to_dict()
+                suspension.append(suspension_type_0_item)
+
         else:
             suspension = self.suspension
 
-        service_provider: dict[str, Any] | None | Unset
+        service_provider: list[dict[str, Any]] | None | Unset
         if isinstance(self.service_provider, Unset):
             service_provider = UNSET
-        elif isinstance(self.service_provider, ControllableUnitServiceProviderResponse):
-            service_provider = self.service_provider.to_dict()
+        elif isinstance(self.service_provider, list):
+            service_provider = []
+            for service_provider_type_0_item_data in self.service_provider:
+                service_provider_type_0_item = service_provider_type_0_item_data.to_dict()
+                service_provider.append(service_provider_type_0_item)
+
         else:
             service_provider = self.service_provider
 
-        service_providing_group_membership: dict[str, Any] | None | Unset
+        service_providing_group_membership: list[dict[str, Any]] | None | Unset
         if isinstance(self.service_providing_group_membership, Unset):
             service_providing_group_membership = UNSET
-        elif isinstance(self.service_providing_group_membership, ServiceProvidingGroupMembershipResponse):
-            service_providing_group_membership = self.service_providing_group_membership.to_dict()
+        elif isinstance(self.service_providing_group_membership, list):
+            service_providing_group_membership = []
+            for service_providing_group_membership_type_0_item_data in self.service_providing_group_membership:
+                service_providing_group_membership_type_0_item = (
+                    service_providing_group_membership_type_0_item_data.to_dict()
+                )
+                service_providing_group_membership.append(service_providing_group_membership_type_0_item)
+
         else:
             service_providing_group_membership = self.service_providing_group_membership
 
-        technical_resource: dict[str, Any] | None | Unset
+        technical_resource: list[dict[str, Any]] | None | Unset
         if isinstance(self.technical_resource, Unset):
             technical_resource = UNSET
-        elif isinstance(self.technical_resource, TechnicalResourceResponse):
-            technical_resource = self.technical_resource.to_dict()
+        elif isinstance(self.technical_resource, list):
+            technical_resource = []
+            for technical_resource_type_0_item_data in self.technical_resource:
+                technical_resource_type_0_item = technical_resource_type_0_item_data.to_dict()
+                technical_resource.append(technical_resource_type_0_item)
+
         else:
             technical_resource = self.technical_resource
 
@@ -292,75 +306,101 @@ class ControllableUnitHistoryResponse:
 
         accounting_point = _parse_accounting_point(d.pop("accounting_point", UNSET))
 
-        def _parse_suspension(data: object) -> ControllableUnitSuspensionResponse | None | Unset:
+        def _parse_suspension(data: object) -> list[ControllableUnitSuspensionResponse] | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             try:
-                if not isinstance(data, dict):
+                if not isinstance(data, list):
                     raise TypeError()
-                suspension_type_0 = ControllableUnitSuspensionResponse.from_dict(data)
+                suspension_type_0 = []
+                _suspension_type_0 = data
+                for suspension_type_0_item_data in _suspension_type_0:
+                    suspension_type_0_item = ControllableUnitSuspensionResponse.from_dict(suspension_type_0_item_data)
+
+                    suspension_type_0.append(suspension_type_0_item)
 
                 return suspension_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(ControllableUnitSuspensionResponse | None | Unset, data)
+            return cast(list[ControllableUnitSuspensionResponse] | None | Unset, data)
 
         suspension = _parse_suspension(d.pop("suspension", UNSET))
 
-        def _parse_service_provider(data: object) -> ControllableUnitServiceProviderResponse | None | Unset:
+        def _parse_service_provider(data: object) -> list[ControllableUnitServiceProviderResponse] | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             try:
-                if not isinstance(data, dict):
+                if not isinstance(data, list):
                     raise TypeError()
-                service_provider_type_0 = ControllableUnitServiceProviderResponse.from_dict(data)
+                service_provider_type_0 = []
+                _service_provider_type_0 = data
+                for service_provider_type_0_item_data in _service_provider_type_0:
+                    service_provider_type_0_item = ControllableUnitServiceProviderResponse.from_dict(
+                        service_provider_type_0_item_data
+                    )
+
+                    service_provider_type_0.append(service_provider_type_0_item)
 
                 return service_provider_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(ControllableUnitServiceProviderResponse | None | Unset, data)
+            return cast(list[ControllableUnitServiceProviderResponse] | None | Unset, data)
 
         service_provider = _parse_service_provider(d.pop("service_provider", UNSET))
 
         def _parse_service_providing_group_membership(
             data: object,
-        ) -> None | ServiceProvidingGroupMembershipResponse | Unset:
+        ) -> list[ServiceProvidingGroupMembershipResponse] | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             try:
-                if not isinstance(data, dict):
+                if not isinstance(data, list):
                     raise TypeError()
-                service_providing_group_membership_type_0 = ServiceProvidingGroupMembershipResponse.from_dict(data)
+                service_providing_group_membership_type_0 = []
+                _service_providing_group_membership_type_0 = data
+                for service_providing_group_membership_type_0_item_data in _service_providing_group_membership_type_0:
+                    service_providing_group_membership_type_0_item = ServiceProvidingGroupMembershipResponse.from_dict(
+                        service_providing_group_membership_type_0_item_data
+                    )
+
+                    service_providing_group_membership_type_0.append(service_providing_group_membership_type_0_item)
 
                 return service_providing_group_membership_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(None | ServiceProvidingGroupMembershipResponse | Unset, data)
+            return cast(list[ServiceProvidingGroupMembershipResponse] | None | Unset, data)
 
         service_providing_group_membership = _parse_service_providing_group_membership(
             d.pop("service_providing_group_membership", UNSET)
         )
 
-        def _parse_technical_resource(data: object) -> None | TechnicalResourceResponse | Unset:
+        def _parse_technical_resource(data: object) -> list[TechnicalResourceResponse] | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             try:
-                if not isinstance(data, dict):
+                if not isinstance(data, list):
                     raise TypeError()
-                technical_resource_type_0 = TechnicalResourceResponse.from_dict(data)
+                technical_resource_type_0 = []
+                _technical_resource_type_0 = data
+                for technical_resource_type_0_item_data in _technical_resource_type_0:
+                    technical_resource_type_0_item = TechnicalResourceResponse.from_dict(
+                        technical_resource_type_0_item_data
+                    )
+
+                    technical_resource_type_0.append(technical_resource_type_0_item)
 
                 return technical_resource_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(None | TechnicalResourceResponse | Unset, data)
+            return cast(list[TechnicalResourceResponse] | None | Unset, data)
 
         technical_resource = _parse_technical_resource(d.pop("technical_resource", UNSET))
 

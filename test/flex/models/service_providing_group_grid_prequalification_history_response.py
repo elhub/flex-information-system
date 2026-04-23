@@ -43,7 +43,7 @@ class ServiceProvidingGroupGridPrequalificationHistoryResponse:
             Example: 2023-01-08T10:00:00+01.
         service_providing_group (None | ServiceProvidingGroupResponse | Unset): Embedded service_providing_group
         impacted_system_operator (None | PartyResponse | Unset): Embedded party
-        comment (None | ServiceProvidingGroupGridPrequalificationCommentResponse | Unset): Embedded
+        comment (list[ServiceProvidingGroupGridPrequalificationCommentResponse] | None | Unset): Embedded
             service_providing_group_grid_prequalification_comment
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (datetime.datetime | None | Unset): When the resource was replaced in the system. Example:
@@ -60,16 +60,13 @@ class ServiceProvidingGroupGridPrequalificationHistoryResponse:
     prequalified_at: datetime.datetime | None | Unset = UNSET
     service_providing_group: None | ServiceProvidingGroupResponse | Unset = UNSET
     impacted_system_operator: None | PartyResponse | Unset = UNSET
-    comment: None | ServiceProvidingGroupGridPrequalificationCommentResponse | Unset = UNSET
+    comment: list[ServiceProvidingGroupGridPrequalificationCommentResponse] | None | Unset = UNSET
     replaced_by: int | None | Unset = UNSET
     replaced_at: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         from ..models.party_response import PartyResponse
-        from ..models.service_providing_group_grid_prequalification_comment_response import (
-            ServiceProvidingGroupGridPrequalificationCommentResponse,
-        )
         from ..models.service_providing_group_response import ServiceProvidingGroupResponse
 
         id = self.id
@@ -110,11 +107,15 @@ class ServiceProvidingGroupGridPrequalificationHistoryResponse:
         else:
             impacted_system_operator = self.impacted_system_operator
 
-        comment: dict[str, Any] | None | Unset
+        comment: list[dict[str, Any]] | None | Unset
         if isinstance(self.comment, Unset):
             comment = UNSET
-        elif isinstance(self.comment, ServiceProvidingGroupGridPrequalificationCommentResponse):
-            comment = self.comment.to_dict()
+        elif isinstance(self.comment, list):
+            comment = []
+            for comment_type_0_item_data in self.comment:
+                comment_type_0_item = comment_type_0_item_data.to_dict()
+                comment.append(comment_type_0_item)
+
         else:
             comment = self.comment
 
@@ -234,20 +235,29 @@ class ServiceProvidingGroupGridPrequalificationHistoryResponse:
 
         impacted_system_operator = _parse_impacted_system_operator(d.pop("impacted_system_operator", UNSET))
 
-        def _parse_comment(data: object) -> None | ServiceProvidingGroupGridPrequalificationCommentResponse | Unset:
+        def _parse_comment(
+            data: object,
+        ) -> list[ServiceProvidingGroupGridPrequalificationCommentResponse] | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             try:
-                if not isinstance(data, dict):
+                if not isinstance(data, list):
                     raise TypeError()
-                comment_type_0 = ServiceProvidingGroupGridPrequalificationCommentResponse.from_dict(data)
+                comment_type_0 = []
+                _comment_type_0 = data
+                for comment_type_0_item_data in _comment_type_0:
+                    comment_type_0_item = ServiceProvidingGroupGridPrequalificationCommentResponse.from_dict(
+                        comment_type_0_item_data
+                    )
+
+                    comment_type_0.append(comment_type_0_item)
 
                 return comment_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(None | ServiceProvidingGroupGridPrequalificationCommentResponse | Unset, data)
+            return cast(list[ServiceProvidingGroupGridPrequalificationCommentResponse] | None | Unset, data)
 
         comment = _parse_comment(d.pop("comment", UNSET))
 

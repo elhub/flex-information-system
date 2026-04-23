@@ -48,7 +48,7 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
             2021-08-08T10:00:00+02.
         service_providing_group (None | ServiceProvidingGroupResponse | Unset): Embedded service_providing_group
         procuring_system_operator (None | PartyResponse | Unset): Embedded party
-        comment (None | ServiceProvidingGroupProductApplicationCommentResponse | Unset): Embedded
+        comment (list[ServiceProvidingGroupProductApplicationCommentResponse] | None | Unset): Embedded
             service_providing_group_product_application_comment
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (datetime.datetime | None | Unset): When the resource was replaced in the system. Example:
@@ -70,16 +70,13 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
     verified_at: datetime.datetime | None | Unset = UNSET
     service_providing_group: None | ServiceProvidingGroupResponse | Unset = UNSET
     procuring_system_operator: None | PartyResponse | Unset = UNSET
-    comment: None | ServiceProvidingGroupProductApplicationCommentResponse | Unset = UNSET
+    comment: list[ServiceProvidingGroupProductApplicationCommentResponse] | None | Unset = UNSET
     replaced_by: int | None | Unset = UNSET
     replaced_at: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         from ..models.party_response import PartyResponse
-        from ..models.service_providing_group_product_application_comment_response import (
-            ServiceProvidingGroupProductApplicationCommentResponse,
-        )
         from ..models.service_providing_group_response import ServiceProvidingGroupResponse
 
         id = self.id
@@ -140,11 +137,15 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
         else:
             procuring_system_operator = self.procuring_system_operator
 
-        comment: dict[str, Any] | None | Unset
+        comment: list[dict[str, Any]] | None | Unset
         if isinstance(self.comment, Unset):
             comment = UNSET
-        elif isinstance(self.comment, ServiceProvidingGroupProductApplicationCommentResponse):
-            comment = self.comment.to_dict()
+        elif isinstance(self.comment, list):
+            comment = []
+            for comment_type_0_item_data in self.comment:
+                comment_type_0_item = comment_type_0_item_data.to_dict()
+                comment.append(comment_type_0_item)
+
         else:
             comment = self.comment
 
@@ -303,20 +304,27 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
 
         procuring_system_operator = _parse_procuring_system_operator(d.pop("procuring_system_operator", UNSET))
 
-        def _parse_comment(data: object) -> None | ServiceProvidingGroupProductApplicationCommentResponse | Unset:
+        def _parse_comment(data: object) -> list[ServiceProvidingGroupProductApplicationCommentResponse] | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             try:
-                if not isinstance(data, dict):
+                if not isinstance(data, list):
                     raise TypeError()
-                comment_type_0 = ServiceProvidingGroupProductApplicationCommentResponse.from_dict(data)
+                comment_type_0 = []
+                _comment_type_0 = data
+                for comment_type_0_item_data in _comment_type_0:
+                    comment_type_0_item = ServiceProvidingGroupProductApplicationCommentResponse.from_dict(
+                        comment_type_0_item_data
+                    )
+
+                    comment_type_0.append(comment_type_0_item)
 
                 return comment_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            return cast(None | ServiceProvidingGroupProductApplicationCommentResponse | Unset, data)
+            return cast(list[ServiceProvidingGroupProductApplicationCommentResponse] | None | Unset, data)
 
         comment = _parse_comment(d.pop("comment", UNSET))
 

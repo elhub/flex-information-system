@@ -1,5 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
+import kotlin.Any
 import kotlin.Long
 import kotlin.String
 import kotlin.time.Instant
@@ -37,10 +38,10 @@ public data class AccountingPointResponse(
   @SerialName("recorded_by")
   public val recordedBy: Long? = null,
   /**
-   * Response schema - Controllable unit
+   * Embedded controllable_unit
    */
   @SerialName("controllable_unit")
-  public val controllableUnit: ControllableUnitResponse? = null,
+  public val controllableUnit: Any? = null,
   /**
    * Response schema - The body that interacts with the Flexibility Information System
    *
@@ -56,28 +57,28 @@ public data class AccountingPointResponse(
   @SerialName("system_operator")
   public val systemOperator: PartyResponse? = null,
   /**
-   * Response schema - Relation linking a balance responsible party to an accounting point.
+   * Embedded accounting_point_balance_responsible_party
    */
   @SerialName("balance_responsible_party")
-  public val balanceResponsibleParty: AccountingPointBalanceResponsiblePartyResponse? = null,
+  public val balanceResponsibleParty: Any? = null,
   /**
-   * Response schema - Relation telling which bidding zone an accounting point belongs to.
+   * Embedded accounting_point_bidding_zone
    */
   @SerialName("bidding_zone")
-  public val biddingZone: AccountingPointBiddingZoneResponse? = null,
+  public val biddingZone: Any? = null,
   /**
-   * Response schema - Relation telling which end user an accounting point belongs to.
+   * Embedded accounting_point_end_user
    */
   @SerialName("end_user")
-  public val endUser: AccountingPointEndUserResponse? = null,
+  public val endUser: Any? = null,
   /**
-   * Response schema - Relation linking an energy supplier to an accounting point.
+   * Embedded accounting_point_energy_supplier
    */
   @SerialName("energy_supplier")
-  public val energySupplier: AccountingPointEnergySupplierResponse? = null,
+  public val energySupplier: Any? = null,
   /**
-   * Response schema - Relation telling which metering grid area an accounting point belongs to.
+   * Embedded accounting_point_metering_grid_area
    */
   @SerialName("metering_grid_area")
-  public val meteringGridArea: AccountingPointMeteringGridAreaResponse? = null,
+  public val meteringGridArea: Any? = null,
 )

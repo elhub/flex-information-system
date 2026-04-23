@@ -322,9 +322,10 @@ export const zTechnicalResourceBusinessIdType = z.enum([
 /**
  * The direction of the effect on the balance that the BRP takes responsibility for.
  */
-export const zAccountingPointBalanceResponsiblePartyEnergyDirection = z
-  .enum(["consumption", "production"])
-  .readonly();
+export const zAccountingPointBalanceResponsiblePartyEnergyDirection = z.enum([
+  "consumption",
+  "production",
+]);
 
 /**
  * The bidding zone of the accounting point.
@@ -340,7 +341,7 @@ export const zAccountingPointBiddingZoneBiddingZone = z.enum([
 /**
  * The type of the business identifier.
  */
-export const zMeteringGridAreaBusinessIdType = z.enum(["eic_y"]).readonly();
+export const zMeteringGridAreaBusinessIdType = z.enum(["eic_y"]);
 
 /**
  * The status of the relation.
@@ -1015,14 +1016,14 @@ export const zControllableUnit = z.object({
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
   accounting_point: z.lazy((): any => zAccountingPoint).nullish(),
-  suspension: z.lazy((): any => zControllableUnitSuspension).nullish(),
+  suspension: z.array(z.lazy((): any => zControllableUnitSuspension)).nullish(),
   service_provider: z
-    .lazy((): any => zControllableUnitServiceProvider)
+    .array(z.lazy((): any => zControllableUnitServiceProvider))
     .nullish(),
   service_providing_group_membership: z
-    .lazy((): any => zServiceProvidingGroupMembership)
+    .array(z.lazy((): any => zServiceProvidingGroupMembership))
     .nullish(),
-  technical_resource: z.lazy((): any => zTechnicalResource).nullish(),
+  technical_resource: z.array(z.lazy((): any => zTechnicalResource)).nullish(),
 });
 
 /**
@@ -1037,7 +1038,9 @@ export const zControllableUnitSuspension = z.object({
   recorded_by: z.coerce.number().readonly(),
   controllable_unit: zControllableUnit.nullish(),
   impacted_system_operator: z.lazy((): any => zParty).nullish(),
-  comment: z.lazy((): any => zControllableUnitSuspensionComment).nullish(),
+  comment: z
+    .array(z.lazy((): any => zControllableUnitSuspensionComment))
+    .nullish(),
 });
 
 /**
@@ -1086,18 +1089,20 @@ export const zServiceProvidingGroup = z.object({
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
   service_provider: z.lazy((): any => zParty).nullish(),
-  membership: z.lazy((): any => zServiceProvidingGroupMembership).nullish(),
+  membership: z
+    .array(z.lazy((): any => zServiceProvidingGroupMembership))
+    .nullish(),
   grid_prequalification: z
-    .lazy((): any => zServiceProvidingGroupGridPrequalification)
+    .array(z.lazy((): any => zServiceProvidingGroupGridPrequalification))
     .nullish(),
   grid_suspension: z
-    .lazy((): any => zServiceProvidingGroupGridSuspension)
+    .array(z.lazy((): any => zServiceProvidingGroupGridSuspension))
     .nullish(),
   product_application: z
-    .lazy((): any => zServiceProvidingGroupProductApplication)
+    .array(z.lazy((): any => zServiceProvidingGroupProductApplication))
     .nullish(),
   product_suspension: z
-    .lazy((): any => zServiceProvidingGroupProductSuspension)
+    .array(z.lazy((): any => zServiceProvidingGroupProductSuspension))
     .nullish(),
 });
 
@@ -1130,7 +1135,7 @@ export const zServiceProvidingGroupGridPrequalification = z.object({
   service_providing_group: zServiceProvidingGroup.nullish(),
   impacted_system_operator: z.lazy((): any => zParty).nullish(),
   comment: z
-    .lazy((): any => zServiceProvidingGroupGridPrequalificationComment)
+    .array(z.lazy((): any => zServiceProvidingGroupGridPrequalificationComment))
     .nullish(),
 });
 
@@ -1163,7 +1168,7 @@ export const zServiceProvidingGroupGridSuspension = z.object({
   impacted_system_operator: z.lazy((): any => zParty).nullish(),
   service_providing_group: zServiceProvidingGroup.nullish(),
   comment: z
-    .lazy((): any => zServiceProvidingGroupGridSuspensionComment)
+    .array(z.lazy((): any => zServiceProvidingGroupGridSuspensionComment))
     .nullish(),
 });
 
@@ -1201,10 +1206,10 @@ export const zEntity = z.object({
   type: zEntityType,
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
-  client: z.lazy((): any => zEntityClient).nullish(),
-  party: z.lazy((): any => zParty).nullish(),
-  party_membership: z.lazy((): any => zPartyMembership).nullish(),
-  identity: z.lazy((): any => zIdentity).nullish(),
+  client: z.array(z.lazy((): any => zEntityClient)).nullish(),
+  party: z.array(z.lazy((): any => zParty)).nullish(),
+  party_membership: z.array(z.lazy((): any => zPartyMembership)).nullish(),
+  identity: z.array(z.lazy((): any => zIdentity)).nullish(),
 });
 
 /**
@@ -1320,7 +1325,7 @@ export const zEvent = z.object({
     .readonly(),
   subject: z.string().readonly().optional(),
   data: z.string().readonly().optional(),
-  notification: z.lazy((): any => zNotification).nullish(),
+  notification: z.array(z.lazy((): any => zNotification)).nullish(),
 });
 
 /**
@@ -1349,16 +1354,20 @@ export const zAccountingPoint = z.object({
   system_operator_id: z.coerce.number().readonly(),
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
-  controllable_unit: zControllableUnit.nullish(),
+  controllable_unit: z.array(zControllableUnit).nullish(),
   system_operator: zParty.nullish(),
   balance_responsible_party: z
-    .lazy((): any => zAccountingPointBalanceResponsibleParty)
+    .array(z.lazy((): any => zAccountingPointBalanceResponsibleParty))
     .nullish(),
-  bidding_zone: z.lazy((): any => zAccountingPointBiddingZone).nullish(),
-  end_user: z.lazy((): any => zAccountingPointEndUser).nullish(),
-  energy_supplier: z.lazy((): any => zAccountingPointEnergySupplier).nullish(),
+  bidding_zone: z
+    .array(z.lazy((): any => zAccountingPointBiddingZone))
+    .nullish(),
+  end_user: z.array(z.lazy((): any => zAccountingPointEndUser)).nullish(),
+  energy_supplier: z
+    .array(z.lazy((): any => zAccountingPointEnergySupplier))
+    .nullish(),
   metering_grid_area: z
-    .lazy((): any => zAccountingPointMeteringGridArea)
+    .array(z.lazy((): any => zAccountingPointMeteringGridArea))
     .nullish(),
 });
 
@@ -1419,7 +1428,7 @@ export const zMeteringGridArea = z.object({
   business_id_type: zMeteringGridAreaBusinessIdType,
   name: z.string().max(128).readonly(),
   accounting_point_metering_grid_area: z
-    .lazy((): any => zAccountingPointMeteringGridArea)
+    .array(z.lazy((): any => zAccountingPointMeteringGridArea))
     .nullish(),
 });
 
@@ -1445,7 +1454,7 @@ export const zProductType = z.object({
   service: z.string().readonly(),
   products: z.string().readonly(),
   system_operator_product_type: z
-    .lazy((): any => zSystemOperatorProductType)
+    .array(z.lazy((): any => zSystemOperatorProductType))
     .nullish(),
 });
 
@@ -1478,7 +1487,7 @@ export const zServiceProviderProductApplication = z.object({
   service_provider: zParty.nullish(),
   system_operator: zParty.nullish(),
   comment: z
-    .lazy((): any => zServiceProviderProductApplicationComment)
+    .array(z.lazy((): any => zServiceProviderProductApplicationComment))
     .nullish(),
 });
 
@@ -1512,7 +1521,7 @@ export const zServiceProviderProductSuspension = z.object({
   procuring_system_operator: zParty.nullish(),
   service_provider: zParty.nullish(),
   comment: z
-    .lazy((): any => zServiceProviderProductSuspensionComment)
+    .array(z.lazy((): any => zServiceProviderProductSuspensionComment))
     .nullish(),
 });
 
@@ -1551,7 +1560,7 @@ export const zServiceProvidingGroupProductApplication = z.object({
   service_providing_group: zServiceProvidingGroup.nullish(),
   procuring_system_operator: zParty.nullish(),
   comment: z
-    .lazy((): any => zServiceProvidingGroupProductApplicationComment)
+    .array(z.lazy((): any => zServiceProvidingGroupProductApplicationComment))
     .nullish(),
 });
 
@@ -1585,7 +1594,7 @@ export const zServiceProvidingGroupProductSuspension = z.object({
   procuring_system_operator: zParty.nullish(),
   service_providing_group: zServiceProvidingGroup.nullish(),
   comment: z
-    .lazy((): any => zServiceProvidingGroupProductSuspensionComment)
+    .array(z.lazy((): any => zServiceProvidingGroupProductSuspensionComment))
     .nullish(),
 });
 
@@ -1920,14 +1929,18 @@ export const zControllableUnitWritable = z.object({
   accounting_point_id: z.coerce.number(),
   additional_information: z.string().optional(),
   accounting_point: z.lazy((): any => zAccountingPointWritable).nullish(),
-  suspension: z.lazy((): any => zControllableUnitSuspensionWritable).nullish(),
+  suspension: z
+    .array(z.lazy((): any => zControllableUnitSuspensionWritable))
+    .nullish(),
   service_provider: z
-    .lazy((): any => zControllableUnitServiceProviderWritable)
+    .array(z.lazy((): any => zControllableUnitServiceProviderWritable))
     .nullish(),
   service_providing_group_membership: z
-    .lazy((): any => zServiceProvidingGroupMembershipWritable)
+    .array(z.lazy((): any => zServiceProvidingGroupMembershipWritable))
     .nullish(),
-  technical_resource: z.lazy((): any => zTechnicalResourceWritable).nullish(),
+  technical_resource: z
+    .array(z.lazy((): any => zTechnicalResourceWritable))
+    .nullish(),
 });
 
 /**
@@ -1940,7 +1953,7 @@ export const zControllableUnitSuspensionWritable = z.object({
   controllable_unit: zControllableUnitWritable.nullish(),
   impacted_system_operator: z.lazy((): any => zPartyWritable).nullish(),
   comment: z
-    .lazy((): any => zControllableUnitSuspensionCommentWritable)
+    .array(z.lazy((): any => zControllableUnitSuspensionCommentWritable))
     .nullish(),
 });
 
@@ -1980,19 +1993,21 @@ export const zServiceProvidingGroupWritable = z.object({
   additional_information: z.string().optional(),
   service_provider: z.lazy((): any => zPartyWritable).nullish(),
   membership: z
-    .lazy((): any => zServiceProvidingGroupMembershipWritable)
+    .array(z.lazy((): any => zServiceProvidingGroupMembershipWritable))
     .nullish(),
   grid_prequalification: z
-    .lazy((): any => zServiceProvidingGroupGridPrequalificationWritable)
+    .array(
+      z.lazy((): any => zServiceProvidingGroupGridPrequalificationWritable),
+    )
     .nullish(),
   grid_suspension: z
-    .lazy((): any => zServiceProvidingGroupGridSuspensionWritable)
+    .array(z.lazy((): any => zServiceProvidingGroupGridSuspensionWritable))
     .nullish(),
   product_application: z
-    .lazy((): any => zServiceProvidingGroupProductApplicationWritable)
+    .array(z.lazy((): any => zServiceProvidingGroupProductApplicationWritable))
     .nullish(),
   product_suspension: z
-    .lazy((): any => zServiceProvidingGroupProductSuspensionWritable)
+    .array(z.lazy((): any => zServiceProvidingGroupProductSuspensionWritable))
     .nullish(),
 });
 
@@ -2019,7 +2034,11 @@ export const zServiceProvidingGroupGridPrequalificationWritable = z.object({
   service_providing_group: zServiceProvidingGroupWritable.nullish(),
   impacted_system_operator: z.lazy((): any => zPartyWritable).nullish(),
   comment: z
-    .lazy((): any => zServiceProvidingGroupGridPrequalificationCommentWritable)
+    .array(
+      z.lazy(
+        (): any => zServiceProvidingGroupGridPrequalificationCommentWritable,
+      ),
+    )
     .nullish(),
 });
 
@@ -2045,7 +2064,9 @@ export const zServiceProvidingGroupGridSuspensionWritable = z.object({
   impacted_system_operator: z.lazy((): any => zPartyWritable).nullish(),
   service_providing_group: zServiceProvidingGroupWritable.nullish(),
   comment: z
-    .lazy((): any => zServiceProvidingGroupGridSuspensionCommentWritable)
+    .array(
+      z.lazy((): any => zServiceProvidingGroupGridSuspensionCommentWritable),
+    )
     .nullish(),
 });
 
@@ -2075,10 +2096,12 @@ export const zEntityWritable = z.object({
   business_id_type: zEntityBusinessIdType,
   name: z.string(),
   type: zEntityType,
-  client: z.lazy((): any => zEntityClientWritable).nullish(),
-  party: z.lazy((): any => zPartyWritable).nullish(),
-  party_membership: z.lazy((): any => zPartyMembershipWritable).nullish(),
-  identity: z.lazy((): any => zIdentityWritable).nullish(),
+  client: z.array(z.lazy((): any => zEntityClientWritable)).nullish(),
+  party: z.array(z.lazy((): any => zPartyWritable)).nullish(),
+  party_membership: z
+    .array(z.lazy((): any => zPartyMembershipWritable))
+    .nullish(),
+  identity: z.array(z.lazy((): any => zIdentityWritable)).nullish(),
 });
 
 /**
@@ -2162,7 +2185,7 @@ export const zTechnicalResourceWritable = z.object({
  * Response schema - Event happening in the system.
  */
 export const zEventWritable = z.object({
-  notification: z.lazy((): any => zNotificationWritable).nullish(),
+  notification: z.array(z.lazy((): any => zNotificationWritable)).nullish(),
 });
 
 /**
@@ -2180,20 +2203,22 @@ export const zNotificationWritable = z.object({
  * Response schema - Accounting point for a controllable unit.
  */
 export const zAccountingPointWritable = z.object({
-  controllable_unit: zControllableUnitWritable.nullish(),
+  controllable_unit: z.array(zControllableUnitWritable).nullish(),
   system_operator: zPartyWritable.nullish(),
   balance_responsible_party: z
-    .lazy((): any => zAccountingPointBalanceResponsiblePartyWritable)
+    .array(z.lazy((): any => zAccountingPointBalanceResponsiblePartyWritable))
     .nullish(),
   bidding_zone: z
-    .lazy((): any => zAccountingPointBiddingZoneWritable)
+    .array(z.lazy((): any => zAccountingPointBiddingZoneWritable))
     .nullish(),
-  end_user: z.lazy((): any => zAccountingPointEndUserWritable).nullish(),
+  end_user: z
+    .array(z.lazy((): any => zAccountingPointEndUserWritable))
+    .nullish(),
   energy_supplier: z
-    .lazy((): any => zAccountingPointEnergySupplierWritable)
+    .array(z.lazy((): any => zAccountingPointEnergySupplierWritable))
     .nullish(),
   metering_grid_area: z
-    .lazy((): any => zAccountingPointMeteringGridAreaWritable)
+    .array(z.lazy((): any => zAccountingPointMeteringGridAreaWritable))
     .nullish(),
 });
 
@@ -2234,7 +2259,7 @@ export const zAccountingPointEnergySupplierWritable = z.object({
  */
 export const zMeteringGridAreaWritable = z.object({
   accounting_point_metering_grid_area: z
-    .lazy((): any => zAccountingPointMeteringGridAreaWritable)
+    .array(z.lazy((): any => zAccountingPointMeteringGridAreaWritable))
     .nullish(),
 });
 
@@ -2251,7 +2276,7 @@ export const zAccountingPointMeteringGridAreaWritable = z.object({
  */
 export const zProductTypeWritable = z.object({
   system_operator_product_type: z
-    .lazy((): any => zSystemOperatorProductTypeWritable)
+    .array(z.lazy((): any => zSystemOperatorProductTypeWritable))
     .nullish(),
 });
 
@@ -2278,7 +2303,7 @@ export const zServiceProviderProductApplicationWritable = z.object({
   service_provider: zPartyWritable.nullish(),
   system_operator: zPartyWritable.nullish(),
   comment: z
-    .lazy((): any => zServiceProviderProductApplicationCommentWritable)
+    .array(z.lazy((): any => zServiceProviderProductApplicationCommentWritable))
     .nullish(),
 });
 
@@ -2304,7 +2329,7 @@ export const zServiceProviderProductSuspensionWritable = z.object({
   procuring_system_operator: zPartyWritable.nullish(),
   service_provider: zPartyWritable.nullish(),
   comment: z
-    .lazy((): any => zServiceProviderProductSuspensionCommentWritable)
+    .array(z.lazy((): any => zServiceProviderProductSuspensionCommentWritable))
     .nullish(),
 });
 
@@ -2335,7 +2360,11 @@ export const zServiceProvidingGroupProductApplicationWritable = z.object({
   service_providing_group: zServiceProvidingGroupWritable.nullish(),
   procuring_system_operator: zPartyWritable.nullish(),
   comment: z
-    .lazy((): any => zServiceProvidingGroupProductApplicationCommentWritable)
+    .array(
+      z.lazy(
+        (): any => zServiceProvidingGroupProductApplicationCommentWritable,
+      ),
+    )
     .nullish(),
 });
 
@@ -2363,7 +2392,9 @@ export const zServiceProvidingGroupProductSuspensionWritable = z.object({
   procuring_system_operator: zPartyWritable.nullish(),
   service_providing_group: zServiceProvidingGroupWritable.nullish(),
   comment: z
-    .lazy((): any => zServiceProvidingGroupProductSuspensionCommentWritable)
+    .array(
+      z.lazy((): any => zServiceProvidingGroupProductSuspensionCommentWritable),
+    )
     .nullish(),
 });
 
@@ -2782,6 +2813,7 @@ export const zListControllableUnitQuery = z.object({
   order: z.string().optional(),
   offset: z.string().optional(),
   limit: z.string().optional(),
+  embed: z.string().optional(),
 });
 
 export const zListControllableUnitResponse = z.union([
@@ -2801,6 +2833,10 @@ export const zCreateControllableUnitResponse = zControllableUnit;
 
 export const zReadControllableUnitPath = z.object({
   id: z.coerce.number(),
+});
+
+export const zReadControllableUnitQuery = z.object({
+  embed: z.string().optional(),
 });
 
 /**
@@ -2874,6 +2910,7 @@ export const zListControllableUnitSuspensionQuery = z.object({
   order: z.string().optional(),
   offset: z.string().optional(),
   limit: z.string().optional(),
+  embed: z.string().optional(),
 });
 
 export const zListControllableUnitSuspensionResponse = z.union([
@@ -2895,6 +2932,10 @@ export const zCreateControllableUnitSuspensionResponse =
 
 export const zReadControllableUnitSuspensionPath = z.object({
   id: z.coerce.number(),
+});
+
+export const zReadControllableUnitSuspensionQuery = z.object({
+  embed: z.string().optional(),
 });
 
 /**
@@ -2969,6 +3010,7 @@ export const zListControllableUnitSuspensionCommentQuery = z.object({
   order: z.string().optional(),
   offset: z.string().optional(),
   limit: z.string().optional(),
+  embed: z.string().optional(),
 });
 
 export const zListControllableUnitSuspensionCommentResponse = z.union([
@@ -2990,6 +3032,10 @@ export const zCreateControllableUnitSuspensionCommentResponse =
 
 export const zReadControllableUnitSuspensionCommentPath = z.object({
   id: z.coerce.number(),
+});
+
+export const zReadControllableUnitSuspensionCommentQuery = z.object({
+  embed: z.string().optional(),
 });
 
 /**
@@ -3070,6 +3116,7 @@ export const zListControllableUnitServiceProviderQuery = z.object({
   order: z.string().optional(),
   offset: z.string().optional(),
   limit: z.string().optional(),
+  embed: z.string().optional(),
 });
 
 export const zListControllableUnitServiceProviderResponse = z.union([
@@ -3091,6 +3138,10 @@ export const zCreateControllableUnitServiceProviderResponse =
 
 export const zReadControllableUnitServiceProviderPath = z.object({
   id: z.coerce.number(),
+});
+
+export const zReadControllableUnitServiceProviderQuery = z.object({
+  embed: z.string().optional(),
 });
 
 /**
@@ -3172,6 +3223,7 @@ export const zListServiceProvidingGroupQuery = z.object({
   order: z.string().optional(),
   offset: z.string().optional(),
   limit: z.string().optional(),
+  embed: z.string().optional(),
 });
 
 export const zListServiceProvidingGroupResponse = z.union([
@@ -3192,6 +3244,10 @@ export const zCreateServiceProvidingGroupResponse = zServiceProvidingGroup;
 
 export const zReadServiceProvidingGroupPath = z.object({
   id: z.coerce.number(),
+});
+
+export const zReadServiceProvidingGroupQuery = z.object({
+  embed: z.string().optional(),
 });
 
 /**
@@ -3268,6 +3324,7 @@ export const zListServiceProvidingGroupMembershipQuery = z.object({
   order: z.string().optional(),
   offset: z.string().optional(),
   limit: z.string().optional(),
+  embed: z.string().optional(),
 });
 
 export const zListServiceProvidingGroupMembershipResponse = z.union([
@@ -3289,6 +3346,10 @@ export const zCreateServiceProvidingGroupMembershipResponse =
 
 export const zReadServiceProvidingGroupMembershipPath = z.object({
   id: z.coerce.number(),
+});
+
+export const zReadServiceProvidingGroupMembershipQuery = z.object({
+  embed: z.string().optional(),
 });
 
 /**
@@ -3369,6 +3430,7 @@ export const zListServiceProvidingGroupGridPrequalificationQuery = z.object({
   order: z.string().optional(),
   offset: z.string().optional(),
   limit: z.string().optional(),
+  embed: z.string().optional(),
 });
 
 export const zListServiceProvidingGroupGridPrequalificationResponse = z.union([
@@ -3390,6 +3452,10 @@ export const zCreateServiceProvidingGroupGridPrequalificationResponse =
 
 export const zReadServiceProvidingGroupGridPrequalificationPath = z.object({
   id: z.coerce.number(),
+});
+
+export const zReadServiceProvidingGroupGridPrequalificationQuery = z.object({
+  embed: z.string().optional(),
 });
 
 /**
@@ -3467,6 +3533,7 @@ export const zListServiceProvidingGroupGridPrequalificationCommentQuery =
     order: z.string().optional(),
     offset: z.string().optional(),
     limit: z.string().optional(),
+    embed: z.string().optional(),
   });
 
 export const zListServiceProvidingGroupGridPrequalificationCommentResponse =
@@ -3490,6 +3557,11 @@ export const zCreateServiceProvidingGroupGridPrequalificationCommentResponse =
 export const zReadServiceProvidingGroupGridPrequalificationCommentPath =
   z.object({
     id: z.coerce.number(),
+  });
+
+export const zReadServiceProvidingGroupGridPrequalificationCommentQuery =
+  z.object({
+    embed: z.string().optional(),
   });
 
 /**
@@ -3566,6 +3638,7 @@ export const zListServiceProvidingGroupGridSuspensionQuery = z.object({
   order: z.string().optional(),
   offset: z.string().optional(),
   limit: z.string().optional(),
+  embed: z.string().optional(),
 });
 
 export const zListServiceProvidingGroupGridSuspensionResponse = z.union([
@@ -3587,6 +3660,10 @@ export const zCreateServiceProvidingGroupGridSuspensionResponse =
 
 export const zReadServiceProvidingGroupGridSuspensionPath = z.object({
   id: z.coerce.number(),
+});
+
+export const zReadServiceProvidingGroupGridSuspensionQuery = z.object({
+  embed: z.string().optional(),
 });
 
 /**
@@ -3661,6 +3738,7 @@ export const zListServiceProvidingGroupGridSuspensionCommentQuery = z.object({
   order: z.string().optional(),
   offset: z.string().optional(),
   limit: z.string().optional(),
+  embed: z.string().optional(),
 });
 
 export const zListServiceProvidingGroupGridSuspensionCommentResponse = z.union([
@@ -3682,6 +3760,10 @@ export const zCreateServiceProvidingGroupGridSuspensionCommentResponse =
 
 export const zReadServiceProvidingGroupGridSuspensionCommentPath = z.object({
   id: z.coerce.number(),
+});
+
+export const zReadServiceProvidingGroupGridSuspensionCommentQuery = z.object({
+  embed: z.string().optional(),
 });
 
 /**
@@ -3752,6 +3834,7 @@ export const zListEntityQuery = z.object({
   order: z.string().optional(),
   offset: z.string().optional(),
   limit: z.string().optional(),
+  embed: z.string().optional(),
 });
 
 export const zListEntityResponse = z.union([
@@ -3771,6 +3854,10 @@ export const zCreateEntityResponse = zEntity;
 
 export const zReadEntityPath = z.object({
   id: z.coerce.number(),
+});
+
+export const zReadEntityQuery = z.object({
+  embed: z.string().optional(),
 });
 
 /**
@@ -3807,6 +3894,7 @@ export const zListEntityClientQuery = z.object({
   order: z.string().optional(),
   offset: z.string().optional(),
   limit: z.string().optional(),
+  embed: z.string().optional(),
 });
 
 export const zListEntityClientResponse = z.union([
@@ -3826,6 +3914,10 @@ export const zCreateEntityClientResponse = zEntityClient;
 
 export const zReadEntityClientPath = z.object({
   id: z.coerce.number(),
+});
+
+export const zReadEntityClientQuery = z.object({
+  embed: z.string().optional(),
 });
 
 /**
@@ -3860,6 +3952,7 @@ export const zListPartyQuery = z.object({
   order: z.string().optional(),
   offset: z.string().optional(),
   limit: z.string().optional(),
+  embed: z.string().optional(),
 });
 
 export const zListPartyResponse = z.union([z.array(zParty), z.array(zParty)]);
@@ -3876,6 +3969,10 @@ export const zCreatePartyResponse = zParty;
 
 export const zReadPartyPath = z.object({
   id: z.coerce.number(),
+});
+
+export const zReadPartyQuery = z.object({
+  embed: z.string().optional(),
 });
 
 /**
@@ -3947,6 +4044,7 @@ export const zListPartyMembershipQuery = z.object({
   order: z.string().optional(),
   offset: z.string().optional(),
   limit: z.string().optional(),
+  embed: z.string().optional(),
 });
 
 export const zListPartyMembershipResponse = z.union([
@@ -3966,6 +4064,10 @@ export const zCreatePartyMembershipResponse = zPartyMembership;
 
 export const zReadPartyMembershipPath = z.object({
   id: z.coerce.number(),
+});
+
+export const zReadPartyMembershipQuery = z.object({
+  embed: z.string().optional(),
 });
 
 /**
@@ -4049,6 +4151,7 @@ export const zListIdentityQuery = z.object({
   order: z.string().optional(),
   offset: z.string().optional(),
   limit: z.string().optional(),
+  embed: z.string().optional(),
 });
 
 export const zListIdentityResponse = z.union([
@@ -4058,6 +4161,10 @@ export const zListIdentityResponse = z.union([
 
 export const zReadIdentityPath = z.object({
   id: z.coerce.number(),
+});
+
+export const zReadIdentityQuery = z.object({
+  embed: z.string().optional(),
 });
 
 /**
@@ -4079,6 +4186,7 @@ export const zListTechnicalResourceQuery = z.object({
   order: z.string().optional(),
   offset: z.string().optional(),
   limit: z.string().optional(),
+  embed: z.string().optional(),
 });
 
 export const zListTechnicalResourceResponse = z.union([
@@ -4098,6 +4206,10 @@ export const zCreateTechnicalResourceResponse = zTechnicalResource;
 
 export const zReadTechnicalResourcePath = z.object({
   id: z.coerce.number(),
+});
+
+export const zReadTechnicalResourceQuery = z.object({
+  embed: z.string().optional(),
 });
 
 /**
@@ -4162,12 +4274,17 @@ export const zListEventQuery = z.object({
   order: z.string().optional(),
   offset: z.string().optional(),
   limit: z.string().optional(),
+  embed: z.string().optional(),
 });
 
 export const zListEventResponse = z.union([z.array(zEvent), z.array(zEvent)]);
 
 export const zReadEventPath = z.object({
   id: z.coerce.number(),
+});
+
+export const zReadEventQuery = z.object({
+  embed: z.string().optional(),
 });
 
 /**
@@ -4192,6 +4309,7 @@ export const zListNotificationQuery = z.object({
   order: z.string().optional(),
   offset: z.string().optional(),
   limit: z.string().optional(),
+  embed: z.string().optional(),
 });
 
 export const zListNotificationResponse = z.union([
@@ -4201,6 +4319,10 @@ export const zListNotificationResponse = z.union([
 
 export const zReadNotificationPath = z.object({
   id: z.coerce.number(),
+});
+
+export const zReadNotificationQuery = z.object({
+  embed: z.string().optional(),
 });
 
 /**
@@ -4233,6 +4355,7 @@ export const zListAccountingPointQuery = z.object({
   order: z.string().optional(),
   offset: z.string().optional(),
   limit: z.string().optional(),
+  embed: z.string().optional(),
 });
 
 export const zListAccountingPointResponse = z.union([
@@ -4242,6 +4365,10 @@ export const zListAccountingPointResponse = z.union([
 
 export const zReadAccountingPointPath = z.object({
   id: z.coerce.number(),
+});
+
+export const zReadAccountingPointQuery = z.object({
+  embed: z.string().optional(),
 });
 
 /**
@@ -4264,6 +4391,7 @@ export const zListAccountingPointBalanceResponsiblePartyQuery = z.object({
   order: z.string().optional(),
   offset: z.string().optional(),
   limit: z.string().optional(),
+  embed: z.string().optional(),
 });
 
 export const zListAccountingPointBalanceResponsiblePartyResponse = z.union([
@@ -4282,6 +4410,7 @@ export const zListAccountingPointBiddingZoneQuery = z.object({
   order: z.string().optional(),
   offset: z.string().optional(),
   limit: z.string().optional(),
+  embed: z.string().optional(),
 });
 
 export const zListAccountingPointBiddingZoneResponse = z.union([
@@ -4304,6 +4433,7 @@ export const zListAccountingPointEndUserQuery = z.object({
   order: z.string().optional(),
   offset: z.string().optional(),
   limit: z.string().optional(),
+  embed: z.string().optional(),
 });
 
 export const zListAccountingPointEndUserResponse = z.union([
@@ -4326,6 +4456,7 @@ export const zListAccountingPointEnergySupplierQuery = z.object({
   order: z.string().optional(),
   offset: z.string().optional(),
   limit: z.string().optional(),
+  embed: z.string().optional(),
 });
 
 export const zListAccountingPointEnergySupplierResponse = z.union([
@@ -4345,6 +4476,7 @@ export const zListMeteringGridAreaQuery = z.object({
   order: z.string().optional(),
   offset: z.string().optional(),
   limit: z.string().optional(),
+  embed: z.string().optional(),
 });
 
 export const zListMeteringGridAreaResponse = z.union([
@@ -4354,6 +4486,10 @@ export const zListMeteringGridAreaResponse = z.union([
 
 export const zReadMeteringGridAreaPath = z.object({
   id: z.coerce.number(),
+});
+
+export const zReadMeteringGridAreaQuery = z.object({
+  embed: z.string().optional(),
 });
 
 /**
@@ -4376,6 +4512,7 @@ export const zListAccountingPointMeteringGridAreaQuery = z.object({
   order: z.string().optional(),
   offset: z.string().optional(),
   limit: z.string().optional(),
+  embed: z.string().optional(),
 });
 
 export const zListAccountingPointMeteringGridAreaResponse = z.union([
@@ -4394,6 +4531,7 @@ export const zListProductTypeQuery = z.object({
   order: z.string().optional(),
   offset: z.string().optional(),
   limit: z.string().optional(),
+  embed: z.string().optional(),
 });
 
 export const zListProductTypeResponse = z.union([
@@ -4403,6 +4541,10 @@ export const zListProductTypeResponse = z.union([
 
 export const zReadProductTypePath = z.object({
   id: z.coerce.number(),
+});
+
+export const zReadProductTypeQuery = z.object({
+  embed: z.string().optional(),
 });
 
 /**
@@ -4427,6 +4569,7 @@ export const zListSystemOperatorProductTypeQuery = z.object({
   order: z.string().optional(),
   offset: z.string().optional(),
   limit: z.string().optional(),
+  embed: z.string().optional(),
 });
 
 export const zListSystemOperatorProductTypeResponse = z.union([
@@ -4448,6 +4591,10 @@ export const zCreateSystemOperatorProductTypeResponse =
 
 export const zReadSystemOperatorProductTypePath = z.object({
   id: z.coerce.number(),
+});
+
+export const zReadSystemOperatorProductTypeQuery = z.object({
+  embed: z.string().optional(),
 });
 
 /**
@@ -4530,6 +4677,7 @@ export const zListServiceProviderProductApplicationQuery = z.object({
   order: z.string().optional(),
   offset: z.string().optional(),
   limit: z.string().optional(),
+  embed: z.string().optional(),
 });
 
 export const zListServiceProviderProductApplicationResponse = z.union([
@@ -4551,6 +4699,10 @@ export const zCreateServiceProviderProductApplicationResponse =
 
 export const zReadServiceProviderProductApplicationPath = z.object({
   id: z.coerce.number(),
+});
+
+export const zReadServiceProviderProductApplicationQuery = z.object({
+  embed: z.string().optional(),
 });
 
 /**
@@ -4629,6 +4781,7 @@ export const zListServiceProviderProductApplicationCommentQuery = z.object({
   order: z.string().optional(),
   offset: z.string().optional(),
   limit: z.string().optional(),
+  embed: z.string().optional(),
 });
 
 export const zListServiceProviderProductApplicationCommentResponse = z.union([
@@ -4650,6 +4803,10 @@ export const zCreateServiceProviderProductApplicationCommentResponse =
 
 export const zReadServiceProviderProductApplicationCommentPath = z.object({
   id: z.coerce.number(),
+});
+
+export const zReadServiceProviderProductApplicationCommentQuery = z.object({
+  embed: z.string().optional(),
 });
 
 /**
@@ -4731,6 +4888,7 @@ export const zListServiceProviderProductSuspensionQuery = z.object({
   order: z.string().optional(),
   offset: z.string().optional(),
   limit: z.string().optional(),
+  embed: z.string().optional(),
 });
 
 export const zListServiceProviderProductSuspensionResponse = z.union([
@@ -4752,6 +4910,10 @@ export const zCreateServiceProviderProductSuspensionResponse =
 
 export const zReadServiceProviderProductSuspensionPath = z.object({
   id: z.coerce.number(),
+});
+
+export const zReadServiceProviderProductSuspensionQuery = z.object({
+  embed: z.string().optional(),
 });
 
 /**
@@ -4830,6 +4992,7 @@ export const zListServiceProviderProductSuspensionCommentQuery = z.object({
   order: z.string().optional(),
   offset: z.string().optional(),
   limit: z.string().optional(),
+  embed: z.string().optional(),
 });
 
 export const zListServiceProviderProductSuspensionCommentResponse = z.union([
@@ -4851,6 +5014,10 @@ export const zCreateServiceProviderProductSuspensionCommentResponse =
 
 export const zReadServiceProviderProductSuspensionCommentPath = z.object({
   id: z.coerce.number(),
+});
+
+export const zReadServiceProviderProductSuspensionCommentQuery = z.object({
+  embed: z.string().optional(),
 });
 
 /**
@@ -4933,6 +5100,7 @@ export const zListServiceProvidingGroupProductApplicationQuery = z.object({
   order: z.string().optional(),
   offset: z.string().optional(),
   limit: z.string().optional(),
+  embed: z.string().optional(),
 });
 
 export const zListServiceProvidingGroupProductApplicationResponse = z.union([
@@ -4954,6 +5122,10 @@ export const zCreateServiceProvidingGroupProductApplicationResponse =
 
 export const zReadServiceProvidingGroupProductApplicationPath = z.object({
   id: z.coerce.number(),
+});
+
+export const zReadServiceProvidingGroupProductApplicationQuery = z.object({
+  embed: z.string().optional(),
 });
 
 /**
@@ -5037,6 +5209,7 @@ export const zListServiceProvidingGroupProductApplicationCommentQuery =
     order: z.string().optional(),
     offset: z.string().optional(),
     limit: z.string().optional(),
+    embed: z.string().optional(),
   });
 
 export const zListServiceProvidingGroupProductApplicationCommentResponse =
@@ -5062,6 +5235,11 @@ export const zReadServiceProvidingGroupProductApplicationCommentPath = z.object(
     id: z.coerce.number(),
   },
 );
+
+export const zReadServiceProvidingGroupProductApplicationCommentQuery =
+  z.object({
+    embed: z.string().optional(),
+  });
 
 /**
  * OK
@@ -5141,6 +5319,7 @@ export const zListServiceProvidingGroupProductSuspensionQuery = z.object({
   order: z.string().optional(),
   offset: z.string().optional(),
   limit: z.string().optional(),
+  embed: z.string().optional(),
 });
 
 export const zListServiceProvidingGroupProductSuspensionResponse = z.union([
@@ -5162,6 +5341,10 @@ export const zCreateServiceProvidingGroupProductSuspensionResponse =
 
 export const zReadServiceProvidingGroupProductSuspensionPath = z.object({
   id: z.coerce.number(),
+});
+
+export const zReadServiceProvidingGroupProductSuspensionQuery = z.object({
+  embed: z.string().optional(),
 });
 
 /**
@@ -5244,6 +5427,7 @@ export const zListServiceProvidingGroupProductSuspensionCommentQuery = z.object(
     order: z.string().optional(),
     offset: z.string().optional(),
     limit: z.string().optional(),
+    embed: z.string().optional(),
   },
 );
 
@@ -5268,6 +5452,12 @@ export const zCreateServiceProvidingGroupProductSuspensionCommentResponse =
 export const zReadServiceProvidingGroupProductSuspensionCommentPath = z.object({
   id: z.coerce.number(),
 });
+
+export const zReadServiceProvidingGroupProductSuspensionCommentQuery = z.object(
+  {
+    embed: z.string().optional(),
+  },
+);
 
 /**
  * OK
@@ -5339,6 +5529,7 @@ export const zListNoticeQuery = z.object({
   order: z.string().optional(),
   offset: z.string().optional(),
   limit: z.string().optional(),
+  embed: z.string().optional(),
 });
 
 export const zListNoticeResponse = z.union([
@@ -5348,6 +5539,10 @@ export const zListNoticeResponse = z.union([
 
 export const zReadNoticePath = z.object({
   id: z.coerce.number(),
+});
+
+export const zReadNoticeQuery = z.object({
+  embed: z.string().optional(),
 });
 
 /**
