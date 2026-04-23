@@ -1,6 +1,5 @@
 package no.elhub.flex.model.dto.generated.models
 
-import kotlin.Any
 import kotlin.Long
 import kotlin.collections.List
 import kotlin.time.Instant
@@ -52,39 +51,6 @@ public data class ServiceProviderProductApplicationHistoryResponse(
    */
   @SerialName("recorded_by")
   public val recordedBy: Long? = null,
-  /**
-   * Response schema - The body that interacts with the Flexibility Information System
-   *
-   * A party is the thing that is authorized to access or modify data in the Flexiblity Information
-   * System.
-   *
-   * Example party types:
-   *
-   * * Service Provider
-   * * System Operator
-   * * End User
-   */
-  @SerialName("service_provider")
-  public val serviceProvider: PartyResponse? = null,
-  /**
-   * Response schema - The body that interacts with the Flexibility Information System
-   *
-   * A party is the thing that is authorized to access or modify data in the Flexiblity Information
-   * System.
-   *
-   * Example party types:
-   *
-   * * Service Provider
-   * * System Operator
-   * * End User
-   */
-  @SerialName("system_operator")
-  public val systemOperator: PartyResponse? = null,
-  /**
-   * Embedded service_provider_product_application_comment
-   */
-  @SerialName("comment")
-  public val comment: Any? = null,
   /**
    * Reference to the resource that was updated.
    */

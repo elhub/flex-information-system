@@ -88,11 +88,6 @@ public data class TechnicalResourceHistoryResponse(
   @SerialName("recorded_by")
   public val recordedBy: Long? = null,
   /**
-   * Response schema - Controllable unit
-   */
-  @SerialName("controllable_unit")
-  public val controllableUnit: ControllableUnitResponse? = null,
-  /**
    * Reference to the resource that was updated.
    */
   @SerialName("technical_resource_id")

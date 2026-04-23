@@ -48,16 +48,6 @@ public data class ServiceProvidingGroupMembershipHistoryResponse(
   @SerialName("recorded_by")
   public val recordedBy: Long? = null,
   /**
-   * Response schema - Controllable unit
-   */
-  @SerialName("controllable_unit")
-  public val controllableUnit: ControllableUnitResponse? = null,
-  /**
-   * Response schema - Group of controllable units
-   */
-  @SerialName("service_providing_group")
-  public val serviceProvidingGroup: ServiceProvidingGroupResponse? = null,
-  /**
    * Reference to the resource that was updated.
    */
   @SerialName("service_providing_group_membership_id")

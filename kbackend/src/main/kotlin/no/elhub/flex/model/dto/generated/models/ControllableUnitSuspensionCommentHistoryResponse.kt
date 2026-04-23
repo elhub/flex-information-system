@@ -52,12 +52,6 @@ public data class ControllableUnitSuspensionCommentHistoryResponse(
   @SerialName("recorded_by")
   public val recordedBy: Long? = null,
   /**
-   * Response schema - The relation allowing an impacted system operator to temporarily suspend a
-   * controllable unit.
-   */
-  @SerialName("controllable_unit_suspension")
-  public val controllableUnitSuspension: ControllableUnitSuspensionResponse? = null,
-  /**
    * Reference to the resource that was updated.
    */
   @SerialName("controllable_unit_suspension_comment_id")

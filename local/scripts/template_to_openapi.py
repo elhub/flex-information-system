@@ -35,38 +35,34 @@ import relationship
 # templates
 
 
-def history_schema_template(resource, resource_summary):
+def history_schema_template(resource, resource_summary, resource_properties, required):
     return {
         "summary": f"{resource_summary} - history",
         "description": f"{resource_summary} - history",
-        "allOf": [
-            {"$ref": f"#/components/schemas/{resource}_response"},
-            {
-                "properties": {
-                    f"{resource}_id": {
-                        "description": "Reference to the resource that was updated.",
-                        "format": "bigint",
-                        "type": "integer",
-                        "example": 48,
-                    },
-                    "replaced_by": {
-                        "description": "The identity that updated the resource when it was replaced.",
-                        "format": "bigint",
-                        "type": "integer",
-                        "nullable": True,
-                        "example": 90,
-                    },
-                    "replaced_at": {
-                        "description": "When the resource was replaced in the system.",
-                        "format": "date-time",
-                        "type": "string",
-                        "nullable": True,
-                        "example": "2024-07-07T10:00:00+00:00",
-                    },
-                },
-                "required": [f"{resource}_id"],
+        "properties": resource_properties
+        | {
+            f"{resource}_id": {
+                "description": "Reference to the resource that was updated.",
+                "format": "bigint",
+                "type": "integer",
+                "example": 48,
             },
-        ],
+            "replaced_by": {
+                "description": "The identity that updated the resource when it was replaced.",
+                "format": "bigint",
+                "type": "integer",
+                "nullable": True,
+                "example": 90,
+            },
+            "replaced_at": {
+                "description": "When the resource was replaced in the system.",
+                "format": "date-time",
+                "type": "string",
+                "nullable": True,
+                "example": "2024-07-07T10:00:00+00:00",
+            },
+        },
+        "required": required + [f"{resource}_id"],
     }
 
 
@@ -604,7 +600,10 @@ def generate_openapi_document(base_file, resources_file, servers_file):
     for resource in resources:
         if resource.get("history"):
             schemas[f"{resource['id']}_history_response"] = history_schema_template(
-                resource["id"], resource["summary"]
+                resource["id"],
+                resource["summary"],
+                schemas[f"{resource['id']}_response"]["properties"],
+                schemas[f"{resource['id']}_response"].get("required", []),
             )
 
     # ---- ENDPOINTS (under paths) ----

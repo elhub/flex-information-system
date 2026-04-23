@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import datetime
 from collections.abc import Mapping
-from typing import TYPE_CHECKING, Any, TypeVar, cast
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -10,10 +10,6 @@ from dateutil.parser import isoparse
 
 from ..models.controllable_unit_suspension_comment_visibility import ControllableUnitSuspensionCommentVisibility
 from ..types import UNSET, Unset
-
-if TYPE_CHECKING:
-    from ..models.controllable_unit_suspension_response import ControllableUnitSuspensionResponse
-
 
 T = TypeVar("T", bound="ControllableUnitSuspensionCommentHistoryResponse")
 
@@ -34,8 +30,6 @@ class ControllableUnitSuspensionCommentHistoryResponse:
             2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
         controllable_unit_suspension_comment_id (int): Reference to the resource that was updated. Example: 48.
-        controllable_unit_suspension (ControllableUnitSuspensionResponse | None | Unset): Embedded
-            controllable_unit_suspension
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (datetime.datetime | None | Unset): When the resource was replaced in the system. Example:
             2024-07-07T10:00:00+00:00.
@@ -50,14 +44,11 @@ class ControllableUnitSuspensionCommentHistoryResponse:
     recorded_at: datetime.datetime
     recorded_by: int
     controllable_unit_suspension_comment_id: int
-    controllable_unit_suspension: ControllableUnitSuspensionResponse | None | Unset = UNSET
     replaced_by: int | None | Unset = UNSET
     replaced_at: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        from ..models.controllable_unit_suspension_response import ControllableUnitSuspensionResponse
-
         id = self.id
 
         controllable_unit_suspension_id = self.controllable_unit_suspension_id
@@ -75,14 +66,6 @@ class ControllableUnitSuspensionCommentHistoryResponse:
         recorded_by = self.recorded_by
 
         controllable_unit_suspension_comment_id = self.controllable_unit_suspension_comment_id
-
-        controllable_unit_suspension: dict[str, Any] | None | Unset
-        if isinstance(self.controllable_unit_suspension, Unset):
-            controllable_unit_suspension = UNSET
-        elif isinstance(self.controllable_unit_suspension, ControllableUnitSuspensionResponse):
-            controllable_unit_suspension = self.controllable_unit_suspension.to_dict()
-        else:
-            controllable_unit_suspension = self.controllable_unit_suspension
 
         replaced_by: int | None | Unset
         if isinstance(self.replaced_by, Unset):
@@ -113,8 +96,6 @@ class ControllableUnitSuspensionCommentHistoryResponse:
                 "controllable_unit_suspension_comment_id": controllable_unit_suspension_comment_id,
             }
         )
-        if controllable_unit_suspension is not UNSET:
-            field_dict["controllable_unit_suspension"] = controllable_unit_suspension
         if replaced_by is not UNSET:
             field_dict["replaced_by"] = replaced_by
         if replaced_at is not UNSET:
@@ -124,8 +105,6 @@ class ControllableUnitSuspensionCommentHistoryResponse:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.controllable_unit_suspension_response import ControllableUnitSuspensionResponse
-
         d = dict(src_dict)
         id = d.pop("id")
 
@@ -144,23 +123,6 @@ class ControllableUnitSuspensionCommentHistoryResponse:
         recorded_by = d.pop("recorded_by")
 
         controllable_unit_suspension_comment_id = d.pop("controllable_unit_suspension_comment_id")
-
-        def _parse_controllable_unit_suspension(data: object) -> ControllableUnitSuspensionResponse | None | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            try:
-                if not isinstance(data, dict):
-                    raise TypeError()
-                controllable_unit_suspension_type_0 = ControllableUnitSuspensionResponse.from_dict(data)
-
-                return controllable_unit_suspension_type_0
-            except (TypeError, ValueError, AttributeError, KeyError):
-                pass
-            return cast(ControllableUnitSuspensionResponse | None | Unset, data)
-
-        controllable_unit_suspension = _parse_controllable_unit_suspension(d.pop("controllable_unit_suspension", UNSET))
 
         def _parse_replaced_by(data: object) -> int | None | Unset:
             if data is None:
@@ -198,7 +160,6 @@ class ControllableUnitSuspensionCommentHistoryResponse:
             recorded_at=recorded_at,
             recorded_by=recorded_by,
             controllable_unit_suspension_comment_id=controllable_unit_suspension_comment_id,
-            controllable_unit_suspension=controllable_unit_suspension,
             replaced_by=replaced_by,
             replaced_at=replaced_at,
         )

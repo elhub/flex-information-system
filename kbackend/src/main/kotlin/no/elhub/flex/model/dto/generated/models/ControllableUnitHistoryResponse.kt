@@ -1,7 +1,6 @@
 package no.elhub.flex.model.dto.generated.models
 
 import java.math.BigDecimal
-import kotlin.Any
 import kotlin.Boolean
 import kotlin.Long
 import kotlin.String
@@ -80,31 +79,6 @@ public data class ControllableUnitHistoryResponse(
    */
   @SerialName("recorded_by")
   public val recordedBy: Long? = null,
-  /**
-   * Response schema - Accounting point for a controllable unit.
-   */
-  @SerialName("accounting_point")
-  public val accountingPoint: AccountingPointResponse? = null,
-  /**
-   * Embedded controllable_unit_suspension
-   */
-  @SerialName("suspension")
-  public val suspension: Any? = null,
-  /**
-   * Embedded controllable_unit_service_provider
-   */
-  @SerialName("service_provider")
-  public val serviceProvider: Any? = null,
-  /**
-   * Embedded service_providing_group_membership
-   */
-  @SerialName("service_providing_group_membership")
-  public val serviceProvidingGroupMembership: Any? = null,
-  /**
-   * Embedded technical_resource
-   */
-  @SerialName("technical_resource")
-  public val technicalResource: Any? = null,
   /**
    * Reference to the resource that was updated.
    */

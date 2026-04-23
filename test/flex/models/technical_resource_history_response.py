@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import datetime
 from collections.abc import Mapping
-from typing import TYPE_CHECKING, Any, TypeVar, cast
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -13,10 +13,6 @@ from ..models.device_type import DeviceType
 from ..models.technical_resource_business_id_type import TechnicalResourceBusinessIdType
 from ..models.technology import Technology
 from ..types import UNSET, Unset
-
-if TYPE_CHECKING:
-    from ..models.controllable_unit_response import ControllableUnitResponse
-
 
 T = TypeVar("T", bound="TechnicalResourceHistoryResponse")
 
@@ -49,7 +45,6 @@ class TechnicalResourceHistoryResponse:
         business_id_type (None | TechnicalResourceBusinessIdType | Unset):
         additional_information (None | str | Unset): Free text field for extra information about the technical resource
             if needed.
-        controllable_unit (ControllableUnitResponse | None | Unset): Embedded controllable_unit
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (datetime.datetime | None | Unset): When the resource was replaced in the system. Example:
             2024-07-07T10:00:00+00:00.
@@ -70,14 +65,11 @@ class TechnicalResourceHistoryResponse:
     business_id: None | str | Unset = UNSET
     business_id_type: None | TechnicalResourceBusinessIdType | Unset = UNSET
     additional_information: None | str | Unset = UNSET
-    controllable_unit: ControllableUnitResponse | None | Unset = UNSET
     replaced_by: int | None | Unset = UNSET
     replaced_at: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        from ..models.controllable_unit_response import ControllableUnitResponse
-
         id = self.id
 
         name = self.name
@@ -136,14 +128,6 @@ class TechnicalResourceHistoryResponse:
         else:
             additional_information = self.additional_information
 
-        controllable_unit: dict[str, Any] | None | Unset
-        if isinstance(self.controllable_unit, Unset):
-            controllable_unit = UNSET
-        elif isinstance(self.controllable_unit, ControllableUnitResponse):
-            controllable_unit = self.controllable_unit.to_dict()
-        else:
-            controllable_unit = self.controllable_unit
-
         replaced_by: int | None | Unset
         if isinstance(self.replaced_by, Unset):
             replaced_by = UNSET
@@ -184,8 +168,6 @@ class TechnicalResourceHistoryResponse:
             field_dict["business_id_type"] = business_id_type
         if additional_information is not UNSET:
             field_dict["additional_information"] = additional_information
-        if controllable_unit is not UNSET:
-            field_dict["controllable_unit"] = controllable_unit
         if replaced_by is not UNSET:
             field_dict["replaced_by"] = replaced_by
         if replaced_at is not UNSET:
@@ -195,8 +177,6 @@ class TechnicalResourceHistoryResponse:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.controllable_unit_response import ControllableUnitResponse
-
         d = dict(src_dict)
         id = d.pop("id")
 
@@ -281,23 +261,6 @@ class TechnicalResourceHistoryResponse:
 
         additional_information = _parse_additional_information(d.pop("additional_information", UNSET))
 
-        def _parse_controllable_unit(data: object) -> ControllableUnitResponse | None | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            try:
-                if not isinstance(data, dict):
-                    raise TypeError()
-                controllable_unit_type_0 = ControllableUnitResponse.from_dict(data)
-
-                return controllable_unit_type_0
-            except (TypeError, ValueError, AttributeError, KeyError):
-                pass
-            return cast(ControllableUnitResponse | None | Unset, data)
-
-        controllable_unit = _parse_controllable_unit(d.pop("controllable_unit", UNSET))
-
         def _parse_replaced_by(data: object) -> int | None | Unset:
             if data is None:
                 return data
@@ -340,7 +303,6 @@ class TechnicalResourceHistoryResponse:
             business_id=business_id,
             business_id_type=business_id_type,
             additional_information=additional_information,
-            controllable_unit=controllable_unit,
             replaced_by=replaced_by,
             replaced_at=replaced_at,
         )

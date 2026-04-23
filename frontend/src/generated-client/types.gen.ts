@@ -2889,7 +2889,49 @@ export type Notice = {
 /**
  * Controllable unit - history
  */
-export type ControllableUnitHistory = ControllableUnit & {
+export type ControllableUnitHistory = {
+  /**
+   * Unique surrogate key.
+   */
+  readonly id: number;
+  /**
+   * Unique business identifier for the controllable unit.
+   */
+  readonly business_id: string;
+  /**
+   * Free text name of the controllable unit.
+   */
+  name: string;
+  /**
+   * The usage date when the controllable unit is first active.
+   */
+  start_date?: string;
+  status: ControllableUnitStatus;
+  regulation_direction: ControllableUnitRegulationDirection;
+  /**
+   * Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
+   */
+  maximum_active_power: number;
+  /**
+   * Whether the controllable unit is small or not, following NCDR.
+   */
+  readonly is_small: boolean;
+  /**
+   * Reference to the accounting point that the controllable unit is connected to.
+   */
+  accounting_point_id: number;
+  /**
+   * Free text field for extra information about the controllable unit if needed.
+   */
+  additional_information?: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
   /**
    * Reference to the resource that was updated.
    */
@@ -2907,7 +2949,28 @@ export type ControllableUnitHistory = ControllableUnit & {
 /**
  * Controllable Unit Suspension - history
  */
-export type ControllableUnitSuspensionHistory = ControllableUnitSuspension & {
+export type ControllableUnitSuspensionHistory = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the suspended controllable unit.
+   */
+  controllable_unit_id: number;
+  /**
+   * Reference to the impacted system operator suspending the controllable unit.
+   */
+  impacted_system_operator_id: number;
+  reason: ControllableUnitSuspensionReason;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
   /**
    * Reference to the resource that was updated.
    */
@@ -2925,45 +2988,134 @@ export type ControllableUnitSuspensionHistory = ControllableUnitSuspension & {
 /**
  * Controllable Unit Suspension Comment - history
  */
-export type ControllableUnitSuspensionCommentHistory =
-  ControllableUnitSuspensionComment & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    controllable_unit_suspension_comment_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ControllableUnitSuspensionCommentHistory = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the controllable unit suspension.
+   */
+  controllable_unit_suspension_id: number;
+  /**
+   * Reference to the identity that created the comment.
+   */
+  readonly created_by: number;
+  /**
+   * When the comment was added to the CUS.
+   */
+  readonly created_at: string;
+  visibility: ControllableUnitSuspensionCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+  /**
+   * Reference to the resource that was updated.
+   */
+  controllable_unit_suspension_comment_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Relation between controllable unit and service provider - history
  */
-export type ControllableUnitServiceProviderHistory =
-  ControllableUnitServiceProvider & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    controllable_unit_service_provider_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ControllableUnitServiceProviderHistory = {
+  /**
+   * Unique surrogate key.
+   */
+  readonly id: number;
+  /**
+   * Reference to the controllable unit this relation links to a service provider.
+   */
+  controllable_unit_id: number;
+  /**
+   * Reference to the `party` (service provider) this relation links to a controllable unit.
+   */
+  service_provider_id: number;
+  /**
+   * Technical ID of the end user behind the accounting point.
+   */
+  end_user_id: number;
+  /**
+   * The service providers internal reference to the contract with the end user. Typically an internal identifier to a stored document or consent record.
+   */
+  contract_reference: string;
+  /**
+   * The date from which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.
+   */
+  valid_from?: string;
+  /**
+   * The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.
+   */
+  valid_to?: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+  /**
+   * Reference to the resource that was updated.
+   */
+  controllable_unit_service_provider_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service providing group - history
  */
-export type ServiceProvidingGroupHistory = ServiceProvidingGroup & {
+export type ServiceProvidingGroupHistory = {
+  /**
+   * Unique surrogate key.
+   */
+  readonly id: number;
+  /**
+   * Free text name of the service providing group.
+   */
+  name: string;
+  /**
+   * Reference to the `party` (service provider) managing the group.
+   */
+  service_provider_id: number;
+  bidding_zone: ServiceProvidingGroupBiddingZone;
+  status: ServiceProvidingGroupStatus;
+  /**
+   * Free text field for extra information about the service providing group if needed.
+   */
+  additional_information?: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
   /**
    * Reference to the resource that was updated.
    */
@@ -2981,102 +3133,257 @@ export type ServiceProvidingGroupHistory = ServiceProvidingGroup & {
 /**
  * Membership relation of controllable unit in service providing group - history
  */
-export type ServiceProvidingGroupMembershipHistory =
-  ServiceProvidingGroupMembership & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_membership_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupMembershipHistory = {
+  /**
+   * Unique surrogate key.
+   */
+  readonly id: number;
+  /**
+   * Reference to the controllable unit this relation links to a service providing group.
+   */
+  controllable_unit_id: number;
+  /**
+   * Reference to the service providing group this relation links to a controllable unit.
+   */
+  service_providing_group_id: number;
+  /**
+   * The date from which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.
+   */
+  valid_from: string;
+  /**
+   * The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.
+   */
+  valid_to?: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_membership_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Grid prequalification for service providing group - history
  */
-export type ServiceProvidingGroupGridPrequalificationHistory =
-  ServiceProvidingGroupGridPrequalification & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_grid_prequalification_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupGridPrequalificationHistory = {
+  /**
+   * Unique surrogate key.
+   */
+  readonly id: number;
+  /**
+   * Reference to the service providing group whose grid prequalification is tracked by the current resource.
+   */
+  service_providing_group_id: number;
+  /**
+   * Reference to the `party` that is the impacted system operator.
+   */
+  impacted_system_operator_id: number;
+  status: ServiceProvidingGroupGridPrequalificationStatus;
+  /**
+   * When the current grid prequalification was last approved.
+   */
+  prequalified_at?: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_grid_prequalification_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Grid prequalification for service providing group Comment - history
  */
-export type ServiceProvidingGroupGridPrequalificationCommentHistory =
-  ServiceProvidingGroupGridPrequalificationComment & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_grid_prequalification_comment_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupGridPrequalificationCommentHistory = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the service providing group grid prequalification.
+   */
+  service_providing_group_grid_prequalification_id: number;
+  /**
+   * Reference to the identity that created the comment.
+   */
+  readonly created_by: number;
+  /**
+   * When the comment was added to the SPGGP.
+   */
+  readonly created_at: string;
+  visibility: ServiceProvidingGroupGridPrequalificationCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_grid_prequalification_comment_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Providing Group Grid Suspension - history
  */
-export type ServiceProvidingGroupGridSuspensionHistory =
-  ServiceProvidingGroupGridSuspension & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_grid_suspension_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupGridSuspensionHistory = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the impacted system operator suspending the service providing group.
+   */
+  impacted_system_operator_id: number;
+  /**
+   * Reference to the service providing group being suspended.
+   */
+  service_providing_group_id: number;
+  reason: ServiceProvidingGroupGridSuspensionReason;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_grid_suspension_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Providing Group Grid Suspension Comment - history
  */
-export type ServiceProvidingGroupGridSuspensionCommentHistory =
-  ServiceProvidingGroupGridSuspensionComment & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_grid_suspension_comment_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupGridSuspensionCommentHistory = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the service providing group grid suspension.
+   */
+  service_providing_group_grid_suspension_id: number;
+  /**
+   * Reference to the identity that created the comment.
+   */
+  readonly created_by: number;
+  /**
+   * When the comment was added to the SPGGS.
+   */
+  readonly created_at: string;
+  visibility: ServiceProvidingGroupGridSuspensionCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_grid_suspension_comment_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Party - history
  */
-export type PartyHistory = Party & {
+export type PartyHistory = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * The business identifier of the party. Format depends on `business_id_type`.
+   */
+  business_id: string;
+  business_id_type: PartyBusinessIdType;
+  /**
+   * Reference to the entity that is the parent of the party.
+   */
+  entity_id: number;
+  /**
+   * Name of the party. Maximum 128 characters.
+   */
+  name: string;
+  role: PartyRole;
+  type: PartyType;
+  status: PartyStatus;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
   /**
    * Reference to the resource that was updated.
    */
@@ -3094,7 +3401,31 @@ export type PartyHistory = Party & {
 /**
  * Party Membership - history
  */
-export type PartyMembershipHistory = PartyMembership & {
+export type PartyMembershipHistory = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the party that the membership links to an entity.
+   */
+  party_id: number;
+  /**
+   * Reference to the entity that the party represents.
+   */
+  entity_id: number;
+  /**
+   * List of scopes granted to the entity when it acts as the party. Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.
+   */
+  scopes: Array<AuthScope>;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
   /**
    * Reference to the resource that was updated.
    */
@@ -3112,7 +3443,60 @@ export type PartyMembershipHistory = PartyMembership & {
 /**
  * Technical Resource - history
  */
-export type TechnicalResourceHistory = TechnicalResource & {
+export type TechnicalResourceHistory = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Name of the technical resource. Maximum 128 characters.
+   */
+  name: string;
+  /**
+   * Reference to the controllable unit that this technical resource belongs to.
+   */
+  controllable_unit_id: number;
+  /**
+   * Technologies of the technical resource using ltree path notation. Multiple technologies can be specified for hybrid resources (e.g., solar + battery).
+   */
+  technology: Array<Technology>;
+  /**
+   * Categories derived from the technologies of the technical resource. Automatically computed based on the selected technologies.
+   */
+  readonly category: Array<Category>;
+  /**
+   * Maximum continuous active power (rated power) of the technical resource in kilowatts.
+   */
+  maximum_active_power: number;
+  /**
+   * The type of device.
+   */
+  device_type: DeviceType;
+  /**
+   * The manufacturer of the device. Required if model or business_id is provided.
+   */
+  make?: string;
+  /**
+   * The model of the device.
+   */
+  model?: string;
+  /**
+   * Business identifier of the device, such as a serial number or MAC address.
+   */
+  business_id?: string;
+  business_id_type?: TechnicalResourceBusinessIdType | null;
+  /**
+   * Free text field for extra information about the technical resource if needed.
+   */
+  additional_information?: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
   /**
    * Reference to the resource that was updated.
    */
@@ -3130,7 +3514,28 @@ export type TechnicalResourceHistory = TechnicalResource & {
 /**
  * System Operator Product Type - history
  */
-export type SystemOperatorProductTypeHistory = SystemOperatorProductType & {
+export type SystemOperatorProductTypeHistory = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the system operator.
+   */
+  system_operator_id: number;
+  /**
+   * Reference to the product type.
+   */
+  product_type_id: number;
+  status: SystemOperatorProductTypeStatus;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
   /**
    * Reference to the resource that was updated.
    */
@@ -3148,154 +3553,386 @@ export type SystemOperatorProductTypeHistory = SystemOperatorProductType & {
 /**
  * Service Provider Product Application - history
  */
-export type ServiceProviderProductApplicationHistory =
-  ServiceProviderProductApplication & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_provider_product_application_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProviderProductApplicationHistory = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the service provider.
+   */
+  service_provider_id: number;
+  /**
+   * Reference to the system operator.
+   */
+  system_operator_id: number;
+  /**
+   * References to the product types.
+   */
+  product_type_ids: Array<number>;
+  status: ServiceProviderProductApplicationStatus;
+  /**
+   * When the product application was last validated.
+   */
+  qualified_at?: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_provider_product_application_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Provider Product Application Comment - history
  */
-export type ServiceProviderProductApplicationCommentHistory =
-  ServiceProviderProductApplicationComment & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_provider_product_application_comment_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProviderProductApplicationCommentHistory = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the service provider product application.
+   */
+  service_provider_product_application_id: number;
+  /**
+   * Reference to the identity that created the comment.
+   */
+  readonly created_by: number;
+  /**
+   * When the comment was added to the SPPA.
+   */
+  readonly created_at: string;
+  visibility: ServiceProviderProductApplicationCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_provider_product_application_comment_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Provider Product Suspension - history
  */
-export type ServiceProviderProductSuspensionHistory =
-  ServiceProviderProductSuspension & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_provider_product_suspension_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProviderProductSuspensionHistory = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the procuring system operator suspending the service provider.
+   */
+  procuring_system_operator_id: number;
+  /**
+   * Reference to the service provider being suspended.
+   */
+  service_provider_id: number;
+  /**
+   * References to the suspended product types.
+   */
+  product_type_ids: Array<number>;
+  reason: ServiceProviderProductSuspensionReason;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_provider_product_suspension_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Provider Product Suspension Comment - history
  */
-export type ServiceProviderProductSuspensionCommentHistory =
-  ServiceProviderProductSuspensionComment & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_provider_product_suspension_comment_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProviderProductSuspensionCommentHistory = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the service provider product suspension.
+   */
+  service_provider_product_suspension_id: number;
+  /**
+   * Reference to the identity that created the comment.
+   */
+  readonly created_by: number;
+  /**
+   * When the comment was added to the SPPS.
+   */
+  readonly created_at: string;
+  visibility: ServiceProviderProductSuspensionCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_provider_product_suspension_comment_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Providing Group Product Application - history
  */
-export type ServiceProvidingGroupProductApplicationHistory =
-  ServiceProvidingGroupProductApplication & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_product_application_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupProductApplicationHistory = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the service providing group.
+   */
+  service_providing_group_id: number;
+  /**
+   * Reference to the procuring system operator.
+   */
+  procuring_system_operator_id: number;
+  /**
+   * References to the product types.
+   */
+  product_type_ids: Array<number>;
+  status: ServiceProvidingGroupProductApplicationStatus;
+  /**
+   * The maximum active power applied for in regulation direction up. Stored in kilowatts.
+   */
+  maximum_active_power_up: number;
+  /**
+   * The maximum active power applied for in regulation direction down. Stored in kilowatts.
+   */
+  maximum_active_power_down: number;
+  /**
+   * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
+   */
+  additional_information?: string;
+  /**
+   * When the product application was last prequalified.
+   */
+  prequalified_at?: string;
+  /**
+   * When the product application was last verified.
+   */
+  verified_at?: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_product_application_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Providing Group Product Application Comment - history
  */
-export type ServiceProvidingGroupProductApplicationCommentHistory =
-  ServiceProvidingGroupProductApplicationComment & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_product_application_comment_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupProductApplicationCommentHistory = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the service providing group product application.
+   */
+  service_providing_group_product_application_id: number;
+  /**
+   * Reference to the identity that created the comment.
+   */
+  readonly created_by: number;
+  /**
+   * When the comment was added to the SPGPA.
+   */
+  readonly created_at: string;
+  visibility: ServiceProvidingGroupProductApplicationCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_product_application_comment_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Providing Group Product Suspension - history
  */
-export type ServiceProvidingGroupProductSuspensionHistory =
-  ServiceProvidingGroupProductSuspension & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_product_suspension_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupProductSuspensionHistory = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the procuring system operator suspending the service providing group.
+   */
+  procuring_system_operator_id: number;
+  /**
+   * Reference to the service providing group being suspended.
+   */
+  service_providing_group_id: number;
+  /**
+   * References to the suspended product types.
+   */
+  product_type_ids: Array<number>;
+  reason: ServiceProvidingGroupProductSuspensionReason;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_product_suspension_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Providing Group Product Suspension Comment - history
  */
-export type ServiceProvidingGroupProductSuspensionCommentHistory =
-  ServiceProvidingGroupProductSuspensionComment & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_product_suspension_comment_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupProductSuspensionCommentHistory = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the service providing group product suspension.
+   */
+  service_providing_group_product_suspension_id: number;
+  /**
+   * Reference to the identity that created the comment.
+   */
+  readonly created_by: number;
+  /**
+   * When the comment was added to the SPGPS.
+   */
+  readonly created_at: string;
+  visibility: ServiceProvidingGroupProductSuspensionCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_product_suspension_comment_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Format of the data field in a notice of type no.elhub.flex.party.missing
@@ -4261,7 +4898,29 @@ export type NoticeWritable = {
 /**
  * Controllable unit - history
  */
-export type ControllableUnitHistoryWritable = ControllableUnitWritable & {
+export type ControllableUnitHistoryWritable = {
+  /**
+   * Free text name of the controllable unit.
+   */
+  name: string;
+  /**
+   * The usage date when the controllable unit is first active.
+   */
+  start_date?: string;
+  status: ControllableUnitStatus;
+  regulation_direction: ControllableUnitRegulationDirection;
+  /**
+   * Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
+   */
+  maximum_active_power: number;
+  /**
+   * Reference to the accounting point that the controllable unit is connected to.
+   */
+  accounting_point_id: number;
+  /**
+   * Free text field for extra information about the controllable unit if needed.
+   */
+  additional_information?: string;
   /**
    * Reference to the resource that was updated.
    */
@@ -4279,178 +4938,297 @@ export type ControllableUnitHistoryWritable = ControllableUnitWritable & {
 /**
  * Controllable Unit Suspension - history
  */
-export type ControllableUnitSuspensionHistoryWritable =
-  ControllableUnitSuspensionWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    controllable_unit_suspension_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ControllableUnitSuspensionHistoryWritable = {
+  /**
+   * Reference to the suspended controllable unit.
+   */
+  controllable_unit_id: number;
+  /**
+   * Reference to the impacted system operator suspending the controllable unit.
+   */
+  impacted_system_operator_id: number;
+  reason: ControllableUnitSuspensionReason;
+  /**
+   * Reference to the resource that was updated.
+   */
+  controllable_unit_suspension_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Controllable Unit Suspension Comment - history
  */
-export type ControllableUnitSuspensionCommentHistoryWritable =
-  ControllableUnitSuspensionCommentWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    controllable_unit_suspension_comment_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ControllableUnitSuspensionCommentHistoryWritable = {
+  /**
+   * Reference to the controllable unit suspension.
+   */
+  controllable_unit_suspension_id: number;
+  visibility: ControllableUnitSuspensionCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+  /**
+   * Reference to the resource that was updated.
+   */
+  controllable_unit_suspension_comment_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Relation between controllable unit and service provider - history
  */
-export type ControllableUnitServiceProviderHistoryWritable =
-  ControllableUnitServiceProviderWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    controllable_unit_service_provider_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ControllableUnitServiceProviderHistoryWritable = {
+  /**
+   * Reference to the controllable unit this relation links to a service provider.
+   */
+  controllable_unit_id: number;
+  /**
+   * Reference to the `party` (service provider) this relation links to a controllable unit.
+   */
+  service_provider_id: number;
+  /**
+   * Technical ID of the end user behind the accounting point.
+   */
+  end_user_id: number;
+  /**
+   * The service providers internal reference to the contract with the end user. Typically an internal identifier to a stored document or consent record.
+   */
+  contract_reference: string;
+  /**
+   * The date from which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.
+   */
+  valid_from?: string;
+  /**
+   * The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.
+   */
+  valid_to?: string;
+  /**
+   * Reference to the resource that was updated.
+   */
+  controllable_unit_service_provider_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service providing group - history
  */
-export type ServiceProvidingGroupHistoryWritable =
-  ServiceProvidingGroupWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupHistoryWritable = {
+  /**
+   * Free text name of the service providing group.
+   */
+  name: string;
+  /**
+   * Reference to the `party` (service provider) managing the group.
+   */
+  service_provider_id: number;
+  bidding_zone: ServiceProvidingGroupBiddingZone;
+  status: ServiceProvidingGroupStatus;
+  /**
+   * Free text field for extra information about the service providing group if needed.
+   */
+  additional_information?: string;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Membership relation of controllable unit in service providing group - history
  */
-export type ServiceProvidingGroupMembershipHistoryWritable =
-  ServiceProvidingGroupMembershipWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_membership_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupMembershipHistoryWritable = {
+  /**
+   * Reference to the controllable unit this relation links to a service providing group.
+   */
+  controllable_unit_id: number;
+  /**
+   * Reference to the service providing group this relation links to a controllable unit.
+   */
+  service_providing_group_id: number;
+  /**
+   * The date from which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.
+   */
+  valid_from: string;
+  /**
+   * The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.
+   */
+  valid_to?: string;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_membership_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Grid prequalification for service providing group - history
  */
-export type ServiceProvidingGroupGridPrequalificationHistoryWritable =
-  ServiceProvidingGroupGridPrequalificationWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_grid_prequalification_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupGridPrequalificationHistoryWritable = {
+  /**
+   * Reference to the service providing group whose grid prequalification is tracked by the current resource.
+   */
+  service_providing_group_id: number;
+  /**
+   * Reference to the `party` that is the impacted system operator.
+   */
+  impacted_system_operator_id: number;
+  status: ServiceProvidingGroupGridPrequalificationStatus;
+  /**
+   * When the current grid prequalification was last approved.
+   */
+  prequalified_at?: string;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_grid_prequalification_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Grid prequalification for service providing group Comment - history
  */
-export type ServiceProvidingGroupGridPrequalificationCommentHistoryWritable =
-  ServiceProvidingGroupGridPrequalificationCommentWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_grid_prequalification_comment_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupGridPrequalificationCommentHistoryWritable = {
+  /**
+   * Reference to the service providing group grid prequalification.
+   */
+  service_providing_group_grid_prequalification_id: number;
+  visibility: ServiceProvidingGroupGridPrequalificationCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_grid_prequalification_comment_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Providing Group Grid Suspension - history
  */
-export type ServiceProvidingGroupGridSuspensionHistoryWritable =
-  ServiceProvidingGroupGridSuspensionWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_grid_suspension_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupGridSuspensionHistoryWritable = {
+  /**
+   * Reference to the impacted system operator suspending the service providing group.
+   */
+  impacted_system_operator_id: number;
+  /**
+   * Reference to the service providing group being suspended.
+   */
+  service_providing_group_id: number;
+  reason: ServiceProvidingGroupGridSuspensionReason;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_grid_suspension_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Providing Group Grid Suspension Comment - history
  */
-export type ServiceProvidingGroupGridSuspensionCommentHistoryWritable =
-  ServiceProvidingGroupGridSuspensionCommentWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_grid_suspension_comment_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupGridSuspensionCommentHistoryWritable = {
+  /**
+   * Reference to the service providing group grid suspension.
+   */
+  service_providing_group_grid_suspension_id: number;
+  visibility: ServiceProvidingGroupGridSuspensionCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_grid_suspension_comment_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Party - history
  */
-export type PartyHistoryWritable = PartyWritable & {
+export type PartyHistoryWritable = {
+  /**
+   * The business identifier of the party. Format depends on `business_id_type`.
+   */
+  business_id: string;
+  business_id_type: PartyBusinessIdType;
+  /**
+   * Reference to the entity that is the parent of the party.
+   */
+  entity_id: number;
+  /**
+   * Name of the party. Maximum 128 characters.
+   */
+  name: string;
+  role: PartyRole;
+  type: PartyType;
+  status: PartyStatus;
   /**
    * Reference to the resource that was updated.
    */
@@ -4468,7 +5246,19 @@ export type PartyHistoryWritable = PartyWritable & {
 /**
  * Party Membership - history
  */
-export type PartyMembershipHistoryWritable = PartyMembershipWritable & {
+export type PartyMembershipHistoryWritable = {
+  /**
+   * Reference to the party that the membership links to an entity.
+   */
+  party_id: number;
+  /**
+   * Reference to the entity that the party represents.
+   */
+  entity_id: number;
+  /**
+   * List of scopes granted to the entity when it acts as the party. Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.
+   */
+  scopes: Array<AuthScope>;
   /**
    * Reference to the resource that was updated.
    */
@@ -4486,7 +5276,44 @@ export type PartyMembershipHistoryWritable = PartyMembershipWritable & {
 /**
  * Technical Resource - history
  */
-export type TechnicalResourceHistoryWritable = TechnicalResourceWritable & {
+export type TechnicalResourceHistoryWritable = {
+  /**
+   * Name of the technical resource. Maximum 128 characters.
+   */
+  name: string;
+  /**
+   * Reference to the controllable unit that this technical resource belongs to.
+   */
+  controllable_unit_id: number;
+  /**
+   * Technologies of the technical resource using ltree path notation. Multiple technologies can be specified for hybrid resources (e.g., solar + battery).
+   */
+  technology: Array<Technology>;
+  /**
+   * Maximum continuous active power (rated power) of the technical resource in kilowatts.
+   */
+  maximum_active_power: number;
+  /**
+   * The type of device.
+   */
+  device_type: DeviceType;
+  /**
+   * The manufacturer of the device. Required if model or business_id is provided.
+   */
+  make?: string;
+  /**
+   * The model of the device.
+   */
+  model?: string;
+  /**
+   * Business identifier of the device, such as a serial number or MAC address.
+   */
+  business_id?: string;
+  business_id_type?: TechnicalResourceBusinessIdType | null;
+  /**
+   * Free text field for extra information about the technical resource if needed.
+   */
+  additional_information?: string;
   /**
    * Reference to the resource that was updated.
    */
@@ -4504,173 +5331,285 @@ export type TechnicalResourceHistoryWritable = TechnicalResourceWritable & {
 /**
  * System Operator Product Type - history
  */
-export type SystemOperatorProductTypeHistoryWritable =
-  SystemOperatorProductTypeWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    system_operator_product_type_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type SystemOperatorProductTypeHistoryWritable = {
+  /**
+   * Reference to the system operator.
+   */
+  system_operator_id: number;
+  /**
+   * Reference to the product type.
+   */
+  product_type_id: number;
+  status: SystemOperatorProductTypeStatus;
+  /**
+   * Reference to the resource that was updated.
+   */
+  system_operator_product_type_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Provider Product Application - history
  */
-export type ServiceProviderProductApplicationHistoryWritable =
-  ServiceProviderProductApplicationWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_provider_product_application_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProviderProductApplicationHistoryWritable = {
+  /**
+   * Reference to the service provider.
+   */
+  service_provider_id: number;
+  /**
+   * Reference to the system operator.
+   */
+  system_operator_id: number;
+  /**
+   * References to the product types.
+   */
+  product_type_ids: Array<number>;
+  status: ServiceProviderProductApplicationStatus;
+  /**
+   * When the product application was last validated.
+   */
+  qualified_at?: string;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_provider_product_application_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Provider Product Application Comment - history
  */
-export type ServiceProviderProductApplicationCommentHistoryWritable =
-  ServiceProviderProductApplicationCommentWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_provider_product_application_comment_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProviderProductApplicationCommentHistoryWritable = {
+  /**
+   * Reference to the service provider product application.
+   */
+  service_provider_product_application_id: number;
+  visibility: ServiceProviderProductApplicationCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_provider_product_application_comment_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Provider Product Suspension - history
  */
-export type ServiceProviderProductSuspensionHistoryWritable =
-  ServiceProviderProductSuspensionWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_provider_product_suspension_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProviderProductSuspensionHistoryWritable = {
+  /**
+   * Reference to the procuring system operator suspending the service provider.
+   */
+  procuring_system_operator_id: number;
+  /**
+   * Reference to the service provider being suspended.
+   */
+  service_provider_id: number;
+  /**
+   * References to the suspended product types.
+   */
+  product_type_ids: Array<number>;
+  reason: ServiceProviderProductSuspensionReason;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_provider_product_suspension_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Provider Product Suspension Comment - history
  */
-export type ServiceProviderProductSuspensionCommentHistoryWritable =
-  ServiceProviderProductSuspensionCommentWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_provider_product_suspension_comment_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProviderProductSuspensionCommentHistoryWritable = {
+  /**
+   * Reference to the service provider product suspension.
+   */
+  service_provider_product_suspension_id: number;
+  visibility: ServiceProviderProductSuspensionCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_provider_product_suspension_comment_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Providing Group Product Application - history
  */
-export type ServiceProvidingGroupProductApplicationHistoryWritable =
-  ServiceProvidingGroupProductApplicationWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_product_application_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupProductApplicationHistoryWritable = {
+  /**
+   * Reference to the service providing group.
+   */
+  service_providing_group_id: number;
+  /**
+   * Reference to the procuring system operator.
+   */
+  procuring_system_operator_id: number;
+  /**
+   * References to the product types.
+   */
+  product_type_ids: Array<number>;
+  status: ServiceProvidingGroupProductApplicationStatus;
+  /**
+   * The maximum active power applied for in regulation direction up. Stored in kilowatts.
+   */
+  maximum_active_power_up: number;
+  /**
+   * The maximum active power applied for in regulation direction down. Stored in kilowatts.
+   */
+  maximum_active_power_down: number;
+  /**
+   * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
+   */
+  additional_information?: string;
+  /**
+   * When the product application was last prequalified.
+   */
+  prequalified_at?: string;
+  /**
+   * When the product application was last verified.
+   */
+  verified_at?: string;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_product_application_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Providing Group Product Application Comment - history
  */
-export type ServiceProvidingGroupProductApplicationCommentHistoryWritable =
-  ServiceProvidingGroupProductApplicationCommentWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_product_application_comment_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupProductApplicationCommentHistoryWritable = {
+  /**
+   * Reference to the service providing group product application.
+   */
+  service_providing_group_product_application_id: number;
+  visibility: ServiceProvidingGroupProductApplicationCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_product_application_comment_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Providing Group Product Suspension - history
  */
-export type ServiceProvidingGroupProductSuspensionHistoryWritable =
-  ServiceProvidingGroupProductSuspensionWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_product_suspension_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupProductSuspensionHistoryWritable = {
+  /**
+   * Reference to the procuring system operator suspending the service providing group.
+   */
+  procuring_system_operator_id: number;
+  /**
+   * Reference to the service providing group being suspended.
+   */
+  service_providing_group_id: number;
+  /**
+   * References to the suspended product types.
+   */
+  product_type_ids: Array<number>;
+  reason: ServiceProvidingGroupProductSuspensionReason;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_product_suspension_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Providing Group Product Suspension Comment - history
  */
-export type ServiceProvidingGroupProductSuspensionCommentHistoryWritable =
-  ServiceProvidingGroupProductSuspensionCommentWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_product_suspension_comment_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupProductSuspensionCommentHistoryWritable = {
+  /**
+   * Reference to the service providing group product suspension.
+   */
+  service_providing_group_product_suspension_id: number;
+  visibility: ServiceProvidingGroupProductSuspensionCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_product_suspension_comment_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 export type ReadOpenapiJsonData = {
   body?: never;

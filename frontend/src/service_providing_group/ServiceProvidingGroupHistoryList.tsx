@@ -17,7 +17,7 @@ export const ServiceProvidingGroupHistoryList = () => {
 
   const spgFields = getFields(zServiceProvidingGroup.shape);
   const historyFields = getFields(
-    zServiceProvidingGroupHistory._zod.def.right.shape,
+    zServiceProvidingGroupHistory._zod.def.shape,
   );
 
   return (

@@ -34,7 +34,7 @@ export const ServiceProvidingGroupProductApplicationHistoryList = () => {
   const spgpaFields = getFields(zServiceProvidingGroupProductApplication.shape);
   // Since history is an intersection of spgpa and a few other fields, we need to get the fields for the right side of the intersection.
   const historyFields = getFields(
-    zServiceProvidingGroupProductApplicationHistory._zod.def.right.shape,
+    zServiceProvidingGroupProductApplicationHistory._zod.def.shape,
   );
   const procuringSystemOperatorIdFields = getFields(zParty.shape);
 

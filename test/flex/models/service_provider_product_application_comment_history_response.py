@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import datetime
 from collections.abc import Mapping
-from typing import TYPE_CHECKING, Any, TypeVar, cast
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -12,10 +12,6 @@ from ..models.service_provider_product_application_comment_visibility import (
     ServiceProviderProductApplicationCommentVisibility,
 )
 from ..types import UNSET, Unset
-
-if TYPE_CHECKING:
-    from ..models.service_provider_product_application_response import ServiceProviderProductApplicationResponse
-
 
 T = TypeVar("T", bound="ServiceProviderProductApplicationCommentHistoryResponse")
 
@@ -37,8 +33,6 @@ class ServiceProviderProductApplicationCommentHistoryResponse:
             2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
         service_provider_product_application_comment_id (int): Reference to the resource that was updated. Example: 48.
-        service_provider_product_application (None | ServiceProviderProductApplicationResponse | Unset): Embedded
-            service_provider_product_application
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (datetime.datetime | None | Unset): When the resource was replaced in the system. Example:
             2024-07-07T10:00:00+00:00.
@@ -53,14 +47,11 @@ class ServiceProviderProductApplicationCommentHistoryResponse:
     recorded_at: datetime.datetime
     recorded_by: int
     service_provider_product_application_comment_id: int
-    service_provider_product_application: None | ServiceProviderProductApplicationResponse | Unset = UNSET
     replaced_by: int | None | Unset = UNSET
     replaced_at: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        from ..models.service_provider_product_application_response import ServiceProviderProductApplicationResponse
-
         id = self.id
 
         service_provider_product_application_id = self.service_provider_product_application_id
@@ -78,14 +69,6 @@ class ServiceProviderProductApplicationCommentHistoryResponse:
         recorded_by = self.recorded_by
 
         service_provider_product_application_comment_id = self.service_provider_product_application_comment_id
-
-        service_provider_product_application: dict[str, Any] | None | Unset
-        if isinstance(self.service_provider_product_application, Unset):
-            service_provider_product_application = UNSET
-        elif isinstance(self.service_provider_product_application, ServiceProviderProductApplicationResponse):
-            service_provider_product_application = self.service_provider_product_application.to_dict()
-        else:
-            service_provider_product_application = self.service_provider_product_application
 
         replaced_by: int | None | Unset
         if isinstance(self.replaced_by, Unset):
@@ -116,8 +99,6 @@ class ServiceProviderProductApplicationCommentHistoryResponse:
                 "service_provider_product_application_comment_id": service_provider_product_application_comment_id,
             }
         )
-        if service_provider_product_application is not UNSET:
-            field_dict["service_provider_product_application"] = service_provider_product_application
         if replaced_by is not UNSET:
             field_dict["replaced_by"] = replaced_by
         if replaced_at is not UNSET:
@@ -127,8 +108,6 @@ class ServiceProviderProductApplicationCommentHistoryResponse:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.service_provider_product_application_response import ServiceProviderProductApplicationResponse
-
         d = dict(src_dict)
         id = d.pop("id")
 
@@ -147,27 +126,6 @@ class ServiceProviderProductApplicationCommentHistoryResponse:
         recorded_by = d.pop("recorded_by")
 
         service_provider_product_application_comment_id = d.pop("service_provider_product_application_comment_id")
-
-        def _parse_service_provider_product_application(
-            data: object,
-        ) -> None | ServiceProviderProductApplicationResponse | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            try:
-                if not isinstance(data, dict):
-                    raise TypeError()
-                service_provider_product_application_type_0 = ServiceProviderProductApplicationResponse.from_dict(data)
-
-                return service_provider_product_application_type_0
-            except (TypeError, ValueError, AttributeError, KeyError):
-                pass
-            return cast(None | ServiceProviderProductApplicationResponse | Unset, data)
-
-        service_provider_product_application = _parse_service_provider_product_application(
-            d.pop("service_provider_product_application", UNSET)
-        )
 
         def _parse_replaced_by(data: object) -> int | None | Unset:
             if data is None:
@@ -205,7 +163,6 @@ class ServiceProviderProductApplicationCommentHistoryResponse:
             recorded_at=recorded_at,
             recorded_by=recorded_by,
             service_provider_product_application_comment_id=service_provider_product_application_comment_id,
-            service_provider_product_application=service_provider_product_application,
             replaced_by=replaced_by,
             replaced_at=replaced_at,
         )
