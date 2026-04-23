@@ -624,7 +624,7 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 
 	ctx := r.Context()
 
-	r.Body = http.MaxBytesReader(w, r.Body, 1024)
+	r.Body = http.MaxBytesReader(w, r.Body, 1024) //nolint:mnd
 
 	partyIDstr := r.FormValue("party_id")
 	if partyIDstr == "" {

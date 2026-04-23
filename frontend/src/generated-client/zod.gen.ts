@@ -2740,6 +2740,7 @@ export const zListControllableUnitServiceProviderQuery = z.object({
     .regex(/^eq\.[0-9]+$/)
     .optional(),
   valid_from: z.string().optional(),
+  valid_at: z.iso.datetime({ offset: true }).optional(),
   valid_to: z.string().optional(),
   select: z.string().optional(),
   order: z.string().optional(),
@@ -2822,6 +2823,7 @@ export const zListControllableUnitServiceProviderHistoryQuery = z.object({
     .regex(/^eq\.[0-9]+$/)
     .optional(),
   valid_from: z.string().optional(),
+  valid_at: z.iso.datetime({ offset: true }).optional(),
   valid_to: z.string().optional(),
   select: z.string().optional(),
   order: z.string().optional(),
@@ -2958,6 +2960,7 @@ export const zListServiceProvidingGroupMembershipQuery = z.object({
     .regex(/^eq\.[0-9]+$/)
     .optional(),
   valid_from: z.string().optional(),
+  valid_at: z.iso.datetime({ offset: true }).optional(),
   valid_to: z.string().optional(),
   select: z.string().optional(),
   order: z.string().optional(),
@@ -3036,6 +3039,7 @@ export const zListServiceProvidingGroupMembershipHistoryQuery = z.object({
     .regex(/^eq\.[0-9]+$/)
     .optional(),
   valid_from: z.string().optional(),
+  valid_at: z.iso.datetime({ offset: true }).optional(),
   valid_to: z.string().optional(),
   select: z.string().optional(),
   order: z.string().optional(),
@@ -4010,6 +4014,7 @@ export const zListAccountingPointBalanceResponsiblePartyQuery = z.object({
     .regex(/^eq\.[0-9]+$/)
     .optional(),
   valid_from: z.string().optional(),
+  valid_at: z.iso.datetime({ offset: true }).optional(),
   valid_to: z.string().optional(),
   select: z.string().optional(),
   order: z.string().optional(),
@@ -4028,6 +4033,7 @@ export const zListAccountingPointBiddingZoneQuery = z.object({
     .regex(/^eq\.[0-9]+$/)
     .optional(),
   valid_from: z.string().optional(),
+  valid_at: z.iso.datetime({ offset: true }).optional(),
   valid_to: z.string().optional(),
   select: z.string().optional(),
   order: z.string().optional(),
@@ -4050,6 +4056,7 @@ export const zListAccountingPointEndUserQuery = z.object({
     .regex(/^eq\.[0-9]+$/)
     .optional(),
   valid_from: z.string().optional(),
+  valid_at: z.iso.datetime({ offset: true }).optional(),
   valid_to: z.string().optional(),
   select: z.string().optional(),
   order: z.string().optional(),
@@ -4072,6 +4079,7 @@ export const zListAccountingPointEnergySupplierQuery = z.object({
     .regex(/^eq\.[0-9]+$/)
     .optional(),
   valid_from: z.string().optional(),
+  valid_at: z.iso.datetime({ offset: true }).optional(),
   valid_to: z.string().optional(),
   select: z.string().optional(),
   order: z.string().optional(),
@@ -4122,6 +4130,7 @@ export const zListAccountingPointMeteringGridAreaQuery = z.object({
     .regex(/^eq\.[0-9]+$/)
     .optional(),
   valid_from: z.string().optional(),
+  valid_at: z.iso.datetime({ offset: true }).optional(),
   valid_to: z.string().optional(),
   select: z.string().optional(),
   order: z.string().optional(),

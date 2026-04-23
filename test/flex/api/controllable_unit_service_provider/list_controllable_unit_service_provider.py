@@ -1,3 +1,4 @@
+import datetime
 from http import HTTPStatus
 from typing import Any
 
@@ -18,6 +19,7 @@ def _get_kwargs(
     service_provider_id: str | Unset = UNSET,
     end_user_id: str | Unset = UNSET,
     valid_from: str | Unset = UNSET,
+    valid_at: datetime.datetime | Unset = UNSET,
     valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
@@ -36,6 +38,11 @@ def _get_kwargs(
     params["end_user_id"] = end_user_id
 
     params["valid_from"] = valid_from
+
+    json_valid_at: str | Unset = UNSET
+    if not isinstance(valid_at, Unset):
+        json_valid_at = valid_at.isoformat()
+    params["valid_at"] = json_valid_at
 
     params["valid_to"] = valid_to
 
@@ -157,6 +164,7 @@ def sync_detailed(
     service_provider_id: str | Unset = UNSET,
     end_user_id: str | Unset = UNSET,
     valid_from: str | Unset = UNSET,
+    valid_at: datetime.datetime | Unset = UNSET,
     valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
@@ -174,6 +182,7 @@ def sync_detailed(
         service_provider_id (str | Unset):
         end_user_id (str | Unset):
         valid_from (str | Unset):
+        valid_at (datetime.datetime | Unset):
         valid_to (str | Unset):
         select (str | Unset):
         order (str | Unset):
@@ -194,6 +203,7 @@ def sync_detailed(
         service_provider_id=service_provider_id,
         end_user_id=end_user_id,
         valid_from=valid_from,
+        valid_at=valid_at,
         valid_to=valid_to,
         select=select,
         order=order,
@@ -216,6 +226,7 @@ def sync(
     service_provider_id: str | Unset = UNSET,
     end_user_id: str | Unset = UNSET,
     valid_from: str | Unset = UNSET,
+    valid_at: datetime.datetime | Unset = UNSET,
     valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
@@ -233,6 +244,7 @@ def sync(
         service_provider_id (str | Unset):
         end_user_id (str | Unset):
         valid_from (str | Unset):
+        valid_at (datetime.datetime | Unset):
         valid_to (str | Unset):
         select (str | Unset):
         order (str | Unset):
@@ -254,6 +266,7 @@ def sync(
         service_provider_id=service_provider_id,
         end_user_id=end_user_id,
         valid_from=valid_from,
+        valid_at=valid_at,
         valid_to=valid_to,
         select=select,
         order=order,
@@ -270,6 +283,7 @@ async def asyncio_detailed(
     service_provider_id: str | Unset = UNSET,
     end_user_id: str | Unset = UNSET,
     valid_from: str | Unset = UNSET,
+    valid_at: datetime.datetime | Unset = UNSET,
     valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
@@ -287,6 +301,7 @@ async def asyncio_detailed(
         service_provider_id (str | Unset):
         end_user_id (str | Unset):
         valid_from (str | Unset):
+        valid_at (datetime.datetime | Unset):
         valid_to (str | Unset):
         select (str | Unset):
         order (str | Unset):
@@ -307,6 +322,7 @@ async def asyncio_detailed(
         service_provider_id=service_provider_id,
         end_user_id=end_user_id,
         valid_from=valid_from,
+        valid_at=valid_at,
         valid_to=valid_to,
         select=select,
         order=order,
@@ -327,6 +343,7 @@ async def asyncio(
     service_provider_id: str | Unset = UNSET,
     end_user_id: str | Unset = UNSET,
     valid_from: str | Unset = UNSET,
+    valid_at: datetime.datetime | Unset = UNSET,
     valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
@@ -344,6 +361,7 @@ async def asyncio(
         service_provider_id (str | Unset):
         end_user_id (str | Unset):
         valid_from (str | Unset):
+        valid_at (datetime.datetime | Unset):
         valid_to (str | Unset):
         select (str | Unset):
         order (str | Unset):
@@ -366,6 +384,7 @@ async def asyncio(
             service_provider_id=service_provider_id,
             end_user_id=end_user_id,
             valid_from=valid_from,
+            valid_at=valid_at,
             valid_to=valid_to,
             select=select,
             order=order,

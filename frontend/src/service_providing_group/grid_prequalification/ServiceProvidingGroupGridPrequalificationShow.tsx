@@ -1,205 +1,69 @@
-import {
-  Button,
-  ReferenceField,
-  Show,
-  SimpleShowLayout,
-  TextField,
-  TopToolbar,
-  usePermissions,
-  useRecordContext,
-  useResourceContext,
-} from "react-admin";
-import { Typography, Stack } from "@mui/material";
-import { FieldStack } from "../../auth";
-import EditIcon from "@mui/icons-material/Edit";
-import { Link } from "react-router-dom";
-import { DateField } from "../../components/datetime";
-import { EventButton } from "../../event/EventButton";
-import { IdentityField } from "../../components/IdentityField";
-import { Permissions } from "../../auth/permissions";
-import HistoryIcon from "@mui/icons-material/History";
-import { CommentList as GenericCommentList } from "../../components/comments";
-import { ServiceProvidingGroupGridPrequalification } from "../../generated-client";
-import { EnumField } from "../../components/enum";
-
-const EditButton = () => {
-  const record = useRecordContext();
-  return (
-    <Button
-      component={Link}
-      to={`/service_providing_group/${record?.service_providing_group_id}/grid_prequalification/${record?.id}`}
-      startIcon={<EditIcon />}
-      label="Edit"
-    />
-  );
-};
-
-// manual components to support both flat and nested URLs for this resource
-
-const HistoryButton = () => {
-  const record = useRecordContext<ServiceProvidingGroupGridPrequalification>();
-  const { permissions } = usePermissions<Permissions>();
-
-  const filter =
-    `?filter=` +
-    encodeURIComponent(
-      `{ "service_providing_group_grid_prequalification_id": ${record?.id} }`,
-    );
-
-  return (
-    <Button
-      component={Link}
-      disabled={
-        !permissions?.allow(
-          "service_providing_group_grid_prequalification_history",
-          "read",
-        )
-      }
-      to={`/service_providing_group/${record?.service_providing_group_id}/grid_prequalification_history${filter}`}
-      startIcon={<HistoryIcon />}
-      label="View History"
-    />
-  );
-};
-
-const CommentHistoryButton = () => {
-  const record = useRecordContext<ServiceProvidingGroupGridPrequalification>();
-  const { permissions } = usePermissions<Permissions>();
-
-  return (
-    <Button
-      component={Link}
-      disabled={
-        !permissions?.allow(
-          "service_providing_group_grid_prequalification_comment_history",
-          "read",
-        )
-      }
-      to={`/service_providing_group/${record?.service_providing_group_id}/grid_prequalification/${record?.id}/comment_history`}
-      startIcon={<HistoryIcon />}
-      label="View History of Comments"
-    />
-  );
-};
-
-const CommentList = () => {
-  const record = useRecordContext<ServiceProvidingGroupGridPrequalification>();
-  return (
-    <GenericCommentList
-      parentPath={
-        record
-          ? [
-              {
-                resource: "service_providing_group",
-                id: record.service_providing_group_id!,
-              },
-              { resource: "grid_prequalification", id: record.id! },
-            ]
-          : undefined
-      }
-    />
-  );
-};
+import { useParams } from "react-router-dom";
+import { usePermissions, useResourceContext } from "ra-core";
+import { Loader, Badge } from "../../components/ui";
+import { ShowPageLayout } from "../../components/ShowPageLayout";
+import type { Permissions } from "../../auth/permissions";
+import { SpgpqShowSummary } from "./show/SpgpqShowSummary";
+import { SpgpqShowTabs } from "./show/SpgpqShowTabs";
+import { SpgpqActionBar } from "./show/SpgpqActionBar";
+import { useSpgpqRecord } from "./show/useSpgpqShowViewModel";
+import { useTranslateEnum } from "../../intl/intl";
+import { spgpqStatusVariantMap } from "./show/spgpqStatus";
+import { useServiceProvidingGroup } from "../show/useSpgShowViewModel";
 
 export const ServiceProvidingGroupGridPrequalificationShow = () => {
+  const spgpqId = Number(useParams<{ id: string }>().id);
   const resource = useResourceContext()!;
   const { permissions } = usePermissions<Permissions>();
+  const translateEnum = useTranslateEnum();
 
   const isHistory = resource.endsWith("_history");
 
-  // Permission checks
-  const canUpdate = permissions?.allow(
-    "service_providing_group_grid_prequalification",
+  const { data: spgpq, isPending, error } = useSpgpqRecord(spgpqId);
+  const spg = useServiceProvidingGroup(spgpq?.service_providing_group_id);
+
+  const canUpdateStatus = !!permissions?.allow(
+    "service_providing_group_grid_prequalification.status",
     "update",
   );
 
+  if (isPending) return <Loader />;
+  if (error) throw error;
+  if (!spgpq) return null;
+  if (spg.error) throw spg.error;
+
+  const { status, icon } = spgpqStatusVariantMap[spgpq.status];
+
   return (
-    <Show
-      actions={
-        !isHistory &&
-        canUpdate && (
-          <TopToolbar>
-            <EditButton />
-          </TopToolbar>
-        )
+    <ShowPageLayout
+      backTo={{
+        pathname: "/service_providing_group_grid_prequalification",
+        label: "Grid prequalifications",
+      }}
+      title={`Grid Prequalification #${spgpq.id}${spg.data ? ` for ${spg.data.name}` : ""}`}
+      badge={
+        <Badge size="small" status={status} variant="block" icon={icon}>
+          {translateEnum(
+            `service_providing_group_grid_prequalification.status.${spgpq.status}`,
+          )}
+        </Badge>
+      }
+      actionBar={
+        !isHistory && canUpdateStatus ? (
+          <SpgpqActionBar spgpq={spgpq} />
+        ) : undefined
       }
     >
-      <SimpleShowLayout>
-        <Stack direction="column" spacing={2}>
-          <Typography variant="h6" gutterBottom>
-            Basic information
-          </Typography>
-          <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField
-              source="id"
-              label="field.service_providing_group_grid_prequalification.id"
-            />
-            <TextField
-              source="service_providing_group_grid_prequalification_id"
-              label="field.service_providing_group_grid_prequalification_history.service_providing_group_grid_prequalification_id"
-            />
-            <ReferenceField
-              source="service_providing_group_id"
-              reference="service_providing_group"
-              label="field.service_providing_group_grid_prequalification.service_providing_group_id"
-            >
-              <TextField source="name" />
-            </ReferenceField>
-            <ReferenceField
-              source="impacted_system_operator_id"
-              reference="party"
-              label="field.service_providing_group_grid_prequalification.impacted_system_operator_id"
-            >
-              <TextField source="name" />
-            </ReferenceField>
-            <EnumField
-              source="status"
-              enumKey="service_providing_group_grid_prequalification.status"
-              label="field.service_providing_group_grid_prequalification.status"
-            />
-            <DateField
-              source="prequalified_at"
-              showTime
-              label="field.service_providing_group_grid_prequalification.prequalified_at"
-            />
-          </FieldStack>
-
-          <Typography variant="h6" gutterBottom>
-            Registration
-          </Typography>
-          <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <DateField
-              source="recorded_at"
-              showTime
-              label="field.service_providing_group_grid_prequalification.recorded_at"
-            />
-            <IdentityField
-              source="recorded_by"
-              label="field.service_providing_group_grid_prequalification.recorded_by"
-            />
-            <DateField
-              source="replaced_at"
-              showTime
-              label="field.service_providing_group_grid_prequalification_history.replaced_at"
-            />
-            <IdentityField
-              source="replaced_by"
-              label="field.service_providing_group_grid_prequalification_history.replaced_by"
-            />
-          </FieldStack>
-        </Stack>
-        <HistoryButton />
-        {!isHistory && <EventButton filterOnSubject />}
-        {!isHistory && (
-          <>
-            <Typography variant="h6" gutterBottom>
-              Comments
-            </Typography>
-            <CommentHistoryButton />
-            <CommentList />
-          </>
-        )}
-      </SimpleShowLayout>
-    </Show>
+      <SpgpqShowSummary spgpq={spgpq} spg={spg.data} isHistory={isHistory} />
+      {!isHistory ? (
+        <SpgpqShowTabs
+          spgId={spgpq.service_providing_group_id}
+          spgpqId={spgpq.id}
+          spg={spg.data}
+        />
+      ) : (
+        <div />
+      )}
+    </ShowPageLayout>
   );
 };

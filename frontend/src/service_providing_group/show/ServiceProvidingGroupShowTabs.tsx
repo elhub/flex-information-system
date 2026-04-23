@@ -11,7 +11,10 @@ export const ServiceProvidingGroupShowTabs = ({ spgId }: Props) => (
   <Tabs defaultValue="controllable_units" className="relative top-[-24px]">
     <Tabs.List>
       <Tabs.Tab label="Controllable units" value="controllable_units" />
-      <Tabs.Tab label="Product applications" value="product_applications" />
+      <Tabs.Tab
+        label="Product prequalifications"
+        value="product_applications"
+      />
       <Tabs.Tab label="Grid prequalifications" value="grid_prequalifications" />
     </Tabs.List>
     <Tabs.Panel value="controllable_units">
