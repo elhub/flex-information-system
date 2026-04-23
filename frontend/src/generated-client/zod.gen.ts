@@ -159,6 +159,13 @@ export const zNoticeDataProductTypeNotQualified = z.object({
   product_type_ids: z.array(z.coerce.number()).optional(),
 });
 
+export const zNumericAggregation = z.object({
+  sum: z.coerce.number().optional(),
+  average: z.coerce.number().optional(),
+  min: z.coerce.number().optional(),
+  max: z.coerce.number().optional(),
+});
+
 /**
  * An empty object
  */
@@ -1710,6 +1717,7 @@ export const zControllableUnit = z.object({
   service_provider: z
     .array(z.lazy((): any => zControllableUnitServiceProvider))
     .nullish(),
+  summary: z.lazy((): any => zControllableUnitSummary).nullish(),
   service_providing_group_membership: z
     .array(z.lazy((): any => zServiceProvidingGroupMembership))
     .nullish(),
@@ -1764,6 +1772,39 @@ export const zControllableUnitServiceProvider = z.object({
   controllable_unit: zControllableUnit.nullish(),
   service_provider: z.lazy((): any => zParty).nullish(),
   end_user: z.lazy((): any => zParty).nullish(),
+});
+
+/**
+ * Response schema - Aggregated summary of technical resources belonging to a controllable unit.
+ */
+export const zControllableUnitSummary = z.object({
+  id: z.coerce.number().readonly(),
+  controllable_unit_id: z.coerce.number().readonly(),
+  technical_resource: z
+    .object({
+      count: z.coerce.number().optional(),
+      maximum_active_power: zNumericAggregation.optional(),
+      by_category: z
+        .record(
+          z.string(),
+          z.object({
+            count: z.coerce.number().optional(),
+            maximum_active_power: zNumericAggregation.optional(),
+          }),
+        )
+        .optional(),
+      by_technology: z
+        .record(
+          z.string(),
+          z.object({
+            count: z.coerce.number().optional(),
+            maximum_active_power: zNumericAggregation.optional(),
+          }),
+        )
+        .optional(),
+    })
+    .readonly(),
+  controllable_unit: zControllableUnit.nullish(),
 });
 
 /**
@@ -2366,6 +2407,7 @@ export const zControllableUnitWritable = z.object({
   service_provider: z
     .array(z.lazy((): any => zControllableUnitServiceProviderWritable))
     .nullish(),
+  summary: z.lazy((): any => zControllableUnitSummaryWritable).nullish(),
   service_providing_group_membership: z
     .array(z.lazy((): any => zServiceProvidingGroupMembershipWritable))
     .nullish(),
@@ -2411,6 +2453,13 @@ export const zControllableUnitServiceProviderWritable = z.object({
   controllable_unit: zControllableUnitWritable.nullish(),
   service_provider: z.lazy((): any => zPartyWritable).nullish(),
   end_user: z.lazy((): any => zPartyWritable).nullish(),
+});
+
+/**
+ * Response schema - Aggregated summary of technical resources belonging to a controllable unit.
+ */
+export const zControllableUnitSummaryWritable = z.object({
+  controllable_unit: zControllableUnitWritable.nullish(),
 });
 
 /**
@@ -4078,6 +4127,19 @@ export const zUpdateControllableUnitServiceProviderResponse = z.union([
   zControllableUnitServiceProvider,
   z.void(),
 ]);
+
+export const zReadControllableUnitSummaryPath = z.object({
+  id: z.coerce.number(),
+});
+
+export const zReadControllableUnitSummaryQuery = z.object({
+  embed: z.string().optional(),
+});
+
+/**
+ * OK
+ */
+export const zReadControllableUnitSummaryResponse = zControllableUnitSummary;
 
 export const zListServiceProvidingGroupQuery = z.object({
   id: z

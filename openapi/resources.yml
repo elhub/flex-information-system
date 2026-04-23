@@ -390,6 +390,125 @@ resources:
           nb: Gyldig til
           nn: Gyldig til
 
+  - id: controllable_unit_summary
+    acronym: CUSU
+    summary: Controllable Unit Summary
+    description: >-
+      Aggregated summary of technical resources belonging to a controllable
+      unit.
+    x-intl:
+      en: Controllable Unit Summary
+      nb: Sammendrag av kontrollerbar enhet
+      nn: Samandrag av kontrollerbar eining
+    operations:
+      - read
+    generate_views: false
+    audit: false
+    properties:
+      id:
+        description: Unique surrogate key (controllable unit ID).
+        format: bigint
+        type: integer
+        readOnly: true
+        x-filter: true
+        example: 12
+        x-intl:
+          en: ID
+          nb: ID
+          nn: ID
+      controllable_unit_id:
+        description: >-
+          The ID of the controllable unit this resource is a summary of.
+        format: bigint
+        type: integer
+        readOnly: true
+        x-filter: true
+        x-foreign-key:
+          resource: controllable_unit
+          field: id
+          cardinality: one-to-one
+        example: 12
+        x-intl:
+          en: ID
+          nb: ID
+          nn: ID
+      technical_resource:
+        description: >-
+          Aggregated statistics on technical resources belonging to the
+          controllable unit, including counts and maximum active power
+          breakdowns (sum, average, min, max) by category and technology.
+        type: object
+        readOnly: true
+        x-intl:
+          en: Technical resource aggregates
+          nb: Aggregat om tekniske ressurser
+          nn: Aggregat om tekniske ressursar
+        properties:
+          count:
+            type: integer
+          maximum_active_power:
+            $ref: "#/components/schemas/numeric_aggregation"
+          by_category:
+            type: object
+            propertyNames:
+              $ref: "#/components/schemas/category"
+            additionalProperties:
+              type: object
+              properties:
+                count:
+                  type: integer
+                maximum_active_power:
+                  $ref: "#/components/schemas/numeric_aggregation"
+          by_technology:
+            type: object
+            propertyNames:
+              $ref: "#/components/schemas/technology"
+            additionalProperties:
+              type: object
+              properties:
+                count:
+                  type: integer
+                maximum_active_power:
+                  $ref: "#/components/schemas/numeric_aggregation"
+        example:
+          technical_resource:
+            count: 3
+            maximum_active_power:
+              sum: 150
+              average: 50
+              min: 20
+              max: 80
+            by_category:
+              production:
+                count: 2
+                maximum_active_power:
+                  sum: 130
+                  average: 65
+                  min: 50
+                  max: 80
+              consumption:
+                count: 1
+                maximum_active_power:
+                  sum: 20
+                  average: 20
+                  min: 20
+                  max: 20
+            by_technology:
+              solar:
+                count: 2
+                maximum_active_power:
+                  sum: 130
+                  average: 65
+                  min: 50
+                  max: 80
+              battery:
+                count: 1
+                maximum_active_power:
+                  sum: 20
+                  average: 20
+                  min: 20
+                  max: 20
+
   - id: service_providing_group
     acronym: SPG
     summary: Service providing group

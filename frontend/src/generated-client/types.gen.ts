@@ -255,6 +255,13 @@ export type NoticeData =
   | NoticeDataPartyOutdated
   | NoticeDataProductTypeNotQualified;
 
+export type NumericAggregation = {
+  sum?: number;
+  average?: number;
+  min?: number;
+  max?: number;
+};
+
 /**
  * An empty object
  */
@@ -610,6 +617,10 @@ export type ControllableUnit = {
    */
   service_provider?: Array<ControllableUnitServiceProvider> | null;
   /**
+   * Embedded controllable_unit_summary
+   */
+  summary?: ControllableUnitSummary | null;
+  /**
    * Embedded service_providing_group_membership
    */
   service_providing_group_membership?: Array<ServiceProvidingGroupMembership> | null;
@@ -845,6 +856,43 @@ export type ControllableUnitServiceProvider = {
    * Embedded party
    */
   end_user?: Party | null;
+};
+
+/**
+ * Response schema - Aggregated summary of technical resources belonging to a controllable unit.
+ */
+export type ControllableUnitSummary = {
+  /**
+   * Unique surrogate key (controllable unit ID).
+   */
+  readonly id: number;
+  /**
+   * The ID of the controllable unit this resource is a summary of.
+   */
+  readonly controllable_unit_id: number;
+  /**
+   * Aggregated statistics on technical resources belonging to the controllable unit, including counts and maximum active power breakdowns (sum, average, min, max) by category and technology.
+   */
+  readonly technical_resource: {
+    count?: number;
+    maximum_active_power?: NumericAggregation;
+    by_category?: {
+      [key in Category]?: {
+        count?: number;
+        maximum_active_power?: NumericAggregation;
+      };
+    };
+    by_technology?: {
+      [key in Technology]?: {
+        count?: number;
+        maximum_active_power?: NumericAggregation;
+      };
+    };
+  };
+  /**
+   * Embedded controllable_unit
+   */
+  controllable_unit?: ControllableUnit | null;
 };
 
 /**
@@ -4014,6 +4062,10 @@ export type ControllableUnitWritable = {
    */
   service_provider?: Array<ControllableUnitServiceProviderWritable> | null;
   /**
+   * Embedded controllable_unit_summary
+   */
+  summary?: ControllableUnitSummaryWritable | null;
+  /**
    * Embedded service_providing_group_membership
    */
   service_providing_group_membership?: Array<ServiceProvidingGroupMembershipWritable> | null;
@@ -4109,6 +4161,16 @@ export type ControllableUnitServiceProviderWritable = {
    * Embedded party
    */
   end_user?: PartyWritable | null;
+};
+
+/**
+ * Response schema - Aggregated summary of technical resources belonging to a controllable unit.
+ */
+export type ControllableUnitSummaryWritable = {
+  /**
+   * Embedded controllable_unit
+   */
+  controllable_unit?: ControllableUnitWritable | null;
 };
 
 /**
@@ -7411,6 +7473,60 @@ export type ReadControllableUnitServiceProviderHistoryResponses = {
 
 export type ReadControllableUnitServiceProviderHistoryResponse =
   ReadControllableUnitServiceProviderHistoryResponses[keyof ReadControllableUnitServiceProviderHistoryResponses];
+
+export type ReadControllableUnitSummaryData = {
+  body?: never;
+  path: {
+    id: number;
+  };
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
+  url: "/controllable_unit_summary/{id}";
+};
+
+export type ReadControllableUnitSummaryErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type ReadControllableUnitSummaryError =
+  ReadControllableUnitSummaryErrors[keyof ReadControllableUnitSummaryErrors];
+
+export type ReadControllableUnitSummaryResponses = {
+  /**
+   * OK
+   */
+  200: ControllableUnitSummary;
+};
+
+export type ReadControllableUnitSummaryResponse =
+  ReadControllableUnitSummaryResponses[keyof ReadControllableUnitSummaryResponses];
 
 export type ListServiceProvidingGroupData = {
   body?: never;

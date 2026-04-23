@@ -100,6 +100,11 @@ CREATE TABLE api.controllable_unit_service_provider_history (
     replaced_by bigint NULL,
     replaced_at timestamp with time zone NULL
 );
+CREATE TABLE api.controllable_unit_summary (
+    id bigint NOT NULL,
+    controllable_unit_id bigint NOT NULL,
+    technical_resource jsonb NOT NULL
+);
 CREATE TABLE api.service_providing_group (
     id bigint NOT NULL,
     name text NOT NULL,

@@ -75,6 +75,9 @@ export type FieldLabel =
   | "controllable_unit_service_provider_history.service_provider_id"
   | "controllable_unit_service_provider_history.valid_from"
   | "controllable_unit_service_provider_history.valid_to"
+  | "controllable_unit_summary.controllable_unit_id"
+  | "controllable_unit_summary.id"
+  | "controllable_unit_summary.technical_resource"
   | "controllable_unit_suspension.controllable_unit_id"
   | "controllable_unit_suspension.id"
   | "controllable_unit_suspension.impacted_system_operator_id"
@@ -607,6 +610,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Controllable Unit Service Provider",
     "controllable_unit_service_provider_history.replaced_at": "Replaced at",
     "controllable_unit_service_provider_history.replaced_by": "Replaced by",
+    "controllable_unit_summary.id": "ID",
+    "controllable_unit_summary.controllable_unit_id": "ID",
+    "controllable_unit_summary.technical_resource":
+      "Technical resource aggregates",
     "service_providing_group.id": "ID",
     "service_providing_group.name": "Name",
     "service_providing_group.service_provider_id": "Service provider",
@@ -1288,6 +1295,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Kontrollerbar enhet tjenesteleverandør",
     "controllable_unit_service_provider_history.replaced_at": "Erstattet",
     "controllable_unit_service_provider_history.replaced_by": "Erstattet av",
+    "controllable_unit_summary.id": "ID",
+    "controllable_unit_summary.controllable_unit_id": "ID",
+    "controllable_unit_summary.technical_resource":
+      "Aggregat om tekniske ressurser",
     "service_providing_group.id": "ID",
     "service_providing_group.name": "Navn",
     "service_providing_group.service_provider_id": "Tjenesteleverandør",
@@ -1964,6 +1975,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Kontrollerbar eining tenesteleverandør",
     "controllable_unit_service_provider_history.replaced_at": "Erstattet",
     "controllable_unit_service_provider_history.replaced_by": "Erstattet av",
+    "controllable_unit_summary.id": "ID",
+    "controllable_unit_summary.controllable_unit_id": "ID",
+    "controllable_unit_summary.technical_resource":
+      "Aggregat om tekniske ressursar",
     "service_providing_group.id": "ID",
     "service_providing_group.name": "Namn",
     "service_providing_group.service_provider_id": "Tenesteleverandør",

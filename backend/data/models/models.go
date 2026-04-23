@@ -112,6 +112,12 @@ type ApiControllableUnitServiceProviderHistory struct {
 	ReplacedAt                        pgtype.Timestamptz
 }
 
+type ApiControllableUnitSummary struct {
+	ID                 int
+	ControllableUnitID int
+	TechnicalResource  []byte
+}
+
 type ApiControllableUnitSuspension struct {
 	ID                       int
 	ControllableUnitID       int

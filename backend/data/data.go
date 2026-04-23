@@ -141,6 +141,8 @@ func NewAPIHandler(
 	mux.Handle("GET /controllable_unit_service_provider_history", dataListPostgRESTHandler)
 	mux.Handle("GET /controllable_unit_service_provider_history/{id}", dataPostgRESTHandler)
 
+	mux.Handle("GET /controllable_unit_summary/{id}", dataPostgRESTHandler)
+
 	mux.Handle("GET /entity", dataListPostgRESTHandler)
 	mux.Handle("POST /entity", dataPostgRESTHandler)
 	mux.Handle("GET /entity/{id}", dataPostgRESTHandler)

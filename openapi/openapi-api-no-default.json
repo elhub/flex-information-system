@@ -41,6 +41,10 @@
             "description": "Relation between controllable unit and service provider"
         },
         {
+            "name": "controllable_unit_summary",
+            "description": "Controllable Unit Summary"
+        },
+        {
             "name": "service_providing_group",
             "description": "Service providing group"
         },
@@ -555,6 +559,24 @@
                         "$ref": "#/components/schemas/notice_data_product_type_not_qualified"
                     }
                 ]
+            },
+            "numeric_aggregation": {
+                "type": "object",
+                "properties": {
+                    "sum": {
+                        "type": "number"
+                    },
+                    "average": {
+                        "type": "number"
+                    },
+                    "min": {
+                        "type": "number"
+                    },
+                    "max": {
+                        "type": "number"
+                    }
+                },
+                "additionalProperties": false
             },
             "empty_object": {
                 "description": "An empty object",
@@ -1137,6 +1159,18 @@
                         ],
                         "nullable": true
                     },
+                    "summary": {
+                        "description": "Embedded controllable_unit_summary",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/controllable_unit_summary_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
                     "service_providing_group_membership": {
                         "description": "Embedded service_providing_group_membership",
                         "oneOf": [
@@ -1622,6 +1656,142 @@
                     "contract_reference",
                     "recorded_at",
                     "recorded_by"
+                ]
+            },
+            "controllable_unit_summary_response": {
+                "summary": "Response - Controllable Unit Summary",
+                "description": "Response schema - Aggregated summary of technical resources belonging to a controllable unit.",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "Unique surrogate key (controllable unit ID).",
+                        "format": "bigint",
+                        "type": "integer",
+                        "readOnly": true,
+                        "example": 12
+                    },
+                    "controllable_unit_id": {
+                        "description": "The ID of the controllable unit this resource is a summary of.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "readOnly": true,
+                        "example": 12
+                    },
+                    "technical_resource": {
+                        "description": "Aggregated statistics on technical resources belonging to the controllable unit, including counts and maximum active power breakdowns (sum, average, min, max) by category and technology.",
+                        "type": "object",
+                        "readOnly": true,
+                        "properties": {
+                            "count": {
+                                "type": "integer"
+                            },
+                            "maximum_active_power": {
+                                "$ref": "#/components/schemas/numeric_aggregation"
+                            },
+                            "by_category": {
+                                "type": "object",
+                                "propertyNames": {
+                                    "$ref": "#/components/schemas/category"
+                                },
+                                "additionalProperties": {
+                                    "type": "object",
+                                    "properties": {
+                                        "count": {
+                                            "type": "integer"
+                                        },
+                                        "maximum_active_power": {
+                                            "$ref": "#/components/schemas/numeric_aggregation"
+                                        }
+                                    }
+                                }
+                            },
+                            "by_technology": {
+                                "type": "object",
+                                "propertyNames": {
+                                    "$ref": "#/components/schemas/technology"
+                                },
+                                "additionalProperties": {
+                                    "type": "object",
+                                    "properties": {
+                                        "count": {
+                                            "type": "integer"
+                                        },
+                                        "maximum_active_power": {
+                                            "$ref": "#/components/schemas/numeric_aggregation"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "example": {
+                            "technical_resource": {
+                                "count": 3,
+                                "maximum_active_power": {
+                                    "sum": 150,
+                                    "average": 50,
+                                    "min": 20,
+                                    "max": 80
+                                },
+                                "by_category": {
+                                    "production": {
+                                        "count": 2,
+                                        "maximum_active_power": {
+                                            "sum": 130,
+                                            "average": 65,
+                                            "min": 50,
+                                            "max": 80
+                                        }
+                                    },
+                                    "consumption": {
+                                        "count": 1,
+                                        "maximum_active_power": {
+                                            "sum": 20,
+                                            "average": 20,
+                                            "min": 20,
+                                            "max": 20
+                                        }
+                                    }
+                                },
+                                "by_technology": {
+                                    "solar": {
+                                        "count": 2,
+                                        "maximum_active_power": {
+                                            "sum": 130,
+                                            "average": 65,
+                                            "min": 50,
+                                            "max": 80
+                                        }
+                                    },
+                                    "battery": {
+                                        "count": 1,
+                                        "maximum_active_power": {
+                                            "sum": 20,
+                                            "average": 20,
+                                            "min": 20,
+                                            "max": 20
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "controllable_unit": {
+                        "description": "Embedded controllable_unit",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/controllable_unit_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "id",
+                    "controllable_unit_id",
+                    "technical_resource"
                 ]
             },
             "service_providing_group_update_request": {
@@ -11806,6 +11976,136 @@
                         ]
                     },
                     {}
+                ]
+            }
+        },
+        "/controllable_unit_summary/{id}": {
+            "summary": "Controllable Unit Summary - single",
+            "description": "",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "schema": {
+                        "format": "bigint",
+                        "type": "integer"
+                    },
+                    "example": 14
+                }
+            ],
+            "get": {
+                "operationId": "read_controllable_unit_summary",
+                "summary": "Read Controllable Unit Summary",
+                "description": "Read [Controllable Unit Summary](https://elhub.github.io/flex-information-system/resources/controllable_unit_summary/)",
+                "tags": [
+                    "controllable_unit_summary"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/controllable_unit_summary_response"
+                                }
+                            }
+                        },
+                        "description": "OK",
+                        "links": {
+                            "controllable_unit_id": {
+                                "operationId": "read_controllable_unit",
+                                "parameters": {
+                                    "path.id": "$response.body#/controllable_unit_id"
+                                },
+                                "description": "The `controllable_unit_id` value returned in the response can be used as the `id` parameter in `GET /controllable_unit/{id}`."
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:controllable_unit_summary"
+                        ]
+                    },
+                    {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
                 ]
             }
         },
