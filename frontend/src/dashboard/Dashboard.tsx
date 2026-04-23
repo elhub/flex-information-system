@@ -1,4 +1,5 @@
 // frontend/src/dashboard/Dashboard.tsx
+import { type ReactNode } from "react";
 import { useAuthenticated, useGetIdentity } from "ra-core";
 import { Alert, Card, CardContent, Heading, Loader } from "../components/ui";
 import { IconClockCircle, IconWarningTriangle } from "@elhub/ds-icons";
@@ -8,8 +9,7 @@ import { useDashboardApplications } from "./useDashboardApplications";
 type StatCardProps = {
   label: string;
   value: number;
-  icon: React.ReactNode;
-  colorClass: string;
+  icon: ReactNode;
   borderClass: string;
   iconBgClass: string;
 };
@@ -72,7 +72,6 @@ export const Dashboard = () => {
                   className="text-semantic-text-information"
                 />
               }
-              colorClass="text-semantic-text-information"
               borderClass="border-l-semantic-border-information"
               iconBgClass="bg-semantic-background-information"
             />
@@ -85,7 +84,6 @@ export const Dashboard = () => {
                   className="text-semantic-text-error"
                 />
               }
-              colorClass="text-semantic-text-error"
               borderClass="border-l-semantic-border-error"
               iconBgClass="bg-semantic-background-error"
             />
