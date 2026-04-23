@@ -338,6 +338,16 @@ def generate_list_parameters(resource, filter_fields):
 
         endpoint_parameters.append(parameter_template)
 
+        if field == "valid_from":
+            valid_at_parameter_template = {
+                "in": "query",
+                "name": "valid_at",
+                "schema": {"type": "string", "format": "date-time"},
+                "example": "2023-12-31T23:59:00+00:00",
+                "description": "Filter based on valid time of the resource. Alternative to using valid_from and valid_to filters together.",
+            }
+            endpoint_parameters.append(valid_at_parameter_template)
+
     endpoint_parameters += list_parameters_template
     return endpoint_parameters
 
