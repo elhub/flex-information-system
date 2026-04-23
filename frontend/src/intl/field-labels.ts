@@ -1668,7 +1668,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "accounting_point_grid_location_history.recorded_at": "Registrert",
     "accounting_point_grid_location_history.recorded_by": "Registrert av",
     "accounting_point_grid_location_history.accounting_point_grid_location_id":
-      "Avregningspunktsgridlokasjon",
+      "Nettlokasjon for avregningspunkt",
     "accounting_point_grid_location_history.replaced_at": "Erstattet",
     "accounting_point_grid_location_history.replaced_by": "Erstattet av",
     "product_type.id": "ID",
@@ -2373,7 +2373,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "accounting_point_grid_location_history.recorded_at": "Registrert",
     "accounting_point_grid_location_history.recorded_by": "Registrert av",
     "accounting_point_grid_location_history.accounting_point_grid_location_id":
-      "Avregningspunktsgridlokasjon",
+      "Nettlokasjon for avrekningspunkt",
     "accounting_point_grid_location_history.replaced_at": "Erstattet",
     "accounting_point_grid_location_history.replaced_by": "Erstattet av",
     "product_type.id": "ID",

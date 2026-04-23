@@ -554,7 +554,7 @@ components:
       summary: Accounting Point Grid Location - Update
       description: >-
         Request schema for updating the grid location of an accounting point.
-        All fields are optional except quality.
+        All fields are optional.
       type: object
       properties:
         object_type:
@@ -616,8 +616,6 @@ components:
             - confirmed
             - guessed
           example: confirmed
-      required:
-        - quality
 paths:
   /openapi.json:
     get:
