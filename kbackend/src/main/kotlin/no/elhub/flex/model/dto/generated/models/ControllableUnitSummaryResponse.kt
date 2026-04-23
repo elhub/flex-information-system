@@ -10,7 +10,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 public data class ControllableUnitSummaryResponse(
   /**
-   * Unique surrogate key.
+   * Unique surrogate key (controllable unit ID).
    */
   @SerialName("id")
   public val id: Long? = null,

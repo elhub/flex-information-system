@@ -863,7 +863,7 @@ export type ControllableUnitServiceProvider = {
  */
 export type ControllableUnitSummary = {
   /**
-   * Unique surrogate key.
+   * Unique surrogate key (controllable unit ID).
    */
   readonly id: number;
   /**

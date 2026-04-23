@@ -23,7 +23,7 @@ class ControllableUnitSummaryResponse:
     """Response schema - Aggregated summary of technical resources belonging to a controllable unit.
 
     Attributes:
-        id (int): Unique surrogate key. Example: 12.
+        id (int): Unique surrogate key (controllable unit ID). Example: 12.
         controllable_unit_id (int): The ID of the controllable unit this resource is a summary of. Example: 12.
         technical_resource (ControllableUnitSummaryResponseTechnicalResource): Aggregated statistics on technical
             resources belonging to the controllable unit, including counts and maximum active power breakdowns (sum,

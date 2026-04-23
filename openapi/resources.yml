@@ -406,7 +406,7 @@ resources:
     audit: false
     properties:
       id:
-        description: Unique surrogate key.
+        description: Unique surrogate key (controllable unit ID).
         format: bigint
         type: integer
         readOnly: true
