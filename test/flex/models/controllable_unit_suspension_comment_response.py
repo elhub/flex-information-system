@@ -2,13 +2,18 @@ from __future__ import annotations
 
 import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
 from ..models.controllable_unit_suspension_comment_visibility import ControllableUnitSuspensionCommentVisibility
+from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.controllable_unit_suspension_response import ControllableUnitSuspensionResponse
+
 
 T = TypeVar("T", bound="ControllableUnitSuspensionCommentResponse")
 
@@ -28,6 +33,8 @@ class ControllableUnitSuspensionCommentResponse:
         recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
+        controllable_unit_suspension (ControllableUnitSuspensionResponse | None | Unset): Embedded
+            controllable_unit_suspension
     """
 
     id: int
@@ -38,9 +45,12 @@ class ControllableUnitSuspensionCommentResponse:
     content: str
     recorded_at: datetime.datetime
     recorded_by: int
+    controllable_unit_suspension: ControllableUnitSuspensionResponse | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        from ..models.controllable_unit_suspension_response import ControllableUnitSuspensionResponse
+
         id = self.id
 
         controllable_unit_suspension_id = self.controllable_unit_suspension_id
@@ -57,6 +67,14 @@ class ControllableUnitSuspensionCommentResponse:
 
         recorded_by = self.recorded_by
 
+        controllable_unit_suspension: dict[str, Any] | None | Unset
+        if isinstance(self.controllable_unit_suspension, Unset):
+            controllable_unit_suspension = UNSET
+        elif isinstance(self.controllable_unit_suspension, ControllableUnitSuspensionResponse):
+            controllable_unit_suspension = self.controllable_unit_suspension.to_dict()
+        else:
+            controllable_unit_suspension = self.controllable_unit_suspension
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -71,11 +89,15 @@ class ControllableUnitSuspensionCommentResponse:
                 "recorded_by": recorded_by,
             }
         )
+        if controllable_unit_suspension is not UNSET:
+            field_dict["controllable_unit_suspension"] = controllable_unit_suspension
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.controllable_unit_suspension_response import ControllableUnitSuspensionResponse
+
         d = dict(src_dict)
         id = d.pop("id")
 
@@ -93,6 +115,23 @@ class ControllableUnitSuspensionCommentResponse:
 
         recorded_by = d.pop("recorded_by")
 
+        def _parse_controllable_unit_suspension(data: object) -> ControllableUnitSuspensionResponse | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                controllable_unit_suspension_type_0 = ControllableUnitSuspensionResponse.from_dict(data)
+
+                return controllable_unit_suspension_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(ControllableUnitSuspensionResponse | None | Unset, data)
+
+        controllable_unit_suspension = _parse_controllable_unit_suspension(d.pop("controllable_unit_suspension", UNSET))
+
         controllable_unit_suspension_comment_response = cls(
             id=id,
             controllable_unit_suspension_id=controllable_unit_suspension_id,
@@ -102,6 +141,7 @@ class ControllableUnitSuspensionCommentResponse:
             content=content,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
+            controllable_unit_suspension=controllable_unit_suspension,
         )
 
         controllable_unit_suspension_comment_response.additional_properties = d

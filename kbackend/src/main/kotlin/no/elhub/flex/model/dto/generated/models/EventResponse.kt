@@ -2,6 +2,7 @@ package no.elhub.flex.model.dto.generated.models
 
 import kotlin.Long
 import kotlin.String
+import kotlin.collections.List
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -46,4 +47,9 @@ public data class EventResponse(
    */
   @SerialName("data")
   public val `data`: String? = null,
+  /**
+   * Embedded notification
+   */
+  @SerialName("notification")
+  public val notification: List<NotificationResponse>? = null,
 )

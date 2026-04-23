@@ -69,8 +69,7 @@ resources:
       status:
         description: The status of the controllable unit.
         x-details: >-
-          Always `new` when created. Can then be updated to the other values.
-          Once `terminated`, only editable by a FIS operator.
+          Always `new` when created. Can then be updated to the other values. Once `terminated`, only editable by a FIS operator.
         format: text
         type: string
         default: new
@@ -102,9 +101,8 @@ resources:
           nn: Status
       regulation_direction:
         description: >-
-          The regulation direction of the controllable unit. `up` means it can
-          be used to increase production or decrease consumption, while `down`
-          means to decrease production or increase consumption.
+          The regulation direction of the controllable unit. `up` means it can be used to increase production or decrease consumption, while `down` means to
+          decrease production or increase consumption.
         x-details: >-
           `up`
         format: text
@@ -132,8 +130,7 @@ resources:
           nn: Reguleringsretning
       maximum_active_power:
         description: >-
-          Maximum continuous active power that the controllable unit can produce
-          or consume, i.e. deliver for balancing and congestion services, in kilowatts.
+          Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
         format: decimal
         type: number
         minimum: 0
@@ -157,8 +154,7 @@ resources:
           nn: Liten
       accounting_point_id:
         description: >-
-          Reference to the accounting point that the controllable unit is
-          connected to.
+          Reference to the accounting point that the controllable unit is connected to.
         format: bigint
         type: integer
         nullable: false
@@ -167,6 +163,7 @@ resources:
         x-foreign-key:
           resource: accounting_point
           field: id
+          cardinality: many-to-one
         example: 10289
         x-intl:
           en: Accounting point ID
@@ -178,7 +175,7 @@ resources:
         format: text
         type: string
         nullable: true
-        example: null
+        example:
         x-intl:
           en: Additional information
           nb: Tilleggsinformasjon
@@ -189,8 +186,7 @@ resources:
     acronym: CUS
     summary: Controllable Unit Suspension
     description: >-
-      The relation allowing an impacted system operator to temporarily suspend a
-      controllable unit.
+      The relation allowing an impacted system operator to temporarily suspend a controllable unit.
     x-intl:
       en: Controllable Unit Suspension
       nb: Suspensjon av kontrollerbar enhet
@@ -230,6 +226,7 @@ resources:
         x-foreign-key:
           resource: controllable_unit
           field: id
+          cardinality: many-to-one
         example: 2
         x-intl:
           en: Controllable Unit
@@ -237,8 +234,7 @@ resources:
           nn: Kontrollerbar eining
       impacted_system_operator_id:
         description: >-
-          Reference to the impacted system operator suspending the controllable
-          unit.
+          Reference to the impacted system operator suspending the controllable unit.
         format: bigint
         type: integer
         x-no-update: true
@@ -246,6 +242,7 @@ resources:
         x-foreign-key:
           resource: party
           field: id
+          cardinality: many-to-one
         example: 7
         required: false
         x-details: Defaults to the system operator creating the resource.
@@ -307,8 +304,7 @@ resources:
           nn: ID
       controllable_unit_id:
         description: >-
-          Reference to the controllable unit this relation links to a
-          service provider.
+          Reference to the controllable unit this relation links to a service provider.
         format: bigint
         type: integer
         x-no-update: true
@@ -316,6 +312,7 @@ resources:
         x-foreign-key:
           resource: controllable_unit
           field: id
+          cardinality: many-to-one
         example: 2
         x-intl:
           en: Controllable unit
@@ -323,8 +320,7 @@ resources:
           nn: Kontrollerbar eining
       service_provider_id:
         description: >-
-          Reference to the `party` (service provider) this relation links to
-          a controllable unit.
+          Reference to the `party` (service provider) this relation links to a controllable unit.
         format: bigint
         type: integer
         x-no-update: true
@@ -332,6 +328,7 @@ resources:
         x-foreign-key:
           resource: party
           field: id
+          cardinality: many-to-one
         example: 78
         x-intl:
           en: Service provider
@@ -347,19 +344,18 @@ resources:
         x-foreign-key:
           resource: party
           field: id
+          cardinality: many-to-one
         x-intl:
           en: End user
           nb: Sluttbruker
           nn: Sluttbrukar
       contract_reference:
         description: >-
-          The service providers internal reference to the contract with the
-          end user. Typically an internal identifier to a stored document or
-          consent record.
+          The service providers internal reference to the contract with the end user. Typically an internal identifier to a stored document or consent record.
         x-details: >-
-          The content of this field will not be checked by the system, but is
-          intended to make sure that the service has a digitally stored proof
-          of their contract with the end user on the controllable unit.
+          The content of this field will not be checked by the system, but is intended
+          to make sure that the service has a digitally stored proof of their contract
+          with the end user on the controllable unit.
         format: text
         type: string
         maxLength: 128
@@ -371,8 +367,7 @@ resources:
           nn: Kontraktsreferanse
       valid_from:
         description: >-
-          The date from which the relation between the controllable unit and
-          the service provider is valid. Midnight aligned on Norwegian timezone.
+          The date from which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.
         format: date-time
         type: string
         x-filter: true
@@ -384,8 +379,7 @@ resources:
           nn: Gyldig frå
       valid_to:
         description: >-
-          The date until which the relation between the controllable unit and
-          the service provider is valid. Midnight aligned on Norwegian timezone.
+          The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.
         format: date-time
         type: string
         x-filter: true
@@ -582,6 +576,7 @@ resources:
         x-foreign-key:
           resource: party
           field: id
+          cardinality: many-to-one
         example: 17
         x-intl:
           en: Service provider
@@ -589,8 +584,7 @@ resources:
           nn: Tenesteleverandør
       bidding_zone:
         description: >-
-          The bidding zone that restricts which CUs that can be added to the group.
-          Also known as scheduling area or price area for TSO.
+          The bidding zone that restricts which CUs that can be added to the group. Also known as scheduling area or price area for TSO.
         format: text
         type: string
         enum:
@@ -627,8 +621,7 @@ resources:
       status:
         description: The status of the group.
         x-details: >-
-          Always `new` when created. Can then be updated to the other values.
-          Once `terminated`, only editable by a FIS operator.
+          Always `new` when created. Can then be updated to the other values. Once `terminated`, only editable by a FIS operator.
         format: text
         type: string
         default: new
@@ -664,7 +657,7 @@ resources:
         format: text
         type: string
         nullable: true
-        example: null
+        example:
         x-intl:
           en: Additional information
           nb: Tilleggsinformasjon
@@ -706,8 +699,7 @@ resources:
           nn: ID
       controllable_unit_id:
         description: >-
-          Reference to the controllable unit this relation links to a
-          service providing group.
+          Reference to the controllable unit this relation links to a service providing group.
         format: bigint
         type: integer
         x-no-update: true
@@ -715,6 +707,7 @@ resources:
         x-foreign-key:
           resource: controllable_unit
           field: id
+          cardinality: many-to-one
         example: 6
         x-intl:
           en: Controllable unit
@@ -722,8 +715,7 @@ resources:
           nn: Kontrollerbar eining
       service_providing_group_id:
         description: >-
-          Reference to the service providing group this relation links to a
-          controllable unit.
+          Reference to the service providing group this relation links to a controllable unit.
         format: bigint
         type: integer
         x-no-update: true
@@ -731,6 +723,7 @@ resources:
         x-foreign-key:
           resource: service_providing_group
           field: id
+          cardinality: many-to-one
         example: 55
         x-intl:
           en: Service providing group
@@ -738,9 +731,7 @@ resources:
           nn: Fleksibilitetsgruppe
       valid_from:
         description: >-
-          The date from which the relation between the controllable unit and
-          the service providing group is valid. Midnight aligned on Norwegian
-          timezone.
+          The date from which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.
         format: date-time
         type: string
         x-filter: true
@@ -751,14 +742,12 @@ resources:
           nn: Gyldig frå
       valid_to:
         description: >-
-          The date until which the relation between the controllable unit and
-          the service providing group is valid. Midnight aligned on Norwegian
-          timezone.
+          The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.
         format: date-time
         type: string
         x-filter: true
         nullable: true
-        example: null
+        example:
         x-intl:
           en: Valid to
           nb: Gyldig til
@@ -800,8 +789,7 @@ resources:
           nn: ID
       service_providing_group_id:
         description: >-
-          Reference to the service providing group whose grid prequalification
-          is tracked by the current resource.
+          Reference to the service providing group whose grid prequalification is tracked by the current resource.
         format: bigint
         type: integer
         x-no-update: true
@@ -809,6 +797,7 @@ resources:
         x-foreign-key:
           resource: service_providing_group
           field: id
+          cardinality: many-to-one
         example: 55
         x-intl:
           en: Service providing group
@@ -824,6 +813,7 @@ resources:
         x-foreign-key:
           resource: party
           field: id
+          cardinality: many-to-one
         example: 7
         x-intl:
           en: Impacted system operator
@@ -831,11 +821,9 @@ resources:
           nn: Påverka systemoperatør
       status:
         description: >-
-          The status of the grid prequalification for this service providing
-          group.
+          The status of the grid prequalification for this service providing group.
         x-details: >-
-          Always `requested` when created. Can then be updated to the other
-          values.
+          Always `requested` when created. Can then be updated to the other values.
         format: text
         type: string
         default: requested
@@ -885,8 +873,7 @@ resources:
     acronym: SPGGS
     summary: Service Providing Group Grid Suspension
     description: >-
-      The relation allowing an impacted system operator to temporarily suspend a
-      service providing group from delivering services.
+      The relation allowing an impacted system operator to temporarily suspend a service providing group from delivering services.
     x-intl:
       en: Service Providing Group Grid Suspension
       nb: Nettsuspensjon for fleksibilitetsgruppe
@@ -918,8 +905,7 @@ resources:
           nn: ID
       impacted_system_operator_id:
         description: >-
-          Reference to the impacted system operator suspending the service
-          providing group.
+          Reference to the impacted system operator suspending the service providing group.
         format: bigint
         type: integer
         x-no-update: true
@@ -929,6 +915,7 @@ resources:
         x-foreign-key:
           resource: party
           field: id
+          cardinality: many-to-one
         example: 7
         x-intl:
           en: Impacted system operator
@@ -943,6 +930,7 @@ resources:
         x-foreign-key:
           resource: service_providing_group
           field: id
+          cardinality: many-to-one
         example: 13
         x-intl:
           en: Service providing group
@@ -1017,8 +1005,7 @@ resources:
           nn: ID
       business_id:
         description: >-
-          The business identifier of the entity. Format depends on
-          `business_id_type`.
+          The business identifier of the entity. Format depends on `business_id_type`.
         format: text
         type: string
         x-no-update: true
@@ -1092,8 +1079,7 @@ resources:
     acronym: ECL
     summary: Entity client
     description: >-
-      Client linked to an entity for client credentials and JWT grant
-      authentication methods.
+      Client linked to an entity for client credentials and JWT grant authentication methods.
     x-intl:
       en: Entity Client
       nb: Entitetsklient
@@ -1127,6 +1113,7 @@ resources:
         x-foreign-key:
           resource: entity
           field: id
+          cardinality: many-to-one
         example: 30
         x-intl:
           en: Entity
@@ -1146,8 +1133,7 @@ resources:
           nn: Namn
       client_id:
         description: >-
-          The identifier of the entity. For use with client credentials
-          authentication method.
+          The identifier of the entity. For use with client credentials authentication method.
         format: text
         type: string
         readOnly: true
@@ -1158,8 +1144,7 @@ resources:
           nn: Klient-ID
       party_id:
         description: >-
-          Reference to the party this client allows to assume. A null value
-          means the client cannot assume any party.
+          Reference to the party this client allows to assume. A null value means the client cannot assume any party.
         format: bigint
         type: integer
         nullable: true
@@ -1167,6 +1152,7 @@ resources:
         x-foreign-key:
           resource: party
           field: id
+          cardinality: many-to-one
         example: 30
         x-intl:
           en: Party
@@ -1174,12 +1160,10 @@ resources:
           nn: Aktør
       scopes:
         description: >-
-          List of scopes granted to the user when it logs in as an entity or
-          when it acts as the party. When assuming a party through party
-          membership, the least privileged set of scopes will be kept.
+          List of scopes granted to the user when it logs in as an entity or when it acts as the party.
+          When assuming a party through party membership, the least privileged set of scopes will be kept.
 
-          Scopes are inspired from OAuth 2.0 and allow refinement of access
-          control and privilege delegation mechanisms.
+          Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.
         type: array
         items:
           "$ref": "#/components/schemas/auth_scope"
@@ -1191,8 +1175,7 @@ resources:
           nn: Scopes
       client_secret:
         description: >-
-          The secret of the entity. For use with client credentials
-          authentication method. Input as plain text but stored encrypted.
+          The secret of the entity. For use with client credentials authentication method. Input as plain text but stored encrypted.
         format: text
         type: string
         minLength: 12
@@ -1203,9 +1186,7 @@ resources:
           nb: Klienthemmelighet
           nn: Klientløyndom
       public_key:
-        description:
-          The public key of the entity (X.509 SubjectPublicKeyInfo). For use
-          with JWT grant authentication method.
+        description: The public key of the entity (X.509 SubjectPublicKeyInfo). For use with JWT grant authentication method.
         format: text
         type: string
         nullable: true
@@ -1266,8 +1247,7 @@ resources:
           nn: ID
       business_id:
         description: >-
-          The business identifier of the party. Format depends on
-          `business_id_type`.
+          The business identifier of the party. Format depends on `business_id_type`.
         format: text
         type: string
         x-no-update: true
@@ -1322,6 +1302,7 @@ resources:
         x-foreign-key:
           resource: entity
           field: id
+          cardinality: many-to-one
         example: 30
         x-intl:
           en: Entity
@@ -1339,8 +1320,7 @@ resources:
           nn: Namn
       role:
         description: >-
-          The role of the party. Currently maps to 1:1 to `type`.
-          E.g. system_operator, service_provider.
+          The role of the party. Currently maps to 1:1 to `type`. E.g. system_operator, service_provider.
         format: text
         type: string
         x-no-update: true
@@ -1532,6 +1512,7 @@ resources:
         x-foreign-key:
           resource: party
           field: id
+          cardinality: many-to-one
         example: 379
         x-intl:
           en: Party
@@ -1547,6 +1528,7 @@ resources:
         x-foreign-key:
           resource: entity
           field: id
+          cardinality: many-to-one
         example: 30
         x-intl:
           en: Entity
@@ -1555,8 +1537,8 @@ resources:
       scopes:
         description: >-
           List of scopes granted to the entity when it acts as the party.
-          Scopes are inspired from OAuth 2.0 and allow refinement of access
-          control and privilege delegation mechanisms.
+          Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege
+          delegation mechanisms.
         type: array
         items:
           "$ref": "#/components/schemas/auth_scope"
@@ -1571,8 +1553,7 @@ resources:
     acronym: ID
     summary: Identity
     description: >-
-      Resource uniquely identifying a user by linking its entity and the
-      potentially assumed party.
+      Resource uniquely identifying a user by linking its entity and the potentially assumed party.
     x-intl:
       en: Identity
       nb: Identitet
@@ -1603,6 +1584,7 @@ resources:
         x-foreign-key:
           resource: entity
           field: id
+          cardinality: many-to-one
         example: 3
         x-intl:
           en: Entity
@@ -1618,6 +1600,7 @@ resources:
         x-foreign-key:
           resource: entity
           field: name
+          cardinality: many-to-one
         example: Martin Andersen
         x-intl:
           en: Entity name
@@ -1634,6 +1617,7 @@ resources:
         x-foreign-key:
           resource: party
           field: id
+          cardinality: many-to-one
         example: 17
         x-intl:
           en: Party
@@ -1650,6 +1634,7 @@ resources:
         x-foreign-key:
           resource: party
           field: name
+          cardinality: many-to-one
         example: Andersen SO
         x-intl:
           en: Party name
@@ -1700,8 +1685,7 @@ resources:
           nn: Namn
       controllable_unit_id:
         description: >-
-          Reference to the controllable unit that this technical resource
-          belongs to.
+          Reference to the controllable unit that this technical resource belongs to.
         format: bigint
         type: integer
         x-no-update: true
@@ -1709,6 +1693,7 @@ resources:
         x-foreign-key:
           resource: controllable_unit
           field: id
+          cardinality: many-to-one
         example: 37
         x-intl:
           en: Controllable Unit
@@ -1716,8 +1701,7 @@ resources:
           nn: Kontrollerbar eining
       technology:
         description: >-
-          Technologies of the technical resource using ltree path notation.
-          Multiple technologies can be specified for hybrid resources (e.g., solar + battery).
+          Technologies of the technical resource using ltree path notation. Multiple technologies can be specified for hybrid resources (e.g., solar + battery).
         type: array
         items:
           $ref: "#/components/schemas/technology"
@@ -1729,8 +1713,7 @@ resources:
           nn: Teknologi
       category:
         description: >-
-          Categories derived from the technologies of the technical resource.
-          Automatically computed based on the selected technologies.
+          Categories derived from the technologies of the technical resource. Automatically computed based on the selected technologies.
         type: array
         items:
           $ref: "#/components/schemas/category"
@@ -1839,7 +1822,7 @@ resources:
         format: text
         type: string
         nullable: true
-        example: null
+        example:
         x-intl:
           en: Additional information
           nb: Tilleggsinformasjon
@@ -1914,11 +1897,9 @@ resources:
           nn: Kjelde
       subject:
         description: >-
-          The URI of the specific subject of the event within the resource
-          pointed by `source`.
+          The URI of the specific subject of the event within the resource pointed by `source`.
         x-details: >-
-          Used in cases where an event happens on a subresource, but we still
-          want to consider it as an event on the main resource, for clarity.
+          Used in cases where an event happens on a subresource, but we still want to consider it as an event on the main resource, for clarity.
         format: text
         type: string
         nullable: true
@@ -1934,7 +1915,7 @@ resources:
         type: string
         readOnly: true
         nullable: true
-        example: null
+        example:
         x-intl:
           en: Data
           nb: Data
@@ -1984,6 +1965,7 @@ resources:
         x-foreign-key:
           resource: event
           field: id
+          cardinality: many-to-one
         example: 37
         x-intl:
           en: Event ID
@@ -1998,6 +1980,7 @@ resources:
         x-foreign-key:
           resource: party
           field: id
+          cardinality: many-to-one
         example: 37
         x-intl:
           en: Party
@@ -2052,6 +2035,7 @@ resources:
         x-foreign-key:
           resource: party
           field: id
+          cardinality: many-to-one
         x-intl:
           en: System operator
           nb: Systemoperatør
@@ -2081,6 +2065,7 @@ resources:
         x-foreign-key:
           resource: accounting_point
           field: id
+          cardinality: many-to-one
         x-intl:
           en: Accounting point
           nb: Avregningspunkt
@@ -2095,14 +2080,14 @@ resources:
         x-foreign-key:
           resource: party
           field: id
+          cardinality: many-to-one
         x-intl:
           en: Balance responsible party
           nb: Balanseansvarlig
           nn: Balanseansvarleg
       energy_direction:
         description: >-
-          The direction of the effect on the balance that the BRP takes
-          responsibility for.
+          The direction of the effect on the balance that the BRP takes responsibility for.
         format: text
         type: string
         readOnly: true
@@ -2124,9 +2109,7 @@ resources:
           nn: Energiretning
       valid_from:
         description: >-
-          The date from which the relation between the accounting point and
-          the balance responsible party is valid. Midnight aligned on Norwegian
-          timezone.
+          The date from which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone.
         format: date-time
         type: string
         readOnly: true
@@ -2138,15 +2121,13 @@ resources:
           nn: Gyldig frå
       valid_to:
         description: >-
-          The date until which the relation between the accounting point and
-          the balance responsible party is valid. Midnight aligned on Norwegian
-          timezone.
+          The date until which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone.
         format: date-time
         type: string
         readOnly: true
         x-filter: true
         nullable: true
-        example: null
+        example:
         x-intl:
           en: Valid to
           nb: Gyldig til
@@ -2176,6 +2157,7 @@ resources:
         x-foreign-key:
           resource: accounting_point
           field: id
+          cardinality: many-to-one
         x-intl:
           en: Accounting point
           nb: Avregningspunkt
@@ -2217,8 +2199,7 @@ resources:
           nn: Budområde
       valid_from:
         description: >-
-          The date from which the accounting point belongs to the bidding zone.
-          Midnight aligned on Norwegian timezone.
+          The date from which the accounting point belongs to the bidding zone. Midnight aligned on Norwegian timezone.
         format: date-time
         type: string
         readOnly: true
@@ -2230,14 +2211,13 @@ resources:
           nn: Gyldig frå
       valid_to:
         description: >-
-          The date until which the accounting point belongs to the bidding zone.
-          Midnight aligned on Norwegian timezone.
+          The date until which the accounting point belongs to the bidding zone. Midnight aligned on Norwegian timezone.
         format: date-time
         type: string
         readOnly: true
         nullable: true
         x-filter: true
-        example: null
+        example:
         x-intl:
           en: Valid to
           nb: Gyldig til
@@ -2266,6 +2246,7 @@ resources:
         x-foreign-key:
           resource: accounting_point
           field: id
+          cardinality: many-to-one
         x-intl:
           en: Accounting point
           nb: Avregningspunkt
@@ -2280,14 +2261,14 @@ resources:
         x-foreign-key:
           resource: party
           field: id
+          cardinality: many-to-one
         x-intl:
           en: End User
           nb: Sluttbruker
           nn: Sluttbrukar
       valid_from:
         description: >-
-          The date from which the accounting point belongs to the end user.
-          Midnight aligned on Norwegian timezone.
+          The date from which the accounting point belongs to the end user. Midnight aligned on Norwegian timezone.
         format: date-time
         type: string
         readOnly: true
@@ -2299,13 +2280,12 @@ resources:
           nn: Gyldig frå
       valid_to:
         description: >-
-          The date until which the accounting point belongs to the end user.
-          Midnight aligned on Norwegian timezone.
+          The date until which the accounting point belongs to the end user. Midnight aligned on Norwegian timezone.
         format: date-time
         type: string
         readOnly: true
         nullable: true
-        example: null
+        example:
         x-filter: true
         x-intl:
           en: Valid to
@@ -2336,6 +2316,7 @@ resources:
         x-foreign-key:
           resource: accounting_point
           field: id
+          cardinality: many-to-one
         x-intl:
           en: Accounting point
           nb: Avregningspunkt
@@ -2350,14 +2331,14 @@ resources:
         x-foreign-key:
           resource: party
           field: id
+          cardinality: many-to-one
         x-intl:
           en: Energy supplier
           nb: Kraftleverandør
           nn: Kraftleverandør
       valid_from:
         description: >-
-          The date from which the relation between the accounting point and
-          the energy supplier is valid. Midnight aligned on Norwegian timezone.
+          The date from which the relation between the accounting point and the energy supplier is valid. Midnight aligned on Norwegian timezone.
         format: date-time
         type: string
         readOnly: true
@@ -2369,14 +2350,13 @@ resources:
           nn: Gyldig frå
       valid_to:
         description: >-
-          The date until which the relation between the accounting point and
-          the energy supplier is valid. Midnight aligned on Norwegian timezone.
+          The date until which the relation between the accounting point and the energy supplier is valid. Midnight aligned on Norwegian timezone.
         format: date-time
         type: string
         readOnly: true
         x-filter: true
         nullable: true
-        example: null
+        example:
         x-intl:
           en: Valid to
           nb: Gyldig til
@@ -2409,8 +2389,7 @@ resources:
           nn: ID
       business_id:
         description: >-
-          The business identifier of the metering grid area. Format depends on
-          `business_id_type`.
+          The business identifier of the metering grid area. Format depends on `business_id_type`.
         format: text
         type: string
         readOnly: true
@@ -2475,6 +2454,7 @@ resources:
         x-foreign-key:
           resource: accounting_point
           field: id
+          cardinality: many-to-one
         x-intl:
           en: Accounting point
           nb: Avregningspunkt
@@ -2489,14 +2469,14 @@ resources:
         x-foreign-key:
           resource: metering_grid_area
           field: id
+          cardinality: many-to-one
         x-intl:
           en: Metering grid area
           nb: Nettområde
           nn: Nettområde
       valid_from:
         description: >-
-          The date from which the accounting point belongs to the metering grid
-          area. Midnight aligned on Norwegian timezone.
+          The date from which the accounting point belongs to the metering grid area. Midnight aligned on Norwegian timezone.
         format: date-time
         type: string
         readOnly: true
@@ -2508,13 +2488,12 @@ resources:
           nn: Gyldig frå
       valid_to:
         description: >-
-          The date until which the accounting point belongs to the metering grid
-          area. Midnight aligned on Norwegian timezone.
+          The date until which the accounting point belongs to the metering grid area. Midnight aligned on Norwegian timezone.
         format: date-time
         type: string
         readOnly: true
         nullable: true
-        example: null
+        example:
         x-filter: true
         x-intl:
           en: Valid to
@@ -2630,6 +2609,7 @@ resources:
         x-foreign-key:
           resource: party
           field: id
+          cardinality: many-to-one
         example: 37
         x-intl:
           en: System operator
@@ -2644,6 +2624,7 @@ resources:
         x-foreign-key:
           resource: product_type
           field: id
+          cardinality: many-to-one
         example: 8
         x-intl:
           en: Product type
@@ -2675,9 +2656,8 @@ resources:
     acronym: SPPA
     summary: Service Provider Product Application
     description: >-
-      Relation between a service provider and a system operator, for the SP to
-      apply for delivering the SO some of the types of product they want to buy
-      on a flexibility market.
+      Relation between a service provider and a system operator, for the SP to apply for delivering the SO some of the types of product they want to buy on a
+      flexibility market.
     x-intl:
       en: Service Provider Product Application
       nb: Tjenesteleverandør produktsøknad
@@ -2715,6 +2695,7 @@ resources:
         x-foreign-key:
           resource: party
           field: id
+          cardinality: many-to-one
         example: 18
         x-intl:
           en: Service provider
@@ -2729,6 +2710,7 @@ resources:
         x-foreign-key:
           resource: party
           field: id
+          cardinality: many-to-one
         example: 39
         x-intl:
           en: System operator
@@ -2744,6 +2726,7 @@ resources:
         x-foreign-key:
           resource: product_type
           field: id
+          cardinality: many-to-one
         example: [2, 4, 5]
         x-intl:
           en: Product types
@@ -2800,8 +2783,7 @@ resources:
     acronym: SPPS
     summary: Service Provider Product Suspension
     description: >-
-      The relation allowing a procuring system operator to temporarily suspend a
-      service provider from delivering them products of the given types.
+      The relation allowing a procuring system operator to temporarily suspend a service provider from delivering them products of the given types.
     x-intl:
       en: Service Provider Product Suspension
       nb: Tjenesteleverandør produktsuspensjon
@@ -2833,8 +2815,7 @@ resources:
           nn: ID
       procuring_system_operator_id:
         description: >-
-          Reference to the procuring system operator suspending the service
-          provider.
+          Reference to the procuring system operator suspending the service provider.
         format: bigint
         type: integer
         x-no-update: true
@@ -2844,6 +2825,7 @@ resources:
         x-foreign-key:
           resource: party
           field: id
+          cardinality: many-to-one
         example: 9
         x-intl:
           en: Procuring system operator
@@ -2858,6 +2840,7 @@ resources:
         x-foreign-key:
           resource: party
           field: id
+          cardinality: many-to-one
         example: 52
         x-intl:
           en: Service provider
@@ -2873,6 +2856,7 @@ resources:
         x-foreign-key:
           resource: product_type
           field: id
+          cardinality: many-to-one
         example: [1, 7]
         x-intl:
           en: Product types
@@ -2927,8 +2911,7 @@ resources:
       nn: Fleksibilitetsgruppe produktsøknad
     summary: Service Providing Group Product Application
     description: >-
-      Relation between a service providing group and a system operator for a
-      product type, for the SPG to deliver a product to the SO later.
+      Relation between a service providing group and a system operator for a product type, for the SPG to deliver a product to the SO later.
     operations:
       - list
       - read
@@ -2962,6 +2945,7 @@ resources:
         x-foreign-key:
           resource: service_providing_group
           field: id
+          cardinality: many-to-one
         example: 18
         x-intl:
           en: Service providing group
@@ -2976,6 +2960,7 @@ resources:
         x-foreign-key:
           resource: party
           field: id
+          cardinality: many-to-one
         example: 39
         x-intl:
           en: Procuring system operator
@@ -2991,6 +2976,7 @@ resources:
         x-foreign-key:
           resource: product_type
           field: id
+          cardinality: many-to-one
         example: [2, 4, 5]
         x-intl:
           en: Product types
@@ -3044,8 +3030,7 @@ resources:
           nn: Status
       maximum_active_power_up:
         description: >-
-          The maximum active power applied for in regulation direction up.
-          Stored in kilowatts.
+          The maximum active power applied for in regulation direction up. Stored in kilowatts.
         format: decimal
         type: number
         minimum: 0
@@ -3058,8 +3043,7 @@ resources:
           nn: Maksimal aktiv effekt (opp)
       maximum_active_power_down:
         description: >-
-          The maximum active power applied for in regulation direction down.
-          Stored in kilowatts.
+          The maximum active power applied for in regulation direction down. Stored in kilowatts.
         format: decimal
         type: number
         minimum: 0
@@ -3072,13 +3056,12 @@ resources:
           nn: Maksimal aktiv effekt (ned)
       additional_information:
         description: >-
-          Free text field for extra information about the application if needed
-          (bidding periods, unavailabilities, etc).
+          Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
         format: text
         type: string
         maxLength: 512
         nullable: true
-        example: null
+        example:
         x-intl:
           en: Additional information
           nb: Tilleggsinformasjon
@@ -3108,8 +3091,7 @@ resources:
     acronym: SPGPS
     summary: Service Providing Group Product Suspension
     description: >-
-      The relation allowing a procuring system operator to temporarily suspend a
-      service providing group from delivering products of certain types.
+      The relation allowing a procuring system operator to temporarily suspend a service providing group from delivering products of certain types.
     x-intl:
       en: Service Providing Group Product Suspension
       nb: Fleksibilitetsgruppe produktsuspensjon
@@ -3141,8 +3123,7 @@ resources:
           nn: ID
       procuring_system_operator_id:
         description: >-
-          Reference to the procuring system operator suspending the service
-          providing group.
+          Reference to the procuring system operator suspending the service providing group.
         format: bigint
         type: integer
         x-no-update: true
@@ -3152,6 +3133,7 @@ resources:
         x-foreign-key:
           resource: party
           field: id
+          cardinality: many-to-one
         example: 91
         x-intl:
           en: Procuring system operator
@@ -3166,6 +3148,7 @@ resources:
         x-foreign-key:
           resource: service_providing_group
           field: id
+          cardinality: many-to-one
         example: 7
         x-intl:
           en: Service providing group
@@ -3181,6 +3164,7 @@ resources:
         x-foreign-key:
           resource: product_type
           field: id
+          cardinality: many-to-one
         example: [3, 6]
         x-intl:
           en: Product typer
@@ -3263,6 +3247,7 @@ resources:
         x-foreign-key:
           resource: party
           field: id
+          cardinality: many-to-one
         example: 18
         x-intl:
           en: Party
@@ -3297,7 +3282,7 @@ resources:
         $ref: '#/components/schemas/notice_data'
         readOnly: true
         nullable: true
-        example: null
+        example:
         x-intl:
           en: Data
           nb: Data

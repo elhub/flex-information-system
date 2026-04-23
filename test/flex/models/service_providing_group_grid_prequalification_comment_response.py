@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -11,6 +11,13 @@ from dateutil.parser import isoparse
 from ..models.service_providing_group_grid_prequalification_comment_visibility import (
     ServiceProvidingGroupGridPrequalificationCommentVisibility,
 )
+from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.service_providing_group_grid_prequalification_response import (
+        ServiceProvidingGroupGridPrequalificationResponse,
+    )
+
 
 T = TypeVar("T", bound="ServiceProvidingGroupGridPrequalificationCommentResponse")
 
@@ -31,6 +38,8 @@ class ServiceProvidingGroupGridPrequalificationCommentResponse:
         recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
+        service_providing_group_grid_prequalification (None | ServiceProvidingGroupGridPrequalificationResponse |
+            Unset): Embedded service_providing_group_grid_prequalification
     """
 
     id: int
@@ -41,9 +50,16 @@ class ServiceProvidingGroupGridPrequalificationCommentResponse:
     content: str
     recorded_at: datetime.datetime
     recorded_by: int
+    service_providing_group_grid_prequalification: None | ServiceProvidingGroupGridPrequalificationResponse | Unset = (
+        UNSET
+    )
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        from ..models.service_providing_group_grid_prequalification_response import (
+            ServiceProvidingGroupGridPrequalificationResponse,
+        )
+
         id = self.id
 
         service_providing_group_grid_prequalification_id = self.service_providing_group_grid_prequalification_id
@@ -60,6 +76,16 @@ class ServiceProvidingGroupGridPrequalificationCommentResponse:
 
         recorded_by = self.recorded_by
 
+        service_providing_group_grid_prequalification: dict[str, Any] | None | Unset
+        if isinstance(self.service_providing_group_grid_prequalification, Unset):
+            service_providing_group_grid_prequalification = UNSET
+        elif isinstance(
+            self.service_providing_group_grid_prequalification, ServiceProvidingGroupGridPrequalificationResponse
+        ):
+            service_providing_group_grid_prequalification = self.service_providing_group_grid_prequalification.to_dict()
+        else:
+            service_providing_group_grid_prequalification = self.service_providing_group_grid_prequalification
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -74,11 +100,17 @@ class ServiceProvidingGroupGridPrequalificationCommentResponse:
                 "recorded_by": recorded_by,
             }
         )
+        if service_providing_group_grid_prequalification is not UNSET:
+            field_dict["service_providing_group_grid_prequalification"] = service_providing_group_grid_prequalification
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.service_providing_group_grid_prequalification_response import (
+            ServiceProvidingGroupGridPrequalificationResponse,
+        )
+
         d = dict(src_dict)
         id = d.pop("id")
 
@@ -96,6 +128,29 @@ class ServiceProvidingGroupGridPrequalificationCommentResponse:
 
         recorded_by = d.pop("recorded_by")
 
+        def _parse_service_providing_group_grid_prequalification(
+            data: object,
+        ) -> None | ServiceProvidingGroupGridPrequalificationResponse | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                service_providing_group_grid_prequalification_type_0 = (
+                    ServiceProvidingGroupGridPrequalificationResponse.from_dict(data)
+                )
+
+                return service_providing_group_grid_prequalification_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(None | ServiceProvidingGroupGridPrequalificationResponse | Unset, data)
+
+        service_providing_group_grid_prequalification = _parse_service_providing_group_grid_prequalification(
+            d.pop("service_providing_group_grid_prequalification", UNSET)
+        )
+
         service_providing_group_grid_prequalification_comment_response = cls(
             id=id,
             service_providing_group_grid_prequalification_id=service_providing_group_grid_prequalification_id,
@@ -105,6 +160,7 @@ class ServiceProvidingGroupGridPrequalificationCommentResponse:
             content=content,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
+            service_providing_group_grid_prequalification=service_providing_group_grid_prequalification,
         )
 
         service_providing_group_grid_prequalification_comment_response.additional_properties = d

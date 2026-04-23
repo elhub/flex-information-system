@@ -4,6 +4,7 @@ import java.math.BigDecimal
 import kotlin.Boolean
 import kotlin.Long
 import kotlin.String
+import kotlin.collections.List
 import kotlin.time.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Contextual
@@ -79,4 +80,29 @@ public data class ControllableUnitResponse(
    */
   @SerialName("recorded_by")
   public val recordedBy: Long? = null,
+  /**
+   * Response schema - Accounting point for a controllable unit.
+   */
+  @SerialName("accounting_point")
+  public val accountingPoint: AccountingPointResponse? = null,
+  /**
+   * Embedded controllable_unit_suspension
+   */
+  @SerialName("suspension")
+  public val suspension: List<ControllableUnitSuspensionResponse>? = null,
+  /**
+   * Embedded controllable_unit_service_provider
+   */
+  @SerialName("service_provider")
+  public val serviceProvider: List<ControllableUnitServiceProviderResponse>? = null,
+  /**
+   * Embedded service_providing_group_membership
+   */
+  @SerialName("service_providing_group_membership")
+  public val serviceProvidingGroupMembership: List<ServiceProvidingGroupMembershipResponse>? = null,
+  /**
+   * Embedded technical_resource
+   */
+  @SerialName("technical_resource")
+  public val technicalResource: List<TechnicalResourceResponse>? = null,
 )

@@ -58,7 +58,10 @@ if resource.endswith("_comment"):
         if r["id"] == resource.removesuffix("_comment")
     )
     yaml_resource = yaml.safe_load(
-        j2.template_str(base_resource, "comment_resource.j2.yml"),
+        j2.template_str(
+            {"resource": base_resource["id"], "data": base_resource},
+            "comment_resource.j2.yml",
+        ),
     )["data"]
 else:
     yaml_resource = next(r for r in resources["resources"] if r["id"] == resource)
