@@ -12,7 +12,7 @@ import {
   listNotice,
 } from "../generated-client";
 import { throwOnError } from "../util";
-import { addMonths, ACTIVE_STATUSES } from "./dashboardUtils";
+import { addMonths, ACTIVE_STATUSES, RESOLVED_SPPA, RESOLVED_SPGPA, RESOLVED_SPGGP } from "./dashboardUtils";
 import { DashboardItemKind } from "./useDashboardApplications";
 
 export type SpDashboardItem = {
@@ -25,16 +25,6 @@ export type SpDashboardItem = {
   status: string;
   route: string;
 };
-
-const RESOLVED_SPPA = new Set(["qualified", "not_qualified", "communication_test"]);
-const RESOLVED_SPGPA = new Set([
-  "prequalified",
-  "verified",
-  "temporary_qualified",
-  "rejected",
-  "prequalification_pending",
-]);
-const RESOLVED_SPGGP = new Set(["approved", "conditionally_approved", "not_approved"]);
 
 export const useSpDashboard = () => {
   const { data: identity } = useGetIdentity();
@@ -186,7 +176,9 @@ export const useSpDashboard = () => {
         id: r.id,
         kind: "spg_product_application" as DashboardItemKind,
         typeLabel: "SPG Product Application",
-        byline: [spgName, ptNames(r.product_type_ids)].filter(Boolean).join(" · "),
+        byline: [spgName, ptNames(r.product_type_ids)]
+          .filter(Boolean)
+          .join(" · "),
         systemOperator:
           partyMap.get(r.procuring_system_operator_id) ??
           String(r.procuring_system_operator_id),
@@ -213,10 +205,14 @@ export const useSpDashboard = () => {
     }),
   ];
 
-  const activeItems = allItems.filter((item) => ACTIVE_STATUSES.has(item.status));
+  const activeItems = allItems.filter((item) =>
+    ACTIVE_STATUSES.has(item.status),
+  );
   const resolvedItems = allItems.filter((item) => {
-    if (item.kind === "sp_product_application") return RESOLVED_SPPA.has(item.status);
-    if (item.kind === "spg_product_application") return RESOLVED_SPGPA.has(item.status);
+    if (item.kind === "sp_product_application")
+      return RESOLVED_SPPA.has(item.status);
+    if (item.kind === "spg_product_application")
+      return RESOLVED_SPGPA.has(item.status);
     return RESOLVED_SPGGP.has(item.status);
   });
 

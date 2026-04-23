@@ -11,7 +11,7 @@ import {
   listProductType,
 } from "../generated-client";
 import { throwOnError } from "../util";
-import { addMonths, ACTIVE_STATUSES } from "./dashboardUtils";
+import { addMonths, ACTIVE_STATUSES, RESOLVED_SPPA, RESOLVED_SPGPA, RESOLVED_SPGGP } from "./dashboardUtils";
 
 export type DashboardItemKind =
   | "sp_product_application"
@@ -31,7 +31,7 @@ export type DashboardItem = {
 
 export const useDashboardApplications = () => {
   const { data: identity } = useGetIdentity();
-  const soId = identity?.id as number | undefined;
+  const soId = identity?.partyID as number | undefined;
 
   const sppaQuery = useQuery({
     queryKey: ["dashboard-sppa", soId],
@@ -156,7 +156,6 @@ export const useDashboardApplications = () => {
 
   const items: DashboardItem[] = [
     ...(sppaQuery.data ?? [])
-      .filter((r) => ACTIVE_STATUSES.has(r.status))
       .map((r) => ({
         id: r.id,
         kind: "sp_product_application" as DashboardItemKind,
@@ -169,7 +168,6 @@ export const useDashboardApplications = () => {
         route: `/service_provider_product_application/${r.id}/show`,
       })),
     ...(spgpaQuery.data ?? [])
-      .filter((r) => ACTIVE_STATUSES.has(r.status))
       .map((r) => {
         const spg = spgMap.get(r.service_providing_group_id);
         const spgName = spg?.name ?? String(r.service_providing_group_id);
@@ -188,7 +186,6 @@ export const useDashboardApplications = () => {
         };
       }),
     ...(spggpQuery.data ?? [])
-      .filter((r) => ACTIVE_STATUSES.has(r.status))
       .map((r) => {
         const spg = spgMap.get(r.service_providing_group_id);
         const spgName = spg?.name ?? String(r.service_providing_group_id);
@@ -206,5 +203,12 @@ export const useDashboardApplications = () => {
       }),
   ];
 
-  return { items, isLoading, error };
+  const activeItems = items.filter((item) => ACTIVE_STATUSES.has(item.status));
+  const resolvedItems = items.filter((item) => {
+    if (item.kind === "sp_product_application") return RESOLVED_SPPA.has(item.status);
+    if (item.kind === "spg_product_application") return RESOLVED_SPGPA.has(item.status);
+    return RESOLVED_SPGGP.has(item.status);
+  });
+
+  return { items: activeItems, activeItems, resolvedItems, isLoading, error };
 };

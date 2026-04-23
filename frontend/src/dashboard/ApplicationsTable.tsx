@@ -12,7 +12,10 @@ type Props = {
   empty?: string;
 };
 
-export const ApplicationsTable = ({ items, empty = "No pending applications." }: Props) => {
+export const ApplicationsTable = ({
+  items,
+  empty = "No pending applications.",
+}: Props) => {
   const navigate = useNavigate();
   const translateEnum = useTranslateEnum();
 
@@ -71,6 +74,7 @@ export const ApplicationsTable = ({ items, empty = "No pending applications." }:
       columns={columns}
       data={items}
       empty={empty}
+      className="w-full"
       rowClick={(item) => navigate(item.route)}
     />
   );

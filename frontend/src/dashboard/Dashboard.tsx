@@ -47,7 +47,7 @@ const StatCard = ({
 );
 
 const SoDashboard = () => {
-  const { items, isLoading, error } = useDashboardApplications();
+  const { activeItems, resolvedItems, isLoading, error } = useDashboardApplications();
 
   return (
     <>
@@ -59,7 +59,7 @@ const SoDashboard = () => {
           <div className="flex flex-col sm:flex-row gap-4">
             <StatCard
               label="Pending Applications"
-              value={items.length}
+              value={activeItems.length}
               icon={
                 <IconClockCircle
                   size="medium"
@@ -85,9 +85,16 @@ const SoDashboard = () => {
 
           <div>
             <p className="text-xs font-semibold uppercase tracking-wide text-semantic-text-subtle mb-3">
-              Applications
+              Active Applications
             </p>
-            <ApplicationsTable items={items} />
+            <ApplicationsTable items={activeItems} empty="No active applications." />
+          </div>
+
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wide text-semantic-text-subtle mb-3">
+              Recently Resolved
+            </p>
+            <ApplicationsTable items={resolvedItems} empty="No resolved applications." />
           </div>
         </>
       )}
@@ -135,7 +142,7 @@ const SpDashboard = () => {
                   className="text-semantic-text-success"
                 />
               }
-              borderClass="border-l-[#198f5d]"
+              borderClass="border-l-semantic-border-success"
               iconBgClass="bg-semantic-background-success"
             />
             <StatCard
@@ -187,9 +194,9 @@ export const Dashboard = () => {
   return (
     <div
       id="flex-dashboard"
-      className="flex flex-col gap-6 px-8 py-6 sm:px-4 sm:py-4"
+      className="flex flex-col gap-10 px-8 py-6 sm:px-4 sm:py-4 max-w-7xl mx-auto w-full"
     >
-      <Heading level={2} size="small">
+      <Heading level={2} size="medium">
         Dashboard
       </Heading>
 
