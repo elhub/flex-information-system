@@ -113,6 +113,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspensionResponse]:
     """Read Service Provider Product Suspension
 
+     Read [Service Provider Product Suspension](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_suspension/)
+
     Args:
         id (int):
         embed (str | Unset):
@@ -145,6 +148,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspensionResponse | None:
     """Read Service Provider Product Suspension
 
+     Read [Service Provider Product Suspension](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_suspension/)
+
     Args:
         id (int):
         embed (str | Unset):
@@ -171,6 +177,9 @@ async def asyncio_detailed(
     embed: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspensionResponse]:
     """Read Service Provider Product Suspension
+
+     Read [Service Provider Product Suspension](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_suspension/)
 
     Args:
         id (int):
@@ -201,6 +210,9 @@ async def asyncio(
     embed: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspensionResponse | None:
     """Read Service Provider Product Suspension
+
+     Read [Service Provider Product Suspension](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_suspension/)
 
     Args:
         id (int):

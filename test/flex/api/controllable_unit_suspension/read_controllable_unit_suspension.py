@@ -113,6 +113,9 @@ def sync_detailed(
 ) -> Response[ControllableUnitSuspensionResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Read Controllable Unit Suspension
 
+     Read [Controllable Unit Suspension](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_suspension/)
+
     Args:
         id (int):
         embed (str | Unset):
@@ -145,6 +148,9 @@ def sync(
 ) -> ControllableUnitSuspensionResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Read Controllable Unit Suspension
 
+     Read [Controllable Unit Suspension](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_suspension/)
+
     Args:
         id (int):
         embed (str | Unset):
@@ -171,6 +177,9 @@ async def asyncio_detailed(
     embed: str | Unset = UNSET,
 ) -> Response[ControllableUnitSuspensionResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Read Controllable Unit Suspension
+
+     Read [Controllable Unit Suspension](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_suspension/)
 
     Args:
         id (int):
@@ -201,6 +210,9 @@ async def asyncio(
     embed: str | Unset = UNSET,
 ) -> ControllableUnitSuspensionResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Read Controllable Unit Suspension
+
+     Read [Controllable Unit Suspension](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_suspension/)
 
     Args:
         id (int):

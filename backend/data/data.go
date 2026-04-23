@@ -2,9 +2,9 @@ package data
 
 import (
 	"bytes"
-	"context"
 	_ "embed"
 	"encoding/json"
+	"errors"
 	"flex/auth"
 	"flex/auth/scope"
 	"flex/data/models"
@@ -22,18 +22,11 @@ import (
 	"slices"
 	"strconv"
 	"strings"
+	"time"
 )
 
 //go:embed static/openapi.json
 var openapiInput []byte
-
-// MeteringPointDatahubService defines the data fetching operations we can
-// execute thanks to an external Metering Point Datahub.
-type MeteringPointDatahubService interface {
-	FetchAccountingPointMeteringGridArea(
-		ctx context.Context, accountingPointBusinessID string,
-	) (string, error)
-}
 
 // api gathers handlers for all endpoints of the data API.
 type api struct {
@@ -42,8 +35,6 @@ type api struct {
 	db           *pgpool.Pool
 	ctxKey       string
 	mux          *http.ServeMux
-	// external datahub used to sync accounting point data when missing
-	meteringPointDatahubService MeteringPointDatahubService
 }
 
 var _ http.Handler = &api{} //nolint:exhaustruct
@@ -57,7 +48,6 @@ func NewAPIHandler(
 	kbackendUpstream string,
 	db *pgpool.Pool,
 	ctxKey string,
-	meteringPointDatahubService MeteringPointDatahubService,
 ) (http.Handler, error) {
 	postgRESTURL, err := url.Parse(postgRESTUpstream)
 	if err != nil {
@@ -72,12 +62,11 @@ func NewAPIHandler(
 	mux := http.NewServeMux()
 
 	data := &api{
-		postgRESTURL:                postgRESTURL,
-		kbackendURL:                 kbackendURL,
-		db:                          db,
-		mux:                         mux,
-		ctxKey:                      ctxKey,
-		meteringPointDatahubService: meteringPointDatahubService,
+		postgRESTURL: postgRESTURL,
+		kbackendURL:  kbackendURL,
+		db:           db,
+		mux:          mux,
+		ctxKey:       ctxKey,
 	}
 
 	// OpenAPI documentation handlers
@@ -510,6 +499,57 @@ func (data *api) entityLookupHandler(
 	w.Write(body)
 }
 
+// errInvalidValidAt is returned when valid_at does not match an accepted datetime format.
+var errInvalidValidAt = errors.New("invalid valid_at format")
+
+// isValidDatetime reports whether value matches one of the accepted datetime input formats.
+func isValidDatetime(value string) bool {
+	// Regular RFC 3339: YYYY-MM-DDTHH:MM:SS[.FFF](Z|±HH:MM)
+	if _, err := time.Parse(time.RFC3339Nano, value); err == nil {
+		return true
+	}
+
+	// Extended format YYYY-MM-DD HH:MM:SS[.FFF] <IANA timezone name or abbreviation>
+	lastSpace := strings.LastIndex(value, " ")
+	if lastSpace == -1 {
+		return false
+	}
+
+	if _, err := time.LoadLocation(value[lastSpace+1:]); err != nil {
+		return false
+	}
+
+	IANAFormat := "2006-01-02 15:04:05.999999999"
+	if _, err := time.Parse(IANAFormat, value[:lastSpace]); err == nil {
+		return true
+	}
+
+	return false
+}
+
+// validAtQueryRewrite rewrites the "valid_at" query parameter into "valid_from" and "valid_to".
+// Returns an error if the valid_at value does not match the expected datetime format.
+func validAtQueryRewrite(query url.Values) error {
+	for key := range query {
+		if key == "valid_at" || strings.HasSuffix(key, ".valid_at") {
+			keyFrom := key[:len(key)-len("valid_at")] + "valid_from"
+			keyOr := key[:len(key)-len("valid_at")] + "or"
+			query.Del(keyFrom)
+			query.Del(keyOr)
+			if validAt := query.Get(key); validAt != "" {
+				if !isValidDatetime(validAt) {
+					return errInvalidValidAt
+				}
+				query.Del(key)
+				query.Set(keyFrom, "lte."+validAt)
+				query.Add(keyOr, "(valid_to.gt."+validAt+",valid_to.is.null)")
+			}
+		}
+	}
+
+	return nil
+}
+
 // postgRESTHandler forwards the request to the PostgREST API.
 func (data *api) postgRESTHandler(w http.ResponseWriter, req *http.Request) {
 	// regex for calls targeting single ID pages, not a valid format in PostgREST
@@ -551,6 +591,14 @@ func (data *api) postgRESTHandler(w http.ResponseWriter, req *http.Request) {
 		slog.WarnContext(ctx, "malformed embed query parameter", "error", err)
 		writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
 			Message: "malformed embed parameter: " + err.Error(),
+		})
+
+		return
+	}
+
+	if err := validAtQueryRewrite(query); err != nil {
+		writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
+			Message: err.Error(),
 		})
 
 		return

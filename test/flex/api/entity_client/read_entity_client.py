@@ -113,6 +113,8 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | EntityClientResponse | ErrorMessage]:
     """Read Entity client
 
+     Read [Entity client](https://elhub.github.io/flex-information-system/resources/entity_client/)
+
     Args:
         id (int):
         embed (str | Unset):
@@ -145,6 +147,8 @@ def sync(
 ) -> EmptyObject | ErrorMessage | EntityClientResponse | ErrorMessage | None:
     """Read Entity client
 
+     Read [Entity client](https://elhub.github.io/flex-information-system/resources/entity_client/)
+
     Args:
         id (int):
         embed (str | Unset):
@@ -171,6 +175,8 @@ async def asyncio_detailed(
     embed: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | EntityClientResponse | ErrorMessage]:
     """Read Entity client
+
+     Read [Entity client](https://elhub.github.io/flex-information-system/resources/entity_client/)
 
     Args:
         id (int):
@@ -201,6 +207,8 @@ async def asyncio(
     embed: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | EntityClientResponse | ErrorMessage | None:
     """Read Entity client
+
+     Read [Entity client](https://elhub.github.io/flex-information-system/resources/entity_client/)
 
     Args:
         id (int):

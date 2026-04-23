@@ -158,6 +158,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationResponse]]:
     """List Grid prequalification for service providing group
 
+     List [Grid prequalification for service providing group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_prequalification/)
+
     Args:
         id (str | Unset):
         service_providing_group_id (str | Unset):
@@ -208,6 +211,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationResponse] | None:
     """List Grid prequalification for service providing group
 
+     List [Grid prequalification for service providing group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_prequalification/)
+
     Args:
         id (str | Unset):
         service_providing_group_id (str | Unset):
@@ -252,6 +258,9 @@ async def asyncio_detailed(
     embed: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationResponse]]:
     """List Grid prequalification for service providing group
+
+     List [Grid prequalification for service providing group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_prequalification/)
 
     Args:
         id (str | Unset):
@@ -300,6 +309,9 @@ async def asyncio(
     embed: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationResponse] | None:
     """List Grid prequalification for service providing group
+
+     List [Grid prequalification for service providing group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_prequalification/)
 
     Args:
         id (str | Unset):

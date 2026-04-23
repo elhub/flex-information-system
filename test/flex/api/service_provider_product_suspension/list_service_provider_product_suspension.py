@@ -160,6 +160,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProviderProductSuspensionResponse]]:
     """List Service Provider Product Suspension
 
+     List [Service Provider Product Suspension](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_suspension/)
+
     Args:
         id (str | Unset):
         procuring_system_operator_id (str | Unset):
@@ -213,6 +216,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProviderProductSuspensionResponse] | None:
     """List Service Provider Product Suspension
 
+     List [Service Provider Product Suspension](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_suspension/)
+
     Args:
         id (str | Unset):
         procuring_system_operator_id (str | Unset):
@@ -260,6 +266,9 @@ async def asyncio_detailed(
     embed: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProviderProductSuspensionResponse]]:
     """List Service Provider Product Suspension
+
+     List [Service Provider Product Suspension](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_suspension/)
 
     Args:
         id (str | Unset):
@@ -311,6 +320,9 @@ async def asyncio(
     embed: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProviderProductSuspensionResponse] | None:
     """List Service Provider Product Suspension
+
+     List [Service Provider Product Suspension](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_suspension/)
 
     Args:
         id (str | Unset):

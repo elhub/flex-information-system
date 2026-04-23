@@ -105,6 +105,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspensionCommentHistoryResponse]:
     """Read Service Provider Product Suspension Comment - history
 
+     Read [Service Provider Product Suspension Comment - history](https://elhub.github.io/flex-
+    information-system/resources/service_provider_product_suspension_comment/)
+
     Args:
         id (int):
 
@@ -134,6 +137,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspensionCommentHistoryResponse | None:
     """Read Service Provider Product Suspension Comment - history
 
+     Read [Service Provider Product Suspension Comment - history](https://elhub.github.io/flex-
+    information-system/resources/service_provider_product_suspension_comment/)
+
     Args:
         id (int):
 
@@ -157,6 +163,9 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspensionCommentHistoryResponse]:
     """Read Service Provider Product Suspension Comment - history
+
+     Read [Service Provider Product Suspension Comment - history](https://elhub.github.io/flex-
+    information-system/resources/service_provider_product_suspension_comment/)
 
     Args:
         id (int):
@@ -184,6 +193,9 @@ async def asyncio(
     client: AuthenticatedClient,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspensionCommentHistoryResponse | None:
     """Read Service Provider Product Suspension Comment - history
+
+     Read [Service Provider Product Suspension Comment - history](https://elhub.github.io/flex-
+    information-system/resources/service_provider_product_suspension_comment/)
 
     Args:
         id (int):

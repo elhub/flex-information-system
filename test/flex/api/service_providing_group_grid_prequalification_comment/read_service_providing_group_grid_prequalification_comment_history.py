@@ -109,6 +109,10 @@ def sync_detailed(
 ]:
     """Read Grid prequalification for service providing group Comment - history
 
+     Read [Grid prequalification for service providing group Comment -
+    history](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_prequalification_comment/)
+
     Args:
         id (int):
 
@@ -138,6 +142,10 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentHistoryResponse | None:
     """Read Grid prequalification for service providing group Comment - history
 
+     Read [Grid prequalification for service providing group Comment -
+    history](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_prequalification_comment/)
+
     Args:
         id (int):
 
@@ -163,6 +171,10 @@ async def asyncio_detailed(
     EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentHistoryResponse
 ]:
     """Read Grid prequalification for service providing group Comment - history
+
+     Read [Grid prequalification for service providing group Comment -
+    history](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_prequalification_comment/)
 
     Args:
         id (int):
@@ -190,6 +202,10 @@ async def asyncio(
     client: AuthenticatedClient,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupGridPrequalificationCommentHistoryResponse | None:
     """Read Grid prequalification for service providing group Comment - history
+
+     Read [Grid prequalification for service providing group Comment -
+    history](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_prequalification_comment/)
 
     Args:
         id (int):

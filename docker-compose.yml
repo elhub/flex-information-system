@@ -166,14 +166,6 @@ services:
       - type: bind
         source: ${HOME}/.ca/certificates/idp.flex.internal.key.pem
         target: /key.pem
-  elhub:
-    build: ./local/docker-python
-    ports:
-      - "5000:8080"
-    volumes:
-      - type: bind
-        source: ${PWD}/local/elhub/main.py
-        target: /app/main.py
   ap-adapter:
     build: ./local/docker-python
     ports:

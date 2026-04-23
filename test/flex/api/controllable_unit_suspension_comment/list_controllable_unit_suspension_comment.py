@@ -152,6 +152,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitSuspensionCommentResponse]]:
     """List Controllable Unit Suspension Comment
 
+     List [Controllable Unit Suspension Comment](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_suspension_comment/)
+
     Args:
         id (str | Unset):
         controllable_unit_suspension_id (str | Unset):
@@ -199,6 +202,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitSuspensionCommentResponse] | None:
     """List Controllable Unit Suspension Comment
 
+     List [Controllable Unit Suspension Comment](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_suspension_comment/)
+
     Args:
         id (str | Unset):
         controllable_unit_suspension_id (str | Unset):
@@ -240,6 +246,9 @@ async def asyncio_detailed(
     embed: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitSuspensionCommentResponse]]:
     """List Controllable Unit Suspension Comment
+
+     List [Controllable Unit Suspension Comment](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_suspension_comment/)
 
     Args:
         id (str | Unset):
@@ -285,6 +294,9 @@ async def asyncio(
     embed: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitSuspensionCommentResponse] | None:
     """List Controllable Unit Suspension Comment
+
+     List [Controllable Unit Suspension Comment](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_suspension_comment/)
 
     Args:
         id (str | Unset):

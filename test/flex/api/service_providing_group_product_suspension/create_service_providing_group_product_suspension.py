@@ -117,6 +117,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionResponse]:
     """Create Service Providing Group Product Suspension
 
+     Create [Service Providing Group Product Suspension](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_product_suspension/)
+
     Args:
         body (ServiceProvidingGroupProductSuspensionCreateRequest | Unset): Request schema for
             create operations - The relation allowing a procuring system operator to temporarily
@@ -148,6 +151,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionResponse | None:
     """Create Service Providing Group Product Suspension
 
+     Create [Service Providing Group Product Suspension](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_product_suspension/)
+
     Args:
         body (ServiceProvidingGroupProductSuspensionCreateRequest | Unset): Request schema for
             create operations - The relation allowing a procuring system operator to temporarily
@@ -173,6 +179,9 @@ async def asyncio_detailed(
     body: ServiceProvidingGroupProductSuspensionCreateRequest | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionResponse]:
     """Create Service Providing Group Product Suspension
+
+     Create [Service Providing Group Product Suspension](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_product_suspension/)
 
     Args:
         body (ServiceProvidingGroupProductSuspensionCreateRequest | Unset): Request schema for
@@ -202,6 +211,9 @@ async def asyncio(
     body: ServiceProvidingGroupProductSuspensionCreateRequest | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionResponse | None:
     """Create Service Providing Group Product Suspension
+
+     Create [Service Providing Group Product Suspension](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_product_suspension/)
 
     Args:
         body (ServiceProvidingGroupProductSuspensionCreateRequest | Unset): Request schema for

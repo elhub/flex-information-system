@@ -115,6 +115,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionCommentResponse]:
     """Read Service Providing Group Product Suspension Comment
 
+     Read [Service Providing Group Product Suspension Comment](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_product_suspension_comment/)
+
     Args:
         id (int):
         embed (str | Unset):
@@ -147,6 +150,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionCommentResponse | None:
     """Read Service Providing Group Product Suspension Comment
 
+     Read [Service Providing Group Product Suspension Comment](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_product_suspension_comment/)
+
     Args:
         id (int):
         embed (str | Unset):
@@ -173,6 +179,9 @@ async def asyncio_detailed(
     embed: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionCommentResponse]:
     """Read Service Providing Group Product Suspension Comment
+
+     Read [Service Providing Group Product Suspension Comment](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_product_suspension_comment/)
 
     Args:
         id (int):
@@ -203,6 +212,9 @@ async def asyncio(
     embed: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionCommentResponse | None:
     """Read Service Providing Group Product Suspension Comment
+
+     Read [Service Providing Group Product Suspension Comment](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_product_suspension_comment/)
 
     Args:
         id (int):

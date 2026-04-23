@@ -113,6 +113,10 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupMembershipResponse]:
     """Read Membership relation of controllable unit in service providing group
 
+     Read [Membership relation of controllable unit in service providing
+    group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_membership/)
+
     Args:
         id (int):
         embed (str | Unset):
@@ -145,6 +149,10 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupMembershipResponse | None:
     """Read Membership relation of controllable unit in service providing group
 
+     Read [Membership relation of controllable unit in service providing
+    group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_membership/)
+
     Args:
         id (int):
         embed (str | Unset):
@@ -171,6 +179,10 @@ async def asyncio_detailed(
     embed: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupMembershipResponse]:
     """Read Membership relation of controllable unit in service providing group
+
+     Read [Membership relation of controllable unit in service providing
+    group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_membership/)
 
     Args:
         id (int):
@@ -201,6 +213,10 @@ async def asyncio(
     embed: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupMembershipResponse | None:
     """Read Membership relation of controllable unit in service providing group
+
+     Read [Membership relation of controllable unit in service providing
+    group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_membership/)
 
     Args:
         id (int):

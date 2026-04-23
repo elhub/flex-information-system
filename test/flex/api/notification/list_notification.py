@@ -156,6 +156,8 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[NotificationResponse]]:
     """List Notification
 
+     List [Notification](https://elhub.github.io/flex-information-system/resources/notification/)
+
     Args:
         id (str | Unset):
         event_id (str | Unset):
@@ -206,6 +208,8 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[NotificationResponse] | None:
     """List Notification
 
+     List [Notification](https://elhub.github.io/flex-information-system/resources/notification/)
+
     Args:
         id (str | Unset):
         event_id (str | Unset):
@@ -250,6 +254,8 @@ async def asyncio_detailed(
     embed: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[NotificationResponse]]:
     """List Notification
+
+     List [Notification](https://elhub.github.io/flex-information-system/resources/notification/)
 
     Args:
         id (str | Unset):
@@ -298,6 +304,8 @@ async def asyncio(
     embed: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[NotificationResponse] | None:
     """List Notification
+
+     List [Notification](https://elhub.github.io/flex-information-system/resources/notification/)
 
     Args:
         id (str | Unset):

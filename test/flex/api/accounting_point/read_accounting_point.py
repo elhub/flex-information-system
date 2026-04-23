@@ -113,6 +113,8 @@ def sync_detailed(
 ) -> Response[AccountingPointResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Read Accounting Point
 
+     Read [Accounting Point](https://elhub.github.io/flex-information-system/resources/accounting_point/)
+
     Args:
         id (int):
         embed (str | Unset):
@@ -145,6 +147,8 @@ def sync(
 ) -> AccountingPointResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Read Accounting Point
 
+     Read [Accounting Point](https://elhub.github.io/flex-information-system/resources/accounting_point/)
+
     Args:
         id (int):
         embed (str | Unset):
@@ -171,6 +175,8 @@ async def asyncio_detailed(
     embed: str | Unset = UNSET,
 ) -> Response[AccountingPointResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Read Accounting Point
+
+     Read [Accounting Point](https://elhub.github.io/flex-information-system/resources/accounting_point/)
 
     Args:
         id (int):
@@ -201,6 +207,8 @@ async def asyncio(
     embed: str | Unset = UNSET,
 ) -> AccountingPointResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Read Accounting Point
+
+     Read [Accounting Point](https://elhub.github.io/flex-information-system/resources/accounting_point/)
 
     Args:
         id (int):

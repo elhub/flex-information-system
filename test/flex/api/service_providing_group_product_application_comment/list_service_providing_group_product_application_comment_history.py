@@ -170,6 +170,9 @@ def sync_detailed(
 ]:
     """List Service Providing Group Product Application Comment - history
 
+     List [Service Providing Group Product Application Comment - history](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_product_application_comment/)
+
     Args:
         id (str | Unset):
         service_providing_group_product_application_id (str | Unset):
@@ -223,6 +226,9 @@ def sync(
 ):
     """List Service Providing Group Product Application Comment - history
 
+     List [Service Providing Group Product Application Comment - history](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_product_application_comment/)
+
     Args:
         id (str | Unset):
         service_providing_group_product_application_id (str | Unset):
@@ -266,6 +272,9 @@ async def asyncio_detailed(
     EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductApplicationCommentHistoryResponse]
 ]:
     """List Service Providing Group Product Application Comment - history
+
+     List [Service Providing Group Product Application Comment - history](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_product_application_comment/)
 
     Args:
         id (str | Unset):
@@ -317,6 +326,9 @@ async def asyncio(
     | None
 ):
     """List Service Providing Group Product Application Comment - history
+
+     List [Service Providing Group Product Application Comment - history](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_product_application_comment/)
 
     Args:
         id (str | Unset):

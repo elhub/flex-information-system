@@ -113,6 +113,8 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | PartyResponse]:
     """Read Party
 
+     Read [Party](https://elhub.github.io/flex-information-system/resources/party/)
+
     Args:
         id (int):
         embed (str | Unset):
@@ -145,6 +147,8 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | PartyResponse | None:
     """Read Party
 
+     Read [Party](https://elhub.github.io/flex-information-system/resources/party/)
+
     Args:
         id (int):
         embed (str | Unset):
@@ -171,6 +175,8 @@ async def asyncio_detailed(
     embed: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | PartyResponse]:
     """Read Party
+
+     Read [Party](https://elhub.github.io/flex-information-system/resources/party/)
 
     Args:
         id (int):
@@ -201,6 +207,8 @@ async def asyncio(
     embed: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | PartyResponse | None:
     """Read Party
+
+     Read [Party](https://elhub.github.io/flex-information-system/resources/party/)
 
     Args:
         id (int):

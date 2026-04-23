@@ -6029,6 +6029,10 @@ export type ListControllableUnitServiceProviderData = {
      */
     valid_from?: string;
     /**
+     * Filter based on valid time of the resource. Alternative to using valid_from and valid_to filters together.
+     */
+    valid_at?: string;
+    /**
      * The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.
      */
     valid_to?: string;
@@ -6341,6 +6345,10 @@ export type ListControllableUnitServiceProviderHistoryData = {
      * The date from which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.
      */
     valid_from?: string;
+    /**
+     * Filter based on valid time of the resource. Alternative to using valid_from and valid_to filters together.
+     */
+    valid_at?: string;
     /**
      * The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.
      */
@@ -6878,6 +6886,10 @@ export type ListServiceProvidingGroupMembershipData = {
      */
     valid_from?: string;
     /**
+     * Filter based on valid time of the resource. Alternative to using valid_from and valid_to filters together.
+     */
+    valid_at?: string;
+    /**
      * The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.
      */
     valid_to?: string;
@@ -7186,6 +7198,10 @@ export type ListServiceProvidingGroupMembershipHistoryData = {
      * The date from which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.
      */
     valid_from?: string;
+    /**
+     * Filter based on valid time of the resource. Alternative to using valid_from and valid_to filters together.
+     */
+    valid_at?: string;
     /**
      * The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.
      */
@@ -11367,6 +11383,10 @@ export type ListAccountingPointBalanceResponsiblePartyData = {
      */
     valid_from?: string;
     /**
+     * Filter based on valid time of the resource. Alternative to using valid_from and valid_to filters together.
+     */
+    valid_at?: string;
+    /**
      * The date until which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone.
      */
     valid_to?: string;
@@ -11454,6 +11474,10 @@ export type ListAccountingPointBiddingZoneData = {
      * The date from which the accounting point belongs to the bidding zone. Midnight aligned on Norwegian timezone.
      */
     valid_from?: string;
+    /**
+     * Filter based on valid time of the resource. Alternative to using valid_from and valid_to filters together.
+     */
+    valid_at?: string;
     /**
      * The date until which the accounting point belongs to the bidding zone. Midnight aligned on Norwegian timezone.
      */
@@ -11547,6 +11571,10 @@ export type ListAccountingPointEndUserData = {
      */
     valid_from?: string;
     /**
+     * Filter based on valid time of the resource. Alternative to using valid_from and valid_to filters together.
+     */
+    valid_at?: string;
+    /**
      * The date until which the accounting point belongs to the end user. Midnight aligned on Norwegian timezone.
      */
     valid_to?: string;
@@ -11638,6 +11666,10 @@ export type ListAccountingPointEnergySupplierData = {
      * The date from which the relation between the accounting point and the energy supplier is valid. Midnight aligned on Norwegian timezone.
      */
     valid_from?: string;
+    /**
+     * Filter based on valid time of the resource. Alternative to using valid_from and valid_to filters together.
+     */
+    valid_at?: string;
     /**
      * The date until which the relation between the accounting point and the energy supplier is valid. Midnight aligned on Norwegian timezone.
      */
@@ -11873,6 +11905,10 @@ export type ListAccountingPointMeteringGridAreaData = {
      * The date from which the accounting point belongs to the metering grid area. Midnight aligned on Norwegian timezone.
      */
     valid_from?: string;
+    /**
+     * Filter based on valid time of the resource. Alternative to using valid_from and valid_to filters together.
+     */
+    valid_at?: string;
     /**
      * The date until which the accounting point belongs to the metering grid area. Midnight aligned on Norwegian timezone.
      */

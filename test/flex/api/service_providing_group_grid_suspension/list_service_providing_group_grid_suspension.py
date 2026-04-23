@@ -156,6 +156,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionResponse]]:
     """List Service Providing Group Grid Suspension
 
+     List [Service Providing Group Grid Suspension](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_suspension/)
+
     Args:
         id (str | Unset):
         impacted_system_operator_id (str | Unset):
@@ -206,6 +209,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionResponse] | None:
     """List Service Providing Group Grid Suspension
 
+     List [Service Providing Group Grid Suspension](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_suspension/)
+
     Args:
         id (str | Unset):
         impacted_system_operator_id (str | Unset):
@@ -250,6 +256,9 @@ async def asyncio_detailed(
     embed: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionResponse]]:
     """List Service Providing Group Grid Suspension
+
+     List [Service Providing Group Grid Suspension](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_suspension/)
 
     Args:
         id (str | Unset):
@@ -298,6 +307,9 @@ async def asyncio(
     embed: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionResponse] | None:
     """List Service Providing Group Grid Suspension
+
+     List [Service Providing Group Grid Suspension](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_suspension/)
 
     Args:
         id (str | Unset):

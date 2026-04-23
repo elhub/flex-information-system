@@ -156,6 +156,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupResponse]]:
     """List Service providing group
 
+     List [Service providing group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group/)
+
     Args:
         id (str | Unset):
         name (str | Unset):
@@ -206,6 +209,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupResponse] | None:
     """List Service providing group
 
+     List [Service providing group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group/)
+
     Args:
         id (str | Unset):
         name (str | Unset):
@@ -250,6 +256,9 @@ async def asyncio_detailed(
     embed: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupResponse]]:
     """List Service providing group
+
+     List [Service providing group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group/)
 
     Args:
         id (str | Unset):
@@ -298,6 +307,9 @@ async def asyncio(
     embed: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupResponse] | None:
     """List Service providing group
+
+     List [Service providing group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group/)
 
     Args:
         id (str | Unset):

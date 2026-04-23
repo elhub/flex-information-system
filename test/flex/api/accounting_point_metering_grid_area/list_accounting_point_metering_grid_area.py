@@ -1,3 +1,4 @@
+import datetime
 from http import HTTPStatus
 from typing import Any
 
@@ -16,6 +17,7 @@ def _get_kwargs(
     accounting_point_id: str | Unset = UNSET,
     metering_grid_area_id: str | Unset = UNSET,
     valid_from: str | Unset = UNSET,
+    valid_at: datetime.datetime | Unset = UNSET,
     valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
@@ -30,6 +32,11 @@ def _get_kwargs(
     params["metering_grid_area_id"] = metering_grid_area_id
 
     params["valid_from"] = valid_from
+
+    json_valid_at: str | Unset = UNSET
+    if not isinstance(valid_at, Unset):
+        json_valid_at = valid_at.isoformat()
+    params["valid_at"] = json_valid_at
 
     params["valid_to"] = valid_to
 
@@ -151,6 +158,7 @@ def sync_detailed(
     accounting_point_id: str | Unset = UNSET,
     metering_grid_area_id: str | Unset = UNSET,
     valid_from: str | Unset = UNSET,
+    valid_at: datetime.datetime | Unset = UNSET,
     valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
@@ -160,10 +168,14 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[AccountingPointMeteringGridAreaResponse]]:
     """List Accounting Point Metering Grid Area
 
+     List [Accounting Point Metering Grid Area](https://elhub.github.io/flex-information-
+    system/resources/accounting_point_metering_grid_area/)
+
     Args:
         accounting_point_id (str | Unset):
         metering_grid_area_id (str | Unset):
         valid_from (str | Unset):
+        valid_at (datetime.datetime | Unset):
         valid_to (str | Unset):
         select (str | Unset):
         order (str | Unset):
@@ -183,6 +195,7 @@ def sync_detailed(
         accounting_point_id=accounting_point_id,
         metering_grid_area_id=metering_grid_area_id,
         valid_from=valid_from,
+        valid_at=valid_at,
         valid_to=valid_to,
         select=select,
         order=order,
@@ -204,6 +217,7 @@ def sync(
     accounting_point_id: str | Unset = UNSET,
     metering_grid_area_id: str | Unset = UNSET,
     valid_from: str | Unset = UNSET,
+    valid_at: datetime.datetime | Unset = UNSET,
     valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
@@ -213,10 +227,14 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[AccountingPointMeteringGridAreaResponse] | None:
     """List Accounting Point Metering Grid Area
 
+     List [Accounting Point Metering Grid Area](https://elhub.github.io/flex-information-
+    system/resources/accounting_point_metering_grid_area/)
+
     Args:
         accounting_point_id (str | Unset):
         metering_grid_area_id (str | Unset):
         valid_from (str | Unset):
+        valid_at (datetime.datetime | Unset):
         valid_to (str | Unset):
         select (str | Unset):
         order (str | Unset):
@@ -237,6 +255,7 @@ def sync(
         accounting_point_id=accounting_point_id,
         metering_grid_area_id=metering_grid_area_id,
         valid_from=valid_from,
+        valid_at=valid_at,
         valid_to=valid_to,
         select=select,
         order=order,
@@ -252,6 +271,7 @@ async def asyncio_detailed(
     accounting_point_id: str | Unset = UNSET,
     metering_grid_area_id: str | Unset = UNSET,
     valid_from: str | Unset = UNSET,
+    valid_at: datetime.datetime | Unset = UNSET,
     valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
@@ -261,10 +281,14 @@ async def asyncio_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[AccountingPointMeteringGridAreaResponse]]:
     """List Accounting Point Metering Grid Area
 
+     List [Accounting Point Metering Grid Area](https://elhub.github.io/flex-information-
+    system/resources/accounting_point_metering_grid_area/)
+
     Args:
         accounting_point_id (str | Unset):
         metering_grid_area_id (str | Unset):
         valid_from (str | Unset):
+        valid_at (datetime.datetime | Unset):
         valid_to (str | Unset):
         select (str | Unset):
         order (str | Unset):
@@ -284,6 +308,7 @@ async def asyncio_detailed(
         accounting_point_id=accounting_point_id,
         metering_grid_area_id=metering_grid_area_id,
         valid_from=valid_from,
+        valid_at=valid_at,
         valid_to=valid_to,
         select=select,
         order=order,
@@ -303,6 +328,7 @@ async def asyncio(
     accounting_point_id: str | Unset = UNSET,
     metering_grid_area_id: str | Unset = UNSET,
     valid_from: str | Unset = UNSET,
+    valid_at: datetime.datetime | Unset = UNSET,
     valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
@@ -312,10 +338,14 @@ async def asyncio(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[AccountingPointMeteringGridAreaResponse] | None:
     """List Accounting Point Metering Grid Area
 
+     List [Accounting Point Metering Grid Area](https://elhub.github.io/flex-information-
+    system/resources/accounting_point_metering_grid_area/)
+
     Args:
         accounting_point_id (str | Unset):
         metering_grid_area_id (str | Unset):
         valid_from (str | Unset):
+        valid_at (datetime.datetime | Unset):
         valid_to (str | Unset):
         select (str | Unset):
         order (str | Unset):
@@ -337,6 +367,7 @@ async def asyncio(
             accounting_point_id=accounting_point_id,
             metering_grid_area_id=metering_grid_area_id,
             valid_from=valid_from,
+            valid_at=valid_at,
             valid_to=valid_to,
             select=select,
             order=order,

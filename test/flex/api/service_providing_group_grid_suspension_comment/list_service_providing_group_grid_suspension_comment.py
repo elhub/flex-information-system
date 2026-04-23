@@ -154,6 +154,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionCommentResponse]]:
     """List Service Providing Group Grid Suspension Comment
 
+     List [Service Providing Group Grid Suspension Comment](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_suspension_comment/)
+
     Args:
         id (str | Unset):
         service_providing_group_grid_suspension_id (str | Unset):
@@ -201,6 +204,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionCommentResponse] | None:
     """List Service Providing Group Grid Suspension Comment
 
+     List [Service Providing Group Grid Suspension Comment](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_suspension_comment/)
+
     Args:
         id (str | Unset):
         service_providing_group_grid_suspension_id (str | Unset):
@@ -242,6 +248,9 @@ async def asyncio_detailed(
     embed: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionCommentResponse]]:
     """List Service Providing Group Grid Suspension Comment
+
+     List [Service Providing Group Grid Suspension Comment](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_suspension_comment/)
 
     Args:
         id (str | Unset):
@@ -287,6 +296,9 @@ async def asyncio(
     embed: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionCommentResponse] | None:
     """List Service Providing Group Grid Suspension Comment
+
+     List [Service Providing Group Grid Suspension Comment](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_suspension_comment/)
 
     Args:
         id (str | Unset):

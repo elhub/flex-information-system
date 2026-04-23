@@ -109,6 +109,9 @@ def sync_detailed(
 ]:
     """Read Service Providing Group Product Application Comment - history
 
+     Read [Service Providing Group Product Application Comment - history](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_product_application_comment/)
+
     Args:
         id (int):
 
@@ -138,6 +141,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationCommentHistoryResponse | None:
     """Read Service Providing Group Product Application Comment - history
 
+     Read [Service Providing Group Product Application Comment - history](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_product_application_comment/)
+
     Args:
         id (int):
 
@@ -163,6 +169,9 @@ async def asyncio_detailed(
     EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationCommentHistoryResponse
 ]:
     """Read Service Providing Group Product Application Comment - history
+
+     Read [Service Providing Group Product Application Comment - history](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_product_application_comment/)
 
     Args:
         id (int):
@@ -190,6 +199,9 @@ async def asyncio(
     client: AuthenticatedClient,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductApplicationCommentHistoryResponse | None:
     """Read Service Providing Group Product Application Comment - history
+
+     Read [Service Providing Group Product Application Comment - history](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_product_application_comment/)
 
     Args:
         id (int):

@@ -162,6 +162,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductApplicationResponse]]:
     """List Service Providing Group Product Application
 
+     List [Service Providing Group Product Application](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_product_application/)
+
     Args:
         id (str | Unset):
         service_providing_group_id (str | Unset):
@@ -215,6 +218,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductApplicationResponse] | None:
     """List Service Providing Group Product Application
 
+     List [Service Providing Group Product Application](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_product_application/)
+
     Args:
         id (str | Unset):
         service_providing_group_id (str | Unset):
@@ -262,6 +268,9 @@ async def asyncio_detailed(
     embed: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductApplicationResponse]]:
     """List Service Providing Group Product Application
+
+     List [Service Providing Group Product Application](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_product_application/)
 
     Args:
         id (str | Unset):
@@ -313,6 +322,9 @@ async def asyncio(
     embed: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductApplicationResponse] | None:
     """List Service Providing Group Product Application
+
+     List [Service Providing Group Product Application](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_product_application/)
 
     Args:
         id (str | Unset):

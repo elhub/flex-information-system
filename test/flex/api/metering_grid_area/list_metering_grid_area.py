@@ -160,6 +160,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[MeteringGridAreaResponse]]:
     """List Metering Grid Area
 
+     List [Metering Grid Area](https://elhub.github.io/flex-information-
+    system/resources/metering_grid_area/)
+
     Args:
         id (str | Unset):
         business_id (str | Unset):
@@ -213,6 +216,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[MeteringGridAreaResponse] | None:
     """List Metering Grid Area
 
+     List [Metering Grid Area](https://elhub.github.io/flex-information-
+    system/resources/metering_grid_area/)
+
     Args:
         id (str | Unset):
         business_id (str | Unset):
@@ -260,6 +266,9 @@ async def asyncio_detailed(
     embed: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[MeteringGridAreaResponse]]:
     """List Metering Grid Area
+
+     List [Metering Grid Area](https://elhub.github.io/flex-information-
+    system/resources/metering_grid_area/)
 
     Args:
         id (str | Unset):
@@ -311,6 +320,9 @@ async def asyncio(
     embed: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[MeteringGridAreaResponse] | None:
     """List Metering Grid Area
+
+     List [Metering Grid Area](https://elhub.github.io/flex-information-
+    system/resources/metering_grid_area/)
 
     Args:
         id (str | Unset):

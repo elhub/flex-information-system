@@ -148,6 +148,8 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[EventResponse]]:
     """List Event
 
+     List [Event](https://elhub.github.io/flex-information-system/resources/event/)
+
     Args:
         id (str | Unset):
         select (str | Unset):
@@ -192,6 +194,8 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[EventResponse] | None:
     """List Event
 
+     List [Event](https://elhub.github.io/flex-information-system/resources/event/)
+
     Args:
         id (str | Unset):
         select (str | Unset):
@@ -230,6 +234,8 @@ async def asyncio_detailed(
     embed: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[EventResponse]]:
     """List Event
+
+     List [Event](https://elhub.github.io/flex-information-system/resources/event/)
 
     Args:
         id (str | Unset):
@@ -272,6 +278,8 @@ async def asyncio(
     embed: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[EventResponse] | None:
     """List Event
+
+     List [Event](https://elhub.github.io/flex-information-system/resources/event/)
 
     Args:
         id (str | Unset):

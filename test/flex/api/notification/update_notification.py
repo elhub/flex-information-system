@@ -118,6 +118,8 @@ def sync_detailed(
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | NotificationResponse]:
     """Update Notification
 
+     Update [Notification](https://elhub.github.io/flex-information-system/resources/notification/)
+
     Args:
         id (int):
         body (NotificationUpdateRequest): Request schema for update operations - Notification
@@ -151,6 +153,8 @@ def sync(
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | NotificationResponse | None:
     """Update Notification
 
+     Update [Notification](https://elhub.github.io/flex-information-system/resources/notification/)
+
     Args:
         id (int):
         body (NotificationUpdateRequest): Request schema for update operations - Notification
@@ -178,6 +182,8 @@ async def asyncio_detailed(
     body: NotificationUpdateRequest,
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | NotificationResponse]:
     """Update Notification
+
+     Update [Notification](https://elhub.github.io/flex-information-system/resources/notification/)
 
     Args:
         id (int):
@@ -209,6 +215,8 @@ async def asyncio(
     body: NotificationUpdateRequest,
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | NotificationResponse | None:
     """Update Notification
+
+     Update [Notification](https://elhub.github.io/flex-information-system/resources/notification/)
 
     Args:
         id (int):

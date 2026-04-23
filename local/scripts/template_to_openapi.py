@@ -189,14 +189,14 @@ endpoint_templates = {
     "list": lambda base_resource, resource, resource_summary: {
         "operationId": f"list_{resource}",
         "summary": f"List {resource_summary}",
-        "description": "",
+        "description": f"List [{resource_summary}](https://elhub.github.io/flex-information-system/resources/{base_resource}/)",
         "tags": [base_resource],
         "g-responses": [200, 206, 400, 401, 403, 404, 406, 416, 500],
     },
     "create": lambda _base_resource, resource, resource_summary: {
         "operationId": f"create_{resource}",
         "summary": f"Create {resource_summary}",
-        "description": "",
+        "description": f"Create [{resource_summary}](https://elhub.github.io/flex-information-system/resources/{resource}/)",
         "tags": [resource],
         "requestBody": {
             "content": {
@@ -214,14 +214,14 @@ endpoint_templates = {
     "read": lambda base_resource, resource, resource_summary: {
         "operationId": f"read_{resource}",
         "summary": f"Read {resource_summary}",
-        "description": "",
+        "description": f"Read [{resource_summary}](https://elhub.github.io/flex-information-system/resources/{base_resource}/)",
         "tags": [base_resource],
         "g-responses": [200, 400, 401, 403, 404, 406, 500],
     },
     "update": lambda _base_resource, resource, resource_summary: {
         "operationId": f"update_{resource}",
         "summary": f"Update {resource_summary}",
-        "description": "",
+        "description": f"Update [{resource_summary}](https://elhub.github.io/flex-information-system/resources/{resource}/)",
         "tags": [resource],
         "requestBody": {
             "content": {
@@ -239,7 +239,7 @@ endpoint_templates = {
     "delete": lambda _base_resource, resource, resource_summary: {
         "operationId": f"delete_{resource}",
         "summary": f"Delete {resource_summary}",
-        "description": "",
+        "description": f"Delete [{resource_summary}](https://elhub.github.io/flex-information-system/resources/{resource}/)",
         "tags": [resource],
         "requestBody": {
             "content": {
@@ -338,6 +338,16 @@ def generate_list_parameters(resource, filter_fields):
             parameter_template["description"] = field_info.get("description")
 
         endpoint_parameters.append(parameter_template)
+
+        if field == "valid_from":
+            valid_at_parameter_template = {
+                "in": "query",
+                "name": "valid_at",
+                "schema": {"type": "string", "format": "date-time"},
+                "example": "2023-12-31T23:59:00+00:00",
+                "description": "Filter based on valid time of the resource. Alternative to using valid_from and valid_to filters together.",
+            }
+            endpoint_parameters.append(valid_at_parameter_template)
 
     endpoint_parameters += list_parameters_template
     return endpoint_parameters

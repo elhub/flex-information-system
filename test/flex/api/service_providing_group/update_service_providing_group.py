@@ -118,6 +118,9 @@ def sync_detailed(
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse]:
     """Update Service providing group
 
+     Update [Service providing group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group/)
+
     Args:
         id (int):
         body (ServiceProvidingGroupUpdateRequest): Request schema for update operations - Group of
@@ -151,6 +154,9 @@ def sync(
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse | None:
     """Update Service providing group
 
+     Update [Service providing group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group/)
+
     Args:
         id (int):
         body (ServiceProvidingGroupUpdateRequest): Request schema for update operations - Group of
@@ -178,6 +184,9 @@ async def asyncio_detailed(
     body: ServiceProvidingGroupUpdateRequest,
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse]:
     """Update Service providing group
+
+     Update [Service providing group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group/)
 
     Args:
         id (int):
@@ -209,6 +218,9 @@ async def asyncio(
     body: ServiceProvidingGroupUpdateRequest,
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupResponse | None:
     """Update Service providing group
+
+     Update [Service providing group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group/)
 
     Args:
         id (int):

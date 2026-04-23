@@ -156,6 +156,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[TechnicalResourceResponse]]:
     """List Technical Resource
 
+     List [Technical Resource](https://elhub.github.io/flex-information-
+    system/resources/technical_resource/)
+
     Args:
         id (str | Unset):
         name (str | Unset):
@@ -206,6 +209,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[TechnicalResourceResponse] | None:
     """List Technical Resource
 
+     List [Technical Resource](https://elhub.github.io/flex-information-
+    system/resources/technical_resource/)
+
     Args:
         id (str | Unset):
         name (str | Unset):
@@ -250,6 +256,9 @@ async def asyncio_detailed(
     embed: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[TechnicalResourceResponse]]:
     """List Technical Resource
+
+     List [Technical Resource](https://elhub.github.io/flex-information-
+    system/resources/technical_resource/)
 
     Args:
         id (str | Unset):
@@ -298,6 +307,9 @@ async def asyncio(
     embed: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[TechnicalResourceResponse] | None:
     """List Technical Resource
+
+     List [Technical Resource](https://elhub.github.io/flex-information-
+    system/resources/technical_resource/)
 
     Args:
         id (str | Unset):
