@@ -2,9 +2,15 @@
 import { type ReactNode } from "react";
 import { useAuthenticated, useGetIdentity } from "ra-core";
 import { Alert, Card, CardContent, Heading, Loader } from "../components/ui";
-import { IconClockCircle, IconWarningTriangle } from "@elhub/ds-icons";
+import {
+  IconClockCircle,
+  IconQualitiesCircle,
+  IconWarningTriangle,
+} from "@elhub/ds-icons";
 import { ApplicationsTable } from "./ApplicationsTable";
 import { useDashboardApplications } from "./useDashboardApplications";
+import { SpApplicationsTable } from "./SpApplicationsTable";
+import { useSpDashboard } from "./useSpDashboard";
 
 type StatCardProps = {
   label: string;
@@ -40,27 +46,15 @@ const StatCard = ({
   </Card>
 );
 
-export const Dashboard = () => {
-  useAuthenticated();
-
-  const { data: identity } = useGetIdentity();
-  const isSystemOperator = identity?.role === "flex_system_operator";
-
+const SoDashboard = () => {
   const { items, isLoading, error } = useDashboardApplications();
 
   return (
-    <div
-      id="flex-dashboard"
-      className="flex flex-col gap-6 px-8 py-6 sm:px-4 sm:py-4"
-    >
-      <Heading level={2} size="small">
-        Dashboard
-      </Heading>
-
+    <>
       {isLoading && <Loader size="medium" />}
       {error && <Alert variant="error">Failed to load applications.</Alert>}
 
-      {!isLoading && !error && isSystemOperator && (
+      {!isLoading && !error && (
         <>
           <div className="flex flex-col sm:flex-row gap-4">
             <StatCard
@@ -97,6 +91,110 @@ export const Dashboard = () => {
           </div>
         </>
       )}
+    </>
+  );
+};
+
+const SpDashboard = () => {
+  const {
+    activeItems,
+    resolvedItems,
+    pendingCount,
+    activeSpgCount,
+    inconsistencyCount,
+    isLoading,
+    error,
+  } = useSpDashboard();
+
+  return (
+    <>
+      {isLoading && <Loader size="medium" />}
+      {error && <Alert variant="error">Failed to load applications.</Alert>}
+
+      {!isLoading && !error && (
+        <>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <StatCard
+              label="Pending Applications"
+              value={pendingCount}
+              icon={
+                <IconClockCircle
+                  size="medium"
+                  className="text-semantic-text-information"
+                />
+              }
+              borderClass="border-l-semantic-border-information"
+              iconBgClass="bg-semantic-background-information"
+            />
+            <StatCard
+              label="Active SPGs"
+              value={activeSpgCount}
+              icon={
+                <IconQualitiesCircle
+                  size="medium"
+                  className="text-semantic-text-success"
+                />
+              }
+              borderClass="border-l-[#198f5d]"
+              iconBgClass="bg-semantic-background-success"
+            />
+            <StatCard
+              label="Inconsistencies"
+              value={inconsistencyCount}
+              icon={
+                <IconWarningTriangle
+                  size="medium"
+                  className="text-semantic-text-error"
+                />
+              }
+              borderClass="border-l-semantic-border-error"
+              iconBgClass="bg-semantic-background-error"
+            />
+          </div>
+
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wide text-semantic-text-subtle mb-3">
+              Active Applications
+            </p>
+            <SpApplicationsTable
+              items={activeItems}
+              empty="No active applications."
+            />
+          </div>
+
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wide text-semantic-text-subtle mb-3">
+              Recently Resolved
+            </p>
+            <SpApplicationsTable
+              items={resolvedItems}
+              empty="No resolved applications."
+            />
+          </div>
+        </>
+      )}
+    </>
+  );
+};
+
+export const Dashboard = () => {
+  useAuthenticated();
+
+  const { data: identity } = useGetIdentity();
+  const isSystemOperator = identity?.role === "flex_system_operator";
+  const isServiceProvider = identity?.role === "flex_service_provider";
+
+  return (
+    <div
+      id="flex-dashboard"
+      className="flex flex-col gap-6 px-8 py-6 sm:px-4 sm:py-4"
+    >
+      <Heading level={2} size="small">
+        Dashboard
+      </Heading>
+
+      {isSystemOperator && <SoDashboard />}
+      {isServiceProvider && <SpDashboard />}
     </div>
   );
 };
