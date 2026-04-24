@@ -121,7 +121,7 @@ WITH (security_invoker = false) AS (
         ) AS cu_aggregates ON TRUE
         LEFT JOIN LATERAL ( -- TR-level aggregates
             SELECT
-                COUNT(*) AS tr_count,
+                COUNT(tr.id) AS tr_count,
                 COALESCE(SUM(tr.maximum_active_power), 0) AS tr_sum_map,
                 COALESCE(AVG(tr.maximum_active_power), 0) AS tr_avg_map,
                 MIN(tr.maximum_active_power) AS tr_min_map,
