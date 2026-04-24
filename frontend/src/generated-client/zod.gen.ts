@@ -376,43 +376,6 @@ export const zAccountingPointGridLocationQuality = z.enum([
 ]);
 
 /**
- * Request schema for create operations - The electrical (topological) location of an accounting point in the common grid model (Nemo).
- */
-export const zAccountingPointGridLocationCreateRequest = z.object({
-  accounting_point_id: z.coerce.number(),
-  object_type: zAccountingPointGridLocationObjectType,
-  business_id: z
-    .string()
-    .regex(
-      /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
-    )
-    .optional(),
-  name: z.string().max(512),
-  nominal_voltage: z.coerce.number().gte(0).lte(999999.999),
-  additional_information: z.string().optional(),
-  source: zAccountingPointGridLocationSource,
-  quality: zAccountingPointGridLocationQuality,
-});
-
-/**
- * Request schema for update operations - The electrical (topological) location of an accounting point in the common grid model (Nemo).
- */
-export const zAccountingPointGridLocationUpdateRequest = z.object({
-  object_type: zAccountingPointGridLocationObjectType.optional(),
-  business_id: z
-    .string()
-    .regex(
-      /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
-    )
-    .optional(),
-  name: z.string().max(512).optional(),
-  nominal_voltage: z.coerce.number().gte(0).lte(999999.999).optional(),
-  additional_information: z.string().optional(),
-  source: zAccountingPointGridLocationSource.optional(),
-  quality: zAccountingPointGridLocationQuality.optional(),
-});
-
-/**
  * The status of the relation.
  */
 export const zSystemOperatorProductTypeStatus = z.enum(["active", "inactive"]);
@@ -853,6 +816,43 @@ export const zTechnicalResourceCreateRequest = z.object({
  */
 export const zNotificationUpdateRequest = z.object({
   acknowledged: z.boolean().optional(),
+});
+
+/**
+ * Request schema for update operations - The electrical (topological) location of an accounting point in the common grid model (Nemo).
+ */
+export const zAccountingPointGridLocationUpdateRequest = z.object({
+  object_type: zAccountingPointGridLocationObjectType.optional(),
+  business_id: z
+    .string()
+    .regex(
+      /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
+    )
+    .optional(),
+  name: z.string().max(512).optional(),
+  nominal_voltage: z.coerce.number().gte(0).lte(999999.999).optional(),
+  additional_information: z.string().optional(),
+  source: zAccountingPointGridLocationSource.optional(),
+  quality: zAccountingPointGridLocationQuality.optional(),
+});
+
+/**
+ * Request schema for create operations - The electrical (topological) location of an accounting point in the common grid model (Nemo).
+ */
+export const zAccountingPointGridLocationCreateRequest = z.object({
+  accounting_point_id: z.coerce.number(),
+  object_type: zAccountingPointGridLocationObjectType,
+  business_id: z
+    .string()
+    .regex(
+      /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
+    )
+    .optional(),
+  name: z.string().max(512),
+  nominal_voltage: z.coerce.number().gte(0).lte(999999.999),
+  additional_information: z.string().optional(),
+  source: zAccountingPointGridLocationSource,
+  quality: zAccountingPointGridLocationQuality,
 });
 
 /**

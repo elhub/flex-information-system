@@ -263,60 +263,6 @@ export type NumericAggregation = {
 };
 
 /**
- * Request schema for create operations - The electrical (topological) location of an accounting point in the common grid model (Nemo).
- */
-export type AccountingPointGridLocationCreateRequest = {
-  /**
-   * The accounting point this grid location belongs to.
-   */
-  accounting_point_id: number;
-  object_type: AccountingPointGridLocationObjectType;
-  /**
-   * Business identifier (mRID) referencing the object in the common grid model.
-   */
-  business_id?: string;
-  /**
-   * Name of the grid model object at the location.
-   */
-  name: string;
-  /**
-   * Nominal voltage level at the grid location, in kilovolt (kV).
-   */
-  nominal_voltage: number;
-  /**
-   * Free text field for extra information about the grid location if needed.
-   */
-  additional_information?: string;
-  source: AccountingPointGridLocationSource;
-  quality: AccountingPointGridLocationQuality;
-};
-
-/**
- * Request schema for update operations - The electrical (topological) location of an accounting point in the common grid model (Nemo).
- */
-export type AccountingPointGridLocationUpdateRequest = {
-  object_type?: AccountingPointGridLocationObjectType;
-  /**
-   * Business identifier (mRID) referencing the object in the common grid model.
-   */
-  business_id?: string;
-  /**
-   * Name of the grid model object at the location.
-   */
-  name?: string;
-  /**
-   * Nominal voltage level at the grid location, in kilovolt (kV).
-   */
-  nominal_voltage?: number;
-  /**
-   * Free text field for extra information about the grid location if needed.
-   */
-  additional_information?: string;
-  source?: AccountingPointGridLocationSource;
-  quality?: AccountingPointGridLocationQuality;
-};
-
-/**
  * An empty object
  */
 export type EmptyObject = {
@@ -2265,6 +2211,60 @@ export type AccountingPointMeteringGridArea = {
    * Embedded metering_grid_area
    */
   metering_grid_area?: MeteringGridArea | null;
+};
+
+/**
+ * Request schema for update operations - The electrical (topological) location of an accounting point in the common grid model (Nemo).
+ */
+export type AccountingPointGridLocationUpdateRequest = {
+  object_type?: AccountingPointGridLocationObjectType;
+  /**
+   * Business identifier (mRID) referencing the object in the common grid model.
+   */
+  business_id?: string;
+  /**
+   * Name of the grid model object at the location.
+   */
+  name?: string;
+  /**
+   * Nominal voltage level at the grid location, in kilovolt (kV).
+   */
+  nominal_voltage?: number;
+  /**
+   * Free text field for extra information about the grid location if needed.
+   */
+  additional_information?: string;
+  source?: AccountingPointGridLocationSource;
+  quality?: AccountingPointGridLocationQuality;
+};
+
+/**
+ * Request schema for create operations - The electrical (topological) location of an accounting point in the common grid model (Nemo).
+ */
+export type AccountingPointGridLocationCreateRequest = {
+  /**
+   * The accounting point this grid location belongs to.
+   */
+  accounting_point_id: number;
+  object_type: AccountingPointGridLocationObjectType;
+  /**
+   * Business identifier (mRID) referencing the object in the common grid model.
+   */
+  business_id?: string;
+  /**
+   * Name of the grid model object at the location.
+   */
+  name: string;
+  /**
+   * Nominal voltage level at the grid location, in kilovolt (kV).
+   */
+  nominal_voltage: number;
+  /**
+   * Free text field for extra information about the grid location if needed.
+   */
+  additional_information?: string;
+  source: AccountingPointGridLocationSource;
+  quality: AccountingPointGridLocationQuality;
 };
 
 /**
