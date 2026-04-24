@@ -11,7 +11,13 @@ import {
   listProductType,
 } from "../generated-client";
 import { throwOnError } from "../util";
-import { addMonths, ACTIVE_STATUSES, RESOLVED_SPPA, RESOLVED_SPGPA, RESOLVED_SPGGP } from "./dashboardUtils";
+import {
+  addMonths,
+  ACTIVE_STATUSES,
+  RESOLVED_SPPA,
+  RESOLVED_SPGPA,
+  RESOLVED_SPGGP,
+} from "./dashboardUtils";
 
 export type DashboardItemKind =
   | "sp_product_application"
@@ -155,58 +161,57 @@ export const useDashboardApplications = () => {
     ids.map((id) => ptMap.get(id) ?? String(id)).join(", ");
 
   const items: DashboardItem[] = [
-    ...(sppaQuery.data ?? [])
-      .map((r) => ({
+    ...(sppaQuery.data ?? []).map((r) => ({
+      id: r.id,
+      kind: "sp_product_application" as DashboardItemKind,
+      typeLabel: "Product Application",
+      byline: ptNames(r.product_type_ids),
+      participant:
+        partyMap.get(r.service_provider_id) ?? String(r.service_provider_id),
+      dueDate: addMonths(r.recorded_at, 3),
+      status: r.status,
+      route: `/service_provider_product_application/${r.id}/show`,
+    })),
+    ...(spgpaQuery.data ?? []).map((r) => {
+      const spg = spgMap.get(r.service_providing_group_id);
+      const spgName = spg?.name ?? String(r.service_providing_group_id);
+      const spId = spg?.service_provider_id;
+      return {
         id: r.id,
-        kind: "sp_product_application" as DashboardItemKind,
-        typeLabel: "Product Application",
-        byline: ptNames(r.product_type_ids),
-        participant:
-          partyMap.get(r.service_provider_id) ?? String(r.service_provider_id),
+        kind: "spg_product_application" as DashboardItemKind,
+        typeLabel: "SPG Product Application",
+        byline: [spgName, ptNames(r.product_type_ids)]
+          .filter(Boolean)
+          .join(" · "),
+        participant: spId ? (partyMap.get(spId) ?? String(spId)) : "",
         dueDate: addMonths(r.recorded_at, 3),
         status: r.status,
-        route: `/service_provider_product_application/${r.id}/show`,
-      })),
-    ...(spgpaQuery.data ?? [])
-      .map((r) => {
-        const spg = spgMap.get(r.service_providing_group_id);
-        const spgName = spg?.name ?? String(r.service_providing_group_id);
-        const spId = spg?.service_provider_id;
-        return {
-          id: r.id,
-          kind: "spg_product_application" as DashboardItemKind,
-          typeLabel: "SPG Product Application",
-          byline: [spgName, ptNames(r.product_type_ids)]
-            .filter(Boolean)
-            .join(" · "),
-          participant: spId ? (partyMap.get(spId) ?? String(spId)) : "",
-          dueDate: addMonths(r.recorded_at, 3),
-          status: r.status,
-          route: `/service_providing_group/${r.service_providing_group_id}/product_application/${r.id}/show`,
-        };
-      }),
-    ...(spggpQuery.data ?? [])
-      .map((r) => {
-        const spg = spgMap.get(r.service_providing_group_id);
-        const spgName = spg?.name ?? String(r.service_providing_group_id);
-        const spId = spg?.service_provider_id;
-        return {
-          id: r.id,
-          kind: "spg_grid_prequalification" as DashboardItemKind,
-          typeLabel: "SPG Grid Prequalification",
-          byline: spgName,
-          participant: spId ? (partyMap.get(spId) ?? String(spId)) : "",
-          dueDate: addMonths(r.recorded_at, 3),
-          status: r.status,
-          route: `/service_providing_group/${r.service_providing_group_id}/grid_prequalification/${r.id}/show`,
-        };
-      }),
+        route: `/service_providing_group/${r.service_providing_group_id}/product_application/${r.id}/show`,
+      };
+    }),
+    ...(spggpQuery.data ?? []).map((r) => {
+      const spg = spgMap.get(r.service_providing_group_id);
+      const spgName = spg?.name ?? String(r.service_providing_group_id);
+      const spId = spg?.service_provider_id;
+      return {
+        id: r.id,
+        kind: "spg_grid_prequalification" as DashboardItemKind,
+        typeLabel: "SPG Grid Prequalification",
+        byline: spgName,
+        participant: spId ? (partyMap.get(spId) ?? String(spId)) : "",
+        dueDate: addMonths(r.recorded_at, 3),
+        status: r.status,
+        route: `/service_providing_group/${r.service_providing_group_id}/grid_prequalification/${r.id}/show`,
+      };
+    }),
   ];
 
   const activeItems = items.filter((item) => ACTIVE_STATUSES.has(item.status));
   const resolvedItems = items.filter((item) => {
-    if (item.kind === "sp_product_application") return RESOLVED_SPPA.has(item.status);
-    if (item.kind === "spg_product_application") return RESOLVED_SPGPA.has(item.status);
+    if (item.kind === "sp_product_application")
+      return RESOLVED_SPPA.has(item.status);
+    if (item.kind === "spg_product_application")
+      return RESOLVED_SPGPA.has(item.status);
     return RESOLVED_SPGGP.has(item.status);
   });
 

@@ -34,17 +34,20 @@ export const SpMarketsCard = ({ spId }: SpMarketsCardProps) => {
   const navigate = useNavigate();
   const { data, isLoading, isError } = useSpQualifiedMarkets(spId);
 
-  // Derive rows from API data
-  const rows = useMemo(
-    () =>
-      (data ?? []).map((item) => ({
-        id: item.id ?? 0,
-        system_operator_id: item.system_operator_id ?? 0,
-        // product_type_ids is number[] in the generated type (FK references)
-        product_type_ids: (item.product_type_ids as number[] | null) ?? [],
-      })),
-    [data],
-  );
+  // Derive rows from API data, grouped by SO (one row per SO, merged product types)
+  const rows = useMemo(() => {
+    const grouped = new Map<number, Set<number>>();
+    for (const item of data ?? []) {
+      const soId = item.system_operator_id ?? 0;
+      const ptIds = (item.product_type_ids as number[] | null) ?? [];
+      if (!grouped.has(soId)) grouped.set(soId, new Set());
+      for (const ptId of ptIds) grouped.get(soId)!.add(ptId);
+    }
+    return [...grouped.entries()].map(([soId, ptSet]) => ({
+      system_operator_id: soId,
+      product_type_ids: [...ptSet],
+    }));
+  }, [data]);
 
   // Collect unique IDs for batch fetches
   const uniqueSoIds = useMemo(
@@ -125,10 +128,10 @@ export const SpMarketsCard = ({ spId }: SpMarketsCardProps) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {rows.map((row) => (
-                      <SoRowCell
-                        key={row.id}
-                        soId={row.system_operator_id}
+                     {rows.map((row) => (
+                       <SoRowCell
+                         key={row.system_operator_id}
+                         soId={row.system_operator_id}
                         productTypeIds={row.product_type_ids}
                         soMap={soMap}
                         ptMap={ptMap}

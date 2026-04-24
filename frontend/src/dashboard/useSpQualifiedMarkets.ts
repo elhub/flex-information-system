@@ -18,8 +18,6 @@ export const useSpQualifiedMarkets = (spId: number | undefined) =>
         query: {
           service_provider_id: `eq.${spId}`,
           status: "eq.qualified",
-          // Only fetch the fields the dashboard card needs
-          select: "id,system_operator_id,product_type_ids",
         } as SppaListQuery,
       }).then(throwOnError),
     enabled: !!spId,

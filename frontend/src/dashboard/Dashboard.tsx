@@ -207,9 +207,9 @@ export const Dashboard = () => {
   return (
     <div
       id="flex-dashboard"
-      className="flex flex-col gap-10 px-8 py-6 sm:px-4 sm:py-4 max-w-7xl mx-auto w-full"
+      className="flex flex-col gap-8 px-8 py-6 sm:px-4 sm:py-4 max-w-7xl mx-auto w-full"
     >
-      <Heading level={2} size="medium">
+      <Heading level={2} size="large">
         Dashboard
       </Heading>
 

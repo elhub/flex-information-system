@@ -12,11 +12,17 @@ import {
   listNotice,
 } from "../generated-client";
 import { throwOnError } from "../util";
-import { addMonths, ACTIVE_STATUSES, RESOLVED_SPPA, RESOLVED_SPGPA, RESOLVED_SPGGP } from "./dashboardUtils";
+import {
+  addMonths,
+  ACTIVE_STATUSES,
+  RESOLVED_SPPA,
+  RESOLVED_SPGPA,
+  RESOLVED_SPGGP,
+} from "./dashboardUtils";
 import { DashboardItemKind } from "./useDashboardApplications";
 
 export type SpDashboardItem = {
-  id: number;
+  id: string | number;
   kind: DashboardItemKind;
   typeLabel: string;
   byline: string;
@@ -159,7 +165,7 @@ export const useSpDashboard = () => {
   // Build all items
   const allItems: SpDashboardItem[] = [
     ...(sppaQuery.data ?? []).map((r) => ({
-      id: r.id,
+      id: `sppa-${r.id}`,
       kind: "sp_product_application" as DashboardItemKind,
       typeLabel: "Product Application",
       byline: ptNames(r.product_type_ids),
@@ -173,7 +179,7 @@ export const useSpDashboard = () => {
       const spg = spgMap.get(r.service_providing_group_id);
       const spgName = spg?.name ?? String(r.service_providing_group_id);
       return {
-        id: r.id,
+        id: `spgpa-${r.id}`,
         kind: "spg_product_application" as DashboardItemKind,
         typeLabel: "SPG Product Application",
         byline: [spgName, ptNames(r.product_type_ids)]
@@ -191,7 +197,7 @@ export const useSpDashboard = () => {
       const spg = spgMap.get(r.service_providing_group_id);
       const spgName = spg?.name ?? String(r.service_providing_group_id);
       return {
-        id: r.id,
+        id: `spggp-${r.id}`,
         kind: "spg_grid_prequalification" as DashboardItemKind,
         typeLabel: "SPG Grid Prequalification",
         byline: spgName,
