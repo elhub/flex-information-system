@@ -11,6 +11,7 @@ import { ApplicationsTable } from "./ApplicationsTable";
 import { useDashboardApplications } from "./useDashboardApplications";
 import { SpApplicationsTable } from "./SpApplicationsTable";
 import { useSpDashboard } from "./useSpDashboard";
+import { SpMarketsCard } from "./SpMarketsCard";
 
 type StatCardProps = {
   label: string;
@@ -47,7 +48,8 @@ const StatCard = ({
 );
 
 const SoDashboard = () => {
-  const { activeItems, resolvedItems, isLoading, error } = useDashboardApplications();
+  const { activeItems, resolvedItems, isLoading, error } =
+    useDashboardApplications();
 
   return (
     <>
@@ -87,14 +89,20 @@ const SoDashboard = () => {
             <p className="text-xs font-semibold uppercase tracking-wide text-semantic-text-subtle mb-3">
               Active Applications
             </p>
-            <ApplicationsTable items={activeItems} empty="No active applications." />
+            <ApplicationsTable
+              items={activeItems}
+              empty="No active applications."
+            />
           </div>
 
           <div>
             <p className="text-xs font-semibold uppercase tracking-wide text-semantic-text-subtle mb-3">
               Recently Resolved
             </p>
-            <ApplicationsTable items={resolvedItems} empty="No resolved applications." />
+            <ApplicationsTable
+              items={resolvedItems}
+              empty="No resolved applications."
+            />
           </div>
         </>
       )}
@@ -112,6 +120,9 @@ const SpDashboard = () => {
     isLoading,
     error,
   } = useSpDashboard();
+
+  const { data: identity } = useGetIdentity();
+  const partyID = identity?.partyID as number | undefined;
 
   return (
     <>
@@ -178,6 +189,8 @@ const SpDashboard = () => {
               empty="No resolved applications."
             />
           </div>
+
+          <SpMarketsCard spId={partyID} />
         </>
       )}
     </>
