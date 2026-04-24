@@ -118,6 +118,9 @@ def sync_detailed(
 ) -> Response[Any | ControllableUnitResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Update Controllable unit
 
+     Update [Controllable unit](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit/)
+
     Args:
         id (int):
         body (ControllableUnitUpdateRequest): Request schema for update operations - Controllable
@@ -151,6 +154,9 @@ def sync(
 ) -> Any | ControllableUnitResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Update Controllable unit
 
+     Update [Controllable unit](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit/)
+
     Args:
         id (int):
         body (ControllableUnitUpdateRequest): Request schema for update operations - Controllable
@@ -178,6 +184,9 @@ async def asyncio_detailed(
     body: ControllableUnitUpdateRequest,
 ) -> Response[Any | ControllableUnitResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Update Controllable unit
+
+     Update [Controllable unit](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit/)
 
     Args:
         id (int):
@@ -209,6 +218,9 @@ async def asyncio(
     body: ControllableUnitUpdateRequest,
 ) -> Any | ControllableUnitResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Update Controllable unit
+
+     Update [Controllable unit](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit/)
 
     Args:
         id (int):

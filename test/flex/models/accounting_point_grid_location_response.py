@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, cast
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -12,6 +12,10 @@ from ..models.accounting_point_grid_location_object_type import AccountingPointG
 from ..models.accounting_point_grid_location_quality import AccountingPointGridLocationQuality
 from ..models.accounting_point_grid_location_source import AccountingPointGridLocationSource
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.accounting_point_response import AccountingPointResponse
+
 
 T = TypeVar("T", bound="AccountingPointGridLocationResponse")
 
@@ -36,6 +40,7 @@ class AccountingPointGridLocationResponse:
             Example: 53919b79-876f-4dad-8bde-b29368367604.
         additional_information (None | str | Unset): Free text field for extra information about the grid location if
             needed.
+        accounting_point (AccountingPointResponse | None | Unset): Embedded accounting_point
     """
 
     id: int
@@ -49,9 +54,12 @@ class AccountingPointGridLocationResponse:
     recorded_by: int
     business_id: None | str | Unset = UNSET
     additional_information: None | str | Unset = UNSET
+    accounting_point: AccountingPointResponse | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        from ..models.accounting_point_response import AccountingPointResponse
+
         id = self.id
 
         accounting_point_id = self.accounting_point_id
@@ -82,6 +90,14 @@ class AccountingPointGridLocationResponse:
         else:
             additional_information = self.additional_information
 
+        accounting_point: dict[str, Any] | None | Unset
+        if isinstance(self.accounting_point, Unset):
+            accounting_point = UNSET
+        elif isinstance(self.accounting_point, AccountingPointResponse):
+            accounting_point = self.accounting_point.to_dict()
+        else:
+            accounting_point = self.accounting_point
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -101,11 +117,15 @@ class AccountingPointGridLocationResponse:
             field_dict["business_id"] = business_id
         if additional_information is not UNSET:
             field_dict["additional_information"] = additional_information
+        if accounting_point is not UNSET:
+            field_dict["accounting_point"] = accounting_point
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.accounting_point_response import AccountingPointResponse
+
         d = dict(src_dict)
         id = d.pop("id")
 
@@ -143,6 +163,23 @@ class AccountingPointGridLocationResponse:
 
         additional_information = _parse_additional_information(d.pop("additional_information", UNSET))
 
+        def _parse_accounting_point(data: object) -> AccountingPointResponse | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                accounting_point_type_0 = AccountingPointResponse.from_dict(data)
+
+                return accounting_point_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(AccountingPointResponse | None | Unset, data)
+
+        accounting_point = _parse_accounting_point(d.pop("accounting_point", UNSET))
+
         accounting_point_grid_location_response = cls(
             id=id,
             accounting_point_id=accounting_point_id,
@@ -155,6 +192,7 @@ class AccountingPointGridLocationResponse:
             recorded_by=recorded_by,
             business_id=business_id,
             additional_information=additional_information,
+            accounting_point=accounting_point,
         )
 
         accounting_point_grid_location_response.additional_properties = d

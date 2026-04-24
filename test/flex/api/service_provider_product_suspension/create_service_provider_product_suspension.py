@@ -115,6 +115,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspensionResponse]:
     """Create Service Provider Product Suspension
 
+     Create [Service Provider Product Suspension](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_suspension/)
+
     Args:
         body (ServiceProviderProductSuspensionCreateRequest | Unset): Request schema for create
             operations - The relation allowing a procuring system operator to temporarily suspend a
@@ -146,6 +149,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspensionResponse | None:
     """Create Service Provider Product Suspension
 
+     Create [Service Provider Product Suspension](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_suspension/)
+
     Args:
         body (ServiceProviderProductSuspensionCreateRequest | Unset): Request schema for create
             operations - The relation allowing a procuring system operator to temporarily suspend a
@@ -171,6 +177,9 @@ async def asyncio_detailed(
     body: ServiceProviderProductSuspensionCreateRequest | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspensionResponse]:
     """Create Service Provider Product Suspension
+
+     Create [Service Provider Product Suspension](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_suspension/)
 
     Args:
         body (ServiceProviderProductSuspensionCreateRequest | Unset): Request schema for create
@@ -200,6 +209,9 @@ async def asyncio(
     body: ServiceProviderProductSuspensionCreateRequest | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspensionResponse | None:
     """Create Service Provider Product Suspension
+
+     Create [Service Provider Product Suspension](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_suspension/)
 
     Args:
         body (ServiceProviderProductSuspensionCreateRequest | Unset): Request schema for create

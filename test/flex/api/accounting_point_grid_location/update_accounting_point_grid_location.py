@@ -118,6 +118,9 @@ def sync_detailed(
 ) -> Response[AccountingPointGridLocationResponse | Any | EmptyObject | ErrorMessage | ErrorMessage]:
     """Update Accounting Point Grid Location
 
+     Update [Accounting Point Grid Location](https://elhub.github.io/flex-information-
+    system/resources/accounting_point_grid_location/)
+
     Args:
         id (int):
         body (AccountingPointGridLocationUpdateRequest): Request schema for update operations -
@@ -152,6 +155,9 @@ def sync(
 ) -> AccountingPointGridLocationResponse | Any | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Update Accounting Point Grid Location
 
+     Update [Accounting Point Grid Location](https://elhub.github.io/flex-information-
+    system/resources/accounting_point_grid_location/)
+
     Args:
         id (int):
         body (AccountingPointGridLocationUpdateRequest): Request schema for update operations -
@@ -180,6 +186,9 @@ async def asyncio_detailed(
     body: AccountingPointGridLocationUpdateRequest,
 ) -> Response[AccountingPointGridLocationResponse | Any | EmptyObject | ErrorMessage | ErrorMessage]:
     """Update Accounting Point Grid Location
+
+     Update [Accounting Point Grid Location](https://elhub.github.io/flex-information-
+    system/resources/accounting_point_grid_location/)
 
     Args:
         id (int):
@@ -212,6 +221,9 @@ async def asyncio(
     body: AccountingPointGridLocationUpdateRequest,
 ) -> AccountingPointGridLocationResponse | Any | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Update Accounting Point Grid Location
+
+     Update [Accounting Point Grid Location](https://elhub.github.io/flex-information-
+    system/resources/accounting_point_grid_location/)
 
     Args:
         id (int):

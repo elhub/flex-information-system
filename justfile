@@ -475,7 +475,19 @@ openapi-to-md:
 
         table=$(.venv/bin/python3 local/scripts/openapi_to_markdown.py ${base} ${resources} ${resource} )
 
-        api_link="../api/v0/index.html#/operations/list_$resource"
+        ops=$(cat $resources | yq "(.resources[] | select(.id == \"$resource\").operations) // \"\"")
+        if [ -z "$ops" ]; then
+            # no operations defined (e.g., comment resource), default to list
+            link="list"
+        elif echo "$ops" | grep -q "list"; then
+            # operations defined and list is one of them, link to list as well
+            link="list"
+        else
+            # no list operation, link to read instead
+            link="read"
+        fi
+        api_link="../api/v0/index.html#/operations/${link}_$resource"
+
         docx_link="../download/${resource}.docx"
 
         ed -s "./docs/resources/${resource}.md" <<EOF

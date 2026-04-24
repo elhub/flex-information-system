@@ -111,6 +111,10 @@ export type PermissionTarget =
   | "controllable_unit_service_provider_history.service_provider_id"
   | "controllable_unit_service_provider_history.valid_from"
   | "controllable_unit_service_provider_history.valid_to"
+  | "controllable_unit_summary"
+  | "controllable_unit_summary.controllable_unit_id"
+  | "controllable_unit_summary.id"
+  | "controllable_unit_summary.technical_resource"
   | "controllable_unit_suspension"
   | "controllable_unit_suspension.controllable_unit_id"
   | "controllable_unit_suspension.id"
@@ -945,6 +949,22 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_service_provider_history.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.technical_resource",
       operation: "read",
     },
     {
@@ -3322,6 +3342,22 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "controllable_unit_summary.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.technical_resource",
+      operation: "read",
+    },
+    {
       target: "controllable_unit_suspension.controllable_unit_id",
       operation: "read",
     },
@@ -5693,6 +5729,22 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_service_provider_history.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.technical_resource",
       operation: "read",
     },
     {
@@ -8295,6 +8347,22 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_service_provider_history.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.technical_resource",
       operation: "read",
     },
     {
@@ -11379,6 +11447,22 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "controllable_unit_summary.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.technical_resource",
+      operation: "read",
+    },
+    {
       target: "controllable_unit_suspension.controllable_unit_id",
       operation: "read",
     },
@@ -13866,6 +13950,22 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_service_provider_history.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.technical_resource",
       operation: "read",
     },
     {
@@ -16757,6 +16857,22 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "controllable_unit_summary.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.technical_resource",
+      operation: "read",
+    },
+    {
       target: "controllable_unit_suspension.controllable_unit_id",
       operation: "read",
     },
@@ -19585,6 +19701,22 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_service_provider_history.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.technical_resource",
       operation: "read",
     },
     {

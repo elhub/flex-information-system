@@ -33,6 +33,7 @@ data:
       x-foreign-key:
         resource: {{ resource }}
         field: id
+        cardinality: many-to-one
       example: 7
     created_by:
       description: Reference to the identity that created the comment.

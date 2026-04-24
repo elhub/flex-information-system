@@ -115,6 +115,9 @@ def sync_detailed(
 ) -> Response[AccountingPointGridLocationResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Create Accounting Point Grid Location
 
+     Create [Accounting Point Grid Location](https://elhub.github.io/flex-information-
+    system/resources/accounting_point_grid_location/)
+
     Args:
         body (AccountingPointGridLocationCreateRequest | Unset): Request schema for create
             operations - The electrical (topological) location of an accounting point in the common
@@ -146,6 +149,9 @@ def sync(
 ) -> AccountingPointGridLocationResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Create Accounting Point Grid Location
 
+     Create [Accounting Point Grid Location](https://elhub.github.io/flex-information-
+    system/resources/accounting_point_grid_location/)
+
     Args:
         body (AccountingPointGridLocationCreateRequest | Unset): Request schema for create
             operations - The electrical (topological) location of an accounting point in the common
@@ -171,6 +177,9 @@ async def asyncio_detailed(
     body: AccountingPointGridLocationCreateRequest | Unset = UNSET,
 ) -> Response[AccountingPointGridLocationResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Create Accounting Point Grid Location
+
+     Create [Accounting Point Grid Location](https://elhub.github.io/flex-information-
+    system/resources/accounting_point_grid_location/)
 
     Args:
         body (AccountingPointGridLocationCreateRequest | Unset): Request schema for create
@@ -200,6 +209,9 @@ async def asyncio(
     body: AccountingPointGridLocationCreateRequest | Unset = UNSET,
 ) -> AccountingPointGridLocationResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Create Accounting Point Grid Location
+
+     Create [Accounting Point Grid Location](https://elhub.github.io/flex-information-
+    system/resources/accounting_point_grid_location/)
 
     Args:
         body (AccountingPointGridLocationCreateRequest | Unset): Request schema for create

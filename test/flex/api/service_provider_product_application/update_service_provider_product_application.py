@@ -118,6 +118,9 @@ def sync_detailed(
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationResponse]:
     """Update Service Provider Product Application
 
+     Update [Service Provider Product Application](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_application/)
+
     Args:
         id (int):
         body (ServiceProviderProductApplicationUpdateRequest): Request schema for update
@@ -153,6 +156,9 @@ def sync(
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationResponse | None:
     """Update Service Provider Product Application
 
+     Update [Service Provider Product Application](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_application/)
+
     Args:
         id (int):
         body (ServiceProviderProductApplicationUpdateRequest): Request schema for update
@@ -182,6 +188,9 @@ async def asyncio_detailed(
     body: ServiceProviderProductApplicationUpdateRequest,
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationResponse]:
     """Update Service Provider Product Application
+
+     Update [Service Provider Product Application](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_application/)
 
     Args:
         id (int):
@@ -215,6 +224,9 @@ async def asyncio(
     body: ServiceProviderProductApplicationUpdateRequest,
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationResponse | None:
     """Update Service Provider Product Application
+
+     Update [Service Provider Product Application](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_application/)
 
     Args:
         id (int):

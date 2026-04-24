@@ -312,6 +312,9 @@ import type {
   ReadControllableUnitServiceProviderHistoryErrors,
   ReadControllableUnitServiceProviderHistoryResponses,
   ReadControllableUnitServiceProviderResponses,
+  ReadControllableUnitSummaryData,
+  ReadControllableUnitSummaryErrors,
+  ReadControllableUnitSummaryResponses,
   ReadControllableUnitSuspensionCommentData,
   ReadControllableUnitSuspensionCommentErrors,
   ReadControllableUnitSuspensionCommentHistoryData,
@@ -578,7 +581,7 @@ export const readOpenapiJson = <ThrowOnError extends boolean = false>(
 /**
  * Call - Controllable unit lookup
  *
- * Lookup a controllable unit from end user ID and business and/or accounting point ID.
+ * Lookup a [controllable unit](https://elhub.github.io/flex-information-system/resources/controllable_unit/) from end user ID and business and/or accounting point ID.
  */
 export const callControllableUnitLookup = <
   ThrowOnError extends boolean = false,
@@ -602,7 +605,7 @@ export const callControllableUnitLookup = <
 /**
  * Call - Entity lookup
  *
- * Lookup an entity from its business ID. Creates the entity if missing.
+ * Lookup an [entity](https://elhub.github.io/flex-information-system/resources/entity/) from its business ID. Creates the entity if missing.
  */
 export const callEntityLookup = <ThrowOnError extends boolean = false>(
   options: Options<CallEntityLookupData, ThrowOnError>,
@@ -623,6 +626,8 @@ export const callEntityLookup = <ThrowOnError extends boolean = false>(
 
 /**
  * List Controllable unit
+ *
+ * List [Controllable unit](https://elhub.github.io/flex-information-system/resources/controllable_unit/)
  */
 export const listControllableUnit = <ThrowOnError extends boolean = false>(
   options?: Options<ListControllableUnitData, ThrowOnError>,
@@ -639,6 +644,8 @@ export const listControllableUnit = <ThrowOnError extends boolean = false>(
 
 /**
  * Create Controllable unit
+ *
+ * Create [Controllable unit](https://elhub.github.io/flex-information-system/resources/controllable_unit/)
  */
 export const createControllableUnit = <ThrowOnError extends boolean = false>(
   options?: Options<CreateControllableUnitData, ThrowOnError>,
@@ -659,6 +666,8 @@ export const createControllableUnit = <ThrowOnError extends boolean = false>(
 
 /**
  * Read Controllable unit
+ *
+ * Read [Controllable unit](https://elhub.github.io/flex-information-system/resources/controllable_unit/)
  */
 export const readControllableUnit = <ThrowOnError extends boolean = false>(
   options: Options<ReadControllableUnitData, ThrowOnError>,
@@ -675,6 +684,8 @@ export const readControllableUnit = <ThrowOnError extends boolean = false>(
 
 /**
  * Update Controllable unit
+ *
+ * Update [Controllable unit](https://elhub.github.io/flex-information-system/resources/controllable_unit/)
  */
 export const updateControllableUnit = <ThrowOnError extends boolean = false>(
   options: Options<UpdateControllableUnitData, ThrowOnError>,
@@ -695,6 +706,8 @@ export const updateControllableUnit = <ThrowOnError extends boolean = false>(
 
 /**
  * List Controllable unit - history
+ *
+ * List [Controllable unit - history](https://elhub.github.io/flex-information-system/resources/controllable_unit/)
  */
 export const listControllableUnitHistory = <
   ThrowOnError extends boolean = false,
@@ -713,6 +726,8 @@ export const listControllableUnitHistory = <
 
 /**
  * Read Controllable unit - history
+ *
+ * Read [Controllable unit - history](https://elhub.github.io/flex-information-system/resources/controllable_unit/)
  */
 export const readControllableUnitHistory = <
   ThrowOnError extends boolean = false,
@@ -731,6 +746,8 @@ export const readControllableUnitHistory = <
 
 /**
  * List Controllable Unit Suspension
+ *
+ * List [Controllable Unit Suspension](https://elhub.github.io/flex-information-system/resources/controllable_unit_suspension/)
  */
 export const listControllableUnitSuspension = <
   ThrowOnError extends boolean = false,
@@ -749,6 +766,8 @@ export const listControllableUnitSuspension = <
 
 /**
  * Create Controllable Unit Suspension
+ *
+ * Create [Controllable Unit Suspension](https://elhub.github.io/flex-information-system/resources/controllable_unit_suspension/)
  */
 export const createControllableUnitSuspension = <
   ThrowOnError extends boolean = false,
@@ -771,6 +790,8 @@ export const createControllableUnitSuspension = <
 
 /**
  * Delete Controllable Unit Suspension
+ *
+ * Delete [Controllable Unit Suspension](https://elhub.github.io/flex-information-system/resources/controllable_unit_suspension/)
  */
 export const deleteControllableUnitSuspension = <
   ThrowOnError extends boolean = false,
@@ -793,6 +814,8 @@ export const deleteControllableUnitSuspension = <
 
 /**
  * Read Controllable Unit Suspension
+ *
+ * Read [Controllable Unit Suspension](https://elhub.github.io/flex-information-system/resources/controllable_unit_suspension/)
  */
 export const readControllableUnitSuspension = <
   ThrowOnError extends boolean = false,
@@ -811,6 +834,8 @@ export const readControllableUnitSuspension = <
 
 /**
  * Update Controllable Unit Suspension
+ *
+ * Update [Controllable Unit Suspension](https://elhub.github.io/flex-information-system/resources/controllable_unit_suspension/)
  */
 export const updateControllableUnitSuspension = <
   ThrowOnError extends boolean = false,
@@ -833,6 +858,8 @@ export const updateControllableUnitSuspension = <
 
 /**
  * List Controllable Unit Suspension - history
+ *
+ * List [Controllable Unit Suspension - history](https://elhub.github.io/flex-information-system/resources/controllable_unit_suspension/)
  */
 export const listControllableUnitSuspensionHistory = <
   ThrowOnError extends boolean = false,
@@ -851,6 +878,8 @@ export const listControllableUnitSuspensionHistory = <
 
 /**
  * Read Controllable Unit Suspension - history
+ *
+ * Read [Controllable Unit Suspension - history](https://elhub.github.io/flex-information-system/resources/controllable_unit_suspension/)
  */
 export const readControllableUnitSuspensionHistory = <
   ThrowOnError extends boolean = false,
@@ -869,6 +898,8 @@ export const readControllableUnitSuspensionHistory = <
 
 /**
  * List Controllable Unit Suspension Comment
+ *
+ * List [Controllable Unit Suspension Comment](https://elhub.github.io/flex-information-system/resources/controllable_unit_suspension_comment/)
  */
 export const listControllableUnitSuspensionComment = <
   ThrowOnError extends boolean = false,
@@ -887,6 +918,8 @@ export const listControllableUnitSuspensionComment = <
 
 /**
  * Create Controllable Unit Suspension Comment
+ *
+ * Create [Controllable Unit Suspension Comment](https://elhub.github.io/flex-information-system/resources/controllable_unit_suspension_comment/)
  */
 export const createControllableUnitSuspensionComment = <
   ThrowOnError extends boolean = false,
@@ -909,6 +942,8 @@ export const createControllableUnitSuspensionComment = <
 
 /**
  * Read Controllable Unit Suspension Comment
+ *
+ * Read [Controllable Unit Suspension Comment](https://elhub.github.io/flex-information-system/resources/controllable_unit_suspension_comment/)
  */
 export const readControllableUnitSuspensionComment = <
   ThrowOnError extends boolean = false,
@@ -927,6 +962,8 @@ export const readControllableUnitSuspensionComment = <
 
 /**
  * Update Controllable Unit Suspension Comment
+ *
+ * Update [Controllable Unit Suspension Comment](https://elhub.github.io/flex-information-system/resources/controllable_unit_suspension_comment/)
  */
 export const updateControllableUnitSuspensionComment = <
   ThrowOnError extends boolean = false,
@@ -949,6 +986,8 @@ export const updateControllableUnitSuspensionComment = <
 
 /**
  * List Controllable Unit Suspension Comment - history
+ *
+ * List [Controllable Unit Suspension Comment - history](https://elhub.github.io/flex-information-system/resources/controllable_unit_suspension_comment/)
  */
 export const listControllableUnitSuspensionCommentHistory = <
   ThrowOnError extends boolean = false,
@@ -970,6 +1009,8 @@ export const listControllableUnitSuspensionCommentHistory = <
 
 /**
  * Read Controllable Unit Suspension Comment - history
+ *
+ * Read [Controllable Unit Suspension Comment - history](https://elhub.github.io/flex-information-system/resources/controllable_unit_suspension_comment/)
  */
 export const readControllableUnitSuspensionCommentHistory = <
   ThrowOnError extends boolean = false,
@@ -991,6 +1032,8 @@ export const readControllableUnitSuspensionCommentHistory = <
 
 /**
  * List Relation between controllable unit and service provider
+ *
+ * List [Relation between controllable unit and service provider](https://elhub.github.io/flex-information-system/resources/controllable_unit_service_provider/)
  */
 export const listControllableUnitServiceProvider = <
   ThrowOnError extends boolean = false,
@@ -1009,6 +1052,8 @@ export const listControllableUnitServiceProvider = <
 
 /**
  * Create Relation between controllable unit and service provider
+ *
+ * Create [Relation between controllable unit and service provider](https://elhub.github.io/flex-information-system/resources/controllable_unit_service_provider/)
  */
 export const createControllableUnitServiceProvider = <
   ThrowOnError extends boolean = false,
@@ -1031,6 +1076,8 @@ export const createControllableUnitServiceProvider = <
 
 /**
  * Delete Relation between controllable unit and service provider
+ *
+ * Delete [Relation between controllable unit and service provider](https://elhub.github.io/flex-information-system/resources/controllable_unit_service_provider/)
  */
 export const deleteControllableUnitServiceProvider = <
   ThrowOnError extends boolean = false,
@@ -1053,6 +1100,8 @@ export const deleteControllableUnitServiceProvider = <
 
 /**
  * Read Relation between controllable unit and service provider
+ *
+ * Read [Relation between controllable unit and service provider](https://elhub.github.io/flex-information-system/resources/controllable_unit_service_provider/)
  */
 export const readControllableUnitServiceProvider = <
   ThrowOnError extends boolean = false,
@@ -1071,6 +1120,8 @@ export const readControllableUnitServiceProvider = <
 
 /**
  * Update Relation between controllable unit and service provider
+ *
+ * Update [Relation between controllable unit and service provider](https://elhub.github.io/flex-information-system/resources/controllable_unit_service_provider/)
  */
 export const updateControllableUnitServiceProvider = <
   ThrowOnError extends boolean = false,
@@ -1093,6 +1144,8 @@ export const updateControllableUnitServiceProvider = <
 
 /**
  * List Relation between controllable unit and service provider - history
+ *
+ * List [Relation between controllable unit and service provider - history](https://elhub.github.io/flex-information-system/resources/controllable_unit_service_provider/)
  */
 export const listControllableUnitServiceProviderHistory = <
   ThrowOnError extends boolean = false,
@@ -1114,6 +1167,8 @@ export const listControllableUnitServiceProviderHistory = <
 
 /**
  * Read Relation between controllable unit and service provider - history
+ *
+ * Read [Relation between controllable unit and service provider - history](https://elhub.github.io/flex-information-system/resources/controllable_unit_service_provider/)
  */
 export const readControllableUnitServiceProviderHistory = <
   ThrowOnError extends boolean = false,
@@ -1134,7 +1189,29 @@ export const readControllableUnitServiceProviderHistory = <
   });
 
 /**
+ * Read Controllable Unit Summary
+ *
+ * Read [Controllable Unit Summary](https://elhub.github.io/flex-information-system/resources/controllable_unit_summary/)
+ */
+export const readControllableUnitSummary = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<ReadControllableUnitSummaryData, ThrowOnError>,
+) =>
+  (options.client ?? client).get<
+    ReadControllableUnitSummaryResponses,
+    ReadControllableUnitSummaryErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/controllable_unit_summary/{id}",
+    ...options,
+  });
+
+/**
  * List Service providing group
+ *
+ * List [Service providing group](https://elhub.github.io/flex-information-system/resources/service_providing_group/)
  */
 export const listServiceProvidingGroup = <ThrowOnError extends boolean = false>(
   options?: Options<ListServiceProvidingGroupData, ThrowOnError>,
@@ -1151,6 +1228,8 @@ export const listServiceProvidingGroup = <ThrowOnError extends boolean = false>(
 
 /**
  * Create Service providing group
+ *
+ * Create [Service providing group](https://elhub.github.io/flex-information-system/resources/service_providing_group/)
  */
 export const createServiceProvidingGroup = <
   ThrowOnError extends boolean = false,
@@ -1173,6 +1252,8 @@ export const createServiceProvidingGroup = <
 
 /**
  * Read Service providing group
+ *
+ * Read [Service providing group](https://elhub.github.io/flex-information-system/resources/service_providing_group/)
  */
 export const readServiceProvidingGroup = <ThrowOnError extends boolean = false>(
   options: Options<ReadServiceProvidingGroupData, ThrowOnError>,
@@ -1189,6 +1270,8 @@ export const readServiceProvidingGroup = <ThrowOnError extends boolean = false>(
 
 /**
  * Update Service providing group
+ *
+ * Update [Service providing group](https://elhub.github.io/flex-information-system/resources/service_providing_group/)
  */
 export const updateServiceProvidingGroup = <
   ThrowOnError extends boolean = false,
@@ -1211,6 +1294,8 @@ export const updateServiceProvidingGroup = <
 
 /**
  * List Service providing group - history
+ *
+ * List [Service providing group - history](https://elhub.github.io/flex-information-system/resources/service_providing_group/)
  */
 export const listServiceProvidingGroupHistory = <
   ThrowOnError extends boolean = false,
@@ -1229,6 +1314,8 @@ export const listServiceProvidingGroupHistory = <
 
 /**
  * Read Service providing group - history
+ *
+ * Read [Service providing group - history](https://elhub.github.io/flex-information-system/resources/service_providing_group/)
  */
 export const readServiceProvidingGroupHistory = <
   ThrowOnError extends boolean = false,
@@ -1247,6 +1334,8 @@ export const readServiceProvidingGroupHistory = <
 
 /**
  * List Membership relation of controllable unit in service providing group
+ *
+ * List [Membership relation of controllable unit in service providing group](https://elhub.github.io/flex-information-system/resources/service_providing_group_membership/)
  */
 export const listServiceProvidingGroupMembership = <
   ThrowOnError extends boolean = false,
@@ -1265,6 +1354,8 @@ export const listServiceProvidingGroupMembership = <
 
 /**
  * Create Membership relation of controllable unit in service providing group
+ *
+ * Create [Membership relation of controllable unit in service providing group](https://elhub.github.io/flex-information-system/resources/service_providing_group_membership/)
  */
 export const createServiceProvidingGroupMembership = <
   ThrowOnError extends boolean = false,
@@ -1287,6 +1378,8 @@ export const createServiceProvidingGroupMembership = <
 
 /**
  * Delete Membership relation of controllable unit in service providing group
+ *
+ * Delete [Membership relation of controllable unit in service providing group](https://elhub.github.io/flex-information-system/resources/service_providing_group_membership/)
  */
 export const deleteServiceProvidingGroupMembership = <
   ThrowOnError extends boolean = false,
@@ -1309,6 +1402,8 @@ export const deleteServiceProvidingGroupMembership = <
 
 /**
  * Read Membership relation of controllable unit in service providing group
+ *
+ * Read [Membership relation of controllable unit in service providing group](https://elhub.github.io/flex-information-system/resources/service_providing_group_membership/)
  */
 export const readServiceProvidingGroupMembership = <
   ThrowOnError extends boolean = false,
@@ -1327,6 +1422,8 @@ export const readServiceProvidingGroupMembership = <
 
 /**
  * Update Membership relation of controllable unit in service providing group
+ *
+ * Update [Membership relation of controllable unit in service providing group](https://elhub.github.io/flex-information-system/resources/service_providing_group_membership/)
  */
 export const updateServiceProvidingGroupMembership = <
   ThrowOnError extends boolean = false,
@@ -1349,6 +1446,8 @@ export const updateServiceProvidingGroupMembership = <
 
 /**
  * List Membership relation of controllable unit in service providing group - history
+ *
+ * List [Membership relation of controllable unit in service providing group - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_membership/)
  */
 export const listServiceProvidingGroupMembershipHistory = <
   ThrowOnError extends boolean = false,
@@ -1370,6 +1469,8 @@ export const listServiceProvidingGroupMembershipHistory = <
 
 /**
  * Read Membership relation of controllable unit in service providing group - history
+ *
+ * Read [Membership relation of controllable unit in service providing group - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_membership/)
  */
 export const readServiceProvidingGroupMembershipHistory = <
   ThrowOnError extends boolean = false,
@@ -1391,6 +1492,8 @@ export const readServiceProvidingGroupMembershipHistory = <
 
 /**
  * List Grid prequalification for service providing group
+ *
+ * List [Grid prequalification for service providing group](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_prequalification/)
  */
 export const listServiceProvidingGroupGridPrequalification = <
   ThrowOnError extends boolean = false,
@@ -1412,6 +1515,8 @@ export const listServiceProvidingGroupGridPrequalification = <
 
 /**
  * Create Grid prequalification for service providing group
+ *
+ * Create [Grid prequalification for service providing group](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_prequalification/)
  */
 export const createServiceProvidingGroupGridPrequalification = <
   ThrowOnError extends boolean = false,
@@ -1437,6 +1542,8 @@ export const createServiceProvidingGroupGridPrequalification = <
 
 /**
  * Read Grid prequalification for service providing group
+ *
+ * Read [Grid prequalification for service providing group](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_prequalification/)
  */
 export const readServiceProvidingGroupGridPrequalification = <
   ThrowOnError extends boolean = false,
@@ -1458,6 +1565,8 @@ export const readServiceProvidingGroupGridPrequalification = <
 
 /**
  * Update Grid prequalification for service providing group
+ *
+ * Update [Grid prequalification for service providing group](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_prequalification/)
  */
 export const updateServiceProvidingGroupGridPrequalification = <
   ThrowOnError extends boolean = false,
@@ -1483,6 +1592,8 @@ export const updateServiceProvidingGroupGridPrequalification = <
 
 /**
  * List Grid prequalification for service providing group - history
+ *
+ * List [Grid prequalification for service providing group - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_prequalification/)
  */
 export const listServiceProvidingGroupGridPrequalificationHistory = <
   ThrowOnError extends boolean = false,
@@ -1504,6 +1615,8 @@ export const listServiceProvidingGroupGridPrequalificationHistory = <
 
 /**
  * Read Grid prequalification for service providing group - history
+ *
+ * Read [Grid prequalification for service providing group - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_prequalification/)
  */
 export const readServiceProvidingGroupGridPrequalificationHistory = <
   ThrowOnError extends boolean = false,
@@ -1525,6 +1638,8 @@ export const readServiceProvidingGroupGridPrequalificationHistory = <
 
 /**
  * List Grid prequalification for service providing group Comment
+ *
+ * List [Grid prequalification for service providing group Comment](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_prequalification_comment/)
  */
 export const listServiceProvidingGroupGridPrequalificationComment = <
   ThrowOnError extends boolean = false,
@@ -1546,6 +1661,8 @@ export const listServiceProvidingGroupGridPrequalificationComment = <
 
 /**
  * Create Grid prequalification for service providing group Comment
+ *
+ * Create [Grid prequalification for service providing group Comment](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_prequalification_comment/)
  */
 export const createServiceProvidingGroupGridPrequalificationComment = <
   ThrowOnError extends boolean = false,
@@ -1571,6 +1688,8 @@ export const createServiceProvidingGroupGridPrequalificationComment = <
 
 /**
  * Read Grid prequalification for service providing group Comment
+ *
+ * Read [Grid prequalification for service providing group Comment](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_prequalification_comment/)
  */
 export const readServiceProvidingGroupGridPrequalificationComment = <
   ThrowOnError extends boolean = false,
@@ -1592,6 +1711,8 @@ export const readServiceProvidingGroupGridPrequalificationComment = <
 
 /**
  * Update Grid prequalification for service providing group Comment
+ *
+ * Update [Grid prequalification for service providing group Comment](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_prequalification_comment/)
  */
 export const updateServiceProvidingGroupGridPrequalificationComment = <
   ThrowOnError extends boolean = false,
@@ -1617,6 +1738,8 @@ export const updateServiceProvidingGroupGridPrequalificationComment = <
 
 /**
  * List Grid prequalification for service providing group Comment - history
+ *
+ * List [Grid prequalification for service providing group Comment - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_prequalification_comment/)
  */
 export const listServiceProvidingGroupGridPrequalificationCommentHistory = <
   ThrowOnError extends boolean = false,
@@ -1638,6 +1761,8 @@ export const listServiceProvidingGroupGridPrequalificationCommentHistory = <
 
 /**
  * Read Grid prequalification for service providing group Comment - history
+ *
+ * Read [Grid prequalification for service providing group Comment - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_prequalification_comment/)
  */
 export const readServiceProvidingGroupGridPrequalificationCommentHistory = <
   ThrowOnError extends boolean = false,
@@ -1659,6 +1784,8 @@ export const readServiceProvidingGroupGridPrequalificationCommentHistory = <
 
 /**
  * List Service Providing Group Grid Suspension
+ *
+ * List [Service Providing Group Grid Suspension](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_suspension/)
  */
 export const listServiceProvidingGroupGridSuspension = <
   ThrowOnError extends boolean = false,
@@ -1677,6 +1804,8 @@ export const listServiceProvidingGroupGridSuspension = <
 
 /**
  * Create Service Providing Group Grid Suspension
+ *
+ * Create [Service Providing Group Grid Suspension](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_suspension/)
  */
 export const createServiceProvidingGroupGridSuspension = <
   ThrowOnError extends boolean = false,
@@ -1702,6 +1831,8 @@ export const createServiceProvidingGroupGridSuspension = <
 
 /**
  * Delete Service Providing Group Grid Suspension
+ *
+ * Delete [Service Providing Group Grid Suspension](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_suspension/)
  */
 export const deleteServiceProvidingGroupGridSuspension = <
   ThrowOnError extends boolean = false,
@@ -1724,6 +1855,8 @@ export const deleteServiceProvidingGroupGridSuspension = <
 
 /**
  * Read Service Providing Group Grid Suspension
+ *
+ * Read [Service Providing Group Grid Suspension](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_suspension/)
  */
 export const readServiceProvidingGroupGridSuspension = <
   ThrowOnError extends boolean = false,
@@ -1742,6 +1875,8 @@ export const readServiceProvidingGroupGridSuspension = <
 
 /**
  * Update Service Providing Group Grid Suspension
+ *
+ * Update [Service Providing Group Grid Suspension](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_suspension/)
  */
 export const updateServiceProvidingGroupGridSuspension = <
   ThrowOnError extends boolean = false,
@@ -1764,6 +1899,8 @@ export const updateServiceProvidingGroupGridSuspension = <
 
 /**
  * List Service Providing Group Grid Suspension - history
+ *
+ * List [Service Providing Group Grid Suspension - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_suspension/)
  */
 export const listServiceProvidingGroupGridSuspensionHistory = <
   ThrowOnError extends boolean = false,
@@ -1785,6 +1922,8 @@ export const listServiceProvidingGroupGridSuspensionHistory = <
 
 /**
  * Read Service Providing Group Grid Suspension - history
+ *
+ * Read [Service Providing Group Grid Suspension - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_suspension/)
  */
 export const readServiceProvidingGroupGridSuspensionHistory = <
   ThrowOnError extends boolean = false,
@@ -1806,6 +1945,8 @@ export const readServiceProvidingGroupGridSuspensionHistory = <
 
 /**
  * List Service Providing Group Grid Suspension Comment
+ *
+ * List [Service Providing Group Grid Suspension Comment](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_suspension_comment/)
  */
 export const listServiceProvidingGroupGridSuspensionComment = <
   ThrowOnError extends boolean = false,
@@ -1827,6 +1968,8 @@ export const listServiceProvidingGroupGridSuspensionComment = <
 
 /**
  * Create Service Providing Group Grid Suspension Comment
+ *
+ * Create [Service Providing Group Grid Suspension Comment](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_suspension_comment/)
  */
 export const createServiceProvidingGroupGridSuspensionComment = <
   ThrowOnError extends boolean = false,
@@ -1852,6 +1995,8 @@ export const createServiceProvidingGroupGridSuspensionComment = <
 
 /**
  * Read Service Providing Group Grid Suspension Comment
+ *
+ * Read [Service Providing Group Grid Suspension Comment](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_suspension_comment/)
  */
 export const readServiceProvidingGroupGridSuspensionComment = <
   ThrowOnError extends boolean = false,
@@ -1873,6 +2018,8 @@ export const readServiceProvidingGroupGridSuspensionComment = <
 
 /**
  * Update Service Providing Group Grid Suspension Comment
+ *
+ * Update [Service Providing Group Grid Suspension Comment](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_suspension_comment/)
  */
 export const updateServiceProvidingGroupGridSuspensionComment = <
   ThrowOnError extends boolean = false,
@@ -1898,6 +2045,8 @@ export const updateServiceProvidingGroupGridSuspensionComment = <
 
 /**
  * List Service Providing Group Grid Suspension Comment - history
+ *
+ * List [Service Providing Group Grid Suspension Comment - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_suspension_comment/)
  */
 export const listServiceProvidingGroupGridSuspensionCommentHistory = <
   ThrowOnError extends boolean = false,
@@ -1919,6 +2068,8 @@ export const listServiceProvidingGroupGridSuspensionCommentHistory = <
 
 /**
  * Read Service Providing Group Grid Suspension Comment - history
+ *
+ * Read [Service Providing Group Grid Suspension Comment - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_grid_suspension_comment/)
  */
 export const readServiceProvidingGroupGridSuspensionCommentHistory = <
   ThrowOnError extends boolean = false,
@@ -1940,6 +2091,8 @@ export const readServiceProvidingGroupGridSuspensionCommentHistory = <
 
 /**
  * List Entity
+ *
+ * List [Entity](https://elhub.github.io/flex-information-system/resources/entity/)
  */
 export const listEntity = <ThrowOnError extends boolean = false>(
   options?: Options<ListEntityData, ThrowOnError>,
@@ -1956,6 +2109,8 @@ export const listEntity = <ThrowOnError extends boolean = false>(
 
 /**
  * Create Entity
+ *
+ * Create [Entity](https://elhub.github.io/flex-information-system/resources/entity/)
  */
 export const createEntity = <ThrowOnError extends boolean = false>(
   options?: Options<CreateEntityData, ThrowOnError>,
@@ -1976,6 +2131,8 @@ export const createEntity = <ThrowOnError extends boolean = false>(
 
 /**
  * Read Entity
+ *
+ * Read [Entity](https://elhub.github.io/flex-information-system/resources/entity/)
  */
 export const readEntity = <ThrowOnError extends boolean = false>(
   options: Options<ReadEntityData, ThrowOnError>,
@@ -1992,6 +2149,8 @@ export const readEntity = <ThrowOnError extends boolean = false>(
 
 /**
  * Update Entity
+ *
+ * Update [Entity](https://elhub.github.io/flex-information-system/resources/entity/)
  */
 export const updateEntity = <ThrowOnError extends boolean = false>(
   options: Options<UpdateEntityData, ThrowOnError>,
@@ -2012,6 +2171,8 @@ export const updateEntity = <ThrowOnError extends boolean = false>(
 
 /**
  * List Entity client
+ *
+ * List [Entity client](https://elhub.github.io/flex-information-system/resources/entity_client/)
  */
 export const listEntityClient = <ThrowOnError extends boolean = false>(
   options?: Options<ListEntityClientData, ThrowOnError>,
@@ -2028,6 +2189,8 @@ export const listEntityClient = <ThrowOnError extends boolean = false>(
 
 /**
  * Create Entity client
+ *
+ * Create [Entity client](https://elhub.github.io/flex-information-system/resources/entity_client/)
  */
 export const createEntityClient = <ThrowOnError extends boolean = false>(
   options?: Options<CreateEntityClientData, ThrowOnError>,
@@ -2048,6 +2211,8 @@ export const createEntityClient = <ThrowOnError extends boolean = false>(
 
 /**
  * Delete Entity client
+ *
+ * Delete [Entity client](https://elhub.github.io/flex-information-system/resources/entity_client/)
  */
 export const deleteEntityClient = <ThrowOnError extends boolean = false>(
   options: Options<DeleteEntityClientData, ThrowOnError>,
@@ -2068,6 +2233,8 @@ export const deleteEntityClient = <ThrowOnError extends boolean = false>(
 
 /**
  * Read Entity client
+ *
+ * Read [Entity client](https://elhub.github.io/flex-information-system/resources/entity_client/)
  */
 export const readEntityClient = <ThrowOnError extends boolean = false>(
   options: Options<ReadEntityClientData, ThrowOnError>,
@@ -2084,6 +2251,8 @@ export const readEntityClient = <ThrowOnError extends boolean = false>(
 
 /**
  * Update Entity client
+ *
+ * Update [Entity client](https://elhub.github.io/flex-information-system/resources/entity_client/)
  */
 export const updateEntityClient = <ThrowOnError extends boolean = false>(
   options: Options<UpdateEntityClientData, ThrowOnError>,
@@ -2104,6 +2273,8 @@ export const updateEntityClient = <ThrowOnError extends boolean = false>(
 
 /**
  * List Party
+ *
+ * List [Party](https://elhub.github.io/flex-information-system/resources/party/)
  */
 export const listParty = <ThrowOnError extends boolean = false>(
   options?: Options<ListPartyData, ThrowOnError>,
@@ -2120,6 +2291,8 @@ export const listParty = <ThrowOnError extends boolean = false>(
 
 /**
  * Create Party
+ *
+ * Create [Party](https://elhub.github.io/flex-information-system/resources/party/)
  */
 export const createParty = <ThrowOnError extends boolean = false>(
   options?: Options<CreatePartyData, ThrowOnError>,
@@ -2140,6 +2313,8 @@ export const createParty = <ThrowOnError extends boolean = false>(
 
 /**
  * Read Party
+ *
+ * Read [Party](https://elhub.github.io/flex-information-system/resources/party/)
  */
 export const readParty = <ThrowOnError extends boolean = false>(
   options: Options<ReadPartyData, ThrowOnError>,
@@ -2156,6 +2331,8 @@ export const readParty = <ThrowOnError extends boolean = false>(
 
 /**
  * Update Party
+ *
+ * Update [Party](https://elhub.github.io/flex-information-system/resources/party/)
  */
 export const updateParty = <ThrowOnError extends boolean = false>(
   options: Options<UpdatePartyData, ThrowOnError>,
@@ -2176,6 +2353,8 @@ export const updateParty = <ThrowOnError extends boolean = false>(
 
 /**
  * List Party - history
+ *
+ * List [Party - history](https://elhub.github.io/flex-information-system/resources/party/)
  */
 export const listPartyHistory = <ThrowOnError extends boolean = false>(
   options?: Options<ListPartyHistoryData, ThrowOnError>,
@@ -2192,6 +2371,8 @@ export const listPartyHistory = <ThrowOnError extends boolean = false>(
 
 /**
  * Read Party - history
+ *
+ * Read [Party - history](https://elhub.github.io/flex-information-system/resources/party/)
  */
 export const readPartyHistory = <ThrowOnError extends boolean = false>(
   options: Options<ReadPartyHistoryData, ThrowOnError>,
@@ -2208,6 +2389,8 @@ export const readPartyHistory = <ThrowOnError extends boolean = false>(
 
 /**
  * List Party Membership
+ *
+ * List [Party Membership](https://elhub.github.io/flex-information-system/resources/party_membership/)
  */
 export const listPartyMembership = <ThrowOnError extends boolean = false>(
   options?: Options<ListPartyMembershipData, ThrowOnError>,
@@ -2224,6 +2407,8 @@ export const listPartyMembership = <ThrowOnError extends boolean = false>(
 
 /**
  * Create Party Membership
+ *
+ * Create [Party Membership](https://elhub.github.io/flex-information-system/resources/party_membership/)
  */
 export const createPartyMembership = <ThrowOnError extends boolean = false>(
   options?: Options<CreatePartyMembershipData, ThrowOnError>,
@@ -2244,6 +2429,8 @@ export const createPartyMembership = <ThrowOnError extends boolean = false>(
 
 /**
  * Delete Party Membership
+ *
+ * Delete [Party Membership](https://elhub.github.io/flex-information-system/resources/party_membership/)
  */
 export const deletePartyMembership = <ThrowOnError extends boolean = false>(
   options: Options<DeletePartyMembershipData, ThrowOnError>,
@@ -2264,6 +2451,8 @@ export const deletePartyMembership = <ThrowOnError extends boolean = false>(
 
 /**
  * Read Party Membership
+ *
+ * Read [Party Membership](https://elhub.github.io/flex-information-system/resources/party_membership/)
  */
 export const readPartyMembership = <ThrowOnError extends boolean = false>(
   options: Options<ReadPartyMembershipData, ThrowOnError>,
@@ -2280,6 +2469,8 @@ export const readPartyMembership = <ThrowOnError extends boolean = false>(
 
 /**
  * Update Party Membership
+ *
+ * Update [Party Membership](https://elhub.github.io/flex-information-system/resources/party_membership/)
  */
 export const updatePartyMembership = <ThrowOnError extends boolean = false>(
   options: Options<UpdatePartyMembershipData, ThrowOnError>,
@@ -2300,6 +2491,8 @@ export const updatePartyMembership = <ThrowOnError extends boolean = false>(
 
 /**
  * List Party Membership - history
+ *
+ * List [Party Membership - history](https://elhub.github.io/flex-information-system/resources/party_membership/)
  */
 export const listPartyMembershipHistory = <
   ThrowOnError extends boolean = false,
@@ -2318,6 +2511,8 @@ export const listPartyMembershipHistory = <
 
 /**
  * Read Party Membership - history
+ *
+ * Read [Party Membership - history](https://elhub.github.io/flex-information-system/resources/party_membership/)
  */
 export const readPartyMembershipHistory = <
   ThrowOnError extends boolean = false,
@@ -2336,6 +2531,8 @@ export const readPartyMembershipHistory = <
 
 /**
  * List Identity
+ *
+ * List [Identity](https://elhub.github.io/flex-information-system/resources/identity/)
  */
 export const listIdentity = <ThrowOnError extends boolean = false>(
   options?: Options<ListIdentityData, ThrowOnError>,
@@ -2352,6 +2549,8 @@ export const listIdentity = <ThrowOnError extends boolean = false>(
 
 /**
  * Read Identity
+ *
+ * Read [Identity](https://elhub.github.io/flex-information-system/resources/identity/)
  */
 export const readIdentity = <ThrowOnError extends boolean = false>(
   options: Options<ReadIdentityData, ThrowOnError>,
@@ -2368,6 +2567,8 @@ export const readIdentity = <ThrowOnError extends boolean = false>(
 
 /**
  * List Technical Resource
+ *
+ * List [Technical Resource](https://elhub.github.io/flex-information-system/resources/technical_resource/)
  */
 export const listTechnicalResource = <ThrowOnError extends boolean = false>(
   options?: Options<ListTechnicalResourceData, ThrowOnError>,
@@ -2384,6 +2585,8 @@ export const listTechnicalResource = <ThrowOnError extends boolean = false>(
 
 /**
  * Create Technical Resource
+ *
+ * Create [Technical Resource](https://elhub.github.io/flex-information-system/resources/technical_resource/)
  */
 export const createTechnicalResource = <ThrowOnError extends boolean = false>(
   options?: Options<CreateTechnicalResourceData, ThrowOnError>,
@@ -2404,6 +2607,8 @@ export const createTechnicalResource = <ThrowOnError extends boolean = false>(
 
 /**
  * Delete Technical Resource
+ *
+ * Delete [Technical Resource](https://elhub.github.io/flex-information-system/resources/technical_resource/)
  */
 export const deleteTechnicalResource = <ThrowOnError extends boolean = false>(
   options: Options<DeleteTechnicalResourceData, ThrowOnError>,
@@ -2424,6 +2629,8 @@ export const deleteTechnicalResource = <ThrowOnError extends boolean = false>(
 
 /**
  * Read Technical Resource
+ *
+ * Read [Technical Resource](https://elhub.github.io/flex-information-system/resources/technical_resource/)
  */
 export const readTechnicalResource = <ThrowOnError extends boolean = false>(
   options: Options<ReadTechnicalResourceData, ThrowOnError>,
@@ -2440,6 +2647,8 @@ export const readTechnicalResource = <ThrowOnError extends boolean = false>(
 
 /**
  * Update Technical Resource
+ *
+ * Update [Technical Resource](https://elhub.github.io/flex-information-system/resources/technical_resource/)
  */
 export const updateTechnicalResource = <ThrowOnError extends boolean = false>(
   options: Options<UpdateTechnicalResourceData, ThrowOnError>,
@@ -2460,6 +2669,8 @@ export const updateTechnicalResource = <ThrowOnError extends boolean = false>(
 
 /**
  * List Technical Resource - history
+ *
+ * List [Technical Resource - history](https://elhub.github.io/flex-information-system/resources/technical_resource/)
  */
 export const listTechnicalResourceHistory = <
   ThrowOnError extends boolean = false,
@@ -2478,6 +2689,8 @@ export const listTechnicalResourceHistory = <
 
 /**
  * Read Technical Resource - history
+ *
+ * Read [Technical Resource - history](https://elhub.github.io/flex-information-system/resources/technical_resource/)
  */
 export const readTechnicalResourceHistory = <
   ThrowOnError extends boolean = false,
@@ -2496,6 +2709,8 @@ export const readTechnicalResourceHistory = <
 
 /**
  * List Event
+ *
+ * List [Event](https://elhub.github.io/flex-information-system/resources/event/)
  */
 export const listEvent = <ThrowOnError extends boolean = false>(
   options?: Options<ListEventData, ThrowOnError>,
@@ -2512,6 +2727,8 @@ export const listEvent = <ThrowOnError extends boolean = false>(
 
 /**
  * Read Event
+ *
+ * Read [Event](https://elhub.github.io/flex-information-system/resources/event/)
  */
 export const readEvent = <ThrowOnError extends boolean = false>(
   options: Options<ReadEventData, ThrowOnError>,
@@ -2528,6 +2745,8 @@ export const readEvent = <ThrowOnError extends boolean = false>(
 
 /**
  * List Notification
+ *
+ * List [Notification](https://elhub.github.io/flex-information-system/resources/notification/)
  */
 export const listNotification = <ThrowOnError extends boolean = false>(
   options?: Options<ListNotificationData, ThrowOnError>,
@@ -2544,6 +2763,8 @@ export const listNotification = <ThrowOnError extends boolean = false>(
 
 /**
  * Read Notification
+ *
+ * Read [Notification](https://elhub.github.io/flex-information-system/resources/notification/)
  */
 export const readNotification = <ThrowOnError extends boolean = false>(
   options: Options<ReadNotificationData, ThrowOnError>,
@@ -2560,6 +2781,8 @@ export const readNotification = <ThrowOnError extends boolean = false>(
 
 /**
  * Update Notification
+ *
+ * Update [Notification](https://elhub.github.io/flex-information-system/resources/notification/)
  */
 export const updateNotification = <ThrowOnError extends boolean = false>(
   options: Options<UpdateNotificationData, ThrowOnError>,
@@ -2580,6 +2803,8 @@ export const updateNotification = <ThrowOnError extends boolean = false>(
 
 /**
  * List Accounting Point
+ *
+ * List [Accounting Point](https://elhub.github.io/flex-information-system/resources/accounting_point/)
  */
 export const listAccountingPoint = <ThrowOnError extends boolean = false>(
   options?: Options<ListAccountingPointData, ThrowOnError>,
@@ -2596,6 +2821,8 @@ export const listAccountingPoint = <ThrowOnError extends boolean = false>(
 
 /**
  * Read Accounting Point
+ *
+ * Read [Accounting Point](https://elhub.github.io/flex-information-system/resources/accounting_point/)
  */
 export const readAccountingPoint = <ThrowOnError extends boolean = false>(
   options: Options<ReadAccountingPointData, ThrowOnError>,
@@ -2612,6 +2839,8 @@ export const readAccountingPoint = <ThrowOnError extends boolean = false>(
 
 /**
  * List Accounting Point Balance Responsible Party
+ *
+ * List [Accounting Point Balance Responsible Party](https://elhub.github.io/flex-information-system/resources/accounting_point_balance_responsible_party/)
  */
 export const listAccountingPointBalanceResponsibleParty = <
   ThrowOnError extends boolean = false,
@@ -2633,6 +2862,8 @@ export const listAccountingPointBalanceResponsibleParty = <
 
 /**
  * List Accounting Point Bidding Zone
+ *
+ * List [Accounting Point Bidding Zone](https://elhub.github.io/flex-information-system/resources/accounting_point_bidding_zone/)
  */
 export const listAccountingPointBiddingZone = <
   ThrowOnError extends boolean = false,
@@ -2651,6 +2882,8 @@ export const listAccountingPointBiddingZone = <
 
 /**
  * List Accounting Point End User
+ *
+ * List [Accounting Point End User](https://elhub.github.io/flex-information-system/resources/accounting_point_end_user/)
  */
 export const listAccountingPointEndUser = <
   ThrowOnError extends boolean = false,
@@ -2669,6 +2902,8 @@ export const listAccountingPointEndUser = <
 
 /**
  * List Accounting Point Energy Supplier
+ *
+ * List [Accounting Point Energy Supplier](https://elhub.github.io/flex-information-system/resources/accounting_point_energy_supplier/)
  */
 export const listAccountingPointEnergySupplier = <
   ThrowOnError extends boolean = false,
@@ -2687,6 +2922,8 @@ export const listAccountingPointEnergySupplier = <
 
 /**
  * List Metering Grid Area
+ *
+ * List [Metering Grid Area](https://elhub.github.io/flex-information-system/resources/metering_grid_area/)
  */
 export const listMeteringGridArea = <ThrowOnError extends boolean = false>(
   options?: Options<ListMeteringGridAreaData, ThrowOnError>,
@@ -2703,6 +2940,8 @@ export const listMeteringGridArea = <ThrowOnError extends boolean = false>(
 
 /**
  * Read Metering Grid Area
+ *
+ * Read [Metering Grid Area](https://elhub.github.io/flex-information-system/resources/metering_grid_area/)
  */
 export const readMeteringGridArea = <ThrowOnError extends boolean = false>(
   options: Options<ReadMeteringGridAreaData, ThrowOnError>,
@@ -2719,6 +2958,8 @@ export const readMeteringGridArea = <ThrowOnError extends boolean = false>(
 
 /**
  * List Accounting Point Metering Grid Area
+ *
+ * List [Accounting Point Metering Grid Area](https://elhub.github.io/flex-information-system/resources/accounting_point_metering_grid_area/)
  */
 export const listAccountingPointMeteringGridArea = <
   ThrowOnError extends boolean = false,
@@ -2737,6 +2978,8 @@ export const listAccountingPointMeteringGridArea = <
 
 /**
  * List Accounting Point Grid Location
+ *
+ * List [Accounting Point Grid Location](https://elhub.github.io/flex-information-system/resources/accounting_point_grid_location/)
  */
 export const listAccountingPointGridLocation = <
   ThrowOnError extends boolean = false,
@@ -2755,6 +2998,8 @@ export const listAccountingPointGridLocation = <
 
 /**
  * Create Accounting Point Grid Location
+ *
+ * Create [Accounting Point Grid Location](https://elhub.github.io/flex-information-system/resources/accounting_point_grid_location/)
  */
 export const createAccountingPointGridLocation = <
   ThrowOnError extends boolean = false,
@@ -2777,6 +3022,8 @@ export const createAccountingPointGridLocation = <
 
 /**
  * Read Accounting Point Grid Location
+ *
+ * Read [Accounting Point Grid Location](https://elhub.github.io/flex-information-system/resources/accounting_point_grid_location/)
  */
 export const readAccountingPointGridLocation = <
   ThrowOnError extends boolean = false,
@@ -2795,6 +3042,8 @@ export const readAccountingPointGridLocation = <
 
 /**
  * Update Accounting Point Grid Location
+ *
+ * Update [Accounting Point Grid Location](https://elhub.github.io/flex-information-system/resources/accounting_point_grid_location/)
  */
 export const updateAccountingPointGridLocation = <
   ThrowOnError extends boolean = false,
@@ -2817,6 +3066,8 @@ export const updateAccountingPointGridLocation = <
 
 /**
  * List Accounting Point Grid Location - history
+ *
+ * List [Accounting Point Grid Location - history](https://elhub.github.io/flex-information-system/resources/accounting_point_grid_location/)
  */
 export const listAccountingPointGridLocationHistory = <
   ThrowOnError extends boolean = false,
@@ -2835,6 +3086,8 @@ export const listAccountingPointGridLocationHistory = <
 
 /**
  * Read Accounting Point Grid Location - history
+ *
+ * Read [Accounting Point Grid Location - history](https://elhub.github.io/flex-information-system/resources/accounting_point_grid_location/)
  */
 export const readAccountingPointGridLocationHistory = <
   ThrowOnError extends boolean = false,
@@ -2853,6 +3106,8 @@ export const readAccountingPointGridLocationHistory = <
 
 /**
  * List Product Type
+ *
+ * List [Product Type](https://elhub.github.io/flex-information-system/resources/product_type/)
  */
 export const listProductType = <ThrowOnError extends boolean = false>(
   options?: Options<ListProductTypeData, ThrowOnError>,
@@ -2869,6 +3124,8 @@ export const listProductType = <ThrowOnError extends boolean = false>(
 
 /**
  * Read Product Type
+ *
+ * Read [Product Type](https://elhub.github.io/flex-information-system/resources/product_type/)
  */
 export const readProductType = <ThrowOnError extends boolean = false>(
   options: Options<ReadProductTypeData, ThrowOnError>,
@@ -2885,6 +3142,8 @@ export const readProductType = <ThrowOnError extends boolean = false>(
 
 /**
  * List System Operator Product Type
+ *
+ * List [System Operator Product Type](https://elhub.github.io/flex-information-system/resources/system_operator_product_type/)
  */
 export const listSystemOperatorProductType = <
   ThrowOnError extends boolean = false,
@@ -2903,6 +3162,8 @@ export const listSystemOperatorProductType = <
 
 /**
  * Create System Operator Product Type
+ *
+ * Create [System Operator Product Type](https://elhub.github.io/flex-information-system/resources/system_operator_product_type/)
  */
 export const createSystemOperatorProductType = <
   ThrowOnError extends boolean = false,
@@ -2925,6 +3186,8 @@ export const createSystemOperatorProductType = <
 
 /**
  * Read System Operator Product Type
+ *
+ * Read [System Operator Product Type](https://elhub.github.io/flex-information-system/resources/system_operator_product_type/)
  */
 export const readSystemOperatorProductType = <
   ThrowOnError extends boolean = false,
@@ -2943,6 +3206,8 @@ export const readSystemOperatorProductType = <
 
 /**
  * Update System Operator Product Type
+ *
+ * Update [System Operator Product Type](https://elhub.github.io/flex-information-system/resources/system_operator_product_type/)
  */
 export const updateSystemOperatorProductType = <
   ThrowOnError extends boolean = false,
@@ -2965,6 +3230,8 @@ export const updateSystemOperatorProductType = <
 
 /**
  * List System Operator Product Type - history
+ *
+ * List [System Operator Product Type - history](https://elhub.github.io/flex-information-system/resources/system_operator_product_type/)
  */
 export const listSystemOperatorProductTypeHistory = <
   ThrowOnError extends boolean = false,
@@ -2983,6 +3250,8 @@ export const listSystemOperatorProductTypeHistory = <
 
 /**
  * Read System Operator Product Type - history
+ *
+ * Read [System Operator Product Type - history](https://elhub.github.io/flex-information-system/resources/system_operator_product_type/)
  */
 export const readSystemOperatorProductTypeHistory = <
   ThrowOnError extends boolean = false,
@@ -3001,6 +3270,8 @@ export const readSystemOperatorProductTypeHistory = <
 
 /**
  * List Service Provider Product Application
+ *
+ * List [Service Provider Product Application](https://elhub.github.io/flex-information-system/resources/service_provider_product_application/)
  */
 export const listServiceProviderProductApplication = <
   ThrowOnError extends boolean = false,
@@ -3019,6 +3290,8 @@ export const listServiceProviderProductApplication = <
 
 /**
  * Create Service Provider Product Application
+ *
+ * Create [Service Provider Product Application](https://elhub.github.io/flex-information-system/resources/service_provider_product_application/)
  */
 export const createServiceProviderProductApplication = <
   ThrowOnError extends boolean = false,
@@ -3041,6 +3314,8 @@ export const createServiceProviderProductApplication = <
 
 /**
  * Read Service Provider Product Application
+ *
+ * Read [Service Provider Product Application](https://elhub.github.io/flex-information-system/resources/service_provider_product_application/)
  */
 export const readServiceProviderProductApplication = <
   ThrowOnError extends boolean = false,
@@ -3059,6 +3334,8 @@ export const readServiceProviderProductApplication = <
 
 /**
  * Update Service Provider Product Application
+ *
+ * Update [Service Provider Product Application](https://elhub.github.io/flex-information-system/resources/service_provider_product_application/)
  */
 export const updateServiceProviderProductApplication = <
   ThrowOnError extends boolean = false,
@@ -3081,6 +3358,8 @@ export const updateServiceProviderProductApplication = <
 
 /**
  * List Service Provider Product Application - history
+ *
+ * List [Service Provider Product Application - history](https://elhub.github.io/flex-information-system/resources/service_provider_product_application/)
  */
 export const listServiceProviderProductApplicationHistory = <
   ThrowOnError extends boolean = false,
@@ -3102,6 +3381,8 @@ export const listServiceProviderProductApplicationHistory = <
 
 /**
  * Read Service Provider Product Application - history
+ *
+ * Read [Service Provider Product Application - history](https://elhub.github.io/flex-information-system/resources/service_provider_product_application/)
  */
 export const readServiceProviderProductApplicationHistory = <
   ThrowOnError extends boolean = false,
@@ -3123,6 +3404,8 @@ export const readServiceProviderProductApplicationHistory = <
 
 /**
  * List Service Provider Product Application Comment
+ *
+ * List [Service Provider Product Application Comment](https://elhub.github.io/flex-information-system/resources/service_provider_product_application_comment/)
  */
 export const listServiceProviderProductApplicationComment = <
   ThrowOnError extends boolean = false,
@@ -3144,6 +3427,8 @@ export const listServiceProviderProductApplicationComment = <
 
 /**
  * Create Service Provider Product Application Comment
+ *
+ * Create [Service Provider Product Application Comment](https://elhub.github.io/flex-information-system/resources/service_provider_product_application_comment/)
  */
 export const createServiceProviderProductApplicationComment = <
   ThrowOnError extends boolean = false,
@@ -3169,6 +3454,8 @@ export const createServiceProviderProductApplicationComment = <
 
 /**
  * Read Service Provider Product Application Comment
+ *
+ * Read [Service Provider Product Application Comment](https://elhub.github.io/flex-information-system/resources/service_provider_product_application_comment/)
  */
 export const readServiceProviderProductApplicationComment = <
   ThrowOnError extends boolean = false,
@@ -3190,6 +3477,8 @@ export const readServiceProviderProductApplicationComment = <
 
 /**
  * Update Service Provider Product Application Comment
+ *
+ * Update [Service Provider Product Application Comment](https://elhub.github.io/flex-information-system/resources/service_provider_product_application_comment/)
  */
 export const updateServiceProviderProductApplicationComment = <
   ThrowOnError extends boolean = false,
@@ -3215,6 +3504,8 @@ export const updateServiceProviderProductApplicationComment = <
 
 /**
  * List Service Provider Product Application Comment - history
+ *
+ * List [Service Provider Product Application Comment - history](https://elhub.github.io/flex-information-system/resources/service_provider_product_application_comment/)
  */
 export const listServiceProviderProductApplicationCommentHistory = <
   ThrowOnError extends boolean = false,
@@ -3236,6 +3527,8 @@ export const listServiceProviderProductApplicationCommentHistory = <
 
 /**
  * Read Service Provider Product Application Comment - history
+ *
+ * Read [Service Provider Product Application Comment - history](https://elhub.github.io/flex-information-system/resources/service_provider_product_application_comment/)
  */
 export const readServiceProviderProductApplicationCommentHistory = <
   ThrowOnError extends boolean = false,
@@ -3257,6 +3550,8 @@ export const readServiceProviderProductApplicationCommentHistory = <
 
 /**
  * List Service Provider Product Suspension
+ *
+ * List [Service Provider Product Suspension](https://elhub.github.io/flex-information-system/resources/service_provider_product_suspension/)
  */
 export const listServiceProviderProductSuspension = <
   ThrowOnError extends boolean = false,
@@ -3275,6 +3570,8 @@ export const listServiceProviderProductSuspension = <
 
 /**
  * Create Service Provider Product Suspension
+ *
+ * Create [Service Provider Product Suspension](https://elhub.github.io/flex-information-system/resources/service_provider_product_suspension/)
  */
 export const createServiceProviderProductSuspension = <
   ThrowOnError extends boolean = false,
@@ -3297,6 +3594,8 @@ export const createServiceProviderProductSuspension = <
 
 /**
  * Delete Service Provider Product Suspension
+ *
+ * Delete [Service Provider Product Suspension](https://elhub.github.io/flex-information-system/resources/service_provider_product_suspension/)
  */
 export const deleteServiceProviderProductSuspension = <
   ThrowOnError extends boolean = false,
@@ -3319,6 +3618,8 @@ export const deleteServiceProviderProductSuspension = <
 
 /**
  * Read Service Provider Product Suspension
+ *
+ * Read [Service Provider Product Suspension](https://elhub.github.io/flex-information-system/resources/service_provider_product_suspension/)
  */
 export const readServiceProviderProductSuspension = <
   ThrowOnError extends boolean = false,
@@ -3337,6 +3638,8 @@ export const readServiceProviderProductSuspension = <
 
 /**
  * Update Service Provider Product Suspension
+ *
+ * Update [Service Provider Product Suspension](https://elhub.github.io/flex-information-system/resources/service_provider_product_suspension/)
  */
 export const updateServiceProviderProductSuspension = <
   ThrowOnError extends boolean = false,
@@ -3359,6 +3662,8 @@ export const updateServiceProviderProductSuspension = <
 
 /**
  * List Service Provider Product Suspension - history
+ *
+ * List [Service Provider Product Suspension - history](https://elhub.github.io/flex-information-system/resources/service_provider_product_suspension/)
  */
 export const listServiceProviderProductSuspensionHistory = <
   ThrowOnError extends boolean = false,
@@ -3380,6 +3685,8 @@ export const listServiceProviderProductSuspensionHistory = <
 
 /**
  * Read Service Provider Product Suspension - history
+ *
+ * Read [Service Provider Product Suspension - history](https://elhub.github.io/flex-information-system/resources/service_provider_product_suspension/)
  */
 export const readServiceProviderProductSuspensionHistory = <
   ThrowOnError extends boolean = false,
@@ -3401,6 +3708,8 @@ export const readServiceProviderProductSuspensionHistory = <
 
 /**
  * List Service Provider Product Suspension Comment
+ *
+ * List [Service Provider Product Suspension Comment](https://elhub.github.io/flex-information-system/resources/service_provider_product_suspension_comment/)
  */
 export const listServiceProviderProductSuspensionComment = <
   ThrowOnError extends boolean = false,
@@ -3422,6 +3731,8 @@ export const listServiceProviderProductSuspensionComment = <
 
 /**
  * Create Service Provider Product Suspension Comment
+ *
+ * Create [Service Provider Product Suspension Comment](https://elhub.github.io/flex-information-system/resources/service_provider_product_suspension_comment/)
  */
 export const createServiceProviderProductSuspensionComment = <
   ThrowOnError extends boolean = false,
@@ -3447,6 +3758,8 @@ export const createServiceProviderProductSuspensionComment = <
 
 /**
  * Read Service Provider Product Suspension Comment
+ *
+ * Read [Service Provider Product Suspension Comment](https://elhub.github.io/flex-information-system/resources/service_provider_product_suspension_comment/)
  */
 export const readServiceProviderProductSuspensionComment = <
   ThrowOnError extends boolean = false,
@@ -3468,6 +3781,8 @@ export const readServiceProviderProductSuspensionComment = <
 
 /**
  * Update Service Provider Product Suspension Comment
+ *
+ * Update [Service Provider Product Suspension Comment](https://elhub.github.io/flex-information-system/resources/service_provider_product_suspension_comment/)
  */
 export const updateServiceProviderProductSuspensionComment = <
   ThrowOnError extends boolean = false,
@@ -3493,6 +3808,8 @@ export const updateServiceProviderProductSuspensionComment = <
 
 /**
  * List Service Provider Product Suspension Comment - history
+ *
+ * List [Service Provider Product Suspension Comment - history](https://elhub.github.io/flex-information-system/resources/service_provider_product_suspension_comment/)
  */
 export const listServiceProviderProductSuspensionCommentHistory = <
   ThrowOnError extends boolean = false,
@@ -3514,6 +3831,8 @@ export const listServiceProviderProductSuspensionCommentHistory = <
 
 /**
  * Read Service Provider Product Suspension Comment - history
+ *
+ * Read [Service Provider Product Suspension Comment - history](https://elhub.github.io/flex-information-system/resources/service_provider_product_suspension_comment/)
  */
 export const readServiceProviderProductSuspensionCommentHistory = <
   ThrowOnError extends boolean = false,
@@ -3535,6 +3854,8 @@ export const readServiceProviderProductSuspensionCommentHistory = <
 
 /**
  * List Service Providing Group Product Application
+ *
+ * List [Service Providing Group Product Application](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application/)
  */
 export const listServiceProvidingGroupProductApplication = <
   ThrowOnError extends boolean = false,
@@ -3556,6 +3877,8 @@ export const listServiceProvidingGroupProductApplication = <
 
 /**
  * Create Service Providing Group Product Application
+ *
+ * Create [Service Providing Group Product Application](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application/)
  */
 export const createServiceProvidingGroupProductApplication = <
   ThrowOnError extends boolean = false,
@@ -3581,6 +3904,8 @@ export const createServiceProvidingGroupProductApplication = <
 
 /**
  * Read Service Providing Group Product Application
+ *
+ * Read [Service Providing Group Product Application](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application/)
  */
 export const readServiceProvidingGroupProductApplication = <
   ThrowOnError extends boolean = false,
@@ -3602,6 +3927,8 @@ export const readServiceProvidingGroupProductApplication = <
 
 /**
  * Update Service Providing Group Product Application
+ *
+ * Update [Service Providing Group Product Application](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application/)
  */
 export const updateServiceProvidingGroupProductApplication = <
   ThrowOnError extends boolean = false,
@@ -3627,6 +3954,8 @@ export const updateServiceProvidingGroupProductApplication = <
 
 /**
  * List Service Providing Group Product Application - history
+ *
+ * List [Service Providing Group Product Application - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application/)
  */
 export const listServiceProvidingGroupProductApplicationHistory = <
   ThrowOnError extends boolean = false,
@@ -3648,6 +3977,8 @@ export const listServiceProvidingGroupProductApplicationHistory = <
 
 /**
  * Read Service Providing Group Product Application - history
+ *
+ * Read [Service Providing Group Product Application - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application/)
  */
 export const readServiceProvidingGroupProductApplicationHistory = <
   ThrowOnError extends boolean = false,
@@ -3669,6 +4000,8 @@ export const readServiceProvidingGroupProductApplicationHistory = <
 
 /**
  * List Service Providing Group Product Application Comment
+ *
+ * List [Service Providing Group Product Application Comment](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application_comment/)
  */
 export const listServiceProvidingGroupProductApplicationComment = <
   ThrowOnError extends boolean = false,
@@ -3690,6 +4023,8 @@ export const listServiceProvidingGroupProductApplicationComment = <
 
 /**
  * Create Service Providing Group Product Application Comment
+ *
+ * Create [Service Providing Group Product Application Comment](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application_comment/)
  */
 export const createServiceProvidingGroupProductApplicationComment = <
   ThrowOnError extends boolean = false,
@@ -3715,6 +4050,8 @@ export const createServiceProvidingGroupProductApplicationComment = <
 
 /**
  * Read Service Providing Group Product Application Comment
+ *
+ * Read [Service Providing Group Product Application Comment](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application_comment/)
  */
 export const readServiceProvidingGroupProductApplicationComment = <
   ThrowOnError extends boolean = false,
@@ -3736,6 +4073,8 @@ export const readServiceProvidingGroupProductApplicationComment = <
 
 /**
  * Update Service Providing Group Product Application Comment
+ *
+ * Update [Service Providing Group Product Application Comment](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application_comment/)
  */
 export const updateServiceProvidingGroupProductApplicationComment = <
   ThrowOnError extends boolean = false,
@@ -3761,6 +4100,8 @@ export const updateServiceProvidingGroupProductApplicationComment = <
 
 /**
  * List Service Providing Group Product Application Comment - history
+ *
+ * List [Service Providing Group Product Application Comment - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application_comment/)
  */
 export const listServiceProvidingGroupProductApplicationCommentHistory = <
   ThrowOnError extends boolean = false,
@@ -3782,6 +4123,8 @@ export const listServiceProvidingGroupProductApplicationCommentHistory = <
 
 /**
  * Read Service Providing Group Product Application Comment - history
+ *
+ * Read [Service Providing Group Product Application Comment - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application_comment/)
  */
 export const readServiceProvidingGroupProductApplicationCommentHistory = <
   ThrowOnError extends boolean = false,
@@ -3803,6 +4146,8 @@ export const readServiceProvidingGroupProductApplicationCommentHistory = <
 
 /**
  * List Service Providing Group Product Suspension
+ *
+ * List [Service Providing Group Product Suspension](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_suspension/)
  */
 export const listServiceProvidingGroupProductSuspension = <
   ThrowOnError extends boolean = false,
@@ -3824,6 +4169,8 @@ export const listServiceProvidingGroupProductSuspension = <
 
 /**
  * Create Service Providing Group Product Suspension
+ *
+ * Create [Service Providing Group Product Suspension](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_suspension/)
  */
 export const createServiceProvidingGroupProductSuspension = <
   ThrowOnError extends boolean = false,
@@ -3849,6 +4196,8 @@ export const createServiceProvidingGroupProductSuspension = <
 
 /**
  * Delete Service Providing Group Product Suspension
+ *
+ * Delete [Service Providing Group Product Suspension](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_suspension/)
  */
 export const deleteServiceProvidingGroupProductSuspension = <
   ThrowOnError extends boolean = false,
@@ -3874,6 +4223,8 @@ export const deleteServiceProvidingGroupProductSuspension = <
 
 /**
  * Read Service Providing Group Product Suspension
+ *
+ * Read [Service Providing Group Product Suspension](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_suspension/)
  */
 export const readServiceProvidingGroupProductSuspension = <
   ThrowOnError extends boolean = false,
@@ -3895,6 +4246,8 @@ export const readServiceProvidingGroupProductSuspension = <
 
 /**
  * Update Service Providing Group Product Suspension
+ *
+ * Update [Service Providing Group Product Suspension](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_suspension/)
  */
 export const updateServiceProvidingGroupProductSuspension = <
   ThrowOnError extends boolean = false,
@@ -3920,6 +4273,8 @@ export const updateServiceProvidingGroupProductSuspension = <
 
 /**
  * List Service Providing Group Product Suspension - history
+ *
+ * List [Service Providing Group Product Suspension - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_suspension/)
  */
 export const listServiceProvidingGroupProductSuspensionHistory = <
   ThrowOnError extends boolean = false,
@@ -3941,6 +4296,8 @@ export const listServiceProvidingGroupProductSuspensionHistory = <
 
 /**
  * Read Service Providing Group Product Suspension - history
+ *
+ * Read [Service Providing Group Product Suspension - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_suspension/)
  */
 export const readServiceProvidingGroupProductSuspensionHistory = <
   ThrowOnError extends boolean = false,
@@ -3962,6 +4319,8 @@ export const readServiceProvidingGroupProductSuspensionHistory = <
 
 /**
  * List Service Providing Group Product Suspension Comment
+ *
+ * List [Service Providing Group Product Suspension Comment](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_suspension_comment/)
  */
 export const listServiceProvidingGroupProductSuspensionComment = <
   ThrowOnError extends boolean = false,
@@ -3983,6 +4342,8 @@ export const listServiceProvidingGroupProductSuspensionComment = <
 
 /**
  * Create Service Providing Group Product Suspension Comment
+ *
+ * Create [Service Providing Group Product Suspension Comment](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_suspension_comment/)
  */
 export const createServiceProvidingGroupProductSuspensionComment = <
   ThrowOnError extends boolean = false,
@@ -4008,6 +4369,8 @@ export const createServiceProvidingGroupProductSuspensionComment = <
 
 /**
  * Read Service Providing Group Product Suspension Comment
+ *
+ * Read [Service Providing Group Product Suspension Comment](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_suspension_comment/)
  */
 export const readServiceProvidingGroupProductSuspensionComment = <
   ThrowOnError extends boolean = false,
@@ -4029,6 +4392,8 @@ export const readServiceProvidingGroupProductSuspensionComment = <
 
 /**
  * Update Service Providing Group Product Suspension Comment
+ *
+ * Update [Service Providing Group Product Suspension Comment](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_suspension_comment/)
  */
 export const updateServiceProvidingGroupProductSuspensionComment = <
   ThrowOnError extends boolean = false,
@@ -4054,6 +4419,8 @@ export const updateServiceProvidingGroupProductSuspensionComment = <
 
 /**
  * List Service Providing Group Product Suspension Comment - history
+ *
+ * List [Service Providing Group Product Suspension Comment - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_suspension_comment/)
  */
 export const listServiceProvidingGroupProductSuspensionCommentHistory = <
   ThrowOnError extends boolean = false,
@@ -4075,6 +4442,8 @@ export const listServiceProvidingGroupProductSuspensionCommentHistory = <
 
 /**
  * Read Service Providing Group Product Suspension Comment - history
+ *
+ * Read [Service Providing Group Product Suspension Comment - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_suspension_comment/)
  */
 export const readServiceProvidingGroupProductSuspensionCommentHistory = <
   ThrowOnError extends boolean = false,
@@ -4096,6 +4465,8 @@ export const readServiceProvidingGroupProductSuspensionCommentHistory = <
 
 /**
  * List Notice
+ *
+ * List [Notice](https://elhub.github.io/flex-information-system/resources/notice/)
  */
 export const listNotice = <ThrowOnError extends boolean = false>(
   options?: Options<ListNoticeData, ThrowOnError>,
@@ -4112,6 +4483,8 @@ export const listNotice = <ThrowOnError extends boolean = false>(
 
 /**
  * Read Notice
+ *
+ * Read [Notice](https://elhub.github.io/flex-information-system/resources/notice/)
  */
 export const readNotice = <ThrowOnError extends boolean = false>(
   options: Options<ReadNoticeData, ThrowOnError>,

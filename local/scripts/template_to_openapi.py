@@ -30,42 +30,39 @@ import json
 import click
 from copy import deepcopy
 import j2
+import relationship
 
 # templates
 
 
-def history_schema_template(resource, resource_summary):
+def history_schema_template(resource, resource_summary, resource_properties, required):
     return {
         "summary": f"{resource_summary} - history",
         "description": f"{resource_summary} - history",
-        "allOf": [
-            {"$ref": f"#/components/schemas/{resource}_response"},
-            {
-                "properties": {
-                    f"{resource}_id": {
-                        "description": "Reference to the resource that was updated.",
-                        "format": "bigint",
-                        "type": "integer",
-                        "example": 48,
-                    },
-                    "replaced_by": {
-                        "description": "The identity that updated the resource when it was replaced.",
-                        "format": "bigint",
-                        "type": "integer",
-                        "nullable": True,
-                        "example": 90,
-                    },
-                    "replaced_at": {
-                        "description": "When the resource was replaced in the system.",
-                        "format": "date-time",
-                        "type": "string",
-                        "nullable": True,
-                        "example": "2024-07-07T10:00:00+00:00",
-                    },
-                },
-                "required": [f"{resource}_id"],
+        "properties": resource_properties
+        | {
+            f"{resource}_id": {
+                "description": "Reference to the resource that was updated.",
+                "format": "bigint",
+                "type": "integer",
+                "example": 48,
             },
-        ],
+            "replaced_by": {
+                "description": "The identity that updated the resource when it was replaced.",
+                "format": "bigint",
+                "type": "integer",
+                "nullable": True,
+                "example": 90,
+            },
+            "replaced_at": {
+                "description": "When the resource was replaced in the system.",
+                "format": "date-time",
+                "type": "string",
+                "nullable": True,
+                "example": "2024-07-07T10:00:00+00:00",
+            },
+        },
+        "required": required + [f"{resource}_id"],
     }
 
 
@@ -188,14 +185,14 @@ endpoint_templates = {
     "list": lambda base_resource, resource, resource_summary: {
         "operationId": f"list_{resource}",
         "summary": f"List {resource_summary}",
-        "description": "",
+        "description": f"List [{resource_summary}](https://elhub.github.io/flex-information-system/resources/{base_resource}/)",
         "tags": [base_resource],
         "g-responses": [200, 206, 400, 401, 403, 404, 406, 416, 500],
     },
     "create": lambda _base_resource, resource, resource_summary: {
         "operationId": f"create_{resource}",
         "summary": f"Create {resource_summary}",
-        "description": "",
+        "description": f"Create [{resource_summary}](https://elhub.github.io/flex-information-system/resources/{resource}/)",
         "tags": [resource],
         "requestBody": {
             "content": {
@@ -213,14 +210,14 @@ endpoint_templates = {
     "read": lambda base_resource, resource, resource_summary: {
         "operationId": f"read_{resource}",
         "summary": f"Read {resource_summary}",
-        "description": "",
+        "description": f"Read [{resource_summary}](https://elhub.github.io/flex-information-system/resources/{base_resource}/)",
         "tags": [base_resource],
         "g-responses": [200, 400, 401, 403, 404, 406, 500],
     },
     "update": lambda _base_resource, resource, resource_summary: {
         "operationId": f"update_{resource}",
         "summary": f"Update {resource_summary}",
-        "description": "",
+        "description": f"Update [{resource_summary}](https://elhub.github.io/flex-information-system/resources/{resource}/)",
         "tags": [resource],
         "requestBody": {
             "content": {
@@ -238,7 +235,7 @@ endpoint_templates = {
     "delete": lambda _base_resource, resource, resource_summary: {
         "operationId": f"delete_{resource}",
         "summary": f"Delete {resource_summary}",
-        "description": "",
+        "description": f"Delete [{resource_summary}](https://elhub.github.io/flex-information-system/resources/{resource}/)",
         "tags": [resource],
         "requestBody": {
             "content": {
@@ -338,6 +335,16 @@ def generate_list_parameters(resource, filter_fields):
 
         endpoint_parameters.append(parameter_template)
 
+        if field == "valid_from":
+            valid_at_parameter_template = {
+                "in": "query",
+                "name": "valid_at",
+                "schema": {"type": "string", "format": "date-time"},
+                "example": "2023-12-31T23:59:00+00:00",
+                "description": "Filter based on valid time of the resource. Alternative to using valid_from and valid_to filters together.",
+            }
+            endpoint_parameters.append(valid_at_parameter_template)
+
     endpoint_parameters += list_parameters_template
     return endpoint_parameters
 
@@ -403,7 +410,10 @@ def generate_openapi_document(base_file, resources_file, servers_file):
     for i, resource in enumerate(resources):
         if resource.get("comments"):
             comment_resource = yaml.safe_load(
-                j2.template_str(resource, "comment_resource.j2.yml"),
+                j2.template_str(
+                    {"resource": resource["id"], "data": resource},
+                    "comment_resource.j2.yml",
+                ),
             )["data"]
             comment_resources.append((i + 1 + shift, comment_resource))
             shift += 1
@@ -590,7 +600,10 @@ def generate_openapi_document(base_file, resources_file, servers_file):
     for resource in resources:
         if resource.get("history"):
             schemas[f"{resource['id']}_history_response"] = history_schema_template(
-                resource["id"], resource["summary"]
+                resource["id"],
+                resource["summary"],
+                schemas[f"{resource['id']}_response"]["properties"],
+                schemas[f"{resource['id']}_response"].get("required", []),
             )
 
     # ---- ENDPOINTS (under paths) ----
@@ -638,6 +651,7 @@ def generate_openapi_document(base_file, resources_file, servers_file):
     # returns, that a query is possible on another resource using the foreign key
     # as an id)
     links = {}
+    rels = []
 
     for resource in resources:
         # setup endpoint groups:
@@ -683,6 +697,18 @@ def generate_openapi_document(base_file, resources_file, servers_file):
             for field, field_info in resource["properties"].items()
             if field_info.get("x-foreign-key") is not None
         ]
+        for field, field_info in foreign_key_fields:
+            if not field.endswith("_id"):
+                continue
+            rels.extend(
+                relationship.from_foreign_key(
+                    resource["id"],
+                    field,
+                    field_info["x-foreign-key"]["resource"],
+                    field_info["x-foreign-key"]["field"],
+                    field_info["x-foreign-key"]["cardinality"],
+                )
+            )
 
         filter_fields = [
             (field, field_info)
@@ -788,7 +814,40 @@ def generate_openapi_document(base_file, resources_file, servers_file):
         # servers
         base["servers"] = [servers["api"]["dev"]]
 
-    # ---- export ----
+    for rel in rels:
+        # add foreign key relationships
+        schema = {"$ref": f"#/components/schemas/{rel.parent.resource}_response"}
+
+        base["components"]["schemas"][rel.child.resource + "_response"]["properties"][
+            rel.name
+        ] = {
+            "description": f"Embedded {rel.parent.resource}",
+            "oneOf": [
+                (
+                    schema
+                    if rel.cardinality == "one"
+                    else {"type": "array", "items": schema}
+                ),
+                {"type": "null"},
+            ],
+            "nullable": True,
+        }
+
+    # any resource with a relationship should also have the embed query parameter on list and read endpoints
+    for resource in set(rel.child.resource for rel in rels):
+        for endpoint in [f"/{resource}", f"/{resource}/{{id}}"]:
+            if endpoint in base["paths"] and "get" in base["paths"][endpoint]:
+                if "parameters" not in base["paths"][endpoint]["get"]:
+                    base["paths"][endpoint]["get"]["parameters"] = []
+                base["paths"][endpoint]["get"]["parameters"].append(
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {"type": "string"},
+                        "description": "Comma-separated list of related resources to embed in the response.",
+                    }
+                )
+        # ---- export ----
 
     print(json.dumps(base, indent=4, default=str))
 

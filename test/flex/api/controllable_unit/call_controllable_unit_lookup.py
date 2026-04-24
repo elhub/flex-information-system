@@ -87,7 +87,8 @@ def sync_detailed(
 ) -> Response[ControllableUnitLookupResponse | ErrorMessage]:
     """Call - Controllable unit lookup
 
-     Lookup a controllable unit from end user ID and business and/or accounting point ID.
+     Lookup a [controllable unit](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit/) from end user ID and business and/or accounting point ID.
 
     Args:
         body (ControllableUnitLookupRequest): Request schema for controllable unit lookup
@@ -119,7 +120,8 @@ def sync(
 ) -> ControllableUnitLookupResponse | ErrorMessage | None:
     """Call - Controllable unit lookup
 
-     Lookup a controllable unit from end user ID and business and/or accounting point ID.
+     Lookup a [controllable unit](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit/) from end user ID and business and/or accounting point ID.
 
     Args:
         body (ControllableUnitLookupRequest): Request schema for controllable unit lookup
@@ -146,7 +148,8 @@ async def asyncio_detailed(
 ) -> Response[ControllableUnitLookupResponse | ErrorMessage]:
     """Call - Controllable unit lookup
 
-     Lookup a controllable unit from end user ID and business and/or accounting point ID.
+     Lookup a [controllable unit](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit/) from end user ID and business and/or accounting point ID.
 
     Args:
         body (ControllableUnitLookupRequest): Request schema for controllable unit lookup
@@ -176,7 +179,8 @@ async def asyncio(
 ) -> ControllableUnitLookupResponse | ErrorMessage | None:
     """Call - Controllable unit lookup
 
-     Lookup a controllable unit from end user ID and business and/or accounting point ID.
+     Lookup a [controllable unit](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit/) from end user ID and business and/or accounting point ID.
 
     Args:
         body (ControllableUnitLookupRequest): Request schema for controllable unit lookup

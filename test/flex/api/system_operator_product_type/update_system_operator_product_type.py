@@ -118,6 +118,9 @@ def sync_detailed(
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductTypeResponse]:
     """Update System Operator Product Type
 
+     Update [System Operator Product Type](https://elhub.github.io/flex-information-
+    system/resources/system_operator_product_type/)
+
     Args:
         id (int):
         body (SystemOperatorProductTypeUpdateRequest): Request schema for update operations -
@@ -151,6 +154,9 @@ def sync(
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductTypeResponse | None:
     """Update System Operator Product Type
 
+     Update [System Operator Product Type](https://elhub.github.io/flex-information-
+    system/resources/system_operator_product_type/)
+
     Args:
         id (int):
         body (SystemOperatorProductTypeUpdateRequest): Request schema for update operations -
@@ -178,6 +184,9 @@ async def asyncio_detailed(
     body: SystemOperatorProductTypeUpdateRequest,
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductTypeResponse]:
     """Update System Operator Product Type
+
+     Update [System Operator Product Type](https://elhub.github.io/flex-information-
+    system/resources/system_operator_product_type/)
 
     Args:
         id (int):
@@ -209,6 +218,9 @@ async def asyncio(
     body: SystemOperatorProductTypeUpdateRequest,
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | SystemOperatorProductTypeResponse | None:
     """Update System Operator Product Type
+
+     Update [System Operator Product Type](https://elhub.github.io/flex-information-
+    system/resources/system_operator_product_type/)
 
     Args:
         id (int):

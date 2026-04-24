@@ -104,6 +104,9 @@ def sync_detailed(
 ) -> Response[AccountingPointGridLocationHistoryResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Read Accounting Point Grid Location - history
 
+     Read [Accounting Point Grid Location - history](https://elhub.github.io/flex-information-
+    system/resources/accounting_point_grid_location/)
+
     Args:
         id (int):
 
@@ -133,6 +136,9 @@ def sync(
 ) -> AccountingPointGridLocationHistoryResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Read Accounting Point Grid Location - history
 
+     Read [Accounting Point Grid Location - history](https://elhub.github.io/flex-information-
+    system/resources/accounting_point_grid_location/)
+
     Args:
         id (int):
 
@@ -156,6 +162,9 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
 ) -> Response[AccountingPointGridLocationHistoryResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Read Accounting Point Grid Location - history
+
+     Read [Accounting Point Grid Location - history](https://elhub.github.io/flex-information-
+    system/resources/accounting_point_grid_location/)
 
     Args:
         id (int):
@@ -183,6 +192,9 @@ async def asyncio(
     client: AuthenticatedClient,
 ) -> AccountingPointGridLocationHistoryResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Read Accounting Point Grid Location - history
+
+     Read [Accounting Point Grid Location - history](https://elhub.github.io/flex-information-
+    system/resources/accounting_point_grid_location/)
 
     Args:
         id (int):

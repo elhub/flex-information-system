@@ -29,6 +29,7 @@ import postgrestRestProvider, {
 
 import { useI18nProvider } from "./intl/intl";
 import { Header } from "./components/Header/Header";
+import { NavigationHistoryProvider } from "./components/NavigationHistoryProvider";
 
 const config: IDataProviderConfig = {
   apiUrl: apiURL,
@@ -56,11 +57,11 @@ const dataProvider: DataProvider = {
 };
 
 const Layout = ({ children }: LayoutProps) => (
-  <>
+  <NavigationHistoryProvider>
     <Header />
     <div className="py-8 px-6 ">{children}</div>
     <ReactQueryDevtools initialIsOpen={false} />
-  </>
+  </NavigationHistoryProvider>
 );
 
 export const App = () => (

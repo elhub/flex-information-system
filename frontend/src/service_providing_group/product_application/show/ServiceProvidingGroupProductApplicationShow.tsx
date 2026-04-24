@@ -33,7 +33,10 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
 
   return (
     <ShowPageLayout
-      backTo={`/service_providing_group/${spgpa.service_providing_group_id}/show`}
+      backTo={{
+        pathname: "/service_providing_group_product_application",
+        label: "Product applications",
+      }}
       title={`Product Application #${spgpa.id}${spg.data ? ` for ${spg.data.name}` : ""}`}
       badge={
         <Badge size="small" status={status} variant="block" icon={icon}>

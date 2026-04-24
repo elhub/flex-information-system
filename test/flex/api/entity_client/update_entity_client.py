@@ -118,6 +118,8 @@ def sync_detailed(
 ) -> Response[Any | EmptyObject | ErrorMessage | EntityClientResponse | ErrorMessage]:
     """Update Entity client
 
+     Update [Entity client](https://elhub.github.io/flex-information-system/resources/entity_client/)
+
     Args:
         id (int):
         body (EntityClientUpdateRequest): Request schema for update operations - Client linked to
@@ -151,6 +153,8 @@ def sync(
 ) -> Any | EmptyObject | ErrorMessage | EntityClientResponse | ErrorMessage | None:
     """Update Entity client
 
+     Update [Entity client](https://elhub.github.io/flex-information-system/resources/entity_client/)
+
     Args:
         id (int):
         body (EntityClientUpdateRequest): Request schema for update operations - Client linked to
@@ -178,6 +182,8 @@ async def asyncio_detailed(
     body: EntityClientUpdateRequest,
 ) -> Response[Any | EmptyObject | ErrorMessage | EntityClientResponse | ErrorMessage]:
     """Update Entity client
+
+     Update [Entity client](https://elhub.github.io/flex-information-system/resources/entity_client/)
 
     Args:
         id (int):
@@ -209,6 +215,8 @@ async def asyncio(
     body: EntityClientUpdateRequest,
 ) -> Any | EmptyObject | ErrorMessage | EntityClientResponse | ErrorMessage | None:
     """Update Entity client
+
+     Update [Entity client](https://elhub.github.io/flex-information-system/resources/entity_client/)
 
     Args:
         id (int):

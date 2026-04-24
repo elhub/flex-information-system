@@ -82,7 +82,8 @@ def sync_detailed(
 ) -> Response[EntityLookupResponse | ErrorMessage]:
     """Call - Entity lookup
 
-     Lookup an entity from its business ID. Creates the entity if missing.
+     Lookup an [entity](https://elhub.github.io/flex-information-system/resources/entity/) from its
+    business ID. Creates the entity if missing.
 
     Args:
         body (EntityLookupRequest): Request schema for entity lookup operations
@@ -113,7 +114,8 @@ def sync(
 ) -> EntityLookupResponse | ErrorMessage | None:
     """Call - Entity lookup
 
-     Lookup an entity from its business ID. Creates the entity if missing.
+     Lookup an [entity](https://elhub.github.io/flex-information-system/resources/entity/) from its
+    business ID. Creates the entity if missing.
 
     Args:
         body (EntityLookupRequest): Request schema for entity lookup operations
@@ -139,7 +141,8 @@ async def asyncio_detailed(
 ) -> Response[EntityLookupResponse | ErrorMessage]:
     """Call - Entity lookup
 
-     Lookup an entity from its business ID. Creates the entity if missing.
+     Lookup an [entity](https://elhub.github.io/flex-information-system/resources/entity/) from its
+    business ID. Creates the entity if missing.
 
     Args:
         body (EntityLookupRequest): Request schema for entity lookup operations
@@ -168,7 +171,8 @@ async def asyncio(
 ) -> EntityLookupResponse | ErrorMessage | None:
     """Call - Entity lookup
 
-     Lookup an entity from its business ID. Creates the entity if missing.
+     Lookup an [entity](https://elhub.github.io/flex-information-system/resources/entity/) from its
+    business ID. Creates the entity if missing.
 
     Args:
         body (EntityLookupRequest): Request schema for entity lookup operations

@@ -23,7 +23,7 @@ if __name__ == "__main__":
 
     for resource in resources:
         j2.template(
-            resource,
+            {"resource": resource["id"], "data": resource},
             "resource_history_audit.j2.sql",
             f"{DB_DIR}/flex/{resource['id']}_history_audit.sql",
         )

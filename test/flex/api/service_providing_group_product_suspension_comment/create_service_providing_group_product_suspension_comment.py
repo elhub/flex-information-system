@@ -119,6 +119,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionCommentResponse]:
     """Create Service Providing Group Product Suspension Comment
 
+     Create [Service Providing Group Product Suspension Comment](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_product_suspension_comment/)
+
     Args:
         body (ServiceProvidingGroupProductSuspensionCommentCreateRequest | Unset): Request schema
             for create operations - Comment made by a party involved in a service providing group
@@ -150,6 +153,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionCommentResponse | None:
     """Create Service Providing Group Product Suspension Comment
 
+     Create [Service Providing Group Product Suspension Comment](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_product_suspension_comment/)
+
     Args:
         body (ServiceProvidingGroupProductSuspensionCommentCreateRequest | Unset): Request schema
             for create operations - Comment made by a party involved in a service providing group
@@ -175,6 +181,9 @@ async def asyncio_detailed(
     body: ServiceProvidingGroupProductSuspensionCommentCreateRequest | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionCommentResponse]:
     """Create Service Providing Group Product Suspension Comment
+
+     Create [Service Providing Group Product Suspension Comment](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_product_suspension_comment/)
 
     Args:
         body (ServiceProvidingGroupProductSuspensionCommentCreateRequest | Unset): Request schema
@@ -204,6 +213,9 @@ async def asyncio(
     body: ServiceProvidingGroupProductSuspensionCommentCreateRequest | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionCommentResponse | None:
     """Create Service Providing Group Product Suspension Comment
+
+     Create [Service Providing Group Product Suspension Comment](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_product_suspension_comment/)
 
     Args:
         body (ServiceProvidingGroupProductSuspensionCommentCreateRequest | Unset): Request schema

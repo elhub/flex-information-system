@@ -153,6 +153,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[AccountingPointGridLocationHistoryResponse]]:
     """List Accounting Point Grid Location - history
 
+     List [Accounting Point Grid Location - history](https://elhub.github.io/flex-information-
+    system/resources/accounting_point_grid_location/)
+
     Args:
         id (str | Unset):
         accounting_point_id (str | Unset):
@@ -200,6 +203,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[AccountingPointGridLocationHistoryResponse] | None:
     """List Accounting Point Grid Location - history
 
+     List [Accounting Point Grid Location - history](https://elhub.github.io/flex-information-
+    system/resources/accounting_point_grid_location/)
+
     Args:
         id (str | Unset):
         accounting_point_id (str | Unset):
@@ -241,6 +247,9 @@ async def asyncio_detailed(
     accounting_point_grid_location_id: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[AccountingPointGridLocationHistoryResponse]]:
     """List Accounting Point Grid Location - history
+
+     List [Accounting Point Grid Location - history](https://elhub.github.io/flex-information-
+    system/resources/accounting_point_grid_location/)
 
     Args:
         id (str | Unset):
@@ -286,6 +295,9 @@ async def asyncio(
     accounting_point_grid_location_id: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[AccountingPointGridLocationHistoryResponse] | None:
     """List Accounting Point Grid Location - history
+
+     List [Accounting Point Grid Location - history](https://elhub.github.io/flex-information-
+    system/resources/accounting_point_grid_location/)
 
     Args:
         id (str | Unset):

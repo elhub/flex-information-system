@@ -118,6 +118,9 @@ def sync_detailed(
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | PartyMembershipResponse]:
     """Update Party Membership
 
+     Update [Party Membership](https://elhub.github.io/flex-information-
+    system/resources/party_membership/)
+
     Args:
         id (int):
         body (PartyMembershipUpdateRequest): Request schema for update operations - The relation
@@ -151,6 +154,9 @@ def sync(
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | PartyMembershipResponse | None:
     """Update Party Membership
 
+     Update [Party Membership](https://elhub.github.io/flex-information-
+    system/resources/party_membership/)
+
     Args:
         id (int):
         body (PartyMembershipUpdateRequest): Request schema for update operations - The relation
@@ -178,6 +184,9 @@ async def asyncio_detailed(
     body: PartyMembershipUpdateRequest,
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | PartyMembershipResponse]:
     """Update Party Membership
+
+     Update [Party Membership](https://elhub.github.io/flex-information-
+    system/resources/party_membership/)
 
     Args:
         id (int):
@@ -209,6 +218,9 @@ async def asyncio(
     body: PartyMembershipUpdateRequest,
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | PartyMembershipResponse | None:
     """Update Party Membership
+
+     Update [Party Membership](https://elhub.github.io/flex-information-
+    system/resources/party_membership/)
 
     Args:
         id (int):

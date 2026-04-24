@@ -26,7 +26,10 @@ if __name__ == "__main__":
     for i, resource in enumerate(resources):
         if resource.get("comments"):
             comment_resource = yaml.safe_load(
-                j2.template_str(resource, "comment_resource.j2.yml"),
+                j2.template_str(
+                    {"resource": resource["id"], "data": resource},
+                    "comment_resource.j2.yml",
+                )
             )["data"]
             comment_resources.append((i + 1 + shift, comment_resource))
             shift += 1

@@ -87,4 +87,9 @@ public data class TechnicalResourceResponse(
    */
   @SerialName("recorded_by")
   public val recordedBy: Long? = null,
+  /**
+   * Response schema - Controllable unit
+   */
+  @SerialName("controllable_unit")
+  public val controllableUnit: ControllableUnitResponse? = null,
 )
