@@ -158,7 +158,7 @@ def test_controllable_unit_summary_aggregation(sts):
     # sum MAP for solar should be 55 (TR1+TR2+TR5)
     assert by_tech["solar"].maximum_active_power.sum_ == pytest.approx(55.0)
 
-    # average MAP for solar should be 55 (TR1+TR2+TR5)
+    # average MAP for solar should be 55/3 (TR1+TR2+TR5)
     assert by_tech["solar"].maximum_active_power.average == pytest.approx(18.33333)
 
     # sum for production should be 55 (TR1+TR2+TR5)

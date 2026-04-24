@@ -105,6 +105,12 @@ CREATE TABLE api.controllable_unit_summary (
     controllable_unit_id bigint NOT NULL,
     technical_resource jsonb NOT NULL
 );
+CREATE TABLE api.service_providing_group_summary (
+    id bigint NOT NULL,
+    service_providing_group_id bigint NOT NULL,
+    controllable_unit jsonb NOT NULL,
+    technical_resource jsonb NOT NULL
+);
 CREATE TABLE api.service_providing_group (
     id bigint NOT NULL,
     name text NOT NULL,

@@ -230,6 +230,8 @@ func NewAPIHandler(
 	mux.Handle("GET /service_providing_group_history", dataListPostgRESTHandler)
 	mux.Handle("GET /service_providing_group_history/{id}", dataPostgRESTHandler)
 
+	mux.Handle("GET /service_providing_group_summary/{id}", dataPostgRESTHandler)
+
 	mux.Handle("GET /service_providing_group_grid_prequalification", dataListPostgRESTHandler)
 	mux.Handle("POST /service_providing_group_grid_prequalification", dataPostgRESTHandler)
 	mux.Handle("GET /service_providing_group_grid_prequalification/{id}", dataPostgRESTHandler)

@@ -45,6 +45,10 @@
             "description": "Controllable Unit Summary"
         },
         {
+            "name": "service_providing_group_summary",
+            "description": "Service Providing Group Summary"
+        },
+        {
             "name": "service_providing_group",
             "description": "Service providing group"
         },
@@ -1794,6 +1798,163 @@
                     "technical_resource"
                 ]
             },
+            "service_providing_group_summary_response": {
+                "summary": "Response - Service Providing Group Summary",
+                "description": "Response schema - Aggregated summary of controllable units and technical resources belonging to a service providing group.",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "Unique surrogate key (service providing group ID).",
+                        "format": "bigint",
+                        "type": "integer",
+                        "readOnly": true,
+                        "example": 4
+                    },
+                    "service_providing_group_id": {
+                        "description": "The ID of the service providing group this resource is a summary of.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "readOnly": true,
+                        "example": 4
+                    },
+                    "controllable_unit": {
+                        "description": "Aggregated statistics on controllable units currently in the service providing group, including count and maximum active power information (sum, average, min, max).",
+                        "type": "object",
+                        "readOnly": true,
+                        "properties": {
+                            "count": {
+                                "type": "integer"
+                            },
+                            "maximum_active_power": {
+                                "$ref": "#/components/schemas/numeric_aggregation"
+                            }
+                        },
+                        "example": {
+                            "count": 3,
+                            "maximum_active_power": {
+                                "sum": 250,
+                                "average": 83.33,
+                                "min": 50,
+                                "max": 120
+                            }
+                        }
+                    },
+                    "technical_resource": {
+                        "description": "Aggregated statistics on technical resources belonging to controllable units with active membership in the service providing group, including counts and maximum active power breakdowns (sum, average, min, max) by category and technology.",
+                        "type": "object",
+                        "readOnly": true,
+                        "properties": {
+                            "count": {
+                                "type": "integer"
+                            },
+                            "maximum_active_power": {
+                                "$ref": "#/components/schemas/numeric_aggregation"
+                            },
+                            "by_category": {
+                                "type": "object",
+                                "propertyNames": {
+                                    "$ref": "#/components/schemas/category"
+                                },
+                                "additionalProperties": {
+                                    "type": "object",
+                                    "properties": {
+                                        "count": {
+                                            "type": "integer"
+                                        },
+                                        "maximum_active_power": {
+                                            "$ref": "#/components/schemas/numeric_aggregation"
+                                        }
+                                    }
+                                }
+                            },
+                            "by_technology": {
+                                "type": "object",
+                                "propertyNames": {
+                                    "$ref": "#/components/schemas/technology"
+                                },
+                                "additionalProperties": {
+                                    "type": "object",
+                                    "properties": {
+                                        "count": {
+                                            "type": "integer"
+                                        },
+                                        "maximum_active_power": {
+                                            "$ref": "#/components/schemas/numeric_aggregation"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "example": {
+                            "count": 8,
+                            "maximum_active_power": {
+                                "sum": 250,
+                                "average": 31.25,
+                                "min": 10,
+                                "max": 80
+                            },
+                            "by_category": {
+                                "production": {
+                                    "count": 5,
+                                    "maximum_active_power": {
+                                        "sum": 180,
+                                        "average": 36,
+                                        "min": 10,
+                                        "max": 80
+                                    }
+                                },
+                                "consumption": {
+                                    "count": 3,
+                                    "maximum_active_power": {
+                                        "sum": 70,
+                                        "average": 23.33,
+                                        "min": 15,
+                                        "max": 30
+                                    }
+                                }
+                            },
+                            "by_technology": {
+                                "solar": {
+                                    "count": 3,
+                                    "maximum_active_power": {
+                                        "sum": 130,
+                                        "average": 43.33,
+                                        "min": 20,
+                                        "max": 80
+                                    }
+                                },
+                                "battery": {
+                                    "count": 2,
+                                    "maximum_active_power": {
+                                        "sum": 50,
+                                        "average": 25,
+                                        "min": 20,
+                                        "max": 30
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "service_providing_group": {
+                        "description": "Embedded service_providing_group",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/service_providing_group_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "id",
+                    "service_providing_group_id",
+                    "controllable_unit",
+                    "technical_resource"
+                ]
+            },
             "service_providing_group_update_request": {
                 "summary": "Update - Service providing group",
                 "description": "Request schema for update operations - Group of controllable units",
@@ -1910,6 +2071,18 @@
                         "type": "integer",
                         "readOnly": true,
                         "example": 145
+                    },
+                    "summary": {
+                        "description": "Embedded service_providing_group_summary",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/service_providing_group_summary_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     },
                     "service_provider": {
                         "description": "Embedded party",
@@ -12093,6 +12266,136 @@
                     {
                         "bearerAuth": [
                             "read:data:controllable_unit_summary"
+                        ]
+                    },
+                    {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
+                ]
+            }
+        },
+        "/service_providing_group_summary/{id}": {
+            "summary": "Service Providing Group Summary - single",
+            "description": "",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "schema": {
+                        "format": "bigint",
+                        "type": "integer"
+                    },
+                    "example": 14
+                }
+            ],
+            "get": {
+                "operationId": "read_service_providing_group_summary",
+                "summary": "Read Service Providing Group Summary",
+                "description": "Read [Service Providing Group Summary](https://elhub.github.io/flex-information-system/resources/service_providing_group_summary/)",
+                "tags": [
+                    "service_providing_group_summary"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/service_providing_group_summary_response"
+                                }
+                            }
+                        },
+                        "description": "OK",
+                        "links": {
+                            "service_providing_group_id": {
+                                "operationId": "read_service_providing_group",
+                                "parameters": {
+                                    "path.id": "$response.body#/service_providing_group_id"
+                                },
+                                "description": "The `service_providing_group_id` value returned in the response can be used as the `id` parameter in `GET /service_providing_group/{id}`."
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:service_providing_group_summary"
                         ]
                     },
                     {}
