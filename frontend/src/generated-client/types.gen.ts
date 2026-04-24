@@ -908,7 +908,7 @@ export type ServiceProvidingGroupSummary = {
    */
   readonly service_providing_group_id: number;
   /**
-   * Aggregated statistics on controllable units currently in the service providing group, including count and maximum active power breakdowns (sum, average, min, max) by category and technology.
+   * Aggregated statistics on controllable units currently in the service providing group, including count and maximum active power information (sum, average, min, max).
    */
   readonly controllable_unit: {
     count?: number;

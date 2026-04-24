@@ -554,8 +554,8 @@ resources:
       controllable_unit:
         description: >-
           Aggregated statistics on controllable units currently in the service
-          providing group, including count and maximum active power breakdowns
-          (sum, average, min, max) by category and technology.
+          providing group, including count and maximum active power information
+          (sum, average, min, max).
         type: object
         readOnly: true
         x-intl:

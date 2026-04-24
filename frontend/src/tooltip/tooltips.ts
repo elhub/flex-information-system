@@ -163,7 +163,7 @@ export const tooltips = {
   "service_providing_group_summary.service_providing_group_id":
     "The ID of the service providing group this resource is a summary of.",
   "service_providing_group_summary.controllable_unit":
-    "Aggregated statistics on controllable units currently in the service providing group, including count and maximum active power breakdowns (sum, average, min, max) by category and technology.",
+    "Aggregated statistics on controllable units currently in the service providing group, including count and maximum active power information (sum, average, min, max).",
   "service_providing_group_summary.technical_resource":
     "Aggregated statistics on technical resources belonging to controllable units with active membership in the service providing group, including counts and maximum active power breakdowns (sum, average, min, max) by category and technology.",
   "service_providing_group.id": "Unique surrogate key.",

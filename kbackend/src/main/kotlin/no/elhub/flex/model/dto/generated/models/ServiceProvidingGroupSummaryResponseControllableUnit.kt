@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 /**
  * Aggregated statistics on controllable units currently in the service providing group, including
- * count and maximum active power breakdowns (sum, average, min, max) by category and technology.
+ * count and maximum active power information (sum, average, min, max).
  */
 @Serializable
 public data class ServiceProvidingGroupSummaryResponseControllableUnit(
