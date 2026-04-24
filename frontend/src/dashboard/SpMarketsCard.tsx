@@ -128,10 +128,10 @@ export const SpMarketsCard = ({ spId }: SpMarketsCardProps) => {
                     </tr>
                   </thead>
                   <tbody>
-                     {rows.map((row) => (
-                       <SoRowCell
-                         key={row.system_operator_id}
-                         soId={row.system_operator_id}
+                    {rows.map((row) => (
+                      <SoRowCell
+                        key={row.system_operator_id}
+                        soId={row.system_operator_id}
                         productTypeIds={row.product_type_ids}
                         soMap={soMap}
                         ptMap={ptMap}
