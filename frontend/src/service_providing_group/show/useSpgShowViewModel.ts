@@ -42,9 +42,10 @@ export const useServiceProvidingGroup = (spgId: number | undefined) =>
   useQuery({
     queryKey: serviceProvidingGroupQueryKey(spgId),
     queryFn: () =>
-      readServiceProvidingGroup({ path: { id: spgId ?? 0 } }).then(
-        throwOnError,
-      ),
+      readServiceProvidingGroup({
+        path: { id: spgId ?? 0 },
+        query: { embed: "summary" },
+      }).then(throwOnError),
     enabled: !!spgId,
   });
 

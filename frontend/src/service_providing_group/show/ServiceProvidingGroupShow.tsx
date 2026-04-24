@@ -24,7 +24,10 @@ export const ServiceProvidingGroupShow = () => {
   } = useQuery({
     queryKey: ["service_providing_group", spgId],
     queryFn: () =>
-      readServiceProvidingGroup({ path: { id: spgId } }).then(throwOnError),
+      readServiceProvidingGroup({
+        path: { id: spgId },
+        query: { embed: "summary" },
+      }).then(throwOnError),
     enabled: !!spgId,
   });
 
@@ -72,7 +75,10 @@ export const ServiceProvidingGroupShow = () => {
       }
     >
       <ServiceProvidingGroupShowSummary spg={spg} />
-      <ServiceProvidingGroupShowTabs spgId={spg.id} />
+      <ServiceProvidingGroupShowTabs
+        spgId={spg.id}
+        summary={spg.summary ?? undefined}
+      />
     </ShowPageLayout>
   );
 };

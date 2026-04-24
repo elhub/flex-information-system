@@ -63,6 +63,23 @@ export const SpgInfoTab = ({ spgId, spg }: Props) => {
         value={spgViewModel?.consumptionCapacityKw}
         unit="kW"
       />
+      {spg.summary && (
+        <>
+          <LabelValue
+            label="Controllable units"
+            value={spg.summary.controllable_unit.count ?? 0}
+          />
+          <LabelValue
+            label="Technical resources"
+            value={spg.summary.technical_resource.count ?? 0}
+          />
+          <LabelValue
+            label="Aggregated maximum active power"
+            value={spg.summary.technical_resource.maximum_active_power?.sum}
+            unit="kW"
+          />
+        </>
+      )}
     </Panel>
   );
 };
