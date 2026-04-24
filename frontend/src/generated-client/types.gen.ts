@@ -896,6 +896,50 @@ export type ControllableUnitSummary = {
 };
 
 /**
+ * Response schema - Aggregated summary of controllable units and technical resources belonging to a service providing group.
+ */
+export type ServiceProvidingGroupSummary = {
+  /**
+   * Unique surrogate key (service providing group ID).
+   */
+  readonly id: number;
+  /**
+   * The ID of the service providing group this resource is a summary of.
+   */
+  readonly service_providing_group_id: number;
+  /**
+   * Aggregated statistics on controllable units currently in the service providing group, including count and maximum active power breakdowns (sum, average, min, max) by category and technology.
+   */
+  readonly controllable_unit: {
+    count?: number;
+    maximum_active_power?: NumericAggregation;
+  };
+  /**
+   * Aggregated statistics on technical resources belonging to controllable units with active membership in the service providing group, including counts and maximum active power breakdowns (sum, average, min, max) by category and technology.
+   */
+  readonly technical_resource: {
+    count?: number;
+    maximum_active_power?: NumericAggregation;
+    by_category?: {
+      [key in Category]?: {
+        count?: number;
+        maximum_active_power?: NumericAggregation;
+      };
+    };
+    by_technology?: {
+      [key in Technology]?: {
+        count?: number;
+        maximum_active_power?: NumericAggregation;
+      };
+    };
+  };
+  /**
+   * Embedded service_providing_group
+   */
+  service_providing_group?: ServiceProvidingGroup | null;
+};
+
+/**
  * Request schema for update operations - Group of controllable units
  */
 export type ServiceProvidingGroupUpdateRequest = {
@@ -961,6 +1005,10 @@ export type ServiceProvidingGroup = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded service_providing_group_summary
+   */
+  summary?: ServiceProvidingGroupSummary | null;
   /**
    * Embedded party
    */
@@ -4174,6 +4222,16 @@ export type ControllableUnitSummaryWritable = {
 };
 
 /**
+ * Response schema - Aggregated summary of controllable units and technical resources belonging to a service providing group.
+ */
+export type ServiceProvidingGroupSummaryWritable = {
+  /**
+   * Embedded service_providing_group
+   */
+  service_providing_group?: ServiceProvidingGroupWritable | null;
+};
+
+/**
  * Response schema - Group of controllable units
  */
 export type ServiceProvidingGroupWritable = {
@@ -4191,6 +4249,10 @@ export type ServiceProvidingGroupWritable = {
    * Free text field for extra information about the service providing group if needed.
    */
   additional_information?: string;
+  /**
+   * Embedded service_providing_group_summary
+   */
+  summary?: ServiceProvidingGroupSummaryWritable | null;
   /**
    * Embedded party
    */
@@ -7527,6 +7589,60 @@ export type ReadControllableUnitSummaryResponses = {
 
 export type ReadControllableUnitSummaryResponse =
   ReadControllableUnitSummaryResponses[keyof ReadControllableUnitSummaryResponses];
+
+export type ReadServiceProvidingGroupSummaryData = {
+  body?: never;
+  path: {
+    id: number;
+  };
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
+  url: "/service_providing_group_summary/{id}";
+};
+
+export type ReadServiceProvidingGroupSummaryErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type ReadServiceProvidingGroupSummaryError =
+  ReadServiceProvidingGroupSummaryErrors[keyof ReadServiceProvidingGroupSummaryErrors];
+
+export type ReadServiceProvidingGroupSummaryResponses = {
+  /**
+   * OK
+   */
+  200: ServiceProvidingGroupSummary;
+};
+
+export type ReadServiceProvidingGroupSummaryResponse =
+  ReadServiceProvidingGroupSummaryResponses[keyof ReadServiceProvidingGroupSummaryResponses];
 
 export type ListServiceProvidingGroupData = {
   body?: never;

@@ -636,6 +636,13 @@ type ApiServiceProvidingGroupProductSuspensionHistory struct {
 	ReplacedAt                               pgtype.Timestamptz
 }
 
+type ApiServiceProvidingGroupSummary struct {
+	ID                      int
+	ServiceProvidingGroupID int
+	ControllableUnit        []byte
+	TechnicalResource       []byte
+}
+
 type ApiSystemOperatorProductType struct {
 	ID               int
 	SystemOperatorID int

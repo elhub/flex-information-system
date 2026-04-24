@@ -234,6 +234,25 @@ from .service_providing_group_product_suspension_update_request import (
 )
 from .service_providing_group_response import ServiceProvidingGroupResponse
 from .service_providing_group_status import ServiceProvidingGroupStatus
+from .service_providing_group_summary_response import ServiceProvidingGroupSummaryResponse
+from .service_providing_group_summary_response_controllable_unit import (
+    ServiceProvidingGroupSummaryResponseControllableUnit,
+)
+from .service_providing_group_summary_response_technical_resource import (
+    ServiceProvidingGroupSummaryResponseTechnicalResource,
+)
+from .service_providing_group_summary_response_technical_resource_by_category import (
+    ServiceProvidingGroupSummaryResponseTechnicalResourceByCategory,
+)
+from .service_providing_group_summary_response_technical_resource_by_category_additional_property import (
+    ServiceProvidingGroupSummaryResponseTechnicalResourceByCategoryAdditionalProperty,
+)
+from .service_providing_group_summary_response_technical_resource_by_technology import (
+    ServiceProvidingGroupSummaryResponseTechnicalResourceByTechnology,
+)
+from .service_providing_group_summary_response_technical_resource_by_technology_additional_property import (
+    ServiceProvidingGroupSummaryResponseTechnicalResourceByTechnologyAdditionalProperty,
+)
 from .service_providing_group_update_request import ServiceProvidingGroupUpdateRequest
 from .system_operator_product_type_create_request import SystemOperatorProductTypeCreateRequest
 from .system_operator_product_type_history_response import SystemOperatorProductTypeHistoryResponse
@@ -401,6 +420,13 @@ __all__ = (
     "ServiceProvidingGroupProductSuspensionUpdateRequest",
     "ServiceProvidingGroupResponse",
     "ServiceProvidingGroupStatus",
+    "ServiceProvidingGroupSummaryResponse",
+    "ServiceProvidingGroupSummaryResponseControllableUnit",
+    "ServiceProvidingGroupSummaryResponseTechnicalResource",
+    "ServiceProvidingGroupSummaryResponseTechnicalResourceByCategory",
+    "ServiceProvidingGroupSummaryResponseTechnicalResourceByCategoryAdditionalProperty",
+    "ServiceProvidingGroupSummaryResponseTechnicalResourceByTechnology",
+    "ServiceProvidingGroupSummaryResponseTechnicalResourceByTechnologyAdditionalProperty",
     "ServiceProvidingGroupUpdateRequest",
     "SystemOperatorProductTypeCreateRequest",
     "SystemOperatorProductTypeHistoryResponse",

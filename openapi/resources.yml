@@ -509,6 +509,148 @@ resources:
                   min: 20
                   max: 20
 
+  - id: service_providing_group_summary
+    acronym: SPGSU
+    summary: Service Providing Group Summary
+    description: >-
+      Aggregated summary of controllable units and technical resources belonging
+      to a service providing group.
+    x-intl:
+      en: Service Providing Group Summary
+      nb: Sammendrag av fleksibilitetsgruppe
+      nn: Samandrag av fleksibilitetsgruppe
+    operations:
+      - read
+    generate_views: false
+    audit: false
+    properties:
+      id:
+        description: Unique surrogate key (service providing group ID).
+        format: bigint
+        type: integer
+        readOnly: true
+        x-filter: true
+        example: 4
+        x-intl:
+          en: ID
+          nb: ID
+          nn: ID
+      service_providing_group_id:
+        description: >-
+          The ID of the service providing group this resource is a summary of.
+        format: bigint
+        type: integer
+        readOnly: true
+        x-filter: true
+        x-foreign-key:
+          resource: service_providing_group
+          field: id
+          cardinality: one-to-one
+        example: 4
+        x-intl:
+          en: Service Providing Group ID
+          nb: Fleksibilitetsgruppe-ID
+          nn: Fleksibilitetsgruppe-ID
+      controllable_unit:
+        description: >-
+          Aggregated statistics on controllable units currently in the service
+          providing group, including count and maximum active power breakdowns
+          (sum, average, min, max) by category and technology.
+        type: object
+        readOnly: true
+        x-intl:
+          en: Controllable unit aggregates
+          nb: Aggregat om kontrollerbare enheter
+          nn: Aggregat om kontrollerbere einingar
+        properties:
+          count:
+            type: integer
+          maximum_active_power:
+            $ref: "#/components/schemas/numeric_aggregation"
+        example:
+          count: 3
+          maximum_active_power:
+            sum: 250
+            average: 83.33
+            min: 50
+            max: 120
+      technical_resource:
+        description: >-
+          Aggregated statistics on technical resources belonging to
+          controllable units with active membership in the service providing
+          group, including counts and maximum active power breakdowns
+          (sum, average, min, max) by category and technology.
+        type: object
+        readOnly: true
+        x-intl:
+          en: Technical resource aggregates
+          nb: Aggregat om tekniske ressurser
+          nn: Aggregat om tekniske ressursar
+        properties:
+          count:
+            type: integer
+          maximum_active_power:
+            $ref: "#/components/schemas/numeric_aggregation"
+          by_category:
+            type: object
+            propertyNames:
+              $ref: "#/components/schemas/category"
+            additionalProperties:
+              type: object
+              properties:
+                count:
+                  type: integer
+                maximum_active_power:
+                  $ref: "#/components/schemas/numeric_aggregation"
+          by_technology:
+            type: object
+            propertyNames:
+              $ref: "#/components/schemas/technology"
+            additionalProperties:
+              type: object
+              properties:
+                count:
+                  type: integer
+                maximum_active_power:
+                  $ref: "#/components/schemas/numeric_aggregation"
+        example:
+          count: 8
+          maximum_active_power:
+            sum: 250
+            average: 31.25
+            min: 10
+            max: 80
+          by_category:
+            production:
+              count: 5
+              maximum_active_power:
+                sum: 180
+                average: 36
+                min: 10
+                max: 80
+            consumption:
+              count: 3
+              maximum_active_power:
+                sum: 70
+                average: 23.33
+                min: 15
+                max: 30
+          by_technology:
+            solar:
+              count: 3
+              maximum_active_power:
+                sum: 130
+                average: 43.33
+                min: 20
+                max: 80
+            battery:
+              count: 2
+              maximum_active_power:
+                sum: 50
+                average: 25
+                min: 20
+                max: 30
+
   - id: service_providing_group
     acronym: SPG
     summary: Service providing group

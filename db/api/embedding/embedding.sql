@@ -89,6 +89,22 @@ RETURNS SETOF api.controllable_unit_summary ROWS 1 AS $$
   select * from api.controllable_unit_summary where controllable_unit_id = $1.id
 $$ STABLE LANGUAGE sql;
 
+-- changeset flex:service_providing_group_summary-service_providing_group_id-to-service_providing_group runAlways:true endDelimiter:--
+CREATE OR REPLACE FUNCTION api.service_providing_group(
+    api.service_providing_group_summary
+)
+RETURNS SETOF api.service_providing_group ROWS 1 AS $$
+  select * from api.service_providing_group where id = $1.service_providing_group_id
+$$ STABLE LANGUAGE sql;
+
+-- changeset flex:service_providing_group-id-to-service_providing_group_summary runAlways:true endDelimiter:--
+CREATE OR REPLACE FUNCTION api.summary(
+    api.service_providing_group
+)
+RETURNS SETOF api.service_providing_group_summary ROWS 1 AS $$
+  select * from api.service_providing_group_summary where service_providing_group_id = $1.id
+$$ STABLE LANGUAGE sql;
+
 -- changeset flex:service_providing_group-service_provider_id-to-party runAlways:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.service_provider(
     api.service_providing_group
