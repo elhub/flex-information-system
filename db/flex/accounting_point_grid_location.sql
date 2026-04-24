@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS accounting_point_grid_location (
     CONSTRAINT accounting_point_grid_location_business_id_check CHECK (
         business_id IS NULL
         OR business_id
-        ~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+        ~* '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
     ),
     CONSTRAINT accounting_point_grid_location_name_check CHECK (
         char_length(name) <= 512

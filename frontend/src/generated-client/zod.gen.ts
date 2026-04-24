@@ -329,10 +329,9 @@ export const zTechnicalResourceBusinessIdType = z.enum([
 /**
  * The direction of the effect on the balance that the BRP takes responsibility for.
  */
-export const zAccountingPointBalanceResponsiblePartyEnergyDirection = z.enum([
-  "consumption",
-  "production",
-]);
+export const zAccountingPointBalanceResponsiblePartyEnergyDirection = z
+  .enum(["consumption", "production"])
+  .readonly();
 
 /**
  * The bidding zone of the accounting point.
@@ -348,7 +347,7 @@ export const zAccountingPointBiddingZoneBiddingZone = z.enum([
 /**
  * The type of the business identifier.
  */
-export const zMeteringGridAreaBusinessIdType = z.enum(["eic_y"]);
+export const zMeteringGridAreaBusinessIdType = z.enum(["eic_y"]).readonly();
 
 /**
  * The type of object in the common grid model that the accounting point is at.
@@ -385,7 +384,7 @@ export const zAccountingPointGridLocationCreateRequest = z.object({
   business_id: z
     .string()
     .regex(
-      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
+      /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
     )
     .optional(),
   name: z.string().max(512),
@@ -403,7 +402,7 @@ export const zAccountingPointGridLocationUpdateRequest = z.object({
   business_id: z
     .string()
     .regex(
-      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
+      /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
     )
     .optional(),
   name: z.string().max(512).optional(),
@@ -1278,7 +1277,7 @@ export const zAccountingPointGridLocationHistory = z.object({
   business_id: z
     .string()
     .regex(
-      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
+      /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
     )
     .optional(),
   name: z.string().max(512),
@@ -1641,7 +1640,7 @@ export const zAccountingPointGridLocationHistoryWritable = z.object({
   business_id: z
     .string()
     .regex(
-      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
+      /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
     )
     .optional(),
   name: z.string().max(512),
@@ -2297,7 +2296,7 @@ export const zAccountingPointGridLocation = z.object({
   business_id: z
     .string()
     .regex(
-      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
+      /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
     )
     .optional(),
   name: z.string().max(512),
@@ -2898,7 +2897,7 @@ export const zAccountingPointGridLocationWritable = z.object({
   business_id: z
     .string()
     .regex(
-      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
+      /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
     )
     .optional(),
   name: z.string().max(512),
