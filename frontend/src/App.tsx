@@ -18,7 +18,7 @@ import { AssumePartyPage } from "./AssumePartyPage";
 
 import { createAllResources } from "./resources";
 
-import { Dashboard } from "./Dashboard";
+import { Dashboard } from "./dashboard/Dashboard";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import postgrestRestProvider, {
