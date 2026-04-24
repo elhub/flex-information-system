@@ -388,7 +388,7 @@ export const zAccountingPointGridLocationCreateRequest = z.object({
     )
     .optional(),
   name: z.string().max(512),
-  nominal_voltage: z.coerce.number().gte(0),
+  nominal_voltage: z.coerce.number().gte(0).lte(999999.999),
   additional_information: z.string().optional(),
   source: zAccountingPointGridLocationSource,
   quality: zAccountingPointGridLocationQuality,
@@ -406,7 +406,7 @@ export const zAccountingPointGridLocationUpdateRequest = z.object({
     )
     .optional(),
   name: z.string().max(512).optional(),
-  nominal_voltage: z.coerce.number().gte(0).optional(),
+  nominal_voltage: z.coerce.number().gte(0).lte(999999.999).optional(),
   additional_information: z.string().optional(),
   source: zAccountingPointGridLocationSource.optional(),
   quality: zAccountingPointGridLocationQuality.optional(),
@@ -1281,7 +1281,7 @@ export const zAccountingPointGridLocationHistory = z.object({
     )
     .optional(),
   name: z.string().max(512),
-  nominal_voltage: z.coerce.number().gte(0),
+  nominal_voltage: z.coerce.number().gte(0).lte(999999.999),
   additional_information: z.string().optional(),
   source: zAccountingPointGridLocationSource,
   quality: zAccountingPointGridLocationQuality,
@@ -1644,7 +1644,7 @@ export const zAccountingPointGridLocationHistoryWritable = z.object({
     )
     .optional(),
   name: z.string().max(512),
-  nominal_voltage: z.coerce.number().gte(0),
+  nominal_voltage: z.coerce.number().gte(0).lte(999999.999),
   additional_information: z.string().optional(),
   source: zAccountingPointGridLocationSource,
   quality: zAccountingPointGridLocationQuality,
@@ -2300,7 +2300,7 @@ export const zAccountingPointGridLocation = z.object({
     )
     .optional(),
   name: z.string().max(512),
-  nominal_voltage: z.coerce.number().gte(0),
+  nominal_voltage: z.coerce.number().gte(0).lte(999999.999),
   additional_information: z.string().optional(),
   source: zAccountingPointGridLocationSource,
   quality: zAccountingPointGridLocationQuality,
@@ -2901,7 +2901,7 @@ export const zAccountingPointGridLocationWritable = z.object({
     )
     .optional(),
   name: z.string().max(512),
-  nominal_voltage: z.coerce.number().gte(0),
+  nominal_voltage: z.coerce.number().gte(0).lte(999999.999),
   additional_information: z.string().optional(),
   source: zAccountingPointGridLocationSource,
   quality: zAccountingPointGridLocationQuality,

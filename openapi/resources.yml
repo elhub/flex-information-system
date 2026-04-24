@@ -2586,6 +2586,8 @@ resources:
         format: decimal
         type: number
         minimum: 0
+        maximum: 999999.999
+        multipleOf: 0.001
         example: 22
         x-intl:
           en: Nominal voltage

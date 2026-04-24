@@ -616,6 +616,8 @@
                         "format": "decimal",
                         "type": "number",
                         "minimum": 0,
+                        "maximum": 999999.999,
+                        "multipleOf": 0.001,
                         "example": 22
                     },
                     "additional_information": {
@@ -669,6 +671,8 @@
                         "format": "decimal",
                         "type": "number",
                         "minimum": 0,
+                        "maximum": 999999.999,
+                        "multipleOf": 0.001,
                         "example": 22
                     },
                     "additional_information": {
@@ -4638,6 +4642,8 @@
                         "format": "decimal",
                         "type": "number",
                         "minimum": 0,
+                        "maximum": 999999.999,
+                        "multipleOf": 0.001,
                         "example": 22
                     },
                     "additional_information": {
@@ -7482,6 +7488,8 @@
                         "format": "decimal",
                         "type": "number",
                         "minimum": 0,
+                        "maximum": 999999.999,
+                        "multipleOf": 0.001,
                         "example": 22
                     },
                     "additional_information": {
