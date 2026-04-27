@@ -89,7 +89,6 @@ export const ServiceProviderProductApplicationInput = () => {
             placeholder="Select status"
           />
         )}
-        <DateTimeInput {...fields.qualified_at} showNow />
         <FormToolbar />
       </FormContainer>
     </Form>
