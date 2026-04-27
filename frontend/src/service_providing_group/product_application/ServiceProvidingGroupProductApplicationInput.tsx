@@ -128,12 +128,6 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
           description
           tooltip={false}
         />
-        <DateTimeInput
-          {...fields.prequalified_at}
-          description
-          tooltip={false}
-        />
-        <DateTimeInput {...fields.verified_at} description tooltip={false} />
         <FormToolbar />
       </FormContainer>
     </Form>
