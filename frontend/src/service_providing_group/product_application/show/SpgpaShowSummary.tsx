@@ -90,14 +90,14 @@ export const SpgpaShowSummary = ({ spgpa, spg }: Props) => {
           />
 
           <LabelValue
-            size="small"
+            size="large"
             label="Max active power (up)"
             value={spgpa.maximum_active_power_up}
             unit="kW"
           />
 
           <LabelValue
-            size="small"
+            size="large"
             label="Max active power (down)"
             value={spgpa.maximum_active_power_down}
             unit="kW"

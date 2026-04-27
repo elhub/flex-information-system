@@ -2,12 +2,7 @@ import { Heading, Link, Panel } from "../../components/ui";
 import { LabelValue } from "../../components/LabelValue";
 import { Column, SimpleTable } from "../../components/SimpleTable";
 import { useTranslateEnum } from "../../intl/intl";
-import {
-  PieChart,
-  Pie,
-  Sector,
-  ResponsiveContainer,
-} from "recharts";
+import { PieChart, Pie, Sector, ResponsiveContainer } from "recharts";
 import type { SectorProps } from "recharts";
 import type { PieSectorShapeProps } from "recharts/types/polar/Pie";
 import type {
@@ -48,7 +43,10 @@ type TechnologyRow = {
 const formatKw = (value: number | undefined) =>
   value !== undefined ? `${Math.round(value * 100) / 100} kW` : "-";
 
-export const ServiceProvidingGroupShowSPGSummarySection = ({ spgViewModel, summary }: Props) => {
+export const ServiceProvidingGroupShowSPGSummarySection = ({
+  spgViewModel,
+  summary,
+}: Props) => {
   const translateEnum = useTranslateEnum();
 
   const { controllable_unit: cu, technical_resource: tr } = summary;
@@ -115,8 +113,13 @@ export const ServiceProvidingGroupShowSPGSummarySection = ({ spgViewModel, summa
       <p>
         Here are the aggregated maximum active power values for this service
         providing group. We explain what these values correspond to in{" "}
-        <Link external
-          href="https://elhub.github.io/flex-information-system/concepts/technologies/#maximum-active-power-as-size">our documentation</Link>{" ."}
+        <Link
+          external
+          href="https://elhub.github.io/flex-information-system/concepts/technologies/#maximum-active-power-as-size"
+        >
+          our documentation
+        </Link>
+        {" ."}
       </p>
       <div className="grid grid-cols-2">
         <LabelValue

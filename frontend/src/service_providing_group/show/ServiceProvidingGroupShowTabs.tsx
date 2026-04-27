@@ -12,7 +12,11 @@ type Props = {
   summary: ServiceProvidingGroupSummary | undefined;
 };
 
-export const ServiceProvidingGroupShowTabs = ({ spgId, spgViewModel, summary }: Props) => (
+export const ServiceProvidingGroupShowTabs = ({
+  spgId,
+  spgViewModel,
+  summary,
+}: Props) => (
   <Tabs defaultValue="summary" className="relative top-[-24px]">
     <Tabs.List>
       <Tabs.Tab label="Summary" value="summary" />
@@ -24,7 +28,14 @@ export const ServiceProvidingGroupShowTabs = ({ spgId, spgViewModel, summary }: 
       <Tabs.Tab label="Grid prequalifications" value="grid_prequalifications" />
     </Tabs.List>
     <Tabs.Panel value="summary">
-      {summary ? <ServiceProvidingGroupShowSPGSummarySection spgViewModel={spgViewModel} summary={summary} /> : "No summary available"}
+      {summary ? (
+        <ServiceProvidingGroupShowSPGSummarySection
+          spgViewModel={spgViewModel}
+          summary={summary}
+        />
+      ) : (
+        "No summary available"
+      )}
     </Tabs.Panel>
     <Tabs.Panel value="controllable_units">
       <ServiceProvidingGroupShowTable spgId={spgId} summary={summary} />

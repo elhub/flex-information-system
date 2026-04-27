@@ -24,62 +24,63 @@ export const SpgInfoTab = ({ spgId, spg }: Props) => {
   const { status, icon } = spgStatusVariantMap[spg.status];
 
   return (
-    <Panel border className="flex flex-col gap-4 p-4">
-      <LabelValue
-        label="Name"
-        value={
-          <div className="flex items-center gap-2">
-            {spg.name}
-            <Link
-              as={RouterLink}
-              to={`/service_providing_group/${spg.id}/show`}
-            >
-              See more
-            </Link>
-          </div>
-        }
-      />
-      <LabelValue label="Bidding zone" value={spg.bidding_zone} />
-      <LabelValue
-        label="Status"
-        value={
-          <Badge size="small" status={status} variant="block" icon={icon}>
-            {translateEnum(`service_providing_group.status.${spg.status}`)}
-          </Badge>
-        }
-      />
-      <LabelValue
-        label="Total capacity"
-        value={spgViewModel?.totalCapacityKw}
-        unit="kW"
-      />
-      <LabelValue
-        label="Capacity - Production"
-        value={spgViewModel?.productionCapacityKw}
-        unit="kW"
-      />
-      <LabelValue
-        label="Capacity - Consumption"
-        value={spgViewModel?.consumptionCapacityKw}
-        unit="kW"
-      />
-      {spg.summary && (
-        <>
+    <div className="flex flex-col gap-4">
+      <Panel border className="flex flex-col gap-4 p-4">
+        <LabelValue
+          label="Name"
+          value={
+            <div className="flex items-center gap-2">
+              {spg.name}
+              <Link
+                as={RouterLink}
+                to={`/service_providing_group/${spg.id}/show`}
+              >
+                See more
+              </Link>
+            </div>
+          }
+        />
+        <LabelValue label="Bidding zone" value={spg.bidding_zone} />
+        <LabelValue
+          label="Status"
+          value={
+            <Badge size="small" status={status} variant="block" icon={icon}>
+              {translateEnum(`service_providing_group.status.${spg.status}`)}
+            </Badge>
+          }
+        />
+      </Panel>
+      <div className="grid grid-cols-3 gap-4">
+        <Panel border className="grid col-span-2 grid-cols-4 gap-4 p-4">
           <LabelValue
-            label="Controllable units"
-            value={spg.summary.controllable_unit.count ?? 0}
-          />
-          <LabelValue
-            label="Technical resources"
-            value={spg.summary.technical_resource.count ?? 0}
-          />
-          <LabelValue
-            label="Aggregated maximum active power"
-            value={spg.summary.technical_resource.maximum_active_power?.sum}
+            className="col-span-2"
+            size="large"
+            label="Aggregated maximum flexible active power"
+            value={spgViewModel?.totalCapacityKw}
             unit="kW"
           />
-        </>
-      )}
-    </Panel>
+          <LabelValue
+            label="Production"
+            value={spgViewModel?.productionCapacityKw}
+            unit="kW"
+          />
+          <LabelValue
+            label="Consumption"
+            value={spgViewModel?.consumptionCapacityKw}
+            unit="kW"
+          />
+        </Panel>
+        <Panel border className="flex flex-row gap-4 p-4">
+          {spg.summary && (
+            <LabelValue
+              size="large"
+              label="Aggregated maximum active power"
+              value={spg.summary.technical_resource.maximum_active_power?.sum}
+              unit="kW"
+            />
+          )}
+        </Panel>
+      </div>
+    </div>
   );
 };
