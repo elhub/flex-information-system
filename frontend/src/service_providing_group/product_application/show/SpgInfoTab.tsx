@@ -5,6 +5,8 @@ import { spgStatusVariantMap } from "../../serviceProvidingGroupStatus";
 import { Link as RouterLink } from "react-router-dom";
 import { ServiceProvidingGroup } from "../../../generated-client";
 import { useSpgShowViewModel } from "../../show/useSpgShowViewModel";
+import { ServiceProvidingGroupControllableUnitSummary } from "../../summary/ServiceProvidingGroupControllableUnitSummary";
+import { ServiceProvidingGroupTechnicalResourceSummary } from "../../summary/ServiceProvidingGroupTechnicalResourceSummary";
 
 type Props = {
   spgId: number;
@@ -50,37 +52,17 @@ export const SpgInfoTab = ({ spgId, spg }: Props) => {
           }
         />
       </Panel>
-      <div className="grid grid-cols-3 gap-4">
-        <Panel border className="grid col-span-2 grid-cols-4 gap-4 p-4">
-          <LabelValue
-            className="col-span-2"
-            size="large"
-            label="Aggregated maximum flexible active power"
-            value={spgViewModel?.totalCapacityKw}
-            unit="kW"
+      {spg.summary && (
+        <>
+          <ServiceProvidingGroupControllableUnitSummary
+            spgViewModel={spgViewModel}
+            summary={spg.summary}
           />
-          <LabelValue
-            label="Production"
-            value={spgViewModel?.productionCapacityKw}
-            unit="kW"
+          <ServiceProvidingGroupTechnicalResourceSummary
+            summary={spg.summary}
           />
-          <LabelValue
-            label="Consumption"
-            value={spgViewModel?.consumptionCapacityKw}
-            unit="kW"
-          />
-        </Panel>
-        <Panel border className="flex flex-row gap-4 p-4">
-          {spg.summary && (
-            <LabelValue
-              size="large"
-              label="Aggregated maximum active power"
-              value={spg.summary.technical_resource.maximum_active_power?.sum}
-              unit="kW"
-            />
-          )}
-        </Panel>
-      </div>
+        </>
+      )}
     </div>
   );
 };
