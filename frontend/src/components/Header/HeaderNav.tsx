@@ -3,8 +3,8 @@ import { Nav } from "../ui";
 
 const navLinks = [
   { label: "Dashboard", to: "/" },
-  { label: "CUs", to: "/controllable_unit" },
-  { label: "SPGs", to: "/service_providing_group" },
+  { label: "Controllable Units", to: "/controllable_unit" },
+  { label: "Service providing groups", to: "/service_providing_group" },
 ];
 
 export const HeaderNav = () => {
