@@ -44,7 +44,7 @@ export const ShowPageLayout = ({
       </Button>
 
       <div className="flex items-center gap-2">
-        <Heading level={2} size="medium">
+        <Heading level={2} size="xlarge">
           {title}
         </Heading>
         {badge && <div className="flex items-center gap-1">{badge}</div>}
