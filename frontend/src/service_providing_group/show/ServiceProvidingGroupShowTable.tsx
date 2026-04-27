@@ -11,9 +11,12 @@ import { IconCrossCircle, IconUser } from "@elhub/ds-icons";
 import { usePermissions } from "ra-core";
 import { Permissions } from "../../auth/permissions";
 import { useConfirmAction } from "../../components/ConfirmAction";
+import { ServiceProvidingGroupSummary } from "../../generated-client";
+import { LabelValue } from "../../components/LabelValue";
 
 type Props = {
   spgId: number;
+  summary: ServiceProvidingGroupSummary | undefined;
 };
 
 const DeleteButton = ({
@@ -50,7 +53,7 @@ const DeleteButton = ({
   );
 };
 
-export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
+export const ServiceProvidingGroupShowTable = ({ spgId, summary }: Props) => {
   const { data, isLoading, error } = useSpgShowViewModel(spgId);
   const navigate = useNavigate();
   const t = useTranslateField();
@@ -123,6 +126,31 @@ export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
 
   return (
     <div className="flex flex-col gap-4">
+      {summary &&
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <LabelValue label="Controllable units" value={summary.controllable_unit.count ?? 0} />
+
+        <LabelValue
+          label="Average maximum active power"
+          value={
+            summary.controllable_unit.maximum_active_power?.average !== undefined
+              ? Math.round(summary.controllable_unit.maximum_active_power.average * 100) / 100
+              : undefined
+          }
+          unit="kW"
+        />
+        <LabelValue
+          label="Minimum"
+          value={summary.controllable_unit.maximum_active_power?.min}
+          unit="kW"
+        />
+        <LabelValue
+          label="Maximum"
+          value={summary.controllable_unit.maximum_active_power?.max}
+          unit="kW"
+        />
+      </div>
+      }
       <div className="flex justify-end">
         {canManageMembers && (
           <Button

@@ -1,4 +1,4 @@
-import { Heading, Panel } from "../../components/ui";
+import { Heading, Link, Panel } from "../../components/ui";
 import { LabelValue } from "../../components/LabelValue";
 import { Column, SimpleTable } from "../../components/SimpleTable";
 import { useTranslateEnum } from "../../intl/intl";
@@ -6,8 +6,6 @@ import {
   PieChart,
   Pie,
   Sector,
-  Tooltip,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
 import type { SectorProps } from "recharts";
@@ -17,15 +15,24 @@ import type {
   Category,
   Technology,
 } from "../../generated-client";
+import { SpgShowViewModel } from "./useSpgShowViewModel";
 
 type Props = {
+  spgViewModel: SpgShowViewModel;
   summary: ServiceProvidingGroupSummary;
 };
 
+// TODO: should this be moved to the theme config ?
+const CHART_COLOR_GREEN = "#686f38"; // global-color-chart-series-3
+const CHART_COLOR_BLUE = "#4f97c8"; // global-color-chart-series-2
+const CHART_COLOR_ORANGE = "#dc712f"; // global-color-chart-series-7
+const CHART_COLOR_FALLBACK = "#5a776f"; // global-color-chart-series-4
+const CHART_SECTOR_STROKE = "#ffffff";
+
 const CATEGORY_COLORS: Record<string, string> = {
-  production: "#4ade80",
-  consumption: "#60a5fa",
-  energy_storage: "#fbbf24",
+  production: CHART_COLOR_GREEN,
+  consumption: CHART_COLOR_BLUE,
+  energy_storage: CHART_COLOR_ORANGE,
 };
 
 type TechnologyRow = {
@@ -41,7 +48,7 @@ type TechnologyRow = {
 const formatKw = (value: number | undefined) =>
   value !== undefined ? `${Math.round(value * 100) / 100} kW` : "-";
 
-export const SpgSummarySection = ({ summary }: Props) => {
+export const ServiceProvidingGroupShowSPGSummarySection = ({ spgViewModel, summary }: Props) => {
   const translateEnum = useTranslateEnum();
 
   const { controllable_unit: cu, technical_resource: tr } = summary;
@@ -70,7 +77,7 @@ export const SpgSummarySection = ({ summary }: Props) => {
     },
     {
       key: "sum",
-      header: "Sum (kW)",
+      header: "Aggregated maximum active power (kW)",
       render: (v) => <div className="text-right">{formatKw(v as number)}</div>,
     },
     {
@@ -104,57 +111,52 @@ export const SpgSummarySection = ({ summary }: Props) => {
   }));
 
   return (
-    <Panel border className="p-4 mt-6">
-      <div className="flex flex-col gap-6">
-        <Heading level="h4" className="mb-4">
-          Aggregated information
-        </Heading>
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-          <LabelValue label="Controllable units" value={cu.count ?? 0} />
-          <LabelValue
-            label="Aggregated maximum active power"
-            value={cu.maximum_active_power?.sum}
-            unit="kW"
+    <div className="flex flex-col gap-6">
+      <p>
+        Here are the aggregated maximum active power values for this service
+        providing group. We explain what these values correspond to in{" "}
+        <Link external
+          href="https://elhub.github.io/flex-information-system/concepts/technologies/#maximum-active-power-as-size">our documentation</Link>{" ."}
+      </p>
+      <div className="grid grid-cols-2">
+        <LabelValue
+          size="large"
+          label="Aggregated maximum flexible active power"
+          value={spgViewModel.totalCapacityKw}
+          unit="kW"
+        />
+        <LabelValue
+          size="large"
+          label="Aggregated maximum active power"
+          value={cu.maximum_active_power?.sum}
+          unit="kW"
+        />
+      </div>
+      <div className="grid grid-cols-3 gap-4">
+        {technologyRows.length > 0 && (
+          <SimpleTable
+            size="small"
+            data={technologyRows}
+            columns={technologyColumns}
+            className="col-span-2 w-full"
           />
-          <LabelValue
-            label="Average"
-            value={
-              cu.maximum_active_power?.average !== undefined
-                ? Math.round(cu.maximum_active_power.average * 100) / 100
-                : undefined
-            }
-            unit="kW"
-          />
-          <LabelValue
-            label="Minimum"
-            value={cu.maximum_active_power?.min}
-            unit="kW"
-          />
-          <LabelValue
-            label="Maximum"
-            value={cu.maximum_active_power?.max}
-            unit="kW"
-          />
-        </div>
-        <div className="grid grid-cols-2 gap-4">
-          {technologyRows.length > 0 && (
-            <SimpleTable
-              size="small"
-              data={technologyRows}
-              columns={technologyColumns}
-              className="w-full"
-            />
-          )}
-          {categoryData.length > 0 && (
+        )}
+        {categoryData.length > 0 && (
+          <Panel
+            border
+            className="bg-semantic-background-alternative h-fit p-4 sm:p-5"
+          >
+            <Heading size="small">
+              Aggregated maximum active power by category
+            </Heading>
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
                 <Pie
+                  // remove outline on chart piece click
+                  style={{ outline: "none" }}
                   data={categoryData}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={100}
+                  innerRadius={25}
+                  outerRadius={80}
                   label={({ name, value }) => `${name}: ${formatKw(value)}`}
                   shape={(props: PieSectorShapeProps) => (
                     <Sector
@@ -162,20 +164,19 @@ export const SpgSummarySection = ({ summary }: Props) => {
                       fill={
                         CATEGORY_COLORS[
                           categoryData[props.index ?? 0]?.key ?? ""
-                        ] ?? "#94a3b8"
+                        ] ?? CHART_COLOR_FALLBACK
                       }
+                      stroke={CHART_SECTOR_STROKE}
+                      strokeWidth={2}
                     />
                   )}
+                  isAnimationActive={false}
                 />
-                <Tooltip
-                  formatter={(value) => formatKw(value as number | undefined)}
-                />
-                <Legend />
               </PieChart>
             </ResponsiveContainer>
-          )}
-        </div>
+          </Panel>
+        )}
       </div>
-    </Panel>
+    </div>
   );
 };
