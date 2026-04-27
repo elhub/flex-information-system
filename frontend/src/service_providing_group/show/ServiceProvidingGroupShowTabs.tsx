@@ -38,7 +38,7 @@ export const ServiceProvidingGroupShowTabs = ({
       )}
     </Tabs.Panel>
     <Tabs.Panel value="controllable_units">
-      <ServiceProvidingGroupShowTable spgId={spgId} summary={summary} />
+      <ServiceProvidingGroupShowTable spgId={spgId} />
     </Tabs.Panel>
     <Tabs.Panel value="product_applications">
       <ServiceProvidingGroupShowProductApplicationsTable spgId={spgId} />
