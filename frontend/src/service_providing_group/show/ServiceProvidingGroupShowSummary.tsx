@@ -1,37 +1,19 @@
 import { EnumField, ReferenceField } from "../../components/EDS-ra";
-import { Button, Loader, Panel } from "../../components/ui";
+import { Button, Panel } from "../../components/ui";
 import { LabelValue } from "../../components/LabelValue";
 import { RecordContextProvider, usePermissions } from "ra-core";
-import { useSpgShowViewModel } from "./useSpgShowViewModel";
 import { ServiceProvidingGroup } from "../../generated-client";
 import { IconPencil } from "@elhub/ds-icons";
 import { Link as RouterLink } from "react-router-dom";
 import { Permissions } from "../../auth/permissions";
-
-const formatUnit = (value: number | undefined, unit: string) => {
-  if (value === undefined) {
-    return "-";
-  }
-
-  return `${value.toFixed(3)} ${unit}`;
-};
 
 export const ServiceProvidingGroupShowSummary = ({
   spg,
 }: {
   spg: ServiceProvidingGroup;
 }) => {
-  const { data, isLoading, error } = useSpgShowViewModel(spg.id);
   const { permissions } = usePermissions<Permissions>();
   const canEdit = permissions?.allow("service_providing_group", "update");
-
-  if (isLoading) {
-    return <Loader size="small" />;
-  }
-
-  if (error) {
-    throw error;
-  }
 
   return (
     <Panel
@@ -66,21 +48,6 @@ export const ServiceProvidingGroupShowSummary = ({
             enumKey="service_providing_group.bidding_zone"
           />
         </RecordContextProvider>
-        <LabelValue
-          size="small"
-          label="Capacity - Consumption"
-          value={formatUnit(data?.consumptionCapacityKw, "kW")}
-        />
-        <LabelValue
-          size="small"
-          label="Capacity - Production"
-          value={formatUnit(data?.productionCapacityKw, "kW")}
-        />
-        <LabelValue
-          size="small"
-          label="Total capacity"
-          value={formatUnit(data?.totalCapacityKw, "kW")}
-        />
         {spg.additional_information && (
           <LabelValue
             label="Additional information"
