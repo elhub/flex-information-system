@@ -24,8 +24,8 @@ class ControllableUnitCreateRequest:
         regulation_direction (ControllableUnitRegulationDirection): The regulation direction of the controllable unit.
             `up` means it can be used to increase production or decrease consumption, while `down` means to decrease
             production or increase consumption. Example: up.
-        maximum_active_power (float): Maximum continuous active power that the controllable unit can produce or consume,
-            i.e. deliver for balancing and congestion services, in kilowatts. Example: 3.5.
+        maximum_active_power (float): Maximum continuous active power (flexible power) that the controllable unit can
+            produce or consume, i.e. deliver for balancing and congestion services, in kilowatts. Example: 3.5.
         accounting_point_id (int): Reference to the accounting point that the controllable unit is connected to.
             Example: 10289.
         start_date (datetime.date | None | Unset): The usage date when the controllable unit is first active. Example:

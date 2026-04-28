@@ -521,7 +521,7 @@ export type ControllableUnitUpdateRequest = {
   status?: ControllableUnitStatus;
   regulation_direction?: ControllableUnitRegulationDirection;
   /**
-   * Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
+   * Maximum continuous active power (flexible power) that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
    */
   maximum_active_power?: number;
   /**
@@ -545,7 +545,7 @@ export type ControllableUnitCreateRequest = {
   status?: ControllableUnitStatus;
   regulation_direction: ControllableUnitRegulationDirection;
   /**
-   * Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
+   * Maximum continuous active power (flexible power) that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
    */
   maximum_active_power: number;
   /**
@@ -581,7 +581,7 @@ export type ControllableUnit = {
   status: ControllableUnitStatus;
   regulation_direction: ControllableUnitRegulationDirection;
   /**
-   * Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
+   * Maximum continuous active power (flexible power) that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
    */
   maximum_active_power: number;
   /**
@@ -3005,7 +3005,7 @@ export type ControllableUnitHistory = {
   status: ControllableUnitStatus;
   regulation_direction: ControllableUnitRegulationDirection;
   /**
-   * Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
+   * Maximum continuous active power (flexible power) that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
    */
   maximum_active_power: number;
   /**
@@ -4086,7 +4086,7 @@ export type ControllableUnitWritable = {
   status: ControllableUnitStatus;
   regulation_direction: ControllableUnitRegulationDirection;
   /**
-   * Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
+   * Maximum continuous active power (flexible power) that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
    */
   maximum_active_power: number;
   /**
@@ -5034,7 +5034,7 @@ export type ControllableUnitHistoryWritable = {
   status: ControllableUnitStatus;
   regulation_direction: ControllableUnitRegulationDirection;
   /**
-   * Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
+   * Maximum continuous active power (flexible power) that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
    */
   maximum_active_power: number;
   /**

@@ -964,7 +964,7 @@
                         "$ref": "#/components/schemas/controllable_unit_regulation_direction"
                     },
                     "maximum_active_power": {
-                        "description": "Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
+                        "description": "Maximum continuous active power (flexible power) that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
                         "format": "decimal",
                         "type": "number",
                         "minimum": 0,
@@ -1007,7 +1007,7 @@
                         "$ref": "#/components/schemas/controllable_unit_regulation_direction"
                     },
                     "maximum_active_power": {
-                        "description": "Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
+                        "description": "Maximum continuous active power (flexible power) that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
                         "format": "decimal",
                         "type": "number",
                         "minimum": 0,
@@ -1078,7 +1078,7 @@
                         "$ref": "#/components/schemas/controllable_unit_regulation_direction"
                     },
                     "maximum_active_power": {
-                        "description": "Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
+                        "description": "Maximum continuous active power (flexible power) that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
                         "format": "decimal",
                         "type": "number",
                         "minimum": 0,
@@ -6220,7 +6220,7 @@
                         "$ref": "#/components/schemas/controllable_unit_regulation_direction"
                     },
                     "maximum_active_power": {
-                        "description": "Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
+                        "description": "Maximum continuous active power (flexible power) that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
                         "format": "decimal",
                         "type": "number",
                         "minimum": 0,

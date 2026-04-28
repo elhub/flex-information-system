@@ -130,7 +130,9 @@ resources:
           nn: Reguleringsretning
       maximum_active_power:
         description: >-
-          Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
+          Maximum continuous active power (flexible power) that the controllable
+          unit can produce or consume, i.e. deliver for balancing and congestion
+          services, in kilowatts.
         format: decimal
         type: number
         minimum: 0
@@ -138,9 +140,9 @@ resources:
         multipleOf: 0.001
         example: 3.5
         x-intl:
-          en: Maximum active power
-          nb: Maksimal aktiv effekt
-          nn: Maksimal aktiv effekt
+          en: Flexible power
+          nb: Fleksibel effekt
+          nn: Fleksibel effekt
       is_small:
         description: >-
           Whether the controllable unit is small or not, following NCDR.
@@ -1864,9 +1866,9 @@ resources:
         multipleOf: 0.001
         example: 120.0
         x-intl:
-          en: Maximum active power
-          nb: Maksimal aktiv effekt
-          nn: Maksimal aktiv effekt
+          en: Rated power
+          nb: Merkeeffekt
+          nn: Merkeeffekt
       device_type:
         description: >-
           The type of device.
