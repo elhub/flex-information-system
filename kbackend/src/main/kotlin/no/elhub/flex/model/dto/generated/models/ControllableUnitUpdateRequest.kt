@@ -35,8 +35,8 @@ public data class ControllableUnitUpdateRequest(
   @SerialName("regulation_direction")
   public val regulationDirection: ControllableUnitRegulationDirection? = null,
   /**
-   * Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver
-   * for balancing and congestion services, in kilowatts.
+   * Maximum continuous active power (flexible power) that the controllable unit can produce or
+   * consume, i.e. deliver for balancing and congestion services, in kilowatts.
    */
   @Contextual
   @SerialName("maximum_active_power")

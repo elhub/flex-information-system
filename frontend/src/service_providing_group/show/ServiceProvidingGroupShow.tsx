@@ -11,6 +11,7 @@ import { usePermissions } from "ra-core";
 import { Permissions } from "../../auth/permissions";
 import { ActivateServiceProvidingGroupButton } from "../ActivateServiceProvidingGroupButton";
 import { spgStatusVariantMap } from "../serviceProvidingGroupStatus";
+import { useSpgShowViewModel } from "./useSpgShowViewModel";
 
 export const ServiceProvidingGroupShow = () => {
   const spgId = Number(useParams<{ id: string }>().id);
@@ -19,24 +20,37 @@ export const ServiceProvidingGroupShow = () => {
 
   const {
     data: spg,
-    isPending,
-    error,
+    isPending: isSPGPending,
+    error: errorSPG,
   } = useQuery({
     queryKey: ["service_providing_group", spgId],
     queryFn: () =>
-      readServiceProvidingGroup({ path: { id: spgId } }).then(throwOnError),
+      readServiceProvidingGroup({
+        path: { id: spgId },
+        query: { embed: "summary" },
+      }).then(throwOnError),
     enabled: !!spgId,
   });
 
-  if (isPending) {
+  const {
+    data: spgViewModel,
+    isPending: isSPGViewModelPending,
+    error: errorSPGViewModel,
+  } = useSpgShowViewModel(spgId);
+
+  if (isSPGPending || isSPGViewModelPending) {
     return <Loader />;
   }
 
-  if (error) {
-    throw error;
+  if (errorSPG) {
+    throw errorSPG;
   }
 
-  if (!spg) {
+  if (errorSPGViewModel) {
+    throw errorSPGViewModel;
+  }
+
+  if (!spg || !spgViewModel) {
     return null;
   }
 
@@ -72,7 +86,11 @@ export const ServiceProvidingGroupShow = () => {
       }
     >
       <ServiceProvidingGroupShowSummary spg={spg} />
-      <ServiceProvidingGroupShowTabs spgId={spg.id} />
+      <ServiceProvidingGroupShowTabs
+        spgId={spg.id}
+        spgViewModel={spgViewModel}
+        summary={spg.summary ?? undefined}
+      />
     </ShowPageLayout>
   );
 };

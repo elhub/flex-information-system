@@ -11,6 +11,7 @@ import { IconCrossCircle, IconUser } from "@elhub/ds-icons";
 import { usePermissions } from "ra-core";
 import { Permissions } from "../../auth/permissions";
 import { useConfirmAction } from "../../components/ConfirmAction";
+import { PowerRatio } from "../../util/powerRatio";
 
 type Props = {
   spgId: number;
@@ -104,9 +105,26 @@ export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
       header: t("service_providing_group_membership.valid_to"),
     },
     {
+      key: "rated_power",
+      header: t("technical_resource.maximum_active_power"),
+      render: (value) => (
+        <div className="text-right">
+          {value != null ? `${String(value)} kW` : "—"}
+        </div>
+      ),
+    },
+    {
       key: "maximum_active_power",
       header: t("controllable_unit.maximum_active_power"),
-      render: (value) => <div className="text-right">{String(value)}</div>,
+      render: (value, row) => (
+        <div className="flex items-center justify-end gap-3">
+          <span>{String(value)} kW</span>
+          <PowerRatio
+            flexiblePower={row.maximum_active_power}
+            ratedPower={row.rated_power}
+          />
+        </div>
+      ),
     },
     {
       key: "regulation_direction",

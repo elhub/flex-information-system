@@ -27,8 +27,8 @@ class ControllableUnitUpdateRequest:
         regulation_direction (ControllableUnitRegulationDirection | Unset): The regulation direction of the controllable
             unit. `up` means it can be used to increase production or decrease consumption, while `down` means to decrease
             production or increase consumption. Example: up.
-        maximum_active_power (float | Unset): Maximum continuous active power that the controllable unit can produce or
-            consume, i.e. deliver for balancing and congestion services, in kilowatts. Example: 3.5.
+        maximum_active_power (float | Unset): Maximum continuous active power (flexible power) that the controllable
+            unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts. Example: 3.5.
         additional_information (None | str | Unset): Free text field for extra information about the controllable unit
             if needed.
     """
