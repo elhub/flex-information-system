@@ -11,7 +11,7 @@ import { IconCrossCircle, IconUser } from "@elhub/ds-icons";
 import { usePermissions } from "ra-core";
 import { Permissions } from "../../auth/permissions";
 import { useConfirmAction } from "../../components/ConfirmAction";
-import { PowerRatio } from "../../util/powerRatio";
+import { PowerRatio } from "../../components/PowerRatio";
 
 type Props = {
   spgId: number;

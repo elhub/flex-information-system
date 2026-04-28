@@ -6,7 +6,7 @@ import {
 import { ColumnOf, SimpleTable } from "../../components/SimpleTable";
 import { useConfirmAction } from "../../components/ConfirmAction";
 import { useTranslateField } from "../../intl/intl";
-import { PowerRatio } from "../../util/powerRatio";
+import { PowerRatio } from "../../components/PowerRatio";
 
 type ControllableUnitsInSpg = NonNullable<
   ReturnType<typeof useControllableUnitsInSpg>["data"]

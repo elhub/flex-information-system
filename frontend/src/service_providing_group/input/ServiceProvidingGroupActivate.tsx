@@ -19,7 +19,7 @@ import { useControllableUnitsInSpg } from "../membership/useSpgMemberships";
 import { LabelValue } from "../../components/LabelValue";
 import { SimpleTable } from "../../components/SimpleTable";
 import { useTranslateField } from "../../intl/intl";
-import { PowerRatio } from "../../util/powerRatio";
+import { PowerRatio } from "../../components/PowerRatio";
 
 export const ServiceProvidingGroupActivate = () => {
   const { id } = useParams<{ id: string }>();

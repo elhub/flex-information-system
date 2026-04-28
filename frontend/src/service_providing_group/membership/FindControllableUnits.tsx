@@ -20,7 +20,7 @@ import { ColumnOf, SimpleTable } from "../../components/SimpleTable";
 import { formatISO, startOfDay } from "date-fns";
 import { tz } from "@date-fns/tz";
 import { useTranslateField } from "../../intl/intl";
-import { PowerRatio } from "../../util/powerRatio";
+import { PowerRatio } from "../../components/PowerRatio";
 
 type Props = {
   spgId: number;
