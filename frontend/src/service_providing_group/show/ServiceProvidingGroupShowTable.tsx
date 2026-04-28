@@ -117,13 +117,12 @@ export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
       key: "maximum_active_power",
       header: t("controllable_unit.maximum_active_power"),
       render: (value, row) => (
-        <div className="text-right">
-          {String(value)} kW (
+        <div className="flex items-center justify-end gap-3">
+          <span>{String(value)} kW</span>
           <PowerRatio
             flexiblePower={row.maximum_active_power}
             ratedPower={row.rated_power}
           />
-          )
         </div>
       ),
     },

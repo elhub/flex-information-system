@@ -1,19 +1,22 @@
 import { ReactNode } from "react";
+import { Tag } from "../components/ui";
 
-// semantic color class based on the ratio of flexible power to rated power
-const getPowerRatioColorClass = (
+type TagVariant = "success" | "warning" | "error";
+
+// tag variant based on the ratio of flexible power to rated power
+const getPowerRatioVariant = (
   flexiblePower: number,
   ratedPower: number,
-): string => {
-  if (ratedPower <= 0) return "";
+): TagVariant => {
+  if (ratedPower <= 0) return "success";
   const ratio = flexiblePower / ratedPower;
   // OK if under 80%, risky if under 100%, critical if above
-  if (ratio <= 0.8) return "text-semantic-text-success";
-  if (ratio <= 1) return "text-semantic-text-warning";
-  return "text-semantic-text-error";
+  if (ratio <= 0.8) return "success";
+  if (ratio <= 1) return "warning";
+  return "error";
 };
 
-// render a formatted power ratio as a percentage with semantic coloring
+// render a power ratio as a percentage inside a colored Tag.
 export const PowerRatio = ({
   flexiblePower,
   ratedPower,
@@ -26,6 +29,10 @@ export const PowerRatio = ({
   }
   const ratio = flexiblePower / ratedPower;
   const percentage = (ratio * 100).toFixed(1);
-  const colorClass = getPowerRatioColorClass(flexiblePower, ratedPower);
-  return <span className={colorClass}>{percentage}%</span>;
+  const variant = getPowerRatioVariant(flexiblePower, ratedPower);
+  return (
+    <Tag size="small" variant={variant}>
+      {percentage}%
+    </Tag>
+  );
 };

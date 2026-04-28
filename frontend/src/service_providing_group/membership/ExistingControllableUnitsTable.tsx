@@ -81,14 +81,13 @@ export const ExistingControllableUnitsTable = ({
       key: "maximum_active_power",
       header: t("controllable_unit.maximum_active_power"),
       render: (v, row) => (
-        <>
-          {String(v)} kW (
+        <div className="flex items-center justify-end gap-3">
+          <span>{String(v)} kW</span>
           <PowerRatio
             flexiblePower={row.maximum_active_power}
             ratedPower={row.rated_power}
           />
-          )
-        </>
+        </div>
       ),
     },
     { key: "status", header: t("controllable_unit.status") },

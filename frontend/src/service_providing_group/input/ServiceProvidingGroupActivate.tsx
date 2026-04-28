@@ -99,14 +99,13 @@ export const ServiceProvidingGroupActivate = () => {
         v: unknown,
         row: { maximum_active_power: number; rated_power?: number },
       ) => (
-        <>
-          {String(v)} kW (
+        <div className="flex items-center justify-end gap-3">
+          <span>{String(v)} kW</span>
           <PowerRatio
             flexiblePower={row.maximum_active_power}
             ratedPower={row.rated_power}
           />
-          )
-        </>
+        </div>
       ),
     },
     { key: "status" as const, header: t("controllable_unit.status") },
