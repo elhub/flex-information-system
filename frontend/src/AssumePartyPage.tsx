@@ -29,14 +29,64 @@ import { ScopesField } from "./components/scopes";
 import { useTheme } from "@mui/material/styles";
 import { EnumField } from "./components/enum";
 
-export const AssumePartyPage = () => {
-  const [unAssumed, setUnAssumed] = useState(false);
+const AssumePartyButton = ({ field }: any) => {
   const notify = useNotify();
   const redirect = useRedirect();
+  const record = useRecordContext()!;
+  const permissions = usePermissions();
+  const login = useLogin();
+  const identity = useGetIdentity();
+  const elhubTheme = useTheme();
+  const [loading, setLoading] = useState(false);
+  const assumeParty = async () => {
+    setLoading(true);
+    return login({ party_id: record[field] })
+      .then(() => {
+        identity?.refetch();
+        permissions.refetch();
+      })
+      .then(() => {
+        setLoading(false);
+        redirect("/");
+      })
+      .catch((error: Error) => {
+        setLoading(false);
+        notify(
+          typeof error === "string"
+            ? error
+            : typeof error === "undefined" || !error.message
+              ? "ra.auth.sign_in_error"
+              : error.message,
+          { type: "error" },
+        );
+      });
+  };
+
+  return (
+    <Button
+      color="secondary"
+      size="medium"
+      onClick={assumeParty}
+      sx={{
+        fontWeight: "bold",
+        border: "2px solid transparent",
+        ":hover": {
+          border: `2px solid ${elhubTheme.palette.primary.main}`,
+        },
+      }}
+    >
+      {loading && <CircularProgress size={25} thickness={2} sx={{ mr: 1 }} />}
+      <PersonIcon sx={{ mr: 1 }} />
+      Act on behalf of {record.name}
+    </Button>
+  );
+};
+
+export const AssumePartyPage = () => {
+  const [unAssumed, setUnAssumed] = useState(false);
   const refresh = useRefresh();
   const login = useLogin();
   const identity = useGetIdentity();
-  const permissions = usePermissions();
 
   // refresh pagination information in resources after assuming a party
   const resetStore = useResetStore();
@@ -57,54 +107,6 @@ export const AssumePartyPage = () => {
     }
   }, [identity.isPending]);
   /* eslint-enable react-hooks/exhaustive-deps */
-
-  const AssumePartyButton = ({ field }: any) => {
-    const record = useRecordContext()!;
-    const elhubTheme = useTheme();
-    const [loading, setLoading] = useState(false);
-    const assumeParty = async () => {
-      setLoading(true);
-      return login({ party_id: record[field] })
-        .then(() => {
-          identity?.refetch();
-          permissions.refetch();
-        })
-        .then(() => {
-          setLoading(false);
-          redirect("/");
-        })
-        .catch((error: Error) => {
-          setLoading(false);
-          notify(
-            typeof error === "string"
-              ? error
-              : typeof error === "undefined" || !error.message
-                ? "ra.auth.sign_in_error"
-                : error.message,
-            { type: "error" },
-          );
-        });
-    };
-
-    return (
-      <Button
-        color="secondary"
-        size="medium"
-        onClick={assumeParty}
-        sx={{
-          fontWeight: "bold",
-          border: "2px solid transparent",
-          ":hover": {
-            border: `2px solid ${elhubTheme.palette.primary.main}`,
-          },
-        }}
-      >
-        {loading && <CircularProgress size={25} thickness={2} sx={{ mr: 1 }} />}
-        <PersonIcon sx={{ mr: 1 }} />
-        Act on behalf of {record.name}
-      </Button>
-    );
-  };
 
   return (
     <>
