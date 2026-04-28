@@ -2630,6 +2630,176 @@ resources:
           nb: Gyldig til
           nn: Gyldig til
 
+  - id: accounting_point_grid_location
+    acronym: APGL
+    name: Accounting Point Grid Location
+    summary: Accounting Point Grid Location
+    description: >-
+      The electrical (topological) location of an accounting point in the
+      common grid model (Nemo).
+    x-intl:
+      en: Accounting Point Grid Location
+      nb: Nettlokasjon for avregningspunkt
+      nn: Nettlokasjon for avrekningspunkt
+    operations:
+      - list
+      - read
+      - create
+      - update
+    history:
+      - list
+      - read
+    history_rls: true
+    audit: true
+    generate_views: true
+    properties:
+      id:
+        description: Unique surrogate key.
+        format: bigint
+        type: integer
+        readOnly: true
+        x-filter: true
+        example: 1
+        x-intl:
+          en: ID
+          nb: ID
+          nn: ID
+      accounting_point_id:
+        description: The accounting point this grid location belongs to.
+        format: bigint
+        type: integer
+        x-no-update: true
+        x-filter: true
+        x-foreign-key:
+          resource: accounting_point
+          field: id
+          cardinality: one-to-one
+        example: 45
+        x-intl:
+          en: Accounting point
+          nb: Avregningspunkt
+          nn: Avregningspunkt
+      object_type:
+        description: >-
+          The type of object in the common grid model that the accounting
+          point is at.
+        format: text
+        type: string
+        enum:
+          - id: substation
+            x-intl:
+              en: Substation
+              nb: Stasjon
+              nn: Stasjon
+          - id: transformer
+            x-intl:
+              en: Transformer
+              nb: Transformator
+              nn: Transformator
+        example: substation
+        x-intl:
+          en: Object type
+          nb: Objekttype
+          nn: Objekttype
+      business_id:
+        description: >-
+          Business identifier (mRID) referencing the object in the common
+          grid model.
+        format: text
+        type: string
+        nullable: true
+        # yamllint disable-line rule:line-length
+        pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
+        example: '53919b79-876f-4dad-8bde-b29368367604'
+        x-intl:
+          en: Business ID
+          nb: Forretnings-ID
+          nn: Forretnings-ID
+      name:
+        description: Name of the grid model object at the location.
+        format: text
+        type: string
+        maxLength: 512
+        example: 'Snilldal 1 KRA'
+        x-intl:
+          en: Name
+          nb: Navn
+          nn: Namn
+      nominal_voltage:
+        description: Nominal voltage level at the grid location, in kilovolt (kV).
+        format: decimal
+        type: number
+        minimum: 0
+        maximum: 999999.999
+        multipleOf: 0.001
+        example: 22
+        x-intl:
+          en: Nominal voltage
+          nb: Nominell spenning
+          nn: Nominell spenning
+      additional_information:
+        description: >-
+          Free text field for extra information about the grid location if
+          needed.
+        format: text
+        type: string
+        nullable: true
+        example: null
+        x-intl:
+          en: Additional information
+          nb: Tilleggsinformasjon
+          nn: Tilleggsinformasjon
+      source:
+        description: How the grid location was determined.
+        format: text
+        type: string
+        enum:
+          - id: cso
+            x-intl:
+              en: Connecting system operator
+              nb: Tilknyttende systemoperatør
+              nn: Tilknyttande systemoperatør
+          - id: so
+            x-intl:
+              en: System operator
+              nb: Systemoperatør
+              nn: Systemoperatør
+          - id: grid_model
+            x-intl:
+              en: Grid model
+              nb: Nettmodell
+              nn: Nettmodell
+          - id: system
+            x-intl:
+              en: System
+              nb: System
+              nn: System
+        example: cso
+        x-intl:
+          en: Source
+          nb: Kilde
+          nn: Kjelde
+      quality:
+        description: The quality of the grid location registration.
+        format: text
+        type: string
+        enum:
+          - id: confirmed
+            x-intl:
+              en: Confirmed
+              nb: Bekreftet
+              nn: Stadfesta
+          - id: guessed
+            x-intl:
+              en: Guessed
+              nb: Gjettet
+              nn: Gjetta
+        example: confirmed
+        x-intl:
+          en: Quality
+          nb: Kvalitet
+          nn: Kvalitet
+
   - id: product_type
     acronym: PT
     summary: Product Type

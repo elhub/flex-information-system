@@ -81,4 +81,10 @@ public data class AccountingPointResponse(
    */
   @SerialName("metering_grid_area")
   public val meteringGridArea: List<AccountingPointMeteringGridAreaResponse>? = null,
+  /**
+   * Response schema - The electrical (topological) location of an accounting point in the common
+   * grid model (Nemo).
+   */
+  @SerialName("grid_location")
+  public val gridLocation: AccountingPointGridLocationResponse? = null,
 )

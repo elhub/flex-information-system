@@ -449,6 +449,22 @@ RETURNS SETOF api.accounting_point_metering_grid_area AS $$
   select * from api.accounting_point_metering_grid_area where metering_grid_area_id = $1.id
 $$ STABLE LANGUAGE sql;
 
+-- changeset flex:accounting_point_grid_location-accounting_point_id-to-accounting_point runAlways:true endDelimiter:--
+CREATE OR REPLACE FUNCTION api.accounting_point(
+    api.accounting_point_grid_location
+)
+RETURNS SETOF api.accounting_point ROWS 1 AS $$
+  select * from api.accounting_point where id = $1.accounting_point_id
+$$ STABLE LANGUAGE sql;
+
+-- changeset flex:accounting_point-id-to-accounting_point_grid_location runAlways:true endDelimiter:--
+CREATE OR REPLACE FUNCTION api.grid_location(
+    api.accounting_point
+)
+RETURNS SETOF api.accounting_point_grid_location ROWS 1 AS $$
+  select * from api.accounting_point_grid_location where accounting_point_id = $1.id
+$$ STABLE LANGUAGE sql;
+
 -- changeset flex:system_operator_product_type-system_operator_id-to-party runAlways:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.system_operator(
     api.system_operator_product_type

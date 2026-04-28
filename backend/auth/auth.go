@@ -41,6 +41,8 @@ const (
 	defaultLoginDelayerBaseDelay            = 2 * time.Minute
 	defaultLoginDelayerDelayIncreaseFactor  = 1.1
 	defaultLoginDelayerMaxDelay             = 1 * time.Hour
+
+	maxRequestBodyBytes = 1024
 )
 
 // API holds the authentication API handlers.
@@ -624,7 +626,7 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 
 	ctx := r.Context()
 
-	r.Body = http.MaxBytesReader(w, r.Body, 1024) //nolint:mnd
+	r.Body = http.MaxBytesReader(w, r.Body, maxRequestBodyBytes)
 
 	partyIDstr := r.FormValue("party_id")
 	if partyIDstr == "" {

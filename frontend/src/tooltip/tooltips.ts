@@ -586,6 +586,54 @@ export const tooltips = {
     "The date from which the accounting point belongs to the metering grid area. Midnight aligned on Norwegian timezone.",
   "accounting_point_metering_grid_area.valid_to":
     "The date until which the accounting point belongs to the metering grid area. Midnight aligned on Norwegian timezone.",
+  "accounting_point_grid_location.id": "Unique surrogate key.",
+  "accounting_point_grid_location.accounting_point_id":
+    "The accounting point this grid location belongs to.",
+  "accounting_point_grid_location.object_type":
+    "The type of object in the common grid model that the accounting point is at.",
+  "accounting_point_grid_location.business_id":
+    "Business identifier (mRID) referencing the object in the common grid model.",
+  "accounting_point_grid_location.name":
+    "Name of the grid model object at the location.",
+  "accounting_point_grid_location.nominal_voltage":
+    "Nominal voltage level at the grid location, in kilovolt (kV).",
+  "accounting_point_grid_location.additional_information":
+    "Free text field for extra information about the grid location if needed.",
+  "accounting_point_grid_location.source":
+    "How the grid location was determined.",
+  "accounting_point_grid_location.quality":
+    "The quality of the grid location registration.",
+  "accounting_point_grid_location.recorded_at":
+    "When the resource was recorded (created or updated) in the system.",
+  "accounting_point_grid_location.recorded_by":
+    "The identity that recorded the resource.",
+  "accounting_point_grid_location_history.id": "Unique surrogate identifier.",
+  "accounting_point_grid_location_history.accounting_point_id":
+    "The accounting point this grid location belongs to.",
+  "accounting_point_grid_location_history.object_type":
+    "The type of object in the common grid model that the accounting point is at.",
+  "accounting_point_grid_location_history.business_id":
+    "Business identifier (mRID) referencing the object in the common grid model.",
+  "accounting_point_grid_location_history.name":
+    "Name of the grid model object at the location.",
+  "accounting_point_grid_location_history.nominal_voltage":
+    "Nominal voltage level at the grid location, in kilovolt (kV).",
+  "accounting_point_grid_location_history.additional_information":
+    "Free text field for extra information about the grid location if needed.",
+  "accounting_point_grid_location_history.source":
+    "How the grid location was determined.",
+  "accounting_point_grid_location_history.quality":
+    "The quality of the grid location registration.",
+  "accounting_point_grid_location_history.recorded_at":
+    "When the resource was recorded (created or updated) in the system.",
+  "accounting_point_grid_location_history.recorded_by":
+    "The identity that recorded the resource.",
+  "accounting_point_grid_location_history.accounting_point_grid_location_id":
+    "Unique surrogate identifier.",
+  "accounting_point_grid_location_history.replaced_at":
+    "When the resource was replaced.",
+  "accounting_point_grid_location_history.replaced_by":
+    "The identity that replaced the resource.",
   "product_type.id": "Unique surrogate identifier.",
   "product_type.business_id": "The code for this product type.",
   "product_type.name": "The name of the product type.",

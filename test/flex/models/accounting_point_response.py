@@ -17,6 +17,7 @@ if TYPE_CHECKING:
     from ..models.accounting_point_bidding_zone_response import AccountingPointBiddingZoneResponse
     from ..models.accounting_point_end_user_response import AccountingPointEndUserResponse
     from ..models.accounting_point_energy_supplier_response import AccountingPointEnergySupplierResponse
+    from ..models.accounting_point_grid_location_response import AccountingPointGridLocationResponse
     from ..models.accounting_point_metering_grid_area_response import AccountingPointMeteringGridAreaResponse
     from ..models.controllable_unit_response import ControllableUnitResponse
     from ..models.party_response import PartyResponse
@@ -46,6 +47,7 @@ class AccountingPointResponse:
             accounting_point_energy_supplier
         metering_grid_area (list[AccountingPointMeteringGridAreaResponse] | None | Unset): Embedded
             accounting_point_metering_grid_area
+        grid_location (AccountingPointGridLocationResponse | None | Unset): Embedded accounting_point_grid_location
     """
 
     id: int
@@ -60,9 +62,11 @@ class AccountingPointResponse:
     end_user: list[AccountingPointEndUserResponse] | None | Unset = UNSET
     energy_supplier: list[AccountingPointEnergySupplierResponse] | None | Unset = UNSET
     metering_grid_area: list[AccountingPointMeteringGridAreaResponse] | None | Unset = UNSET
+    grid_location: AccountingPointGridLocationResponse | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        from ..models.accounting_point_grid_location_response import AccountingPointGridLocationResponse
         from ..models.party_response import PartyResponse
 
         id = self.id
@@ -155,6 +159,14 @@ class AccountingPointResponse:
         else:
             metering_grid_area = self.metering_grid_area
 
+        grid_location: dict[str, Any] | None | Unset
+        if isinstance(self.grid_location, Unset):
+            grid_location = UNSET
+        elif isinstance(self.grid_location, AccountingPointGridLocationResponse):
+            grid_location = self.grid_location.to_dict()
+        else:
+            grid_location = self.grid_location
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -180,6 +192,8 @@ class AccountingPointResponse:
             field_dict["energy_supplier"] = energy_supplier
         if metering_grid_area is not UNSET:
             field_dict["metering_grid_area"] = metering_grid_area
+        if grid_location is not UNSET:
+            field_dict["grid_location"] = grid_location
 
         return field_dict
 
@@ -191,6 +205,7 @@ class AccountingPointResponse:
         from ..models.accounting_point_bidding_zone_response import AccountingPointBiddingZoneResponse
         from ..models.accounting_point_end_user_response import AccountingPointEndUserResponse
         from ..models.accounting_point_energy_supplier_response import AccountingPointEnergySupplierResponse
+        from ..models.accounting_point_grid_location_response import AccountingPointGridLocationResponse
         from ..models.accounting_point_metering_grid_area_response import AccountingPointMeteringGridAreaResponse
         from ..models.controllable_unit_response import ControllableUnitResponse
         from ..models.party_response import PartyResponse
@@ -367,6 +382,23 @@ class AccountingPointResponse:
 
         metering_grid_area = _parse_metering_grid_area(d.pop("metering_grid_area", UNSET))
 
+        def _parse_grid_location(data: object) -> AccountingPointGridLocationResponse | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                grid_location_type_0 = AccountingPointGridLocationResponse.from_dict(data)
+
+                return grid_location_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(AccountingPointGridLocationResponse | None | Unset, data)
+
+        grid_location = _parse_grid_location(d.pop("grid_location", UNSET))
+
         accounting_point_response = cls(
             id=id,
             business_id=business_id,
@@ -380,6 +412,7 @@ class AccountingPointResponse:
             end_user=end_user,
             energy_supplier=energy_supplier,
             metering_grid_area=metering_grid_area,
+            grid_location=grid_location,
         )
 
         accounting_point_response.additional_properties = d

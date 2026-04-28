@@ -411,6 +411,35 @@ CREATE TABLE api.accounting_point_metering_grid_area (
     valid_from timestamp with time zone NOT NULL,
     valid_to timestamp with time zone NULL
 );
+CREATE TABLE api.accounting_point_grid_location (
+    id bigint NOT NULL,
+    accounting_point_id bigint NOT NULL,
+    object_type text NOT NULL,
+    business_id text NULL,
+    name text NOT NULL,
+    nominal_voltage decimal NOT NULL,
+    additional_information text NULL,
+    source text NOT NULL,
+    quality text NOT NULL,
+    recorded_by bigint NOT NULL,
+    recorded_at timestamp with time zone NOT NULL
+);
+CREATE TABLE api.accounting_point_grid_location_history (
+    accounting_point_grid_location_id bigint NOT NULL,
+    id bigint NOT NULL,
+    accounting_point_id bigint NOT NULL,
+    object_type text NOT NULL,
+    business_id text NULL,
+    name text NOT NULL,
+    nominal_voltage decimal NOT NULL,
+    additional_information text NULL,
+    source text NOT NULL,
+    quality text NOT NULL,
+    recorded_by bigint NOT NULL,
+    recorded_at timestamp with time zone NOT NULL,
+    replaced_by bigint NULL,
+    replaced_at timestamp with time zone NULL
+);
 CREATE TABLE api.product_type (
     id bigint NOT NULL,
     business_id text NOT NULL,

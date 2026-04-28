@@ -45,6 +45,37 @@ type ApiAccountingPointEnergySupplier struct {
 	ValidTo           pgtype.Timestamptz
 }
 
+type ApiAccountingPointGridLocation struct {
+	ID                    int
+	AccountingPointID     int
+	ObjectType            string
+	BusinessID            *string
+	Name                  string
+	NominalVoltage        float64
+	AdditionalInformation *string
+	Source                string
+	Quality               string
+	RecordedBy            int
+	RecordedAt            pgtype.Timestamptz
+}
+
+type ApiAccountingPointGridLocationHistory struct {
+	AccountingPointGridLocationID int
+	ID                            int
+	AccountingPointID             int
+	ObjectType                    string
+	BusinessID                    *string
+	Name                          string
+	NominalVoltage                float64
+	AdditionalInformation         *string
+	Source                        string
+	Quality                       string
+	RecordedBy                    int
+	RecordedAt                    pgtype.Timestamptz
+	ReplacedBy                    *int
+	ReplacedAt                    pgtype.Timestamptz
+}
+
 type ApiAccountingPointMeteringGridArea struct {
 	AccountingPointID  int
 	MeteringGridAreaID int

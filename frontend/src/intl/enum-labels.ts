@@ -8,6 +8,14 @@ export type EnumLabel =
   | "accounting_point_bidding_zone.bidding_zone.NO3"
   | "accounting_point_bidding_zone.bidding_zone.NO4"
   | "accounting_point_bidding_zone.bidding_zone.NO5"
+  | "accounting_point_grid_location.object_type.substation"
+  | "accounting_point_grid_location.object_type.transformer"
+  | "accounting_point_grid_location.quality.confirmed"
+  | "accounting_point_grid_location.quality.guessed"
+  | "accounting_point_grid_location.source.cso"
+  | "accounting_point_grid_location.source.grid_model"
+  | "accounting_point_grid_location.source.so"
+  | "accounting_point_grid_location.source.system"
   | "category.consumption"
   | "category.energy_storage"
   | "category.production"
@@ -214,6 +222,14 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "accounting_point_bidding_zone.bidding_zone.NO5": "NO5 (Western Norway)",
     "metering_grid_area.business_id_type.eic_y":
       "EIC-Y (Energy Identification Code - Areas)",
+    "accounting_point_grid_location.object_type.substation": "Substation",
+    "accounting_point_grid_location.object_type.transformer": "Transformer",
+    "accounting_point_grid_location.source.cso": "Connecting system operator",
+    "accounting_point_grid_location.source.so": "System operator",
+    "accounting_point_grid_location.source.grid_model": "Grid model",
+    "accounting_point_grid_location.source.system": "System",
+    "accounting_point_grid_location.quality.confirmed": "Confirmed",
+    "accounting_point_grid_location.quality.guessed": "Guessed",
     "system_operator_product_type.status.active": "Active",
     "system_operator_product_type.status.inactive": "Inactive",
     "service_provider_product_application.status.requested": "Requested",
@@ -368,6 +384,14 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "accounting_point_bidding_zone.bidding_zone.NO5": "NO5 (Vestlandet)",
     "metering_grid_area.business_id_type.eic_y":
       "EIC-Y (Energy Identification Code - Områder)",
+    "accounting_point_grid_location.object_type.substation": "Stasjon",
+    "accounting_point_grid_location.object_type.transformer": "Transformator",
+    "accounting_point_grid_location.source.cso": "Tilknyttende systemoperatør",
+    "accounting_point_grid_location.source.so": "Systemoperatør",
+    "accounting_point_grid_location.source.grid_model": "Nettmodell",
+    "accounting_point_grid_location.source.system": "System",
+    "accounting_point_grid_location.quality.confirmed": "Bekreftet",
+    "accounting_point_grid_location.quality.guessed": "Gjettet",
     "system_operator_product_type.status.active": "Aktiv",
     "system_operator_product_type.status.inactive": "Inaktiv",
     "service_provider_product_application.status.requested": "Forespurt",
@@ -522,6 +546,14 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "accounting_point_bidding_zone.bidding_zone.NO5": "NO5 (Vestlandet)",
     "metering_grid_area.business_id_type.eic_y":
       "EIC-Y (Energy Identification Code - Område)",
+    "accounting_point_grid_location.object_type.substation": "Stasjon",
+    "accounting_point_grid_location.object_type.transformer": "Transformator",
+    "accounting_point_grid_location.source.cso": "Tilknyttande systemoperatør",
+    "accounting_point_grid_location.source.so": "Systemoperatør",
+    "accounting_point_grid_location.source.grid_model": "Nettmodell",
+    "accounting_point_grid_location.source.system": "System",
+    "accounting_point_grid_location.quality.confirmed": "Stadfesta",
+    "accounting_point_grid_location.quality.guessed": "Gjetta",
     "system_operator_product_type.status.active": "Aktiv",
     "system_operator_product_type.status.inactive": "Inaktiv",
     "service_provider_product_application.status.requested": "Førespurt",
