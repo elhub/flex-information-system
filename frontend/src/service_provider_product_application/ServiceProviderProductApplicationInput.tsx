@@ -1,4 +1,4 @@
-import { useGetIdentity } from "react-admin";
+import {  useGetIdentity } from "react-admin";
 import { Form, useRecordContext } from "ra-core";
 import { useFormContext } from "react-hook-form";
 import { useEffect } from "react";
@@ -7,6 +7,7 @@ import { zServiceProviderProductApplicationCreateRequest } from "../generated-cl
 import { getFields, unTypedZodResolver } from "../zod";
 import { FormContainer, Heading, VerticalSpace } from "../components/ui";
 import {
+  DateTimeInput,
   EnumInput,
   FormToolbar,
   PartyReferenceInput,
@@ -68,7 +69,9 @@ export const ServiceProviderProductApplicationInput = () => {
     >
       <FormContainer>
         <Heading level={3} size="medium">
-          Basic information
+          {createOrUpdate === "create"
+            ? "Create service provider product application"
+            : "Edit service provider product application"}
         </Heading>
         <VerticalSpace size="small" />
         <PartyReferenceInput
@@ -77,9 +80,7 @@ export const ServiceProviderProductApplicationInput = () => {
         />
         <PartyReferenceInput {...fields.system_operator_id} />
         <ProductTypesInput {...fields.product_type_ids} />
-        <Heading level={3} size="medium">
-          Application process
-        </Heading>
+
         <VerticalSpace size="small" />
         {createOrUpdate === "update" && (
           <EnumInput
@@ -89,6 +90,7 @@ export const ServiceProviderProductApplicationInput = () => {
           />
         )}
         <DateTimeInput {...fields.qualified_at} showNow />
+        <VerticalSpace size="large" />
         <FormToolbar />
       </FormContainer>
     </Form>

@@ -3,7 +3,7 @@ import { Nav } from "../ui";
 
 const navLinks = [
   { label: "Dashboard", to: "/" },
-  { label: "Controllable Units", to: "/controllable_unit" },
+  { label: "Controllable units", to: "/controllable_unit" },
   { label: "Service providing groups", to: "/service_providing_group" },
 ];
 

@@ -15,6 +15,7 @@ import {
   FormToolbar,
   UnitInput,
   type BaseInputProps,
+  DateTimeInput,
 } from "../../components/EDS-ra/inputs";
 import { ProductTypeArrayInput } from "../../product_type/components";
 
@@ -70,9 +71,17 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
     >
       <FormContainer>
         <Heading level={3} size="medium">
-          Basic information
+          {createOrUpdate === "create"
+            ? "Create SPG product application"
+            : "Edit  SPG product application"}
         </Heading>
         <VerticalSpace size="small" />
+        <AutocompleteReferenceInput
+          {...fields.service_providing_group_id}
+          reference="service_providing_group"
+          readOnly={!!record?.service_providing_group_id}
+          description
+          tooltip={false} />
         <AutocompleteReferenceInput
           {...fields.service_providing_group_id}
           reference="service_providing_group"
@@ -91,10 +100,6 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
           description
           tooltip={false}
         />
-        <Heading level={3} size="medium">
-          Application process
-        </Heading>
-        <VerticalSpace size="small" />
         <EnumInput
           {...fields.status}
           enumKey="service_providing_group_product_application.status"
@@ -135,6 +140,6 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
         <DateTimeInput {...fields.verified_at} description tooltip={false} />
         <FormToolbar />
       </FormContainer>
-    </Form>
+    </Form >
   );
 };

@@ -64,6 +64,10 @@ export const BaseInput = ({
 
   const isDisabled = disabled || readOnly || isPermissionDisabled;
 
+  if (isPermissionDisabled) {
+    return null;
+  }
+
   return (
     <FormItem
       id={id}
