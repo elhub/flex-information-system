@@ -22,7 +22,7 @@ export const ServiceProvidingGroupShowTabs = ({
       <Tabs.Tab label="Summary" value="summary" />
       <Tabs.Tab label="Controllable units" value="controllable_units" />
       <Tabs.Tab
-        label="Product prequalifications"
+        label="Product applications"
         value="product_applications"
       />
       <Tabs.Tab label="Grid prequalifications" value="grid_prequalifications" />

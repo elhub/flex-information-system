@@ -12,6 +12,7 @@ import { Permissions } from "../../auth/permissions";
 import { ActivateServiceProvidingGroupButton } from "../ActivateServiceProvidingGroupButton";
 import { spgStatusVariantMap } from "../serviceProvidingGroupStatus";
 import { useSpgShowViewModel } from "./useSpgShowViewModel";
+import { ServiceProvidingGroupAlerts } from "./ServiceProvidingGroupAlerts";
 
 export const ServiceProvidingGroupShow = () => {
   const spgId = Number(useParams<{ id: string }>().id);
@@ -66,6 +67,7 @@ export const ServiceProvidingGroupShow = () => {
         label: "Service providing groups",
       }}
       title={`Group Details - ${spg.name}`}
+      alerts={<ServiceProvidingGroupAlerts spg={spg} />}
       badge={
         <>
           <Badge
