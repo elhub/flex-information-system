@@ -54,6 +54,12 @@ public data class ServiceProvidingGroupResponse(
   @SerialName("recorded_by")
   public val recordedBy: Long? = null,
   /**
+   * Response schema - Aggregated summary of controllable units and technical resources belonging to
+   * a service providing group.
+   */
+  @SerialName("summary")
+  public val summary: ServiceProvidingGroupSummaryResponse? = null,
+  /**
    * Response schema - The body that interacts with the Flexibility Information System
    *
    * A party is the thing that is authorized to access or modify data in the Flexiblity Information

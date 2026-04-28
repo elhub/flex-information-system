@@ -288,6 +288,9 @@ databaseChangeLog:
   - include:
       file: ./controllable_unit_summary.sql
       relativeToChangelogFile: true
+  - include:
+      file: ./service_providing_group_summary.sql
+      relativeToChangelogFile: true
   # notice
   - includeAll:
       path: ./notice/

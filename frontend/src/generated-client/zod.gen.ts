@@ -1918,6 +1918,45 @@ export const zControllableUnitSummary = z.object({
 });
 
 /**
+ * Response schema - Aggregated summary of controllable units and technical resources belonging to a service providing group.
+ */
+export const zServiceProvidingGroupSummary = z.object({
+  id: z.coerce.number().readonly(),
+  service_providing_group_id: z.coerce.number().readonly(),
+  controllable_unit: z
+    .object({
+      count: z.coerce.number().optional(),
+      maximum_active_power: zNumericAggregation.optional(),
+    })
+    .readonly(),
+  technical_resource: z
+    .object({
+      count: z.coerce.number().optional(),
+      maximum_active_power: zNumericAggregation.optional(),
+      by_category: z
+        .record(
+          z.string(),
+          z.object({
+            count: z.coerce.number().optional(),
+            maximum_active_power: zNumericAggregation.optional(),
+          }),
+        )
+        .optional(),
+      by_technology: z
+        .record(
+          z.string(),
+          z.object({
+            count: z.coerce.number().optional(),
+            maximum_active_power: zNumericAggregation.optional(),
+          }),
+        )
+        .optional(),
+    })
+    .readonly(),
+  service_providing_group: z.lazy((): any => zServiceProvidingGroup).nullish(),
+});
+
+/**
  * Response schema - Group of controllable units
  */
 export const zServiceProvidingGroup = z.object({
@@ -1929,6 +1968,7 @@ export const zServiceProvidingGroup = z.object({
   additional_information: z.string().optional(),
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
+  summary: zServiceProvidingGroupSummary.nullish(),
   service_provider: z.lazy((): any => zParty).nullish(),
   membership: z
     .array(z.lazy((): any => zServiceProvidingGroupMembership))
@@ -2597,6 +2637,15 @@ export const zControllableUnitSummaryWritable = z.object({
 });
 
 /**
+ * Response schema - Aggregated summary of controllable units and technical resources belonging to a service providing group.
+ */
+export const zServiceProvidingGroupSummaryWritable = z.object({
+  service_providing_group: z
+    .lazy((): any => zServiceProvidingGroupWritable)
+    .nullish(),
+});
+
+/**
  * Response schema - Group of controllable units
  */
 export const zServiceProvidingGroupWritable = z.object({
@@ -2605,6 +2654,7 @@ export const zServiceProvidingGroupWritable = z.object({
   bidding_zone: zServiceProvidingGroupBiddingZone,
   status: zServiceProvidingGroupStatus,
   additional_information: z.string().optional(),
+  summary: zServiceProvidingGroupSummaryWritable.nullish(),
   service_provider: z.lazy((): any => zPartyWritable).nullish(),
   membership: z
     .array(z.lazy((): any => zServiceProvidingGroupMembershipWritable))
@@ -4331,6 +4381,20 @@ export const zReadControllableUnitSummaryQuery = z.object({
  * OK
  */
 export const zReadControllableUnitSummaryResponse = zControllableUnitSummary;
+
+export const zReadServiceProvidingGroupSummaryPath = z.object({
+  id: z.coerce.number(),
+});
+
+export const zReadServiceProvidingGroupSummaryQuery = z.object({
+  embed: z.string().optional(),
+});
+
+/**
+ * OK
+ */
+export const zReadServiceProvidingGroupSummaryResponse =
+  zServiceProvidingGroupSummary;
 
 export const zListServiceProvidingGroupQuery = z.object({
   id: z

@@ -25,6 +25,7 @@ if TYPE_CHECKING:
     from ..models.service_providing_group_product_suspension_response import (
         ServiceProvidingGroupProductSuspensionResponse,
     )
+    from ..models.service_providing_group_summary_response import ServiceProvidingGroupSummaryResponse
 
 
 T = TypeVar("T", bound="ServiceProvidingGroupResponse")
@@ -46,6 +47,7 @@ class ServiceProvidingGroupResponse:
         recorded_by (int): The identity that recorded the resource. Example: 145.
         additional_information (None | str | Unset): Free text field for extra information about the service providing
             group if needed.
+        summary (None | ServiceProvidingGroupSummaryResponse | Unset): Embedded service_providing_group_summary
         service_provider (None | PartyResponse | Unset): Embedded party
         membership (list[ServiceProvidingGroupMembershipResponse] | None | Unset): Embedded
             service_providing_group_membership
@@ -67,6 +69,7 @@ class ServiceProvidingGroupResponse:
     recorded_at: datetime.datetime
     recorded_by: int
     additional_information: None | str | Unset = UNSET
+    summary: None | ServiceProvidingGroupSummaryResponse | Unset = UNSET
     service_provider: None | PartyResponse | Unset = UNSET
     membership: list[ServiceProvidingGroupMembershipResponse] | None | Unset = UNSET
     grid_prequalification: list[ServiceProvidingGroupGridPrequalificationResponse] | None | Unset = UNSET
@@ -77,6 +80,7 @@ class ServiceProvidingGroupResponse:
 
     def to_dict(self) -> dict[str, Any]:
         from ..models.party_response import PartyResponse
+        from ..models.service_providing_group_summary_response import ServiceProvidingGroupSummaryResponse
 
         id = self.id
 
@@ -97,6 +101,14 @@ class ServiceProvidingGroupResponse:
             additional_information = UNSET
         else:
             additional_information = self.additional_information
+
+        summary: dict[str, Any] | None | Unset
+        if isinstance(self.summary, Unset):
+            summary = UNSET
+        elif isinstance(self.summary, ServiceProvidingGroupSummaryResponse):
+            summary = self.summary.to_dict()
+        else:
+            summary = self.summary
 
         service_provider: dict[str, Any] | None | Unset
         if isinstance(self.service_provider, Unset):
@@ -181,6 +193,8 @@ class ServiceProvidingGroupResponse:
         )
         if additional_information is not UNSET:
             field_dict["additional_information"] = additional_information
+        if summary is not UNSET:
+            field_dict["summary"] = summary
         if service_provider is not UNSET:
             field_dict["service_provider"] = service_provider
         if membership is not UNSET:
@@ -212,6 +226,7 @@ class ServiceProvidingGroupResponse:
         from ..models.service_providing_group_product_suspension_response import (
             ServiceProvidingGroupProductSuspensionResponse,
         )
+        from ..models.service_providing_group_summary_response import ServiceProvidingGroupSummaryResponse
 
         d = dict(src_dict)
         id = d.pop("id")
@@ -236,6 +251,23 @@ class ServiceProvidingGroupResponse:
             return cast(None | str | Unset, data)
 
         additional_information = _parse_additional_information(d.pop("additional_information", UNSET))
+
+        def _parse_summary(data: object) -> None | ServiceProvidingGroupSummaryResponse | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                summary_type_0 = ServiceProvidingGroupSummaryResponse.from_dict(data)
+
+                return summary_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(None | ServiceProvidingGroupSummaryResponse | Unset, data)
+
+        summary = _parse_summary(d.pop("summary", UNSET))
 
         def _parse_service_provider(data: object) -> None | PartyResponse | Unset:
             if data is None:
@@ -389,6 +421,7 @@ class ServiceProvidingGroupResponse:
             recorded_at=recorded_at,
             recorded_by=recorded_by,
             additional_information=additional_information,
+            summary=summary,
             service_provider=service_provider,
             membership=membership,
             grid_prequalification=grid_prequalification,

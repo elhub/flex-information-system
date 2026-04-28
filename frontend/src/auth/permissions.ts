@@ -545,6 +545,11 @@ export type PermissionTarget =
   | "service_providing_group_product_suspension_history.replaced_by"
   | "service_providing_group_product_suspension_history.service_providing_group_id"
   | "service_providing_group_product_suspension_history.service_providing_group_product_suspension_id"
+  | "service_providing_group_summary"
+  | "service_providing_group_summary.controllable_unit"
+  | "service_providing_group_summary.id"
+  | "service_providing_group_summary.service_providing_group_id"
+  | "service_providing_group_summary.technical_resource"
   | "system_operator_product_type"
   | "system_operator_product_type.id"
   | "system_operator_product_type.product_type_id"
@@ -2798,6 +2803,26 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_product_suspension_history.service_providing_group_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.controllable_unit",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.technical_resource",
       operation: "read",
     },
     {
@@ -5191,6 +5216,26 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_summary.controllable_unit",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.technical_resource",
+      operation: "read",
+    },
+    {
       target: "system_operator_product_type.id",
       operation: "read",
     },
@@ -7578,6 +7623,26 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_product_suspension_history.service_providing_group_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.controllable_unit",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.technical_resource",
       operation: "read",
     },
     {
@@ -10794,6 +10859,26 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_summary.controllable_unit",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.technical_resource",
+      operation: "read",
+    },
+    {
       target: "system_operator_product_type",
       operation: "create",
     },
@@ -13293,6 +13378,26 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_product_suspension_history.service_providing_group_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.controllable_unit",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.technical_resource",
       operation: "read",
     },
     {
@@ -16177,6 +16282,26 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_product_suspension_history.service_providing_group_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.controllable_unit",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.technical_resource",
       operation: "read",
     },
     {
@@ -19075,6 +19200,26 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_summary.controllable_unit",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.technical_resource",
+      operation: "read",
+    },
+    {
       target: "system_operator_product_type.id",
       operation: "read",
     },
@@ -21550,6 +21695,26 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_product_suspension_history.service_providing_group_product_suspension_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.controllable_unit",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.technical_resource",
       operation: "read",
     },
     {
