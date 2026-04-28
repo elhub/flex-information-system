@@ -21,6 +21,7 @@ export type SpgMembershipRow = {
   validFrom: string;
   validTo: string;
   maximum_active_power: number;
+  rated_power: number | undefined;
   regulation_direction: string;
   mpid: string;
   brpName: string;
@@ -75,6 +76,7 @@ const fetchSpgShowData = async (serviceProvidingGroupId: number) => {
     query: {
       id: `in.(${controllableUnitIds.join(",")})`,
       limit: "500",
+      embed: "summary",
     },
   }).then(throwOnError);
 
@@ -131,6 +133,7 @@ const fetchSpgShowData = async (serviceProvidingGroupId: number) => {
       validFrom: toDateString(membership?.valid_from),
       validTo: toDateString(membership?.valid_to),
       maximum_active_power: cu.maximum_active_power,
+      rated_power: cu.summary?.technical_resource?.maximum_active_power?.sum,
       regulation_direction: cu.regulation_direction,
       mpid: ap?.business_id ?? "-",
       brpName: (() => {

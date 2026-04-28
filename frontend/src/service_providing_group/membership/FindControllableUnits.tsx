@@ -20,6 +20,7 @@ import { ColumnOf, SimpleTable } from "../../components/SimpleTable";
 import { formatISO, startOfDay } from "date-fns";
 import { tz } from "@date-fns/tz";
 import { useTranslateField } from "../../intl/intl";
+import { PowerRatio } from "../../util/powerRatio";
 
 type Props = {
   spgId: number;
@@ -98,8 +99,23 @@ export const FindControllableUnits = ({ spgId }: Props) => {
       header: "Number of Technical Resources",
     },
     {
+      key: "rated_power",
+      header: t("technical_resource.maximum_active_power"),
+      render: (v) => (v != null ? `${String(v)} kW` : "—"),
+    },
+    {
       key: "maximum_active_power",
       header: t("controllable_unit.maximum_active_power"),
+      render: (v, row) => (
+        <>
+          {String(v)} kW (
+          <PowerRatio
+            flexiblePower={row.maximum_active_power}
+            ratedPower={row.rated_power}
+          />
+          )
+        </>
+      ),
     },
     { key: "status", header: t("controllable_unit.status") },
   ];

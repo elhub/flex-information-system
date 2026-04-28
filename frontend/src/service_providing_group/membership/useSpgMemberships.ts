@@ -74,6 +74,8 @@ const enrichControllableUnit = async (
     bidding_zone: currentBiddingZone?.bidding_zone,
     brp_name: brpName,
     technical_resource_count: technicalResources.length,
+    rated_power:
+      cu.summary?.technical_resource?.maximum_active_power?.sum ?? undefined,
   };
 };
 
@@ -93,6 +95,7 @@ const fetchControllableUnitsInSpg = async (spgId: number) => {
   const controllableUnits = await listControllableUnit({
     query: {
       id: `in.(${memberships.map((m) => m.controllable_unit_id).join(",")})`,
+      embed: "summary",
     },
   }).then(throwOnError);
 
@@ -114,7 +117,10 @@ const fetchControllableUnitsNotInSpg = async (spgId: number) => {
     memberCuIds.length > 0 ? { id: `not.in.(${memberCuIds.join(",")})` } : {};
 
   const controllableUnits = await listControllableUnit({
-    query,
+    query: {
+      ...query,
+      embed: "summary",
+    },
   }).then(throwOnError);
 
   return Promise.all(

@@ -178,9 +178,7 @@ const ServiceProvidingGroupTechnicalResourceSummaryDetails = ({
             border
             className="bg-semantic-background-alternative h-fit p-4 sm:p-5"
           >
-            <Heading size="small">
-              Aggregated maximum active power by category
-            </Heading>
+            <Heading size="small">Aggregated rated power by category</Heading>
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
                 <Pie
