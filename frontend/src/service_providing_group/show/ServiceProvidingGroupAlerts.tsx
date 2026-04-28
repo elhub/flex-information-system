@@ -25,7 +25,7 @@ const useServiceProvidingGroupAlerts = (
   if (productApplications?.length === 0) {
     return {
       severity: "info",
-      content: "You dont have a product application for this SPG.",
+      content: "You don't have a product application for this SPG.",
     };
   }
 
