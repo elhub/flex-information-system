@@ -34,7 +34,7 @@ from flex.api.party_membership import (
 import time
 from typing import cast
 import pytest
-from test_entity import random_email
+from api_client_tests.test_entity import random_email
 
 
 def unique_gln() -> str:

@@ -2,6 +2,7 @@ package no.elhub.flex.model.dto.generated.models
 
 import kotlin.Long
 import kotlin.String
+import kotlin.collections.List
 import kotlin.time.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -52,4 +53,49 @@ public data class ServiceProvidingGroupResponse(
    */
   @SerialName("recorded_by")
   public val recordedBy: Long? = null,
+  /**
+   * Response schema - Aggregated summary of controllable units and technical resources belonging to
+   * a service providing group.
+   */
+  @SerialName("summary")
+  public val summary: ServiceProvidingGroupSummaryResponse? = null,
+  /**
+   * Response schema - The body that interacts with the Flexibility Information System
+   *
+   * A party is the thing that is authorized to access or modify data in the Flexiblity Information
+   * System.
+   *
+   * Example party types:
+   *
+   * * Service Provider
+   * * System Operator
+   * * End User
+   */
+  @SerialName("service_provider")
+  public val serviceProvider: PartyResponse? = null,
+  /**
+   * Embedded service_providing_group_membership
+   */
+  @SerialName("membership")
+  public val membership: List<ServiceProvidingGroupMembershipResponse>? = null,
+  /**
+   * Embedded service_providing_group_grid_prequalification
+   */
+  @SerialName("grid_prequalification")
+  public val gridPrequalification: List<ServiceProvidingGroupGridPrequalificationResponse>? = null,
+  /**
+   * Embedded service_providing_group_grid_suspension
+   */
+  @SerialName("grid_suspension")
+  public val gridSuspension: List<ServiceProvidingGroupGridSuspensionResponse>? = null,
+  /**
+   * Embedded service_providing_group_product_application
+   */
+  @SerialName("product_application")
+  public val productApplication: List<ServiceProvidingGroupProductApplicationResponse>? = null,
+  /**
+   * Embedded service_providing_group_product_suspension
+   */
+  @SerialName("product_suspension")
+  public val productSuspension: List<ServiceProvidingGroupProductSuspensionResponse>? = null,
 )

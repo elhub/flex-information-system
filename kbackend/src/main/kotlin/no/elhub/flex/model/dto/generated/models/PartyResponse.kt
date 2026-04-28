@@ -70,4 +70,17 @@ public data class PartyResponse(
    */
   @SerialName("recorded_by")
   public val recordedBy: Long? = null,
+  /**
+   * Response schema - Entity - Natural or legal person
+   *
+   * An entity is a natural or legal person that can be a party in the Flexibility Information
+   * System.
+   *
+   * Example entity types:
+   *
+   * * Person
+   * * Organisation
+   */
+  @SerialName("entity")
+  public val entity: EntityResponse? = null,
 )

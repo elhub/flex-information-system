@@ -297,6 +297,9 @@ import type {
   ReadControllableUnitServiceProviderHistoryErrors,
   ReadControllableUnitServiceProviderHistoryResponses,
   ReadControllableUnitServiceProviderResponses,
+  ReadControllableUnitSummaryData,
+  ReadControllableUnitSummaryErrors,
+  ReadControllableUnitSummaryResponses,
   ReadControllableUnitSuspensionCommentData,
   ReadControllableUnitSuspensionCommentErrors,
   ReadControllableUnitSuspensionCommentHistoryData,
@@ -432,6 +435,9 @@ import type {
   ReadServiceProvidingGroupProductSuspensionHistoryResponses,
   ReadServiceProvidingGroupProductSuspensionResponses,
   ReadServiceProvidingGroupResponses,
+  ReadServiceProvidingGroupSummaryData,
+  ReadServiceProvidingGroupSummaryErrors,
+  ReadServiceProvidingGroupSummaryResponses,
   ReadSystemOperatorProductTypeData,
   ReadSystemOperatorProductTypeErrors,
   ReadSystemOperatorProductTypeHistoryData,
@@ -1164,6 +1170,46 @@ export const readControllableUnitServiceProviderHistory = <
   >({
     security: [{ scheme: "bearer", type: "http" }],
     url: "/controllable_unit_service_provider_history/{id}",
+    ...options,
+  });
+
+/**
+ * Read Controllable Unit Summary
+ *
+ * Read [Controllable Unit Summary](https://elhub.github.io/flex-information-system/resources/controllable_unit_summary/)
+ */
+export const readControllableUnitSummary = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<ReadControllableUnitSummaryData, ThrowOnError>,
+) =>
+  (options.client ?? client).get<
+    ReadControllableUnitSummaryResponses,
+    ReadControllableUnitSummaryErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/controllable_unit_summary/{id}",
+    ...options,
+  });
+
+/**
+ * Read Service Providing Group Summary
+ *
+ * Read [Service Providing Group Summary](https://elhub.github.io/flex-information-system/resources/service_providing_group_summary/)
+ */
+export const readServiceProvidingGroupSummary = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<ReadServiceProvidingGroupSummaryData, ThrowOnError>,
+) =>
+  (options.client ?? client).get<
+    ReadServiceProvidingGroupSummaryResponses,
+    ReadServiceProvidingGroupSummaryErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/service_providing_group_summary/{id}",
     ...options,
   });
 

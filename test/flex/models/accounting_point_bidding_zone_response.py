@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, cast
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -10,6 +10,10 @@ from dateutil.parser import isoparse
 
 from ..models.accounting_point_bidding_zone_bidding_zone import AccountingPointBiddingZoneBiddingZone
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.accounting_point_response import AccountingPointResponse
+
 
 T = TypeVar("T", bound="AccountingPointBiddingZoneResponse")
 
@@ -25,15 +29,19 @@ class AccountingPointBiddingZoneResponse:
             aligned on Norwegian timezone. Example: 2022-08-08T00:00:00+02.
         valid_to (datetime.datetime | None | Unset): The date until which the accounting point belongs to the bidding
             zone. Midnight aligned on Norwegian timezone.
+        accounting_point (AccountingPointResponse | None | Unset): Embedded accounting_point
     """
 
     accounting_point_id: int
     bidding_zone: AccountingPointBiddingZoneBiddingZone
     valid_from: datetime.datetime
     valid_to: datetime.datetime | None | Unset = UNSET
+    accounting_point: AccountingPointResponse | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        from ..models.accounting_point_response import AccountingPointResponse
+
         accounting_point_id = self.accounting_point_id
 
         bidding_zone = self.bidding_zone.value
@@ -48,6 +56,14 @@ class AccountingPointBiddingZoneResponse:
         else:
             valid_to = self.valid_to
 
+        accounting_point: dict[str, Any] | None | Unset
+        if isinstance(self.accounting_point, Unset):
+            accounting_point = UNSET
+        elif isinstance(self.accounting_point, AccountingPointResponse):
+            accounting_point = self.accounting_point.to_dict()
+        else:
+            accounting_point = self.accounting_point
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -59,11 +75,15 @@ class AccountingPointBiddingZoneResponse:
         )
         if valid_to is not UNSET:
             field_dict["valid_to"] = valid_to
+        if accounting_point is not UNSET:
+            field_dict["accounting_point"] = accounting_point
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.accounting_point_response import AccountingPointResponse
+
         d = dict(src_dict)
         accounting_point_id = d.pop("accounting_point_id")
 
@@ -88,11 +108,29 @@ class AccountingPointBiddingZoneResponse:
 
         valid_to = _parse_valid_to(d.pop("valid_to", UNSET))
 
+        def _parse_accounting_point(data: object) -> AccountingPointResponse | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                accounting_point_type_0 = AccountingPointResponse.from_dict(data)
+
+                return accounting_point_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(AccountingPointResponse | None | Unset, data)
+
+        accounting_point = _parse_accounting_point(d.pop("accounting_point", UNSET))
+
         accounting_point_bidding_zone_response = cls(
             accounting_point_id=accounting_point_id,
             bidding_zone=bidding_zone,
             valid_from=valid_from,
             valid_to=valid_to,
+            accounting_point=accounting_point,
         )
 
         accounting_point_bidding_zone_response.additional_properties = d

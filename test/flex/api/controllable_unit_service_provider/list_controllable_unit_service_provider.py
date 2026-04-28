@@ -1,3 +1,4 @@
+import datetime
 from http import HTTPStatus
 from typing import Any
 
@@ -18,11 +19,13 @@ def _get_kwargs(
     service_provider_id: str | Unset = UNSET,
     end_user_id: str | Unset = UNSET,
     valid_from: str | Unset = UNSET,
+    valid_at: datetime.datetime | Unset = UNSET,
     valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
 ) -> dict[str, Any]:
 
     params: dict[str, Any] = {}
@@ -37,6 +40,11 @@ def _get_kwargs(
 
     params["valid_from"] = valid_from
 
+    json_valid_at: str | Unset = UNSET
+    if not isinstance(valid_at, Unset):
+        json_valid_at = valid_at.isoformat()
+    params["valid_at"] = json_valid_at
+
     params["valid_to"] = valid_to
 
     params["select"] = select
@@ -46,6 +54,8 @@ def _get_kwargs(
     params["offset"] = offset
 
     params["limit"] = limit
+
+    params["embed"] = embed
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
@@ -157,11 +167,13 @@ def sync_detailed(
     service_provider_id: str | Unset = UNSET,
     end_user_id: str | Unset = UNSET,
     valid_from: str | Unset = UNSET,
+    valid_at: datetime.datetime | Unset = UNSET,
     valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitServiceProviderResponse]]:
     """List Relation between controllable unit and service provider
 
@@ -174,11 +186,13 @@ def sync_detailed(
         service_provider_id (str | Unset):
         end_user_id (str | Unset):
         valid_from (str | Unset):
+        valid_at (datetime.datetime | Unset):
         valid_to (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -194,11 +208,13 @@ def sync_detailed(
         service_provider_id=service_provider_id,
         end_user_id=end_user_id,
         valid_from=valid_from,
+        valid_at=valid_at,
         valid_to=valid_to,
         select=select,
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
     )
 
     response = client.get_httpx_client().request(
@@ -216,11 +232,13 @@ def sync(
     service_provider_id: str | Unset = UNSET,
     end_user_id: str | Unset = UNSET,
     valid_from: str | Unset = UNSET,
+    valid_at: datetime.datetime | Unset = UNSET,
     valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitServiceProviderResponse] | None:
     """List Relation between controllable unit and service provider
 
@@ -233,11 +251,13 @@ def sync(
         service_provider_id (str | Unset):
         end_user_id (str | Unset):
         valid_from (str | Unset):
+        valid_at (datetime.datetime | Unset):
         valid_to (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -254,11 +274,13 @@ def sync(
         service_provider_id=service_provider_id,
         end_user_id=end_user_id,
         valid_from=valid_from,
+        valid_at=valid_at,
         valid_to=valid_to,
         select=select,
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
     ).parsed
 
 
@@ -270,11 +292,13 @@ async def asyncio_detailed(
     service_provider_id: str | Unset = UNSET,
     end_user_id: str | Unset = UNSET,
     valid_from: str | Unset = UNSET,
+    valid_at: datetime.datetime | Unset = UNSET,
     valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitServiceProviderResponse]]:
     """List Relation between controllable unit and service provider
 
@@ -287,11 +311,13 @@ async def asyncio_detailed(
         service_provider_id (str | Unset):
         end_user_id (str | Unset):
         valid_from (str | Unset):
+        valid_at (datetime.datetime | Unset):
         valid_to (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -307,11 +333,13 @@ async def asyncio_detailed(
         service_provider_id=service_provider_id,
         end_user_id=end_user_id,
         valid_from=valid_from,
+        valid_at=valid_at,
         valid_to=valid_to,
         select=select,
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -327,11 +355,13 @@ async def asyncio(
     service_provider_id: str | Unset = UNSET,
     end_user_id: str | Unset = UNSET,
     valid_from: str | Unset = UNSET,
+    valid_at: datetime.datetime | Unset = UNSET,
     valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitServiceProviderResponse] | None:
     """List Relation between controllable unit and service provider
 
@@ -344,11 +374,13 @@ async def asyncio(
         service_provider_id (str | Unset):
         end_user_id (str | Unset):
         valid_from (str | Unset):
+        valid_at (datetime.datetime | Unset):
         valid_to (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -366,10 +398,12 @@ async def asyncio(
             service_provider_id=service_provider_id,
             end_user_id=end_user_id,
             valid_from=valid_from,
+            valid_at=valid_at,
             valid_to=valid_to,
             select=select,
             order=order,
             offset=offset,
             limit=limit,
+            embed=embed,
         )
     ).parsed

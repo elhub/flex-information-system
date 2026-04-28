@@ -4,6 +4,7 @@ type RouteLabel = {
 };
 
 const ROUTE_LABELS: RouteLabel[] = [
+  { pattern: /^\/$/, label: () => "Dashboard" },
   // Top-level show pages
   {
     pattern: /^\/service_providing_group\/(\d+)\/show$/,

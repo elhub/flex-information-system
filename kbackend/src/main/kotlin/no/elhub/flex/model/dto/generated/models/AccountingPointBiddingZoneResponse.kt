@@ -32,4 +32,9 @@ public data class AccountingPointBiddingZoneResponse(
    */
   @SerialName("valid_to")
   public val validTo: Instant? = null,
+  /**
+   * Response schema - Accounting point for a controllable unit.
+   */
+  @SerialName("accounting_point")
+  public val accountingPoint: AccountingPointResponse? = null,
 )

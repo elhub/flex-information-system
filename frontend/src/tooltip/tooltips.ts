@@ -152,6 +152,20 @@ export const tooltips = {
     "When the resource was replaced.",
   "controllable_unit_service_provider_history.replaced_by":
     "The identity that replaced the resource.",
+  "controllable_unit_summary.id":
+    "Unique surrogate key (controllable unit ID).",
+  "controllable_unit_summary.controllable_unit_id":
+    "The ID of the controllable unit this resource is a summary of.",
+  "controllable_unit_summary.technical_resource":
+    "Aggregated statistics on technical resources belonging to the controllable unit, including counts and maximum active power breakdowns (sum, average, min, max) by category and technology.",
+  "service_providing_group_summary.id":
+    "Unique surrogate key (service providing group ID).",
+  "service_providing_group_summary.service_providing_group_id":
+    "The ID of the service providing group this resource is a summary of.",
+  "service_providing_group_summary.controllable_unit":
+    "Aggregated statistics on controllable units currently in the service providing group, including count and maximum active power information (sum, average, min, max).",
+  "service_providing_group_summary.technical_resource":
+    "Aggregated statistics on technical resources belonging to controllable units with active membership in the service providing group, including counts and maximum active power breakdowns (sum, average, min, max) by category and technology.",
   "service_providing_group.id": "Unique surrogate key.",
   "service_providing_group.name":
     "Free text name of the service providing group.",

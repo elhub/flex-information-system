@@ -37,4 +37,23 @@ public data class AccountingPointBalanceResponsiblePartyResponse(
    */
   @SerialName("valid_to")
   public val validTo: Instant? = null,
+  /**
+   * Response schema - Accounting point for a controllable unit.
+   */
+  @SerialName("accounting_point")
+  public val accountingPoint: AccountingPointResponse? = null,
+  /**
+   * Response schema - The body that interacts with the Flexibility Information System
+   *
+   * A party is the thing that is authorized to access or modify data in the Flexiblity Information
+   * System.
+   *
+   * Example party types:
+   *
+   * * Service Provider
+   * * System Operator
+   * * End User
+   */
+  @SerialName("balance_responsible_party")
+  public val balanceResponsibleParty: PartyResponse? = null,
 )

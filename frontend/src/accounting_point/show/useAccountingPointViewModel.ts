@@ -1,10 +1,5 @@
 import {
   AccountingPoint,
-  AccountingPointBalanceResponsibleParty,
-  AccountingPointBiddingZone,
-  AccountingPointEndUser,
-  AccountingPointEnergySupplier,
-  AccountingPointMeteringGridArea,
   listAccountingPointBalanceResponsibleParty,
   listAccountingPointBiddingZone,
   listAccountingPointEndUser,
@@ -26,29 +21,6 @@ export type AccountingPointShowViewModel = {
   };
 };
 
-// helper to find the currently valid record from a timeline
-// TODO: either move to utils or replace with a better query on API calls
-const findCurrentlyValidRecord = <
-  T extends { valid_from?: string; valid_to?: string },
->(
-  data: T[] | undefined,
-): T | undefined => {
-  if (!data) return undefined;
-
-  const now = new Date();
-  return data.find((record) => {
-    const validFrom = record.valid_from ? new Date(record.valid_from) : null;
-    const validTo = record.valid_to ? new Date(record.valid_to) : null;
-
-    // deleted or in the future -> skip
-    if (validFrom === null || validFrom > now) return false;
-    // expired -> skip
-    if (validTo !== null && validTo <= now) return false;
-    // remaining case: currently valid
-    return true;
-  });
-};
-
 const getAccountingPointData = async (
   accountingPoint: AccountingPoint | undefined,
 ): Promise<Omit<AccountingPointShowViewModel, "accountingPoint">> => {
@@ -56,35 +28,47 @@ const getAccountingPointData = async (
     throw new Error("Accounting point not found");
   }
 
+  const now = new Date().toISOString();
+
   const brpData = await listAccountingPointBalanceResponsibleParty({
-    query: { accounting_point_id: "eq." + accountingPoint.id },
+    query: {
+      accounting_point_id: "eq." + accountingPoint.id,
+      valid_at: now,
+    },
   }).then(throwOnError);
-  const currentBRP =
-    findCurrentlyValidRecord<AccountingPointBalanceResponsibleParty>(brpData);
+  const currentBRP = brpData.length > 0 ? brpData[0] : undefined;
 
   const bzData = await listAccountingPointBiddingZone({
-    query: { accounting_point_id: "eq." + accountingPoint.id },
+    query: {
+      accounting_point_id: "eq." + accountingPoint.id,
+      valid_at: now,
+    },
   }).then(throwOnError);
-  const currentBiddingZone =
-    findCurrentlyValidRecord<AccountingPointBiddingZone>(bzData);
+  const currentBiddingZone = bzData.length > 0 ? bzData[0] : undefined;
 
   const euData = await listAccountingPointEndUser({
-    query: { accounting_point_id: "eq." + accountingPoint.id },
+    query: {
+      accounting_point_id: "eq." + accountingPoint.id,
+      valid_at: now,
+    },
   }).then(throwOnError);
-  const currentEndUser =
-    findCurrentlyValidRecord<AccountingPointEndUser>(euData);
+  const currentEndUser = euData.length > 0 ? euData[0] : undefined;
 
   const esData = await listAccountingPointEnergySupplier({
-    query: { accounting_point_id: "eq." + accountingPoint.id },
+    query: {
+      accounting_point_id: "eq." + accountingPoint.id,
+      valid_at: now,
+    },
   }).then(throwOnError);
-  const currentEnergySupplier =
-    findCurrentlyValidRecord<AccountingPointEnergySupplier>(esData);
+  const currentEnergySupplier = esData.length > 0 ? esData[0] : undefined;
 
   const mgaData = await listAccountingPointMeteringGridArea({
-    query: { accounting_point_id: "eq." + accountingPoint.id },
+    query: {
+      accounting_point_id: "eq." + accountingPoint.id,
+      valid_at: now,
+    },
   }).then(throwOnError);
-  const currentMGA =
-    findCurrentlyValidRecord<AccountingPointMeteringGridArea>(mgaData);
+  const currentMGA = mgaData.length > 0 ? mgaData[0] : undefined;
 
   return {
     connections: {

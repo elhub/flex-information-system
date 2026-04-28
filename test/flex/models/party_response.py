@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -12,6 +12,11 @@ from ..models.party_business_id_type import PartyBusinessIdType
 from ..models.party_role import PartyRole
 from ..models.party_status import PartyStatus
 from ..models.party_type import PartyType
+from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.entity_response import EntityResponse
+
 
 T = TypeVar("T", bound="PartyResponse")
 
@@ -42,6 +47,7 @@ class PartyResponse:
             recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
                 2023-12-31T23:59:00+00:00.
             recorded_by (int): The identity that recorded the resource. Example: 145.
+            entity (EntityResponse | None | Unset): Embedded entity
     """
 
     id: int
@@ -54,9 +60,12 @@ class PartyResponse:
     status: PartyStatus
     recorded_at: datetime.datetime
     recorded_by: int
+    entity: EntityResponse | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        from ..models.entity_response import EntityResponse
+
         id = self.id
 
         business_id = self.business_id
@@ -77,6 +86,14 @@ class PartyResponse:
 
         recorded_by = self.recorded_by
 
+        entity: dict[str, Any] | None | Unset
+        if isinstance(self.entity, Unset):
+            entity = UNSET
+        elif isinstance(self.entity, EntityResponse):
+            entity = self.entity.to_dict()
+        else:
+            entity = self.entity
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -93,11 +110,15 @@ class PartyResponse:
                 "recorded_by": recorded_by,
             }
         )
+        if entity is not UNSET:
+            field_dict["entity"] = entity
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.entity_response import EntityResponse
+
         d = dict(src_dict)
         id = d.pop("id")
 
@@ -119,6 +140,23 @@ class PartyResponse:
 
         recorded_by = d.pop("recorded_by")
 
+        def _parse_entity(data: object) -> EntityResponse | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                entity_type_0 = EntityResponse.from_dict(data)
+
+                return entity_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(EntityResponse | None | Unset, data)
+
+        entity = _parse_entity(d.pop("entity", UNSET))
+
         party_response = cls(
             id=id,
             business_id=business_id,
@@ -130,6 +168,7 @@ class PartyResponse:
             status=status,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
+            entity=entity,
         )
 
         party_response.additional_properties = d
