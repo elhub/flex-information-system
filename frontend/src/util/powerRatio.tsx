@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Tag } from "../components/ui";
+import { Tag, Tooltip } from "../components/ui";
 
 type TagVariant = "success" | "warning" | "error";
 
@@ -31,8 +31,12 @@ export const PowerRatio = ({
   const percentage = (ratio * 100).toFixed(1);
   const variant = getPowerRatioVariant(flexiblePower, ratedPower);
   return (
-    <Tag size="small" variant={variant}>
-      {percentage}%
-    </Tag>
+    <Tooltip
+      content={`The flexible power represents ${percentage}% of the rated power. This ratio should ideally be held under 80% to ensure safe operation.`}
+    >
+      <Tag size="small" variant={variant}>
+        {percentage}%
+      </Tag>
+    </Tooltip>
   );
 };
