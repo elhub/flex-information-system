@@ -29,17 +29,13 @@ type TechnologyRow = {
   max: number | undefined;
 };
 
-// TODO: should this be moved to the theme config ?
-const CHART_COLOR_GREEN = "#686f38"; // global-color-chart-series-3
-const CHART_COLOR_BLUE = "#4f97c8"; // global-color-chart-series-2
-const CHART_COLOR_ORANGE = "#dc712f"; // global-color-chart-series-7
-const CHART_COLOR_FALLBACK = "#5a776f"; // global-color-chart-series-4
+const CHART_COLOR_FALLBACK = "var(--eds-global-color-chart-series-4)";
 const CHART_SECTOR_STROKE = "#ffffff";
 
 const CATEGORY_COLORS: Record<string, string> = {
-  production: CHART_COLOR_GREEN,
-  consumption: CHART_COLOR_BLUE,
-  energy_storage: CHART_COLOR_ORANGE,
+  production: "var(--eds-global-color-chart-series-3)",
+  consumption: "var(--eds-global-color-chart-series-2)",
+  energy_storage: "var(--eds-global-color-chart-series-7)",
 };
 
 export const ServiceProvidingGroupTechnicalResourceSummary = ({
