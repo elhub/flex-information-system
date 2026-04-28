@@ -81,7 +81,8 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
           reference="service_providing_group"
           readOnly={!!record?.service_providing_group_id}
           description
-          tooltip={false} />
+          tooltip={false}
+        />
         <AutocompleteReferenceInput
           {...fields.service_providing_group_id}
           reference="service_providing_group"
@@ -140,6 +141,6 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
         <DateTimeInput {...fields.verified_at} description tooltip={false} />
         <FormToolbar />
       </FormContainer>
-    </Form >
+    </Form>
   );
 };

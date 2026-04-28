@@ -51,8 +51,6 @@ export const DateTimeInput = ({
   const displayNowButton = showNow && !isEffectivelyDisabled;
   const displayClearButton = !required && !isEffectivelyDisabled && field.value;
 
-
-
   return (
     <BaseInput
       source={source}

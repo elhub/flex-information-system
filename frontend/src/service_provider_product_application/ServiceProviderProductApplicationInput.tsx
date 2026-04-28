@@ -1,4 +1,4 @@
-import {  useGetIdentity } from "react-admin";
+import { useGetIdentity } from "react-admin";
 import { Form, useRecordContext } from "ra-core";
 import { useFormContext } from "react-hook-form";
 import { useEffect } from "react";
