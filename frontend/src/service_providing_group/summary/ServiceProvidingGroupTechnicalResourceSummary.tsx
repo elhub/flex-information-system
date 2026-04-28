@@ -52,7 +52,6 @@ export const ServiceProvidingGroupTechnicalResourceSummary = ({
         resources. Here are the <b>rated power</b> aggregates computed across
         all of them:
       </p>
-      <p></p>
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         <LabelValue
           label="Aggregated rated power"
