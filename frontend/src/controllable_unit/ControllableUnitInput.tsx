@@ -7,7 +7,7 @@ import {
 } from "../generated-client/zod.gen";
 import { getFields, unTypedZodResolver } from "../zod";
 import { useCreateOrUpdate } from "../auth";
-import { FormContainer, Heading, FlexDiv, Accordion } from "../components/ui";
+import { FormContainer, Heading, FlexDiv } from "../components/ui";
 import {
   TextInput,
   EnumInput,
@@ -86,9 +86,7 @@ export const ControllableUnitInput = () => {
           />
         </FlexDiv>
 
-        <FlexDiv
-          style={{ gap: "var(--eds-size-3)", flexDirection: "column" }}
-        >
+        <FlexDiv style={{ gap: "var(--eds-size-3)", flexDirection: "column" }}>
           <UnitInput
             {...fields.maximum_active_power}
             units={[
