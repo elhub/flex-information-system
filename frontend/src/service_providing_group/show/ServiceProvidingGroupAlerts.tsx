@@ -1,4 +1,3 @@
-import { useRecordContext } from "ra-core";
 import { ReactNode } from "react";
 import { ServiceProvidingGroup } from "../../generated-client";
 import { Alert, BodyText } from "../../components/ui";
@@ -12,10 +11,9 @@ type AlertType = {
 const useServiceProvidingGroupAlerts = (
   spg: ServiceProvidingGroup,
 ): AlertType | null => {
-  const record = useRecordContext();
   const { data: productApplications } = useSpgProductApplications(spg.id);
 
-  if (record?.status === "new") {
+  if (spg.status === "new") {
     return {
       severity: "info",
       content: "The service providing group is not active.",
