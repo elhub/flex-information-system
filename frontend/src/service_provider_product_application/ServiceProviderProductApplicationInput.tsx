@@ -69,7 +69,9 @@ export const ServiceProviderProductApplicationInput = () => {
     >
       <FormContainer>
         <Heading level={3} size="medium">
-          Basic information
+          {createOrUpdate === "create"
+            ? "Create service provider product application"
+            : "Edit service provider product application"}
         </Heading>
         <VerticalSpace size="small" />
         <PartyReferenceInput
@@ -78,9 +80,7 @@ export const ServiceProviderProductApplicationInput = () => {
         />
         <PartyReferenceInput {...fields.system_operator_id} />
         <ProductTypesInput {...fields.product_type_ids} />
-        <Heading level={3} size="medium">
-          Application process
-        </Heading>
+
         <VerticalSpace size="small" />
         {createOrUpdate === "update" && (
           <EnumInput
@@ -90,6 +90,7 @@ export const ServiceProviderProductApplicationInput = () => {
           />
         )}
         <DateTimeInput {...fields.qualified_at} showNow />
+        <VerticalSpace size="large" />
         <FormToolbar />
       </FormContainer>
     </Form>

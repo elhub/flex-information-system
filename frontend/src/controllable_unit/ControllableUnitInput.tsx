@@ -7,7 +7,7 @@ import {
 } from "../generated-client/zod.gen";
 import { getFields, unTypedZodResolver } from "../zod";
 import { useCreateOrUpdate } from "../auth";
-import { FormContainer, Heading, FlexDiv, Accordion } from "../components/ui";
+import { FormContainer, Heading, FlexDiv } from "../components/ui";
 import {
   TextInput,
   EnumInput,
@@ -86,32 +86,23 @@ export const ControllableUnitInput = () => {
           />
         </FlexDiv>
 
-        <Accordion border>
-          <Accordion.Item>
-            <Accordion.Header>Technical Information</Accordion.Header>
-            <Accordion.Content>
-              <FlexDiv
-                style={{ gap: "var(--eds-size-3)", flexDirection: "column" }}
-              >
-                <UnitInput
-                  {...fields.maximum_active_power}
-                  units={[
-                    { label: "kW", scale: 1 },
-                    { label: "MW", scale: 1000 },
-                  ]}
-                  description
-                  tooltip={false}
-                />
-                <EnumInput
-                  {...fields.regulation_direction}
-                  enumKey="controllable_unit.regulation_direction"
-                  description
-                  tooltip={false}
-                />
-              </FlexDiv>
-            </Accordion.Content>
-          </Accordion.Item>
-        </Accordion>
+        <FlexDiv style={{ gap: "var(--eds-size-3)", flexDirection: "column" }}>
+          <UnitInput
+            {...fields.maximum_active_power}
+            units={[
+              { label: "kW", scale: 1 },
+              { label: "MW", scale: 1000 },
+            ]}
+            description
+            tooltip={false}
+          />
+          <EnumInput
+            {...fields.regulation_direction}
+            enumKey="controllable_unit.regulation_direction"
+            description
+            tooltip={false}
+          />
+        </FlexDiv>
 
         <FormToolbar />
       </FormContainer>
