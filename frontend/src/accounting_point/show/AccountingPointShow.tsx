@@ -4,7 +4,7 @@ import { Loader, Panel } from "../../components/ui";
 import { ShowPageLayout } from "../../components/ShowPageLayout";
 import { useGetIdentity } from "react-admin";
 import { AccountingPointConnections } from "./AccountingPointConnections";
-import { AccountingPointGridLocationPanel } from "./AccountingPointGridLocationPanel";
+import { AccountingPointShowTabs } from "./AccountingPointShowTabs";
 import { LabelValue } from "../../components/LabelValue";
 import { formatDate } from "date-fns";
 import {
@@ -99,19 +99,16 @@ export const AccountingPointShow = () => {
           />
         </div>
       </Panel>
-      {userCanViewGridLocation(identity?.role) ? (
-        <AccountingPointGridLocationPanel
-          apId={apId}
-          gridLocation={viewModel.gridLocation}
-          userCanEdit={userCanEditGridLocation(
-            identity!,
-            ap,
-            viewModel.gridLocation,
-          )}
-        />
-      ) : (
-        <></>
-      )}
+      <AccountingPointShowTabs
+        apId={apId}
+        gridLocation={viewModel.gridLocation}
+        userCanViewGridLocation={userCanViewGridLocation(identity?.role)}
+        userCanEditGridLocation={userCanEditGridLocation(
+          identity!,
+          ap,
+          viewModel.gridLocation,
+        )}
+      />
     </ShowPageLayout>
   );
 };

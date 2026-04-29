@@ -21,7 +21,9 @@ export const AccountingPointGridLocationPanel = ({
   return (
     <Panel border className="bg-white h-fit p-4">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-base font-semibold">Grid Location</h3>
+        {!isEditing && (
+          <h3 className="text-base font-semibold">{gridLocation?.name}</h3>
+        )}
         {userCanEdit && !isEditing && gridLocation != null && (
           <Button
             variant="invisible"
@@ -56,11 +58,6 @@ export const AccountingPointGridLocationPanel = ({
         </div>
       ) : (
         <div className="flex flex-col gap-4">
-          <LabelValue
-            size="small"
-            labelKey="accounting_point_grid_location.name"
-            value={gridLocation.name}
-          />
           <LabelValue
             size="small"
             labelKey="accounting_point_grid_location.object_type"
