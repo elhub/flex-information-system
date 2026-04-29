@@ -15,6 +15,7 @@ import {
 } from "../../generated-client";
 
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import { useGetIdentity } from "ra-core";
 import { throwOnError } from "../../util";
 
 export type AccountingPointShowViewModel = {
@@ -30,6 +31,7 @@ export type AccountingPointShowViewModel = {
 
 const getAccountingPointData = async (
   id: number,
+  canReadConnections: boolean,
 ): Promise<AccountingPointShowViewModel> => {
   const accountingPoint = await readAccountingPoint({
     path: { id },
@@ -37,38 +39,40 @@ const getAccountingPointData = async (
 
   const now = new Date().toISOString();
 
-  const [brpData, bzData, euData, esData, mgaData] = await Promise.all([
-    listAccountingPointBalanceResponsibleParty({
-      query: {
-        accounting_point_id: "eq." + accountingPoint.id,
-        valid_at: now,
-      },
-    }).then(throwOnError),
-    listAccountingPointBiddingZone({
-      query: {
-        accounting_point_id: "eq." + accountingPoint.id,
-        valid_at: now,
-      },
-    }).then(throwOnError),
-    listAccountingPointEndUser({
-      query: {
-        accounting_point_id: "eq." + accountingPoint.id,
-        valid_at: now,
-      },
-    }).then(throwOnError),
-    listAccountingPointEnergySupplier({
-      query: {
-        accounting_point_id: "eq." + accountingPoint.id,
-        valid_at: now,
-      },
-    }).then(throwOnError),
-    listAccountingPointMeteringGridArea({
-      query: {
-        accounting_point_id: "eq." + accountingPoint.id,
-        valid_at: now,
-      },
-    }).then(throwOnError),
-  ]);
+  const [brpData, bzData, euData, esData, mgaData] = canReadConnections
+    ? await Promise.all([
+        listAccountingPointBalanceResponsibleParty({
+          query: {
+            accounting_point_id: "eq." + accountingPoint.id,
+            valid_at: now,
+          },
+        }).then(throwOnError),
+        listAccountingPointBiddingZone({
+          query: {
+            accounting_point_id: "eq." + accountingPoint.id,
+            valid_at: now,
+          },
+        }).then(throwOnError),
+        listAccountingPointEndUser({
+          query: {
+            accounting_point_id: "eq." + accountingPoint.id,
+            valid_at: now,
+          },
+        }).then(throwOnError),
+        listAccountingPointEnergySupplier({
+          query: {
+            accounting_point_id: "eq." + accountingPoint.id,
+            valid_at: now,
+          },
+        }).then(throwOnError),
+        listAccountingPointMeteringGridArea({
+          query: {
+            accounting_point_id: "eq." + accountingPoint.id,
+            valid_at: now,
+          },
+        }).then(throwOnError),
+      ])
+    : [[], [], [], [], []];
 
   const gridLocationResult = await listAccountingPointGridLocation({
     query: { accounting_point_id: "eq." + accountingPoint.id },
@@ -90,31 +94,35 @@ const getAccountingPointData = async (
     energySupplier,
     systemOperator,
     meteringGridArea,
-  ] = await Promise.all([
-    currentBRP?.balance_responsible_party_id
-      ? readParty({
-          path: { id: currentBRP.balance_responsible_party_id },
-        }).then(throwOnError)
-      : Promise.resolve(undefined),
-    currentEU?.end_user_id
-      ? readParty({ path: { id: currentEU.end_user_id } }).then(throwOnError)
-      : Promise.resolve(undefined),
-    currentES?.energy_supplier_id
-      ? readParty({ path: { id: currentES.energy_supplier_id } }).then(
-          throwOnError,
-        )
-      : Promise.resolve(undefined),
-    accountingPoint.system_operator_id
-      ? readParty({ path: { id: accountingPoint.system_operator_id } }).then(
-          throwOnError,
-        )
-      : Promise.resolve(undefined),
-    currentMGA?.metering_grid_area_id
-      ? readMeteringGridArea({
-          path: { id: currentMGA.metering_grid_area_id },
-        }).then(throwOnError)
-      : Promise.resolve(undefined),
-  ]);
+  ] = canReadConnections
+    ? await Promise.all([
+        currentBRP?.balance_responsible_party_id
+          ? readParty({
+              path: { id: currentBRP.balance_responsible_party_id },
+            }).then(throwOnError)
+          : Promise.resolve(undefined),
+        currentEU?.end_user_id
+          ? readParty({ path: { id: currentEU.end_user_id } }).then(
+              throwOnError,
+            )
+          : Promise.resolve(undefined),
+        currentES?.energy_supplier_id
+          ? readParty({ path: { id: currentES.energy_supplier_id } }).then(
+              throwOnError,
+            )
+          : Promise.resolve(undefined),
+        accountingPoint.system_operator_id
+          ? readParty({
+              path: { id: accountingPoint.system_operator_id },
+            }).then(throwOnError)
+          : Promise.resolve(undefined),
+        currentMGA?.metering_grid_area_id
+          ? readMeteringGridArea({
+              path: { id: currentMGA.metering_grid_area_id },
+            }).then(throwOnError)
+          : Promise.resolve(undefined),
+      ])
+    : [undefined, undefined, undefined, undefined, undefined];
 
   return {
     accountingPoint,
@@ -135,9 +143,13 @@ export const accountingPointViewModelQueryKey = (
 export const useAccountingPointViewModel = (
   id: number | undefined,
 ): UseQueryResult<AccountingPointShowViewModel> => {
+  const { data: identity } = useGetIdentity();
+  const canReadConnections =
+    identity?.role === "flex_flexibility_information_system_operator";
+
   return useQuery({
     queryKey: accountingPointViewModelQueryKey(id),
-    queryFn: () => getAccountingPointData(id!),
+    queryFn: () => getAccountingPointData(id!, canReadConnections),
     enabled: !!id,
   });
 };
