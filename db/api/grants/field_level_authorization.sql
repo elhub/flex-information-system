@@ -5198,7 +5198,6 @@ GRANT INSERT (
     name,
     nominal_voltage,
     additional_information,
-    source,
     quality
 ) ON TABLE
 api.accounting_point_grid_location
@@ -5226,7 +5225,6 @@ GRANT UPDATE (
     name,
     nominal_voltage,
     additional_information,
-    source,
     quality
 ) ON TABLE
 api.accounting_point_grid_location
@@ -5239,7 +5237,6 @@ GRANT INSERT (
     name,
     nominal_voltage,
     additional_information,
-    source,
     quality
 ) ON TABLE
 api.accounting_point_grid_location
@@ -5267,7 +5264,6 @@ GRANT UPDATE (
     name,
     nominal_voltage,
     additional_information,
-    source,
     quality
 ) ON TABLE
 api.accounting_point_grid_location
