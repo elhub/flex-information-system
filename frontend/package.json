@@ -9,7 +9,7 @@
         "lint": "eslint --fix ./src",
         "owasp": "owasp-dependency-check --project \"flex-portal\"",
         "serve": "vite preview",
-        "test": "true",
+        "test": "vitest --no-watch",
         "type-check": "tsc --noEmit"
     },
     "dependencies": {
@@ -59,8 +59,9 @@
         "owasp-dependency-check": "1.0.1",
         "prettier": "3.8.3",
         "typescript": "6.0.3",
+        "typescript-eslint": "8.58.2",
         "vite": "8.0.8",
-        "typescript-eslint": "8.58.2"
+        "vitest": "^4.1.5"
     },
     "overrides": {
         "lodash": "4.18.1"
