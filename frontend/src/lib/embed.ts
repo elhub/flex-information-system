@@ -34,18 +34,19 @@ type EmbeddableKeys<T> = {
     ? NonNullable<T[K]> extends object
       ? K
       : never
-    : never
-}[keyof T]
+    : never;
+}[keyof T];
 
 /** Unwrap Array<U> | null → U, or SomeType | null → SomeType. */
-type EmbedElement<T> = NonNullable<T> extends Array<infer U> ? U : NonNullable<T>
+type EmbedElement<T> =
+  NonNullable<T> extends Array<infer U> ? U : NonNullable<T>;
 
 /** A selector object whose keys are the embeddable relations of T. */
 type EmbedSelector<T> = {
   [K in EmbeddableKeys<T>]: (
-    sub?: (s: EmbedSelector<EmbedElement<T[K]>>) => void
-  ) => void
-}
+    sub?: (s: EmbedSelector<EmbedElement<T[K]>>) => void,
+  ) => void;
+};
 
 /**
  * Creates a Proxy-backed selector that records embed parts into `parts`.
@@ -59,18 +60,18 @@ type EmbedSelector<T> = {
 function makeSelector<T>(parts: string[]): EmbedSelector<T> {
   return new Proxy({} as EmbedSelector<T>, {
     get(_, key) {
-      if (typeof key !== "string") return undefined
+      if (typeof key !== "string") return undefined;
       return (sub?: (s: EmbedSelector<unknown>) => void) => {
         if (sub) {
-          const childParts: string[] = []
-          sub(makeSelector(childParts))
-          parts.push(`${key}(${childParts.join(",")})`)
+          const childParts: string[] = [];
+          sub(makeSelector(childParts));
+          parts.push(`${key}(${childParts.join(",")})`);
         } else {
-          parts.push(key)
+          parts.push(key);
         }
-      }
+      };
     },
-  })
+  });
 }
 
 /**
@@ -88,7 +89,7 @@ function makeSelector<T>(parts: string[]): EmbedSelector<T> {
  *   // => "accounting_point(bidding_zone),suspension"
  */
 export function embed<T>(build: (s: EmbedSelector<T>) => void): string {
-  const parts: string[] = []
-  build(makeSelector<T>(parts))
-  return parts.join(",")
+  const parts: string[] = [];
+  build(makeSelector<T>(parts));
+  return parts.join(",");
 }
