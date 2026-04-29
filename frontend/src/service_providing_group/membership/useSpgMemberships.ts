@@ -2,7 +2,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   AccountingPointBiddingZone,
   ControllableUnit,
-  ServiceProvidingGroupMembership,
   createServiceProvidingGroupMembership,
   deleteServiceProvidingGroupMembership,
   listAccountingPointBalanceResponsibleParty,
@@ -13,7 +12,6 @@ import {
   readAccountingPoint,
   readParty,
 } from "../../generated-client";
-import { embed } from "../../lib/embed";
 import { findCurrentlyValidRecord, throwOnError } from "../../util";
 
 const fetchCurrentBiddingZone = async (
@@ -140,33 +138,12 @@ export const controllableUnitsNotInSpgQueryKey = (spgId: number) => [
   spgId,
 ];
 
-export const useControllableUnitsInSpg = (spgId: number) => {
-  fetchControllableUnitsInSpgEmbedded(spgId);
-  return useQuery({
+export const useControllableUnitsInSpg = (spgId: number) =>
+  useQuery({
     queryKey: controllableUnitsInSpgQueryKey(spgId),
     queryFn: () => fetchControllableUnitsInSpg(spgId),
     enabled: !!spgId,
   });
-};
-
-const fetchControllableUnitsInSpgEmbedded = async (spgId: number) => {
-  const memberships = await listServiceProvidingGroupMembership({
-    query: {
-      id: "eq." + spgId,
-      embed: embed<ServiceProvidingGroupMembership>({
-        controllable_unit: {
-          accounting_point: {
-            bidding_zone: true,
-            balance_responsible_party: {
-              balance_responsible_party: true,
-            },
-          },
-        },
-      }),
-    },
-  }).then(throwOnError);
-  console.log("memberships", memberships);
-};
 
 export const useControllableUnitsNotInSpg = (spgId: number) =>
   useQuery({
