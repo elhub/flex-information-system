@@ -43,6 +43,7 @@ export const AccountingPointGridLocationInput = ({
   > = isCreate
     ? { accounting_point_id: apId }
     : {
+        accounting_point_id: apId,
         name: gridLocation.name,
         object_type: gridLocation.object_type,
         business_id: gridLocation.business_id ?? undefined,
@@ -75,9 +76,7 @@ export const AccountingPointGridLocationInput = ({
       <Form
         record={record}
         resolver={unTypedZodResolver(
-          isCreate
-            ? zAccountingPointGridLocationCreateRequestWritable
-            : zAccountingPointGridLocationUpdateRequestWritable,
+          zAccountingPointGridLocationCreateRequestWritable,
         )}
         onSubmit={onSubmit}
       >
