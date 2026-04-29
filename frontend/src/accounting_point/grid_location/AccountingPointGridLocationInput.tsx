@@ -39,8 +39,7 @@ export const AccountingPointGridLocationInput = ({
   const isCreate = gridLocation === undefined;
 
   const record: Partial<
-    | z.infer<typeof zAccountingPointGridLocationCreateRequestWritable>
-    | z.infer<typeof zAccountingPointGridLocationUpdateRequestWritable>
+    z.infer<typeof zAccountingPointGridLocationCreateRequestWritable>
   > = isCreate
     ? { accounting_point_id: apId }
     : {
