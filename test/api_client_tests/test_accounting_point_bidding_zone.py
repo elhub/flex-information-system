@@ -74,13 +74,15 @@ def test_apbz_sp(sts):
         [
             cast(AccountingPointBiddingZoneResponse, apbz)
             for apbz in apbzs
-            if apbz.accounting_point_id == 1003
+            # NB: here we need to use an AP where no other test creates CUSP
+            # impacting the same (AP, SP) pair (for example NOT 1003)
+            if apbz.accounting_point_id == 1001
         ],
         key=lambda apbz: str(apbz.valid_from),
     )
 
     assert len(apbzs_ap) >= 2, (
-        f"Expected at least 2 APBZ records for AP 1003, got {len(apbzs_ap)}"
+        f"Expected at least 2 APBZ records for AP 1001, got {len(apbzs_ap)}"
     )
 
     # We check that:
