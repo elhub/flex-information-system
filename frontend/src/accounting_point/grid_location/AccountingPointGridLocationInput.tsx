@@ -1,4 +1,4 @@
-import { Form, ResourceContextProvider } from "ra-core";
+import { Form, ResourceContextProvider, useNotify } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import z from "zod";
 import {
@@ -19,7 +19,6 @@ import {
   FormToolbar,
 } from "../../components/EDS-ra";
 import { accountingPointViewModelQueryKey } from "../show/useAccountingPointViewModel";
-import { throwOnError } from "../../util";
 import { unTypedZodResolver, getFields } from "../../zod";
 
 const fields = getFields(
@@ -36,6 +35,7 @@ export const AccountingPointGridLocationInput = ({
   onDone: () => void;
 }) => {
   const queryClient = useQueryClient();
+  const notify = useNotify();
   const isCreate = gridLocation === undefined;
 
   const record: Partial<
@@ -56,14 +56,22 @@ export const AccountingPointGridLocationInput = ({
     if (isCreate) {
       const body =
         zAccountingPointGridLocationCreateRequestWritable.parse(values);
-      await createAccountingPointGridLocation({ body }).then(throwOnError);
+      const result = await createAccountingPointGridLocation({ body });
+      if (result.error) {
+        notify(result.error.message ?? "An error occurred", { type: "error" });
+        return;
+      }
     } else {
       const body =
         zAccountingPointGridLocationUpdateRequestWritable.parse(values);
-      await updateAccountingPointGridLocation({
+      const result = await updateAccountingPointGridLocation({
         path: { id: gridLocation.id },
         body,
-      }).then(throwOnError);
+      });
+      if (result.error) {
+        notify(result.error.message ?? "An error occurred", { type: "error" });
+        return;
+      }
     }
     await queryClient.invalidateQueries({
       queryKey: accountingPointViewModelQueryKey(apId),
