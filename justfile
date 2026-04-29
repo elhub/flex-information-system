@@ -273,7 +273,7 @@ liquibase pghost='localhost' password='flex_password' action='update' changelog=
     LIQUIBASE_COMMAND_URL=jdbc:postgresql://{{ pghost }}:5432/flex \
     LIQUIBASE_COMMAND_USERNAME=flex \
     LIQUIBASE_COMMAND_PASSWORD={{ password }} \
-    LIQUIBASE_COMMAND_CONTEXT_FILTER="with-test-data" \
+    LIQUIBASE_COMMAND_CONTEXT_FILTER="test" \
     .bin/liquibase-{{ LIQUIBASE_VERSION }}/liquibase \
     --liquibaseSchemaName=flex \
     --defaultSchemaName=flex \

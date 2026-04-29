@@ -51,7 +51,7 @@ databaseChangeLog:
       file: ./test_data/test_data.sql
       relativeToChangelogFile: true
       # `@` means run only when the context is explicitly set
-      context: "@with-test-data"
+      context: "@test"
   # make sure the changes made by Liquibase are exposed in PostgREST
   - changeSet:
       id: notify-postgrest
