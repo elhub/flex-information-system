@@ -17,7 +17,7 @@ import {
   UnitInput,
   TextAreaInput,
   FormToolbar,
-} from "../../components/EDS-ra/inputs";
+} from "../../components/EDS-ra";
 import { accountingPointViewModelQueryKey } from "../show/useAccountingPointViewModel";
 import { throwOnError } from "../../util";
 import { unTypedZodResolver, getFields } from "../../zod";
