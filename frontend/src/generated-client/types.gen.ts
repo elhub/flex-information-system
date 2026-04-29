@@ -4933,6 +4933,58 @@ export type AccountingPointMeteringGridAreaWritable = {
 };
 
 /**
+ * Request schema for update operations - The electrical (topological) location of an accounting point in the common grid model (Nemo).
+ */
+export type AccountingPointGridLocationUpdateRequestWritable = {
+  object_type?: AccountingPointGridLocationObjectType;
+  /**
+   * Business identifier (mRID) referencing the object in the common grid model.
+   */
+  business_id?: string;
+  /**
+   * Name of the grid model object at the location.
+   */
+  name?: string;
+  /**
+   * Nominal voltage level at the grid location, in kilovolt (kV).
+   */
+  nominal_voltage?: number;
+  /**
+   * Free text field for extra information about the grid location if needed.
+   */
+  additional_information?: string;
+  quality?: AccountingPointGridLocationQuality;
+};
+
+/**
+ * Request schema for create operations - The electrical (topological) location of an accounting point in the common grid model (Nemo).
+ */
+export type AccountingPointGridLocationCreateRequestWritable = {
+  /**
+   * The accounting point this grid location belongs to.
+   */
+  accounting_point_id: number;
+  object_type: AccountingPointGridLocationObjectType;
+  /**
+   * Business identifier (mRID) referencing the object in the common grid model.
+   */
+  business_id?: string;
+  /**
+   * Name of the grid model object at the location.
+   */
+  name: string;
+  /**
+   * Nominal voltage level at the grid location, in kilovolt (kV).
+   */
+  nominal_voltage: number;
+  /**
+   * Free text field for extra information about the grid location if needed.
+   */
+  additional_information?: string;
+  quality: AccountingPointGridLocationQuality;
+};
+
+/**
  * Response schema - The electrical (topological) location of an accounting point in the common grid model (Nemo).
  */
 export type AccountingPointGridLocationWritable = {
@@ -4957,7 +5009,6 @@ export type AccountingPointGridLocationWritable = {
    * Free text field for extra information about the grid location if needed.
    */
   additional_information?: string;
-  source: AccountingPointGridLocationSource;
   quality: AccountingPointGridLocationQuality;
   /**
    * Embedded accounting_point
@@ -5691,7 +5742,6 @@ export type AccountingPointGridLocationHistoryWritable = {
    * Free text field for extra information about the grid location if needed.
    */
   additional_information?: string;
-  source: AccountingPointGridLocationSource;
   quality: AccountingPointGridLocationQuality;
   /**
    * Reference to the resource that was updated.
@@ -13499,7 +13549,7 @@ export type CreateAccountingPointGridLocationData = {
   /**
    * accounting_point_grid_location
    */
-  body?: AccountingPointGridLocationCreateRequest;
+  body?: AccountingPointGridLocationCreateRequestWritable;
   path?: never;
   query?: never;
   url: "/accounting_point_grid_location";
@@ -13607,7 +13657,7 @@ export type UpdateAccountingPointGridLocationData = {
   /**
    * accounting_point_grid_location
    */
-  body: AccountingPointGridLocationUpdateRequest;
+  body: AccountingPointGridLocationUpdateRequestWritable;
   path: {
     id: number;
   };

@@ -214,7 +214,7 @@ accounting_point_grid_location;business_id;;;;;RCU;;RCU;;;;;;
 accounting_point_grid_location;name;;;;;RCU;;RCU;;;;;;
 accounting_point_grid_location;nominal_voltage;;;;;RCU;;RCU;;;;;;
 accounting_point_grid_location;additional_information;;;;;RCU;;RCU;;;;;;
-accounting_point_grid_location;source;;;;;RCU;;RCU;;;;;;
+accounting_point_grid_location;source;;;;;R;;R;;;;;;
 accounting_point_grid_location;quality;;;;;RCU;;RCU;;;;;;
 accounting_point_grid_location;recorded_at;;;;;R;;R;;;;;;
 accounting_point_grid_location;recorded_by;;;;;R;;R;;;;;;

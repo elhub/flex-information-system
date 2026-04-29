@@ -53,3 +53,36 @@ FOR EACH ROW EXECUTE FUNCTION suppress_redundant_updates_trigger();
 CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS
 accounting_point_grid_location_accounting_point_idx
 ON accounting_point_grid_location (accounting_point_id);
+
+-- changeset flex:accounting-point-grid-location-source-set-trigger runOnChange:true endDelimiter:--
+CREATE OR REPLACE FUNCTION accounting_point_grid_location_source_set()
+RETURNS trigger
+SECURITY INVOKER
+LANGUAGE plpgsql
+AS
+$$
+BEGIN
+    IF coalesce((SELECT current_party()),0) = 0 THEN
+        RETURN NEW;
+    END IF;
+
+    IF EXISTS (
+        SELECT 1
+        FROM accounting_point_system_operator AS ap_so
+        WHERE ap_so.accounting_point_id = NEW.accounting_point_id
+            AND ap_so.system_operator_id = (SELECT current_party())
+            AND ap_so.valid_time_range @> current_timestamp
+    ) THEN
+        NEW.source := 'cso';
+    ELSE
+        NEW.source := 'so';
+    END IF;
+    RETURN NEW;
+END;
+$$;
+
+CREATE OR REPLACE TRIGGER a_accounting_point_grid_location_source_set
+BEFORE INSERT OR UPDATE
+ON accounting_point_grid_location
+FOR EACH ROW
+EXECUTE FUNCTION accounting_point_grid_location_source_set();
