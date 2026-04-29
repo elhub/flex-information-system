@@ -103,12 +103,11 @@ func NewProvider( //nolint: funlen
 
 	jwksCache, err := jwkfetch.NewCache(
 		ctx,
-		httprc.NewClient(
-			// By default, the HTTP client used will ignore our HTTP_PROXY config.
-			// We override with http.DefaultClient, which we also use in other places.
-			// (see https://github.com/jwx-go/jwkfetch#options)
-			httprc.WithHTTPClient(http.DefaultClient),
-		),
+		httprc.NewClient(),
+		// By default, the HTTP client used will ignore our HTTP_PROXY config.
+		// We override with http.DefaultClient, which we also use in other places.
+		// (see https://github.com/jwx-go/jwkfetch#options)
+		jwkfetch.WithHTTPClient(http.DefaultClient),
 	)
 	if err != nil {
 		return nil, fmt.Errorf("could not create JWK cache: %w", err)
