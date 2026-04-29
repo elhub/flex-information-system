@@ -4,7 +4,7 @@ import { LabelValue } from "../../components/LabelValue";
 import { Button, Panel } from "../../components/ui";
 import { useTranslate } from "ra-core";
 import { IconPencil } from "@elhub/ds-icons";
-import { AccountingPointGridLocationForm } from "./AccountingPointGridLocationForm";
+import { AccountingPointGridLocationInput } from "./AccountingPointGridLocationInput";
 
 export const AccountingPointGridLocationPanel = ({
   apId,
@@ -36,7 +36,7 @@ export const AccountingPointGridLocationPanel = ({
       </div>
 
       {isEditing ? (
-        <AccountingPointGridLocationForm
+        <AccountingPointGridLocationInput
           apId={apId}
           gridLocation={gridLocation}
           onDone={() => setIsEditing(false)}

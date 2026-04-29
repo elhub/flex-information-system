@@ -62,7 +62,7 @@ LANGUAGE plpgsql
 AS
 $$
 BEGIN
-    IF (SELECT current_party()) = 0 THEN
+    IF coalesce((SELECT current_party()),0) = 0 THEN
         RETURN NEW;
     END IF;
 

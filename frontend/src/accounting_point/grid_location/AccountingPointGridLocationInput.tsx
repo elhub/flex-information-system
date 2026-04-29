@@ -23,7 +23,7 @@ import {
   TextField,
   Textarea,
 } from "../../components/ui";
-import { accountingPointViewModelQueryKey } from "./useAccountingPointViewModel";
+import { accountingPointViewModelQueryKey } from "../show/useAccountingPointViewModel";
 import { throwOnError } from "../../util";
 
 const OBJECT_TYPE_OPTIONS = ["substation", "transformer"] as const;
@@ -32,7 +32,7 @@ const QUALITY_OPTIONS = ["confirmed", "guessed"] as const;
 type CreateFormValues = AccountingPointGridLocationCreateRequestWritable;
 type UpdateFormValues = AccountingPointGridLocationUpdateRequestWritable;
 
-export const AccountingPointGridLocationForm = ({
+export const AccountingPointGridLocationInput = ({
   apId,
   gridLocation,
   onDone,
@@ -175,7 +175,11 @@ export const AccountingPointGridLocationForm = ({
             <TextField
               {...field}
               value={field.value != null ? String(field.value) : ""}
-              onChange={(e) => field.onChange(e.target.valueAsNumber)}
+              onChange={(e) =>
+                field.onChange(
+                  e.target.value === "" ? undefined : e.target.valueAsNumber,
+                )
+              }
               type="number"
               unit="kV"
             />

@@ -1,6 +1,6 @@
 import { Tabs } from "../../components/ui";
 import { AccountingPointGridLocation } from "../../generated-client";
-import { AccountingPointGridLocationPanel } from "./AccountingPointGridLocationPanel";
+import { AccountingPointGridLocationPanel } from "../grid_location/AccountingPointGridLocationPanel";
 
 type Props = {
   apId: number;
