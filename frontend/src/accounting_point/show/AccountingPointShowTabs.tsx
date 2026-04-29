@@ -1,4 +1,4 @@
-import { useGetIdentity, usePermissions } from "ra-core";
+import { useGetIdentity, usePermissions, UserIdentity } from "ra-core";
 import { Tabs } from "../../components/ui";
 import {
   AccountingPoint,
@@ -8,7 +8,7 @@ import { AccountingPointGridLocationPanel } from "../grid_location/AccountingPoi
 import { Permissions } from "../../auth/permissions";
 
 const userCanEditGridLocation = (
-  identity: any,
+  identity: UserIdentity | undefined,
   accountingPoint: AccountingPoint,
   gridLocation: AccountingPointGridLocation | undefined,
 ) => {
