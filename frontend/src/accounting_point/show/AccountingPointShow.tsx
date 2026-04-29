@@ -7,27 +7,6 @@ import { AccountingPointConnections } from "./AccountingPointConnections";
 import { AccountingPointShowTabs } from "./AccountingPointShowTabs";
 import { LabelValue } from "../../components/LabelValue";
 import { formatDate } from "date-fns";
-import {
-  AccountingPoint,
-  AccountingPointGridLocation,
-} from "../../generated-client";
-
-const userCanViewGridLocation = (role: string | undefined) =>
-  role === "flex_flexibility_information_system_operator" ||
-  role === "flex_system_operator";
-
-const userCanEditGridLocation = (
-  identity: any,
-  accountingPoint: AccountingPoint,
-  gridLocation: AccountingPointGridLocation | undefined,
-) => {
-  const isFISO =
-    identity?.role === "flex_flexibility_information_system_operator";
-  if (isFISO) return true;
-  const isCSO = identity?.partyID == accountingPoint.system_operator_id;
-  if (gridLocation?.source === "grid_model") return false;
-  return !(gridLocation?.source === "cso" && !isCSO);
-};
 
 export const AccountingPointShow = () => {
   const { id } = useParams<{ id: string }>();
@@ -100,14 +79,8 @@ export const AccountingPointShow = () => {
         </div>
       </Panel>
       <AccountingPointShowTabs
-        apId={apId}
+        accountingPoint={ap}
         gridLocation={viewModel.gridLocation}
-        userCanViewGridLocation={userCanViewGridLocation(identity?.role)}
-        userCanEditGridLocation={userCanEditGridLocation(
-          identity!,
-          ap,
-          viewModel.gridLocation,
-        )}
       />
     </ShowPageLayout>
   );
