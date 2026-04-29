@@ -1,169 +1,117 @@
-import {
-  Loading,
-  RecordContextProvider,
-  ReferenceField,
-  Show,
-  SimpleShowLayout,
-  TextField,
-  useGetIdentity,
-  useRecordContext,
-} from "react-admin";
-import { FieldStack } from "../../auth";
-import { Typography, Stack } from "@mui/material";
-import { DateField } from "../../components/datetime";
-import { EnumField } from "../../components/enum";
 import { useAccountingPointViewModel } from "./useAccountingPointViewModel";
-import { AccountingPoint } from "../../generated-client";
+import { useParams } from "react-router-dom";
+import { Loader, Panel } from "../../components/ui";
+import { ShowPageLayout } from "../../components/ShowPageLayout";
+import { useGetIdentity } from "react-admin";
+import { AccountingPointConnections } from "./AccountingPointConnections";
+import { AccountingPointGridLocationPanel } from "./AccountingPointGridLocationPanel";
+import { LabelValue } from "../../components/LabelValue";
+import { formatDate } from "date-fns";
+import {
+  AccountingPoint,
+  AccountingPointGridLocation,
+} from "../../generated-client";
 
-const AccountingPointConnections = () => {
-  const record = useRecordContext<AccountingPoint>()!;
+const userCanViewGridLocation = (role: string | undefined) =>
+  role === "flex_flexibility_information_system_operator" ||
+  role === "flex_system_operator";
 
-  const {
-    data: accountingPointViewModel,
-    isPending,
-    error,
-  } = useAccountingPointViewModel(record);
-
-  if (isPending) {
-    return <Loading />;
-  }
-
-  if (error) {
-    // caught by the React-Admin Error Boundary
-    throw error;
-  }
-
-  return (
-    <RecordContextProvider
-      value={{ ...record, ...accountingPointViewModel.connections }}
-    >
-      {/* NB: we need a FieldStack for each field because data is picked from several resources and
-              we need to change the resource context of the tooltip everytime */}
-      <Stack direction="row" spacing={2}>
-        <FieldStack
-          direction="row"
-          flexWrap="wrap"
-          spacing={2}
-          resource="accounting_point_balance_responsible_party"
-        >
-          <ReferenceField
-            reference="party"
-            source="balance_responsible_party_id"
-            label="field.accounting_point_balance_responsible_party.balance_responsible_party_id"
-          >
-            <TextField source="name" />
-          </ReferenceField>
-        </FieldStack>
-        <FieldStack
-          direction="row"
-          flexWrap="wrap"
-          spacing={2}
-          resource="accounting_point_bidding_zone"
-        >
-          <EnumField
-            source="bidding_zone"
-            enumKey="accounting_point_bidding_zone.bidding_zone"
-          />
-        </FieldStack>
-        <FieldStack
-          direction="row"
-          flexWrap="wrap"
-          spacing={2}
-          resource="accounting_point_end_user"
-        >
-          <ReferenceField
-            source="end_user_id"
-            reference="party"
-            label="field.accounting_point_end_user.end_user_id"
-          >
-            <TextField source="name" />
-          </ReferenceField>
-        </FieldStack>
-        <FieldStack
-          direction="row"
-          flexWrap="wrap"
-          spacing={2}
-          resource="accounting_point_energy_supplier"
-        >
-          <ReferenceField
-            source="energy_supplier_id"
-            reference="party"
-            label="field.accounting_point_energy_supplier.energy_supplier_id"
-          >
-            <TextField source="name" />
-          </ReferenceField>
-        </FieldStack>
-        <FieldStack
-          direction="row"
-          flexWrap="wrap"
-          spacing={2}
-          resource="accounting_point_metering_grid_area"
-        >
-          <ReferenceField
-            source="metering_grid_area_id"
-            reference="metering_grid_area"
-            label="field.accounting_point_metering_grid_area.metering_grid_area_id"
-          >
-            <TextField source="name" label="metering_grid_area.name" />
-          </ReferenceField>
-        </FieldStack>
-        <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-          <ReferenceField
-            source="system_operator_id"
-            reference="party"
-            label="field.accounting_point.system_operator_id"
-          >
-            <TextField source="name" />
-          </ReferenceField>
-        </FieldStack>
-      </Stack>
-    </RecordContextProvider>
-  );
+const userCanEditGridLocation = (
+  identity: any,
+  accountingPoint: AccountingPoint,
+  gridLocation: AccountingPointGridLocation | undefined,
+) => {
+  const isFISO =
+    identity?.role === "flex_flexibility_information_system_operator";
+  if (isFISO) return true;
+  const isCSO = identity?.partyID == accountingPoint.system_operator_id;
+  if (gridLocation?.source === "grid_model") return false;
+  return !(gridLocation?.source === "cso" && !isCSO);
 };
 
 export const AccountingPointShow = () => {
-  const { identity, isPending } = useGetIdentity();
+  const { id } = useParams<{ id: string }>();
+  const apId = Number(id);
+  const { data: identity } = useGetIdentity();
 
-  if (isPending) {
-    return <div>Loading...</div>;
+  const {
+    data: viewModel,
+    isPending,
+    error,
+  } = useAccountingPointViewModel(apId);
+
+  if (error) {
+    throw error;
   }
 
-  return (
-    <Show>
-      <SimpleShowLayout>
-        <Stack direction="column" spacing={2}>
-          <Typography variant="h6" gutterBottom>
-            Basic information
-          </Typography>
-          <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField source="id" label="field.accounting_point.id" />
-            <TextField
-              source="business_id"
-              label="field.accounting_point.business_id"
-            />
-          </FieldStack>
+  if (isPending) {
+    return <Loader />;
+  }
 
-          {identity?.role == "flex_flexibility_information_system_operator" && (
-            <>
-              <Typography variant="h6" gutterBottom>
-                Connections
-              </Typography>
-              <AccountingPointConnections />
-            </>
+  if (!viewModel?.accountingPoint) {
+    return null;
+  }
+
+  const ap = viewModel.accountingPoint;
+
+  return (
+    <ShowPageLayout
+      backTo={{ pathname: "/accounting_point", label: "Accounting points" }}
+      title="Accounting Point"
+    >
+      <Panel
+        border
+        className="bg-semantic-background-alternative h-fit p-4 sm:p-5"
+      >
+        <h3 className="text-base font-semibold mb-4">General Information</h3>
+        <div className="flex flex-col gap-4">
+          <LabelValue
+            size="small"
+            labelKey="accounting_point.id"
+            value={ap.id}
+          />
+          <LabelValue
+            size="small"
+            labelKey="accounting_point.business_id"
+            value={ap.business_id}
+          />
+
+          {identity?.role ===
+            "flex_flexibility_information_system_operator" && (
+            <AccountingPointConnections
+              biddingZone={viewModel.biddingZone}
+              balanceResponsibleParty={viewModel.balanceResponsibleParty}
+              endUser={viewModel.endUser}
+              energySupplier={viewModel.energySupplier}
+              systemOperator={viewModel.systemOperator}
+              meteringGridArea={viewModel.meteringGridArea}
+            />
           )}
 
-          <Typography variant="h6" gutterBottom>
-            Registration
-          </Typography>
-          <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <DateField
-              source="recorded_at"
-              showTime
-              label="field.accounting_point.recorded_at"
-            />
-          </FieldStack>
-        </Stack>
-      </SimpleShowLayout>
-    </Show>
+          <LabelValue
+            size="small"
+            labelKey="accounting_point.recorded_at"
+            value={
+              ap.recorded_at
+                ? formatDate(ap.recorded_at, "dd.MM.yyyy HH:mm")
+                : undefined
+            }
+          />
+        </div>
+      </Panel>
+      {userCanViewGridLocation(identity?.role) ? (
+        <AccountingPointGridLocationPanel
+          apId={apId}
+          gridLocation={viewModel.gridLocation}
+          userCanEdit={userCanEditGridLocation(
+            identity!,
+            ap,
+            viewModel.gridLocation,
+          )}
+        />
+      ) : (
+        <></>
+      )}
+    </ShowPageLayout>
   );
 };

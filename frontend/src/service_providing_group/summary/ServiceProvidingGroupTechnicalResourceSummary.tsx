@@ -5,7 +5,7 @@ import type {
 } from "../../generated-client";
 import { useTranslateEnum } from "../../intl/intl";
 import { PieChart, Pie, Sector, ResponsiveContainer } from "recharts";
-import type { SectorProps } from "recharts";
+import type { SectorProps, PieLabelRenderProps } from "recharts";
 import type { PieSectorShapeProps } from "recharts/types/polar/Pie";
 import { Column, SimpleTable } from "../../components/SimpleTable";
 import { Heading, Panel, Divider } from "../../components/ui";
@@ -182,7 +182,9 @@ const ServiceProvidingGroupTechnicalResourceSummaryDetails = ({
                   data={categoryData}
                   innerRadius={25}
                   outerRadius={80}
-                  label={({ name, value }) => `${name}: ${formatKw(value)}`}
+                  label={({ name, value }: PieLabelRenderProps) =>
+                    `${name}: ${formatKw(value as number | undefined)}`
+                  }
                   shape={(props: PieSectorShapeProps) => (
                     <Sector
                       {...(props as SectorProps)}

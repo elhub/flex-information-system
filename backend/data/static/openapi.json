@@ -852,6 +852,7 @@
                 "description": "How the grid location was determined.",
                 "format": "text",
                 "type": "string",
+                "readOnly": true,
                 "enum": [
                     "cso",
                     "so",
