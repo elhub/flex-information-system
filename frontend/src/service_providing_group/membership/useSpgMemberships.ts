@@ -13,6 +13,7 @@ import {
   readParty,
 } from "../../generated-client";
 import { findCurrentlyValidRecord, throwOnError } from "../../util";
+import { embed } from "../../lib/embed";
 
 const fetchCurrentBiddingZone = async (
   accountingPointId: number,
@@ -95,7 +96,7 @@ const fetchControllableUnitsInSpg = async (spgId: number) => {
   const controllableUnits = await listControllableUnit({
     query: {
       id: `in.(${memberships.map((m) => m.controllable_unit_id).join(",")})`,
-      embed: "summary",
+      embed: embed<ControllableUnit>({ summary: true }),
     },
   }).then(throwOnError);
 
