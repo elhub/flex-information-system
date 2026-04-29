@@ -153,15 +153,15 @@ const fetchControllableUnitsInSpgEmbedded = async (spgId: number) => {
   const memberships = await listServiceProvidingGroupMembership({
     query: {
       id: "eq." + spgId,
-      embed: embed<ServiceProvidingGroupMembership>((s) => {
-        s.controllable_unit((cu) => {
-          cu.accounting_point((a) => {
-            a.bidding_zone();
-            a.balance_responsible_party((brp) => {
-              brp.balance_responsible_party();
-            });
-          });
-        });
+      embed: embed<ServiceProvidingGroupMembership>({
+        controllable_unit: {
+          accounting_point: {
+            bidding_zone: true,
+            balance_responsible_party: {
+              balance_responsible_party: true,
+            },
+          },
+        },
       }),
     },
   }).then(throwOnError);
