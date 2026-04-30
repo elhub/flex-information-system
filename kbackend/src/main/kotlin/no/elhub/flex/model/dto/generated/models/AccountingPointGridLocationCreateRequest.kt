@@ -48,7 +48,7 @@ public data class AccountingPointGridLocationCreateRequest(
    * How the grid location was determined.
    */
   @SerialName("source")
-  public val source: AccountingPointGridLocationSource,
+  public val source: AccountingPointGridLocationSource? = null,
   /**
    * The quality of the grid location registration.
    */

@@ -2753,6 +2753,7 @@ resources:
         description: How the grid location was determined.
         format: text
         type: string
+        readOnly: true
         enum:
           - id: cso
             x-intl:
