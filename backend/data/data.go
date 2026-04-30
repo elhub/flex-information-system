@@ -563,6 +563,8 @@ func validAtQueryRewrite(query url.Values) error {
 }
 
 // postgRESTHandler forwards the request to the PostgREST API.
+//
+//nolint:cyclop,funlen
 func (data *api) postgRESTHandler(w http.ResponseWriter, req *http.Request) {
 	// regex for calls targeting single ID pages, not a valid format in PostgREST
 	regexSingleID := regexp.MustCompile("^/([a-z_]+)/([0-9]+)$")
@@ -599,7 +601,11 @@ func (data *api) postgRESTHandler(w http.ResponseWriter, req *http.Request) {
 		)
 	}
 
-	if err := embedQueryRewrite(query); err != nil {
+	// turn the embed parameter into a PostgREST select if present, checking that
+	// the scopes cover reading the embedding resources
+
+	embedNodes, err := parseEmbed(query)
+	if err != nil {
 		slog.WarnContext(ctx, "malformed embed query parameter", "error", err)
 		writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
 			Message: "malformed embed parameter: " + err.Error(),
@@ -607,6 +613,37 @@ func (data *api) postgRESTHandler(w http.ResponseWriter, req *http.Request) {
 
 		return
 	}
+
+	if len(embedNodes) > 0 { // embed parameter exists -> check scopes
+		rd, err := auth.RequestDetailsFromContext(ctx)
+		if err != nil {
+			slog.ErrorContext(ctx, "no request details in context", "error", err)
+			writeInternalServerError(w)
+
+			return
+		}
+
+		requestScope := rd.Scope()
+
+		for _, resource := range resourceNames(embedNodes) {
+			requiredScope := scope.Scope{Verb: scope.Read, Asset: "data:" + resource}
+			if !requestScope.Covers(requiredScope) {
+				slog.DebugContext(ctx, "insufficient scope for embedded resource",
+					"required_scope", requiredScope.String(),
+					"scope", requestScope.String(),
+					"embedded_resource", resource,
+				)
+				writeErrorToResponseWriter(w, http.StatusForbidden, errorMessage{ //nolint:exhaustruct
+					Message: "insufficient scope for embedded resource: " + resource,
+				})
+
+				return
+			}
+		}
+	}
+
+	// write the select parameter (if applies)
+	applyEmbedRewrite(query, embedNodes)
 
 	if err := validAtQueryRewrite(query); err != nil {
 		writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
