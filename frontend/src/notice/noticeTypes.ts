@@ -1,5 +1,13 @@
 const noticeTypes = [
   {
+    id: "no.elhub.flex.accounting_point_grid_location.source_insufficient",
+    label: "accounting_point_grid_location.source_insufficient",
+  },
+  {
+    id: "no.elhub.flex.accounting_point_grid_location.missing",
+    label: "accounting_point_grid_location.missing",
+  },
+  {
     id: "no.elhub.flex.controllable_unit_service_provider.valid_time.outside_contract",
     label: "controllable_unit_service_provider.valid_time.outside_contract",
   },

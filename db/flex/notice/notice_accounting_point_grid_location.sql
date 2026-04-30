@@ -33,10 +33,10 @@ WITH (security_invoker = false) AS (
     SELECT
         ap_so.system_operator_id AS party_id,
         'no.elhub.flex.accounting_point_grid_location.source_insufficient'::ltree AS type, -- noqa
-        'accounting_point_grid_location' AS source_resource,
-        apgl.id AS source_id,
+        'accounting_point' AS source_resource,
+        apgl.accounting_point_id AS source_id,
         null::jsonb AS data, -- noqa
-        md5(apgl.id::text || '_' || ap_so.system_operator_id::text) AS deduplication_key -- noqa
+        md5(apgl.accounting_point_id::text || '_' || ap_so.system_operator_id::text) AS deduplication_key -- noqa
     FROM flex.accounting_point_grid_location AS apgl
         INNER JOIN flex.accounting_point_system_operator AS ap_so
             ON
