@@ -8,7 +8,7 @@ import { PieChart, Pie, Sector, ResponsiveContainer } from "recharts";
 import type { SectorProps, PieLabelRenderProps } from "recharts";
 import type { PieSectorShapeProps } from "recharts/types/polar/Pie";
 import { Column, SimpleTable } from "../../components/SimpleTable";
-import { Heading, Panel, Divider } from "../../components/ui";
+import { Heading, Panel, Tabs } from "../../components/ui";
 import { LabelValue } from "../../components/LabelValue";
 
 const formatKw = (value: number | undefined) =>
@@ -154,56 +154,65 @@ const ServiceProvidingGroupTechnicalResourceSummaryDetails = ({
 
   return (
     <div className="flex flex-col gap-6">
-      <Divider />
-      <p>
-        Here is a breakdown of these aggregates, grouped by <b>technology</b> in
-        the table and by <b>category</b> in the diagram:
-      </p>
-      <div className="grid grid-cols-2 gap-4">
-        {technologyRows.length > 0 && (
-          <SimpleTable
-            size="small"
-            data={technologyRows}
-            columns={technologyColumns}
-            className="w-full"
-          />
-        )}
-        {categoryData.length > 0 && (
-          <Panel
-            border
-            className="bg-semantic-background-alternative h-fit p-4 sm:p-5"
-          >
-            <Heading size="small">Aggregated rated power by category</Heading>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  // remove outline on chart piece click
-                  style={{ outline: "none" }}
-                  data={categoryData}
-                  innerRadius={25}
-                  outerRadius={80}
-                  label={({ name, value }: PieLabelRenderProps) =>
-                    `${name}: ${formatKw(value as number | undefined)}`
-                  }
-                  shape={(props: PieSectorShapeProps) => (
-                    <Sector
-                      {...(props as SectorProps)}
-                      fill={
-                        CATEGORY_COLORS[
-                          categoryData[props.index ?? 0]?.key ?? ""
-                        ] ?? CHART_COLOR_FALLBACK
+      <Tabs defaultValue="technology">
+        <Tabs.List>
+          <Tabs.Tab label="Breakdown by technology" value="technology" />
+          <Tabs.Tab label="Breakdown by category" value="category" />
+        </Tabs.List>
+        <Tabs.Panel value="technology">
+          {technologyRows.length > 0 && (
+            <div className="pt-4">
+              <SimpleTable
+                size="small"
+                data={technologyRows}
+                columns={technologyColumns}
+                className="w-full"
+              />
+            </div>
+          )}
+        </Tabs.Panel>
+        <Tabs.Panel value="category">
+          {categoryData.length > 0 && (
+            <div className="pt-4">
+              <Panel
+                border
+                className="bg-semantic-background-alternative h-fit p-4 sm:p-5"
+              >
+                <Heading size="small">
+                  Aggregated rated power by category
+                </Heading>
+                <ResponsiveContainer width="100%" height={500}>
+                  <PieChart>
+                    <Pie
+                      // remove outline on chart piece click
+                      style={{ outline: "none" }}
+                      data={categoryData}
+                      innerRadius={50}
+                      outerRadius={150}
+                      label={({ name, value }: PieLabelRenderProps) =>
+                        `${name}: ${formatKw(value as number | undefined)}`
                       }
-                      stroke={CHART_SECTOR_STROKE}
-                      strokeWidth={2}
+                      shape={(props: PieSectorShapeProps) => (
+                        <Sector
+                          {...(props as SectorProps)}
+                          fill={
+                            CATEGORY_COLORS[
+                              categoryData[props.index ?? 0]?.key ?? ""
+                            ] ?? CHART_COLOR_FALLBACK
+                          }
+                          stroke={CHART_SECTOR_STROKE}
+                          strokeWidth={2}
+                        />
+                      )}
+                      isAnimationActive={false}
                     />
-                  )}
-                  isAnimationActive={false}
-                />
-              </PieChart>
-            </ResponsiveContainer>
-          </Panel>
-        )}
-      </div>
+                  </PieChart>
+                </ResponsiveContainer>
+              </Panel>
+            </div>
+          )}
+        </Tabs.Panel>
+      </Tabs>
     </div>
   );
 };
