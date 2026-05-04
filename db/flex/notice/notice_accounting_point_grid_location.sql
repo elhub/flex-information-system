@@ -3,7 +3,6 @@
 
 -- changeset flex:notice-accounting-point-grid-location runAlways:true endDelimiter:--
 
-DROP VIEW IF EXISTS notice_accounting_point_grid_location_insufficient CASCADE;
 DROP VIEW IF EXISTS notice_accounting_point_grid_location_missing CASCADE;
 -- APs with no grid location registered
 CREATE VIEW notice_accounting_point_grid_location_missing
