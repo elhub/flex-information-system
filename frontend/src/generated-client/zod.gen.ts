@@ -358,7 +358,7 @@ export const zAccountingPointGridLocationObjectType = z.enum([
 ]);
 
 /**
- * How the grid location was determined.
+ * How the grid location was determined.  When a system operator creates or updates a grid location, this field is set automatically:  `cso` if the SO is the connecting system operator, `so` otherwise.
  */
 export const zAccountingPointGridLocationSource = z
   .enum(["cso", "so", "grid_model", "system"])
@@ -666,9 +666,7 @@ export const zServiceProvidingGroupGridSuspensionCommentCreateRequest =
  * * Organisation
  */
 export const zEntityUpdateRequest = z.object({
-  business_id_type: zEntityBusinessIdType.optional(),
   name: z.string().optional(),
-  type: zEntityType.optional(),
 });
 
 /**
@@ -733,10 +731,7 @@ export const zEntityClientCreateRequest = z.object({
  * * End User
  */
 export const zPartyUpdateRequest = z.object({
-  business_id_type: zPartyBusinessIdType.optional(),
   name: z.string().optional(),
-  role: zPartyRole.optional(),
-  type: zPartyType.optional(),
   status: zPartyStatus.optional(),
 });
 
@@ -829,7 +824,6 @@ export const zAccountingPointGridLocationUpdateRequest = z.object({
   name: z.string().max(512).optional(),
   nominal_voltage: z.coerce.number().gte(0).lte(999999.999).optional(),
   additional_information: z.string().optional(),
-  source: zAccountingPointGridLocationSource.optional(),
   quality: zAccountingPointGridLocationQuality.optional(),
 });
 
@@ -848,7 +842,6 @@ export const zAccountingPointGridLocationCreateRequest = z.object({
   name: z.string().max(512),
   nominal_voltage: z.coerce.number().gte(0).lte(999999.999),
   additional_information: z.string().optional(),
-  source: zAccountingPointGridLocationSource,
   quality: zAccountingPointGridLocationQuality,
 });
 
@@ -1280,7 +1273,7 @@ export const zAccountingPointGridLocationHistory = z.object({
   name: z.string().max(512),
   nominal_voltage: z.coerce.number().gte(0).lte(999999.999),
   additional_information: z.string().optional(),
-  source: zAccountingPointGridLocationSource,
+  source: zAccountingPointGridLocationSource.readonly(),
   quality: zAccountingPointGridLocationQuality,
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
@@ -1446,41 +1439,6 @@ export const zServiceProvidingGroupProductSuspensionCommentHistory = z.object({
  * An empty object
  */
 export const zEmptyObjectWritable = z.record(z.string(), z.never());
-
-/**
- * Request schema for update operations - The electrical (topological) location of an accounting point in the common grid model (Nemo).
- */
-export const zAccountingPointGridLocationUpdateRequestWritable = z.object({
-  object_type: zAccountingPointGridLocationObjectType.optional(),
-  business_id: z
-    .string()
-    .regex(
-      /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
-    )
-    .optional(),
-  name: z.string().max(512).optional(),
-  nominal_voltage: z.coerce.number().gte(0).lte(999999.999).optional(),
-  additional_information: z.string().optional(),
-  quality: zAccountingPointGridLocationQuality.optional(),
-});
-
-/**
- * Request schema for create operations - The electrical (topological) location of an accounting point in the common grid model (Nemo).
- */
-export const zAccountingPointGridLocationCreateRequestWritable = z.object({
-  accounting_point_id: z.coerce.number(),
-  object_type: zAccountingPointGridLocationObjectType,
-  business_id: z
-    .string()
-    .regex(
-      /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
-    )
-    .optional(),
-  name: z.string().max(512),
-  nominal_voltage: z.coerce.number().gte(0).lte(999999.999),
-  additional_information: z.string().optional(),
-  quality: zAccountingPointGridLocationQuality,
-});
 
 /**
  * Controllable unit - history
@@ -2290,7 +2248,8 @@ export const zAccountingPoint = z.object({
 export const zAccountingPointBalanceResponsibleParty = z.object({
   accounting_point_id: z.coerce.number().readonly(),
   balance_responsible_party_id: z.coerce.number().readonly(),
-  energy_direction: zAccountingPointBalanceResponsiblePartyEnergyDirection,
+  energy_direction:
+    zAccountingPointBalanceResponsiblePartyEnergyDirection.readonly(),
   valid_from: z.iso.datetime({ offset: true }).readonly(),
   valid_to: z.iso.datetime({ offset: true }).readonly().optional(),
   accounting_point: zAccountingPoint.nullish(),
@@ -2338,7 +2297,7 @@ export const zAccountingPointEnergySupplier = z.object({
 export const zMeteringGridArea = z.object({
   id: z.coerce.number().readonly(),
   business_id: z.string().readonly(),
-  business_id_type: zMeteringGridAreaBusinessIdType,
+  business_id_type: zMeteringGridAreaBusinessIdType.readonly(),
   name: z.string().max(128).readonly(),
   accounting_point_metering_grid_area: z
     .array(z.lazy((): any => zAccountingPointMeteringGridArea))
@@ -2373,7 +2332,7 @@ export const zAccountingPointGridLocation = z.object({
   name: z.string().max(512),
   nominal_voltage: z.coerce.number().gte(0).lte(999999.999),
   additional_information: z.string().optional(),
-  source: zAccountingPointGridLocationSource,
+  source: zAccountingPointGridLocationSource.readonly(),
   quality: zAccountingPointGridLocationQuality,
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
@@ -5433,7 +5392,7 @@ export const zListAccountingPointGridLocationResponse = z.union([
  * accounting_point_grid_location
  */
 export const zCreateAccountingPointGridLocationBody =
-  zAccountingPointGridLocationCreateRequestWritable;
+  zAccountingPointGridLocationCreateRequest;
 
 /**
  * Created
@@ -5459,7 +5418,7 @@ export const zReadAccountingPointGridLocationResponse =
  * accounting_point_grid_location
  */
 export const zUpdateAccountingPointGridLocationBody =
-  zAccountingPointGridLocationUpdateRequestWritable;
+  zAccountingPointGridLocationUpdateRequest;
 
 export const zUpdateAccountingPointGridLocationPath = z.object({
   id: z.coerce.number(),

@@ -31,7 +31,9 @@ class AccountingPointGridLocationResponse:
             accounting point is at. Example: substation.
         name (str): Name of the grid model object at the location. Example: Snilldal 1 KRA.
         nominal_voltage (float): Nominal voltage level at the grid location, in kilovolt (kV). Example: 22.
-        source (AccountingPointGridLocationSource): How the grid location was determined. Example: cso.
+        source (AccountingPointGridLocationSource): How the grid location was determined.  When a system operator
+            creates or updates a grid location, this field is set automatically:  `cso` if the SO is the connecting system
+            operator, `so` otherwise. Example: cso.
         quality (AccountingPointGridLocationQuality): The quality of the grid location registration. Example: confirmed.
         recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31T23:59:00+00:00.

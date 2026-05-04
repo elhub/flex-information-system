@@ -39,11 +39,6 @@ public data class AccountingPointGridLocationUpdateRequest(
   @SerialName("additional_information")
   public val additionalInformation: String? = null,
   /**
-   * How the grid location was determined.
-   */
-  @SerialName("source")
-  public val source: AccountingPointGridLocationSource? = null,
-  /**
    * The quality of the grid location registration.
    */
   @SerialName("quality")
