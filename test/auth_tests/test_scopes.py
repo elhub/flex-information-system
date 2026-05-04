@@ -46,7 +46,16 @@ client_secret = "qwertyuiop123456"
 
 
 @pytest.fixture(scope="module")
-def data(request):
+def jwt_keys():
+    with open("./test/keys/.test.pub.pem") as f:
+        pubkey = f.read().strip()
+    with open("./test/keys/.test.key.pem") as f:
+        privkey = f.read().strip()
+    return pubkey, privkey
+
+
+@pytest.fixture(scope="module")
+def data(request, jwt_keys):
     sts = SecurityTokenService()
 
     client_fiso = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "FISO"))
@@ -57,10 +66,7 @@ def data(request):
     ent_id = sts.get_userinfo(client_ent)["entity_id"]
     other_ent_id = sts.get_userinfo(client_other_ent)["entity_id"]
 
-    with open("./test/keys/.test.pub.pem") as f:
-        pubkey = f.read().strip()
-    with open("./test/keys/.test.key.pem") as f:
-        privkey = f.read().strip()
+    pubkey, privkey = jwt_keys
 
     # create an entity client we will log in with
     clt = create_entity_client.sync(
@@ -416,7 +422,7 @@ def test_scopes_jwt_bearer_membership_party(data):
     }
 
 
-def test_scopes_embedding():
+def test_scopes_embedding(jwt_keys):
     # this test checks that an entity client lacking sufficient scopes cannot
     # embed resources in a query
 
@@ -427,10 +433,7 @@ def test_scopes_embedding():
 
     ent_id = sts.get_userinfo(client_ent)["entity_id"]
 
-    with open("./test/keys/.test.pub.pem") as f:
-        pubkey = f.read().strip()
-    with open("./test/keys/.test.key.pem") as f:
-        privkey = f.read().strip()
+    pubkey, privkey = jwt_keys
 
     # entity client that can only manage party membership but not read other resources
     clt = create_entity_client.sync(
