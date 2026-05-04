@@ -27,7 +27,8 @@ these concepts see
 Our reasons for choosing event notification over event-carried state transfer are:
 
 - it is simple to implement both for us and the client
-- simplifies data access mechanisms by forcing access to data to go through API calls
+- simplifies data access mechanisms by forcing access to data to go through API
+  calls
 
 The main downside is increased network traffic and latency due to the need for an
 additional API call to get the updated data.
@@ -100,8 +101,8 @@ The client must acknowledge the notification by calling
 `PATCH /notification?id=in.(1,2,3)` with `{ "acknowledged" : true }`.
 
 > [!NOTE]
-> We might add a push-based system in the future. This could e.g. include email or
-> webhooks. Acknowledgement would still be needed.
+> We might add a push-based system in the future. This could e.g. include email
+> or webhooks. Acknowledgement would still be needed.
 
 ## Picking recipients
 
@@ -194,3 +195,11 @@ defined in the `worker` package and is concurrency safe due to the use of the
 We are doing this in an external worker since to allow for
 flexibility to add other notification mechanisms as well as being able to
 offload the "identify recipients" read load to a future read replica database.
+
+The worker runs as the `flex_internal_event_notification` database role, which
+has open RLS policies to be able to read tables it needs to determine who should
+get a notification. To decouple the notification module from the ground
+database, we avoid querying the `flex` schema directly, so when the worker must
+read data that does not exist in the `api` schema, we redefine a view in the
+`notification` schema so that they can get the data without having a strong
+dependency on `flex`.
