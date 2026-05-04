@@ -5,6 +5,14 @@
 ALTER TABLE IF EXISTS accounting_point_grid_location
 ENABLE ROW LEVEL SECURITY;
 
+-- internal
+GRANT SELECT ON accounting_point_grid_location
+TO flex_internal_event_notification;
+CREATE POLICY "APGL_INTERNAL_EVENT_NOTIFICATION" ON accounting_point_grid_location
+FOR SELECT
+TO flex_internal_event_notification
+USING (true);
+
 -- RLS: APGL-FISO001
 GRANT SELECT, INSERT, UPDATE ON accounting_point_grid_location
 TO flex_flexibility_information_system_operator;

@@ -493,3 +493,27 @@ WHERE cusch.controllable_unit_suspension_comment_id = @resource_id
         @> @recorded_at::timestamptz
     -- private comments do not lead to notifications
     AND cusch.visibility = 'any_involved_party';
+
+-- name: GetAccountingPointGridLocationNotificationRecipients :many
+-- CSO: current SO for the AP at event time
+SELECT ap_so.system_operator_id
+FROM notification.accounting_point_system_operator AS ap_so
+    INNER JOIN api.accounting_point_grid_location AS apgl
+        ON apgl.accounting_point_id = ap_so.accounting_point_id
+WHERE apgl.id = @resource_id
+    AND ap_so.valid_time_range @> @recorded_at::timestamptz
+UNION
+-- PSO: procuring SO with a ready-for-market SPG product application
+-- for a CU behind this AP
+SELECT spgpa.procuring_system_operator_id
+FROM api.accounting_point_grid_location AS apgl
+    INNER JOIN api.controllable_unit AS cu
+        ON cu.accounting_point_id = apgl.accounting_point_id
+    INNER JOIN api.service_providing_group_membership AS spgm
+        ON spgm.controllable_unit_id = cu.id
+            AND spgm.valid_from <= @recorded_at::timestamptz
+            AND (spgm.valid_to IS NULL OR spgm.valid_to > @recorded_at::timestamptz)
+    INNER JOIN api.service_providing_group_product_application AS spgpa
+        ON spgpa.service_providing_group_id = spgm.service_providing_group_id
+WHERE apgl.id = @resource_id
+    AND notification.spg_product_application_ready_for_market_check(spgpa);

@@ -86,3 +86,9 @@ BEFORE INSERT OR UPDATE
 ON accounting_point_grid_location
 FOR EACH ROW
 EXECUTE FUNCTION accounting_point_grid_location_source_set();
+
+-- changeset flex:accounting-point-grid-location-event-trigger runOnChange:true endDelimiter:--
+CREATE OR REPLACE TRIGGER z_accounting_point_grid_location_event
+AFTER INSERT OR UPDATE ON accounting_point_grid_location
+FOR EACH ROW
+EXECUTE FUNCTION capture_event('accounting_point');
