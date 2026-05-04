@@ -5271,6 +5271,22 @@ TO flex_system_operator;
 
 GRANT SELECT (
     id,
+    accounting_point_id,
+    object_type,
+    business_id,
+    name,
+    nominal_voltage,
+    additional_information,
+    source,
+    quality,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.accounting_point_grid_location
+TO flex_internal_event_notification;
+
+GRANT SELECT (
+    id,
     accounting_point_grid_location_id,
     accounting_point_id,
     object_type,
@@ -5306,6 +5322,25 @@ GRANT SELECT (
 ) ON TABLE
 api.accounting_point_grid_location_history
 TO flex_system_operator;
+
+GRANT SELECT (
+    id,
+    accounting_point_grid_location_id,
+    accounting_point_id,
+    object_type,
+    business_id,
+    name,
+    nominal_voltage,
+    additional_information,
+    source,
+    quality,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.accounting_point_grid_location_history
+TO flex_internal_event_notification;
 
 GRANT SELECT (
     id,

@@ -732,6 +732,12 @@ type ApiTechnicalResourceHistory struct {
 	ReplacedAt            pgtype.Timestamptz
 }
 
+type NotificationAccountingPointSystemOperator struct {
+	AccountingPointID int
+	SystemOperatorID  int
+	ValidTimeRange    pgtype.Range[pgtype.Timestamptz]
+}
+
 type NotificationControllableUnitEndUser struct {
 	ControllableUnitID int
 	EndUserID          int

@@ -107,6 +107,9 @@ func (q *Queries) GetNotificationRecipients( //nolint:cyclop,funlen
 		"no.elhub.flex.technical_resource.update",
 		"no.elhub.flex.technical_resource.delete":
 		return q.GetTechnicalResourceNotificationRecipients(ctx, resourceID, recordedAt)
+	case "no.elhub.flex.accounting_point_grid_location.create",
+		"no.elhub.flex.accounting_point_grid_location.update":
+		return q.GetAccountingPointGridLocationNotificationRecipients(ctx, resourceID, recordedAt)
 	default:
 		return []int{}, nil
 	}
