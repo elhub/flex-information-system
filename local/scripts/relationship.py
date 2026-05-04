@@ -70,3 +70,30 @@ def name_inverse(child, parent):
     if child.startswith(prefix):
         return child[len(prefix) :]
     return child
+
+
+def collect(resources) -> list[Relationship]:
+    """
+    Collect all FK relationships that have a cardinality annotation.
+    Returns a list of dicts with the relationship metadata needed for the template.
+    """
+    rels = []
+    for resource in resources:
+        child = resource["id"]
+        props = resource.get("properties", {})
+        for field, attr in props.items():
+            if not field.endswith("_id"):
+                continue
+            if not isinstance(attr, dict):
+                continue
+            fk = attr.get("x-foreign-key")
+            if not fk or "cardinality" not in fk:
+                continue
+            child_field = field
+            parent = fk["resource"]
+            parent_field = fk["field"]
+            cardinality = fk["cardinality"]
+            rels.extend(
+                from_foreign_key(child, child_field, parent, parent_field, cardinality)
+            )
+    return rels
