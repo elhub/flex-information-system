@@ -94,18 +94,27 @@ func applyEmbedRewrite(query url.Values, nodes []embedNode) {
 
 // resourceNames returns the list of all unique resource names appearing in the embed node tree.
 // This allows checking that the caller has the required scopes to read every embedded resource.
-func resourceNames(nodes []embedNode) []string {
+//
+// Based on the embedRelations mapping generated from the resources YAML.
+func resourceNames(parentResource string, nodes []embedNode) []string {
 	seen := make(map[string]struct{})
 
-	var collect func(nodes []embedNode)
-	collect = func(nodes []embedNode) {
-		for _, n := range nodes {
-			seen[n.name] = struct{}{}
-			collect(n.children)
+	var collect func(parent string, nodes []embedNode)
+	collect = func(parent string, nodes []embedNode) {
+		// embedding name -> actual resource
+		relations := embedRelations[parent]
+
+		for _, node := range nodes {
+			actual := node.name
+			if resolved, ok := relations[node.name]; ok {
+				actual = resolved
+			}
+			seen[actual] = struct{}{}
+			collect(actual, node.children)
 		}
 	}
 
-	collect(nodes)
+	collect(parentResource, nodes)
 
 	names := make([]string, 0, len(seen))
 	for name := range seen {

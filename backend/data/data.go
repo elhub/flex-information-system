@@ -625,7 +625,13 @@ func (data *api) postgRESTHandler(w http.ResponseWriter, req *http.Request) {
 
 		requestScope := rd.Scope()
 
-		for _, resource := range resourceNames(embedNodes) {
+		// resource of the API call
+		mainResource := strings.TrimPrefix(strings.TrimPrefix(url, "/"), "/")
+		if idx := strings.Index(mainResource, "/"); idx != -1 {
+			mainResource = mainResource[:idx]
+		}
+
+		for _, resource := range resourceNames(mainResource, embedNodes) {
 			requiredScope := scope.Scope{Verb: scope.Read, Asset: "data:" + resource}
 			if !requestScope.Covers(requiredScope) {
 				slog.DebugContext(ctx, "insufficient scope for embedded resource",

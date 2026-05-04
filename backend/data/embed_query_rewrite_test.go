@@ -265,48 +265,77 @@ func TestResourceNames(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
-		name  string
-		nodes []embedNode
-		want  []string
+		name           string
+		parentResource string
+		nodes          []embedNode
+		want           []string
 	}{
 		{
-			name:  "empty list",
-			nodes: nil,
-			want:  []string{},
+			name:           "empty list",
+			parentResource: "controllable_unit",
+			nodes:          nil,
+			want:           []string{},
 		},
 		{
-			name: "single node",
+			name:           "single node with direct name match",
+			parentResource: "controllable_unit",
 			nodes: []embedNode{
 				{name: "accounting_point"}, //nolint:exhaustruct
 			},
 			want: []string{"accounting_point"},
 		},
 		{
-			name: "multiple top-level nodes",
+			name:           "embedding name resolves to different resource",
+			parentResource: "controllable_unit_service_provider",
 			nodes: []embedNode{
-				{name: "accounting_point"},   //nolint:exhaustruct
+				{name: "service_provider"}, //nolint:exhaustruct
+			},
+			want: []string{"party"},
+		},
+		{
+			name:           "multiple top-level nodes with mixed mappings",
+			parentResource: "controllable_unit_service_provider",
+			nodes: []embedNode{
+				{name: "controllable_unit"}, //nolint:exhaustruct
+				{name: "end_user"},          //nolint:exhaustruct
+			},
+			want: []string{"controllable_unit", "party"},
+		},
+		{
+			name:           "nested nodes resolved at each level",
+			parentResource: "controllable_unit",
+			nodes: []embedNode{
+				{name: "accounting_point", children: []embedNode{ //nolint:exhaustruct
+					{name: "metering_grid_area"}, //nolint:exhaustruct
+				}},
 				{name: "technical_resource"}, //nolint:exhaustruct
 			},
-			want: []string{"accounting_point", "technical_resource"},
+			want: []string{"accounting_point", "accounting_point_metering_grid_area", "technical_resource"},
 		},
 		{
-			name: "nested nodes",
+			name:           "duplicates are deduplicated",
+			parentResource: "controllable_unit_service_provider",
 			nodes: []embedNode{
-				{name: "controllable_unit", children: []embedNode{ //nolint:exhaustruct
-					{name: "accounting_point", children: []embedNode{ //nolint:exhaustruct
-						{name: "metering_grid_area"}, //nolint:exhaustruct
-					}},
-					{name: "technical_resource"}, //nolint:exhaustruct
-				}},
+				// both end_user and service_provider resolve to party
+				{name: "end_user"},         //nolint:exhaustruct
+				{name: "service_provider"}, //nolint:exhaustruct
 			},
-			want: []string{"accounting_point", "controllable_unit", "metering_grid_area", "technical_resource"},
+			want: []string{"party"},
+		},
+		// these 2 last cases may fail at a lower level since the resources do not exist
+		{
+			name:           "unknown embedding name",
+			parentResource: "controllable_unit",
+			nodes: []embedNode{
+				{name: "nonexistent"}, //nolint:exhaustruct
+			},
+			want: []string{"nonexistent"},
 		},
 		{
-			name: "duplicates are deduplicated",
+			name:           "unknown parent resource",
+			parentResource: "nonexistent_resource",
 			nodes: []embedNode{
-				{name: "foo", children: []embedNode{ //nolint:exhaustruct
-					{name: "bar"}, //nolint:exhaustruct
-				}},
+				{name: "foo"}, //nolint:exhaustruct
 				{name: "bar"}, //nolint:exhaustruct
 			},
 			want: []string{"bar", "foo"},
@@ -317,7 +346,7 @@ func TestResourceNames(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			got := resourceNames(tt.nodes)
+			got := resourceNames(tt.parentResource, tt.nodes)
 			sort.Strings(got)
 			sort.Strings(tt.want)
 
