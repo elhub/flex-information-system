@@ -3026,7 +3026,7 @@ resources:
         x-foreign-key:
           resource: product_type
           field: id
-          cardinality: many-to-one
+          cardinality: many-to-many
         example: [2, 4, 5]
         x-intl:
           en: Product types

@@ -19,7 +19,10 @@ import { AssumePartyPage } from "./AssumePartyPage";
 import { createAllResources } from "./resources";
 
 import { Dashboard } from "./dashboard/Dashboard";
+import { QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { listProductType } from "./generated-client";
+import { PRODUCT_TYPE_QUERY_KEY } from "./product_type/useProductTypes";
 
 import postgrestRestProvider, {
   IDataProviderConfig,
@@ -30,6 +33,16 @@ import postgrestRestProvider, {
 import { useI18nProvider } from "./intl/intl";
 import { Header } from "./components/Header/Header";
 import { NavigationHistoryProvider } from "./components/NavigationHistoryProvider";
+
+export const queryClient = new QueryClient();
+
+// Eagerly populate the product_type reference cache so all components have
+// the data available without an individual fetch on first render.
+queryClient.prefetchQuery({
+  queryKey: PRODUCT_TYPE_QUERY_KEY,
+  queryFn: () => listProductType().then((res) => res.data ?? []),
+  staleTime: Infinity,
+});
 
 const config: IDataProviderConfig = {
   apiUrl: apiURL,
@@ -76,6 +89,7 @@ export const App = () => (
     requireAuth={true}
     store={localStorageStore(undefined, "Flex")}
     theme={elhubTheme}
+    queryClient={queryClient}
   >
     {(permissions) =>
       permissions.allow ? <>{createAllResources(permissions)}</> : null

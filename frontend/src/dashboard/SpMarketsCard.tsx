@@ -2,7 +2,8 @@ import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Alert, Button, Card, CardContent, Loader } from "../components/ui";
-import { listParty, listProductType } from "../generated-client";
+import { listParty } from "../generated-client";
+import { useProductTypes } from "../product_type/components";
 import { throwOnError } from "../util";
 import { useSpQualifiedMarkets } from "./useSpQualifiedMarkets";
 
@@ -69,15 +70,8 @@ export const SpMarketsCard = ({ spId }: SpMarketsCardProps) => {
       }).then(throwOnError),
   });
 
-  // Batch-fetch product type names (same pattern as useSpDashboard)
-  const ptQuery = useQuery({
-    queryKey: ["sp-markets-product-types", uniquePtIds],
-    enabled: uniquePtIds.length > 0,
-    queryFn: () =>
-      listProductType({
-        query: { id: `in.(${uniquePtIds.join(",")})` },
-      }).then(throwOnError),
-  });
+  // Use global product type cache
+  const { data: allProductTypes, isLoading: ptLoading } = useProductTypes();
 
   const soMap = useMemo(
     () =>
@@ -88,15 +82,17 @@ export const SpMarketsCard = ({ spId }: SpMarketsCardProps) => {
   const ptMap = useMemo(
     () =>
       new Map(
-        (ptQuery.data ?? []).map((pt) => [pt.id, pt.name ?? String(pt.id)]),
+        (allProductTypes ?? [])
+          .filter((pt) => uniquePtIds.includes(pt.id))
+          .map((pt) => [pt.id, pt.name ?? String(pt.id)]),
       ),
-    [ptQuery.data],
+    [allProductTypes, uniquePtIds],
   );
 
   // Wait for both lookup queries to load (only if data arrived and IDs exist)
   const isLookupLoading =
     (uniqueSoIds.length > 0 && soQuery.isLoading) ||
-    (uniquePtIds.length > 0 && ptQuery.isLoading);
+    (uniquePtIds.length > 0 && ptLoading);
 
   return (
     <div>

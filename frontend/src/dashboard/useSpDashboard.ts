@@ -8,12 +8,11 @@ import {
   listServiceProvidingGroupGridPrequalification,
   listServiceProvidingGroup,
   listParty,
-  listProductType,
   listNotice,
 } from "../generated-client";
+import { useProductTypes } from "../product_type/components";
 import { throwOnError } from "../util";
 import {
-  addMonths,
   ACTIVE_STATUSES,
   RESOLVED_SPPA,
   RESOLVED_SPGPA,
@@ -27,7 +26,6 @@ export type SpDashboardItem = {
   typeLabel: string;
   byline: string;
   systemOperator: string;
-  dueDate: string;
   status: string;
   route: string;
 };
@@ -113,14 +111,7 @@ export const useSpDashboard = () => {
     [sppaQuery.data, spgpaQuery.data],
   );
 
-  const ptQuery = useQuery({
-    queryKey: ["sp-dashboard-product-types", uniquePtIds],
-    enabled: uniquePtIds.length > 0,
-    queryFn: () =>
-      listProductType({
-        query: { id: `in.(${uniquePtIds.join(",")})` },
-      }).then(throwOnError),
-  });
+  const { data: allProductTypes, isLoading: ptLoading } = useProductTypes();
 
   // 7. Fetch notices for inconsistency count
   const noticeQuery = useQuery({
@@ -138,7 +129,7 @@ export const useSpDashboard = () => {
     spgpaQuery.isLoading ||
     spggpQuery.isLoading ||
     partyQuery.isLoading ||
-    ptQuery.isLoading ||
+    ptLoading ||
     noticeQuery.isLoading;
 
   const error =
@@ -147,7 +138,6 @@ export const useSpDashboard = () => {
     spgpaQuery.error ??
     spggpQuery.error ??
     partyQuery.error ??
-    ptQuery.error ??
     noticeQuery.error;
 
   // Build lookup maps
@@ -156,7 +146,9 @@ export const useSpDashboard = () => {
     (partyQuery.data ?? []).map((p) => [p.id, p.name ?? String(p.id)]),
   );
   const ptMap = new Map(
-    (ptQuery.data ?? []).map((pt) => [pt.id, pt.name ?? String(pt.id)]),
+    (allProductTypes ?? [])
+      .filter((pt) => uniquePtIds.includes(pt.id))
+      .map((pt) => [pt.id, pt.name ?? String(pt.id)]),
   );
 
   const ptNames = (ids: number[]) =>
@@ -171,7 +163,6 @@ export const useSpDashboard = () => {
       byline: ptNames(r.product_type_ids),
       systemOperator:
         partyMap.get(r.system_operator_id) ?? String(r.system_operator_id),
-      dueDate: addMonths(r.recorded_at, 3),
       status: r.status,
       route: `/service_provider_product_application/${r.id}/show`,
     })),
@@ -188,7 +179,6 @@ export const useSpDashboard = () => {
         systemOperator:
           partyMap.get(r.procuring_system_operator_id) ??
           String(r.procuring_system_operator_id),
-        dueDate: addMonths(r.recorded_at, 3),
         status: r.status,
         route: `/service_providing_group/${r.service_providing_group_id}/product_application/${r.id}/show`,
       };
@@ -204,7 +194,6 @@ export const useSpDashboard = () => {
         systemOperator:
           partyMap.get(r.impacted_system_operator_id) ??
           String(r.impacted_system_operator_id),
-        dueDate: addMonths(r.recorded_at, 3),
         status: r.status,
         route: `/service_providing_group/${r.service_providing_group_id}/grid_prequalification/${r.id}/show`,
       };

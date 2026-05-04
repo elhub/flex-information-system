@@ -42,13 +42,6 @@ export const SpApplicationsTable = ({
       ),
     },
     {
-      key: "dueDate",
-      header: <span className="hidden sm:inline">Due Date</span>,
-      render: (value) => (
-        <span className="hidden sm:inline">{String(value ?? "")}</span>
-      ),
-    },
-    {
       key: "status",
       header: "Status",
       render: (_, row) => {
