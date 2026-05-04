@@ -21,3 +21,8 @@ Authorization: Bearer {{ access_token }}
 [Query]
 id: eq.1
 embed: controllable_unit(accounting_point(bidding_zone,balance_responsible_party(balance_responsible_party)))
+
+GET {{ api_url }}/service_providing_group_membership/1
+Authorization: Bearer {{ access_token }}
+[Query]
+embed: controllable_unit(accounting_point(bidding_zone,balance_responsible_party(balance_responsible_party)))
