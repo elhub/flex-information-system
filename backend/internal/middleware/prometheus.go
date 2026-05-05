@@ -91,9 +91,9 @@ func (rw *recordingResponseWriter) wroteHeader() bool {
 	return rw.statusCode != 0
 }
 
-// PrometheusDataAPI wraps a stdlib http.Handler (the data API mux) and records
-// per-route metrics using the pattern matched by the inner http.ServeMux.
-func PrometheusDataAPI(next http.Handler) http.Handler {
+// PrometheusMuxInstrumentation wraps a stdlib http.Handler backed by an
+// http.ServeMux and records per-route metrics.
+func PrometheusMuxInstrumentation(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 		rw := &recordingResponseWriter{ResponseWriter: w, statusCode: 0}
 		start := time.Now()
