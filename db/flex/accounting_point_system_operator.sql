@@ -13,8 +13,13 @@ WITH (security_invoker = false) AS (
             * mga_so.valid_time_range
         ) AS valid_time_range
     FROM flex.accounting_point_metering_grid_area AS ap_mga
+        INNER JOIN flex.metering_grid_area AS mga
+            ON
+                ap_mga.metering_grid_area_id = mga.id
+                AND mga.status = 'active'
         INNER JOIN flex.metering_grid_area_system_operator AS mga_so
-            ON ap_mga.metering_grid_area_id = mga_so.metering_grid_area_id
+            ON
+                ap_mga.metering_grid_area_id = mga_so.metering_grid_area_id
                 AND ap_mga.valid_time_range && mga_so.valid_time_range
 );
 

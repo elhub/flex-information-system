@@ -17,11 +17,17 @@ WITH (security_invoker = true) AS (
         ) AS valid_time_range
     FROM flex.accounting_point_energy_supplier AS ap_es -- noqa
         INNER JOIN flex.accounting_point_metering_grid_area AS ap_mga
-            ON ap_mga.accounting_point_id = ap_es.accounting_point_id
+            ON
+                ap_es.accounting_point_id = ap_mga.accounting_point_id
                 AND ap_es.valid_time_range && ap_mga.valid_time_range
+        INNER JOIN flex.metering_grid_area AS mga
+            ON
+                ap_mga.metering_grid_area_id = mga.id
+                AND mga.status = 'active'
         INNER JOIN flex.energy_supplier_balance_responsibility AS es_br
-            ON es_br.metering_grid_area_id = ap_mga.metering_grid_area_id
-                AND es_br.energy_supplier_id = ap_es.energy_supplier_id
+            ON
+                ap_mga.metering_grid_area_id = es_br.metering_grid_area_id
+                AND ap_es.energy_supplier_id = es_br.energy_supplier_id
                 AND ap_es.valid_time_range && es_br.valid_time_range
 );
 

@@ -67,7 +67,9 @@ CREATE OR REPLACE VIEW staging.energy_supplier_balance_responsibility_v AS (
         stg.valid_time_range
     FROM staging.energy_supplier_balance_responsibility AS stg
         INNER JOIN flex.metering_grid_area AS mga
-            ON stg.metering_grid_area_business_id = mga.business_id
+            ON
+                stg.metering_grid_area_business_id = mga.business_id
+                AND mga.status = 'active'
         INNER JOIN flex.party AS esp
             ON
                 stg.energy_supplier_business_id = esp.business_id
