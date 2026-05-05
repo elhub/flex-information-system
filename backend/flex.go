@@ -448,7 +448,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		router.Match(
 			[]string{"HEAD", "GET", "POST", "PATCH", "DELETE", "OPTIONS"},
 			"/api/v0/*url",
-			WrapHandler(http.StripPrefix("/api/v0", dataAPIHandler)), //nolint:contextcheck
+			WrapHandler(http.StripPrefix("/api/v0", middleware.PrometheusDataAPI(dataAPIHandler))), //nolint:contextcheck
 		)
 	} //end:nolint:contextcheck
 
