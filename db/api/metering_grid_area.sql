@@ -11,4 +11,5 @@ WITH (security_invoker = true) AS (
         'eic_y' AS business_id_type,
         name
     FROM flex.metering_grid_area
+    WHERE status = 'active'
 );
