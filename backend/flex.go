@@ -409,8 +409,8 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 
 	router.Use(sloggin.NewWithConfig(logger, slogginConfig))
 
-	router.Use(WrapMiddleware(authAPI.TokenDecodingMiddleware))
 	router.Use(middleware.Prometheus)
+	router.Use(WrapMiddleware(authAPI.TokenDecodingMiddleware))
 
 	// auth API endpoints
 	authRouter := router.Group("/auth/v0")
