@@ -2559,6 +2559,27 @@ resources:
           en: Name
           nb: Navn
           nn: Namn
+      status:
+        description: The status of the metering grid area.
+        format: text
+        type: string
+        readOnly: true
+        example: active
+        enum:
+          - id: active
+            x-intl:
+              en: Active
+              nb: Aktiv
+              nn: Aktiv
+          - id: inactive
+            x-intl:
+              en: Inactive
+              nb: Inaktiv
+              nn: Inaktiv
+        x-intl:
+          en: Status
+          nb: Status
+          nn: Status
 
   - id: accounting_point_metering_grid_area
     acronym: APMGA

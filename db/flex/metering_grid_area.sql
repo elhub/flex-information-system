@@ -10,9 +10,14 @@ CREATE TABLE IF NOT EXISTS metering_grid_area (
         localtimestamp, null, '[)'
     ),
     recorded_by bigint NOT NULL DEFAULT current_identity(),
+    status text NOT NULL DEFAULT 'active',
 
     CONSTRAINT metering_grid_area_business_id_check
     CHECK (
         validate_business_id(business_id, 'eic_y')
+    ),
+    CONSTRAINT metering_grid_area_status_check
+    CHECK (
+        status IN ('active', 'inactive')
     )
 );

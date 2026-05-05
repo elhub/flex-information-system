@@ -838,6 +838,17 @@
                 ],
                 "example": "eic_y"
             },
+            "metering_grid_area_status": {
+                "description": "The status of the metering grid area.",
+                "format": "text",
+                "type": "string",
+                "readOnly": true,
+                "example": "active",
+                "enum": [
+                    "active",
+                    "inactive"
+                ]
+            },
             "accounting_point_grid_location_object_type": {
                 "description": "The type of object in the common grid model that the accounting point is at.",
                 "format": "text",
@@ -849,7 +860,7 @@
                 "example": "substation"
             },
             "accounting_point_grid_location_source": {
-                "description": "How the grid location was determined.  When a system operator creates or updates a grid location, this field is set automatically:  `cso` if the SO is the connecting system operator, `so` otherwise.",
+                "description": "How the grid location was determined. When a system operator creates or updates a grid location, this field is set automatically: `cso` if the SO is the connecting system operator, `so` otherwise.",
                 "format": "text",
                 "type": "string",
                 "readOnly": true,
@@ -4605,6 +4616,10 @@
                         "readOnly": true,
                         "example": "VN04VESTNORGEDX12"
                     },
+                    "status": {
+                        "$ref": "#/components/schemas/metering_grid_area_status",
+                        "readOnly": true
+                    },
                     "accounting_point_metering_grid_area": {
                         "description": "Embedded accounting_point_metering_grid_area",
                         "oneOf": [
@@ -4625,7 +4640,8 @@
                     "id",
                     "business_id",
                     "business_id_type",
-                    "name"
+                    "name",
+                    "status"
                 ]
             },
             "accounting_point_metering_grid_area_response": {

@@ -429,6 +429,11 @@ export type AccountingPointBiddingZoneBiddingZone =
 export type MeteringGridAreaBusinessIdType = "eic_y";
 
 /**
+ * The status of the metering grid area.
+ */
+export type MeteringGridAreaStatus = "active" | "inactive";
+
+/**
  * The type of object in the common grid model that the accounting point is at.
  */
 export type AccountingPointGridLocationObjectType =
@@ -436,7 +441,7 @@ export type AccountingPointGridLocationObjectType =
   | "transformer";
 
 /**
- * How the grid location was determined.  When a system operator creates or updates a grid location, this field is set automatically:  `cso` if the SO is the connecting system operator, `so` otherwise.
+ * How the grid location was determined. When a system operator creates or updates a grid location, this field is set automatically: `cso` if the SO is the connecting system operator, `so` otherwise.
  */
 export type AccountingPointGridLocationSource =
   | "cso"
@@ -2220,6 +2225,7 @@ export type MeteringGridArea = {
    * The name of the metering grid area.
    */
   readonly name: string;
+  readonly status: MeteringGridAreaStatus;
   /**
    * Embedded accounting_point_metering_grid_area
    */

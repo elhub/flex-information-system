@@ -44,6 +44,8 @@ export type EnumLabel =
   | "entity.type.organisation"
   | "entity.type.person"
   | "metering_grid_area.business_id_type.eic_y"
+  | "metering_grid_area.status.active"
+  | "metering_grid_area.status.inactive"
   | "notice.status.active"
   | "notice.status.resolved"
   | "party.business_id_type.eic_x"
@@ -222,6 +224,8 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "accounting_point_bidding_zone.bidding_zone.NO5": "NO5 (Western Norway)",
     "metering_grid_area.business_id_type.eic_y":
       "EIC-Y (Energy Identification Code - Areas)",
+    "metering_grid_area.status.active": "Active",
+    "metering_grid_area.status.inactive": "Inactive",
     "accounting_point_grid_location.object_type.substation": "Substation",
     "accounting_point_grid_location.object_type.transformer": "Transformer",
     "accounting_point_grid_location.source.cso": "Connecting system operator",
@@ -384,6 +388,8 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "accounting_point_bidding_zone.bidding_zone.NO5": "NO5 (Vestlandet)",
     "metering_grid_area.business_id_type.eic_y":
       "EIC-Y (Energy Identification Code - Områder)",
+    "metering_grid_area.status.active": "Aktiv",
+    "metering_grid_area.status.inactive": "Inaktiv",
     "accounting_point_grid_location.object_type.substation": "Stasjon",
     "accounting_point_grid_location.object_type.transformer": "Transformator",
     "accounting_point_grid_location.source.cso": "Tilknyttende systemoperatør",
@@ -546,6 +552,8 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "accounting_point_bidding_zone.bidding_zone.NO5": "NO5 (Vestlandet)",
     "metering_grid_area.business_id_type.eic_y":
       "EIC-Y (Energy Identification Code - Område)",
+    "metering_grid_area.status.active": "Aktiv",
+    "metering_grid_area.status.inactive": "Inaktiv",
     "accounting_point_grid_location.object_type.substation": "Stasjon",
     "accounting_point_grid_location.object_type.transformer": "Transformator",
     "accounting_point_grid_location.source.cso": "Tilknyttande systemoperatør",
