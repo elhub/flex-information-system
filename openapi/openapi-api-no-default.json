@@ -852,7 +852,7 @@
                 "example": "substation"
             },
             "accounting_point_grid_location_source": {
-                "description": "How the grid location was determined.",
+                "description": "How the grid location was determined. When a system operator creates or updates a grid location, this field is set automatically: `cso` if the SO is the connecting system operator, `so` otherwise.",
                 "format": "text",
                 "type": "string",
                 "readOnly": true,
@@ -2898,17 +2898,11 @@
                 "description": "Request schema for update operations - Entity - Natural or legal person\n\nAn entity is a natural or legal person that can be a party in the Flexibility Information System.\n\nExample entity types:\n\n* Person\n* Organisation",
                 "type": "object",
                 "properties": {
-                    "business_id_type": {
-                        "$ref": "#/components/schemas/entity_business_id_type"
-                    },
                     "name": {
                         "description": "Name of the entity. Maximum 128 characters.",
                         "format": "text",
                         "type": "string",
                         "example": "John Smith"
-                    },
-                    "type": {
-                        "$ref": "#/components/schemas/entity_type"
                     }
                 }
             },
@@ -3286,20 +3280,11 @@
                 "description": "Request schema for update operations - The body that interacts with the Flexibility Information System\n\nA party is the thing that is authorized to access or modify data in the Flexiblity Information System.\n\nExample party types:\n\n* Service Provider\n* System Operator\n* End User",
                 "type": "object",
                 "properties": {
-                    "business_id_type": {
-                        "$ref": "#/components/schemas/party_business_id_type"
-                    },
                     "name": {
                         "description": "Name of the party. Maximum 128 characters.",
                         "format": "text",
                         "type": "string",
                         "example": "Flex Energy Supplier"
-                    },
-                    "role": {
-                        "$ref": "#/components/schemas/party_role"
-                    },
-                    "type": {
-                        "$ref": "#/components/schemas/party_type"
                     },
                     "status": {
                         "$ref": "#/components/schemas/party_status"
@@ -4332,7 +4317,8 @@
                         "readOnly": true
                     },
                     "energy_direction": {
-                        "$ref": "#/components/schemas/accounting_point_balance_responsible_party_energy_direction"
+                        "$ref": "#/components/schemas/accounting_point_balance_responsible_party_energy_direction",
+                        "readOnly": true
                     },
                     "valid_from": {
                         "description": "The date from which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone.",
@@ -4580,7 +4566,8 @@
                         "example": "24YAOER9FNW34FNN"
                     },
                     "business_id_type": {
-                        "$ref": "#/components/schemas/metering_grid_area_business_id_type"
+                        "$ref": "#/components/schemas/metering_grid_area_business_id_type",
+                        "readOnly": true
                     },
                     "name": {
                         "description": "The name of the metering grid area.",
@@ -4591,7 +4578,8 @@
                         "example": "VN04VESTNORGEDX12"
                     },
                     "status": {
-                        "$ref": "#/components/schemas/metering_grid_area_status"
+                        "$ref": "#/components/schemas/metering_grid_area_status",
+                        "readOnly": true
                     },
                     "accounting_point_metering_grid_area": {
                         "description": "Embedded accounting_point_metering_grid_area",
@@ -4721,9 +4709,6 @@
                         "nullable": true,
                         "example": null
                     },
-                    "source": {
-                        "$ref": "#/components/schemas/accounting_point_grid_location_source"
-                    },
                     "quality": {
                         "$ref": "#/components/schemas/accounting_point_grid_location_quality"
                     }
@@ -4774,9 +4759,6 @@
                         "nullable": true,
                         "example": null
                     },
-                    "source": {
-                        "$ref": "#/components/schemas/accounting_point_grid_location_source"
-                    },
                     "quality": {
                         "$ref": "#/components/schemas/accounting_point_grid_location_quality"
                     }
@@ -4786,7 +4768,6 @@
                     "object_type",
                     "name",
                     "nominal_voltage",
-                    "source",
                     "quality"
                 ]
             },
@@ -4843,7 +4824,8 @@
                         "example": null
                     },
                     "source": {
-                        "$ref": "#/components/schemas/accounting_point_grid_location_source"
+                        "$ref": "#/components/schemas/accounting_point_grid_location_source",
+                        "readOnly": true
                     },
                     "quality": {
                         "$ref": "#/components/schemas/accounting_point_grid_location_quality"
@@ -7689,7 +7671,8 @@
                         "example": null
                     },
                     "source": {
-                        "$ref": "#/components/schemas/accounting_point_grid_location_source"
+                        "$ref": "#/components/schemas/accounting_point_grid_location_source",
+                        "readOnly": true
                     },
                     "quality": {
                         "$ref": "#/components/schemas/accounting_point_grid_location_quality"

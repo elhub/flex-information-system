@@ -441,7 +441,7 @@ export type AccountingPointGridLocationObjectType =
   | "transformer";
 
 /**
- * How the grid location was determined.
+ * How the grid location was determined. When a system operator creates or updates a grid location, this field is set automatically: `cso` if the SO is the connecting system operator, `so` otherwise.
  */
 export type AccountingPointGridLocationSource =
   | "cso"
@@ -1414,12 +1414,10 @@ export type ServiceProvidingGroupGridSuspensionComment = {
  * * Organisation
  */
 export type EntityUpdateRequest = {
-  business_id_type?: EntityBusinessIdType;
   /**
    * Name of the entity. Maximum 128 characters.
    */
   name?: string;
-  type?: EntityType;
 };
 
 /**
@@ -1624,13 +1622,10 @@ export type EntityClient = {
  * * End User
  */
 export type PartyUpdateRequest = {
-  business_id_type?: PartyBusinessIdType;
   /**
    * Name of the party. Maximum 128 characters.
    */
   name?: string;
-  role?: PartyRole;
-  type?: PartyType;
   status?: PartyStatus;
 };
 
@@ -2111,7 +2106,7 @@ export type AccountingPointBalanceResponsibleParty = {
    * The balance responsible party of the accounting point.
    */
   readonly balance_responsible_party_id: number;
-  energy_direction: AccountingPointBalanceResponsiblePartyEnergyDirection;
+  readonly energy_direction: AccountingPointBalanceResponsiblePartyEnergyDirection;
   /**
    * The date from which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone.
    */
@@ -2225,12 +2220,12 @@ export type MeteringGridArea = {
    * The business identifier of the metering grid area. Format depends on `business_id_type`.
    */
   readonly business_id: string;
-  business_id_type: MeteringGridAreaBusinessIdType;
+  readonly business_id_type: MeteringGridAreaBusinessIdType;
   /**
    * The name of the metering grid area.
    */
   readonly name: string;
-  status: MeteringGridAreaStatus;
+  readonly status: MeteringGridAreaStatus;
   /**
    * Embedded accounting_point_metering_grid_area
    */
@@ -2288,7 +2283,6 @@ export type AccountingPointGridLocationUpdateRequest = {
    * Free text field for extra information about the grid location if needed.
    */
   additional_information?: string;
-  source?: AccountingPointGridLocationSource;
   quality?: AccountingPointGridLocationQuality;
 };
 
@@ -2317,7 +2311,6 @@ export type AccountingPointGridLocationCreateRequest = {
    * Free text field for extra information about the grid location if needed.
    */
   additional_information?: string;
-  source: AccountingPointGridLocationSource;
   quality: AccountingPointGridLocationQuality;
 };
 
@@ -2350,7 +2343,7 @@ export type AccountingPointGridLocation = {
    * Free text field for extra information about the grid location if needed.
    */
   additional_information?: string;
-  source: AccountingPointGridLocationSource;
+  readonly source: AccountingPointGridLocationSource;
   quality: AccountingPointGridLocationQuality;
   /**
    * When the resource was recorded (created or updated) in the system.
@@ -3766,7 +3759,7 @@ export type AccountingPointGridLocationHistory = {
    * Free text field for extra information about the grid location if needed.
    */
   additional_information?: string;
-  source: AccountingPointGridLocationSource;
+  readonly source: AccountingPointGridLocationSource;
   quality: AccountingPointGridLocationQuality;
   /**
    * When the resource was recorded (created or updated) in the system.
@@ -4936,58 +4929,6 @@ export type AccountingPointMeteringGridAreaWritable = {
    * Embedded metering_grid_area
    */
   metering_grid_area?: MeteringGridAreaWritable | null;
-};
-
-/**
- * Request schema for update operations - The electrical (topological) location of an accounting point in the common grid model (Nemo).
- */
-export type AccountingPointGridLocationUpdateRequestWritable = {
-  object_type?: AccountingPointGridLocationObjectType;
-  /**
-   * Business identifier (mRID) referencing the object in the common grid model.
-   */
-  business_id?: string;
-  /**
-   * Name of the grid model object at the location.
-   */
-  name?: string;
-  /**
-   * Nominal voltage level at the grid location, in kilovolt (kV).
-   */
-  nominal_voltage?: number;
-  /**
-   * Free text field for extra information about the grid location if needed.
-   */
-  additional_information?: string;
-  quality?: AccountingPointGridLocationQuality;
-};
-
-/**
- * Request schema for create operations - The electrical (topological) location of an accounting point in the common grid model (Nemo).
- */
-export type AccountingPointGridLocationCreateRequestWritable = {
-  /**
-   * The accounting point this grid location belongs to.
-   */
-  accounting_point_id: number;
-  object_type: AccountingPointGridLocationObjectType;
-  /**
-   * Business identifier (mRID) referencing the object in the common grid model.
-   */
-  business_id?: string;
-  /**
-   * Name of the grid model object at the location.
-   */
-  name: string;
-  /**
-   * Nominal voltage level at the grid location, in kilovolt (kV).
-   */
-  nominal_voltage: number;
-  /**
-   * Free text field for extra information about the grid location if needed.
-   */
-  additional_information?: string;
-  quality: AccountingPointGridLocationQuality;
 };
 
 /**
@@ -13555,7 +13496,7 @@ export type CreateAccountingPointGridLocationData = {
   /**
    * accounting_point_grid_location
    */
-  body?: AccountingPointGridLocationCreateRequestWritable;
+  body?: AccountingPointGridLocationCreateRequest;
   path?: never;
   query?: never;
   url: "/accounting_point_grid_location";
@@ -13663,7 +13604,7 @@ export type UpdateAccountingPointGridLocationData = {
   /**
    * accounting_point_grid_location
    */
-  body: AccountingPointGridLocationUpdateRequestWritable;
+  body: AccountingPointGridLocationUpdateRequest;
   path: {
     id: number;
   };

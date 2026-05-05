@@ -386,7 +386,7 @@ openapi-postgrest:
 
     rm -rf out/*
 
-openapi: resources-to-diagram template-to-openapi openapi-to-md openapi-to-db sqlc openapi-client-test openapi-client-frontend resources-to-intl-and-tooltips kbackend-models
+openapi: resources-to-diagram template-to-openapi openapi-to-md openapi-to-db openapi-to-embed-relations sqlc openapi-client-test openapi-client-frontend resources-to-intl-and-tooltips kbackend-models
 
 kbackend-models:
     kbackend/scripts/generate-openapi-models.sh
@@ -436,6 +436,14 @@ openapi-to-db:
     cat openapi/resources.yml | .venv/bin/python3 local/scripts/openapi_to_db.py
 
     .venv/bin/python3 local/scripts/internal_resources_to_db.py
+
+openapi-to-embed-relations:
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    cat openapi/resources.yml | \
+        .venv/bin/python3 local/scripts/openapi_to_embed_relations.py \
+        > backend/data/embed_relations_gen.go
 
 sqlc:
     #!/usr/bin/env bash

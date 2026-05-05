@@ -8,7 +8,6 @@ from flex.models import (
     AccountingPointGridLocationCreateRequest,
     AccountingPointGridLocationUpdateRequest,
     AccountingPointGridLocationObjectType,
-    AccountingPointGridLocationSource,
     AccountingPointGridLocationQuality,
     ControllableUnitCreateRequest,
     ControllableUnitResponse,
@@ -76,7 +75,6 @@ def _base_create_request(
         object_type=AccountingPointGridLocationObjectType.SUBSTATION,
         name="Test Substation",
         nominal_voltage=22.0,
-        source=AccountingPointGridLocationSource.CSO,
         quality=AccountingPointGridLocationQuality.CONFIRMED,
     )
 
@@ -367,7 +365,6 @@ def test_apgl_validation_name_too_long(sts):
             object_type=AccountingPointGridLocationObjectType.SUBSTATION,
             name="x" * 513,
             nominal_voltage=22.0,
-            source=AccountingPointGridLocationSource.CSO,
             quality=AccountingPointGridLocationQuality.CONFIRMED,
         ),
     )
@@ -384,7 +381,6 @@ def test_apgl_validation_nominal_voltage_negative(sts):
             object_type=AccountingPointGridLocationObjectType.SUBSTATION,
             name="Test",
             nominal_voltage=-1.0,
-            source=AccountingPointGridLocationSource.CSO,
             quality=AccountingPointGridLocationQuality.CONFIRMED,
         ),
     )

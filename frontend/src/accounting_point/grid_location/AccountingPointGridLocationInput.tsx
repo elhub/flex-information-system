@@ -7,8 +7,8 @@ import {
   updateAccountingPointGridLocation,
 } from "../../generated-client";
 import {
-  zAccountingPointGridLocationCreateRequestWritable,
-  zAccountingPointGridLocationUpdateRequestWritable,
+  zAccountingPointGridLocationCreateRequest,
+  zAccountingPointGridLocationUpdateRequest,
 } from "../../generated-client/zod.gen";
 import { FormContainer } from "../../components/ui";
 import {
@@ -21,9 +21,7 @@ import {
 import { accountingPointViewModelQueryKey } from "../show/useAccountingPointViewModel";
 import { unTypedZodResolver, getFields } from "../../zod";
 
-const fields = getFields(
-  zAccountingPointGridLocationCreateRequestWritable.shape,
-);
+const fields = getFields(zAccountingPointGridLocationCreateRequest.shape);
 
 export const AccountingPointGridLocationInput = ({
   apId,
@@ -39,7 +37,7 @@ export const AccountingPointGridLocationInput = ({
   const isCreate = gridLocation === undefined;
 
   const record: Partial<
-    z.infer<typeof zAccountingPointGridLocationCreateRequestWritable>
+    z.infer<typeof zAccountingPointGridLocationCreateRequest>
   > = isCreate
     ? { accounting_point_id: apId }
     : {
@@ -54,16 +52,14 @@ export const AccountingPointGridLocationInput = ({
 
   const onSubmit = async (values: object) => {
     if (isCreate) {
-      const body =
-        zAccountingPointGridLocationCreateRequestWritable.parse(values);
+      const body = zAccountingPointGridLocationCreateRequest.parse(values);
       const result = await createAccountingPointGridLocation({ body });
       if (result.error) {
         notify(result.error.message ?? "An error occurred", { type: "error" });
         return;
       }
     } else {
-      const body =
-        zAccountingPointGridLocationUpdateRequestWritable.parse(values);
+      const body = zAccountingPointGridLocationUpdateRequest.parse(values);
       const result = await updateAccountingPointGridLocation({
         path: { id: gridLocation.id },
         body,
@@ -83,9 +79,7 @@ export const AccountingPointGridLocationInput = ({
     <ResourceContextProvider value="accounting_point_grid_location">
       <Form
         record={record}
-        resolver={unTypedZodResolver(
-          zAccountingPointGridLocationCreateRequestWritable,
-        )}
+        resolver={unTypedZodResolver(zAccountingPointGridLocationCreateRequest)}
         onSubmit={onSubmit}
       >
         <FormContainer>
