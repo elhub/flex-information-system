@@ -87,35 +87,6 @@ CREATE TABLE api.{resource}_history (
 """
 
 
-def collect_relationships(resources):
-    """
-    Collect all FK relationships that have a cardinality annotation.
-    Returns a list of dicts with the relationship metadata needed for the template.
-    """
-    rels = []
-    for resource in resources:
-        child = resource["id"]
-        props = resource.get("properties", {})
-        for field, attr in props.items():
-            if not field.endswith("_id"):
-                continue
-            if not isinstance(attr, dict):
-                continue
-            fk = attr.get("x-foreign-key")
-            if not fk or "cardinality" not in fk:
-                continue
-            child_field = field
-            parent = fk["resource"]
-            parent_field = fk["field"]
-            cardinality = fk["cardinality"]
-            rels.extend(
-                relationship.from_foreign_key(
-                    child, child_field, parent, parent_field, cardinality
-                )
-            )
-    return rels
-
-
 if __name__ == "__main__":
     yaml.SafeDumper.ignore_aliases = lambda self, data: True
     resources = yaml.safe_load(sys.stdin)
@@ -217,7 +188,7 @@ if __name__ == "__main__":
                 )
 
         # generate embedding functions for all FK relationships with cardinality
-        rels = collect_relationships(resources)
+        rels = relationship.collect(resources)
         j2.template(
             {"rels": rels},
             "embedding.j2.sql",

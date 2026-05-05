@@ -23,20 +23,37 @@ var (
 	errInvalidIdentChar      = errors.New("unexpected character at start of identifier")
 )
 
-// embedQueryRewrite rewrites the query parameters of the request to match the PostgREST format.
-// the input format should be like
+// parseEmbed parses the embed query parameter into a list of embed nodes.
+// It returns an empty list if the embed parameter is empty or absent.
+//
+// The input format should be like
 //
 //	?embed=related_table!(subrelation1!,subrelation2(subsubrelation))
 //
-// and it will be rewritten into
+// and it will be parsed to
 //
-//	?select=*,related_table!inner(*,subrelation1!inner,subrelation2(*,subsubrelation))
-func embedQueryRewrite(query url.Values) error {
-	query.Del("select")
-
+//	[]embedNode{
+//		{
+//			name: "related_table",
+//			joinHint: true,
+//			children: []embedNode{
+//				{
+//					name: "subrelation1",
+//					joinHint: true,
+//				},
+//				{
+//					name: "subrelation2",
+//					children: []embedNode{
+//						{name: "subsubrelation"},
+//					},
+//				},
+//			},
+//		},
+//	}
+func parseEmbed(query url.Values) ([]embedNode, error) {
 	embed := query.Get("embed")
 	if embed == "" {
-		return nil
+		return []embedNode{}, nil
 	}
 
 	embed = strings.ToLower(embed)
@@ -44,17 +61,67 @@ func embedQueryRewrite(query url.Values) error {
 
 	nodes, rest, err := parseEmbedList(embed)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	if rest != "" {
-		return fmt.Errorf("%w: %q", errUnexpectedChars, rest)
+		return nil, fmt.Errorf("%w: %q", errUnexpectedChars, rest)
+	}
+
+	return nodes, nil
+}
+
+// applyEmbedRewrite rewrites the select query parameter into the PostgREST format,
+// using the parsed embed nodes.
+//
+// For example, given the embed nodes corresponding to
+//
+//	?embed=related_table!(subrelation1!,subrelation2(subsubrelation))
+//
+// it will set the select parameter to
+//
+//	?select=*,related_table!inner(*,subrelation1!inner,subrelation2(*,subsubrelation))
+func applyEmbedRewrite(query url.Values, nodes []embedNode) {
+	query.Del("select")
+
+	if len(nodes) == 0 {
+		return
 	}
 
 	query.Set("select", "*,"+emitEmbedList(nodes))
 	query.Del("embed")
+}
 
-	return nil
+// resourceNames returns the list of all unique resource names appearing in the embed node tree.
+// This allows checking that the caller has the required scopes to read every embedded resource.
+//
+// Based on the embedRelations mapping generated from the resources YAML.
+func resourceNames(parentResource string, nodes []embedNode) []string {
+	seen := make(map[string]struct{})
+
+	var collect func(parent string, nodes []embedNode)
+	collect = func(parent string, nodes []embedNode) {
+		// embedding name -> actual resource
+		relations := embedRelations[parent]
+
+		for _, node := range nodes {
+			actual := node.name
+			if resolved, ok := relations[node.name]; ok {
+				actual = resolved
+			}
+			seen[actual] = struct{}{}
+			collect(actual, node.children)
+		}
+	}
+
+	collect(parentResource, nodes)
+
+	names := make([]string, 0, len(seen))
+	for name := range seen {
+		names = append(names, name)
+	}
+
+	return names
 }
 
 // parseEmbedList parses a comma-separated list of embed nodes from input.
