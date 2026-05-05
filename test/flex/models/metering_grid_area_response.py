@@ -7,6 +7,7 @@ from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..models.metering_grid_area_business_id_type import MeteringGridAreaBusinessIdType
+from ..models.metering_grid_area_status import MeteringGridAreaStatus
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
@@ -26,6 +27,7 @@ class MeteringGridAreaResponse:
             Example: 24YAOER9FNW34FNN.
         business_id_type (MeteringGridAreaBusinessIdType): The type of the business identifier. Example: eic_y.
         name (str): The name of the metering grid area. Example: VN04VESTNORGEDX12.
+        status (MeteringGridAreaStatus): The status of the metering grid area. Example: active.
         accounting_point_metering_grid_area (list[AccountingPointMeteringGridAreaResponse] | None | Unset): Embedded
             accounting_point_metering_grid_area
     """
@@ -34,6 +36,7 @@ class MeteringGridAreaResponse:
     business_id: str
     business_id_type: MeteringGridAreaBusinessIdType
     name: str
+    status: MeteringGridAreaStatus
     accounting_point_metering_grid_area: list[AccountingPointMeteringGridAreaResponse] | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -45,6 +48,8 @@ class MeteringGridAreaResponse:
         business_id_type = self.business_id_type.value
 
         name = self.name
+
+        status = self.status.value
 
         accounting_point_metering_grid_area: list[dict[str, Any]] | None | Unset
         if isinstance(self.accounting_point_metering_grid_area, Unset):
@@ -68,6 +73,7 @@ class MeteringGridAreaResponse:
                 "business_id": business_id,
                 "business_id_type": business_id_type,
                 "name": name,
+                "status": status,
             }
         )
         if accounting_point_metering_grid_area is not UNSET:
@@ -87,6 +93,8 @@ class MeteringGridAreaResponse:
         business_id_type = MeteringGridAreaBusinessIdType(d.pop("business_id_type"))
 
         name = d.pop("name")
+
+        status = MeteringGridAreaStatus(d.pop("status"))
 
         def _parse_accounting_point_metering_grid_area(
             data: object,
@@ -121,6 +129,7 @@ class MeteringGridAreaResponse:
             business_id=business_id,
             business_id_type=business_id_type,
             name=name,
+            status=status,
             accounting_point_metering_grid_area=accounting_point_metering_grid_area,
         )
 

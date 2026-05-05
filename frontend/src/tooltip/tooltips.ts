@@ -578,6 +578,7 @@ export const tooltips = {
     "The business identifier of the metering grid area. Format depends on `business_id_type`.",
   "metering_grid_area.business_id_type": "The type of the business identifier.",
   "metering_grid_area.name": "The name of the metering grid area.",
+  "metering_grid_area.status": "The status of the metering grid area.",
   "accounting_point_metering_grid_area.accounting_point_id":
     "The ID of the accounting point.",
   "accounting_point_metering_grid_area.metering_grid_area_id":

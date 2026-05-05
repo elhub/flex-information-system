@@ -429,6 +429,11 @@ export type AccountingPointBiddingZoneBiddingZone =
 export type MeteringGridAreaBusinessIdType = "eic_y";
 
 /**
+ * The status of the metering grid area.
+ */
+export type MeteringGridAreaStatus = "active" | "inactive";
+
+/**
  * The type of object in the common grid model that the accounting point is at.
  */
 export type AccountingPointGridLocationObjectType =
@@ -2225,6 +2230,7 @@ export type MeteringGridArea = {
    * The name of the metering grid area.
    */
   readonly name: string;
+  status: MeteringGridAreaStatus;
   /**
    * Embedded accounting_point_metering_grid_area
    */

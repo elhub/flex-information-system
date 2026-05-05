@@ -350,6 +350,13 @@ export const zAccountingPointBiddingZoneBiddingZone = z.enum([
 export const zMeteringGridAreaBusinessIdType = z.enum(["eic_y"]).readonly();
 
 /**
+ * The status of the metering grid area.
+ */
+export const zMeteringGridAreaStatus = z
+  .enum(["active", "inactive"])
+  .readonly();
+
+/**
  * The type of object in the common grid model that the accounting point is at.
  */
 export const zAccountingPointGridLocationObjectType = z.enum([
@@ -2340,6 +2347,7 @@ export const zMeteringGridArea = z.object({
   business_id: z.string().readonly(),
   business_id_type: zMeteringGridAreaBusinessIdType,
   name: z.string().max(128).readonly(),
+  status: zMeteringGridAreaStatus,
   accounting_point_metering_grid_area: z
     .array(z.lazy((): any => zAccountingPointMeteringGridArea))
     .nullish(),
