@@ -39,7 +39,7 @@ var (
 func Prometheus(ctx *gin.Context) {
 	path := ctx.FullPath()
 
-	// Skip /metrics scrapes and data API routes (instrumented by PrometheusDataAPI).
+	// Skip /metrics scrapes and data API routes (instrumented by PrometheusMuxInstrumentation).
 	if path == "/metrics" || path == "/api/v0/*url" {
 		ctx.Next()
 		return
