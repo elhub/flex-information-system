@@ -17,18 +17,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 public data class EntityUpdateRequest(
   /**
-   * The type of the business identifier.
-   */
-  @SerialName("business_id_type")
-  public val businessIdType: EntityBusinessIdType? = null,
-  /**
    * Name of the entity. Maximum 128 characters.
    */
   @SerialName("name")
   public val name: String? = null,
-  /**
-   * The type of the entity, e.g Person, Organisation
-   */
-  @SerialName("type")
-  public val type: EntityType? = null,
 )

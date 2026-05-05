@@ -600,7 +600,7 @@ export const tooltips = {
   "accounting_point_grid_location.additional_information":
     "Free text field for extra information about the grid location if needed.",
   "accounting_point_grid_location.source":
-    "How the grid location was determined.",
+    "How the grid location was determined.  When a system operator creates or updates a grid location, this field is set automatically:  `cso` if the SO is the connecting system operator, `so` otherwise.",
   "accounting_point_grid_location.quality":
     "The quality of the grid location registration.",
   "accounting_point_grid_location.recorded_at":
@@ -621,7 +621,7 @@ export const tooltips = {
   "accounting_point_grid_location_history.additional_information":
     "Free text field for extra information about the grid location if needed.",
   "accounting_point_grid_location_history.source":
-    "How the grid location was determined.",
+    "How the grid location was determined.  When a system operator creates or updates a grid location, this field is set automatically:  `cso` if the SO is the connecting system operator, `so` otherwise.",
   "accounting_point_grid_location_history.quality":
     "The quality of the grid location registration.",
   "accounting_point_grid_location_history.recorded_at":

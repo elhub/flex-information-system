@@ -8,7 +8,6 @@ from attrs import field as _attrs_field
 
 from ..models.accounting_point_grid_location_object_type import AccountingPointGridLocationObjectType
 from ..models.accounting_point_grid_location_quality import AccountingPointGridLocationQuality
-from ..models.accounting_point_grid_location_source import AccountingPointGridLocationSource
 from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="AccountingPointGridLocationCreateRequest")
@@ -25,7 +24,6 @@ class AccountingPointGridLocationCreateRequest:
                 accounting point is at. Example: substation.
             name (str): Name of the grid model object at the location. Example: Snilldal 1 KRA.
             nominal_voltage (float): Nominal voltage level at the grid location, in kilovolt (kV). Example: 22.
-            source (AccountingPointGridLocationSource): How the grid location was determined. Example: cso.
             quality (AccountingPointGridLocationQuality): The quality of the grid location registration. Example: confirmed.
             business_id (None | str | Unset): Business identifier (mRID) referencing the object in the common grid model.
                 Example: 53919b79-876f-4dad-8bde-b29368367604.
@@ -37,7 +35,6 @@ class AccountingPointGridLocationCreateRequest:
     object_type: AccountingPointGridLocationObjectType
     name: str
     nominal_voltage: float
-    source: AccountingPointGridLocationSource
     quality: AccountingPointGridLocationQuality
     business_id: None | str | Unset = UNSET
     additional_information: None | str | Unset = UNSET
@@ -51,8 +48,6 @@ class AccountingPointGridLocationCreateRequest:
         name = self.name
 
         nominal_voltage = self.nominal_voltage
-
-        source = self.source.value
 
         quality = self.quality.value
 
@@ -76,7 +71,6 @@ class AccountingPointGridLocationCreateRequest:
                 "object_type": object_type,
                 "name": name,
                 "nominal_voltage": nominal_voltage,
-                "source": source,
                 "quality": quality,
             }
         )
@@ -97,8 +91,6 @@ class AccountingPointGridLocationCreateRequest:
         name = d.pop("name")
 
         nominal_voltage = d.pop("nominal_voltage")
-
-        source = AccountingPointGridLocationSource(d.pop("source"))
 
         quality = AccountingPointGridLocationQuality(d.pop("quality"))
 
@@ -125,7 +117,6 @@ class AccountingPointGridLocationCreateRequest:
             object_type=object_type,
             name=name,
             nominal_voltage=nominal_voltage,
-            source=source,
             quality=quality,
             business_id=business_id,
             additional_information=additional_information,
