@@ -1,25 +1,41 @@
 // frontend/src/dashboard/useDashboardApplications.ts
 import { useGetIdentity } from "ra-core";
 import { useQuery } from "@tanstack/react-query";
-import { useMemo } from "react";
 import {
   listServiceProviderProductApplication,
   listServiceProvidingGroupProductApplication,
   listServiceProvidingGroupGridPrequalification,
-} from "../generated-client";
-import { useProductTypes } from "../product_type/components";
-import { throwOnError } from "../util";
-import {
-  ACTIVE_STATUSES,
-  RESOLVED_SPPA,
-  RESOLVED_SPGPA,
-  RESOLVED_SPGGP,
-} from "./dashboardUtils";
+} from "../../generated-client";
+import { useProductTypes } from "../../product_type/components";
+import { throwOnError } from "../../util";
+
 
 export type DashboardItemKind =
   | "sp_product_application"
   | "spg_product_application"
   | "spg_grid_prequalification";
+
+
+export const ACTIVE_STATUSES = new Set(["requested", "in_progress"]);
+
+export const RESOLVED_SPPA = new Set([
+  "qualified",
+  "not_qualified",
+  "communication_test",
+]);
+export const RESOLVED_SPGPA = new Set([
+  "prequalified",
+  "verified",
+  "temporary_qualified",
+  "rejected",
+  "prequalification_pending",
+]);
+export const RESOLVED_SPGGP = new Set([
+  "approved",
+  "conditionally_approved",
+  "not_approved",
+]);
+
 
 export type DashboardItem = {
   id: number;
@@ -42,7 +58,7 @@ export const useDashboardApplications = () => {
       listServiceProviderProductApplication({
         query: {
           system_operator_id: `eq.${soId}`,
-          embed: "service_provider,product_type",
+          embed: "service_provider",
         },
       }).then(throwOnError),
   });
@@ -54,7 +70,7 @@ export const useDashboardApplications = () => {
       listServiceProvidingGroupProductApplication({
         query: {
           procuring_system_operator_id: `eq.${soId}`,
-          embed: "service_providing_group,product_type,service_provider",
+          embed: "service_providing_group(service_provider)",
         },
       }).then(throwOnError),
   });
@@ -66,7 +82,7 @@ export const useDashboardApplications = () => {
       listServiceProvidingGroupGridPrequalification({
         query: {
           impacted_system_operator_id: `eq.${soId}`,
-          embed: "service_providing_group(service_provider)"
+          embed: "service_providing_group(service_provider)",
         },
       }).then(throwOnError),
   });
@@ -89,11 +105,11 @@ export const useDashboardApplications = () => {
     id: r.id,
     kind: "sp_product_application" as DashboardItemKind,
     typeLabel: "Product Application",
-    byline: getProductTypeNames(r.product_type_ids),
+    byline: getProductTypeNames(r.product_type_ids) || "",
     participant: r.service_provider?.name || "",
     status: r.status,
     route: `/service_provider_product_application/${r.id}/show`,
-  }));
+  })) || []
 
   const spgpa = spgpaQuery.data?.map((r) => ({
     id: r.id,
@@ -103,7 +119,7 @@ export const useDashboardApplications = () => {
     participant: r.procuring_system_operator?.name || "",
     status: r.status,
     route: `/service_providing_group/${r.service_providing_group_id}/product_application/${r.id}/show`,
-  }));
+  })) || []
 
   const gridPrequalifications = spggpQuery.data?.map((r) => {
     return {
@@ -115,19 +131,14 @@ export const useDashboardApplications = () => {
       status: r.status,
       route: `/service_providing_group/${r.service_providing_group_id}/grid_prequalification/${r.id}/show`,
     };
-  })
+  }) || []
 
-  const items = [...(sppa || []), ...(spgpa || []), ...(gridPrequalifications || [])]
+  const activeItems: DashboardItem[] = [...gridPrequalifications, ...spgpa, ...sppa].filter((item) => ACTIVE_STATUSES.has(item.status));
+  const resolvedGridPrequalifications = gridPrequalifications?.filter(gp => RESOLVED_SPGGP.has(gp.status)) || []
+  const resolvedSPPA = sppa?.filter(sppa => RESOLVED_SPPA.has(sppa.status)) || []
+  const resolvedSPGPA = spgpa?.filter(spgpa => RESOLVED_SPPA.has(spgpa.status)) || []
 
-  const activeItems = items.filter((item) => ACTIVE_STATUSES.has(item.status));
+  const resolvedItems: DashboardItem[] = [...resolvedGridPrequalifications, ...resolvedSPPA, ...resolvedSPGPA]
 
-  const resolvedItems = items.filter((item) => {
-    if (item.kind === "sp_product_application")
-      return RESOLVED_SPPA.has(item.status);
-    if (item.kind === "spg_product_application")
-      return RESOLVED_SPGPA.has(item.status);
-    return RESOLVED_SPGGP.has(item.status);
-  });
-
-  return { items: activeItems, activeItems, resolvedItems, isLoading, error };
+  return { activeItems, resolvedItems, gridPrequalifications, spgpa, sppa, isLoading, error };
 };

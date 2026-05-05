@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { listServiceProviderProductApplication } from "../generated-client";
-import type { ListServiceProviderProductApplicationData } from "../generated-client";
-import { throwOnError } from "../util";
+import { listServiceProviderProductApplication } from "../../generated-client";
+import type { ListServiceProviderProductApplicationData } from "../../generated-client";
+import { throwOnError } from "../../util";
 
 // "Qualified markets" in the UI maps to Service Provider Product Applications
 // with status=qualified. The generated query type does not include `status`

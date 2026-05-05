@@ -114,7 +114,7 @@ export const ProductTypeArrayField = (props: any) => {
             {data?.map((pt_id) => (
               <Tag key={pt_id as any}>
                 {
-                  productTypes?.find((productType) => productType.id == pt_id)
+                  productTypes?.find((productType) => productType.id === pt_id.id)
                     ?.name
                 }
               </Tag>

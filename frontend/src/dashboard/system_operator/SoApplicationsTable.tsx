@@ -1,18 +1,18 @@
 // frontend/src/dashboard/ApplicationsTable.tsx
 import { useNavigate } from "react-router-dom";
-import { useTranslateEnum } from "../intl/intl";
-import { EnumLabel } from "../intl/enum-labels";
-import { SimpleTable, Column } from "../components/SimpleTable";
-import { Badge } from "../components/ui";
-import { ENUM_KEY_PREFIX, getStatusVariant } from "./dashboardTableUtils";
-import { DashboardItem } from "./useDashboardApplications";
+import { useTranslateEnum } from "../../intl/intl";
+import { EnumLabel } from "../../intl/enum-labels";
+import { SimpleTable, Column } from "../../components/SimpleTable";
+import { Badge } from "../../components/ui";
+import { ENUM_KEY_PREFIX, getStatusVariant } from "../shared/dashboardTableUtils";
+import { DashboardItem } from "../hooks/useDashboardApplications";
 
 type Props = {
   items: DashboardItem[];
   empty?: string;
 };
 
-export const ApplicationsTable = ({
+export const SOApplicationsTable = ({
   items,
   empty = "No pending applications.",
 }: Props) => {

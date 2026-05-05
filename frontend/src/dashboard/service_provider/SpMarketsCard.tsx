@@ -1,11 +1,11 @@
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Alert, Button, Card, CardContent, Loader } from "../components/ui";
-import { listParty } from "../generated-client";
-import { useProductTypes } from "../product_type/components";
-import { throwOnError } from "../util";
-import { useSpQualifiedMarkets } from "./useSpQualifiedMarkets";
+import { Alert, Button, Card, CardContent, Loader } from "../../components/ui";
+import { listParty } from "../../generated-client";
+import { useProductTypes } from "../../product_type/components";
+import { throwOnError } from "../../util";
+import { useSpQualifiedMarkets } from "../hooks/useSpQualifiedMarkets";
 
 type SoRowCellProps = {
   soId: number;
@@ -60,7 +60,7 @@ export const SpMarketsCard = ({ spId }: SpMarketsCardProps) => {
     [rows],
   );
 
-  // Batch-fetch SO names (same pattern as useSpDashboard)
+  // Batch-fetch SO names
   const soQuery = useQuery({
     queryKey: ["sp-markets-parties", uniqueSoIds],
     enabled: uniqueSoIds.length > 0,

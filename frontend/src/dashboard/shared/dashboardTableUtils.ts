@@ -1,18 +1,15 @@
-// frontend/src/dashboard/dashboardTableUtils.ts
 import { ComponentType } from "react";
 import {
-  IconCheckCircle,
-  IconCrossCircle,
   IconStopWatch15,
-  IconWarningCircle,
   SvgIconProps,
 } from "@elhub/ds-icons";
 import {
   sppaStatusVariantMap,
   SppaBadgeVariant,
-} from "../service_provider_product_application/show/sppaStatus";
-import { spgpaStatusVariantMap } from "../service_providing_group/product_application/show/spgpaStatus";
-import { DashboardItemKind } from "./useDashboardApplications";
+} from "../../service_provider_product_application/show/sppaStatus";
+import { spgpaStatusVariantMap } from "../../service_providing_group/product_application/show/spgpaStatus";
+import { DashboardItemKind } from "../hooks/useDashboardApplications";
+import { spgpqStatusVariantMap } from "../../service_providing_group/grid_prequalification/show/spgpqStatus";
 
 export type BadgeVariant = {
   status: SppaBadgeVariant["status"];
@@ -24,19 +21,6 @@ export const ENUM_KEY_PREFIX: Record<DashboardItemKind, string> = {
   spg_product_application: "service_providing_group_product_application.status",
   spg_grid_prequalification:
     "service_providing_group_grid_prequalification.status",
-};
-
-// Grid prequalification statuses don't have a shared variant map yet,
-// so we define a minimal one inline.
-export const spggpStatusVariantMap: Record<string, BadgeVariant> = {
-  requested: { status: "pending", icon: IconStopWatch15 },
-  in_progress: { status: "ongoing", icon: IconStopWatch15 },
-  conditionally_approved: {
-    status: "approved-with-warning",
-    icon: IconWarningCircle,
-  },
-  approved: { status: "approved", icon: IconCheckCircle },
-  not_approved: { status: "rejected", icon: IconCrossCircle },
 };
 
 export const fallbackVariant: BadgeVariant = {
@@ -60,5 +44,5 @@ export const getStatusVariant = (
       fallbackVariant
     );
   }
-  return spggpStatusVariantMap[status] ?? fallbackVariant;
+  return spgpqStatusVariantMap[status as keyof typeof spgpqStatusVariantMap] ?? fallbackVariant;
 };
