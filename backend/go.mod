@@ -11,6 +11,7 @@ require (
 	github.com/jackc/pgx/v5 v5.9.2
 	github.com/jwx-go/jwkfetch/v4 v4.0.0
 	github.com/lestrrat-go/httprc/v3 v3.0.5
+	github.com/prometheus/client_golang v1.23.2
 	github.com/samber/slog-gin v1.21.0
 	go.opentelemetry.io/otel v1.43.0
 	go.opentelemetry.io/otel/sdk v1.43.0
@@ -18,7 +19,15 @@ require (
 	golang.org/x/oauth2 v0.36.0
 )
 
-require github.com/lestrrat-go/option/v3 v3.0.0-alpha1 // indirect
+require (
+	github.com/beorn7/perks v1.0.1 // indirect
+	github.com/lestrrat-go/option/v3 v3.0.0-alpha1 // indirect
+	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
+	github.com/prometheus/client_model v0.6.2 // indirect
+	github.com/prometheus/common v0.66.1 // indirect
+	github.com/prometheus/procfs v0.16.1 // indirect
+	go.yaml.in/yaml/v2 v2.4.2 // indirect
+)
 
 require (
 	github.com/bytedance/gopkg v0.1.3 // indirect

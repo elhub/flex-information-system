@@ -24,6 +24,7 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/graceful"
 	"github.com/gin-gonic/gin"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 
 	sloggin "github.com/samber/slog-gin"
 )
@@ -391,6 +392,8 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		ctx.JSON(http.StatusOK, gin.H{"status": "ok"})
 	})
 
+	router.GET("/metrics", WrapHandler(promhttp.Handler())) //nolint:contextcheck
+
 	// middlewares with logging
 
 	router.Use(gin.Logger())
@@ -407,6 +410,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	router.Use(sloggin.NewWithConfig(logger, slogginConfig))
 
 	router.Use(WrapMiddleware(authAPI.TokenDecodingMiddleware))
+	router.Use(middleware.Prometheus)
 
 	// auth API endpoints
 	authRouter := router.Group("/auth/v0")

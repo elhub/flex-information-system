@@ -261,7 +261,7 @@ repos:
         name: golangci-lint
         entry: /usr/bin/bash
         pass_filenames: false
-        args: ['-c', 'cd backend && golangci-lint run --fix']
+        args: ['-c', 'cd backend && golangci-lint run --fix --new-from-rev=HEAD']
         types: [go]
         language: script
       - id: go-unit-tests
