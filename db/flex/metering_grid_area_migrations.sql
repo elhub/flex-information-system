@@ -102,7 +102,7 @@ DROP COLUMN IF EXISTS valid_time_range;
 --preconditions onFail:MARK_RAN
 --precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = 'flex' AND table_name = 'metering_grid_area' AND column_name = 'status'
 ALTER TABLE flex.metering_grid_area
-ADD COLUMN IF NOT EXISTS status text;
+ADD COLUMN IF NOT EXISTS status text NOT NULL DEFAULT 'active';
 
 ALTER TABLE flex.metering_grid_area_history
 ADD COLUMN IF NOT EXISTS status text;
