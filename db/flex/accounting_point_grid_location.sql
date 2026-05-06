@@ -87,7 +87,7 @@ ON accounting_point_grid_location
 FOR EACH ROW
 EXECUTE FUNCTION accounting_point_grid_location_source_set();
 
--- changeset flex:accounting-point-grid-location-source-transition-check-trigger runOnChange:true endDelimiter:--
+-- changeset flex:accounting-point-grid-location-source-transition-check-function runOnChange:true endDelimiter:--
 -- APGL-VAL001
 CREATE OR REPLACE FUNCTION accounting_point_grid_location_source_transition_check()
 RETURNS trigger
@@ -113,13 +113,15 @@ BEGIN
 END;
 $$;
 
+-- changeset flex:accounting-point-grid-location-source-transition-check-trigger runOnChange:true endDelimiter:--
+-- APGL-VAL001
 CREATE OR REPLACE TRIGGER b_accounting_point_grid_location_source_transition_check
 BEFORE UPDATE ON accounting_point_grid_location
 FOR EACH ROW
 WHEN (current_role != 'flex_flexibility_information_system_operator')
 EXECUTE FUNCTION accounting_point_grid_location_source_transition_check();
 
--- changeset flex:accounting-point-grid-location-quality-source-check-trigger runOnChange:true endDelimiter:--
+-- changeset flex:accounting-point-grid-location-quality-source-check-function runOnChange:true endDelimiter:--
 -- APGL-VAL002
 CREATE OR REPLACE FUNCTION accounting_point_grid_location_quality_source_check()
 RETURNS trigger
@@ -136,6 +138,8 @@ BEGIN
 END;
 $$;
 
+-- changeset flex:accounting-point-grid-location-quality-source-check-trigger runOnChange:true endDelimiter:--
+-- APGL-VAL002
 CREATE OR REPLACE TRIGGER b_accounting_point_grid_location_quality_source_check
 BEFORE INSERT OR UPDATE ON accounting_point_grid_location
 FOR EACH ROW
