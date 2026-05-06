@@ -27185,6 +27185,14 @@
                         "name": "product_type_ids"
                     },
                     {
+                        "in": "query",
+                        "name": "status",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somestatus"
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -27780,6 +27788,14 @@
                         "example": "eq.55",
                         "description": "References to the product types.",
                         "name": "product_type_ids"
+                    },
+                    {
+                        "in": "query",
+                        "name": "status",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somestatus"
                     },
                     {
                         "description": "Filtering Columns",

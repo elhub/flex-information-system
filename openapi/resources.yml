@@ -3037,6 +3037,7 @@ resources:
         format: text
         type: string
         default: requested
+        x-filter: true
         enum:
           - id: requested
             x-intl:

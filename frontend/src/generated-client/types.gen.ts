@@ -14349,6 +14349,7 @@ export type ListServiceProviderProductApplicationData = {
      * References to the product types.
      */
     product_type_ids?: string;
+    status?: string;
     /**
      * Filtering Columns
      */
@@ -14609,6 +14610,7 @@ export type ListServiceProviderProductApplicationHistoryData = {
      * References to the product types.
      */
     product_type_ids?: string;
+    status?: string;
     /**
      * Filtering Columns
      */
