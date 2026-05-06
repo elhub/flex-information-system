@@ -1,4 +1,3 @@
-// frontend/src/dashboard/ApplicationsTable.tsx
 import { useNavigate } from "react-router-dom";
 import { useTranslateEnum } from "../../intl/intl";
 import { EnumLabel } from "../../intl/enum-labels";
@@ -68,6 +67,7 @@ export const SOApplicationsTable = ({
       data={items}
       empty={empty}
       className="w-full"
+      rowKey={(row) => row.kind + "-" + row.id}
       rowClick={(item) => navigate(item.route)}
     />
   );
