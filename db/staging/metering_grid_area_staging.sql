@@ -104,7 +104,9 @@ CREATE OR REPLACE VIEW staging.metering_grid_area_system_operator_v AS (
         stg.valid_time_range
     FROM staging.metering_grid_area_system_operator AS stg
         INNER JOIN flex.metering_grid_area AS mga
-            ON stg.metering_grid_area_business_id = mga.business_id
+            ON
+                stg.metering_grid_area_business_id = mga.business_id
+                AND mga.status = 'active'
         INNER JOIN flex.party AS so
             ON
                 stg.system_operator_business_id = so.business_id
@@ -119,7 +121,9 @@ CREATE OR REPLACE VIEW staging.metering_grid_area_price_area_v AS (
         stg.valid_time_range
     FROM staging.metering_grid_area_price_area AS stg
         INNER JOIN flex.metering_grid_area AS mga
-            ON stg.metering_grid_area_business_id = mga.business_id
+            ON
+                stg.metering_grid_area_business_id = mga.business_id
+                AND mga.status = 'active'
 );
 
 -- update functions
@@ -146,24 +150,21 @@ BEGIN
     MERGE INTO flex.metering_grid_area AS flex_mga
     USING staging.metering_grid_area AS staging_mga
         ON flex_mga.business_id = staging_mga.business_id
-    -- step 2: update changed MGAs
+    -- step 2: update/reactivate changed MGAs
     WHEN MATCHED AND (
         staging_mga.name IS DISTINCT FROM flex_mga.name
-        OR staging_mga.status IS DISTINCT FROM flex_mga.status
     ) THEN
         UPDATE SET
             name = staging_mga.name,
-            status = staging_mga.status
+            status = 'active'
     -- step 3: insert new MGAs
     WHEN NOT MATCHED /* BY TARGET */ THEN
         INSERT (
             business_id,
-            name,
-            status
+            name
         ) VALUES (
             staging_mga.business_id,
-            staging_mga.name,
-            staging_mga.status
+            staging_mga.name
         );
 END;
 $$;
