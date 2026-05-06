@@ -23,5 +23,9 @@
     "include": [
         "src",
         "theme.d.ts"
+    ],
+    "exclude": [
+        "src/**/*.test.ts",
+        "src/**/*.test.tsx"
     ]
 }
