@@ -5,19 +5,19 @@ import {
 } from "@elhub/ds-icons";
 import { Alert, Loader } from "../../components/ui";
 import { useDashboardApplications } from "../hooks/useDashboardApplications";
-import { useNotices } from "../hooks/useNotices";
 import { useServiceProvidingGroups } from "../hooks/useServiceProvidingGroups";
 import { StatCard } from "../shared/StatCard";
+import { useInconsistencies } from "../hooks/useInconsistencies";
 
 export const SpStatCards = () => {
   const applicationsQuery = useDashboardApplications();
   const spgQuery = useServiceProvidingGroups();
-  const noticeQuery = useNotices();
+  const inconsistenciesQuery = useInconsistencies();
 
   const isLoading =
-    applicationsQuery.isLoading || spgQuery.isLoading || noticeQuery.isLoading;
+    applicationsQuery.isLoading || spgQuery.isLoading || inconsistenciesQuery.isLoading;
   const error =
-    applicationsQuery.error || spgQuery.error || noticeQuery.error;
+    applicationsQuery.error || spgQuery.error || inconsistenciesQuery.error;
 
   if (isLoading) return <Loader size="small" />;
   if (error) return <Alert variant="error">Failed to load stats.</Alert>;
@@ -26,7 +26,7 @@ export const SpStatCards = () => {
   const activeSpgCount = (spgQuery.data ?? []).filter(
     (s) => s.status === "active",
   ).length;
-  const inconsistencyCount = (noticeQuery.data ?? []).length;
+  const inconsistencyCount = (inconsistenciesQuery.data ?? []).length;
 
   return (
     <div className="flex flex-col sm:flex-row gap-4">

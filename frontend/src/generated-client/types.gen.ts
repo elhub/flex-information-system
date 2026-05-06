@@ -17572,6 +17572,10 @@ export type ListNoticeData = {
      */
     party_id?: string;
     /**
+     * The type of the notice.
+     */
+    type?: string;
+    /**
      * Filtering Columns
      */
     select?: string;

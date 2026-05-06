@@ -14,7 +14,6 @@ export const Dashboard = () => {
   const { data: identity } = useGetIdentity();
   const { activeItems, resolvedItems, isLoading, error } =
     useDashboardApplications();
-  const isSystemOperator = identity?.role === "flex_system_operator";
   const isServiceProvider = identity?.role === "flex_service_provider";
   const partyID = identity?.partyID as number | undefined;
 
@@ -31,13 +30,7 @@ export const Dashboard = () => {
 
       {!isLoading && !error && (
         <>
-          {isSystemOperator && (
-            <DashboardLayout
-              statCards={<SoStatCards />}
-              activeTable={<SOApplicationsTable items={activeItems} empty="No active applications." />}
-              resolvedTable={<SOApplicationsTable items={resolvedItems} empty="No resolved applications." />}
-            />
-          )}
+
           {isServiceProvider && (
             <DashboardLayout
               statCards={<SpStatCards />}
@@ -46,8 +39,18 @@ export const Dashboard = () => {
               extra={<SpMarketsCard spId={partyID} />}
             />
           )}
+
+          {!isServiceProvider && (
+            <DashboardLayout
+              statCards={<SoStatCards />}
+              activeTable={<SOApplicationsTable items={activeItems} empty="No active applications." />}
+              resolvedTable={<SOApplicationsTable items={resolvedItems} empty="No resolved applications." />}
+            />
+          )}
         </>
       )}
+
+
 
     </div>
   );

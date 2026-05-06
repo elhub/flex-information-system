@@ -34387,6 +34387,15 @@
                         "name": "party_id"
                     },
                     {
+                        "in": "query",
+                        "name": "type",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.sometype",
+                        "description": "The type of the notice."
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",

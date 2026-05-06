@@ -1,6 +1,7 @@
 import { NavLink, matchPath, useLocation, useMatch } from "react-router-dom";
 import { Button, Dropdown, Link, Nav } from "../ui";
 import { IconChevronDown } from "@elhub/ds-icons";
+import { useGetIdentity } from "ra-core";
 
 type MenuItem = {
   label: string;
@@ -43,11 +44,30 @@ const className = ({ isActive }: { isActive: boolean }) =>
       : "after:bg-transparent",
   ].join(" ");
 
+const useMenuItems = () => {
+  const { data: identity, isSuccess } = useGetIdentity();
+
+  if (!isSuccess) {
+    return [];
+  }
+
+  if (!identity.partyID) {
+    return [
+      { label: "Assume party", to: "/login/assumeParty" },
+    ]
+  }
+
+  return navLinks;
+}
+
 export const HeaderNav = () => {
+
+  const menuItems = useMenuItems();
+
   return (
     <Nav className="flex h-full items-center">
       <div className="flex h-full items-center gap-3">
-        {navLinks.map((link) =>
+        {menuItems.map((link) =>
           "items" in link ? (
             <DropdownNav key={link.label} {...link} />
           ) : (

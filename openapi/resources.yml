@@ -3558,6 +3558,7 @@ resources:
         format: text
         type: string
         pattern: '^no.elhub.flex.'
+        x-filter: true
         readOnly: true
         example: 'no.elhub.flex.service_providing_group_membership.valid_time.outside_contract'
         x-intl:

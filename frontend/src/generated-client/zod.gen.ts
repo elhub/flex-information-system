@@ -6083,6 +6083,7 @@ export const zListNoticeQuery = z.object({
     .string()
     .regex(/^eq\.[0-9]+$/)
     .optional(),
+  type: z.string().optional(),
   select: z.string().optional(),
   order: z.string().optional(),
   offset: z.string().optional(),
