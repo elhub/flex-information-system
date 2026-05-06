@@ -1,10 +1,12 @@
-# Testing ESBR staging
+# Testing the staging schema
 
-The test data CSV file in this directory was made from dumping the ESBR table we
+## Test data
+
+The test data CSV files in this directory was made from dumping the tables we
 load in the test data, introducing some modifications to test that the update
 procedure works correctly.
 
-For instance:
+### ESBR staging
 
 - one record was shifted (instead of ending on day `D`, it ends on `D-1`, and
   the record following is updated to start on `D-1` as well)
@@ -14,16 +16,20 @@ For instance:
   date) and a new record was introduced after it (the most common case happening
   in real life)
 
+### MGA staging
+
+TODO
+
 ## Test procedure
 
-In order to run the test, first we call the `prepare` operation for ESBR in the
-`staging` schema:
+In order to run the test, first we call the `prepare` operation for the resource
+in the `staging` schema:
 
 ```sql
 SELECT staging.energy_supplier_balance_responsibility_prepare();
 ```
 
-Then, we copy the staging table from the test CSV file:
+Then, we copy the staging table(s) from the test CSV file(s):
 
 ```sql
 \COPY staging.energy_supplier_balance_responsibility(
@@ -38,8 +44,8 @@ DELIMITER ';'
 CSV HEADER;
 ```
 
-Finally, call the `finalise` operation that should run the `MERGE` internally,
-after doing some checks.
+Finally, call the `finalise` operation that should run the `MERGE`(s)
+internally, after doing some checks.
 
 ```sql
 SELECT staging.energy_supplier_balance_responsibility_finalise();
@@ -52,10 +58,12 @@ SELECT staging.energy_supplier_balance_responsibility_finalise();
 If you delete half of the test CSV file before doing the test, you should get
 an exception because we don't load when we expect to lose too much data.
 
-## Correct case
+### Correct case
 
-If you run the test with the test CSV file unmodified, you should get the
+If you run the test with the test CSV file(s) unmodified, you should get the
 following results:
+
+#### ESBR results
 
 ```sql
 SELECT * FROM flex.energy_supplier_balance_responsibility;
@@ -70,3 +78,7 @@ SELECT * FROM flex.energy_supplier_balance_responsibility;
 - record `4` is the last on MGA `4` before the update, it should be there with
   an ended valid time, and we should have a new record to register the new
   BRP chosen in the updated dataset.
+
+#### MGA results
+
+TODO
