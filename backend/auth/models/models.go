@@ -217,36 +217,40 @@ func PartyOfIdentity(
 
 //
 
-const getAssumablePartyIDFromGLN = `select
+const getAssumablePartyID = `select
 	p.id as party_id
 from flex.entity as e
 	inner join flex.party_membership as pm on e.id = pm.entity_id
 	inner join flex.party as p on pm.party_id = p.id
 where e.id = $1
 	and p.business_id = $2
+	and p.type = $3
 union all
 select
 	p.id as party_id
 from flex.party as p
 where p.entity_id = $1
 	and p.business_id = $2
+	and p.type = $3
 limit 1`
 
-// GetAssumablePartyIDFromGLN returns the party ID of the given party GLN if the
+// GetAssumablePartyID returns the party ID of the given party business ID and type if the
 // given entity can assume it (i.e., owns it or is a member of it).
-func GetAssumablePartyIDFromGLN(
+func GetAssumablePartyID(
 	ctx context.Context,
 	tx pgx.Tx,
 	entityID int,
 	partyBusinessID string,
+	partyType string,
 ) (int, error) {
 	var partyID int
 
 	err := tx.QueryRow(
 		ctx,
-		getAssumablePartyIDFromGLN,
+		getAssumablePartyID,
 		entityID,
 		partyBusinessID,
+		partyType,
 	).Scan(&partyID)
 	if err != nil {
 		return 0, fmt.Errorf("failed to get party ID: %w", err)
