@@ -87,6 +87,65 @@ ON accounting_point_grid_location
 FOR EACH ROW
 EXECUTE FUNCTION accounting_point_grid_location_source_set();
 
+-- changeset flex:accounting-point-grid-location-source-transition-check-function runOnChange:true endDelimiter:--
+-- APGL-VAL001
+CREATE OR REPLACE FUNCTION accounting_point_grid_location_source_transition_check()
+RETURNS trigger
+SECURITY DEFINER
+LANGUAGE plpgsql
+AS
+$$
+BEGIN
+    IF OLD.source IS DISTINCT FROM NEW.source THEN
+        IF NOT (
+            CASE OLD.source
+                WHEN 'grid_model' THEN NEW.source = 'grid_model'
+                WHEN 'cso'        THEN NEW.source IN ('grid_model', 'cso')
+                WHEN 'so'         THEN NEW.source IN ('grid_model', 'cso', 'so')
+                WHEN 'system'     THEN NEW.source IN ('grid_model', 'cso', 'so', 'system')
+            END
+        ) THEN
+            RAISE EXCEPTION
+                'Invalid source transition from % to %.', OLD.source, NEW.source;
+        END IF;
+    END IF;
+    RETURN NEW;
+END;
+$$;
+
+-- changeset flex:accounting-point-grid-location-source-transition-check-trigger runOnChange:true endDelimiter:--
+-- APGL-VAL001
+CREATE OR REPLACE TRIGGER b_accounting_point_grid_location_source_transition_check
+BEFORE UPDATE ON accounting_point_grid_location
+FOR EACH ROW
+WHEN (current_role != 'flex_flexibility_information_system_operator')
+EXECUTE FUNCTION accounting_point_grid_location_source_transition_check();
+
+-- changeset flex:accounting-point-grid-location-quality-source-check-function runOnChange:true endDelimiter:--
+-- APGL-VAL002
+CREATE OR REPLACE FUNCTION accounting_point_grid_location_quality_source_check()
+RETURNS trigger
+SECURITY DEFINER
+LANGUAGE plpgsql
+AS
+$$
+BEGIN
+    IF NEW.quality = 'confirmed' AND NEW.source NOT IN ('cso', 'so', 'grid_model') THEN
+        RAISE EXCEPTION
+            'quality=confirmed is not permitted with source=%.', NEW.source;
+    END IF;
+    RETURN NEW;
+END;
+$$;
+
+-- changeset flex:accounting-point-grid-location-quality-source-check-trigger runOnChange:true endDelimiter:--
+-- APGL-VAL002
+CREATE OR REPLACE TRIGGER b_accounting_point_grid_location_quality_source_check
+BEFORE INSERT OR UPDATE ON accounting_point_grid_location
+FOR EACH ROW
+WHEN (current_role != 'flex_flexibility_information_system_operator')
+EXECUTE FUNCTION accounting_point_grid_location_quality_source_check();
+
 -- changeset flex:accounting-point-grid-location-event-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER z_accounting_point_grid_location_event
 AFTER INSERT OR UPDATE ON accounting_point_grid_location

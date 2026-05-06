@@ -38,8 +38,8 @@ see [Accounting Point Grid Location](../technical/accounting-point-grid-location
 
 | Validation rule key | Validation rule                                                                                                | Status |
 |---------------------|----------------------------------------------------------------------------------------------------------------|--------|
-| APGL-VAL001         | Updates to the grid location are only allowed based on the current `source` value. See transition table below. | TODO   |
-| APGL-VAL002         | `quality=confirmed` is only permitted when `source` is `cso`, `so` or `grid_model`.                            | TODO   |
+| APGL-VAL001         | Updates to the grid location are only allowed based on the current `source` value. See transition table below. | DONE   |
+| APGL-VAL002         | `quality=confirmed` is only permitted when `source` is `cso`, `so` or `grid_model`.                            | DONE   |
 
 ### APGL-VAL001 source transition table
 
