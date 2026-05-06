@@ -1,9 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { listServiceProviderProductApplication } from "../../generated-client";
-import type { ListServiceProviderProductApplicationData } from "../../generated-client";
 import { throwOnError } from "../../util";
-
-
 
 export const useSpQualifiedMarkets = (spId: number | undefined) =>
   useQuery({
@@ -13,6 +10,7 @@ export const useSpQualifiedMarkets = (spId: number | undefined) =>
         query: {
           service_provider_id: `eq.${spId}`,
           status: "eq.qualified",
+          embed: "system_operator",
         },
       }).then(throwOnError),
     enabled: !!spId,

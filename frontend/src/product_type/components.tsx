@@ -118,7 +118,8 @@ export const ProductTypeArrayField = (props: any) => {
               <Tag key={pt_id as any}>
                 {
                   productTypes?.find(
-                    (productType) => productType.id === pt_id.id,
+                    // The typing from react-admin is not great here. It says its a record but its a number
+                    (productType) => productType.id === pt_id as unknown as number,
                   )?.name
                 }
               </Tag>
