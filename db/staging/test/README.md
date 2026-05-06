@@ -2,7 +2,7 @@
 
 ## Test data
 
-The test data CSV files in this directory was made from dumping the tables we
+The test data CSV files in this directory were made from dumping the tables we
 load in the test data, introducing some modifications to test that the update
 procedure works correctly.
 

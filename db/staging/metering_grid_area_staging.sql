@@ -152,7 +152,8 @@ BEGIN
         ON flex_mga.business_id = staging_mga.business_id
     -- step 2: update/reactivate changed MGAs
     WHEN MATCHED AND (
-        staging_mga.name IS DISTINCT FROM flex_mga.name
+        flex_mga.status = 'inactive'
+        OR staging_mga.name IS DISTINCT FROM flex_mga.name
     ) THEN
         UPDATE SET
             name = staging_mga.name,
