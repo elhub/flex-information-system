@@ -170,6 +170,7 @@ export type FieldLabel =
   | "metering_grid_area.business_id_type"
   | "metering_grid_area.id"
   | "metering_grid_area.name"
+  | "metering_grid_area.status"
   | "notice.data"
   | "notice.id"
   | "notice.party_id"
@@ -946,6 +947,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "metering_grid_area.business_id": "Business ID",
     "metering_grid_area.business_id_type": "Business ID type",
     "metering_grid_area.name": "Name",
+    "metering_grid_area.status": "Status",
     "accounting_point_metering_grid_area.accounting_point_id":
       "Accounting point",
     "accounting_point_metering_grid_area.metering_grid_area_id":
@@ -1665,6 +1667,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "metering_grid_area.business_id": "Forretnings-ID",
     "metering_grid_area.business_id_type": "Forretnings-ID-type",
     "metering_grid_area.name": "Navn",
+    "metering_grid_area.status": "Status",
     "accounting_point_metering_grid_area.accounting_point_id":
       "Avregningspunkt",
     "accounting_point_metering_grid_area.metering_grid_area_id": "Nettområde",
@@ -2381,6 +2384,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "metering_grid_area.business_id": "Forretnings-ID",
     "metering_grid_area.business_id_type": "Forretnings-ID-type",
     "metering_grid_area.name": "Namn",
+    "metering_grid_area.status": "Status",
     "accounting_point_metering_grid_area.accounting_point_id":
       "Avregningspunkt",
     "accounting_point_metering_grid_area.metering_grid_area_id": "Nettområde",

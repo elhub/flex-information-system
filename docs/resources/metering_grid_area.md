@@ -9,12 +9,13 @@ Metering grid area accounting points belong to.
 
 ## Fields
 
-| Name                                                                                 | Description                                                                              | Format                                   | Reference |
-|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|------------------------------------------|-----------|
-| <a name="field-id" href="#field-id">id</a>                                           | Unique surrogate identifier.                                                             | bigint<br/>Read only                     |           |
-| <a name="field-business_id" href="#field-business_id">business_id</a>                | The business identifier of the metering grid area. Format depends on `business_id_type`. | text<br/>Read only                       |           |
-| <a name="field-business_id_type" href="#field-business_id_type">business_id_type</a> | The type of the business identifier.                                                     | text<br/>One of: `eic_y`<br/>Read only   |           |
-| <a name="field-name" href="#field-name">name</a>                                     | The name of the metering grid area.                                                      | text<br/>Max length: `128`<br/>Read only |           |
+| Name                                                                                 | Description                                                                              | Format                                              | Reference |
+|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|-----------------------------------------------------|-----------|
+| <a name="field-id" href="#field-id">id</a>                                           | Unique surrogate identifier.                                                             | bigint<br/>Read only                                |           |
+| <a name="field-business_id" href="#field-business_id">business_id</a>                | The business identifier of the metering grid area. Format depends on `business_id_type`. | text<br/>Read only                                  |           |
+| <a name="field-business_id_type" href="#field-business_id_type">business_id_type</a> | The type of the business identifier.                                                     | text<br/>One of: `eic_y`<br/>Read only              |           |
+| <a name="field-name" href="#field-name">name</a>                                     | The name of the metering grid area.                                                      | text<br/>Max length: `128`<br/>Read only            |           |
+| <a name="field-status" href="#field-status">status</a>                               | The status of the metering grid area.                                                    | text<br/>One of: `active`, `inactive`<br/>Read only |           |
 
 ## Validation Rules
 
@@ -89,3 +90,4 @@ For party type abbreviations, check
 | business_id      |      | R   | R  | R  | R    | R  | R  | R  |     |
 | business_id_type |      | R   | R  | R  | R    | R  | R  | R  |     |
 | name             |      | R   | R  | R  | R    | R  | R  | R  |     |
+| status           |      | R   | R  | R  | R    | R  | R  | R  |     |

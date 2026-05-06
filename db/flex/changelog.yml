@@ -148,6 +148,9 @@ databaseChangeLog:
       file: ./metering_grid_area.sql
       relativeToChangelogFile: true
   - include:
+      file: ./metering_grid_area_migrations.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./metering_grid_area_price_area.sql
       relativeToChangelogFile: true
   - include:
@@ -309,9 +312,6 @@ databaseChangeLog:
       endsWithFilter: _history_audit.sql
       maxDepth: 1
 
-  - include:
-      file: ./metering_grid_area_migrations.sql
-      relativeToChangelogFile: true
   - include:
       file: ./party_membership_migrations.sql
       relativeToChangelogFile: true

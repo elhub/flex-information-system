@@ -476,6 +476,10 @@ def generate_openapi_document(base_file, resources_file, servers_file):
                     resource["properties"][field]["default"] = data["default"]
                 if data.get("x-filter") is not None:
                     resource["properties"][field]["x-filter"] = data["x-filter"]
+                if data.get("readOnly") is not None:
+                    resource["properties"][field]["readOnly"] = data["readOnly"]
+                if data.get("x-no-update") is not None:
+                    resource["properties"][field]["x-no-update"] = data["x-no-update"]
                 if "nullable" in data:
                     if data["nullable"]:
                         # OAS 3.1: express nullability via oneOf instead of nullable:true
@@ -491,6 +495,12 @@ def generate_openapi_document(base_file, resources_file, servers_file):
                             resource["properties"][field]["default"] = data["default"]
                         if data.get("x-filter") is not None:
                             resource["properties"][field]["x-filter"] = data["x-filter"]
+                        if data.get("readOnly") is not None:
+                            resource["properties"][field]["readOnly"] = data["readOnly"]
+                        if data.get("x-no-update") is not None:
+                            resource["properties"][field]["x-no-update"] = data[
+                                "x-no-update"
+                            ]
                         if "required" in data:
                             resource["properties"][field]["required"] = data["required"]
                         continue

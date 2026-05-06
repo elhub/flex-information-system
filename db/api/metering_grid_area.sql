@@ -9,6 +9,7 @@ WITH (security_invoker = true) AS (
         id,
         business_id,
         'eic_y' AS business_id_type,
-        name
+        name,
+        status
     FROM flex.metering_grid_area
 );

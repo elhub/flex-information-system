@@ -32,6 +32,11 @@ public data class MeteringGridAreaResponse(
   @SerialName("name")
   public val name: String? = null,
   /**
+   * The status of the metering grid area.
+   */
+  @SerialName("status")
+  public val status: MeteringGridAreaStatus? = null,
+  /**
    * Embedded accounting_point_metering_grid_area
    */
   @SerialName("accounting_point_metering_grid_area")
