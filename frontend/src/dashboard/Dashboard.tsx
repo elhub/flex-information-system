@@ -30,12 +30,21 @@ export const Dashboard = () => {
 
       {!isLoading && !error && (
         <>
-
           {isServiceProvider && (
             <DashboardLayout
               statCards={<SpStatCards />}
-              activeTable={<SpApplicationsTable items={activeItems} empty="No active applications." />}
-              resolvedTable={<SpApplicationsTable items={resolvedItems} empty="No resolved applications." />}
+              activeTable={
+                <SpApplicationsTable
+                  items={activeItems}
+                  empty="No active applications."
+                />
+              }
+              resolvedTable={
+                <SpApplicationsTable
+                  items={resolvedItems}
+                  empty="No resolved applications."
+                />
+              }
               extra={<SpMarketsCard spId={partyID} />}
             />
           )}
@@ -43,15 +52,22 @@ export const Dashboard = () => {
           {!isServiceProvider && (
             <DashboardLayout
               statCards={<SoStatCards />}
-              activeTable={<SOApplicationsTable items={activeItems} empty="No active applications." />}
-              resolvedTable={<SOApplicationsTable items={resolvedItems} empty="No resolved applications." />}
+              activeTable={
+                <SOApplicationsTable
+                  items={activeItems}
+                  empty="No active applications."
+                />
+              }
+              resolvedTable={
+                <SOApplicationsTable
+                  items={resolvedItems}
+                  empty="No resolved applications."
+                />
+              }
             />
           )}
         </>
       )}
-
-
-
     </div>
   );
 };

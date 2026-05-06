@@ -31,7 +31,6 @@ import { useI18nProvider } from "./intl/intl";
 import { Header } from "./components/Header/Header";
 import { NavigationHistoryProvider } from "./components/NavigationHistoryProvider";
 
-
 const config: IDataProviderConfig = {
   apiUrl: apiURL,
   httpClient: httpClient,

@@ -8,8 +8,7 @@ const inconsistencyNoticeTypes = [
   "no.elhub.flex.service_providing_group.balance_responsible_party.multiple",
   "no.elhub.flex.service_providing_group_membership.valid_time.outside_contract",
   "no.elhub.flex.service_providing_group_membership.bidding_zone_mismatch",
-]
-
+];
 
 export const useInconsistencies = () => {
   const { data: identity } = useGetIdentity();
@@ -20,7 +19,10 @@ export const useInconsistencies = () => {
     enabled: partyID != null,
     queryFn: () =>
       listNotice({
-        query: { party_id: `eq.${partyID}`, type: `in.(${inconsistencyNoticeTypes.join(",")})` },
+        query: {
+          party_id: `eq.${partyID}`,
+          type: `in.(${inconsistencyNoticeTypes.join(",")})`,
+        },
       }).then(throwOnError),
   });
 };

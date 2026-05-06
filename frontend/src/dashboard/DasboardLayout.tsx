@@ -1,16 +1,18 @@
 import { type ReactNode } from "react";
 
-
 type Props = {
   statCards: ReactNode;
   activeTable: ReactNode;
-  resolvedTable: ReactNode
+  resolvedTable: ReactNode;
   extra?: ReactNode;
 };
 
-export const DashboardLayout = ({ statCards, activeTable, resolvedTable, extra }: Props) => {
-
-
+export const DashboardLayout = ({
+  statCards,
+  activeTable,
+  resolvedTable,
+  extra,
+}: Props) => {
   return (
     <>
       <>

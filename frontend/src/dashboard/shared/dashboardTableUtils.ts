@@ -1,8 +1,5 @@
 import { ComponentType } from "react";
-import {
-  IconStopWatch15,
-  SvgIconProps,
-} from "@elhub/ds-icons";
+import { IconStopWatch15, SvgIconProps } from "@elhub/ds-icons";
 import {
   sppaStatusVariantMap,
   SppaBadgeVariant,
@@ -44,5 +41,8 @@ export const getStatusVariant = (
       fallbackVariant
     );
   }
-  return spgpqStatusVariantMap[status as keyof typeof spgpqStatusVariantMap] ?? fallbackVariant;
+  return (
+    spgpqStatusVariantMap[status as keyof typeof spgpqStatusVariantMap] ??
+    fallbackVariant
+  );
 };

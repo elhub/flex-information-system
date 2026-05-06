@@ -55,14 +55,17 @@ export const useGetProductTypesBySystemOperator = (
       }),
   });
 
-  const isLoading = ptLoading || (systemOperatorId != null && soptQuery.isLoading);
+  const isLoading =
+    ptLoading || (systemOperatorId != null && soptQuery.isLoading);
 
   if (!systemOperatorId) {
     return { data: allProductTypes, isLoading };
   }
 
   const filtered = soptQuery.data?.data
-    ?.map((sopt) => allProductTypes?.find((pt) => pt.id === sopt.product_type_id))
+    ?.map((sopt) =>
+      allProductTypes?.find((pt) => pt.id === sopt.product_type_id),
+    )
     .filter((pt) => pt !== undefined);
 
   return { data: filtered, isLoading };
@@ -114,8 +117,9 @@ export const ProductTypeArrayField = (props: any) => {
             {data?.map((pt_id) => (
               <Tag key={pt_id as any}>
                 {
-                  productTypes?.find((productType) => productType.id === pt_id.id)
-                    ?.name
+                  productTypes?.find(
+                    (productType) => productType.id === pt_id.id,
+                  )?.name
                 }
               </Tag>
             ))}

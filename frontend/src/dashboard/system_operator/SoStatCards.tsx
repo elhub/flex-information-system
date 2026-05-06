@@ -1,7 +1,7 @@
 import { IconClockCircle, IconWarningTriangle } from "@elhub/ds-icons";
 import { useDashboardApplications } from "../hooks/useDashboardApplications";
 import { StatCard } from "../shared/StatCard";
-import { Alert, Loader } from "@elhub/ds-components";
+import { Alert, Loader } from "../../components/ui";
 
 export const SoStatCards = () => {
   const { activeItems, isLoading, error } = useDashboardApplications();

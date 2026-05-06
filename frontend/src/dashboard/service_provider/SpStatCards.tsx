@@ -15,7 +15,9 @@ export const SpStatCards = () => {
   const inconsistenciesQuery = useInconsistencies();
 
   const isLoading =
-    applicationsQuery.isLoading || spgQuery.isLoading || inconsistenciesQuery.isLoading;
+    applicationsQuery.isLoading ||
+    spgQuery.isLoading ||
+    inconsistenciesQuery.isLoading;
   const error =
     applicationsQuery.error || spgQuery.error || inconsistenciesQuery.error;
 

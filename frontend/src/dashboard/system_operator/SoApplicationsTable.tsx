@@ -3,7 +3,10 @@ import { useTranslateEnum } from "../../intl/intl";
 import { EnumLabel } from "../../intl/enum-labels";
 import { SimpleTable, Column } from "../../components/SimpleTable";
 import { Badge } from "../../components/ui";
-import { ENUM_KEY_PREFIX, getStatusVariant } from "../shared/dashboardTableUtils";
+import {
+  ENUM_KEY_PREFIX,
+  getStatusVariant,
+} from "../shared/dashboardTableUtils";
 import { DashboardItem } from "../hooks/useDashboardApplications";
 
 type Props = {
