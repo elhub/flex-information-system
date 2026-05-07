@@ -38,7 +38,7 @@ export const SpApplicationsTable = ({
       ),
     },
     {
-      key: "participant",
+      key: "systemOperator",
       header: <span className="hidden sm:inline">System Operator</span>,
       render: (value) => (
         <span className="hidden sm:inline">{String(value ?? "")}</span>

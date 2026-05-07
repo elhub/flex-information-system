@@ -21,6 +21,7 @@ import {
 } from "../components/EDS-ra/inputs";
 import { useQuery } from "@tanstack/react-query";
 import { useProductTypes } from "./useProductTypes";
+import { throwOnError } from "../util";
 
 export { useProductTypes } from "./useProductTypes";
 
@@ -52,7 +53,7 @@ export const useGetProductTypesBySystemOperator = (
     queryFn: () =>
       listSystemOperatorProductType({
         query: { system_operator_id: `eq.${systemOperatorId}` },
-      }),
+      }).then(throwOnError),
   });
 
   const isLoading =
@@ -62,7 +63,7 @@ export const useGetProductTypesBySystemOperator = (
     return { data: allProductTypes, isLoading };
   }
 
-  const filtered = soptQuery.data?.data
+  const filtered = soptQuery.data
     ?.map((sopt) =>
       allProductTypes?.find((pt) => pt.id === sopt.product_type_id),
     )

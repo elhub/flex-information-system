@@ -5,7 +5,7 @@ import { SpApplicationsTable } from "./service_provider/SpApplicationsTable";
 import { SoStatCards } from "./system_operator/SoStatCards";
 import { SpMarketsCard } from "./service_provider/SpMarketsCard";
 import { SpStatCards } from "./service_provider/SpStatCards";
-import { DashboardLayout } from "./DasboardLayout";
+import { DashboardLayout } from "./DashboardLayout";
 import { useDashboardApplications } from "./hooks/useDashboardApplications";
 
 export const Dashboard = () => {

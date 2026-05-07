@@ -37,8 +37,8 @@ export const SOApplicationsTable = ({
       ),
     },
     {
-      key: "participant",
-      header: <span className="hidden sm:inline">Participant</span>,
+      key: "serviceProvider",
+      header: <span className="hidden sm:inline">Service provider</span>,
       render: (value) => (
         <span className="hidden sm:inline">{String(value ?? "")}</span>
       ),
@@ -70,7 +70,6 @@ export const SOApplicationsTable = ({
       data={items}
       empty={empty}
       className="w-full"
-      rowKey={(row) => row.kind + "-" + row.id}
       rowClick={(item) => navigate(item.route)}
     />
   );
