@@ -78,7 +78,7 @@ const getAccountingPointData = async (
     query: { accounting_point_id: "eq." + accountingPoint.id },
   });
   const gridLocation =
-    gridLocationResult.response.status === 403
+    gridLocationResult.response?.status === 403
       ? undefined
       : throwOnError(gridLocationResult)[0];
 
