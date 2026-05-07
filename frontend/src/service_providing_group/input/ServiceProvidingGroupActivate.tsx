@@ -120,8 +120,8 @@ export const ServiceProvidingGroupActivate = () => {
 
       <div className="flex flex-col gap-5">
         <Alert variant="info">
-          Activating the service providing group will notify the system operator to
-          validate the group.
+          Activating the service providing group will notify the system operator
+          to validate the group.
         </Alert>
 
         <div>
