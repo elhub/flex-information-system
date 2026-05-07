@@ -27260,6 +27260,14 @@
                         "name": "product_type_ids"
                     },
                     {
+                        "in": "query",
+                        "name": "status",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somestatus"
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -27855,6 +27863,14 @@
                         "example": "eq.55",
                         "description": "References to the product types.",
                         "name": "product_type_ids"
+                    },
+                    {
+                        "in": "query",
+                        "name": "status",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somestatus"
                     },
                     {
                         "description": "Filtering Columns",
@@ -34460,6 +34476,15 @@
                         "example": "eq.55",
                         "description": "Reference to the party targeted by the notice.",
                         "name": "party_id"
+                    },
+                    {
+                        "in": "query",
+                        "name": "type",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.sometype",
+                        "description": "The type of the notice."
                     },
                     {
                         "description": "Filtering Columns",

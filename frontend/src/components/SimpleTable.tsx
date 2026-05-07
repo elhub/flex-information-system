@@ -18,6 +18,7 @@ type SimpleTableProps<T extends { id?: string | number }> = {
   empty?: ReactNode;
   action?: { render: (row: T) => ReactNode; header?: string };
   checkbox?: { render: (row: T) => ReactNode; header?: ReactNode };
+  rowKey?: (row: T) => string | number;
   className?: string;
   rowClick?: (record: T) => void;
 };
@@ -30,6 +31,7 @@ export const SimpleTable = <T extends { id?: string | number }>({
   action,
   checkbox,
   className,
+  rowKey,
   rowClick,
 }: SimpleTableProps<T>) => {
   const handleRowClick = (
@@ -75,7 +77,7 @@ export const SimpleTable = <T extends { id?: string | number }>({
       <Table.Body>
         {data.map((row, i) => (
           <Table.Row
-            key={String(row.id ?? i)}
+            key={rowKey ? rowKey(row) : String(row.id ?? i)}
             onClick={(e) => handleRowClick(e, row)}
             className={rowClick ? "cursor-pointer" : undefined}
           >
