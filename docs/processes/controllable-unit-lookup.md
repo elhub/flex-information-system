@@ -54,7 +54,8 @@ processes:
 
 The input to the controllable unit lookup contains three fields:
 
-- end user (EU) business identifier
+- end user (EU) identifier: birth date (`YYYY-MM-DD`) for a person, or
+  organisation number for an organisation
 - accounting point (AP) business identifier
 - controllable unit (CU) business identifier
 

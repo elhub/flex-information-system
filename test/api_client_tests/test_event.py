@@ -277,7 +277,8 @@ def test_event_sp(sts):
     lookup = call_controllable_unit_lookup.sync(
         client=client_fiso,
         body=ControllableUnitLookupRequest(
-            end_user="13370000001",  # Test EU entity business ID
+            # invalid date, but matches the first 6 digits of Test EU entity business ID
+            end_user="1900-37-13",
             accounting_point="133700000000010014",  # test AP 1002
         ),
     )
