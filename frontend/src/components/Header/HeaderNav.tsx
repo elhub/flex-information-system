@@ -34,7 +34,7 @@ const navLinks: MenuItem[] = [
     label: "Other",
     items: [
       {
-        label: "Service operator product listing",
+        label: "System operator product listing",
         to: "/system_operator_product_type",
       },
       { label: "Entities", to: "/entity" },
