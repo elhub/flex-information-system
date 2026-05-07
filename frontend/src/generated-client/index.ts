@@ -744,6 +744,7 @@ export type {
   ListTechnicalResourceResponses,
   MeteringGridArea,
   MeteringGridAreaBusinessIdType,
+  MeteringGridAreaStatus,
   MeteringGridAreaWritable,
   Notice,
   NoticeData,

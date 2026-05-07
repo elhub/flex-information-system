@@ -191,6 +191,7 @@ export type PermissionTarget =
   | "metering_grid_area.business_id_type"
   | "metering_grid_area.id"
   | "metering_grid_area.name"
+  | "metering_grid_area.status"
   | "notice"
   | "notice.data"
   | "notice.id"
@@ -1279,6 +1280,10 @@ const rawPermissions: Record<
     },
     {
       target: "metering_grid_area",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.status",
       operation: "read",
     },
     {
@@ -3692,6 +3697,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "metering_grid_area.status",
+      operation: "read",
+    },
+    {
       target: "notice.data",
       operation: "read",
     },
@@ -6102,6 +6111,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "metering_grid_area.status",
+      operation: "read",
+    },
+    {
       target: "notice.data",
       operation: "read",
     },
@@ -8059,15 +8072,7 @@ const rawPermissions: Record<
     },
     {
       target: "accounting_point_grid_location.source",
-      operation: "create",
-    },
-    {
-      target: "accounting_point_grid_location.source",
       operation: "read",
-    },
-    {
-      target: "accounting_point_grid_location.source",
-      operation: "update",
     },
     {
       target: "accounting_point_grid_location",
@@ -8826,6 +8831,10 @@ const rawPermissions: Record<
     },
     {
       target: "metering_grid_area",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.status",
       operation: "read",
     },
     {
@@ -11857,6 +11866,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "metering_grid_area.status",
+      operation: "read",
+    },
+    {
       target: "notice.data",
       operation: "read",
     },
@@ -13814,15 +13827,7 @@ const rawPermissions: Record<
     },
     {
       target: "accounting_point_grid_location.source",
-      operation: "create",
-    },
-    {
-      target: "accounting_point_grid_location.source",
       operation: "read",
-    },
-    {
-      target: "accounting_point_grid_location.source",
-      operation: "update",
     },
     {
       target: "accounting_point_grid_location",
@@ -14437,6 +14442,10 @@ const rawPermissions: Record<
     },
     {
       target: "metering_grid_area",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.status",
       operation: "read",
     },
     {
@@ -17336,6 +17345,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "metering_grid_area.status",
+      operation: "read",
+    },
+    {
       target: "notice.data",
       operation: "read",
     },
@@ -20171,6 +20184,10 @@ const rawPermissions: Record<
     },
     {
       target: "metering_grid_area",
+      operation: "read",
+    },
+    {
+      target: "metering_grid_area.status",
       operation: "read",
     },
     {

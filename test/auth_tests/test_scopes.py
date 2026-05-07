@@ -34,6 +34,7 @@ from flex.api.party import (
 from flex.api.party_membership import (
     create_party_membership,
     delete_party_membership,
+    list_party_membership,
 )
 from typing import cast
 
@@ -45,7 +46,16 @@ client_secret = "qwertyuiop123456"
 
 
 @pytest.fixture(scope="module")
-def data(request):
+def jwt_keys():
+    with open("./test/keys/.test.pub.pem") as f:
+        pubkey = f.read().strip()
+    with open("./test/keys/.test.key.pem") as f:
+        privkey = f.read().strip()
+    return pubkey, privkey
+
+
+@pytest.fixture(scope="module")
+def data(request, jwt_keys):
     sts = SecurityTokenService()
 
     client_fiso = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "FISO"))
@@ -56,10 +66,7 @@ def data(request):
     ent_id = sts.get_userinfo(client_ent)["entity_id"]
     other_ent_id = sts.get_userinfo(client_other_ent)["entity_id"]
 
-    with open("./test/keys/.test.pub.pem") as f:
-        pubkey = f.read().strip()
-    with open("./test/keys/.test.key.pem") as f:
-        privkey = f.read().strip()
+    pubkey, privkey = jwt_keys
 
     # create an entity client we will log in with
     clt = create_entity_client.sync(
@@ -413,3 +420,92 @@ def test_scopes_jwt_bearer_membership_party(data):
         "use:data:party_membership",
         "manage:auth",
     }
+
+
+def test_scopes_embedding(jwt_keys):
+    # this test checks that an entity client lacking sufficient scopes cannot
+    # embed resources in a query
+
+    sts = SecurityTokenService()
+
+    client_ent = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST))
+    client_fiso = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "FISO"))
+
+    ent_id = sts.get_userinfo(client_ent)["entity_id"]
+
+    pubkey, privkey = jwt_keys
+
+    # entity client that can only manage party membership but not read other resources
+    clt = create_entity_client.sync(
+        client=client_ent,
+        body=EntityClientCreateRequest(
+            entity_id=ent_id,
+            scopes=[
+                AuthScope.MANAGEDATAPARTY_MEMBERSHIP,
+                AuthScope.MANAGEAUTH,
+            ],
+            client_secret=client_secret,
+            public_key=pubkey,
+        ),
+    )
+    assert isinstance(clt, EntityClientResponse)
+
+    # create an owned party so we can assume it and keep the client scopes
+    party = create_party.sync(
+        client=client_fiso,
+        body=PartyCreateRequest(
+            name="party - test embed scopes",
+            business_id=unique_gln(),
+            business_id_type=PartyBusinessIdType.GLN,
+            role=PartyRole.FLEX_SYSTEM_OPERATOR,
+            type_=PartyType.SYSTEM_OPERATOR,
+            entity_id=ent_id,
+        ),
+    )
+    assert isinstance(party, PartyResponse)
+
+    # log in as owned party through entity client key
+    payload = {
+        "aud": "https://test.flex.internal:6443/auth/v0/",
+        "iss": clt.client_id,
+        "jti": str(uuid.uuid4()),
+        "iat": dt.now(tz.utc),
+        "exp": dt.now(tz.utc) + timedelta(seconds=120),
+        "sub": f"no:party:gln:{party.business_id}",
+    }
+    token = jwt.encode(payload, privkey, algorithm="RS256")
+
+    response = requests.post(
+        auth_url + "/token",
+        headers=auth_headers,
+        data={
+            "grant_type": "urn:ietf:params:oauth:grant-type:jwt-bearer",
+            "assertion": token,
+        },
+    )
+    assert response.status_code == 200
+    json = response.json()
+    party_token = json.get("access_token")
+    assert party_token is not None
+
+    # create our API client with these narrow scopes
+    test_client = AuthenticatedClient(
+        base_url=SecurityTokenService.api_url,
+        token=party_token,
+        verify_ssl=False,
+    )
+
+    # embed request fails because client cannot read party
+    e = list_party_membership.sync_detailed(
+        client=test_client,
+        limit="10",
+        embed="party",
+    )
+    assert e.status_code == 403
+
+    # cleanup
+    delete_entity_client.sync(
+        id=cast(int, clt.id),
+        client=client_ent,
+        body=EmptyObject(),
+    )

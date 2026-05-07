@@ -20,25 +20,10 @@ import kotlinx.serialization.Serializable
 @Serializable
 public data class PartyUpdateRequest(
   /**
-   * The type of the business identifier.
-   */
-  @SerialName("business_id_type")
-  public val businessIdType: PartyBusinessIdType = PartyBusinessIdType.UUID,
-  /**
    * Name of the party. Maximum 128 characters.
    */
   @SerialName("name")
   public val name: String? = null,
-  /**
-   * The role of the party. Currently maps to 1:1 to `type`. E.g. system_operator, service_provider.
-   */
-  @SerialName("role")
-  public val role: PartyRole? = null,
-  /**
-   * The type of the party, e.g SystemOperator, ServiceProvider
-   */
-  @SerialName("type")
-  public val type: PartyType? = null,
   /**
    * The status of the party.
    */

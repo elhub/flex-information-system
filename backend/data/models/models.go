@@ -241,6 +241,7 @@ type ApiMeteringGridArea struct {
 	BusinessID     string
 	BusinessIDType string
 	Name           string
+	Status         string
 }
 
 type ApiNotice struct {

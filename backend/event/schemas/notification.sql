@@ -14,6 +14,12 @@ CREATE TABLE notification.controllable_unit_system_operator (
     valid_time_range tstzrange NOT NULL
 );
 
+CREATE TABLE notification.accounting_point_system_operator (
+    accounting_point_id bigint NOT NULL,
+    system_operator_id bigint NOT NULL,
+    valid_time_range tstzrange NOT NULL
+);
+
 CREATE TABLE notification.event (
     id bigint NOT NULL,
     type TEXT NOT NULL,

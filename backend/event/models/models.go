@@ -241,6 +241,7 @@ type ApiMeteringGridArea struct {
 	BusinessID     string
 	BusinessIDType string
 	Name           string
+	Status         string
 }
 
 type ApiNotice struct {
@@ -730,6 +731,12 @@ type ApiTechnicalResourceHistory struct {
 	RecordedAt            pgtype.Timestamptz
 	ReplacedBy            *int
 	ReplacedAt            pgtype.Timestamptz
+}
+
+type NotificationAccountingPointSystemOperator struct {
+	AccountingPointID int
+	SystemOperatorID  int
+	ValidTimeRange    pgtype.Range[pgtype.Timestamptz]
 }
 
 type NotificationControllableUnitEndUser struct {

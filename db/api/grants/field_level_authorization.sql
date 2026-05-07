@@ -5051,7 +5051,8 @@ GRANT SELECT (
     id,
     business_id,
     business_id_type,
-    name
+    name,
+    status
 ) ON TABLE
 api.metering_grid_area
 TO flex_balance_responsible_party;
@@ -5060,7 +5061,8 @@ GRANT SELECT (
     id,
     business_id,
     business_id_type,
-    name
+    name,
+    status
 ) ON TABLE
 api.metering_grid_area
 TO flex_energy_supplier;
@@ -5069,7 +5071,8 @@ GRANT SELECT (
     id,
     business_id,
     business_id_type,
-    name
+    name,
+    status
 ) ON TABLE
 api.metering_grid_area
 TO flex_end_user;
@@ -5078,7 +5081,8 @@ GRANT SELECT (
     id,
     business_id,
     business_id_type,
-    name
+    name,
+    status
 ) ON TABLE
 api.metering_grid_area
 TO flex_flexibility_information_system_operator;
@@ -5087,7 +5091,8 @@ GRANT SELECT (
     id,
     business_id,
     business_id_type,
-    name
+    name,
+    status
 ) ON TABLE
 api.metering_grid_area
 TO flex_market_operator;
@@ -5096,7 +5101,8 @@ GRANT SELECT (
     id,
     business_id,
     business_id_type,
-    name
+    name,
+    status
 ) ON TABLE
 api.metering_grid_area
 TO flex_system_operator;
@@ -5105,7 +5111,8 @@ GRANT SELECT (
     id,
     business_id,
     business_id_type,
-    name
+    name,
+    status
 ) ON TABLE
 api.metering_grid_area
 TO flex_service_provider;
@@ -5114,7 +5121,8 @@ GRANT SELECT (
     id,
     business_id,
     business_id_type,
-    name
+    name,
+    status
 ) ON TABLE
 api.metering_grid_area
 TO flex_third_party;
@@ -5198,7 +5206,6 @@ GRANT INSERT (
     name,
     nominal_voltage,
     additional_information,
-    source,
     quality
 ) ON TABLE
 api.accounting_point_grid_location
@@ -5226,7 +5233,6 @@ GRANT UPDATE (
     name,
     nominal_voltage,
     additional_information,
-    source,
     quality
 ) ON TABLE
 api.accounting_point_grid_location
@@ -5239,7 +5245,6 @@ GRANT INSERT (
     name,
     nominal_voltage,
     additional_information,
-    source,
     quality
 ) ON TABLE
 api.accounting_point_grid_location
@@ -5267,11 +5272,26 @@ GRANT UPDATE (
     name,
     nominal_voltage,
     additional_information,
-    source,
     quality
 ) ON TABLE
 api.accounting_point_grid_location
 TO flex_system_operator;
+
+GRANT SELECT (
+    id,
+    accounting_point_id,
+    object_type,
+    business_id,
+    name,
+    nominal_voltage,
+    additional_information,
+    source,
+    quality,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.accounting_point_grid_location
+TO flex_internal_event_notification;
 
 GRANT SELECT (
     id,
@@ -5310,6 +5330,25 @@ GRANT SELECT (
 ) ON TABLE
 api.accounting_point_grid_location_history
 TO flex_system_operator;
+
+GRANT SELECT (
+    id,
+    accounting_point_grid_location_id,
+    accounting_point_id,
+    object_type,
+    business_id,
+    name,
+    nominal_voltage,
+    additional_information,
+    source,
+    quality,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.accounting_point_grid_location_history
+TO flex_internal_event_notification;
 
 GRANT SELECT (
     id,

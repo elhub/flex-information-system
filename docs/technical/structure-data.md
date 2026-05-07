@@ -22,12 +22,12 @@ with the staging table and updating the target table accordingly.
 
 The structure data that must be synchronised is summarised in the table below.
 
-| Data                                   | Description/comment                                                 | Size in records (NO) | Authority (NO) | Loading | Update    |
-|----------------------------------------|---------------------------------------------------------------------|----------------------|----------------|---------|-----------|
-| Party                                  | Market participants (SP and SO)                                     | ~500                 | Ediel          | Merge   | Notice    |
-| Price Area                             | NO1-5 in Norway                                                     | ~5                   | Statnett       | Merge   | Notice    |
-| Metering Grid Area (MGA)               | Grid areas used in settlement, including SO and price area relation | ~500                 | Statnett       | Merge   | Notice    |
-| Energy Supplier Balance Responsibility | Balance responsibility of each ES, MGA and direction                | ~100k                | eSett          | Replace | Automatic |
+| Data                                   | Description/comment                                                 | Size in records (NO) | Authority (NO) | Update    |
+|----------------------------------------|---------------------------------------------------------------------|----------------------|----------------|-----------|
+| Party                                  | Market participants (SP, BRP, ES and SO)                            | ~500                 | Ediel          | Notice    |
+| Price Area                             | NO1-5 in Norway                                                     | ~5                   | Statnett       | Automatic |
+| Metering Grid Area (MGA)               | Grid areas used in settlement, including SO and price area relation | ~500                 | Statnett       | Automatic |
+| Energy Supplier Balance Responsibility | Balance responsibility of each ES, MGA and direction                | ~100k                | eSett          | Automatic |
 
 As you can see from the last column in the table, there are two different
 strategies for _doing updates_: notice and automatic. These will be
@@ -75,36 +75,34 @@ inconsistencies.
 ### Database interface
 
 The data fetching component interfaces directly with the database to load the
-data into the staging structure. We do this via dedicated views, procedures and
+data into the staging structure. We do this via dedicated procedures and
 unlogged tables in a separate `staging` schema. This is to ensure decoupling and
 prevent assuming an internal database structure from the outside, which makes us
 free to change the internal details over time if needed.
 
-## Loading mechanism
+Data loading is done in four steps into an unlogged table in the staging schema:
 
-We use two different strategies for loading the data into the staging structure,
-depending on the size of the dataset and the update mechanism we have in place.
-
-### Replace
-
-For bigger datasets, using the automatic update strategy, we replace the whole
-dataset with the new one. This is largely for performance and simplicity. Since
-the system does not rely on the data always being present in the staging tables,
-this allows us to use unlogged tables, truncate and PostgreSQL copy command to
-efficiently load the data.
-
-### Merge
-
-Datasets that are small and rely on the notice update mechanism depend on
-having the data always available in the staging tables. We must use a merge
-strategy for loading the data. This means that the fetching component must
-update, insert, delete existing records in the staging table as needed.
+1. Call a `prepare` procedure that generally just truncates the staging table.
+2. Load the data into the staging table. This is done via a bulk loading mechanism
+   (e.g. `COPY` in Postgres).
+3. Call a `finalise` procedure that does some crude safety checks and then calls
+   `update` which merges the data into the target table.
 
 ## Update mechanism
 
 We have two different mechanisms for _doing updates_ into the target tables in
 the system: notice and automatic. We are picking the mechanism based on the size
 and significance of the data.
+
+### Automatic
+
+For data that is "big" and/or frequently updated, we cannot rely on manual
+review and acceptance. We accept all updates and need to bake in safety logic to
+ensure that we do not accept bad data/updates. The energy supplier balance
+responsibility data is loaded with this strategy. The diagram below shows how
+this is done in the system.
+
+![Energy Supplier Balance Responsibility synchronisation overview](../diagrams/structure_data_es_br.drawio.png)
 
 ### Notice
 
@@ -114,36 +112,14 @@ operator is mostly in the loop to be informed, but can also do/request changes
 to the data in upstream systems in case something is wrong.
 
 The operator is made aware of the updates via
-[notices](../concepts/notification-and-notice.md#notice).
+[notices](../concepts/notification-and-notice.md#notice). This mechanism adds an
+additional `_staging` table in the `flex` schema to facilitate the notice
+generation.
 
 For instance, party synchronisation is done manually by the appropriate users,
 after they have received _notices_ about the inconsistency or out-of-sync state
 to review and resolve, whereas balance responsibility is to be loaded
-automatically every day by a background process.
-
-### Automatic
-
-For data that is bigger and/or more frequently updated, we cannot rely on manual
-review and acceptance. Instead we accept all updates and need to bake in safety
-logic to ensure that we do not accept bad data/updates. The energy supplier
-balance responsibility data is loaded with this strategy.
-
-## Examples
-
-The following two sections illustrate how the above mechanisms are used for two
-of the structure data types we synchronise in the system.
-
-### Party synchronisation
-
-Party synchronisation is using the merge loading strategy and the notice update
-strategy. The diagram below shows how this is done in the system.
+automatically every day by a background process. The diagram below shows how the
+party synchronisation process works in the system.
 
 ![Party synchronisation overview](../diagrams/structure_data_party.drawio.png)
-
-### Energy Supplier Balance Responsibility synchronisation
-
-Energy Supplier Balance Responsibility (ES BR) synchronisation is using the
-replace loading strategy and the automatic update strategy.
-The diagram below shows how this is done in the system.
-
-![Energy Supplier Balance Responsibility synchronisation overview](../diagrams/structure_data_es_br.drawio.png)

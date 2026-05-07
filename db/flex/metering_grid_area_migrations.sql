@@ -97,3 +97,21 @@ DROP COLUMN IF EXISTS system_operator_party_type;
 
 ALTER TABLE flex.metering_grid_area
 DROP COLUMN IF EXISTS valid_time_range;
+
+-- changeset flex:metering-grid-area-status runAlways:true endDelimiter:;
+--preconditions onFail:MARK_RAN
+--precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = 'flex' AND table_name = 'metering_grid_area' AND column_name = 'status'
+ALTER TABLE flex.metering_grid_area
+ADD COLUMN IF NOT EXISTS status text NOT NULL DEFAULT 'active';
+
+ALTER TABLE flex.metering_grid_area_history
+ADD COLUMN IF NOT EXISTS status text;
+
+ALTER TABLE flex.metering_grid_area
+DROP CONSTRAINT IF EXISTS metering_grid_area_status_check;
+
+ALTER TABLE flex.metering_grid_area
+ADD CONSTRAINT metering_grid_area_status_check
+CHECK (
+    status IN ('active', 'inactive')
+);

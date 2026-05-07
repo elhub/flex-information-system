@@ -51,10 +51,12 @@ public data class AccountingPointGridLocationResponse(
   @SerialName("additional_information")
   public val additionalInformation: String? = null,
   /**
-   * How the grid location was determined.
+   * How the grid location was determined. When a system operator creates or updates a grid
+   * location, this field is set automatically: `cso` if the SO is the connecting system operator, `so`
+   * otherwise.
    */
   @SerialName("source")
-  public val source: AccountingPointGridLocationSource,
+  public val source: AccountingPointGridLocationSource? = null,
   /**
    * The quality of the grid location registration.
    */

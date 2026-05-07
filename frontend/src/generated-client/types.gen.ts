@@ -429,6 +429,11 @@ export type AccountingPointBiddingZoneBiddingZone =
 export type MeteringGridAreaBusinessIdType = "eic_y";
 
 /**
+ * The status of the metering grid area.
+ */
+export type MeteringGridAreaStatus = "active" | "inactive";
+
+/**
  * The type of object in the common grid model that the accounting point is at.
  */
 export type AccountingPointGridLocationObjectType =
@@ -436,7 +441,7 @@ export type AccountingPointGridLocationObjectType =
   | "transformer";
 
 /**
- * How the grid location was determined.
+ * How the grid location was determined. When a system operator creates or updates a grid location, this field is set automatically: `cso` if the SO is the connecting system operator, `so` otherwise.
  */
 export type AccountingPointGridLocationSource =
   | "cso"
@@ -1409,12 +1414,10 @@ export type ServiceProvidingGroupGridSuspensionComment = {
  * * Organisation
  */
 export type EntityUpdateRequest = {
-  business_id_type?: EntityBusinessIdType;
   /**
    * Name of the entity. Maximum 128 characters.
    */
   name?: string;
-  type?: EntityType;
 };
 
 /**
@@ -1619,13 +1622,10 @@ export type EntityClient = {
  * * End User
  */
 export type PartyUpdateRequest = {
-  business_id_type?: PartyBusinessIdType;
   /**
    * Name of the party. Maximum 128 characters.
    */
   name?: string;
-  role?: PartyRole;
-  type?: PartyType;
   status?: PartyStatus;
 };
 
@@ -2106,7 +2106,7 @@ export type AccountingPointBalanceResponsibleParty = {
    * The balance responsible party of the accounting point.
    */
   readonly balance_responsible_party_id: number;
-  energy_direction: AccountingPointBalanceResponsiblePartyEnergyDirection;
+  readonly energy_direction: AccountingPointBalanceResponsiblePartyEnergyDirection;
   /**
    * The date from which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone.
    */
@@ -2220,11 +2220,12 @@ export type MeteringGridArea = {
    * The business identifier of the metering grid area. Format depends on `business_id_type`.
    */
   readonly business_id: string;
-  business_id_type: MeteringGridAreaBusinessIdType;
+  readonly business_id_type: MeteringGridAreaBusinessIdType;
   /**
    * The name of the metering grid area.
    */
   readonly name: string;
+  readonly status: MeteringGridAreaStatus;
   /**
    * Embedded accounting_point_metering_grid_area
    */
@@ -2282,7 +2283,6 @@ export type AccountingPointGridLocationUpdateRequest = {
    * Free text field for extra information about the grid location if needed.
    */
   additional_information?: string;
-  source?: AccountingPointGridLocationSource;
   quality?: AccountingPointGridLocationQuality;
 };
 
@@ -2311,7 +2311,6 @@ export type AccountingPointGridLocationCreateRequest = {
    * Free text field for extra information about the grid location if needed.
    */
   additional_information?: string;
-  source: AccountingPointGridLocationSource;
   quality: AccountingPointGridLocationQuality;
 };
 
@@ -2344,7 +2343,7 @@ export type AccountingPointGridLocation = {
    * Free text field for extra information about the grid location if needed.
    */
   additional_information?: string;
-  source: AccountingPointGridLocationSource;
+  readonly source: AccountingPointGridLocationSource;
   quality: AccountingPointGridLocationQuality;
   /**
    * When the resource was recorded (created or updated) in the system.
@@ -3760,7 +3759,7 @@ export type AccountingPointGridLocationHistory = {
    * Free text field for extra information about the grid location if needed.
    */
   additional_information?: string;
-  source: AccountingPointGridLocationSource;
+  readonly source: AccountingPointGridLocationSource;
   quality: AccountingPointGridLocationQuality;
   /**
    * When the resource was recorded (created or updated) in the system.
@@ -4957,7 +4956,6 @@ export type AccountingPointGridLocationWritable = {
    * Free text field for extra information about the grid location if needed.
    */
   additional_information?: string;
-  source: AccountingPointGridLocationSource;
   quality: AccountingPointGridLocationQuality;
   /**
    * Embedded accounting_point
@@ -5691,7 +5689,6 @@ export type AccountingPointGridLocationHistoryWritable = {
    * Free text field for extra information about the grid location if needed.
    */
   additional_information?: string;
-  source: AccountingPointGridLocationSource;
   quality: AccountingPointGridLocationQuality;
   /**
    * Reference to the resource that was updated.

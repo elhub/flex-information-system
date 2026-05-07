@@ -5,7 +5,8 @@ import kotlin.collections.Map
 import kotlinx.serialization.SerialName
 
 /**
- * How the grid location was determined.
+ * How the grid location was determined. When a system operator creates or updates a grid location,
+ * this field is set automatically: `cso` if the SO is the connecting system operator, `so` otherwise.
  */
 public enum class AccountingPointGridLocationSource(
   public val `value`: String,

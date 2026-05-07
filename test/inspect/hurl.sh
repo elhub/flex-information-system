@@ -12,12 +12,12 @@ echo "Audience: $AUDIENCE"
 # Using Test Suite keypair
 PRIVATE_KEY_FILE="${SCRIPT_DIR}/../keys/.test.key.pem"
 
-# HURL_ variables can be used in the hurl file
-HURL_grant_jwt=$("$SCRIPT_DIR/../../.venv/bin/python3" "$SCRIPT_DIR/gen_jwt.py" "$PRIVATE_KEY_FILE" "$AUDIENCE/")
-export HURL_grant_jwt
+# HURL_VARIABLE_ variables can be used in the hurl file
+HURL_VARIABLE_grant_jwt=$("$SCRIPT_DIR/../../.venv/bin/python3" "$SCRIPT_DIR/gen_jwt.py" "$PRIVATE_KEY_FILE" "$AUDIENCE/")
+export HURL_VARIABLE_grant_jwt
 
-HURL_today=$(date +%Y-%m-%d)
-export HURL_today
+HURL_VARIABLE_today=$(date +%Y-%m-%d)
+export HURL_VARIABLE_today
 
 hurl -k \
 	--variables-file "$1" \

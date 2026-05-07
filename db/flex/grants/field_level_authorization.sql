@@ -1828,12 +1828,20 @@ flex.accounting_point_grid_location
 TO flex_system_operator;
 
 GRANT SELECT ON TABLE
+flex.accounting_point_grid_location
+TO flex_internal_event_notification;
+
+GRANT SELECT ON TABLE
 flex.accounting_point_grid_location_history
 TO flex_flexibility_information_system_operator;
 
 GRANT SELECT ON TABLE
 flex.accounting_point_grid_location_history
 TO flex_system_operator;
+
+GRANT SELECT ON TABLE
+flex.accounting_point_grid_location_history
+TO flex_internal_event_notification;
 
 GRANT SELECT ON TABLE
 flex.product_type
