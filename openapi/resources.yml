@@ -1116,7 +1116,7 @@ resources:
       - create
       - update
     audit: true
-    generate_views: true
+    generate_views: false
     properties:
       id:
         description: |-
