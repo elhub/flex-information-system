@@ -40,3 +40,6 @@ ALTER TABLE flex.party ADD CONSTRAINT check_organisation_iff_org CHECK (
 --precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM pg_catalog.pg_constraint WHERE conname = 'uk_party_business_id_type'
 ALTER TABLE flex.party ADD CONSTRAINT uk_party_business_id_type
 UNIQUE (business_id, type);
+
+-- changeset flex:party-drop-unique-business-id runOnChange:false endDelimiter:;
+ALTER TABLE flex.party DROP CONSTRAINT IF EXISTS party_business_id_key;
