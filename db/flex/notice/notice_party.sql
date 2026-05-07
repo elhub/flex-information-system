@@ -31,7 +31,7 @@ WITH (security_invoker = false) AS (
                 )
             )
         ) AS data, -- noqa
-        md5(p_stg.gln::text) AS deduplication_key -- noqa
+        md5(p_stg.gln::text || p_stg.type) AS deduplication_key -- noqa
     FROM flex.party_staging AS p_stg -- noqa
         LEFT JOIN flex.entity AS e_stg
             ON p_stg.org = e_stg.business_id
@@ -40,7 +40,9 @@ WITH (security_invoker = false) AS (
             ON p_fiso.type = 'flexibility_information_system_operator'
     WHERE NOT EXISTS (
         SELECT 1 FROM flex.party AS p
-        WHERE p.business_id = p_stg.gln
+        WHERE
+            p.business_id = p_stg.gln
+            AND p.type = p_stg.type
     )
 );
 
@@ -80,9 +82,11 @@ WITH (security_invoker = false) AS (
         INNER JOIN flex.entity AS e
             ON p.entity_id = e.id
         INNER JOIN flex.party_staging AS p_stg
-            ON p.business_id = p_stg.gln
-            -- party has changed name or owning entity
-            AND (p.name != p_stg.name OR e.business_id != p_stg.org)
+            ON
+                p.business_id = p_stg.gln
+                AND p.type = p_stg.type
+                -- party has changed name or owning entity
+                AND (p.name != p_stg.name OR e.business_id != p_stg.org)
         LEFT JOIN flex.entity AS e_stg
             ON p_stg.org = e_stg.business_id
         -- warn all FISOs
@@ -110,6 +114,8 @@ WITH (security_invoker = false) AS (
         AND p.status != 'terminated'
         AND NOT EXISTS (
             SELECT 1 FROM flex.party_staging AS p_stg
-            WHERE p_stg.gln = p.business_id
+            WHERE
+                p_stg.gln = p.business_id
+                AND p_stg.type = p.type
         )
 );
