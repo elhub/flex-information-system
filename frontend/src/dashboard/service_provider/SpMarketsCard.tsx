@@ -1,33 +1,49 @@
 import { useNavigate } from "react-router-dom";
 import { Alert, Button, Card, CardContent, Loader } from "../../components/ui";
-import { ProductType, ServiceProviderProductApplication } from "../../generated-client";
+import {
+  ProductType,
+  ServiceProviderProductApplication,
+} from "../../generated-client";
 import { useProductTypes } from "../../product_type/components";
 import { useSpQualifiedMarkets } from "../hooks/useSpQualifiedMarkets";
 import { IconPlus } from "@elhub/ds-icons";
 
-
-const groupBySO = (applications: ServiceProviderProductApplication[] | undefined, productTypes: ProductType[] | undefined) => {
-
+const groupBySO = (
+  applications: ServiceProviderProductApplication[] | undefined,
+  productTypes: ProductType[] | undefined,
+) => {
   if (!applications || !productTypes) return [];
 
   const qualifiedMarketsMap = applications.reduce((map, app) => {
     if (map.has(app.system_operator_id)) {
-      map.get(app.system_operator_id)?.productTypeIds.push(...app.product_type_ids);
+      map
+        .get(app.system_operator_id)
+        ?.productTypeIds.push(...app.product_type_ids);
       return map;
     }
 
     const soName = app.system_operator?.name || "Unknown SO";
-    map.set(app.system_operator_id, { soName, productTypeIds: [...app.product_type_ids] });
+    map.set(app.system_operator_id, {
+      soName,
+      productTypeIds: [...app.product_type_ids],
+    });
     return map;
+  }, new Map<number, { soName: string; productTypeIds: number[] }>());
 
-  }, new Map<number, { soName: string, productTypeIds: number[] }>());
-
-  return Array.from(qualifiedMarketsMap.entries()).map(([soId, { soName, productTypeIds }]) => ({
-    soId,
-    soName,
-    productTypeNames: productTypeIds.map(ptId => productTypes.find(pt => pt.id === ptId)?.name || "Unknown Product Type").join(", "),
-  }));
-}
+  return Array.from(qualifiedMarketsMap.entries()).map(
+    ([soId, { soName, productTypeIds }]) => ({
+      soId,
+      soName,
+      productTypeNames: productTypeIds
+        .map(
+          (ptId) =>
+            productTypes.find((pt) => pt.id === ptId)?.name ||
+            "Unknown Product Type",
+        )
+        .join(", "),
+    }),
+  );
+};
 
 type SpMarketsCardProps = {
   spId: number | undefined;
@@ -35,10 +51,13 @@ type SpMarketsCardProps = {
 
 export const SpMarketsCard = ({ spId }: SpMarketsCardProps) => {
   const navigate = useNavigate();
-  const { data: qualifiedSPApplications, isLoading, isError } = useSpQualifiedMarkets(spId);
+  const {
+    data: qualifiedSPApplications,
+    isLoading,
+    isError,
+  } = useSpQualifiedMarkets(spId);
   const { data: allProductTypes } = useProductTypes();
   const rows = groupBySO(qualifiedSPApplications, allProductTypes);
-
 
   return (
     <div>

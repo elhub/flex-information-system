@@ -39,8 +39,8 @@ export type DashboardItem = {
   kind: DashboardItemKind;
   typeLabel: string;
   byline: string;
-  systemOperator?: string,
-  serviceProvider?: string,
+  systemOperator?: string;
+  serviceProvider?: string;
   status: string;
   route: string;
 };
@@ -64,7 +64,8 @@ export const useDashboardApplications = () => {
     queryFn: () =>
       listServiceProvidingGroupProductApplication({
         query: {
-          embed: "service_providing_group(service_provider),procuring_system_operator",
+          embed:
+            "service_providing_group(service_provider),procuring_system_operator",
         },
       }).then(throwOnError),
   });
@@ -74,7 +75,8 @@ export const useDashboardApplications = () => {
     queryFn: () =>
       listServiceProvidingGroupGridPrequalification({
         query: {
-          embed: "service_providing_group(service_provider),impacted_system_operator",
+          embed:
+            "service_providing_group(service_provider),impacted_system_operator",
         },
       }).then(throwOnError),
   });
