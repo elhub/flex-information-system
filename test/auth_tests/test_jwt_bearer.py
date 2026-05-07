@@ -74,11 +74,12 @@ def test_entity(keys, key, client_id, expected_status, error):
 
 
 @pytest.mark.parametrize(
-    "key,gln,client_id,expected_status,error",
+    "key,gln,party_type,client_id,expected_status,error",
     [
         (
             "test",
             "1337000100058",
+            "service_provider",
             client_ids["test"],
             200,
             "",
@@ -86,6 +87,7 @@ def test_entity(keys, key, client_id, expected_status, error):
         (
             "common",
             "1337000000051",
+            "service_provider",
             client_ids["common"],
             200,
             "",
@@ -93,6 +95,7 @@ def test_entity(keys, key, client_id, expected_status, error):
         (
             "common",
             "1337000100058",
+            "service_provider",
             client_ids["common"],
             400,
             "invalid_client",
@@ -100,6 +103,7 @@ def test_entity(keys, key, client_id, expected_status, error):
         (
             "test",
             "1337121312322",
+            "service_provider",
             client_ids["test"],
             400,
             "invalid_client",
@@ -107,13 +111,22 @@ def test_entity(keys, key, client_id, expected_status, error):
         (
             "common",
             "malformed",
+            "service_provider",
             client_ids["common"],
             400,
             "invalid_request",
         ),  # Does entity does not exist
+        (
+            "test",
+            "1337000100058",
+            "invalid_type",
+            client_ids["test"],
+            400,
+            "invalid_request",
+        ),  # Invalid party type
     ],
 )
-def test_party(keys, key, gln, client_id, expected_status, error):
+def test_party(keys, key, gln, party_type, client_id, expected_status, error):
     payload = {
         # Audience
         "aud": "https://test.flex.internal:6443/auth/v0/",
@@ -122,7 +135,7 @@ def test_party(keys, key, gln, client_id, expected_status, error):
         # JWT ID
         "jti": str(uuid.uuid4()),
         # Subject (the subject to get a token for)
-        "sub": f"no:party:gln:{gln}",
+        "sub": f"no:party:gln:{gln}:{party_type}",
         # Issued at
         "iat": dt.now(tz.utc),
         # Expiration time
@@ -151,52 +164,66 @@ def test_party(keys, key, gln, client_id, expected_status, error):
         (
             "https://test.flex.internal:6443/auth/v0/",
             client_ids["test"],
-            "no:party:gln:1337000100058",
+            "no:party:gln:1337000100058:service_provider",
             200,
         ),
         # Invalid audience
         (
             "https://test.flex.internal:6443/auth/v0",
             client_ids["test"],
-            "no:party:gln:1337000100058",
+            "no:party:gln:1337000100058:service_provider",
             400,
         ),
         (
             "https://flex.localost:6443/auth/v0/",
             client_ids["test"],
-            "no:party:gln:1337000100058",
+            "no:party:gln:1337000100058:service_provider",
             400,
         ),
         # Invalid issuer
         (
             "https://test.flex.internal:6443/auth/v0/",
             "malformed",
-            "no:party:gln:1337000100058",
+            "no:party:gln:1337000100058:service_provider",
             400,
         ),
         (
             "https://test.flex.internal:6443/auth/v0/",
             client_ids["common"],
-            "no:party:gln:1337000100058",
+            "no:party:gln:1337000100058:service_provider",
             400,
         ),
         # Invalid subject
         (
             "https://test.flex.internal:6443/auth/v0/",
             client_ids["test"],
-            "no:entity:gln:1337000100058",
+            "no:entity:gln:1337000100058:service_provider",
             400,
         ),
         (
             "https://test.flex.internal:6443/auth/v0/",
             client_ids["test"],
-            "party:gln:1337000100058",
+            "party:gln:1337000100058:service_provider",
             400,
         ),
         (
             "https://test.flex.internal:6443/auth/v0/",
             client_ids["test"],
-            "no:party:gln:337000100058",
+            "no:party:gln:337000100058:service_provider",
+            400,
+        ),
+        # Missing party type
+        (
+            "https://test.flex.internal:6443/auth/v0/",
+            client_ids["test"],
+            "no:party:gln:1337000100058",
+            400,
+        ),
+        # Invalid party type
+        (
+            "https://test.flex.internal:6443/auth/v0/",
+            client_ids["test"],
+            "no:party:gln:1337000100058:invalid_type",
             400,
         ),
     ],
@@ -258,7 +285,7 @@ def test_timing(keys, expected_status, iat_offset, exp_offset):
         # Issuer
         "iss": client_ids["test"],  # Test Suite
         # Subject
-        "sub": "no:party:gln:1337000100058",
+        "sub": "no:party:gln:1337000100058:service_provider",
         # JWT ID
         "jti": str(uuid.uuid4()),
         # Issued at

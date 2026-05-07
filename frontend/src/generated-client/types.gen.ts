@@ -14346,6 +14346,7 @@ export type ListServiceProviderProductApplicationData = {
      * References to the product types.
      */
     product_type_ids?: string;
+    status?: string;
     /**
      * Filtering Columns
      */
@@ -14606,6 +14607,7 @@ export type ListServiceProviderProductApplicationHistoryData = {
      * References to the product types.
      */
     product_type_ids?: string;
+    status?: string;
     /**
      * Filtering Columns
      */
@@ -17568,6 +17570,10 @@ export type ListNoticeData = {
      * Reference to the party targeted by the notice.
      */
     party_id?: string;
+    /**
+     * The type of the notice.
+     */
+    type?: string;
     /**
      * Filtering Columns
      */
