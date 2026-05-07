@@ -10,7 +10,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 public data class ControllableUnitLookupRequest(
   /**
-   * Birth date (YYYY-MM-DD) of the end user if a person, or organisation number if an organisation.
+   * Birth date (DDMMYY) of the end user if a person, or organisation number if an organisation.
    */
   @SerialName("end_user")
   public val endUser: String,

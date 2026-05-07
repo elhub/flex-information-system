@@ -55,17 +55,9 @@ AS $$
                 AND e.business_id = l_end_user_business_id)
             OR
             -- person: match by birth date encoded in the PID (DDMMYY = first 6 digits)
-            (l_end_user_business_id ~ '^[0-9]{4}-[0-9]{2}-[0-9]{2}$'
+            (l_end_user_business_id ~ '^[0-9]{6}$'
                 AND e.business_id_type = 'pid'
-                AND LEFT(e.business_id, 6) = (
-                    -- in `YYYY-MM-DD`:
-                    --   DD comes in position 9
-                    substring(l_end_user_business_id, 9, 2)
-                    --   MM comes in position 6
-                    || substring(l_end_user_business_id, 6, 2)
-                    --   YY comes in position 3 (remove the century)
-                    || substring(l_end_user_business_id, 3, 2)
-                ))
+                AND LEFT(e.business_id, 6) = l_end_user_business_id)
         )
         AND apeu.valid_time_range @> current_timestamp;
 $$;

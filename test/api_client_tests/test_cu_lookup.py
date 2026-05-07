@@ -42,17 +42,7 @@ from test_entity import random_number, random_pid, random_org
 
 
 def birth_date_from_pid(pid: str) -> str:
-    """Convert a PID (fødselsnummer) to a YYYY-MM-DD date string for CU lookup.
-
-    The first 6 digits of a PID encode the birth date as DDMMYY.
-    This function returns the corresponding date string YYYY-MM-DD, using 19YY
-    as the century prefix. The result is used in CU lookup requests in place of
-    the PID, so that the raw identifier is never transmitted over the network.
-    """
-    dd = pid[0:2]
-    mm = pid[2:4]
-    yy = pid[4:6]
-    return f"19{yy}-{mm}-{dd}"
+    return pid[0:6]
 
 
 @pytest.fixture
@@ -166,7 +156,7 @@ def test_cu_lookup_params(sts):
     e = call_controllable_unit_lookup.sync(
         client=client_fiso,
         body=ControllableUnitLookupRequest(
-            end_user="1900-01-01",
+            end_user="010100",
             controllable_unit=cu.business_id,
         ),
     )
@@ -201,7 +191,7 @@ def test_cu_lookup_params(sts):
     e = call_controllable_unit_lookup.sync(
         client=client_fiso,
         body=ControllableUnitLookupRequest(
-            end_user="1900-01-01",
+            end_user="010100",
             accounting_point="133700000000010007",
         ),
     )

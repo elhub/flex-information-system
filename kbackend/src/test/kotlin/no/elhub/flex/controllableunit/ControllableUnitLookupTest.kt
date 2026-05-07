@@ -226,7 +226,7 @@ class ControllableUnitLookupTest :
             }
 
             test("birth date as end_user (person) is accepted and returns HTTP 200") {
-                val endUserBusinessId = "1990-01-15"
+                val endUserBusinessId = "150190"
                 val accountingPointBusinessId = "133700000000000053"
                 coEvery {
                     with(any<FlexPrincipal>()) { mockAccountingPointService.getCurrentAccountingPoint(any()) }
