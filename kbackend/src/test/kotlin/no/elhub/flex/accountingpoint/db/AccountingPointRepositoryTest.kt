@@ -106,8 +106,7 @@ class AccountingPointRepositoryTest : FunSpec({
 
     context("checkEndUserMatchesAccountingPoint") {
 
-        fun pidToBirthDate(pid: String): String =
-            "19${pid.substring(4, 6)}-${pid.substring(2, 4)}-${pid.substring(0, 2)}"
+        fun pidToBirthDate(pid: String): String = pid.substring(0, 6)
 
         test("returns end user ID when end user matches accounting point") {
             // given
@@ -132,14 +131,13 @@ class AccountingPointRepositoryTest : FunSpec({
             // given
             val targetApBusinessId = uniqueGsrn()
             val linkedEntityBusinessId = uniquePid()
-            val otherEntityBusinessId = uniquePid()
             val targetApId = insertAccountingPoint(targetApBusinessId)
             linkApToEndUser(targetApId, insertEndUserParty(linkedEntityBusinessId))
-            insertEndUserParty(otherEntityBusinessId)
+            val otherBirthDate = "170514"
 
             // when
             val result = with(principal) {
-                repo.checkEndUserMatchesAccountingPoint(pidToBirthDate(otherEntityBusinessId), targetApBusinessId)
+                repo.checkEndUserMatchesAccountingPoint(otherBirthDate, targetApBusinessId)
             }
 
             // then
