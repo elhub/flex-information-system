@@ -5,8 +5,8 @@ import {
   ServiceProviderProductApplication,
 } from "../../generated-client";
 import { useProductTypes } from "../../product_type/components";
-import { useSpQualifiedMarkets } from "../hooks/useSpQualifiedMarkets";
 import { IconPlus } from "@elhub/ds-icons";
+import { useQualifiedServiceProviderProductApplications } from "../hooks/useSpQualifiedMarkets";
 
 const groupBySO = (
   applications: ServiceProviderProductApplication[] | undefined,
@@ -55,7 +55,7 @@ export const SpMarketsCard = ({ spId }: SpMarketsCardProps) => {
     data: qualifiedSPApplications,
     isLoading,
     isError,
-  } = useSpQualifiedMarkets(spId);
+  } = useQualifiedServiceProviderProductApplications(spId);
   const { data: allProductTypes } = useProductTypes();
   const rows = groupBySO(qualifiedSPApplications, allProductTypes);
 

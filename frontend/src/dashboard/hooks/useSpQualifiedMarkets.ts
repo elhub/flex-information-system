@@ -2,9 +2,11 @@ import { useQuery } from "@tanstack/react-query";
 import { listServiceProviderProductApplication } from "../../generated-client";
 import { throwOnError } from "../../util";
 
-export const useSpQualifiedMarkets = (spId: number | undefined) =>
+export const useQualifiedServiceProviderProductApplications = (
+  spId: number | undefined,
+) =>
   useQuery({
-    queryKey: ["sp-qualified-markets", spId],
+    queryKey: ["resolved-sppa", spId],
     queryFn: () =>
       listServiceProviderProductApplication({
         query: {
