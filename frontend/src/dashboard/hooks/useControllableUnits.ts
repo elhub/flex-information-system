@@ -1,7 +1,8 @@
 import { useGetIdentity } from "ra-core";
 import { useQuery } from "@tanstack/react-query";
 import { listControllableUnitServiceProvider } from "../../generated-client";
-import { throwOnError } from "../../util";
+import { getCountAndData } from "../../util";
+import { formatISO } from "date-fns";
 
 export const useControllableUnits = () => {
   const { data: identity } = useGetIdentity();
@@ -9,7 +10,7 @@ export const useControllableUnits = () => {
 
   return useQuery({
     queryKey: [
-      "dashboard-controllable-units",
+      "controllable-units",
       { service_provider_id: partyID },
     ],
     enabled: partyID != null,
@@ -17,8 +18,12 @@ export const useControllableUnits = () => {
       listControllableUnitServiceProvider({
         query: {
           service_provider_id: `eq.${partyID}`,
+          valid_at: formatISO(new Date()),
           embed: "controllable_unit",
         },
-      }).then(throwOnError),
+        headers: {
+          "Prefer": "count=exact",
+        },
+      }).then(getCountAndData),
   });
 };

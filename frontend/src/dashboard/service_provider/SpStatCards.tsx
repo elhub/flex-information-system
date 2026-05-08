@@ -1,12 +1,10 @@
 import {
   IconClockCircle,
-  IconPlus,
   IconQualitiesCircle,
   IconWarningTriangle,
 } from "@elhub/ds-icons";
 import { Alert, Loader } from "../../components/ui";
 import {
-  ACTIVE_STATUSES,
   useDashboardApplications,
 } from "../hooks/useDashboardApplications";
 import { useServiceProvidingGroups } from "../hooks/useServiceProvidingGroups";
@@ -19,7 +17,7 @@ export const SpStatCards = () => {
   const applicationsQuery = useDashboardApplications();
   const spgQuery = useServiceProvidingGroups();
   const cuQuery = useControllableUnits();
-  const inconsistenciesQuery = useNotices();
+  const noticeQuery = useNotices();
   const { data: identity } = useGetIdentity()
 
   const noticeQueryParams = identity ? new URLSearchParams({
@@ -30,36 +28,27 @@ export const SpStatCards = () => {
     applicationsQuery.isLoading ||
     spgQuery.isLoading ||
     cuQuery.isLoading ||
-    inconsistenciesQuery.isLoading;
+    noticeQuery.isLoading;
   const error =
     applicationsQuery.error ||
     spgQuery.error ||
     cuQuery.error ||
-    inconsistenciesQuery.error;
+    noticeQuery.error;
 
   if (isLoading) return <Loader size="small" />;
   if (error) return <Alert variant="error">Failed to load stats.</Alert>;
 
 
-  const activeCuCount = new Set(
-    (cuQuery.data ?? [])
-      .filter((cusp) => cusp.controllable_unit?.status === "active")
-      .map((cusp) => cusp.controllable_unit_id),
-  ).size;
-  const activeSpgCount = (spgQuery.data ?? []).filter(
-    (s) => s.status === "active",
-  ).length;
-  const noticeCount = (inconsistenciesQuery.data ?? []).length;
 
-  const sppaCount = applicationsQuery.sppa.length;
-  const spgpaCount = applicationsQuery.spgpa.length;
-  const sppgpCount = applicationsQuery.gridPrequalifications.length;
+  const sppaCount = applicationsQuery.sppaCount;
+  const spgpaCount = applicationsQuery.spgpaCount;
+  const sppgpCount = applicationsQuery.gridPrequalificationsCount;
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
       <StatCard
         label="Controllable Units"
-        value={activeCuCount}
+        value={cuQuery.data?.count ?? 0}
         icon={
           <IconQualitiesCircle
             size="medium"
@@ -73,7 +62,7 @@ export const SpStatCards = () => {
       />
       <StatCard
         label="Service Providing Groups"
-        value={activeSpgCount}
+        value={spgQuery.data?.count ?? 0}
         icon={
           <IconQualitiesCircle
             size="medium"
@@ -87,7 +76,7 @@ export const SpStatCards = () => {
       />
       <StatCard
         label="Notices"
-        value={noticeCount}
+        value={noticeQuery.data?.count ?? 0}
         icon={
           <IconWarningTriangle
             size="medium"

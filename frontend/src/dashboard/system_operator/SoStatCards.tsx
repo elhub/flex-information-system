@@ -6,10 +6,10 @@ import { useNotices } from "../hooks/useNotices";
 
 export const SoStatCards = () => {
   const { activeItems, isLoading, error } = useDashboardApplications();
-  const { data: inconsistencies } = useNotices();
+  const noticeQuery = useNotices();
 
-  if (isLoading) return <Loader size="small" />;
-  if (error) return <Alert variant="error">Failed to load stats.</Alert>;
+  if (isLoading || noticeQuery.isLoading) return <Loader size="small" />;
+  if (error || noticeQuery.error) return <Alert variant="error">Failed to load stats.</Alert>;
 
   return (
     <div className="flex flex-col sm:flex-row gap-4">
@@ -27,7 +27,7 @@ export const SoStatCards = () => {
       />
       <StatCard
         label="Resource Inconsistencies"
-        value={inconsistencies?.length || 0}
+        value={noticeQuery.data?.count ?? 0}
         icon={
           <IconWarningTriangle
             size="medium"
