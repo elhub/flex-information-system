@@ -1,4 +1,5 @@
 import { type ReactNode } from "react";
+import { Link } from "react-router-dom";
 import { Card, CardContent } from "../../components/ui";
 
 type StatCardProps = {
@@ -7,6 +8,8 @@ type StatCardProps = {
   icon: ReactNode;
   borderClass: string;
   iconBgClass: string;
+  actionLabel?: string;
+  actionTo?: string;
 };
 
 export const StatCard = ({
@@ -15,6 +18,8 @@ export const StatCard = ({
   icon,
   borderClass,
   iconBgClass,
+  actionLabel,
+  actionTo,
 }: StatCardProps) => (
   <Card className={`flex-1 border-l-4 ${borderClass}`}>
     <CardContent className="flex items-center gap-4 py-4">
@@ -23,7 +28,7 @@ export const StatCard = ({
       >
         {icon}
       </div>
-      <div>
+      <div className="flex-1">
         <p className="text-xs font-semibold uppercase tracking-wide text-semantic-text-subtle mb-1">
           {label}
         </p>
@@ -31,6 +36,14 @@ export const StatCard = ({
           {value}
         </p>
       </div>
+      {actionLabel && actionTo && (
+        <Link
+          to={actionTo}
+          className="text-sm font-medium text-semantic-text-information hover:underline flex-shrink-0"
+        >
+          {actionLabel}
+        </Link>
+      )}
     </CardContent>
   </Card>
 );
