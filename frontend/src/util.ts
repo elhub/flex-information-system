@@ -36,15 +36,15 @@ export function countDefinedValues(obj: any): number {
 
 export type Response<T> =
   | {
-    data: T;
-    error: undefined;
-    response: { headers: Headers };
-  }
+      data: T;
+      error: undefined;
+      response: { headers: Headers };
+    }
   | {
-    data: undefined;
-    response: { headers: Headers };
-    error: ErrorMessage | EmptyObject;
-  };
+      data: undefined;
+      response: { headers: Headers };
+      error: ErrorMessage | EmptyObject;
+    };
 
 export const throwOnError = <T>(response: Response<T>): T => {
   const { data, error } = response;
