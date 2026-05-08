@@ -14,7 +14,7 @@ export const useServiceProvidingGroups = () => {
       listServiceProvidingGroup({
         query: { service_provider_id: `eq.${partyID}` },
         headers: {
-          "Prefer": "count=exact",
+          Prefer: "count=exact",
         },
       }).then(getCountAndData),
   });

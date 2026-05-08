@@ -16,8 +16,8 @@ export const useNotices = () => {
           party_id: `eq.${partyID}`,
         },
         headers: {
-          "Prefer": "count=exact",
-        }
+          Prefer: "count=exact",
+        },
       }).then(getCountAndData),
   });
 };

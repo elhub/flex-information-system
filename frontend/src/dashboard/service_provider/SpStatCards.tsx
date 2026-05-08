@@ -4,9 +4,7 @@ import {
   IconWarningTriangle,
 } from "@elhub/ds-icons";
 import { Alert, Loader } from "../../components/ui";
-import {
-  useDashboardApplications,
-} from "../hooks/useDashboardApplications";
+import { useDashboardApplications } from "../hooks/useDashboardApplications";
 import { useServiceProvidingGroups } from "../hooks/useServiceProvidingGroups";
 import { useControllableUnits } from "../hooks/useControllableUnits";
 import { StatCard } from "../shared/StatCard";
@@ -18,11 +16,13 @@ export const SpStatCards = () => {
   const spgQuery = useServiceProvidingGroups();
   const cuQuery = useControllableUnits();
   const noticeQuery = useNotices();
-  const { data: identity } = useGetIdentity()
+  const { data: identity } = useGetIdentity();
 
-  const noticeQueryParams = identity ? new URLSearchParams({
-    filter: JSON.stringify({ party_id: identity?.partyID }),
-  }) : undefined
+  const noticeQueryParams = identity
+    ? new URLSearchParams({
+        filter: JSON.stringify({ party_id: identity?.partyID }),
+      })
+    : undefined;
 
   const isLoading =
     applicationsQuery.isLoading ||
@@ -37,8 +37,6 @@ export const SpStatCards = () => {
 
   if (isLoading) return <Loader size="small" />;
   if (error) return <Alert variant="error">Failed to load stats.</Alert>;
-
-
 
   const sppaCount = applicationsQuery.sppaCount;
   const spgpaCount = applicationsQuery.spgpaCount;

@@ -9,10 +9,7 @@ export const useControllableUnits = () => {
   const partyID = identity?.partyID as number | undefined;
 
   return useQuery({
-    queryKey: [
-      "controllable-units",
-      { service_provider_id: partyID },
-    ],
+    queryKey: ["controllable-units", { service_provider_id: partyID }],
     enabled: partyID != null,
     queryFn: () =>
       listControllableUnitServiceProvider({
@@ -22,7 +19,7 @@ export const useControllableUnits = () => {
           embed: "controllable_unit",
         },
         headers: {
-          "Prefer": "count=exact",
+          Prefer: "count=exact",
         },
       }).then(getCountAndData),
   });

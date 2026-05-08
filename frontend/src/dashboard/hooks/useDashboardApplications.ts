@@ -1,4 +1,3 @@
-// frontend/src/dashboard/useDashboardApplications.ts
 import { useGetIdentity } from "ra-core";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -7,7 +6,7 @@ import {
   listServiceProvidingGroupGridPrequalification,
 } from "../../generated-client";
 import { useProductTypes } from "../../product_type/components";
-import { getCountAndData, throwOnError } from "../../util";
+import { getCountAndData } from "../../util";
 
 export type DashboardItemKind =
   | "sp_product_application"

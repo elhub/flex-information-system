@@ -9,7 +9,8 @@ export const SoStatCards = () => {
   const noticeQuery = useNotices();
 
   if (isLoading || noticeQuery.isLoading) return <Loader size="small" />;
-  if (error || noticeQuery.error) return <Alert variant="error">Failed to load stats.</Alert>;
+  if (error || noticeQuery.error)
+    return <Alert variant="error">Failed to load stats.</Alert>;
 
   return (
     <div className="flex flex-col sm:flex-row gap-4">

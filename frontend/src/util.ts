@@ -36,13 +36,13 @@ export function countDefinedValues(obj: any): number {
 
 export type Response<T> =
   | {
-    data: T;
-    error: undefined;
-  }
+      data: T;
+      error: undefined;
+    }
   | {
-    data: undefined;
-    error: ErrorMessage | EmptyObject;
-  };
+      data: undefined;
+      error: ErrorMessage | EmptyObject;
+    };
 
 export const throwOnError = <T>(response: Response<T>): T => {
   const { data, error } = response;
@@ -52,14 +52,16 @@ export const throwOnError = <T>(response: Response<T>): T => {
   return data;
 };
 
-export const getCountAndData = <T>(response: Response<T[]>): { count: number; data: T[] } => {
+export const getCountAndData = <T>(
+  response: Response<T[]>,
+): { count: number; data: T[] } => {
   const { data, error } = response;
   if (error || !data) {
     throw error;
   }
 
   return { count: data.length, data };
-}
+};
 
 // CN is a standard utility function for merging classes
 export const cn = (...classes: (string | undefined)[]): string => {
