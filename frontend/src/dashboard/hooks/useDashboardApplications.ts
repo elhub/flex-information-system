@@ -55,6 +55,9 @@ export const useDashboardApplications = () => {
         query: {
           embed: "service_provider,system_operator",
         },
+        headers: {
+          Prefer: "count=exact",
+        },
       }).then(getCountAndData),
   });
 
@@ -66,6 +69,9 @@ export const useDashboardApplications = () => {
           embed:
             "service_providing_group(service_provider),procuring_system_operator",
         },
+        headers: {
+          Prefer: "count=exact",
+        },
       }).then(getCountAndData),
   });
 
@@ -76,6 +82,9 @@ export const useDashboardApplications = () => {
         query: {
           embed:
             "service_providing_group(service_provider),impacted_system_operator",
+        },
+        headers: {
+          Prefer: "count=exact",
         },
       }).then(getCountAndData),
   });
