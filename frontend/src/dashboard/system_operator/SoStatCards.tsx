@@ -27,7 +27,7 @@ export const SoStatCards = () => {
         iconBgClass="bg-semantic-background-information"
       />
       <StatCard
-        label="Resource Inconsistencies"
+        label="Notices"
         value={noticeQuery.data?.count ?? 0}
         icon={
           <IconWarningTriangle
