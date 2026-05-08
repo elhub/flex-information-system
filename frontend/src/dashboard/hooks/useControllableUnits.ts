@@ -8,7 +8,10 @@ export const useControllableUnits = () => {
   const partyID = identity?.partyID as number | undefined;
 
   return useQuery({
-    queryKey: ["dashboard-controllable-units", { service_provider_id: partyID }],
+    queryKey: [
+      "dashboard-controllable-units",
+      { service_provider_id: partyID },
+    ],
     enabled: partyID != null,
     queryFn: () =>
       listControllableUnitServiceProvider({

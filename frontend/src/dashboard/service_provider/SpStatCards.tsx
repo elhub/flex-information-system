@@ -1,5 +1,6 @@
 import {
   IconClockCircle,
+  IconPlus,
   IconQualitiesCircle,
   IconWarningTriangle,
 } from "@elhub/ds-icons";
@@ -11,13 +12,19 @@ import {
 import { useServiceProvidingGroups } from "../hooks/useServiceProvidingGroups";
 import { useControllableUnits } from "../hooks/useControllableUnits";
 import { StatCard } from "../shared/StatCard";
-import { useInconsistencies } from "../hooks/useInconsistencies";
+import { useNotices } from "../hooks/useNotices";
+import { useGetIdentity } from "ra-core";
 
 export const SpStatCards = () => {
   const applicationsQuery = useDashboardApplications();
   const spgQuery = useServiceProvidingGroups();
   const cuQuery = useControllableUnits();
-  const inconsistenciesQuery = useInconsistencies();
+  const inconsistenciesQuery = useNotices();
+  const { data: identity } = useGetIdentity()
+
+  const noticeQueryParams = identity ? new URLSearchParams({
+    filter: JSON.stringify({ party_id: identity?.partyID }),
+  }) : undefined
 
   const isLoading =
     applicationsQuery.isLoading ||
@@ -33,6 +40,7 @@ export const SpStatCards = () => {
   if (isLoading) return <Loader size="small" />;
   if (error) return <Alert variant="error">Failed to load stats.</Alert>;
 
+
   const activeCuCount = new Set(
     (cuQuery.data ?? [])
       .filter((cusp) => cusp.controllable_unit?.status === "active")
@@ -43,18 +51,12 @@ export const SpStatCards = () => {
   ).length;
   const noticeCount = (inconsistenciesQuery.data ?? []).length;
 
-  const activeSppaCount = (applicationsQuery.sppa ?? []).filter((i) =>
-    ACTIVE_STATUSES.has(i.status),
-  ).length;
-  const activeSpgpaCount = (applicationsQuery.spgpa ?? []).filter((i) =>
-    ACTIVE_STATUSES.has(i.status),
-  ).length;
-  const activeSpggpCount = (
-    applicationsQuery.gridPrequalifications ?? []
-  ).filter((i) => ACTIVE_STATUSES.has(i.status)).length;
+  const sppaCount = applicationsQuery.sppa.length;
+  const spgpaCount = applicationsQuery.spgpa.length;
+  const sppgpCount = applicationsQuery.gridPrequalifications.length;
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
       <StatCard
         label="Controllable Units"
         value={activeCuCount}
@@ -66,7 +68,7 @@ export const SpStatCards = () => {
         }
         borderClass="border-l-semantic-border-success"
         iconBgClass="bg-semantic-background-success"
-        actionLabel="Create CU"
+        actionLabel="Create new"
         actionTo="/controllable_unit/create"
       />
       <StatCard
@@ -80,7 +82,7 @@ export const SpStatCards = () => {
         }
         borderClass="border-l-semantic-border-success"
         iconBgClass="bg-semantic-background-success"
-        actionLabel="Create SPG"
+        actionLabel="Create new"
         actionTo="/service_providing_group/create"
       />
       <StatCard
@@ -94,10 +96,12 @@ export const SpStatCards = () => {
         }
         borderClass="border-l-semantic-border-error"
         iconBgClass="bg-semantic-background-error"
+        actionLabel="View"
+        actionTo={`/notice?${noticeQueryParams?.toString() || ""}`}
       />
       <StatCard
         label="SP Product Applications"
-        value={activeSppaCount}
+        value={sppaCount}
         icon={
           <IconClockCircle
             size="medium"
@@ -106,12 +110,12 @@ export const SpStatCards = () => {
         }
         borderClass="border-l-semantic-border-information"
         iconBgClass="bg-semantic-background-information"
-        actionLabel="View"
-        actionTo="/service_provider_product_application"
+        actionLabel="Create new"
+        actionTo="/service_provider_product_application/create"
       />
       <StatCard
         label="SPG Product Applications"
-        value={activeSpgpaCount}
+        value={spgpaCount}
         icon={
           <IconClockCircle
             size="medium"
@@ -120,12 +124,12 @@ export const SpStatCards = () => {
         }
         borderClass="border-l-semantic-border-information"
         iconBgClass="bg-semantic-background-information"
-        actionLabel="View"
-        actionTo="/service_providing_group_product_application"
+        actionLabel="Create new"
+        actionTo="/service_providing_group_product_application/create"
       />
       <StatCard
         label="Grid Prequalifications"
-        value={activeSpggpCount}
+        value={sppgpCount}
         icon={
           <IconClockCircle
             size="medium"

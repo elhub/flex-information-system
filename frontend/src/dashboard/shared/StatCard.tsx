@@ -1,6 +1,6 @@
-import { type ReactNode } from "react";
+import React, { type ReactNode } from "react";
 import { Link } from "react-router-dom";
-import { Card, CardContent } from "../../components/ui";
+import { Button, Card, CardContent } from "../../components/ui";
 
 type StatCardProps = {
   label: string;
@@ -37,12 +37,14 @@ export const StatCard = ({
         </p>
       </div>
       {actionLabel && actionTo && (
-        <Link
+        <Button
+          as={Link}
           to={actionTo}
-          className="text-sm font-medium text-semantic-text-information hover:underline flex-shrink-0"
+          variant="invisible"
+          className="text-sm font-medium hover:underline flex-shrink-0"
         >
           {actionLabel}
-        </Link>
+        </Button>
       )}
     </CardContent>
   </Card>
