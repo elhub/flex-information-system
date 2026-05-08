@@ -16,7 +16,8 @@ class ControllableUnitLookupRequest:
     """Request schema for controllable unit lookup operations
 
     Attributes:
-        end_user (str): Birth number or organisation number of the end user. Example: 133700008.
+        end_user (str): Birth date (DDMMYY) of the end user if a person, or organisation number if an organisation.
+            Example: 150190.
         controllable_unit (str | Unset): The business ID of the controllable unit to lookup. Example:
             53919b79-876f-4dad-8bde-b29368367604.
         accounting_point (str | Unset): The accounting point ID of the controllable unit(s) to lookup. `GSRN` metering
