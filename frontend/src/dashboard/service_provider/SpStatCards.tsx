@@ -33,9 +33,11 @@ export const SpStatCards = () => {
   if (isLoading) return <Loader size="small" />;
   if (error) return <Alert variant="error">Failed to load stats.</Alert>;
 
-  const activeCuCount = (cuQuery.data ?? []).filter(
-    (cusp) => cusp.controllable_unit?.status === "active",
-  ).length;
+  const activeCuCount = new Set(
+    (cuQuery.data ?? [])
+      .filter((cusp) => cusp.controllable_unit?.status === "active")
+      .map((cusp) => cusp.controllable_unit_id),
+  ).size;
   const activeSpgCount = (spgQuery.data ?? []).filter(
     (s) => s.status === "active",
   ).length;
