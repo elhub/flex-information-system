@@ -21,16 +21,33 @@ type subject struct {
 	IdentifierType string
 	// Identifier is the identifier of the subject.
 	Identifier string
+	// PartyType is the type of the party to assume.
+	PartyType string
 }
 
 // String returns the subject as a string.
 func (s *subject) String() string {
-	return "no:party:" + s.IdentifierType + ":" + s.Identifier
+	return "no:party:" + s.IdentifierType + ":" + s.Identifier + ":" + s.PartyType
 }
 
 // MarshalJSON marshals a subject to a JSON string.
 func (s *subject) MarshalJSON() ([]byte, error) {
 	return []byte(`"` + s.String() + `"`), nil
+}
+
+// validPartyTypes is the set of valid party type values.
+//
+//nolint:gochecknoglobals
+var validPartyTypes = map[string]struct{}{
+	"balance_responsible_party":               {},
+	"end_user":                                {},
+	"energy_supplier":                         {},
+	"flexibility_information_system_operator": {},
+	"market_operator":                         {},
+	"organisation":                            {},
+	"service_provider":                        {},
+	"system_operator":                         {},
+	"third_party":                             {},
 }
 
 // UnmarshalJSON unmarshals a subject from a JSON string.
@@ -40,8 +57,10 @@ func (s *subject) UnmarshalJSON(data []byte) error {
 	nQuote := 2
 	lenGln := 13
 	lenUUID := 36
-	minLen := nQuote + len("no:party:gln:") + lenGln
-	maxLen := nQuote + len("no:party:uuid:") + lenUUID
+	lenShortestType := len("end_user")                               // 8
+	lenLongestType := len("flexibility_information_system_operator") // 38
+	minLen := nQuote + len("no:party:gln:") + lenGln + 1 + lenShortestType
+	maxLen := nQuote + len("no:party:uuid:") + lenUUID + 1 + lenLongestType
 
 	if len(data) < minLen {
 		return fmt.Errorf("%w: too short", errInvalidSubject)
@@ -60,11 +79,11 @@ func (s *subject) UnmarshalJSON(data []byte) error {
 	}
 
 	parts := strings.Split(typedIdentifier, `:`)
-	if len(parts) != 2 { //nolint:mnd
+	if len(parts) != 3 { //nolint:mnd
 		return fmt.Errorf("%w: incorrect number of parts", errInvalidSubject)
 	}
 
-	identifierType, identifier := parts[0], parts[1]
+	identifierType, identifier, partyType := parts[0], parts[1], parts[2]
 
 	if identifierType != "gln" && identifierType != "uuid" {
 		return fmt.Errorf("%w: invalid identifier type", errInvalidSubject)
@@ -85,8 +104,13 @@ func (s *subject) UnmarshalJSON(data []byte) error {
 		}
 	}
 
+	if _, ok := validPartyTypes[partyType]; !ok {
+		return fmt.Errorf("%w: invalid party type", errInvalidSubject)
+	}
+
 	s.IdentifierType = identifierType
 	s.Identifier = identifier
+	s.PartyType = partyType
 
 	return nil
 }
@@ -120,8 +144,8 @@ type authorizationGrant struct {
 	JWTID string `json:"jti"`
 
 	// Subject is the party on behalf of whom the new token is being requested.
-	// no:party:gln:1234567890123
-	// no:party:uuid:123e4567-e89b-12d3-a456-426614174000
+	// no:party:gln:1234567890123:service_provider
+	// no:party:uuid:123e4567-e89b-12d3-a456-426614174000:end_user
 	// If omitted or empty, returned access token will be for the issuer entity.
 	Subject *subject `json:"sub,omitempty"`
 }

@@ -80,7 +80,7 @@ export const zTechnology = z.enum([
  * Request schema for controllable unit lookup operations
  */
 export const zControllableUnitLookupRequest = z.object({
-  end_user: z.string().regex(/^[1-9]([0-9]{8}|[0-9]{10})$/),
+  end_user: z.string().regex(/^[0-9]{6}$|^[1-9][0-9]{8}$/),
   controllable_unit: z
     .string()
     .regex(
@@ -3779,6 +3779,7 @@ export const zListServiceProviderProductApplicationHistoryQuery = z.object({
     .string()
     .regex(/^eq\.[0-9]+$/)
     .optional(),
+  status: z.string().optional(),
   select: z.string().optional(),
   order: z.string().optional(),
   offset: z.string().optional(),
@@ -5552,6 +5553,7 @@ export const zListServiceProviderProductApplicationQuery = z.object({
     .string()
     .regex(/^eq\.[0-9]+$/)
     .optional(),
+  status: z.string().optional(),
   select: z.string().optional(),
   order: z.string().optional(),
   offset: z.string().optional(),
@@ -6080,6 +6082,7 @@ export const zListNoticeQuery = z.object({
     .string()
     .regex(/^eq\.[0-9]+$/)
     .optional(),
+  type: z.string().optional(),
   select: z.string().optional(),
   order: z.string().optional(),
   offset: z.string().optional(),

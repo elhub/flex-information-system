@@ -3,13 +3,10 @@ from security_token_service import (
     TestEntity,
 )
 from flex.models import (
-    PartyCreateRequest,
-    PartyResponse,
-    PartyRole,
     PartyType,
 )
 from flex.api.party import (
-    create_party,
+    list_party,
 )
 import os
 import requests
@@ -183,16 +180,9 @@ def test_token_exchange_ok_ent(sts):
 
     ent_id = sts.get_userinfo(client_ent)["entity_id"]
 
-    p = create_party.sync(
-        client=client_fiso,
-        body=PartyCreateRequest(
-            entity_id=ent_id,
-            type_=PartyType.END_USER,
-            role=PartyRole.FLEX_END_USER,
-            name="Auth Test EU",
-        ),
-    )
-    assert isinstance(p, PartyResponse)
+    ps = list_party.sync(client=client_fiso, entity_id=f"eq.{ent_id}")
+    assert isinstance(ps, list)
+    p = [p for p in ps if p.type_ == PartyType.END_USER][0]
 
     actor_token = client_ent.token
 

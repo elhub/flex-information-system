@@ -4,14 +4,12 @@ import {
   FieldProps,
   Link,
   SelectInput,
-  useGetList,
   useGetOne,
   useRecordContext,
   WithListContext,
 } from "react-admin";
 import { Stack, Chip, Tooltip } from "@mui/material";
 import {
-  listProductType,
   listSystemOperatorProductType,
   ProductType,
 } from "../generated-client";
@@ -22,6 +20,10 @@ import {
   ArrayInputProps,
 } from "../components/EDS-ra/inputs";
 import { useQuery } from "@tanstack/react-query";
+import { useProductTypes } from "./useProductTypes";
+import { throwOnError } from "../util";
+
+export { useProductTypes } from "./useProductTypes";
 
 // display a product type with name and example products if present
 export const displayProductType = (productType: ProductType) =>
@@ -29,14 +31,12 @@ export const displayProductType = (productType: ProductType) =>
 
 // hook to get all possible product types sorted by ID
 export function useGetAllProductTypes() {
-  const { data } = useGetList("product_type");
+  const { data } = useProductTypes();
 
-  const productTypes = data?.map((product_type) => {
-    return {
-      id: product_type.id,
-      name: displayProductType(product_type),
-    };
-  });
+  const productTypes = data?.map((product_type) => ({
+    id: product_type.id,
+    name: displayProductType(product_type),
+  }));
   productTypes?.sort((pt1, pt2) => pt1.id - pt2.id);
 
   return productTypes;
@@ -45,27 +45,31 @@ export function useGetAllProductTypes() {
 export const useGetProductTypesBySystemOperator = (
   systemOperatorId?: number,
 ) => {
-  return useQuery({
-    queryKey: ["productTypesBySystemOperator", systemOperatorId],
-    queryFn: () => getProductTypesBySystemOperator(systemOperatorId),
-  });
-};
+  const { data: allProductTypes, isLoading: ptLoading } = useProductTypes();
 
-const getProductTypesBySystemOperator = async (systemOperatorId?: number) => {
-  const { data: productTypes } = await listProductType();
+  const soptQuery = useQuery({
+    queryKey: ["systemOperatorProductType", systemOperatorId],
+    enabled: systemOperatorId != null,
+    queryFn: () =>
+      listSystemOperatorProductType({
+        query: { system_operator_id: `eq.${systemOperatorId}` },
+      }).then(throwOnError),
+  });
+
+  const isLoading =
+    ptLoading || (systemOperatorId != null && soptQuery.isLoading);
 
   if (!systemOperatorId) {
-    return productTypes;
+    return { data: allProductTypes, isLoading };
   }
 
-  const { data: systemOperatorProductTypes } =
-    await listSystemOperatorProductType({
-      query: { system_operator_id: `eq.${systemOperatorId}` },
-    });
-
-  return systemOperatorProductTypes
-    ?.map((sopt) => productTypes?.find((pt) => pt.id === sopt.product_type_id))
+  const filtered = soptQuery.data
+    ?.map((sopt) =>
+      allProductTypes?.find((pt) => pt.id === sopt.product_type_id),
+    )
     .filter((pt) => pt !== undefined);
+
+  return { data: filtered, isLoading };
 };
 
 export const ProductTypeField = ({ source }: FieldProps) => {
@@ -114,8 +118,11 @@ export const ProductTypeArrayField = (props: any) => {
             {data?.map((pt_id) => (
               <Tag key={pt_id as any}>
                 {
-                  productTypes?.find((productType) => productType.id == pt_id)
-                    ?.name
+                  productTypes?.find(
+                    // The typing from react-admin is not great here. It says its a record but its a number
+                    (productType) =>
+                      productType.id === (pt_id as unknown as number),
+                  )?.name
                 }
               </Tag>
             ))}

@@ -71,7 +71,7 @@ export const ServiceProvidingGroupProductApplicationList = () => {
         <Datagrid
           bulkActionButtons={false}
           rowClick={(_id, _res, record) =>
-            `/service_providing_group/${record.service_providing_group_id}/product_application/${record.id}/show`
+            `/service_providing_group_product_application/${record.id}/show`
           }
         >
           <TextField

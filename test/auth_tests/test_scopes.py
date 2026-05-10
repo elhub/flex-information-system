@@ -356,7 +356,7 @@ def test_scopes_jwt_bearer_owned_party(data):
         "jti": str(uuid.uuid4()),
         "iat": dt.now(tz.utc),
         "exp": dt.now(tz.utc) + timedelta(seconds=120),
-        "sub": f"no:party:gln:{owned_party_gln}",
+        "sub": f"no:party:gln:{owned_party_gln}:system_operator",
     }
     token = jwt.encode(payload, clt_private_key, algorithm="RS256")
 
@@ -392,7 +392,7 @@ def test_scopes_jwt_bearer_membership_party(data):
         "jti": str(uuid.uuid4()),
         "iat": dt.now(tz.utc),
         "exp": dt.now(tz.utc) + timedelta(seconds=120),
-        "sub": f"no:party:gln:{membership_party_gln}",
+        "sub": f"no:party:gln:{membership_party_gln}:system_operator",
     }
     token = jwt.encode(payload, clt_private_key, algorithm="RS256")
 
@@ -471,7 +471,7 @@ def test_scopes_embedding(jwt_keys):
         "jti": str(uuid.uuid4()),
         "iat": dt.now(tz.utc),
         "exp": dt.now(tz.utc) + timedelta(seconds=120),
-        "sub": f"no:party:gln:{party.business_id}",
+        "sub": f"no:party:gln:{party.business_id}:system_operator",
     }
     token = jwt.encode(payload, privkey, algorithm="RS256")
 

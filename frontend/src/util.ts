@@ -44,12 +44,15 @@ export type Response<T> =
       error: ErrorMessage | EmptyObject;
     };
 
-export const throwOnError = <T>(response: Response<T>): T => {
+export const throwOnError = <T>(response: Response<T>): NonNullable<T> => {
   const { data, error } = response;
   if (error) {
     throw error;
   }
-  return data;
+  if (data === undefined || data === null) {
+    throw new Error("Unexpected empty response");
+  }
+  return data as NonNullable<T>;
 };
 
 // CN is a standard utility function for merging classes

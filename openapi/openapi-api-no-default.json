@@ -299,11 +299,11 @@
                 "type": "object",
                 "properties": {
                     "end_user": {
-                        "description": "Birth number or organisation number of the end user.",
+                        "description": "Birth date (DDMMYY) of the end user if a person, or organisation number if an organisation.",
                         "format": "text",
                         "type": "string",
-                        "pattern": "^[1-9]([0-9]{8}|[0-9]{10})$",
-                        "example": "133700008"
+                        "pattern": "^[0-9]{6}$|^[1-9][0-9]{8}$",
+                        "example": "150190"
                     },
                     "controllable_unit": {
                         "description": "The business ID of the controllable unit to lookup.",
@@ -27184,6 +27184,14 @@
                         "name": "product_type_ids"
                     },
                     {
+                        "in": "query",
+                        "name": "status",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somestatus"
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -27779,6 +27787,14 @@
                         "example": "eq.55",
                         "description": "References to the product types.",
                         "name": "product_type_ids"
+                    },
+                    {
+                        "in": "query",
+                        "name": "status",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somestatus"
                     },
                     {
                         "description": "Filtering Columns",
@@ -34384,6 +34400,15 @@
                         "example": "eq.55",
                         "description": "Reference to the party targeted by the notice.",
                         "name": "party_id"
+                    },
+                    {
+                        "in": "query",
+                        "name": "type",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.sometype",
+                        "description": "The type of the notice."
                     },
                     {
                         "description": "Filtering Columns",

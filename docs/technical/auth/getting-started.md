@@ -89,7 +89,7 @@ payload = {
   "aud": auth_api_url,
   "iss": "7a9016dc-ac40-4908-9462-ffb0809726ce", # client ID for PC #1
   "jti": str(uuid.uuid4()),
-  "sub": f"no:party:gln:1111111111111", # GLN of Testkraft SP
+  "sub": f"no:party:gln:1111111111111:service_provider", # GLN of Testkraft SP
   "iat": dt.now(tz.utc),
   "exp": dt.now(tz.utc) + timedelta(seconds=120),
 }

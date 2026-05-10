@@ -59,7 +59,7 @@ export const ControllableUnitLookupInput = () => {
         </Heading>
         <TextInput
           description
-          descriptionOverride="Organisation number or birth number of the end user"
+          descriptionOverride="End user organisation number or birth date (DDMMYY, 6 first digits of the fødselsnummer)"
           overrideLabel="End user"
           tooltip={false}
           {...keys.end_user}
