@@ -124,7 +124,94 @@ BEGIN
 END;
 $$;
 
--- changeset flex:party-staging-grants runOnChange:false endDelimiter:;
+-- changeset flex:party-initial-merge runOnChange:true endDelimiter:--
+-- inserts data from flex.party_staging into flex.entity and flex.party
+-- intended for initial load only; existing rows are left untouched
+CREATE OR REPLACE FUNCTION staging.party_initial_merge()
+RETURNS void
+SECURITY DEFINER
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    PERFORM set_config('flex.current_identity', '0', false);
+
+    -- flex.entity
+    MERGE INTO flex.entity AS e
+    USING (
+        SELECT DISTINCT ON (ps.org)
+            ps.org,
+            ps.name
+        FROM flex.party_staging AS ps
+        ORDER BY ps.org asc, length(ps.name) asc
+    ) AS src
+        ON e.business_id = src.org
+        AND e.business_id_type = 'org'
+    WHEN NOT MATCHED THEN
+        INSERT (name, type, business_id, business_id_type)
+        VALUES (src.name, 'organisation', src.org, 'org');
+
+    -- flex.party "organisation" entries
+    MERGE INTO flex.party AS p
+    USING (
+        SELECT
+            ps.org,
+            ps.name,
+            'organisation' AS type,
+            e.id AS entity_id
+        FROM (
+            SELECT DISTINCT ON (ps.org)
+            ps.org,
+            ps.name
+            FROM flex.party_staging AS ps
+            ORDER BY ps.org asc, length(ps.name) asc
+        ) AS ps
+        INNER JOIN flex.entity AS e
+            ON e.business_id = ps.org
+            AND e.business_id_type = 'org'
+    ) AS src
+        ON p.business_id = src.org
+        AND p.business_id_type = 'org'
+    WHEN NOT MATCHED THEN
+        INSERT (business_id, business_id_type, entity_id, name, type, role, status)
+        VALUES (src.org, 'org', src.entity_id, src.name, src.type, 'flex_' || src.type, 'new');
+
+    -- flex.party - all the rest
+    MERGE INTO flex.party AS p
+    USING (
+        SELECT
+            ps.gln,
+            ps.name,
+            ps.type,
+            e.id AS entity_id
+        FROM flex.party_staging AS ps
+        INNER JOIN flex.entity AS e
+            ON e.business_id = ps.org
+            AND e.business_id_type = 'org'
+    ) AS src
+        ON p.business_id = src.gln
+        AND p.type = src.type
+    WHEN NOT MATCHED THEN
+        INSERT (business_id, business_id_type, entity_id, name, type, role, status)
+        VALUES (src.gln, 'gln', src.entity_id, src.name, src.type, 'flex_' || src.type, 'new');
+
+    -- update status to 'active'
+    UPDATE flex.party
+    SET status = 'active'
+    WHERE status = 'new'
+        AND (business_id_type = 'gln' OR business_id_type = 'org')
+        AND EXISTS (
+            SELECT 1
+            FROM flex.party_staging AS ps
+            WHERE ( ps.gln = flex.party.business_id
+            AND ps.type = flex.party.type )
+            OR ( ps.org = flex.party.business_id
+            AND ps.type = 'organisation' )
+        );
+
+END;
+$$;
+
+-- changeset flex:party-staging-grants runOnChange:false endDelimiter:--;
 GRANT INSERT, SELECT, UPDATE, DELETE
 ON staging.party
 TO flex_staging_structure_data;
