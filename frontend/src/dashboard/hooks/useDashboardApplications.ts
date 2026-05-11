@@ -1,4 +1,3 @@
-// frontend/src/dashboard/useDashboardApplications.ts
 import { useGetIdentity } from "ra-core";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -7,7 +6,7 @@ import {
   listServiceProvidingGroupGridPrequalification,
 } from "../../generated-client";
 import { useProductTypes } from "../../product_type/components";
-import { throwOnError } from "../../util";
+import { getCountAndData } from "../../util";
 
 export type DashboardItemKind =
   | "sp_product_application"
@@ -56,7 +55,10 @@ export const useDashboardApplications = () => {
         query: {
           embed: "service_provider,system_operator",
         },
-      }).then(throwOnError),
+        headers: {
+          Prefer: "count=exact",
+        },
+      }).then(getCountAndData),
   });
 
   const spgpaQuery = useQuery({
@@ -67,7 +69,10 @@ export const useDashboardApplications = () => {
           embed:
             "service_providing_group(service_provider),procuring_system_operator",
         },
-      }).then(throwOnError),
+        headers: {
+          Prefer: "count=exact",
+        },
+      }).then(getCountAndData),
   });
 
   const spggpQuery = useQuery({
@@ -78,7 +83,10 @@ export const useDashboardApplications = () => {
           embed:
             "service_providing_group(service_provider),impacted_system_operator",
         },
-      }).then(throwOnError),
+        headers: {
+          Prefer: "count=exact",
+        },
+      }).then(getCountAndData),
   });
 
   const { data: allProductTypes, isLoading: ptLoading } = useProductTypes();
@@ -98,7 +106,7 @@ export const useDashboardApplications = () => {
       .join(", ");
 
   const sppa =
-    sppaQuery.data?.map((r) => ({
+    sppaQuery.data?.data.map((r) => ({
       id: `sp_product_application_${r.id}`,
       kind: "sp_product_application" as DashboardItemKind,
       typeLabel: "Product Application",
@@ -110,7 +118,7 @@ export const useDashboardApplications = () => {
     })) || [];
 
   const spgpa =
-    spgpaQuery.data?.map((r) => ({
+    spgpaQuery.data?.data.map((r) => ({
       id: `spg_product_application_${r.id}`,
       kind: "spg_product_application" as DashboardItemKind,
       typeLabel: "SPG Product Application",
@@ -122,7 +130,7 @@ export const useDashboardApplications = () => {
     })) || [];
 
   const gridPrequalifications =
-    spggpQuery.data?.map((r) => {
+    spggpQuery.data?.data.map((r) => {
       return {
         id: `spg_grid_prequalification_${r.id}`,
         kind: "spg_grid_prequalification" as DashboardItemKind,
@@ -159,6 +167,9 @@ export const useDashboardApplications = () => {
     gridPrequalifications,
     spgpa,
     sppa,
+    gridPrequalificationsCount: spggpQuery.data?.count ?? 0,
+    spgpaCount: spgpaQuery.data?.count ?? 0,
+    sppaCount: sppaQuery.data?.count ?? 0,
     isLoading,
     error,
   };
