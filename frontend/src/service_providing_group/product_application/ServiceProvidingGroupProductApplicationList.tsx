@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 import { ProductTypeArrayField } from "../../product_type/components";
 import { Permissions } from "../../auth/permissions";
 import { EnumField } from "../../components/enum";
+import { isProductApplicationBlocked } from "../../productApplicationBlock";
 
 const CreateButton = ({ id }: { id: any }) => (
   <Button
@@ -46,10 +47,11 @@ export const ServiceProvidingGroupProductApplicationList = () => {
     "service_providing_group_product_application",
     "read",
   );
-  const canCreate = !!permissions?.allow(
-    "service_providing_group_product_application",
-    "create",
-  );
+  const canCreate =
+    !!permissions?.allow(
+      "service_providing_group_product_application",
+      "create",
+    ) && !isProductApplicationBlocked();
 
   if (!canRead) {
     return null; // or <NotAllowed /> component

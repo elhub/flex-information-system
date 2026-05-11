@@ -1,8 +1,15 @@
-import { List, ReferenceField, TextField } from "react-admin";
+import {
+  CreateButton,
+  List,
+  ReferenceField,
+  TextField,
+  TopToolbar,
+} from "react-admin";
 import { Datagrid, PartyReferenceInput } from "../auth";
 import { DateField } from "../components/datetime";
 import { ProductTypeArrayField } from "../product_type/components";
 import { EnumArrayInput, EnumField } from "../components/enum";
+import { isProductApplicationBlocked } from "../productApplicationBlock";
 
 export const ServiceProviderProductApplicationList = () => {
   const ServiceProviderProductApplicationListFilters = [
@@ -32,6 +39,15 @@ export const ServiceProviderProductApplicationList = () => {
       perPage={25}
       sort={{ field: "id", order: "DESC" }}
       empty={false}
+      actions={
+        isProductApplicationBlocked() ? (
+          <TopToolbar />
+        ) : (
+          <TopToolbar>
+            <CreateButton />
+          </TopToolbar>
+        )
+      }
       filters={ServiceProviderProductApplicationListFilters}
     >
       <Datagrid>

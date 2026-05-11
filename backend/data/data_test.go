@@ -1,8 +1,11 @@
 package data //nolint:testpackage
 
 import (
+	"net/http"
+	"net/http/httptest"
 	"net/url"
 	"testing"
+	"time"
 )
 
 func TestIsValidDatetime(t *testing.T) {
@@ -38,6 +41,53 @@ func TestIsValidDatetime(t *testing.T) {
 			got := isValidDatetime(tc.input)
 			if got != tc.valid {
 				t.Errorf("isValidDatetime(%q) = %v, want %v", tc.input, got, tc.valid)
+			}
+		})
+	}
+}
+
+func TestBlockBeforeDate(t *testing.T) {
+	t.Parallel()
+
+	passthrough := http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("ok"))
+	})
+
+	testCases := []struct {
+		name           string
+		blockBefore    *time.Time
+		expectedStatus int
+	}{
+		{
+			name:           "nil blockBefore passes through",
+			blockBefore:    nil,
+			expectedStatus: http.StatusOK,
+		},
+		{
+			name:           "date in the past passes through",
+			blockBefore:    new(time.Now().Add(-24 * time.Hour)),
+			expectedStatus: http.StatusOK,
+		},
+		{
+			name:           "date in the future blocks",
+			blockBefore:    new(time.Now().Add(24 * time.Hour)),
+			expectedStatus: http.StatusForbidden,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+
+			handler := blockBeforeDate(tc.blockBefore, "SPPA-VAL002", "Service provider product applications", passthrough)
+			req := httptest.NewRequestWithContext(t.Context(), http.MethodPost, "/service_provider_product_application", nil)
+			rec := httptest.NewRecorder()
+
+			handler.ServeHTTP(rec, req)
+
+			if rec.Code != tc.expectedStatus {
+				t.Errorf("status = %d, want %d", rec.Code, tc.expectedStatus)
 			}
 		})
 	}
