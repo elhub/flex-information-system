@@ -29,7 +29,7 @@ AS $$
     SELECT NOT EXISTS (
         SELECT product_type_id FROM unnest(product_type_ids) product_type_id -- noqa
         WHERE NOT EXISTS (
-                SELECT 1 FROM product_type WHERE id = product_type_id
+                SELECT 1 FROM flex.product_type WHERE id = product_type_id
             )
     )
 $$;
