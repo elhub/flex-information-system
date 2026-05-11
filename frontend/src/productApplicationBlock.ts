@@ -1,3 +1,6 @@
+import { tz } from "@date-fns/tz";
+import { isFuture, parseISO } from "date-fns";
+
 /**
  * Checks whether product application creation is currently blocked.
  * Controlled by the VITE_PRODUCT_APPLICATION_BLOCK_BEFORE environment variable.
@@ -9,8 +12,8 @@
 export function isProductApplicationBlocked(): boolean {
   const blockBefore = import.meta.env.VITE_PRODUCT_APPLICATION_BLOCK_BEFORE;
   if (!blockBefore) return false;
-  const blockDate = new Date(blockBefore + "+02:00");
-  return new Date() < blockDate;
+  const blockDate = parseISO(blockBefore, { in: tz("Europe/Oslo") });
+  return isFuture(blockDate);
 }
 
 export function getProductApplicationBlockDate(): string | undefined {
