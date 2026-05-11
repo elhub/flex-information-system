@@ -36,15 +36,15 @@ export function countDefinedValues(obj: any): number {
 
 export type Response<T> =
   | {
-    data: T;
-    error: undefined;
-    response?: { headers: Headers };
-  }
+      data: T;
+      error: undefined;
+      response?: { headers: Headers };
+    }
   | {
-    data: undefined;
-    response?: { headers: Headers };
-    error: ErrorMessage | EmptyObject;
-  };
+      data: undefined;
+      response?: { headers: Headers };
+      error: ErrorMessage | EmptyObject;
+    };
 
 export const throwOnError = <T>(response: Response<T>): NonNullable<T> => {
   const { data, error } = response;
@@ -62,7 +62,6 @@ export const throwOnError = <T>(response: Response<T>): NonNullable<T> => {
 export const getCountAndData = <T>(
   response: Response<T>,
 ): { count: number; data: NonNullable<T> } => {
-
   const data = throwOnError(response);
 
   const count = response.response?.headers.get("Content-Range")?.split("/")[1];
