@@ -1,6 +1,7 @@
 import { type ReactNode } from "react";
 import { Link } from "react-router-dom";
-import { Button, Card, CardContent } from "../../components/ui";
+import { Button, Card, CardContent, Tooltip } from "../../components/ui";
+import { IconQuestionCircleOutlined } from "@elhub/ds-icons";
 
 type StatCardProps = {
   label: string;
@@ -10,6 +11,8 @@ type StatCardProps = {
   iconBgClass: string;
   actionLabel?: string;
   actionTo?: string;
+  actionDisabled?: boolean;
+  actionDisabledTooltip?: string;
 };
 
 export const StatCard = ({
@@ -20,6 +23,8 @@ export const StatCard = ({
   iconBgClass,
   actionLabel,
   actionTo,
+  actionDisabled,
+  actionDisabledTooltip,
 }: StatCardProps) => (
   <Card className={`flex-1 border-l-4 ${borderClass}`}>
     <CardContent className="flex items-center gap-4 py-4">
@@ -36,15 +41,34 @@ export const StatCard = ({
           {value}
         </p>
       </div>
-      {actionLabel && actionTo && (
-        <Button
-          as={Link}
-          to={actionTo}
-          variant="invisible"
-          className="text-sm font-medium hover:underline flex-shrink-0"
-        >
-          {actionLabel}
-        </Button>
+      {actionLabel && (
+        <>
+          {actionDisabled ? (
+            <div className="flex items-center gap-1">
+              <Button
+                variant="invisible"
+                className="text-sm font-medium flex-shrink-0"
+                disabled
+              >
+                {actionLabel}
+              </Button>
+              <Tooltip content={actionDisabledTooltip ?? ""}>
+                <IconQuestionCircleOutlined size="small" className="text-semantic-text-subtle cursor-help" />
+              </Tooltip>
+            </div>
+          ) : (
+            actionTo && (
+              <Button
+                as={Link}
+                to={actionTo}
+                variant="invisible"
+                className="text-sm font-medium hover:underline flex-shrink-0"
+              >
+                {actionLabel}
+              </Button>
+            )
+          )}
+        </>
       )}
     </CardContent>
   </Card>

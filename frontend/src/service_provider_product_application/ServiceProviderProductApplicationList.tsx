@@ -9,7 +9,12 @@ import { Datagrid, PartyReferenceInput } from "../auth";
 import { DateField } from "../components/datetime";
 import { ProductTypeArrayField } from "../product_type/components";
 import { EnumArrayInput, EnumField } from "../components/enum";
-import { isProductApplicationBlocked } from "../productApplicationBlock";
+import {
+  isProductApplicationBlocked,
+  getProductApplicationBlockDate,
+} from "../productApplicationBlock";
+import { Button, Tooltip } from "../components/ui";
+import { IconPlus, IconQuestionCircleOutlined } from "@elhub/ds-icons";
 
 export const ServiceProviderProductApplicationList = () => {
   const ServiceProviderProductApplicationListFilters = [
@@ -34,19 +39,36 @@ export const ServiceProviderProductApplicationList = () => {
     />,
   ];
 
+  const blocked = isProductApplicationBlocked();
+
   return (
     <List
       perPage={25}
       sort={{ field: "id", order: "DESC" }}
       empty={false}
       actions={
-        isProductApplicationBlocked() ? (
-          <TopToolbar />
-        ) : (
-          <TopToolbar>
+        <TopToolbar>
+          {blocked ? (
+            <div className="flex items-center gap-1">
+              <Button
+                variant="primary"
+                icon={IconPlus}
+                iconPosition="left"
+                disabled
+              >
+                Create
+              </Button>
+              <Tooltip
+                content={`Product applications cannot be created before ${getProductApplicationBlockDate()}`}
+                className="max-w-2xl"
+              >
+                <IconQuestionCircleOutlined size="small" className="text-semantic-text-subtle cursor-help" />
+              </Tooltip>
+            </div>
+          ) : (
             <CreateButton />
-          </TopToolbar>
-        )
+          )}
+        </TopToolbar>
       }
       filters={ServiceProviderProductApplicationListFilters}
     >

@@ -1,4 +1,4 @@
-import { Loader, Button } from "../../components/ui";
+import { Loader, Button, Tooltip } from "../../components/ui";
 import { Column, SimpleTable } from "../../components/SimpleTable";
 import {
   SpgProductApplicationRow,
@@ -6,9 +6,13 @@ import {
 } from "./useSpgProductApplications";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useTranslateField } from "../../intl/intl";
-import { IconPlus } from "@elhub/ds-icons";
+import { IconPlus, IconQuestionCircleOutlined } from "@elhub/ds-icons";
 import { usePermissions } from "ra-core";
 import { Permissions } from "../../auth/permissions";
+import {
+  isProductApplicationBlocked,
+  getProductApplicationBlockDate,
+} from "../../productApplicationBlock";
 
 type Props = {
   spgId: number;
@@ -60,15 +64,32 @@ export const ServiceProvidingGroupShowProductApplicationsTable = ({
     <div className="flex flex-col gap-4">
       <div className="flex justify-end">
         {canCreate && (
-          <Button
-            as={RouterLink}
-            to={`/service_providing_group/${spgId}/product_application/create`}
-            state={{ service_providing_group_id: spgId }}
-            variant="primary"
-            icon={IconPlus}
-          >
-            Create product application
-          </Button>
+          isProductApplicationBlocked() ? (
+            <div className="flex items-center gap-1">
+              <Button
+                variant="primary"
+                icon={IconPlus}
+                disabled
+              >
+                Create product application
+              </Button>
+              <Tooltip
+                content={`Product applications cannot be created before ${getProductApplicationBlockDate()}`}
+              >
+                <IconQuestionCircleOutlined size="small" className="text-semantic-text-subtle cursor-help" />
+              </Tooltip>
+            </div>
+          ) : (
+            <Button
+              as={RouterLink}
+              to={`/service_providing_group/${spgId}/product_application/create`}
+              state={{ service_providing_group_id: spgId }}
+              variant="primary"
+              icon={IconPlus}
+            >
+              Create product application
+            </Button>
+          )
         )}
       </div>
       <SimpleTable

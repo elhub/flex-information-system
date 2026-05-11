@@ -14,5 +14,12 @@ export function isProductApplicationBlocked(): boolean {
 }
 
 export function getProductApplicationBlockDate(): string | undefined {
-  return import.meta.env.VITE_PRODUCT_APPLICATION_BLOCK_BEFORE;
+  const raw = import.meta.env.VITE_PRODUCT_APPLICATION_BLOCK_BEFORE;
+  if (!raw) return undefined;
+  const blockDate = new Date(raw);
+  return blockDate.toLocaleString("no-NO", {
+    timeZone: "Europe/Oslo",
+    dateStyle: "long",
+    timeStyle: "short",
+  });
 }

@@ -14,7 +14,12 @@ import { Link } from "react-router-dom";
 import { ProductTypeArrayField } from "../../product_type/components";
 import { Permissions } from "../../auth/permissions";
 import { EnumField } from "../../components/enum";
-import { isProductApplicationBlocked } from "../../productApplicationBlock";
+import {
+  isProductApplicationBlocked,
+  getProductApplicationBlockDate,
+} from "../../productApplicationBlock";
+import { Button as EdsButton, Tooltip } from "../../components/ui";
+import { IconPlus, IconQuestionCircleOutlined } from "@elhub/ds-icons";
 
 const CreateButton = ({ id }: { id: any }) => (
   <Button
@@ -30,8 +35,30 @@ const CreateButton = ({ id }: { id: any }) => (
   />
 );
 
-const ListActions = ({ canCreate, id }: { canCreate: boolean; id: any }) => (
-  <TopToolbar>{canCreate && <CreateButton id={id} />}</TopToolbar>
+const blockTooltip = `Product applications cannot be created before ${getProductApplicationBlockDate()}`;
+
+const BlockedCreateButton = () => (
+  <div className="flex items-center gap-1">
+    <EdsButton
+      variant="primary"
+      icon={IconPlus}
+      iconPosition="left"
+      disabled
+    >
+      Create
+    </EdsButton>
+    <Tooltip className="max-w-2xl" content={blockTooltip}>
+      <IconQuestionCircleOutlined size="small" className="text-semantic-text-subtle cursor-help" />
+    </Tooltip>
+  </div>
+);
+
+type ListActionsProps = { canCreate: boolean; isBlocked: boolean; id: any };
+
+const ListActions = ({ canCreate, isBlocked, id }: ListActionsProps) => (
+  <TopToolbar>
+    {isBlocked ? <BlockedCreateButton /> : canCreate && <CreateButton id={id} />}
+  </TopToolbar>
 );
 
 export const ServiceProvidingGroupProductApplicationList = () => {
@@ -57,12 +84,14 @@ export const ServiceProvidingGroupProductApplicationList = () => {
     return null; // or <NotAllowed /> component
   }
 
+  const blocked = isProductApplicationBlocked();
+
   return (
     <ResourceContextProvider value="service_providing_group_product_application">
       <List
         title={false}
         perPage={10}
-        actions={<ListActions canCreate={canCreate} id={id} />}
+        actions={<ListActions canCreate={canCreate} isBlocked={blocked} id={id} />}
         exporter={false}
         empty={false}
         filter={id ? { service_providing_group_id: id } : undefined}

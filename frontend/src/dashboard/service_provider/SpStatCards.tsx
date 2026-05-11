@@ -10,6 +10,10 @@ import { useControllableUnits } from "../hooks/useControllableUnits";
 import { StatCard } from "../shared/StatCard";
 import { useNotices } from "../hooks/useNotices";
 import { useGetIdentity } from "ra-core";
+import {
+  isProductApplicationBlocked,
+  getProductApplicationBlockDate,
+} from "../../productApplicationBlock";
 
 export const SpStatCards = () => {
   const applicationsQuery = useDashboardApplications();
@@ -42,8 +46,11 @@ export const SpStatCards = () => {
   const spgpaCount = applicationsQuery.spgpaCount;
   const sppgpCount = applicationsQuery.gridPrequalificationsCount;
 
+  const blocked = isProductApplicationBlocked();
+  const blockTooltip = `Product applications cannot be created before ${getProductApplicationBlockDate()}`;
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
       <StatCard
         label="Controllable Units"
         value={cuQuery.data?.count ?? 0}
@@ -99,6 +106,8 @@ export const SpStatCards = () => {
         iconBgClass="bg-semantic-background-information"
         actionLabel="Create new"
         actionTo="/service_provider_product_application/create"
+        actionDisabled={blocked}
+        actionDisabledTooltip={blockTooltip}
       />
       <StatCard
         label="SPG Product Applications"
@@ -113,6 +122,8 @@ export const SpStatCards = () => {
         iconBgClass="bg-semantic-background-information"
         actionLabel="Create new"
         actionTo="/service_providing_group_product_application/create"
+        actionDisabled={blocked}
+        actionDisabledTooltip={blockTooltip}
       />
       <StatCard
         label="Grid Prequalifications"
