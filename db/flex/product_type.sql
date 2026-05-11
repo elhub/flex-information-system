@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS product_type (
     )
 );
 
--- changeset flex:product-type-ids-exists runOnChange:false endDelimiter:--
+-- changeset flex:product-type-ids-exists runOnChange:true endDelimiter:--
 -- foreign key check but for an array
 CREATE OR REPLACE FUNCTION product_type_ids_exists(
     product_type_ids bigint []
@@ -29,7 +29,7 @@ AS $$
     SELECT NOT EXISTS (
         SELECT product_type_id FROM unnest(product_type_ids) product_type_id -- noqa
         WHERE NOT EXISTS (
-                SELECT 1 FROM product_type WHERE id = product_type_id
+                SELECT 1 FROM flex.product_type WHERE id = product_type_id
             )
     )
 $$;
