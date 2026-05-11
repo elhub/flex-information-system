@@ -63,20 +63,19 @@ export const ServiceProvidingGroupShowProductApplicationsTable = ({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-end">
-        {canCreate && (
-          isProductApplicationBlocked() ? (
+        {canCreate &&
+          (isProductApplicationBlocked() ? (
             <div className="flex items-center gap-1">
-              <Button
-                variant="primary"
-                icon={IconPlus}
-                disabled
-              >
+              <Button variant="primary" icon={IconPlus} disabled>
                 Create product application
               </Button>
               <Tooltip
                 content={`Product applications cannot be created before ${getProductApplicationBlockDate()}`}
               >
-                <IconQuestionCircleOutlined size="small" className="text-semantic-text-subtle cursor-help" />
+                <IconQuestionCircleOutlined
+                  size="small"
+                  className="text-semantic-text-subtle cursor-help"
+                />
               </Tooltip>
             </div>
           ) : (
@@ -89,8 +88,7 @@ export const ServiceProvidingGroupShowProductApplicationsTable = ({
             >
               Create product application
             </Button>
-          )
-        )}
+          ))}
       </div>
       <SimpleTable
         rowClick={(row) =>

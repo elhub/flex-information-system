@@ -39,16 +39,14 @@ const blockTooltip = `Product applications cannot be created before ${getProduct
 
 const BlockedCreateButton = () => (
   <div className="flex items-center gap-1">
-    <EdsButton
-      variant="primary"
-      icon={IconPlus}
-      iconPosition="left"
-      disabled
-    >
+    <EdsButton variant="primary" icon={IconPlus} iconPosition="left" disabled>
       Create
     </EdsButton>
     <Tooltip className="max-w-2xl" content={blockTooltip}>
-      <IconQuestionCircleOutlined size="small" className="text-semantic-text-subtle cursor-help" />
+      <IconQuestionCircleOutlined
+        size="small"
+        className="text-semantic-text-subtle cursor-help"
+      />
     </Tooltip>
   </div>
 );
@@ -57,7 +55,11 @@ type ListActionsProps = { canCreate: boolean; isBlocked: boolean; id: any };
 
 const ListActions = ({ canCreate, isBlocked, id }: ListActionsProps) => (
   <TopToolbar>
-    {isBlocked ? <BlockedCreateButton /> : canCreate && <CreateButton id={id} />}
+    {isBlocked ? (
+      <BlockedCreateButton />
+    ) : (
+      canCreate && <CreateButton id={id} />
+    )}
   </TopToolbar>
 );
 
@@ -91,7 +93,9 @@ export const ServiceProvidingGroupProductApplicationList = () => {
       <List
         title={false}
         perPage={10}
-        actions={<ListActions canCreate={canCreate} isBlocked={blocked} id={id} />}
+        actions={
+          <ListActions canCreate={canCreate} isBlocked={blocked} id={id} />
+        }
         exporter={false}
         empty={false}
         filter={id ? { service_providing_group_id: id } : undefined}

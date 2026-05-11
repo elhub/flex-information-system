@@ -62,7 +62,10 @@ export const ServiceProviderProductApplicationList = () => {
                 content={`Product applications cannot be created before ${getProductApplicationBlockDate()}`}
                 className="max-w-2xl"
               >
-                <IconQuestionCircleOutlined size="small" className="text-semantic-text-subtle cursor-help" />
+                <IconQuestionCircleOutlined
+                  size="small"
+                  className="text-semantic-text-subtle cursor-help"
+                />
               </Tooltip>
             </div>
           ) : (

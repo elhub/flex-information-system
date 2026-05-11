@@ -53,7 +53,10 @@ export const StatCard = ({
                 {actionLabel}
               </Button>
               <Tooltip content={actionDisabledTooltip ?? ""}>
-                <IconQuestionCircleOutlined size="small" className="text-semantic-text-subtle cursor-help" />
+                <IconQuestionCircleOutlined
+                  size="small"
+                  className="text-semantic-text-subtle cursor-help"
+                />
               </Tooltip>
             </div>
           ) : (
