@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS product_type (
     )
 );
 
--- changeset flex:product-type-ids-exists runOnChange:false endDelimiter:--
+-- changeset flex:product-type-ids-exists runOnChange:true endDelimiter:--
 -- foreign key check but for an array
 CREATE OR REPLACE FUNCTION product_type_ids_exists(
     product_type_ids bigint []
