@@ -211,7 +211,7 @@ BEGIN
 END;
 $$;
 
--- changeset flex:party-staging-grants runOnChange:false endDelimiter:--;
+-- changeset flex:party-staging-grants runOnChange:false endDelimiter:--
 GRANT INSERT, SELECT, UPDATE, DELETE
 ON staging.party
 TO flex_staging_structure_data;
