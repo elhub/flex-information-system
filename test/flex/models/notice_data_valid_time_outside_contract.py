@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, Any, TypeVar
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
+from ..models.notice_data_valid_time_outside_contract_notice_type import NoticeDataValidTimeOutsideContractNoticeType
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
@@ -20,14 +21,21 @@ class NoticeDataValidTimeOutsideContract:
     """Format of the data field in a notice of type no.elhub.flex.*.valid_time.outside_contract
 
     Attributes:
+        notice_type (NoticeDataValidTimeOutsideContractNoticeType | Unset): Identifies the notice type for discriminated
+            union deserialization.
         invalid_timeline (list[TimelineMultiRangeItem] | Unset): Partial timeline data that is relevant to mention, in a
             notice for instance. Multirange format, i.e., array of start/end timestamp pairs.
     """
 
+    notice_type: NoticeDataValidTimeOutsideContractNoticeType | Unset = UNSET
     invalid_timeline: list[TimelineMultiRangeItem] | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        notice_type: str | Unset = UNSET
+        if not isinstance(self.notice_type, Unset):
+            notice_type = self.notice_type.value
+
         invalid_timeline: list[dict[str, Any]] | Unset = UNSET
         if not isinstance(self.invalid_timeline, Unset):
             invalid_timeline = []
@@ -38,6 +46,8 @@ class NoticeDataValidTimeOutsideContract:
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
+        if notice_type is not UNSET:
+            field_dict["notice_type"] = notice_type
         if invalid_timeline is not UNSET:
             field_dict["invalid_timeline"] = invalid_timeline
 
@@ -48,6 +58,13 @@ class NoticeDataValidTimeOutsideContract:
         from ..models.timeline_multi_range_item import TimelineMultiRangeItem
 
         d = dict(src_dict)
+        _notice_type = d.pop("notice_type", UNSET)
+        notice_type: NoticeDataValidTimeOutsideContractNoticeType | Unset
+        if isinstance(_notice_type, Unset):
+            notice_type = UNSET
+        else:
+            notice_type = NoticeDataValidTimeOutsideContractNoticeType(_notice_type)
+
         _invalid_timeline = d.pop("invalid_timeline", UNSET)
         invalid_timeline: list[TimelineMultiRangeItem] | Unset = UNSET
         if _invalid_timeline is not UNSET:
@@ -60,6 +77,7 @@ class NoticeDataValidTimeOutsideContract:
                 invalid_timeline.append(componentsschemastimeline_multi_range_item)
 
         notice_data_valid_time_outside_contract = cls(
+            notice_type=notice_type,
             invalid_timeline=invalid_timeline,
         )
 

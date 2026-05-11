@@ -206,6 +206,10 @@ export type TimelineMultiRange = Array<{
  */
 export type NoticeDataValidTimeOutsideContract = {
   /**
+   * Identifies the notice type for discriminated union deserialization.
+   */
+  notice_type?: "no.elhub.flex.controllable_unit_service_provider.valid_time.outside_contract";
+  /**
    * Part of the timeline where the end user on the CUSP relation does not match the end user on the accounting point.
    */
   invalid_timeline?: TimelineMultiRange;
@@ -215,6 +219,10 @@ export type NoticeDataValidTimeOutsideContract = {
  * Format of the data field in a notice of type no.elhub.flex.party.missing
  */
 export type NoticeDataPartyMissing = {
+  /**
+   * Identifies the notice type for discriminated union deserialization.
+   */
+  notice_type?: "no.elhub.flex.party.missing";
   /**
    * Details about the entity owning the missing party.
    */
@@ -230,6 +238,10 @@ export type NoticeDataPartyMissing = {
  */
 export type NoticeDataPartyOutdated = {
   /**
+   * Identifies the notice type for discriminated union deserialization.
+   */
+  notice_type?: "no.elhub.flex.party.outdated";
+  /**
    * Details about the possibly new entity owning the party.
    */
   entity?: Entity;
@@ -244,16 +256,28 @@ export type NoticeDataPartyOutdated = {
  */
 export type NoticeDataProductTypeNotQualified = {
   /**
+   * Identifies the notice type for discriminated union deserialization.
+   */
+  notice_type?: "no.elhub.flex.service_provider_product_suspension.product_type.not_qualified";
+  /**
    * List of product types that are not qualified.
    */
   product_type_ids?: Array<number>;
 };
 
 export type NoticeData =
-  | NoticeDataValidTimeOutsideContract
-  | NoticeDataPartyMissing
-  | NoticeDataPartyOutdated
-  | NoticeDataProductTypeNotQualified;
+  | ({
+      notice_type: "no.elhub.flex.controllable_unit_service_provider.valid_time.outside_contract";
+    } & NoticeDataValidTimeOutsideContract)
+  | ({
+      notice_type: "no.elhub.flex.party.missing";
+    } & NoticeDataPartyMissing)
+  | ({
+      notice_type: "no.elhub.flex.party.outdated";
+    } & NoticeDataPartyOutdated)
+  | ({
+      notice_type: "no.elhub.flex.service_provider_product_suspension.product_type.not_qualified";
+    } & NoticeDataProductTypeNotQualified);
 
 export type NumericAggregation = {
   sum?: number;
@@ -4211,6 +4235,10 @@ export type ServiceProvidingGroupProductSuspensionCommentHistory = {
  */
 export type NoticeDataPartyMissingWritable = {
   /**
+   * Identifies the notice type for discriminated union deserialization.
+   */
+  notice_type?: "no.elhub.flex.party.missing";
+  /**
    * Details about the entity owning the missing party.
    */
   entity?: EntityWritable;
@@ -4225,6 +4253,10 @@ export type NoticeDataPartyMissingWritable = {
  */
 export type NoticeDataPartyOutdatedWritable = {
   /**
+   * Identifies the notice type for discriminated union deserialization.
+   */
+  notice_type?: "no.elhub.flex.party.outdated";
+  /**
    * Details about the possibly new entity owning the party.
    */
   entity?: EntityWritable;
@@ -4235,10 +4267,18 @@ export type NoticeDataPartyOutdatedWritable = {
 };
 
 export type NoticeDataWritable =
-  | NoticeDataValidTimeOutsideContract
-  | NoticeDataPartyMissingWritable
-  | NoticeDataPartyOutdatedWritable
-  | NoticeDataProductTypeNotQualified;
+  | ({
+      notice_type: "no.elhub.flex.controllable_unit_service_provider.valid_time.outside_contract";
+    } & NoticeDataValidTimeOutsideContract)
+  | ({
+      notice_type: "no.elhub.flex.party.missing";
+    } & NoticeDataPartyMissingWritable)
+  | ({
+      notice_type: "no.elhub.flex.party.outdated";
+    } & NoticeDataPartyOutdatedWritable)
+  | ({
+      notice_type: "no.elhub.flex.service_provider_product_suspension.product_type.not_qualified";
+    } & NoticeDataProductTypeNotQualified);
 
 /**
  * An empty object

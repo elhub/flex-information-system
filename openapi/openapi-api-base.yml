@@ -431,6 +431,11 @@ components:
         Format of the data field in a notice of type
         no.elhub.flex.*.valid_time.outside_contract
       properties:
+        notice_type:
+          description: Identifies the notice type for discriminated union deserialization.
+          type: string
+          enum:
+            - no.elhub.flex.controllable_unit_service_provider.valid_time.outside_contract
         invalid_timeline:
           description: >-
             Part of the timeline where the end user on the CUSP relation does
@@ -440,6 +445,11 @@ components:
       description: >-
         Format of the data field in a notice of type no.elhub.flex.party.missing
       properties:
+        notice_type:
+          description: Identifies the notice type for discriminated union deserialization.
+          type: string
+          enum:
+            - no.elhub.flex.party.missing
         entity:
           description: Details about the entity owning the missing party.
           $ref: "#/components/schemas/entity_response"
@@ -451,6 +461,11 @@ components:
         Format of the data field in a notice of type
         no.elhub.flex.party.outdated
       properties:
+        notice_type:
+          description: Identifies the notice type for discriminated union deserialization.
+          type: string
+          enum:
+            - no.elhub.flex.party.outdated
         entity:
           description: Details about the possibly new entity owning the party.
           $ref: "#/components/schemas/entity_response"
@@ -462,6 +477,11 @@ components:
         Format of the data field in a notice of type
         no.elhub.flex.service_provider_product_suspension.product_type.not_qualified
       properties:
+        notice_type:
+          description: Identifies the notice type for discriminated union deserialization.
+          type: string
+          enum:
+            - no.elhub.flex.service_provider_product_suspension.product_type.not_qualified
         product_type_ids:
           description: List of product types that are not qualified.
           type: array
@@ -475,6 +495,13 @@ components:
         - $ref: "#/components/schemas/notice_data_party_missing"
         - $ref: "#/components/schemas/notice_data_party_outdated"
         - $ref: "#/components/schemas/notice_data_product_type_not_qualified"
+      discriminator:
+        propertyName: notice_type
+        mapping:
+          no.elhub.flex.controllable_unit_service_provider.valid_time.outside_contract: "#/components/schemas/notice_data_valid_time_outside_contract"
+          no.elhub.flex.party.missing: "#/components/schemas/notice_data_party_missing"
+          no.elhub.flex.party.outdated: "#/components/schemas/notice_data_party_outdated"
+          no.elhub.flex.service_provider_product_suspension.product_type.not_qualified: "#/components/schemas/notice_data_product_type_not_qualified"
     numeric_aggregation:
       type: object
       properties:

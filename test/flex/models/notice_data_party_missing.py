@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, Any, TypeVar
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
+from ..models.notice_data_party_missing_notice_type import NoticeDataPartyMissingNoticeType
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
@@ -21,6 +22,8 @@ class NoticeDataPartyMissing:
     """Format of the data field in a notice of type no.elhub.flex.party.missing
 
     Attributes:
+        notice_type (NoticeDataPartyMissingNoticeType | Unset): Identifies the notice type for discriminated union
+            deserialization.
         entity (EntityResponse | Unset): Response schema - Entity - Natural or legal person
 
             An entity is a natural or legal person that can be a party in the Flexibility Information System.
@@ -40,11 +43,16 @@ class NoticeDataPartyMissing:
             * End User
     """
 
+    notice_type: NoticeDataPartyMissingNoticeType | Unset = UNSET
     entity: EntityResponse | Unset = UNSET
     party: PartyResponse | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        notice_type: str | Unset = UNSET
+        if not isinstance(self.notice_type, Unset):
+            notice_type = self.notice_type.value
+
         entity: dict[str, Any] | Unset = UNSET
         if not isinstance(self.entity, Unset):
             entity = self.entity.to_dict()
@@ -56,6 +64,8 @@ class NoticeDataPartyMissing:
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
+        if notice_type is not UNSET:
+            field_dict["notice_type"] = notice_type
         if entity is not UNSET:
             field_dict["entity"] = entity
         if party is not UNSET:
@@ -69,6 +79,13 @@ class NoticeDataPartyMissing:
         from ..models.party_response import PartyResponse
 
         d = dict(src_dict)
+        _notice_type = d.pop("notice_type", UNSET)
+        notice_type: NoticeDataPartyMissingNoticeType | Unset
+        if isinstance(_notice_type, Unset):
+            notice_type = UNSET
+        else:
+            notice_type = NoticeDataPartyMissingNoticeType(_notice_type)
+
         _entity = d.pop("entity", UNSET)
         entity: EntityResponse | Unset
         if isinstance(_entity, Unset):
@@ -84,6 +101,7 @@ class NoticeDataPartyMissing:
             party = PartyResponse.from_dict(_party)
 
         notice_data_party_missing = cls(
+            notice_type=notice_type,
             entity=entity,
             party=party,
         )
