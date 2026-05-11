@@ -36,15 +36,15 @@ export function countDefinedValues(obj: any): number {
 
 export type Response<T> =
   | {
-      data: T;
-      error: undefined;
-      response: { headers: Headers };
-    }
+    data: T;
+    error: undefined;
+    response?: { headers: Headers };
+  }
   | {
-      data: undefined;
-      response: { headers: Headers };
-      error: ErrorMessage | EmptyObject;
-    };
+    data: undefined;
+    response?: { headers: Headers };
+    error: ErrorMessage | EmptyObject;
+  };
 
 export const throwOnError = <T>(response: Response<T>): NonNullable<T> => {
   const { data, error } = response;
@@ -61,12 +61,11 @@ export const throwOnError = <T>(response: Response<T>): NonNullable<T> => {
 // The request needs prefer header "count=exact" for this to work
 export const getCountAndData = <T>(
   response: Response<T>,
-): { count: number; data: T } => {
-  const { data, error } = response;
-  if (error) {
-    throw error;
-  }
-  const count = response.response.headers.get("Content-Range")?.split("/")[1];
+): { count: number; data: NonNullable<T> } => {
+
+  const data = throwOnError(response);
+
+  const count = response.response?.headers.get("Content-Range")?.split("/")[1];
 
   if (!count || count === "*") {
     console.error("Count header is missing or invalid in the response");
