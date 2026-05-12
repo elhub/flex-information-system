@@ -1,7 +1,7 @@
 # Query Parameters
 
 The API is backed by [PostgREST](https://postgrest.org/). Most query parameters
-are forwarded to PostgREST directly; a few are rewritten by the Go proxy before
+are forwarded to PostgREST directly; a few are rewritten before
 forwarding. This page documents what is available and the syntax to use.
 
 ## Filtering — `<field>=<operator>.<value>`
@@ -108,5 +108,5 @@ The parameter also works prefixed with a relation name when used alongside
 GET /controllable_unit?embed=service_provider&service_provider.valid_at=2025-01-01T00:00:00Z
 ```
 
-Accepted datetime formats match those described in [API Design — Datetime](api-design.md#datetime).
+Accepted datetime formats match those described in [API Design — Datetime](../technical/api-design.md#datetime).
 An invalid value returns `400 Bad Request`.

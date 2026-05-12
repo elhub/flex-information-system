@@ -181,9 +181,9 @@ Resource level authorization is a way to control access to each resource as a
 whole. As an example, a service provider should only be able to see the
 controllable units that are assigned to them.
 
-RLA is documented as a set of policies per resource and party type. We document this
-as a list of textual policies per type, as shown for Service Provider (SP) and
-System Operator (SO) in the example below.
+RLA is documented as a set of policies per resource and party type.
+We document this as a list of textual policies per type, as shown for
+Service Provider (SP) and System Operator (SO) in the example below.
 
 | Policy key | Policy                                                   | Status  |
 |------------|----------------------------------------------------------|---------|
