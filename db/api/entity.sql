@@ -54,10 +54,8 @@ BEGIN
     ELSIF TG_OP = 'UPDATE' THEN
 
         UPDATE flex.entity SET
-            name = NEW.name,
-            type = NEW.type,
-            business_id = NEW.business_id,
-            business_id_type = NEW.business_id_type
+            -- only name is allowed to be updated
+            name = NEW.name
         WHERE id = NEW.id;
 
         IF NOT FOUND THEN
