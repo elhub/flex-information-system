@@ -57,7 +57,7 @@ build
 dist
 dist-docs
 docs/download
-docs/api
+docs/api/v0
 docs/auth
 out
 dist-ssr
