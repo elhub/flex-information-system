@@ -1,12 +1,11 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import TYPE_CHECKING, Any, TypeVar
+from typing import TYPE_CHECKING, Any, Literal, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..models.notice_data_party_outdated_notice_type import NoticeDataPartyOutdatedNoticeType
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
@@ -22,7 +21,7 @@ class NoticeDataPartyOutdated:
     """Format of the data field in a notice of type no.elhub.flex.party.outdated
 
     Attributes:
-        notice_type (NoticeDataPartyOutdatedNoticeType | Unset): Identifies the notice type for discriminated union
+        kind (Literal['notice.data.party.outdated'] | Unset): Identifies the notice data schema for discriminated union
             deserialization.
         entity (EntityResponse | Unset): Response schema - Entity - Natural or legal person
 
@@ -43,15 +42,13 @@ class NoticeDataPartyOutdated:
             * End User
     """
 
-    notice_type: NoticeDataPartyOutdatedNoticeType | Unset = UNSET
+    kind: Literal["notice.data.party.outdated"] | Unset = UNSET
     entity: EntityResponse | Unset = UNSET
     party: PartyResponse | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        notice_type: str | Unset = UNSET
-        if not isinstance(self.notice_type, Unset):
-            notice_type = self.notice_type.value
+        kind = self.kind
 
         entity: dict[str, Any] | Unset = UNSET
         if not isinstance(self.entity, Unset):
@@ -64,8 +61,8 @@ class NoticeDataPartyOutdated:
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
-        if notice_type is not UNSET:
-            field_dict["notice_type"] = notice_type
+        if kind is not UNSET:
+            field_dict["kind"] = kind
         if entity is not UNSET:
             field_dict["entity"] = entity
         if party is not UNSET:
@@ -79,12 +76,9 @@ class NoticeDataPartyOutdated:
         from ..models.party_response import PartyResponse
 
         d = dict(src_dict)
-        _notice_type = d.pop("notice_type", UNSET)
-        notice_type: NoticeDataPartyOutdatedNoticeType | Unset
-        if isinstance(_notice_type, Unset):
-            notice_type = UNSET
-        else:
-            notice_type = NoticeDataPartyOutdatedNoticeType(_notice_type)
+        kind = cast(Literal["notice.data.party.outdated"] | Unset, d.pop("kind", UNSET))
+        if kind != "notice.data.party.outdated" and not isinstance(kind, Unset):
+            raise ValueError(f"kind must match const 'notice.data.party.outdated', got '{kind}'")
 
         _entity = d.pop("entity", UNSET)
         entity: EntityResponse | Unset
@@ -101,7 +95,7 @@ class NoticeDataPartyOutdated:
             party = PartyResponse.from_dict(_party)
 
         notice_data_party_outdated = cls(
-            notice_type=notice_type,
+            kind=kind,
             entity=entity,
             party=party,
         )

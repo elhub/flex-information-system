@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 /**
  * Format of the data field in a notice of type no.elhub.flex.party.missing
  */
-@SerialName("no.elhub.flex.party.missing")
+@SerialName("notice.data.party.missing")
 @Serializable
 public data class NoticeDataPartyMissing(
   /**

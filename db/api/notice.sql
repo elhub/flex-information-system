@@ -5,20 +5,17 @@
 CREATE OR REPLACE VIEW api.notice
 WITH (security_invoker = true) AS (
     SELECT
-        n.id,
-        n.party_id,
-        n.type,
-        n.status,
-        n.recorded_by,
+        id,
+        data,
+        party_id,
+        type,
+        status,
+        recorded_by,
         CASE
-            WHEN n.data IS null THEN null
-            ELSE n.data || jsonb_build_object('notice_type', n.type::text)
-        END AS data, -- noqa
-        CASE
-            WHEN n.source_resource IS null OR n.source_id IS null THEN null
-            ELSE '/' || n.source_resource || '/' || n.source_id
+            WHEN source_resource IS null OR source_id IS null THEN null
+            ELSE '/' || source_resource || '/' || source_id
         END
         AS source,
-        lower(n.record_time_range) AS recorded_at
-    FROM flex.notice AS n
+        lower(record_time_range) AS recorded_at
+    FROM flex.notice
 );

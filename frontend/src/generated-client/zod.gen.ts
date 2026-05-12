@@ -149,11 +149,7 @@ export const zTimelineMultiRange = z.array(
  * Format of the data field in a notice of type no.elhub.flex.*.valid_time.outside_contract
  */
 export const zNoticeDataValidTimeOutsideContract = z.object({
-  notice_type: z
-    .enum([
-      "no.elhub.flex.controllable_unit_service_provider.valid_time.outside_contract",
-    ])
-    .optional(),
+  kind: z.literal("notice.data.valid_time.outside_contract").optional(),
   invalid_timeline: zTimelineMultiRange.optional(),
 });
 
@@ -161,11 +157,7 @@ export const zNoticeDataValidTimeOutsideContract = z.object({
  * Format of the data field in a notice of type no.elhub.flex.service_provider_product_suspension.product_type.not_qualified
  */
 export const zNoticeDataProductTypeNotQualified = z.object({
-  notice_type: z
-    .enum([
-      "no.elhub.flex.service_provider_product_suspension.product_type.not_qualified",
-    ])
-    .optional(),
+  kind: z.literal("notice.data.product_type.not_qualified").optional(),
   product_type_ids: z.array(z.coerce.number()).optional(),
 });
 
@@ -1788,7 +1780,7 @@ export const zServiceProvidingGroupProductSuspensionCommentHistoryWritable =
  * Format of the data field in a notice of type no.elhub.flex.party.missing
  */
 export const zNoticeDataPartyMissing = z.object({
-  notice_type: z.enum(["no.elhub.flex.party.missing"]).optional(),
+  kind: z.literal("notice.data.party.missing").optional(),
   entity: z.lazy((): any => zEntity).optional(),
   party: z.lazy((): any => zParty).optional(),
 });
@@ -1797,36 +1789,24 @@ export const zNoticeDataPartyMissing = z.object({
  * Format of the data field in a notice of type no.elhub.flex.party.outdated
  */
 export const zNoticeDataPartyOutdated = z.object({
-  notice_type: z.enum(["no.elhub.flex.party.outdated"]).optional(),
+  kind: z.literal("notice.data.party.outdated").optional(),
   entity: z.lazy((): any => zEntity).optional(),
   party: z.lazy((): any => zParty).optional(),
 });
 
-export const zNoticeData = z.union([
-  z
-    .object({
-      notice_type: z.literal(
-        "no.elhub.flex.controllable_unit_service_provider.valid_time.outside_contract",
-      ),
-    })
-    .and(zNoticeDataValidTimeOutsideContract),
-  z
-    .object({
-      notice_type: z.literal("no.elhub.flex.party.missing"),
-    })
-    .and(zNoticeDataPartyMissing),
-  z
-    .object({
-      notice_type: z.literal("no.elhub.flex.party.outdated"),
-    })
-    .and(zNoticeDataPartyOutdated),
-  z
-    .object({
-      notice_type: z.literal(
-        "no.elhub.flex.service_provider_product_suspension.product_type.not_qualified",
-      ),
-    })
-    .and(zNoticeDataProductTypeNotQualified),
+export const zNoticeData = z.discriminatedUnion("kind", [
+  zNoticeDataValidTimeOutsideContract.extend({
+    kind: z.literal("notice.data.valid_time.outside_contract"),
+  }),
+  zNoticeDataPartyMissing.extend({
+    kind: z.literal("notice.data.party.missing"),
+  }),
+  zNoticeDataPartyOutdated.extend({
+    kind: z.literal("notice.data.party.outdated"),
+  }),
+  zNoticeDataProductTypeNotQualified.extend({
+    kind: z.literal("notice.data.product_type.not_qualified"),
+  }),
 ]);
 
 /**
@@ -2574,7 +2554,7 @@ export const zNotice = z.object({
  * Format of the data field in a notice of type no.elhub.flex.party.missing
  */
 export const zNoticeDataPartyMissingWritable = z.object({
-  notice_type: z.enum(["no.elhub.flex.party.missing"]).optional(),
+  kind: z.literal("notice.data.party.missing").optional(),
   entity: z.lazy((): any => zEntityWritable).optional(),
   party: z.lazy((): any => zPartyWritable).optional(),
 });
@@ -2583,36 +2563,24 @@ export const zNoticeDataPartyMissingWritable = z.object({
  * Format of the data field in a notice of type no.elhub.flex.party.outdated
  */
 export const zNoticeDataPartyOutdatedWritable = z.object({
-  notice_type: z.enum(["no.elhub.flex.party.outdated"]).optional(),
+  kind: z.literal("notice.data.party.outdated").optional(),
   entity: z.lazy((): any => zEntityWritable).optional(),
   party: z.lazy((): any => zPartyWritable).optional(),
 });
 
-export const zNoticeDataWritable = z.union([
-  z
-    .object({
-      notice_type: z.literal(
-        "no.elhub.flex.controllable_unit_service_provider.valid_time.outside_contract",
-      ),
-    })
-    .and(zNoticeDataValidTimeOutsideContract),
-  z
-    .object({
-      notice_type: z.literal("no.elhub.flex.party.missing"),
-    })
-    .and(zNoticeDataPartyMissingWritable),
-  z
-    .object({
-      notice_type: z.literal("no.elhub.flex.party.outdated"),
-    })
-    .and(zNoticeDataPartyOutdatedWritable),
-  z
-    .object({
-      notice_type: z.literal(
-        "no.elhub.flex.service_provider_product_suspension.product_type.not_qualified",
-      ),
-    })
-    .and(zNoticeDataProductTypeNotQualified),
+export const zNoticeDataWritable = z.discriminatedUnion("kind", [
+  zNoticeDataValidTimeOutsideContract.extend({
+    kind: z.literal("notice.data.valid_time.outside_contract"),
+  }),
+  zNoticeDataPartyMissingWritable.extend({
+    kind: z.literal("notice.data.party.missing"),
+  }),
+  zNoticeDataPartyOutdatedWritable.extend({
+    kind: z.literal("notice.data.party.outdated"),
+  }),
+  zNoticeDataProductTypeNotQualified.extend({
+    kind: z.literal("notice.data.product_type.not_qualified"),
+  }),
 ]);
 
 /**

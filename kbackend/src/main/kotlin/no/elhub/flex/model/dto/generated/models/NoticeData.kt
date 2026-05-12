@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonClassDiscriminator
 
 @Serializable
-@JsonClassDiscriminator("notice_type")
+@JsonClassDiscriminator("kind")
 @ExperimentalSerializationApi
 public sealed interface NoticeData

@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 /**
  * Format of the data field in a notice of type no.elhub.flex.party.outdated
  */
-@SerialName("no.elhub.flex.party.outdated")
+@SerialName("notice.data.party.outdated")
 @Serializable
 public data class NoticeDataPartyOutdated(
   /**
