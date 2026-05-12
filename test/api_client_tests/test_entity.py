@@ -209,16 +209,19 @@ def test_entity_fiso(sts):
     )
     assert isinstance(e, EntityResponse)
 
+    new_entity_pid = random_pid()
     e = create_entity.sync(
         client=client_fiso,
         body=EntityCreateRequest(
             name="Test Entity VALID PID",
-            business_id=random_pid(),
+            business_id=new_entity_pid,
             business_id_type=EntityBusinessIdType.PID,
             type_=EntityType.PERSON,
         ),
     )
     assert isinstance(e, EntityResponse)
+    # check that the business id is masked in the response
+    assert e.business_id == new_entity_pid[0:6] + "*****"
 
     # update OK
 
