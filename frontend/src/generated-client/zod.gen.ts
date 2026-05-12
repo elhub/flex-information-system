@@ -80,7 +80,7 @@ export const zTechnology = z.enum([
  * Request schema for controllable unit lookup operations
  */
 export const zControllableUnitLookupRequest = z.object({
-  end_user: z.string().regex(/^[1-9]([0-9]{8}|[0-9]{10})$/),
+  end_user: z.string().regex(/^[0-9]{6}$|^[1-9][0-9]{8}$/),
   controllable_unit: z
     .string()
     .regex(

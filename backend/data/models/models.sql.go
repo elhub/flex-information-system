@@ -9,55 +9,6 @@ import (
 	"context"
 )
 
-const controllableUnitLookup = `-- name: ControllableUnitLookup :one
-SELECT
-    controllable_units::jsonb
-FROM api.controllable_unit_lookup(
-  -- empty strings considered as missing values
-  nullif($1::text, ''),
-  nullif($2::text, '')
-)
-`
-
-func (q *Queries) ControllableUnitLookup(ctx context.Context, controllableUnitBusinessID string, accountingPointID string) ([]byte, error) {
-	row := q.db.QueryRow(ctx, controllableUnitLookup, controllableUnitBusinessID, accountingPointID)
-	var controllable_units []byte
-	err := row.Scan(&controllable_units)
-	return controllable_units, err
-}
-
-const controllableUnitLookupCheckEndUserMatchesAccountingPoint = `-- name: ControllableUnitLookupCheckEndUserMatchesAccountingPoint :one
-SELECT end_user_id::bigint
-FROM api.controllable_unit_lookup_check_end_user_matches_accounting_point(
-    $1::text,
-    $2::text
-)
-`
-
-func (q *Queries) ControllableUnitLookupCheckEndUserMatchesAccountingPoint(ctx context.Context, endUserBusinessID string, accountingPointBusinessID string) (int, error) {
-	row := q.db.QueryRow(ctx, controllableUnitLookupCheckEndUserMatchesAccountingPoint, endUserBusinessID, accountingPointBusinessID)
-	var end_user_id int
-	err := row.Scan(&end_user_id)
-	return end_user_id, err
-}
-
-const controllableUnitLookupSyncAccountingPoint = `-- name: ControllableUnitLookupSyncAccountingPoint :one
-SELECT
-    accounting_point_id::bigint
-FROM api.controllable_unit_lookup_sync_accounting_point(
-    $1::text,
-    $2::text,
-    $3::text
-)
-`
-
-func (q *Queries) ControllableUnitLookupSyncAccountingPoint(ctx context.Context, accountingPointBusinessID string, meteringGridAreaBusinessID string, endUserBusinessID string) (int, error) {
-	row := q.db.QueryRow(ctx, controllableUnitLookupSyncAccountingPoint, accountingPointBusinessID, meteringGridAreaBusinessID, endUserBusinessID)
-	var accounting_point_id int
-	err := row.Scan(&accounting_point_id)
-	return accounting_point_id, err
-}
-
 const entityLookup = `-- name: EntityLookup :one
 SELECT
     entity_id::bigint,
@@ -78,40 +29,5 @@ func (q *Queries) EntityLookup(ctx context.Context, entityBusinessID string, ent
 	row := q.db.QueryRow(ctx, entityLookup, entityBusinessID, entityName, entityType)
 	var i EntityLookupRow
 	err := row.Scan(&i.EntityID, &i.EntityFound)
-	return i, err
-}
-
-const getAccountingPointIDFromBusinessID = `-- name: GetAccountingPointIDFromBusinessID :one
-SELECT ap.id
-FROM api.accounting_point AS ap
-WHERE ap.business_id = $1
-`
-
-// no function as AP is public information
-func (q *Queries) GetAccountingPointIDFromBusinessID(ctx context.Context, accountingPointBusinessID string) (int, error) {
-	row := q.db.QueryRow(ctx, getAccountingPointIDFromBusinessID, accountingPointBusinessID)
-	var id int
-	err := row.Scan(&id)
-	return id, err
-}
-
-const getCurrentControllableUnitAccountingPoint = `-- name: GetCurrentControllableUnitAccountingPoint :one
-SELECT
-    accounting_point_id::bigint,
-    accounting_point_business_id::text
-FROM api.current_controllable_unit_accounting_point(
-    $1::text
-)
-`
-
-type GetCurrentControllableUnitAccountingPointRow struct {
-	AccountingPointID         int
-	AccountingPointBusinessID string
-}
-
-func (q *Queries) GetCurrentControllableUnitAccountingPoint(ctx context.Context, controllableUnitBusinessID string) (GetCurrentControllableUnitAccountingPointRow, error) {
-	row := q.db.QueryRow(ctx, getCurrentControllableUnitAccountingPoint, controllableUnitBusinessID)
-	var i GetCurrentControllableUnitAccountingPointRow
-	err := row.Scan(&i.AccountingPointID, &i.AccountingPointBusinessID)
 	return i, err
 }

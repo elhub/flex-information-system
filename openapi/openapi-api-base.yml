@@ -253,11 +253,13 @@ components:
       type: object
       properties:
         end_user:
-          description: Birth number or organisation number of the end user.
+          description: >-
+            Birth date (DDMMYY) of the end user if a person, or organisation
+            number if an organisation.
           format: text
           type: string
-          pattern: "^[1-9]([0-9]{8}|[0-9]{10})$"
-          example: "133700008"
+          pattern: "^[0-9]{6}$|^[1-9][0-9]{8}$"
+          example: "150190"
         controllable_unit:
           description: The business ID of the controllable unit to lookup.
           format: text

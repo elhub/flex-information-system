@@ -2,14 +2,15 @@ import { IconClockCircle, IconWarningTriangle } from "@elhub/ds-icons";
 import { useDashboardApplications } from "../hooks/useDashboardApplications";
 import { StatCard } from "../shared/StatCard";
 import { Alert, Loader } from "../../components/ui";
-import { useInconsistencies } from "../hooks/useInconsistencies";
+import { useNotices } from "../hooks/useNotices";
 
 export const SoStatCards = () => {
   const { activeItems, isLoading, error } = useDashboardApplications();
-  const { data: inconsistencies } = useInconsistencies();
+  const noticeQuery = useNotices();
 
-  if (isLoading) return <Loader size="small" />;
-  if (error) return <Alert variant="error">Failed to load stats.</Alert>;
+  if (isLoading || noticeQuery.isLoading) return <Loader size="small" />;
+  if (error || noticeQuery.error)
+    return <Alert variant="error">Failed to load stats.</Alert>;
 
   return (
     <div className="flex flex-col sm:flex-row gap-4">
@@ -26,8 +27,8 @@ export const SoStatCards = () => {
         iconBgClass="bg-semantic-background-information"
       />
       <StatCard
-        label="Resource Inconsistencies"
-        value={inconsistencies?.length || 0}
+        label="Notices"
+        value={noticeQuery.data?.count ?? 0}
         icon={
           <IconWarningTriangle
             size="medium"

@@ -88,7 +88,7 @@ export type Technology =
  */
 export type ControllableUnitLookupRequest = {
   /**
-   * Birth number or organisation number of the end user.
+   * Birth date (DDMMYY) of the end user if a person, or organisation number if an organisation.
    */
   end_user: string;
   /**

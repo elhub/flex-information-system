@@ -38,6 +38,9 @@ BEGIN
     USING in_resource_id, in_event_time;
 
     RETURN l_is_resource_visible_at_event_time;
+EXCEPTION
+    WHEN insufficient_privilege THEN
+        RETURN false;
 END;
 $$;
 
