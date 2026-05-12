@@ -12,6 +12,9 @@ Here are the acceptable values for entities:
 | Organisation   | `org` (_organisasjonsnummer_)    |
 | Person         | `pid` (_fødselsnummer_), `email` |
 
+If the business ID type is `pid`, then the API response will mask the five last
+digits, so that the returned `business_id` will look like `010101*****`.
+
 ## Lookup
 
 A lookup operation can be performed to check whether a business ID is already
