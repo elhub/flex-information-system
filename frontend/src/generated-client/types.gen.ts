@@ -202,13 +202,13 @@ export type TimelineMultiRange = Array<{
 }>;
 
 /**
- * Format of the data field in a notice of type no.elhub.flex.*.valid_time.outside_contract
+ * Format of the data field in a notice with data.kind = notice.data.valid_time.outside_contract
  */
 export type NoticeDataValidTimeOutsideContract = {
   /**
    * Identifies the notice data schema for discriminated union deserialization.
    */
-  kind?: "notice.data.valid_time.outside_contract";
+  kind: "notice.data.valid_time.outside_contract";
   /**
    * Part of the timeline where the end user on the CUSP relation does not match the end user on the accounting point.
    */
@@ -216,13 +216,13 @@ export type NoticeDataValidTimeOutsideContract = {
 };
 
 /**
- * Format of the data field in a notice of type no.elhub.flex.party.missing
+ * Format of the data field in a notice with data.kind = notice.data.party.missing
  */
 export type NoticeDataPartyMissing = {
   /**
    * Identifies the notice data schema for discriminated union deserialization.
    */
-  kind?: "notice.data.party.missing";
+  kind: "notice.data.party.missing";
   /**
    * Details about the entity owning the missing party.
    */
@@ -234,13 +234,13 @@ export type NoticeDataPartyMissing = {
 };
 
 /**
- * Format of the data field in a notice of type no.elhub.flex.party.outdated
+ * Format of the data field in a notice with data.kind = notice.data.party.outdated
  */
 export type NoticeDataPartyOutdated = {
   /**
    * Identifies the notice data schema for discriminated union deserialization.
    */
-  kind?: "notice.data.party.outdated";
+  kind: "notice.data.party.outdated";
   /**
    * Details about the possibly new entity owning the party.
    */
@@ -252,13 +252,13 @@ export type NoticeDataPartyOutdated = {
 };
 
 /**
- * Format of the data field in a notice of type no.elhub.flex.service_provider_product_suspension.product_type.not_qualified
+ * Format of the data field in a notice with data.kind = notice.data.product_type.not_qualified
  */
 export type NoticeDataProductTypeNotQualified = {
   /**
    * Identifies the notice data schema for discriminated union deserialization.
    */
-  kind?: "notice.data.product_type.not_qualified";
+  kind: "notice.data.product_type.not_qualified";
   /**
    * List of product types that are not qualified.
    */
@@ -4231,13 +4231,13 @@ export type ServiceProvidingGroupProductSuspensionCommentHistory = {
 };
 
 /**
- * Format of the data field in a notice of type no.elhub.flex.party.missing
+ * Format of the data field in a notice with data.kind = notice.data.party.missing
  */
 export type NoticeDataPartyMissingWritable = {
   /**
    * Identifies the notice data schema for discriminated union deserialization.
    */
-  kind?: "notice.data.party.missing";
+  kind: "notice.data.party.missing";
   /**
    * Details about the entity owning the missing party.
    */
@@ -4249,13 +4249,13 @@ export type NoticeDataPartyMissingWritable = {
 };
 
 /**
- * Format of the data field in a notice of type no.elhub.flex.party.outdated
+ * Format of the data field in a notice with data.kind = notice.data.party.outdated
  */
 export type NoticeDataPartyOutdatedWritable = {
   /**
    * Identifies the notice data schema for discriminated union deserialization.
    */
-  kind?: "notice.data.party.outdated";
+  kind: "notice.data.party.outdated";
   /**
    * Details about the possibly new entity owning the party.
    */

@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * Format of the data field in a notice of type no.elhub.flex.party.missing
+ * Format of the data field in a notice with data.kind = notice.data.party.missing
  */
 @SerialName("notice.data.party.missing")
 @Serializable

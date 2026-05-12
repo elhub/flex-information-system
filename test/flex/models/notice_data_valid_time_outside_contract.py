@@ -17,16 +17,16 @@ T = TypeVar("T", bound="NoticeDataValidTimeOutsideContract")
 
 @_attrs_define
 class NoticeDataValidTimeOutsideContract:
-    """Format of the data field in a notice of type no.elhub.flex.*.valid_time.outside_contract
+    """Format of the data field in a notice with data.kind = notice.data.valid_time.outside_contract
 
     Attributes:
-        kind (Literal['notice.data.valid_time.outside_contract'] | Unset): Identifies the notice data schema for
-            discriminated union deserialization.
+        kind (Literal['notice.data.valid_time.outside_contract']): Identifies the notice data schema for discriminated
+            union deserialization.
         invalid_timeline (list[TimelineMultiRangeItem] | Unset): Partial timeline data that is relevant to mention, in a
             notice for instance. Multirange format, i.e., array of start/end timestamp pairs.
     """
 
-    kind: Literal["notice.data.valid_time.outside_contract"] | Unset = UNSET
+    kind: Literal["notice.data.valid_time.outside_contract"]
     invalid_timeline: list[TimelineMultiRangeItem] | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -42,9 +42,11 @@ class NoticeDataValidTimeOutsideContract:
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if kind is not UNSET:
-            field_dict["kind"] = kind
+        field_dict.update(
+            {
+                "kind": kind,
+            }
+        )
         if invalid_timeline is not UNSET:
             field_dict["invalid_timeline"] = invalid_timeline
 
@@ -55,8 +57,8 @@ class NoticeDataValidTimeOutsideContract:
         from ..models.timeline_multi_range_item import TimelineMultiRangeItem
 
         d = dict(src_dict)
-        kind = cast(Literal["notice.data.valid_time.outside_contract"] | Unset, d.pop("kind", UNSET))
-        if kind != "notice.data.valid_time.outside_contract" and not isinstance(kind, Unset):
+        kind = cast(Literal["notice.data.valid_time.outside_contract"], d.pop("kind"))
+        if kind != "notice.data.valid_time.outside_contract":
             raise ValueError(f"kind must match const 'notice.data.valid_time.outside_contract', got '{kind}'")
 
         _invalid_timeline = d.pop("invalid_timeline", UNSET)

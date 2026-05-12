@@ -6,8 +6,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * Format of the data field in a notice of type
- * no.elhub.flex.service_provider_product_suspension.product_type.not_qualified
+ * Format of the data field in a notice with data.kind = notice.data.product_type.not_qualified
  */
 @SerialName("notice.data.product_type.not_qualified")
 @Serializable

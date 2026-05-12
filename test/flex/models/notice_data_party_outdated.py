@@ -18,10 +18,10 @@ T = TypeVar("T", bound="NoticeDataPartyOutdated")
 
 @_attrs_define
 class NoticeDataPartyOutdated:
-    """Format of the data field in a notice of type no.elhub.flex.party.outdated
+    """Format of the data field in a notice with data.kind = notice.data.party.outdated
 
     Attributes:
-        kind (Literal['notice.data.party.outdated'] | Unset): Identifies the notice data schema for discriminated union
+        kind (Literal['notice.data.party.outdated']): Identifies the notice data schema for discriminated union
             deserialization.
         entity (EntityResponse | Unset): Response schema - Entity - Natural or legal person
 
@@ -42,7 +42,7 @@ class NoticeDataPartyOutdated:
             * End User
     """
 
-    kind: Literal["notice.data.party.outdated"] | Unset = UNSET
+    kind: Literal["notice.data.party.outdated"]
     entity: EntityResponse | Unset = UNSET
     party: PartyResponse | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
@@ -60,9 +60,11 @@ class NoticeDataPartyOutdated:
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if kind is not UNSET:
-            field_dict["kind"] = kind
+        field_dict.update(
+            {
+                "kind": kind,
+            }
+        )
         if entity is not UNSET:
             field_dict["entity"] = entity
         if party is not UNSET:
@@ -76,8 +78,8 @@ class NoticeDataPartyOutdated:
         from ..models.party_response import PartyResponse
 
         d = dict(src_dict)
-        kind = cast(Literal["notice.data.party.outdated"] | Unset, d.pop("kind", UNSET))
-        if kind != "notice.data.party.outdated" and not isinstance(kind, Unset):
+        kind = cast(Literal["notice.data.party.outdated"], d.pop("kind"))
+        if kind != "notice.data.party.outdated":
             raise ValueError(f"kind must match const 'notice.data.party.outdated', got '{kind}'")
 
         _entity = d.pop("entity", UNSET)

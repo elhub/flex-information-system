@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * Format of the data field in a notice of type no.elhub.flex.*.valid_time.outside_contract
+ * Format of the data field in a notice with data.kind = notice.data.valid_time.outside_contract
  */
 @SerialName("notice.data.valid_time.outside_contract")
 @Serializable

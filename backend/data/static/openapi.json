@@ -504,7 +504,11 @@
                 }
             },
             "notice_data_valid_time_outside_contract": {
-                "description": "Format of the data field in a notice of type no.elhub.flex.*.valid_time.outside_contract",
+                "type": "object",
+                "description": "Format of the data field in a notice with data.kind = notice.data.valid_time.outside_contract",
+                "required": [
+                    "kind"
+                ],
                 "properties": {
                     "kind": {
                         "description": "Identifies the notice data schema for discriminated union deserialization.",
@@ -518,7 +522,11 @@
                 }
             },
             "notice_data_party_missing": {
-                "description": "Format of the data field in a notice of type no.elhub.flex.party.missing",
+                "type": "object",
+                "description": "Format of the data field in a notice with data.kind = notice.data.party.missing",
+                "required": [
+                    "kind"
+                ],
                 "properties": {
                     "kind": {
                         "description": "Identifies the notice data schema for discriminated union deserialization.",
@@ -536,7 +544,11 @@
                 }
             },
             "notice_data_party_outdated": {
-                "description": "Format of the data field in a notice of type no.elhub.flex.party.outdated",
+                "type": "object",
+                "description": "Format of the data field in a notice with data.kind = notice.data.party.outdated",
+                "required": [
+                    "kind"
+                ],
                 "properties": {
                     "kind": {
                         "description": "Identifies the notice data schema for discriminated union deserialization.",
@@ -554,7 +566,11 @@
                 }
             },
             "notice_data_product_type_not_qualified": {
-                "description": "Format of the data field in a notice of type no.elhub.flex.service_provider_product_suspension.product_type.not_qualified",
+                "type": "object",
+                "description": "Format of the data field in a notice with data.kind = notice.data.product_type.not_qualified",
+                "required": [
+                    "kind"
+                ],
                 "properties": {
                     "kind": {
                         "description": "Identifies the notice data schema for discriminated union deserialization.",
