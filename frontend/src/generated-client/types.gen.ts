@@ -41,11 +41,54 @@ export type AuthScope =
   | "manage:auth";
 
 /**
+ * Resource category classification. Derived from technologies.
+ */
+export type Category = "consumption" | "production" | "energy_storage";
+
+/**
+ * Type of device for technical resources.
+ */
+export type DeviceType =
+  | "inverter"
+  | "boiler"
+  | "water_heater"
+  | "socket"
+  | "hvac"
+  | "ev_charging_device"
+  | "energy_management_system"
+  | "other";
+
+/**
+ * Technology classification using ltree path notation. Technologies are hierarchical (e.g., hydropower.pumped, hvac.heat_pump). Use the most specific technology applicable to the technical resource.
+ */
+export type Technology =
+  | "hydropower"
+  | "hydropower.pumped"
+  | "hydropower.run_of_river"
+  | "heat_power_plant"
+  | "heat_power_plant.chp"
+  | "solar"
+  | "wind"
+  | "backup_generator"
+  | "hvac"
+  | "hvac.heat"
+  | "hvac.heat_pump"
+  | "lighting"
+  | "water_heater"
+  | "boiler"
+  | "ev_charging_device"
+  | "ev_charging_device.v2g"
+  | "battery"
+  | "other.consumption"
+  | "other.production"
+  | "other.energy_storage";
+
+/**
  * Request schema for controllable unit lookup operations
  */
 export type ControllableUnitLookupRequest = {
   /**
-   * Birth number or organisation number of the end user.
+   * Birth date (DDMMYY) of the end user if a person, or organisation number if an organisation.
    */
   end_user: string;
   /**
@@ -112,10 +155,6 @@ export type ControllableUnitLookup = {
        * The name of the technical resource.
        */
       name: string;
-      /**
-       * Additional details about the technical resource.
-       */
-      details?: string;
     }>;
   }>;
 };
@@ -216,6 +255,13 @@ export type NoticeData =
   | NoticeDataPartyOutdated
   | NoticeDataProductTypeNotQualified;
 
+export type NumericAggregation = {
+  sum?: number;
+  average?: number;
+  min?: number;
+  max?: number;
+};
+
 /**
  * An empty object
  */
@@ -236,16 +282,6 @@ export type ControllableUnitStatus =
  * The regulation direction of the controllable unit. `up` means it can be used to increase production or decrease consumption, while `down` means to decrease production or increase consumption.
  */
 export type ControllableUnitRegulationDirection = "up" | "down" | "both";
-
-/**
- * The grid validation status of the controllable unit.
- */
-export type ControllableUnitGridValidationStatus =
-  | "pending"
-  | "in_progress"
-  | "incomplete_information"
-  | "validated"
-  | "validation_failed";
 
 /**
  * The reason for the suspension.
@@ -366,6 +402,11 @@ export type PartyStatus =
   | "terminated";
 
 /**
+ * The type of business identifier used for the device.
+ */
+export type TechnicalResourceBusinessIdType = "serial_number" | "mac" | "other";
+
+/**
  * The direction of the effect on the balance that the BRP takes responsibility for.
  */
 export type AccountingPointBalanceResponsiblePartyEnergyDirection =
@@ -386,6 +427,32 @@ export type AccountingPointBiddingZoneBiddingZone =
  * The type of the business identifier.
  */
 export type MeteringGridAreaBusinessIdType = "eic_y";
+
+/**
+ * The status of the metering grid area.
+ */
+export type MeteringGridAreaStatus = "active" | "inactive";
+
+/**
+ * The type of object in the common grid model that the accounting point is at.
+ */
+export type AccountingPointGridLocationObjectType =
+  | "substation"
+  | "transformer";
+
+/**
+ * How the grid location was determined. When a system operator creates or updates a grid location, this field is set automatically: `cso` if the SO is the connecting system operator, `so` otherwise.
+ */
+export type AccountingPointGridLocationSource =
+  | "cso"
+  | "so"
+  | "grid_model"
+  | "system";
+
+/**
+ * The quality of the grid location registration.
+ */
+export type AccountingPointGridLocationQuality = "confirmed" | "guessed";
 
 /**
  * The status of the relation.
@@ -440,6 +507,13 @@ export type ServiceProvidingGroupProductApplicationStatus =
   | "rejected";
 
 /**
+ * The level of visibility of the comment.
+ */
+export type ServiceProvidingGroupProductApplicationCommentVisibility =
+  | "same_party"
+  | "any_involved_party";
+
+/**
  * The reason for the suspension.
  */
 export type ServiceProvidingGroupProductSuspensionReason =
@@ -452,6 +526,11 @@ export type ServiceProvidingGroupProductSuspensionReason =
 export type ServiceProvidingGroupProductSuspensionCommentVisibility =
   | "same_party"
   | "any_involved_party";
+
+/**
+ * The status of the notice.
+ */
+export type NoticeStatus = "active" | "resolved";
 
 /**
  * Request schema for update operations - Controllable unit
@@ -468,38 +547,13 @@ export type ControllableUnitUpdateRequest = {
   status?: ControllableUnitStatus;
   regulation_direction?: ControllableUnitRegulationDirection;
   /**
-   * Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
+   * Maximum continuous active power (flexible power) that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
    */
-  maximum_available_capacity?: number;
+  maximum_active_power?: number;
   /**
-   * The minimum activation duration in seconds.
+   * Free text field for extra information about the controllable unit if needed.
    */
-  minimum_duration?: number;
-  /**
-   * The maximum activation duration in seconds.
-   */
-  maximum_duration?: number;
-  /**
-   * The minimum recovery duration between activations in seconds.
-   */
-  recovery_duration?: number;
-  /**
-   * The rate of power per unit of time to reach empty or full power for the controllable unit, in kilowatts per minute.
-   */
-  ramp_rate?: number;
-  /**
-   * Reference to the node that the controllable unit is connected to.
-   */
-  grid_node_id?: string;
-  grid_validation_status?: ControllableUnitGridValidationStatus;
-  /**
-   * Free text notes on the current grid validation status.
-   */
-  grid_validation_notes?: string;
-  /**
-   * When the controllable unit was last validated.
-   */
-  validated_at?: string;
+  additional_information?: string;
 };
 
 /**
@@ -517,42 +571,17 @@ export type ControllableUnitCreateRequest = {
   status?: ControllableUnitStatus;
   regulation_direction: ControllableUnitRegulationDirection;
   /**
-   * Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
+   * Maximum continuous active power (flexible power) that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
    */
-  maximum_available_capacity: number;
-  /**
-   * The minimum activation duration in seconds.
-   */
-  minimum_duration?: number;
-  /**
-   * The maximum activation duration in seconds.
-   */
-  maximum_duration?: number;
-  /**
-   * The minimum recovery duration between activations in seconds.
-   */
-  recovery_duration?: number;
-  /**
-   * The rate of power per unit of time to reach empty or full power for the controllable unit, in kilowatts per minute.
-   */
-  ramp_rate?: number;
+  maximum_active_power: number;
   /**
    * Reference to the accounting point that the controllable unit is connected to.
    */
   accounting_point_id: number;
   /**
-   * Reference to the node that the controllable unit is connected to.
+   * Free text field for extra information about the controllable unit if needed.
    */
-  grid_node_id?: string;
-  grid_validation_status?: ControllableUnitGridValidationStatus;
-  /**
-   * Free text notes on the current grid validation status.
-   */
-  grid_validation_notes?: string;
-  /**
-   * When the controllable unit was last validated.
-   */
-  validated_at?: string;
+  additional_information?: string;
 };
 
 /**
@@ -578,46 +607,21 @@ export type ControllableUnit = {
   status: ControllableUnitStatus;
   regulation_direction: ControllableUnitRegulationDirection;
   /**
-   * Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
+   * Maximum continuous active power (flexible power) that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
    */
-  maximum_available_capacity: number;
+  maximum_active_power: number;
   /**
    * Whether the controllable unit is small or not, following NCDR.
    */
   readonly is_small: boolean;
   /**
-   * The minimum activation duration in seconds.
-   */
-  minimum_duration?: number;
-  /**
-   * The maximum activation duration in seconds.
-   */
-  maximum_duration?: number;
-  /**
-   * The minimum recovery duration between activations in seconds.
-   */
-  recovery_duration?: number;
-  /**
-   * The rate of power per unit of time to reach empty or full power for the controllable unit, in kilowatts per minute.
-   */
-  ramp_rate?: number;
-  /**
    * Reference to the accounting point that the controllable unit is connected to.
    */
   accounting_point_id: number;
   /**
-   * Reference to the node that the controllable unit is connected to.
+   * Free text field for extra information about the controllable unit if needed.
    */
-  grid_node_id?: string;
-  grid_validation_status: ControllableUnitGridValidationStatus;
-  /**
-   * Free text notes on the current grid validation status.
-   */
-  grid_validation_notes?: string;
-  /**
-   * When the controllable unit was last validated.
-   */
-  validated_at?: string;
+  additional_information?: string;
   /**
    * When the resource was recorded (created or updated) in the system.
    */
@@ -626,6 +630,30 @@ export type ControllableUnit = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded accounting_point
+   */
+  accounting_point?: AccountingPoint | null;
+  /**
+   * Embedded controllable_unit_suspension
+   */
+  suspension?: Array<ControllableUnitSuspension> | null;
+  /**
+   * Embedded controllable_unit_service_provider
+   */
+  service_provider?: Array<ControllableUnitServiceProvider> | null;
+  /**
+   * Embedded controllable_unit_summary
+   */
+  summary?: ControllableUnitSummary | null;
+  /**
+   * Embedded service_providing_group_membership
+   */
+  service_providing_group_membership?: Array<ServiceProvidingGroupMembership> | null;
+  /**
+   * Embedded technical_resource
+   */
+  technical_resource?: Array<TechnicalResource> | null;
 };
 
 /**
@@ -675,6 +703,18 @@ export type ControllableUnitSuspension = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded controllable_unit
+   */
+  controllable_unit?: ControllableUnit | null;
+  /**
+   * Embedded party
+   */
+  impacted_system_operator?: Party | null;
+  /**
+   * Embedded controllable_unit_suspension_comment
+   */
+  comment?: Array<ControllableUnitSuspensionComment> | null;
 };
 
 /**
@@ -736,6 +776,10 @@ export type ControllableUnitSuspensionComment = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded controllable_unit_suspension
+   */
+  controllable_unit_suspension?: ControllableUnitSuspension | null;
 };
 
 /**
@@ -826,6 +870,99 @@ export type ControllableUnitServiceProvider = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded controllable_unit
+   */
+  controllable_unit?: ControllableUnit | null;
+  /**
+   * Embedded party
+   */
+  service_provider?: Party | null;
+  /**
+   * Embedded party
+   */
+  end_user?: Party | null;
+};
+
+/**
+ * Response schema - Aggregated summary of technical resources belonging to a controllable unit.
+ */
+export type ControllableUnitSummary = {
+  /**
+   * Unique surrogate key (controllable unit ID).
+   */
+  readonly id: number;
+  /**
+   * The ID of the controllable unit this resource is a summary of.
+   */
+  readonly controllable_unit_id: number;
+  /**
+   * Aggregated statistics on technical resources belonging to the controllable unit, including counts and maximum active power breakdowns (sum, average, min, max) by category and technology.
+   */
+  readonly technical_resource: {
+    count?: number;
+    maximum_active_power?: NumericAggregation;
+    by_category?: {
+      [key in Category]?: {
+        count?: number;
+        maximum_active_power?: NumericAggregation;
+      };
+    };
+    by_technology?: {
+      [key in Technology]?: {
+        count?: number;
+        maximum_active_power?: NumericAggregation;
+      };
+    };
+  };
+  /**
+   * Embedded controllable_unit
+   */
+  controllable_unit?: ControllableUnit | null;
+};
+
+/**
+ * Response schema - Aggregated summary of controllable units and technical resources belonging to a service providing group.
+ */
+export type ServiceProvidingGroupSummary = {
+  /**
+   * Unique surrogate key (service providing group ID).
+   */
+  readonly id: number;
+  /**
+   * The ID of the service providing group this resource is a summary of.
+   */
+  readonly service_providing_group_id: number;
+  /**
+   * Aggregated statistics on controllable units currently in the service providing group, including count and maximum active power information (sum, average, min, max).
+   */
+  readonly controllable_unit: {
+    count?: number;
+    maximum_active_power?: NumericAggregation;
+  };
+  /**
+   * Aggregated statistics on technical resources belonging to controllable units with active membership in the service providing group, including counts and maximum active power breakdowns (sum, average, min, max) by category and technology.
+   */
+  readonly technical_resource: {
+    count?: number;
+    maximum_active_power?: NumericAggregation;
+    by_category?: {
+      [key in Category]?: {
+        count?: number;
+        maximum_active_power?: NumericAggregation;
+      };
+    };
+    by_technology?: {
+      [key in Technology]?: {
+        count?: number;
+        maximum_active_power?: NumericAggregation;
+      };
+    };
+  };
+  /**
+   * Embedded service_providing_group
+   */
+  service_providing_group?: ServiceProvidingGroup | null;
 };
 
 /**
@@ -838,6 +975,10 @@ export type ServiceProvidingGroupUpdateRequest = {
   name?: string;
   bidding_zone?: ServiceProvidingGroupBiddingZone;
   status?: ServiceProvidingGroupStatus;
+  /**
+   * Free text field for extra information about the service providing group if needed.
+   */
+  additional_information?: string;
 };
 
 /**
@@ -854,6 +995,10 @@ export type ServiceProvidingGroupCreateRequest = {
   service_provider_id: number;
   bidding_zone: ServiceProvidingGroupBiddingZone;
   status?: ServiceProvidingGroupStatus;
+  /**
+   * Free text field for extra information about the service providing group if needed.
+   */
+  additional_information?: string;
 };
 
 /**
@@ -875,6 +1020,10 @@ export type ServiceProvidingGroup = {
   bidding_zone: ServiceProvidingGroupBiddingZone;
   status: ServiceProvidingGroupStatus;
   /**
+   * Free text field for extra information about the service providing group if needed.
+   */
+  additional_information?: string;
+  /**
    * When the resource was recorded (created or updated) in the system.
    */
   readonly recorded_at: string;
@@ -882,6 +1031,34 @@ export type ServiceProvidingGroup = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded service_providing_group_summary
+   */
+  summary?: ServiceProvidingGroupSummary | null;
+  /**
+   * Embedded party
+   */
+  service_provider?: Party | null;
+  /**
+   * Embedded service_providing_group_membership
+   */
+  membership?: Array<ServiceProvidingGroupMembership> | null;
+  /**
+   * Embedded service_providing_group_grid_prequalification
+   */
+  grid_prequalification?: Array<ServiceProvidingGroupGridPrequalification> | null;
+  /**
+   * Embedded service_providing_group_grid_suspension
+   */
+  grid_suspension?: Array<ServiceProvidingGroupGridSuspension> | null;
+  /**
+   * Embedded service_providing_group_product_application
+   */
+  product_application?: Array<ServiceProvidingGroupProductApplication> | null;
+  /**
+   * Embedded service_providing_group_product_suspension
+   */
+  product_suspension?: Array<ServiceProvidingGroupProductSuspension> | null;
 };
 
 /**
@@ -952,6 +1129,14 @@ export type ServiceProvidingGroupMembership = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded controllable_unit
+   */
+  controllable_unit?: ControllableUnit | null;
+  /**
+   * Embedded service_providing_group
+   */
+  service_providing_group?: ServiceProvidingGroup | null;
 };
 
 /**
@@ -1013,6 +1198,18 @@ export type ServiceProvidingGroupGridPrequalification = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded service_providing_group
+   */
+  service_providing_group?: ServiceProvidingGroup | null;
+  /**
+   * Embedded party
+   */
+  impacted_system_operator?: Party | null;
+  /**
+   * Embedded service_providing_group_grid_prequalification_comment
+   */
+  comment?: Array<ServiceProvidingGroupGridPrequalificationComment> | null;
 };
 
 /**
@@ -1074,6 +1271,10 @@ export type ServiceProvidingGroupGridPrequalificationComment = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded service_providing_group_grid_prequalification
+   */
+  service_providing_group_grid_prequalification?: ServiceProvidingGroupGridPrequalification | null;
 };
 
 /**
@@ -1123,6 +1324,18 @@ export type ServiceProvidingGroupGridSuspension = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded party
+   */
+  impacted_system_operator?: Party | null;
+  /**
+   * Embedded service_providing_group
+   */
+  service_providing_group?: ServiceProvidingGroup | null;
+  /**
+   * Embedded service_providing_group_grid_suspension_comment
+   */
+  comment?: Array<ServiceProvidingGroupGridSuspensionComment> | null;
 };
 
 /**
@@ -1184,6 +1397,10 @@ export type ServiceProvidingGroupGridSuspensionComment = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded service_providing_group_grid_suspension
+   */
+  service_providing_group_grid_suspension?: ServiceProvidingGroupGridSuspension | null;
 };
 
 /**
@@ -1197,12 +1414,10 @@ export type ServiceProvidingGroupGridSuspensionComment = {
  * * Organisation
  */
 export type EntityUpdateRequest = {
-  business_id_type?: EntityBusinessIdType;
   /**
    * Name of the entity. Maximum 128 characters.
    */
   name?: string;
-  type?: EntityType;
 };
 
 /**
@@ -1264,6 +1479,22 @@ export type Entity = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded entity_client
+   */
+  client?: Array<EntityClient> | null;
+  /**
+   * Embedded party
+   */
+  party?: Array<Party> | null;
+  /**
+   * Embedded party_membership
+   */
+  party_membership?: Array<PartyMembership> | null;
+  /**
+   * Embedded identity
+   */
+  identity?: Array<Identity> | null;
 };
 
 /**
@@ -1369,6 +1600,14 @@ export type EntityClient = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded entity
+   */
+  entity?: Entity | null;
+  /**
+   * Embedded party
+   */
+  party?: Party | null;
 };
 
 /**
@@ -1383,13 +1622,10 @@ export type EntityClient = {
  * * End User
  */
 export type PartyUpdateRequest = {
-  business_id_type?: PartyBusinessIdType;
   /**
    * Name of the party. Maximum 128 characters.
    */
   name?: string;
-  role?: PartyRole;
-  type?: PartyType;
   status?: PartyStatus;
 };
 
@@ -1463,6 +1699,10 @@ export type Party = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded entity
+   */
+  entity?: Entity | null;
 };
 
 /**
@@ -1521,6 +1761,14 @@ export type PartyMembership = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded party
+   */
+  party?: Party | null;
+  /**
+   * Embedded entity
+   */
+  entity?: Entity | null;
 };
 
 /**
@@ -1547,6 +1795,14 @@ export type Identity = {
    * Name of the party assumed by the entity.
    */
   readonly party_name?: string;
+  /**
+   * Embedded entity
+   */
+  entity?: Entity | null;
+  /**
+   * Embedded party
+   */
+  party?: Party | null;
 };
 
 /**
@@ -1558,9 +1814,34 @@ export type TechnicalResourceUpdateRequest = {
    */
   name?: string;
   /**
-   * Free text details about the technical resource.
+   * Technologies of the technical resource using ltree path notation. Multiple technologies can be specified for hybrid resources (e.g., solar + battery).
    */
-  details?: string;
+  technology?: Array<Technology>;
+  /**
+   * Maximum continuous active power (rated power) of the technical resource in kilowatts.
+   */
+  maximum_active_power?: number;
+  /**
+   * The type of device.
+   */
+  device_type?: DeviceType;
+  /**
+   * The manufacturer of the device. Required if model or business_id is provided.
+   */
+  make?: string;
+  /**
+   * The model of the device.
+   */
+  model?: string;
+  /**
+   * Business identifier of the device, such as a serial number or MAC address.
+   */
+  business_id?: string;
+  business_id_type?: TechnicalResourceBusinessIdType | null;
+  /**
+   * Free text field for extra information about the technical resource if needed.
+   */
+  additional_information?: string;
 };
 
 /**
@@ -1576,9 +1857,34 @@ export type TechnicalResourceCreateRequest = {
    */
   controllable_unit_id: number;
   /**
-   * Free text details about the technical resource.
+   * Technologies of the technical resource using ltree path notation. Multiple technologies can be specified for hybrid resources (e.g., solar + battery).
    */
-  details?: string;
+  technology: Array<Technology>;
+  /**
+   * Maximum continuous active power (rated power) of the technical resource in kilowatts.
+   */
+  maximum_active_power: number;
+  /**
+   * The type of device.
+   */
+  device_type: DeviceType;
+  /**
+   * The manufacturer of the device. Required if model or business_id is provided.
+   */
+  make?: string;
+  /**
+   * The model of the device.
+   */
+  model?: string;
+  /**
+   * Business identifier of the device, such as a serial number or MAC address.
+   */
+  business_id?: string;
+  business_id_type?: TechnicalResourceBusinessIdType | null;
+  /**
+   * Free text field for extra information about the technical resource if needed.
+   */
+  additional_information?: string;
 };
 
 /**
@@ -1598,9 +1904,38 @@ export type TechnicalResource = {
    */
   controllable_unit_id: number;
   /**
-   * Free text details about the technical resource.
+   * Technologies of the technical resource using ltree path notation. Multiple technologies can be specified for hybrid resources (e.g., solar + battery).
    */
-  details?: string;
+  technology: Array<Technology>;
+  /**
+   * Categories derived from the technologies of the technical resource. Automatically computed based on the selected technologies.
+   */
+  readonly category: Array<Category>;
+  /**
+   * Maximum continuous active power (rated power) of the technical resource in kilowatts.
+   */
+  maximum_active_power: number;
+  /**
+   * The type of device.
+   */
+  device_type: DeviceType;
+  /**
+   * The manufacturer of the device. Required if model or business_id is provided.
+   */
+  make?: string;
+  /**
+   * The model of the device.
+   */
+  model?: string;
+  /**
+   * Business identifier of the device, such as a serial number or MAC address.
+   */
+  business_id?: string;
+  business_id_type?: TechnicalResourceBusinessIdType | null;
+  /**
+   * Free text field for extra information about the technical resource if needed.
+   */
+  additional_information?: string;
   /**
    * When the resource was recorded (created or updated) in the system.
    */
@@ -1609,6 +1944,10 @@ export type TechnicalResource = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded controllable_unit
+   */
+  controllable_unit?: ControllableUnit | null;
 };
 
 /**
@@ -1643,6 +1982,10 @@ export type Event = {
    * The data of the event.
    */
   readonly data?: string;
+  /**
+   * Embedded notification
+   */
+  notification?: Array<Notification> | null;
 };
 
 /**
@@ -1683,6 +2026,14 @@ export type Notification = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded event
+   */
+  event?: Event | null;
+  /**
+   * Embedded party
+   */
+  party?: Party | null;
 };
 
 /**
@@ -1709,6 +2060,38 @@ export type AccountingPoint = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded controllable_unit
+   */
+  controllable_unit?: Array<ControllableUnit> | null;
+  /**
+   * Embedded party
+   */
+  system_operator?: Party | null;
+  /**
+   * Embedded accounting_point_balance_responsible_party
+   */
+  balance_responsible_party?: Array<AccountingPointBalanceResponsibleParty> | null;
+  /**
+   * Embedded accounting_point_bidding_zone
+   */
+  bidding_zone?: Array<AccountingPointBiddingZone> | null;
+  /**
+   * Embedded accounting_point_end_user
+   */
+  end_user?: Array<AccountingPointEndUser> | null;
+  /**
+   * Embedded accounting_point_energy_supplier
+   */
+  energy_supplier?: Array<AccountingPointEnergySupplier> | null;
+  /**
+   * Embedded accounting_point_metering_grid_area
+   */
+  metering_grid_area?: Array<AccountingPointMeteringGridArea> | null;
+  /**
+   * Embedded accounting_point_grid_location
+   */
+  grid_location?: AccountingPointGridLocation | null;
 };
 
 /**
@@ -1723,7 +2106,7 @@ export type AccountingPointBalanceResponsibleParty = {
    * The balance responsible party of the accounting point.
    */
   readonly balance_responsible_party_id: number;
-  energy_direction: AccountingPointBalanceResponsiblePartyEnergyDirection;
+  readonly energy_direction: AccountingPointBalanceResponsiblePartyEnergyDirection;
   /**
    * The date from which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone.
    */
@@ -1732,6 +2115,14 @@ export type AccountingPointBalanceResponsibleParty = {
    * The date until which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone.
    */
   readonly valid_to?: string;
+  /**
+   * Embedded accounting_point
+   */
+  accounting_point?: AccountingPoint | null;
+  /**
+   * Embedded party
+   */
+  balance_responsible_party?: Party | null;
 };
 
 /**
@@ -1751,6 +2142,10 @@ export type AccountingPointBiddingZone = {
    * The date until which the accounting point belongs to the bidding zone. Midnight aligned on Norwegian timezone.
    */
   readonly valid_to?: string;
+  /**
+   * Embedded accounting_point
+   */
+  accounting_point?: AccountingPoint | null;
 };
 
 /**
@@ -1773,6 +2168,14 @@ export type AccountingPointEndUser = {
    * The date until which the accounting point belongs to the end user. Midnight aligned on Norwegian timezone.
    */
   readonly valid_to?: string;
+  /**
+   * Embedded accounting_point
+   */
+  accounting_point?: AccountingPoint | null;
+  /**
+   * Embedded party
+   */
+  end_user?: Party | null;
 };
 
 /**
@@ -1795,6 +2198,14 @@ export type AccountingPointEnergySupplier = {
    * The date until which the relation between the accounting point and the energy supplier is valid. Midnight aligned on Norwegian timezone.
    */
   readonly valid_to?: string;
+  /**
+   * Embedded accounting_point
+   */
+  accounting_point?: AccountingPoint | null;
+  /**
+   * Embedded party
+   */
+  energy_supplier?: Party | null;
 };
 
 /**
@@ -1809,11 +2220,16 @@ export type MeteringGridArea = {
    * The business identifier of the metering grid area. Format depends on `business_id_type`.
    */
   readonly business_id: string;
-  business_id_type: MeteringGridAreaBusinessIdType;
+  readonly business_id_type: MeteringGridAreaBusinessIdType;
   /**
    * The name of the metering grid area.
    */
   readonly name: string;
+  readonly status: MeteringGridAreaStatus;
+  /**
+   * Embedded accounting_point_metering_grid_area
+   */
+  accounting_point_metering_grid_area?: Array<AccountingPointMeteringGridArea> | null;
 };
 
 /**
@@ -1836,6 +2252,111 @@ export type AccountingPointMeteringGridArea = {
    * The date until which the accounting point belongs to the metering grid area. Midnight aligned on Norwegian timezone.
    */
   readonly valid_to?: string;
+  /**
+   * Embedded accounting_point
+   */
+  accounting_point?: AccountingPoint | null;
+  /**
+   * Embedded metering_grid_area
+   */
+  metering_grid_area?: MeteringGridArea | null;
+};
+
+/**
+ * Request schema for update operations - The electrical (topological) location of an accounting point in the common grid model (Nemo).
+ */
+export type AccountingPointGridLocationUpdateRequest = {
+  object_type?: AccountingPointGridLocationObjectType;
+  /**
+   * Business identifier (mRID) referencing the object in the common grid model.
+   */
+  business_id?: string;
+  /**
+   * Name of the grid model object at the location.
+   */
+  name?: string;
+  /**
+   * Nominal voltage level at the grid location, in kilovolt (kV).
+   */
+  nominal_voltage?: number;
+  /**
+   * Free text field for extra information about the grid location if needed.
+   */
+  additional_information?: string;
+  quality?: AccountingPointGridLocationQuality;
+};
+
+/**
+ * Request schema for create operations - The electrical (topological) location of an accounting point in the common grid model (Nemo).
+ */
+export type AccountingPointGridLocationCreateRequest = {
+  /**
+   * The accounting point this grid location belongs to.
+   */
+  accounting_point_id: number;
+  object_type: AccountingPointGridLocationObjectType;
+  /**
+   * Business identifier (mRID) referencing the object in the common grid model.
+   */
+  business_id?: string;
+  /**
+   * Name of the grid model object at the location.
+   */
+  name: string;
+  /**
+   * Nominal voltage level at the grid location, in kilovolt (kV).
+   */
+  nominal_voltage: number;
+  /**
+   * Free text field for extra information about the grid location if needed.
+   */
+  additional_information?: string;
+  quality: AccountingPointGridLocationQuality;
+};
+
+/**
+ * Response schema - The electrical (topological) location of an accounting point in the common grid model (Nemo).
+ */
+export type AccountingPointGridLocation = {
+  /**
+   * Unique surrogate key.
+   */
+  readonly id: number;
+  /**
+   * The accounting point this grid location belongs to.
+   */
+  accounting_point_id: number;
+  object_type: AccountingPointGridLocationObjectType;
+  /**
+   * Business identifier (mRID) referencing the object in the common grid model.
+   */
+  business_id?: string;
+  /**
+   * Name of the grid model object at the location.
+   */
+  name: string;
+  /**
+   * Nominal voltage level at the grid location, in kilovolt (kV).
+   */
+  nominal_voltage: number;
+  /**
+   * Free text field for extra information about the grid location if needed.
+   */
+  additional_information?: string;
+  readonly source: AccountingPointGridLocationSource;
+  quality: AccountingPointGridLocationQuality;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+  /**
+   * Embedded accounting_point
+   */
+  accounting_point?: AccountingPoint | null;
 };
 
 /**
@@ -1862,6 +2383,10 @@ export type ProductType = {
    * Examples of products belonging to this product type.
    */
   readonly products: string;
+  /**
+   * Embedded system_operator_product_type
+   */
+  system_operator_product_type?: Array<SystemOperatorProductType> | null;
 };
 
 /**
@@ -1911,6 +2436,14 @@ export type SystemOperatorProductType = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded party
+   */
+  system_operator?: Party | null;
+  /**
+   * Embedded product_type
+   */
+  product_type?: ProductType | null;
 };
 
 /**
@@ -1984,6 +2517,18 @@ export type ServiceProviderProductApplication = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded party
+   */
+  service_provider?: Party | null;
+  /**
+   * Embedded party
+   */
+  system_operator?: Party | null;
+  /**
+   * Embedded service_provider_product_application_comment
+   */
+  comment?: Array<ServiceProviderProductApplicationComment> | null;
 };
 
 /**
@@ -2045,6 +2590,10 @@ export type ServiceProviderProductApplicationComment = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded service_provider_product_application
+   */
+  service_provider_product_application?: ServiceProviderProductApplication | null;
 };
 
 /**
@@ -2106,6 +2655,18 @@ export type ServiceProviderProductSuspension = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded party
+   */
+  procuring_system_operator?: Party | null;
+  /**
+   * Embedded party
+   */
+  service_provider?: Party | null;
+  /**
+   * Embedded service_provider_product_suspension_comment
+   */
+  comment?: Array<ServiceProviderProductSuspensionComment> | null;
 };
 
 /**
@@ -2167,6 +2728,10 @@ export type ServiceProviderProductSuspensionComment = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded service_provider_product_suspension
+   */
+  service_provider_product_suspension?: ServiceProviderProductSuspension | null;
 };
 
 /**
@@ -2179,9 +2744,17 @@ export type ServiceProvidingGroupProductApplicationUpdateRequest = {
   product_type_ids?: Array<number>;
   status?: ServiceProvidingGroupProductApplicationStatus;
   /**
-   * Free text notes on the current product application status.
+   * The maximum active power applied for in regulation direction up. Stored in kilowatts.
    */
-  notes?: string;
+  maximum_active_power_up?: number;
+  /**
+   * The maximum active power applied for in regulation direction down. Stored in kilowatts.
+   */
+  maximum_active_power_down?: number;
+  /**
+   * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
+   */
+  additional_information?: string;
   /**
    * When the product application was last prequalified.
    */
@@ -2210,9 +2783,17 @@ export type ServiceProvidingGroupProductApplicationCreateRequest = {
   product_type_ids: Array<number>;
   status?: ServiceProvidingGroupProductApplicationStatus;
   /**
-   * Free text notes on the current product application status.
+   * The maximum active power applied for in regulation direction up. Stored in kilowatts.
    */
-  notes?: string;
+  maximum_active_power_up: number;
+  /**
+   * The maximum active power applied for in regulation direction down. Stored in kilowatts.
+   */
+  maximum_active_power_down: number;
+  /**
+   * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
+   */
+  additional_information?: string;
   /**
    * When the product application was last prequalified.
    */
@@ -2245,9 +2826,17 @@ export type ServiceProvidingGroupProductApplication = {
   product_type_ids: Array<number>;
   status: ServiceProvidingGroupProductApplicationStatus;
   /**
-   * Free text notes on the current product application status.
+   * The maximum active power applied for in regulation direction up. Stored in kilowatts.
    */
-  notes?: string;
+  maximum_active_power_up: number;
+  /**
+   * The maximum active power applied for in regulation direction down. Stored in kilowatts.
+   */
+  maximum_active_power_down: number;
+  /**
+   * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
+   */
+  additional_information?: string;
   /**
    * When the product application was last prequalified.
    */
@@ -2264,6 +2853,83 @@ export type ServiceProvidingGroupProductApplication = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded service_providing_group
+   */
+  service_providing_group?: ServiceProvidingGroup | null;
+  /**
+   * Embedded party
+   */
+  procuring_system_operator?: Party | null;
+  /**
+   * Embedded service_providing_group_product_application_comment
+   */
+  comment?: Array<ServiceProvidingGroupProductApplicationComment> | null;
+};
+
+/**
+ * Request schema for update operations - Comment made by a party involved in a service providing group product application.
+ */
+export type ServiceProvidingGroupProductApplicationCommentUpdateRequest = {
+  visibility?: ServiceProvidingGroupProductApplicationCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content?: string;
+};
+
+/**
+ * Request schema for create operations - Comment made by a party involved in a service providing group product application.
+ */
+export type ServiceProvidingGroupProductApplicationCommentCreateRequest = {
+  /**
+   * Reference to the service providing group product application.
+   */
+  service_providing_group_product_application_id: number;
+  visibility?: ServiceProvidingGroupProductApplicationCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+};
+
+/**
+ * Response schema - Comment made by a party involved in a service providing group product application.
+ */
+export type ServiceProvidingGroupProductApplicationComment = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the service providing group product application.
+   */
+  service_providing_group_product_application_id: number;
+  /**
+   * Reference to the identity that created the comment.
+   */
+  readonly created_by: number;
+  /**
+   * When the comment was added to the SPGPA.
+   */
+  readonly created_at: string;
+  visibility: ServiceProvidingGroupProductApplicationCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+  /**
+   * Embedded service_providing_group_product_application
+   */
+  service_providing_group_product_application?: ServiceProvidingGroupProductApplication | null;
 };
 
 /**
@@ -2325,6 +2991,18 @@ export type ServiceProvidingGroupProductSuspension = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded party
+   */
+  procuring_system_operator?: Party | null;
+  /**
+   * Embedded service_providing_group
+   */
+  service_providing_group?: ServiceProvidingGroup | null;
+  /**
+   * Embedded service_providing_group_product_suspension_comment
+   */
+  comment?: Array<ServiceProvidingGroupProductSuspensionComment> | null;
 };
 
 /**
@@ -2386,12 +3064,21 @@ export type ServiceProvidingGroupProductSuspensionComment = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded service_providing_group_product_suspension
+   */
+  service_providing_group_product_suspension?: ServiceProvidingGroupProductSuspension | null;
 };
 
 /**
  * Response schema - Notice to users about various issues or actions expected from them.
  */
 export type Notice = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  status: NoticeStatus;
   /**
    * Reference to the party targeted by the notice.
    */
@@ -2403,13 +3090,67 @@ export type Notice = {
   /**
    * The URI of the resource concerned by the event.
    */
-  readonly source: string;
+  readonly source?: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+  /**
+   * Embedded party
+   */
+  party?: Party | null;
 };
 
 /**
  * Controllable unit - history
  */
-export type ControllableUnitHistory = ControllableUnit & {
+export type ControllableUnitHistory = {
+  /**
+   * Unique surrogate key.
+   */
+  readonly id: number;
+  /**
+   * Unique business identifier for the controllable unit.
+   */
+  readonly business_id: string;
+  /**
+   * Free text name of the controllable unit.
+   */
+  name: string;
+  /**
+   * The usage date when the controllable unit is first active.
+   */
+  start_date?: string;
+  status: ControllableUnitStatus;
+  regulation_direction: ControllableUnitRegulationDirection;
+  /**
+   * Maximum continuous active power (flexible power) that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
+   */
+  maximum_active_power: number;
+  /**
+   * Whether the controllable unit is small or not, following NCDR.
+   */
+  readonly is_small: boolean;
+  /**
+   * Reference to the accounting point that the controllable unit is connected to.
+   */
+  accounting_point_id: number;
+  /**
+   * Free text field for extra information about the controllable unit if needed.
+   */
+  additional_information?: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
   /**
    * Reference to the resource that was updated.
    */
@@ -2427,7 +3168,28 @@ export type ControllableUnitHistory = ControllableUnit & {
 /**
  * Controllable Unit Suspension - history
  */
-export type ControllableUnitSuspensionHistory = ControllableUnitSuspension & {
+export type ControllableUnitSuspensionHistory = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the suspended controllable unit.
+   */
+  controllable_unit_id: number;
+  /**
+   * Reference to the impacted system operator suspending the controllable unit.
+   */
+  impacted_system_operator_id: number;
+  reason: ControllableUnitSuspensionReason;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
   /**
    * Reference to the resource that was updated.
    */
@@ -2445,45 +3207,134 @@ export type ControllableUnitSuspensionHistory = ControllableUnitSuspension & {
 /**
  * Controllable Unit Suspension Comment - history
  */
-export type ControllableUnitSuspensionCommentHistory =
-  ControllableUnitSuspensionComment & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    controllable_unit_suspension_comment_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ControllableUnitSuspensionCommentHistory = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the controllable unit suspension.
+   */
+  controllable_unit_suspension_id: number;
+  /**
+   * Reference to the identity that created the comment.
+   */
+  readonly created_by: number;
+  /**
+   * When the comment was added to the CUS.
+   */
+  readonly created_at: string;
+  visibility: ControllableUnitSuspensionCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+  /**
+   * Reference to the resource that was updated.
+   */
+  controllable_unit_suspension_comment_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Relation between controllable unit and service provider - history
  */
-export type ControllableUnitServiceProviderHistory =
-  ControllableUnitServiceProvider & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    controllable_unit_service_provider_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ControllableUnitServiceProviderHistory = {
+  /**
+   * Unique surrogate key.
+   */
+  readonly id: number;
+  /**
+   * Reference to the controllable unit this relation links to a service provider.
+   */
+  controllable_unit_id: number;
+  /**
+   * Reference to the `party` (service provider) this relation links to a controllable unit.
+   */
+  service_provider_id: number;
+  /**
+   * Technical ID of the end user behind the accounting point.
+   */
+  end_user_id: number;
+  /**
+   * The service providers internal reference to the contract with the end user. Typically an internal identifier to a stored document or consent record.
+   */
+  contract_reference: string;
+  /**
+   * The date from which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.
+   */
+  valid_from?: string;
+  /**
+   * The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.
+   */
+  valid_to?: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+  /**
+   * Reference to the resource that was updated.
+   */
+  controllable_unit_service_provider_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service providing group - history
  */
-export type ServiceProvidingGroupHistory = ServiceProvidingGroup & {
+export type ServiceProvidingGroupHistory = {
+  /**
+   * Unique surrogate key.
+   */
+  readonly id: number;
+  /**
+   * Free text name of the service providing group.
+   */
+  name: string;
+  /**
+   * Reference to the `party` (service provider) managing the group.
+   */
+  service_provider_id: number;
+  bidding_zone: ServiceProvidingGroupBiddingZone;
+  status: ServiceProvidingGroupStatus;
+  /**
+   * Free text field for extra information about the service providing group if needed.
+   */
+  additional_information?: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
   /**
    * Reference to the resource that was updated.
    */
@@ -2501,102 +3352,257 @@ export type ServiceProvidingGroupHistory = ServiceProvidingGroup & {
 /**
  * Membership relation of controllable unit in service providing group - history
  */
-export type ServiceProvidingGroupMembershipHistory =
-  ServiceProvidingGroupMembership & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_membership_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupMembershipHistory = {
+  /**
+   * Unique surrogate key.
+   */
+  readonly id: number;
+  /**
+   * Reference to the controllable unit this relation links to a service providing group.
+   */
+  controllable_unit_id: number;
+  /**
+   * Reference to the service providing group this relation links to a controllable unit.
+   */
+  service_providing_group_id: number;
+  /**
+   * The date from which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.
+   */
+  valid_from: string;
+  /**
+   * The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.
+   */
+  valid_to?: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_membership_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Grid prequalification for service providing group - history
  */
-export type ServiceProvidingGroupGridPrequalificationHistory =
-  ServiceProvidingGroupGridPrequalification & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_grid_prequalification_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupGridPrequalificationHistory = {
+  /**
+   * Unique surrogate key.
+   */
+  readonly id: number;
+  /**
+   * Reference to the service providing group whose grid prequalification is tracked by the current resource.
+   */
+  service_providing_group_id: number;
+  /**
+   * Reference to the `party` that is the impacted system operator.
+   */
+  impacted_system_operator_id: number;
+  status: ServiceProvidingGroupGridPrequalificationStatus;
+  /**
+   * When the current grid prequalification was last approved.
+   */
+  prequalified_at?: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_grid_prequalification_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Grid prequalification for service providing group Comment - history
  */
-export type ServiceProvidingGroupGridPrequalificationCommentHistory =
-  ServiceProvidingGroupGridPrequalificationComment & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_grid_prequalification_comment_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupGridPrequalificationCommentHistory = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the service providing group grid prequalification.
+   */
+  service_providing_group_grid_prequalification_id: number;
+  /**
+   * Reference to the identity that created the comment.
+   */
+  readonly created_by: number;
+  /**
+   * When the comment was added to the SPGGP.
+   */
+  readonly created_at: string;
+  visibility: ServiceProvidingGroupGridPrequalificationCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_grid_prequalification_comment_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Providing Group Grid Suspension - history
  */
-export type ServiceProvidingGroupGridSuspensionHistory =
-  ServiceProvidingGroupGridSuspension & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_grid_suspension_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupGridSuspensionHistory = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the impacted system operator suspending the service providing group.
+   */
+  impacted_system_operator_id: number;
+  /**
+   * Reference to the service providing group being suspended.
+   */
+  service_providing_group_id: number;
+  reason: ServiceProvidingGroupGridSuspensionReason;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_grid_suspension_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Providing Group Grid Suspension Comment - history
  */
-export type ServiceProvidingGroupGridSuspensionCommentHistory =
-  ServiceProvidingGroupGridSuspensionComment & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_grid_suspension_comment_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupGridSuspensionCommentHistory = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the service providing group grid suspension.
+   */
+  service_providing_group_grid_suspension_id: number;
+  /**
+   * Reference to the identity that created the comment.
+   */
+  readonly created_by: number;
+  /**
+   * When the comment was added to the SPGGS.
+   */
+  readonly created_at: string;
+  visibility: ServiceProvidingGroupGridSuspensionCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_grid_suspension_comment_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Party - history
  */
-export type PartyHistory = Party & {
+export type PartyHistory = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * The business identifier of the party. Format depends on `business_id_type`.
+   */
+  business_id: string;
+  business_id_type: PartyBusinessIdType;
+  /**
+   * Reference to the entity that is the parent of the party.
+   */
+  entity_id: number;
+  /**
+   * Name of the party. Maximum 128 characters.
+   */
+  name: string;
+  role: PartyRole;
+  type: PartyType;
+  status: PartyStatus;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
   /**
    * Reference to the resource that was updated.
    */
@@ -2614,7 +3620,31 @@ export type PartyHistory = Party & {
 /**
  * Party Membership - history
  */
-export type PartyMembershipHistory = PartyMembership & {
+export type PartyMembershipHistory = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the party that the membership links to an entity.
+   */
+  party_id: number;
+  /**
+   * Reference to the entity that the party represents.
+   */
+  entity_id: number;
+  /**
+   * List of scopes granted to the entity when it acts as the party. Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.
+   */
+  scopes: Array<AuthScope>;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
   /**
    * Reference to the resource that was updated.
    */
@@ -2632,7 +3662,60 @@ export type PartyMembershipHistory = PartyMembership & {
 /**
  * Technical Resource - history
  */
-export type TechnicalResourceHistory = TechnicalResource & {
+export type TechnicalResourceHistory = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Name of the technical resource. Maximum 128 characters.
+   */
+  name: string;
+  /**
+   * Reference to the controllable unit that this technical resource belongs to.
+   */
+  controllable_unit_id: number;
+  /**
+   * Technologies of the technical resource using ltree path notation. Multiple technologies can be specified for hybrid resources (e.g., solar + battery).
+   */
+  technology: Array<Technology>;
+  /**
+   * Categories derived from the technologies of the technical resource. Automatically computed based on the selected technologies.
+   */
+  readonly category: Array<Category>;
+  /**
+   * Maximum continuous active power (rated power) of the technical resource in kilowatts.
+   */
+  maximum_active_power: number;
+  /**
+   * The type of device.
+   */
+  device_type: DeviceType;
+  /**
+   * The manufacturer of the device. Required if model or business_id is provided.
+   */
+  make?: string;
+  /**
+   * The model of the device.
+   */
+  model?: string;
+  /**
+   * Business identifier of the device, such as a serial number or MAC address.
+   */
+  business_id?: string;
+  business_id_type?: TechnicalResourceBusinessIdType | null;
+  /**
+   * Free text field for extra information about the technical resource if needed.
+   */
+  additional_information?: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
   /**
    * Reference to the resource that was updated.
    */
@@ -2648,9 +3731,83 @@ export type TechnicalResourceHistory = TechnicalResource & {
 };
 
 /**
+ * Accounting Point Grid Location - history
+ */
+export type AccountingPointGridLocationHistory = {
+  /**
+   * Unique surrogate key.
+   */
+  readonly id: number;
+  /**
+   * The accounting point this grid location belongs to.
+   */
+  accounting_point_id: number;
+  object_type: AccountingPointGridLocationObjectType;
+  /**
+   * Business identifier (mRID) referencing the object in the common grid model.
+   */
+  business_id?: string;
+  /**
+   * Name of the grid model object at the location.
+   */
+  name: string;
+  /**
+   * Nominal voltage level at the grid location, in kilovolt (kV).
+   */
+  nominal_voltage: number;
+  /**
+   * Free text field for extra information about the grid location if needed.
+   */
+  additional_information?: string;
+  readonly source: AccountingPointGridLocationSource;
+  quality: AccountingPointGridLocationQuality;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+  /**
+   * Reference to the resource that was updated.
+   */
+  accounting_point_grid_location_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
+
+/**
  * System Operator Product Type - history
  */
-export type SystemOperatorProductTypeHistory = SystemOperatorProductType & {
+export type SystemOperatorProductTypeHistory = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the system operator.
+   */
+  system_operator_id: number;
+  /**
+   * Reference to the product type.
+   */
+  product_type_id: number;
+  status: SystemOperatorProductTypeStatus;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
   /**
    * Reference to the resource that was updated.
    */
@@ -2668,135 +3825,386 @@ export type SystemOperatorProductTypeHistory = SystemOperatorProductType & {
 /**
  * Service Provider Product Application - history
  */
-export type ServiceProviderProductApplicationHistory =
-  ServiceProviderProductApplication & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_provider_product_application_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProviderProductApplicationHistory = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the service provider.
+   */
+  service_provider_id: number;
+  /**
+   * Reference to the system operator.
+   */
+  system_operator_id: number;
+  /**
+   * References to the product types.
+   */
+  product_type_ids: Array<number>;
+  status: ServiceProviderProductApplicationStatus;
+  /**
+   * When the product application was last validated.
+   */
+  qualified_at?: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_provider_product_application_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Provider Product Application Comment - history
  */
-export type ServiceProviderProductApplicationCommentHistory =
-  ServiceProviderProductApplicationComment & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_provider_product_application_comment_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProviderProductApplicationCommentHistory = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the service provider product application.
+   */
+  service_provider_product_application_id: number;
+  /**
+   * Reference to the identity that created the comment.
+   */
+  readonly created_by: number;
+  /**
+   * When the comment was added to the SPPA.
+   */
+  readonly created_at: string;
+  visibility: ServiceProviderProductApplicationCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_provider_product_application_comment_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Provider Product Suspension - history
  */
-export type ServiceProviderProductSuspensionHistory =
-  ServiceProviderProductSuspension & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_provider_product_suspension_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProviderProductSuspensionHistory = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the procuring system operator suspending the service provider.
+   */
+  procuring_system_operator_id: number;
+  /**
+   * Reference to the service provider being suspended.
+   */
+  service_provider_id: number;
+  /**
+   * References to the suspended product types.
+   */
+  product_type_ids: Array<number>;
+  reason: ServiceProviderProductSuspensionReason;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_provider_product_suspension_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Provider Product Suspension Comment - history
  */
-export type ServiceProviderProductSuspensionCommentHistory =
-  ServiceProviderProductSuspensionComment & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_provider_product_suspension_comment_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProviderProductSuspensionCommentHistory = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the service provider product suspension.
+   */
+  service_provider_product_suspension_id: number;
+  /**
+   * Reference to the identity that created the comment.
+   */
+  readonly created_by: number;
+  /**
+   * When the comment was added to the SPPS.
+   */
+  readonly created_at: string;
+  visibility: ServiceProviderProductSuspensionCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_provider_product_suspension_comment_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Providing Group Product Application - history
  */
-export type ServiceProvidingGroupProductApplicationHistory =
-  ServiceProvidingGroupProductApplication & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_product_application_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupProductApplicationHistory = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the service providing group.
+   */
+  service_providing_group_id: number;
+  /**
+   * Reference to the procuring system operator.
+   */
+  procuring_system_operator_id: number;
+  /**
+   * References to the product types.
+   */
+  product_type_ids: Array<number>;
+  status: ServiceProvidingGroupProductApplicationStatus;
+  /**
+   * The maximum active power applied for in regulation direction up. Stored in kilowatts.
+   */
+  maximum_active_power_up: number;
+  /**
+   * The maximum active power applied for in regulation direction down. Stored in kilowatts.
+   */
+  maximum_active_power_down: number;
+  /**
+   * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
+   */
+  additional_information?: string;
+  /**
+   * When the product application was last prequalified.
+   */
+  prequalified_at?: string;
+  /**
+   * When the product application was last verified.
+   */
+  verified_at?: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_product_application_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
+
+/**
+ * Service Providing Group Product Application Comment - history
+ */
+export type ServiceProvidingGroupProductApplicationCommentHistory = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the service providing group product application.
+   */
+  service_providing_group_product_application_id: number;
+  /**
+   * Reference to the identity that created the comment.
+   */
+  readonly created_by: number;
+  /**
+   * When the comment was added to the SPGPA.
+   */
+  readonly created_at: string;
+  visibility: ServiceProvidingGroupProductApplicationCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_product_application_comment_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Providing Group Product Suspension - history
  */
-export type ServiceProvidingGroupProductSuspensionHistory =
-  ServiceProvidingGroupProductSuspension & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_product_suspension_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupProductSuspensionHistory = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the procuring system operator suspending the service providing group.
+   */
+  procuring_system_operator_id: number;
+  /**
+   * Reference to the service providing group being suspended.
+   */
+  service_providing_group_id: number;
+  /**
+   * References to the suspended product types.
+   */
+  product_type_ids: Array<number>;
+  reason: ServiceProvidingGroupProductSuspensionReason;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_product_suspension_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Providing Group Product Suspension Comment - history
  */
-export type ServiceProvidingGroupProductSuspensionCommentHistory =
-  ServiceProvidingGroupProductSuspensionComment & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_product_suspension_comment_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupProductSuspensionCommentHistory = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the service providing group product suspension.
+   */
+  service_providing_group_product_suspension_id: number;
+  /**
+   * Reference to the identity that created the comment.
+   */
+  readonly created_by: number;
+  /**
+   * When the comment was added to the SPGPS.
+   */
+  readonly created_at: string;
+  visibility: ServiceProvidingGroupProductSuspensionCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_product_suspension_comment_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Format of the data field in a notice of type no.elhub.flex.party.missing
@@ -2854,42 +4262,41 @@ export type ControllableUnitWritable = {
   status: ControllableUnitStatus;
   regulation_direction: ControllableUnitRegulationDirection;
   /**
-   * Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
+   * Maximum continuous active power (flexible power) that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
    */
-  maximum_available_capacity: number;
-  /**
-   * The minimum activation duration in seconds.
-   */
-  minimum_duration?: number;
-  /**
-   * The maximum activation duration in seconds.
-   */
-  maximum_duration?: number;
-  /**
-   * The minimum recovery duration between activations in seconds.
-   */
-  recovery_duration?: number;
-  /**
-   * The rate of power per unit of time to reach empty or full power for the controllable unit, in kilowatts per minute.
-   */
-  ramp_rate?: number;
+  maximum_active_power: number;
   /**
    * Reference to the accounting point that the controllable unit is connected to.
    */
   accounting_point_id: number;
   /**
-   * Reference to the node that the controllable unit is connected to.
+   * Free text field for extra information about the controllable unit if needed.
    */
-  grid_node_id?: string;
-  grid_validation_status: ControllableUnitGridValidationStatus;
+  additional_information?: string;
   /**
-   * Free text notes on the current grid validation status.
+   * Embedded accounting_point
    */
-  grid_validation_notes?: string;
+  accounting_point?: AccountingPointWritable | null;
   /**
-   * When the controllable unit was last validated.
+   * Embedded controllable_unit_suspension
    */
-  validated_at?: string;
+  suspension?: Array<ControllableUnitSuspensionWritable> | null;
+  /**
+   * Embedded controllable_unit_service_provider
+   */
+  service_provider?: Array<ControllableUnitServiceProviderWritable> | null;
+  /**
+   * Embedded controllable_unit_summary
+   */
+  summary?: ControllableUnitSummaryWritable | null;
+  /**
+   * Embedded service_providing_group_membership
+   */
+  service_providing_group_membership?: Array<ServiceProvidingGroupMembershipWritable> | null;
+  /**
+   * Embedded technical_resource
+   */
+  technical_resource?: Array<TechnicalResourceWritable> | null;
 };
 
 /**
@@ -2905,6 +4312,18 @@ export type ControllableUnitSuspensionWritable = {
    */
   impacted_system_operator_id: number;
   reason: ControllableUnitSuspensionReason;
+  /**
+   * Embedded controllable_unit
+   */
+  controllable_unit?: ControllableUnitWritable | null;
+  /**
+   * Embedded party
+   */
+  impacted_system_operator?: PartyWritable | null;
+  /**
+   * Embedded controllable_unit_suspension_comment
+   */
+  comment?: Array<ControllableUnitSuspensionCommentWritable> | null;
 };
 
 /**
@@ -2920,6 +4339,10 @@ export type ControllableUnitSuspensionCommentWritable = {
    * Free text content of the comment.
    */
   content: string;
+  /**
+   * Embedded controllable_unit_suspension
+   */
+  controllable_unit_suspension?: ControllableUnitSuspensionWritable | null;
 };
 
 /**
@@ -2950,6 +4373,38 @@ export type ControllableUnitServiceProviderWritable = {
    * The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.
    */
   valid_to?: string;
+  /**
+   * Embedded controllable_unit
+   */
+  controllable_unit?: ControllableUnitWritable | null;
+  /**
+   * Embedded party
+   */
+  service_provider?: PartyWritable | null;
+  /**
+   * Embedded party
+   */
+  end_user?: PartyWritable | null;
+};
+
+/**
+ * Response schema - Aggregated summary of technical resources belonging to a controllable unit.
+ */
+export type ControllableUnitSummaryWritable = {
+  /**
+   * Embedded controllable_unit
+   */
+  controllable_unit?: ControllableUnitWritable | null;
+};
+
+/**
+ * Response schema - Aggregated summary of controllable units and technical resources belonging to a service providing group.
+ */
+export type ServiceProvidingGroupSummaryWritable = {
+  /**
+   * Embedded service_providing_group
+   */
+  service_providing_group?: ServiceProvidingGroupWritable | null;
 };
 
 /**
@@ -2966,6 +4421,38 @@ export type ServiceProvidingGroupWritable = {
   service_provider_id: number;
   bidding_zone: ServiceProvidingGroupBiddingZone;
   status: ServiceProvidingGroupStatus;
+  /**
+   * Free text field for extra information about the service providing group if needed.
+   */
+  additional_information?: string;
+  /**
+   * Embedded service_providing_group_summary
+   */
+  summary?: ServiceProvidingGroupSummaryWritable | null;
+  /**
+   * Embedded party
+   */
+  service_provider?: PartyWritable | null;
+  /**
+   * Embedded service_providing_group_membership
+   */
+  membership?: Array<ServiceProvidingGroupMembershipWritable> | null;
+  /**
+   * Embedded service_providing_group_grid_prequalification
+   */
+  grid_prequalification?: Array<ServiceProvidingGroupGridPrequalificationWritable> | null;
+  /**
+   * Embedded service_providing_group_grid_suspension
+   */
+  grid_suspension?: Array<ServiceProvidingGroupGridSuspensionWritable> | null;
+  /**
+   * Embedded service_providing_group_product_application
+   */
+  product_application?: Array<ServiceProvidingGroupProductApplicationWritable> | null;
+  /**
+   * Embedded service_providing_group_product_suspension
+   */
+  product_suspension?: Array<ServiceProvidingGroupProductSuspensionWritable> | null;
 };
 
 /**
@@ -2988,6 +4475,14 @@ export type ServiceProvidingGroupMembershipWritable = {
    * The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.
    */
   valid_to?: string;
+  /**
+   * Embedded controllable_unit
+   */
+  controllable_unit?: ControllableUnitWritable | null;
+  /**
+   * Embedded service_providing_group
+   */
+  service_providing_group?: ServiceProvidingGroupWritable | null;
 };
 
 /**
@@ -3007,6 +4502,18 @@ export type ServiceProvidingGroupGridPrequalificationWritable = {
    * When the current grid prequalification was last approved.
    */
   prequalified_at?: string;
+  /**
+   * Embedded service_providing_group
+   */
+  service_providing_group?: ServiceProvidingGroupWritable | null;
+  /**
+   * Embedded party
+   */
+  impacted_system_operator?: PartyWritable | null;
+  /**
+   * Embedded service_providing_group_grid_prequalification_comment
+   */
+  comment?: Array<ServiceProvidingGroupGridPrequalificationCommentWritable> | null;
 };
 
 /**
@@ -3022,6 +4529,10 @@ export type ServiceProvidingGroupGridPrequalificationCommentWritable = {
    * Free text content of the comment.
    */
   content: string;
+  /**
+   * Embedded service_providing_group_grid_prequalification
+   */
+  service_providing_group_grid_prequalification?: ServiceProvidingGroupGridPrequalificationWritable | null;
 };
 
 /**
@@ -3037,6 +4548,18 @@ export type ServiceProvidingGroupGridSuspensionWritable = {
    */
   service_providing_group_id: number;
   reason: ServiceProvidingGroupGridSuspensionReason;
+  /**
+   * Embedded party
+   */
+  impacted_system_operator?: PartyWritable | null;
+  /**
+   * Embedded service_providing_group
+   */
+  service_providing_group?: ServiceProvidingGroupWritable | null;
+  /**
+   * Embedded service_providing_group_grid_suspension_comment
+   */
+  comment?: Array<ServiceProvidingGroupGridSuspensionCommentWritable> | null;
 };
 
 /**
@@ -3052,6 +4575,10 @@ export type ServiceProvidingGroupGridSuspensionCommentWritable = {
    * Free text content of the comment.
    */
   content: string;
+  /**
+   * Embedded service_providing_group_grid_suspension
+   */
+  service_providing_group_grid_suspension?: ServiceProvidingGroupGridSuspensionWritable | null;
 };
 
 /**
@@ -3075,6 +4602,22 @@ export type EntityWritable = {
    */
   name: string;
   type: EntityType;
+  /**
+   * Embedded entity_client
+   */
+  client?: Array<EntityClientWritable> | null;
+  /**
+   * Embedded party
+   */
+  party?: Array<PartyWritable> | null;
+  /**
+   * Embedded party_membership
+   */
+  party_membership?: Array<PartyMembershipWritable> | null;
+  /**
+   * Embedded identity
+   */
+  identity?: Array<IdentityWritable> | null;
 };
 
 /**
@@ -3106,6 +4649,14 @@ export type EntityClientWritable = {
    * The public key of the entity (X.509 SubjectPublicKeyInfo). For use with JWT grant authentication method.
    */
   public_key?: string;
+  /**
+   * Embedded entity
+   */
+  entity?: EntityWritable | null;
+  /**
+   * Embedded party
+   */
+  party?: PartyWritable | null;
 };
 
 /**
@@ -3136,6 +4687,10 @@ export type PartyWritable = {
   role: PartyRole;
   type: PartyType;
   status: PartyStatus;
+  /**
+   * Embedded entity
+   */
+  entity?: EntityWritable | null;
 };
 
 /**
@@ -3154,6 +4709,28 @@ export type PartyMembershipWritable = {
    * List of scopes granted to the entity when it acts as the party. Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.
    */
   scopes: Array<AuthScope>;
+  /**
+   * Embedded party
+   */
+  party?: PartyWritable | null;
+  /**
+   * Embedded entity
+   */
+  entity?: EntityWritable | null;
+};
+
+/**
+ * Response schema - Resource uniquely identifying a user by linking its entity and the potentially assumed party.
+ */
+export type IdentityWritable = {
+  /**
+   * Embedded entity
+   */
+  entity?: EntityWritable | null;
+  /**
+   * Embedded party
+   */
+  party?: PartyWritable | null;
 };
 
 /**
@@ -3169,9 +4746,48 @@ export type TechnicalResourceWritable = {
    */
   controllable_unit_id: number;
   /**
-   * Free text details about the technical resource.
+   * Technologies of the technical resource using ltree path notation. Multiple technologies can be specified for hybrid resources (e.g., solar + battery).
    */
-  details?: string;
+  technology: Array<Technology>;
+  /**
+   * Maximum continuous active power (rated power) of the technical resource in kilowatts.
+   */
+  maximum_active_power: number;
+  /**
+   * The type of device.
+   */
+  device_type: DeviceType;
+  /**
+   * The manufacturer of the device. Required if model or business_id is provided.
+   */
+  make?: string;
+  /**
+   * The model of the device.
+   */
+  model?: string;
+  /**
+   * Business identifier of the device, such as a serial number or MAC address.
+   */
+  business_id?: string;
+  business_id_type?: TechnicalResourceBusinessIdType | null;
+  /**
+   * Free text field for extra information about the technical resource if needed.
+   */
+  additional_information?: string;
+  /**
+   * Embedded controllable_unit
+   */
+  controllable_unit?: ControllableUnitWritable | null;
+};
+
+/**
+ * Response schema - Event happening in the system.
+ */
+export type EventWritable = {
+  /**
+   * Embedded notification
+   */
+  notification?: Array<NotificationWritable> | null;
 };
 
 /**
@@ -3190,13 +4806,66 @@ export type NotificationWritable = {
    * Reference to the party concerned by this notification.
    */
   party_id: number;
+  /**
+   * Embedded event
+   */
+  event?: EventWritable | null;
+  /**
+   * Embedded party
+   */
+  party?: PartyWritable | null;
+};
+
+/**
+ * Response schema - Accounting point for a controllable unit.
+ */
+export type AccountingPointWritable = {
+  /**
+   * Embedded controllable_unit
+   */
+  controllable_unit?: Array<ControllableUnitWritable> | null;
+  /**
+   * Embedded party
+   */
+  system_operator?: PartyWritable | null;
+  /**
+   * Embedded accounting_point_balance_responsible_party
+   */
+  balance_responsible_party?: Array<AccountingPointBalanceResponsiblePartyWritable> | null;
+  /**
+   * Embedded accounting_point_bidding_zone
+   */
+  bidding_zone?: Array<AccountingPointBiddingZoneWritable> | null;
+  /**
+   * Embedded accounting_point_end_user
+   */
+  end_user?: Array<AccountingPointEndUserWritable> | null;
+  /**
+   * Embedded accounting_point_energy_supplier
+   */
+  energy_supplier?: Array<AccountingPointEnergySupplierWritable> | null;
+  /**
+   * Embedded accounting_point_metering_grid_area
+   */
+  metering_grid_area?: Array<AccountingPointMeteringGridAreaWritable> | null;
+  /**
+   * Embedded accounting_point_grid_location
+   */
+  grid_location?: AccountingPointGridLocationWritable | null;
 };
 
 /**
  * Response schema - Relation linking a balance responsible party to an accounting point.
  */
 export type AccountingPointBalanceResponsiblePartyWritable = {
-  [key: string]: unknown;
+  /**
+   * Embedded accounting_point
+   */
+  accounting_point?: AccountingPointWritable | null;
+  /**
+   * Embedded party
+   */
+  balance_responsible_party?: PartyWritable | null;
 };
 
 /**
@@ -3204,13 +4873,104 @@ export type AccountingPointBalanceResponsiblePartyWritable = {
  */
 export type AccountingPointBiddingZoneWritable = {
   bidding_zone: AccountingPointBiddingZoneBiddingZone;
+  /**
+   * Embedded accounting_point
+   */
+  accounting_point?: AccountingPointWritable | null;
+};
+
+/**
+ * Response schema - Relation telling which end user an accounting point belongs to.
+ */
+export type AccountingPointEndUserWritable = {
+  /**
+   * Embedded accounting_point
+   */
+  accounting_point?: AccountingPointWritable | null;
+  /**
+   * Embedded party
+   */
+  end_user?: PartyWritable | null;
+};
+
+/**
+ * Response schema - Relation linking an energy supplier to an accounting point.
+ */
+export type AccountingPointEnergySupplierWritable = {
+  /**
+   * Embedded accounting_point
+   */
+  accounting_point?: AccountingPointWritable | null;
+  /**
+   * Embedded party
+   */
+  energy_supplier?: PartyWritable | null;
 };
 
 /**
  * Response schema - Metering grid area to which accounting points belong.
  */
 export type MeteringGridAreaWritable = {
-  [key: string]: unknown;
+  /**
+   * Embedded accounting_point_metering_grid_area
+   */
+  accounting_point_metering_grid_area?: Array<AccountingPointMeteringGridAreaWritable> | null;
+};
+
+/**
+ * Response schema - Relation telling which metering grid area an accounting point belongs to.
+ */
+export type AccountingPointMeteringGridAreaWritable = {
+  /**
+   * Embedded accounting_point
+   */
+  accounting_point?: AccountingPointWritable | null;
+  /**
+   * Embedded metering_grid_area
+   */
+  metering_grid_area?: MeteringGridAreaWritable | null;
+};
+
+/**
+ * Response schema - The electrical (topological) location of an accounting point in the common grid model (Nemo).
+ */
+export type AccountingPointGridLocationWritable = {
+  /**
+   * The accounting point this grid location belongs to.
+   */
+  accounting_point_id: number;
+  object_type: AccountingPointGridLocationObjectType;
+  /**
+   * Business identifier (mRID) referencing the object in the common grid model.
+   */
+  business_id?: string;
+  /**
+   * Name of the grid model object at the location.
+   */
+  name: string;
+  /**
+   * Nominal voltage level at the grid location, in kilovolt (kV).
+   */
+  nominal_voltage: number;
+  /**
+   * Free text field for extra information about the grid location if needed.
+   */
+  additional_information?: string;
+  quality: AccountingPointGridLocationQuality;
+  /**
+   * Embedded accounting_point
+   */
+  accounting_point?: AccountingPointWritable | null;
+};
+
+/**
+ * Response schema - Product type.
+ */
+export type ProductTypeWritable = {
+  /**
+   * Embedded system_operator_product_type
+   */
+  system_operator_product_type?: Array<SystemOperatorProductTypeWritable> | null;
 };
 
 /**
@@ -3226,6 +4986,14 @@ export type SystemOperatorProductTypeWritable = {
    */
   product_type_id: number;
   status: SystemOperatorProductTypeStatus;
+  /**
+   * Embedded party
+   */
+  system_operator?: PartyWritable | null;
+  /**
+   * Embedded product_type
+   */
+  product_type?: ProductTypeWritable | null;
 };
 
 /**
@@ -3249,6 +5017,18 @@ export type ServiceProviderProductApplicationWritable = {
    * When the product application was last validated.
    */
   qualified_at?: string;
+  /**
+   * Embedded party
+   */
+  service_provider?: PartyWritable | null;
+  /**
+   * Embedded party
+   */
+  system_operator?: PartyWritable | null;
+  /**
+   * Embedded service_provider_product_application_comment
+   */
+  comment?: Array<ServiceProviderProductApplicationCommentWritable> | null;
 };
 
 /**
@@ -3264,6 +5044,10 @@ export type ServiceProviderProductApplicationCommentWritable = {
    * Free text content of the comment.
    */
   content: string;
+  /**
+   * Embedded service_provider_product_application
+   */
+  service_provider_product_application?: ServiceProviderProductApplicationWritable | null;
 };
 
 /**
@@ -3283,6 +5067,18 @@ export type ServiceProviderProductSuspensionWritable = {
    */
   product_type_ids: Array<number>;
   reason: ServiceProviderProductSuspensionReason;
+  /**
+   * Embedded party
+   */
+  procuring_system_operator?: PartyWritable | null;
+  /**
+   * Embedded party
+   */
+  service_provider?: PartyWritable | null;
+  /**
+   * Embedded service_provider_product_suspension_comment
+   */
+  comment?: Array<ServiceProviderProductSuspensionCommentWritable> | null;
 };
 
 /**
@@ -3298,6 +5094,10 @@ export type ServiceProviderProductSuspensionCommentWritable = {
    * Free text content of the comment.
    */
   content: string;
+  /**
+   * Embedded service_provider_product_suspension
+   */
+  service_provider_product_suspension?: ServiceProviderProductSuspensionWritable | null;
 };
 
 /**
@@ -3318,9 +5118,17 @@ export type ServiceProvidingGroupProductApplicationWritable = {
   product_type_ids: Array<number>;
   status: ServiceProvidingGroupProductApplicationStatus;
   /**
-   * Free text notes on the current product application status.
+   * The maximum active power applied for in regulation direction up. Stored in kilowatts.
    */
-  notes?: string;
+  maximum_active_power_up: number;
+  /**
+   * The maximum active power applied for in regulation direction down. Stored in kilowatts.
+   */
+  maximum_active_power_down: number;
+  /**
+   * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
+   */
+  additional_information?: string;
   /**
    * When the product application was last prequalified.
    */
@@ -3329,6 +5137,37 @@ export type ServiceProvidingGroupProductApplicationWritable = {
    * When the product application was last verified.
    */
   verified_at?: string;
+  /**
+   * Embedded service_providing_group
+   */
+  service_providing_group?: ServiceProvidingGroupWritable | null;
+  /**
+   * Embedded party
+   */
+  procuring_system_operator?: PartyWritable | null;
+  /**
+   * Embedded service_providing_group_product_application_comment
+   */
+  comment?: Array<ServiceProvidingGroupProductApplicationCommentWritable> | null;
+};
+
+/**
+ * Response schema - Comment made by a party involved in a service providing group product application.
+ */
+export type ServiceProvidingGroupProductApplicationCommentWritable = {
+  /**
+   * Reference to the service providing group product application.
+   */
+  service_providing_group_product_application_id: number;
+  visibility: ServiceProvidingGroupProductApplicationCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+  /**
+   * Embedded service_providing_group_product_application
+   */
+  service_providing_group_product_application?: ServiceProvidingGroupProductApplicationWritable | null;
 };
 
 /**
@@ -3348,6 +5187,18 @@ export type ServiceProvidingGroupProductSuspensionWritable = {
    */
   product_type_ids: Array<number>;
   reason: ServiceProvidingGroupProductSuspensionReason;
+  /**
+   * Embedded party
+   */
+  procuring_system_operator?: PartyWritable | null;
+  /**
+   * Embedded service_providing_group
+   */
+  service_providing_group?: ServiceProvidingGroupWritable | null;
+  /**
+   * Embedded service_providing_group_product_suspension_comment
+   */
+  comment?: Array<ServiceProvidingGroupProductSuspensionCommentWritable> | null;
 };
 
 /**
@@ -3363,19 +5214,49 @@ export type ServiceProvidingGroupProductSuspensionCommentWritable = {
    * Free text content of the comment.
    */
   content: string;
+  /**
+   * Embedded service_providing_group_product_suspension
+   */
+  service_providing_group_product_suspension?: ServiceProvidingGroupProductSuspensionWritable | null;
 };
 
 /**
  * Response schema - Notice to users about various issues or actions expected from them.
  */
 export type NoticeWritable = {
-  [key: string]: unknown;
+  status: NoticeStatus;
+  /**
+   * Embedded party
+   */
+  party?: PartyWritable | null;
 };
 
 /**
  * Controllable unit - history
  */
-export type ControllableUnitHistoryWritable = ControllableUnitWritable & {
+export type ControllableUnitHistoryWritable = {
+  /**
+   * Free text name of the controllable unit.
+   */
+  name: string;
+  /**
+   * The usage date when the controllable unit is first active.
+   */
+  start_date?: string;
+  status: ControllableUnitStatus;
+  regulation_direction: ControllableUnitRegulationDirection;
+  /**
+   * Maximum continuous active power (flexible power) that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.
+   */
+  maximum_active_power: number;
+  /**
+   * Reference to the accounting point that the controllable unit is connected to.
+   */
+  accounting_point_id: number;
+  /**
+   * Free text field for extra information about the controllable unit if needed.
+   */
+  additional_information?: string;
   /**
    * Reference to the resource that was updated.
    */
@@ -3393,178 +5274,297 @@ export type ControllableUnitHistoryWritable = ControllableUnitWritable & {
 /**
  * Controllable Unit Suspension - history
  */
-export type ControllableUnitSuspensionHistoryWritable =
-  ControllableUnitSuspensionWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    controllable_unit_suspension_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ControllableUnitSuspensionHistoryWritable = {
+  /**
+   * Reference to the suspended controllable unit.
+   */
+  controllable_unit_id: number;
+  /**
+   * Reference to the impacted system operator suspending the controllable unit.
+   */
+  impacted_system_operator_id: number;
+  reason: ControllableUnitSuspensionReason;
+  /**
+   * Reference to the resource that was updated.
+   */
+  controllable_unit_suspension_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Controllable Unit Suspension Comment - history
  */
-export type ControllableUnitSuspensionCommentHistoryWritable =
-  ControllableUnitSuspensionCommentWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    controllable_unit_suspension_comment_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ControllableUnitSuspensionCommentHistoryWritable = {
+  /**
+   * Reference to the controllable unit suspension.
+   */
+  controllable_unit_suspension_id: number;
+  visibility: ControllableUnitSuspensionCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+  /**
+   * Reference to the resource that was updated.
+   */
+  controllable_unit_suspension_comment_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Relation between controllable unit and service provider - history
  */
-export type ControllableUnitServiceProviderHistoryWritable =
-  ControllableUnitServiceProviderWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    controllable_unit_service_provider_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ControllableUnitServiceProviderHistoryWritable = {
+  /**
+   * Reference to the controllable unit this relation links to a service provider.
+   */
+  controllable_unit_id: number;
+  /**
+   * Reference to the `party` (service provider) this relation links to a controllable unit.
+   */
+  service_provider_id: number;
+  /**
+   * Technical ID of the end user behind the accounting point.
+   */
+  end_user_id: number;
+  /**
+   * The service providers internal reference to the contract with the end user. Typically an internal identifier to a stored document or consent record.
+   */
+  contract_reference: string;
+  /**
+   * The date from which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.
+   */
+  valid_from?: string;
+  /**
+   * The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.
+   */
+  valid_to?: string;
+  /**
+   * Reference to the resource that was updated.
+   */
+  controllable_unit_service_provider_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service providing group - history
  */
-export type ServiceProvidingGroupHistoryWritable =
-  ServiceProvidingGroupWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupHistoryWritable = {
+  /**
+   * Free text name of the service providing group.
+   */
+  name: string;
+  /**
+   * Reference to the `party` (service provider) managing the group.
+   */
+  service_provider_id: number;
+  bidding_zone: ServiceProvidingGroupBiddingZone;
+  status: ServiceProvidingGroupStatus;
+  /**
+   * Free text field for extra information about the service providing group if needed.
+   */
+  additional_information?: string;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Membership relation of controllable unit in service providing group - history
  */
-export type ServiceProvidingGroupMembershipHistoryWritable =
-  ServiceProvidingGroupMembershipWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_membership_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupMembershipHistoryWritable = {
+  /**
+   * Reference to the controllable unit this relation links to a service providing group.
+   */
+  controllable_unit_id: number;
+  /**
+   * Reference to the service providing group this relation links to a controllable unit.
+   */
+  service_providing_group_id: number;
+  /**
+   * The date from which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.
+   */
+  valid_from: string;
+  /**
+   * The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.
+   */
+  valid_to?: string;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_membership_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Grid prequalification for service providing group - history
  */
-export type ServiceProvidingGroupGridPrequalificationHistoryWritable =
-  ServiceProvidingGroupGridPrequalificationWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_grid_prequalification_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupGridPrequalificationHistoryWritable = {
+  /**
+   * Reference to the service providing group whose grid prequalification is tracked by the current resource.
+   */
+  service_providing_group_id: number;
+  /**
+   * Reference to the `party` that is the impacted system operator.
+   */
+  impacted_system_operator_id: number;
+  status: ServiceProvidingGroupGridPrequalificationStatus;
+  /**
+   * When the current grid prequalification was last approved.
+   */
+  prequalified_at?: string;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_grid_prequalification_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Grid prequalification for service providing group Comment - history
  */
-export type ServiceProvidingGroupGridPrequalificationCommentHistoryWritable =
-  ServiceProvidingGroupGridPrequalificationCommentWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_grid_prequalification_comment_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupGridPrequalificationCommentHistoryWritable = {
+  /**
+   * Reference to the service providing group grid prequalification.
+   */
+  service_providing_group_grid_prequalification_id: number;
+  visibility: ServiceProvidingGroupGridPrequalificationCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_grid_prequalification_comment_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Providing Group Grid Suspension - history
  */
-export type ServiceProvidingGroupGridSuspensionHistoryWritable =
-  ServiceProvidingGroupGridSuspensionWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_grid_suspension_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupGridSuspensionHistoryWritable = {
+  /**
+   * Reference to the impacted system operator suspending the service providing group.
+   */
+  impacted_system_operator_id: number;
+  /**
+   * Reference to the service providing group being suspended.
+   */
+  service_providing_group_id: number;
+  reason: ServiceProvidingGroupGridSuspensionReason;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_grid_suspension_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Providing Group Grid Suspension Comment - history
  */
-export type ServiceProvidingGroupGridSuspensionCommentHistoryWritable =
-  ServiceProvidingGroupGridSuspensionCommentWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_grid_suspension_comment_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupGridSuspensionCommentHistoryWritable = {
+  /**
+   * Reference to the service providing group grid suspension.
+   */
+  service_providing_group_grid_suspension_id: number;
+  visibility: ServiceProvidingGroupGridSuspensionCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_grid_suspension_comment_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Party - history
  */
-export type PartyHistoryWritable = PartyWritable & {
+export type PartyHistoryWritable = {
+  /**
+   * The business identifier of the party. Format depends on `business_id_type`.
+   */
+  business_id: string;
+  business_id_type: PartyBusinessIdType;
+  /**
+   * Reference to the entity that is the parent of the party.
+   */
+  entity_id: number;
+  /**
+   * Name of the party. Maximum 128 characters.
+   */
+  name: string;
+  role: PartyRole;
+  type: PartyType;
+  status: PartyStatus;
   /**
    * Reference to the resource that was updated.
    */
@@ -3582,7 +5582,19 @@ export type PartyHistoryWritable = PartyWritable & {
 /**
  * Party Membership - history
  */
-export type PartyMembershipHistoryWritable = PartyMembershipWritable & {
+export type PartyMembershipHistoryWritable = {
+  /**
+   * Reference to the party that the membership links to an entity.
+   */
+  party_id: number;
+  /**
+   * Reference to the entity that the party represents.
+   */
+  entity_id: number;
+  /**
+   * List of scopes granted to the entity when it acts as the party. Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.
+   */
+  scopes: Array<AuthScope>;
   /**
    * Reference to the resource that was updated.
    */
@@ -3600,7 +5612,44 @@ export type PartyMembershipHistoryWritable = PartyMembershipWritable & {
 /**
  * Technical Resource - history
  */
-export type TechnicalResourceHistoryWritable = TechnicalResourceWritable & {
+export type TechnicalResourceHistoryWritable = {
+  /**
+   * Name of the technical resource. Maximum 128 characters.
+   */
+  name: string;
+  /**
+   * Reference to the controllable unit that this technical resource belongs to.
+   */
+  controllable_unit_id: number;
+  /**
+   * Technologies of the technical resource using ltree path notation. Multiple technologies can be specified for hybrid resources (e.g., solar + battery).
+   */
+  technology: Array<Technology>;
+  /**
+   * Maximum continuous active power (rated power) of the technical resource in kilowatts.
+   */
+  maximum_active_power: number;
+  /**
+   * The type of device.
+   */
+  device_type: DeviceType;
+  /**
+   * The manufacturer of the device. Required if model or business_id is provided.
+   */
+  make?: string;
+  /**
+   * The model of the device.
+   */
+  model?: string;
+  /**
+   * Business identifier of the device, such as a serial number or MAC address.
+   */
+  business_id?: string;
+  business_id_type?: TechnicalResourceBusinessIdType | null;
+  /**
+   * Free text field for extra information about the technical resource if needed.
+   */
+  additional_information?: string;
   /**
    * Reference to the resource that was updated.
    */
@@ -3616,156 +5665,327 @@ export type TechnicalResourceHistoryWritable = TechnicalResourceWritable & {
 };
 
 /**
+ * Accounting Point Grid Location - history
+ */
+export type AccountingPointGridLocationHistoryWritable = {
+  /**
+   * The accounting point this grid location belongs to.
+   */
+  accounting_point_id: number;
+  object_type: AccountingPointGridLocationObjectType;
+  /**
+   * Business identifier (mRID) referencing the object in the common grid model.
+   */
+  business_id?: string;
+  /**
+   * Name of the grid model object at the location.
+   */
+  name: string;
+  /**
+   * Nominal voltage level at the grid location, in kilovolt (kV).
+   */
+  nominal_voltage: number;
+  /**
+   * Free text field for extra information about the grid location if needed.
+   */
+  additional_information?: string;
+  quality: AccountingPointGridLocationQuality;
+  /**
+   * Reference to the resource that was updated.
+   */
+  accounting_point_grid_location_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
+
+/**
  * System Operator Product Type - history
  */
-export type SystemOperatorProductTypeHistoryWritable =
-  SystemOperatorProductTypeWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    system_operator_product_type_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type SystemOperatorProductTypeHistoryWritable = {
+  /**
+   * Reference to the system operator.
+   */
+  system_operator_id: number;
+  /**
+   * Reference to the product type.
+   */
+  product_type_id: number;
+  status: SystemOperatorProductTypeStatus;
+  /**
+   * Reference to the resource that was updated.
+   */
+  system_operator_product_type_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Provider Product Application - history
  */
-export type ServiceProviderProductApplicationHistoryWritable =
-  ServiceProviderProductApplicationWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_provider_product_application_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProviderProductApplicationHistoryWritable = {
+  /**
+   * Reference to the service provider.
+   */
+  service_provider_id: number;
+  /**
+   * Reference to the system operator.
+   */
+  system_operator_id: number;
+  /**
+   * References to the product types.
+   */
+  product_type_ids: Array<number>;
+  status: ServiceProviderProductApplicationStatus;
+  /**
+   * When the product application was last validated.
+   */
+  qualified_at?: string;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_provider_product_application_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Provider Product Application Comment - history
  */
-export type ServiceProviderProductApplicationCommentHistoryWritable =
-  ServiceProviderProductApplicationCommentWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_provider_product_application_comment_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProviderProductApplicationCommentHistoryWritable = {
+  /**
+   * Reference to the service provider product application.
+   */
+  service_provider_product_application_id: number;
+  visibility: ServiceProviderProductApplicationCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_provider_product_application_comment_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Provider Product Suspension - history
  */
-export type ServiceProviderProductSuspensionHistoryWritable =
-  ServiceProviderProductSuspensionWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_provider_product_suspension_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProviderProductSuspensionHistoryWritable = {
+  /**
+   * Reference to the procuring system operator suspending the service provider.
+   */
+  procuring_system_operator_id: number;
+  /**
+   * Reference to the service provider being suspended.
+   */
+  service_provider_id: number;
+  /**
+   * References to the suspended product types.
+   */
+  product_type_ids: Array<number>;
+  reason: ServiceProviderProductSuspensionReason;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_provider_product_suspension_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Provider Product Suspension Comment - history
  */
-export type ServiceProviderProductSuspensionCommentHistoryWritable =
-  ServiceProviderProductSuspensionCommentWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_provider_product_suspension_comment_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProviderProductSuspensionCommentHistoryWritable = {
+  /**
+   * Reference to the service provider product suspension.
+   */
+  service_provider_product_suspension_id: number;
+  visibility: ServiceProviderProductSuspensionCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_provider_product_suspension_comment_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Providing Group Product Application - history
  */
-export type ServiceProvidingGroupProductApplicationHistoryWritable =
-  ServiceProvidingGroupProductApplicationWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_product_application_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupProductApplicationHistoryWritable = {
+  /**
+   * Reference to the service providing group.
+   */
+  service_providing_group_id: number;
+  /**
+   * Reference to the procuring system operator.
+   */
+  procuring_system_operator_id: number;
+  /**
+   * References to the product types.
+   */
+  product_type_ids: Array<number>;
+  status: ServiceProvidingGroupProductApplicationStatus;
+  /**
+   * The maximum active power applied for in regulation direction up. Stored in kilowatts.
+   */
+  maximum_active_power_up: number;
+  /**
+   * The maximum active power applied for in regulation direction down. Stored in kilowatts.
+   */
+  maximum_active_power_down: number;
+  /**
+   * Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).
+   */
+  additional_information?: string;
+  /**
+   * When the product application was last prequalified.
+   */
+  prequalified_at?: string;
+  /**
+   * When the product application was last verified.
+   */
+  verified_at?: string;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_product_application_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
+
+/**
+ * Service Providing Group Product Application Comment - history
+ */
+export type ServiceProvidingGroupProductApplicationCommentHistoryWritable = {
+  /**
+   * Reference to the service providing group product application.
+   */
+  service_providing_group_product_application_id: number;
+  visibility: ServiceProvidingGroupProductApplicationCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_product_application_comment_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Providing Group Product Suspension - history
  */
-export type ServiceProvidingGroupProductSuspensionHistoryWritable =
-  ServiceProvidingGroupProductSuspensionWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_product_suspension_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupProductSuspensionHistoryWritable = {
+  /**
+   * Reference to the procuring system operator suspending the service providing group.
+   */
+  procuring_system_operator_id: number;
+  /**
+   * Reference to the service providing group being suspended.
+   */
+  service_providing_group_id: number;
+  /**
+   * References to the suspended product types.
+   */
+  product_type_ids: Array<number>;
+  reason: ServiceProvidingGroupProductSuspensionReason;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_product_suspension_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 /**
  * Service Providing Group Product Suspension Comment - history
  */
-export type ServiceProvidingGroupProductSuspensionCommentHistoryWritable =
-  ServiceProvidingGroupProductSuspensionCommentWritable & {
-    /**
-     * Reference to the resource that was updated.
-     */
-    service_providing_group_product_suspension_comment_id: number;
-    /**
-     * The identity that updated the resource when it was replaced.
-     */
-    replaced_by?: number;
-    /**
-     * When the resource was replaced in the system.
-     */
-    replaced_at?: string;
-  };
+export type ServiceProvidingGroupProductSuspensionCommentHistoryWritable = {
+  /**
+   * Reference to the service providing group product suspension.
+   */
+  service_providing_group_product_suspension_id: number;
+  visibility: ServiceProvidingGroupProductSuspensionCommentVisibility;
+  /**
+   * Free text content of the comment.
+   */
+  content: string;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_product_suspension_comment_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
 
 export type ReadOpenapiJsonData = {
   body?: never;
@@ -3914,6 +6134,10 @@ export type ListControllableUnitData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/controllable_unit";
 };
@@ -4025,7 +6249,12 @@ export type ReadControllableUnitData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/controllable_unit/{id}";
 };
 
@@ -4301,6 +6530,10 @@ export type ListControllableUnitSuspensionData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/controllable_unit_suspension";
 };
@@ -4457,7 +6690,12 @@ export type ReadControllableUnitSuspensionData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/controllable_unit_suspension/{id}";
 };
 
@@ -4725,6 +6963,10 @@ export type ListControllableUnitSuspensionCommentData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/controllable_unit_suspension_comment";
 };
@@ -4836,7 +7078,12 @@ export type ReadControllableUnitSuspensionCommentData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/controllable_unit_suspension_comment/{id}";
 };
 
@@ -5097,6 +7344,10 @@ export type ListControllableUnitServiceProviderData = {
      */
     valid_from?: string;
     /**
+     * Filter based on valid time of the resource. Alternative to using valid_from and valid_to filters together.
+     */
+    valid_at?: string;
+    /**
      * The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.
      */
     valid_to?: string;
@@ -5116,6 +7367,10 @@ export type ListControllableUnitServiceProviderData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/controllable_unit_service_provider";
 };
@@ -5272,7 +7527,12 @@ export type ReadControllableUnitServiceProviderData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/controllable_unit_service_provider/{id}";
 };
 
@@ -5401,6 +7661,10 @@ export type ListControllableUnitServiceProviderHistoryData = {
      */
     valid_from?: string;
     /**
+     * Filter based on valid time of the resource. Alternative to using valid_from and valid_to filters together.
+     */
+    valid_at?: string;
+    /**
      * The date until which the relation between the controllable unit and the service provider is valid. Midnight aligned on Norwegian timezone.
      */
     valid_to?: string;
@@ -5524,6 +7788,114 @@ export type ReadControllableUnitServiceProviderHistoryResponses = {
 export type ReadControllableUnitServiceProviderHistoryResponse =
   ReadControllableUnitServiceProviderHistoryResponses[keyof ReadControllableUnitServiceProviderHistoryResponses];
 
+export type ReadControllableUnitSummaryData = {
+  body?: never;
+  path: {
+    id: number;
+  };
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
+  url: "/controllable_unit_summary/{id}";
+};
+
+export type ReadControllableUnitSummaryErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type ReadControllableUnitSummaryError =
+  ReadControllableUnitSummaryErrors[keyof ReadControllableUnitSummaryErrors];
+
+export type ReadControllableUnitSummaryResponses = {
+  /**
+   * OK
+   */
+  200: ControllableUnitSummary;
+};
+
+export type ReadControllableUnitSummaryResponse =
+  ReadControllableUnitSummaryResponses[keyof ReadControllableUnitSummaryResponses];
+
+export type ReadServiceProvidingGroupSummaryData = {
+  body?: never;
+  path: {
+    id: number;
+  };
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
+  url: "/service_providing_group_summary/{id}";
+};
+
+export type ReadServiceProvidingGroupSummaryErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type ReadServiceProvidingGroupSummaryError =
+  ReadServiceProvidingGroupSummaryErrors[keyof ReadServiceProvidingGroupSummaryErrors];
+
+export type ReadServiceProvidingGroupSummaryResponses = {
+  /**
+   * OK
+   */
+  200: ServiceProvidingGroupSummary;
+};
+
+export type ReadServiceProvidingGroupSummaryResponse =
+  ReadServiceProvidingGroupSummaryResponses[keyof ReadServiceProvidingGroupSummaryResponses];
+
 export type ListServiceProvidingGroupData = {
   body?: never;
   path?: never;
@@ -5556,6 +7928,10 @@ export type ListServiceProvidingGroupData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group";
 };
@@ -5667,7 +8043,12 @@ export type ReadServiceProvidingGroupData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group/{id}";
 };
 
@@ -5928,6 +8309,10 @@ export type ListServiceProvidingGroupMembershipData = {
      */
     valid_from?: string;
     /**
+     * Filter based on valid time of the resource. Alternative to using valid_from and valid_to filters together.
+     */
+    valid_at?: string;
+    /**
      * The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.
      */
     valid_to?: string;
@@ -5947,6 +8332,10 @@ export type ListServiceProvidingGroupMembershipData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_membership";
 };
@@ -6103,7 +8492,12 @@ export type ReadServiceProvidingGroupMembershipData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_membership/{id}";
 };
 
@@ -6227,6 +8621,10 @@ export type ListServiceProvidingGroupMembershipHistoryData = {
      * The date from which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.
      */
     valid_from?: string;
+    /**
+     * Filter based on valid time of the resource. Alternative to using valid_from and valid_to filters together.
+     */
+    valid_at?: string;
     /**
      * The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.
      */
@@ -6383,6 +8781,10 @@ export type ListServiceProvidingGroupGridPrequalificationData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_grid_prequalification";
 };
@@ -6494,7 +8896,12 @@ export type ReadServiceProvidingGroupGridPrequalificationData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_grid_prequalification/{id}";
 };
 
@@ -6762,6 +9169,10 @@ export type ListServiceProvidingGroupGridPrequalificationCommentData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_grid_prequalification_comment";
 };
@@ -6873,7 +9284,12 @@ export type ReadServiceProvidingGroupGridPrequalificationCommentData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_grid_prequalification_comment/{id}";
 };
 
@@ -7145,6 +9561,10 @@ export type ListServiceProvidingGroupGridSuspensionData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_grid_suspension";
 };
@@ -7301,7 +9721,12 @@ export type ReadServiceProvidingGroupGridSuspensionData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_grid_suspension/{id}";
 };
 
@@ -7569,6 +9994,10 @@ export type ListServiceProvidingGroupGridSuspensionCommentData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_grid_suspension_comment";
 };
@@ -7680,7 +10109,12 @@ export type ReadServiceProvidingGroupGridSuspensionCommentData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_grid_suspension_comment/{id}";
 };
 
@@ -7952,6 +10386,10 @@ export type ListEntityData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/entity";
 };
@@ -8060,7 +10498,12 @@ export type ReadEntityData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/entity/{id}";
 };
 
@@ -8193,6 +10636,10 @@ export type ListEntityClientData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/entity_client";
 };
@@ -8349,7 +10796,12 @@ export type ReadEntityClientData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/entity_client/{id}";
 };
 
@@ -8486,6 +10938,10 @@ export type ListPartyData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/party";
 };
@@ -8594,7 +11050,12 @@ export type ReadPartyData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/party/{id}";
 };
 
@@ -8868,6 +11329,10 @@ export type ListPartyMembershipData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/party_membership";
 };
@@ -9024,7 +11489,12 @@ export type ReadPartyMembershipData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/party_membership/{id}";
 };
 
@@ -9304,6 +11774,10 @@ export type ListIdentityData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/identity";
 };
@@ -9360,7 +11834,12 @@ export type ReadIdentityData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/identity/{id}";
 };
 
@@ -9435,6 +11914,10 @@ export type ListTechnicalResourceData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/technical_resource";
 };
@@ -9591,7 +12074,12 @@ export type ReadTechnicalResourceData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/technical_resource/{id}";
 };
 
@@ -9855,6 +12343,10 @@ export type ListEventData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/event";
 };
@@ -9910,7 +12402,12 @@ export type ReadEventData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/event/{id}";
 };
 
@@ -9984,6 +12481,10 @@ export type ListNotificationData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/notification";
 };
@@ -10041,7 +12542,12 @@ export type ReadNotificationData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/notification/{id}";
 };
 
@@ -10173,6 +12679,10 @@ export type ListAccountingPointData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/accounting_point";
 };
@@ -10230,7 +12740,12 @@ export type ReadAccountingPointData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/accounting_point/{id}";
 };
 
@@ -10291,6 +12806,10 @@ export type ListAccountingPointBalanceResponsiblePartyData = {
      */
     valid_from?: string;
     /**
+     * Filter based on valid time of the resource. Alternative to using valid_from and valid_to filters together.
+     */
+    valid_at?: string;
+    /**
      * The date until which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone.
      */
     valid_to?: string;
@@ -10310,6 +12829,10 @@ export type ListAccountingPointBalanceResponsiblePartyData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/accounting_point_balance_responsible_party";
 };
@@ -10375,6 +12898,10 @@ export type ListAccountingPointBiddingZoneData = {
      */
     valid_from?: string;
     /**
+     * Filter based on valid time of the resource. Alternative to using valid_from and valid_to filters together.
+     */
+    valid_at?: string;
+    /**
      * The date until which the accounting point belongs to the bidding zone. Midnight aligned on Norwegian timezone.
      */
     valid_to?: string;
@@ -10394,6 +12921,10 @@ export type ListAccountingPointBiddingZoneData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/accounting_point_bidding_zone";
 };
@@ -10463,6 +12994,10 @@ export type ListAccountingPointEndUserData = {
      */
     valid_from?: string;
     /**
+     * Filter based on valid time of the resource. Alternative to using valid_from and valid_to filters together.
+     */
+    valid_at?: string;
+    /**
      * The date until which the accounting point belongs to the end user. Midnight aligned on Norwegian timezone.
      */
     valid_to?: string;
@@ -10482,6 +13017,10 @@ export type ListAccountingPointEndUserData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/accounting_point_end_user";
 };
@@ -10551,6 +13090,10 @@ export type ListAccountingPointEnergySupplierData = {
      */
     valid_from?: string;
     /**
+     * Filter based on valid time of the resource. Alternative to using valid_from and valid_to filters together.
+     */
+    valid_at?: string;
+    /**
      * The date until which the relation between the accounting point and the energy supplier is valid. Midnight aligned on Norwegian timezone.
      */
     valid_to?: string;
@@ -10570,6 +13113,10 @@ export type ListAccountingPointEnergySupplierData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/accounting_point_energy_supplier";
 };
@@ -10655,6 +13202,10 @@ export type ListMeteringGridAreaData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/metering_grid_area";
 };
@@ -10712,7 +13263,12 @@ export type ReadMeteringGridAreaData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/metering_grid_area/{id}";
 };
 
@@ -10773,6 +13329,10 @@ export type ListAccountingPointMeteringGridAreaData = {
      */
     valid_from?: string;
     /**
+     * Filter based on valid time of the resource. Alternative to using valid_from and valid_to filters together.
+     */
+    valid_at?: string;
+    /**
      * The date until which the accounting point belongs to the metering grid area. Midnight aligned on Norwegian timezone.
      */
     valid_to?: string;
@@ -10792,6 +13352,10 @@ export type ListAccountingPointMeteringGridAreaData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/accounting_point_metering_grid_area";
 };
@@ -10844,6 +13408,390 @@ export type ListAccountingPointMeteringGridAreaResponses = {
 export type ListAccountingPointMeteringGridAreaResponse =
   ListAccountingPointMeteringGridAreaResponses[keyof ListAccountingPointMeteringGridAreaResponses];
 
+export type ListAccountingPointGridLocationData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Unique surrogate key.
+     */
+    id?: string;
+    /**
+     * The accounting point this grid location belongs to.
+     */
+    accounting_point_id?: string;
+    /**
+     * Filtering Columns
+     */
+    select?: string;
+    /**
+     * Ordering
+     */
+    order?: string;
+    /**
+     * Limiting and Pagination
+     */
+    offset?: string;
+    /**
+     * Limiting and Pagination
+     */
+    limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
+  url: "/accounting_point_grid_location";
+};
+
+export type ListAccountingPointGridLocationErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Range Not Satisfiable
+   */
+  416: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type ListAccountingPointGridLocationError =
+  ListAccountingPointGridLocationErrors[keyof ListAccountingPointGridLocationErrors];
+
+export type ListAccountingPointGridLocationResponses = {
+  /**
+   * OK
+   */
+  200: Array<AccountingPointGridLocation>;
+  /**
+   * Partial Content
+   */
+  206: Array<AccountingPointGridLocation>;
+};
+
+export type ListAccountingPointGridLocationResponse =
+  ListAccountingPointGridLocationResponses[keyof ListAccountingPointGridLocationResponses];
+
+export type CreateAccountingPointGridLocationData = {
+  /**
+   * accounting_point_grid_location
+   */
+  body?: AccountingPointGridLocationCreateRequest;
+  path?: never;
+  query?: never;
+  url: "/accounting_point_grid_location";
+};
+
+export type CreateAccountingPointGridLocationErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Conflict
+   */
+  409: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type CreateAccountingPointGridLocationError =
+  CreateAccountingPointGridLocationErrors[keyof CreateAccountingPointGridLocationErrors];
+
+export type CreateAccountingPointGridLocationResponses = {
+  /**
+   * Created
+   */
+  201: AccountingPointGridLocation;
+};
+
+export type CreateAccountingPointGridLocationResponse =
+  CreateAccountingPointGridLocationResponses[keyof CreateAccountingPointGridLocationResponses];
+
+export type ReadAccountingPointGridLocationData = {
+  body?: never;
+  path: {
+    id: number;
+  };
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
+  url: "/accounting_point_grid_location/{id}";
+};
+
+export type ReadAccountingPointGridLocationErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type ReadAccountingPointGridLocationError =
+  ReadAccountingPointGridLocationErrors[keyof ReadAccountingPointGridLocationErrors];
+
+export type ReadAccountingPointGridLocationResponses = {
+  /**
+   * OK
+   */
+  200: AccountingPointGridLocation;
+};
+
+export type ReadAccountingPointGridLocationResponse =
+  ReadAccountingPointGridLocationResponses[keyof ReadAccountingPointGridLocationResponses];
+
+export type UpdateAccountingPointGridLocationData = {
+  /**
+   * accounting_point_grid_location
+   */
+  body: AccountingPointGridLocationUpdateRequest;
+  path: {
+    id: number;
+  };
+  query?: never;
+  url: "/accounting_point_grid_location/{id}";
+};
+
+export type UpdateAccountingPointGridLocationErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Conflict
+   */
+  409: ErrorMessage;
+};
+
+export type UpdateAccountingPointGridLocationError =
+  UpdateAccountingPointGridLocationErrors[keyof UpdateAccountingPointGridLocationErrors];
+
+export type UpdateAccountingPointGridLocationResponses = {
+  /**
+   * OK
+   */
+  200: AccountingPointGridLocation;
+  /**
+   * No Content
+   */
+  204: void;
+};
+
+export type UpdateAccountingPointGridLocationResponse =
+  UpdateAccountingPointGridLocationResponses[keyof UpdateAccountingPointGridLocationResponses];
+
+export type ListAccountingPointGridLocationHistoryData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Unique surrogate key.
+     */
+    id?: string;
+    /**
+     * Identifier of the Accounting Point Grid Location whose history we want to inspect.
+     */
+    accounting_point_grid_location_id?: string;
+    /**
+     * The accounting point this grid location belongs to.
+     */
+    accounting_point_id?: string;
+    /**
+     * Filtering Columns
+     */
+    select?: string;
+    /**
+     * Ordering
+     */
+    order?: string;
+    /**
+     * Limiting and Pagination
+     */
+    offset?: string;
+    /**
+     * Limiting and Pagination
+     */
+    limit?: string;
+  };
+  url: "/accounting_point_grid_location_history";
+};
+
+export type ListAccountingPointGridLocationHistoryErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Range Not Satisfiable
+   */
+  416: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type ListAccountingPointGridLocationHistoryError =
+  ListAccountingPointGridLocationHistoryErrors[keyof ListAccountingPointGridLocationHistoryErrors];
+
+export type ListAccountingPointGridLocationHistoryResponses = {
+  /**
+   * OK
+   */
+  200: Array<AccountingPointGridLocationHistory>;
+  /**
+   * Partial Content
+   */
+  206: Array<AccountingPointGridLocationHistory>;
+};
+
+export type ListAccountingPointGridLocationHistoryResponse =
+  ListAccountingPointGridLocationHistoryResponses[keyof ListAccountingPointGridLocationHistoryResponses];
+
+export type ReadAccountingPointGridLocationHistoryData = {
+  body?: never;
+  path: {
+    /**
+     * Identifier of the history record we want to inspect.
+     */
+    id: number;
+  };
+  query?: never;
+  url: "/accounting_point_grid_location_history/{id}";
+};
+
+export type ReadAccountingPointGridLocationHistoryErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type ReadAccountingPointGridLocationHistoryError =
+  ReadAccountingPointGridLocationHistoryErrors[keyof ReadAccountingPointGridLocationHistoryErrors];
+
+export type ReadAccountingPointGridLocationHistoryResponses = {
+  /**
+   * OK
+   */
+  200: AccountingPointGridLocationHistory;
+};
+
+export type ReadAccountingPointGridLocationHistoryResponse =
+  ReadAccountingPointGridLocationHistoryResponses[keyof ReadAccountingPointGridLocationHistoryResponses];
+
 export type ListProductTypeData = {
   body?: never;
   path?: never;
@@ -10876,6 +13824,10 @@ export type ListProductTypeData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/product_type";
 };
@@ -10933,7 +13885,12 @@ export type ReadProductTypeData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/product_type/{id}";
 };
 
@@ -11009,6 +13966,10 @@ export type ListSystemOperatorProductTypeData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/system_operator_product_type";
 };
@@ -11120,7 +14081,12 @@ export type ReadSystemOperatorProductTypeData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/system_operator_product_type/{id}";
 };
 
@@ -11380,6 +14346,7 @@ export type ListServiceProviderProductApplicationData = {
      * References to the product types.
      */
     product_type_ids?: string;
+    status?: string;
     /**
      * Filtering Columns
      */
@@ -11396,6 +14363,10 @@ export type ListServiceProviderProductApplicationData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_provider_product_application";
 };
@@ -11507,7 +14478,12 @@ export type ReadServiceProviderProductApplicationData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_provider_product_application/{id}";
 };
 
@@ -11631,6 +14607,7 @@ export type ListServiceProviderProductApplicationHistoryData = {
      * References to the product types.
      */
     product_type_ids?: string;
+    status?: string;
     /**
      * Filtering Columns
      */
@@ -11779,6 +14756,10 @@ export type ListServiceProviderProductApplicationCommentData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_provider_product_application_comment";
 };
@@ -11890,7 +14871,12 @@ export type ReadServiceProviderProductApplicationCommentData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_provider_product_application_comment/{id}";
 };
 
@@ -12162,6 +15148,10 @@ export type ListServiceProviderProductSuspensionData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_provider_product_suspension";
 };
@@ -12318,7 +15308,12 @@ export type ReadServiceProviderProductSuspensionData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_provider_product_suspension/{id}";
 };
 
@@ -12590,6 +15585,10 @@ export type ListServiceProviderProductSuspensionCommentData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_provider_product_suspension_comment";
 };
@@ -12701,7 +15700,12 @@ export type ReadServiceProviderProductSuspensionCommentData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_provider_product_suspension_comment/{id}";
 };
 
@@ -12973,6 +15977,10 @@ export type ListServiceProvidingGroupProductApplicationData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_product_application";
 };
@@ -13084,7 +16092,12 @@ export type ReadServiceProvidingGroupProductApplicationData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_product_application/{id}";
 };
 
@@ -13328,6 +16341,392 @@ export type ReadServiceProvidingGroupProductApplicationHistoryResponses = {
 export type ReadServiceProvidingGroupProductApplicationHistoryResponse =
   ReadServiceProvidingGroupProductApplicationHistoryResponses[keyof ReadServiceProvidingGroupProductApplicationHistoryResponses];
 
+export type ListServiceProvidingGroupProductApplicationCommentData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Unique surrogate identifier.
+     */
+    id?: string;
+    /**
+     * Reference to the service providing group product application.
+     */
+    service_providing_group_product_application_id?: string;
+    /**
+     * Filtering Columns
+     */
+    select?: string;
+    /**
+     * Ordering
+     */
+    order?: string;
+    /**
+     * Limiting and Pagination
+     */
+    offset?: string;
+    /**
+     * Limiting and Pagination
+     */
+    limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
+  url: "/service_providing_group_product_application_comment";
+};
+
+export type ListServiceProvidingGroupProductApplicationCommentErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Range Not Satisfiable
+   */
+  416: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type ListServiceProvidingGroupProductApplicationCommentError =
+  ListServiceProvidingGroupProductApplicationCommentErrors[keyof ListServiceProvidingGroupProductApplicationCommentErrors];
+
+export type ListServiceProvidingGroupProductApplicationCommentResponses = {
+  /**
+   * OK
+   */
+  200: Array<ServiceProvidingGroupProductApplicationComment>;
+  /**
+   * Partial Content
+   */
+  206: Array<ServiceProvidingGroupProductApplicationComment>;
+};
+
+export type ListServiceProvidingGroupProductApplicationCommentResponse =
+  ListServiceProvidingGroupProductApplicationCommentResponses[keyof ListServiceProvidingGroupProductApplicationCommentResponses];
+
+export type CreateServiceProvidingGroupProductApplicationCommentData = {
+  /**
+   * service_providing_group_product_application_comment
+   */
+  body?: ServiceProvidingGroupProductApplicationCommentCreateRequest;
+  path?: never;
+  query?: never;
+  url: "/service_providing_group_product_application_comment";
+};
+
+export type CreateServiceProvidingGroupProductApplicationCommentErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Conflict
+   */
+  409: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type CreateServiceProvidingGroupProductApplicationCommentError =
+  CreateServiceProvidingGroupProductApplicationCommentErrors[keyof CreateServiceProvidingGroupProductApplicationCommentErrors];
+
+export type CreateServiceProvidingGroupProductApplicationCommentResponses = {
+  /**
+   * Created
+   */
+  201: ServiceProvidingGroupProductApplicationComment;
+};
+
+export type CreateServiceProvidingGroupProductApplicationCommentResponse =
+  CreateServiceProvidingGroupProductApplicationCommentResponses[keyof CreateServiceProvidingGroupProductApplicationCommentResponses];
+
+export type ReadServiceProvidingGroupProductApplicationCommentData = {
+  body?: never;
+  path: {
+    id: number;
+  };
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
+  url: "/service_providing_group_product_application_comment/{id}";
+};
+
+export type ReadServiceProvidingGroupProductApplicationCommentErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type ReadServiceProvidingGroupProductApplicationCommentError =
+  ReadServiceProvidingGroupProductApplicationCommentErrors[keyof ReadServiceProvidingGroupProductApplicationCommentErrors];
+
+export type ReadServiceProvidingGroupProductApplicationCommentResponses = {
+  /**
+   * OK
+   */
+  200: ServiceProvidingGroupProductApplicationComment;
+};
+
+export type ReadServiceProvidingGroupProductApplicationCommentResponse =
+  ReadServiceProvidingGroupProductApplicationCommentResponses[keyof ReadServiceProvidingGroupProductApplicationCommentResponses];
+
+export type UpdateServiceProvidingGroupProductApplicationCommentData = {
+  /**
+   * service_providing_group_product_application_comment
+   */
+  body: ServiceProvidingGroupProductApplicationCommentUpdateRequest;
+  path: {
+    id: number;
+  };
+  query?: never;
+  url: "/service_providing_group_product_application_comment/{id}";
+};
+
+export type UpdateServiceProvidingGroupProductApplicationCommentErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Conflict
+   */
+  409: ErrorMessage;
+};
+
+export type UpdateServiceProvidingGroupProductApplicationCommentError =
+  UpdateServiceProvidingGroupProductApplicationCommentErrors[keyof UpdateServiceProvidingGroupProductApplicationCommentErrors];
+
+export type UpdateServiceProvidingGroupProductApplicationCommentResponses = {
+  /**
+   * OK
+   */
+  200: ServiceProvidingGroupProductApplicationComment;
+  /**
+   * No Content
+   */
+  204: void;
+};
+
+export type UpdateServiceProvidingGroupProductApplicationCommentResponse =
+  UpdateServiceProvidingGroupProductApplicationCommentResponses[keyof UpdateServiceProvidingGroupProductApplicationCommentResponses];
+
+export type ListServiceProvidingGroupProductApplicationCommentHistoryData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Unique surrogate identifier.
+     */
+    id?: string;
+    /**
+     * Identifier of the Service Providing Group Product Application Comment whose history we want to inspect.
+     */
+    service_providing_group_product_application_comment_id?: string;
+    /**
+     * Reference to the service providing group product application.
+     */
+    service_providing_group_product_application_id?: string;
+    /**
+     * Filtering Columns
+     */
+    select?: string;
+    /**
+     * Ordering
+     */
+    order?: string;
+    /**
+     * Limiting and Pagination
+     */
+    offset?: string;
+    /**
+     * Limiting and Pagination
+     */
+    limit?: string;
+  };
+  url: "/service_providing_group_product_application_comment_history";
+};
+
+export type ListServiceProvidingGroupProductApplicationCommentHistoryErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Range Not Satisfiable
+   */
+  416: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type ListServiceProvidingGroupProductApplicationCommentHistoryError =
+  ListServiceProvidingGroupProductApplicationCommentHistoryErrors[keyof ListServiceProvidingGroupProductApplicationCommentHistoryErrors];
+
+export type ListServiceProvidingGroupProductApplicationCommentHistoryResponses =
+  {
+    /**
+     * OK
+     */
+    200: Array<ServiceProvidingGroupProductApplicationCommentHistory>;
+    /**
+     * Partial Content
+     */
+    206: Array<ServiceProvidingGroupProductApplicationCommentHistory>;
+  };
+
+export type ListServiceProvidingGroupProductApplicationCommentHistoryResponse =
+  ListServiceProvidingGroupProductApplicationCommentHistoryResponses[keyof ListServiceProvidingGroupProductApplicationCommentHistoryResponses];
+
+export type ReadServiceProvidingGroupProductApplicationCommentHistoryData = {
+  body?: never;
+  path: {
+    /**
+     * Identifier of the history record we want to inspect.
+     */
+    id: number;
+  };
+  query?: never;
+  url: "/service_providing_group_product_application_comment_history/{id}";
+};
+
+export type ReadServiceProvidingGroupProductApplicationCommentHistoryErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type ReadServiceProvidingGroupProductApplicationCommentHistoryError =
+  ReadServiceProvidingGroupProductApplicationCommentHistoryErrors[keyof ReadServiceProvidingGroupProductApplicationCommentHistoryErrors];
+
+export type ReadServiceProvidingGroupProductApplicationCommentHistoryResponses =
+  {
+    /**
+     * OK
+     */
+    200: ServiceProvidingGroupProductApplicationCommentHistory;
+  };
+
+export type ReadServiceProvidingGroupProductApplicationCommentHistoryResponse =
+  ReadServiceProvidingGroupProductApplicationCommentHistoryResponses[keyof ReadServiceProvidingGroupProductApplicationCommentHistoryResponses];
+
 export type ListServiceProvidingGroupProductSuspensionData = {
   body?: never;
   path?: never;
@@ -13364,6 +16763,10 @@ export type ListServiceProvidingGroupProductSuspensionData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_product_suspension";
 };
@@ -13520,7 +16923,12 @@ export type ReadServiceProvidingGroupProductSuspensionData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_product_suspension/{id}";
 };
 
@@ -13792,6 +17200,10 @@ export type ListServiceProvidingGroupProductSuspensionCommentData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/service_providing_group_product_suspension_comment";
 };
@@ -13903,7 +17315,12 @@ export type ReadServiceProvidingGroupProductSuspensionCommentData = {
   path: {
     id: number;
   };
-  query?: never;
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
   url: "/service_providing_group_product_suspension_comment/{id}";
 };
 
@@ -14146,9 +17563,17 @@ export type ListNoticeData = {
   path?: never;
   query?: {
     /**
+     * Unique surrogate identifier.
+     */
+    id?: string;
+    /**
      * Reference to the party targeted by the notice.
      */
     party_id?: string;
+    /**
+     * The type of the notice.
+     */
+    type?: string;
     /**
      * Filtering Columns
      */
@@ -14165,6 +17590,10 @@ export type ListNoticeData = {
      * Limiting and Pagination
      */
     limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
   };
   url: "/notice";
 };
@@ -14214,3 +17643,55 @@ export type ListNoticeResponses = {
 };
 
 export type ListNoticeResponse = ListNoticeResponses[keyof ListNoticeResponses];
+
+export type ReadNoticeData = {
+  body?: never;
+  path: {
+    id: number;
+  };
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
+  url: "/notice/{id}";
+};
+
+export type ReadNoticeErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type ReadNoticeError = ReadNoticeErrors[keyof ReadNoticeErrors];
+
+export type ReadNoticeResponses = {
+  /**
+   * OK
+   */
+  200: Notice;
+};
+
+export type ReadNoticeResponse = ReadNoticeResponses[keyof ReadNoticeResponses];

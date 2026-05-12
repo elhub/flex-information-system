@@ -1,0 +1,59 @@
+package no.elhub.flex.model.dto.generated.models
+
+import kotlin.Long
+import kotlin.time.Instant
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+/**
+ * Response schema - Relation linking a balance responsible party to an accounting point.
+ */
+@Serializable
+public data class AccountingPointBalanceResponsiblePartyResponse(
+  /**
+   * The ID of the accounting point.
+   */
+  @SerialName("accounting_point_id")
+  public val accountingPointId: Long? = null,
+  /**
+   * The balance responsible party of the accounting point.
+   */
+  @SerialName("balance_responsible_party_id")
+  public val balanceResponsiblePartyId: Long? = null,
+  /**
+   * The direction of the effect on the balance that the BRP takes responsibility for.
+   */
+  @SerialName("energy_direction")
+  public val energyDirection: AccountingPointBalanceResponsiblePartyEnergyDirection? = null,
+  /**
+   * The date from which the relation between the accounting point and the balance responsible party
+   * is valid. Midnight aligned on Norwegian timezone.
+   */
+  @SerialName("valid_from")
+  public val validFrom: Instant? = null,
+  /**
+   * The date until which the relation between the accounting point and the balance responsible
+   * party is valid. Midnight aligned on Norwegian timezone.
+   */
+  @SerialName("valid_to")
+  public val validTo: Instant? = null,
+  /**
+   * Response schema - Accounting point for a controllable unit.
+   */
+  @SerialName("accounting_point")
+  public val accountingPoint: AccountingPointResponse? = null,
+  /**
+   * Response schema - The body that interacts with the Flexibility Information System
+   *
+   * A party is the thing that is authorized to access or modify data in the Flexiblity Information
+   * System.
+   *
+   * Example party types:
+   *
+   * * Service Provider
+   * * System Operator
+   * * End User
+   */
+  @SerialName("balance_responsible_party")
+  public val balanceResponsibleParty: PartyResponse? = null,
+)

@@ -20,6 +20,8 @@ export const ReferenceComboboxInput = ({
   readOnly,
   disabled,
   resource: resourceProp,
+  description,
+  descriptionOverride,
   ...rest
 }: ReferenceComboboxInputProps) => {
   const { id, field, fieldState } = useInput({
@@ -69,6 +71,8 @@ export const ReferenceComboboxInput = ({
       error={fieldState.error?.message}
       resource={resourceProp}
       overrideLabel={overrideLabel}
+      description={description}
+      descriptionOverride={descriptionOverride}
     >
       <Combobox
         options={options ?? []}

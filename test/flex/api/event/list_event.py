@@ -18,7 +18,9 @@ def _get_kwargs(
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["id"] = id
@@ -30,6 +32,8 @@ def _get_kwargs(
     params["offset"] = offset
 
     params["limit"] = limit
+
+    params["embed"] = embed
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
@@ -141,8 +145,11 @@ def sync_detailed(
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[EventResponse]]:
     """List Event
+
+     List [Event](https://elhub.github.io/flex-information-system/resources/event/)
 
     Args:
         id (str | Unset):
@@ -150,6 +157,7 @@ def sync_detailed(
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -165,6 +173,7 @@ def sync_detailed(
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
     )
 
     response = client.get_httpx_client().request(
@@ -182,8 +191,11 @@ def sync(
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[EventResponse] | None:
     """List Event
+
+     List [Event](https://elhub.github.io/flex-information-system/resources/event/)
 
     Args:
         id (str | Unset):
@@ -191,6 +203,7 @@ def sync(
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -207,6 +220,7 @@ def sync(
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
     ).parsed
 
 
@@ -218,8 +232,11 @@ async def asyncio_detailed(
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[EventResponse]]:
     """List Event
+
+     List [Event](https://elhub.github.io/flex-information-system/resources/event/)
 
     Args:
         id (str | Unset):
@@ -227,6 +244,7 @@ async def asyncio_detailed(
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -242,6 +260,7 @@ async def asyncio_detailed(
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -257,8 +276,11 @@ async def asyncio(
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[EventResponse] | None:
     """List Event
+
+     List [Event](https://elhub.github.io/flex-information-system/resources/event/)
 
     Args:
         id (str | Unset):
@@ -266,6 +288,7 @@ async def asyncio(
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -283,5 +306,6 @@ async def asyncio(
             order=order,
             offset=offset,
             limit=limit,
+            embed=embed,
         )
     ).parsed

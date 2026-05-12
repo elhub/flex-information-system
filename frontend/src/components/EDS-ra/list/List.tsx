@@ -5,12 +5,13 @@ import {
   ListBaseProps,
   useListContext,
 } from "ra-core";
-import { BodyText, FlexDiv, Pagination, Panel, VerticalSpace } from "../../ui";
+import { BodyText, Pagination, Panel } from "../../ui";
 
 type ListProps = ListBaseProps & {
   filters?: ReactNode[];
   empty?: boolean;
   actions?: ReactNode[];
+  pagination?: boolean;
 };
 
 export const List = ({
@@ -18,34 +19,19 @@ export const List = ({
   filters,
   empty,
   actions,
+  pagination = true,
   ...rest
 }: ListProps) => {
-  if (empty) {
-    return (
-      <ListBase {...rest}>
-        {actions && <ListActions actions={actions} />}
-        <VerticalSpace />
-        <Panel border>
-          <BodyText>No results</BodyText>
-        </Panel>
-      </ListBase>
-    );
-  }
-
   return (
     <ListBase {...rest}>
-      {actions && <ListActions actions={actions} />}
-      <Panel border>
-        {filters?.length ? (
-          <>
-            <ListFilters filters={filters} />
-            <VerticalSpace />
-          </>
-        ) : null}
-        {children}
-        <VerticalSpace />
-        <ListPagination />
-      </Panel>
+      <div className="flex flex-col gap-2">
+        {actions && <ListActions actions={actions} />}
+        <Panel border className="flex flex-col gap-5">
+          {filters?.length ? <ListFilters filters={filters} /> : null}
+          {empty ? <BodyText>No results</BodyText> : children}
+          {pagination && <ListPagination />}
+        </Panel>
+      </div>
     </ListBase>
   );
 };
@@ -56,7 +42,7 @@ type ListFiltersProps = {
 
 const ListFilters = ({ filters }: ListFiltersProps) => (
   <FilterLiveForm>
-    <FlexDiv style={{ gap: "1rem", flexWrap: "wrap" }}>{filters}</FlexDiv>
+    <div className="flex gap-2 flex-wrap">{filters}</div>
   </FilterLiveForm>
 );
 
@@ -65,15 +51,13 @@ type ListActionsProps = {
 };
 
 const ListActions = ({ actions }: ListActionsProps) => (
-  <FlexDiv style={{ justifyContent: "flex-end", gap: "1rem" }}>
-    {actions}
-  </FlexDiv>
+  <div className="flex justify-end gap-2">{actions}</div>
 );
 
 const ListPagination = () => {
   const { page, perPage, setPage, total } = useListContext();
 
-  if (!total || total <= 1) {
+  if (!total) {
     return null;
   }
 

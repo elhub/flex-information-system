@@ -27,7 +27,8 @@ these concepts see
 Our reasons for choosing event notification over event-carried state transfer are:
 
 - it is simple to implement both for us and the client
-- simplifies data access mechanisms by forcing access to data to go through API calls
+- simplifies data access mechanisms by forcing access to data to go through API
+  calls
 
 The main downside is increased network traffic and latency due to the need for an
 additional API call to get the updated data.
@@ -100,8 +101,8 @@ The client must acknowledge the notification by calling
 `PATCH /notification?id=in.(1,2,3)` with `{ "acknowledged" : true }`.
 
 > [!NOTE]
-> We might add a push-based system in the future. This could e.g. include email or
-> webhooks. Acknowledgement would still be needed.
+> We might add a push-based system in the future. This could e.g. include email
+> or webhooks. Acknowledgement would still be needed.
 
 ## Picking recipients
 
@@ -186,14 +187,19 @@ table. We are using triggers to make the event handling transparent to the
 application code changing the data. Also, PostgREST is limited in its ability to
 customize transactions.
 
-To read the data from the event table to create notifications, we use a
-[logical replication](https://www.postgresql.org/docs/current/logical-replication.html)
-and a worker in the custom backend to identify recipients and insert
-notifications. The worker is defined in the `worker` package, and connects to
-the replication slot by using the `pgrepl` package.
+To read the data from the event table to create notifications, poll based worker
+in the backend to identify recipients and insert notifications. The worker is
+defined in the `worker` package and is concurrency safe due to the use of the
+`FOR UPDATE SKIP LOCKED` pattern.
 
 We are doing this in an external worker since to allow for
 flexibility to add other notification mechanisms as well as being able to
 offload the "identify recipients" read load to a future read replica database.
-In the database, we store the notification with a foreign key to the event, but
-in the API/view we embed it.
+
+The worker runs as the `flex_internal_event_notification` database role, which
+has open RLS policies to be able to read tables it needs to determine who should
+get a notification. To decouple the notification module from the ground
+database, we avoid querying the `flex` schema directly, so when the worker must
+read data that does not exist in the `api` schema, we redefine a view in the
+`notification` schema so that they can get the data without having a strong
+dependency on `flex`.

@@ -1,14 +1,19 @@
 import {
   AutocompleteInput,
+  Datagrid,
+  DateField,
+  EnumArrayInput,
+  EnumField,
   List,
+  PartyReferenceInput,
   ReferenceField,
+  ResourceButton,
   TextField,
-  useRecordContext,
-} from "react-admin";
-import { Datagrid, PartyReferenceInput } from "../auth";
-import { ResourceButton } from "../components/ResourceButton";
-import { NoticeShow } from "./NoticeShow";
+} from "../components/EDS-ra";
 import noticeTypes from "./noticeTypes";
+import { zNotice } from "../generated-client/zod.gen";
+import { getFields } from "../zod";
+import { useRecordContext } from "react-admin";
 
 const NoticeResourceButton = () => {
   const noticeRecord = useRecordContext()!;
@@ -18,53 +23,42 @@ const NoticeResourceButton = () => {
 };
 
 export const NoticeList = () => {
+  const noticeFields = getFields(zNotice.shape);
+
   const filters = [
     <PartyReferenceInput
-      source="party_id"
+      source={noticeFields.party_id.source}
       label="field.notice.party_id"
       noTypeFilter
       key="party"
     />,
     <AutocompleteInput
       key="notice_type"
-      label="field.notice.type"
-      source="type"
-      TextFieldProps={{
-        style: {
-          width: "600px",
-        },
-      }}
-      slotProps={{
-        popper: {
-          style: {
-            width: "fit-content",
-          },
-        },
-      }}
+      source={noticeFields.type.source}
       choices={noticeTypes.map((nt) => ({ id: nt.id, name: nt.label }))}
+      style={{ width: "600px" }}
+    />,
+    <EnumArrayInput
+      key="notice_status"
+      enumKey="notice.status"
+      source="status@in"
     />,
   ];
 
-  // a defined sort parameter is required there because notice has no ID field
-  // cf https://github.com/marmelab/react-admin/blob/27dccfb8519de551ef7e236355860aacef36ef56/packages/ra-core/src/controller/list/useListController.ts#L451-L454
   return (
-    <List
-      perPage={25}
-      filters={filters}
-      sort={{ field: "source", order: "DESC" }}
-      empty={false}
-    >
-      <Datagrid expand={NoticeShow} expandSingle={true}>
-        <ReferenceField
-          source="party_id"
-          reference="party"
-          sortable={false}
-          label="field.notice.party_id"
-        >
+    <List perPage={25} filters={filters} empty={false}>
+      <Datagrid>
+        <TextField source={noticeFields.id.source} />
+        <ReferenceField source={noticeFields.party_id.source} reference="party">
           <TextField source="name" />
         </ReferenceField>
-        <TextField source="type" label="field.notice.type" />
-        <TextField source="source" label="field.notice.source" />
+        <TextField source={noticeFields.type.source} />
+        <TextField source={noticeFields.source.source} />
+        <EnumField
+          source={noticeFields.status.source}
+          enumKey="notice.status"
+        />
+        <DateField source={noticeFields.recorded_at.source} showTime />
         <NoticeResourceButton />
       </Datagrid>
     </List>

@@ -25,6 +25,7 @@ def _get_kwargs(
     limit: str | Unset = UNSET,
     service_providing_group_product_suspension_id: str | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["id"] = id
@@ -162,6 +163,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductSuspensionHistoryResponse]]:
     """List Service Providing Group Product Suspension - history
 
+     List [Service Providing Group Product Suspension - history](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_product_suspension/)
+
     Args:
         id (str | Unset):
         procuring_system_operator_id (str | Unset):
@@ -215,6 +219,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductSuspensionHistoryResponse] | None:
     """List Service Providing Group Product Suspension - history
 
+     List [Service Providing Group Product Suspension - history](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_product_suspension/)
+
     Args:
         id (str | Unset):
         procuring_system_operator_id (str | Unset):
@@ -262,6 +269,9 @@ async def asyncio_detailed(
     service_providing_group_product_suspension_id: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductSuspensionHistoryResponse]]:
     """List Service Providing Group Product Suspension - history
+
+     List [Service Providing Group Product Suspension - history](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_product_suspension/)
 
     Args:
         id (str | Unset):
@@ -313,6 +323,9 @@ async def asyncio(
     service_providing_group_product_suspension_id: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupProductSuspensionHistoryResponse] | None:
     """List Service Providing Group Product Suspension - history
+
+     List [Service Providing Group Product Suspension - history](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_product_suspension/)
 
     Args:
         id (str | Unset):

@@ -1,0 +1,66 @@
+@startuml accounting-point-sync-lookup
+!theme plain
+
+title AP Sync - Lookup
+
+autonumber
+autoactivate on
+skinparam note {
+    BackgroundColor #FFFFBD
+}
+
+actor "Service provider" as SP
+participant "CU Lookup" as CUL
+database "AP" as AP
+database "AP <sub>" as APSUB
+database "AP Sync" as APS
+participant "AP Adapter" as APA
+
+SP -> CUL: Lookup
+
+CUL -> APA: Get AP data
+return
+
+CUL -> AP: Insert AP\nON CONFLICT DO NOTHING\nCOMMIT
+' Something like https://stackoverflow.com/a/42217872 ?
+AP -> APS: Insert trigger\nversion = 0
+return
+return Result (ap_id)
+
+CUL -> APS: BEGIN\nUpdate lock (ap_id)
+note right
+    SET LOCAL lock_timeout = '1s';
+    SELECT FOR UPDATE
+end note
+return Result (version)
+
+opt 55P03 lock_not_available\nAnother sync in progress
+    note over CUL
+        This is an edge case.
+        Return error and retry in caller.
+    end note
+end
+
+CUL -> AP: Update AP record
+note right of AP
+    Yes, even though we might
+    have inserted above.
+    Just in case.
+end note
+return
+CUL -> APSUB: Merge data
+return
+
+CUL -> APS: Unlock (ap_id)
+note right
+    last_synced_at = now
+    last_sync_start = null
+    version = version + 1
+end note
+return
+
+return: OK
+
+
+
+@enduml

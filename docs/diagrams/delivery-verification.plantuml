@@ -1,0 +1,70 @@
+@startuml delivery-verification
+
+!theme plain
+
+title Delivery verification
+
+autonumber
+skinparam note {
+    BackgroundColor #FFFFBD
+}
+
+participant "Time series\nservices" as TS
+actor "Service Provider (SP)" as SP
+participant "Market platform" as MP
+participant "Flexibility\nInformation System (FIS)" as FIS
+actor "System Operator (SO)" as SO 
+participant "Elhub" as EL
+
+== Bid activation ==
+
+activate SP
+SP -> MP: Send bid
+SP -> TS: Send baseline
+
+Activate SO
+SO -> TS: Get baseline
+TS --> SO: Baseline
+
+SO -> MP: Activate bid
+
+note left
+    SP activates the SPGs resources
+    after the bid is activated
+end note
+
+SP -> TS: Metering values
+deactivate SP
+
+SO -> EL: Metering values from smart meters
+
+note right
+    Elhub receives the metering values
+    from the system operator at D+1
+end note
+
+== Delivery verification ==
+
+SO -> FIS: Get CU/SPG/MP ID
+FIS --> SO: CU/SPG/MP ID
+
+note right
+    PSO uses FIS to get the IDs of the CUs/SPG and MPID
+    in order to collect the right metering values.
+end note
+
+SO -> TS: Get metering values and baseline
+TS --> SO: Metering values and baseline
+SO -> EL : Get metering values
+EL --> SO : Metering Values
+
+note left
+    PSO uses the collected time series and the
+    activated bid to do the delivery verification
+    analysis.
+end note
+
+SO -> FIS: Register result of delivery verification
+FIS --> SP: Notify
+
+deactivate SO

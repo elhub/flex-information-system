@@ -1,12 +1,11 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:party-create runOnChange:false endDelimiter:--
---validCheckSum: 9:65fc6f6a36ea85af1b3dcb1e11a78ec2
+-- changeset flex:party-create runOnChange:true endDelimiter:--
 CREATE TABLE IF NOT EXISTS party (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     -- PTY-VAL002
-    business_id text UNIQUE NOT NULL DEFAULT (public.uuid_generate_v4()),
+    business_id text NOT NULL DEFAULT (public.uuid_generate_v4()),
     business_id_type text NOT NULL
     REFERENCES business_id_type (name) DEFAULT 'uuid',
     entity_id bigint NOT NULL
@@ -68,12 +67,20 @@ CREATE TABLE IF NOT EXISTS party (
             'third_party'
         )
     ),
-    CONSTRAINT uk_party_id_type UNIQUE (id, type)
+    CONSTRAINT uk_party_id_type UNIQUE (id, type),
+    CONSTRAINT uk_party_business_id_type UNIQUE (business_id, type)
 );
 
 -- changeset flex:party-entiry-end-user-uk runOnChange:true endDelimiter:--
 -- only one end_user party per entity
 CREATE INDEX IF NOT EXISTS uk_entity_end_user ON party (entity_id) WHERE (
+    type = 'end_user'
+);
+
+-- changeset flex:party-entity-end-user-uk-unique runOnChange:false endDelimiter:--
+-- enforce uniqueness at DB level to prevent race conditions
+DROP INDEX IF EXISTS uk_entity_end_user;
+CREATE UNIQUE INDEX IF NOT EXISTS uk_entity_end_user ON party (entity_id) WHERE (
     type = 'end_user'
 );
 

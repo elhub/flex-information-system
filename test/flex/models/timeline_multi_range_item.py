@@ -17,8 +17,9 @@ T = TypeVar("T", bound="TimelineMultiRangeItem")
 class TimelineMultiRangeItem:
     """
     Attributes:
-        valid_from (datetime.datetime | Unset): The start time of the timeline section. Example: 2023-01-01T00:00:00Z.
-        valid_to (datetime.datetime | Unset): The end time of the timeline section. Example: 2023-01-02T00:00:00Z.
+        valid_from (datetime.datetime | Unset): The start time of the timeline section. Example:
+            2023-01-01T00:00:00+00:00.
+        valid_to (datetime.datetime | Unset): The end time of the timeline section. Example: 2023-01-02T00:00:00+00:00.
     """
 
     valid_from: datetime.datetime | Unset = UNSET

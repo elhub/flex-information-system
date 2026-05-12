@@ -1,41 +1,24 @@
-import { useState, ReactNode, createElement } from "react";
 import {
   Admin,
   CustomRoutes,
   ResourceContextProvider,
-  Layout as RaLayout,
   LayoutProps,
   localStorageStore,
-  Menu,
-  useCreatePath,
-  MenuItemLink,
 } from "react-admin";
-import { MenuItem, ListItemIcon, ListItemText, Box } from "@mui/material";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Collapse from "@mui/material/Collapse";
 
-import DefaultIcon from "@mui/icons-material/ViewList";
-import {
-  useResourceDefinitions,
-  useGetResourceLabel,
-  useCanAccess,
-  DataProvider,
-} from "ra-core";
+import { DataProvider } from "ra-core";
 
 import { Route } from "react-router-dom";
-import { apiURL, serverURL, httpClient, authURL, docsURL } from "./httpConfig";
+import { apiURL, httpClient } from "./httpConfig";
 
 import { authProvider } from "./auth";
-
-import { Breadcrumbs } from "./components/Breadcrumbs";
 import { elhubTheme } from "./theme";
 import { LoginPage } from "./LoginPage";
 import { AssumePartyPage } from "./AssumePartyPage";
 
 import { createAllResources } from "./resources";
 
-import { Dashboard } from "./Dashboard";
+import { Dashboard } from "./dashboard/Dashboard";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import postgrestRestProvider, {
@@ -46,6 +29,7 @@ import postgrestRestProvider, {
 
 import { useI18nProvider } from "./intl/intl";
 import { Header } from "./components/Header/Header";
+import { NavigationHistoryProvider } from "./components/NavigationHistoryProvider";
 
 const config: IDataProviderConfig = {
   apiUrl: apiURL,
@@ -72,206 +56,12 @@ const dataProvider: DataProvider = {
     }),
 };
 
-const SubMenu = ({
-  text,
-  defaultOpen,
-  children,
-}: {
-  text: string;
-  children: ReactNode;
-  defaultOpen?: boolean;
-}) => {
-  const [open, setOpen] = useState(defaultOpen);
-
-  const handleClick = () => {
-    setOpen(!open);
-  };
-
-  return (
-    <>
-      <MenuItem onClick={handleClick}>
-        <ListItemIcon>
-          {open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-        </ListItemIcon>
-        <ListItemText primary={text} />
-      </MenuItem>
-      <Collapse
-        in={open}
-        timeout="auto"
-        unmountOnExit
-        sx={{
-          "& .RaMenuItemLink-icon": {
-            paddingLeft: 1,
-          },
-        }}
-      >
-        {children}
-      </Collapse>
-    </>
-  );
-};
-
-// ResourceMenuItem + label override
-export const LabelledResourceMenuItem = ({
-  name,
-  label,
-}: {
-  name: string;
-  label: string;
-}) => {
-  const resources = useResourceDefinitions();
-  const { canAccess, error, isPending } = useCanAccess({
-    action: "list",
-    resource: name,
-  });
-  const getResourceLabel = useGetResourceLabel();
-  const createPath = useCreatePath();
-  if (
-    !resources ||
-    !resources[name] ||
-    isPending ||
-    canAccess === false ||
-    error != null
-  )
-    return null;
-
-  return (
-    <MenuItemLink
-      to={createPath({ resource: name, type: "list" })}
-      state={{ _scrollToTop: true }}
-      primaryText={label ?? <>{getResourceLabel(name, 2)}</>}
-      leftIcon={
-        resources[name]?.icon ? (
-          createElement(resources[name]?.icon)
-        ) : (
-          <DefaultIcon />
-        )
-      }
-    />
-  );
-};
-
-const MainMenu = () => (
-  <Menu>
-    <Menu.DashboardItem />
-    <SubMenu text="Basic resources" defaultOpen>
-      <LabelledResourceMenuItem
-        name="accounting_point"
-        label="Accounting point data"
-      />
-      <LabelledResourceMenuItem
-        name="controllable_unit"
-        label="CU registrations"
-      />
-      <LabelledResourceMenuItem
-        name="service_providing_group"
-        label="SPG registrations"
-      />
-      <LabelledResourceMenuItem
-        name="service_providing_group_membership"
-        label="SPG memberships"
-      />
-      <LabelledResourceMenuItem
-        name="service_providing_group_grid_prequalification"
-        label="SPG grid prequalifications"
-      />
-      <LabelledResourceMenuItem
-        name="system_operator_product_type"
-        label="System operator product listings"
-      />
-    </SubMenu>
-    <SubMenu text="Product application" defaultOpen>
-      <LabelledResourceMenuItem
-        name="service_provider_product_application"
-        label="SP product applications"
-      />
-      <LabelledResourceMenuItem
-        name="service_providing_group_product_application"
-        label="SPG product applications"
-      />
-    </SubMenu>
-    <SubMenu text="Suspension" defaultOpen>
-      <LabelledResourceMenuItem
-        name="controllable_unit_suspension"
-        label="CU suspensions"
-      />
-      <LabelledResourceMenuItem
-        name="service_provider_product_suspension"
-        label="SP product suspensions"
-      />
-      <LabelledResourceMenuItem
-        name="service_providing_group_grid_suspension"
-        label="SPG grid suspensions"
-      />
-      <LabelledResourceMenuItem
-        name="service_providing_group_product_suspension"
-        label="SPG product suspensions"
-      />
-    </SubMenu>
-    <SubMenu text="Identity">
-      <Menu.ResourceItem name="entity" />
-      <Menu.ResourceItem name="party" />
-    </SubMenu>
-    <SubMenu text="System">
-      <Menu.ResourceItem name="event" />
-      <Menu.ResourceItem name="notification" />
-      <Menu.ResourceItem name="notice" />
-    </SubMenu>
-  </Menu>
-);
-
-const FooterButton = ({ href, label }: any) => (
-  <a
-    style={{
-      display: "inline-block",
-      padding: "2px 8px",
-      border: `1px solid ${elhubTheme.palette.background.default}`,
-      color: elhubTheme.palette.background.default,
-      borderRadius: "3px",
-      textDecoration: "none",
-    }}
-    href={href}
-  >
-    {label}
-  </a>
-);
-
 const Layout = ({ children }: LayoutProps) => (
-  <>
-    <RaLayout menu={MainMenu} appBar={Header}>
-      <Breadcrumbs />
-      {children}
-      <Box m={3} />
-    </RaLayout>
+  <NavigationHistoryProvider>
+    <Header />
+    <div className="py-8 px-6 ">{children}</div>
     <ReactQueryDevtools initialIsOpen={false} />
-    <footer
-      style={{
-        position: "fixed",
-        right: 0,
-        bottom: 0,
-        left: 0,
-        zIndex: 100,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: "10px",
-        backgroundColor: "var(--eds-semantic-background-action-primary)",
-        textAlign: "center",
-      }}
-    >
-      <form
-        style={{
-          display: "flex",
-          gap: "10px",
-        }}
-      >
-        <FooterButton href={serverURL} label="Portal" />
-        <FooterButton href={docsURL} label="Project documentation" />
-        <FooterButton href={apiURL} label="Main API documentation" />
-        <FooterButton href={authURL} label="Auth API documentation" />
-      </form>
-    </footer>
-  </>
+  </NavigationHistoryProvider>
 );
 
 export const App = () => (

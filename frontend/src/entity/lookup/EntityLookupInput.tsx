@@ -25,7 +25,7 @@ const Toolbar = () => {
 
   // launch lookup request
   const lookup = async () => {
-    let body: any = {};
+    const body: any = {};
     const values = getValues();
 
     // do not put undefined/null into the request body

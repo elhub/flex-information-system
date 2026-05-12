@@ -27,6 +27,7 @@ import {
 import { ControllableUnitSuspensionList } from "../controllable_unit";
 import { ControllableUnitServiceProviderList } from "../controllable_unit/service_provider/ControllableUnitServiceProviderList";
 import { ControllableUnitBalanceResponsiblePartyList } from "../controllable_unit/balance_responsible_party/ControllableUnitBalanceResponsiblePartyList";
+import ControllableUnitCreate from "../controllable_unit/ControllableUnitCreate";
 
 export const createControllableUnitResources = (permissions: Permissions) => {
   const resources: JSX.Element[] = [];
@@ -57,9 +58,9 @@ export const createControllableUnitResources = (permissions: Permissions) => {
         }
         create={
           canCreate ? (
-            <Create>
+            <CreateRedirectPreviousPage>
               <ControllableUnitInput />
-            </Create>
+            </CreateRedirectPreviousPage>
           ) : undefined
         }
         recordRepresentation="name"
@@ -70,18 +71,11 @@ export const createControllableUnitResources = (permissions: Permissions) => {
           path="lookup/result"
           element={<ControllableUnitLookupResult />}
         />
+        <Route path="/lookup/create" element={<ControllableUnitCreate />} />
         {/* controllable unit history */}
         <Route
           path=":controllable_unit_id/history"
           element={<ControllableUnitHistoryList />}
-        />
-        <Route
-          path=":controllable_unit_id/history/:id/show"
-          element={
-            <ResourceContextProvider value="controllable_unit_history">
-              <ControllableUnitShow />
-            </ResourceContextProvider>
-          }
         />
         {/* controllable unit suspension */}
         <Route

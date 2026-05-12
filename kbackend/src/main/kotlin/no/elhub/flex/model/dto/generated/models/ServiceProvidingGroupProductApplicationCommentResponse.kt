@@ -1,0 +1,62 @@
+package no.elhub.flex.model.dto.generated.models
+
+import kotlin.Long
+import kotlin.String
+import kotlin.time.Instant
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+/**
+ * Response schema - Comment made by a party involved in a service providing group product
+ * application.
+ */
+@Serializable
+public data class ServiceProvidingGroupProductApplicationCommentResponse(
+  /**
+   * Unique surrogate identifier.
+   */
+  @SerialName("id")
+  public val id: Long? = null,
+  /**
+   * Reference to the service providing group product application.
+   */
+  @SerialName("service_providing_group_product_application_id")
+  public val serviceProvidingGroupProductApplicationId: Long,
+  /**
+   * Reference to the identity that created the comment.
+   */
+  @SerialName("created_by")
+  public val createdBy: Long? = null,
+  /**
+   * When the comment was added to the SPGPA.
+   */
+  @SerialName("created_at")
+  public val createdAt: Instant? = null,
+  /**
+   * The level of visibility of the comment.
+   */
+  @SerialName("visibility")
+  public val visibility: ServiceProvidingGroupProductApplicationCommentVisibility,
+  /**
+   * Free text content of the comment.
+   */
+  @SerialName("content")
+  public val content: String,
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  @SerialName("recorded_at")
+  public val recordedAt: Instant? = null,
+  /**
+   * The identity that recorded the resource.
+   */
+  @SerialName("recorded_by")
+  public val recordedBy: Long? = null,
+  /**
+   * Response schema - Relation between a service providing group and a system operator for a
+   * product type, for the SPG to deliver a product to the SO later.
+   */
+  @SerialName("service_providing_group_product_application")
+  public val serviceProvidingGroupProductApplication:
+      ServiceProvidingGroupProductApplicationResponse? = null,
+)

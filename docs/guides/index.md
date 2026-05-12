@@ -20,7 +20,7 @@ can be validated.
 
 ## Getting ready to participate in the market?
 
-[Get Ready for Market](get-ready-for-market.md) helps you get an overview
+[Get Ready for Market](get-ready-for-market/index.md) helps you get an overview
 of how to go from initial setup in FIS to being ready for market participation.
 It summarises the registration, validation, and approval steps needed before
 you can deliver flexibility products.

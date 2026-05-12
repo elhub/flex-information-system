@@ -22,6 +22,7 @@ def _get_kwargs(
     limit: str | Unset = UNSET,
     controllable_unit_suspension_id: str | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["id"] = id
@@ -156,6 +157,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitSuspensionHistoryResponse]]:
     """List Controllable Unit Suspension - history
 
+     List [Controllable Unit Suspension - history](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_suspension/)
+
     Args:
         id (str | Unset):
         controllable_unit_id (str | Unset):
@@ -206,6 +210,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitSuspensionHistoryResponse] | None:
     """List Controllable Unit Suspension - history
 
+     List [Controllable Unit Suspension - history](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_suspension/)
+
     Args:
         id (str | Unset):
         controllable_unit_id (str | Unset):
@@ -250,6 +257,9 @@ async def asyncio_detailed(
     controllable_unit_suspension_id: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitSuspensionHistoryResponse]]:
     """List Controllable Unit Suspension - history
+
+     List [Controllable Unit Suspension - history](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_suspension/)
 
     Args:
         id (str | Unset):
@@ -298,6 +308,9 @@ async def asyncio(
     controllable_unit_suspension_id: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ControllableUnitSuspensionHistoryResponse] | None:
     """List Controllable Unit Suspension - history
+
+     List [Controllable Unit Suspension - history](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_suspension/)
 
     Args:
         id (str | Unset):

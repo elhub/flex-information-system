@@ -1,13 +1,20 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, cast
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
 from ..models.auth_scope import AuthScope
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.entity_response import EntityResponse
+    from ..models.party_response import PartyResponse
+
 
 T = TypeVar("T", bound="EntityClientResponse")
 
@@ -25,8 +32,8 @@ class EntityClientResponse:
             party. When assuming a party through party membership, the least privileged set of scopes will be kept.
             Scopes are inspired from OAuth 2.0 and allow refinement of access control and privilege delegation mechanisms.
             Example: ['read:data'].
-        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-            23:59:00 CET.
+        recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
+            2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
         name (None | str | Unset): Name of the client. Example: Laptop.
         party_id (int | None | Unset): Reference to the party this client allows to assume. A null value means the
@@ -40,21 +47,28 @@ class EntityClientResponse:
             kbRlHyYfxahbgOHixOOnXkKXrtZW7yWGjXPqy/ZJ/+kFBNPAzxy7fDuAzKfU3Rn5
             0sBakg95pua14W1oE4rtd4/U+sg2maCq6HgGdCLLxRWwXA8IBtvHZ48i6kxiz9tu
             -----END PUBLIC KEY-----.
+        entity (EntityResponse | None | Unset): Embedded entity
+        party (None | PartyResponse | Unset): Embedded party
     """
 
     id: int
     entity_id: int
     client_id: str
     scopes: list[AuthScope]
-    recorded_at: str
+    recorded_at: datetime.datetime
     recorded_by: int
     name: None | str | Unset = UNSET
     party_id: int | None | Unset = UNSET
     client_secret: None | str | Unset = UNSET
     public_key: None | str | Unset = UNSET
+    entity: EntityResponse | None | Unset = UNSET
+    party: None | PartyResponse | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        from ..models.entity_response import EntityResponse
+        from ..models.party_response import PartyResponse
+
         id = self.id
 
         entity_id = self.entity_id
@@ -66,7 +80,7 @@ class EntityClientResponse:
             scopes_item = scopes_item_data.value
             scopes.append(scopes_item)
 
-        recorded_at = self.recorded_at
+        recorded_at = self.recorded_at.isoformat()
 
         recorded_by = self.recorded_by
 
@@ -94,6 +108,22 @@ class EntityClientResponse:
         else:
             public_key = self.public_key
 
+        entity: dict[str, Any] | None | Unset
+        if isinstance(self.entity, Unset):
+            entity = UNSET
+        elif isinstance(self.entity, EntityResponse):
+            entity = self.entity.to_dict()
+        else:
+            entity = self.entity
+
+        party: dict[str, Any] | None | Unset
+        if isinstance(self.party, Unset):
+            party = UNSET
+        elif isinstance(self.party, PartyResponse):
+            party = self.party.to_dict()
+        else:
+            party = self.party
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -114,11 +144,18 @@ class EntityClientResponse:
             field_dict["client_secret"] = client_secret
         if public_key is not UNSET:
             field_dict["public_key"] = public_key
+        if entity is not UNSET:
+            field_dict["entity"] = entity
+        if party is not UNSET:
+            field_dict["party"] = party
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.entity_response import EntityResponse
+        from ..models.party_response import PartyResponse
+
         d = dict(src_dict)
         id = d.pop("id")
 
@@ -133,7 +170,7 @@ class EntityClientResponse:
 
             scopes.append(scopes_item)
 
-        recorded_at = d.pop("recorded_at")
+        recorded_at = isoparse(d.pop("recorded_at"))
 
         recorded_by = d.pop("recorded_by")
 
@@ -173,6 +210,40 @@ class EntityClientResponse:
 
         public_key = _parse_public_key(d.pop("public_key", UNSET))
 
+        def _parse_entity(data: object) -> EntityResponse | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                entity_type_0 = EntityResponse.from_dict(data)
+
+                return entity_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(EntityResponse | None | Unset, data)
+
+        entity = _parse_entity(d.pop("entity", UNSET))
+
+        def _parse_party(data: object) -> None | PartyResponse | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                party_type_0 = PartyResponse.from_dict(data)
+
+                return party_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(None | PartyResponse | Unset, data)
+
+        party = _parse_party(d.pop("party", UNSET))
+
         entity_client_response = cls(
             id=id,
             entity_id=entity_id,
@@ -184,6 +255,8 @@ class EntityClientResponse:
             party_id=party_id,
             client_secret=client_secret,
             public_key=public_key,
+            entity=entity,
+            party=party,
         )
 
         entity_client_response.additional_properties = d

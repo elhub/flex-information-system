@@ -17,6 +17,7 @@ from ...types import Response
 def _get_kwargs(
     id: int,
 ) -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/controllable_unit_suspension_comment_history/{id}".format(
@@ -105,6 +106,9 @@ def sync_detailed(
 ) -> Response[ControllableUnitSuspensionCommentHistoryResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Read Controllable Unit Suspension Comment - history
 
+     Read [Controllable Unit Suspension Comment - history](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_suspension_comment/)
+
     Args:
         id (int):
 
@@ -134,6 +138,9 @@ def sync(
 ) -> ControllableUnitSuspensionCommentHistoryResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Read Controllable Unit Suspension Comment - history
 
+     Read [Controllable Unit Suspension Comment - history](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_suspension_comment/)
+
     Args:
         id (int):
 
@@ -157,6 +164,9 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
 ) -> Response[ControllableUnitSuspensionCommentHistoryResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Read Controllable Unit Suspension Comment - history
+
+     Read [Controllable Unit Suspension Comment - history](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_suspension_comment/)
 
     Args:
         id (int):
@@ -184,6 +194,9 @@ async def asyncio(
     client: AuthenticatedClient,
 ) -> ControllableUnitSuspensionCommentHistoryResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Read Controllable Unit Suspension Comment - history
+
+     Read [Controllable Unit Suspension Comment - history](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_suspension_comment/)
 
     Args:
         id (int):

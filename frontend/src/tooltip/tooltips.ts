@@ -10,28 +10,14 @@ export const tooltips = {
   "controllable_unit.status": "The status of the controllable unit.",
   "controllable_unit.regulation_direction":
     "The regulation direction of the controllable unit. `up` means it can be used to increase production or decrease consumption, while `down` means to decrease production or increase consumption.",
-  "controllable_unit.maximum_available_capacity":
-    "Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
+  "controllable_unit.maximum_active_power":
+    "Maximum continuous active power (flexible power) that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
   "controllable_unit.is_small":
     "Whether the controllable unit is small or not, following NCDR.",
-  "controllable_unit.minimum_duration":
-    "The minimum activation duration in seconds.",
-  "controllable_unit.maximum_duration":
-    "The maximum activation duration in seconds.",
-  "controllable_unit.recovery_duration":
-    "The minimum recovery duration between activations in seconds.",
-  "controllable_unit.ramp_rate":
-    "The rate of power per unit of time to reach empty or full power for the controllable unit, in kilowatts per minute.",
   "controllable_unit.accounting_point_id":
     "Reference to the accounting point that the controllable unit is connected to.",
-  "controllable_unit.grid_node_id":
-    "Reference to the node that the controllable unit is connected to.",
-  "controllable_unit.grid_validation_status":
-    "The grid validation status of the controllable unit.",
-  "controllable_unit.grid_validation_notes":
-    "Free text notes on the current grid validation status.",
-  "controllable_unit.validated_at":
-    "When the controllable unit was last validated.",
+  "controllable_unit.additional_information":
+    "Free text field for extra information about the controllable unit if needed.",
   "controllable_unit.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "controllable_unit.recorded_by": "The identity that recorded the resource.",
@@ -44,28 +30,14 @@ export const tooltips = {
   "controllable_unit_history.status": "The status of the controllable unit.",
   "controllable_unit_history.regulation_direction":
     "The regulation direction of the controllable unit. `up` means it can be used to increase production or decrease consumption, while `down` means to decrease production or increase consumption.",
-  "controllable_unit_history.maximum_available_capacity":
-    "Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
+  "controllable_unit_history.maximum_active_power":
+    "Maximum continuous active power (flexible power) that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
   "controllable_unit_history.is_small":
     "Whether the controllable unit is small or not, following NCDR.",
-  "controllable_unit_history.minimum_duration":
-    "The minimum activation duration in seconds.",
-  "controllable_unit_history.maximum_duration":
-    "The maximum activation duration in seconds.",
-  "controllable_unit_history.recovery_duration":
-    "The minimum recovery duration between activations in seconds.",
-  "controllable_unit_history.ramp_rate":
-    "The rate of power per unit of time to reach empty or full power for the controllable unit, in kilowatts per minute.",
   "controllable_unit_history.accounting_point_id":
     "Reference to the accounting point that the controllable unit is connected to.",
-  "controllable_unit_history.grid_node_id":
-    "Reference to the node that the controllable unit is connected to.",
-  "controllable_unit_history.grid_validation_status":
-    "The grid validation status of the controllable unit.",
-  "controllable_unit_history.grid_validation_notes":
-    "Free text notes on the current grid validation status.",
-  "controllable_unit_history.validated_at":
-    "When the controllable unit was last validated.",
+  "controllable_unit_history.additional_information":
+    "Free text field for extra information about the controllable unit if needed.",
   "controllable_unit_history.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "controllable_unit_history.recorded_by":
@@ -110,7 +82,7 @@ export const tooltips = {
   "controllable_unit_suspension_comment.content":
     "Free text content of the comment.",
   "controllable_unit_suspension_comment.created_at":
-    "When the comment was added to the CUS.",
+    "When the comment was added to the resource.",
   "controllable_unit_suspension_comment.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "controllable_unit_suspension_comment.recorded_by":
@@ -126,7 +98,7 @@ export const tooltips = {
   "controllable_unit_suspension_comment_history.content":
     "Free text content of the comment.",
   "controllable_unit_suspension_comment_history.created_at":
-    "When the comment was added to the CUS.",
+    "When the comment was added to the resource.",
   "controllable_unit_suspension_comment_history.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "controllable_unit_suspension_comment_history.recorded_by":
@@ -180,6 +152,20 @@ export const tooltips = {
     "When the resource was replaced.",
   "controllable_unit_service_provider_history.replaced_by":
     "The identity that replaced the resource.",
+  "controllable_unit_summary.id":
+    "Unique surrogate key (controllable unit ID).",
+  "controllable_unit_summary.controllable_unit_id":
+    "The ID of the controllable unit this resource is a summary of.",
+  "controllable_unit_summary.technical_resource":
+    "Aggregated statistics on technical resources belonging to the controllable unit, including counts and maximum active power breakdowns (sum, average, min, max) by category and technology.",
+  "service_providing_group_summary.id":
+    "Unique surrogate key (service providing group ID).",
+  "service_providing_group_summary.service_providing_group_id":
+    "The ID of the service providing group this resource is a summary of.",
+  "service_providing_group_summary.controllable_unit":
+    "Aggregated statistics on controllable units currently in the service providing group, including count and maximum active power information (sum, average, min, max).",
+  "service_providing_group_summary.technical_resource":
+    "Aggregated statistics on technical resources belonging to controllable units with active membership in the service providing group, including counts and maximum active power breakdowns (sum, average, min, max) by category and technology.",
   "service_providing_group.id": "Unique surrogate key.",
   "service_providing_group.name":
     "Free text name of the service providing group.",
@@ -188,6 +174,8 @@ export const tooltips = {
   "service_providing_group.bidding_zone":
     "The bidding zone that restricts which CUs that can be added to the group. Also known as scheduling area or price area for TSO.",
   "service_providing_group.status": "The status of the group.",
+  "service_providing_group.additional_information":
+    "Free text field for extra information about the service providing group if needed.",
   "service_providing_group.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group.recorded_by":
@@ -200,6 +188,8 @@ export const tooltips = {
   "service_providing_group_history.bidding_zone":
     "The bidding zone that restricts which CUs that can be added to the group. Also known as scheduling area or price area for TSO.",
   "service_providing_group_history.status": "The status of the group.",
+  "service_providing_group_history.additional_information":
+    "Free text field for extra information about the service providing group if needed.",
   "service_providing_group_history.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group_history.recorded_by":
@@ -285,7 +275,7 @@ export const tooltips = {
   "service_providing_group_grid_prequalification_comment.content":
     "Free text content of the comment.",
   "service_providing_group_grid_prequalification_comment.created_at":
-    "When the comment was added to the CUS.",
+    "When the comment was added to the resource.",
   "service_providing_group_grid_prequalification_comment.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group_grid_prequalification_comment.recorded_by":
@@ -301,7 +291,7 @@ export const tooltips = {
   "service_providing_group_grid_prequalification_comment_history.content":
     "Free text content of the comment.",
   "service_providing_group_grid_prequalification_comment_history.created_at":
-    "When the comment was added to the CUS.",
+    "When the comment was added to the resource.",
   "service_providing_group_grid_prequalification_comment_history.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group_grid_prequalification_comment_history.recorded_by":
@@ -352,7 +342,7 @@ export const tooltips = {
   "service_providing_group_grid_suspension_comment.content":
     "Free text content of the comment.",
   "service_providing_group_grid_suspension_comment.created_at":
-    "When the comment was added to the CUS.",
+    "When the comment was added to the resource.",
   "service_providing_group_grid_suspension_comment.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group_grid_suspension_comment.recorded_by":
@@ -368,7 +358,7 @@ export const tooltips = {
   "service_providing_group_grid_suspension_comment_history.content":
     "Free text content of the comment.",
   "service_providing_group_grid_suspension_comment_history.created_at":
-    "When the comment was added to the CUS.",
+    "When the comment was added to the resource.",
   "service_providing_group_grid_suspension_comment_history.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group_grid_suspension_comment_history.recorded_by":
@@ -474,8 +464,22 @@ export const tooltips = {
     "Name of the technical resource. Maximum 128 characters.",
   "technical_resource.controllable_unit_id":
     "Reference to the controllable unit that this technical resource belongs to.",
-  "technical_resource.details":
-    "Free text details about the technical resource.",
+  "technical_resource.technology":
+    "Technologies of the technical resource using ltree path notation. Multiple technologies can be specified for hybrid resources (e.g., solar + battery).",
+  "technical_resource.category":
+    "Categories derived from the technologies of the technical resource. Automatically computed based on the selected technologies.",
+  "technical_resource.maximum_active_power":
+    "Maximum continuous active power (rated power) of the technical resource in kilowatts.",
+  "technical_resource.device_type": "The type of device.",
+  "technical_resource.make":
+    "The manufacturer of the device. Required if model or business_id is provided.",
+  "technical_resource.model": "The model of the device.",
+  "technical_resource.business_id":
+    "Business identifier of the device, such as a serial number or MAC address.",
+  "technical_resource.business_id_type":
+    "The type of business identifier used for the device.",
+  "technical_resource.additional_information":
+    "Free text field for extra information about the technical resource if needed.",
   "technical_resource.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "technical_resource.recorded_by": "The identity that recorded the resource.",
@@ -484,8 +488,22 @@ export const tooltips = {
     "Name of the technical resource. Maximum 128 characters.",
   "technical_resource_history.controllable_unit_id":
     "Reference to the controllable unit that this technical resource belongs to.",
-  "technical_resource_history.details":
-    "Free text details about the technical resource.",
+  "technical_resource_history.technology":
+    "Technologies of the technical resource using ltree path notation. Multiple technologies can be specified for hybrid resources (e.g., solar + battery).",
+  "technical_resource_history.category":
+    "Categories derived from the technologies of the technical resource. Automatically computed based on the selected technologies.",
+  "technical_resource_history.maximum_active_power":
+    "Maximum continuous active power (rated power) of the technical resource in kilowatts.",
+  "technical_resource_history.device_type": "The type of device.",
+  "technical_resource_history.make":
+    "The manufacturer of the device. Required if model or business_id is provided.",
+  "technical_resource_history.model": "The model of the device.",
+  "technical_resource_history.business_id":
+    "Business identifier of the device, such as a serial number or MAC address.",
+  "technical_resource_history.business_id_type":
+    "The type of business identifier used for the device.",
+  "technical_resource_history.additional_information":
+    "Free text field for extra information about the technical resource if needed.",
   "technical_resource_history.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "technical_resource_history.recorded_by":
@@ -560,6 +578,7 @@ export const tooltips = {
     "The business identifier of the metering grid area. Format depends on `business_id_type`.",
   "metering_grid_area.business_id_type": "The type of the business identifier.",
   "metering_grid_area.name": "The name of the metering grid area.",
+  "metering_grid_area.status": "The status of the metering grid area.",
   "accounting_point_metering_grid_area.accounting_point_id":
     "The ID of the accounting point.",
   "accounting_point_metering_grid_area.metering_grid_area_id":
@@ -568,6 +587,54 @@ export const tooltips = {
     "The date from which the accounting point belongs to the metering grid area. Midnight aligned on Norwegian timezone.",
   "accounting_point_metering_grid_area.valid_to":
     "The date until which the accounting point belongs to the metering grid area. Midnight aligned on Norwegian timezone.",
+  "accounting_point_grid_location.id": "Unique surrogate key.",
+  "accounting_point_grid_location.accounting_point_id":
+    "The accounting point this grid location belongs to.",
+  "accounting_point_grid_location.object_type":
+    "The type of object in the common grid model that the accounting point is at.",
+  "accounting_point_grid_location.business_id":
+    "Business identifier (mRID) referencing the object in the common grid model.",
+  "accounting_point_grid_location.name":
+    "Name of the grid model object at the location.",
+  "accounting_point_grid_location.nominal_voltage":
+    "Nominal voltage level at the grid location, in kilovolt (kV).",
+  "accounting_point_grid_location.additional_information":
+    "Free text field for extra information about the grid location if needed.",
+  "accounting_point_grid_location.source":
+    "How the grid location was determined. When a system operator creates or updates a grid location, this field is set automatically: `cso` if the SO is the connecting system operator, `so` otherwise.",
+  "accounting_point_grid_location.quality":
+    "The quality of the grid location registration.",
+  "accounting_point_grid_location.recorded_at":
+    "When the resource was recorded (created or updated) in the system.",
+  "accounting_point_grid_location.recorded_by":
+    "The identity that recorded the resource.",
+  "accounting_point_grid_location_history.id": "Unique surrogate identifier.",
+  "accounting_point_grid_location_history.accounting_point_id":
+    "The accounting point this grid location belongs to.",
+  "accounting_point_grid_location_history.object_type":
+    "The type of object in the common grid model that the accounting point is at.",
+  "accounting_point_grid_location_history.business_id":
+    "Business identifier (mRID) referencing the object in the common grid model.",
+  "accounting_point_grid_location_history.name":
+    "Name of the grid model object at the location.",
+  "accounting_point_grid_location_history.nominal_voltage":
+    "Nominal voltage level at the grid location, in kilovolt (kV).",
+  "accounting_point_grid_location_history.additional_information":
+    "Free text field for extra information about the grid location if needed.",
+  "accounting_point_grid_location_history.source":
+    "How the grid location was determined. When a system operator creates or updates a grid location, this field is set automatically: `cso` if the SO is the connecting system operator, `so` otherwise.",
+  "accounting_point_grid_location_history.quality":
+    "The quality of the grid location registration.",
+  "accounting_point_grid_location_history.recorded_at":
+    "When the resource was recorded (created or updated) in the system.",
+  "accounting_point_grid_location_history.recorded_by":
+    "The identity that recorded the resource.",
+  "accounting_point_grid_location_history.accounting_point_grid_location_id":
+    "Unique surrogate identifier.",
+  "accounting_point_grid_location_history.replaced_at":
+    "When the resource was replaced.",
+  "accounting_point_grid_location_history.replaced_by":
+    "The identity that replaced the resource.",
   "product_type.id": "Unique surrogate identifier.",
   "product_type.business_id": "The code for this product type.",
   "product_type.name": "The name of the product type.",
@@ -646,7 +713,7 @@ export const tooltips = {
   "service_provider_product_application_comment.content":
     "Free text content of the comment.",
   "service_provider_product_application_comment.created_at":
-    "When the comment was added to the CUS.",
+    "When the comment was added to the resource.",
   "service_provider_product_application_comment.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_provider_product_application_comment.recorded_by":
@@ -662,7 +729,7 @@ export const tooltips = {
   "service_provider_product_application_comment_history.content":
     "Free text content of the comment.",
   "service_provider_product_application_comment_history.created_at":
-    "When the comment was added to the CUS.",
+    "When the comment was added to the resource.",
   "service_provider_product_application_comment_history.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_provider_product_application_comment_history.recorded_by":
@@ -717,7 +784,7 @@ export const tooltips = {
   "service_provider_product_suspension_comment.content":
     "Free text content of the comment.",
   "service_provider_product_suspension_comment.created_at":
-    "When the comment was added to the CUS.",
+    "When the comment was added to the resource.",
   "service_provider_product_suspension_comment.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_provider_product_suspension_comment.recorded_by":
@@ -733,7 +800,7 @@ export const tooltips = {
   "service_provider_product_suspension_comment_history.content":
     "Free text content of the comment.",
   "service_provider_product_suspension_comment_history.created_at":
-    "When the comment was added to the CUS.",
+    "When the comment was added to the resource.",
   "service_provider_product_suspension_comment_history.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_provider_product_suspension_comment_history.recorded_by":
@@ -756,8 +823,12 @@ export const tooltips = {
     "References to the product types.",
   "service_providing_group_product_application.status":
     "The status of the application.",
-  "service_providing_group_product_application.notes":
-    "Free text notes on the current product application status.",
+  "service_providing_group_product_application.maximum_active_power_up":
+    "The maximum active power applied for in regulation direction up. Stored in kilowatts.",
+  "service_providing_group_product_application.maximum_active_power_down":
+    "The maximum active power applied for in regulation direction down. Stored in kilowatts.",
+  "service_providing_group_product_application.additional_information":
+    "Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).",
   "service_providing_group_product_application.prequalified_at":
     "When the product application was last prequalified.",
   "service_providing_group_product_application.verified_at":
@@ -776,8 +847,12 @@ export const tooltips = {
     "References to the product types.",
   "service_providing_group_product_application_history.status":
     "The status of the application.",
-  "service_providing_group_product_application_history.notes":
-    "Free text notes on the current product application status.",
+  "service_providing_group_product_application_history.maximum_active_power_up":
+    "The maximum active power applied for in regulation direction up. Stored in kilowatts.",
+  "service_providing_group_product_application_history.maximum_active_power_down":
+    "The maximum active power applied for in regulation direction down. Stored in kilowatts.",
+  "service_providing_group_product_application_history.additional_information":
+    "Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc).",
   "service_providing_group_product_application_history.prequalified_at":
     "When the product application was last prequalified.",
   "service_providing_group_product_application_history.verified_at":
@@ -792,6 +867,44 @@ export const tooltips = {
     "When the resource was replaced.",
   "service_providing_group_product_application_history.replaced_by":
     "The identity that replaced the resource.",
+  "service_providing_group_product_application_comment.id":
+    "Unique surrogate identifier.",
+  "service_providing_group_product_application_comment.created_by":
+    "The identity that created the comment.",
+  "service_providing_group_product_application_comment.visibility":
+    "The level of visibility of the comment.",
+  "service_providing_group_product_application_comment.content":
+    "Free text content of the comment.",
+  "service_providing_group_product_application_comment.created_at":
+    "When the comment was added to the resource.",
+  "service_providing_group_product_application_comment.recorded_at":
+    "When the resource was recorded (created or updated) in the system.",
+  "service_providing_group_product_application_comment.recorded_by":
+    "The identity that recorded the resource.",
+  "service_providing_group_product_application_comment.service_providing_group_product_application_id":
+    "Unique surrogate identifier.",
+  "service_providing_group_product_application_comment_history.id":
+    "Unique surrogate identifier.",
+  "service_providing_group_product_application_comment_history.created_by":
+    "The identity that created the comment.",
+  "service_providing_group_product_application_comment_history.visibility":
+    "The level of visibility of the comment.",
+  "service_providing_group_product_application_comment_history.content":
+    "Free text content of the comment.",
+  "service_providing_group_product_application_comment_history.created_at":
+    "When the comment was added to the resource.",
+  "service_providing_group_product_application_comment_history.recorded_at":
+    "When the resource was recorded (created or updated) in the system.",
+  "service_providing_group_product_application_comment_history.recorded_by":
+    "The identity that recorded the resource.",
+  "service_providing_group_product_application_comment_history.service_providing_group_product_application_id":
+    "Unique surrogate identifier.",
+  "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id":
+    "Comment ID",
+  "service_providing_group_product_application_comment_history.replaced_at":
+    "When the comment was replaced.",
+  "service_providing_group_product_application_comment_history.replaced_by":
+    "The identity that replaced the comment.",
   "service_providing_group_product_suspension.id":
     "Unique surrogate identifier.",
   "service_providing_group_product_suspension.procuring_system_operator_id":
@@ -835,7 +948,7 @@ export const tooltips = {
   "service_providing_group_product_suspension_comment.content":
     "Free text content of the comment.",
   "service_providing_group_product_suspension_comment.created_at":
-    "When the comment was added to the CUS.",
+    "When the comment was added to the resource.",
   "service_providing_group_product_suspension_comment.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group_product_suspension_comment.recorded_by":
@@ -851,7 +964,7 @@ export const tooltips = {
   "service_providing_group_product_suspension_comment_history.content":
     "Free text content of the comment.",
   "service_providing_group_product_suspension_comment_history.created_at":
-    "When the comment was added to the CUS.",
+    "When the comment was added to the resource.",
   "service_providing_group_product_suspension_comment_history.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group_product_suspension_comment_history.recorded_by":
@@ -864,9 +977,14 @@ export const tooltips = {
     "When the comment was replaced.",
   "service_providing_group_product_suspension_comment_history.replaced_by":
     "The identity that replaced the comment.",
+  "notice.id": "Unique surrogate identifier.",
+  "notice.status": "The status of the notice.",
   "notice.party_id": "Reference to the party targeted by the notice.",
   "notice.type": "The type of the notice.",
   "notice.source": "The URI of the resource concerned by the event.",
   "notice.data": "The data of the notice.",
+  "notice.recorded_at":
+    "When the resource was recorded (created or updated) in the system.",
+  "notice.recorded_by": "The identity that recorded the resource.",
 };
 export type TooltipKey = keyof typeof tooltips;

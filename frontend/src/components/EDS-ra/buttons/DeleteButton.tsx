@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import { Button } from "../../ui";
 import { useDelete, useRecordContext, useResourceContext } from "ra-core";
-import { IconCross } from "@elhub/ds-icons";
+import { IconTrash } from "@elhub/ds-icons";
 import { useConfirmAction } from "../../ConfirmAction";
 
 type DeleteButtonProps = {
@@ -40,10 +40,11 @@ export const DeleteButton = (props: DeleteButtonProps) => {
   return (
     <>
       <Button
-        variant="caution"
-        size="small"
+        variant="invisible"
+        className="text-semantic-background-action-danger"
+        size="medium"
         disabled={disabled || isPending}
-        icon={IconCross}
+        icon={IconTrash}
         onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
           e.stopPropagation();
           buttonProps.onClick();

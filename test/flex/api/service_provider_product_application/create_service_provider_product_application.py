@@ -115,6 +115,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationResponse]:
     """Create Service Provider Product Application
 
+     Create [Service Provider Product Application](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_application/)
+
     Args:
         body (ServiceProviderProductApplicationCreateRequest | Unset): Request schema for create
             operations - Relation between a service provider and a system operator, for the SP to
@@ -147,6 +150,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationResponse | None:
     """Create Service Provider Product Application
 
+     Create [Service Provider Product Application](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_application/)
+
     Args:
         body (ServiceProviderProductApplicationCreateRequest | Unset): Request schema for create
             operations - Relation between a service provider and a system operator, for the SP to
@@ -173,6 +179,9 @@ async def asyncio_detailed(
     body: ServiceProviderProductApplicationCreateRequest | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationResponse]:
     """Create Service Provider Product Application
+
+     Create [Service Provider Product Application](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_application/)
 
     Args:
         body (ServiceProviderProductApplicationCreateRequest | Unset): Request schema for create
@@ -203,6 +212,9 @@ async def asyncio(
     body: ServiceProviderProductApplicationCreateRequest | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductApplicationResponse | None:
     """Create Service Provider Product Application
+
+     Create [Service Provider Product Application](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_application/)
 
     Args:
         body (ServiceProviderProductApplicationCreateRequest | Unset): Request schema for create

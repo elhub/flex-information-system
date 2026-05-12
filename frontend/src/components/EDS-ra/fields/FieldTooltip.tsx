@@ -1,6 +1,7 @@
 import { Tooltip } from "../../ui";
 import { IconInformationCircleOutlined } from "@elhub/ds-icons";
-import { tooltips, TooltipKey } from "../../../tooltip/tooltips";
+import { TooltipKey } from "../../../tooltip/tooltips";
+import { useTooltipText } from "./useTooltipText";
 
 type TooltipProps =
   | {
@@ -12,12 +13,7 @@ type TooltipProps =
     };
 
 export const FieldTooltip = (props: TooltipProps) => {
-  const title =
-    "tooltipKey" in props
-      ? tooltips[props.tooltipKey]
-      : `${props.resource}.${props.field}` in tooltips
-        ? tooltips[`${props.resource}.${props.field}` as TooltipKey]
-        : undefined;
+  const title = useTooltipText(props);
 
   if (!title) {
     return null;

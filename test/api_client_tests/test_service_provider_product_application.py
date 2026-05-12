@@ -26,6 +26,7 @@ from flex.api.service_provider_product_application import (
     list_service_provider_product_application_history,
     read_service_provider_product_application_history,
 )
+import datetime
 import pytest
 from typing import cast
 
@@ -151,7 +152,7 @@ def test_sppa_sp(sts):
         client=client_other_so,
         id=cast(int, sppa.id),
         body=ServiceProviderProductApplicationUpdateRequest(
-            qualified_at="2024-01-01T00:00:00Z",
+            qualified_at=datetime.datetime.fromisoformat("2024-01-01T00:00:00+00:00"),
         ),
     )
     assert not isinstance(u, ErrorMessage)
@@ -193,7 +194,7 @@ def test_sppa_sp(sts):
         id=cast(int, sppa.id),
         body=ServiceProviderProductApplicationUpdateRequest(
             status=ServiceProviderProductApplicationStatus.QUALIFIED,
-            qualified_at="2024-01-01T00:00:00Z",
+            qualified_at=datetime.datetime.fromisoformat("2024-01-01T00:00:00+00:00"),
         ),
     )
     assert not isinstance(u, ErrorMessage)
@@ -259,7 +260,7 @@ def test_sppa_sp(sts):
         id=cast(int, sppa.id),
         body=ServiceProviderProductApplicationUpdateRequest(
             status=ServiceProviderProductApplicationStatus.QUALIFIED,
-            qualified_at="2024-01-01T00:00:00Z",
+            qualified_at=datetime.datetime.fromisoformat("2024-01-01T00:00:00+00:00"),
         ),
     )
     assert not isinstance(u, ErrorMessage)

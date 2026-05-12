@@ -23,6 +23,11 @@
 !.dockerignore
 *.dot
 !.air.toml
+!.editorconfig
+!.devxp/
+
+# Intellij
+*.iml
 
 # TeamCity config
 !.teamcity/pom.xml
@@ -56,6 +61,7 @@ docs/api
 docs/auth
 out
 dist-ssr
+kbackend/bin
 
 # Frontend
 !frontend/.env.[dlpst]*

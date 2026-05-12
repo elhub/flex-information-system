@@ -9,14 +9,7 @@ DROP VIEW IF EXISTS notice_fresh CASCADE;
 -- noqa: disable=AM04
 CREATE MATERIALIZED VIEW IF NOT EXISTS notice_fresh AS (
     -- Controllable Unit notices
-    SELECT * FROM notice_cu_grid_node_id_missing
-    UNION ALL
-    SELECT * FROM notice_cu_grid_validation_status_pending
-    UNION ALL
-    SELECT * FROM notice_cu_grid_validation_status_incomplete_information
-
     -- Controllable Unit Service Provider notices
-    UNION ALL
     SELECT * FROM notice_cusp_valid_time_outside_contract
 
     -- Controllable Unit Suspension notices
@@ -72,6 +65,12 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS notice_fresh AS (
     SELECT * FROM notice_party_outdated
     UNION ALL
     SELECT * FROM notice_party_residual
+
+    -- Accounting Point Grid Location notices
+    UNION ALL
+    SELECT * FROM notice_accounting_point_grid_location_missing
+    UNION ALL
+    SELECT * FROM notice_accounting_point_grid_location_source_insufficient
 );
 -- noqa: enable=AM04
 
@@ -134,3 +133,10 @@ BEGIN
     );
 END;
 $$;
+
+-- changeset flex:notice-sync-job-schedule runAlways:true endDelimiter:;
+SELECT cron.schedule(
+    'notice-sync',
+    '*/15 * * * *', -- every 15 minutes
+    $$SELECT flex.notice_sync()$$
+);

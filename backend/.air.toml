@@ -3,4 +3,4 @@ tmp_dir = ".tmp"
 
 [build]
 bin = "./.tmp/flex"
-cmd = "go build -o ./.tmp/flex ./cmd/flex"
+cmd = "go build -tags goexperiment.jsonv2 -o ./.tmp/flex ./cmd/flex"

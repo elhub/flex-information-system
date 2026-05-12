@@ -7,6 +7,7 @@ api.service_providing_group
 WITH (security_invoker = true) AS (
     SELECT
         id,
+        additional_information,
         bidding_zone,
         name,
         service_provider_id,
@@ -24,6 +25,7 @@ WITH (
     SELECT
         id,
         id AS service_providing_group_id,
+        additional_information,
         bidding_zone,
         name,
         service_provider_id,
@@ -37,6 +39,7 @@ WITH (
     SELECT
         history_id AS id,
         id AS service_providing_group_id,
+        additional_information,
         bidding_zone,
         name,
         service_provider_id,

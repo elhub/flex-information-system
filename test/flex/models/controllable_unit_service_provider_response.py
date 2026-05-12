@@ -1,12 +1,19 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, cast
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.controllable_unit_response import ControllableUnitResponse
+    from ..models.party_response import PartyResponse
+
 
 T = TypeVar("T", bound="ControllableUnitServiceProviderResponse")
 
@@ -24,13 +31,16 @@ class ControllableUnitServiceProviderResponse:
         end_user_id (int): Technical ID of the end user behind the accounting point.
         contract_reference (str): The service providers internal reference to the contract with the end user. Typically
             an internal identifier to a stored document or consent record. Example: 123e4567-e89b-12d3-a456-426614174000.
-        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-            23:59:00 CET.
+        recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
+            2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
-        valid_from (None | str | Unset): The date from which the relation between the controllable unit and the service
-            provider is valid. Midnight aligned on Norwegian timezone. Example: 2022-08-08 00:00:00 CET.
-        valid_to (None | str | Unset): The date until which the relation between the controllable unit and the service
-            provider is valid. Midnight aligned on Norwegian timezone. Example: 2022-09-10 00:00:00 CET.
+        valid_from (datetime.datetime | None | Unset): The date from which the relation between the controllable unit
+            and the service provider is valid. Midnight aligned on Norwegian timezone. Example: 2022-08-08T00:00:00+02.
+        valid_to (datetime.datetime | None | Unset): The date until which the relation between the controllable unit and
+            the service provider is valid. Midnight aligned on Norwegian timezone. Example: 2022-09-10T00:00:00+02.
+        controllable_unit (ControllableUnitResponse | None | Unset): Embedded controllable_unit
+        service_provider (None | PartyResponse | Unset): Embedded party
+        end_user (None | PartyResponse | Unset): Embedded party
     """
 
     id: int
@@ -38,13 +48,19 @@ class ControllableUnitServiceProviderResponse:
     service_provider_id: int
     end_user_id: int
     contract_reference: str
-    recorded_at: str
+    recorded_at: datetime.datetime
     recorded_by: int
-    valid_from: None | str | Unset = UNSET
-    valid_to: None | str | Unset = UNSET
+    valid_from: datetime.datetime | None | Unset = UNSET
+    valid_to: datetime.datetime | None | Unset = UNSET
+    controllable_unit: ControllableUnitResponse | None | Unset = UNSET
+    service_provider: None | PartyResponse | Unset = UNSET
+    end_user: None | PartyResponse | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        from ..models.controllable_unit_response import ControllableUnitResponse
+        from ..models.party_response import PartyResponse
+
         id = self.id
 
         controllable_unit_id = self.controllable_unit_id
@@ -55,21 +71,49 @@ class ControllableUnitServiceProviderResponse:
 
         contract_reference = self.contract_reference
 
-        recorded_at = self.recorded_at
+        recorded_at = self.recorded_at.isoformat()
 
         recorded_by = self.recorded_by
 
         valid_from: None | str | Unset
         if isinstance(self.valid_from, Unset):
             valid_from = UNSET
+        elif isinstance(self.valid_from, datetime.datetime):
+            valid_from = self.valid_from.isoformat()
         else:
             valid_from = self.valid_from
 
         valid_to: None | str | Unset
         if isinstance(self.valid_to, Unset):
             valid_to = UNSET
+        elif isinstance(self.valid_to, datetime.datetime):
+            valid_to = self.valid_to.isoformat()
         else:
             valid_to = self.valid_to
+
+        controllable_unit: dict[str, Any] | None | Unset
+        if isinstance(self.controllable_unit, Unset):
+            controllable_unit = UNSET
+        elif isinstance(self.controllable_unit, ControllableUnitResponse):
+            controllable_unit = self.controllable_unit.to_dict()
+        else:
+            controllable_unit = self.controllable_unit
+
+        service_provider: dict[str, Any] | None | Unset
+        if isinstance(self.service_provider, Unset):
+            service_provider = UNSET
+        elif isinstance(self.service_provider, PartyResponse):
+            service_provider = self.service_provider.to_dict()
+        else:
+            service_provider = self.service_provider
+
+        end_user: dict[str, Any] | None | Unset
+        if isinstance(self.end_user, Unset):
+            end_user = UNSET
+        elif isinstance(self.end_user, PartyResponse):
+            end_user = self.end_user.to_dict()
+        else:
+            end_user = self.end_user
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -88,11 +132,20 @@ class ControllableUnitServiceProviderResponse:
             field_dict["valid_from"] = valid_from
         if valid_to is not UNSET:
             field_dict["valid_to"] = valid_to
+        if controllable_unit is not UNSET:
+            field_dict["controllable_unit"] = controllable_unit
+        if service_provider is not UNSET:
+            field_dict["service_provider"] = service_provider
+        if end_user is not UNSET:
+            field_dict["end_user"] = end_user
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.controllable_unit_response import ControllableUnitResponse
+        from ..models.party_response import PartyResponse
+
         d = dict(src_dict)
         id = d.pop("id")
 
@@ -104,27 +157,94 @@ class ControllableUnitServiceProviderResponse:
 
         contract_reference = d.pop("contract_reference")
 
-        recorded_at = d.pop("recorded_at")
+        recorded_at = isoparse(d.pop("recorded_at"))
 
         recorded_by = d.pop("recorded_by")
 
-        def _parse_valid_from(data: object) -> None | str | Unset:
+        def _parse_valid_from(data: object) -> datetime.datetime | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(None | str | Unset, data)
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                valid_from_type_0 = isoparse(data)
+
+                return valid_from_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(datetime.datetime | None | Unset, data)
 
         valid_from = _parse_valid_from(d.pop("valid_from", UNSET))
 
-        def _parse_valid_to(data: object) -> None | str | Unset:
+        def _parse_valid_to(data: object) -> datetime.datetime | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(None | str | Unset, data)
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                valid_to_type_0 = isoparse(data)
+
+                return valid_to_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(datetime.datetime | None | Unset, data)
 
         valid_to = _parse_valid_to(d.pop("valid_to", UNSET))
+
+        def _parse_controllable_unit(data: object) -> ControllableUnitResponse | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                controllable_unit_type_0 = ControllableUnitResponse.from_dict(data)
+
+                return controllable_unit_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(ControllableUnitResponse | None | Unset, data)
+
+        controllable_unit = _parse_controllable_unit(d.pop("controllable_unit", UNSET))
+
+        def _parse_service_provider(data: object) -> None | PartyResponse | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                service_provider_type_0 = PartyResponse.from_dict(data)
+
+                return service_provider_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(None | PartyResponse | Unset, data)
+
+        service_provider = _parse_service_provider(d.pop("service_provider", UNSET))
+
+        def _parse_end_user(data: object) -> None | PartyResponse | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                end_user_type_0 = PartyResponse.from_dict(data)
+
+                return end_user_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(None | PartyResponse | Unset, data)
+
+        end_user = _parse_end_user(d.pop("end_user", UNSET))
 
         controllable_unit_service_provider_response = cls(
             id=id,
@@ -136,6 +256,9 @@ class ControllableUnitServiceProviderResponse:
             recorded_by=recorded_by,
             valid_from=valid_from,
             valid_to=valid_to,
+            controllable_unit=controllable_unit,
+            service_provider=service_provider,
+            end_user=end_user,
         )
 
         controllable_unit_service_provider_response.additional_properties = d

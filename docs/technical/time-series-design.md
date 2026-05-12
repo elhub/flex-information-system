@@ -169,7 +169,7 @@ GB of storage.
 
 > [!INFO]
 >
-> A `tstzrange` — range of timestamp with time zone - uses a variable lenght of storage
+> A `tstzrange` — range of timestamp with time zone - uses a variable length of storage
 > depending on the presence of the lower and upper bounds. If both bounds are present.
 >
 > * No bounds: 6 byte

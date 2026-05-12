@@ -79,7 +79,7 @@ func (p *Pool) Acquire(ctx context.Context) (*Conn, error) {
 
 	role := userDetails.Role()
 
-	slog.InfoContext(ctx, "acquiring connection for role", "role", role)
+	slog.DebugContext(ctx, "acquiring connection for role", "role", role)
 
 	acquireCtx, cancel := context.WithTimeout(ctx, 5*time.Second) //nolint:mnd
 	defer cancel()

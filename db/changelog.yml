@@ -39,11 +39,19 @@ databaseChangeLog:
       file: ./notification/changelog.yml
       relativeToChangelogFile: true
   - include:
+      file: ./staging/changelog.yml
+      relativeToChangelogFile: true
+  - include:
       file: ./api/changelog.yml
+      relativeToChangelogFile: true
+  - include:
+      file: ./operations/changelog.yml
       relativeToChangelogFile: true
   - include:
       file: ./test_data/test_data.sql
       relativeToChangelogFile: true
+      # `@` means run only when the context is explicitly set
+      context: "@test"
   # make sure the changes made by Liquibase are exposed in PostgREST
   - changeSet:
       id: notify-postgrest

@@ -52,10 +52,8 @@ First upgrade your go version using `devxp-wsl`.
 
 Then change the go version in
 
-* [docker-compose.yml](../docker-compose.yml) and our
-* [/backend/go.mod](../backend/go.mod) and
-* [/backend/Dockerfile](../backend/Dockerfile). You can also use
-  `go get go@latest` for the go.mod one.
+* [/backend/go.mod](../backend/go.mod). You can use `go get go@latest` for this.
+* [/backend/Dockerfile](../backend/Dockerfile).
 
 Also remember to update/re-install go tools. Check
 [the main dev docs](./index.md).

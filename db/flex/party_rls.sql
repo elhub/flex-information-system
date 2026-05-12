@@ -49,3 +49,9 @@ CREATE POLICY "PTY_FISO001" ON party
 FOR ALL
 TO flex_flexibility_information_system_operator
 USING (true);
+
+GRANT INSERT, SELECT, UPDATE ON party TO flex_internal_data;
+CREATE POLICY "PTY_INTERNAL_DATA" ON party
+FOR ALL
+TO flex_internal_data
+USING (true);

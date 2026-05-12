@@ -3,12 +3,14 @@ import no.elhub.devxp.build.configuration.pipeline.constants.Group
 import no.elhub.devxp.build.configuration.pipeline.constants.KubeCluster
 import no.elhub.devxp.build.configuration.pipeline.dsl.elhubProject
 import no.elhub.devxp.build.configuration.pipeline.extensions.triggerOnVcsChange
+import no.elhub.devxp.build.configuration.pipeline.jobs.common.Source
 import no.elhub.devxp.build.configuration.pipeline.jobs.dockerBuild
 import no.elhub.devxp.build.configuration.pipeline.jobs.gitOps
+import no.elhub.devxp.build.configuration.pipeline.jobs.gradleJib
+import no.elhub.devxp.build.configuration.pipeline.jobs.gradleVerify
 import no.elhub.devxp.build.configuration.pipeline.jobs.liquiBuild
 import no.elhub.devxp.build.configuration.pipeline.jobs.makeVerify
 import no.elhub.devxp.build.configuration.pipeline.jobs.npmVerify
-import no.elhub.devxp.build.configuration.pipeline.jobs.common.Source
 
 elhubProject(Group.FLEX, "flex-information-system") {
 
@@ -16,7 +18,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
     val imageRepoPrefix = "flex/information-system"
     val imageRepoFrontend = "$imageRepoPrefix-frontend"
     val imageRepoBackend = "$imageRepoPrefix-backend"
-
+    val imageRepoKotlinBackend = "$imageRepoPrefix-kbackend"
 
     pipeline {
         parallel {
@@ -48,18 +50,38 @@ elhubProject(Group.FLEX, "flex-information-system") {
                     source = Source.CommitSha
                 }
 
-                gitOps {
-                    buildNameSuffix = "Backend"
-                    clusters = setOf(KubeCluster.TEST9)
-                    gitOpsRepository = gitOpsRepo
-                    projectName = "fis-backend"
-                    source = Source.CommitSha
-                    isMonoRepo = true
-                }.triggerOnVcsChange { triggerRules = """
-                            -:*
-                            +:backend/**
-                            +:db/**
-                    """.trimIndent()
+                parallel {
+                    gitOps {
+                        buildNameSuffix = "backend test"
+                        clusters = setOf(KubeCluster.TEST9)
+                        gitOpsRepository = gitOpsRepo
+                        projectName = "fis-backend"
+                        source = Source.CommitSha
+                        isMonoRepo = true
+                        autoMerge = true
+                    }.triggerOnVcsChange {
+                        triggerRules = """
+                                -:*
+                                +:backend/**
+                                +:db/**
+                        """.trimIndent()
+                    }
+
+                    gitOps {
+                        buildNameSuffix = "backend prod1"
+                        clusters = setOf(KubeCluster.PROD1)
+                        gitOpsRepository = gitOpsRepo
+                        projectName = "fis-backend"
+                        source = Source.CommitSha
+                        isMonoRepo = true
+                        autoMerge = false
+                    }.triggerOnVcsChange {
+                        triggerRules = """
+                                -:*
+                                +:backend/**
+                                +:db/**
+                        """.trimIndent()
+                    }
                 }
             }
             sequential {
@@ -85,14 +107,79 @@ elhubProject(Group.FLEX, "flex-information-system") {
                     source = Source.CommitSha
                 }
 
-                gitOps {
-                    buildNameSuffix = "Frontend"
-                    clusters = setOf(KubeCluster.TEST9)
-                    gitOpsRepository = gitOpsRepo
-                    projectName = "fis-frontend"
+                parallel {
+                    gitOps {
+                        buildNameSuffix = "frontend test"
+                        clusters = setOf(KubeCluster.TEST9)
+                        gitOpsRepository = gitOpsRepo
+                        projectName = "fis-frontend"
+                        source = Source.CommitSha
+                        isMonoRepo = true
+                        autoMerge = true
+                    }.triggerOnVcsChange { triggerRules = "+:frontend/**" }
+
+                    gitOps {
+                        buildNameSuffix = "frontend prod1"
+                        clusters = setOf(KubeCluster.PROD1)
+                        gitOpsRepository = gitOpsRepo
+                        projectName = "fis-frontend"
+                        source = Source.CommitSha
+                        isMonoRepo = true
+                        autoMerge = false
+                    }.triggerOnVcsChange { triggerRules = "+:frontend/**" }
+                }
+            }
+            sequential {
+                gradleVerify {
+                    workingDir = "kbackend"
+                    enablePublishMetrics = true
+                }.buildType.triggerOnVcsChange {
+                    triggerRules = """
+                        -:*
+                        +:kbackend/**
+                        +:db/**
+                    """.trimIndent()
+                }
+
+                gradleJib {
+                    workingDir = "kbackend"
                     source = Source.CommitSha
-                    isMonoRepo = true
-                }.triggerOnVcsChange { triggerRules = "+:frontend/**" }
+                    registrySettings = {
+                        repository = imageRepoKotlinBackend
+                    }
+                }
+
+                parallel {
+                    gitOps {
+                        buildNameSuffix = "kbackend test"
+                        clusters = setOf(KubeCluster.TEST9)
+                        gitOpsRepository = gitOpsRepo
+                        projectName = "flex-kbackend"
+                        source = Source.CommitSha
+                        isMonoRepo = true
+                        autoMerge = true
+                    }.triggerOnVcsChange {
+                        triggerRules = """
+                            -:*
+                            +:kbackend/**
+                        """.trimIndent()
+                    }
+
+                    gitOps {
+                        buildNameSuffix = "kbackend prod1"
+                        clusters = setOf(KubeCluster.PROD1)
+                        gitOpsRepository = gitOpsRepo
+                        projectName = "flex-kbackend"
+                        source = Source.CommitSha
+                        isMonoRepo = true
+                        autoMerge = false
+                    }.triggerOnVcsChange {
+                        triggerRules = """
+                            -:*
+                            +:kbackend/**
+                        """.trimIndent()
+                    }
+                }
             }
         }
     }

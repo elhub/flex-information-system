@@ -122,6 +122,9 @@ def sync_detailed(
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionCommentResponse]:
     """Update Service Providing Group Product Suspension Comment
 
+     Update [Service Providing Group Product Suspension Comment](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_product_suspension_comment/)
+
     Args:
         id (int):
         body (ServiceProvidingGroupProductSuspensionCommentUpdateRequest): Request schema for
@@ -156,6 +159,9 @@ def sync(
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionCommentResponse | None:
     """Update Service Providing Group Product Suspension Comment
 
+     Update [Service Providing Group Product Suspension Comment](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_product_suspension_comment/)
+
     Args:
         id (int):
         body (ServiceProvidingGroupProductSuspensionCommentUpdateRequest): Request schema for
@@ -184,6 +190,9 @@ async def asyncio_detailed(
     body: ServiceProvidingGroupProductSuspensionCommentUpdateRequest,
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionCommentResponse]:
     """Update Service Providing Group Product Suspension Comment
+
+     Update [Service Providing Group Product Suspension Comment](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_product_suspension_comment/)
 
     Args:
         id (int):
@@ -216,6 +225,9 @@ async def asyncio(
     body: ServiceProvidingGroupProductSuspensionCommentUpdateRequest,
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupProductSuspensionCommentResponse | None:
     """Update Service Providing Group Product Suspension Comment
+
+     Update [Service Providing Group Product Suspension Comment](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_product_suspension_comment/)
 
     Args:
         id (int):

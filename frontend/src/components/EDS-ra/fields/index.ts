@@ -6,3 +6,4 @@ export * from "./IdentityField";
 export * from "./ReferenceField";
 export * from "./ScopesField";
 export * from "./TextField";
+export * from "./useTooltipText";

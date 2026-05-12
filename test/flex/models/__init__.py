@@ -8,11 +8,18 @@ from .accounting_point_bidding_zone_bidding_zone import AccountingPointBiddingZo
 from .accounting_point_bidding_zone_response import AccountingPointBiddingZoneResponse
 from .accounting_point_end_user_response import AccountingPointEndUserResponse
 from .accounting_point_energy_supplier_response import AccountingPointEnergySupplierResponse
+from .accounting_point_grid_location_create_request import AccountingPointGridLocationCreateRequest
+from .accounting_point_grid_location_history_response import AccountingPointGridLocationHistoryResponse
+from .accounting_point_grid_location_object_type import AccountingPointGridLocationObjectType
+from .accounting_point_grid_location_quality import AccountingPointGridLocationQuality
+from .accounting_point_grid_location_response import AccountingPointGridLocationResponse
+from .accounting_point_grid_location_source import AccountingPointGridLocationSource
+from .accounting_point_grid_location_update_request import AccountingPointGridLocationUpdateRequest
 from .accounting_point_metering_grid_area_response import AccountingPointMeteringGridAreaResponse
 from .accounting_point_response import AccountingPointResponse
 from .auth_scope import AuthScope
+from .category import Category
 from .controllable_unit_create_request import ControllableUnitCreateRequest
-from .controllable_unit_grid_validation_status import ControllableUnitGridValidationStatus
 from .controllable_unit_history_response import ControllableUnitHistoryResponse
 from .controllable_unit_lookup_request import ControllableUnitLookupRequest
 from .controllable_unit_lookup_response import ControllableUnitLookupResponse
@@ -31,6 +38,20 @@ from .controllable_unit_service_provider_history_response import ControllableUni
 from .controllable_unit_service_provider_response import ControllableUnitServiceProviderResponse
 from .controllable_unit_service_provider_update_request import ControllableUnitServiceProviderUpdateRequest
 from .controllable_unit_status import ControllableUnitStatus
+from .controllable_unit_summary_response import ControllableUnitSummaryResponse
+from .controllable_unit_summary_response_technical_resource import ControllableUnitSummaryResponseTechnicalResource
+from .controllable_unit_summary_response_technical_resource_by_category import (
+    ControllableUnitSummaryResponseTechnicalResourceByCategory,
+)
+from .controllable_unit_summary_response_technical_resource_by_category_additional_property import (
+    ControllableUnitSummaryResponseTechnicalResourceByCategoryAdditionalProperty,
+)
+from .controllable_unit_summary_response_technical_resource_by_technology import (
+    ControllableUnitSummaryResponseTechnicalResourceByTechnology,
+)
+from .controllable_unit_summary_response_technical_resource_by_technology_additional_property import (
+    ControllableUnitSummaryResponseTechnicalResourceByTechnologyAdditionalProperty,
+)
 from .controllable_unit_suspension_comment_create_request import ControllableUnitSuspensionCommentCreateRequest
 from .controllable_unit_suspension_comment_history_response import ControllableUnitSuspensionCommentHistoryResponse
 from .controllable_unit_suspension_comment_response import ControllableUnitSuspensionCommentResponse
@@ -42,6 +63,7 @@ from .controllable_unit_suspension_reason import ControllableUnitSuspensionReaso
 from .controllable_unit_suspension_response import ControllableUnitSuspensionResponse
 from .controllable_unit_suspension_update_request import ControllableUnitSuspensionUpdateRequest
 from .controllable_unit_update_request import ControllableUnitUpdateRequest
+from .device_type import DeviceType
 from .empty_object import EmptyObject
 from .entity_business_id_type import EntityBusinessIdType
 from .entity_client_create_request import EntityClientCreateRequest
@@ -59,13 +81,16 @@ from .event_response import EventResponse
 from .identity_response import IdentityResponse
 from .metering_grid_area_business_id_type import MeteringGridAreaBusinessIdType
 from .metering_grid_area_response import MeteringGridAreaResponse
+from .metering_grid_area_status import MeteringGridAreaStatus
 from .notice_data_party_missing import NoticeDataPartyMissing
 from .notice_data_party_outdated import NoticeDataPartyOutdated
 from .notice_data_product_type_not_qualified import NoticeDataProductTypeNotQualified
 from .notice_data_valid_time_outside_contract import NoticeDataValidTimeOutsideContract
 from .notice_response import NoticeResponse
+from .notice_status import NoticeStatus
 from .notification_response import NotificationResponse
 from .notification_update_request import NotificationUpdateRequest
+from .numeric_aggregation import NumericAggregation
 from .party_business_id_type import PartyBusinessIdType
 from .party_create_request import PartyCreateRequest
 from .party_history_response import PartyHistoryResponse
@@ -163,6 +188,21 @@ from .service_providing_group_membership_create_request import ServiceProvidingG
 from .service_providing_group_membership_history_response import ServiceProvidingGroupMembershipHistoryResponse
 from .service_providing_group_membership_response import ServiceProvidingGroupMembershipResponse
 from .service_providing_group_membership_update_request import ServiceProvidingGroupMembershipUpdateRequest
+from .service_providing_group_product_application_comment_create_request import (
+    ServiceProvidingGroupProductApplicationCommentCreateRequest,
+)
+from .service_providing_group_product_application_comment_history_response import (
+    ServiceProvidingGroupProductApplicationCommentHistoryResponse,
+)
+from .service_providing_group_product_application_comment_response import (
+    ServiceProvidingGroupProductApplicationCommentResponse,
+)
+from .service_providing_group_product_application_comment_update_request import (
+    ServiceProvidingGroupProductApplicationCommentUpdateRequest,
+)
+from .service_providing_group_product_application_comment_visibility import (
+    ServiceProvidingGroupProductApplicationCommentVisibility,
+)
 from .service_providing_group_product_application_create_request import (
     ServiceProvidingGroupProductApplicationCreateRequest,
 )
@@ -202,16 +242,37 @@ from .service_providing_group_product_suspension_update_request import (
 )
 from .service_providing_group_response import ServiceProvidingGroupResponse
 from .service_providing_group_status import ServiceProvidingGroupStatus
+from .service_providing_group_summary_response import ServiceProvidingGroupSummaryResponse
+from .service_providing_group_summary_response_controllable_unit import (
+    ServiceProvidingGroupSummaryResponseControllableUnit,
+)
+from .service_providing_group_summary_response_technical_resource import (
+    ServiceProvidingGroupSummaryResponseTechnicalResource,
+)
+from .service_providing_group_summary_response_technical_resource_by_category import (
+    ServiceProvidingGroupSummaryResponseTechnicalResourceByCategory,
+)
+from .service_providing_group_summary_response_technical_resource_by_category_additional_property import (
+    ServiceProvidingGroupSummaryResponseTechnicalResourceByCategoryAdditionalProperty,
+)
+from .service_providing_group_summary_response_technical_resource_by_technology import (
+    ServiceProvidingGroupSummaryResponseTechnicalResourceByTechnology,
+)
+from .service_providing_group_summary_response_technical_resource_by_technology_additional_property import (
+    ServiceProvidingGroupSummaryResponseTechnicalResourceByTechnologyAdditionalProperty,
+)
 from .service_providing_group_update_request import ServiceProvidingGroupUpdateRequest
 from .system_operator_product_type_create_request import SystemOperatorProductTypeCreateRequest
 from .system_operator_product_type_history_response import SystemOperatorProductTypeHistoryResponse
 from .system_operator_product_type_response import SystemOperatorProductTypeResponse
 from .system_operator_product_type_status import SystemOperatorProductTypeStatus
 from .system_operator_product_type_update_request import SystemOperatorProductTypeUpdateRequest
+from .technical_resource_business_id_type import TechnicalResourceBusinessIdType
 from .technical_resource_create_request import TechnicalResourceCreateRequest
 from .technical_resource_history_response import TechnicalResourceHistoryResponse
 from .technical_resource_response import TechnicalResourceResponse
 from .technical_resource_update_request import TechnicalResourceUpdateRequest
+from .technology import Technology
 from .timeline_multi_range_item import TimelineMultiRangeItem
 
 __all__ = (
@@ -221,11 +282,18 @@ __all__ = (
     "AccountingPointBiddingZoneResponse",
     "AccountingPointEndUserResponse",
     "AccountingPointEnergySupplierResponse",
+    "AccountingPointGridLocationCreateRequest",
+    "AccountingPointGridLocationHistoryResponse",
+    "AccountingPointGridLocationObjectType",
+    "AccountingPointGridLocationQuality",
+    "AccountingPointGridLocationResponse",
+    "AccountingPointGridLocationSource",
+    "AccountingPointGridLocationUpdateRequest",
     "AccountingPointMeteringGridAreaResponse",
     "AccountingPointResponse",
     "AuthScope",
+    "Category",
     "ControllableUnitCreateRequest",
-    "ControllableUnitGridValidationStatus",
     "ControllableUnitHistoryResponse",
     "ControllableUnitLookupRequest",
     "ControllableUnitLookupResponse",
@@ -240,6 +308,12 @@ __all__ = (
     "ControllableUnitServiceProviderResponse",
     "ControllableUnitServiceProviderUpdateRequest",
     "ControllableUnitStatus",
+    "ControllableUnitSummaryResponse",
+    "ControllableUnitSummaryResponseTechnicalResource",
+    "ControllableUnitSummaryResponseTechnicalResourceByCategory",
+    "ControllableUnitSummaryResponseTechnicalResourceByCategoryAdditionalProperty",
+    "ControllableUnitSummaryResponseTechnicalResourceByTechnology",
+    "ControllableUnitSummaryResponseTechnicalResourceByTechnologyAdditionalProperty",
     "ControllableUnitSuspensionCommentCreateRequest",
     "ControllableUnitSuspensionCommentHistoryResponse",
     "ControllableUnitSuspensionCommentResponse",
@@ -251,6 +325,7 @@ __all__ = (
     "ControllableUnitSuspensionResponse",
     "ControllableUnitSuspensionUpdateRequest",
     "ControllableUnitUpdateRequest",
+    "DeviceType",
     "EmptyObject",
     "EntityBusinessIdType",
     "EntityClientCreateRequest",
@@ -268,13 +343,16 @@ __all__ = (
     "IdentityResponse",
     "MeteringGridAreaBusinessIdType",
     "MeteringGridAreaResponse",
+    "MeteringGridAreaStatus",
     "NoticeDataPartyMissing",
     "NoticeDataPartyOutdated",
     "NoticeDataProductTypeNotQualified",
     "NoticeDataValidTimeOutsideContract",
     "NoticeResponse",
+    "NoticeStatus",
     "NotificationResponse",
     "NotificationUpdateRequest",
+    "NumericAggregation",
     "PartyBusinessIdType",
     "PartyCreateRequest",
     "PartyHistoryResponse",
@@ -336,6 +414,11 @@ __all__ = (
     "ServiceProvidingGroupMembershipHistoryResponse",
     "ServiceProvidingGroupMembershipResponse",
     "ServiceProvidingGroupMembershipUpdateRequest",
+    "ServiceProvidingGroupProductApplicationCommentCreateRequest",
+    "ServiceProvidingGroupProductApplicationCommentHistoryResponse",
+    "ServiceProvidingGroupProductApplicationCommentResponse",
+    "ServiceProvidingGroupProductApplicationCommentUpdateRequest",
+    "ServiceProvidingGroupProductApplicationCommentVisibility",
     "ServiceProvidingGroupProductApplicationCreateRequest",
     "ServiceProvidingGroupProductApplicationHistoryResponse",
     "ServiceProvidingGroupProductApplicationResponse",
@@ -353,15 +436,24 @@ __all__ = (
     "ServiceProvidingGroupProductSuspensionUpdateRequest",
     "ServiceProvidingGroupResponse",
     "ServiceProvidingGroupStatus",
+    "ServiceProvidingGroupSummaryResponse",
+    "ServiceProvidingGroupSummaryResponseControllableUnit",
+    "ServiceProvidingGroupSummaryResponseTechnicalResource",
+    "ServiceProvidingGroupSummaryResponseTechnicalResourceByCategory",
+    "ServiceProvidingGroupSummaryResponseTechnicalResourceByCategoryAdditionalProperty",
+    "ServiceProvidingGroupSummaryResponseTechnicalResourceByTechnology",
+    "ServiceProvidingGroupSummaryResponseTechnicalResourceByTechnologyAdditionalProperty",
     "ServiceProvidingGroupUpdateRequest",
     "SystemOperatorProductTypeCreateRequest",
     "SystemOperatorProductTypeHistoryResponse",
     "SystemOperatorProductTypeResponse",
     "SystemOperatorProductTypeStatus",
     "SystemOperatorProductTypeUpdateRequest",
+    "TechnicalResourceBusinessIdType",
     "TechnicalResourceCreateRequest",
     "TechnicalResourceHistoryResponse",
     "TechnicalResourceResponse",
     "TechnicalResourceUpdateRequest",
+    "Technology",
     "TimelineMultiRangeItem",
 )

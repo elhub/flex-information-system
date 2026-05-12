@@ -1,6 +1,6 @@
 # backend - build for production
 # https://docs.docker.com/guides/golang/build-images/
-FROM docker.jfrog.elhub.cloud/golang:1.25.6-alpine AS builder
+FROM docker.jfrog.elhub.cloud/golang:1.26.3-alpine AS builder
 
 WORKDIR /app
 
@@ -9,7 +9,7 @@ RUN go mod download
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o /flex ./cmd/flex
+RUN CGO_ENABLED=0 GOOS=linux GOEXPERIMENT=jsonv2 go build -o /flex ./cmd/flex
 
 # --- Run Stage ---
 # Deploy the application binary into a lean image

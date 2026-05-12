@@ -115,6 +115,9 @@ def sync_detailed(
 ) -> Response[ControllableUnitSuspensionCommentResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Create Controllable Unit Suspension Comment
 
+     Create [Controllable Unit Suspension Comment](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_suspension_comment/)
+
     Args:
         body (ControllableUnitSuspensionCommentCreateRequest | Unset): Request schema for create
             operations - Comment made by a party involved in a controllable unit suspension.
@@ -145,6 +148,9 @@ def sync(
 ) -> ControllableUnitSuspensionCommentResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Create Controllable Unit Suspension Comment
 
+     Create [Controllable Unit Suspension Comment](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_suspension_comment/)
+
     Args:
         body (ControllableUnitSuspensionCommentCreateRequest | Unset): Request schema for create
             operations - Comment made by a party involved in a controllable unit suspension.
@@ -169,6 +175,9 @@ async def asyncio_detailed(
     body: ControllableUnitSuspensionCommentCreateRequest | Unset = UNSET,
 ) -> Response[ControllableUnitSuspensionCommentResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Create Controllable Unit Suspension Comment
+
+     Create [Controllable Unit Suspension Comment](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_suspension_comment/)
 
     Args:
         body (ControllableUnitSuspensionCommentCreateRequest | Unset): Request schema for create
@@ -197,6 +206,9 @@ async def asyncio(
     body: ControllableUnitSuspensionCommentCreateRequest | Unset = UNSET,
 ) -> ControllableUnitSuspensionCommentResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Create Controllable Unit Suspension Comment
+
+     Create [Controllable Unit Suspension Comment](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_suspension_comment/)
 
     Args:
         body (ControllableUnitSuspensionCommentCreateRequest | Unset): Request schema for create

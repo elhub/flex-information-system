@@ -1,21 +1,24 @@
 import {
   AccountingPoint,
+  AccountingPointBalanceResponsibleParty,
   ControllableUnit,
   ControllableUnitHistory,
   ControllableUnitServiceProvider,
   ControllableUnitSuspension,
   listAccountingPointBalanceResponsibleParty,
+  listAccountingPointBiddingZone,
   listControllableUnitServiceProvider,
   listControllableUnitSuspension,
   listTechnicalResource,
   Party,
   readAccountingPoint,
+  readControllableUnit,
   readParty,
   TechnicalResource,
 } from "../../generated-client";
 
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
-import { throwOnError } from "../../util";
+import { findCurrentlyValidRecord, throwOnError } from "../../util";
 
 export type ControllableUnitShowViewModel = {
   controllableUnit: ControllableUnit | ControllableUnitHistory;
@@ -26,6 +29,10 @@ export type ControllableUnitShowViewModel = {
   accountingPoint: AccountingPoint | undefined;
   suspensions: ControllableUnitSuspension[] | undefined;
   balanceResponsibleParty: Party | undefined;
+  accountingPointBalanceResponsibleParty:
+    | AccountingPointBalanceResponsibleParty
+    | undefined;
+  biddingZone: string | undefined;
 };
 
 const findCurrentCusp = async (controllableUnitId: number) => {
@@ -57,16 +64,14 @@ const getCurrentBalanceResponsibleParty = async (accountingPointId: number) => {
       query: { accounting_point_id: "eq." + accountingPointId },
     }).then(throwOnError);
 
-  const currentBalanceResponsibleParty = balanceResponsibleParties.find(
-    (brp) =>
-      brp.valid_from &&
-      new Date(brp.valid_from) <= new Date() &&
-      (!brp.valid_to || new Date(brp.valid_to) >= new Date()),
+  const currentBalanceResponsibleParty = findCurrentlyValidRecord(
+    balanceResponsibleParties,
   );
 
   if (!currentBalanceResponsibleParty) {
     return {
       balanceResponsibleParty: undefined,
+      accountingPointBalanceResponsibleParty: undefined,
     };
   }
 
@@ -78,7 +83,17 @@ const getCurrentBalanceResponsibleParty = async (accountingPointId: number) => {
 
   return {
     balanceResponsibleParty,
+    accountingPointBalanceResponsibleParty: currentBalanceResponsibleParty,
   };
+};
+
+const getCurrentBiddingZone = async (accountingPointId: number) => {
+  const biddingZones = await listAccountingPointBiddingZone({
+    query: { accounting_point_id: "eq." + accountingPointId },
+  }).then(throwOnError);
+
+  const currentBiddingZone = findCurrentlyValidRecord(biddingZones);
+  return currentBiddingZone?.bidding_zone;
 };
 
 const getAccountingPointData = async (
@@ -89,6 +104,8 @@ const getAccountingPointData = async (
       accountingPoint: undefined,
       systemOperator: undefined,
       balanceResponsibleParty: undefined,
+      accountingPointBalanceResponsibleParty: undefined,
+      biddingZone: undefined,
     };
   }
 
@@ -103,37 +120,43 @@ const getAccountingPointData = async (
   const balanceResponsiblePartyPromise =
     getCurrentBalanceResponsibleParty(accountingPointId);
 
-  const [systemOperator, balanceResponsibleParty] = await Promise.all([
-    systemOperatorPromise,
-    balanceResponsiblePartyPromise,
-  ]);
+  const biddingZonePromise = getCurrentBiddingZone(accountingPointId);
+
+  const [systemOperator, balanceResponsibleParty, biddingZone] =
+    await Promise.all([
+      systemOperatorPromise,
+      balanceResponsiblePartyPromise,
+      biddingZonePromise,
+    ]);
 
   return {
     accountingPoint,
     systemOperator,
     balanceResponsibleParty: balanceResponsibleParty?.balanceResponsibleParty,
+    accountingPointBalanceResponsibleParty:
+      balanceResponsibleParty?.accountingPointBalanceResponsibleParty,
+    biddingZone,
   };
 };
 
-const getControllableUnitData = async (
-  controllableUnit: ControllableUnit | undefined,
-): Promise<Omit<ControllableUnitShowViewModel, "controllableUnit">> => {
-  const controllableUnitIdInt = controllableUnit?.id ?? 0;
+export const getControllableUnitData = async (
+  controllableUnitId: number,
+): Promise<ControllableUnitShowViewModel> => {
+  const controllableUnit = await readControllableUnit({
+    path: { id: controllableUnitId },
+  }).then(throwOnError);
 
-  if (!controllableUnit) {
-    throw new Error("Controllable unit not found");
-  }
   const technicalResourcesPromise = listTechnicalResource({
-    query: { controllable_unit_id: "eq." + controllableUnitIdInt },
+    query: { controllable_unit_id: "eq." + controllableUnitId },
   }).then(throwOnError);
 
   const accountingPointPromise = getAccountingPointData(
     controllableUnit?.accounting_point_id,
   );
-  const cuspPromise = findCurrentCusp(controllableUnitIdInt);
+  const cuspPromise = findCurrentCusp(controllableUnitId);
 
   const suspensionsPromise = listControllableUnitSuspension({
-    query: { controllable_unit_id: "eq." + controllableUnitIdInt },
+    query: { controllable_unit_id: "eq." + controllableUnitId },
   }).then(throwOnError);
 
   const [technicalResources, accountingPoint, cuspData, suspensions] =
@@ -145,11 +168,15 @@ const getControllableUnitData = async (
     ]);
 
   return {
+    controllableUnit,
     serviceProvider: cuspData.systemProvider,
     technicalResources: technicalResources,
     systemOperator: accountingPoint.systemOperator,
     accountingPoint: accountingPoint.accountingPoint,
     balanceResponsibleParty: accountingPoint.balanceResponsibleParty,
+    accountingPointBalanceResponsibleParty:
+      accountingPoint.accountingPointBalanceResponsibleParty,
+    biddingZone: accountingPoint.biddingZone,
     suspensions: suspensions,
     controllableUnitServiceProvider: cuspData.cusp,
   };
@@ -158,25 +185,13 @@ const getControllableUnitData = async (
 export const controllableUnitViewModelQueryKey = (
   controllableUnitId: number | undefined,
 ) => ["controllableUnitViewModel", controllableUnitId];
-export const useControllableUnitViewModel = (
-  controllableUnit: ControllableUnit | ControllableUnitHistory | undefined,
-): UseQueryResult<ControllableUnitShowViewModel> => {
-  const query = useQuery({
-    queryKey: controllableUnitViewModelQueryKey(controllableUnit?.id),
-    queryFn: () => getControllableUnitData(controllableUnit),
-    enabled: !!controllableUnit?.id,
-  });
 
-  return {
-    ...query,
-    data: query.data
-      ? {
-          ...query.data,
-          controllableUnit,
-        }
-      : undefined,
-    // Since controllable unit is prefetched, we dont want controllableUnit to be in the query logic, so we can partially invalidate the query when the controllable unit is updated
-    // but for simplicity we want the controllable unit to be available in the view model, so we add it to the data
-    // Thats why we return the query result and add the controllableUnit to the data, casting it manually since the types of useQuery are complex and not easily inferrable
-  } as UseQueryResult<ControllableUnitShowViewModel>;
+export const useControllableUnitViewModel = (
+  id: number | undefined,
+): UseQueryResult<ControllableUnitShowViewModel> => {
+  return useQuery({
+    queryKey: controllableUnitViewModelQueryKey(id),
+    queryFn: () => getControllableUnitData(id!),
+    enabled: !!id,
+  });
 };

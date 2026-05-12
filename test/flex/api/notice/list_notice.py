@@ -13,15 +13,23 @@ from ...types import UNSET, Response, Unset
 
 def _get_kwargs(
     *,
+    id: str | Unset = UNSET,
     party_id: str | Unset = UNSET,
+    type_: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
+    params["id"] = id
+
     params["party_id"] = party_id
+
+    params["type"] = type_
 
     params["select"] = select
 
@@ -30,6 +38,8 @@ def _get_kwargs(
     params["offset"] = offset
 
     params["limit"] = limit
+
+    params["embed"] = embed
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
@@ -136,20 +146,28 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
+    id: str | Unset = UNSET,
     party_id: str | Unset = UNSET,
+    type_: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[NoticeResponse]]:
     """List Notice
 
+     List [Notice](https://elhub.github.io/flex-information-system/resources/notice/)
+
     Args:
+        id (str | Unset):
         party_id (str | Unset):
+        type_ (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -160,11 +178,14 @@ def sync_detailed(
     """
 
     kwargs = _get_kwargs(
+        id=id,
         party_id=party_id,
+        type_=type_,
         select=select,
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
     )
 
     response = client.get_httpx_client().request(
@@ -177,20 +198,28 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
+    id: str | Unset = UNSET,
     party_id: str | Unset = UNSET,
+    type_: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[NoticeResponse] | None:
     """List Notice
 
+     List [Notice](https://elhub.github.io/flex-information-system/resources/notice/)
+
     Args:
+        id (str | Unset):
         party_id (str | Unset):
+        type_ (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -202,31 +231,42 @@ def sync(
 
     return sync_detailed(
         client=client,
+        id=id,
         party_id=party_id,
+        type_=type_,
         select=select,
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
     ).parsed
 
 
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
+    id: str | Unset = UNSET,
     party_id: str | Unset = UNSET,
+    type_: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[NoticeResponse]]:
     """List Notice
 
+     List [Notice](https://elhub.github.io/flex-information-system/resources/notice/)
+
     Args:
+        id (str | Unset):
         party_id (str | Unset):
+        type_ (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -237,11 +277,14 @@ async def asyncio_detailed(
     """
 
     kwargs = _get_kwargs(
+        id=id,
         party_id=party_id,
+        type_=type_,
         select=select,
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -252,20 +295,28 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
+    id: str | Unset = UNSET,
     party_id: str | Unset = UNSET,
+    type_: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[NoticeResponse] | None:
     """List Notice
 
+     List [Notice](https://elhub.github.io/flex-information-system/resources/notice/)
+
     Args:
+        id (str | Unset):
         party_id (str | Unset):
+        type_ (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -278,10 +329,13 @@ async def asyncio(
     return (
         await asyncio_detailed(
             client=client,
+            id=id,
             party_id=party_id,
+            type_=type_,
             select=select,
             order=order,
             offset=offset,
             limit=limit,
+            embed=embed,
         )
     ).parsed

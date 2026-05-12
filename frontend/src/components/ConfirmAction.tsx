@@ -1,22 +1,34 @@
 import { ReactNode, useState } from "react";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
-import { useNotify } from "react-admin";
+import { useNotify } from "ra-core";
 import { Button, Modal } from "./ui";
 
-type UseConfirmActionOptions = {
+type BaseOptions = {
   title: string;
   content?: ReactNode;
   confirmText?: string;
   cancelText?: string;
-  successMessage?: string;
-  onConfirmMutation: UseMutationOptions<unknown, Error, void>;
 };
+
+type MutationOptions = BaseOptions & {
+  onConfirmMutation: UseMutationOptions<unknown, Error, void>;
+  onConfirm?: never;
+  successMessage?: string;
+};
+
+type CallbackOptions = BaseOptions & {
+  onConfirm: () => void;
+  onConfirmMutation?: never;
+  successMessage?: never;
+};
+
+type UseConfirmActionOptions = MutationOptions | CallbackOptions;
 
 /*
 This component is used to confirm an action with a dialog.
 
-The mutation is passed as an option and will be executed when the user confirms the action.
-
+Pass either `onConfirmMutation` (a react-query mutation) or `onConfirm` (a plain
+callback) depending on whether the confirmed action is async or not.
 */
 
 export const useConfirmAction = ({
@@ -24,21 +36,30 @@ export const useConfirmAction = ({
   content,
   confirmText = "Confirm",
   cancelText = "Cancel",
-  successMessage,
-  onConfirmMutation,
+  ...rest
 }: UseConfirmActionOptions) => {
   const [open, setOpen] = useState(false);
-  const { mutate, isPending } = useMutation(onConfirmMutation);
   const notify = useNotify();
 
+  const { mutate, isPending } = useMutation(
+    "onConfirmMutation" in rest && rest.onConfirmMutation
+      ? rest.onConfirmMutation
+      : { mutationFn: async () => {} },
+  );
+
   const confirm = () => {
+    if ("onConfirm" in rest && rest.onConfirm) {
+      rest.onConfirm();
+      setOpen(false);
+      return;
+    }
     mutate(undefined, {
       onSettled: () => {
         setOpen(false);
       },
       onSuccess: () => {
-        if (successMessage) {
-          notify(successMessage, { type: "success" });
+        if ("successMessage" in rest && rest.successMessage) {
+          notify(rest.successMessage, { type: "success" });
         }
       },
       onError: (error) => {

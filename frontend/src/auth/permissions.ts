@@ -42,6 +42,18 @@ export type PermissionTarget =
   | "accounting_point_energy_supplier.energy_supplier_id"
   | "accounting_point_energy_supplier.valid_from"
   | "accounting_point_energy_supplier.valid_to"
+  | "accounting_point_grid_location"
+  | "accounting_point_grid_location.accounting_point_id"
+  | "accounting_point_grid_location.additional_information"
+  | "accounting_point_grid_location.business_id"
+  | "accounting_point_grid_location.id"
+  | "accounting_point_grid_location.name"
+  | "accounting_point_grid_location.nominal_voltage"
+  | "accounting_point_grid_location.object_type"
+  | "accounting_point_grid_location.quality"
+  | "accounting_point_grid_location.recorded_at"
+  | "accounting_point_grid_location.recorded_by"
+  | "accounting_point_grid_location.source"
   | "accounting_point_metering_grid_area"
   | "accounting_point_metering_grid_area.accounting_point_id"
   | "accounting_point_metering_grid_area.metering_grid_area_id"
@@ -49,47 +61,33 @@ export type PermissionTarget =
   | "accounting_point_metering_grid_area.valid_to"
   | "controllable_unit"
   | "controllable_unit.accounting_point_id"
+  | "controllable_unit.additional_information"
   | "controllable_unit.business_id"
-  | "controllable_unit.grid_node_id"
-  | "controllable_unit.grid_validation_notes"
-  | "controllable_unit.grid_validation_status"
   | "controllable_unit.id"
   | "controllable_unit.is_small"
-  | "controllable_unit.maximum_available_capacity"
-  | "controllable_unit.maximum_duration"
-  | "controllable_unit.minimum_duration"
+  | "controllable_unit.maximum_active_power"
   | "controllable_unit.name"
-  | "controllable_unit.ramp_rate"
   | "controllable_unit.recorded_at"
   | "controllable_unit.recorded_by"
-  | "controllable_unit.recovery_duration"
   | "controllable_unit.regulation_direction"
   | "controllable_unit.start_date"
   | "controllable_unit.status"
-  | "controllable_unit.validated_at"
   | "controllable_unit_history"
   | "controllable_unit_history.accounting_point_id"
+  | "controllable_unit_history.additional_information"
   | "controllable_unit_history.business_id"
   | "controllable_unit_history.controllable_unit_id"
-  | "controllable_unit_history.grid_node_id"
-  | "controllable_unit_history.grid_validation_notes"
-  | "controllable_unit_history.grid_validation_status"
   | "controllable_unit_history.id"
   | "controllable_unit_history.is_small"
-  | "controllable_unit_history.maximum_available_capacity"
-  | "controllable_unit_history.maximum_duration"
-  | "controllable_unit_history.minimum_duration"
+  | "controllable_unit_history.maximum_active_power"
   | "controllable_unit_history.name"
-  | "controllable_unit_history.ramp_rate"
   | "controllable_unit_history.recorded_at"
   | "controllable_unit_history.recorded_by"
-  | "controllable_unit_history.recovery_duration"
   | "controllable_unit_history.regulation_direction"
   | "controllable_unit_history.replaced_at"
   | "controllable_unit_history.replaced_by"
   | "controllable_unit_history.start_date"
   | "controllable_unit_history.status"
-  | "controllable_unit_history.validated_at"
   | "controllable_unit_service_provider"
   | "controllable_unit_service_provider.contract_reference"
   | "controllable_unit_service_provider.controllable_unit_id"
@@ -113,6 +111,10 @@ export type PermissionTarget =
   | "controllable_unit_service_provider_history.service_provider_id"
   | "controllable_unit_service_provider_history.valid_from"
   | "controllable_unit_service_provider_history.valid_to"
+  | "controllable_unit_summary"
+  | "controllable_unit_summary.controllable_unit_id"
+  | "controllable_unit_summary.id"
+  | "controllable_unit_summary.technical_resource"
   | "controllable_unit_suspension"
   | "controllable_unit_suspension.controllable_unit_id"
   | "controllable_unit_suspension.id"
@@ -189,10 +191,15 @@ export type PermissionTarget =
   | "metering_grid_area.business_id_type"
   | "metering_grid_area.id"
   | "metering_grid_area.name"
+  | "metering_grid_area.status"
   | "notice"
   | "notice.data"
+  | "notice.id"
   | "notice.party_id"
+  | "notice.recorded_at"
+  | "notice.recorded_by"
   | "notice.source"
+  | "notice.status"
   | "notice.type"
   | "notification"
   | "notification.acknowledged"
@@ -332,6 +339,7 @@ export type PermissionTarget =
   | "service_provider_product_suspension_history.service_provider_id"
   | "service_provider_product_suspension_history.service_provider_product_suspension_id"
   | "service_providing_group"
+  | "service_providing_group.additional_information"
   | "service_providing_group.bidding_zone"
   | "service_providing_group.id"
   | "service_providing_group.name"
@@ -418,6 +426,7 @@ export type PermissionTarget =
   | "service_providing_group_grid_suspension_history.service_providing_group_grid_suspension_id"
   | "service_providing_group_grid_suspension_history.service_providing_group_id"
   | "service_providing_group_history"
+  | "service_providing_group_history.additional_information"
   | "service_providing_group_history.bidding_zone"
   | "service_providing_group_history.id"
   | "service_providing_group_history.name"
@@ -448,8 +457,10 @@ export type PermissionTarget =
   | "service_providing_group_membership_history.valid_from"
   | "service_providing_group_membership_history.valid_to"
   | "service_providing_group_product_application"
+  | "service_providing_group_product_application.additional_information"
   | "service_providing_group_product_application.id"
-  | "service_providing_group_product_application.notes"
+  | "service_providing_group_product_application.maximum_active_power_down"
+  | "service_providing_group_product_application.maximum_active_power_up"
   | "service_providing_group_product_application.prequalified_at"
   | "service_providing_group_product_application.procuring_system_operator_id"
   | "service_providing_group_product_application.product_type_ids"
@@ -458,9 +469,32 @@ export type PermissionTarget =
   | "service_providing_group_product_application.service_providing_group_id"
   | "service_providing_group_product_application.status"
   | "service_providing_group_product_application.verified_at"
+  | "service_providing_group_product_application_comment"
+  | "service_providing_group_product_application_comment.content"
+  | "service_providing_group_product_application_comment.created_at"
+  | "service_providing_group_product_application_comment.created_by"
+  | "service_providing_group_product_application_comment.id"
+  | "service_providing_group_product_application_comment.recorded_at"
+  | "service_providing_group_product_application_comment.recorded_by"
+  | "service_providing_group_product_application_comment.service_providing_group_product_application_id"
+  | "service_providing_group_product_application_comment.visibility"
+  | "service_providing_group_product_application_comment_history"
+  | "service_providing_group_product_application_comment_history.content"
+  | "service_providing_group_product_application_comment_history.created_at"
+  | "service_providing_group_product_application_comment_history.created_by"
+  | "service_providing_group_product_application_comment_history.id"
+  | "service_providing_group_product_application_comment_history.recorded_at"
+  | "service_providing_group_product_application_comment_history.recorded_by"
+  | "service_providing_group_product_application_comment_history.replaced_at"
+  | "service_providing_group_product_application_comment_history.replaced_by"
+  | "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id"
+  | "service_providing_group_product_application_comment_history.service_providing_group_product_application_id"
+  | "service_providing_group_product_application_comment_history.visibility"
   | "service_providing_group_product_application_history"
+  | "service_providing_group_product_application_history.additional_information"
   | "service_providing_group_product_application_history.id"
-  | "service_providing_group_product_application_history.notes"
+  | "service_providing_group_product_application_history.maximum_active_power_down"
+  | "service_providing_group_product_application_history.maximum_active_power_up"
   | "service_providing_group_product_application_history.prequalified_at"
   | "service_providing_group_product_application_history.procuring_system_operator_id"
   | "service_providing_group_product_application_history.product_type_ids"
@@ -512,6 +546,11 @@ export type PermissionTarget =
   | "service_providing_group_product_suspension_history.replaced_by"
   | "service_providing_group_product_suspension_history.service_providing_group_id"
   | "service_providing_group_product_suspension_history.service_providing_group_product_suspension_id"
+  | "service_providing_group_summary"
+  | "service_providing_group_summary.controllable_unit"
+  | "service_providing_group_summary.id"
+  | "service_providing_group_summary.service_providing_group_id"
+  | "service_providing_group_summary.technical_resource"
   | "system_operator_product_type"
   | "system_operator_product_type.id"
   | "system_operator_product_type.product_type_id"
@@ -530,22 +569,38 @@ export type PermissionTarget =
   | "system_operator_product_type_history.system_operator_id"
   | "system_operator_product_type_history.system_operator_product_type_id"
   | "technical_resource"
+  | "technical_resource.additional_information"
+  | "technical_resource.business_id"
+  | "technical_resource.business_id_type"
+  | "technical_resource.category"
   | "technical_resource.controllable_unit_id"
-  | "technical_resource.details"
+  | "technical_resource.device_type"
   | "technical_resource.id"
+  | "technical_resource.make"
+  | "technical_resource.maximum_active_power"
+  | "technical_resource.model"
   | "technical_resource.name"
   | "technical_resource.recorded_at"
   | "technical_resource.recorded_by"
+  | "technical_resource.technology"
   | "technical_resource_history"
+  | "technical_resource_history.additional_information"
+  | "technical_resource_history.business_id"
+  | "technical_resource_history.business_id_type"
+  | "technical_resource_history.category"
   | "technical_resource_history.controllable_unit_id"
-  | "technical_resource_history.details"
+  | "technical_resource_history.device_type"
   | "technical_resource_history.id"
+  | "technical_resource_history.make"
+  | "technical_resource_history.maximum_active_power"
+  | "technical_resource_history.model"
   | "technical_resource_history.name"
   | "technical_resource_history.recorded_at"
   | "technical_resource_history.recorded_by"
   | "technical_resource_history.replaced_at"
   | "technical_resource_history.replaced_by"
-  | "technical_resource_history.technical_resource_id";
+  | "technical_resource_history.technical_resource_id"
+  | "technical_resource_history.technology";
 
 export type PermissionOperation =
   | "create"
@@ -698,19 +753,11 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "controllable_unit.additional_information",
+      operation: "read",
+    },
+    {
       target: "controllable_unit.business_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_node_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_validation_notes",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_validation_status",
       operation: "read",
     },
     {
@@ -722,23 +769,11 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.maximum_available_capacity",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.maximum_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.minimum_duration",
+      target: "controllable_unit.maximum_active_power",
       operation: "read",
     },
     {
       target: "controllable_unit.name",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.ramp_rate",
       operation: "read",
     },
     {
@@ -754,10 +789,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.recovery_duration",
-      operation: "read",
-    },
-    {
       target: "controllable_unit.regulation_direction",
       operation: "read",
     },
@@ -770,11 +801,11 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.validated_at",
+      target: "controllable_unit_history.accounting_point_id",
       operation: "read",
     },
     {
-      target: "controllable_unit_history.accounting_point_id",
+      target: "controllable_unit_history.additional_information",
       operation: "read",
     },
     {
@@ -786,18 +817,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.grid_node_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.grid_validation_notes",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.grid_validation_status",
-      operation: "read",
-    },
-    {
       target: "controllable_unit_history.id",
       operation: "read",
     },
@@ -806,23 +825,11 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.maximum_available_capacity",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.maximum_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.minimum_duration",
+      target: "controllable_unit_history.maximum_active_power",
       operation: "read",
     },
     {
       target: "controllable_unit_history.name",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.ramp_rate",
       operation: "read",
     },
     {
@@ -835,10 +842,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.recorded_by",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.recovery_duration",
       operation: "read",
     },
     {
@@ -859,10 +862,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.status",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.validated_at",
       operation: "read",
     },
     {
@@ -956,6 +955,22 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_service_provider_history.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.technical_resource",
       operation: "read",
     },
     {
@@ -1268,7 +1283,15 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "metering_grid_area.status",
+      operation: "read",
+    },
+    {
       target: "notice.data",
+      operation: "read",
+    },
+    {
+      target: "notice.id",
       operation: "read",
     },
     {
@@ -1280,7 +1303,19 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "notice.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "notice.recorded_by",
+      operation: "read",
+    },
+    {
       target: "notice.source",
+      operation: "read",
+    },
+    {
+      target: "notice.status",
       operation: "read",
     },
     {
@@ -1859,6 +1894,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group.bidding_zone",
       operation: "read",
     },
@@ -2245,6 +2284,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_history.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_history.bidding_zone",
       operation: "read",
     },
@@ -2367,11 +2410,22 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target:
+        "service_providing_group_product_application.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application.id",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application.notes",
+      target:
+        "service_providing_group_product_application.maximum_active_power_down",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.maximum_active_power_up",
       operation: "read",
     },
     {
@@ -2413,11 +2467,117 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application_history.id",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application_history.notes",
+      target:
+        "service_providing_group_product_application_history.maximum_active_power_down",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.maximum_active_power_up",
       operation: "read",
     },
     {
@@ -2651,6 +2811,26 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_summary.controllable_unit",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.technical_resource",
+      operation: "read",
+    },
+    {
       target: "system_operator_product_type.id",
       operation: "read",
     },
@@ -2720,15 +2900,43 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "technical_resource.additional_information",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.business_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.category",
+      operation: "read",
+    },
+    {
       target: "technical_resource.controllable_unit_id",
       operation: "read",
     },
     {
-      target: "technical_resource.details",
+      target: "technical_resource.device_type",
       operation: "read",
     },
     {
       target: "technical_resource.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.make",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.model",
       operation: "read",
     },
     {
@@ -2748,15 +2956,47 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "technical_resource.technology",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.additional_information",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.business_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.category",
+      operation: "read",
+    },
+    {
       target: "technical_resource_history.controllable_unit_id",
       operation: "read",
     },
     {
-      target: "technical_resource_history.details",
+      target: "technical_resource_history.device_type",
       operation: "read",
     },
     {
       target: "technical_resource_history.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.make",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.model",
       operation: "read",
     },
     {
@@ -2785,6 +3025,10 @@ const rawPermissions: Record<
     },
     {
       target: "technical_resource_history.technical_resource_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.technology",
       operation: "read",
     },
   ],
@@ -2923,19 +3167,11 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "controllable_unit.additional_information",
+      operation: "read",
+    },
+    {
       target: "controllable_unit.business_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_node_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_validation_notes",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_validation_status",
       operation: "read",
     },
     {
@@ -2947,23 +3183,11 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.maximum_available_capacity",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.maximum_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.minimum_duration",
+      target: "controllable_unit.maximum_active_power",
       operation: "read",
     },
     {
       target: "controllable_unit.name",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.ramp_rate",
       operation: "read",
     },
     {
@@ -2979,10 +3203,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.recovery_duration",
-      operation: "read",
-    },
-    {
       target: "controllable_unit.regulation_direction",
       operation: "read",
     },
@@ -2995,11 +3215,11 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.validated_at",
+      target: "controllable_unit_history.accounting_point_id",
       operation: "read",
     },
     {
-      target: "controllable_unit_history.accounting_point_id",
+      target: "controllable_unit_history.additional_information",
       operation: "read",
     },
     {
@@ -3011,18 +3231,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.grid_node_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.grid_validation_notes",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.grid_validation_status",
-      operation: "read",
-    },
-    {
       target: "controllable_unit_history.id",
       operation: "read",
     },
@@ -3031,23 +3239,11 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.maximum_available_capacity",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.maximum_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.minimum_duration",
+      target: "controllable_unit_history.maximum_active_power",
       operation: "read",
     },
     {
       target: "controllable_unit_history.name",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.ramp_rate",
       operation: "read",
     },
     {
@@ -3060,10 +3256,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.recorded_by",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.recovery_duration",
       operation: "read",
     },
     {
@@ -3084,10 +3276,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.status",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.validated_at",
       operation: "read",
     },
     {
@@ -3181,6 +3369,22 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_service_provider_history.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.technical_resource",
       operation: "read",
     },
     {
@@ -3493,7 +3697,15 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "metering_grid_area.status",
+      operation: "read",
+    },
+    {
       target: "notice.data",
+      operation: "read",
+    },
+    {
+      target: "notice.id",
       operation: "read",
     },
     {
@@ -3505,7 +3717,19 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "notice.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "notice.recorded_by",
+      operation: "read",
+    },
+    {
       target: "notice.source",
+      operation: "read",
+    },
+    {
+      target: "notice.status",
       operation: "read",
     },
     {
@@ -4084,6 +4308,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group.bidding_zone",
       operation: "read",
     },
@@ -4470,6 +4698,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_history.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_history.bidding_zone",
       operation: "read",
     },
@@ -4592,11 +4824,22 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target:
+        "service_providing_group_product_application.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application.id",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application.notes",
+      target:
+        "service_providing_group_product_application.maximum_active_power_down",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.maximum_active_power_up",
       operation: "read",
     },
     {
@@ -4638,11 +4881,117 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application_history.id",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application_history.notes",
+      target:
+        "service_providing_group_product_application_history.maximum_active_power_down",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.maximum_active_power_up",
       operation: "read",
     },
     {
@@ -4876,6 +5225,26 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_summary.controllable_unit",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.technical_resource",
+      operation: "read",
+    },
+    {
       target: "system_operator_product_type.id",
       operation: "read",
     },
@@ -4945,15 +5314,43 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "technical_resource.additional_information",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.business_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.category",
+      operation: "read",
+    },
+    {
       target: "technical_resource.controllable_unit_id",
       operation: "read",
     },
     {
-      target: "technical_resource.details",
+      target: "technical_resource.device_type",
       operation: "read",
     },
     {
       target: "technical_resource.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.make",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.model",
       operation: "read",
     },
     {
@@ -4973,15 +5370,47 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "technical_resource.technology",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.additional_information",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.business_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.category",
+      operation: "read",
+    },
+    {
       target: "technical_resource_history.controllable_unit_id",
       operation: "read",
     },
     {
-      target: "technical_resource_history.details",
+      target: "technical_resource_history.device_type",
       operation: "read",
     },
     {
       target: "technical_resource_history.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.make",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.model",
       operation: "read",
     },
     {
@@ -5010,6 +5439,10 @@ const rawPermissions: Record<
     },
     {
       target: "technical_resource_history.technical_resource_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.technology",
       operation: "read",
     },
   ],
@@ -5148,19 +5581,11 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "controllable_unit.additional_information",
+      operation: "read",
+    },
+    {
       target: "controllable_unit.business_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_node_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_validation_notes",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_validation_status",
       operation: "read",
     },
     {
@@ -5172,23 +5597,11 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.maximum_available_capacity",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.maximum_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.minimum_duration",
+      target: "controllable_unit.maximum_active_power",
       operation: "read",
     },
     {
       target: "controllable_unit.name",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.ramp_rate",
       operation: "read",
     },
     {
@@ -5204,10 +5617,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.recovery_duration",
-      operation: "read",
-    },
-    {
       target: "controllable_unit.regulation_direction",
       operation: "read",
     },
@@ -5220,11 +5629,11 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.validated_at",
+      target: "controllable_unit_history.accounting_point_id",
       operation: "read",
     },
     {
-      target: "controllable_unit_history.accounting_point_id",
+      target: "controllable_unit_history.additional_information",
       operation: "read",
     },
     {
@@ -5236,18 +5645,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.grid_node_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.grid_validation_notes",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.grid_validation_status",
-      operation: "read",
-    },
-    {
       target: "controllable_unit_history.id",
       operation: "read",
     },
@@ -5256,23 +5653,11 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.maximum_available_capacity",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.maximum_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.minimum_duration",
+      target: "controllable_unit_history.maximum_active_power",
       operation: "read",
     },
     {
       target: "controllable_unit_history.name",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.ramp_rate",
       operation: "read",
     },
     {
@@ -5285,10 +5670,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.recorded_by",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.recovery_duration",
       operation: "read",
     },
     {
@@ -5309,10 +5690,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.status",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.validated_at",
       operation: "read",
     },
     {
@@ -5406,6 +5783,22 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_service_provider_history.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.technical_resource",
       operation: "read",
     },
     {
@@ -5718,7 +6111,15 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "metering_grid_area.status",
+      operation: "read",
+    },
+    {
       target: "notice.data",
+      operation: "read",
+    },
+    {
+      target: "notice.id",
       operation: "read",
     },
     {
@@ -5730,7 +6131,19 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "notice.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "notice.recorded_by",
+      operation: "read",
+    },
+    {
       target: "notice.source",
+      operation: "read",
+    },
+    {
+      target: "notice.status",
       operation: "read",
     },
     {
@@ -6309,6 +6722,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group.bidding_zone",
       operation: "read",
     },
@@ -6695,6 +7112,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_history.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_history.bidding_zone",
       operation: "read",
     },
@@ -6817,11 +7238,22 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target:
+        "service_providing_group_product_application.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application.id",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application.notes",
+      target:
+        "service_providing_group_product_application.maximum_active_power_down",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.maximum_active_power_up",
       operation: "read",
     },
     {
@@ -6863,11 +7295,117 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application_history.id",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application_history.notes",
+      target:
+        "service_providing_group_product_application_history.maximum_active_power_down",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.maximum_active_power_up",
       operation: "read",
     },
     {
@@ -7101,6 +7639,26 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_summary.controllable_unit",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.technical_resource",
+      operation: "read",
+    },
+    {
       target: "system_operator_product_type.id",
       operation: "read",
     },
@@ -7170,15 +7728,43 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "technical_resource.additional_information",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.business_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.category",
+      operation: "read",
+    },
+    {
       target: "technical_resource.controllable_unit_id",
       operation: "read",
     },
     {
-      target: "technical_resource.details",
+      target: "technical_resource.device_type",
       operation: "read",
     },
     {
       target: "technical_resource.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.make",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.model",
       operation: "read",
     },
     {
@@ -7198,15 +7784,47 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "technical_resource.technology",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.additional_information",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.business_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.category",
+      operation: "read",
+    },
+    {
       target: "technical_resource_history.controllable_unit_id",
       operation: "read",
     },
     {
-      target: "technical_resource_history.details",
+      target: "technical_resource_history.device_type",
       operation: "read",
     },
     {
       target: "technical_resource_history.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.make",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.model",
       operation: "read",
     },
     {
@@ -7235,6 +7853,10 @@ const rawPermissions: Record<
     },
     {
       target: "technical_resource_history.technical_resource_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.technology",
       operation: "read",
     },
   ],
@@ -7349,6 +7971,114 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "accounting_point_grid_location.accounting_point_id",
+      operation: "create",
+    },
+    {
+      target: "accounting_point_grid_location.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.additional_information",
+      operation: "create",
+    },
+    {
+      target: "accounting_point_grid_location.additional_information",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.additional_information",
+      operation: "update",
+    },
+    {
+      target: "accounting_point_grid_location.business_id",
+      operation: "create",
+    },
+    {
+      target: "accounting_point_grid_location.business_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.business_id",
+      operation: "update",
+    },
+    {
+      target: "accounting_point_grid_location",
+      operation: "create",
+    },
+    {
+      target: "accounting_point_grid_location.id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.name",
+      operation: "create",
+    },
+    {
+      target: "accounting_point_grid_location.name",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.name",
+      operation: "update",
+    },
+    {
+      target: "accounting_point_grid_location.nominal_voltage",
+      operation: "create",
+    },
+    {
+      target: "accounting_point_grid_location.nominal_voltage",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.nominal_voltage",
+      operation: "update",
+    },
+    {
+      target: "accounting_point_grid_location.object_type",
+      operation: "create",
+    },
+    {
+      target: "accounting_point_grid_location.object_type",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.object_type",
+      operation: "update",
+    },
+    {
+      target: "accounting_point_grid_location.quality",
+      operation: "create",
+    },
+    {
+      target: "accounting_point_grid_location.quality",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.quality",
+      operation: "update",
+    },
+    {
+      target: "accounting_point_grid_location",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.source",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location",
+      operation: "update",
+    },
+    {
       target: "accounting_point_metering_grid_area.accounting_point_id",
       operation: "read",
     },
@@ -7377,48 +8107,24 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "controllable_unit.additional_information",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit.additional_information",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.additional_information",
+      operation: "update",
+    },
+    {
       target: "controllable_unit.business_id",
       operation: "read",
     },
     {
       target: "controllable_unit",
       operation: "create",
-    },
-    {
-      target: "controllable_unit.grid_node_id",
-      operation: "create",
-    },
-    {
-      target: "controllable_unit.grid_node_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_node_id",
-      operation: "update",
-    },
-    {
-      target: "controllable_unit.grid_validation_notes",
-      operation: "create",
-    },
-    {
-      target: "controllable_unit.grid_validation_notes",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_validation_notes",
-      operation: "update",
-    },
-    {
-      target: "controllable_unit.grid_validation_status",
-      operation: "create",
-    },
-    {
-      target: "controllable_unit.grid_validation_status",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_validation_status",
-      operation: "update",
     },
     {
       target: "controllable_unit.id",
@@ -7433,39 +8139,15 @@ const rawPermissions: Record<
       operation: "lookup",
     },
     {
-      target: "controllable_unit.maximum_available_capacity",
+      target: "controllable_unit.maximum_active_power",
       operation: "create",
     },
     {
-      target: "controllable_unit.maximum_available_capacity",
+      target: "controllable_unit.maximum_active_power",
       operation: "read",
     },
     {
-      target: "controllable_unit.maximum_available_capacity",
-      operation: "update",
-    },
-    {
-      target: "controllable_unit.maximum_duration",
-      operation: "create",
-    },
-    {
-      target: "controllable_unit.maximum_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.maximum_duration",
-      operation: "update",
-    },
-    {
-      target: "controllable_unit.minimum_duration",
-      operation: "create",
-    },
-    {
-      target: "controllable_unit.minimum_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.minimum_duration",
+      target: "controllable_unit.maximum_active_power",
       operation: "update",
     },
     {
@@ -7478,18 +8160,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit.name",
-      operation: "update",
-    },
-    {
-      target: "controllable_unit.ramp_rate",
-      operation: "create",
-    },
-    {
-      target: "controllable_unit.ramp_rate",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.ramp_rate",
       operation: "update",
     },
     {
@@ -7505,18 +8175,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.recovery_duration",
-      operation: "create",
-    },
-    {
-      target: "controllable_unit.recovery_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.recovery_duration",
-      operation: "update",
-    },
-    {
       target: "controllable_unit.regulation_direction",
       operation: "create",
     },
@@ -7557,19 +8215,11 @@ const rawPermissions: Record<
       operation: "update",
     },
     {
-      target: "controllable_unit.validated_at",
-      operation: "create",
-    },
-    {
-      target: "controllable_unit.validated_at",
+      target: "controllable_unit_history.accounting_point_id",
       operation: "read",
     },
     {
-      target: "controllable_unit.validated_at",
-      operation: "update",
-    },
-    {
-      target: "controllable_unit_history.accounting_point_id",
+      target: "controllable_unit_history.additional_information",
       operation: "read",
     },
     {
@@ -7581,18 +8231,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.grid_node_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.grid_validation_notes",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.grid_validation_status",
-      operation: "read",
-    },
-    {
       target: "controllable_unit_history.id",
       operation: "read",
     },
@@ -7601,23 +8239,11 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.maximum_available_capacity",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.maximum_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.minimum_duration",
+      target: "controllable_unit_history.maximum_active_power",
       operation: "read",
     },
     {
       target: "controllable_unit_history.name",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.ramp_rate",
       operation: "read",
     },
     {
@@ -7630,10 +8256,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.recorded_by",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.recovery_duration",
       operation: "read",
     },
     {
@@ -7654,10 +8276,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.status",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.validated_at",
       operation: "read",
     },
     {
@@ -7799,6 +8417,22 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_service_provider_history.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.technical_resource",
       operation: "read",
     },
     {
@@ -8200,7 +8834,15 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "metering_grid_area.status",
+      operation: "read",
+    },
+    {
       target: "notice.data",
+      operation: "read",
+    },
+    {
+      target: "notice.id",
       operation: "read",
     },
     {
@@ -8212,7 +8854,19 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "notice.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "notice.recorded_by",
+      operation: "read",
+    },
+    {
       target: "notice.source",
+      operation: "read",
+    },
+    {
+      target: "notice.status",
       operation: "read",
     },
     {
@@ -8974,6 +9628,18 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group.additional_information",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group.additional_information",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.additional_information",
+      operation: "update",
+    },
+    {
       target: "service_providing_group.bidding_zone",
       operation: "create",
     },
@@ -9512,6 +10178,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_history.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_history.bidding_zone",
       operation: "read",
     },
@@ -9670,15 +10340,37 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target:
+        "service_providing_group_product_application.additional_information",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.additional_information",
+      operation: "update",
+    },
+    {
       target: "service_providing_group_product_application.id",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application.notes",
+      target:
+        "service_providing_group_product_application.maximum_active_power_down",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application.notes",
+      target:
+        "service_providing_group_product_application.maximum_active_power_down",
+      operation: "update",
+    },
+    {
+      target:
+        "service_providing_group_product_application.maximum_active_power_up",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.maximum_active_power_up",
       operation: "update",
     },
     {
@@ -9740,11 +10432,146 @@ const rawPermissions: Record<
       operation: "update",
     },
     {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment.service_providing_group_product_application_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "update",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application_history.id",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application_history.notes",
+      target:
+        "service_providing_group_product_application_history.maximum_active_power_down",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.maximum_active_power_up",
       operation: "read",
     },
     {
@@ -10041,6 +10868,26 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_summary.controllable_unit",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.technical_resource",
+      operation: "read",
+    },
+    {
       target: "system_operator_product_type",
       operation: "create",
     },
@@ -10134,6 +10981,46 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "technical_resource.additional_information",
+      operation: "create",
+    },
+    {
+      target: "technical_resource.additional_information",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.additional_information",
+      operation: "update",
+    },
+    {
+      target: "technical_resource.business_id",
+      operation: "create",
+    },
+    {
+      target: "technical_resource.business_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.business_id",
+      operation: "update",
+    },
+    {
+      target: "technical_resource.business_id_type",
+      operation: "create",
+    },
+    {
+      target: "technical_resource.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.business_id_type",
+      operation: "update",
+    },
+    {
+      target: "technical_resource.category",
+      operation: "read",
+    },
+    {
       target: "technical_resource.controllable_unit_id",
       operation: "create",
     },
@@ -10150,20 +11037,56 @@ const rawPermissions: Record<
       operation: "delete",
     },
     {
-      target: "technical_resource.details",
+      target: "technical_resource.device_type",
       operation: "create",
     },
     {
-      target: "technical_resource.details",
+      target: "technical_resource.device_type",
       operation: "read",
     },
     {
-      target: "technical_resource.details",
+      target: "technical_resource.device_type",
       operation: "update",
     },
     {
       target: "technical_resource.id",
       operation: "read",
+    },
+    {
+      target: "technical_resource.make",
+      operation: "create",
+    },
+    {
+      target: "technical_resource.make",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.make",
+      operation: "update",
+    },
+    {
+      target: "technical_resource.maximum_active_power",
+      operation: "create",
+    },
+    {
+      target: "technical_resource.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.maximum_active_power",
+      operation: "update",
+    },
+    {
+      target: "technical_resource.model",
+      operation: "create",
+    },
+    {
+      target: "technical_resource.model",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.model",
+      operation: "update",
     },
     {
       target: "technical_resource.name",
@@ -10190,19 +11113,59 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "technical_resource.technology",
+      operation: "create",
+    },
+    {
+      target: "technical_resource.technology",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.technology",
+      operation: "update",
+    },
+    {
       target: "technical_resource",
       operation: "update",
+    },
+    {
+      target: "technical_resource_history.additional_information",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.business_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.category",
+      operation: "read",
     },
     {
       target: "technical_resource_history.controllable_unit_id",
       operation: "read",
     },
     {
-      target: "technical_resource_history.details",
+      target: "technical_resource_history.device_type",
       operation: "read",
     },
     {
       target: "technical_resource_history.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.make",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.model",
       operation: "read",
     },
     {
@@ -10231,6 +11194,10 @@ const rawPermissions: Record<
     },
     {
       target: "technical_resource_history.technical_resource_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.technology",
       operation: "read",
     },
   ],
@@ -10369,19 +11336,11 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "controllable_unit.additional_information",
+      operation: "read",
+    },
+    {
       target: "controllable_unit.business_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_node_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_validation_notes",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_validation_status",
       operation: "read",
     },
     {
@@ -10393,23 +11352,11 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.maximum_available_capacity",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.maximum_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.minimum_duration",
+      target: "controllable_unit.maximum_active_power",
       operation: "read",
     },
     {
       target: "controllable_unit.name",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.ramp_rate",
       operation: "read",
     },
     {
@@ -10425,10 +11372,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.recovery_duration",
-      operation: "read",
-    },
-    {
       target: "controllable_unit.regulation_direction",
       operation: "read",
     },
@@ -10441,11 +11384,11 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.validated_at",
+      target: "controllable_unit_history.accounting_point_id",
       operation: "read",
     },
     {
-      target: "controllable_unit_history.accounting_point_id",
+      target: "controllable_unit_history.additional_information",
       operation: "read",
     },
     {
@@ -10457,18 +11400,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.grid_node_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.grid_validation_notes",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.grid_validation_status",
-      operation: "read",
-    },
-    {
       target: "controllable_unit_history.id",
       operation: "read",
     },
@@ -10477,23 +11408,11 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.maximum_available_capacity",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.maximum_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.minimum_duration",
+      target: "controllable_unit_history.maximum_active_power",
       operation: "read",
     },
     {
       target: "controllable_unit_history.name",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.ramp_rate",
       operation: "read",
     },
     {
@@ -10506,10 +11425,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.recorded_by",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.recovery_duration",
       operation: "read",
     },
     {
@@ -10530,10 +11445,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.status",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.validated_at",
       operation: "read",
     },
     {
@@ -10627,6 +11538,22 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_service_provider_history.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.technical_resource",
       operation: "read",
     },
     {
@@ -10939,7 +11866,15 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "metering_grid_area.status",
+      operation: "read",
+    },
+    {
       target: "notice.data",
+      operation: "read",
+    },
+    {
+      target: "notice.id",
       operation: "read",
     },
     {
@@ -10951,7 +11886,19 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "notice.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "notice.recorded_by",
+      operation: "read",
+    },
+    {
       target: "notice.source",
+      operation: "read",
+    },
+    {
+      target: "notice.status",
       operation: "read",
     },
     {
@@ -11530,6 +12477,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group.bidding_zone",
       operation: "read",
     },
@@ -11916,6 +12867,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_history.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_history.bidding_zone",
       operation: "read",
     },
@@ -12038,11 +12993,22 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target:
+        "service_providing_group_product_application.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application.id",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application.notes",
+      target:
+        "service_providing_group_product_application.maximum_active_power_down",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.maximum_active_power_up",
       operation: "read",
     },
     {
@@ -12084,11 +13050,117 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application_history.id",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application_history.notes",
+      target:
+        "service_providing_group_product_application_history.maximum_active_power_down",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.maximum_active_power_up",
       operation: "read",
     },
     {
@@ -12322,6 +13394,26 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_summary.controllable_unit",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.technical_resource",
+      operation: "read",
+    },
+    {
       target: "system_operator_product_type.id",
       operation: "read",
     },
@@ -12391,15 +13483,43 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "technical_resource.additional_information",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.business_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.category",
+      operation: "read",
+    },
+    {
       target: "technical_resource.controllable_unit_id",
       operation: "read",
     },
     {
-      target: "technical_resource.details",
+      target: "technical_resource.device_type",
       operation: "read",
     },
     {
       target: "technical_resource.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.make",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.model",
       operation: "read",
     },
     {
@@ -12419,15 +13539,47 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "technical_resource.technology",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.additional_information",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.business_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.category",
+      operation: "read",
+    },
+    {
       target: "technical_resource_history.controllable_unit_id",
       operation: "read",
     },
     {
-      target: "technical_resource_history.details",
+      target: "technical_resource_history.device_type",
       operation: "read",
     },
     {
       target: "technical_resource_history.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.make",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.model",
       operation: "read",
     },
     {
@@ -12456,6 +13608,10 @@ const rawPermissions: Record<
     },
     {
       target: "technical_resource_history.technical_resource_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.technology",
       operation: "read",
     },
   ],
@@ -12570,6 +13726,114 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "accounting_point_grid_location.accounting_point_id",
+      operation: "create",
+    },
+    {
+      target: "accounting_point_grid_location.accounting_point_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.additional_information",
+      operation: "create",
+    },
+    {
+      target: "accounting_point_grid_location.additional_information",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.additional_information",
+      operation: "update",
+    },
+    {
+      target: "accounting_point_grid_location.business_id",
+      operation: "create",
+    },
+    {
+      target: "accounting_point_grid_location.business_id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.business_id",
+      operation: "update",
+    },
+    {
+      target: "accounting_point_grid_location",
+      operation: "create",
+    },
+    {
+      target: "accounting_point_grid_location.id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.name",
+      operation: "create",
+    },
+    {
+      target: "accounting_point_grid_location.name",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.name",
+      operation: "update",
+    },
+    {
+      target: "accounting_point_grid_location.nominal_voltage",
+      operation: "create",
+    },
+    {
+      target: "accounting_point_grid_location.nominal_voltage",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.nominal_voltage",
+      operation: "update",
+    },
+    {
+      target: "accounting_point_grid_location.object_type",
+      operation: "create",
+    },
+    {
+      target: "accounting_point_grid_location.object_type",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.object_type",
+      operation: "update",
+    },
+    {
+      target: "accounting_point_grid_location.quality",
+      operation: "create",
+    },
+    {
+      target: "accounting_point_grid_location.quality",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.quality",
+      operation: "update",
+    },
+    {
+      target: "accounting_point_grid_location",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location.source",
+      operation: "read",
+    },
+    {
+      target: "accounting_point_grid_location",
+      operation: "update",
+    },
+    {
       target: "accounting_point_metering_grid_area.accounting_point_id",
       operation: "read",
     },
@@ -12594,32 +13858,12 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "controllable_unit.additional_information",
+      operation: "read",
+    },
+    {
       target: "controllable_unit.business_id",
       operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_node_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_node_id",
-      operation: "update",
-    },
-    {
-      target: "controllable_unit.grid_validation_notes",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_validation_notes",
-      operation: "update",
-    },
-    {
-      target: "controllable_unit.grid_validation_status",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_validation_status",
-      operation: "update",
     },
     {
       target: "controllable_unit.id",
@@ -12630,23 +13874,11 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.maximum_available_capacity",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.maximum_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.minimum_duration",
+      target: "controllable_unit.maximum_active_power",
       operation: "read",
     },
     {
       target: "controllable_unit.name",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.ramp_rate",
       operation: "read",
     },
     {
@@ -12662,10 +13894,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.recovery_duration",
-      operation: "read",
-    },
-    {
       target: "controllable_unit.regulation_direction",
       operation: "read",
     },
@@ -12678,19 +13906,11 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit",
-      operation: "update",
-    },
-    {
-      target: "controllable_unit.validated_at",
+      target: "controllable_unit_history.accounting_point_id",
       operation: "read",
     },
     {
-      target: "controllable_unit.validated_at",
-      operation: "update",
-    },
-    {
-      target: "controllable_unit_history.accounting_point_id",
+      target: "controllable_unit_history.additional_information",
       operation: "read",
     },
     {
@@ -12702,18 +13922,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.grid_node_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.grid_validation_notes",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.grid_validation_status",
-      operation: "read",
-    },
-    {
       target: "controllable_unit_history.id",
       operation: "read",
     },
@@ -12722,23 +13930,11 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.maximum_available_capacity",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.maximum_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.minimum_duration",
+      target: "controllable_unit_history.maximum_active_power",
       operation: "read",
     },
     {
       target: "controllable_unit_history.name",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.ramp_rate",
       operation: "read",
     },
     {
@@ -12751,10 +13947,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.recorded_by",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.recovery_duration",
       operation: "read",
     },
     {
@@ -12775,10 +13967,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.status",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.validated_at",
       operation: "read",
     },
     {
@@ -12872,6 +14060,22 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_service_provider_history.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.technical_resource",
       operation: "read",
     },
     {
@@ -13241,7 +14445,15 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "metering_grid_area.status",
+      operation: "read",
+    },
+    {
       target: "notice.data",
+      operation: "read",
+    },
+    {
+      target: "notice.id",
       operation: "read",
     },
     {
@@ -13253,7 +14465,19 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "notice.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "notice.recorded_by",
+      operation: "read",
+    },
+    {
       target: "notice.source",
+      operation: "read",
+    },
+    {
+      target: "notice.status",
       operation: "read",
     },
     {
@@ -13939,6 +15163,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group.bidding_zone",
       operation: "read",
     },
@@ -14427,6 +15655,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_history.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_history.bidding_zone",
       operation: "read",
     },
@@ -14549,16 +15781,23 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target:
+        "service_providing_group_product_application.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application.id",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application.notes",
+      target:
+        "service_providing_group_product_application.maximum_active_power_down",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application.notes",
-      operation: "update",
+      target:
+        "service_providing_group_product_application.maximum_active_power_up",
+      operation: "read",
     },
     {
       target: "service_providing_group_product_application.prequalified_at",
@@ -14619,11 +15858,146 @@ const rawPermissions: Record<
       operation: "update",
     },
     {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment.service_providing_group_product_application_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "update",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application_history.id",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application_history.notes",
+      target:
+        "service_providing_group_product_application_history.maximum_active_power_down",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.maximum_active_power_up",
       operation: "read",
     },
     {
@@ -14920,6 +16294,26 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_summary.controllable_unit",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.technical_resource",
+      operation: "read",
+    },
+    {
       target: "system_operator_product_type",
       operation: "create",
     },
@@ -15013,15 +16407,43 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "technical_resource.additional_information",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.business_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.category",
+      operation: "read",
+    },
+    {
       target: "technical_resource.controllable_unit_id",
       operation: "read",
     },
     {
-      target: "technical_resource.details",
+      target: "technical_resource.device_type",
       operation: "read",
     },
     {
       target: "technical_resource.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.make",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.model",
       operation: "read",
     },
     {
@@ -15041,15 +16463,47 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "technical_resource.technology",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.additional_information",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.business_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.category",
+      operation: "read",
+    },
+    {
       target: "technical_resource_history.controllable_unit_id",
       operation: "read",
     },
     {
-      target: "technical_resource_history.details",
+      target: "technical_resource_history.device_type",
       operation: "read",
     },
     {
       target: "technical_resource_history.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.make",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.model",
       operation: "read",
     },
     {
@@ -15078,6 +16532,10 @@ const rawPermissions: Record<
     },
     {
       target: "technical_resource_history.technical_resource_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.technology",
       operation: "read",
     },
   ],
@@ -15220,28 +16678,24 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "controllable_unit.additional_information",
+      operation: "create",
+    },
+    {
+      target: "controllable_unit.additional_information",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit.additional_information",
+      operation: "update",
+    },
+    {
       target: "controllable_unit.business_id",
       operation: "read",
     },
     {
       target: "controllable_unit",
       operation: "create",
-    },
-    {
-      target: "controllable_unit.grid_node_id",
-      operation: "create",
-    },
-    {
-      target: "controllable_unit.grid_node_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_validation_notes",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_validation_status",
-      operation: "read",
     },
     {
       target: "controllable_unit.id",
@@ -15256,39 +16710,15 @@ const rawPermissions: Record<
       operation: "lookup",
     },
     {
-      target: "controllable_unit.maximum_available_capacity",
+      target: "controllable_unit.maximum_active_power",
       operation: "create",
     },
     {
-      target: "controllable_unit.maximum_available_capacity",
+      target: "controllable_unit.maximum_active_power",
       operation: "read",
     },
     {
-      target: "controllable_unit.maximum_available_capacity",
-      operation: "update",
-    },
-    {
-      target: "controllable_unit.maximum_duration",
-      operation: "create",
-    },
-    {
-      target: "controllable_unit.maximum_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.maximum_duration",
-      operation: "update",
-    },
-    {
-      target: "controllable_unit.minimum_duration",
-      operation: "create",
-    },
-    {
-      target: "controllable_unit.minimum_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.minimum_duration",
+      target: "controllable_unit.maximum_active_power",
       operation: "update",
     },
     {
@@ -15301,18 +16731,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit.name",
-      operation: "update",
-    },
-    {
-      target: "controllable_unit.ramp_rate",
-      operation: "create",
-    },
-    {
-      target: "controllable_unit.ramp_rate",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.ramp_rate",
       operation: "update",
     },
     {
@@ -15328,18 +16746,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.recovery_duration",
-      operation: "create",
-    },
-    {
-      target: "controllable_unit.recovery_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.recovery_duration",
-      operation: "update",
-    },
-    {
       target: "controllable_unit.regulation_direction",
       operation: "create",
     },
@@ -15380,11 +16786,11 @@ const rawPermissions: Record<
       operation: "update",
     },
     {
-      target: "controllable_unit.validated_at",
+      target: "controllable_unit_history.accounting_point_id",
       operation: "read",
     },
     {
-      target: "controllable_unit_history.accounting_point_id",
+      target: "controllable_unit_history.additional_information",
       operation: "read",
     },
     {
@@ -15396,18 +16802,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.grid_node_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.grid_validation_notes",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.grid_validation_status",
-      operation: "read",
-    },
-    {
       target: "controllable_unit_history.id",
       operation: "read",
     },
@@ -15416,23 +16810,11 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.maximum_available_capacity",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.maximum_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.minimum_duration",
+      target: "controllable_unit_history.maximum_active_power",
       operation: "read",
     },
     {
       target: "controllable_unit_history.name",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.ramp_rate",
       operation: "read",
     },
     {
@@ -15445,10 +16827,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.recorded_by",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.recovery_duration",
       operation: "read",
     },
     {
@@ -15469,10 +16847,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.status",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.validated_at",
       operation: "read",
     },
     {
@@ -15614,6 +16988,22 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_service_provider_history.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.technical_resource",
       operation: "read",
     },
     {
@@ -15955,7 +17345,15 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "metering_grid_area.status",
+      operation: "read",
+    },
+    {
       target: "notice.data",
+      operation: "read",
+    },
+    {
+      target: "notice.id",
       operation: "read",
     },
     {
@@ -15967,7 +17365,19 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "notice.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "notice.recorded_by",
+      operation: "read",
+    },
+    {
       target: "notice.source",
+      operation: "read",
+    },
+    {
+      target: "notice.status",
       operation: "read",
     },
     {
@@ -16632,6 +18042,18 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group.additional_information",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group.additional_information",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group.additional_information",
+      operation: "update",
+    },
+    {
       target: "service_providing_group.bidding_zone",
       operation: "create",
     },
@@ -17110,6 +18532,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_history.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_history.bidding_zone",
       operation: "read",
     },
@@ -17268,6 +18694,21 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target:
+        "service_providing_group_product_application.additional_information",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_application.additional_information",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.additional_information",
+      operation: "update",
+    },
+    {
       target: "service_providing_group_product_application",
       operation: "create",
     },
@@ -17276,8 +18717,34 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application.notes",
+      target:
+        "service_providing_group_product_application.maximum_active_power_down",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_application.maximum_active_power_down",
       operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.maximum_active_power_down",
+      operation: "update",
+    },
+    {
+      target:
+        "service_providing_group_product_application.maximum_active_power_up",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_application.maximum_active_power_up",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.maximum_active_power_up",
+      operation: "update",
     },
     {
       target: "service_providing_group_product_application.prequalified_at",
@@ -17336,10 +18803,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application.status",
-      operation: "update",
-    },
-    {
       target: "service_providing_group_product_application",
       operation: "update",
     },
@@ -17348,11 +18811,146 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment.service_providing_group_product_application_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "update",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "update",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application_history.id",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application_history.notes",
+      target:
+        "service_providing_group_product_application_history.maximum_active_power_down",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.maximum_active_power_up",
       operation: "read",
     },
     {
@@ -17615,6 +19213,26 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_summary.controllable_unit",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.technical_resource",
+      operation: "read",
+    },
+    {
       target: "system_operator_product_type.id",
       operation: "read",
     },
@@ -17684,6 +19302,46 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "technical_resource.additional_information",
+      operation: "create",
+    },
+    {
+      target: "technical_resource.additional_information",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.additional_information",
+      operation: "update",
+    },
+    {
+      target: "technical_resource.business_id",
+      operation: "create",
+    },
+    {
+      target: "technical_resource.business_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.business_id",
+      operation: "update",
+    },
+    {
+      target: "technical_resource.business_id_type",
+      operation: "create",
+    },
+    {
+      target: "technical_resource.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.business_id_type",
+      operation: "update",
+    },
+    {
+      target: "technical_resource.category",
+      operation: "read",
+    },
+    {
       target: "technical_resource.controllable_unit_id",
       operation: "create",
     },
@@ -17700,20 +19358,56 @@ const rawPermissions: Record<
       operation: "delete",
     },
     {
-      target: "technical_resource.details",
+      target: "technical_resource.device_type",
       operation: "create",
     },
     {
-      target: "technical_resource.details",
+      target: "technical_resource.device_type",
       operation: "read",
     },
     {
-      target: "technical_resource.details",
+      target: "technical_resource.device_type",
       operation: "update",
     },
     {
       target: "technical_resource.id",
       operation: "read",
+    },
+    {
+      target: "technical_resource.make",
+      operation: "create",
+    },
+    {
+      target: "technical_resource.make",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.make",
+      operation: "update",
+    },
+    {
+      target: "technical_resource.maximum_active_power",
+      operation: "create",
+    },
+    {
+      target: "technical_resource.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.maximum_active_power",
+      operation: "update",
+    },
+    {
+      target: "technical_resource.model",
+      operation: "create",
+    },
+    {
+      target: "technical_resource.model",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.model",
+      operation: "update",
     },
     {
       target: "technical_resource.name",
@@ -17740,19 +19434,59 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "technical_resource.technology",
+      operation: "create",
+    },
+    {
+      target: "technical_resource.technology",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.technology",
+      operation: "update",
+    },
+    {
       target: "technical_resource",
       operation: "update",
+    },
+    {
+      target: "technical_resource_history.additional_information",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.business_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.category",
+      operation: "read",
     },
     {
       target: "technical_resource_history.controllable_unit_id",
       operation: "read",
     },
     {
-      target: "technical_resource_history.details",
+      target: "technical_resource_history.device_type",
       operation: "read",
     },
     {
       target: "technical_resource_history.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.make",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.model",
       operation: "read",
     },
     {
@@ -17781,6 +19515,10 @@ const rawPermissions: Record<
     },
     {
       target: "technical_resource_history.technical_resource_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.technology",
       operation: "read",
     },
   ],
@@ -17919,19 +19657,11 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "controllable_unit.additional_information",
+      operation: "read",
+    },
+    {
       target: "controllable_unit.business_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_node_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_validation_notes",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.grid_validation_status",
       operation: "read",
     },
     {
@@ -17943,23 +19673,11 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.maximum_available_capacity",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.maximum_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.minimum_duration",
+      target: "controllable_unit.maximum_active_power",
       operation: "read",
     },
     {
       target: "controllable_unit.name",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit.ramp_rate",
       operation: "read",
     },
     {
@@ -17975,10 +19693,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.recovery_duration",
-      operation: "read",
-    },
-    {
       target: "controllable_unit.regulation_direction",
       operation: "read",
     },
@@ -17991,11 +19705,11 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit.validated_at",
+      target: "controllable_unit_history.accounting_point_id",
       operation: "read",
     },
     {
-      target: "controllable_unit_history.accounting_point_id",
+      target: "controllable_unit_history.additional_information",
       operation: "read",
     },
     {
@@ -18007,18 +19721,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.grid_node_id",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.grid_validation_notes",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.grid_validation_status",
-      operation: "read",
-    },
-    {
       target: "controllable_unit_history.id",
       operation: "read",
     },
@@ -18027,23 +19729,11 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "controllable_unit_history.maximum_available_capacity",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.maximum_duration",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.minimum_duration",
+      target: "controllable_unit_history.maximum_active_power",
       operation: "read",
     },
     {
       target: "controllable_unit_history.name",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.ramp_rate",
       operation: "read",
     },
     {
@@ -18056,10 +19746,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.recorded_by",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.recovery_duration",
       operation: "read",
     },
     {
@@ -18080,10 +19766,6 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_history.status",
-      operation: "read",
-    },
-    {
-      target: "controllable_unit_history.validated_at",
       operation: "read",
     },
     {
@@ -18177,6 +19859,22 @@ const rawPermissions: Record<
     },
     {
       target: "controllable_unit_service_provider_history.valid_to",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.controllable_unit_id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.id",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary",
+      operation: "read",
+    },
+    {
+      target: "controllable_unit_summary.technical_resource",
       operation: "read",
     },
     {
@@ -18489,7 +20187,15 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "metering_grid_area.status",
+      operation: "read",
+    },
+    {
       target: "notice.data",
+      operation: "read",
+    },
+    {
+      target: "notice.id",
       operation: "read",
     },
     {
@@ -18501,7 +20207,19 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "notice.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "notice.recorded_by",
+      operation: "read",
+    },
+    {
       target: "notice.source",
+      operation: "read",
+    },
+    {
+      target: "notice.status",
       operation: "read",
     },
     {
@@ -19080,6 +20798,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group.bidding_zone",
       operation: "read",
     },
@@ -19466,6 +21188,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_history.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_history.bidding_zone",
       operation: "read",
     },
@@ -19588,11 +21314,22 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target:
+        "service_providing_group_product_application.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application.id",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application.notes",
+      target:
+        "service_providing_group_product_application.maximum_active_power_down",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application.maximum_active_power_up",
       operation: "read",
     },
     {
@@ -19634,11 +21371,117 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_product_application_comment.content",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.content",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.created_by",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_comment_history",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.replaced_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_comment_history.visibility",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.additional_information",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application_history.id",
       operation: "read",
     },
     {
-      target: "service_providing_group_product_application_history.notes",
+      target:
+        "service_providing_group_product_application_history.maximum_active_power_down",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_history.maximum_active_power_up",
       operation: "read",
     },
     {
@@ -19872,6 +21715,26 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_summary.controllable_unit",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_summary.technical_resource",
+      operation: "read",
+    },
+    {
       target: "system_operator_product_type.id",
       operation: "read",
     },
@@ -19941,15 +21804,43 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "technical_resource.additional_information",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.business_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.category",
+      operation: "read",
+    },
+    {
       target: "technical_resource.controllable_unit_id",
       operation: "read",
     },
     {
-      target: "technical_resource.details",
+      target: "technical_resource.device_type",
       operation: "read",
     },
     {
       target: "technical_resource.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.make",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target: "technical_resource.model",
       operation: "read",
     },
     {
@@ -19969,15 +21860,47 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "technical_resource.technology",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.additional_information",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.business_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.category",
+      operation: "read",
+    },
+    {
       target: "technical_resource_history.controllable_unit_id",
       operation: "read",
     },
     {
-      target: "technical_resource_history.details",
+      target: "technical_resource_history.device_type",
       operation: "read",
     },
     {
       target: "technical_resource_history.id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.make",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.maximum_active_power",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.model",
       operation: "read",
     },
     {
@@ -20006,6 +21929,10 @@ const rawPermissions: Record<
     },
     {
       target: "technical_resource_history.technical_resource_id",
+      operation: "read",
+    },
+    {
+      target: "technical_resource_history.technology",
       operation: "read",
     },
   ],

@@ -1,3 +1,25 @@
+-- name: GetEventsToProcess :many
+SELECT
+    id,
+    type,
+    source_resource,
+    source_id,
+    subject_resource,
+    subject_id,
+    processed,
+    recorded_at,
+    recorded_by
+FROM notification.event e
+WHERE processed = false
+ORDER BY id
+LIMIT @batch_size
+FOR UPDATE SKIP LOCKED;
+
+-- name: MarkEventsAsProcessed :exec
+UPDATE notification.event
+SET processed = true
+WHERE id in (SELECT unnest(@event_ids::bigint[]));
+
 -- name: GetSystemOperatorProductTypeCreateNotificationRecipients :many
 SELECT system_operator_id
 FROM api.system_operator_product_type sopt
@@ -25,6 +47,23 @@ WHERE spg.id = (
     FROM api.service_providing_group_product_application spgpa
     WHERE spgpa.id = @resource_id
 );
+
+-- name: GetServiceProvidingGroupProductApplicationCommentNotificationRecipients :many
+SELECT DISTINCT
+    unnest(ARRAY[spg.service_provider_id, spgpa.procuring_system_operator_id])::bigint
+-- using SPGPA comment history because visibility can change over time
+FROM api.service_providing_group_product_application_comment_history AS spgpach
+    -- not using SPGPA history because the resource cannot be deleted
+    INNER JOIN api.service_providing_group_product_application AS spgpa
+        ON spgpach.service_providing_group_product_application_id = spgpa.id
+    -- SPG cannot be deleted + SP does not change
+    INNER JOIN api.service_providing_group AS spg
+        ON spgpa.service_providing_group_id = spg.id
+WHERE spgpach.service_providing_group_product_application_comment_id = @resource_id
+    AND tstzrange(spgpach.recorded_at, spgpach.replaced_at, '[]')
+        @> @recorded_at::timestamptz
+    -- private comments do not lead to notifications
+    AND spgpach.visibility = 'any_involved_party';
 
 -- name: GetControllableUnitCreateNotificationRecipients :many
 SELECT unnest(
@@ -221,6 +260,23 @@ WHERE spg.id = (
     WHERE spggp.id = @resource_id
 );
 
+-- name: GetServiceProvidingGroupGridPrequalificationCommentNotificationRecipients :many
+SELECT DISTINCT
+    unnest(ARRAY[spg.service_provider_id, spggp.impacted_system_operator_id])::bigint
+-- using SPGGP comment history because visibility can change over time
+FROM api.service_providing_group_grid_prequalification_comment_history AS spggpch
+    -- not using SPGGP history because the resource cannot be deleted
+    INNER JOIN api.service_providing_group_grid_prequalification AS spggp
+        ON spggpch.service_providing_group_grid_prequalification_id = spggp.id
+    -- SPG cannot be deleted + SP does not change
+    INNER JOIN api.service_providing_group AS spg
+        ON spggp.service_providing_group_id = spg.id
+WHERE spggpch.service_providing_group_grid_prequalification_comment_id = @resource_id
+    AND tstzrange(spggpch.recorded_at, spggpch.replaced_at, '[]')
+        @> @recorded_at::timestamptz
+    -- private comments do not lead to notifications
+    AND spggpch.visibility = 'any_involved_party';
+
 -- name: GetTechnicalResourceNotificationRecipients :many
 SELECT service_provider_id
 FROM api.controllable_unit_service_provider_history cusph
@@ -264,6 +320,11 @@ WHERE sppach.service_provider_product_application_comment_id = @resource_id
 -- name: Notify :exec
 INSERT INTO api.notification (event_id, party_id)
 VALUES (@event_id, @party_id)
+ON CONFLICT DO NOTHING;
+
+-- name: NotifyMany :exec
+INSERT INTO api.notification (event_id, party_id)
+SELECT @event_id, unnest(@party_ids::bigint[])
 ON CONFLICT DO NOTHING;
 
 -- name: GetControllableUnitLookupNotificationRecipients :many
@@ -432,3 +493,27 @@ WHERE cusch.controllable_unit_suspension_comment_id = @resource_id
         @> @recorded_at::timestamptz
     -- private comments do not lead to notifications
     AND cusch.visibility = 'any_involved_party';
+
+-- name: GetAccountingPointGridLocationNotificationRecipients :many
+-- CSO: current SO for the AP at event time
+SELECT ap_so.system_operator_id
+FROM notification.accounting_point_system_operator AS ap_so
+    INNER JOIN api.accounting_point_grid_location AS apgl
+        ON apgl.accounting_point_id = ap_so.accounting_point_id
+WHERE apgl.id = @resource_id
+    AND ap_so.valid_time_range @> @recorded_at::timestamptz
+UNION
+-- PSO: procuring SO with a ready-for-market SPG product application
+-- for a CU behind this AP
+SELECT spgpa.procuring_system_operator_id
+FROM api.accounting_point_grid_location AS apgl
+    INNER JOIN api.controllable_unit AS cu
+        ON cu.accounting_point_id = apgl.accounting_point_id
+    INNER JOIN api.service_providing_group_membership AS spgm
+        ON spgm.controllable_unit_id = cu.id
+            AND spgm.valid_from <= @recorded_at::timestamptz
+            AND (spgm.valid_to IS NULL OR spgm.valid_to > @recorded_at::timestamptz)
+    INNER JOIN api.service_providing_group_product_application AS spgpa
+        ON spgpa.service_providing_group_id = spgm.service_providing_group_id
+WHERE apgl.id = @resource_id
+    AND notification.spg_product_application_ready_for_market_check(spgpa);

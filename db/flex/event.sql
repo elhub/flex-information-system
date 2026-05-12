@@ -18,7 +18,8 @@ CREATE TABLE IF NOT EXISTS event (
     ),
     recorded_by bigint NOT NULL DEFAULT current_identity(),
     subject_resource text NULL,
-    subject_id bigint NULL
+    subject_id bigint NULL,
+    processed boolean NOT NULL DEFAULT false
 );
 
 -- changeset flex:event-capture runOnChange:true endDelimiter:--

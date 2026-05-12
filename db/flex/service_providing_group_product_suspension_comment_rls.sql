@@ -62,7 +62,8 @@ USING (
     AND EXISTS (
         SELECT 1
         FROM flex.identity AS comment_creator
-        WHERE comment_creator.id = service_providing_group_product_suspension_comment.created_by -- noqa
+        WHERE
+            comment_creator.id = service_providing_group_product_suspension_comment.created_by -- noqa
             AND comment_creator.party_id = (SELECT flex.current_party()) -- noqa
     )
 );
@@ -125,8 +126,8 @@ USING (
     AND EXISTS (
         SELECT 1
         FROM flex.identity AS comment_creator
-        WHERE comment_creator.id
-        = service_providing_group_product_suspension_comment_history.created_by -- noqa
+        WHERE
+            comment_creator.id = service_providing_group_product_suspension_comment_history.created_by -- noqa
             AND comment_creator.party_id = (SELECT flex.current_party())
     )
 );

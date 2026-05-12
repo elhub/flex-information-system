@@ -115,6 +115,10 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupMembershipResponse]:
     """Create Membership relation of controllable unit in service providing group
 
+     Create [Membership relation of controllable unit in service providing
+    group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_membership/)
+
     Args:
         body (ServiceProvidingGroupMembershipCreateRequest | Unset): Request schema for create
             operations - Membership relation of controllable unit in service providing group
@@ -145,6 +149,10 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupMembershipResponse | None:
     """Create Membership relation of controllable unit in service providing group
 
+     Create [Membership relation of controllable unit in service providing
+    group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_membership/)
+
     Args:
         body (ServiceProvidingGroupMembershipCreateRequest | Unset): Request schema for create
             operations - Membership relation of controllable unit in service providing group
@@ -169,6 +177,10 @@ async def asyncio_detailed(
     body: ServiceProvidingGroupMembershipCreateRequest | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupMembershipResponse]:
     """Create Membership relation of controllable unit in service providing group
+
+     Create [Membership relation of controllable unit in service providing
+    group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_membership/)
 
     Args:
         body (ServiceProvidingGroupMembershipCreateRequest | Unset): Request schema for create
@@ -197,6 +209,10 @@ async def asyncio(
     body: ServiceProvidingGroupMembershipCreateRequest | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupMembershipResponse | None:
     """Create Membership relation of controllable unit in service providing group
+
+     Create [Membership relation of controllable unit in service providing
+    group](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_membership/)
 
     Args:
         body (ServiceProvidingGroupMembershipCreateRequest | Unset): Request schema for create

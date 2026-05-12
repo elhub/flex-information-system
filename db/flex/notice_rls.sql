@@ -16,3 +16,16 @@ CREATE POLICY "NOTICE_FISO001" ON notice
 FOR SELECT
 TO flex_flexibility_information_system_operator
 USING (true);
+
+-- internal: used for reading events on notices (notice history is not exposed)
+-- user can read history when they can read a notice
+GRANT SELECT ON notice_history TO flex_common;
+CREATE POLICY "NOTICEH_INTERNAL" ON notice_history
+FOR SELECT
+TO flex_common
+USING (
+    EXISTS (
+        SELECT 1 FROM flex.notice AS n
+        WHERE n.id = notice_history.id -- noqa
+    )
+);

@@ -21,9 +21,11 @@ party_type_abbr = {
     "SP": "service_provider",
     "TP": "third_party",
     "IEN": "internal_event_notification",
+    "ID": "internal_data",
 }
 
 history_enabled = [
+    "accounting_point_grid_location",
     "controllable_unit",
     "controllable_unit_suspension",
     "controllable_unit_suspension_comment",
@@ -45,6 +47,7 @@ history_enabled = [
     "service_provider_product_suspension",
     "service_provider_product_suspension_comment",
     "service_providing_group_product_application",
+    "service_providing_group_product_application_comment",
 ]
 
 
@@ -133,12 +136,10 @@ if __name__ == "__main__":
 
                 if columns is not None:
                     print(
-                        f"\n-- changeset flex:api-grant-{resource.replace('_', '-').lower()}-{party_type.lower()}-{grant.lower()} endDelimiter:-- runAlways:true"
-                        + f"\nGRANT {grant}{columns} ON TABLE\napi.{resource}\nTO flex_{party_type_abbr[party_type]};",
+                        f"\nGRANT {grant}{columns} ON TABLE\napi.{resource}\nTO flex_{party_type_abbr[party_type]};",
                         file=sys.stdout,
                     )
                     print(
-                        f"\n-- changeset flex:flex-grant-{resource.replace('_', '-').lower()}-{party_type.lower()}-{grant.lower()} endDelimiter:-- runAlways:true"
-                        + f"\nGRANT {grant} ON TABLE\nflex.{resource}\nTO flex_{party_type_abbr[party_type]};",
+                        f"\nGRANT {grant} ON TABLE\nflex.{resource}\nTO flex_{party_type_abbr[party_type]};",
                         file=sys.stderr,
                     )

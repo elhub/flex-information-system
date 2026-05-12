@@ -1,0 +1,4 @@
+name: Localhost
+variables:
+  - name: baseUrl
+    value: https://test.flex.internal:6443/api/v0

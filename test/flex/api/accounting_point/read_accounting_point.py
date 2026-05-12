@@ -9,17 +9,27 @@ from ...client import AuthenticatedClient, Client
 from ...models.accounting_point_response import AccountingPointResponse
 from ...models.empty_object import EmptyObject
 from ...models.error_message import ErrorMessage
-from ...types import Response
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     id: int,
+    *,
+    embed: str | Unset = UNSET,
 ) -> dict[str, Any]:
+
+    params: dict[str, Any] = {}
+
+    params["embed"] = embed
+
+    params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
+
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/accounting_point/{id}".format(
             id=quote(str(id), safe=""),
         ),
+        "params": params,
     }
 
     return _kwargs
@@ -100,11 +110,15 @@ def sync_detailed(
     id: int,
     *,
     client: AuthenticatedClient,
+    embed: str | Unset = UNSET,
 ) -> Response[AccountingPointResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Read Accounting Point
 
+     Read [Accounting Point](https://elhub.github.io/flex-information-system/resources/accounting_point/)
+
     Args:
         id (int):
+        embed (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -116,6 +130,7 @@ def sync_detailed(
 
     kwargs = _get_kwargs(
         id=id,
+        embed=embed,
     )
 
     response = client.get_httpx_client().request(
@@ -129,11 +144,15 @@ def sync(
     id: int,
     *,
     client: AuthenticatedClient,
+    embed: str | Unset = UNSET,
 ) -> AccountingPointResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Read Accounting Point
 
+     Read [Accounting Point](https://elhub.github.io/flex-information-system/resources/accounting_point/)
+
     Args:
         id (int):
+        embed (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -146,6 +165,7 @@ def sync(
     return sync_detailed(
         id=id,
         client=client,
+        embed=embed,
     ).parsed
 
 
@@ -153,11 +173,15 @@ async def asyncio_detailed(
     id: int,
     *,
     client: AuthenticatedClient,
+    embed: str | Unset = UNSET,
 ) -> Response[AccountingPointResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Read Accounting Point
 
+     Read [Accounting Point](https://elhub.github.io/flex-information-system/resources/accounting_point/)
+
     Args:
         id (int):
+        embed (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -169,6 +193,7 @@ async def asyncio_detailed(
 
     kwargs = _get_kwargs(
         id=id,
+        embed=embed,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -180,11 +205,15 @@ async def asyncio(
     id: int,
     *,
     client: AuthenticatedClient,
+    embed: str | Unset = UNSET,
 ) -> AccountingPointResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Read Accounting Point
 
+     Read [Accounting Point](https://elhub.github.io/flex-information-system/resources/accounting_point/)
+
     Args:
         id (int):
+        embed (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -198,5 +227,6 @@ async def asyncio(
         await asyncio_detailed(
             id=id,
             client=client,
+            embed=embed,
         )
     ).parsed

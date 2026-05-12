@@ -10,8 +10,16 @@ WITH (
         id,
         id AS technical_resource_id,
         controllable_unit_id,
-        details,
         name,
+        technology,
+        category,
+        maximum_active_power,
+        device_type,
+        make,
+        model,
+        business_id,
+        business_id_type,
+        additional_information,
         recorded_by,
         lower(record_time_range) AS recorded_at,
         null AS replaced_by,
@@ -22,8 +30,16 @@ WITH (
         history_id AS id,
         id AS technical_resource_id,
         controllable_unit_id,
-        details,
         name,
+        technology,
+        category,
+        maximum_active_power,
+        device_type,
+        make,
+        model,
+        business_id,
+        business_id_type,
+        additional_information,
         recorded_by,
         lower(record_time_range) AS recorded_at,
         replaced_by,
@@ -37,16 +53,32 @@ WITH (security_invoker = true) AS (
     SELECT
         trh.id,
         trh.controllable_unit_id,
-        trh.details,
         trh.name,
+        trh.technology,
+        trh.category,
+        trh.maximum_active_power,
+        trh.device_type,
+        trh.make,
+        trh.model,
+        trh.business_id,
+        trh.business_id_type,
+        trh.additional_information,
         trh.recorded_by,
         lower(trh.record_time_range) AS recorded_at
     FROM (
         SELECT
             id,
             controllable_unit_id,
-            details,
             name,
+            technology,
+            category,
+            maximum_active_power,
+            device_type,
+            make,
+            model,
+            business_id,
+            business_id_type,
+            additional_information,
             recorded_by,
             record_time_range
         FROM flex.technical_resource
@@ -54,14 +86,23 @@ WITH (security_invoker = true) AS (
         SELECT
             id,
             controllable_unit_id,
-            details,
             name,
+            technology,
+            category,
+            maximum_active_power,
+            device_type,
+            make,
+            model,
+            business_id,
+            business_id_type,
+            additional_information,
             recorded_by,
             record_time_range
         FROM flex.technical_resource_history
     ) AS trh
         LEFT JOIN flex.controllable_unit_as_of AS cu_asof
-            ON trh.controllable_unit_id = cu_asof.controllable_unit_id
+            ON
+                trh.controllable_unit_id = cu_asof.controllable_unit_id
                 AND cu_asof.party_role = current_role
                 AND cu_asof.party_id = flex.current_party()
     WHERE trh.record_time_range @> coalesce(cu_asof.as_of, current_timestamp)
@@ -83,12 +124,26 @@ BEGIN
 
         INSERT INTO flex.technical_resource(
             controllable_unit_id,
-            details,
-            name
+            name,
+            technology,
+            maximum_active_power,
+            device_type,
+            make,
+            model,
+            business_id,
+            business_id_type,
+            additional_information
         ) VALUES (
             NEW.controllable_unit_id,
-            NEW.details,
-            NEW.name
+            NEW.name,
+            NEW.technology,
+            NEW.maximum_active_power,
+            NEW.device_type,
+            NEW.make,
+            NEW.model,
+            NEW.business_id,
+            NEW.business_id_type,
+            NEW.additional_information
         ) RETURNING id INTO l_id;
 
         SELECT * INTO l_new FROM api.technical_resource WHERE id = l_id;
@@ -100,8 +155,16 @@ BEGIN
         SELECT
             tr.id,
             tr.controllable_unit_id,
-            tr.details,
             tr.name,
+            tr.technology,
+            tr.category,
+            tr.maximum_active_power,
+            tr.device_type,
+            tr.make,
+            tr.model,
+            tr.business_id,
+            tr.business_id_type,
+            tr.additional_information,
             tr.recorded_by,
             lower(tr.record_time_range) AS recorded_at
         INTO l_old
@@ -119,8 +182,15 @@ BEGIN
 
         UPDATE flex.technical_resource SET
             controllable_unit_id = NEW.controllable_unit_id,
-            details = NEW.details,
-            name = NEW.name
+            name = NEW.name,
+            technology = NEW.technology,
+            maximum_active_power = NEW.maximum_active_power,
+            device_type = NEW.device_type,
+            make = NEW.make,
+            model = NEW.model,
+            business_id = NEW.business_id,
+            business_id_type = NEW.business_id_type,
+            additional_information = NEW.additional_information
         WHERE id = NEW.id;
 
         IF NOT FOUND THEN

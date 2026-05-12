@@ -3,34 +3,74 @@ import {
   ArrayField,
   FieldProps,
   Link,
-  SelectArrayInput,
   SelectInput,
-  useGetList,
   useGetOne,
   useRecordContext,
   WithListContext,
 } from "react-admin";
 import { Stack, Chip, Tooltip } from "@mui/material";
-import { ProductType } from "../generated-client";
+import {
+  listSystemOperatorProductType,
+  ProductType,
+} from "../generated-client";
+import { Tag } from "../components/ui";
+import {
+  ArrayInput,
+  ArrayInputOption,
+  ArrayInputProps,
+} from "../components/EDS-ra/inputs";
+import { useQuery } from "@tanstack/react-query";
+import { useProductTypes } from "./useProductTypes";
+import { throwOnError } from "../util";
+
+export { useProductTypes } from "./useProductTypes";
 
 // display a product type with name and example products if present
 export const displayProductType = (productType: ProductType) =>
   productType.name + (productType.products ? ` (${productType.products})` : "");
 
 // hook to get all possible product types sorted by ID
-function useGetAllProductTypes() {
-  const { data } = useGetList("product_type");
+export function useGetAllProductTypes() {
+  const { data } = useProductTypes();
 
-  const productTypes = data?.map((product_type) => {
-    return {
-      id: product_type.id,
-      name: displayProductType(product_type),
-    };
-  });
+  const productTypes = data?.map((product_type) => ({
+    id: product_type.id,
+    name: displayProductType(product_type),
+  }));
   productTypes?.sort((pt1, pt2) => pt1.id - pt2.id);
 
   return productTypes;
 }
+
+export const useGetProductTypesBySystemOperator = (
+  systemOperatorId?: number,
+) => {
+  const { data: allProductTypes, isLoading: ptLoading } = useProductTypes();
+
+  const soptQuery = useQuery({
+    queryKey: ["systemOperatorProductType", systemOperatorId],
+    enabled: systemOperatorId != null,
+    queryFn: () =>
+      listSystemOperatorProductType({
+        query: { system_operator_id: `eq.${systemOperatorId}` },
+      }).then(throwOnError),
+  });
+
+  const isLoading =
+    ptLoading || (systemOperatorId != null && soptQuery.isLoading);
+
+  if (!systemOperatorId) {
+    return { data: allProductTypes, isLoading };
+  }
+
+  const filtered = soptQuery.data
+    ?.map((sopt) =>
+      allProductTypes?.find((pt) => pt.id === sopt.product_type_id),
+    )
+    .filter((pt) => pt !== undefined);
+
+  return { data: filtered, isLoading };
+};
 
 export const ProductTypeField = ({ source }: FieldProps) => {
   const record = useRecordContext()!;
@@ -59,7 +99,7 @@ export const ProductTypeField = ({ source }: FieldProps) => {
   );
 };
 
-// input component to select ONE product type
+// input component to select ONE product type (react-admin SelectInput for legacy use)
 export const ProductTypeInput = (props: any) => {
   const productTypes = useGetAllProductTypes();
 
@@ -76,14 +116,15 @@ export const ProductTypeArrayField = (props: any) => {
         render={({ data }) => (
           <Stack direction="row" spacing={2}>
             {data?.map((pt_id) => (
-              <Chip
-                key={pt_id as any}
-                sx={{ marginBottom: 1 }}
-                label={
-                  productTypes?.find((productType) => productType.id == pt_id)
-                    ?.name
+              <Tag key={pt_id as any}>
+                {
+                  productTypes?.find(
+                    // The typing from react-admin is not great here. It says its a record but its a number
+                    (productType) =>
+                      productType.id === (pt_id as unknown as number),
+                  )?.name
                 }
-              />
+              </Tag>
             ))}
           </Stack>
         )}
@@ -93,13 +134,27 @@ export const ProductTypeArrayField = (props: any) => {
 };
 
 // input component to select MULTIPLE product types
-export const ProductTypeArrayInput = (props: any) => {
-  const { filter, ...rest } = props;
-  const productTypes = useGetAllProductTypes();
+type ProductTypeArrayInputProps = Omit<ArrayInputProps, "options"> & {
+  systemOperatorId?: number;
+};
+
+export const ProductTypeArrayInput = ({
+  systemOperatorId,
+  ...rest
+}: ProductTypeArrayInputProps) => {
+  const { data: productTypes } =
+    useGetProductTypesBySystemOperator(systemOperatorId);
+
+  const options: ArrayInputOption[] =
+    productTypes?.map((pt) => ({ value: String(pt.id), label: pt.name })) ?? [];
 
   return (
-    <SelectArrayInput
-      choices={filter ? productTypes?.filter(filter) : productTypes}
+    <ArrayInput
+      options={options}
+      format={(v: number[] | undefined) =>
+        (Array.isArray(v) ? v : []).map(String)
+      }
+      parse={(v: string[]) => (Array.isArray(v) ? v : []).map(Number)}
       {...rest}
     />
   );

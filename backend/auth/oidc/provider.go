@@ -12,9 +12,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/jwx-go/jwkfetch/v4"
 	"github.com/lestrrat-go/httprc/v3"
-	"github.com/lestrrat-go/jwx/v3/jwa"
-	"github.com/lestrrat-go/jwx/v3/jwk"
+	"github.com/lestrrat-go/jwx/v4/jwa"
+	"github.com/lestrrat-go/jwx/v4/jwk"
 	"golang.org/x/oauth2"
 )
 
@@ -57,7 +58,7 @@ type Provider struct {
 	// jwksURI is the OIDC JWKS URI.
 	jwksURI string
 	// jwksCache
-	jwksCache *jwk.Cache
+	jwksCache *jwkfetch.Cache
 	// oauth2Config is the oauth2 configuration for the OIDC provider.
 	oauth2Config oauth2.Config
 }
@@ -100,7 +101,14 @@ func NewProvider( //nolint: funlen
 
 	slog.DebugContext(ctx, "Creating JWK cache")
 
-	jwksCache, err := jwk.NewCache(ctx, httprc.NewClient())
+	jwksCache, err := jwkfetch.NewCache(
+		ctx,
+		httprc.NewClient(),
+		// By default, the HTTP client used will ignore our HTTP_PROXY config.
+		// We override with http.DefaultClient, which we also use in other places.
+		// (see https://github.com/jwx-go/jwkfetch#options)
+		jwkfetch.WithHTTPClient(http.DefaultClient),
+	)
 	if err != nil {
 		return nil, fmt.Errorf("could not create JWK cache: %w", err)
 	}

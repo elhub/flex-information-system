@@ -1,23 +1,26 @@
 import {
-  List,
-  Button,
-  DeleteButton,
-  ResourceContextProvider,
-  TextField,
-  TopToolbar,
   usePermissions,
   useRecordContext,
   Identifier,
-} from "react-admin";
-import { Datagrid } from "../../auth";
-import AddIcon from "@mui/icons-material/Add";
-import { Link } from "react-router-dom";
-import { Typography } from "@mui/material";
+  useTranslate,
+} from "ra-core";
+import { useQueryClient } from "@tanstack/react-query";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { Permissions } from "../../auth/permissions";
 import { TechnicalResourceInputLocationState } from "./TechnicalResourceInput";
+import {
+  TechnicalResource,
+  deleteTechnicalResource,
+} from "../../generated-client";
+import { SimpleTable, ColumnOf } from "../../components/SimpleTable";
+import { Button } from "../../components/ui";
+import { IconPlus, IconTrash } from "@elhub/ds-icons";
+import { useConfirmAction } from "../../components/ConfirmAction";
+import { throwOnError } from "../../util";
+import { useTechnicalResources } from "./useTechnicalResources";
+import { useTranslateEnum } from "../../intl/intl";
+import { EnumLabel } from "../../intl/enum-labels";
 
-// automatically fill the controllable_unit_id field with the ID of the
-// show page the create button is displayed on
 const CreateButton = ({
   controllableUnitId,
 }: {
@@ -30,74 +33,116 @@ const CreateButton = ({
   };
   return (
     <Button
-      component={Link}
+      as={RouterLink}
       to={`/controllable_unit/${controllableUnitId}/technical_resource/create`}
-      startIcon={<AddIcon />}
       state={locationState}
-      label="Create"
-    />
+      variant="primary"
+      icon={IconPlus}
+    >
+      Create technical resource
+    </Button>
   );
 };
 
-const ListActions = ({
-  permissions,
-  id,
+const DeleteTechnicalResourceButton = ({
+  record,
 }: {
-  permissions: Permissions | undefined;
-  id: Identifier;
+  record: TechnicalResource;
 }) => {
-  const canCreate = permissions?.allow("technical_resource", "create");
+  const queryClient = useQueryClient();
+
+  const { buttonProps, dialog } = useConfirmAction({
+    title: "Delete",
+    content:
+      "Are you sure you want to delete this item? This action cannot be undone.",
+    onConfirmMutation: {
+      mutationFn: () =>
+        deleteTechnicalResource({ path: { id: record.id } }).then(throwOnError),
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: [
+            "technical_resource",
+            { controllable_unit_id: record.controllable_unit_id },
+          ],
+        });
+      },
+    },
+  });
 
   return (
-    <TopToolbar>
-      {canCreate && <CreateButton controllableUnitId={id} />}
-    </TopToolbar>
+    <>
+      <Button
+        variant="invisible"
+        className="text-semantic-background-action-danger"
+        size="medium"
+        icon={IconTrash}
+        onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+          e.stopPropagation();
+          buttonProps.onClick();
+        }}
+      />
+      {dialog}
+    </>
   );
 };
 
 export const TechnicalResourceList = () => {
-  // id of the controllable unit whose technical resources we want to get
   const { id } = useRecordContext()!;
   const { permissions } = usePermissions<Permissions>();
+  const navigate = useNavigate();
+  const translate = useTranslate();
+  const translateEnum = useTranslateEnum();
 
-  // Permission checks
   const canRead = permissions?.allow("technical_resource", "read");
   const canDelete = permissions?.allow("technical_resource", "delete");
+  const canCreate = permissions?.allow("technical_resource", "create");
+
+  const { data } = useTechnicalResources(Number(id));
+
+  const columns: ColumnOf<typeof data>[] = [
+    { key: "id", header: translate("field.technical_resource.id") },
+    { key: "name", header: translate("field.technical_resource.name") },
+    {
+      key: "maximum_active_power",
+      header: translate("field.technical_resource.maximum_active_power"),
+    },
+    {
+      key: "device_type",
+      header: translate("field.technical_resource.device_type"),
+      render: (value) =>
+        translateEnum(`device_type.${value as string}` as EnumLabel),
+    },
+  ];
 
   return (
     canRead && (
-      <ResourceContextProvider value="technical_resource">
-        <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-          Technical resources:
-        </Typography>
-        <List
-          perPage={10}
-          title={false}
-          actions={<ListActions permissions={permissions} id={id} />}
-          exporter={false}
-          empty={false}
-          filter={{ controllable_unit_id: id }}
-          sort={{ field: "id", order: "DESC" }}
-          disableSyncWithLocation
-        >
-          <Datagrid
-            bulkActionButtons={false}
-            rowClick={(_id, _res, record) =>
-              `/controllable_unit/${record.controllable_unit_id}/technical_resource/${record.id}/show`
-            }
-          >
-            <TextField source="id" label="field.technical_resource.id" />
-            <TextField source="name" label="field.technical_resource.name" />
-            <TextField
-              source="details"
-              label="field.technical_resource.details"
-            />
-            {canDelete && (
-              <DeleteButton mutationMode="pessimistic" redirect="" />
-            )}
-          </Datagrid>
-        </List>
-      </ResourceContextProvider>
+      <div className="flex flex-col gap-4">
+        <div className="flex justify-end">
+          {canCreate && <CreateButton controllableUnitId={id} />}
+        </div>
+        <SimpleTable
+          columns={columns}
+          data={data ?? []}
+          empty={
+            "No technical resources yet. To set the controllable unit as active, one technical resource is required."
+          }
+          rowClick={(record) => {
+            navigate(
+              `/controllable_unit/${record.controllable_unit_id}/technical_resource/${record.id}/show`,
+            );
+          }}
+          action={
+            canDelete
+              ? {
+                  header: "Delete",
+                  render: (record) => (
+                    <DeleteTechnicalResourceButton record={record} />
+                  ),
+                }
+              : undefined
+          }
+        />
+      </div>
     )
   );
 };

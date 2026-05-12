@@ -1,0 +1,44 @@
+package no.elhub.flex.model.dto.generated.models
+
+import kotlin.Long
+import kotlin.String
+import kotlin.collections.List
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+/**
+ * Response schema - Metering grid area to which accounting points belong.
+ */
+@Serializable
+public data class MeteringGridAreaResponse(
+  /**
+   * Unique surrogate identifier.
+   */
+  @SerialName("id")
+  public val id: Long? = null,
+  /**
+   * The business identifier of the metering grid area. Format depends on `business_id_type`.
+   */
+  @SerialName("business_id")
+  public val businessId: String? = null,
+  /**
+   * The type of the business identifier.
+   */
+  @SerialName("business_id_type")
+  public val businessIdType: MeteringGridAreaBusinessIdType? = null,
+  /**
+   * The name of the metering grid area.
+   */
+  @SerialName("name")
+  public val name: String? = null,
+  /**
+   * The status of the metering grid area.
+   */
+  @SerialName("status")
+  public val status: MeteringGridAreaStatus? = null,
+  /**
+   * Embedded accounting_point_metering_grid_area
+   */
+  @SerialName("accounting_point_metering_grid_area")
+  public val accountingPointMeteringGridArea: List<AccountingPointMeteringGridAreaResponse>? = null,
+)

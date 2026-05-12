@@ -11,14 +11,14 @@ For information about the concept, see [notification and notice](../concepts/not
 
 ## Fields
 
-| Name                                                                     | Description                                                        | Format                                 | Reference                     |
-|--------------------------------------------------------------------------|--------------------------------------------------------------------|----------------------------------------|-------------------------------|
-| <a name="field-id" href="#field-id">id</a>                               | Unique surrogate identifier.                                       | bigint<br/>Read only                   |                               |
-| <a name="field-acknowledged" href="#field-acknowledged">acknowledged</a> | Whether the notification was acknowledged by the target user.      | boolean<br/>Required                   |                               |
-| <a name="field-event_id" href="#field-event_id">event_id</a>             | Reference to the event notified by this resource.                  | bigint<br/>Required<br/>Non-updatable  | [event.id](event.md#field-id) |
-| <a name="field-party_id" href="#field-party_id">party_id</a>             | Reference to the party concerned by this notification.             | bigint<br/>Required<br/>Non-updatable  | [party.id](party.md#field-id) |
-| <a name="field-recorded_at" href="#field-recorded_at">recorded_at</a>    | When the resource was recorded (created or updated) in the system. | timestamp with time zone<br/>Read only |                               |
-| <a name="field-recorded_by" href="#field-recorded_by">recorded_by</a>    | The identity that recorded the resource.                           | bigint<br/>Read only                   |                               |
+| Name                                                                     | Description                                                        | Format                                | Reference                     |
+|--------------------------------------------------------------------------|--------------------------------------------------------------------|---------------------------------------|-------------------------------|
+| <a name="field-id" href="#field-id">id</a>                               | Unique surrogate identifier.                                       | bigint<br/>Read only                  |                               |
+| <a name="field-acknowledged" href="#field-acknowledged">acknowledged</a> | Whether the notification was acknowledged by the target user.      | boolean<br/>Required                  |                               |
+| <a name="field-event_id" href="#field-event_id">event_id</a>             | Reference to the event notified by this resource.                  | bigint<br/>Required<br/>Non-updatable | [event.id](event.md#field-id) |
+| <a name="field-party_id" href="#field-party_id">party_id</a>             | Reference to the party concerned by this notification.             | bigint<br/>Required<br/>Non-updatable | [party.id](party.md#field-id) |
+| <a name="field-recorded_at" href="#field-recorded_at">recorded_at</a>    | When the resource was recorded (created or updated) in the system. | date-time<br/>Read only               |                               |
+| <a name="field-recorded_by" href="#field-recorded_by">recorded_by</a>    | The identity that recorded the resource.                           | bigint<br/>Read only                  |                               |
 
 ## Validation Rules
 

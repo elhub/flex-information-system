@@ -15,6 +15,7 @@ from ...types import Response
 def _get_kwargs(
     id: int,
 ) -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/service_providing_group_membership_history/{id}".format(
@@ -103,6 +104,10 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupMembershipHistoryResponse]:
     """Read Membership relation of controllable unit in service providing group - history
 
+     Read [Membership relation of controllable unit in service providing group -
+    history](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_membership/)
+
     Args:
         id (int):
 
@@ -132,6 +137,10 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupMembershipHistoryResponse | None:
     """Read Membership relation of controllable unit in service providing group - history
 
+     Read [Membership relation of controllable unit in service providing group -
+    history](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_membership/)
+
     Args:
         id (int):
 
@@ -155,6 +164,10 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupMembershipHistoryResponse]:
     """Read Membership relation of controllable unit in service providing group - history
+
+     Read [Membership relation of controllable unit in service providing group -
+    history](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_membership/)
 
     Args:
         id (int):
@@ -182,6 +195,10 @@ async def asyncio(
     client: AuthenticatedClient,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | ServiceProvidingGroupMembershipHistoryResponse | None:
     """Read Membership relation of controllable unit in service providing group - history
+
+     Read [Membership relation of controllable unit in service providing group -
+    history](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_membership/)
 
     Args:
         id (int):

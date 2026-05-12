@@ -11,8 +11,10 @@ FROM docker.jfrog.elhub.cloud/nginxinc/nginx-unprivileged:stable-alpine-slim AS 
 ARG UID=65534
 ARG GID=65534
 
-# We want gzip compression for better performance
-COPY nginx.conf.d/05-gzip.conf /etc/nginx/conf.d/05-gzip.conf
+# Config overrides
+#  * gzip compression for better performance
+#  * default.conf to allow nested includes
+COPY nginx.conf.d/05-gzip.conf nginx.conf.d/default.conf /etc/nginx/conf.d/
 
 # Since we are not running as nginx anymore, we need to ensure that the nobody user has access to
 # the necessary directories used by nginx.
@@ -20,6 +22,7 @@ COPY nginx.conf.d/05-gzip.conf /etc/nginx/conf.d/05-gzip.conf
 USER root
 RUN chown -R nobody:0 /var/cache/nginx \
 && chmod -R g+w /var/cache/nginx \
+&& mkdir -p /etc/nginx/conf.d/server \
 && chown -R nobody:0 /etc/nginx \
 && chmod -R g+w /etc/nginx \
 # We also want default liveness and readiness probe files

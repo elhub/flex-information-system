@@ -12,6 +12,7 @@ export const ScopesField = ({
   emptyText,
   label,
   tooltip,
+  textSize = "small",
 }: ScopesFieldProps) => {
   const record = useRecordContext();
   const value = record?.[source];
@@ -25,11 +26,16 @@ export const ScopesField = ({
         ))}
       </Chips>
     ) : emptyText ? (
-      <BodyText>{emptyText}</BodyText>
+      <BodyText size={textSize}>{emptyText}</BodyText>
     ) : null;
 
   return (
-    <BaseField source={source} label={label} tooltip={tooltip}>
+    <BaseField
+      textSize={textSize}
+      source={source}
+      label={label}
+      tooltip={tooltip}
+    >
       {content}
     </BaseField>
   );

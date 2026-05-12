@@ -32,3 +32,16 @@ ADD COLUMN subject_resource text;
 
 ALTER TABLE flex.event
 ADD COLUMN subject_id bigint;
+
+-- changeset flex:event-processed-column runOnChange:false endDelimiter:;
+--preconditions onFail:MARK_RAN
+--precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = 'flex' AND table_name = 'event' AND column_name = 'processed'
+ALTER TABLE flex.event
+ADD COLUMN processed boolean NOT NULL DEFAULT false;
+
+-- changeset flex:event-processed-index runOnChange:false endDelimiter:;
+--preconditions onFail:MARK_RAN
+--precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM pg_indexes WHERE schemaname = 'flex' AND tablename = 'event' AND indexname = 'event_processed_false_idx'
+CREATE INDEX event_processed_false_idx
+ON flex.event (processed, id)
+WHERE processed = false;

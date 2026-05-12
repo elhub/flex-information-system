@@ -53,3 +53,12 @@ ALTER TABLE flex.service_providing_group
 ADD CONSTRAINT check_service_providing_group_bidding_zone CHECK (
     bidding_zone IN ('NO1', 'NO2', 'NO3', 'NO4', 'NO5')
 );
+
+-- changeset flex:service-providing-group-additional-information-add runOnChange:false endDelimiter:--
+--preconditions onFail:MARK_RAN
+--precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = 'flex' AND table_name = 'service_providing_group' AND column_name = 'additional_information'
+ALTER TABLE flex.service_providing_group
+ADD COLUMN IF NOT EXISTS additional_information text;
+ALTER TABLE flex.service_providing_group_history
+ADD COLUMN IF NOT EXISTS additional_information text;
+--

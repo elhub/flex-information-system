@@ -23,13 +23,12 @@ the SP is applying for. The checks also might differ based on the composition of
 the SPG.
 
 Also note that the service provider has been vetted as part of the
-[registration](service-provider-registration-and-approval.md) and
-[product application](service-provider-product-application.md) processes.
+[registration](service-provider-registration-and-approval.md) process.
 
 The following is a list of types-of-checks that might be relevant for the prequalification.
 
 - The SPG has the necessary technical capabilities to deliver the product type.
-- The Service provider has been qualified for offering services to the SO for
+- The Service provider has applied for offering services to the SO for
   the specific product type as part of the
   [service provider product application process](./service-provider-product-application.md).
 - Activation test

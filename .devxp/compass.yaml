@@ -1,0 +1,34 @@
+---
+name: flex-information-system
+slug: flex-information-system
+id: "ari:cloud:compass:dd0efeb0-2368-4bf7-b77b-9402345ecfe5:component/4290245e-438e-4548-ba7a-a603f0c73614/c0846d6e-2a6f-496d-8b3a-f04d8b7fc2b4"
+description: |-
+  Pilot Flexibility information system for EuroFlex work package 4
+typeId: SERVICE
+ownerId: "ari:cloud:identity::team/42a43121-c77e-4f94-8501-3ca245feeca1"
+fields:
+  tier: 3
+  lifecycle: Pre-release
+configVersion: 1
+links:
+  - name: "GitHub Repository"
+    type: REPOSITORY
+    url: "https://github.com/elhub/flex-information-system"
+  - name: "Jira Project"
+    type: PROJECT
+    url: "https://elhub.atlassian.net/browse/FLEX"
+  - name: "Sonar Dashboard"
+    type: DASHBOARD
+    url: "https://sonar.elhub.cloud/dashboard?id=no.elhub.flex.flex-information-system"
+  - name: Developer Docs
+    type: DOCUMENT
+    url: "https://docs.elhub.cloud/value-streams/flex/index.html"
+labels:
+  - "language:go"
+  - "language:kotlin"
+  - "language:python"
+  - "language:typescript"
+  - "source:github"
+  - "framework:ktor"
+  - "framework:react-admin"
+  - "deployment:kubernetes"

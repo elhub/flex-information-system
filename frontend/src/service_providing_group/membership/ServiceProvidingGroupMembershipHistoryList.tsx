@@ -12,7 +12,7 @@ import { IdentityField } from "../../components/IdentityField";
 
 export const ServiceProvidingGroupMembershipHistoryList = () => {
   const params = useParams();
-  let filter: any = {
+  const filter: any = {
     service_providing_group_id: params.service_providing_group_id,
   };
 

@@ -1,0 +1,28 @@
+@startuml accounting-point-sync-incoming-event
+!theme plain
+
+title AP Sync - Incoming Event
+
+autonumber
+autoactivate on
+skinparam note {
+    BackgroundColor #FFFFBD
+}
+
+participant "Receiver" as REC
+database "AP Event" as APE
+participant "AP Adapter" as APA
+
+APA -> REC: AP Updated (GSRN)
+
+REC -> APE: Upsert last_event_at
+note right
+    Only if the new event is newer
+    than the current `last_event_at`.
+end note
+return
+
+REC --> APA: 200 OK
+
+
+@enduml

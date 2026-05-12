@@ -18,23 +18,23 @@ import { Link } from "react-router-dom";
 import { ScopesField } from "../../components/scopes";
 import { Permissions } from "../../auth/permissions";
 
+const EditButton = () => {
+  const record = useRecordContext()!;
+  return (
+    <Button
+      component={Link}
+      to={`/entity/${record.entity_id}/client/${record.id}`}
+      startIcon={<EditIcon />}
+      label="Edit"
+    />
+  );
+};
+
 export const EntityClientShow = () => {
   const { permissions } = usePermissions<Permissions>();
 
   // Permission checks
   const canUpdate = permissions?.allow("entity_client", "update");
-
-  const EditButton = () => {
-    const record = useRecordContext()!;
-    return (
-      <Button
-        component={Link}
-        to={`/entity/${record.entity_id}/client/${record.id}`}
-        startIcon={<EditIcon />}
-        label="Edit"
-      />
-    );
-  };
 
   return (
     <Show

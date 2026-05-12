@@ -22,8 +22,14 @@ megalinter:
 tbls-lint:
     tbls lint
 
+build-kbackend:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    cd kbackend
+    ./gradlew jibDockerBuild --image=flex-kbackend
+
 # start the docker environment
-start:
+start: build-kbackend
     #!/usr/bin/env bash
     set -euo pipefail
     docker compose up -d
@@ -46,7 +52,7 @@ pull:
     docker compose pull
 
 # docker compose build
-build:
+build: build-kbackend
     docker compose build --pull
 
 # load the database
@@ -59,8 +65,6 @@ load: liquibase
 
     psql -X -v ON_ERROR_STOP=1 -d postgres -U postgres \
         -c "ALTER USER flex_authenticator PASSWORD 'authenticator_password';"
-    psql -X -v ON_ERROR_STOP=1 -d postgres -U postgres \
-        -c "ALTER USER flex_replication PASSWORD 'replication_password';"
 
     # set fixed client IDs so we can use them in the tests
     UUID_TEST='3733e21b-5def-400d-8133-06bcda02465e'
@@ -269,8 +273,8 @@ liquibase pghost='localhost' password='flex_password' action='update' changelog=
     LIQUIBASE_COMMAND_URL=jdbc:postgresql://{{ pghost }}:5432/flex \
     LIQUIBASE_COMMAND_USERNAME=flex \
     LIQUIBASE_COMMAND_PASSWORD={{ password }} \
+    LIQUIBASE_COMMAND_CONTEXT_FILTER="test" \
     .bin/liquibase-{{ LIQUIBASE_VERSION }}/liquibase \
-    --contexts=local \
     --liquibaseSchemaName=flex \
     --defaultSchemaName=flex \
     --changeLogFile={{ changelog }} \
@@ -382,7 +386,10 @@ openapi-postgrest:
 
     rm -rf out/*
 
-openapi: resources-to-diagram template-to-openapi openapi-to-md openapi-to-db sqlc openapi-client-test openapi-client-frontend resources-to-intl-and-tooltips
+openapi: resources-to-diagram template-to-openapi openapi-to-md openapi-to-db openapi-to-embed-relations sqlc openapi-client-test openapi-client-frontend resources-to-intl-and-tooltips kbackend-models
+
+kbackend-models:
+    kbackend/scripts/generate-openapi-models.sh
 
 template-to-openapi:
     #!/usr/bin/env bash
@@ -430,6 +437,14 @@ openapi-to-db:
 
     .venv/bin/python3 local/scripts/internal_resources_to_db.py
 
+openapi-to-embed-relations:
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    cat openapi/resources.yml | \
+        .venv/bin/python3 local/scripts/openapi_to_embed_relations.py \
+        > backend/data/embed_relations_gen.go
+
 sqlc:
     #!/usr/bin/env bash
     set -euo pipefail
@@ -460,12 +475,27 @@ openapi-to-md:
 
     echo "Generating markdown tables"
 
+    base=openapi/openapi-api-base.yml
+    resources=openapi/resources.yml
+
     for resource in $(find docs/resources/ -type f -not -name "index.md" -exec basename {} \; | cut -d. -f1); do
         echo ".. ${resource}"
 
-        table=$(cat openapi/resources.yml | .venv/bin/python3 local/scripts/openapi_to_markdown.py ${resource} )
+        table=$(.venv/bin/python3 local/scripts/openapi_to_markdown.py ${base} ${resources} ${resource} )
 
-        api_link="../api/v0/index.html#/operations/list_$resource"
+        ops=$(cat $resources | yq "(.resources[] | select(.id == \"$resource\").operations) // \"\"")
+        if [ -z "$ops" ]; then
+            # no operations defined (e.g., comment resource), default to list
+            link="list"
+        elif echo "$ops" | grep -q "list"; then
+            # operations defined and list is one of them, link to list as well
+            link="list"
+        else
+            # no list operation, link to read instead
+            link="read"
+        fi
+        api_link="../api/v0/index.html#/operations/${link}_$resource"
+
         docx_link="../download/${resource}.docx"
 
         ed -s "./docs/resources/${resource}.md" <<EOF
@@ -490,6 +520,21 @@ openapi-to-md:
     EOF
 
     done
+
+openapi-client-accounting-point-adapter:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    mkdir -p ./out
+    rm -rf local/accounting-point/client/* ./out/openapi-client-accounting-point-adapter
+
+    ./.venv/bin/openapi-python-client generate \
+        --path ./kbackend/src/main/kotlin/no/elhub/flex/integration/accountingpointadapter/openapi.yaml \
+        --output-path ./out/openapi-client-accounting-point-adapter \
+        --config ./openapi/openapi-client-config.yml
+    mv ./out/openapi-client-accounting-point-adapter/flex/models local/accounting-point/client/models
+    mv ./out/openapi-client-accounting-point-adapter/flex/types.py local/accounting-point/client/types.py
+
+    ruff format local/accounting-point/client
 
 openapi-client-test:
     #!/usr/bin/env bash
@@ -526,15 +571,21 @@ openapi-client-frontend:
 
     rm ../backend/data/static/.openapi-frontend-client.json
 
-    # replace all z.optional properties to preprocess null so we dont have to handle null or undefined. Only undefined in forms.
-    perl -i -pe 's/z\.optional\(((?:[^()]|\((?:[^()]|\([^()]*\))*\))*)\)/z.optional(z.preprocess((value) => (value === null ? undefined : value), $1.optional()))/g' src/generated-client/zod.gen.ts
+    # Replace number and int with z.coerce.number
+    sed -i 's/z\.number/z\.coerce\.number/g' src/generated-client/zod.gen.ts
+    sed -i 's/z\.int/z\.coerce\.number/g' src/generated-client/zod.gen.ts
+
+    # allow timezones in datetime values (full ISO 8601)
+    sed -i 's/z\.iso\.datetime()/z.iso.datetime({ offset: true })/g' src/generated-client/zod.gen.ts
+
+    # Remove all default values from the zod.gen.ts file. They create problems when you dont have access to the specific field.
+    sed -i 's/\.default([^)]*)//g' src/generated-client/zod.gen.ts
 
     npx prettier --write src/generated-client
 
 resources-to-intl-and-tooltips:
     #!/usr/bin/env bash
-    cat openapi/resources.yml \
-        | .venv/bin/python3 local/scripts/resources_to_intl.py
+    .venv/bin/python3 local/scripts/resources_to_intl.py openapi/openapi-api-base.yml openapi/resources.yml
     npx prettier --write frontend/src/intl/field-labels.ts frontend/src/intl/enum-labels.ts frontend/src/tooltip/tooltips.ts
 
 permissions: permissions-to-frontend permissions-to-md permissions-to-db
@@ -542,6 +593,11 @@ permissions: permissions-to-frontend permissions-to-md permissions-to-db
 permissions-to-db:
     echo "-- liquibase formatted sql\n-- AUTO-GENERATED FILE (just permissions-to-db)\n" \
         | tee db/api/grants/field_level_authorization.sql > db/flex/grants/field_level_authorization.sql
+
+    echo "-- changeset flex:api-field-level-authorization runAlways:true" \
+        >> db/api/grants/field_level_authorization.sql
+    echo "-- changeset flex:flex-field-level-authorization runAlways:true" \
+        >> db/flex/grants/field_level_authorization.sql
 
     cat local/input/permissions.csv \
         | .venv/bin/python3 local/scripts/permissions_to_grant.py \

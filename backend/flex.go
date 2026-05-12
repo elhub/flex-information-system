@@ -11,9 +11,7 @@ import (
 	"flex/internal/middleware"
 	"flex/internal/openapi"
 	"flex/internal/trace"
-	"flex/meteringpointdatahub"
 	"flex/pgpool"
-	"flex/pgrepl"
 	"fmt"
 	"log/slog"
 	"net"
@@ -26,6 +24,7 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/graceful"
 	"github.com/gin-gonic/gin"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 
 	sloggin "github.com/samber/slog-gin"
 )
@@ -206,46 +205,6 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		)
 	}
 
-	replURI, exists := lookupenv("FLEX_DB_REPLICATION_URI")
-	if !exists { //nolint:nestif
-		slog.InfoContext(
-			ctx, "FLEX_DB_REPLICATION_URI environment variable is not set, checking parameter variables",
-		)
-
-		replURIHost, exists := lookupenv("FLEX_DB_REPLICATION_URI_HOST")
-		if !exists {
-			return fmt.Errorf("%w: FLEX_DB_REPLICATION_URI_HOST", errMissingEnv)
-		}
-
-		replURIPort, exists := lookupenv("FLEX_DB_REPLICATION_URI_PORT")
-		if !exists {
-			return fmt.Errorf("%w: FLEX_DB_REPLICATION_URI_PORT", errMissingEnv)
-		}
-
-		replURIDatabase, exists := lookupenv("FLEX_DB_REPLICATION_URI_DATABASE")
-		if !exists {
-			return fmt.Errorf("%w: FLEX_DB_REPLICATION_URI_DATABASE", errMissingEnv)
-		}
-
-		replURIUser, exists := lookupenv("FLEX_DB_REPLICATION_URI_USER")
-		if !exists {
-			return fmt.Errorf("%w: FLEX_DB_REPLICATION_URI_USER", errMissingEnv)
-		}
-
-		replURIPassword, exists := lookupenv("FLEX_DB_REPLICATION_URI_PASSWORD")
-		if !exists {
-			return fmt.Errorf("%w: FLEX_DB_REPLICATION_URI_PASSWORD", errMissingEnv)
-		}
-
-		replURI = fmt.Sprintf(
-			"postgres://%s:%s@%s/%s",
-			replURIUser,
-			replURIPassword,
-			net.JoinHostPort(replURIHost, replURIPort),
-			replURIDatabase,
-		)
-	}
-
 	port, exists := lookupenv("FLEX_PORT")
 	if !exists {
 		slog.InfoContext(ctx, "FLEX_PORT environment variable is not set, using default port 7001")
@@ -253,14 +212,14 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		port = "7001"
 	}
 
-	eventSlotName, exists := lookupenv("FLEX_DB_REPLICATION_SLOT_NAME")
-	if !exists {
-		return fmt.Errorf("%w: FLEX_DB_REPLICATION_SLOT_NAME", errMissingEnv)
-	}
-
 	postgRESTUpstream, exists := lookupenv("FLEX_UPSTREAM_POSTGREST")
 	if !exists {
 		return fmt.Errorf("%w: FLEX_UPSTREAM_POSTGREST", errMissingEnv)
+	}
+
+	kbackendUpstream, exists := lookupenv("FLEX_UPSTREAM_KBACKEND")
+	if !exists {
+		return fmt.Errorf("%w: FLEX_UPSTREAM_KBACKEND", errMissingEnv)
 	}
 
 	baseURL, exists := lookupenv("FLEX_BASE_URL")
@@ -305,21 +264,6 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		slog.InfoContext(ctx, "Disabled login limiting")
 	} else {
 		slog.InfoContext(ctx, "Default login limiting")
-	}
-
-	var meteringPointDatahubService data.MeteringPointDatahubService
-	meteringPointDatahubURL, exists := lookupenv("FLEX_METERING_POINT_DATAHUB_URL")
-	if !exists {
-		slog.InfoContext(
-			ctx,
-			"FLEX_METERING_POINT_DATAHUB_URL environment variable is not set, "+
-				"not using any metering point datahub",
-		)
-
-		meteringPointDatahubService = nil
-	} else {
-		service := meteringpointdatahub.NewService(meteringPointDatahubURL)
-		meteringPointDatahubService = &service
 	}
 
 	// first instantiate the database service implementation
@@ -381,9 +325,9 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	dataAPIHandler, err := data.NewAPIHandler(
 		dataAPIBaseURL,
 		postgRESTUpstream,
+		kbackendUpstream,
 		dbPool,
 		requestDetailsContextKey,
-		meteringPointDatahubService,
 	)
 	if err != nil {
 		return fmt.Errorf("could not create data API module: %w", err)
@@ -391,60 +335,22 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 
 	// launch the event worker
 	go func() {
-		// loop in case the replication connection drops
-		for {
-			select {
-			case <-ctx.Done():
-				slog.InfoContext(ctx, "context canceled, stopping event worker")
+		select {
+		case <-ctx.Done():
+			slog.InfoContext(ctx, "context canceled, stopping event worker")
+			return
+		default:
+			slog.InfoContext(ctx, "Launching the event worker...")
+
+			eventWorker, err := event.NewWorker(dbPool, requestDetailsContextKey)
+			if err != nil {
+				slog.ErrorContext(ctx, "failed to create event worker", "error", err.Error())
 				return
-			default:
-				slog.InfoContext(ctx, "Launching the event worker...")
+			}
 
-				replConn, err := backoff.Retry(ctx, func() (*pgrepl.Connection, error) {
-					var err error
-
-					slog.InfoContext(ctx, "Trying to connect to the replication slot...")
-
-					conn, err := pgrepl.NewConnection(
-						ctx,
-						replURI,
-						eventSlotName,
-						"event-worker-replication",
-					)
-					if err != nil {
-						slog.InfoContext(ctx, "Failed", "error", err.Error())
-						return nil, fmt.Errorf("failed to create replication listener: %w", err)
-					}
-
-					return conn, nil
-				}, backoff.WithBackOff(ebo), backoff.WithMaxElapsedTime(1*time.Hour))
-				if err != nil {
-					slog.InfoContext(ctx, "exhausted db connection retries", "error", err.Error())
-					return
-				}
-
-				slog.InfoContext(ctx, "Connected to the replication slot!")
-				defer replConn.Close(ctx) //nolint:errcheck
-
-				eventWorker, err := event.NewWorker(
-					replConn, dbPool, requestDetailsContextKey, "event-worker",
-				)
-				if err != nil {
-					slog.InfoContext(ctx, "failed to create event worker", "error", err.Error())
-				}
-				// this ends on error, so we loop and recreate the replication connection
-				err = eventWorker.Start(ctx)
-				if err != nil {
-					slog.InfoContext(ctx, "failure in event worker", "error", err.Error())
-
-					err = eventWorker.Stop(ctx)
-					if err != nil {
-						slog.InfoContext(ctx, "could not stop event worker", "error", err.Error())
-					}
-
-					slog.InfoContext(ctx, "Waiting before retrying the event worker...")
-					time.Sleep(15 * time.Second) //nolint:mnd
-				}
+			err = eventWorker.Start(ctx)
+			if err != nil {
+				slog.InfoContext(ctx, "event worker stopped", "error", err.Error())
 			}
 		}
 	}()
@@ -455,32 +361,20 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 
 	addr := ":" + port
 
-	router, err := graceful.Default(graceful.WithAddr(addr))
+	router, err := graceful.New(gin.New(), graceful.WithAddr(addr))
 	if err != nil {
 		return fmt.Errorf("could not create router: %w", err)
 	}
+
+	// silent middlewares first
 
 	// Enabling the fallback context ensures that gin falls back to the underlying context.Context.
 	// It must be set e.g. for otel tracing to work.
 	router.ContextWithFallback = true
 	router.Use(trace.Middleware()) //nolint:contextcheck
 
-	slogginConfig := sloggin.Config{ //nolint:exhaustruct
-		// We are providing our own trace.SlogHandler, so we don't need to log trace IDs here.
-		WithSpanID:        false,
-		WithTraceID:       false,
-		WithRequestBody:   slogLevel == slog.LevelDebug,
-		WithResponseBody:  slogLevel == slog.LevelDebug,
-		WithRequestHeader: slogLevel == slog.LevelDebug,
-	}
-	router.Use(sloggin.NewWithConfig(logger, slogginConfig))
-
 	// TODO use CustomRecovery to return JSON error responses
 	router.Use(gin.Recovery())
-
-	// We are handling network-type security elsewhere (nginx, nftables, network policies),
-	// so we can trust all proxies here to silence GINs warnings.
-	_ = router.SetTrustedProxies(nil)
 
 	corsConfig := cors.DefaultConfig()
 	corsConfig.AllowAllOrigins = true
@@ -492,6 +386,30 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 
 	router.Use(cors.New(corsConfig))
 	router.Use(WrapMiddleware(middleware.RealIP))
+
+	// silent endpoints
+	router.Match([]string{"GET", "HEAD"}, "/readyz", func(ctx *gin.Context) {
+		ctx.JSON(http.StatusOK, gin.H{"status": "ok"})
+	})
+
+	router.GET("/metrics", WrapHandler(promhttp.Handler())) //nolint:contextcheck
+
+	// middlewares with logging
+
+	router.Use(gin.Logger())
+
+	slogginConfig := sloggin.Config{ //nolint:exhaustruct
+		// We are providing our own trace.SlogHandler, so we don't need to log trace IDs here.
+		WithSpanID:        false,
+		WithTraceID:       false,
+		WithRequestBody:   slogLevel == slog.LevelDebug,
+		WithResponseBody:  slogLevel == slog.LevelDebug,
+		WithRequestHeader: slogLevel == slog.LevelDebug,
+	}
+
+	router.Use(sloggin.NewWithConfig(logger, slogginConfig))
+
+	router.Use(middleware.Prometheus)
 	router.Use(WrapMiddleware(authAPI.TokenDecodingMiddleware))
 
 	// auth API endpoints
@@ -530,14 +448,9 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		router.Match(
 			[]string{"HEAD", "GET", "POST", "PATCH", "DELETE", "OPTIONS"},
 			"/api/v0/*url",
-			WrapHandler(http.StripPrefix("/api/v0", dataAPIHandler)), //nolint:contextcheck
+			WrapHandler(http.StripPrefix("/api/v0", middleware.PrometheusMuxInstrumentation(dataAPIHandler))), //nolint:contextcheck
 		)
 	} //end:nolint:contextcheck
-
-	// health check endpoints
-	router.Match([]string{"GET", "HEAD"}, "/readyz", func(ctx *gin.Context) {
-		ctx.JSON(http.StatusOK, gin.H{"status": "ok"})
-	})
 
 	slog.InfoContext(ctx, "Running server on server on"+addr)
 

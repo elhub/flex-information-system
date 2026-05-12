@@ -22,7 +22,7 @@ import {
   zServiceProvidingGroupGridSuspensionCreateRequest,
 } from "../../generated-client/zod.gen";
 import { EnumInput } from "../../components/enum";
-import { unTypedZodResolver } from "../../util";
+import { unTypedZodResolver } from "../../zod";
 
 export type ServiceProvidingGroupGridSuspensionLocationState = {
   spggs: Partial<ServiceProvidingGroupGridSuspension>;

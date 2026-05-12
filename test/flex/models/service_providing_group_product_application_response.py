@@ -1,13 +1,23 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, cast
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
 from ..models.service_providing_group_product_application_status import ServiceProvidingGroupProductApplicationStatus
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.party_response import PartyResponse
+    from ..models.service_providing_group_product_application_comment_response import (
+        ServiceProvidingGroupProductApplicationCommentResponse,
+    )
+    from ..models.service_providing_group_response import ServiceProvidingGroupResponse
+
 
 T = TypeVar("T", bound="ServiceProvidingGroupProductApplicationResponse")
 
@@ -23,14 +33,23 @@ class ServiceProvidingGroupProductApplicationResponse:
             procuring_system_operator_id (int): Reference to the procuring system operator. Example: 39.
             product_type_ids (list[int]): References to the product types. Example: [2, 4, 5].
             status (ServiceProvidingGroupProductApplicationStatus): The status of the application. Example: in_progress.
-            recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-                23:59:00 CET.
+            maximum_active_power_up (float): The maximum active power applied for in regulation direction up. Stored in
+                kilowatts. Example: 150.5.
+            maximum_active_power_down (float): The maximum active power applied for in regulation direction down. Stored in
+                kilowatts. Example: 150.5.
+            recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
+                2023-12-31T23:59:00+00:00.
             recorded_by (int): The identity that recorded the resource. Example: 145.
-            notes (None | str | Unset): Free text notes on the current product application status.
-            prequalified_at (None | str | Unset): When the product application was last prequalified. Example: 2022-08-08
-                12:00:00 CET.
-            verified_at (None | str | Unset): When the product application was last verified. Example: 2021-08-08 10:00:00
-                CET.
+            additional_information (None | str | Unset): Free text field for extra information about the application if
+                needed (bidding periods, unavailabilities, etc).
+            prequalified_at (datetime.datetime | None | Unset): When the product application was last prequalified. Example:
+                2022-08-08T12:00:00+02.
+            verified_at (datetime.datetime | None | Unset): When the product application was last verified. Example:
+                2021-08-08T10:00:00+02.
+            service_providing_group (None | ServiceProvidingGroupResponse | Unset): Embedded service_providing_group
+            procuring_system_operator (None | PartyResponse | Unset): Embedded party
+            comment (list[ServiceProvidingGroupProductApplicationCommentResponse] | None | Unset): Embedded
+                service_providing_group_product_application_comment
     """
 
     id: int
@@ -38,14 +57,22 @@ class ServiceProvidingGroupProductApplicationResponse:
     procuring_system_operator_id: int
     product_type_ids: list[int]
     status: ServiceProvidingGroupProductApplicationStatus
-    recorded_at: str
+    maximum_active_power_up: float
+    maximum_active_power_down: float
+    recorded_at: datetime.datetime
     recorded_by: int
-    notes: None | str | Unset = UNSET
-    prequalified_at: None | str | Unset = UNSET
-    verified_at: None | str | Unset = UNSET
+    additional_information: None | str | Unset = UNSET
+    prequalified_at: datetime.datetime | None | Unset = UNSET
+    verified_at: datetime.datetime | None | Unset = UNSET
+    service_providing_group: None | ServiceProvidingGroupResponse | Unset = UNSET
+    procuring_system_operator: None | PartyResponse | Unset = UNSET
+    comment: list[ServiceProvidingGroupProductApplicationCommentResponse] | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        from ..models.party_response import PartyResponse
+        from ..models.service_providing_group_response import ServiceProvidingGroupResponse
+
         id = self.id
 
         service_providing_group_id = self.service_providing_group_id
@@ -56,27 +83,63 @@ class ServiceProvidingGroupProductApplicationResponse:
 
         status = self.status.value
 
-        recorded_at = self.recorded_at
+        maximum_active_power_up = self.maximum_active_power_up
+
+        maximum_active_power_down = self.maximum_active_power_down
+
+        recorded_at = self.recorded_at.isoformat()
 
         recorded_by = self.recorded_by
 
-        notes: None | str | Unset
-        if isinstance(self.notes, Unset):
-            notes = UNSET
+        additional_information: None | str | Unset
+        if isinstance(self.additional_information, Unset):
+            additional_information = UNSET
         else:
-            notes = self.notes
+            additional_information = self.additional_information
 
         prequalified_at: None | str | Unset
         if isinstance(self.prequalified_at, Unset):
             prequalified_at = UNSET
+        elif isinstance(self.prequalified_at, datetime.datetime):
+            prequalified_at = self.prequalified_at.isoformat()
         else:
             prequalified_at = self.prequalified_at
 
         verified_at: None | str | Unset
         if isinstance(self.verified_at, Unset):
             verified_at = UNSET
+        elif isinstance(self.verified_at, datetime.datetime):
+            verified_at = self.verified_at.isoformat()
         else:
             verified_at = self.verified_at
+
+        service_providing_group: dict[str, Any] | None | Unset
+        if isinstance(self.service_providing_group, Unset):
+            service_providing_group = UNSET
+        elif isinstance(self.service_providing_group, ServiceProvidingGroupResponse):
+            service_providing_group = self.service_providing_group.to_dict()
+        else:
+            service_providing_group = self.service_providing_group
+
+        procuring_system_operator: dict[str, Any] | None | Unset
+        if isinstance(self.procuring_system_operator, Unset):
+            procuring_system_operator = UNSET
+        elif isinstance(self.procuring_system_operator, PartyResponse):
+            procuring_system_operator = self.procuring_system_operator.to_dict()
+        else:
+            procuring_system_operator = self.procuring_system_operator
+
+        comment: list[dict[str, Any]] | None | Unset
+        if isinstance(self.comment, Unset):
+            comment = UNSET
+        elif isinstance(self.comment, list):
+            comment = []
+            for comment_type_0_item_data in self.comment:
+                comment_type_0_item = comment_type_0_item_data.to_dict()
+                comment.append(comment_type_0_item)
+
+        else:
+            comment = self.comment
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -87,21 +150,35 @@ class ServiceProvidingGroupProductApplicationResponse:
                 "procuring_system_operator_id": procuring_system_operator_id,
                 "product_type_ids": product_type_ids,
                 "status": status,
+                "maximum_active_power_up": maximum_active_power_up,
+                "maximum_active_power_down": maximum_active_power_down,
                 "recorded_at": recorded_at,
                 "recorded_by": recorded_by,
             }
         )
-        if notes is not UNSET:
-            field_dict["notes"] = notes
+        if additional_information is not UNSET:
+            field_dict["additional_information"] = additional_information
         if prequalified_at is not UNSET:
             field_dict["prequalified_at"] = prequalified_at
         if verified_at is not UNSET:
             field_dict["verified_at"] = verified_at
+        if service_providing_group is not UNSET:
+            field_dict["service_providing_group"] = service_providing_group
+        if procuring_system_operator is not UNSET:
+            field_dict["procuring_system_operator"] = procuring_system_operator
+        if comment is not UNSET:
+            field_dict["comment"] = comment
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.party_response import PartyResponse
+        from ..models.service_providing_group_product_application_comment_response import (
+            ServiceProvidingGroupProductApplicationCommentResponse,
+        )
+        from ..models.service_providing_group_response import ServiceProvidingGroupResponse
+
         d = dict(src_dict)
         id = d.pop("id")
 
@@ -113,36 +190,114 @@ class ServiceProvidingGroupProductApplicationResponse:
 
         status = ServiceProvidingGroupProductApplicationStatus(d.pop("status"))
 
-        recorded_at = d.pop("recorded_at")
+        maximum_active_power_up = d.pop("maximum_active_power_up")
+
+        maximum_active_power_down = d.pop("maximum_active_power_down")
+
+        recorded_at = isoparse(d.pop("recorded_at"))
 
         recorded_by = d.pop("recorded_by")
 
-        def _parse_notes(data: object) -> None | str | Unset:
+        def _parse_additional_information(data: object) -> None | str | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             return cast(None | str | Unset, data)
 
-        notes = _parse_notes(d.pop("notes", UNSET))
+        additional_information = _parse_additional_information(d.pop("additional_information", UNSET))
 
-        def _parse_prequalified_at(data: object) -> None | str | Unset:
+        def _parse_prequalified_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(None | str | Unset, data)
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                prequalified_at_type_0 = isoparse(data)
+
+                return prequalified_at_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(datetime.datetime | None | Unset, data)
 
         prequalified_at = _parse_prequalified_at(d.pop("prequalified_at", UNSET))
 
-        def _parse_verified_at(data: object) -> None | str | Unset:
+        def _parse_verified_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(None | str | Unset, data)
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                verified_at_type_0 = isoparse(data)
+
+                return verified_at_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(datetime.datetime | None | Unset, data)
 
         verified_at = _parse_verified_at(d.pop("verified_at", UNSET))
+
+        def _parse_service_providing_group(data: object) -> None | ServiceProvidingGroupResponse | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                service_providing_group_type_0 = ServiceProvidingGroupResponse.from_dict(data)
+
+                return service_providing_group_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(None | ServiceProvidingGroupResponse | Unset, data)
+
+        service_providing_group = _parse_service_providing_group(d.pop("service_providing_group", UNSET))
+
+        def _parse_procuring_system_operator(data: object) -> None | PartyResponse | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                procuring_system_operator_type_0 = PartyResponse.from_dict(data)
+
+                return procuring_system_operator_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(None | PartyResponse | Unset, data)
+
+        procuring_system_operator = _parse_procuring_system_operator(d.pop("procuring_system_operator", UNSET))
+
+        def _parse_comment(data: object) -> list[ServiceProvidingGroupProductApplicationCommentResponse] | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, list):
+                    raise TypeError()
+                comment_type_0 = []
+                _comment_type_0 = data
+                for comment_type_0_item_data in _comment_type_0:
+                    comment_type_0_item = ServiceProvidingGroupProductApplicationCommentResponse.from_dict(
+                        comment_type_0_item_data
+                    )
+
+                    comment_type_0.append(comment_type_0_item)
+
+                return comment_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(list[ServiceProvidingGroupProductApplicationCommentResponse] | None | Unset, data)
+
+        comment = _parse_comment(d.pop("comment", UNSET))
 
         service_providing_group_product_application_response = cls(
             id=id,
@@ -150,11 +305,16 @@ class ServiceProvidingGroupProductApplicationResponse:
             procuring_system_operator_id=procuring_system_operator_id,
             product_type_ids=product_type_ids,
             status=status,
+            maximum_active_power_up=maximum_active_power_up,
+            maximum_active_power_down=maximum_active_power_down,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
-            notes=notes,
+            additional_information=additional_information,
             prequalified_at=prequalified_at,
             verified_at=verified_at,
+            service_providing_group=service_providing_group,
+            procuring_system_operator=procuring_system_operator,
+            comment=comment,
         )
 
         service_providing_group_product_application_response.additional_properties = d

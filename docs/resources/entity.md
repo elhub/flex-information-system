@@ -12,6 +12,9 @@ Here are the acceptable values for entities:
 | Organisation   | `org` (_organisasjonsnummer_)    |
 | Person         | `pid` (_fødselsnummer_), `email` |
 
+If the business ID type is `pid`, then the API response will mask the last five
+digits, so that the returned `business_id` will look like `010101*****`.
+
 ## Lookup
 
 A lookup operation can be performed to check whether a business ID is already
@@ -35,7 +38,7 @@ to their organisation, and possibly create entities for their colleagues.
 | <a name="field-business_id_type" href="#field-business_id_type">business_id_type</a> | The type of the business identifier.                                         | text<br/>One of: `pid`, `org`, `email`<br/>Required<br/>Non-updatable    |           |
 | <a name="field-name" href="#field-name">name</a>                                     | Name of the entity. Maximum 128 characters.                                  | text<br/>Required                                                        |           |
 | <a name="field-type" href="#field-type">type</a>                                     | The type of the entity, e.g Person, Organisation                             | text<br/>One of: `person`, `organisation`<br/>Required<br/>Non-updatable |           |
-| <a name="field-recorded_at" href="#field-recorded_at">recorded_at</a>                | When the resource was recorded (created or updated) in the system.           | timestamp with time zone<br/>Read only                                   |           |
+| <a name="field-recorded_at" href="#field-recorded_at">recorded_at</a>                | When the resource was recorded (created or updated) in the system.           | date-time<br/>Read only                                                  |           |
 | <a name="field-recorded_by" href="#field-recorded_by">recorded_by</a>                | The identity that recorded the resource.                                     | bigint<br/>Read only                                                     |           |
 
 ## Validation Rules

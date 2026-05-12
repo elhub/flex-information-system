@@ -1,4 +1,4 @@
-import { Resource, Create, ResourceContextProvider } from "react-admin";
+import { Resource, ResourceContextProvider } from "react-admin";
 import { Route } from "react-router-dom";
 import { JSX } from "react";
 import BookmarksIcon from "@mui/icons-material/Bookmarks";
@@ -7,8 +7,11 @@ import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import { EditRedirectPreviousPage, CreateRedirectPreviousPage } from "./shared";
 import { Permissions } from "../auth/permissions";
 import { ServiceProvidingGroupList } from "../service_providing_group/ServiceProvidingGroupList";
-import { ServiceProvidingGroupShow } from "../service_providing_group/ServiceProvidingGroupShow";
-import { ServiceProvidingGroupInput } from "../service_providing_group/ServiceProvidingGroupInput";
+import { ServiceProvidingGroupShow } from "../service_providing_group/show/ServiceProvidingGroupShow";
+import { ServiceProvidingGroupInput } from "../service_providing_group/input/ServiceProvidingGroupInput";
+import { ServiceProvidingGroupCreate } from "../service_providing_group/input/ServiceProvidingGroupCreate";
+import { ServiceProvidingGroupManageMembers } from "../service_providing_group/input/ServiceProvidingGroupManageMembers";
+import { ServiceProvidingGroupActivate } from "../service_providing_group/input/ServiceProvidingGroupActivate";
 import { ServiceProvidingGroupHistoryList } from "../service_providing_group/ServiceProvidingGroupHistoryList";
 import { ServiceProvidingGroupMembershipInput } from "../service_providing_group/membership/ServiceProvidingGroupMembershipInput";
 import { ServiceProvidingGroupMembershipShow } from "../service_providing_group/membership/ServiceProvidingGroupMembershipShow";
@@ -65,17 +68,17 @@ export const createServiceProvidingGroupResources = (
             (null as any)
           )
         }
-        create={
-          canCreate ? (
-            <Create redirect="list">
-              <ServiceProvidingGroupInput />
-            </Create>
-          ) : (
-            (null as any)
-          )
-        }
+        create={canCreate ? <ServiceProvidingGroupCreate /> : (null as any)}
         recordRepresentation="name"
       >
+        <Route
+          path=":id/manage-members"
+          element={<ServiceProvidingGroupManageMembers />}
+        />
+        <Route
+          path=":id/activate"
+          element={<ServiceProvidingGroupActivate />}
+        />
         <Route
           path=":service_providing_group_id/history"
           element={<ServiceProvidingGroupHistoryList />}
@@ -251,6 +254,49 @@ export const createServiceProvidingGroupResources = (
           element={
             <ResourceContextProvider value="service_providing_group_product_application_history">
               <ServiceProvidingGroupProductApplicationShow />
+            </ResourceContextProvider>
+          }
+        />
+        {/* service providing group product application comments */}
+        {/* list is part of SPG product application show page */}
+        <Route
+          path=":service_providing_group_id/product_application/:service_providing_group_product_application_id/comment/:id/show"
+          element={
+            <ResourceContextProvider value="service_providing_group_product_application_comment">
+              <CommentShow />
+            </ResourceContextProvider>
+          }
+        />
+        <Route
+          path=":service_providing_group_id/product_application/:service_providing_group_product_application_id/comment/create"
+          element={
+            <ResourceContextProvider value="service_providing_group_product_application_comment">
+              <CreateRedirectPreviousPage>
+                <CommentInput />
+              </CreateRedirectPreviousPage>
+            </ResourceContextProvider>
+          }
+        />
+        <Route
+          path=":service_providing_group_id/product_application/:service_providing_group_product_application_id/comment/:id"
+          element={
+            <ResourceContextProvider value="service_providing_group_product_application_comment">
+              <EditRedirectPreviousPage>
+                <CommentInput />
+              </EditRedirectPreviousPage>
+            </ResourceContextProvider>
+          }
+        />
+        {/* service providing group product application comment history */}
+        <Route
+          path=":service_providing_group_id/product_application/:service_providing_group_product_application_id/comment_history"
+          element={<CommentHistoryList />}
+        />
+        <Route
+          path=":service_providing_group_id/product_application/:service_providing_group_product_application_id/comment_history/:id/show"
+          element={
+            <ResourceContextProvider value="service_providing_group_product_application_comment_history">
+              <CommentShow />
             </ResourceContextProvider>
           }
         />
@@ -542,6 +588,14 @@ export const createServiceProvidingGroupResources = (
     "service_providing_group_product_application",
     "read",
   );
+  const canCreateSPGPA = permissions.allow(
+    "service_providing_group_product_application",
+    "create",
+  );
+  const canUpdateSPGPA = permissions.allow(
+    "service_providing_group_product_application",
+    "update",
+  );
 
   if (canReadSPGPA) {
     resources.push(
@@ -550,6 +604,24 @@ export const createServiceProvidingGroupResources = (
         name="service_providing_group_product_application"
         list={ServiceProvidingGroupProductApplicationList}
         show={ServiceProvidingGroupProductApplicationShow}
+        edit={
+          canUpdateSPGPA ? (
+            <EditRedirectPreviousPage>
+              <ServiceProvidingGroupProductApplicationInput />
+            </EditRedirectPreviousPage>
+          ) : (
+            (null as any)
+          )
+        }
+        create={
+          canCreateSPGPA ? (
+            <CreateRedirectPreviousPage>
+              <ServiceProvidingGroupProductApplicationInput />
+            </CreateRedirectPreviousPage>
+          ) : (
+            (null as any)
+          )
+        }
       >
         <Route
           path=":service_providing_group_product_application_id/history"

@@ -41,7 +41,7 @@ While we are not suggesting going all in on Supabase, we are looking at
 the open-source building blocks that Supabase is making use of, e.g., for REST
 API, authn/z, etc.
 
-### Backend - PostgREST + Go
+### Backend - PostgREST + Go -> Kotlin
 
 The Flexibility Information System will be API first. Regulations from EU
 (Network Code Demand Response) and just the general idea of a central system
@@ -54,25 +54,15 @@ We currently have two APIs:
 * **Main API** - our main API that provides access to the data in the database.
   See the [API design documentation](./api-design.md) for more details.
 
-Both of them are served by distinct modules of a backend built with Go.
-We use the [**Gin**](https://gin-gonic.com/) web framework for its ease of
-development. Other popular options were:
-
-* **Standard library**. This implies using only the `net/http` module, which is
-  a bit too low-level. Using a framework removes some of the boilerplate code
-  and makes the development faster and more delightful.
-* [**chi**](https://go-chi.io/#/).
-  Chi is just a router and not a full-fledged framework.
-* [**Fiber**](https://gofiber.io/).
-  Comparable to gin, but a bit less popular and is based on a non-standard HTTP
-  server implementation, making it a slightly riskier choice than Gin.
+Both of them are served by distinct modules of a backend built with Go. Early on
+we used the [**Gin**](https://gin-gonic.com/) web framework for its ease of
+development. We half-way made a transition to using the standard library. This
+basically means using only the `net/http` module.
 
 The Main API relies on a component that generates REST APIs automatically from
 the database. [PostgREST](https://postgrest.org/) is the leading open-source
 tool for this. It provides us with a RESTish API by plugging into the database.
 By default, the backend simply redirects calls on the Main API to PostgREST.
-This will allow us to eventually take over PostgREST for better control, by
-progressively writing custom implementations for the endpoints.
 
 The Go backend also includes other functionalities implemented as services
 running in the background alongside the web server.
@@ -81,21 +71,33 @@ running in the background alongside the web server.
   the background, handling events happening on the system and creating
   notifications to the users.
 
-### Web Server - Static assets and reverse proxy in NGINX
+#### Transition to Kotlin
 
-We use NGINX as web server. It is used to:
+We are moving the Go + PostgREST backend to a Ktor-based Kotlin service. While
+Go is a great choice for our use case, Kotlin aligns better with other teams at
+Elhub.
 
-* serve static assets such as the frontend, API docs and API spec
-* reverse proxy to our APIs
+We will proxy requests via the Go backend to the Kotlin backend. This allows us
+to do a gradual transition, where we can move one API at a time to the new
+backend.
 
-NGINX also allows us to do a few things that out-of-the-box PostgREST does not do
-(like hierarchies). The choice of NGINX (over,
-say, httpd or caddy) is because:
+### Adapter
 
-* its boring
-* its widely used
-* whenever the PostgREST docs mentions "reverse proxy" it is always using NGINX
-  as an example
+The adapter component is an external component responsible for making available
+data from external sources on a format and interface that is compatible with the
+Flexibility Information System. The adapter is not part of the system itself,
+but it is an important part of the overall architecture.
+
+The OpenAPI spec for the adapter is defined in this repository.
+
+### Web Server - Static assets
+
+We use NGINX as web server to serve static assets such as the frontend.
+
+### Gateway
+
+A gateway is used to serve frontend and backend/APIs from the same domain. In
+dev/test we use Nginx for this.
 
 ### APIs - Application Programming Interfaces
 

@@ -13,17 +13,17 @@ actor "Service Provider (SP)" as SP
 participant "Flexibility\nInformation System (FIS)" as FIS
 actor "System Operator" as SO
 
-== Identify relevant Service Providing Groups (SPGs) and product types approved ==
+== Identify relevant Service Providing Groups (SPGs) and product types applied for ==
 Activate SP
 
 note over SP
-    The SP need an overview of
-    own SPGs and product types qualified for
+    The SP needs an overview of own SPGs
+    and product types they have applied for
 end note
 
-SP -> FIS: List product types approved
+SP -> FIS: List product types applied for
 activate FIS
-FIS --> SP: List of product types approved
+FIS --> SP: List of product types applied for
 deactivate FIS
 
 SP -> FIS: List of SPGs

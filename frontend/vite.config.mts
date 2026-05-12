@@ -3,6 +3,7 @@ import react from "@vitejs/plugin-react";
 import fs from "fs";
 import { homedir } from "os";
 import checker from "vite-plugin-checker";
+import tailwindcss from '@tailwindcss/vite';
 
 // https://vitejs.dev/config/
 
@@ -25,27 +26,9 @@ export default defineConfig({
   optimizeDeps: {
     include: ["@mui/material/Tooltip"],
   },
-  plugins: [react(), checker({ typescript: true })],
+  plugins: [react(), checker({ typescript: true }), tailwindcss()],
   define: {
     "process.env": {},
-  },
-  build: {
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          // Separate MUI components into their own chunk (icons tree-shake separately)
-          "mui-core": ["@mui/material"],
-          // Separate React Admin into its own chunk
-          "react-admin": ["react-admin", "ra-core"],
-          // Separate data provider
-          "data-provider": ["@raphiniert/ra-data-postgrest"],
-          // Separate query devtools (only for dev)
-          "react-query-devtools": ["@tanstack/react-query-devtools"],
-        },
-      },
-    },
-    // Increase chunk size warning limit since react-admin is quite large
-    chunkSizeWarningLimit: 600,
   },
   server: {
     host: "dev.flex.internal",

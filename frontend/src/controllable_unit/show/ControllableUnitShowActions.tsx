@@ -1,12 +1,10 @@
-import { Button, EditButton, TopToolbar, usePermissions } from "react-admin";
 import { Link as RouterLink } from "react-router-dom";
-import WarningIcon from "@mui/icons-material/Warning";
-import AddIcon from "@mui/icons-material/Add";
-import { ResourceHistoryButton } from "../../components/history";
-import { EventButton } from "../../event/EventButton";
+import { usePermissions } from "ra-core";
 import { ControllableUnitServiceProviderLocationState } from "../service_provider/ControllableUnitServiceProviderInput";
 import { ControllableUnitSuspensionLocationState } from "../suspension/ControllableUnitSuspensionInput";
 import { Permissions } from "../../auth/permissions";
+import { Button } from "../../components/ui";
+import { IconPlus, IconWarningTriangle } from "@elhub/ds-icons";
 
 const CreateCUSPButton = ({
   controllableUnitId,
@@ -19,12 +17,14 @@ const CreateCUSPButton = ({
   };
   return (
     <Button
-      component={RouterLink}
+      as={RouterLink}
       to={`/controllable_unit/${controllableUnitId}/service_provider/create`}
       state={locationState}
-      startIcon={<AddIcon />}
-      label="Create new contract"
-    />
+      icon={IconPlus}
+      variant="invisible"
+    >
+      Create new contract
+    </Button>
   );
 };
 
@@ -39,21 +39,21 @@ const CreateSuspensionButton = ({
 
   return (
     <Button
-      component={RouterLink}
+      as={RouterLink}
       to={`/controllable_unit/${controllableUnitId}/suspension/create`}
       state={locationState}
-      startIcon={<WarningIcon />}
-      label="Create new suspension"
-    />
+      icon={IconWarningTriangle}
+      variant="invisible"
+    >
+      Create new suspension
+    </Button>
   );
 };
 
 export const ControllableUnitShowActions = ({
   controllableUnitId,
-  isHistory,
 }: {
   controllableUnitId: string | undefined;
-  isHistory: boolean;
 }) => {
   const { permissions } = usePermissions<Permissions>();
 
@@ -65,19 +65,15 @@ export const ControllableUnitShowActions = ({
     "controllable_unit_suspension",
     "create",
   );
-  const canEdit = permissions?.allow("controllable_unit", "update");
 
   return (
-    <TopToolbar>
+    <>
       {canCreateSuspension && (
         <CreateSuspensionButton controllableUnitId={controllableUnitId} />
       )}
       {canCreateCUSP && (
         <CreateCUSPButton controllableUnitId={controllableUnitId} />
       )}
-      {canEdit && <EditButton />}
-      <ResourceHistoryButton id={controllableUnitId} />
-      {(!isHistory && <EventButton recordId={controllableUnitId} />) || null}
-    </TopToolbar>
+    </>
   );
 };

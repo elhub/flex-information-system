@@ -9,17 +9,10 @@ CREATE TABLE api.controllable_unit (
     start_date date NULL,
     status text NOT NULL,
     regulation_direction text NOT NULL,
-    maximum_available_capacity decimal NOT NULL,
+    maximum_active_power decimal NOT NULL,
     is_small boolean NOT NULL,
-    minimum_duration bigint NULL,
-    maximum_duration bigint NULL,
-    recovery_duration bigint NULL,
-    ramp_rate decimal NULL,
     accounting_point_id bigint NOT NULL,
-    grid_node_id text NULL,
-    grid_validation_status text NOT NULL,
-    grid_validation_notes text NULL,
-    validated_at timestamp with time zone NULL,
+    additional_information text NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
@@ -31,17 +24,10 @@ CREATE TABLE api.controllable_unit_history (
     start_date date NULL,
     status text NOT NULL,
     regulation_direction text NOT NULL,
-    maximum_available_capacity decimal NOT NULL,
+    maximum_active_power decimal NOT NULL,
     is_small boolean NOT NULL,
-    minimum_duration bigint NULL,
-    maximum_duration bigint NULL,
-    recovery_duration bigint NULL,
-    ramp_rate decimal NULL,
     accounting_point_id bigint NOT NULL,
-    grid_node_id text NULL,
-    grid_validation_status text NOT NULL,
-    grid_validation_notes text NULL,
-    validated_at timestamp with time zone NULL,
+    additional_information text NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL,
     replaced_by bigint NULL,
@@ -114,12 +100,24 @@ CREATE TABLE api.controllable_unit_service_provider_history (
     replaced_by bigint NULL,
     replaced_at timestamp with time zone NULL
 );
+CREATE TABLE api.controllable_unit_summary (
+    id bigint NOT NULL,
+    controllable_unit_id bigint NOT NULL,
+    technical_resource jsonb NOT NULL
+);
+CREATE TABLE api.service_providing_group_summary (
+    id bigint NOT NULL,
+    service_providing_group_id bigint NOT NULL,
+    controllable_unit jsonb NOT NULL,
+    technical_resource jsonb NOT NULL
+);
 CREATE TABLE api.service_providing_group (
     id bigint NOT NULL,
     name text NOT NULL,
     service_provider_id bigint NOT NULL,
     bidding_zone text NOT NULL,
     status text NOT NULL,
+    additional_information text NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
@@ -130,6 +128,7 @@ CREATE TABLE api.service_providing_group_history (
     service_provider_id bigint NOT NULL,
     bidding_zone text NOT NULL,
     status text NOT NULL,
+    additional_information text NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL,
     replaced_by bigint NULL,
@@ -320,7 +319,15 @@ CREATE TABLE api.technical_resource (
     id bigint NOT NULL,
     name text NOT NULL,
     controllable_unit_id bigint NOT NULL,
-    details text NULL,
+    technology text [] NOT NULL,
+    category text [] NOT NULL,
+    maximum_active_power decimal NOT NULL,
+    device_type text NOT NULL,
+    make text NULL,
+    model text NULL,
+    business_id text NULL,
+    business_id_type text NULL,
+    additional_information text NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
@@ -329,7 +336,15 @@ CREATE TABLE api.technical_resource_history (
     id bigint NOT NULL,
     name text NOT NULL,
     controllable_unit_id bigint NOT NULL,
-    details text NULL,
+    technology text [] NOT NULL,
+    category text [] NOT NULL,
+    maximum_active_power decimal NOT NULL,
+    device_type text NOT NULL,
+    make text NULL,
+    model text NULL,
+    business_id text NULL,
+    business_id_type text NULL,
+    additional_information text NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL,
     replaced_by bigint NULL,
@@ -388,13 +403,43 @@ CREATE TABLE api.metering_grid_area (
     id bigint NOT NULL,
     business_id text NOT NULL,
     business_id_type text NOT NULL,
-    name text NOT NULL
+    name text NOT NULL,
+    status text NOT NULL
 );
 CREATE TABLE api.accounting_point_metering_grid_area (
     accounting_point_id bigint NOT NULL,
     metering_grid_area_id bigint NOT NULL,
     valid_from timestamp with time zone NOT NULL,
     valid_to timestamp with time zone NULL
+);
+CREATE TABLE api.accounting_point_grid_location (
+    id bigint NOT NULL,
+    accounting_point_id bigint NOT NULL,
+    object_type text NOT NULL,
+    business_id text NULL,
+    name text NOT NULL,
+    nominal_voltage decimal NOT NULL,
+    additional_information text NULL,
+    source text NOT NULL,
+    quality text NOT NULL,
+    recorded_by bigint NOT NULL,
+    recorded_at timestamp with time zone NOT NULL
+);
+CREATE TABLE api.accounting_point_grid_location_history (
+    accounting_point_grid_location_id bigint NOT NULL,
+    id bigint NOT NULL,
+    accounting_point_id bigint NOT NULL,
+    object_type text NOT NULL,
+    business_id text NULL,
+    name text NOT NULL,
+    nominal_voltage decimal NOT NULL,
+    additional_information text NULL,
+    source text NOT NULL,
+    quality text NOT NULL,
+    recorded_by bigint NOT NULL,
+    recorded_at timestamp with time zone NOT NULL,
+    replaced_by bigint NULL,
+    replaced_at timestamp with time zone NULL
 );
 CREATE TABLE api.product_type (
     id bigint NOT NULL,
@@ -518,7 +563,9 @@ CREATE TABLE api.service_providing_group_product_application (
     procuring_system_operator_id bigint NOT NULL,
     product_type_ids bigint [] NOT NULL,
     status text NOT NULL,
-    notes text NULL,
+    maximum_active_power_up decimal NOT NULL,
+    maximum_active_power_down decimal NOT NULL,
+    additional_information text NULL,
     prequalified_at timestamp with time zone NULL,
     verified_at timestamp with time zone NULL,
     recorded_by bigint NOT NULL,
@@ -531,9 +578,34 @@ CREATE TABLE api.service_providing_group_product_application_history (
     procuring_system_operator_id bigint NOT NULL,
     product_type_ids bigint [] NOT NULL,
     status text NOT NULL,
-    notes text NULL,
+    maximum_active_power_up decimal NOT NULL,
+    maximum_active_power_down decimal NOT NULL,
+    additional_information text NULL,
     prequalified_at timestamp with time zone NULL,
     verified_at timestamp with time zone NULL,
+    recorded_by bigint NOT NULL,
+    recorded_at timestamp with time zone NOT NULL,
+    replaced_by bigint NULL,
+    replaced_at timestamp with time zone NULL
+);
+CREATE TABLE api.service_providing_group_product_application_comment (
+    id bigint NOT NULL,
+    service_providing_group_product_application_id bigint NOT NULL,
+    created_by bigint NOT NULL,
+    created_at timestamp with time zone NOT NULL,
+    visibility text NOT NULL,
+    content text NOT NULL,
+    recorded_by bigint NOT NULL,
+    recorded_at timestamp with time zone NOT NULL
+);
+CREATE TABLE api.service_providing_group_product_application_comment_history (
+    service_providing_group_product_application_comment_id bigint NOT NULL,
+    id bigint NOT NULL,
+    service_providing_group_product_application_id bigint NOT NULL,
+    created_by bigint NOT NULL,
+    created_at timestamp with time zone NOT NULL,
+    visibility text NOT NULL,
+    content text NOT NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL,
     replaced_by bigint NULL,
@@ -584,8 +656,12 @@ CREATE TABLE api.service_providing_group_product_suspension_comment_history (
     replaced_at timestamp with time zone NULL
 );
 CREATE TABLE api.notice (
+    id bigint NOT NULL,
+    status text NOT NULL,
     party_id bigint NOT NULL,
     type text NOT NULL,
     source text NULL,
-    data jsonb NULL
+    data jsonb NULL,
+    recorded_by bigint NOT NULL,
+    recorded_at timestamp with time zone NOT NULL
 );

@@ -4,6 +4,7 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp"; -- noqa: RF05
 CREATE EXTENSION IF NOT EXISTS btree_gist;
 CREATE EXTENSION IF NOT EXISTS ltree;
+CREATE EXTENSION IF NOT EXISTS pg_cron;
 
 -- flex is the main role for the application
 CREATE ROLE flex WITH NOINHERIT LOGIN PASSWORD 'flex_password';
@@ -14,6 +15,8 @@ GRANT CREATE ON DATABASE flex TO flex;
 ALTER USER flex WITH REPLICATION;
 -- the main schema must exist for liquibase to add its changelog tables
 CREATE SCHEMA flex AUTHORIZATION flex;
+-- grant cron job execution to flex
+GRANT USAGE ON SCHEMA cron TO flex;
 
 -- authenticator is used by backend/postgREST to connect to the database
 CREATE ROLE flex_authenticator
@@ -33,9 +36,9 @@ CREATE ROLE flex_service_provider WITH NOLOGIN;
 CREATE ROLE flex_system_operator WITH NOLOGIN;
 CREATE ROLE flex_third_party WITH NOLOGIN;
 
--- internal roles
-CREATE ROLE flex_replication
-WITH REPLICATION NOINHERIT LOGIN PASSWORD 'replication_password';
+-- sync roles
+CREATE ROLE flex_staging_structure_data
+WITH NOINHERIT LOGIN PASSWORD 'staging_structure_data_password';
 
 -- flex_internal is similar to flex_anonymous but is used for internal
 -- system roles. All internal roles are granted to flex_internal
@@ -56,10 +59,12 @@ GRANT flex_operation_readonly TO local_operator;
 GRANT flex_operation_update TO local_operator;
 GRANT flex_operation_readwrite TO local_operator;
 
--- interal roles
+-- internal roles
 CREATE ROLE flex_internal_event_notification WITH NOLOGIN;
-GRANT flex_internal TO flex_internal_event_notification;
-
+CREATE ROLE flex_internal_data WITH NOLOGIN;
+GRANT flex_internal TO
+flex_internal_event_notification,
+flex_internal_data;
 
 -- authenticator will set role to any of the party and internal roles
 GRANT flex_anonymous TO flex_authenticator;
@@ -76,6 +81,7 @@ GRANT flex_third_party TO flex_authenticator;
 
 -- internal system roles
 GRANT flex_internal_event_notification TO flex_authenticator;
+GRANT flex_internal_data TO flex_authenticator;
 
 -- common and anonymous inherits from common
 GRANT flex_anonymous TO

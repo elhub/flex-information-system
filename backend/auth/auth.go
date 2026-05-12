@@ -23,10 +23,10 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
-	"github.com/lestrrat-go/jwx/v3/jwa"
-	"github.com/lestrrat-go/jwx/v3/jws"
-	"github.com/lestrrat-go/jwx/v3/jwt"
-	"github.com/lestrrat-go/jwx/v3/jwt/openid"
+	"github.com/lestrrat-go/jwx/v4/jwa"
+	"github.com/lestrrat-go/jwx/v4/jws"
+	"github.com/lestrrat-go/jwx/v4/jwt"
+	"github.com/lestrrat-go/jwx/v4/jwt/openid"
 )
 
 const (
@@ -41,6 +41,8 @@ const (
 	defaultLoginDelayerBaseDelay            = 2 * time.Minute
 	defaultLoginDelayerDelayIncreaseFactor  = 1.1
 	defaultLoginDelayerMaxDelay             = 1 * time.Hour
+
+	maxRequestBodyBytes = 1024
 )
 
 // API holds the authentication API handlers.
@@ -524,7 +526,7 @@ func (auth *API) GetCallbackHandler(ctx *gin.Context) { //nolint:funlen,cyclop
 
 	var returnedNonce string
 
-	err = token.Get("nonce", &returnedNonce)
+	returnedNonce, err = jwt.Get[string](token, "nonce")
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, newErrorMessage(http.StatusBadRequest, "no nonce in id_token", err))
 		return
@@ -623,6 +625,8 @@ func (auth *API) PostAssumeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	ctx := r.Context()
+
+	r.Body = http.MaxBytesReader(w, r.Body, maxRequestBodyBytes)
 
 	partyIDstr := r.FormValue("party_id")
 	if partyIDstr == "" {
@@ -1128,6 +1132,7 @@ func (auth *API) clientCredentialsHandler( //nolint:funlen
 		return
 	}
 
+	//nolint:gosec // no credentials hardcoded
 	ctx.JSON(http.StatusOK, gin.H{
 		"access_token":      string(signedAccessToken),
 		"issued_token_type": "urn:ietf:params:oauth:token-type:jwt",
@@ -1463,12 +1468,12 @@ func (auth *API) jwtBearerHandler(
 		}
 		defer tx.Commit(ctx)
 
-		partyID, err := models.GetAssumablePartyIDFromGLN(
-			ctx, tx, entityID, grant.Subject.Identifier,
+		partyID, err := models.GetAssumablePartyID(
+			ctx, tx, entityID, grant.Subject.Identifier, grant.Subject.PartyType,
 		)
 		if err != nil {
 			slog.ErrorContext(
-				ctx, "getting assumable party ID from GLN failed", "error", err,
+				ctx, "getting assumable party ID failed", "error", err,
 			)
 			ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
 				Error:            oauthErrorInvalidClient,

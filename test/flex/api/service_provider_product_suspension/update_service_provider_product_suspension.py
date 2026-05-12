@@ -118,6 +118,9 @@ def sync_detailed(
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspensionResponse]:
     """Update Service Provider Product Suspension
 
+     Update [Service Provider Product Suspension](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_suspension/)
+
     Args:
         id (int):
         body (ServiceProviderProductSuspensionUpdateRequest): Request schema for update operations
@@ -152,6 +155,9 @@ def sync(
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspensionResponse | None:
     """Update Service Provider Product Suspension
 
+     Update [Service Provider Product Suspension](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_suspension/)
+
     Args:
         id (int):
         body (ServiceProviderProductSuspensionUpdateRequest): Request schema for update operations
@@ -180,6 +186,9 @@ async def asyncio_detailed(
     body: ServiceProviderProductSuspensionUpdateRequest,
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspensionResponse]:
     """Update Service Provider Product Suspension
+
+     Update [Service Provider Product Suspension](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_suspension/)
 
     Args:
         id (int):
@@ -212,6 +221,9 @@ async def asyncio(
     body: ServiceProviderProductSuspensionUpdateRequest,
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | ServiceProviderProductSuspensionResponse | None:
     """Update Service Provider Product Suspension
+
+     Update [Service Provider Product Suspension](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_suspension/)
 
     Args:
         id (int):

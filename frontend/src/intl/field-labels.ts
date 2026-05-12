@@ -23,51 +23,62 @@ export type FieldLabel =
   | "accounting_point_energy_supplier.energy_supplier_id"
   | "accounting_point_energy_supplier.valid_from"
   | "accounting_point_energy_supplier.valid_to"
+  | "accounting_point_grid_location.accounting_point_id"
+  | "accounting_point_grid_location.additional_information"
+  | "accounting_point_grid_location.business_id"
+  | "accounting_point_grid_location.id"
+  | "accounting_point_grid_location.name"
+  | "accounting_point_grid_location.nominal_voltage"
+  | "accounting_point_grid_location.object_type"
+  | "accounting_point_grid_location.quality"
+  | "accounting_point_grid_location.recorded_at"
+  | "accounting_point_grid_location.recorded_by"
+  | "accounting_point_grid_location.source"
+  | "accounting_point_grid_location_history.accounting_point_grid_location_id"
+  | "accounting_point_grid_location_history.accounting_point_id"
+  | "accounting_point_grid_location_history.additional_information"
+  | "accounting_point_grid_location_history.business_id"
+  | "accounting_point_grid_location_history.id"
+  | "accounting_point_grid_location_history.name"
+  | "accounting_point_grid_location_history.nominal_voltage"
+  | "accounting_point_grid_location_history.object_type"
+  | "accounting_point_grid_location_history.quality"
+  | "accounting_point_grid_location_history.recorded_at"
+  | "accounting_point_grid_location_history.recorded_by"
+  | "accounting_point_grid_location_history.replaced_at"
+  | "accounting_point_grid_location_history.replaced_by"
+  | "accounting_point_grid_location_history.source"
   | "accounting_point_metering_grid_area.accounting_point_id"
   | "accounting_point_metering_grid_area.metering_grid_area_id"
   | "accounting_point_metering_grid_area.valid_from"
   | "accounting_point_metering_grid_area.valid_to"
   | "controllable_unit.accounting_point_id"
+  | "controllable_unit.additional_information"
   | "controllable_unit.business_id"
-  | "controllable_unit.grid_node_id"
-  | "controllable_unit.grid_validation_notes"
-  | "controllable_unit.grid_validation_status"
   | "controllable_unit.id"
   | "controllable_unit.is_small"
-  | "controllable_unit.maximum_available_capacity"
-  | "controllable_unit.maximum_duration"
-  | "controllable_unit.minimum_duration"
+  | "controllable_unit.maximum_active_power"
   | "controllable_unit.name"
-  | "controllable_unit.ramp_rate"
   | "controllable_unit.recorded_at"
   | "controllable_unit.recorded_by"
-  | "controllable_unit.recovery_duration"
   | "controllable_unit.regulation_direction"
   | "controllable_unit.start_date"
   | "controllable_unit.status"
-  | "controllable_unit.validated_at"
   | "controllable_unit_history.accounting_point_id"
+  | "controllable_unit_history.additional_information"
   | "controllable_unit_history.business_id"
   | "controllable_unit_history.controllable_unit_id"
-  | "controllable_unit_history.grid_node_id"
-  | "controllable_unit_history.grid_validation_notes"
-  | "controllable_unit_history.grid_validation_status"
   | "controllable_unit_history.id"
   | "controllable_unit_history.is_small"
-  | "controllable_unit_history.maximum_available_capacity"
-  | "controllable_unit_history.maximum_duration"
-  | "controllable_unit_history.minimum_duration"
+  | "controllable_unit_history.maximum_active_power"
   | "controllable_unit_history.name"
-  | "controllable_unit_history.ramp_rate"
   | "controllable_unit_history.recorded_at"
   | "controllable_unit_history.recorded_by"
-  | "controllable_unit_history.recovery_duration"
   | "controllable_unit_history.regulation_direction"
   | "controllable_unit_history.replaced_at"
   | "controllable_unit_history.replaced_by"
   | "controllable_unit_history.start_date"
   | "controllable_unit_history.status"
-  | "controllable_unit_history.validated_at"
   | "controllable_unit_service_provider.contract_reference"
   | "controllable_unit_service_provider.controllable_unit_id"
   | "controllable_unit_service_provider.end_user_id"
@@ -89,6 +100,9 @@ export type FieldLabel =
   | "controllable_unit_service_provider_history.service_provider_id"
   | "controllable_unit_service_provider_history.valid_from"
   | "controllable_unit_service_provider_history.valid_to"
+  | "controllable_unit_summary.controllable_unit_id"
+  | "controllable_unit_summary.id"
+  | "controllable_unit_summary.technical_resource"
   | "controllable_unit_suspension.controllable_unit_id"
   | "controllable_unit_suspension.id"
   | "controllable_unit_suspension.impacted_system_operator_id"
@@ -156,9 +170,14 @@ export type FieldLabel =
   | "metering_grid_area.business_id_type"
   | "metering_grid_area.id"
   | "metering_grid_area.name"
+  | "metering_grid_area.status"
   | "notice.data"
+  | "notice.id"
   | "notice.party_id"
+  | "notice.recorded_at"
+  | "notice.recorded_by"
   | "notice.source"
+  | "notice.status"
   | "notice.type"
   | "notification.acknowledged"
   | "notification.event_id"
@@ -283,6 +302,7 @@ export type FieldLabel =
   | "service_provider_product_suspension_history.replaced_by"
   | "service_provider_product_suspension_history.service_provider_id"
   | "service_provider_product_suspension_history.service_provider_product_suspension_id"
+  | "service_providing_group.additional_information"
   | "service_providing_group.bidding_zone"
   | "service_providing_group.id"
   | "service_providing_group.name"
@@ -360,6 +380,7 @@ export type FieldLabel =
   | "service_providing_group_grid_suspension_history.replaced_by"
   | "service_providing_group_grid_suspension_history.service_providing_group_grid_suspension_id"
   | "service_providing_group_grid_suspension_history.service_providing_group_id"
+  | "service_providing_group_history.additional_information"
   | "service_providing_group_history.bidding_zone"
   | "service_providing_group_history.id"
   | "service_providing_group_history.name"
@@ -387,8 +408,10 @@ export type FieldLabel =
   | "service_providing_group_membership_history.service_providing_group_membership_id"
   | "service_providing_group_membership_history.valid_from"
   | "service_providing_group_membership_history.valid_to"
+  | "service_providing_group_product_application.additional_information"
   | "service_providing_group_product_application.id"
-  | "service_providing_group_product_application.notes"
+  | "service_providing_group_product_application.maximum_active_power_down"
+  | "service_providing_group_product_application.maximum_active_power_up"
   | "service_providing_group_product_application.prequalified_at"
   | "service_providing_group_product_application.procuring_system_operator_id"
   | "service_providing_group_product_application.product_type_ids"
@@ -397,8 +420,29 @@ export type FieldLabel =
   | "service_providing_group_product_application.service_providing_group_id"
   | "service_providing_group_product_application.status"
   | "service_providing_group_product_application.verified_at"
+  | "service_providing_group_product_application_comment.content"
+  | "service_providing_group_product_application_comment.created_at"
+  | "service_providing_group_product_application_comment.created_by"
+  | "service_providing_group_product_application_comment.id"
+  | "service_providing_group_product_application_comment.recorded_at"
+  | "service_providing_group_product_application_comment.recorded_by"
+  | "service_providing_group_product_application_comment.service_providing_group_product_application_id"
+  | "service_providing_group_product_application_comment.visibility"
+  | "service_providing_group_product_application_comment_history.content"
+  | "service_providing_group_product_application_comment_history.created_at"
+  | "service_providing_group_product_application_comment_history.created_by"
+  | "service_providing_group_product_application_comment_history.id"
+  | "service_providing_group_product_application_comment_history.recorded_at"
+  | "service_providing_group_product_application_comment_history.recorded_by"
+  | "service_providing_group_product_application_comment_history.replaced_at"
+  | "service_providing_group_product_application_comment_history.replaced_by"
+  | "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id"
+  | "service_providing_group_product_application_comment_history.service_providing_group_product_application_id"
+  | "service_providing_group_product_application_comment_history.visibility"
+  | "service_providing_group_product_application_history.additional_information"
   | "service_providing_group_product_application_history.id"
-  | "service_providing_group_product_application_history.notes"
+  | "service_providing_group_product_application_history.maximum_active_power_down"
+  | "service_providing_group_product_application_history.maximum_active_power_up"
   | "service_providing_group_product_application_history.prequalified_at"
   | "service_providing_group_product_application_history.procuring_system_operator_id"
   | "service_providing_group_product_application_history.product_type_ids"
@@ -446,6 +490,10 @@ export type FieldLabel =
   | "service_providing_group_product_suspension_history.replaced_by"
   | "service_providing_group_product_suspension_history.service_providing_group_id"
   | "service_providing_group_product_suspension_history.service_providing_group_product_suspension_id"
+  | "service_providing_group_summary.controllable_unit"
+  | "service_providing_group_summary.id"
+  | "service_providing_group_summary.service_providing_group_id"
+  | "service_providing_group_summary.technical_resource"
   | "system_operator_product_type.id"
   | "system_operator_product_type.product_type_id"
   | "system_operator_product_type.recorded_at"
@@ -461,21 +509,37 @@ export type FieldLabel =
   | "system_operator_product_type_history.status"
   | "system_operator_product_type_history.system_operator_id"
   | "system_operator_product_type_history.system_operator_product_type_id"
+  | "technical_resource.additional_information"
+  | "technical_resource.business_id"
+  | "technical_resource.business_id_type"
+  | "technical_resource.category"
   | "technical_resource.controllable_unit_id"
-  | "technical_resource.details"
+  | "technical_resource.device_type"
   | "technical_resource.id"
+  | "technical_resource.make"
+  | "technical_resource.maximum_active_power"
+  | "technical_resource.model"
   | "technical_resource.name"
   | "technical_resource.recorded_at"
   | "technical_resource.recorded_by"
+  | "technical_resource.technology"
+  | "technical_resource_history.additional_information"
+  | "technical_resource_history.business_id"
+  | "technical_resource_history.business_id_type"
+  | "technical_resource_history.category"
   | "technical_resource_history.controllable_unit_id"
-  | "technical_resource_history.details"
+  | "technical_resource_history.device_type"
   | "technical_resource_history.id"
+  | "technical_resource_history.make"
+  | "technical_resource_history.maximum_active_power"
+  | "technical_resource_history.model"
   | "technical_resource_history.name"
   | "technical_resource_history.recorded_at"
   | "technical_resource_history.recorded_by"
   | "technical_resource_history.replaced_at"
   | "technical_resource_history.replaced_by"
-  | "technical_resource_history.technical_resource_id";
+  | "technical_resource_history.technical_resource_id"
+  | "technical_resource_history.technology";
 
 export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
   en: {
@@ -485,18 +549,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit.start_date": "Start date",
     "controllable_unit.status": "Status",
     "controllable_unit.regulation_direction": "Regulation direction",
-    "controllable_unit.maximum_available_capacity":
-      "Maximum available capacity",
+    "controllable_unit.maximum_active_power": "Flexible power",
     "controllable_unit.is_small": "Small",
-    "controllable_unit.minimum_duration": "Minimum duration",
-    "controllable_unit.maximum_duration": "Maximum duration",
-    "controllable_unit.recovery_duration": "Recovery duration",
-    "controllable_unit.ramp_rate": "Ramp rate",
     "controllable_unit.accounting_point_id": "Accounting point ID",
-    "controllable_unit.grid_node_id": "Grid node ID",
-    "controllable_unit.grid_validation_status": "Grid validation status",
-    "controllable_unit.grid_validation_notes": "Grid validation notes",
-    "controllable_unit.validated_at": "Validated at",
+    "controllable_unit.additional_information": "Additional information",
     "controllable_unit.recorded_at": "Recorded at",
     "controllable_unit.recorded_by": "Recorded by",
     "controllable_unit_history.id": "ID",
@@ -505,19 +561,11 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit_history.start_date": "Start date",
     "controllable_unit_history.status": "Status",
     "controllable_unit_history.regulation_direction": "Regulation direction",
-    "controllable_unit_history.maximum_available_capacity":
-      "Maximum available capacity",
+    "controllable_unit_history.maximum_active_power": "Flexible power",
     "controllable_unit_history.is_small": "Small",
-    "controllable_unit_history.minimum_duration": "Minimum duration",
-    "controllable_unit_history.maximum_duration": "Maximum duration",
-    "controllable_unit_history.recovery_duration": "Recovery duration",
-    "controllable_unit_history.ramp_rate": "Ramp rate",
     "controllable_unit_history.accounting_point_id": "Accounting point ID",
-    "controllable_unit_history.grid_node_id": "Grid node ID",
-    "controllable_unit_history.grid_validation_status":
-      "Grid validation status",
-    "controllable_unit_history.grid_validation_notes": "Grid validation notes",
-    "controllable_unit_history.validated_at": "Validated at",
+    "controllable_unit_history.additional_information":
+      "Additional information",
     "controllable_unit_history.recorded_at": "Recorded at",
     "controllable_unit_history.recorded_by": "Recorded by",
     "controllable_unit_history.controllable_unit_id": "Controllable Unit",
@@ -592,11 +640,23 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Controllable Unit Service Provider",
     "controllable_unit_service_provider_history.replaced_at": "Replaced at",
     "controllable_unit_service_provider_history.replaced_by": "Replaced by",
+    "controllable_unit_summary.id": "ID",
+    "controllable_unit_summary.controllable_unit_id": "ID",
+    "controllable_unit_summary.technical_resource":
+      "Technical resource aggregates",
+    "service_providing_group_summary.id": "ID",
+    "service_providing_group_summary.service_providing_group_id":
+      "Service Providing Group ID",
+    "service_providing_group_summary.controllable_unit":
+      "Controllable unit aggregates",
+    "service_providing_group_summary.technical_resource":
+      "Technical resource aggregates",
     "service_providing_group.id": "ID",
     "service_providing_group.name": "Name",
     "service_providing_group.service_provider_id": "Service provider",
     "service_providing_group.bidding_zone": "Bidding zone",
     "service_providing_group.status": "Status",
+    "service_providing_group.additional_information": "Additional information",
     "service_providing_group.recorded_at": "Recorded at",
     "service_providing_group.recorded_by": "Recorded by",
     "service_providing_group_history.id": "ID",
@@ -604,6 +664,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_history.service_provider_id": "Service provider",
     "service_providing_group_history.bidding_zone": "Bidding zone",
     "service_providing_group_history.status": "Status",
+    "service_providing_group_history.additional_information":
+      "Additional information",
     "service_providing_group_history.recorded_at": "Recorded at",
     "service_providing_group_history.recorded_by": "Recorded by",
     "service_providing_group_history.service_providing_group_id":
@@ -814,13 +876,30 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "technical_resource.id": "ID",
     "technical_resource.name": "Name",
     "technical_resource.controllable_unit_id": "Controllable Unit",
-    "technical_resource.details": "Details",
+    "technical_resource.technology": "Technology",
+    "technical_resource.category": "Category",
+    "technical_resource.maximum_active_power": "Rated power",
+    "technical_resource.device_type": "Device type",
+    "technical_resource.make": "Make",
+    "technical_resource.model": "Model",
+    "technical_resource.business_id": "Business ID",
+    "technical_resource.business_id_type": "Business ID type",
+    "technical_resource.additional_information": "Additional information",
     "technical_resource.recorded_at": "Recorded at",
     "technical_resource.recorded_by": "Recorded by",
     "technical_resource_history.id": "ID",
     "technical_resource_history.name": "Name",
     "technical_resource_history.controllable_unit_id": "Controllable Unit",
-    "technical_resource_history.details": "Details",
+    "technical_resource_history.technology": "Technology",
+    "technical_resource_history.category": "Category",
+    "technical_resource_history.maximum_active_power": "Rated power",
+    "technical_resource_history.device_type": "Device type",
+    "technical_resource_history.make": "Make",
+    "technical_resource_history.model": "Model",
+    "technical_resource_history.business_id": "Business ID",
+    "technical_resource_history.business_id_type": "Business ID type",
+    "technical_resource_history.additional_information":
+      "Additional information",
     "technical_resource_history.recorded_at": "Recorded at",
     "technical_resource_history.recorded_by": "Recorded by",
     "technical_resource_history.technical_resource_id": "Technical Resource",
@@ -868,12 +947,42 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "metering_grid_area.business_id": "Business ID",
     "metering_grid_area.business_id_type": "Business ID type",
     "metering_grid_area.name": "Name",
+    "metering_grid_area.status": "Status",
     "accounting_point_metering_grid_area.accounting_point_id":
       "Accounting point",
     "accounting_point_metering_grid_area.metering_grid_area_id":
       "Metering grid area",
     "accounting_point_metering_grid_area.valid_from": "Valid from",
     "accounting_point_metering_grid_area.valid_to": "Valid to",
+    "accounting_point_grid_location.id": "ID",
+    "accounting_point_grid_location.accounting_point_id": "Accounting point",
+    "accounting_point_grid_location.object_type": "Object type",
+    "accounting_point_grid_location.business_id": "Business ID",
+    "accounting_point_grid_location.name": "Name",
+    "accounting_point_grid_location.nominal_voltage": "Nominal voltage",
+    "accounting_point_grid_location.additional_information":
+      "Additional information",
+    "accounting_point_grid_location.source": "Source",
+    "accounting_point_grid_location.quality": "Quality",
+    "accounting_point_grid_location.recorded_at": "Recorded at",
+    "accounting_point_grid_location.recorded_by": "Recorded by",
+    "accounting_point_grid_location_history.id": "ID",
+    "accounting_point_grid_location_history.accounting_point_id":
+      "Accounting point",
+    "accounting_point_grid_location_history.object_type": "Object type",
+    "accounting_point_grid_location_history.business_id": "Business ID",
+    "accounting_point_grid_location_history.name": "Name",
+    "accounting_point_grid_location_history.nominal_voltage": "Nominal voltage",
+    "accounting_point_grid_location_history.additional_information":
+      "Additional information",
+    "accounting_point_grid_location_history.source": "Source",
+    "accounting_point_grid_location_history.quality": "Quality",
+    "accounting_point_grid_location_history.recorded_at": "Recorded at",
+    "accounting_point_grid_location_history.recorded_by": "Recorded by",
+    "accounting_point_grid_location_history.accounting_point_grid_location_id":
+      "Accounting Point Grid Location",
+    "accounting_point_grid_location_history.replaced_at": "Replaced at",
+    "accounting_point_grid_location_history.replaced_by": "Replaced by",
     "product_type.id": "ID",
     "product_type.business_id": "Business ID",
     "product_type.name": "Name",
@@ -1010,7 +1119,12 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application.product_type_ids":
       "Product types",
     "service_providing_group_product_application.status": "Status",
-    "service_providing_group_product_application.notes": "Notes",
+    "service_providing_group_product_application.maximum_active_power_up":
+      "Maximum active power (up)",
+    "service_providing_group_product_application.maximum_active_power_down":
+      "Maximum active power (down)",
+    "service_providing_group_product_application.additional_information":
+      "Additional information",
     "service_providing_group_product_application.prequalified_at":
       "Prequalified at",
     "service_providing_group_product_application.verified_at": "Verified at",
@@ -1024,7 +1138,12 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application_history.product_type_ids":
       "Product types",
     "service_providing_group_product_application_history.status": "Status",
-    "service_providing_group_product_application_history.notes": "Notes",
+    "service_providing_group_product_application_history.maximum_active_power_up":
+      "Maximum active power (up)",
+    "service_providing_group_product_application_history.maximum_active_power_down":
+      "Maximum active power (down)",
+    "service_providing_group_product_application_history.additional_information":
+      "Additional information",
     "service_providing_group_product_application_history.prequalified_at":
       "Prequalified at",
     "service_providing_group_product_application_history.verified_at":
@@ -1038,6 +1157,41 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application_history.replaced_at":
       "Replaced at",
     "service_providing_group_product_application_history.replaced_by":
+      "Replaced by",
+    "service_providing_group_product_application_comment.id": "ID",
+    "service_providing_group_product_application_comment.created_by":
+      "Created by",
+    "service_providing_group_product_application_comment.visibility":
+      "Visibility",
+    "service_providing_group_product_application_comment.content": "Content",
+    "service_providing_group_product_application_comment.created_at":
+      "Created at",
+    "service_providing_group_product_application_comment.recorded_at":
+      "Recorded at",
+    "service_providing_group_product_application_comment.recorded_by":
+      "Recorded by",
+    "service_providing_group_product_application_comment.service_providing_group_product_application_id":
+      "Service Providing Group Product Application",
+    "service_providing_group_product_application_comment_history.id": "ID",
+    "service_providing_group_product_application_comment_history.created_by":
+      "Created by",
+    "service_providing_group_product_application_comment_history.visibility":
+      "Visibility",
+    "service_providing_group_product_application_comment_history.content":
+      "Content",
+    "service_providing_group_product_application_comment_history.created_at":
+      "Created at",
+    "service_providing_group_product_application_comment_history.recorded_at":
+      "Recorded at",
+    "service_providing_group_product_application_comment_history.recorded_by":
+      "Recorded by",
+    "service_providing_group_product_application_comment_history.service_providing_group_product_application_id":
+      "Service Providing Group Product Application",
+    "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id":
+      "Comment ID",
+    "service_providing_group_product_application_comment_history.replaced_at":
+      "Replaced at",
+    "service_providing_group_product_application_comment_history.replaced_by":
       "Replaced by",
     "service_providing_group_product_suspension.id": "ID",
     "service_providing_group_product_suspension.procuring_system_operator_id":
@@ -1102,10 +1256,14 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Replaced at",
     "service_providing_group_product_suspension_comment_history.replaced_by":
       "Replaced by",
+    "notice.id": "ID",
+    "notice.status": "Status",
     "notice.party_id": "Party",
     "notice.type": "Type",
     "notice.source": "Source",
     "notice.data": "Data",
+    "notice.recorded_at": "Recorded at",
+    "notice.recorded_by": "Recorded by",
   },
   nb: {
     "controllable_unit.id": "ID",
@@ -1114,18 +1272,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit.start_date": "Startdato",
     "controllable_unit.status": "Status",
     "controllable_unit.regulation_direction": "Reguleringsretning",
-    "controllable_unit.maximum_available_capacity":
-      "Maksimal tilgjengelig kapasitet",
+    "controllable_unit.maximum_active_power": "Fleksibel effekt",
     "controllable_unit.is_small": "Liten",
-    "controllable_unit.minimum_duration": "Minimumsvarighet",
-    "controllable_unit.maximum_duration": "Maksimumsvarighet",
-    "controllable_unit.recovery_duration": "Gjenopprettingsvarighet",
-    "controllable_unit.ramp_rate": "Ramping",
     "controllable_unit.accounting_point_id": "Avregningspunkt-ID",
-    "controllable_unit.grid_node_id": "Nettnode-ID",
-    "controllable_unit.grid_validation_status": "Nettvalideringsstatus",
-    "controllable_unit.grid_validation_notes": "Nettvalideringsnotater",
-    "controllable_unit.validated_at": "Validert",
+    "controllable_unit.additional_information": "Tilleggsinformasjon",
     "controllable_unit.recorded_at": "Registrert",
     "controllable_unit.recorded_by": "Registrert av",
     "controllable_unit_history.id": "ID",
@@ -1134,18 +1284,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit_history.start_date": "Startdato",
     "controllable_unit_history.status": "Status",
     "controllable_unit_history.regulation_direction": "Reguleringsretning",
-    "controllable_unit_history.maximum_available_capacity":
-      "Maksimal tilgjengelig kapasitet",
+    "controllable_unit_history.maximum_active_power": "Fleksibel effekt",
     "controllable_unit_history.is_small": "Liten",
-    "controllable_unit_history.minimum_duration": "Minimumsvarighet",
-    "controllable_unit_history.maximum_duration": "Maksimumsvarighet",
-    "controllable_unit_history.recovery_duration": "Gjenopprettingsvarighet",
-    "controllable_unit_history.ramp_rate": "Ramping",
     "controllable_unit_history.accounting_point_id": "Avregningspunkt-ID",
-    "controllable_unit_history.grid_node_id": "Nettnode-ID",
-    "controllable_unit_history.grid_validation_status": "Nettvalideringsstatus",
-    "controllable_unit_history.grid_validation_notes": "Nettvalideringsnotater",
-    "controllable_unit_history.validated_at": "Validert",
+    "controllable_unit_history.additional_information": "Tilleggsinformasjon",
     "controllable_unit_history.recorded_at": "Registrert",
     "controllable_unit_history.recorded_by": "Registrert av",
     "controllable_unit_history.controllable_unit_id": "Kontrollerbar enhet",
@@ -1220,11 +1362,23 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Kontrollerbar enhet tjenesteleverandør",
     "controllable_unit_service_provider_history.replaced_at": "Erstattet",
     "controllable_unit_service_provider_history.replaced_by": "Erstattet av",
+    "controllable_unit_summary.id": "ID",
+    "controllable_unit_summary.controllable_unit_id": "ID",
+    "controllable_unit_summary.technical_resource":
+      "Aggregat om tekniske ressurser",
+    "service_providing_group_summary.id": "ID",
+    "service_providing_group_summary.service_providing_group_id":
+      "Fleksibilitetsgruppe-ID",
+    "service_providing_group_summary.controllable_unit":
+      "Aggregat om kontrollerbare enheter",
+    "service_providing_group_summary.technical_resource":
+      "Aggregat om tekniske ressurser",
     "service_providing_group.id": "ID",
     "service_providing_group.name": "Navn",
     "service_providing_group.service_provider_id": "Tjenesteleverandør",
     "service_providing_group.bidding_zone": "Budområde",
     "service_providing_group.status": "Status",
+    "service_providing_group.additional_information": "Tilleggsinformasjon",
     "service_providing_group.recorded_at": "Registrert",
     "service_providing_group.recorded_by": "Registrert av",
     "service_providing_group_history.id": "ID",
@@ -1232,6 +1386,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_history.service_provider_id": "Tjenesteleverandør",
     "service_providing_group_history.bidding_zone": "Budområde",
     "service_providing_group_history.status": "Status",
+    "service_providing_group_history.additional_information":
+      "Tilleggsinformasjon",
     "service_providing_group_history.recorded_at": "Registrert",
     "service_providing_group_history.recorded_by": "Registrert av",
     "service_providing_group_history.service_providing_group_id":
@@ -1441,13 +1597,29 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "technical_resource.id": "ID",
     "technical_resource.name": "Navn",
     "technical_resource.controllable_unit_id": "Kontrollerbar enhet",
-    "technical_resource.details": "Detaljer",
+    "technical_resource.technology": "Teknologi",
+    "technical_resource.category": "Kategori",
+    "technical_resource.maximum_active_power": "Merkeeffekt",
+    "technical_resource.device_type": "Enhetstype",
+    "technical_resource.make": "Produsent",
+    "technical_resource.model": "Modell",
+    "technical_resource.business_id": "Forretnings-ID",
+    "technical_resource.business_id_type": "Forretnings-ID-type",
+    "technical_resource.additional_information": "Tilleggsinformasjon",
     "technical_resource.recorded_at": "Registrert",
     "technical_resource.recorded_by": "Registrert av",
     "technical_resource_history.id": "ID",
     "technical_resource_history.name": "Navn",
     "technical_resource_history.controllable_unit_id": "Kontrollerbar enhet",
-    "technical_resource_history.details": "Detaljer",
+    "technical_resource_history.technology": "Teknologi",
+    "technical_resource_history.category": "Kategori",
+    "technical_resource_history.maximum_active_power": "Merkeeffekt",
+    "technical_resource_history.device_type": "Enhetstype",
+    "technical_resource_history.make": "Produsent",
+    "technical_resource_history.model": "Modell",
+    "technical_resource_history.business_id": "Forretnings-ID",
+    "technical_resource_history.business_id_type": "Forretnings-ID-type",
+    "technical_resource_history.additional_information": "Tilleggsinformasjon",
     "technical_resource_history.recorded_at": "Registrert",
     "technical_resource_history.recorded_by": "Registrert av",
     "technical_resource_history.technical_resource_id": "Teknisk ressurs",
@@ -1495,11 +1667,42 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "metering_grid_area.business_id": "Forretnings-ID",
     "metering_grid_area.business_id_type": "Forretnings-ID-type",
     "metering_grid_area.name": "Navn",
+    "metering_grid_area.status": "Status",
     "accounting_point_metering_grid_area.accounting_point_id":
       "Avregningspunkt",
     "accounting_point_metering_grid_area.metering_grid_area_id": "Nettområde",
     "accounting_point_metering_grid_area.valid_from": "Gyldig fra",
     "accounting_point_metering_grid_area.valid_to": "Gyldig til",
+    "accounting_point_grid_location.id": "ID",
+    "accounting_point_grid_location.accounting_point_id": "Avregningspunkt",
+    "accounting_point_grid_location.object_type": "Objekttype",
+    "accounting_point_grid_location.business_id": "Forretnings-ID",
+    "accounting_point_grid_location.name": "Navn",
+    "accounting_point_grid_location.nominal_voltage": "Nominell spenning",
+    "accounting_point_grid_location.additional_information":
+      "Tilleggsinformasjon",
+    "accounting_point_grid_location.source": "Kilde",
+    "accounting_point_grid_location.quality": "Kvalitet",
+    "accounting_point_grid_location.recorded_at": "Registrert",
+    "accounting_point_grid_location.recorded_by": "Registrert av",
+    "accounting_point_grid_location_history.id": "ID",
+    "accounting_point_grid_location_history.accounting_point_id":
+      "Avregningspunkt",
+    "accounting_point_grid_location_history.object_type": "Objekttype",
+    "accounting_point_grid_location_history.business_id": "Forretnings-ID",
+    "accounting_point_grid_location_history.name": "Navn",
+    "accounting_point_grid_location_history.nominal_voltage":
+      "Nominell spenning",
+    "accounting_point_grid_location_history.additional_information":
+      "Tilleggsinformasjon",
+    "accounting_point_grid_location_history.source": "Kilde",
+    "accounting_point_grid_location_history.quality": "Kvalitet",
+    "accounting_point_grid_location_history.recorded_at": "Registrert",
+    "accounting_point_grid_location_history.recorded_by": "Registrert av",
+    "accounting_point_grid_location_history.accounting_point_grid_location_id":
+      "Nettlokasjon for avregningspunkt",
+    "accounting_point_grid_location_history.replaced_at": "Erstattet",
+    "accounting_point_grid_location_history.replaced_by": "Erstattet av",
     "product_type.id": "ID",
     "product_type.business_id": "Forretnings-ID",
     "product_type.name": "Navn",
@@ -1634,7 +1837,12 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application.product_type_ids":
       "Produkttyper",
     "service_providing_group_product_application.status": "Status",
-    "service_providing_group_product_application.notes": "Notater",
+    "service_providing_group_product_application.maximum_active_power_up":
+      "Maksimal aktiv effekt (opp)",
+    "service_providing_group_product_application.maximum_active_power_down":
+      "Maksimal aktiv effekt (ned)",
+    "service_providing_group_product_application.additional_information":
+      "Tilleggsinformasjon",
     "service_providing_group_product_application.prequalified_at":
       "Prekvalifisert",
     "service_providing_group_product_application.verified_at": "Verifisert",
@@ -1648,7 +1856,12 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application_history.product_type_ids":
       "Produkttyper",
     "service_providing_group_product_application_history.status": "Status",
-    "service_providing_group_product_application_history.notes": "Notater",
+    "service_providing_group_product_application_history.maximum_active_power_up":
+      "Maksimal aktiv effekt (opp)",
+    "service_providing_group_product_application_history.maximum_active_power_down":
+      "Maksimal aktiv effekt (ned)",
+    "service_providing_group_product_application_history.additional_information":
+      "Tilleggsinformasjon",
     "service_providing_group_product_application_history.prequalified_at":
       "Prekvalifisert",
     "service_providing_group_product_application_history.verified_at":
@@ -1662,6 +1875,41 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application_history.replaced_at":
       "Erstattet",
     "service_providing_group_product_application_history.replaced_by":
+      "Erstattet av",
+    "service_providing_group_product_application_comment.id": "ID",
+    "service_providing_group_product_application_comment.created_by":
+      "Opprettet av",
+    "service_providing_group_product_application_comment.visibility":
+      "Synlighet",
+    "service_providing_group_product_application_comment.content": "Innhold",
+    "service_providing_group_product_application_comment.created_at":
+      "Opprettet",
+    "service_providing_group_product_application_comment.recorded_at":
+      "Registrert",
+    "service_providing_group_product_application_comment.recorded_by":
+      "Registrert av",
+    "service_providing_group_product_application_comment.service_providing_group_product_application_id":
+      "Fleksibilitetsgruppe produktsøknad",
+    "service_providing_group_product_application_comment_history.id": "ID",
+    "service_providing_group_product_application_comment_history.created_by":
+      "Opprettet av",
+    "service_providing_group_product_application_comment_history.visibility":
+      "Synlighet",
+    "service_providing_group_product_application_comment_history.content":
+      "Innhold",
+    "service_providing_group_product_application_comment_history.created_at":
+      "Opprettet",
+    "service_providing_group_product_application_comment_history.recorded_at":
+      "Registrert",
+    "service_providing_group_product_application_comment_history.recorded_by":
+      "Registrert av",
+    "service_providing_group_product_application_comment_history.service_providing_group_product_application_id":
+      "Fleksibilitetsgruppe produktsøknad",
+    "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id":
+      "Kommentar-ID",
+    "service_providing_group_product_application_comment_history.replaced_at":
+      "Erstattet",
+    "service_providing_group_product_application_comment_history.replaced_by":
       "Erstattet av",
     "service_providing_group_product_suspension.id": "ID",
     "service_providing_group_product_suspension.procuring_system_operator_id":
@@ -1726,10 +1974,14 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Erstattet",
     "service_providing_group_product_suspension_comment_history.replaced_by":
       "Erstattet av",
+    "notice.id": "ID",
+    "notice.status": "Status",
     "notice.party_id": "Aktør",
     "notice.type": "Type",
     "notice.source": "Kilde",
     "notice.data": "Data",
+    "notice.recorded_at": "Registrert",
+    "notice.recorded_by": "Registrert av",
   },
   nn: {
     "controllable_unit.id": "ID",
@@ -1738,18 +1990,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit.start_date": "Startdato",
     "controllable_unit.status": "Status",
     "controllable_unit.regulation_direction": "Reguleringsretning",
-    "controllable_unit.maximum_available_capacity":
-      "Maksimal tilgjengeleg kapasitet",
+    "controllable_unit.maximum_active_power": "Fleksibel effekt",
     "controllable_unit.is_small": "Liten",
-    "controllable_unit.minimum_duration": "Minimumsvarigheit",
-    "controllable_unit.maximum_duration": "Maksimumsvarigheit",
-    "controllable_unit.recovery_duration": "Gjenopprettingsvarigheit",
-    "controllable_unit.ramp_rate": "Ramping",
     "controllable_unit.accounting_point_id": "Avregningspunkt-ID",
-    "controllable_unit.grid_node_id": "Nettnode-ID",
-    "controllable_unit.grid_validation_status": "Nettvalideringsstatus",
-    "controllable_unit.grid_validation_notes": "Nettvalideringsnotat",
-    "controllable_unit.validated_at": "Validert",
+    "controllable_unit.additional_information": "Tilleggsinformasjon",
     "controllable_unit.recorded_at": "Registrert",
     "controllable_unit.recorded_by": "Registrert av",
     "controllable_unit_history.id": "ID",
@@ -1758,18 +2002,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit_history.start_date": "Startdato",
     "controllable_unit_history.status": "Status",
     "controllable_unit_history.regulation_direction": "Reguleringsretning",
-    "controllable_unit_history.maximum_available_capacity":
-      "Maksimal tilgjengeleg kapasitet",
+    "controllable_unit_history.maximum_active_power": "Fleksibel effekt",
     "controllable_unit_history.is_small": "Liten",
-    "controllable_unit_history.minimum_duration": "Minimumsvarigheit",
-    "controllable_unit_history.maximum_duration": "Maksimumsvarigheit",
-    "controllable_unit_history.recovery_duration": "Gjenopprettingsvarigheit",
-    "controllable_unit_history.ramp_rate": "Ramping",
     "controllable_unit_history.accounting_point_id": "Avregningspunkt-ID",
-    "controllable_unit_history.grid_node_id": "Nettnode-ID",
-    "controllable_unit_history.grid_validation_status": "Nettvalideringsstatus",
-    "controllable_unit_history.grid_validation_notes": "Nettvalideringsnotat",
-    "controllable_unit_history.validated_at": "Validert",
+    "controllable_unit_history.additional_information": "Tilleggsinformasjon",
     "controllable_unit_history.recorded_at": "Registrert",
     "controllable_unit_history.recorded_by": "Registrert av",
     "controllable_unit_history.controllable_unit_id": "Kontrollerbar eining",
@@ -1844,11 +2080,23 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Kontrollerbar eining tenesteleverandør",
     "controllable_unit_service_provider_history.replaced_at": "Erstattet",
     "controllable_unit_service_provider_history.replaced_by": "Erstattet av",
+    "controllable_unit_summary.id": "ID",
+    "controllable_unit_summary.controllable_unit_id": "ID",
+    "controllable_unit_summary.technical_resource":
+      "Aggregat om tekniske ressursar",
+    "service_providing_group_summary.id": "ID",
+    "service_providing_group_summary.service_providing_group_id":
+      "Fleksibilitetsgruppe-ID",
+    "service_providing_group_summary.controllable_unit":
+      "Aggregat om kontrollerbere einingar",
+    "service_providing_group_summary.technical_resource":
+      "Aggregat om tekniske ressursar",
     "service_providing_group.id": "ID",
     "service_providing_group.name": "Namn",
     "service_providing_group.service_provider_id": "Tenesteleverandør",
     "service_providing_group.bidding_zone": "Budområde",
     "service_providing_group.status": "Status",
+    "service_providing_group.additional_information": "Tilleggsinformasjon",
     "service_providing_group.recorded_at": "Registrert",
     "service_providing_group.recorded_by": "Registrert av",
     "service_providing_group_history.id": "ID",
@@ -1856,6 +2104,8 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_history.service_provider_id": "Tenesteleverandør",
     "service_providing_group_history.bidding_zone": "Budområde",
     "service_providing_group_history.status": "Status",
+    "service_providing_group_history.additional_information":
+      "Tilleggsinformasjon",
     "service_providing_group_history.recorded_at": "Registrert",
     "service_providing_group_history.recorded_by": "Registrert av",
     "service_providing_group_history.service_providing_group_id":
@@ -2064,13 +2314,29 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "technical_resource.id": "ID",
     "technical_resource.name": "Namn",
     "technical_resource.controllable_unit_id": "Kontrollerbar eining",
-    "technical_resource.details": "Detaljar",
+    "technical_resource.technology": "Teknologi",
+    "technical_resource.category": "Kategori",
+    "technical_resource.maximum_active_power": "Merkeeffekt",
+    "technical_resource.device_type": "Einingstype",
+    "technical_resource.make": "Produsent",
+    "technical_resource.model": "Modell",
+    "technical_resource.business_id": "Forretnings-ID",
+    "technical_resource.business_id_type": "Forretnings-ID-type",
+    "technical_resource.additional_information": "Tilleggsinformasjon",
     "technical_resource.recorded_at": "Registrert",
     "technical_resource.recorded_by": "Registrert av",
     "technical_resource_history.id": "ID",
     "technical_resource_history.name": "Namn",
     "technical_resource_history.controllable_unit_id": "Kontrollerbar eining",
-    "technical_resource_history.details": "Detaljar",
+    "technical_resource_history.technology": "Teknologi",
+    "technical_resource_history.category": "Kategori",
+    "technical_resource_history.maximum_active_power": "Merkeeffekt",
+    "technical_resource_history.device_type": "Einingstype",
+    "technical_resource_history.make": "Produsent",
+    "technical_resource_history.model": "Modell",
+    "technical_resource_history.business_id": "Forretnings-ID",
+    "technical_resource_history.business_id_type": "Forretnings-ID-type",
+    "technical_resource_history.additional_information": "Tilleggsinformasjon",
     "technical_resource_history.recorded_at": "Registrert",
     "technical_resource_history.recorded_by": "Registrert av",
     "technical_resource_history.technical_resource_id": "Teknisk ressurs",
@@ -2118,11 +2384,42 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "metering_grid_area.business_id": "Forretnings-ID",
     "metering_grid_area.business_id_type": "Forretnings-ID-type",
     "metering_grid_area.name": "Namn",
+    "metering_grid_area.status": "Status",
     "accounting_point_metering_grid_area.accounting_point_id":
       "Avregningspunkt",
     "accounting_point_metering_grid_area.metering_grid_area_id": "Nettområde",
     "accounting_point_metering_grid_area.valid_from": "Gyldig frå",
     "accounting_point_metering_grid_area.valid_to": "Gyldig til",
+    "accounting_point_grid_location.id": "ID",
+    "accounting_point_grid_location.accounting_point_id": "Avregningspunkt",
+    "accounting_point_grid_location.object_type": "Objekttype",
+    "accounting_point_grid_location.business_id": "Forretnings-ID",
+    "accounting_point_grid_location.name": "Namn",
+    "accounting_point_grid_location.nominal_voltage": "Nominell spenning",
+    "accounting_point_grid_location.additional_information":
+      "Tilleggsinformasjon",
+    "accounting_point_grid_location.source": "Kjelde",
+    "accounting_point_grid_location.quality": "Kvalitet",
+    "accounting_point_grid_location.recorded_at": "Registrert",
+    "accounting_point_grid_location.recorded_by": "Registrert av",
+    "accounting_point_grid_location_history.id": "ID",
+    "accounting_point_grid_location_history.accounting_point_id":
+      "Avregningspunkt",
+    "accounting_point_grid_location_history.object_type": "Objekttype",
+    "accounting_point_grid_location_history.business_id": "Forretnings-ID",
+    "accounting_point_grid_location_history.name": "Namn",
+    "accounting_point_grid_location_history.nominal_voltage":
+      "Nominell spenning",
+    "accounting_point_grid_location_history.additional_information":
+      "Tilleggsinformasjon",
+    "accounting_point_grid_location_history.source": "Kjelde",
+    "accounting_point_grid_location_history.quality": "Kvalitet",
+    "accounting_point_grid_location_history.recorded_at": "Registrert",
+    "accounting_point_grid_location_history.recorded_by": "Registrert av",
+    "accounting_point_grid_location_history.accounting_point_grid_location_id":
+      "Nettlokasjon for avrekningspunkt",
+    "accounting_point_grid_location_history.replaced_at": "Erstattet",
+    "accounting_point_grid_location_history.replaced_by": "Erstattet av",
     "product_type.id": "ID",
     "product_type.business_id": "Forretnings-ID",
     "product_type.name": "Namn",
@@ -2257,7 +2554,12 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application.product_type_ids":
       "Produkttypar",
     "service_providing_group_product_application.status": "Status",
-    "service_providing_group_product_application.notes": "Notat",
+    "service_providing_group_product_application.maximum_active_power_up":
+      "Maksimal aktiv effekt (opp)",
+    "service_providing_group_product_application.maximum_active_power_down":
+      "Maksimal aktiv effekt (ned)",
+    "service_providing_group_product_application.additional_information":
+      "Tilleggsinformasjon",
     "service_providing_group_product_application.prequalified_at":
       "Prekvalifisert",
     "service_providing_group_product_application.verified_at": "Verifisert",
@@ -2271,7 +2573,12 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application_history.product_type_ids":
       "Produkttypar",
     "service_providing_group_product_application_history.status": "Status",
-    "service_providing_group_product_application_history.notes": "Notat",
+    "service_providing_group_product_application_history.maximum_active_power_up":
+      "Maksimal aktiv effekt (opp)",
+    "service_providing_group_product_application_history.maximum_active_power_down":
+      "Maksimal aktiv effekt (ned)",
+    "service_providing_group_product_application_history.additional_information":
+      "Tilleggsinformasjon",
     "service_providing_group_product_application_history.prequalified_at":
       "Prekvalifisert",
     "service_providing_group_product_application_history.verified_at":
@@ -2285,6 +2592,41 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application_history.replaced_at":
       "Erstattet",
     "service_providing_group_product_application_history.replaced_by":
+      "Erstattet av",
+    "service_providing_group_product_application_comment.id": "ID",
+    "service_providing_group_product_application_comment.created_by":
+      "Oppretta av",
+    "service_providing_group_product_application_comment.visibility":
+      "Synlegheit",
+    "service_providing_group_product_application_comment.content": "Innhald",
+    "service_providing_group_product_application_comment.created_at":
+      "Oppretta",
+    "service_providing_group_product_application_comment.recorded_at":
+      "Registrert",
+    "service_providing_group_product_application_comment.recorded_by":
+      "Registrert av",
+    "service_providing_group_product_application_comment.service_providing_group_product_application_id":
+      "Fleksibilitetsgruppe produktsøknad",
+    "service_providing_group_product_application_comment_history.id": "ID",
+    "service_providing_group_product_application_comment_history.created_by":
+      "Oppretta av",
+    "service_providing_group_product_application_comment_history.visibility":
+      "Synlegheit",
+    "service_providing_group_product_application_comment_history.content":
+      "Innhald",
+    "service_providing_group_product_application_comment_history.created_at":
+      "Oppretta",
+    "service_providing_group_product_application_comment_history.recorded_at":
+      "Registrert",
+    "service_providing_group_product_application_comment_history.recorded_by":
+      "Registrert av",
+    "service_providing_group_product_application_comment_history.service_providing_group_product_application_id":
+      "Fleksibilitetsgruppe produktsøknad",
+    "service_providing_group_product_application_comment_history.service_providing_group_product_application_comment_id":
+      "Kommentar-ID",
+    "service_providing_group_product_application_comment_history.replaced_at":
+      "Erstattet",
+    "service_providing_group_product_application_comment_history.replaced_by":
       "Erstattet av",
     "service_providing_group_product_suspension.id": "ID",
     "service_providing_group_product_suspension.procuring_system_operator_id":
@@ -2348,9 +2690,13 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Erstattet",
     "service_providing_group_product_suspension_comment_history.replaced_by":
       "Erstattet av",
+    "notice.id": "ID",
+    "notice.status": "Status",
     "notice.party_id": "Aktør",
     "notice.type": "Type",
     "notice.source": "Kjelde",
     "notice.data": "Data",
+    "notice.recorded_at": "Registrert",
+    "notice.recorded_by": "Registrert av",
   },
 };

@@ -1,7 +1,8 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { EmptyObject, Resolver } from "react-hook-form";
+import { EmptyObject } from "react-hook-form";
 import { ErrorMessage } from "./generated-client";
-import { ZodRawShape, ZodType } from "zod";
+import { twMerge } from "tailwind-merge";
+import clsx from "clsx";
+import { formatDate } from "date-fns";
 
 // split an array into chunks of given size
 export function chunksOf(size: number, t: any[]): any[][] {
@@ -33,41 +34,78 @@ export function countDefinedValues(obj: any): number {
   }, 0);
 }
 
-// this is the type react admin uses internally for the form values
-type FieldValues = Record<string, any>;
-// React admin does not support required fields in the schema, so we need to untype the resolver
-export const unTypedZodResolver = (schema: Parameters<typeof zodResolver>[0]) =>
-  zodResolver(schema) as Resolver<FieldValues>;
-
 export type Response<T> =
   | {
       data: T;
       error: undefined;
+      response?: { headers: Headers };
     }
   | {
       data: undefined;
+      response?: { headers: Headers };
       error: ErrorMessage | EmptyObject;
     };
 
-export const throwOnError = <T>(response: Response<T>): T => {
+export const throwOnError = <T>(response: Response<T>): NonNullable<T> => {
   const { data, error } = response;
   if (error) {
     throw error;
   }
-  return data;
+  if (data === undefined || data === null) {
+    throw new Error("Unexpected empty response");
+  }
+  return data as NonNullable<T>;
 };
 
-// Use Zod schema to get the keys of the fields and if they are required.
-export const getFields = <T extends ZodRawShape>(schema: T) => {
-  return Object.entries(schema).reduce(
-    (acc, [key, value]) => {
-      const isNullable =
-        "safeParse" in value
-          ? (value as ZodType<unknown>).safeParse(undefined).success
-          : false;
-      acc[key as keyof T] = { required: !isNullable, source: key as keyof T };
-      return acc;
-    },
-    {} as Record<keyof T, { required: boolean; source: keyof T }>,
-  );
+// A utility function to extract count from response headers and return it along with data
+// The request needs prefer header "count=exact" for this to work
+export const getCountAndData = <T>(
+  response: Response<T>,
+): { count: number; data: NonNullable<T> } => {
+  const data = throwOnError(response);
+
+  const count = response.response?.headers.get("Content-Range")?.split("/")[1];
+
+  if (!count || count === "*") {
+    console.error("Count header is missing or invalid in the response");
+    throw new Error("Count header is missing in the response");
+  }
+
+  return { count: Number(count), data };
+};
+
+// CN is a standard utility function for merging classes
+export const cn = (...classes: (string | undefined)[]): string => {
+  return twMerge(clsx(classes));
+};
+
+// Format a date string (ISO) to "dd.MM.yyyy", or "-" if absent
+export const toDateString = (value: string | undefined): string => {
+  if (!value) return "-";
+  return formatDate(value, "dd.MM.yyyy");
+};
+
+// Find the currently valid record from a list of time-ranged records
+export const findCurrentlyValidRecord = <
+  T extends { valid_from?: string; valid_to?: string },
+>(
+  data: T[] | undefined,
+): T | undefined => {
+  if (!data) return undefined;
+
+  const now = new Date();
+  return data.find((record) => {
+    const validFrom = record.valid_from ? new Date(record.valid_from) : null;
+    const validTo = record.valid_to ? new Date(record.valid_to) : null;
+
+    if (
+      validFrom === null ||
+      Number.isNaN(validFrom.getTime()) ||
+      validFrom > now
+    )
+      return false;
+    if (validTo !== null && (Number.isNaN(validTo.getTime()) || validTo <= now))
+      return false;
+    return true;
+  });
 };

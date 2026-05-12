@@ -1,12 +1,22 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, cast
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
+from ..models.category import Category
+from ..models.device_type import DeviceType
+from ..models.technical_resource_business_id_type import TechnicalResourceBusinessIdType
+from ..models.technology import Technology
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.controllable_unit_response import ControllableUnitResponse
+
 
 T = TypeVar("T", bound="TechnicalResourceResponse")
 
@@ -20,37 +30,110 @@ class TechnicalResourceResponse:
         name (str): Name of the technical resource. Maximum 128 characters. Example: Battery Unit #1.
         controllable_unit_id (int): Reference to the controllable unit that this technical resource belongs to. Example:
             37.
-        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-            23:59:00 CET.
+        technology (list[Technology]): Technologies of the technical resource using ltree path notation. Multiple
+            technologies can be specified for hybrid resources (e.g., solar + battery). Example: ['solar', 'battery'].
+        category (list[Category]): Categories derived from the technologies of the technical resource. Automatically
+            computed based on the selected technologies. Example: ['production', 'energy_storage'].
+        maximum_active_power (float): Maximum continuous active power (rated power) of the technical resource in
+            kilowatts. Example: 120.0.
+        device_type (DeviceType): Type of device for technical resources.
+        recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
+            2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
-        details (None | str | Unset): Free text details about the technical resource. Example: Make: ACME
-            Model: Car Charger 3000.
+        make (None | str | Unset): The manufacturer of the device. Required if model or business_id is provided.
+            Example: SolarEdge.
+        model (None | str | Unset): The model of the device. Example: SE10K-RWS.
+        business_id (None | str | Unset): Business identifier of the device, such as a serial number or MAC address.
+            Example: SE10K123456789.
+        business_id_type (None | TechnicalResourceBusinessIdType | Unset):
+        additional_information (None | str | Unset): Free text field for extra information about the technical resource
+            if needed.
+        controllable_unit (ControllableUnitResponse | None | Unset): Embedded controllable_unit
     """
 
     id: int
     name: str
     controllable_unit_id: int
-    recorded_at: str
+    technology: list[Technology]
+    category: list[Category]
+    maximum_active_power: float
+    device_type: DeviceType
+    recorded_at: datetime.datetime
     recorded_by: int
-    details: None | str | Unset = UNSET
+    make: None | str | Unset = UNSET
+    model: None | str | Unset = UNSET
+    business_id: None | str | Unset = UNSET
+    business_id_type: None | TechnicalResourceBusinessIdType | Unset = UNSET
+    additional_information: None | str | Unset = UNSET
+    controllable_unit: ControllableUnitResponse | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        from ..models.controllable_unit_response import ControllableUnitResponse
+
         id = self.id
 
         name = self.name
 
         controllable_unit_id = self.controllable_unit_id
 
-        recorded_at = self.recorded_at
+        technology = []
+        for technology_item_data in self.technology:
+            technology_item = technology_item_data.value
+            technology.append(technology_item)
+
+        category = []
+        for category_item_data in self.category:
+            category_item = category_item_data.value
+            category.append(category_item)
+
+        maximum_active_power = self.maximum_active_power
+
+        device_type = self.device_type.value
+
+        recorded_at = self.recorded_at.isoformat()
 
         recorded_by = self.recorded_by
 
-        details: None | str | Unset
-        if isinstance(self.details, Unset):
-            details = UNSET
+        make: None | str | Unset
+        if isinstance(self.make, Unset):
+            make = UNSET
         else:
-            details = self.details
+            make = self.make
+
+        model: None | str | Unset
+        if isinstance(self.model, Unset):
+            model = UNSET
+        else:
+            model = self.model
+
+        business_id: None | str | Unset
+        if isinstance(self.business_id, Unset):
+            business_id = UNSET
+        else:
+            business_id = self.business_id
+
+        business_id_type: None | str | Unset
+        if isinstance(self.business_id_type, Unset):
+            business_id_type = UNSET
+        elif isinstance(self.business_id_type, TechnicalResourceBusinessIdType):
+            business_id_type = self.business_id_type.value
+        else:
+            business_id_type = self.business_id_type
+
+        additional_information: None | str | Unset
+        if isinstance(self.additional_information, Unset):
+            additional_information = UNSET
+        else:
+            additional_information = self.additional_information
+
+        controllable_unit: dict[str, Any] | None | Unset
+        if isinstance(self.controllable_unit, Unset):
+            controllable_unit = UNSET
+        elif isinstance(self.controllable_unit, ControllableUnitResponse):
+            controllable_unit = self.controllable_unit.to_dict()
+        else:
+            controllable_unit = self.controllable_unit
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -59,17 +142,33 @@ class TechnicalResourceResponse:
                 "id": id,
                 "name": name,
                 "controllable_unit_id": controllable_unit_id,
+                "technology": technology,
+                "category": category,
+                "maximum_active_power": maximum_active_power,
+                "device_type": device_type,
                 "recorded_at": recorded_at,
                 "recorded_by": recorded_by,
             }
         )
-        if details is not UNSET:
-            field_dict["details"] = details
+        if make is not UNSET:
+            field_dict["make"] = make
+        if model is not UNSET:
+            field_dict["model"] = model
+        if business_id is not UNSET:
+            field_dict["business_id"] = business_id
+        if business_id_type is not UNSET:
+            field_dict["business_id_type"] = business_id_type
+        if additional_information is not UNSET:
+            field_dict["additional_information"] = additional_information
+        if controllable_unit is not UNSET:
+            field_dict["controllable_unit"] = controllable_unit
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.controllable_unit_response import ControllableUnitResponse
+
         d = dict(src_dict)
         id = d.pop("id")
 
@@ -77,26 +176,114 @@ class TechnicalResourceResponse:
 
         controllable_unit_id = d.pop("controllable_unit_id")
 
-        recorded_at = d.pop("recorded_at")
+        technology = []
+        _technology = d.pop("technology")
+        for technology_item_data in _technology:
+            technology_item = Technology(technology_item_data)
+
+            technology.append(technology_item)
+
+        category = []
+        _category = d.pop("category")
+        for category_item_data in _category:
+            category_item = Category(category_item_data)
+
+            category.append(category_item)
+
+        maximum_active_power = d.pop("maximum_active_power")
+
+        device_type = DeviceType(d.pop("device_type"))
+
+        recorded_at = isoparse(d.pop("recorded_at"))
 
         recorded_by = d.pop("recorded_by")
 
-        def _parse_details(data: object) -> None | str | Unset:
+        def _parse_make(data: object) -> None | str | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             return cast(None | str | Unset, data)
 
-        details = _parse_details(d.pop("details", UNSET))
+        make = _parse_make(d.pop("make", UNSET))
+
+        def _parse_model(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        model = _parse_model(d.pop("model", UNSET))
+
+        def _parse_business_id(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        business_id = _parse_business_id(d.pop("business_id", UNSET))
+
+        def _parse_business_id_type(data: object) -> None | TechnicalResourceBusinessIdType | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                business_id_type_type_0 = TechnicalResourceBusinessIdType(data)
+
+                return business_id_type_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(None | TechnicalResourceBusinessIdType | Unset, data)
+
+        business_id_type = _parse_business_id_type(d.pop("business_id_type", UNSET))
+
+        def _parse_additional_information(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        additional_information = _parse_additional_information(d.pop("additional_information", UNSET))
+
+        def _parse_controllable_unit(data: object) -> ControllableUnitResponse | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                controllable_unit_type_0 = ControllableUnitResponse.from_dict(data)
+
+                return controllable_unit_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(ControllableUnitResponse | None | Unset, data)
+
+        controllable_unit = _parse_controllable_unit(d.pop("controllable_unit", UNSET))
 
         technical_resource_response = cls(
             id=id,
             name=name,
             controllable_unit_id=controllable_unit_id,
+            technology=technology,
+            category=category,
+            maximum_active_power=maximum_active_power,
+            device_type=device_type,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
-            details=details,
+            make=make,
+            model=model,
+            business_id=business_id,
+            business_id_type=business_id_type,
+            additional_information=additional_information,
+            controllable_unit=controllable_unit,
         )
 
         technical_resource_response.additional_properties = d

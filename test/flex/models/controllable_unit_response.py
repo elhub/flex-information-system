@@ -2,16 +2,24 @@ from __future__ import annotations
 
 import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, cast
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 from dateutil.parser import isoparse
 
-from ..models.controllable_unit_grid_validation_status import ControllableUnitGridValidationStatus
 from ..models.controllable_unit_regulation_direction import ControllableUnitRegulationDirection
 from ..models.controllable_unit_status import ControllableUnitStatus
 from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.accounting_point_response import AccountingPointResponse
+    from ..models.controllable_unit_service_provider_response import ControllableUnitServiceProviderResponse
+    from ..models.controllable_unit_summary_response import ControllableUnitSummaryResponse
+    from ..models.controllable_unit_suspension_response import ControllableUnitSuspensionResponse
+    from ..models.service_providing_group_membership_response import ServiceProvidingGroupMembershipResponse
+    from ..models.technical_resource_response import TechnicalResourceResponse
+
 
 T = TypeVar("T", bound="ControllableUnitResponse")
 
@@ -29,29 +37,26 @@ class ControllableUnitResponse:
         regulation_direction (ControllableUnitRegulationDirection): The regulation direction of the controllable unit.
             `up` means it can be used to increase production or decrease consumption, while `down` means to decrease
             production or increase consumption. Example: up.
-        maximum_available_capacity (float): Maximum continuous active power that the controllable unit can produce or
-            consume, i.e. deliver for balancing and congestion services, in kilowatts. Example: 3.5.
+        maximum_active_power (float): Maximum continuous active power (flexible power) that the controllable unit can
+            produce or consume, i.e. deliver for balancing and congestion services, in kilowatts. Example: 3.5.
         is_small (bool): Whether the controllable unit is small or not, following NCDR. Example: True.
         accounting_point_id (int): Reference to the accounting point that the controllable unit is connected to.
             Example: 10289.
-        grid_validation_status (ControllableUnitGridValidationStatus): The grid validation status of the controllable
-            unit. Example: validated.
-        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-            23:59:00 CET.
+        recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
+            2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
         start_date (datetime.date | None | Unset): The usage date when the controllable unit is first active. Example:
             2024-05-17.
-        minimum_duration (int | None | Unset): The minimum activation duration in seconds. Example: 30.
-        maximum_duration (int | None | Unset): The maximum activation duration in seconds. Example: 1200.
-        recovery_duration (int | None | Unset): The minimum recovery duration between activations in seconds. Example:
-            3600.
-        ramp_rate (float | None | Unset): The rate of power per unit of time to reach empty or full power for the
-            controllable unit, in kilowatts per minute. Example: 0.1.
-        grid_node_id (None | str | Unset): Reference to the node that the controllable unit is connected to. Example:
-            53919b79-876f-4dad-8bde-b29368367604.
-        grid_validation_notes (None | str | Unset): Free text notes on the current grid validation status.
-        validated_at (None | str | Unset): When the controllable unit was last validated. Example: 2022-08-08 12:00:00
-            CET.
+        additional_information (None | str | Unset): Free text field for extra information about the controllable unit
+            if needed.
+        accounting_point (AccountingPointResponse | None | Unset): Embedded accounting_point
+        suspension (list[ControllableUnitSuspensionResponse] | None | Unset): Embedded controllable_unit_suspension
+        service_provider (list[ControllableUnitServiceProviderResponse] | None | Unset): Embedded
+            controllable_unit_service_provider
+        summary (ControllableUnitSummaryResponse | None | Unset): Embedded controllable_unit_summary
+        service_providing_group_membership (list[ServiceProvidingGroupMembershipResponse] | None | Unset): Embedded
+            service_providing_group_membership
+        technical_resource (list[TechnicalResourceResponse] | None | Unset): Embedded technical_resource
     """
 
     id: int
@@ -59,23 +64,25 @@ class ControllableUnitResponse:
     name: str
     status: ControllableUnitStatus
     regulation_direction: ControllableUnitRegulationDirection
-    maximum_available_capacity: float
+    maximum_active_power: float
     is_small: bool
     accounting_point_id: int
-    grid_validation_status: ControllableUnitGridValidationStatus
-    recorded_at: str
+    recorded_at: datetime.datetime
     recorded_by: int
     start_date: datetime.date | None | Unset = UNSET
-    minimum_duration: int | None | Unset = UNSET
-    maximum_duration: int | None | Unset = UNSET
-    recovery_duration: int | None | Unset = UNSET
-    ramp_rate: float | None | Unset = UNSET
-    grid_node_id: None | str | Unset = UNSET
-    grid_validation_notes: None | str | Unset = UNSET
-    validated_at: None | str | Unset = UNSET
+    additional_information: None | str | Unset = UNSET
+    accounting_point: AccountingPointResponse | None | Unset = UNSET
+    suspension: list[ControllableUnitSuspensionResponse] | None | Unset = UNSET
+    service_provider: list[ControllableUnitServiceProviderResponse] | None | Unset = UNSET
+    summary: ControllableUnitSummaryResponse | None | Unset = UNSET
+    service_providing_group_membership: list[ServiceProvidingGroupMembershipResponse] | None | Unset = UNSET
+    technical_resource: list[TechnicalResourceResponse] | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        from ..models.accounting_point_response import AccountingPointResponse
+        from ..models.controllable_unit_summary_response import ControllableUnitSummaryResponse
+
         id = self.id
 
         business_id = self.business_id
@@ -86,15 +93,13 @@ class ControllableUnitResponse:
 
         regulation_direction = self.regulation_direction.value
 
-        maximum_available_capacity = self.maximum_available_capacity
+        maximum_active_power = self.maximum_active_power
 
         is_small = self.is_small
 
         accounting_point_id = self.accounting_point_id
 
-        grid_validation_status = self.grid_validation_status.value
-
-        recorded_at = self.recorded_at
+        recorded_at = self.recorded_at.isoformat()
 
         recorded_by = self.recorded_by
 
@@ -106,47 +111,77 @@ class ControllableUnitResponse:
         else:
             start_date = self.start_date
 
-        minimum_duration: int | None | Unset
-        if isinstance(self.minimum_duration, Unset):
-            minimum_duration = UNSET
+        additional_information: None | str | Unset
+        if isinstance(self.additional_information, Unset):
+            additional_information = UNSET
         else:
-            minimum_duration = self.minimum_duration
+            additional_information = self.additional_information
 
-        maximum_duration: int | None | Unset
-        if isinstance(self.maximum_duration, Unset):
-            maximum_duration = UNSET
+        accounting_point: dict[str, Any] | None | Unset
+        if isinstance(self.accounting_point, Unset):
+            accounting_point = UNSET
+        elif isinstance(self.accounting_point, AccountingPointResponse):
+            accounting_point = self.accounting_point.to_dict()
         else:
-            maximum_duration = self.maximum_duration
+            accounting_point = self.accounting_point
 
-        recovery_duration: int | None | Unset
-        if isinstance(self.recovery_duration, Unset):
-            recovery_duration = UNSET
-        else:
-            recovery_duration = self.recovery_duration
+        suspension: list[dict[str, Any]] | None | Unset
+        if isinstance(self.suspension, Unset):
+            suspension = UNSET
+        elif isinstance(self.suspension, list):
+            suspension = []
+            for suspension_type_0_item_data in self.suspension:
+                suspension_type_0_item = suspension_type_0_item_data.to_dict()
+                suspension.append(suspension_type_0_item)
 
-        ramp_rate: float | None | Unset
-        if isinstance(self.ramp_rate, Unset):
-            ramp_rate = UNSET
         else:
-            ramp_rate = self.ramp_rate
+            suspension = self.suspension
 
-        grid_node_id: None | str | Unset
-        if isinstance(self.grid_node_id, Unset):
-            grid_node_id = UNSET
-        else:
-            grid_node_id = self.grid_node_id
+        service_provider: list[dict[str, Any]] | None | Unset
+        if isinstance(self.service_provider, Unset):
+            service_provider = UNSET
+        elif isinstance(self.service_provider, list):
+            service_provider = []
+            for service_provider_type_0_item_data in self.service_provider:
+                service_provider_type_0_item = service_provider_type_0_item_data.to_dict()
+                service_provider.append(service_provider_type_0_item)
 
-        grid_validation_notes: None | str | Unset
-        if isinstance(self.grid_validation_notes, Unset):
-            grid_validation_notes = UNSET
         else:
-            grid_validation_notes = self.grid_validation_notes
+            service_provider = self.service_provider
 
-        validated_at: None | str | Unset
-        if isinstance(self.validated_at, Unset):
-            validated_at = UNSET
+        summary: dict[str, Any] | None | Unset
+        if isinstance(self.summary, Unset):
+            summary = UNSET
+        elif isinstance(self.summary, ControllableUnitSummaryResponse):
+            summary = self.summary.to_dict()
         else:
-            validated_at = self.validated_at
+            summary = self.summary
+
+        service_providing_group_membership: list[dict[str, Any]] | None | Unset
+        if isinstance(self.service_providing_group_membership, Unset):
+            service_providing_group_membership = UNSET
+        elif isinstance(self.service_providing_group_membership, list):
+            service_providing_group_membership = []
+            for service_providing_group_membership_type_0_item_data in self.service_providing_group_membership:
+                service_providing_group_membership_type_0_item = (
+                    service_providing_group_membership_type_0_item_data.to_dict()
+                )
+                service_providing_group_membership.append(service_providing_group_membership_type_0_item)
+
+        else:
+            service_providing_group_membership = self.service_providing_group_membership
+
+        technical_resource: list[dict[str, Any]] | None | Unset
+        if isinstance(self.technical_resource, Unset):
+            technical_resource = UNSET
+        elif isinstance(self.technical_resource, list):
+            technical_resource = []
+            for technical_resource_type_0_item_data in self.technical_resource:
+                technical_resource_type_0_item = technical_resource_type_0_item_data.to_dict()
+                technical_resource.append(technical_resource_type_0_item)
+
+        else:
+            technical_resource = self.technical_resource
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -157,35 +192,41 @@ class ControllableUnitResponse:
                 "name": name,
                 "status": status,
                 "regulation_direction": regulation_direction,
-                "maximum_available_capacity": maximum_available_capacity,
+                "maximum_active_power": maximum_active_power,
                 "is_small": is_small,
                 "accounting_point_id": accounting_point_id,
-                "grid_validation_status": grid_validation_status,
                 "recorded_at": recorded_at,
                 "recorded_by": recorded_by,
             }
         )
         if start_date is not UNSET:
             field_dict["start_date"] = start_date
-        if minimum_duration is not UNSET:
-            field_dict["minimum_duration"] = minimum_duration
-        if maximum_duration is not UNSET:
-            field_dict["maximum_duration"] = maximum_duration
-        if recovery_duration is not UNSET:
-            field_dict["recovery_duration"] = recovery_duration
-        if ramp_rate is not UNSET:
-            field_dict["ramp_rate"] = ramp_rate
-        if grid_node_id is not UNSET:
-            field_dict["grid_node_id"] = grid_node_id
-        if grid_validation_notes is not UNSET:
-            field_dict["grid_validation_notes"] = grid_validation_notes
-        if validated_at is not UNSET:
-            field_dict["validated_at"] = validated_at
+        if additional_information is not UNSET:
+            field_dict["additional_information"] = additional_information
+        if accounting_point is not UNSET:
+            field_dict["accounting_point"] = accounting_point
+        if suspension is not UNSET:
+            field_dict["suspension"] = suspension
+        if service_provider is not UNSET:
+            field_dict["service_provider"] = service_provider
+        if summary is not UNSET:
+            field_dict["summary"] = summary
+        if service_providing_group_membership is not UNSET:
+            field_dict["service_providing_group_membership"] = service_providing_group_membership
+        if technical_resource is not UNSET:
+            field_dict["technical_resource"] = technical_resource
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.accounting_point_response import AccountingPointResponse
+        from ..models.controllable_unit_service_provider_response import ControllableUnitServiceProviderResponse
+        from ..models.controllable_unit_summary_response import ControllableUnitSummaryResponse
+        from ..models.controllable_unit_suspension_response import ControllableUnitSuspensionResponse
+        from ..models.service_providing_group_membership_response import ServiceProvidingGroupMembershipResponse
+        from ..models.technical_resource_response import TechnicalResourceResponse
+
         d = dict(src_dict)
         id = d.pop("id")
 
@@ -197,15 +238,13 @@ class ControllableUnitResponse:
 
         regulation_direction = ControllableUnitRegulationDirection(d.pop("regulation_direction"))
 
-        maximum_available_capacity = d.pop("maximum_available_capacity")
+        maximum_active_power = d.pop("maximum_active_power")
 
         is_small = d.pop("is_small")
 
         accounting_point_id = d.pop("accounting_point_id")
 
-        grid_validation_status = ControllableUnitGridValidationStatus(d.pop("grid_validation_status"))
-
-        recorded_at = d.pop("recorded_at")
+        recorded_at = isoparse(d.pop("recorded_at"))
 
         recorded_by = d.pop("recorded_by")
 
@@ -226,68 +265,146 @@ class ControllableUnitResponse:
 
         start_date = _parse_start_date(d.pop("start_date", UNSET))
 
-        def _parse_minimum_duration(data: object) -> int | None | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            return cast(int | None | Unset, data)
-
-        minimum_duration = _parse_minimum_duration(d.pop("minimum_duration", UNSET))
-
-        def _parse_maximum_duration(data: object) -> int | None | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            return cast(int | None | Unset, data)
-
-        maximum_duration = _parse_maximum_duration(d.pop("maximum_duration", UNSET))
-
-        def _parse_recovery_duration(data: object) -> int | None | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            return cast(int | None | Unset, data)
-
-        recovery_duration = _parse_recovery_duration(d.pop("recovery_duration", UNSET))
-
-        def _parse_ramp_rate(data: object) -> float | None | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            return cast(float | None | Unset, data)
-
-        ramp_rate = _parse_ramp_rate(d.pop("ramp_rate", UNSET))
-
-        def _parse_grid_node_id(data: object) -> None | str | Unset:
+        def _parse_additional_information(data: object) -> None | str | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
             return cast(None | str | Unset, data)
 
-        grid_node_id = _parse_grid_node_id(d.pop("grid_node_id", UNSET))
+        additional_information = _parse_additional_information(d.pop("additional_information", UNSET))
 
-        def _parse_grid_validation_notes(data: object) -> None | str | Unset:
+        def _parse_accounting_point(data: object) -> AccountingPointResponse | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(None | str | Unset, data)
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                accounting_point_type_0 = AccountingPointResponse.from_dict(data)
 
-        grid_validation_notes = _parse_grid_validation_notes(d.pop("grid_validation_notes", UNSET))
+                return accounting_point_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(AccountingPointResponse | None | Unset, data)
 
-        def _parse_validated_at(data: object) -> None | str | Unset:
+        accounting_point = _parse_accounting_point(d.pop("accounting_point", UNSET))
+
+        def _parse_suspension(data: object) -> list[ControllableUnitSuspensionResponse] | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(None | str | Unset, data)
+            try:
+                if not isinstance(data, list):
+                    raise TypeError()
+                suspension_type_0 = []
+                _suspension_type_0 = data
+                for suspension_type_0_item_data in _suspension_type_0:
+                    suspension_type_0_item = ControllableUnitSuspensionResponse.from_dict(suspension_type_0_item_data)
 
-        validated_at = _parse_validated_at(d.pop("validated_at", UNSET))
+                    suspension_type_0.append(suspension_type_0_item)
+
+                return suspension_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(list[ControllableUnitSuspensionResponse] | None | Unset, data)
+
+        suspension = _parse_suspension(d.pop("suspension", UNSET))
+
+        def _parse_service_provider(data: object) -> list[ControllableUnitServiceProviderResponse] | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, list):
+                    raise TypeError()
+                service_provider_type_0 = []
+                _service_provider_type_0 = data
+                for service_provider_type_0_item_data in _service_provider_type_0:
+                    service_provider_type_0_item = ControllableUnitServiceProviderResponse.from_dict(
+                        service_provider_type_0_item_data
+                    )
+
+                    service_provider_type_0.append(service_provider_type_0_item)
+
+                return service_provider_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(list[ControllableUnitServiceProviderResponse] | None | Unset, data)
+
+        service_provider = _parse_service_provider(d.pop("service_provider", UNSET))
+
+        def _parse_summary(data: object) -> ControllableUnitSummaryResponse | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                summary_type_0 = ControllableUnitSummaryResponse.from_dict(data)
+
+                return summary_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(ControllableUnitSummaryResponse | None | Unset, data)
+
+        summary = _parse_summary(d.pop("summary", UNSET))
+
+        def _parse_service_providing_group_membership(
+            data: object,
+        ) -> list[ServiceProvidingGroupMembershipResponse] | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, list):
+                    raise TypeError()
+                service_providing_group_membership_type_0 = []
+                _service_providing_group_membership_type_0 = data
+                for service_providing_group_membership_type_0_item_data in _service_providing_group_membership_type_0:
+                    service_providing_group_membership_type_0_item = ServiceProvidingGroupMembershipResponse.from_dict(
+                        service_providing_group_membership_type_0_item_data
+                    )
+
+                    service_providing_group_membership_type_0.append(service_providing_group_membership_type_0_item)
+
+                return service_providing_group_membership_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(list[ServiceProvidingGroupMembershipResponse] | None | Unset, data)
+
+        service_providing_group_membership = _parse_service_providing_group_membership(
+            d.pop("service_providing_group_membership", UNSET)
+        )
+
+        def _parse_technical_resource(data: object) -> list[TechnicalResourceResponse] | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, list):
+                    raise TypeError()
+                technical_resource_type_0 = []
+                _technical_resource_type_0 = data
+                for technical_resource_type_0_item_data in _technical_resource_type_0:
+                    technical_resource_type_0_item = TechnicalResourceResponse.from_dict(
+                        technical_resource_type_0_item_data
+                    )
+
+                    technical_resource_type_0.append(technical_resource_type_0_item)
+
+                return technical_resource_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(list[TechnicalResourceResponse] | None | Unset, data)
+
+        technical_resource = _parse_technical_resource(d.pop("technical_resource", UNSET))
 
         controllable_unit_response = cls(
             id=id,
@@ -295,20 +412,19 @@ class ControllableUnitResponse:
             name=name,
             status=status,
             regulation_direction=regulation_direction,
-            maximum_available_capacity=maximum_available_capacity,
+            maximum_active_power=maximum_active_power,
             is_small=is_small,
             accounting_point_id=accounting_point_id,
-            grid_validation_status=grid_validation_status,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
             start_date=start_date,
-            minimum_duration=minimum_duration,
-            maximum_duration=maximum_duration,
-            recovery_duration=recovery_duration,
-            ramp_rate=ramp_rate,
-            grid_node_id=grid_node_id,
-            grid_validation_notes=grid_validation_notes,
-            validated_at=validated_at,
+            additional_information=additional_information,
+            accounting_point=accounting_point,
+            suspension=suspension,
+            service_provider=service_provider,
+            summary=summary,
+            service_providing_group_membership=service_providing_group_membership,
+            technical_resource=technical_resource,
         )
 
         controllable_unit_response.additional_properties = d

@@ -1,0 +1,8 @@
+.stepper :global(.eds-stepper-item) {
+  width: fit-content;
+}
+
+.stepper :global(.eds-stepper-separator) {
+  margin-left: 0;
+  margin-right: 0;
+}

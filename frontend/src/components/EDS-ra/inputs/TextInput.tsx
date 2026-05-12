@@ -16,6 +16,7 @@ export const TextInput = ({
   placeholder,
   readOnly,
   disabled,
+  description,
   ...rest
 }: TextInputProps) => {
   const { id, field, fieldState } = useInput({ source, ...rest });
@@ -26,6 +27,7 @@ export const TextInput = ({
 
   return (
     <BaseInput
+      description={description}
       source={source}
       required={required}
       tooltip={tooltip}
@@ -33,6 +35,7 @@ export const TextInput = ({
       readOnly={readOnly}
       id={id}
       error={fieldState.error?.message}
+      {...rest}
     >
       <TextField
         id={id}

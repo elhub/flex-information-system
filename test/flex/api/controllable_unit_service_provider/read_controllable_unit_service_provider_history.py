@@ -15,6 +15,7 @@ from ...types import Response
 def _get_kwargs(
     id: int,
 ) -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/controllable_unit_service_provider_history/{id}".format(
@@ -103,6 +104,10 @@ def sync_detailed(
 ) -> Response[ControllableUnitServiceProviderHistoryResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Read Relation between controllable unit and service provider - history
 
+     Read [Relation between controllable unit and service provider -
+    history](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_service_provider/)
+
     Args:
         id (int):
 
@@ -132,6 +137,10 @@ def sync(
 ) -> ControllableUnitServiceProviderHistoryResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Read Relation between controllable unit and service provider - history
 
+     Read [Relation between controllable unit and service provider -
+    history](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_service_provider/)
+
     Args:
         id (int):
 
@@ -155,6 +164,10 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
 ) -> Response[ControllableUnitServiceProviderHistoryResponse | EmptyObject | ErrorMessage | ErrorMessage]:
     """Read Relation between controllable unit and service provider - history
+
+     Read [Relation between controllable unit and service provider -
+    history](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_service_provider/)
 
     Args:
         id (int):
@@ -182,6 +195,10 @@ async def asyncio(
     client: AuthenticatedClient,
 ) -> ControllableUnitServiceProviderHistoryResponse | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Read Relation between controllable unit and service provider - history
+
+     Read [Relation between controllable unit and service provider -
+    history](https://elhub.github.io/flex-information-
+    system/resources/controllable_unit_service_provider/)
 
     Args:
         id (int):

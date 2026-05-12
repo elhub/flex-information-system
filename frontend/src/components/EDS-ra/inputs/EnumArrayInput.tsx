@@ -14,7 +14,9 @@ export const EnumArrayInput = ({ enumKey, ...rest }: EnumArrayInputProps) => {
   const i18nProvider = useI18nProvider() as I18nProvider;
 
   const options = i18nProvider.getEnumValues(enumKey).map((value) => ({
-    value: value.split(".").pop() ?? value,
+    // enum values are in the format "enumKey.enumValue",
+    // so we need to remove the enumKey part (plus one dot) to get the actual value
+    value: value.slice(enumKey.length + 1),
     label: translate(`enum.${value}`),
   }));
 

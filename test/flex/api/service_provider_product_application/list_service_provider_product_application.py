@@ -17,11 +17,14 @@ def _get_kwargs(
     service_provider_id: str | Unset = UNSET,
     system_operator_id: str | Unset = UNSET,
     product_type_ids: str | Unset = UNSET,
+    status: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["id"] = id
@@ -32,6 +35,8 @@ def _get_kwargs(
 
     params["product_type_ids"] = product_type_ids
 
+    params["status"] = status
+
     params["select"] = select
 
     params["order"] = order
@@ -39,6 +44,8 @@ def _get_kwargs(
     params["offset"] = offset
 
     params["limit"] = limit
+
+    params["embed"] = embed
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
@@ -149,22 +156,29 @@ def sync_detailed(
     service_provider_id: str | Unset = UNSET,
     system_operator_id: str | Unset = UNSET,
     product_type_ids: str | Unset = UNSET,
+    status: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProviderProductApplicationResponse]]:
     """List Service Provider Product Application
+
+     List [Service Provider Product Application](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_application/)
 
     Args:
         id (str | Unset):
         service_provider_id (str | Unset):
         system_operator_id (str | Unset):
         product_type_ids (str | Unset):
+        status (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -179,10 +193,12 @@ def sync_detailed(
         service_provider_id=service_provider_id,
         system_operator_id=system_operator_id,
         product_type_ids=product_type_ids,
+        status=status,
         select=select,
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
     )
 
     response = client.get_httpx_client().request(
@@ -199,22 +215,29 @@ def sync(
     service_provider_id: str | Unset = UNSET,
     system_operator_id: str | Unset = UNSET,
     product_type_ids: str | Unset = UNSET,
+    status: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProviderProductApplicationResponse] | None:
     """List Service Provider Product Application
+
+     List [Service Provider Product Application](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_application/)
 
     Args:
         id (str | Unset):
         service_provider_id (str | Unset):
         system_operator_id (str | Unset):
         product_type_ids (str | Unset):
+        status (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -230,10 +253,12 @@ def sync(
         service_provider_id=service_provider_id,
         system_operator_id=system_operator_id,
         product_type_ids=product_type_ids,
+        status=status,
         select=select,
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
     ).parsed
 
 
@@ -244,22 +269,29 @@ async def asyncio_detailed(
     service_provider_id: str | Unset = UNSET,
     system_operator_id: str | Unset = UNSET,
     product_type_ids: str | Unset = UNSET,
+    status: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProviderProductApplicationResponse]]:
     """List Service Provider Product Application
+
+     List [Service Provider Product Application](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_application/)
 
     Args:
         id (str | Unset):
         service_provider_id (str | Unset):
         system_operator_id (str | Unset):
         product_type_ids (str | Unset):
+        status (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -274,10 +306,12 @@ async def asyncio_detailed(
         service_provider_id=service_provider_id,
         system_operator_id=system_operator_id,
         product_type_ids=product_type_ids,
+        status=status,
         select=select,
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -292,22 +326,29 @@ async def asyncio(
     service_provider_id: str | Unset = UNSET,
     system_operator_id: str | Unset = UNSET,
     product_type_ids: str | Unset = UNSET,
+    status: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProviderProductApplicationResponse] | None:
     """List Service Provider Product Application
+
+     List [Service Provider Product Application](https://elhub.github.io/flex-information-
+    system/resources/service_provider_product_application/)
 
     Args:
         id (str | Unset):
         service_provider_id (str | Unset):
         system_operator_id (str | Unset):
         product_type_ids (str | Unset):
+        status (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -324,9 +365,11 @@ async def asyncio(
             service_provider_id=service_provider_id,
             system_operator_id=system_operator_id,
             product_type_ids=product_type_ids,
+            status=status,
             select=select,
             order=order,
             offset=offset,
             limit=limit,
+            embed=embed,
         )
     ).parsed

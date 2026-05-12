@@ -7,7 +7,9 @@ api.service_providing_group_product_application
 WITH (security_invoker = true) AS (
     SELECT
         id,
-        notes,
+        additional_information,
+        maximum_active_power_down,
+        maximum_active_power_up,
         prequalified_at,
         procuring_system_operator_id,
         product_type_ids,
@@ -27,7 +29,9 @@ WITH (
     SELECT
         id,
         id AS service_providing_group_product_application_id,
-        notes,
+        additional_information,
+        maximum_active_power_down,
+        maximum_active_power_up,
         prequalified_at,
         procuring_system_operator_id,
         product_type_ids,
@@ -43,7 +47,9 @@ WITH (
     SELECT
         history_id AS id,
         id AS service_providing_group_product_application_id,
-        notes,
+        additional_information,
+        maximum_active_power_down,
+        maximum_active_power_up,
         prequalified_at,
         procuring_system_operator_id,
         product_type_ids,

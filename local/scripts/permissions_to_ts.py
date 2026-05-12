@@ -58,6 +58,7 @@ history_enabled = [
     "service_provider_product_suspension",
     "service_provider_product_suspension_comment",
     "service_providing_group_product_application",
+    "service_providing_group_product_application_comment",
     "service_providing_group_product_suspension",
     "service_providing_group_product_suspension_comment",
 ]

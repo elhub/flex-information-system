@@ -24,7 +24,7 @@ operator product type resource always starts as `active`, but it can be marked
 | <a name="field-system_operator_id" href="#field-system_operator_id">system_operator_id</a> | Reference to the system operator.                                  | bigint<br/>Required<br/>Non-updatable                       | [party.id](party.md#field-id)               |
 | <a name="field-product_type_id" href="#field-product_type_id">product_type_id</a>          | Reference to the product type.                                     | bigint<br/>Required<br/>Non-updatable                       | [product_type.id](product_type.md#field-id) |
 | <a name="field-status" href="#field-status">status</a>                                     | The status of the relation.                                        | text<br/>One of: `active`, `inactive`<br/>Default: `active` |                                             |
-| <a name="field-recorded_at" href="#field-recorded_at">recorded_at</a>                      | When the resource was recorded (created or updated) in the system. | timestamp with time zone<br/>Read only                      |                                             |
+| <a name="field-recorded_at" href="#field-recorded_at">recorded_at</a>                      | When the resource was recorded (created or updated) in the system. | date-time<br/>Read only                                     |                                             |
 | <a name="field-recorded_by" href="#field-recorded_by">recorded_by</a>                      | The identity that recorded the resource.                           | bigint<br/>Read only                                        |                                             |
 
 ## Validation Rules

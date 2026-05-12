@@ -15,6 +15,7 @@ from ...types import Response
 def _get_kwargs(
     id: int,
 ) -> dict[str, Any]:
+
     _kwargs: dict[str, Any] = {
         "method": "get",
         "url": "/party_membership_history/{id}".format(
@@ -103,6 +104,9 @@ def sync_detailed(
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | PartyMembershipHistoryResponse]:
     """Read Party Membership - history
 
+     Read [Party Membership - history](https://elhub.github.io/flex-information-
+    system/resources/party_membership/)
+
     Args:
         id (int):
 
@@ -132,6 +136,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | PartyMembershipHistoryResponse | None:
     """Read Party Membership - history
 
+     Read [Party Membership - history](https://elhub.github.io/flex-information-
+    system/resources/party_membership/)
+
     Args:
         id (int):
 
@@ -155,6 +162,9 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | PartyMembershipHistoryResponse]:
     """Read Party Membership - history
+
+     Read [Party Membership - history](https://elhub.github.io/flex-information-
+    system/resources/party_membership/)
 
     Args:
         id (int):
@@ -182,6 +192,9 @@ async def asyncio(
     client: AuthenticatedClient,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | PartyMembershipHistoryResponse | None:
     """Read Party Membership - history
+
+     Read [Party Membership - history](https://elhub.github.io/flex-information-
+    system/resources/party_membership/)
 
     Args:
         id (int):

@@ -1,10 +1,16 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+
+from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.system_operator_product_type_response import SystemOperatorProductTypeResponse
+
 
 T = TypeVar("T", bound="ProductTypeResponse")
 
@@ -19,6 +25,8 @@ class ProductTypeResponse:
         name (str): The name of the product type. Example: Manual Congestion.
         service (str): The service offered by the product type. Example: congestion management.
         products (str): Examples of products belonging to this product type. Example: LongFlex, ShortFlex.
+        system_operator_product_type (list[SystemOperatorProductTypeResponse] | None | Unset): Embedded
+            system_operator_product_type
     """
 
     id: int
@@ -26,6 +34,7 @@ class ProductTypeResponse:
     name: str
     service: str
     products: str
+    system_operator_product_type: list[SystemOperatorProductTypeResponse] | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -39,6 +48,18 @@ class ProductTypeResponse:
 
         products = self.products
 
+        system_operator_product_type: list[dict[str, Any]] | None | Unset
+        if isinstance(self.system_operator_product_type, Unset):
+            system_operator_product_type = UNSET
+        elif isinstance(self.system_operator_product_type, list):
+            system_operator_product_type = []
+            for system_operator_product_type_type_0_item_data in self.system_operator_product_type:
+                system_operator_product_type_type_0_item = system_operator_product_type_type_0_item_data.to_dict()
+                system_operator_product_type.append(system_operator_product_type_type_0_item)
+
+        else:
+            system_operator_product_type = self.system_operator_product_type
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -50,11 +71,15 @@ class ProductTypeResponse:
                 "products": products,
             }
         )
+        if system_operator_product_type is not UNSET:
+            field_dict["system_operator_product_type"] = system_operator_product_type
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.system_operator_product_type_response import SystemOperatorProductTypeResponse
+
         d = dict(src_dict)
         id = d.pop("id")
 
@@ -66,12 +91,37 @@ class ProductTypeResponse:
 
         products = d.pop("products")
 
+        def _parse_system_operator_product_type(data: object) -> list[SystemOperatorProductTypeResponse] | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, list):
+                    raise TypeError()
+                system_operator_product_type_type_0 = []
+                _system_operator_product_type_type_0 = data
+                for system_operator_product_type_type_0_item_data in _system_operator_product_type_type_0:
+                    system_operator_product_type_type_0_item = SystemOperatorProductTypeResponse.from_dict(
+                        system_operator_product_type_type_0_item_data
+                    )
+
+                    system_operator_product_type_type_0.append(system_operator_product_type_type_0_item)
+
+                return system_operator_product_type_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(list[SystemOperatorProductTypeResponse] | None | Unset, data)
+
+        system_operator_product_type = _parse_system_operator_product_type(d.pop("system_operator_product_type", UNSET))
+
         product_type_response = cls(
             id=id,
             business_id=business_id,
             name=name,
             service=service,
             products=products,
+            system_operator_product_type=system_operator_product_type,
         )
 
         product_type_response.additional_properties = d

@@ -5,13 +5,13 @@ hypothesis
 Jinja2
 markdown-callouts
 mkdocs-material
-openapi-python-client==0.28.1
+openapi-python-client==0.28.3
 openpyxl
 pandas
 psycopg[binary,pool]
 pyjwt
-pytest==9.0.2
+pytest==9.0.3
 python-dotenv
-schemathesis==4.9.3
+schemathesis==4.17.0
 tabulate
 Flask

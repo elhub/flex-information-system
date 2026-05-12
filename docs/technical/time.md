@@ -137,16 +137,22 @@ The three first contracts are therefore invalid, even if number `2` starts at
 midnight on 14.07, and the three last ones are valid, and number `5` can start
 as soon as midnight on 07.07. The end date of these contracts does not matter.
 
-## Timezones
+## Timestamps
 
 In the context of storing datetime-related information, a timestamp only has
 meaning if it is considered in a given timezone.
 
 ### Storage format
 
-Datetime data is stored in the system in the standard [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
-format (date + time + timezone), so that information in the database is complete
-and does not depend on any user configuration.
+Datetime data is stored in our database as [timestamp with time
+zone](https://www.postgresql.org/docs/current/datatype-datetime.html), so that
+information in the database is complete and does not depend on any user
+configuration.
+
+### API format
+
+For documentation about the timestamp format used in the API check
+[API design](./api-design.md#time).
 
 ### Time in the user interface
 

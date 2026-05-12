@@ -1,3 +1,4 @@
+import datetime
 from http import HTTPStatus
 from typing import Any
 
@@ -15,17 +16,25 @@ def _get_kwargs(
     *,
     accounting_point_id: str | Unset = UNSET,
     valid_from: str | Unset = UNSET,
+    valid_at: datetime.datetime | Unset = UNSET,
     valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["accounting_point_id"] = accounting_point_id
 
     params["valid_from"] = valid_from
+
+    json_valid_at: str | Unset = UNSET
+    if not isinstance(valid_at, Unset):
+        json_valid_at = valid_at.isoformat()
+    params["valid_at"] = json_valid_at
 
     params["valid_to"] = valid_to
 
@@ -36,6 +45,8 @@ def _get_kwargs(
     params["offset"] = offset
 
     params["limit"] = limit
+
+    params["embed"] = embed
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
@@ -144,22 +155,29 @@ def sync_detailed(
     client: AuthenticatedClient,
     accounting_point_id: str | Unset = UNSET,
     valid_from: str | Unset = UNSET,
+    valid_at: datetime.datetime | Unset = UNSET,
     valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[AccountingPointBiddingZoneResponse]]:
     """List Accounting Point Bidding Zone
+
+     List [Accounting Point Bidding Zone](https://elhub.github.io/flex-information-
+    system/resources/accounting_point_bidding_zone/)
 
     Args:
         accounting_point_id (str | Unset):
         valid_from (str | Unset):
+        valid_at (datetime.datetime | Unset):
         valid_to (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -172,11 +190,13 @@ def sync_detailed(
     kwargs = _get_kwargs(
         accounting_point_id=accounting_point_id,
         valid_from=valid_from,
+        valid_at=valid_at,
         valid_to=valid_to,
         select=select,
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
     )
 
     response = client.get_httpx_client().request(
@@ -191,22 +211,29 @@ def sync(
     client: AuthenticatedClient,
     accounting_point_id: str | Unset = UNSET,
     valid_from: str | Unset = UNSET,
+    valid_at: datetime.datetime | Unset = UNSET,
     valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[AccountingPointBiddingZoneResponse] | None:
     """List Accounting Point Bidding Zone
+
+     List [Accounting Point Bidding Zone](https://elhub.github.io/flex-information-
+    system/resources/accounting_point_bidding_zone/)
 
     Args:
         accounting_point_id (str | Unset):
         valid_from (str | Unset):
+        valid_at (datetime.datetime | Unset):
         valid_to (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -220,11 +247,13 @@ def sync(
         client=client,
         accounting_point_id=accounting_point_id,
         valid_from=valid_from,
+        valid_at=valid_at,
         valid_to=valid_to,
         select=select,
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
     ).parsed
 
 
@@ -233,22 +262,29 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     accounting_point_id: str | Unset = UNSET,
     valid_from: str | Unset = UNSET,
+    valid_at: datetime.datetime | Unset = UNSET,
     valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
 ) -> Response[EmptyObject | ErrorMessage | ErrorMessage | list[AccountingPointBiddingZoneResponse]]:
     """List Accounting Point Bidding Zone
+
+     List [Accounting Point Bidding Zone](https://elhub.github.io/flex-information-
+    system/resources/accounting_point_bidding_zone/)
 
     Args:
         accounting_point_id (str | Unset):
         valid_from (str | Unset):
+        valid_at (datetime.datetime | Unset):
         valid_to (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -261,11 +297,13 @@ async def asyncio_detailed(
     kwargs = _get_kwargs(
         accounting_point_id=accounting_point_id,
         valid_from=valid_from,
+        valid_at=valid_at,
         valid_to=valid_to,
         select=select,
         order=order,
         offset=offset,
         limit=limit,
+        embed=embed,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -278,22 +316,29 @@ async def asyncio(
     client: AuthenticatedClient,
     accounting_point_id: str | Unset = UNSET,
     valid_from: str | Unset = UNSET,
+    valid_at: datetime.datetime | Unset = UNSET,
     valid_to: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
     limit: str | Unset = UNSET,
+    embed: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[AccountingPointBiddingZoneResponse] | None:
     """List Accounting Point Bidding Zone
+
+     List [Accounting Point Bidding Zone](https://elhub.github.io/flex-information-
+    system/resources/accounting_point_bidding_zone/)
 
     Args:
         accounting_point_id (str | Unset):
         valid_from (str | Unset):
+        valid_at (datetime.datetime | Unset):
         valid_to (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
         limit (str | Unset):
+        embed (str | Unset):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -308,10 +353,12 @@ async def asyncio(
             client=client,
             accounting_point_id=accounting_point_id,
             valid_from=valid_from,
+            valid_at=valid_at,
             valid_to=valid_to,
             select=select,
             order=order,
             offset=offset,
             limit=limit,
+            embed=embed,
         )
     ).parsed

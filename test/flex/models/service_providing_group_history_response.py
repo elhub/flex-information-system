@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
 from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
 from ..models.service_providing_group_bidding_zone import ServiceProvidingGroupBiddingZone
 from ..models.service_providing_group_status import ServiceProvidingGroupStatus
@@ -24,13 +26,15 @@ class ServiceProvidingGroupHistoryResponse:
         bidding_zone (ServiceProvidingGroupBiddingZone): The bidding zone that restricts which CUs that can be added to
             the group. Also known as scheduling area or price area for TSO. Example: NO3.
         status (ServiceProvidingGroupStatus): The status of the group. Example: active.
-        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-            23:59:00 CET.
+        recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
+            2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
         service_providing_group_id (int): Reference to the resource that was updated. Example: 48.
+        additional_information (None | str | Unset): Free text field for extra information about the service providing
+            group if needed.
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
-        replaced_at (None | str | Unset): When the resource was replaced in the system. Example: 2024-07-07 10:00:00
-            CET.
+        replaced_at (datetime.datetime | None | Unset): When the resource was replaced in the system. Example:
+            2024-07-07T10:00:00+00:00.
     """
 
     id: int
@@ -38,11 +42,12 @@ class ServiceProvidingGroupHistoryResponse:
     service_provider_id: int
     bidding_zone: ServiceProvidingGroupBiddingZone
     status: ServiceProvidingGroupStatus
-    recorded_at: str
+    recorded_at: datetime.datetime
     recorded_by: int
     service_providing_group_id: int
+    additional_information: None | str | Unset = UNSET
     replaced_by: int | None | Unset = UNSET
-    replaced_at: None | str | Unset = UNSET
+    replaced_at: datetime.datetime | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -56,11 +61,17 @@ class ServiceProvidingGroupHistoryResponse:
 
         status = self.status.value
 
-        recorded_at = self.recorded_at
+        recorded_at = self.recorded_at.isoformat()
 
         recorded_by = self.recorded_by
 
         service_providing_group_id = self.service_providing_group_id
+
+        additional_information: None | str | Unset
+        if isinstance(self.additional_information, Unset):
+            additional_information = UNSET
+        else:
+            additional_information = self.additional_information
 
         replaced_by: int | None | Unset
         if isinstance(self.replaced_by, Unset):
@@ -71,6 +82,8 @@ class ServiceProvidingGroupHistoryResponse:
         replaced_at: None | str | Unset
         if isinstance(self.replaced_at, Unset):
             replaced_at = UNSET
+        elif isinstance(self.replaced_at, datetime.datetime):
+            replaced_at = self.replaced_at.isoformat()
         else:
             replaced_at = self.replaced_at
 
@@ -88,6 +101,8 @@ class ServiceProvidingGroupHistoryResponse:
                 "service_providing_group_id": service_providing_group_id,
             }
         )
+        if additional_information is not UNSET:
+            field_dict["additional_information"] = additional_information
         if replaced_by is not UNSET:
             field_dict["replaced_by"] = replaced_by
         if replaced_at is not UNSET:
@@ -108,11 +123,20 @@ class ServiceProvidingGroupHistoryResponse:
 
         status = ServiceProvidingGroupStatus(d.pop("status"))
 
-        recorded_at = d.pop("recorded_at")
+        recorded_at = isoparse(d.pop("recorded_at"))
 
         recorded_by = d.pop("recorded_by")
 
         service_providing_group_id = d.pop("service_providing_group_id")
+
+        def _parse_additional_information(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        additional_information = _parse_additional_information(d.pop("additional_information", UNSET))
 
         def _parse_replaced_by(data: object) -> int | None | Unset:
             if data is None:
@@ -123,12 +147,20 @@ class ServiceProvidingGroupHistoryResponse:
 
         replaced_by = _parse_replaced_by(d.pop("replaced_by", UNSET))
 
-        def _parse_replaced_at(data: object) -> None | str | Unset:
+        def _parse_replaced_at(data: object) -> datetime.datetime | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(None | str | Unset, data)
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                replaced_at_type_0 = isoparse(data)
+
+                return replaced_at_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(datetime.datetime | None | Unset, data)
 
         replaced_at = _parse_replaced_at(d.pop("replaced_at", UNSET))
 
@@ -141,6 +173,7 @@ class ServiceProvidingGroupHistoryResponse:
             recorded_at=recorded_at,
             recorded_by=recorded_by,
             service_providing_group_id=service_providing_group_id,
+            additional_information=additional_information,
             replaced_by=replaced_by,
             replaced_at=replaced_at,
         )

@@ -7,3 +7,6 @@ gln,Global Location Number
 uuid,Universally Unique IDentifier
 eic_x,Energy Identification Code (Market Parties)
 eic_y,Energy Identification Code (Grid Areas)
+serial_number,Serial Number
+mac,MAC Address
+other,Other

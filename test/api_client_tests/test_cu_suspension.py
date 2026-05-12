@@ -16,6 +16,8 @@ from flex.models import (
     EmptyObject,
     TechnicalResourceCreateRequest,
     TechnicalResourceResponse,
+    Technology,
+    DeviceType,
 )
 from flex.models import (
     ControllableUnitSuspensionCreateRequest,
@@ -84,6 +86,7 @@ from flex.api.controllable_unit_service_provider import (
     create_controllable_unit_service_provider,
 )
 from typing import cast
+import datetime
 import pytest
 
 
@@ -108,7 +111,7 @@ def data():
             name="CU-SUSP-1",
             accounting_point_id=1002,  # managed by Test SO
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
-            maximum_available_capacity=3.5,
+            maximum_active_power=3.5,
         ),
     )
     assert isinstance(cu, ControllableUnitResponse)
@@ -120,7 +123,7 @@ def data():
             service_provider_id=sp_id,
             end_user_id=eu_id,
             contract_reference="TEST-CONTRACT-SUSP-1",
-            valid_from="2024-01-01T00:00:00+1",
+            valid_from=datetime.datetime.fromisoformat("2024-01-01T00:00:00+01:00"),
         ),
     )
     assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
@@ -131,6 +134,9 @@ def data():
         body=TechnicalResourceCreateRequest(
             name="TEST-TR-FOR-ACTIVATION",
             controllable_unit_id=cast(int, cu.id),
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=1.0,
+            device_type=DeviceType.OTHER,
         ),
     )
     assert isinstance(tr, TechnicalResourceResponse)
@@ -280,7 +286,7 @@ def test_cus_so(data):
             name="TEST-CU-18",
             accounting_point_id=1002,
             regulation_direction=ControllableUnitRegulationDirection.UP,
-            maximum_available_capacity=2,
+            maximum_active_power=2,
         ),
     )
     assert isinstance(cu, ControllableUnitResponse)
@@ -290,6 +296,9 @@ def test_cus_so(data):
         body=TechnicalResourceCreateRequest(
             name="TEST-TR-FOR-ACTIVATION",
             controllable_unit_id=cast(int, cu.id),
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=1.0,
+            device_type=DeviceType.OTHER,
         ),
     )
     assert isinstance(tr, TechnicalResourceResponse)
@@ -349,7 +358,7 @@ def test_cus_so(data):
             service_provider_id=sp_id,
             end_user_id=eu_id,
             contract_reference="TEST-CONTRACT-CUS",
-            valid_from="2024-01-02 Europe/Oslo",
+            valid_from=datetime.datetime.fromisoformat("2024-01-02T00:00:00+01:00"),
         ),
     )
     assert isinstance(cusp, ControllableUnitServiceProviderResponse)
@@ -359,7 +368,7 @@ def test_cus_so(data):
         body=ServiceProvidingGroupMembershipCreateRequest(
             controllable_unit_id=cast(int, cu.id),
             service_providing_group_id=cast(int, spg.id),
-            valid_from="2024-01-02 Europe/Oslo",
+            valid_from=datetime.datetime.fromisoformat("2024-01-02T00:00:00+01:00"),
         ),
     )
     assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
@@ -409,7 +418,7 @@ def test_cus_so(data):
         id=cast(int, sppa.id),
         body=ServiceProviderProductApplicationUpdateRequest(
             status=ServiceProviderProductApplicationStatus.QUALIFIED,
-            qualified_at="2024-01-01T00:00:00+1",
+            qualified_at=datetime.datetime.fromisoformat("2024-01-01T00:00:00+01:00"),
         ),
     )
 
@@ -421,6 +430,8 @@ def test_cus_so(data):
             service_providing_group_id=cast(int, spg.id),
             procuring_system_operator_id=so2_id,
             product_type_ids=pt_ids,
+            maximum_active_power_up=3.5,
+            maximum_active_power_down=3.5,
         ),
     )
     assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
@@ -430,7 +441,7 @@ def test_cus_so(data):
         id=cast(int, sppa.id),
         body=ServiceProviderProductApplicationUpdateRequest(
             status=ServiceProviderProductApplicationStatus.QUALIFIED,
-            qualified_at="2024-01-01T00:00:00+1",
+            qualified_at=datetime.datetime.fromisoformat("2024-01-01T00:00:00+01:00"),
         ),
     )
     assert not isinstance(u, ErrorMessage)
@@ -467,7 +478,7 @@ def test_cus_sp(data):
             name="CU-SUSP-1",
             accounting_point_id=1002,
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
-            maximum_available_capacity=3.5,
+            maximum_active_power=3.5,
         ),
     )
     assert isinstance(cu, ControllableUnitResponse)
@@ -479,8 +490,8 @@ def test_cus_sp(data):
             service_provider_id=old_sp_id,
             end_user_id=eu_id,
             contract_reference="TEST-CONTRACT-SUSP-OLD-1",
-            valid_from="2024-05-01 Europe/Oslo",
-            valid_to="2024-06-01 Europe/Oslo",
+            valid_from=datetime.datetime.fromisoformat("2024-05-01T00:00:00+02:00"),
+            valid_to=datetime.datetime.fromisoformat("2024-06-01T00:00:00+02:00"),
         ),
     )
     assert isinstance(old_cu_sp, ControllableUnitServiceProviderResponse)
@@ -503,6 +514,9 @@ def test_cus_sp(data):
         body=TechnicalResourceCreateRequest(
             name="TEST-TR-FOR-ACTIVATION",
             controllable_unit_id=cast(int, cu.id),
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=1.0,
+            device_type=DeviceType.OTHER,
         ),
     )
     assert isinstance(tr, TechnicalResourceResponse)
@@ -539,7 +553,7 @@ def test_cus_sp(data):
             service_provider_id=sp_id,
             end_user_id=eu_id,
             contract_reference="TEST-CONTRACT-SUSP-OLD-1",
-            valid_from="2024-07-01 Europe/Oslo",
+            valid_from=datetime.datetime.fromisoformat("2024-07-01T00:00:00+02:00"),
         ),
     )
     assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)

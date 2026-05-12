@@ -1,12 +1,19 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
 from ..models.controllable_unit_suspension_comment_visibility import ControllableUnitSuspensionCommentVisibility
+from ..types import UNSET, Unset
+
+if TYPE_CHECKING:
+    from ..models.controllable_unit_suspension_response import ControllableUnitSuspensionResponse
+
 
 T = TypeVar("T", bound="ControllableUnitSuspensionCommentResponse")
 
@@ -19,41 +26,54 @@ class ControllableUnitSuspensionCommentResponse:
         id (int): Unique surrogate identifier. Example: 9.
         controllable_unit_suspension_id (int): Reference to the controllable unit suspension. Example: 7.
         created_by (int): Reference to the identity that created the comment. Example: 94.
-        created_at (str): When the comment was added to the CUS. Example: 2022-08-08 12:00:00 CET.
+        created_at (datetime.datetime): When the comment was added to the CUS. Example: 2022-08-08 12:00:00+02:00.
         visibility (ControllableUnitSuspensionCommentVisibility): The level of visibility of the comment. Example:
             same_party.
         content (str): Free text content of the comment. Example: Missing document..
-        recorded_at (str): When the resource was recorded (created or updated) in the system. Example: 2023-12-31
-            23:59:00 CET.
+        recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
+            2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
+        controllable_unit_suspension (ControllableUnitSuspensionResponse | None | Unset): Embedded
+            controllable_unit_suspension
     """
 
     id: int
     controllable_unit_suspension_id: int
     created_by: int
-    created_at: str
+    created_at: datetime.datetime
     visibility: ControllableUnitSuspensionCommentVisibility
     content: str
-    recorded_at: str
+    recorded_at: datetime.datetime
     recorded_by: int
+    controllable_unit_suspension: ControllableUnitSuspensionResponse | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        from ..models.controllable_unit_suspension_response import ControllableUnitSuspensionResponse
+
         id = self.id
 
         controllable_unit_suspension_id = self.controllable_unit_suspension_id
 
         created_by = self.created_by
 
-        created_at = self.created_at
+        created_at = self.created_at.isoformat()
 
         visibility = self.visibility.value
 
         content = self.content
 
-        recorded_at = self.recorded_at
+        recorded_at = self.recorded_at.isoformat()
 
         recorded_by = self.recorded_by
+
+        controllable_unit_suspension: dict[str, Any] | None | Unset
+        if isinstance(self.controllable_unit_suspension, Unset):
+            controllable_unit_suspension = UNSET
+        elif isinstance(self.controllable_unit_suspension, ControllableUnitSuspensionResponse):
+            controllable_unit_suspension = self.controllable_unit_suspension.to_dict()
+        else:
+            controllable_unit_suspension = self.controllable_unit_suspension
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -69,11 +89,15 @@ class ControllableUnitSuspensionCommentResponse:
                 "recorded_by": recorded_by,
             }
         )
+        if controllable_unit_suspension is not UNSET:
+            field_dict["controllable_unit_suspension"] = controllable_unit_suspension
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.controllable_unit_suspension_response import ControllableUnitSuspensionResponse
+
         d = dict(src_dict)
         id = d.pop("id")
 
@@ -81,15 +105,32 @@ class ControllableUnitSuspensionCommentResponse:
 
         created_by = d.pop("created_by")
 
-        created_at = d.pop("created_at")
+        created_at = isoparse(d.pop("created_at"))
 
         visibility = ControllableUnitSuspensionCommentVisibility(d.pop("visibility"))
 
         content = d.pop("content")
 
-        recorded_at = d.pop("recorded_at")
+        recorded_at = isoparse(d.pop("recorded_at"))
 
         recorded_by = d.pop("recorded_by")
+
+        def _parse_controllable_unit_suspension(data: object) -> ControllableUnitSuspensionResponse | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                controllable_unit_suspension_type_0 = ControllableUnitSuspensionResponse.from_dict(data)
+
+                return controllable_unit_suspension_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(ControllableUnitSuspensionResponse | None | Unset, data)
+
+        controllable_unit_suspension = _parse_controllable_unit_suspension(d.pop("controllable_unit_suspension", UNSET))
 
         controllable_unit_suspension_comment_response = cls(
             id=id,
@@ -100,6 +141,7 @@ class ControllableUnitSuspensionCommentResponse:
             content=content,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
+            controllable_unit_suspension=controllable_unit_suspension,
         )
 
         controllable_unit_suspension_comment_response.additional_properties = d

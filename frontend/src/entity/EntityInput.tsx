@@ -5,7 +5,7 @@ import { Toolbar } from "../components/Toolbar";
 import { useFormContext } from "react-hook-form";
 import { useEffect } from "react";
 import { zEntityCreateRequest } from "../generated-client/zod.gen";
-import { unTypedZodResolver } from "../util";
+import { unTypedZodResolver } from "../zod";
 import { EnumInput } from "../components/enum";
 
 const businessIDTypeOfEntityType = (entityType: string) => {

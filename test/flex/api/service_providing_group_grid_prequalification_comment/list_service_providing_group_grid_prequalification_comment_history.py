@@ -23,6 +23,7 @@ def _get_kwargs(
     limit: str | Unset = UNSET,
     service_providing_group_grid_prequalification_comment_id: str | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["id"] = id
@@ -170,6 +171,10 @@ def sync_detailed(
 ]:
     """List Grid prequalification for service providing group Comment - history
 
+     List [Grid prequalification for service providing group Comment -
+    history](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_prequalification_comment/)
+
     Args:
         id (str | Unset):
         service_providing_group_grid_prequalification_id (str | Unset):
@@ -223,6 +228,10 @@ def sync(
 ):
     """List Grid prequalification for service providing group Comment - history
 
+     List [Grid prequalification for service providing group Comment -
+    history](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_prequalification_comment/)
+
     Args:
         id (str | Unset):
         service_providing_group_grid_prequalification_id (str | Unset):
@@ -266,6 +275,10 @@ async def asyncio_detailed(
     EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridPrequalificationCommentHistoryResponse]
 ]:
     """List Grid prequalification for service providing group Comment - history
+
+     List [Grid prequalification for service providing group Comment -
+    history](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_prequalification_comment/)
 
     Args:
         id (str | Unset):
@@ -317,6 +330,10 @@ async def asyncio(
     | None
 ):
     """List Grid prequalification for service providing group Comment - history
+
+     List [Grid prequalification for service providing group Comment -
+    history](https://elhub.github.io/flex-information-
+    system/resources/service_providing_group_grid_prequalification_comment/)
 
     Args:
         id (str | Unset):

@@ -23,6 +23,7 @@ def _get_kwargs(
     limit: str | Unset = UNSET,
     service_providing_group_grid_suspension_comment_id: str | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["id"] = id
@@ -162,6 +163,9 @@ def sync_detailed(
 ]:
     """List Service Providing Group Grid Suspension Comment - history
 
+     List [Service Providing Group Grid Suspension Comment - history](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_grid_suspension_comment/)
+
     Args:
         id (str | Unset):
         service_providing_group_grid_suspension_id (str | Unset):
@@ -209,6 +213,9 @@ def sync(
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionCommentHistoryResponse] | None:
     """List Service Providing Group Grid Suspension Comment - history
 
+     List [Service Providing Group Grid Suspension Comment - history](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_grid_suspension_comment/)
+
     Args:
         id (str | Unset):
         service_providing_group_grid_suspension_id (str | Unset):
@@ -252,6 +259,9 @@ async def asyncio_detailed(
     EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionCommentHistoryResponse]
 ]:
     """List Service Providing Group Grid Suspension Comment - history
+
+     List [Service Providing Group Grid Suspension Comment - history](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_grid_suspension_comment/)
 
     Args:
         id (str | Unset):
@@ -297,6 +307,9 @@ async def asyncio(
     service_providing_group_grid_suspension_comment_id: str | Unset = UNSET,
 ) -> EmptyObject | ErrorMessage | ErrorMessage | list[ServiceProvidingGroupGridSuspensionCommentHistoryResponse] | None:
     """List Service Providing Group Grid Suspension Comment - history
+
+     List [Service Providing Group Grid Suspension Comment - history](https://elhub.github.io/flex-
+    information-system/resources/service_providing_group_grid_suspension_comment/)
 
     Args:
         id (str | Unset):

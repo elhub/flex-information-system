@@ -1,0 +1,19 @@
+info:
+  name: Get by Accounting Point Id
+  type: http
+  seq: 7
+
+http:
+  method: GET
+  url: "{{baseUrl}}/accounting_point_grid_location?accounting_point_id=eq.1001"
+  params:
+    - name: accounting_point_id
+      value: eq.1001
+      type: query
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

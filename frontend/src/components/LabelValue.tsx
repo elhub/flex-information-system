@@ -1,16 +1,22 @@
-import { Stack, Typography, TypographyProps } from "@mui/material";
 import { useTranslateField } from "../intl/intl";
 import { FieldTooltip } from "../tooltip/FieldTooltip";
 import { TooltipKey } from "../tooltip/tooltips";
 import { FieldLabel } from "../intl/field-labels";
+import { BodyText, BodyTextProps, Link } from "./ui";
+import { ReactNode } from "react";
+import { Link as RouterLink } from "react-router-dom";
+import { cn } from "../util";
 
 type LabelValueProps = {
   labelKey?: TooltipKey | FieldLabel;
   label?: string;
-  value: string | number | undefined;
+  value: string | number | ReactNode | undefined;
+  link?: string;
+  linkText?: string;
   unit?: string;
   tooltip?: boolean;
-} & TypographyProps;
+  className?: string;
+} & Omit<BodyTextProps, "children">;
 
 export const LabelValue = ({
   label,
@@ -18,29 +24,34 @@ export const LabelValue = ({
   unit,
   labelKey,
   tooltip = false,
+  link,
+  linkText,
+  className,
   ...props
 }: LabelValueProps) => {
   const translateLabel = useTranslateField();
-  if (!value) {
-    return null;
-  }
 
-  const formattedValue = unit ? `${value} ${unit}` : value;
+  const formattedValue =
+    value !== undefined && value !== null && value !== ""
+      ? unit && (typeof value === "string" || typeof value === "number")
+        ? `${value} ${unit}`
+        : value
+      : "No value";
 
   return (
-    <Stack direction="row" spacing={1} alignItems="center">
-      <Typography variant="subtitle1" color="text.secondary" {...props}>
+    <div className={cn("flex flex-col gap-1", className)}>
+      <BodyText weight="bold" {...props}>
         {labelKey ? translateLabel(labelKey) : label}:
-      </Typography>
-      <Typography
-        variant="body1"
-        fontWeight="400"
-        color="text.primary"
-        {...props}
-      >
-        {formattedValue}
-      </Typography>
-      {tooltip && labelKey && <FieldTooltip tooltipKey={labelKey} />}
-    </Stack>
+      </BodyText>
+      <div className="flex gap-2 items-center">
+        <BodyText {...props}>{formattedValue}</BodyText>
+        {link && linkText && (
+          <Link to={link} as={RouterLink}>
+            {linkText}
+          </Link>
+        )}
+        {tooltip && labelKey && <FieldTooltip tooltipKey={labelKey} />}
+      </div>
+    </div>
   );
 };
