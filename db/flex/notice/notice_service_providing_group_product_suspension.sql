@@ -35,6 +35,7 @@ WITH (security_invoker = false) AS (
         'service_providing_group_product_suspension' AS source_resource,
         spgps.id AS source_id,
         jsonb_build_object(
+            'kind', 'notice.data.product_type.not_qualified',
             'product_type_ids', (
                 SELECT array(
                     SELECT unnest(spgps.product_type_ids)
