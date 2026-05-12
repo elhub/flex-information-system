@@ -1,9 +1,14 @@
-# Registering a Controllable Unit
+# Controllable unit registration - portal
 
 This guide explains how a Service Provider (SP) can register a new
 [Controllable Unit (CU)](../../resources/controllable_unit.md) in the Flexibility
 Information System (FIS). It explains each step that is needed as well as the
 reason why these steps are required.
+
+> [!NOTE]
+>
+> The guide is geared towards user of the portal. If you are looking for a API
+> guide, check the [companion guide](../../technical/guides/sp-cu-registration.md).
 
 Learn more about the CU and related concepts here:
 [Conceptual model](../../concepts/conceptual-model.md)
@@ -16,7 +21,7 @@ in the FIS.
 
 ## 1. Start at CU registrations
 
-Begin by navigating to CU registrations.  
+Begin by navigating to CU registrations.
 This is where the [CU registration](../../processes/controllable-unit-registration.md)
 process starts.
 
@@ -34,7 +39,7 @@ The end user ID is required in order to prevent unauthorized use of the lookup f
 Inspect the list of CUs at the accounting point:
 
 * If the CU does **not** appear → proceed to `Create a new controllable unit`.
-* If the CU **does** appear → the CU is already registered.  
+* If the CU **does** appear → the CU is already registered.
   *If the CU is receiving a new contract to switch service provider, follow the
   [service provider switching process](../../processes/service-provider-switching.md).*
 
@@ -67,7 +72,7 @@ The contract establishes the service provider’s right to control the CU and
 functions as the authorization mechanism within the register. This enables the
 service provider to manage the CU in the system.
 
-> [!NOTE]  
+> [!NOTE]
 > It is not possible to add contracts with start dates in the future when
 > registering a new CU.
 

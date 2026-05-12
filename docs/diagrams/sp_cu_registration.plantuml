@@ -3,7 +3,7 @@
 ' https://plantuml.com/activity-diagram-beta
 ' This diagram shows what a SP must do when registering a CU (using the API).
 start
-:CU lookup;
+:POST /controllable_unit/lookup;
 note left
   CU lookup allows the SP to:
   - Validate end user relation
@@ -16,14 +16,14 @@ note left
 end note
 
 if (CU exists?) then (no)
-  :Create CU;
+  :POST /controllable_unit;
   note left
     A CU must be created with status
     "new". It is the default.
   end note
 else (yes)
 endif
-  :Create CU SP contract;
+  :POST /controllable_unit_service_provider;
   note left
     The CU SP contract gives
     the SP access to the CU.
@@ -43,22 +43,24 @@ endif
     start date back in time.
   end note
   repeat
-    :Update CU data;
+    :PATCH /controllable_unit/<id>;
     note left
       Most data is provided when
       creating the CU. This step is
       necessary when switching SPs
       on existing CUs.
     end note
-    :Create/update TRs;
+    :POST /technical_resource;
     note left
       Technical resources (TRs)
-      are the actual assets that are
+      are the actual assets or devices that are
       controlled as a unit.
+
+      The CU must contain at least one TR.
     end note
   repeat while (All data OK?) is (No) not (Yes)
 
-:Activate;
+:PATCH /controllable_unit/<id>\n{"status" : "active"};
 note left
   Activating the CU means changing
   its status to "active".
