@@ -9,7 +9,8 @@ identifiers are used on the resources are detailed in the
 
 ## Surrogate vs natural keys
 
-A common way to classify different identifiers (at least in database design) is to
+A common way to classify different identifiers (at least in database design)
+is to
 call them "natural" and "surrogate" keys.
 
 A natural key is a key that is derived from the data itself. For example, a
@@ -43,7 +44,7 @@ Example:
 ## Resource identifiers - Incremental integers
 
 All resources are primarily identified by an incremental integer in the API and
-system. See the [API documentation](api-design.md#identifiers) for more information.
+system. See the [API documentation](../api/api-design.md#identifiers) for more information.
 
 ## Identifier types
 

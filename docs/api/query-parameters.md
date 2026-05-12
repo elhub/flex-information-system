@@ -72,7 +72,7 @@ GET /controllable_unit?embed=accounting_point,technical_resource
 
 ### Available relations
 
-Available relations are defined per parent resource in [`embed_relations_gen.go`](../../backend/data/embed_relations_gen.go).
+Available relations are defined per parent resource in [`embed_relations_gen.go`](https://github.com/elhub/flex-information-system/blob/main/backend/data/embed_relations_gen.go)
 
 For example, on `controllable_unit`:
 
@@ -108,5 +108,5 @@ The parameter also works prefixed with a relation name when used alongside
 GET /controllable_unit?embed=service_provider&service_provider.valid_at=2025-01-01T00:00:00Z
 ```
 
-Accepted datetime formats match those described in [API Design — Datetime](../technical/api-design.md#datetime).
+Accepted datetime formats match those described in [API Design — Datetime](./api-design.md#datetime).
 An invalid value returns `400 Bad Request`.
