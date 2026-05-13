@@ -227,8 +227,8 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		return fmt.Errorf("%w: FLEX_BASE_URL", errMissingEnv)
 	}
 
-	authAPIBaseURL := baseURL + "auth/v0/"
-	dataAPIBaseURL := baseURL + "api/v0/"
+	authAPIBaseURL := baseURL + "auth/v1/"
+	dataAPIBaseURL := baseURL + "api/v1/"
 
 	oidcIssuer, exists := lookupenv("FLEX_OIDC_ISSUER")
 	if !exists {
@@ -382,7 +382,8 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		"GET", "POST", "PATCH", "DELETE", "OPTIONS",
 	}
 
-	corsConfig.AllowHeaders = []string{"Authorization"}
+	corsConfig.AllowHeaders = []string{"Authorization", "Api-Version"}
+	corsConfig.ExposeHeaders = []string{"Api-Version"}
 
 	router.Use(cors.New(corsConfig))
 	router.Use(WrapMiddleware(middleware.RealIP))
@@ -413,7 +414,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 	router.Use(WrapMiddleware(authAPI.TokenDecodingMiddleware))
 
 	// auth API endpoints
-	authRouter := router.Group("/auth/v0")
+	authRouter := router.Group("/auth/v1")
 
 	// Endpoints
 	//nolint:contextcheck
@@ -447,8 +448,8 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		// data API endpoint
 		router.Match(
 			[]string{"HEAD", "GET", "POST", "PATCH", "DELETE", "OPTIONS"},
-			"/api/v0/*url",
-			WrapHandler(http.StripPrefix("/api/v0", middleware.PrometheusMuxInstrumentation(dataAPIHandler))), //nolint:contextcheck
+			"/api/v1/*url",
+			WrapHandler(http.StripPrefix("/api/v1", middleware.RequireAPIVersion(middleware.PrometheusMuxInstrumentation(dataAPIHandler)))), //nolint:contextcheck
 		)
 	} //end:nolint:contextcheck
 

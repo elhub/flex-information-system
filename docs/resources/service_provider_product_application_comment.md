@@ -7,7 +7,7 @@ For information about comments as a concept see [Communication and Coordination]
 
 ## Relevant links
 
-* [API Documentation](../api/v0/index.html#/operations/list_service_provider_product_application_comment)
+* [API Documentation](../api/v1/index.html#/operations/list_service_provider_product_application_comment)
 * [Download docx](../download/service_provider_product_application_comment.docx)
 
 ## Fields

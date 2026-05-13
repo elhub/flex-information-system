@@ -15,7 +15,7 @@ see [Accounting Point Grid Location](../technical/accounting-point-grid-location
 
 ## Relevant links
 
-* [API Documentation](../api/v0/index.html#/operations/list_accounting_point_grid_location)
+* [API Documentation](../api/v1/index.html#/operations/list_accounting_point_grid_location)
 * [Download docx](../download/accounting_point_grid_location.docx)
 
 ## Fields

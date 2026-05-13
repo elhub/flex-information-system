@@ -4,7 +4,7 @@ Metering grid area accounting points belong to.
 
 ## Relevant links
 
-* [API Documentation](../api/v0/index.html#/operations/list_metering_grid_area)
+* [API Documentation](../api/v1/index.html#/operations/list_metering_grid_area)
 * [Download docx](../download/metering_grid_area.docx)
 
 ## Fields

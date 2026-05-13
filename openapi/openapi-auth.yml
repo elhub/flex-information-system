@@ -7,7 +7,7 @@ info:
     name: Elhub AS
     url: https://elhub.no
     email: post@elhub.no
-  version: 0.0.1
+  version: 2026-06-08
 externalDocs:
   description: TODO
   url: https://todo.example.com
@@ -630,5 +630,5 @@ paths:
 security:
   - JWT: []
 servers:
-  - url: https://localhost:7001/auth/v0
+  - url: https://localhost:7001/auth/v1
     description: Development

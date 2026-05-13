@@ -8,11 +8,11 @@
             "url": "https://elhub.no",
             "email": "post@elhub.no"
         },
-        "version": "0.0.1"
+        "version": "2026-06-08"
     },
     "externalDocs": {
-        "description": "TODO",
-        "url": "https://todo.example.com"
+        "description": "API Changelog",
+        "url": "https://elhub.github.io/flex-information-system/changelog/"
     },
     "jsonSchemaDialect": "https://spec.openapis.org/oas/3.1/dialect/base",
     "tags": [
@@ -186,7 +186,21 @@
                 "bearerFormat": "JWT"
             }
         },
-        "parameters": {},
+        "parameters": {
+            "ApiVersion": {
+                "name": "Api-Version",
+                "in": "header",
+                "required": true,
+                "description": "The API version to use. Must be a supported version date. See the [changelog](https://elhub.github.io/flex-information-system/changelog/) for available versions.\n",
+                "schema": {
+                    "type": "string",
+                    "enum": [
+                        "2026-06-08"
+                    ],
+                    "example": "2026-06-08"
+                }
+            }
+        },
         "schemas": {
             "error_message": {
                 "description": "Error message returned from the API.",
@@ -8651,7 +8665,12 @@
                             }
                         }
                     }
-                }
+                },
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
+                ]
             }
         },
         "/controllable_unit/lookup": {
@@ -8740,7 +8759,12 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
+                ]
             }
         },
         "/entity/lookup": {
@@ -8819,7 +8843,12 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
+                ]
             }
         },
         "/controllable_unit": {
@@ -8910,6 +8939,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -9139,6 +9171,11 @@
                             "manage:data:controllable_unit"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -9268,6 +9305,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             },
@@ -9378,6 +9418,11 @@
                             "manage:data:controllable_unit"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -9483,6 +9528,9 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -9709,6 +9757,11 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -9792,6 +9845,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -10021,6 +10077,11 @@
                             "manage:data:controllable_unit_suspension"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -10157,6 +10218,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             },
@@ -10267,6 +10331,11 @@
                             "manage:data:controllable_unit_suspension"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             },
             "delete": {
@@ -10353,6 +10422,11 @@
                         "bearerAuth": [
                             "manage:data:controllable_unit_suspension"
                         ]
+                    }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             }
@@ -10451,6 +10525,9 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -10677,6 +10754,11 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -10750,6 +10832,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -10979,6 +11064,11 @@
                             "manage:data:controllable_unit_suspension_comment"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -11108,6 +11198,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             },
@@ -11218,6 +11311,11 @@
                             "manage:data:controllable_unit_suspension_comment"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -11305,6 +11403,9 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -11531,6 +11632,11 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -11652,6 +11758,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -11881,6 +11990,11 @@
                             "manage:data:controllable_unit_service_provider"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -12024,6 +12138,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             },
@@ -12134,6 +12251,11 @@
                             "manage:data:controllable_unit_service_provider"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             },
             "delete": {
@@ -12220,6 +12342,11 @@
                         "bearerAuth": [
                             "manage:data:controllable_unit_service_provider"
                         ]
+                    }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             }
@@ -12356,6 +12483,9 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -12582,6 +12712,11 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -12711,6 +12846,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             }
@@ -12841,6 +12979,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             }
@@ -12924,6 +13065,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -13153,6 +13297,11 @@
                             "manage:data:service_providing_group"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -13282,6 +13431,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             },
@@ -13392,6 +13544,11 @@
                             "manage:data:service_providing_group"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -13488,6 +13645,9 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -13714,6 +13874,11 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -13825,6 +13990,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -14054,6 +14222,11 @@
                             "manage:data:service_providing_group_membership"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -14190,6 +14363,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             },
@@ -14300,6 +14476,11 @@
                             "manage:data:service_providing_group_membership"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             },
             "delete": {
@@ -14386,6 +14567,11 @@
                         "bearerAuth": [
                             "manage:data:service_providing_group_membership"
                         ]
+                    }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             }
@@ -14512,6 +14698,9 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -14738,6 +14927,11 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -14821,6 +15015,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -15050,6 +15247,11 @@
                             "manage:data:service_providing_group_grid_prequalification"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -15186,6 +15388,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             },
@@ -15296,6 +15501,11 @@
                             "manage:data:service_providing_group_grid_prequalification"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -15393,6 +15603,9 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -15619,6 +15832,11 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -15692,6 +15910,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -15921,6 +16142,11 @@
                             "manage:data:service_providing_group_grid_prequalification_comment"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -16050,6 +16276,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             },
@@ -16160,6 +16389,11 @@
                             "manage:data:service_providing_group_grid_prequalification_comment"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -16247,6 +16481,9 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -16473,6 +16710,11 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -16556,6 +16798,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -16785,6 +17030,11 @@
                             "manage:data:service_providing_group_grid_suspension"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -16921,6 +17171,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             },
@@ -17031,6 +17284,11 @@
                             "manage:data:service_providing_group_grid_suspension"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             },
             "delete": {
@@ -17117,6 +17375,11 @@
                         "bearerAuth": [
                             "manage:data:service_providing_group_grid_suspension"
                         ]
+                    }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             }
@@ -17215,6 +17478,9 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -17441,6 +17707,11 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -17514,6 +17785,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -17743,6 +18017,11 @@
                             "manage:data:service_providing_group_grid_suspension_comment"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -17872,6 +18151,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             },
@@ -17982,6 +18264,11 @@
                             "manage:data:service_providing_group_grid_suspension_comment"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -18069,6 +18356,9 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -18295,6 +18585,11 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -18384,6 +18679,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -18613,6 +18911,11 @@
                             "manage:data:entity"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -18733,6 +19036,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             },
@@ -18843,6 +19149,11 @@
                             "manage:data:entity"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -18935,6 +19246,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -19164,6 +19478,11 @@
                             "manage:data:entity_client"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -19300,6 +19619,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             },
@@ -19410,6 +19732,11 @@
                             "manage:data:entity_client"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             },
             "delete": {
@@ -19496,6 +19823,11 @@
                         "bearerAuth": [
                             "manage:data:entity_client"
                         ]
+                    }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             }
@@ -19596,6 +19928,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -19825,6 +20160,11 @@
                             "manage:data:party"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -19954,6 +20294,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             },
@@ -20063,6 +20406,11 @@
                         "bearerAuth": [
                             "manage:data:party"
                         ]
+                    }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             }
@@ -20177,6 +20525,9 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -20403,6 +20754,11 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -20486,6 +20842,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -20715,6 +21074,11 @@
                             "manage:data:party_membership"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -20851,6 +21215,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             },
@@ -20961,6 +21328,11 @@
                             "manage:data:party_membership"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             },
             "delete": {
@@ -21047,6 +21419,11 @@
                         "bearerAuth": [
                             "manage:data:party_membership"
                         ]
+                    }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             }
@@ -21145,6 +21522,9 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -21371,6 +21751,11 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -21474,6 +21859,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -21738,6 +22126,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             }
@@ -21821,6 +22212,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -22050,6 +22444,11 @@
                             "manage:data:technical_resource"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -22179,6 +22578,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             },
@@ -22289,6 +22691,11 @@
                             "manage:data:technical_resource"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             },
             "delete": {
@@ -22375,6 +22782,11 @@
                         "bearerAuth": [
                             "manage:data:technical_resource"
                         ]
+                    }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             }
@@ -22472,6 +22884,9 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -22698,6 +23113,11 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -22761,6 +23181,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -22995,6 +23418,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             }
@@ -23079,6 +23505,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -23329,6 +23758,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             },
@@ -23439,6 +23871,11 @@
                             "manage:data:notification"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -23521,6 +23958,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -23764,6 +24204,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             }
@@ -23866,6 +24309,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -24071,6 +24517,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -24286,6 +24735,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -24501,6 +24953,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -24704,6 +25159,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -24938,6 +25396,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             }
@@ -25040,6 +25501,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -25227,6 +25691,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -25456,6 +25923,11 @@
                             "manage:data:accounting_point_grid_location"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -25585,6 +26057,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             },
@@ -25695,6 +26170,11 @@
                             "manage:data:accounting_point_grid_location"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -25782,6 +26262,9 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -26008,6 +26491,11 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -26089,6 +26577,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -26323,6 +26814,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             }
@@ -26407,6 +26901,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -26636,6 +27133,11 @@
                             "manage:data:system_operator_product_type"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -26772,6 +27274,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             },
@@ -26882,6 +27387,11 @@
                             "manage:data:system_operator_product_type"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -26979,6 +27489,9 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -27205,6 +27718,11 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -27306,6 +27824,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -27535,6 +28056,11 @@
                             "manage:data:service_provider_product_application"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -27678,6 +28204,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             },
@@ -27787,6 +28316,11 @@
                         "bearerAuth": [
                             "manage:data:service_provider_product_application"
                         ]
+                    }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             }
@@ -27903,6 +28437,9 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -28129,6 +28666,11 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -28202,6 +28744,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -28431,6 +28976,11 @@
                             "manage:data:service_provider_product_application_comment"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -28560,6 +29110,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             },
@@ -28670,6 +29223,11 @@
                             "manage:data:service_provider_product_application_comment"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -28757,6 +29315,9 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -28983,6 +29544,11 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -29076,6 +29642,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -29305,6 +29874,11 @@
                             "manage:data:service_provider_product_suspension"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -29448,6 +30022,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             },
@@ -29558,6 +30135,11 @@
                             "manage:data:service_provider_product_suspension"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             },
             "delete": {
@@ -29644,6 +30226,11 @@
                         "bearerAuth": [
                             "manage:data:service_provider_product_suspension"
                         ]
+                    }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             }
@@ -29752,6 +30339,9 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -29978,6 +30568,11 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -30051,6 +30646,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -30280,6 +30878,11 @@
                             "manage:data:service_provider_product_suspension_comment"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -30409,6 +31012,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             },
@@ -30519,6 +31125,11 @@
                             "manage:data:service_provider_product_suspension_comment"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -30606,6 +31217,9 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -30832,6 +31446,11 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -30925,6 +31544,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -31154,6 +31776,11 @@
                             "manage:data:service_providing_group_product_application"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -31297,6 +31924,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             },
@@ -31407,6 +32037,11 @@
                             "manage:data:service_providing_group_product_application"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -31514,6 +32149,9 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -31740,6 +32378,11 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -31813,6 +32456,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -32042,6 +32688,11 @@
                             "manage:data:service_providing_group_product_application_comment"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -32171,6 +32822,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             },
@@ -32281,6 +32935,11 @@
                             "manage:data:service_providing_group_product_application_comment"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -32368,6 +33027,9 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -32594,6 +33256,11 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -32687,6 +33354,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -32916,6 +33586,11 @@
                             "manage:data:service_providing_group_product_suspension"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -33059,6 +33734,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             },
@@ -33169,6 +33847,11 @@
                             "manage:data:service_providing_group_product_suspension"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             },
             "delete": {
@@ -33255,6 +33938,11 @@
                         "bearerAuth": [
                             "manage:data:service_providing_group_product_suspension"
                         ]
+                    }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             }
@@ -33363,6 +34051,9 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -33589,6 +34280,11 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -33662,6 +34358,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -33891,6 +34590,11 @@
                             "manage:data:service_providing_group_product_suspension_comment"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -34020,6 +34724,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             },
@@ -34130,6 +34837,11 @@
                             "manage:data:service_providing_group_product_suspension_comment"
                         ]
                     }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -34217,6 +34929,9 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -34443,6 +35158,11 @@
                         ]
                     },
                     {}
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
                 ]
             }
         },
@@ -34525,6 +35245,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ],
                 "responses": {
@@ -34768,6 +35491,9 @@
                             "type": "string"
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
                     }
                 ]
             }
@@ -34775,7 +35501,7 @@
     },
     "servers": [
         {
-            "url": "https://test.flex.internal:6443/api/v0",
+            "url": "https://test.flex.internal:6443/api/v1",
             "description": "Development"
         }
     ]

@@ -9,7 +9,7 @@ flexibility structure, see [Conceptual Model and Terminology](../concepts/concep
 
 ## Relevant links
 
-* [API Documentation](../api/v0/index.html#/operations/list_technical_resource)
+* [API Documentation](../api/v1/index.html#/operations/list_technical_resource)
 * [Download docx](../download/technical_resource.docx)
 
 ## Fields

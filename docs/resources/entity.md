@@ -22,11 +22,11 @@ linked to an existing entity in the system, and create the entity if it does not
 already exist. This allows users to manage more easily party memberships related
 to their organisation, and possibly create entities for their colleagues.
 
-* [API Documentation for Lookup](../api/v0/index.html#/operations/call_entity_lookup)
+* [API Documentation for Lookup](../api/v1/index.html#/operations/call_entity_lookup)
 
 ## Relevant links
 
-* [API Documentation](../api/v0/index.html#/operations/list_entity)
+* [API Documentation](../api/v1/index.html#/operations/list_entity)
 * [Download docx](../download/entity.docx)
 
 ## Fields

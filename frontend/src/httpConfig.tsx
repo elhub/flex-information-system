@@ -2,9 +2,10 @@ import { fetchUtils } from "react-admin";
 
 export const serverURL =
   window.env.VITE_FLEX_URL ?? import.meta.env.VITE_FLEX_URL;
-export const apiURL = serverURL + "/api/v0";
-export const authURL = serverURL + "/auth/v0";
+export const apiURL = serverURL + "/api/v1";
+export const authURL = serverURL + "/auth/v1";
 export const docsURL = "https://elhub.github.io/flex-information-system";
+export const API_VERSION = "2026-06-08";
 
 export async function httpClient(url: string, options: any = {}) {
   // --- workaround for array filter in the URL query --------------------------
@@ -62,6 +63,9 @@ export async function httpClient(url: string, options: any = {}) {
 
   if (!options.headers) {
     options.headers = new Headers({ Accept: "application/json" });
+  }
+  if (u.href.startsWith(apiURL)) {
+    options.headers.set("Api-Version", API_VERSION);
   }
   return fetchUtils.fetchJson(u.href, options);
 }

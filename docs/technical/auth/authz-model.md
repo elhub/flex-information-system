@@ -106,11 +106,11 @@ that the client has a matching scope.
 
 The following are a few example scopes.
 
-* `GET /api/v0/controllable_unit/` requires `read:data:controllable_unit`. It is
+* `GET /api/v1/controllable_unit/` requires `read:data:controllable_unit`. It is
   also covered by e.g. `read:data` and `use:data` but not
   `manage:data:technical_resource`.
 
-* `POST /api/v0/controllable_unit/lookup` requires `use:data:controllable_unit:lookup`.
+* `POST /api/v1/controllable_unit/lookup` requires `use:data:controllable_unit:lookup`.
   It is also covered by e.g. `manage:data` and `use:data:controllable_unit`.
 
 ### Scope assignment
@@ -181,9 +181,9 @@ Resource level authorization is a way to control access to each resource as a
 whole. As an example, a service provider should only be able to see the
 controllable units that are assigned to them.
 
-RLA is documented as a set of policies per resource and party type. We document this
-as a list of textual policies per type, as shown for Service Provider (SP) and
-System Operator (SO) in the example below.
+RLA is documented as a set of policies per resource and party type. We document
+this as a list of textual policies per type, as shown for Service Provider (SP)
+and System Operator (SO) in the example below.
 
 | Policy key | Policy                                                   | Status  |
 |------------|----------------------------------------------------------|---------|

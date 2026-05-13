@@ -90,9 +90,12 @@ Helper class for authentication, so we don't repeat this in every test
 """
 
 
+API_VERSION = "2026-06-08"
+
+
 class SecurityTokenService:
     COMMON_ROLES = ["BRP", "EU", "ES", "FISO", "MO", "SP", "SO", "TP"]
-    api_url = os.environ["FLEX_URL_BASE"] + "/api/v0"
+    api_url = os.environ["FLEX_URL_BASE"] + "/api/v1"
 
     # make this class a singleton so the caches of memoised methods are shared
     def __new__(cls):
@@ -100,7 +103,7 @@ class SecurityTokenService:
             cls.instance = super(SecurityTokenService, cls).__new__(cls)
         return cls.instance
 
-    auth_url = os.environ["FLEX_AUTH_BASE"] + "/auth/v0"
+    auth_url = os.environ["FLEX_AUTH_BASE"] + "/auth/v1"
 
     def _client_credentials(self, client_id, client_secret) -> str:
         """
@@ -165,7 +168,10 @@ class SecurityTokenService:
     def _get_client(self, entity: TestEntity, party_name=None):
         entity_token = self._client_credentials(entity.client_id(), "87h87hijhulO")
         entity_client = AuthenticatedClient(
-            base_url=self.api_url, token=entity_token, verify_ssl=False
+            base_url=self.api_url,
+            token=entity_token,
+            verify_ssl=False,
+            headers={"Api-Version": API_VERSION},
         )
         if party_name is None or party_name == "ENT":
             return entity_client
@@ -175,7 +181,12 @@ class SecurityTokenService:
             f"{str(entity.party_name_prefix())} {party_name}",
         )
         token = self._token_exchange(entity_token, party_id)
-        return AuthenticatedClient(base_url=self.api_url, token=token, verify_ssl=False)
+        return AuthenticatedClient(
+            base_url=self.api_url,
+            token=token,
+            verify_ssl=False,
+            headers={"Api-Version": API_VERSION},
+        )
 
     # memoised method for authentication
     _clients: dict[tuple[TestEntity, str | None], AuthenticatedClient] = {}
@@ -196,7 +207,11 @@ class SecurityTokenService:
                 return client
 
         # anon
-        return Client(base_url=self.api_url, verify_ssl=False)
+        return Client(
+            base_url=self.api_url,
+            verify_ssl=False,
+            headers={"Api-Version": API_VERSION},
+        )
 
     _party_types = {
         "BRP": PartyType.BALANCE_RESPONSIBLE_PARTY,
@@ -276,4 +291,5 @@ class SecurityTokenService:
             base_url=self.api_url,
             token=token,
             verify_ssl=False,
+            headers={"Api-Version": API_VERSION},
         )

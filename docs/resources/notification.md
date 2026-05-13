@@ -6,7 +6,7 @@ For information about the concept, see [notification and notice](../concepts/not
 
 ## Relevant links
 
-* [API Documentation](../api/v0/index.html#/operations/list_notification)
+* [API Documentation](../api/v1/index.html#/operations/list_notification)
 * [Download docx](../download/notification.docx)
 
 ## Fields

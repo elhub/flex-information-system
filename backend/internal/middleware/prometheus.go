@@ -33,14 +33,14 @@ var (
 // Prometheus is a Gin middleware that records HTTP request metrics.
 // It records http_requests_total and http_request_duration_seconds
 // labelled by method, matched route pattern and status code.
-// Requests to /metrics and /api/v0/* are skipped — the former to avoid
+// Requests to /metrics and /api/v1/* are skipped — the former to avoid
 // self-referential noise, the latter because PrometheusDataAPI records
 // per-route metrics for the data API at a finer granularity.
 func Prometheus(ctx *gin.Context) {
 	path := ctx.FullPath()
 
 	// Skip /metrics scrapes and data API routes (instrumented by PrometheusMuxInstrumentation).
-	if path == "/metrics" || path == "/api/v0/*url" {
+	if path == "/metrics" || path == "/api/v1/*url" {
 		ctx.Next()
 		return
 	}
@@ -104,9 +104,9 @@ func PrometheusMuxInstrumentation(next http.Handler) http.Handler {
 		// It contains only the path portion, e.g. "GET /controllable_unit/{id}".
 		// We strip the method prefix and prepend the Gin mount point.
 		pattern := req.Pattern
-		path := "/api/v0" + stripMethod(pattern)
+		path := "/api/v1" + stripMethod(pattern)
 		if pattern == "" {
-			path = "/api/v0/unmatched"
+			path = "/api/v1/unmatched"
 		}
 
 		status := strconv.Itoa(rw.statusCode)

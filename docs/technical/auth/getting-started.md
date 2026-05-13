@@ -81,7 +81,7 @@ from datetime import datetime as dt, timezone as tz, timedelta
 import uuid
 import jwt
 
-auth_api_url = # ... URL to the auth API (e.g., https://api.url/auth/v0)
+auth_api_url = # ... URL to the auth API (e.g., https://api.url/auth/v1)
 key          = # ... private key associated to the PC #1 entity client
 
 # JWT token contents

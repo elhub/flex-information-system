@@ -2,21 +2,21 @@
 # Lists servers for the APIs for all environments
 auth:
   dev:
-    url: https://localhost:7001/auth/v0
+    url: https://localhost:7001/auth/v1
     description: Development
   local:
-    url: https://test.flex.internal:6443/auth/v0
+    url: https://test.flex.internal:6443/auth/v1
     description: Local
   test:
-    url: https://flex-test.elhub.no/auth/v0
+    url: https://flex-test.elhub.no/auth/v1
     description: Test
 api:
   dev:
-    url: https://test.flex.internal:6443/api/v0
+    url: https://test.flex.internal:6443/api/v1
     description: Development
   local:
-    url: https://test.flex.internal:6443/api/v0
+    url: https://test.flex.internal:6443/api/v1
     description: Local
   test:
-    url: https://flex-test.elhub.no/api/v0
+    url: https://flex-test.elhub.no/api/v1
     description: Test

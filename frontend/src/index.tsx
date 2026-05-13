@@ -7,7 +7,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { App } from "./App";
 import { client } from "./generated-client/client.gen";
-import { apiURL } from "./httpConfig";
+import { apiURL, API_VERSION } from "./httpConfig";
 
 declare global {
   interface Window {
@@ -21,6 +21,13 @@ declare global {
 
 client.setConfig({
   baseUrl: apiURL,
+});
+
+client.interceptors.request.use((request) => {
+  if (request.url.startsWith(apiURL)) {
+    request.headers.set("Api-Version", API_VERSION);
+  }
+  return request;
 });
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

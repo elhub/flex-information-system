@@ -4,7 +4,7 @@ Relation telling which end user an accounting point belongs to.
 
 ## Relevant links
 
-* [API Documentation](../api/v0/index.html#/operations/list_accounting_point_end_user)
+* [API Documentation](../api/v1/index.html#/operations/list_accounting_point_end_user)
 * [Download docx](../download/accounting_point_end_user.docx)
 
 ## Fields

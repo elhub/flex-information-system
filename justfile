@@ -314,24 +314,24 @@ _mkdocs_build_resource_docx:
 
 _mkdocs_build_elements:
     #!/usr/bin/env bash
-    mkdir -p docs/api/v0
-    mkdir -p docs/auth/v0
+    mkdir -p docs/api/v1
+    mkdir -p docs/auth/v1
 
     api_title="Flexibility Information System Main API Documentation"
     sed "s/API_TITLE/$api_title/g; s/API_NAME/api/g; s/BASE_URL/\/flex-information-system/g" \
         ./local/elements/index.html \
-        >"./docs/api/v0/index.html"
+        >"./docs/api/v1/index.html"
     api_title="Flexibility Information System Auth API Documentation"
     sed "s/API_TITLE/$api_title/g; s/API_NAME/auth/g; s/BASE_URL/\/flex-information-system/g" \
         ./local/elements/index.html \
-        >"./docs/auth/v0/index.html"
+        >"./docs/auth/v1/index.html"
 
     jq --argjson servers "$(yq -o=json openapi/servers.yml)" \
         '.servers = [$servers.api.test]' <"backend/data/static/openapi.json" \
-        >"./docs/api/v0/openapi.json"
+        >"./docs/api/v1/openapi.json"
     jq --argjson servers "$(yq -o=json openapi/servers.yml)" \
         '.servers = [$servers.auth.test]' <"backend/auth/static/openapi.json" \
-        >"./docs/auth/v0/openapi.json"
+        >"./docs/auth/v1/openapi.json"
 
 # deploy documentation to GitHub Pages
 mkdocs_deploy: _check_main _venv _mkdocs_build_resource_docx _mkdocs_build_elements _mkdocs_deploy
@@ -494,7 +494,7 @@ openapi-to-md:
             # no list operation, link to read instead
             link="read"
         fi
-        api_link="../api/v0/index.html#/operations/${link}_$resource"
+        api_link="../api/v1/index.html#/operations/${link}_$resource"
 
         docx_link="../download/${resource}.docx"
 
@@ -546,9 +546,18 @@ openapi-client-test:
     # assumes that the client should use the default value if it is not provided.
     # Our interpretation of the default value is that it is a value that the
     # _server_ uses if the client does not provide a value.
+    # We also remove the ApiVersion header parameter: it is injected centrally by
+    # SecurityTokenService on every client, so it must not appear as a required
+    # argument on every generated function.
 
     jq '( .components.schemas // empty, .paths[].get.parameters // empty )
-            |= walk(if type == "object" then del(.default) else . end)' \
+            |= walk(if type == "object" then del(.default) else . end)
+        | del(.components.parameters.ApiVersion)
+        | .paths[][]
+          |= if type == "object" and has("parameters")
+             then .parameters |= map(select(.["$ref"] != "#/components/parameters/ApiVersion"))
+             else .
+             end' \
         --indent 4 \
         < backend/data/static/openapi.json \
         > openapi/openapi-api-no-default.json
@@ -563,8 +572,17 @@ openapi-client-frontend:
     #!/usr/bin/env bash
     set -euo pipefail
 
-    # remove _response suffix from all response schemas to get cleaner imports of the types in frontend ControllableUnit, instead of ControllableUnitResponse
-    sed 's/_response//g' backend/data/static/openapi.json > backend/data/static/.openapi-frontend-client.json
+    # Remove the ApiVersion header parameter from the spec before generating the frontend client.
+    # The header is injected globally by the request interceptor in index.tsx, so it must not
+    # appear as a required field on every generated SDK function's Options type.
+    # Also remove _response suffix from all response schemas to get cleaner type names.
+    jq 'del(.components.parameters.ApiVersion)
+        | .paths[][]
+          |= if type == "object" and has("parameters")
+             then .parameters |= map(select(.["$ref"] != "#/components/parameters/ApiVersion"))
+             else .
+             end' backend/data/static/openapi.json \
+    | sed 's/_response//g' > backend/data/static/.openapi-frontend-client.json
 
     cd frontend
     npx openapi-ts
