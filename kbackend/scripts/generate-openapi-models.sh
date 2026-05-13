@@ -116,7 +116,8 @@ docker run --rm --user "$(id -u):$(id -g)" -v "$topdir":/workspace ghcr.io/fabri
 	--validation-library 'no_validation' \
 	--targets 'http_models'
 
-# TODO: https://elhub.atlassian.net/browse/FLEX-1101
-# Remove Notice* models — the notice data field has no discriminator property in
-# the API response, so the generated classes cannot be used for deserialisation.
-rm -f "$topdir/kbackend/src/main/kotlin/no/elhub/flex/model/dto/generated/models/Notice"*.kt
+# Fix Fabrikt bug: the NoticeData* implementation classes reference the raw
+# OpenAPI schema name 'notice_data' as their supertype instead of the generated
+# sealed interface name 'NoticeData'.
+sed -i 's/) : notice_data$/) : NoticeData/' \
+	"$topdir/kbackend/src/main/kotlin/no/elhub/flex/model/dto/generated/models/NoticeData"*.kt

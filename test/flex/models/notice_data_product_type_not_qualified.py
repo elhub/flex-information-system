@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, cast
+from typing import Any, Literal, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -13,24 +13,32 @@ T = TypeVar("T", bound="NoticeDataProductTypeNotQualified")
 
 @_attrs_define
 class NoticeDataProductTypeNotQualified:
-    """Format of the data field in a notice of type
-    no.elhub.flex.service_provider_product_suspension.product_type.not_qualified
+    """Format of the data field in a notice with data.kind = notice.data.product_type.not_qualified
 
-        Attributes:
-            product_type_ids (list[int] | Unset): List of product types that are not qualified.
+    Attributes:
+        kind (Literal['notice.data.product_type.not_qualified']): Identifies the notice data schema for discriminated
+            union deserialization.
+        product_type_ids (list[int] | Unset): List of product types that are not qualified.
     """
 
+    kind: Literal["notice.data.product_type.not_qualified"]
     product_type_ids: list[int] | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        kind = self.kind
+
         product_type_ids: list[int] | Unset = UNSET
         if not isinstance(self.product_type_ids, Unset):
             product_type_ids = self.product_type_ids
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
+        field_dict.update(
+            {
+                "kind": kind,
+            }
+        )
         if product_type_ids is not UNSET:
             field_dict["product_type_ids"] = product_type_ids
 
@@ -39,9 +47,14 @@ class NoticeDataProductTypeNotQualified:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
+        kind = cast(Literal["notice.data.product_type.not_qualified"], d.pop("kind"))
+        if kind != "notice.data.product_type.not_qualified":
+            raise ValueError(f"kind must match const 'notice.data.product_type.not_qualified', got '{kind}'")
+
         product_type_ids = cast(list[int], d.pop("product_type_ids", UNSET))
 
         notice_data_product_type_not_qualified = cls(
+            kind=kind,
             product_type_ids=product_type_ids,
         )
 

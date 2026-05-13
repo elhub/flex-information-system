@@ -38,9 +38,11 @@ export type Response<T> =
   | {
       data: T;
       error: undefined;
+      response?: { headers: Headers };
     }
   | {
       data: undefined;
+      response?: { headers: Headers };
       error: ErrorMessage | EmptyObject;
     };
 
@@ -53,6 +55,23 @@ export const throwOnError = <T>(response: Response<T>): NonNullable<T> => {
     throw new Error("Unexpected empty response");
   }
   return data as NonNullable<T>;
+};
+
+// A utility function to extract count from response headers and return it along with data
+// The request needs prefer header "count=exact" for this to work
+export const getCountAndData = <T>(
+  response: Response<T>,
+): { count: number; data: NonNullable<T> } => {
+  const data = throwOnError(response);
+
+  const count = response.response?.headers.get("Content-Range")?.split("/")[1];
+
+  if (!count || count === "*") {
+    console.error("Count header is missing or invalid in the response");
+    throw new Error("Count header is missing in the response");
+  }
+
+  return { count: Number(count), data };
 };
 
 // CN is a standard utility function for merging classes

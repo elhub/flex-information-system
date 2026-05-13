@@ -61,6 +61,7 @@ docs/api
 docs/auth
 out
 dist-ssr
+kbackend/bin
 
 # Frontend
 !frontend/.env.[dlpst]*
