@@ -29,7 +29,7 @@ add external links to relevant resources where appropriate (like we just did ðŸ˜
   How can a user log in to the FIS?
 * :fontawesome-solid-user-cog: [Authorization](./authz-model.md)
   What is a user allowed to do?
-* :fontawesome-solid-rocket: [Getting started](../api/getting-started.md)
+* :fontawesome-solid-rocket: [Getting started](../api/guides/getting-started.md)
   Set up your API user and register your first controllable unit
 * :fontawesome-solid-users: [Users management](./users-management.md)
   How to manage access to assets in the system?

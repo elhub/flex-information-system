@@ -167,10 +167,11 @@ At a grand total of 80 bytes per row. It does not seem like much but storing a
 measly 100k timeseries with an interval of 15 over a year will take up over 260
 GB of storage.
 
-> [!INFO]
+> [!NOTE]
 >
-> A `tstzrange` — range of timestamp with time zone - uses a variable length of storage
-> depending on the presence of the lower and upper bounds. If both bounds are present.
+> A `tstzrange` — range of timestamp with time zone - uses a variable length of
+> storage depending on the presence of the lower and upper bounds. If both
+> bounds are present.
 >
 > * No bounds: 6 byte
 > * Lower bound only: 14 byte
