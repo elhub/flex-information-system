@@ -8,7 +8,7 @@ reason why these steps are required.
 > [!NOTE]
 >
 > The guide is geared towards users of the portal. If you are looking for an API
-> guide, check the [companion guide](../../technical/guides/sp-cu-registration.md).
+> guide, check the [companion guide](../../api/guides/sp-cu-registration.md).
 
 Learn more about the CU and related concepts here:
 [Conceptual model](../../concepts/conceptual-model.md)
