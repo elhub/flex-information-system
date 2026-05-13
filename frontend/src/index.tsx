@@ -12,9 +12,10 @@ import { apiURL } from "./httpConfig";
 declare global {
   interface Window {
     env: {
-      PRIMARY_COLOR: string;
-      VITE_FLEX_URL: string;
-      VITE_FLEX_COLOR_DARK: string;
+      PRIMARY_COLOR?: string;
+      VITE_FLEX_URL?: string;
+      VITE_FLEX_COLOR_DARK?: string;
+      VITE_FLEX_PRODUCT_APPLICATION_BLOCK_BEFORE?: string;
     };
   }
 }

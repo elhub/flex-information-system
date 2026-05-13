@@ -10,14 +10,14 @@ import { isFuture, parseISO } from "date-fns";
  * (late March through late October). For CET dates, adjust to +01:00.
  */
 export function isProductApplicationBlocked(): boolean {
-  const blockBefore = import.meta.env.VITE_PRODUCT_APPLICATION_BLOCK_BEFORE;
+  const blockBefore = getEnv();
   if (!blockBefore) return false;
   const blockDate = parseISO(blockBefore, { in: tz("Europe/Oslo") });
   return isFuture(blockDate);
 }
 
 export function getProductApplicationBlockDate(): string | undefined {
-  const raw = import.meta.env.VITE_PRODUCT_APPLICATION_BLOCK_BEFORE;
+  const raw = getEnv();
   if (!raw) return undefined;
   const blockDate = new Date(raw);
   return blockDate.toLocaleString("no-NO", {
@@ -26,3 +26,10 @@ export function getProductApplicationBlockDate(): string | undefined {
     timeStyle: "short",
   });
 }
+
+const getEnv = () => {
+  return (
+    window.env.VITE_FLEX_PRODUCT_APPLICATION_BLOCK_BEFORE ||
+    import.meta.env.VITE_FLEX_PRODUCT_APPLICATION_BLOCK_BEFORE
+  );
+};
