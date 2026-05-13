@@ -162,7 +162,7 @@ def test_ap_so(sts):
     assert isinstance(spggp, ServiceProvidingGroupGridPrequalificationResponse)
 
     # ISO can now see the AP via the grid prequalification link
-    ap = read_accounting_point.sync(client=client_so, id=1004)
+    ap = read_accounting_point.sync(client=client_iso, id=1004)
     assert isinstance(ap, AccountingPointResponse)
 
     # PSO path: this fresh SO will be the PSO
