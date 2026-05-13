@@ -1468,12 +1468,12 @@ func (auth *API) jwtBearerHandler(
 		}
 		defer tx.Commit(ctx)
 
-		partyID, err := models.GetAssumablePartyIDFromGLN(
-			ctx, tx, entityID, grant.Subject.Identifier,
+		partyID, err := models.GetAssumablePartyID(
+			ctx, tx, entityID, grant.Subject.Identifier, grant.Subject.PartyType,
 		)
 		if err != nil {
 			slog.ErrorContext(
-				ctx, "getting assumable party ID from GLN failed", "error", err,
+				ctx, "getting assumable party ID failed", "error", err,
 			)
 			ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
 				Error:            oauthErrorInvalidClient,

@@ -1,25 +1,27 @@
-// frontend/src/dashboard/SpApplicationsTable.tsx
 import { useNavigate } from "react-router-dom";
-import { useTranslateEnum } from "../intl/intl";
-import { EnumLabel } from "../intl/enum-labels";
-import { SimpleTable, Column } from "../components/SimpleTable";
-import { Badge } from "../components/ui";
-import { ENUM_KEY_PREFIX, getStatusVariant } from "./dashboardTableUtils";
-import { SpDashboardItem } from "./useSpDashboard";
+import { useTranslateEnum } from "../../intl/intl";
+import { EnumLabel } from "../../intl/enum-labels";
+import { SimpleTable, Column } from "../../components/SimpleTable";
+import { Badge } from "../../components/ui";
+import {
+  ENUM_KEY_PREFIX,
+  getStatusVariant,
+} from "../shared/dashboardTableUtils";
+import { DashboardItem } from "../hooks/useDashboardApplications";
 
 type Props = {
-  items: SpDashboardItem[];
+  items: DashboardItem[];
   empty?: string;
 };
 
-export const SpApplicationsTable = ({
+export const SOApplicationsTable = ({
   items,
-  empty = "No applications.",
+  empty = "No pending applications.",
 }: Props) => {
   const navigate = useNavigate();
   const translateEnum = useTranslateEnum();
 
-  const columns: Column<SpDashboardItem>[] = [
+  const columns: Column<DashboardItem>[] = [
     {
       key: "typeLabel",
       header: "Type",
@@ -35,15 +37,8 @@ export const SpApplicationsTable = ({
       ),
     },
     {
-      key: "systemOperator",
-      header: <span className="hidden sm:inline">System Operator</span>,
-      render: (value) => (
-        <span className="hidden sm:inline">{String(value ?? "")}</span>
-      ),
-    },
-    {
-      key: "dueDate",
-      header: <span className="hidden sm:inline">Due Date</span>,
+      key: "serviceProvider",
+      header: <span className="hidden sm:inline">Service provider</span>,
       render: (value) => (
         <span className="hidden sm:inline">{String(value ?? "")}</span>
       ),

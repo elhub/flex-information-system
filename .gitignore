@@ -57,10 +57,11 @@ build
 dist
 dist-docs
 docs/download
-docs/api
-docs/auth
+docs/api/v0
+docs/auth/v0
 out
 dist-ssr
+kbackend/bin
 
 # Frontend
 !frontend/.env.[dlpst]*

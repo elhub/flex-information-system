@@ -1116,7 +1116,7 @@ resources:
       - create
       - update
     audit: true
-    generate_views: true
+    generate_views: false
     properties:
       id:
         description: |-
@@ -3051,7 +3051,7 @@ resources:
         x-foreign-key:
           resource: product_type
           field: id
-          cardinality: many-to-one
+          cardinality: many-to-many
         example: [2, 4, 5]
         x-intl:
           en: Product types
@@ -3062,6 +3062,7 @@ resources:
         format: text
         type: string
         default: requested
+        x-filter: true
         enum:
           - id: requested
             x-intl:
@@ -3583,6 +3584,7 @@ resources:
         format: text
         type: string
         pattern: '^no.elhub.flex.'
+        x-filter: true
         readOnly: true
         example: 'no.elhub.flex.service_providing_group_membership.valid_time.outside_contract'
         x-intl:

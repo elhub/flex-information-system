@@ -253,11 +253,13 @@ components:
       type: object
       properties:
         end_user:
-          description: Birth number or organisation number of the end user.
+          description: >-
+            Birth date (DDMMYY) of the end user if a person, or organisation
+            number if an organisation.
           format: text
           type: string
-          pattern: "^[1-9]([0-9]{8}|[0-9]{10})$"
-          example: "133700008"
+          pattern: "^[0-9]{6}$|^[1-9][0-9]{8}$"
+          example: "150190"
         controllable_unit:
           description: The business ID of the controllable unit to lookup.
           format: text
@@ -425,19 +427,33 @@ components:
             description: The end time of the timeline section.
             example: "2023-01-02T00:00:00+00:00"
     notice_data_valid_time_outside_contract:
+      type: object
       description: >-
-        Format of the data field in a notice of type
-        no.elhub.flex.*.valid_time.outside_contract
+        Format of the data field in a notice with data.kind =
+        notice.data.valid_time.outside_contract
+      required:
+        - kind
       properties:
+        kind:
+          description: Identifies the notice data schema for discriminated union deserialization.
+          type: string
+          const: notice.data.valid_time.outside_contract
         invalid_timeline:
           description: >-
             Part of the timeline where the end user on the CUSP relation does
             not match the end user on the accounting point.
           $ref: "#/components/schemas/timeline_multi_range"
     notice_data_party_missing:
+      type: object
       description: >-
-        Format of the data field in a notice of type no.elhub.flex.party.missing
+        Format of the data field in a notice with data.kind = notice.data.party.missing
+      required:
+        - kind
       properties:
+        kind:
+          description: Identifies the notice data schema for discriminated union deserialization.
+          type: string
+          const: notice.data.party.missing
         entity:
           description: Details about the entity owning the missing party.
           $ref: "#/components/schemas/entity_response"
@@ -445,10 +461,16 @@ components:
           description: Details about the missing party.
           $ref: "#/components/schemas/party_response"
     notice_data_party_outdated:
+      type: object
       description: >-
-        Format of the data field in a notice of type
-        no.elhub.flex.party.outdated
+        Format of the data field in a notice with data.kind = notice.data.party.outdated
+      required:
+        - kind
       properties:
+        kind:
+          description: Identifies the notice data schema for discriminated union deserialization.
+          type: string
+          const: notice.data.party.outdated
         entity:
           description: Details about the possibly new entity owning the party.
           $ref: "#/components/schemas/entity_response"
@@ -456,10 +478,17 @@ components:
           description: Updated fields of the party.
           $ref: "#/components/schemas/party_response"
     notice_data_product_type_not_qualified:
+      type: object
       description: >-
-        Format of the data field in a notice of type
-        no.elhub.flex.service_provider_product_suspension.product_type.not_qualified
+        Format of the data field in a notice with data.kind =
+        notice.data.product_type.not_qualified
+      required:
+        - kind
       properties:
+        kind:
+          description: Identifies the notice data schema for discriminated union deserialization.
+          type: string
+          const: notice.data.product_type.not_qualified
         product_type_ids:
           description: List of product types that are not qualified.
           type: array
@@ -473,6 +502,13 @@ components:
         - $ref: "#/components/schemas/notice_data_party_missing"
         - $ref: "#/components/schemas/notice_data_party_outdated"
         - $ref: "#/components/schemas/notice_data_product_type_not_qualified"
+      discriminator:
+        propertyName: kind
+        mapping:
+          notice.data.valid_time.outside_contract: "#/components/schemas/notice_data_valid_time_outside_contract"
+          notice.data.party.missing: "#/components/schemas/notice_data_party_missing"
+          notice.data.party.outdated: "#/components/schemas/notice_data_party_outdated"
+          notice.data.product_type.not_qualified: "#/components/schemas/notice_data_product_type_not_qualified"
     numeric_aggregation:
       type: object
       properties:

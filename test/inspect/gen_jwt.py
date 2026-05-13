@@ -21,7 +21,7 @@ payload = {
     # JWT ID
     "jti": str(uuid.uuid4()),
     # Subject (the subject to get a token for)
-    "sub": "no:party:gln:1337000100072",  # Test Suite party
+    "sub": "no:party:gln:1337000100072:flexibility_information_system_operator",  # Test Suite party
     # Issued at
     "iat": dt.now(tz.utc),
     # Expiration time

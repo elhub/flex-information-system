@@ -88,7 +88,7 @@ export type Technology =
  */
 export type ControllableUnitLookupRequest = {
   /**
-   * Birth number or organisation number of the end user.
+   * Birth date (DDMMYY) of the end user if a person, or organisation number if an organisation.
    */
   end_user: string;
   /**
@@ -202,9 +202,13 @@ export type TimelineMultiRange = Array<{
 }>;
 
 /**
- * Format of the data field in a notice of type no.elhub.flex.*.valid_time.outside_contract
+ * Format of the data field in a notice with data.kind = notice.data.valid_time.outside_contract
  */
 export type NoticeDataValidTimeOutsideContract = {
+  /**
+   * Identifies the notice data schema for discriminated union deserialization.
+   */
+  kind: "notice.data.valid_time.outside_contract";
   /**
    * Part of the timeline where the end user on the CUSP relation does not match the end user on the accounting point.
    */
@@ -212,9 +216,13 @@ export type NoticeDataValidTimeOutsideContract = {
 };
 
 /**
- * Format of the data field in a notice of type no.elhub.flex.party.missing
+ * Format of the data field in a notice with data.kind = notice.data.party.missing
  */
 export type NoticeDataPartyMissing = {
+  /**
+   * Identifies the notice data schema for discriminated union deserialization.
+   */
+  kind: "notice.data.party.missing";
   /**
    * Details about the entity owning the missing party.
    */
@@ -226,9 +234,13 @@ export type NoticeDataPartyMissing = {
 };
 
 /**
- * Format of the data field in a notice of type no.elhub.flex.party.outdated
+ * Format of the data field in a notice with data.kind = notice.data.party.outdated
  */
 export type NoticeDataPartyOutdated = {
+  /**
+   * Identifies the notice data schema for discriminated union deserialization.
+   */
+  kind: "notice.data.party.outdated";
   /**
    * Details about the possibly new entity owning the party.
    */
@@ -240,9 +252,13 @@ export type NoticeDataPartyOutdated = {
 };
 
 /**
- * Format of the data field in a notice of type no.elhub.flex.service_provider_product_suspension.product_type.not_qualified
+ * Format of the data field in a notice with data.kind = notice.data.product_type.not_qualified
  */
 export type NoticeDataProductTypeNotQualified = {
+  /**
+   * Identifies the notice data schema for discriminated union deserialization.
+   */
+  kind: "notice.data.product_type.not_qualified";
   /**
    * List of product types that are not qualified.
    */
@@ -250,10 +266,18 @@ export type NoticeDataProductTypeNotQualified = {
 };
 
 export type NoticeData =
-  | NoticeDataValidTimeOutsideContract
-  | NoticeDataPartyMissing
-  | NoticeDataPartyOutdated
-  | NoticeDataProductTypeNotQualified;
+  | ({
+      kind: "notice.data.valid_time.outside_contract";
+    } & NoticeDataValidTimeOutsideContract)
+  | ({
+      kind: "notice.data.party.missing";
+    } & NoticeDataPartyMissing)
+  | ({
+      kind: "notice.data.party.outdated";
+    } & NoticeDataPartyOutdated)
+  | ({
+      kind: "notice.data.product_type.not_qualified";
+    } & NoticeDataProductTypeNotQualified);
 
 export type NumericAggregation = {
   sum?: number;
@@ -4207,9 +4231,13 @@ export type ServiceProvidingGroupProductSuspensionCommentHistory = {
 };
 
 /**
- * Format of the data field in a notice of type no.elhub.flex.party.missing
+ * Format of the data field in a notice with data.kind = notice.data.party.missing
  */
 export type NoticeDataPartyMissingWritable = {
+  /**
+   * Identifies the notice data schema for discriminated union deserialization.
+   */
+  kind: "notice.data.party.missing";
   /**
    * Details about the entity owning the missing party.
    */
@@ -4221,9 +4249,13 @@ export type NoticeDataPartyMissingWritable = {
 };
 
 /**
- * Format of the data field in a notice of type no.elhub.flex.party.outdated
+ * Format of the data field in a notice with data.kind = notice.data.party.outdated
  */
 export type NoticeDataPartyOutdatedWritable = {
+  /**
+   * Identifies the notice data schema for discriminated union deserialization.
+   */
+  kind: "notice.data.party.outdated";
   /**
    * Details about the possibly new entity owning the party.
    */
@@ -4235,10 +4267,18 @@ export type NoticeDataPartyOutdatedWritable = {
 };
 
 export type NoticeDataWritable =
-  | NoticeDataValidTimeOutsideContract
-  | NoticeDataPartyMissingWritable
-  | NoticeDataPartyOutdatedWritable
-  | NoticeDataProductTypeNotQualified;
+  | ({
+      kind: "notice.data.valid_time.outside_contract";
+    } & NoticeDataValidTimeOutsideContract)
+  | ({
+      kind: "notice.data.party.missing";
+    } & NoticeDataPartyMissingWritable)
+  | ({
+      kind: "notice.data.party.outdated";
+    } & NoticeDataPartyOutdatedWritable)
+  | ({
+      kind: "notice.data.product_type.not_qualified";
+    } & NoticeDataProductTypeNotQualified);
 
 /**
  * An empty object
@@ -14346,6 +14386,7 @@ export type ListServiceProviderProductApplicationData = {
      * References to the product types.
      */
     product_type_ids?: string;
+    status?: string;
     /**
      * Filtering Columns
      */
@@ -14606,6 +14647,7 @@ export type ListServiceProviderProductApplicationHistoryData = {
      * References to the product types.
      */
     product_type_ids?: string;
+    status?: string;
     /**
      * Filtering Columns
      */
@@ -17568,6 +17610,10 @@ export type ListNoticeData = {
      * Reference to the party targeted by the notice.
      */
     party_id?: string;
+    /**
+     * The type of the notice.
+     */
+    type?: string;
     /**
      * Filtering Columns
      */

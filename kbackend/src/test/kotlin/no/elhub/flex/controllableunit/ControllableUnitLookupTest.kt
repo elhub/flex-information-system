@@ -199,6 +199,17 @@ class ControllableUnitLookupTest :
                 app.stop()
             }
 
+            test("PID (11-digit fødselsnummer) is rejected as end_user") {
+                val app = testApp(mockRepo, mockAccountingPointService)
+                val response = app.client.post("/controllable_unit/lookup") {
+                    contentType(ContentType.Application.Json)
+                    header("Authorization", "Bearer ${makeJwt()}")
+                    setBody("""{"end_user":"13370000001","accounting_point":"133700000000000053"}""")
+                }
+                response.status shouldBe HttpStatusCode.BadRequest
+                app.stop()
+            }
+
             test("both AP and CU business IDs returns HTTP 400") {
                 val app = testApp(mockRepo, mockAccountingPointService)
                 val response = app.client.post("/controllable_unit/lookup") {
@@ -211,6 +222,39 @@ class ControllableUnitLookupTest :
                     )
                 }
                 response.status shouldBe HttpStatusCode.BadRequest
+                app.stop()
+            }
+
+            test("birth date as end_user (person) is accepted and returns HTTP 200") {
+                val endUserBusinessId = "150190"
+                val accountingPointBusinessId = "133700000000000053"
+                coEvery {
+                    with(any<FlexPrincipal>()) { mockAccountingPointService.getCurrentAccountingPoint(any()) }
+                } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
+                coEvery {
+                    mockAccountingPointService.synchronizeAccountingPoint(any(), any())
+                } returns Unit.right()
+                coEvery {
+                    with(any<FlexPrincipal>()) {
+                        mockAccountingPointService.checkEndUserMatchesAccountingPoint(endUserBusinessId, accountingPointBusinessId)
+                    }
+                } returns 7L.right()
+                coEvery {
+                    with(any<FlexPrincipal>()) {
+                        mockAccountingPointService.getAccountingPointByBusinessId(accountingPointBusinessId)
+                    }
+                } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
+                coEvery {
+                    with(any<FlexPrincipal>()) { mockRepo.lookupControllableUnits(any(), any()) }
+                } returns emptyList<ControllableUnit>().right()
+
+                val app = testApp(mockRepo, mockAccountingPointService)
+                val response = app.client.post("/controllable_unit/lookup") {
+                    contentType(ContentType.Application.Json)
+                    header("Authorization", "Bearer ${makeJwt()}")
+                    setBody("""{"end_user":"$endUserBusinessId","accounting_point":"$accountingPointBusinessId"}""")
+                }
+                response.status shouldBe HttpStatusCode.OK
                 app.stop()
             }
 

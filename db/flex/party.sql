@@ -5,7 +5,7 @@
 CREATE TABLE IF NOT EXISTS party (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     -- PTY-VAL002
-    business_id text UNIQUE NOT NULL DEFAULT (public.uuid_generate_v4()),
+    business_id text NOT NULL DEFAULT (public.uuid_generate_v4()),
     business_id_type text NOT NULL
     REFERENCES business_id_type (name) DEFAULT 'uuid',
     entity_id bigint NOT NULL

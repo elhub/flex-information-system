@@ -9,7 +9,7 @@ processes:
 
 ## Why is CU lookup a necessary process?
 
-1. To verify whether the unit is already registered in the system  
+1. To verify whether the unit is already registered in the system
    to determine next step
 
     This process retrieves the necessary information from FIS, to ensure that the
@@ -52,9 +52,14 @@ processes:
 
 ## Request and response
 
+Detailed request and response information can be found in the OpenAPI
+documentation under
+[call_controllable_unit_lookup](https://elhub.github.io/flex-information-system/api/v0/#/operations/call_controllable_unit_lookup).
+
 The input to the controllable unit lookup contains three fields:
 
-- end user (EU) business identifier
+- end user (EU) identifier: birth date (`DDMMYY`) for a person, or
+  organisation number for an organisation
 - accounting point (AP) business identifier
 - controllable unit (CU) business identifier
 

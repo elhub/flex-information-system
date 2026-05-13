@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   Alert,
   BodyText,
@@ -22,15 +22,20 @@ import { tz } from "@date-fns/tz";
 import { useTranslateField } from "../../intl/intl";
 import { PowerRatio } from "../../components/PowerRatio";
 
-type Props = {
-  spgId: number;
-};
-
 const toMidnightISO = (date: Date): string =>
   formatISO(date, { representation: "complete", in: tz("Europe/Oslo") });
 
-export const FindControllableUnits = ({ spgId }: Props) => {
-  const [selectedCuIds, setSelectedCuIds] = useState<number[]>([]);
+type Props = {
+  spgId: number;
+  selectedCuIds: number[];
+  setSelectedCuIds: React.Dispatch<React.SetStateAction<number[]>>;
+};
+
+export const FindControllableUnits = ({
+  spgId,
+  selectedCuIds,
+  setSelectedCuIds,
+}: Props) => {
   const [failedCUs, setFailedCUs] = useState<number[]>([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [validFrom, setValidFrom] = useState<Date>(

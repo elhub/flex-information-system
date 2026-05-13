@@ -12,6 +12,9 @@ Here are the acceptable values for entities:
 | Organisation   | `org` (_organisasjonsnummer_)    |
 | Person         | `pid` (_fødselsnummer_), `email` |
 
+If the business ID type is `pid`, then the API response will mask the last five
+digits, so that the returned `business_id` will look like `010101*****`.
+
 ## Lookup
 
 A lookup operation can be performed to check whether a business ID is already
@@ -50,7 +53,7 @@ No notifications.
 
 ### Resource Level Authorization
 
-Below is the [RLA](../technical/auth/authz-model.md#resource-level-authorization-rla)
+Below is the [RLA](../auth/authz-model.md#resource-level-authorization-rla)
 for the
 resource. The default policy is **deny**.
 
@@ -114,7 +117,7 @@ No policies.
 ### Field Level Authorization
 
 For party type abbreviations, check
-[the authentication docs](../technical/auth/authn-model.md#party-market-actors).
+[the authentication docs](../auth/authn-model.md#party-market-actors).
 
 | FIELD            | ANON | BRP | ES | EU | FISO | SO | SP | TP | ORG |
 |------------------|------|-----|----|----|------|----|----|----|-----|

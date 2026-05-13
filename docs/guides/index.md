@@ -1,7 +1,7 @@
 # Guides
 
 This section provides practical, task-oriented information about how to use and
-test the Flexibility Information System (FIS).  
+test the Flexibility Information System (FIS).
 
 The guides help users navigate FIS, understand how to
 interact with the system, and use the available test data to verify workflows.
@@ -9,7 +9,11 @@ interact with the system, and use the available test data to verify workflows.
 ## Are you a new user?
 
 [Getting Started](getting-started.md) explains how to log in to the FIS
-environment, authenticate, and explore the graphical user interface.  
+environment, authenticate, and explore the graphical user interface.
+
+## Working with the API?
+
+There is a separate section for you. Check out the [API docs](../api/index.md).
 
 ## Performing tests in FIS?
 

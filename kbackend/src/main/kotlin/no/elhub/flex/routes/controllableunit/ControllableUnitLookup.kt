@@ -29,7 +29,7 @@ import org.koin.core.annotation.Property
 import org.koin.core.annotation.Single
 import kotlin.time.Instant
 
-private val END_USER_REGEX = Regex("^[1-9]([0-9]{8}|[0-9]{10})$")
+private val END_USER_REGEX = Regex("^[0-9]{6}$|^[1-9][0-9]{8}$")
 private val CONTROLLABLE_UNIT_BUSINESS_ID_REGEX =
     Regex("^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$")
 

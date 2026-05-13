@@ -41,6 +41,10 @@ from datetime import date, datetime, timedelta, time, timezone
 from test_entity import random_number, random_pid, random_org
 
 
+def birth_date_from_pid(pid: str) -> str:
+    return pid[0:6]
+
+
 @pytest.fixture
 def sts():
     yield SecurityTokenService()
@@ -55,12 +59,6 @@ def test_cu_lookup_params(sts):
     )
     assert isinstance(eu_entity, EntityResponse)
 
-    other_eu_entity = read_entity.sync(
-        client=client_fiso,
-        id=sts.get_userinfo(sts.get_client(TestEntity.COMMON))["entity_id"],
-    )
-    assert isinstance(other_eu_entity, EntityResponse)
-
     # ill formed requests
 
     # no AP/CU
@@ -68,7 +66,7 @@ def test_cu_lookup_params(sts):
     e = call_controllable_unit_lookup.sync(
         client=client_fiso,
         body=ControllableUnitLookupRequest(
-            end_user=str(eu_entity.business_id),
+            end_user=birth_date_from_pid(eu_entity.business_id),
         ),
     )
     assert isinstance(e, ErrorMessage)
@@ -85,11 +83,22 @@ def test_cu_lookup_params(sts):
     assert isinstance(e, ErrorMessage)
     assert e.code == "HTTP400"
 
+    # raw PID (fødselsnummer) is no longer accepted: use birth date instead
+    e = call_controllable_unit_lookup.sync(
+        client=client_fiso,
+        body=ControllableUnitLookupRequest(
+            end_user=str(eu_entity.business_id),  # 11-digit PID, now rejected
+            accounting_point="133700000000010007",
+        ),
+    )
+    assert isinstance(e, ErrorMessage)
+    assert e.code == "HTTP400"
+
     # bad AP business ID
     e = call_controllable_unit_lookup.sync(
         client=client_fiso,
         body=ControllableUnitLookupRequest(
-            end_user=str(eu_entity.business_id),
+            end_user=birth_date_from_pid(eu_entity.business_id),
             accounting_point="badformat",
         ),
     )
@@ -100,7 +109,7 @@ def test_cu_lookup_params(sts):
     e = call_controllable_unit_lookup.sync(
         client=client_fiso,
         body=ControllableUnitLookupRequest(
-            end_user=str(eu_entity.business_id),
+            end_user=birth_date_from_pid(eu_entity.business_id),
             controllable_unit="badformat",
         ),
     )
@@ -122,7 +131,7 @@ def test_cu_lookup_params(sts):
     e = call_controllable_unit_lookup.sync(
         client=client_fiso,
         body=ControllableUnitLookupRequest(
-            end_user=str(eu_entity.business_id),
+            end_user=birth_date_from_pid(eu_entity.business_id),
             accounting_point="133700000000010007",
             controllable_unit=cu.business_id,
         ),
@@ -136,7 +145,7 @@ def test_cu_lookup_params(sts):
     e = call_controllable_unit_lookup.sync(
         client=client_fiso,
         body=ControllableUnitLookupRequest(
-            end_user=str(eu_entity.business_id),
+            end_user=birth_date_from_pid(eu_entity.business_id),
             controllable_unit="00000000-0000-4000-8000-000000000000",
         ),
     )
@@ -147,7 +156,7 @@ def test_cu_lookup_params(sts):
     e = call_controllable_unit_lookup.sync(
         client=client_fiso,
         body=ControllableUnitLookupRequest(
-            end_user=str(other_eu_entity.business_id),
+            end_user="010100",
             controllable_unit=cu.business_id,
         ),
     )
@@ -158,7 +167,7 @@ def test_cu_lookup_params(sts):
     cul = call_controllable_unit_lookup.sync(
         client=client_fiso,
         body=ControllableUnitLookupRequest(
-            end_user=str(eu_entity.business_id),
+            end_user=birth_date_from_pid(eu_entity.business_id),
             controllable_unit=cu.business_id,
         ),
     )
@@ -171,7 +180,7 @@ def test_cu_lookup_params(sts):
     e = call_controllable_unit_lookup.sync(
         client=client_fiso,
         body=ControllableUnitLookupRequest(
-            end_user=str(eu_entity.business_id),
+            end_user=birth_date_from_pid(eu_entity.business_id),
             accounting_point="999999999999999995",
         ),
     )
@@ -182,7 +191,7 @@ def test_cu_lookup_params(sts):
     e = call_controllable_unit_lookup.sync(
         client=client_fiso,
         body=ControllableUnitLookupRequest(
-            end_user=str(other_eu_entity.business_id),
+            end_user="010100",
             accounting_point="133700000000010007",
         ),
     )
@@ -193,7 +202,7 @@ def test_cu_lookup_params(sts):
     cul = call_controllable_unit_lookup.sync(
         client=client_fiso,
         body=ControllableUnitLookupRequest(
-            end_user=str(eu_entity.business_id),
+            end_user=birth_date_from_pid(eu_entity.business_id),
             accounting_point="133700000000010991",
         ),
     )
@@ -204,7 +213,7 @@ def test_cu_lookup_params(sts):
     cul = call_controllable_unit_lookup.sync(
         client=client_fiso,
         body=ControllableUnitLookupRequest(
-            end_user=str(eu_entity.business_id),
+            end_user=birth_date_from_pid(eu_entity.business_id),
             accounting_point="133700000000010007",
         ),
     )
@@ -227,7 +236,7 @@ def test_cu_lookup_params(sts):
     cul = call_controllable_unit_lookup.sync(
         client=client_fiso,
         body=ControllableUnitLookupRequest(
-            end_user=str(eu_entity.business_id),
+            end_user=birth_date_from_pid(eu_entity.business_id),
             accounting_point="133700000000010007",
         ),
     )
@@ -269,7 +278,7 @@ def test_cu_lookup_remote(sts):
     cul = call_controllable_unit_lookup.sync(
         client=client_fiso,
         body=ControllableUnitLookupRequest(
-            end_user=str(eu_entity.business_id),
+            end_user=birth_date_from_pid(eu_entity.business_id),
             accounting_point=ap_business_id,
         ),
     )
@@ -301,7 +310,7 @@ def test_cu_lookup_remote(sts):
     cul = call_controllable_unit_lookup.sync(
         client=client_fiso,
         body=ControllableUnitLookupRequest(
-            end_user=str(e.business_id),
+            end_user=birth_date_from_pid(e.business_id),
             accounting_point=ap_business_id,
         ),
     )
@@ -400,7 +409,7 @@ def test_cu_lookup_flow(sts):
     cul = call_controllable_unit_lookup.sync(
         client=client_sp,
         body=ControllableUnitLookupRequest(
-            end_user=str(eu_entity.business_id),
+            end_user=birth_date_from_pid(eu_entity.business_id),
             controllable_unit=cu.business_id,
         ),
     )

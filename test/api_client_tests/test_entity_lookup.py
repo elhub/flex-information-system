@@ -101,7 +101,7 @@ def test_entity_lookup_params(sts):
 def test_entity_lookup_fiso(sts):
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
-    es = list_entity.sync(client=client_fiso, business_id="eq.13370000000")
+    es = list_entity.sync(client=client_fiso, business_id="eq.133700000")
     assert isinstance(es, list)
     assert len(es) == 1
     ent_id = es[0].id
@@ -110,9 +110,9 @@ def test_entity_lookup_fiso(sts):
     el = call_entity_lookup.sync(
         client=client_fiso,
         body=EntityLookupRequest(
-            business_id="13370000000",
+            business_id="133700000",
             name="x",
-            type_=EntityLookupRequestType.PERSON,
+            type_=EntityLookupRequestType.ORGANISATION,
         ),
     )
     assert isinstance(el, EntityLookupResponse)

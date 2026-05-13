@@ -27,7 +27,7 @@ object PostgresTestContainer {
     private val container: PostgreSQLContainer =
         PostgreSQLContainer(
             DockerImageName
-                .parse("docker.jfrog.elhub.cloud/frzq0sxltynr/elhub/base/postgres-16:0.0.4")
+                .parse("docker.jfrog.elhub.cloud/frzq0sxltynr/elhub/base/postgres-17:0.0.2")
                 .asCompatibleSubstituteFor("postgres")
         )
             .withDatabaseName("flex")
