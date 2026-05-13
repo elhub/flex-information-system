@@ -52,9 +52,7 @@ No policies.
 
 #### Common
 
-| Policy key | Policy                      | Status |
-|------------|-----------------------------|--------|
-| AP-COM001  | Read all accounting points. | DONE   |
+No policies.
 
 #### Balance Responsible Party
 
@@ -70,7 +68,9 @@ No policies.
 
 #### Flexibility Information System Operator
 
-No policies.
+| Policy key | Policy                      | Status |
+|------------|-----------------------------|--------|
+| AP-FISO001 | Read all accounting points. | DONE   |
 
 #### Organisation
 
@@ -78,11 +78,15 @@ No policies.
 
 #### System Operator
 
-No policies.
+| Policy key | Policy                                                 | Status |
+|------------|--------------------------------------------------------|--------|
+| AP-SO001   | Read accounting points where they are CSO, ISO or PSO. | DONE   |
 
 #### Service Provider
 
-No policies.
+| Policy key | Policy                                                         | Status |
+|------------|----------------------------------------------------------------|--------|
+| AP-SP001   | Read accounting points where they are or have been SP on a CU. | DONE   |
 
 #### Third Party
 
