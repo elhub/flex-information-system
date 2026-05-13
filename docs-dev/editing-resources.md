@@ -77,7 +77,7 @@ associated endpoints will not be generated in the OpenAPI documentation.
 
 ## Fixing authorisation
 
-[Authorisation](../docs/technical/auth/authz-model.md) is done in the database,
+[Authorisation](../docs/technical/authz-model.md) is done in the database,
 both at the _row_ level and the _field_ level. Automation is provided after
 creating manually the documentation file for the resource (a Markdown file under
 `docs/resources`). This file must contain all the sections (you can start by

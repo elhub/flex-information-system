@@ -4,7 +4,7 @@ In this section, we describe the authentication model in the Flexibility
 Information System. This diagram shows the main concepts in the model and how
 they relate to each other.
 
-![../diagrams/auth_model.drawio.png](../../diagrams/auth_model.drawio.png)
+![../diagrams/auth_model.drawio.png](../diagrams/auth_model.drawio.png)
 
 ## Identity
 
@@ -24,7 +24,7 @@ Inspiration for this step is taken from [Altinn](https://info.altinn.no/en/),
 where one is presented with a list of parties upon login. The Elhub portal also
 has the same type of logical mechanism.
 
-![Altinn select party](../../assets/altinn-choose-party.png).
+![Altinn select party](../assets/altinn-choose-party.png).
 
 The concept is also inspired by [AWS AssumeRole](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html).
 

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import TYPE_CHECKING, Any, TypeVar
+from typing import TYPE_CHECKING, Any, Literal, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -17,17 +17,22 @@ T = TypeVar("T", bound="NoticeDataValidTimeOutsideContract")
 
 @_attrs_define
 class NoticeDataValidTimeOutsideContract:
-    """Format of the data field in a notice of type no.elhub.flex.*.valid_time.outside_contract
+    """Format of the data field in a notice with data.kind = notice.data.valid_time.outside_contract
 
     Attributes:
+        kind (Literal['notice.data.valid_time.outside_contract']): Identifies the notice data schema for discriminated
+            union deserialization.
         invalid_timeline (list[TimelineMultiRangeItem] | Unset): Partial timeline data that is relevant to mention, in a
             notice for instance. Multirange format, i.e., array of start/end timestamp pairs.
     """
 
+    kind: Literal["notice.data.valid_time.outside_contract"]
     invalid_timeline: list[TimelineMultiRangeItem] | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        kind = self.kind
+
         invalid_timeline: list[dict[str, Any]] | Unset = UNSET
         if not isinstance(self.invalid_timeline, Unset):
             invalid_timeline = []
@@ -37,7 +42,11 @@ class NoticeDataValidTimeOutsideContract:
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
+        field_dict.update(
+            {
+                "kind": kind,
+            }
+        )
         if invalid_timeline is not UNSET:
             field_dict["invalid_timeline"] = invalid_timeline
 
@@ -48,6 +57,10 @@ class NoticeDataValidTimeOutsideContract:
         from ..models.timeline_multi_range_item import TimelineMultiRangeItem
 
         d = dict(src_dict)
+        kind = cast(Literal["notice.data.valid_time.outside_contract"], d.pop("kind"))
+        if kind != "notice.data.valid_time.outside_contract":
+            raise ValueError(f"kind must match const 'notice.data.valid_time.outside_contract', got '{kind}'")
+
         _invalid_timeline = d.pop("invalid_timeline", UNSET)
         invalid_timeline: list[TimelineMultiRangeItem] | Unset = UNSET
         if _invalid_timeline is not UNSET:
@@ -60,6 +73,7 @@ class NoticeDataValidTimeOutsideContract:
                 invalid_timeline.append(componentsschemastimeline_multi_range_item)
 
         notice_data_valid_time_outside_contract = cls(
+            kind=kind,
             invalid_timeline=invalid_timeline,
         )
 

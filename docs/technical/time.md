@@ -152,7 +152,7 @@ configuration.
 ### API format
 
 For documentation about the timestamp format used in the API check
-[API design](./api-design.md#time).
+[API design](../api/api-design.md#time).
 
 ### Time in the user interface
 
