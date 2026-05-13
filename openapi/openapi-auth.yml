@@ -7,7 +7,7 @@ info:
     name: Elhub AS
     url: https://elhub.no
     email: post@elhub.no
-  version: 2026-06-08
+  version: "1"
 externalDocs:
   description: TODO
   url: https://todo.example.com
