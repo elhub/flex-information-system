@@ -13,6 +13,7 @@ WITH (security_invoker = false) AS (
         null AS source_resource, -- no source because the party does not exist yet
         null::bigint AS source_id,
         jsonb_build_object(
+            'kind', 'notice.data.party.missing',
             'entity', jsonb_strip_nulls(
                 jsonb_build_object(
                     'business_id', p_stg.org,
@@ -57,6 +58,7 @@ WITH (security_invoker = false) AS (
         p.id AS source_id,
         jsonb_strip_nulls(
             jsonb_build_object(
+                'kind', 'notice.data.party.outdated',
                 'entity',
                 (CASE
                     WHEN p_stg.org != e.business_id

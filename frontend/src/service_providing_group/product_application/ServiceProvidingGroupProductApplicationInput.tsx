@@ -6,7 +6,16 @@ import { useLocation } from "react-router-dom";
 import { getFields, unTypedZodResolver } from "../../zod";
 import { useCreateOrUpdate } from "../../auth";
 import { zServiceProvidingGroupProductApplicationCreateRequest } from "../../generated-client/zod.gen";
-import { FormContainer, Heading, VerticalSpace } from "../../components/ui";
+import {
+  Alert,
+  FormContainer,
+  Heading,
+  VerticalSpace,
+} from "../../components/ui";
+import {
+  isProductApplicationBlocked,
+  getProductApplicationBlockDate,
+} from "../../productApplicationBlock";
 import {
   TextAreaInput,
   EnumInput,
@@ -56,6 +65,17 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
 
   const record = { ...actualRecord, ...parsedOverrideRecord };
   const createOrUpdate = useCreateOrUpdate();
+
+  if (createOrUpdate === "create" && isProductApplicationBlocked()) {
+    return (
+      <FormContainer>
+        <Alert variant="warning">
+          Product applications cannot be created before{" "}
+          {getProductApplicationBlockDate()}.
+        </Alert>
+      </FormContainer>
+    );
+  }
 
   const fields = getFields(
     zServiceProvidingGroupProductApplicationCreateRequest.shape,

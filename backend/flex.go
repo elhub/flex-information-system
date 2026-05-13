@@ -266,6 +266,24 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		slog.InfoContext(ctx, "Default login limiting")
 	}
 
+	var productApplicationBlockBefore *time.Time
+
+	if blockBeforeStr, exists := lookupenv("FLEX_PRODUCT_APPLICATION_BLOCK_BEFORE"); exists {
+		oslo, err := time.LoadLocation("Europe/Oslo")
+		if err != nil {
+			return fmt.Errorf("could not load Europe/Oslo timezone: %w", err)
+		}
+
+		blockTime, err := time.ParseInLocation("2006-01-02T15:04:05", blockBeforeStr, oslo)
+		if err != nil {
+			return fmt.Errorf("invalid FLEX_PRODUCT_APPLICATION_BLOCK_BEFORE: %w", err)
+		}
+
+		productApplicationBlockBefore = &blockTime
+
+		slog.InfoContext(ctx, "Product application creation blocked before", "date", blockTime)
+	}
+
 	// first instantiate the database service implementation
 	slog.InfoContext(ctx, "Connecting to the database...")
 
@@ -328,6 +346,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		kbackendUpstream,
 		dbPool,
 		requestDetailsContextKey,
+		productApplicationBlockBefore,
 	)
 	if err != nil {
 		return fmt.Errorf("could not create data API module: %w", err)

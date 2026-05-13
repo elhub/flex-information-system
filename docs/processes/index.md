@@ -8,7 +8,7 @@ The processes describe the sequence of activities that are done to achieve a
 goal. They are *business processes* and not technical processes *in* the FIS,
 but do provide quite a lot of details about how interaction will be done with
 the FIS API. All interactions with the FIS is done via syncronous calls to the
-[Resource-oriented JSON-over-HTTP(s) Data API](../technical/api-design.md).
+[Resource-oriented JSON-over-HTTP(s) Data API](../api/api-design.md).
 The FIS API will be implemented to *support* the processes and enforce certain
 rules/policies such as data validation, state transitions and notifications.
 

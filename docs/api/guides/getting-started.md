@@ -3,18 +3,20 @@
 This is a guide to get you started as a service provider that will mainly
 interact with the FIS through our API.
 
-!!! info "Guide for portal users"
-    If you rather would like to use the portal, please head to the
-    [getting started guide for the portal users](TODO).
+> [!NOTE]
+>
+> If you rather would like to use the portal check the [general
+> guides](../../guides/index.md).
 
 ## Understand the model
 
-The first step is to read and understand our [authentication model](./authn-model.md).
+The first step is to read and understand our [authentication model](../../auth/authn-model.md).
 Indeed, in order to be able to manually use the API, you need to understand what
 an _entity_ and a _party_ are and how they make up the identity of a user in the
 system.
 
-You also need to understand [_scopes_](./authz-model.md#scopes) and how they allow
+You also need to understand [_scopes_](../../auth/authz-model.md#scopes) and how
+they allow
 restricting what operations an API user can do.
 
 Finally, you need to understand what an [_entity client_](../../resources/entity_client.md)
@@ -25,7 +27,7 @@ is, because it is the main tool we use to allow machine access to the API.
 As part of the [SP registration and approval process](../../processes/service-provider-registration-and-approval.md),
 you need to be in contact with a FIS operator that will create objects you need
 to be able to log in to the system.
-The created objects are explained in the [user management documentation](./users-management.md).
+The created objects are explained in the [user management documentation](../../auth/users-management.md).
 
 More precisely, objects related to the organisation correspond to step 12 in the
 sequence diagram of the process, the FISO activates the parties as part of step
@@ -52,7 +54,7 @@ You should be able to assume the organisation party.
 
 Now, navigate to the page of your company's entity and add an entity client.
 A cryptographic key should be generated for each client as explained in the
-documentation of the [JWT Bearer](./authn-methods.md#jwt-bearer) authentication
+documentation of the [JWT Bearer](../../auth/authn-methods.md#jwt-bearer) authentication
 method.
 You can set up scopes to restrict what the person using machine access will be
 able to do on the API.

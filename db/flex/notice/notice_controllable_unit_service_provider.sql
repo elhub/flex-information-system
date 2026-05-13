@@ -14,6 +14,7 @@ WITH (security_invoker = false) AS (
         'controllable_unit_service_provider' AS source_resource,
         id AS source_id,
         jsonb_build_object(
+            'kind', 'notice.data.valid_time.outside_contract',
             'invalid_timeline',
             (
                 SELECT

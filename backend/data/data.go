@@ -31,11 +31,12 @@ var openapiInput []byte
 
 // api gathers handlers for all endpoints of the data API.
 type api struct {
-	postgRESTURL *url.URL
-	kbackendURL  *url.URL
-	db           *pgpool.Pool
-	ctxKey       string
-	mux          *http.ServeMux
+	postgRESTURL                  *url.URL
+	kbackendURL                   *url.URL
+	db                            *pgpool.Pool
+	ctxKey                        string
+	mux                           *http.ServeMux
+	productApplicationBlockBefore *time.Time
 }
 
 var _ http.Handler = &api{} //nolint:exhaustruct
@@ -49,6 +50,7 @@ func NewAPIHandler(
 	kbackendUpstream string,
 	db *pgpool.Pool,
 	ctxKey string,
+	productApplicationBlockBefore *time.Time,
 ) (http.Handler, error) {
 	postgRESTURL, err := url.Parse(postgRESTUpstream)
 	if err != nil {
@@ -63,11 +65,12 @@ func NewAPIHandler(
 	mux := http.NewServeMux()
 
 	data := &api{
-		postgRESTURL: postgRESTURL,
-		kbackendURL:  kbackendURL,
-		db:           db,
-		mux:          mux,
-		ctxKey:       ctxKey,
+		postgRESTURL:                  postgRESTURL,
+		kbackendURL:                   kbackendURL,
+		db:                            db,
+		mux:                           mux,
+		ctxKey:                        ctxKey,
+		productApplicationBlockBefore: productApplicationBlockBefore,
 	}
 
 	// OpenAPI documentation handlers
@@ -199,7 +202,10 @@ func NewAPIHandler(
 	mux.Handle("GET /product_type/{id}", dataPostgRESTHandler)
 
 	mux.Handle("GET /service_provider_product_application", dataListPostgRESTHandler)
-	mux.Handle("POST /service_provider_product_application", dataPostgRESTHandler)
+	mux.Handle("POST /service_provider_product_application", blockBeforeDate(
+		data.productApplicationBlockBefore, "SPPA-VAL002",
+		"Service provider product applications", dataPostgRESTHandler,
+	))
 	mux.Handle("GET /service_provider_product_application/{id}", dataPostgRESTHandler)
 	mux.Handle("PATCH /service_provider_product_application/{id}", dataPostgRESTHandler)
 
@@ -284,7 +290,10 @@ func NewAPIHandler(
 	mux.Handle("GET /service_providing_group_membership_history/{id}", dataPostgRESTHandler)
 
 	mux.Handle("GET /service_providing_group_product_application", dataListPostgRESTHandler)
-	mux.Handle("POST /service_providing_group_product_application", dataPostgRESTHandler)
+	mux.Handle("POST /service_providing_group_product_application", blockBeforeDate(
+		data.productApplicationBlockBefore, "SPGPA-VAL007",
+		"Service providing group product applications", dataPostgRESTHandler,
+	))
 	mux.Handle("GET /service_providing_group_product_application/{id}", dataPostgRESTHandler)
 	mux.Handle("PATCH /service_providing_group_product_application/{id}", dataPostgRESTHandler)
 
@@ -367,6 +376,24 @@ func (data *api) kbackendProxyHandler(w http.ResponseWriter, req *http.Request) 
 	}
 
 	proxy.ServeHTTP(w, req)
+}
+
+// blockBeforeDate returns a handler that rejects requests with a 403 error
+// if the current time is before the configured block date.
+// If blockBefore is nil, the handler passes through to next.
+func blockBeforeDate(blockBefore *time.Time, code string, resourceName string, next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+		if blockBefore != nil && time.Now().Before(*blockBefore) {
+			writeErrorToResponseWriter(w, http.StatusForbidden, errorMessage{ //nolint:exhaustruct
+				Code:    code,
+				Message: fmt.Sprintf("%s cannot be created before %s", resourceName, blockBefore.Format("2006-01-02 15:04 MST")),
+			})
+
+			return
+		}
+
+		next.ServeHTTP(w, req)
+	})
 }
 
 // writeErrorToResponseWriter writes an error message as JSON in the response

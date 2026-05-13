@@ -65,7 +65,7 @@ of the record. `yes` means the transition is allowed, `no` means it is denied.
 
 ### Resource Level Authorization
 
-Below is the [RLA](../technical/auth/authz-model.md#resource-level-authorization-rla)
+Below is the [RLA](../auth/authz-model.md#resource-level-authorization-rla)
 for the
 resource. The default policy is **deny**.
 
@@ -118,7 +118,7 @@ No policies.
 ### Field Level Authorization
 
 For party type abbreviations, check
-[the authentication docs](../technical/auth/authn-model.md#party-market-actors).
+[the authentication docs](../auth/authn-model.md#party-market-actors).
 
 | FIELD                  | ANON | BRP | ES | EU | FISO | SO  | SP | TP | ORG |
 |------------------------|------|-----|----|----|------|-----|----|----|-----|

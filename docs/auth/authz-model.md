@@ -1,6 +1,6 @@
 # Authorization model
 
-We are providing a [resource-oriented main API](../api-design.md). Authorization
+We are providing a [resource-oriented main API](../api/api-design.md). Authorization
 is understood as allowing a user access to do an action on a resource or its
 field.
 
@@ -29,7 +29,7 @@ Together, these policies allow the party type to read all fields except `A` of r
 
 In addition to this, the user must have the required scope to perform the action.
 
-![Resource and Field Level Authorization](../../diagrams/auth-table.drawio.png)
+![Resource and Field Level Authorization](../diagrams/auth-table.drawio.png)
 
 More information about the policies and their implementation can be found in the
 following sections.
@@ -181,9 +181,9 @@ Resource level authorization is a way to control access to each resource as a
 whole. As an example, a service provider should only be able to see the
 controllable units that are assigned to them.
 
-RLA is documented as a set of policies per resource and party type. We document
-this as a list of textual policies per type, as shown for Service Provider (SP)
-and System Operator (SO) in the example below.
+RLA is documented as a set of policies per resource and party type.
+We document this as a list of textual policies per type, as shown for
+Service Provider (SP) and System Operator (SO) in the example below.
 
 | Policy key | Policy                                                   | Status  |
 |------------|----------------------------------------------------------|---------|
@@ -261,7 +261,7 @@ will see historic values presented as current records.
 Let us take the example of the controllable unit resource where access for
 service providers is based on CUSP contracts.
 
-![Time-dependent RLA](../../diagrams/time_dependent_authorization.png)
+![Time-dependent RLA](../diagrams/time_dependent_authorization.png)
 
 In this example we have 3 records in the data history for the CU. `3` is the
 current record. Two service providers, `A` and `B`, have had contracts on the
@@ -300,7 +300,7 @@ the resource into queries _as of_ this specific timestamp.
 Let us take the example of a resource managed in turn by 4 users: D, A, B, C,
 and then D again.
 
-![asof_example](../../diagrams/asof_example.png)
+![asof_example](../diagrams/asof_example.png)
 
 The resource has 3 records.
 The first one is updated (marked by a colour change), then deleted while B
