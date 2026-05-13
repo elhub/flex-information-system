@@ -63,7 +63,7 @@ export const SpStatCards = () => {
         borderClass="border-l-semantic-border-success"
         iconBgClass="bg-semantic-background-success"
         actionLabel="Create new"
-        actionTo="/controllable_unit/create"
+        actionTo="/controllable_unit/lookup"
       />
       <StatCard
         label="Service Providing Groups"
