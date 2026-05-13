@@ -70,7 +70,7 @@ No policies.
 
 | Policy key | Policy                      | Status |
 |------------|-----------------------------|--------|
-| AP-FISO001 | Read all accounting points. | TODO   |
+| AP-FISO001 | Read all accounting points. | DONE   |
 
 #### Organisation
 
@@ -80,13 +80,13 @@ No policies.
 
 | Policy key | Policy                                                 | Status |
 |------------|--------------------------------------------------------|--------|
-| AP-SO001   | Read accounting points where they are CSO, ISO or PSO. | TODO   |
+| AP-SO001   | Read accounting points where they are CSO, ISO or PSO. | DONE   |
 
 #### Service Provider
 
 | Policy key | Policy                                                         | Status |
 |------------|----------------------------------------------------------------|--------|
-| AP-SP001   | Read accounting points where they are or have been SP on a CU. | TODO   |
+| AP-SP001   | Read accounting points where they are or have been SP on a CU. | DONE   |
 
 #### Third Party
 
