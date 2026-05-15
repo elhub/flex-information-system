@@ -433,6 +433,7 @@ export const zServiceProvidingGroupProductApplicationStatus = z.enum([
   "prequalification_pending",
   "in_progress",
   "temporary_qualified",
+  "ready_for_grid_prequalification",
   "prequalified",
   "verified",
   "rejected",

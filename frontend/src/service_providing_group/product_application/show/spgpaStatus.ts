@@ -32,6 +32,10 @@ export const spgpaStatusVariantMap: Record<
     status: "approved-with-warning",
     icon: IconWarningCircle,
   },
+  ready_for_grid_prequalification: {
+    status: "ongoing",
+    icon: IconStopWatch15,
+  },
   prequalified: { status: "approved", icon: IconQualitiesCircle },
   verified: { status: "approved", icon: IconQualitiesCircle },
   rejected: { status: "rejected", icon: IconCrossCircle },

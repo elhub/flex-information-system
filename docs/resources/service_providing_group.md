@@ -13,8 +13,7 @@ groups.
 
 The service provider is responsible for creating a new service providing group.
 Initially, the status is set to `new`. Once the SPG registration is complete,
-the service provider updates the status to `active`. SPG grid prequalification
-resources are created on activation for each impacted system operator.
+the service provider updates the status to `active`.
 The service provider can terminate the service providing group at any time.
 After termination, the status can only be edited by a FIS operator.
 

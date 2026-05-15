@@ -3334,6 +3334,11 @@ resources:
               en: Temporary qualified
               nb: Midlertidig kvalifisert
               nn: Mellombels kvalifisert
+          - id: ready_for_grid_prequalification
+            x-intl:
+              en: Ready for grid prequalification
+              nb: Klar for nettprekvalisering
+              nn: Klar for nettprekvalisering
           - id: prequalified
             x-intl:
               en: Prequalified

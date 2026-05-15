@@ -18,6 +18,8 @@ public enum class ServiceProvidingGroupProductApplicationStatus(
   IN_PROGRESS("in_progress"),
   @SerialName("temporary_qualified")
   TEMPORARY_QUALIFIED("temporary_qualified"),
+  @SerialName("ready_for_grid_prequalification")
+  READY_FOR_GRID_PREQUALIFICATION("ready_for_grid_prequalification"),
   @SerialName("prequalified")
   PREQUALIFIED("prequalified"),
   @SerialName("verified")
