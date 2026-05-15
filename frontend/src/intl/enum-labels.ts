@@ -430,7 +430,7 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_providing_group_product_application.status.temporary_qualified":
       "Midlertidig kvalifisert",
     "service_providing_group_product_application.status.ready_for_grid_prequalification":
-      "Klar for nettprekvalisering",
+      "Klar for nettprekvalifisering",
     "service_providing_group_product_application.status.prequalified":
       "Prekvalifisert",
     "service_providing_group_product_application.status.verified": "Verifisert",
@@ -595,7 +595,7 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_providing_group_product_application.status.temporary_qualified":
       "Mellombels kvalifisert",
     "service_providing_group_product_application.status.ready_for_grid_prequalification":
-      "Klar for nettprekvalisering",
+      "Klar for nettprekvalifisering",
     "service_providing_group_product_application.status.prequalified":
       "Prekvalifisert",
     "service_providing_group_product_application.status.verified": "Verifisert",
