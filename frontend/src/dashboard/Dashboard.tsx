@@ -1,19 +1,13 @@
 import { useAuthenticated, useGetIdentity } from "ra-core";
-import { Alert, Heading, Loader } from "../components/ui";
-import { SOApplicationsTable } from "./system_operator/SoApplicationsTable";
-import { SpApplicationsTable } from "./service_provider/SpApplicationsTable";
-import { SoStatCards } from "./system_operator/SoStatCards";
-import { SpStatCards } from "./service_provider/SpStatCards";
-import { DashboardLayout } from "./DashboardLayout";
-import { useDashboardApplications } from "./hooks/useDashboardApplications";
+import { Heading, Loader } from "../components/ui";
+import { SpDashboard } from "./service_provider/SpDashboard";
+import { SoDashboard } from "./system_operator/SoDashboard";
+import { DefaultDashboard } from "./DefaultDashboard";
 
 export const Dashboard = () => {
   useAuthenticated();
 
-  const { data: identity } = useGetIdentity();
-  const { activeItems, resolvedItems, isLoading, error } =
-    useDashboardApplications();
-  const isServiceProvider = identity?.role === "flex_service_provider";
+  const { data: identity, isLoading } = useGetIdentity();
 
   return (
     <div
@@ -24,47 +18,15 @@ export const Dashboard = () => {
         Dashboard
       </Heading>
       {isLoading && <Loader size="medium" />}
-      {error && <Alert variant="error">Failed to load dashboard.</Alert>}
-
-      {!isLoading && !error && (
-        <>
-          {isServiceProvider && (
-            <DashboardLayout
-              statCards={<SpStatCards />}
-              activeTable={
-                <SpApplicationsTable
-                  items={activeItems}
-                  empty="No active applications."
-                />
-              }
-              resolvedTable={
-                <SpApplicationsTable
-                  items={resolvedItems}
-                  empty="No resolved applications."
-                />
-              }
-            />
-          )}
-
-          {!isServiceProvider && (
-            <DashboardLayout
-              statCards={<SoStatCards />}
-              activeTable={
-                <SOApplicationsTable
-                  items={activeItems}
-                  empty="No active applications."
-                />
-              }
-              resolvedTable={
-                <SOApplicationsTable
-                  items={resolvedItems}
-                  empty="No resolved applications."
-                />
-              }
-            />
-          )}
-        </>
+      {!isLoading && identity?.role === "flex_service_provider" && (
+        <SpDashboard />
       )}
+      {!isLoading && identity?.role === "flex_system_operator" && (
+        <SoDashboard />
+      )}
+      {!isLoading &&
+        identity?.role !== "flex_service_provider" &&
+        identity?.role !== "flex_system_operator" && <DefaultDashboard />}
     </div>
   );
 };
