@@ -13,7 +13,13 @@ import {
   deleteTechnicalResource,
 } from "../../generated-client";
 import { SimpleTable, ColumnOf } from "../../components/SimpleTable";
-import { Button } from "../../components/ui";
+import {
+  Button,
+  Heading,
+  BodyText,
+  Card,
+  CardContent,
+} from "../../components/ui";
 import { IconPlus, IconTrash } from "@elhub/ds-icons";
 import { useConfirmAction } from "../../components/ConfirmAction";
 import { throwOnError } from "../../util";
@@ -124,7 +130,22 @@ export const TechnicalResourceList = () => {
           columns={columns}
           data={data ?? []}
           empty={
-            "No technical resources yet. To set the controllable unit as active, one technical resource is required."
+            <Card>
+              <CardContent>
+                <div className="flex flex-col gap-2 py-4">
+                  <Heading level={3}>No technical resources</Heading>
+                  <BodyText>
+                    A technical resource represents a physical device or asset
+                    (such as a battery, generator, or flexible load) that
+                    provides the actual controllable capacity.
+                  </BodyText>
+                  <BodyText>
+                    To set the controllable unit as active, at least one
+                    technical resource is required.
+                  </BodyText>
+                </div>
+              </CardContent>
+            </Card>
           }
           rowClick={(record) => {
             navigate(
