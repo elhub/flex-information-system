@@ -30,7 +30,7 @@ import (
 )
 
 const (
-	callbackPath     = "/auth/v0/callback"
+	callbackPath     = "/auth/v1/callback"
 	sessionCookieKey = "__Host-flex_session"
 
 	defaultFailedLoginResponseDelay = 2 * time.Second

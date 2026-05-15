@@ -4,7 +4,7 @@ Relation telling which metering grid area an accounting point belongs to.
 
 ## Relevant links
 
-* [API Documentation](../api/v0/index.html#/operations/list_accounting_point_metering_grid_area)
+* [API Documentation](../api/v1/index.html#/operations/list_accounting_point_metering_grid_area)
 * [Download docx](../download/accounting_point_metering_grid_area.docx)
 
 ## Fields

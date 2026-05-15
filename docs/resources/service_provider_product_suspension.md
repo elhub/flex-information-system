@@ -5,7 +5,7 @@ service provider from delivering them products of the given types.
 
 ## Relevant links
 
-* [API Documentation](../api/v0/index.html#/operations/list_service_provider_product_suspension)
+* [API Documentation](../api/v1/index.html#/operations/list_service_provider_product_suspension)
 * [Download docx](../download/service_provider_product_suspension.docx)
 
 ## Fields

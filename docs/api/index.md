@@ -6,5 +6,5 @@ technical information about the API.
 
 If you are looking for the OpenAPI specs for our APIs, use these links:
 
-* [Auth API](../auth/v0/)
-* [Data API](../api/v0/)
+* [Auth API](../auth/v1/)
+* [Data API](../api/v1/)

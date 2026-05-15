@@ -9,13 +9,12 @@ info:
     name: Elhub AS
     url: https://elhub.no
     email: post@elhub.no
-  version: 0.0.1
+  version: 2026-06-08
 externalDocs:
-  description: TODO
-  url: https://todo.example.com
+  description: API Changelog
+  url: https://elhub.github.io/flex-information-system/changelog/
 jsonSchemaDialect: https://spec.openapis.org/oas/3.1/dialect/base
 tags:
-  # TODO externaldocs
   - name: introspection
     description: Introspection
   - name: controllable_unit
@@ -29,7 +28,20 @@ components:
       type: http
       scheme: Bearer
       bearerFormat: JWT
-  parameters: {}
+  parameters:
+    ApiVersion:
+      name: Api-Version
+      in: header
+      required: true
+      description: >
+        The API version to use. Must be a supported version date.
+        See the [changelog](https://elhub.github.io/flex-information-system/changelog/)
+        for available versions.
+      schema:
+        type: string
+        enum:
+          - "2026-06-08"
+        example: "2026-06-08"
   schemas:
     error_message:
       description: Error message returned from the API.
@@ -650,7 +662,7 @@ paths:
                 $ref: "#/components/schemas/error_message"
           description: Internal Server Error
 servers:
-  - url: https://flex-test.elhub.no/api/v0
+  - url: https://flex-test.elhub.no/api/v1
     description: External test environment
-  - url: https://test.flex.internal:6443/api/v0
+  - url: https://test.flex.internal:6443/api/v1
     description: Local development

@@ -9,7 +9,7 @@ import { Typography, Stack, Button, Box } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import UndoIcon from "@mui/icons-material/Undo";
-import { apiURL } from "../../httpConfig";
+import { apiURL, API_VERSION } from "../../httpConfig";
 import { useFormContext } from "react-hook-form";
 import { InputStack } from "../../auth";
 
@@ -39,6 +39,7 @@ const Toolbar = () => {
       method: "POST",
       headers: new Headers({
         "Content-Type": "application/json",
+        "Api-Version": API_VERSION,
       }),
       body: JSON.stringify(body),
     });

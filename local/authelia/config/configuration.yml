@@ -116,8 +116,8 @@ identity_providers:
         authorization_policy: 'one_factor'
         public: false
         redirect_uris:
-          - 'https://test.flex.internal:6443/auth/v0/callback'
-          - 'https://dev.flex.internal:5443/auth/v0/callback'
+          - 'https://test.flex.internal:6443/auth/v1/callback'
+          - 'https://dev.flex.internal:5443/auth/v1/callback'
         scopes:
           - 'openid'
           - 'profile' # to get preferred_username

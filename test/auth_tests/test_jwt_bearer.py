@@ -18,7 +18,7 @@ def keys():
 
 
 auth_request_headers = {"Content-Type": "application/x-www-form-urlencoded"}
-auth_url = os.environ["FLEX_AUTH_BASE"] + "/auth/v0"
+auth_url = os.environ["FLEX_AUTH_BASE"] + "/auth/v1"
 grant_type_bearer = "urn:ietf:params:oauth:grant-type:jwt-bearer"
 
 client_ids = {
@@ -46,7 +46,7 @@ client_ids = {
 def test_entity(keys, key, client_id, expected_status, error):
     payload = {
         # Audience
-        "aud": "https://test.flex.internal:6443/auth/v0/",
+        "aud": "https://test.flex.internal:6443/auth/v1/",
         # JWT ID
         "jti": str(uuid.uuid4()),
         # Issued at
@@ -129,7 +129,7 @@ def test_entity(keys, key, client_id, expected_status, error):
 def test_party(keys, key, gln, party_type, client_id, expected_status, error):
     payload = {
         # Audience
-        "aud": "https://test.flex.internal:6443/auth/v0/",
+        "aud": "https://test.flex.internal:6443/auth/v1/",
         # Issuer
         "iss": client_id,  # Test Suite
         # JWT ID
@@ -162,66 +162,66 @@ def test_party(keys, key, gln, party_type, client_id, expected_status, error):
     [
         # The only valid case
         (
-            "https://test.flex.internal:6443/auth/v0/",
+            "https://test.flex.internal:6443/auth/v1/",
             client_ids["test"],
             "no:party:gln:1337000100058:service_provider",
             200,
         ),
         # Invalid audience
         (
-            "https://test.flex.internal:6443/auth/v0",
+            "https://test.flex.internal:6443/auth/v1",
             client_ids["test"],
             "no:party:gln:1337000100058:service_provider",
             400,
         ),
         (
-            "https://flex.localost:6443/auth/v0/",
+            "https://flex.localost:6443/auth/v1/",
             client_ids["test"],
             "no:party:gln:1337000100058:service_provider",
             400,
         ),
         # Invalid issuer
         (
-            "https://test.flex.internal:6443/auth/v0/",
+            "https://test.flex.internal:6443/auth/v1/",
             "malformed",
             "no:party:gln:1337000100058:service_provider",
             400,
         ),
         (
-            "https://test.flex.internal:6443/auth/v0/",
+            "https://test.flex.internal:6443/auth/v1/",
             client_ids["common"],
             "no:party:gln:1337000100058:service_provider",
             400,
         ),
         # Invalid subject
         (
-            "https://test.flex.internal:6443/auth/v0/",
+            "https://test.flex.internal:6443/auth/v1/",
             client_ids["test"],
             "no:entity:gln:1337000100058:service_provider",
             400,
         ),
         (
-            "https://test.flex.internal:6443/auth/v0/",
+            "https://test.flex.internal:6443/auth/v1/",
             client_ids["test"],
             "party:gln:1337000100058:service_provider",
             400,
         ),
         (
-            "https://test.flex.internal:6443/auth/v0/",
+            "https://test.flex.internal:6443/auth/v1/",
             client_ids["test"],
             "no:party:gln:337000100058:service_provider",
             400,
         ),
         # Missing party type
         (
-            "https://test.flex.internal:6443/auth/v0/",
+            "https://test.flex.internal:6443/auth/v1/",
             client_ids["test"],
             "no:party:gln:1337000100058",
             400,
         ),
         # Invalid party type
         (
-            "https://test.flex.internal:6443/auth/v0/",
+            "https://test.flex.internal:6443/auth/v1/",
             client_ids["test"],
             "no:party:gln:1337000100058:invalid_type",
             400,
@@ -281,7 +281,7 @@ def test_timing(keys, expected_status, iat_offset, exp_offset):
     exp = now + timedelta(seconds=exp_offset)
     payload = {
         # Audience
-        "aud": "https://test.flex.internal:6443/auth/v0/",
+        "aud": "https://test.flex.internal:6443/auth/v1/",
         # Issuer
         "iss": client_ids["test"],  # Test Suite
         # Subject

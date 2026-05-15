@@ -1,4 +1,4 @@
-POST https://{{host}}/api/v0/controllable_unit/lookup
+POST https://{{host}}/api/v1/controllable_unit/lookup
 Authorization: Bearer {{jwt}}
 
 {
