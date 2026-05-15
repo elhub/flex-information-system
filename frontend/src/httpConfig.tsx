@@ -61,9 +61,9 @@ export async function httpClient(url: string, options: any = {}) {
 
   // ---
 
-  if (!options.headers) {
-    options.headers = new Headers({ Accept: "application/json" });
-  }
+  options.headers = new Headers(
+    options.headers ?? { Accept: "application/json" },
+  );
   if (u.href.startsWith(apiURL)) {
     options.headers.set("Api-Version", API_VERSION);
   }
