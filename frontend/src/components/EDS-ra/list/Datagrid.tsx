@@ -92,12 +92,13 @@ export const DataTable = <T extends RaRecord>({
       <Table.Header>
         <Table.Row>
           {columns.map((child, index) => {
-            const { source } = child.props as {
+            const { source, label } = child.props as {
               source: string;
+              label?: string;
             };
             return (
               <Table.ColumnHeader key={source ?? index} scope="col">
-                <FieldTitle source={source} resource={resource} />
+                <FieldTitle source={source} label={label} resource={resource} />
               </Table.ColumnHeader>
             );
           })}
