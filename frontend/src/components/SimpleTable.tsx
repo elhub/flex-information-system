@@ -49,7 +49,12 @@ export const SimpleTable = <T extends { id?: string | number }>({
     rowClick(record);
   };
 
-  if (!data.length) return <BodyText>{empty}</BodyText>;
+  if (!data.length)
+    return typeof empty === "string" ? (
+      <BodyText>{empty}</BodyText>
+    ) : (
+      <>{empty}</>
+    );
   return (
     <Table className={className} size={size}>
       <Table.Header>
