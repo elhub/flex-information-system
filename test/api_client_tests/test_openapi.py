@@ -6,7 +6,6 @@ from security_token_service import (
     SecurityTokenService,
     TestEntity,
 )
-from security_token_service import API_VERSION
 
 
 def test_openapi():
@@ -16,8 +15,8 @@ def test_openapi():
         AuthenticatedClient, SecurityTokenService().get_client(TestEntity.TEST)
     ).token
 
+    # endpoint: GET /openapi.json
     response = requests.get(
-        api_url + "/openapi.json",
-        headers={"Authorization": f"Bearer {entity_token}", "Api-Version": API_VERSION},
+        api_url + "/openapi.json", headers={"Authorization": f"Bearer {entity_token}"}
     )
     response.raise_for_status()

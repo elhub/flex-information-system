@@ -8620,8 +8620,7 @@
                             }
                         }
                     }
-                },
-                "parameters": []
+                }
             }
         },
         "/controllable_unit/lookup": {

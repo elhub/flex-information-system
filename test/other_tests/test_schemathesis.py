@@ -7,6 +7,7 @@ from security_token_service import (
     SecurityTokenService,
     TestEntity,
     AuthenticatedClient,
+    API_VERSION,
 )
 
 """
@@ -44,7 +45,10 @@ schema = schemathesis.openapi.from_file(openapi_document).include(func=include_f
 @schema.parametrize()
 def test_schemathesis(case: schemathesis.Case) -> None:
     api_url = os.environ["FLEX_URL_BASE"] + "/api/v1"
-    response = case.call(base_url=api_url, headers={"Authorization": f"Bearer {token}"})
+    response = case.call(
+        base_url=api_url,
+        headers={"Authorization": f"Bearer {token}", "Api-Version": API_VERSION},
+    )
 
     # When the OpenAPI spec includes a cookie securityScheme, then we get some 500s
     case.validate_response(response)

@@ -8710,12 +8710,7 @@
                             }
                         }
                     }
-                },
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/ApiVersion"
-                    }
-                ]
+                }
             }
         },
         "/controllable_unit/lookup": {

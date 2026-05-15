@@ -15,12 +15,21 @@ const apiVersionKey contextKey = "api-version"
 // contains an unsupported version. On success it echoes the latest version
 // back in the response and stores the requested version in the context.
 // Add a new entry to knownVersions when a breaking change ships. Remove old entries at sunset.
+// The OpenAPI endpoints (/ and /openapi.json) are exempt.
 func RequireAPIVersion(next http.Handler) http.Handler {
 	knownVersions := []string{
 		"2026-06-08",
 	}
 	currentVersion := knownVersions[len(knownVersions)-1]
+	exempt := map[string]bool{
+		"/":             true,
+		"/openapi.json": true,
+	}
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if exempt[r.URL.Path] {
+			next.ServeHTTP(w, r)
+			return
+		}
 		apiVersion := r.Header.Get("Api-Version")
 		if apiVersion == "" || !slices.Contains(knownVersions, apiVersion) {
 			w.Header().Set("Content-Type", "application/json")
