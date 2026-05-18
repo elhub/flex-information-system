@@ -13,17 +13,17 @@ type Props = {
 export const SpgpqShowTabs = ({ spgId, spgpqId, spg }: Props) => {
   const [tab, setTab] = useTabSearchParam("spg_info");
   return (
-  <Tabs value={tab} onChange={setTab} className="relative top-[-24px]">
-    <Tabs.List>
-      <Tabs.Tab label="SPG info" value="spg_info" />
-      <Tabs.Tab label="Comments" value="comments" />
-    </Tabs.List>
-    <Tabs.Panel value="spg_info">
-      <SpgInfoTab spgId={spgId} spg={spg} />
-    </Tabs.Panel>
-    <Tabs.Panel value="comments">
-      <SpgpqCommentFeed spgpqId={spgpqId} />
-    </Tabs.Panel>
-  </Tabs>
+    <Tabs value={tab} onChange={setTab} className="relative top-[-24px]">
+      <Tabs.List>
+        <Tabs.Tab label="SPG info" value="spg_info" />
+        <Tabs.Tab label="Comments" value="comments" />
+      </Tabs.List>
+      <Tabs.Panel value="spg_info">
+        <SpgInfoTab spgId={spgId} spg={spg} />
+      </Tabs.Panel>
+      <Tabs.Panel value="comments">
+        <SpgpqCommentFeed spgpqId={spgpqId} />
+      </Tabs.Panel>
+    </Tabs>
   );
 };

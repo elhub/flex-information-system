@@ -9,13 +9,13 @@ type Props = {
 export const SppaShowTabs = ({ sppaId }: Props) => {
   const [tab, setTab] = useTabSearchParam("comments");
   return (
-  <Tabs value={tab} onChange={setTab} className="relative top-[-24px]">
-    <Tabs.List>
-      <Tabs.Tab label="Comments" value="comments" />
-    </Tabs.List>
-    <Tabs.Panel value="comments">
-      <SppaCommentFeed sppaId={sppaId} />
-    </Tabs.Panel>
-  </Tabs>
+    <Tabs value={tab} onChange={setTab} className="relative top-[-24px]">
+      <Tabs.List>
+        <Tabs.Tab label="Comments" value="comments" />
+      </Tabs.List>
+      <Tabs.Panel value="comments">
+        <SppaCommentFeed sppaId={sppaId} />
+      </Tabs.Panel>
+    </Tabs>
   );
 };
