@@ -635,7 +635,7 @@ export type ControllableUnit = {
    */
   maximum_active_power: number;
   /**
-   * Whether the controllable unit is small or not, following NCDR.
+   * Whether the controllable unit is small or not, following NCDR. Current threshold for this to be true is <= 50 kW of flexible power.
    */
   readonly is_small: boolean;
   /**
@@ -3156,7 +3156,7 @@ export type ControllableUnitHistory = {
    */
   maximum_active_power: number;
   /**
-   * Whether the controllable unit is small or not, following NCDR.
+   * Whether the controllable unit is small or not, following NCDR. Current threshold for this to be true is <= 50 kW of flexible power.
    */
   readonly is_small: boolean;
   /**

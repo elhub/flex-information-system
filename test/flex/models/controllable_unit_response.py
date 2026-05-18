@@ -39,7 +39,8 @@ class ControllableUnitResponse:
             production or increase consumption. Example: up.
         maximum_active_power (float): Maximum continuous active power (flexible power) that the controllable unit can
             produce or consume, i.e. deliver for balancing and congestion services, in kilowatts. Example: 3.5.
-        is_small (bool): Whether the controllable unit is small or not, following NCDR. Example: True.
+        is_small (bool): Whether the controllable unit is small or not, following NCDR. Current threshold for this to be
+            true is <= 50 kW of flexible power. Example: True.
         accounting_point_id (int): Reference to the accounting point that the controllable unit is connected to.
             Example: 10289.
         recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
