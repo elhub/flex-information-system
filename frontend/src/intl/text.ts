@@ -15,7 +15,8 @@ export const text: Record<string, Record<TextKey, string>> = {
     entity_role: "Entity",
     "controllable_unit.is_small.true": "Yes (Small, ≤ 50 kW of flexible power)",
     "controllable_unit.is_small.true.label": "Yes",
-    "controllable_unit.is_small.false": "No (Not small, > 50 kW of flexible power)",
+    "controllable_unit.is_small.false":
+      "No (Not small, > 50 kW of flexible power)",
     "controllable_unit.is_small.false.label": "No",
     "lookup.input.accounting_point": "Accounting point",
     "lookup.input.controllable_unit": "Controllable unit",
@@ -27,7 +28,8 @@ export const text: Record<string, Record<TextKey, string>> = {
     entity_role: "Entitet",
     "controllable_unit.is_small.true": "Ja (Liten, ≤ 50 kW fleksibel effekt)",
     "controllable_unit.is_small.true.label": "Ja",
-    "controllable_unit.is_small.false": "Nei (Ikke liten, > 50 kW fleksibel effekt)",
+    "controllable_unit.is_small.false":
+      "Nei (Ikke liten, > 50 kW fleksibel effekt)",
     "controllable_unit.is_small.false.label": "Nei",
     "lookup.input.accounting_point": "Avregningspunkt",
     "lookup.input.controllable_unit": "Kontrollerbar enhet",

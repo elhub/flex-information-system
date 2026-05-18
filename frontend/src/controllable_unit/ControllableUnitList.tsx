@@ -20,9 +20,7 @@ import { BodyText, Button, Tooltip } from "../components/ui";
 import { Permissions } from "../auth/permissions";
 import { zControllableUnit } from "../generated-client/zod.gen";
 import { getFields } from "../zod";
-import {
-  IconPlus,
-} from "@elhub/ds-icons";
+import { IconPlus } from "@elhub/ds-icons";
 import { findCurrentlyValidRecord } from "../util";
 import type {
   AccountingPointBiddingZone,
@@ -124,8 +122,12 @@ const IsSmallField = ({
 
   if (isSmall == null) return null;
 
-  const key = isSmall ? "controllable_unit.is_small.true" : "controllable_unit.is_small.false";
-  const labelKey = isSmall ? "controllable_unit.is_small.true.label" : "controllable_unit.is_small.false.label";
+  const key = isSmall
+    ? "controllable_unit.is_small.true"
+    : "controllable_unit.is_small.false";
+  const labelKey = isSmall
+    ? "controllable_unit.is_small.true.label"
+    : "controllable_unit.is_small.false.label";
 
   return (
     <Tooltip content={translate(`text.${key}`)}>

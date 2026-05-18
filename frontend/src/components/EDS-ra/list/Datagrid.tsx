@@ -101,7 +101,11 @@ export const DataTable = <T extends RaRecord>({
             return (
               <Table.ColumnHeader key={source ?? index} scope="col">
                 <span className="flex items-center gap-1">
-                  <FieldTitle source={source} label={label} resource={resource} />
+                  <FieldTitle
+                    source={source}
+                    label={label}
+                    resource={resource}
+                  />
                   {headerTooltip && source && (
                     <FieldTooltip resource={resource} field={source} />
                   )}
