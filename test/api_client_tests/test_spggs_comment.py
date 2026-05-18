@@ -14,6 +14,8 @@ from flex.models import (
     ServiceProvidingGroupBiddingZone,
     ServiceProvidingGroupMembershipCreateRequest,
     ServiceProvidingGroupMembershipResponse,
+    ServiceProvidingGroupGridPrequalificationCreateRequest,
+    ServiceProvidingGroupGridPrequalificationResponse,
     ServiceProvidingGroupGridPrequalificationUpdateRequest,
     ServiceProvidingGroupGridPrequalificationStatus,
     ControllableUnitCreateRequest,
@@ -43,7 +45,7 @@ from flex.api.controllable_unit_service_provider import (
     create_controllable_unit_service_provider,
 )
 from flex.api.service_providing_group_grid_prequalification import (
-    list_service_providing_group_grid_prequalification,
+    create_service_providing_group_grid_prequalification,
     update_service_providing_group_grid_prequalification,
 )
 from flex.api.service_providing_group_grid_suspension import (
@@ -110,7 +112,7 @@ def create_spggs(client_fiso, client_sp, sp_id, ap_id, eu_id, so_id):
     )
     assert isinstance(spgm, ServiceProvidingGroupMembershipResponse)
 
-    # activate the SPG and get the SPGGP created automatically
+    # activate the SPG
 
     u = update_service_providing_group.sync(
         client=client_sp,
@@ -122,16 +124,20 @@ def create_spggs(client_fiso, client_sp, sp_id, ap_id, eu_id, so_id):
     )
     assert not (isinstance(u, ErrorMessage))
 
-    spggps = list_service_providing_group_grid_prequalification.sync(
+    # create the SPGGP manually (linked to the SO via the accounting point)
+
+    spggp = create_service_providing_group_grid_prequalification.sync(
         client=client_fiso,
-        service_providing_group_id=f"eq.{spg.id}",
+        body=ServiceProvidingGroupGridPrequalificationCreateRequest(
+            service_providing_group_id=cast(int, spg.id),
+            impacted_system_operator_id=so_id,
+        ),
     )
-    assert isinstance(spggps, list)
-    assert len(spggps) == 1
+    assert isinstance(spggp, ServiceProvidingGroupGridPrequalificationResponse)
 
     u = update_service_providing_group_grid_prequalification.sync(
         client=client_fiso,
-        id=cast(int, spggps[0].id),
+        id=cast(int, spggp.id),
         body=ServiceProvidingGroupGridPrequalificationUpdateRequest(
             status=ServiceProvidingGroupGridPrequalificationStatus.IN_PROGRESS,
             prequalified_at=datetime.datetime.fromisoformat(

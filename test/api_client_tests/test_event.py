@@ -92,7 +92,6 @@ from flex.api.service_providing_group_membership import (
 from flex.api.service_providing_group_grid_prequalification import (
     create_service_providing_group_grid_prequalification,
     update_service_providing_group_grid_prequalification,
-    list_service_providing_group_grid_prequalification,
 )
 from flex.api.service_providing_group_grid_suspension import (
     create_service_providing_group_grid_suspension,
@@ -410,15 +409,6 @@ def test_event_sp(sts):
             impacted_system_operator_id=so_id,
         ),
     )
-    if isinstance(spggp, ErrorMessage):
-        # possibly already created when activating the SPG, retrieve it
-        spggps = list_service_providing_group_grid_prequalification.sync(
-            client=client_fiso,
-            service_providing_group_id=f"eq.{spg.id}",
-        )
-        assert isinstance(spggps, list)
-        assert len(spggps) == 1
-        spggp = spggps[0]
     assert isinstance(spggp, ServiceProvidingGroupGridPrequalificationResponse)
 
     u = update_service_providing_group_grid_prequalification.sync(

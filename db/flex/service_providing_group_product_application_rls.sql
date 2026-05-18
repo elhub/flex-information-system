@@ -85,3 +85,31 @@ TO flex_system_operator
 USING (
     procuring_system_operator_id = (SELECT flex.current_party())
 );
+
+-- security definer to avoid costly recursive RLS checks
+CREATE OR REPLACE FUNCTION exists_spggp_linking_spg_and_so(
+    in_spg_id bigint,
+    in_so_id bigint
+)
+RETURNS boolean
+SECURITY DEFINER
+LANGUAGE sql
+AS $$
+SELECT EXISTS (
+    SELECT 1
+    FROM flex.service_providing_group_grid_prequalification AS spggp
+    WHERE spggp.service_providing_group_id = in_spg_id
+        AND spggp.impacted_system_operator_id = in_so_id
+)
+$$;
+
+-- RLS: SPGPA-SO003
+CREATE POLICY "SPGPA_SO003"
+ON service_providing_group_product_application
+FOR SELECT
+TO flex_system_operator
+USING (
+    exists_spggp_linking_spg_and_so(
+        service_providing_group_id, (SELECT flex.current_party())
+    )
+);

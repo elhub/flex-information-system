@@ -15,6 +15,7 @@ digraph G {
         temporary_qualified;
     }
     in_progress;
+    ready_for_grid_prequalification;
     {
         rank = same;
         verified;
@@ -33,8 +34,11 @@ digraph G {
     temporary_qualified -> rejected [label="Verification\nfailed", color="green"];
     temporary_qualified -> verified [color="green"];
 
-    in_progress -> prequalified [color="green"];
+    in_progress -> ready_for_grid_prequalification [color="green"];
     in_progress -> rejected [color="green"];
+
+    ready_for_grid_prequalification -> prequalified [color="green"];
+    ready_for_grid_prequalification -> rejected [color="green"];
 
     prequalified -> requested [label="SPG has changed\nsignificantly", color="green"];
     verified -> requested [label="SPG has changed\nsignificantly", color="green"];

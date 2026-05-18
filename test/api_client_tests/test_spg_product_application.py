@@ -59,6 +59,9 @@ from flex.api.service_providing_group_product_application import (
     list_service_providing_group_product_application_history,
     read_service_providing_group_product_application_history,
 )
+from flex.api.service_providing_group_grid_prequalification import (
+    list_service_providing_group_grid_prequalification,
+)
 from flex import AuthenticatedClient
 import datetime
 import pytest
@@ -383,6 +386,45 @@ def test_spgpa_fiso_sp_so(data):
         ),
     )
     assert not isinstance(u, ErrorMessage)
+
+    # transition to ready_for_grid_prequalification triggers automatic creation of
+    # SPGGP for all impacted SOs
+
+    spggps_before = list_service_providing_group_grid_prequalification.sync(
+        client=client_fiso,
+        service_providing_group_id=f"eq.{spg_ids[0]}",
+    )
+    assert isinstance(spggps_before, list)
+
+    u = update_service_providing_group_product_application.sync(
+        client=client_fiso,
+        id=cast(int, spgpa.id),
+        body=ServiceProvidingGroupProductApplicationUpdateRequest(
+            status=ServiceProvidingGroupProductApplicationStatus.READY_FOR_GRID_PREQUALIFICATION,
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
+
+    # the CU in the SPG is linked to Test SO (AP 1002), so one SPGGP should be created
+    spggps_after = list_service_providing_group_grid_prequalification.sync(
+        client=client_fiso,
+        service_providing_group_id=f"eq.{spg_ids[0]}",
+    )
+    assert isinstance(spggps_after, list)
+    assert len(spggps_after) == len(spggps_before) + 1
+
+    # RLS: SPGPA-SO003
+
+    # spgpa2 targets the other SO, so that SO can read it through policy SO001
+    # but Test SO cannot read it through this policy
+    # if they can read it, it is therefore through policy SO003 with the created
+    # SPGGP above
+
+    s = read_service_providing_group_product_application.sync(
+        client=client_so,
+        id=cast(int, spgpa2.id),
+    )
+    assert isinstance(s, ServiceProvidingGroupProductApplicationResponse)
 
     # prequalified or verified, but no timestamp: not ok
     # cross-verification there:
