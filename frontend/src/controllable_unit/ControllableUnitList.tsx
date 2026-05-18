@@ -16,11 +16,13 @@ import {
   TextField,
 } from "../components/EDS-ra/fields";
 import { EnumArrayInput } from "../components/EDS-ra/inputs";
-import { BodyText, Button } from "../components/ui";
+import { BodyText, Button, Tooltip } from "../components/ui";
 import { Permissions } from "../auth/permissions";
 import { zControllableUnit } from "../generated-client/zod.gen";
 import { getFields } from "../zod";
-import { IconPlus } from "@elhub/ds-icons";
+import {
+  IconPlus,
+} from "@elhub/ds-icons";
 import { findCurrentlyValidRecord } from "../util";
 import type {
   AccountingPointBiddingZone,
@@ -109,6 +111,31 @@ const BalanceResponsiblePartyField = ({
   return <BodyText size="small">{party.name}</BodyText>;
 };
 
+const IsSmallField = ({
+  source: _source,
+  headerTooltip: _headerTooltip,
+}: {
+  source: string;
+  headerTooltip?: boolean;
+}) => {
+  const record = useRecordContext();
+  const translate = useTranslate();
+  const isSmall: boolean | undefined = record?.is_small;
+
+  if (isSmall == null) return null;
+
+  const key = isSmall ? "controllable_unit.is_small.true" : "controllable_unit.is_small.false";
+  const labelKey = isSmall ? "controllable_unit.is_small.true.label" : "controllable_unit.is_small.false.label";
+
+  return (
+    <Tooltip content={translate(`text.${key}`)}>
+      <span>
+        <BodyText size="small">{translate(`text.${labelKey}`)}</BodyText>
+      </span>
+    </Tooltip>
+  );
+};
+
 export const ControllableUnitList = () => {
   const { permissions } = usePermissions<Permissions>();
   const { data: identity } = useGetIdentity();
@@ -152,7 +179,7 @@ export const ControllableUnitList = () => {
           source={fields.regulation_direction.source}
           enumKey="controllable_unit.regulation_direction"
         />
-        <TextField source={fields.is_small.source} />
+        <IsSmallField source={fields.is_small.source} headerTooltip />
         <ReferenceField
           source={fields.accounting_point_id.source}
           reference="accounting_point"

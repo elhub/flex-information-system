@@ -56,7 +56,8 @@ public data class ControllableUnitResponse(
   @SerialName("maximum_active_power")
   public val maximumActivePower: BigDecimal,
   /**
-   * Whether the controllable unit is small or not, following NCDR.
+   * Whether the controllable unit is small or not, following NCDR. Current threshold for this to be
+   * true is <= 50 kW of flexible power.
    */
   @SerialName("is_small")
   public val isSmall: Boolean? = null,
