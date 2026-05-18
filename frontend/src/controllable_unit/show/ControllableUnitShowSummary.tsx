@@ -168,6 +168,18 @@ export const ControllableUnitShowSummary = ({
           />
           <LabelValue
             size="small"
+            tooltip
+            labelKey="controllable_unit.additional_information"
+            value={
+              controllableUnit.additional_information ? (
+                <span className="whitespace-pre-wrap">
+                  {controllableUnit.additional_information}
+                </span>
+              ) : undefined
+            }
+          />
+          <LabelValue
+            size="small"
             labelKey="controllable_unit.recorded_at"
             value={
               controllableUnit.recorded_at
