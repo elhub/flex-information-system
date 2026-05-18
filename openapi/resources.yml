@@ -3319,26 +3319,16 @@ resources:
               en: Requested
               nb: Forespurt
               nn: Førespurt
-          - id: prequalification_pending
+          - id: prequalification
             x-intl:
-              en: Prequalification pending
-              nb: Prekvalifisering venter
-              nn: Prekvalifisering ventar
-          - id: in_progress
-            x-intl:
-              en: In progress
-              nb: Under behandling
-              nn: Under behandling
+              en: Prequalification
+              nb: Prekvalifisering
+              nn: Prekvalifisering
           - id: temporary_qualified
             x-intl:
               en: Temporary qualified
               nb: Midlertidig kvalifisert
               nn: Mellombels kvalifisert
-          - id: ready_for_grid_prequalification
-            x-intl:
-              en: Ready for grid prequalification
-              nb: Klar for nettprekvalifisering
-              nn: Klar for nettprekvalifisering
           - id: prequalified
             x-intl:
               en: Prequalified
@@ -3354,7 +3344,7 @@ resources:
               en: Rejected
               nb: Avvist
               nn: Avvist
-        example: in_progress
+        example: prequalification
         x-intl:
           en: Status
           nb: Status

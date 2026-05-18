@@ -103,10 +103,8 @@ export type EnumLabel =
   | "service_providing_group_grid_suspension.reason.breach_of_conditions"
   | "service_providing_group_grid_suspension.reason.other"
   | "service_providing_group_grid_suspension.reason.significant_group_change"
-  | "service_providing_group_product_application.status.in_progress"
-  | "service_providing_group_product_application.status.prequalification_pending"
+  | "service_providing_group_product_application.status.prequalification"
   | "service_providing_group_product_application.status.prequalified"
-  | "service_providing_group_product_application.status.ready_for_grid_prequalification"
   | "service_providing_group_product_application.status.rejected"
   | "service_providing_group_product_application.status.requested"
   | "service_providing_group_product_application.status.temporary_qualified"
@@ -255,14 +253,10 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
       "Breach of conditions",
     "service_provider_product_suspension.reason.other": "Other",
     "service_providing_group_product_application.status.requested": "Requested",
-    "service_providing_group_product_application.status.prequalification_pending":
-      "Prequalification pending",
-    "service_providing_group_product_application.status.in_progress":
-      "In progress",
+    "service_providing_group_product_application.status.prequalification":
+      "Prequalification",
     "service_providing_group_product_application.status.temporary_qualified":
       "Temporary qualified",
-    "service_providing_group_product_application.status.ready_for_grid_prequalification":
-      "Ready for grid prequalification",
     "service_providing_group_product_application.status.prequalified":
       "Prequalified",
     "service_providing_group_product_application.status.verified": "Verified",
@@ -423,14 +417,10 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
       "Brudd på vilkår",
     "service_provider_product_suspension.reason.other": "Annet",
     "service_providing_group_product_application.status.requested": "Forespurt",
-    "service_providing_group_product_application.status.prequalification_pending":
-      "Prekvalifisering venter",
-    "service_providing_group_product_application.status.in_progress":
-      "Under behandling",
+    "service_providing_group_product_application.status.prequalification":
+      "Prekvalifisering",
     "service_providing_group_product_application.status.temporary_qualified":
       "Midlertidig kvalifisert",
-    "service_providing_group_product_application.status.ready_for_grid_prequalification":
-      "Klar for nettprekvalifisering",
     "service_providing_group_product_application.status.prequalified":
       "Prekvalifisert",
     "service_providing_group_product_application.status.verified": "Verifisert",
@@ -588,14 +578,10 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
       "Brot på vilkår",
     "service_provider_product_suspension.reason.other": "Anna",
     "service_providing_group_product_application.status.requested": "Førespurt",
-    "service_providing_group_product_application.status.prequalification_pending":
-      "Prekvalifisering ventar",
-    "service_providing_group_product_application.status.in_progress":
-      "Under behandling",
+    "service_providing_group_product_application.status.prequalification":
+      "Prekvalifisering",
     "service_providing_group_product_application.status.temporary_qualified":
       "Mellombels kvalifisert",
-    "service_providing_group_product_application.status.ready_for_grid_prequalification":
-      "Klar for nettprekvalifisering",
     "service_providing_group_product_application.status.prequalified":
       "Prekvalifisert",
     "service_providing_group_product_application.status.verified": "Verifisert",

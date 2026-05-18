@@ -227,18 +227,30 @@ ENABLE TRIGGER USER;
 --preconditions onFail:MARK_RAN
 --precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM pg_catalog.pg_constraint WHERE conname = 'spg_product_application_status_check'
 ALTER TABLE flex.service_providing_group_product_application
+DISABLE TRIGGER USER;
+
+ALTER TABLE flex.service_providing_group_product_application
 DROP CONSTRAINT service_providing_group_product_application_status_check;
+
+UPDATE flex.service_providing_group_product_application
+SET status = 'prequalification'
+WHERE status = 'in_progress';
+
+UPDATE flex.service_providing_group_product_application_history
+SET status = 'prequalification'
+WHERE status = 'in_progress';
 
 ALTER TABLE flex.service_providing_group_product_application
 ADD CONSTRAINT spg_product_application_status_check CHECK (
     status IN (
         'requested',
-        'prequalification_pending',
-        'in_progress',
+        'prequalification',
         'temporary_qualified',
-        'ready_for_grid_prequalification',
         'prequalified',
         'verified',
         'rejected'
     )
 );
+
+ALTER TABLE flex.service_providing_group_product_application
+ENABLE TRIGGER USER;

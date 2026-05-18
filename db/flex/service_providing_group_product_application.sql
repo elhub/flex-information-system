@@ -27,10 +27,8 @@ CREATE TABLE IF NOT EXISTS service_providing_group_product_application (
     CONSTRAINT spg_product_application_status_check CHECK (
         status IN (
             'requested',
-            'prequalification_pending',
-            'in_progress',
+            'prequalification',
             'temporary_qualified',
-            'ready_for_grid_prequalification',
             'prequalified',
             'verified',
             'rejected'
@@ -226,7 +224,7 @@ AFTER UPDATE OF status ON flex.service_providing_group_product_application
 FOR EACH ROW
 WHEN (
     NEW.status IS DISTINCT FROM OLD.status -- noqa
-    AND NEW.status = 'ready_for_grid_prequalification' --noqa
+    AND NEW.status = 'prequalification' --noqa
 )
 EXECUTE FUNCTION
 spg_product_application_create_grid_prequalifications();

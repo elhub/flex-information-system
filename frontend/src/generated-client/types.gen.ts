@@ -523,10 +523,8 @@ export type ServiceProviderProductSuspensionCommentVisibility =
  */
 export type ServiceProvidingGroupProductApplicationStatus =
   | "requested"
-  | "prequalification_pending"
-  | "in_progress"
+  | "prequalification"
   | "temporary_qualified"
-  | "ready_for_grid_prequalification"
   | "prequalified"
   | "verified"
   | "rejected";

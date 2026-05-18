@@ -35,7 +35,7 @@ const getActionsForStatus = (
       return [
         {
           label: "Start prequalification",
-          payload: { status: "in_progress" },
+          payload: { status: "prequalification" },
           confirmTitle: "Start prequalification",
           confirmContent:
             "This will move the application to in progress. The service provider will be notified.",
@@ -43,21 +43,7 @@ const getActionsForStatus = (
         },
         rejectAction,
       ];
-    case "in_progress":
-      return [
-        {
-          label: "Mark ready for grid prequalification",
-          payload: {
-            status: "ready_for_grid_prequalification",
-          },
-          confirmTitle: "Mark as ready for grid prequalification",
-          confirmContent:
-            "This will mark the application as ready for grid prequalification. Impacted system operators will be notified.",
-          variant: "primary",
-        },
-        rejectAction,
-      ];
-    case "ready_for_grid_prequalification":
+    case "prequalification":
       return [
         {
           label: "Mark prequalified",
