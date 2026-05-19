@@ -80,7 +80,7 @@ func parseEmbed(query url.Values) ([]embedNode, error) {
 //
 // it will set the select parameter to
 //
-//	?select=*,related_table!inner(*,subrelation1!inner,subrelation2(*,subsubrelation))
+//	?select=*,related_table!inner(*,subrelation1!inner(*),subrelation2(*,subsubrelation(*)))
 func applyEmbedRewrite(query url.Values, nodes []embedNode) {
 	query.Del("select")
 
