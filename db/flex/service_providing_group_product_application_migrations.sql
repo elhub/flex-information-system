@@ -234,11 +234,11 @@ DROP CONSTRAINT service_providing_group_product_application_status_check;
 
 UPDATE flex.service_providing_group_product_application
 SET status = 'prequalification'
-WHERE status = 'in_progress';
+WHERE status IN ('in_progress', 'prequalification_pending');
 
 UPDATE flex.service_providing_group_product_application_history
 SET status = 'prequalification'
-WHERE status = 'in_progress';
+WHERE status IN ('in_progress', 'prequalification_pending');
 
 ALTER TABLE flex.service_providing_group_product_application
 ADD CONSTRAINT spg_product_application_status_check CHECK (
