@@ -38,7 +38,7 @@ const getActionsForStatus = (
           payload: { status: "prequalification" },
           confirmTitle: "Start prequalification",
           confirmContent:
-            "This will move the application to in progress. The service provider will be notified.",
+            "This will start prequalification on the service providing group. The service provider will be notified.",
           variant: "primary",
         },
         rejectAction,
