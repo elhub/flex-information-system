@@ -237,8 +237,8 @@ func emitEmbedList(nodes []embedNode) string {
 // emitEmbedNode converts a single embed node into a PostgREST select expression.
 // The join hint (!inner) and the sub-relation list ((*,...)) are emitted independently:
 //
-//	no hint, no children  → name
-//	hint only             → name!inner
+//	no hint, no children  → name(*)
+//	hint only             → name!inner(*)
 //	children only         → name(*,children)
 //	hint and children     → name!inner(*,children)
 func emitEmbedNode(node embedNode) string {
@@ -250,6 +250,8 @@ func emitEmbedNode(node embedNode) string {
 
 	if len(node.children) > 0 {
 		result += "(*," + emitEmbedList(node.children) + ")"
+	} else {
+		result += "(*)"
 	}
 
 	return result
