@@ -1,29 +1,19 @@
-import {
-  required,
-  SimpleForm,
-  TextInput,
-  Toolbar as RAToolbar,
-  useNotify,
-} from "react-admin";
-import { Typography, Stack, Button, Box } from "@mui/material";
+import { Form, useNotify } from "ra-core";
 import { useNavigate, useLocation } from "react-router-dom";
-import TravelExploreIcon from "@mui/icons-material/TravelExplore";
-import UndoIcon from "@mui/icons-material/Undo";
-import { apiURL, API_VERSION } from "../../httpConfig";
 import { useFormContext } from "react-hook-form";
-import { InputStack } from "../../auth";
+import { apiURL, API_VERSION } from "../../httpConfig";
+import { FormContainer, Heading, Button } from "../../components/ui";
+import { TextInput } from "../../components/EDS-ra/inputs";
 
-const Toolbar = () => {
+const LookupToolbar = () => {
   const navigate = useNavigate();
   const { getValues } = useFormContext();
   const notify = useNotify();
 
-  // fetch party ID saved from the party membership list
   const {
     state: { party_id },
   } = useLocation();
 
-  // launch lookup request
   const lookup = async () => {
     const body: any = {};
     const values = getValues();
@@ -46,7 +36,6 @@ const Toolbar = () => {
     const lookupResult = await response.json();
 
     if (!response.ok) {
-      // error, just notify the user like in the other pages
       notify(lookupResult.message, { type: "error" });
     } else {
       // navigate to the create party membership page with all information
@@ -64,54 +53,33 @@ const Toolbar = () => {
   };
 
   return (
-    <RAToolbar>
-      <Button
-        color="primary"
-        variant="contained"
-        startIcon={<TravelExploreIcon />}
-        onClick={lookup}
-      >
+    <div className="flex gap-3 items-center">
+      <Button type="button" variant="primary" onClick={lookup}>
         Lookup
       </Button>
-      <Box width="1em" />
-      <Button
-        color="inherit"
-        variant="contained"
-        startIcon={<UndoIcon />}
-        onClick={() => navigate(-1)}
-      >
+      <Button type="button" variant="secondary" onClick={() => navigate(-1)}>
         Cancel
       </Button>
-    </RAToolbar>
+    </div>
   );
 };
 
-// page to enter data required for entity lookup
 export const EntityLookupInput = () => (
-  <SimpleForm maxWidth={1280} toolbar={<Toolbar />}>
-    <Stack direction="column" spacing={1}>
-      <Typography variant="h6" gutterBottom>
+  <Form defaultValues={{ type: "person" }}>
+    <FormContainer>
+      <Heading level={3} size="medium">
         Lookup an entity
-      </Typography>
-      <InputStack
-        direction="row"
-        flexWrap="wrap"
-        allowAll
-        resource="entity_lookup_request"
-      >
+      </Heading>
+      <div className="flex flex-col gap-3">
         <TextInput
           source="business_id"
-          label="Business ID (Person Number)"
-          validate={required()}
+          overrideLabel="Business ID (Person Number)"
+          required
         />
-        <TextInput source="name" validate={required()} />
-        <TextInput
-          source="type"
-          validate={required()}
-          defaultValue={"person"}
-          readOnly
-        />
-      </InputStack>
-    </Stack>
-  </SimpleForm>
+        <TextInput source="name" required />
+        <TextInput source="type" readOnly />
+      </div>
+      <LookupToolbar />
+    </FormContainer>
+  </Form>
 );
