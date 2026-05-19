@@ -1,46 +1,44 @@
+import { usePermissions } from "ra-core";
+import { List, Datagrid } from "../components/EDS-ra/list";
 import {
-  DeleteButton,
-  List,
+  DateField,
+  EnumField,
+  IdentityField,
   ReferenceField,
   TextField,
-  usePermissions,
-} from "react-admin";
-import { Permissions } from "../auth/permissions";
-import { Datagrid, PartyReferenceInput } from "../auth";
-import { DateField } from "../components/datetime";
+} from "../components/EDS-ra/fields";
+import { DeleteButton } from "../components/EDS-ra/buttons";
+import {
+  EnumArrayInput,
+  PartyReferenceInput,
+} from "../components/EDS-ra/inputs";
 import { ProductTypeArrayField } from "../product_type/components";
-import { IdentityField } from "../components/IdentityField";
-import { EnumArrayInput, EnumField } from "../components/enum";
+import { Permissions } from "../auth/permissions";
+import { zServiceProviderProductSuspension } from "../generated-client/zod.gen";
+import { getFields } from "../zod";
 
 export const ServiceProviderProductSuspensionList = () => {
   const { permissions } = usePermissions<Permissions>();
-
-  // Permission checks
   const canDelete = permissions?.allow(
     "service_provider_product_suspension",
     "delete",
   );
+  const fields = getFields(zServiceProviderProductSuspension.shape);
 
-  const ServiceProviderProductSuspensionListFilters = [
+  const filters = [
     <PartyReferenceInput
       key="procuring_system_operator_id"
       source="procuring_system_operator_id"
       filter={{ type: "system_operator" }}
-      label="field.service_provider_product_suspension.procuring_system_operator_id"
-      alwaysOn
     />,
     <PartyReferenceInput
       key="service_provider_id"
       source="service_provider_id"
-      label="field.service_provider_product_suspension.service_provider_id"
-      alwaysOn
     />,
     <EnumArrayInput
       key="reason"
       enumKey="service_provider_product_suspension.reason"
-      label="field.service_provider_product_suspension.reason"
       source="reason@in"
-      alwaysOn
     />,
   ];
 
@@ -49,48 +47,32 @@ export const ServiceProviderProductSuspensionList = () => {
       perPage={25}
       sort={{ field: "id", order: "DESC" }}
       empty={false}
-      filters={ServiceProviderProductSuspensionListFilters}
+      filters={filters}
     >
-      <Datagrid bulkActionButtons={false} rowClick="show">
-        <TextField
-          source="id"
-          label="field.service_provider_product_suspension.id"
-        />
+      <Datagrid
+        rowClick={(r) => `/service_provider_product_suspension/${r.id}/show`}
+      >
+        <TextField source={fields.id.source} />
         <ReferenceField
-          source="procuring_system_operator_id"
+          source={fields.procuring_system_operator_id.source}
           reference="party"
-          sortable={false}
-          label="field.service_provider_product_suspension.procuring_system_operator_id"
         >
           <TextField source="name" />
         </ReferenceField>
         <ReferenceField
-          source="service_provider_id"
+          source={fields.service_provider_id.source}
           reference="party"
-          sortable={false}
-          label="field.service_provider_product_suspension.service_provider_id"
         >
           <TextField source="name" />
         </ReferenceField>
-        <ProductTypeArrayField
-          label="field.service_provider_product_suspension.product_type_ids"
-          source="product_type_ids"
-        />
+        <ProductTypeArrayField source={fields.product_type_ids.source} />
         <EnumField
-          source="reason"
+          source={fields.reason.source}
           enumKey="service_provider_product_suspension.reason"
-          label="field.service_provider_product_suspension.reason"
         />
-        <DateField
-          source="recorded_at"
-          showTime
-          label="field.service_provider_product_suspension.recorded_at"
-        />
-        <IdentityField
-          source="recorded_by"
-          label="field.service_provider_product_suspension.recorded_by"
-        />
-        {canDelete && <DeleteButton mutationMode="pessimistic" redirect="" />}
+        <DateField source={fields.recorded_at.source} showTime />
+        <IdentityField source={fields.recorded_by.source} />
+        {canDelete && <DeleteButton />}
       </Datagrid>
     </List>
   );

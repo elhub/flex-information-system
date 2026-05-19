@@ -1,97 +1,67 @@
+import { useParams } from "react-router-dom";
+import { Datagrid, List } from "../../components/EDS-ra/list";
 import {
-  List,
-  NumberInput,
+  DateField,
+  EnumField,
+  IdentityField,
   ReferenceField,
   TextField,
-  useGetOne,
-} from "react-admin";
-import { Datagrid } from "../../auth";
-import { useParams } from "react-router-dom";
-import { DateField } from "../../components/datetime";
-import { IdentityField } from "../../components/IdentityField";
-import { EnumField } from "../../components/enum";
+} from "../../components/EDS-ra/fields";
+import { TextInput } from "../../components/EDS-ra/inputs";
+import {
+  zServiceProvidingGroupProductSuspension,
+  zServiceProvidingGroupProductSuspensionHistory,
+} from "../../generated-client/zod.gen";
+import { getFields } from "../../zod";
 
 export const ServiceProvidingGroupProductSuspensionHistoryList = () => {
-  const params = useParams();
-  const filter: any = {
-    service_providing_group_id: params.service_providing_group_id,
-  };
+  const { service_providing_group_id } = useParams();
 
-  const { data } = useGetOne("service_providing_group", {
-    id: params.service_providing_group_id,
-  });
-
-  const ServiceProvidingGroupProductSuspensionHistoryListFilters = [
-    <NumberInput
-      key="service_providing_group_product_suspension_id"
-      min="0"
-      label="field.service_providing_group_product_suspension_history.service_providing_group_product_suspension_id"
-      source="service_providing_group_product_suspension_id"
-    />,
-  ];
+  const fields = getFields(zServiceProvidingGroupProductSuspension.shape);
+  const historyFields = getFields(
+    zServiceProvidingGroupProductSuspensionHistory.shape,
+  );
 
   return (
     <List
       resource="service_providing_group_product_suspension_history"
-      title={`Service providing group product suspension history for ${data.name}`}
-      filter={filter}
-      filters={ServiceProvidingGroupProductSuspensionHistoryListFilters}
+      filter={{ service_providing_group_id }}
       perPage={25}
       sort={{ field: "recorded_at", order: "DESC" }}
       empty={false}
+      filters={[
+        <TextInput
+          key="service_providing_group_product_suspension_id"
+          type="number"
+          {...historyFields.service_providing_group_product_suspension_id}
+        />,
+      ]}
     >
-      <Datagrid
-        rowClick={(_id, _res, record) =>
-          `/service_providing_group/${record.service_providing_group_id}/product_suspension_history/${record.id}/show`
-        }
-      >
+      <Datagrid rowClick={false}>
+        <TextField {...fields.id} />
         <TextField
-          source="id"
-          label="field.service_providing_group_product_suspension_history.id"
-        />
-        <TextField
-          source="service_providing_group_product_suspension_id"
-          label="field.service_providing_group_product_suspension_history.service_providing_group_product_suspension_id"
+          {...historyFields.service_providing_group_product_suspension_id}
         />
         <ReferenceField
-          source="service_providing_group_id"
+          {...fields.service_providing_group_id}
           reference="service_providing_group"
-          sortable={false}
-          label="field.service_providing_group_product_suspension_history.service_providing_group_id"
         >
           <TextField source="name" />
         </ReferenceField>
         <ReferenceField
-          source="procuring_system_operator_id"
+          {...fields.procuring_system_operator_id}
           reference="party"
-          sortable={false}
-          label="field.service_providing_group_product_suspension_history.procuring_system_operator_id"
         >
           <TextField source="name" />
         </ReferenceField>
         <EnumField
-          source="reason"
+          {...fields.reason}
           enumKey="service_providing_group_product_suspension.reason"
-          label="field.service_providing_group_product_suspension_history.reason"
         />
-        <DateField
-          source="recorded_at"
-          showTime
-          label="field.service_providing_group_product_suspension_history.recorded_at"
-        />
-        <IdentityField
-          source="recorded_by"
-          label="field.service_providing_group_product_suspension_history.recorded_by"
-        />
-        <DateField
-          source="replaced_at"
-          showTime
-          label="field.service_providing_group_product_suspension_history.replaced_at"
-        />
-        <IdentityField
-          source="replaced_by"
-          label="field.service_providing_group_product_suspension_history.replaced_by"
-        />
+        <DateField {...fields.recorded_at} showTime />
+        <IdentityField {...fields.recorded_by} />
+        <DateField {...historyFields.replaced_at} showTime />
+        <IdentityField {...historyFields.replaced_by} />
       </Datagrid>
     </List>
   );

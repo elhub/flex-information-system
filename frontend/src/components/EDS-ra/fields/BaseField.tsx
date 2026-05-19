@@ -6,7 +6,7 @@ import { FieldTooltip } from "./FieldTooltip";
 
 export type BaseFieldProps = {
   source: string;
-  label?: boolean;
+  label?: string | boolean;
   tooltip?: boolean;
   descriptionOverride?: string;
   unit?: string;
@@ -37,7 +37,9 @@ export const BaseField = ({
     permissions?.allow(`${resource}.${source}` as PermissionTarget, "read") !==
       false;
 
-  const labelText = translate(`field.${resource}.${source}`);
+  const derivedLabelText = translate(`field.${resource}.${source}`);
+  const labelText =
+    typeof label === "string" ? translate(label) : derivedLabelText;
   const formattedLabelText =
     labelDirection === "column" ? labelText : `${labelText} :`;
 
@@ -49,7 +51,7 @@ export const BaseField = ({
     <div
       className={`flex gap-2 ${labelDirection === "column" ? "flex-col justify-start items-start" : "flex-row items-center"}`}
     >
-      {label === true ? (
+      {label ? (
         <BodyText weight="bold" size={textSize}>
           {formattedLabelText}
         </BodyText>

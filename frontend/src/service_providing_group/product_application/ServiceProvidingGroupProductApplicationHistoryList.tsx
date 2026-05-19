@@ -47,11 +47,7 @@ export const ServiceProvidingGroupProductApplicationHistoryList = () => {
       sort={{ field: "recorded_at", order: "DESC" }}
       empty={false}
     >
-      <Datagrid
-        rowClick={(record) =>
-          `/service_providing_group/${record.service_providing_group_id}/product_application_history/${record.id}/show`
-        }
-      >
+      <Datagrid rowClick={false}>
         <TextField {...spgpaFields.id} />
         <ReferenceField
           {...spgpaFields.procuring_system_operator_id}

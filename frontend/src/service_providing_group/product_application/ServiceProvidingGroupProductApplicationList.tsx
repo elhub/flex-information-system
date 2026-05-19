@@ -1,47 +1,49 @@
 import {
-  List,
-  Button,
-  ReferenceField,
-  ResourceContextProvider,
-  TextField,
-  TopToolbar,
   usePermissions,
   useRecordContext,
-} from "react-admin";
-import { Datagrid } from "../../auth";
-import AddIcon from "@mui/icons-material/Add";
+  ResourceContextProvider,
+} from "ra-core";
 import { Link } from "react-router-dom";
-import { ProductTypeArrayField } from "../../product_type/components";
+import { Datagrid, List } from "../../components/EDS-ra/list";
+import {
+  EnumField,
+  ReferenceField,
+  TextField,
+} from "../../components/EDS-ra/fields";
+import { Button, Tooltip } from "../../components/ui";
+import { IconPlus, IconQuestionCircleOutlined } from "@elhub/ds-icons";
 import { Permissions } from "../../auth/permissions";
-import { EnumField } from "../../components/enum";
+import { ProductTypeArrayField } from "../../product_type/components";
 import {
   isProductApplicationBlocked,
   getProductApplicationBlockDate,
 } from "../../productApplicationBlock";
-import { Button as EdsButton, Tooltip } from "../../components/ui";
-import { IconPlus, IconQuestionCircleOutlined } from "@elhub/ds-icons";
+import { zServiceProvidingGroupProductApplication } from "../../generated-client/zod.gen";
+import { getFields } from "../../zod";
 
 const CreateButton = ({ id }: { id: any }) => (
   <Button
-    component={Link}
+    as={Link}
+    icon={IconPlus}
     to={
       id
         ? `/service_providing_group/${id}/product_application/create`
         : "/service_providing_group_product_application/create"
     }
-    startIcon={<AddIcon />}
     state={{ service_providing_group_id: id }}
-    label="Create"
-  />
+    variant="invisible"
+  >
+    Create
+  </Button>
 );
 
 const blockTooltip = `Product applications cannot be created before ${getProductApplicationBlockDate()}`;
 
 const BlockedCreateButton = () => (
   <div className="flex items-center gap-1">
-    <EdsButton variant="primary" icon={IconPlus} iconPosition="left" disabled>
+    <Button variant="primary" icon={IconPlus} iconPosition="left" disabled>
       Create
-    </EdsButton>
+    </Button>
     <Tooltip className="max-w-2xl" content={blockTooltip}>
       <IconQuestionCircleOutlined
         size="small"
@@ -51,95 +53,68 @@ const BlockedCreateButton = () => (
   </div>
 );
 
-type ListActionsProps = { canCreate: boolean; isBlocked: boolean; id: any };
-
-const ListActions = ({ canCreate, isBlocked, id }: ListActionsProps) => (
-  <TopToolbar>
-    {isBlocked ? (
-      <BlockedCreateButton />
-    ) : (
-      canCreate && <CreateButton id={id} />
-    )}
-  </TopToolbar>
-);
-
 export const ServiceProvidingGroupProductApplicationList = () => {
   const record = useRecordContext();
   const id = record?.id;
-
   const { permissions, isLoading } = usePermissions<Permissions>();
 
-  if (isLoading) return null; // or a loading spinner
+  if (isLoading) return null;
 
-  // Permission checks
   const canRead = permissions?.allow(
     "service_providing_group_product_application",
     "read",
   );
-  const canCreate =
-    !!permissions?.allow(
-      "service_providing_group_product_application",
-      "create",
-    ) && !isProductApplicationBlocked();
+  const canCreate = !!permissions?.allow(
+    "service_providing_group_product_application",
+    "create",
+  );
 
-  if (!canRead) {
-    return null; // or <NotAllowed /> component
-  }
+  if (!canRead) return null;
 
   const blocked = isProductApplicationBlocked();
+
+  const fields = getFields(zServiceProvidingGroupProductApplication.shape);
+
+  const actions = blocked
+    ? [<BlockedCreateButton key="create" />]
+    : canCreate
+      ? [<CreateButton key="create" id={id} />]
+      : [];
 
   return (
     <ResourceContextProvider value="service_providing_group_product_application">
       <List
-        title={false}
         perPage={10}
-        actions={
-          <ListActions canCreate={canCreate} isBlocked={blocked} id={id} />
-        }
-        exporter={false}
+        actions={actions}
         empty={false}
         filter={id ? { service_providing_group_id: id } : undefined}
         sort={{ field: "id", order: "DESC" }}
-        sx={{ mb: 4 }}
         disableSyncWithLocation
       >
         <Datagrid
-          bulkActionButtons={false}
-          rowClick={(_id, _res, record) =>
-            `/service_providing_group_product_application/${record.id}/show`
+          rowClick={(r) =>
+            `/service_providing_group_product_application/${r.id}/show`
           }
         >
-          <TextField
-            source="id"
-            label="field.service_providing_group_product_application.id"
-          />
+          <TextField source={fields.id.source} />
           {!record?.id && (
             <ReferenceField
-              source="service_providing_group_id"
+              source={fields.service_providing_group_id.source}
               reference="service_providing_group"
-              sortable={false}
-              label="field.service_providing_group_product_application.service_providing_group_id"
             >
               <TextField source="name" />
             </ReferenceField>
           )}
           <ReferenceField
-            source="procuring_system_operator_id"
+            source={fields.procuring_system_operator_id.source}
             reference="party"
-            sortable={false}
-            label="field.service_providing_group_product_application.procuring_system_operator_id"
           >
             <TextField source="name" />
           </ReferenceField>
-          <ProductTypeArrayField
-            label="field.service_providing_group_product_application.product_type_ids"
-            source="product_type_ids"
-            sortable={false}
-          />
+          <ProductTypeArrayField source={fields.product_type_ids.source} />
           <EnumField
-            source="status"
+            source={fields.status.source}
             enumKey="service_providing_group_product_application.status"
-            label="field.service_providing_group_product_application.status"
           />
         </Datagrid>
       </List>

@@ -1,115 +1,110 @@
+import { Link } from "react-router-dom";
+import { List, Datagrid } from "../components/EDS-ra/list";
 import {
-  CreateButton,
-  List,
+  DateField,
+  EnumField,
   ReferenceField,
   TextField,
-  TopToolbar,
-} from "react-admin";
-import { Datagrid, PartyReferenceInput } from "../auth";
-import { DateField } from "../components/datetime";
+} from "../components/EDS-ra/fields";
+import {
+  EnumArrayInput,
+  PartyReferenceInput,
+} from "../components/EDS-ra/inputs";
+import { Button, Tooltip } from "../components/ui";
+import { IconPlus, IconQuestionCircleOutlined } from "@elhub/ds-icons";
 import { ProductTypeArrayField } from "../product_type/components";
-import { EnumArrayInput, EnumField } from "../components/enum";
 import {
   isProductApplicationBlocked,
   getProductApplicationBlockDate,
 } from "../productApplicationBlock";
-import { Button, Tooltip } from "../components/ui";
-import { IconPlus, IconQuestionCircleOutlined } from "@elhub/ds-icons";
+import { zServiceProviderProductApplication } from "../generated-client/zod.gen";
+import { getFields } from "../zod";
+
+const CreateButton = () => (
+  <Button
+    as={Link}
+    icon={IconPlus}
+    to="/service_provider_product_application/create"
+    variant="invisible"
+  >
+    Create
+  </Button>
+);
 
 export const ServiceProviderProductApplicationList = () => {
-  const ServiceProviderProductApplicationListFilters = [
+  const fields = getFields(zServiceProviderProductApplication.shape);
+  const blocked = isProductApplicationBlocked();
+
+  const filters = [
     <PartyReferenceInput
       key="service_provider_id"
       source="service_provider_id"
-      label="field.service_provider_product_application.service_provider_id"
-      alwaysOn
     />,
     <PartyReferenceInput
       key="system_operator_id"
       source="system_operator_id"
-      label="field.service_provider_product_application.system_operator_id"
-      alwaysOn
     />,
     <EnumArrayInput
       key="status"
       enumKey="service_provider_product_application.status"
-      label="field.service_provider_product_application.status"
       source="status@in"
-      alwaysOn
     />,
   ];
 
-  const blocked = isProductApplicationBlocked();
+  const actions = blocked
+    ? [
+        <div key="create-blocked" className="flex items-center gap-1">
+          <Button
+            variant="primary"
+            icon={IconPlus}
+            iconPosition="left"
+            disabled
+          >
+            Create
+          </Button>
+          <Tooltip
+            content={`Product applications cannot be created before ${getProductApplicationBlockDate()}`}
+            className="max-w-2xl"
+          >
+            <IconQuestionCircleOutlined
+              size="small"
+              className="text-semantic-text-subtle cursor-help"
+            />
+          </Tooltip>
+        </div>,
+      ]
+    : [<CreateButton key="create" />];
 
   return (
     <List
       perPage={25}
       sort={{ field: "id", order: "DESC" }}
       empty={false}
-      actions={
-        <TopToolbar>
-          {blocked ? (
-            <div className="flex items-center gap-1">
-              <Button
-                variant="primary"
-                icon={IconPlus}
-                iconPosition="left"
-                disabled
-              >
-                Create
-              </Button>
-              <Tooltip
-                content={`Product applications cannot be created before ${getProductApplicationBlockDate()}`}
-                className="max-w-2xl"
-              >
-                <IconQuestionCircleOutlined
-                  size="small"
-                  className="text-semantic-text-subtle cursor-help"
-                />
-              </Tooltip>
-            </div>
-          ) : (
-            <CreateButton />
-          )}
-        </TopToolbar>
-      }
-      filters={ServiceProviderProductApplicationListFilters}
+      actions={actions}
+      filters={filters}
     >
-      <Datagrid>
-        <TextField
-          source="id"
-          label="field.service_provider_product_application.id"
-        />
+      <Datagrid
+        rowClick={(r) => `/service_provider_product_application/${r.id}/show`}
+      >
+        <TextField source={fields.id.source} />
         <ReferenceField
-          source="service_provider_id"
+          source={fields.service_provider_id.source}
           reference="party"
-          sortable={false}
-          label="field.service_provider_product_application.service_provider_id"
         >
           <TextField source="name" />
         </ReferenceField>
         <ReferenceField
-          source="system_operator_id"
+          source={fields.system_operator_id.source}
           reference="party"
-          sortable={false}
-          label="field.service_provider_product_application.system_operator_id"
         >
           <TextField source="name" />
         </ReferenceField>
-        <ProductTypeArrayField
-          label="field.service_provider_product_application.product_type_ids"
-          source="product_type_ids"
-        />
+        <ProductTypeArrayField source={fields.product_type_ids.source} />
         <EnumField
-          source="status"
+          source={fields.status.source}
           enumKey="service_provider_product_application.status"
-          label="field.service_provider_product_application.status"
         />
-        <DateField
-          source="qualified_at"
-          showTime
-          label="field.service_provider_product_application.qualified_at"
-        />
+        <DateField source={fields.qualified_at.source} showTime />
       </Datagrid>
     </List>
   );
