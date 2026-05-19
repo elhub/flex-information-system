@@ -394,7 +394,7 @@ def test_spgpa_fiso_sp_so(data):
     )
     assert not isinstance(u, ErrorMessage)
 
-    # the SO transition from requested to prequalified (above) triggered the
+    # the SO transition away from `requested` (above) triggered the
     # SPGGP sync, we need to verify the count increased by 1
     spggps_after = list_service_providing_group_grid_prequalification.sync(
         client=client_fiso,
