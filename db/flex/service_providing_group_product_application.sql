@@ -171,9 +171,8 @@ EXECUTE FUNCTION utils.check_timestamp_on_status_update(
     '{rejected}'  -- SPGPA-VAL006
 );
 
--- changeset flex:service-providing-group-product-application-create-grid-prequalifications-function runOnChange:true endDelimiter:--
-CREATE OR REPLACE FUNCTION
-spg_product_application_create_grid_prequalifications()
+-- changeset flex:service-providing-group-product-application-sync-grid-prequalifications-function runOnChange:true endDelimiter:--
+CREATE OR REPLACE FUNCTION spgpa_sync_grid_prequalifications()
 RETURNS trigger
 SECURITY DEFINER
 LANGUAGE plpgsql
@@ -187,13 +186,12 @@ BEGIN
 END;
 $$;
 
--- changeset flex:service-providing-group-product-application-create-grid-prequalifications-trigger runOnChange:true endDelimiter:--
-CREATE OR REPLACE TRIGGER spg_product_application_create_grid_prequalifications
+-- changeset flex:service-providing-group-product-application-sync-grid-prequalifications-trigger runOnChange:true endDelimiter:--
+CREATE OR REPLACE TRIGGER spgpa_sync_grid_prequalifications
 AFTER UPDATE OF status ON flex.service_providing_group_product_application
 FOR EACH ROW
 WHEN (
     NEW.status IS DISTINCT FROM OLD.status -- noqa
     AND OLD.status = 'requested' AND NEW.status != 'rejected' -- noqa
 )
-EXECUTE FUNCTION
-spg_product_application_create_grid_prequalifications();
+EXECUTE FUNCTION spgpa_sync_grid_prequalifications();
