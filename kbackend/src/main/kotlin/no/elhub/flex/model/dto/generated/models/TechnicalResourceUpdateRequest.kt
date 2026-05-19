@@ -18,13 +18,14 @@ public data class TechnicalResourceUpdateRequest(
   @SerialName("name")
   public val name: String? = null,
   /**
-   * Technologies of the technical resource using ltree path notation. Multiple technologies can be
-   * specified for hybrid resources (e.g., solar + battery).
+   * Technologies of the technical resource. Multiple technologies can be given, e.g. solar and
+   * battery for hybrid inverters.
    */
   @SerialName("technology")
   public val technology: List<Technology>? = null,
   /**
-   * Maximum continuous active power (rated power) of the technical resource in kilowatts.
+   * Rated power in kilowatts. This is the maximum nominal continuous power of the device, typically
+   * defined by the manufacturer.
    */
   @Contextual
   @SerialName("maximum_active_power")
@@ -35,7 +36,7 @@ public data class TechnicalResourceUpdateRequest(
   @SerialName("device_type")
   public val deviceType: DeviceType? = null,
   /**
-   * The manufacturer of the device. Required if model or business_id is provided.
+   * The manufacturer of the device. Required if model or business id is provided.
    */
   @SerialName("make")
   public val make: String? = null,
