@@ -1838,11 +1838,11 @@ export type TechnicalResourceUpdateRequest = {
    */
   name?: string;
   /**
-   * Technologies of the technical resource using ltree path notation. Multiple technologies can be specified for hybrid resources (e.g., solar + battery).
+   * Technologies of the technical resource. Multiple technologies can be given, e.g. solar and battery for hybrid inverters.
    */
   technology?: Array<Technology>;
   /**
-   * Maximum continuous active power (rated power) of the technical resource in kilowatts.
+   * Rated power in kilowatts. This is the maximum nominal continuous power of the device, typically defined by the manufacturer.
    */
   maximum_active_power?: number;
   /**
@@ -1850,7 +1850,7 @@ export type TechnicalResourceUpdateRequest = {
    */
   device_type?: DeviceType;
   /**
-   * The manufacturer of the device. Required if model or business_id is provided.
+   * The manufacturer of the device. Required if model or business id is provided.
    */
   make?: string;
   /**
@@ -1881,11 +1881,11 @@ export type TechnicalResourceCreateRequest = {
    */
   controllable_unit_id: number;
   /**
-   * Technologies of the technical resource using ltree path notation. Multiple technologies can be specified for hybrid resources (e.g., solar + battery).
+   * Technologies of the technical resource. Multiple technologies can be given, e.g. solar and battery for hybrid inverters.
    */
   technology: Array<Technology>;
   /**
-   * Maximum continuous active power (rated power) of the technical resource in kilowatts.
+   * Rated power in kilowatts. This is the maximum nominal continuous power of the device, typically defined by the manufacturer.
    */
   maximum_active_power: number;
   /**
@@ -1893,7 +1893,7 @@ export type TechnicalResourceCreateRequest = {
    */
   device_type: DeviceType;
   /**
-   * The manufacturer of the device. Required if model or business_id is provided.
+   * The manufacturer of the device. Required if model or business id is provided.
    */
   make?: string;
   /**
@@ -1928,7 +1928,7 @@ export type TechnicalResource = {
    */
   controllable_unit_id: number;
   /**
-   * Technologies of the technical resource using ltree path notation. Multiple technologies can be specified for hybrid resources (e.g., solar + battery).
+   * Technologies of the technical resource. Multiple technologies can be given, e.g. solar and battery for hybrid inverters.
    */
   technology: Array<Technology>;
   /**
@@ -1936,7 +1936,7 @@ export type TechnicalResource = {
    */
   readonly category: Array<Category>;
   /**
-   * Maximum continuous active power (rated power) of the technical resource in kilowatts.
+   * Rated power in kilowatts. This is the maximum nominal continuous power of the device, typically defined by the manufacturer.
    */
   maximum_active_power: number;
   /**
@@ -1944,7 +1944,7 @@ export type TechnicalResource = {
    */
   device_type: DeviceType;
   /**
-   * The manufacturer of the device. Required if model or business_id is provided.
+   * The manufacturer of the device. Required if model or business id is provided.
    */
   make?: string;
   /**
@@ -3700,7 +3700,7 @@ export type TechnicalResourceHistory = {
    */
   controllable_unit_id: number;
   /**
-   * Technologies of the technical resource using ltree path notation. Multiple technologies can be specified for hybrid resources (e.g., solar + battery).
+   * Technologies of the technical resource. Multiple technologies can be given, e.g. solar and battery for hybrid inverters.
    */
   technology: Array<Technology>;
   /**
@@ -3708,7 +3708,7 @@ export type TechnicalResourceHistory = {
    */
   readonly category: Array<Category>;
   /**
-   * Maximum continuous active power (rated power) of the technical resource in kilowatts.
+   * Rated power in kilowatts. This is the maximum nominal continuous power of the device, typically defined by the manufacturer.
    */
   maximum_active_power: number;
   /**
@@ -3716,7 +3716,7 @@ export type TechnicalResourceHistory = {
    */
   device_type: DeviceType;
   /**
-   * The manufacturer of the device. Required if model or business_id is provided.
+   * The manufacturer of the device. Required if model or business id is provided.
    */
   make?: string;
   /**
@@ -4786,11 +4786,11 @@ export type TechnicalResourceWritable = {
    */
   controllable_unit_id: number;
   /**
-   * Technologies of the technical resource using ltree path notation. Multiple technologies can be specified for hybrid resources (e.g., solar + battery).
+   * Technologies of the technical resource. Multiple technologies can be given, e.g. solar and battery for hybrid inverters.
    */
   technology: Array<Technology>;
   /**
-   * Maximum continuous active power (rated power) of the technical resource in kilowatts.
+   * Rated power in kilowatts. This is the maximum nominal continuous power of the device, typically defined by the manufacturer.
    */
   maximum_active_power: number;
   /**
@@ -4798,7 +4798,7 @@ export type TechnicalResourceWritable = {
    */
   device_type: DeviceType;
   /**
-   * The manufacturer of the device. Required if model or business_id is provided.
+   * The manufacturer of the device. Required if model or business id is provided.
    */
   make?: string;
   /**
@@ -5662,11 +5662,11 @@ export type TechnicalResourceHistoryWritable = {
    */
   controllable_unit_id: number;
   /**
-   * Technologies of the technical resource using ltree path notation. Multiple technologies can be specified for hybrid resources (e.g., solar + battery).
+   * Technologies of the technical resource. Multiple technologies can be given, e.g. solar and battery for hybrid inverters.
    */
   technology: Array<Technology>;
   /**
-   * Maximum continuous active power (rated power) of the technical resource in kilowatts.
+   * Rated power in kilowatts. This is the maximum nominal continuous power of the device, typically defined by the manufacturer.
    */
   maximum_active_power: number;
   /**
@@ -5674,7 +5674,7 @@ export type TechnicalResourceHistoryWritable = {
    */
   device_type: DeviceType;
   /**
-   * The manufacturer of the device. Required if model or business_id is provided.
+   * The manufacturer of the device. Required if model or business id is provided.
    */
   make?: string;
   /**

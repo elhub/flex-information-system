@@ -465,14 +465,14 @@ export const tooltips = {
   "technical_resource.controllable_unit_id":
     "Reference to the controllable unit that this technical resource belongs to.",
   "technical_resource.technology":
-    "Technologies of the technical resource using ltree path notation. Multiple technologies can be specified for hybrid resources (e.g., solar + battery).",
+    "Technologies of the technical resource. Multiple technologies can be given, e.g. solar and battery for hybrid inverters.",
   "technical_resource.category":
     "Categories derived from the technologies of the technical resource. Automatically computed based on the selected technologies.",
   "technical_resource.maximum_active_power":
-    "Maximum continuous active power (rated power) of the technical resource in kilowatts.",
+    "Rated power in kilowatts. This is the maximum nominal continuous power of the device, typically defined by the manufacturer.",
   "technical_resource.device_type": "The type of device.",
   "technical_resource.make":
-    "The manufacturer of the device. Required if model or business_id is provided.",
+    "The manufacturer of the device. Required if model or business id is provided.",
   "technical_resource.model": "The model of the device.",
   "technical_resource.business_id":
     "Business identifier of the device, such as a serial number or MAC address.",
@@ -489,14 +489,14 @@ export const tooltips = {
   "technical_resource_history.controllable_unit_id":
     "Reference to the controllable unit that this technical resource belongs to.",
   "technical_resource_history.technology":
-    "Technologies of the technical resource using ltree path notation. Multiple technologies can be specified for hybrid resources (e.g., solar + battery).",
+    "Technologies of the technical resource. Multiple technologies can be given, e.g. solar and battery for hybrid inverters.",
   "technical_resource_history.category":
     "Categories derived from the technologies of the technical resource. Automatically computed based on the selected technologies.",
   "technical_resource_history.maximum_active_power":
-    "Maximum continuous active power (rated power) of the technical resource in kilowatts.",
+    "Rated power in kilowatts. This is the maximum nominal continuous power of the device, typically defined by the manufacturer.",
   "technical_resource_history.device_type": "The type of device.",
   "technical_resource_history.make":
-    "The manufacturer of the device. Required if model or business_id is provided.",
+    "The manufacturer of the device. Required if model or business id is provided.",
   "technical_resource_history.model": "The model of the device.",
   "technical_resource_history.business_id":
     "Business identifier of the device, such as a serial number or MAC address.",

@@ -26,18 +26,18 @@ class TechnicalResourceHistoryResponse:
         name (str): Name of the technical resource. Maximum 128 characters. Example: Battery Unit #1.
         controllable_unit_id (int): Reference to the controllable unit that this technical resource belongs to. Example:
             37.
-        technology (list[Technology]): Technologies of the technical resource using ltree path notation. Multiple
-            technologies can be specified for hybrid resources (e.g., solar + battery). Example: ['solar', 'battery'].
+        technology (list[Technology]): Technologies of the technical resource. Multiple technologies can be given, e.g.
+            solar and battery for hybrid inverters. Example: ['solar', 'battery'].
         category (list[Category]): Categories derived from the technologies of the technical resource. Automatically
             computed based on the selected technologies. Example: ['production', 'energy_storage'].
-        maximum_active_power (float): Maximum continuous active power (rated power) of the technical resource in
-            kilowatts. Example: 120.0.
+        maximum_active_power (float): Rated power in kilowatts. This is the maximum nominal continuous power of the
+            device, typically defined by the manufacturer. Example: 120.0.
         device_type (DeviceType): Type of device for technical resources.
         recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
         technical_resource_id (int): Reference to the resource that was updated. Example: 48.
-        make (None | str | Unset): The manufacturer of the device. Required if model or business_id is provided.
+        make (None | str | Unset): The manufacturer of the device. Required if model or business id is provided.
             Example: SolarEdge.
         model (None | str | Unset): The model of the device. Example: SE10K-RWS.
         business_id (None | str | Unset): Business identifier of the device, such as a serial number or MAC address.
