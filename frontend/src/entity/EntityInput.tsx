@@ -1,12 +1,14 @@
-import { email, regex, required, SimpleForm, TextInput } from "react-admin";
-import { Typography, Stack } from "@mui/material";
-import { InputStack } from "../auth";
-import { Toolbar } from "../components/Toolbar";
+import { Form } from "ra-core";
 import { useFormContext } from "react-hook-form";
 import { useEffect } from "react";
 import { zEntityCreateRequest } from "../generated-client/zod.gen";
-import { unTypedZodResolver } from "../zod";
-import { EnumInput } from "../components/enum";
+import { getFields, unTypedZodResolver } from "../zod";
+import { FormContainer, Heading } from "../components/ui";
+import {
+  TextInput,
+  EnumInput,
+  FormToolbar,
+} from "../components/EDS-ra/inputs";
 
 const businessIDTypeOfEntityType = (entityType: string) => {
   switch (entityType) {
@@ -19,8 +21,6 @@ const businessIDTypeOfEntityType = (entityType: string) => {
   }
 };
 
-// component updating the business_id_type fields automatically based on the
-// type field
 const EntityTypeInput = (props: any) => {
   const formContext = useFormContext();
   const entityType = formContext.watch("type");
@@ -34,16 +34,16 @@ const EntityTypeInput = (props: any) => {
 
   return (
     <EnumInput
+      {...props}
       enumKey="entity.type"
       defaultValue="person"
-      validate={required()}
-      onChange={(event: any) => {
+      required
+      onChange={(value: string | null) => {
         formContext.setValue(
           "business_id_type",
-          businessIDTypeOfEntityType(event.target.value),
+          businessIDTypeOfEntityType(value ?? ""),
         );
       }}
-      {...props}
     />
   );
 };
@@ -51,52 +51,33 @@ const EntityTypeInput = (props: any) => {
 const EntityBusinessIDInput = (props: any) => {
   const formContext = useFormContext();
   const entityType = formContext.watch("type");
+  void entityType; // used for context, validation handled by Zod
 
-  return (
-    <TextInput
-      source="business_id"
-      validate={[
-        required(),
-        (businessID) =>
-          entityType == "organisation"
-            ? regex(
-                /^[1-9]\d{8}$/,
-                "Please enter a valid organisation number.",
-              )(businessID)
-            : email("Please enter a valid email.")(businessID),
-      ]}
-      {...props}
-    />
-  );
+  return <TextInput {...props} />;
 };
+
+const fields = getFields(zEntityCreateRequest.shape);
 
 export const EntityInput = () => {
   return (
-    <SimpleForm
-      maxWidth={1280}
-      resolver={unTypedZodResolver(zEntityCreateRequest)}
-      toolbar={<Toolbar />}
-    >
-      <Stack direction="column" spacing={1}>
-        <Typography variant="h6" gutterBottom>
+    <Form resolver={unTypedZodResolver(zEntityCreateRequest)}>
+      <FormContainer>
+        <Heading level={3} size="medium">
           Basic information
-        </Typography>
-        <InputStack direction="row" flexWrap="wrap">
-          <EntityTypeInput source="type" label="field.entity.type" />
+        </Heading>
+        <div className="flex flex-col gap-3">
+          <EntityTypeInput source="type" />
           <EnumInput
             source="business_id_type"
-            label="field.entity.business_id_type"
             enumKey="entity.business_id_type"
             defaultValue="person"
             readOnly
           />
-          <EntityBusinessIDInput
-            source="business_id"
-            label="field.entity.business_id"
-          />
-          <TextInput source="name" label="field.entity.name" />
-        </InputStack>
-      </Stack>
-    </SimpleForm>
+          <EntityBusinessIDInput source="business_id" />
+          <TextInput source="name" />
+        </div>
+        <FormToolbar />
+      </FormContainer>
+    </Form>
   );
 };
