@@ -1,5 +1,4 @@
-import { useRecordContext } from "react-admin";
-import { Form } from "ra-core";
+import { Form, useRecordContext } from "ra-core";
 import { useFormContext } from "react-hook-form";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
