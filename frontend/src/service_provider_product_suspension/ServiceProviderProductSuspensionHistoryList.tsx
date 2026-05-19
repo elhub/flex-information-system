@@ -1,63 +1,51 @@
-import { List, ReferenceField, TextField } from "react-admin";
-import { Datagrid } from "../auth";
 import { useParams } from "react-router-dom";
-import { historyRowClick } from "../components/history";
-import { DateField } from "../components/datetime";
-import { EnumField } from "../components/enum";
+import { Datagrid, List } from "../components/EDS-ra/list";
+import {
+  DateField,
+  EnumField,
+  ReferenceField,
+  TextField,
+} from "../components/EDS-ra/fields";
+import {
+  zServiceProviderProductSuspension,
+  zServiceProviderProductSuspensionHistory,
+} from "../generated-client/zod.gen";
+import { getFields } from "../zod";
 
 export const ServiceProviderProductSuspensionHistoryList = () => {
   const { service_provider_product_suspension_id } = useParams();
+
+  const fields = getFields(zServiceProviderProductSuspension.shape);
+  const historyFields = getFields(
+    zServiceProviderProductSuspensionHistory.shape,
+  );
+
   return (
     <List
       resource="service_provider_product_suspension_history"
-      filter={{
-        service_provider_product_suspension_id:
-          service_provider_product_suspension_id,
-      }}
+      filter={{ service_provider_product_suspension_id }}
       perPage={25}
       sort={{ field: "recorded_at", order: "DESC" }}
       empty={false}
     >
-      <Datagrid rowClick={historyRowClick}>
-        <TextField
-          source="id"
-          label="field.service_provider_product_suspension_history.id"
-        />
-        <TextField
-          source="service_provider_product_suspension_id"
-          label="field.service_provider_product_suspension_history.service_provider_product_suspension_id"
-        />
+      <Datagrid rowClick={false}>
+        <TextField {...fields.id} />
+        <TextField {...historyFields.service_provider_product_suspension_id} />
         <ReferenceField
-          source="procuring_system_operator_id"
+          {...fields.procuring_system_operator_id}
           reference="party"
-          sortable={false}
-          label="field.service_provider_product_suspension_history.procuring_system_operator_id"
         >
           <TextField source="name" />
         </ReferenceField>
-        <ReferenceField
-          source="service_provider_id"
-          reference="party"
-          sortable={false}
-          label="field.service_provider_product_suspension_history.service_provider_id"
-        >
+        <ReferenceField {...fields.service_provider_id} reference="party">
           <TextField source="name" />
         </ReferenceField>
         <EnumField
-          source="reason"
+          {...fields.reason}
           enumKey="service_provider_product_suspension.reason"
-          label="field.service_provider_product_suspension_history.reason"
         />
-        <DateField
-          source="recorded_at"
-          showTime
-          label="field.service_provider_product_suspension_history.recorded_at"
-        />
-        <DateField
-          source="replaced_at"
-          showTime
-          label="field.service_provider_product_suspension_history.replaced_at"
-        />
+        <DateField {...fields.recorded_at} showTime />
+        <DateField {...historyFields.replaced_at} showTime />
       </Datagrid>
     </List>
   );

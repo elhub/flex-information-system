@@ -26,11 +26,7 @@ export const ServiceProvidingGroupHistoryList = () => {
       sort={{ field: "recorded_at", order: "DESC" }}
       empty={false}
     >
-      <Datagrid
-        rowClick={(record) =>
-          `/service_providing_group/${record.service_providing_group_id}/history/${record.id}/show`
-        }
-      >
+      <Datagrid rowClick={false}>
         <TextField {...spgFields.id} />
         <TextField {...historyFields.service_providing_group_id} />
         <TextField {...spgFields.name} />

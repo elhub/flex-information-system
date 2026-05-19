@@ -1,84 +1,53 @@
+import { useParams } from "react-router-dom";
+import { Datagrid, List } from "../../components/EDS-ra/list";
 import {
-  List,
-  NumberInput,
+  DateField,
+  IdentityField,
   ReferenceField,
   TextField,
-  useGetOne,
-} from "react-admin";
-import { Datagrid } from "../../auth";
-import { useParams } from "react-router-dom";
-import { DateField } from "../../components/datetime";
-import { IdentityField } from "../../components/IdentityField";
+} from "../../components/EDS-ra/fields";
+import { TextInput } from "../../components/EDS-ra/inputs";
+import {
+  zTechnicalResource,
+  zTechnicalResourceHistory,
+} from "../../generated-client/zod.gen";
+import { getFields } from "../../zod";
 
 export const TechnicalResourceHistoryList = () => {
-  const params = useParams();
-  const filter: any = {
-    controllable_unit_id: params.controllable_unit_id,
-  };
+  const { controllable_unit_id } = useParams();
 
-  const { data } = useGetOne("controllable_unit", {
-    id: params.controllable_unit_id,
-  });
-
-  const TechnicalResourceHistoryListFilters = [
-    <NumberInput
-      key="technical_resource_id"
-      min="0"
-      label="field.technical_resource_history.technical_resource_id"
-      source="technical_resource_id"
-    />,
-  ];
+  const fields = getFields(zTechnicalResource.shape);
+  const historyFields = getFields(zTechnicalResourceHistory.shape);
 
   return (
     <List
       resource="technical_resource_history"
-      title={`Technical resource history for ${data.name}`}
-      filter={filter}
-      filters={TechnicalResourceHistoryListFilters}
+      filter={{ controllable_unit_id }}
       perPage={25}
       sort={{ field: "recorded_at", order: "DESC" }}
       empty={false}
+      filters={[
+        <TextInput
+          key="technical_resource_id"
+          type="number"
+          {...historyFields.technical_resource_id}
+        />,
+      ]}
     >
-      <Datagrid
-        rowClick={(_id, _res, record) =>
-          `/controllable_unit/${record.controllable_unit_id}/technical_resource_history/${record.id}/show`
-        }
-      >
-        <TextField source="id" label="field.technical_resource_history.id" />
-        <TextField
-          source="technical_resource_id"
-          label="field.technical_resource_history.technical_resource_id"
-        />
-        <TextField
-          source="name"
-          label="field.technical_resource_history.name"
-        />
+      <Datagrid rowClick={false}>
+        <TextField {...fields.id} />
+        <TextField {...historyFields.technical_resource_id} />
+        <TextField {...fields.name} />
         <ReferenceField
-          source="controllable_unit_id"
+          {...fields.controllable_unit_id}
           reference="controllable_unit"
-          sortable={false}
-          label="field.technical_resource_history.controllable_unit_id"
         >
           <TextField source="name" />
         </ReferenceField>
-        <DateField
-          source="recorded_at"
-          showTime
-          label="field.technical_resource_history.recorded_at"
-        />
-        <IdentityField
-          source="recorded_by"
-          label="field.technical_resource_history.recorded_by"
-        />
-        <DateField
-          source="replaced_at"
-          showTime
-          label="field.technical_resource_history.replaced_at"
-        />
-        <IdentityField
-          source="replaced_by"
-          label="field.technical_resource_history.replaced_by"
-        />
+        <DateField {...fields.recorded_at} showTime />
+        <IdentityField {...fields.recorded_by} />
+        <DateField {...historyFields.replaced_at} showTime />
+        <IdentityField {...historyFields.replaced_by} />
       </Datagrid>
     </List>
   );
