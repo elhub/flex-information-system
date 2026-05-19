@@ -1,69 +1,65 @@
-import { NumberInput, SimpleForm, useRecordContext } from "react-admin";
-import { Typography, Stack } from "@mui/material";
-import {
-  AutocompleteReferenceInput,
-  PartyReferenceInput,
-  InputStack,
-} from "../../auth";
+import { Form, useRecordContext } from "ra-core";
 import { useLocation } from "react-router-dom";
-import { Toolbar } from "../../components/Toolbar";
-import { ScopesInput } from "../../components/scopes";
 import { useMemo } from "react";
 import { zPartyMembershipCreateRequest } from "../../generated-client/zod.gen";
-import { unTypedZodResolver } from "../../zod";
+import { getFields, unTypedZodResolver } from "../../zod";
+import { FormContainer, Heading } from "../../components/ui";
+import {
+  TextInput,
+  AutocompleteReferenceInput,
+  PartyReferenceInput,
+  FormToolbar,
+} from "../../components/EDS-ra/inputs";
+import { ScopesInput } from "../../components/scopes";
 
-// keep only the fields that map to the UI
 const filterRecord = ({ party_id, entity_id, scopes }: any) => ({
   party_id,
   entity_id,
   scopes,
 });
 
-// common layout to create and edit pages
+const fields = getFields(zPartyMembershipCreateRequest.shape);
+
 export const PartyMembershipInput = () => {
   const { state: overrideRecord } = useLocation();
-
   const actualRecord = useRecordContext();
-  // priority to the restored values if they exist, otherwise normal edit mode
-  // Memoize the combined record to avoid re-renders causing errors
+
   const record = useMemo(
     () => filterRecord({ ...actualRecord, ...overrideRecord }),
     [actualRecord, overrideRecord],
   );
 
   return (
-    <SimpleForm
+    <Form
       record={record}
-      maxWidth={1280}
       resolver={unTypedZodResolver(zPartyMembershipCreateRequest)}
-      toolbar={<Toolbar />}
+      sanitizeEmptyValues
     >
-      <Stack direction="column" spacing={1}>
-        <Typography variant="h6" gutterBottom>
+      <FormContainer>
+        <Heading level={3} size="medium">
           Basic information
-        </Typography>
-        <InputStack direction="row" flexWrap="wrap">
+        </Heading>
+        <div className="flex flex-col gap-3">
           <PartyReferenceInput
-            source="party_id"
-            label="field.party_membership.party_id"
+            {...fields.party_id}
             readOnly
           />
           {overrideRecord?.showTechnicalEntityID ? (
-            <NumberInput
-              source="entity_id"
-              label="field.party_membership.entity_id"
+            <TextInput
+              {...fields.entity_id}
+              type="number"
               readOnly
             />
           ) : (
             <AutocompleteReferenceInput
-              source="entity_id"
+              {...fields.entity_id}
               reference="entity"
-              label="field.party_membership.entity_id"
             />
           )}
-        </InputStack>
-        <ScopesInput source="scopes" label="field.party_membership.scopes" />
-      </Stack>
-    </SimpleForm>
+          <ScopesInput source="scopes" label="field.party_membership.scopes" />
+        </div>
+        <FormToolbar />
+      </FormContainer>
+    </Form>
   );
 };
