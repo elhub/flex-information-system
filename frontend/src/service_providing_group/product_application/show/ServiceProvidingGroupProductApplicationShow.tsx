@@ -10,6 +10,7 @@ import { useSpgpaRecord } from "./useSpgpaShowViewModel";
 import { useTranslateEnum } from "../../../intl/intl";
 import { spgpaStatusVariantMap } from "./spgpaStatus";
 import { useServiceProvidingGroup } from "../../show/useSpgShowViewModel";
+import { SpgpaAlerts } from "./SpgpaAlerts";
 
 export const ServiceProvidingGroupProductApplicationShow = () => {
   const spgpaId = Number(useParams<{ id: string }>().id);
@@ -46,6 +47,7 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
         </Badge>
       }
       actionBar={canUpdateStatus ? <SpgpaActionBar spgpa={spgpa} /> : undefined}
+      alerts={<SpgpaAlerts spgpa={spgpa} />}
     >
       <SpgpaShowSummary spgpa={spgpa} spg={spg.data} />
       <SpgpaShowTabs
