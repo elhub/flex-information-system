@@ -4,7 +4,7 @@ Aggregated summary of controllable units and technical resources belonging to a 
 
 ## Relevant links
 
-* [API Documentation](../api/v0/index.html#/operations/read_service_providing_group_summary)
+* [API Documentation](../api/v1/index.html#/operations/read_service_providing_group_summary)
 * [Download docx](../download/service_providing_group_summary.docx)
 
 ## Fields

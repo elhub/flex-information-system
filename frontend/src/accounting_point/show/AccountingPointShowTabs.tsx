@@ -6,6 +6,7 @@ import {
 } from "../../generated-client";
 import { AccountingPointGridLocationPanel } from "../grid_location/AccountingPointGridLocationPanel";
 import { Permissions } from "../../auth/permissions";
+import { useTabSearchParam } from "../../hooks/useTabSearchParam";
 
 const userCanEditGridLocation = (
   identity: UserIdentity | undefined,
@@ -35,9 +36,10 @@ export const AccountingPointShowTabs = ({
     "accounting_point_grid_location",
     "read",
   );
+  const [tab, setTab] = useTabSearchParam("grid_location");
 
   return (
-    <Tabs defaultValue="grid_location" className="relative top-[-24px]">
+    <Tabs value={tab} onChange={setTab} className="relative top-[-24px]">
       <Tabs.List>
         {canViewGridLocation && (
           <Tabs.Tab label="Grid Location" value="grid_location" />

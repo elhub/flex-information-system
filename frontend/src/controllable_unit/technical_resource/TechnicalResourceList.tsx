@@ -5,7 +5,7 @@ import {
   useTranslate,
 } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { Link as RouterLink, useSearchParams } from "react-router-dom";
 import { Permissions } from "../../auth/permissions";
 import { TechnicalResourceInputLocationState } from "./TechnicalResourceInput";
 import {
@@ -13,13 +13,20 @@ import {
   deleteTechnicalResource,
 } from "../../generated-client";
 import { SimpleTable, ColumnOf } from "../../components/SimpleTable";
-import { Button } from "../../components/ui";
+import {
+  Button,
+  Heading,
+  BodyText,
+  Card,
+  CardContent,
+} from "../../components/ui";
 import { IconPlus, IconTrash } from "@elhub/ds-icons";
 import { useConfirmAction } from "../../components/ConfirmAction";
 import { throwOnError } from "../../util";
 import { useTechnicalResources } from "./useTechnicalResources";
 import { useTranslateEnum } from "../../intl/intl";
 import { EnumLabel } from "../../intl/enum-labels";
+import { TechnicalResourceDetailModal } from "./TechnicalResourceDetailModal";
 
 const CreateButton = ({
   controllableUnitId,
@@ -89,15 +96,35 @@ const DeleteTechnicalResourceButton = ({
 export const TechnicalResourceList = () => {
   const { id } = useRecordContext()!;
   const { permissions } = usePermissions<Permissions>();
-  const navigate = useNavigate();
   const translate = useTranslate();
   const translateEnum = useTranslateEnum();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const selectedTrId = searchParams.get("tr")
+    ? Number(searchParams.get("tr"))
+    : null;
+
+  const setSelectedTrId = (trId: number | null) =>
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams(prev);
+        if (trId != null) {
+          next.set("tr", String(trId));
+        } else {
+          next.delete("tr");
+        }
+        return next;
+      },
+      { replace: true },
+    );
 
   const canRead = permissions?.allow("technical_resource", "read");
   const canDelete = permissions?.allow("technical_resource", "delete");
   const canCreate = permissions?.allow("technical_resource", "create");
 
   const { data } = useTechnicalResources(Number(id));
+
+  const selectedRecord = data?.find((r) => r.id === selectedTrId) ?? null;
 
   const columns: ColumnOf<typeof data>[] = [
     { key: "id", header: translate("field.technical_resource.id") },
@@ -124,12 +151,25 @@ export const TechnicalResourceList = () => {
           columns={columns}
           data={data ?? []}
           empty={
-            "No technical resources yet. To set the controllable unit as active, one technical resource is required."
+            <Card>
+              <CardContent>
+                <div className="flex flex-col gap-2 py-4">
+                  <Heading level={3}>No technical resources</Heading>
+                  <BodyText>
+                    A technical resource represents a physical device or asset
+                    (such as a battery, generator, or flexible load) that
+                    provides the actual controllable capacity.
+                  </BodyText>
+                  <BodyText>
+                    To set the controllable unit as active, at least one
+                    technical resource is required.
+                  </BodyText>
+                </div>
+              </CardContent>
+            </Card>
           }
           rowClick={(record) => {
-            navigate(
-              `/controllable_unit/${record.controllable_unit_id}/technical_resource/${record.id}/show`,
-            );
+            setSelectedTrId(record.id);
           }}
           action={
             canDelete
@@ -141,6 +181,11 @@ export const TechnicalResourceList = () => {
                 }
               : undefined
           }
+        />
+        <TechnicalResourceDetailModal
+          record={selectedRecord}
+          open={selectedTrId !== null}
+          onClose={() => setSelectedTrId(null)}
         />
       </div>
     )

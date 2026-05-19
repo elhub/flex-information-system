@@ -859,6 +859,28 @@ def generate_openapi_document(base_file, resources_file, servers_file):
                 )
         # ---- export ----
 
+    # Inject Api-Version header parameter into every operation so it is
+    # documented as required on all data API operations. We inject at the
+    # operation level (not path-item level) to ensure all renderers display it.
+    # The read_openapi_json operation is exempt: it is served outside the
+    # RequireAPIVersion middleware so the Stoplight Elements UI can load the
+    # spec without needing to send the header.
+    api_version_ref = {"$ref": "#/components/parameters/ApiVersion"}
+    http_methods = {"get", "post", "patch", "delete", "put", "head", "options"}
+    for path_item in base["paths"].values():
+        # remove any path-level ApiVersion left over from the base file
+        if "parameters" in path_item:
+            path_item["parameters"] = [
+                p for p in path_item["parameters"] if p != api_version_ref
+            ]
+        for method, operation in path_item.items():
+            if method in http_methods:
+                if operation.get("operationId") == "read_openapi_json":
+                    continue
+                operation.setdefault("parameters", [])
+                if api_version_ref not in operation["parameters"]:
+                    operation["parameters"].append(api_version_ref)
+
     print(json.dumps(base, indent=4, default=str))
 
 

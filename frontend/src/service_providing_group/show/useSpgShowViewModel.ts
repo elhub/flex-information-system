@@ -24,6 +24,7 @@ export type SpgMembershipRow = {
   rated_power: number | undefined;
   regulation_direction: string;
   mpid: string;
+  accountingPointId: number;
   brpName: string;
   status: string;
 };
@@ -136,6 +137,7 @@ const fetchSpgShowData = async (serviceProvidingGroupId: number) => {
       rated_power: cu.summary?.technical_resource?.maximum_active_power?.sum,
       regulation_direction: cu.regulation_direction,
       mpid: ap?.business_id ?? "-",
+      accountingPointId: cu.accounting_point_id,
       brpName: (() => {
         const brpId = currentBrps.get(cu.accounting_point_id);
         return brpId ? (brpPartyMap[brpId]?.name ?? "-") : "-";

@@ -21,7 +21,7 @@ def sts():
     yield SecurityTokenService()
 
 
-auth_url = os.environ["FLEX_AUTH_BASE"] + "/auth/v0"
+auth_url = os.environ["FLEX_AUTH_BASE"] + "/auth/v1"
 auth_headers = {"Content-Type": "application/x-www-form-urlencoded"}
 
 # ---- ---- ---- ----- -----

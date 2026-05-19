@@ -40,7 +40,7 @@ from typing import cast
 
 from api_client_tests.test_party import unique_gln
 
-auth_url = os.environ["FLEX_AUTH_BASE"] + "/auth/v0"
+auth_url = os.environ["FLEX_AUTH_BASE"] + "/auth/v1"
 auth_headers = {"Content-Type": "application/x-www-form-urlencoded"}
 client_secret = "qwertyuiop123456"
 
@@ -245,7 +245,7 @@ def test_scopes_jwt_bearer_entity(data):
 
     # log in as entity through entity client key
     payload = {
-        "aud": "https://test.flex.internal:6443/auth/v0/",
+        "aud": "https://test.flex.internal:6443/auth/v1/",
         "iss": entity_clt.client_id,
         "jti": str(uuid.uuid4()),
         "iat": dt.now(tz.utc),
@@ -351,7 +351,7 @@ def test_scopes_jwt_bearer_owned_party(data):
 
     # log in as owned party through entity client key
     payload = {
-        "aud": "https://test.flex.internal:6443/auth/v0/",
+        "aud": "https://test.flex.internal:6443/auth/v1/",
         "iss": entity_clt.client_id,
         "jti": str(uuid.uuid4()),
         "iat": dt.now(tz.utc),
@@ -387,7 +387,7 @@ def test_scopes_jwt_bearer_membership_party(data):
 
     # log in as owned party through entity client key
     payload = {
-        "aud": "https://test.flex.internal:6443/auth/v0/",
+        "aud": "https://test.flex.internal:6443/auth/v1/",
         "iss": entity_clt.client_id,
         "jti": str(uuid.uuid4()),
         "iat": dt.now(tz.utc),
@@ -466,7 +466,7 @@ def test_scopes_embedding(jwt_keys):
 
     # log in as owned party through entity client key
     payload = {
-        "aud": "https://test.flex.internal:6443/auth/v0/",
+        "aud": "https://test.flex.internal:6443/auth/v1/",
         "iss": clt.client_id,
         "jti": str(uuid.uuid4()),
         "iat": dt.now(tz.utc),

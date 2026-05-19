@@ -4,7 +4,7 @@ Relation telling which bidding zone an accounting point belongs to.
 
 ## Relevant links
 
-* [API Documentation](../api/v0/index.html#/operations/list_accounting_point_bidding_zone)
+* [API Documentation](../api/v1/index.html#/operations/list_accounting_point_bidding_zone)
 * [Download docx](../download/accounting_point_bidding_zone.docx)
 
 ## Fields

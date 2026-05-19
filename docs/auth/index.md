@@ -48,7 +48,7 @@ shows the layers we have in our model.
 
 The layers in the auth model are there to protect our resources. These resources
 take the form of data or remote procedure calls (RPCs) in our APIs. You can
-think of a resource as a path in our API, e.g. `/api/v0/controllable_unit/`.
+think of a resource as a path in our API, e.g. `/api/v1/controllable_unit/`.
 Authorization protects what actions (create, read, update, delete, call) the
 user can do on the resources.
 

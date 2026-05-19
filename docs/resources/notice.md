@@ -32,7 +32,7 @@ from the responsible party.
 
 ## Relevant links
 
-* [API Documentation](../api/v0/index.html#/operations/list_notice)
+* [API Documentation](../api/v1/index.html#/operations/list_notice)
 * [Download docx](../download/notice.docx)
 
 ## Fields

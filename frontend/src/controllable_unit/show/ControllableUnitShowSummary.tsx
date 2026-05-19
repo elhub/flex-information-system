@@ -1,4 +1,4 @@
-import { Button, Panel } from "../../components/ui";
+import { Button, Link, Panel } from "../../components/ui";
 import { LabelValue } from "../../components/LabelValue";
 import type { ControllableUnitShowViewModel } from "./useControllableUnitViewModel";
 import { formatDate } from "date-fns";
@@ -92,9 +92,16 @@ export const ControllableUnitShowSummary = ({
             size="small"
             label="Accounting point"
             value={
-              accountingPoint && systemOperator
-                ? `${accountingPoint.business_id} (${systemOperator.name})`
-                : undefined
+              accountingPoint ? (
+                <Link
+                  as={RouterLink}
+                  to={`/accounting_point/${accountingPoint.id}/show`}
+                >
+                  {systemOperator
+                    ? `${accountingPoint.business_id} (${systemOperator.name})`
+                    : accountingPoint.business_id}
+                </Link>
+              ) : undefined
             }
           />
           <LabelValue
@@ -158,6 +165,18 @@ export const ControllableUnitShowSummary = ({
             tooltip
             labelKey="controllable_unit.regulation_direction"
             value={controllableUnit.regulation_direction}
+          />
+          <LabelValue
+            size="small"
+            tooltip
+            labelKey="controllable_unit.additional_information"
+            value={
+              controllableUnit.additional_information ? (
+                <span className="whitespace-pre-wrap">
+                  {controllableUnit.additional_information}
+                </span>
+              ) : undefined
+            }
           />
           <LabelValue
             size="small"

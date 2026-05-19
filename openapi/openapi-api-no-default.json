@@ -8,11 +8,11 @@
             "url": "https://elhub.no",
             "email": "post@elhub.no"
         },
-        "version": "0.0.1"
+        "version": "2026-06-08"
     },
     "externalDocs": {
-        "description": "TODO",
-        "url": "https://todo.example.com"
+        "description": "API Changelog",
+        "url": "https://elhub.github.io/flex-information-system/changelog/"
     },
     "jsonSchemaDialect": "https://spec.openapis.org/oas/3.1/dialect/base",
     "tags": [
@@ -1179,7 +1179,7 @@
                         "example": 3.5
                     },
                     "is_small": {
-                        "description": "Whether the controllable unit is small or not, following NCDR.",
+                        "description": "Whether the controllable unit is small or not, following NCDR. Current threshold for this to be true is <= 50 kW of flexible power.",
                         "format": "boolean",
                         "type": "boolean",
                         "readOnly": true,
@@ -6524,7 +6524,7 @@
                         "example": 3.5
                     },
                     "is_small": {
-                        "description": "Whether the controllable unit is small or not, following NCDR.",
+                        "description": "Whether the controllable unit is small or not, following NCDR. Current threshold for this to be true is <= 50 kW of flexible power.",
                         "format": "boolean",
                         "type": "boolean",
                         "readOnly": true,
@@ -8708,7 +8708,8 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "parameters": []
             }
         },
         "/entity/lookup": {
@@ -8787,7 +8788,8 @@
                         },
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "parameters": []
             }
         },
         "/controllable_unit": {
@@ -9107,7 +9109,8 @@
                             "manage:data:controllable_unit"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/controllable_unit/{id}": {
@@ -9346,7 +9349,8 @@
                             "manage:data:controllable_unit"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/controllable_unit_history": {
@@ -9677,7 +9681,8 @@
                         ]
                     },
                     {}
-                ]
+                ],
+                "parameters": []
             }
         },
         "/controllable_unit_suspension": {
@@ -9989,7 +9994,8 @@
                             "manage:data:controllable_unit_suspension"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/controllable_unit_suspension/{id}": {
@@ -10235,7 +10241,8 @@
                             "manage:data:controllable_unit_suspension"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             },
             "delete": {
                 "operationId": "delete_controllable_unit_suspension",
@@ -10322,7 +10329,8 @@
                             "manage:data:controllable_unit_suspension"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/controllable_unit_suspension_history": {
@@ -10645,7 +10653,8 @@
                         ]
                     },
                     {}
-                ]
+                ],
+                "parameters": []
             }
         },
         "/controllable_unit_suspension_comment": {
@@ -10947,7 +10956,8 @@
                             "manage:data:controllable_unit_suspension_comment"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/controllable_unit_suspension_comment/{id}": {
@@ -11186,7 +11196,8 @@
                             "manage:data:controllable_unit_suspension_comment"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/controllable_unit_suspension_comment_history": {
@@ -11499,7 +11510,8 @@
                         ]
                     },
                     {}
-                ]
+                ],
+                "parameters": []
             }
         },
         "/controllable_unit_service_provider": {
@@ -11849,7 +11861,8 @@
                             "manage:data:controllable_unit_service_provider"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/controllable_unit_service_provider/{id}": {
@@ -12102,7 +12115,8 @@
                             "manage:data:controllable_unit_service_provider"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             },
             "delete": {
                 "operationId": "delete_controllable_unit_service_provider",
@@ -12189,7 +12203,8 @@
                             "manage:data:controllable_unit_service_provider"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/controllable_unit_service_provider_history": {
@@ -12550,7 +12565,8 @@
                         ]
                     },
                     {}
-                ]
+                ],
+                "parameters": []
             }
         },
         "/controllable_unit_summary/{id}": {
@@ -13121,7 +13137,8 @@
                             "manage:data:service_providing_group"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_providing_group/{id}": {
@@ -13360,7 +13377,8 @@
                             "manage:data:service_providing_group"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_providing_group_history": {
@@ -13682,7 +13700,8 @@
                         ]
                     },
                     {}
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_providing_group_membership": {
@@ -14022,7 +14041,8 @@
                             "manage:data:service_providing_group_membership"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_providing_group_membership/{id}": {
@@ -14268,7 +14288,8 @@
                             "manage:data:service_providing_group_membership"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             },
             "delete": {
                 "operationId": "delete_service_providing_group_membership",
@@ -14355,7 +14376,8 @@
                             "manage:data:service_providing_group_membership"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_providing_group_membership_history": {
@@ -14706,7 +14728,8 @@
                         ]
                     },
                     {}
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_providing_group_grid_prequalification": {
@@ -15018,7 +15041,8 @@
                             "manage:data:service_providing_group_grid_prequalification"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_providing_group_grid_prequalification/{id}": {
@@ -15264,7 +15288,8 @@
                             "manage:data:service_providing_group_grid_prequalification"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_providing_group_grid_prequalification_history": {
@@ -15587,7 +15612,8 @@
                         ]
                     },
                     {}
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_providing_group_grid_prequalification_comment": {
@@ -15889,7 +15915,8 @@
                             "manage:data:service_providing_group_grid_prequalification_comment"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_providing_group_grid_prequalification_comment/{id}": {
@@ -16128,7 +16155,8 @@
                             "manage:data:service_providing_group_grid_prequalification_comment"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_providing_group_grid_prequalification_comment_history": {
@@ -16441,7 +16469,8 @@
                         ]
                     },
                     {}
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_providing_group_grid_suspension": {
@@ -16753,7 +16782,8 @@
                             "manage:data:service_providing_group_grid_suspension"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_providing_group_grid_suspension/{id}": {
@@ -16999,7 +17029,8 @@
                             "manage:data:service_providing_group_grid_suspension"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             },
             "delete": {
                 "operationId": "delete_service_providing_group_grid_suspension",
@@ -17086,7 +17117,8 @@
                             "manage:data:service_providing_group_grid_suspension"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_providing_group_grid_suspension_history": {
@@ -17409,7 +17441,8 @@
                         ]
                     },
                     {}
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_providing_group_grid_suspension_comment": {
@@ -17711,7 +17744,8 @@
                             "manage:data:service_providing_group_grid_suspension_comment"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_providing_group_grid_suspension_comment/{id}": {
@@ -17950,7 +17984,8 @@
                             "manage:data:service_providing_group_grid_suspension_comment"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_providing_group_grid_suspension_comment_history": {
@@ -18263,7 +18298,8 @@
                         ]
                     },
                     {}
-                ]
+                ],
+                "parameters": []
             }
         },
         "/entity": {
@@ -18581,7 +18617,8 @@
                             "manage:data:entity"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/entity/{id}": {
@@ -18811,7 +18848,8 @@
                             "manage:data:entity"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/entity_client": {
@@ -19132,7 +19170,8 @@
                             "manage:data:entity_client"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/entity_client/{id}": {
@@ -19378,7 +19417,8 @@
                             "manage:data:entity_client"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             },
             "delete": {
                 "operationId": "delete_entity_client",
@@ -19465,7 +19505,8 @@
                             "manage:data:entity_client"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/party": {
@@ -19793,7 +19834,8 @@
                             "manage:data:party"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/party/{id}": {
@@ -20032,7 +20074,8 @@
                             "manage:data:party"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/party_history": {
@@ -20371,7 +20414,8 @@
                         ]
                     },
                     {}
-                ]
+                ],
+                "parameters": []
             }
         },
         "/party_membership": {
@@ -20683,7 +20727,8 @@
                             "manage:data:party_membership"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/party_membership/{id}": {
@@ -20929,7 +20974,8 @@
                             "manage:data:party_membership"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             },
             "delete": {
                 "operationId": "delete_party_membership",
@@ -21016,7 +21062,8 @@
                             "manage:data:party_membership"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/party_membership_history": {
@@ -21339,7 +21386,8 @@
                         ]
                     },
                     {}
-                ]
+                ],
+                "parameters": []
             }
         },
         "/identity": {
@@ -22018,7 +22066,8 @@
                             "manage:data:technical_resource"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/technical_resource/{id}": {
@@ -22257,7 +22306,8 @@
                             "manage:data:technical_resource"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             },
             "delete": {
                 "operationId": "delete_technical_resource",
@@ -22344,7 +22394,8 @@
                             "manage:data:technical_resource"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/technical_resource_history": {
@@ -22666,7 +22717,8 @@
                         ]
                     },
                     {}
-                ]
+                ],
+                "parameters": []
             }
         },
         "/event": {
@@ -23407,7 +23459,8 @@
                             "manage:data:notification"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/accounting_point": {
@@ -25424,7 +25477,8 @@
                             "manage:data:accounting_point_grid_location"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/accounting_point_grid_location/{id}": {
@@ -25663,7 +25717,8 @@
                             "manage:data:accounting_point_grid_location"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/accounting_point_grid_location_history": {
@@ -25976,7 +26031,8 @@
                         ]
                     },
                     {}
-                ]
+                ],
+                "parameters": []
             }
         },
         "/product_type": {
@@ -26604,7 +26660,8 @@
                             "manage:data:system_operator_product_type"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/system_operator_product_type/{id}": {
@@ -26850,7 +26907,8 @@
                             "manage:data:system_operator_product_type"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/system_operator_product_type_history": {
@@ -27173,7 +27231,8 @@
                         ]
                     },
                     {}
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_provider_product_application": {
@@ -27503,7 +27562,8 @@
                             "manage:data:service_provider_product_application"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_provider_product_application/{id}": {
@@ -27756,7 +27816,8 @@
                             "manage:data:service_provider_product_application"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_provider_product_application_history": {
@@ -28097,7 +28158,8 @@
                         ]
                     },
                     {}
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_provider_product_application_comment": {
@@ -28399,7 +28461,8 @@
                             "manage:data:service_provider_product_application_comment"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_provider_product_application_comment/{id}": {
@@ -28638,7 +28701,8 @@
                             "manage:data:service_provider_product_application_comment"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_provider_product_application_comment_history": {
@@ -28951,7 +29015,8 @@
                         ]
                     },
                     {}
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_provider_product_suspension": {
@@ -29273,7 +29338,8 @@
                             "manage:data:service_provider_product_suspension"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_provider_product_suspension/{id}": {
@@ -29526,7 +29592,8 @@
                             "manage:data:service_provider_product_suspension"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             },
             "delete": {
                 "operationId": "delete_service_provider_product_suspension",
@@ -29613,7 +29680,8 @@
                             "manage:data:service_provider_product_suspension"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_provider_product_suspension_history": {
@@ -29946,7 +30014,8 @@
                         ]
                     },
                     {}
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_provider_product_suspension_comment": {
@@ -30248,7 +30317,8 @@
                             "manage:data:service_provider_product_suspension_comment"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_provider_product_suspension_comment/{id}": {
@@ -30487,7 +30557,8 @@
                             "manage:data:service_provider_product_suspension_comment"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_provider_product_suspension_comment_history": {
@@ -30800,7 +30871,8 @@
                         ]
                     },
                     {}
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_providing_group_product_application": {
@@ -31122,7 +31194,8 @@
                             "manage:data:service_providing_group_product_application"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_providing_group_product_application/{id}": {
@@ -31375,7 +31448,8 @@
                             "manage:data:service_providing_group_product_application"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_providing_group_product_application_history": {
@@ -31708,7 +31782,8 @@
                         ]
                     },
                     {}
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_providing_group_product_application_comment": {
@@ -32010,7 +32085,8 @@
                             "manage:data:service_providing_group_product_application_comment"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_providing_group_product_application_comment/{id}": {
@@ -32249,7 +32325,8 @@
                             "manage:data:service_providing_group_product_application_comment"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_providing_group_product_application_comment_history": {
@@ -32562,7 +32639,8 @@
                         ]
                     },
                     {}
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_providing_group_product_suspension": {
@@ -32884,7 +32962,8 @@
                             "manage:data:service_providing_group_product_suspension"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_providing_group_product_suspension/{id}": {
@@ -33137,7 +33216,8 @@
                             "manage:data:service_providing_group_product_suspension"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             },
             "delete": {
                 "operationId": "delete_service_providing_group_product_suspension",
@@ -33224,7 +33304,8 @@
                             "manage:data:service_providing_group_product_suspension"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_providing_group_product_suspension_history": {
@@ -33557,7 +33638,8 @@
                         ]
                     },
                     {}
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_providing_group_product_suspension_comment": {
@@ -33859,7 +33941,8 @@
                             "manage:data:service_providing_group_product_suspension_comment"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_providing_group_product_suspension_comment/{id}": {
@@ -34098,7 +34181,8 @@
                             "manage:data:service_providing_group_product_suspension_comment"
                         ]
                     }
-                ]
+                ],
+                "parameters": []
             }
         },
         "/service_providing_group_product_suspension_comment_history": {
@@ -34411,7 +34495,8 @@
                         ]
                     },
                     {}
-                ]
+                ],
+                "parameters": []
             }
         },
         "/notice": {
@@ -34743,7 +34828,7 @@
     },
     "servers": [
         {
-            "url": "https://test.flex.internal:6443/api/v0",
+            "url": "https://test.flex.internal:6443/api/v1",
             "description": "Development"
         }
     ]

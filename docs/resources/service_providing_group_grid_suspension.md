@@ -5,7 +5,7 @@ service providing group from delivering services.
 
 ## Relevant links
 
-* [API Documentation](../api/v0/index.html#/operations/list_service_providing_group_grid_suspension)
+* [API Documentation](../api/v1/index.html#/operations/list_service_providing_group_grid_suspension)
 * [Download docx](../download/service_providing_group_grid_suspension.docx)
 
 ## Fields

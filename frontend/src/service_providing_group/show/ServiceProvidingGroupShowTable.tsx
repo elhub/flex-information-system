@@ -1,4 +1,4 @@
-import { BodyText, Button, Loader } from "../../components/ui";
+import { BodyText, Button, Link, Loader } from "../../components/ui";
 import { Column, SimpleTable } from "../../components/SimpleTable";
 import {
   useSpgShowViewModel,
@@ -130,7 +130,22 @@ export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
       key: "regulation_direction",
       header: t("controllable_unit.regulation_direction"),
     },
-    { key: "mpid", header: t("controllable_unit.accounting_point_id") },
+    {
+      key: "mpid",
+      header: t("controllable_unit.accounting_point_id"),
+      render: (value, row) =>
+        value !== "-" ? (
+          <Link
+            as={RouterLink}
+            to={`/accounting_point/${row.accountingPointId}/show`}
+            onClick={(e: React.MouseEvent) => e.stopPropagation()}
+          >
+            {String(value)}
+          </Link>
+        ) : (
+          <>{value}</>
+        ),
+    },
     {
       key: "brpName",
       header: t(

@@ -13,7 +13,7 @@ export const tooltips = {
   "controllable_unit.maximum_active_power":
     "Maximum continuous active power (flexible power) that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
   "controllable_unit.is_small":
-    "Whether the controllable unit is small or not, following NCDR.",
+    "Whether the controllable unit is small or not, following NCDR. Current threshold for this to be true is <= 50 kW of flexible power.",
   "controllable_unit.accounting_point_id":
     "Reference to the accounting point that the controllable unit is connected to.",
   "controllable_unit.additional_information":
@@ -33,7 +33,7 @@ export const tooltips = {
   "controllable_unit_history.maximum_active_power":
     "Maximum continuous active power (flexible power) that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
   "controllable_unit_history.is_small":
-    "Whether the controllable unit is small or not, following NCDR.",
+    "Whether the controllable unit is small or not, following NCDR. Current threshold for this to be true is <= 50 kW of flexible power.",
   "controllable_unit_history.accounting_point_id":
     "Reference to the accounting point that the controllable unit is connected to.",
   "controllable_unit_history.additional_information":

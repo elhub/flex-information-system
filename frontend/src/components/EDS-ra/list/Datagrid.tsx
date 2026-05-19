@@ -13,6 +13,7 @@ import {
   useListContext,
 } from "ra-core";
 import { BodyText, Loader, Table } from "../../ui";
+import { FieldTooltip } from "../fields";
 
 type DatagridProps<T extends RaRecord = RaRecord> = {
   children: ReactNode;
@@ -92,12 +93,23 @@ export const DataTable = <T extends RaRecord>({
       <Table.Header>
         <Table.Row>
           {columns.map((child, index) => {
-            const { source } = child.props as {
+            const { source, label, headerTooltip } = child.props as {
               source: string;
+              label?: string;
+              headerTooltip?: boolean;
             };
             return (
               <Table.ColumnHeader key={source ?? index} scope="col">
-                <FieldTitle source={source} resource={resource} />
+                <span className="flex items-center gap-1">
+                  <FieldTitle
+                    source={source}
+                    label={label}
+                    resource={resource}
+                  />
+                  {headerTooltip && source && (
+                    <FieldTooltip resource={resource} field={source} />
+                  )}
+                </span>
               </Table.ColumnHeader>
             );
           })}

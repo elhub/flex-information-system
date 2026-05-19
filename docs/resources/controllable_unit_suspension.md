@@ -5,7 +5,7 @@ controllable unit.
 
 ## Relevant links
 
-* [API Documentation](../api/v0/index.html#/operations/list_controllable_unit_suspension)
+* [API Documentation](../api/v1/index.html#/operations/list_controllable_unit_suspension)
 * [Download docx](../download/controllable_unit_suspension.docx)
 
 ## Fields

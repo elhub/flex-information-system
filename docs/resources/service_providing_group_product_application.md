@@ -31,7 +31,7 @@ change from `requested` will trigger this check as well.
 
 ## Relevant links
 
-* [API Documentation](../api/v0/index.html#/operations/list_service_providing_group_product_application)
+* [API Documentation](../api/v1/index.html#/operations/list_service_providing_group_product_application)
 * [Download docx](../download/service_providing_group_product_application.docx)
 
 ## Fields

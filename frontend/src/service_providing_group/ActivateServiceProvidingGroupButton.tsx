@@ -16,7 +16,7 @@ export const ActivateServiceProvidingGroupButton = ({
   const { buttonProps, dialog } = useConfirmAction({
     title: "Activate service providing group",
     content:
-      "Activating the service providing group will notify the system operator to validate the service providing group.",
+      "Activating the service providing group will notify the system operator to grid prequalify the service providing group.",
     confirmText: "Activate",
     onConfirmMutation: {
       mutationFn: () =>

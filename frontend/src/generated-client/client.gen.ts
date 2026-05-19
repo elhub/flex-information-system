@@ -22,6 +22,6 @@ export type CreateClientConfig<T extends ClientOptions = ClientOptions2> = (
 
 export const client = createClient(
   createConfig<ClientOptions2>({
-    baseUrl: "https://test.flex.internal:6443/api/v0",
+    baseUrl: "https://test.flex.internal:6443/api/v1",
   }),
 );

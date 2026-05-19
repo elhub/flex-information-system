@@ -42,7 +42,7 @@ key stored in the entity client.
 
 ## Relevant links
 
-* [API Documentation](../api/v0/index.html#/operations/list_entity_client)
+* [API Documentation](../api/v1/index.html#/operations/list_entity_client)
 * [Download docx](../download/entity_client.docx)
 
 ## Fields

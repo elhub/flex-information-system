@@ -5,7 +5,7 @@ assumed party.
 
 ## Relevant links
 
-* [API Documentation](../api/v0/index.html#/operations/list_identity)
+* [API Documentation](../api/v1/index.html#/operations/list_identity)
 * [Download docx](../download/identity.docx)
 
 ## Fields
