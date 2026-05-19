@@ -36,22 +36,13 @@ export const NotificationList = () => {
         <TextField source={fields.id.source} />
         <AcknowledgedField source={fields.acknowledged.source} />
         <TextField source={fields.event_id.source} />
-        <ReferenceField
-          source={fields.event_id.source}
-          reference="event"
-        >
+        <ReferenceField source={fields.event_id.source} reference="event">
           <TextField source="type" />
         </ReferenceField>
-        <ReferenceField
-          source={fields.event_id.source}
-          reference="event"
-        >
+        <ReferenceField source={fields.event_id.source} reference="event">
           <TextField source="source" />
         </ReferenceField>
-        <ReferenceField
-          source={fields.event_id.source}
-          reference="event"
-        >
+        <ReferenceField source={fields.event_id.source} reference="event">
           <DateField source="time" showTime />
         </ReferenceField>
         <ReferenceField source={fields.party_id.source} reference="party">

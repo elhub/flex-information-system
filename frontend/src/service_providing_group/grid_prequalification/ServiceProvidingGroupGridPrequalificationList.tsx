@@ -1,4 +1,8 @@
-import { usePermissions, useRecordContext, ResourceContextProvider } from "ra-core";
+import {
+  usePermissions,
+  useRecordContext,
+  ResourceContextProvider,
+} from "ra-core";
 import { Link } from "react-router-dom";
 import { Datagrid, List } from "../../components/EDS-ra/list";
 import {

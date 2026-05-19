@@ -1,8 +1,16 @@
-import { usePermissions, useRecordContext, ResourceContextProvider } from "ra-core";
+import {
+  usePermissions,
+  useRecordContext,
+  ResourceContextProvider,
+} from "ra-core";
 import { Link } from "react-router-dom";
 import { Datagrid, List } from "../../components/EDS-ra/list";
-import { DateField, ReferenceField, TextField } from "../../components/EDS-ra/fields";
-import { DeleteButton, CreateButton as EdsCreateButton } from "../../components/EDS-ra/buttons";
+import {
+  DateField,
+  ReferenceField,
+  TextField,
+} from "../../components/EDS-ra/fields";
+import { DeleteButton } from "../../components/EDS-ra/buttons";
 import { Button } from "../../components/ui";
 import { IconPlus } from "@elhub/ds-icons";
 import { Permissions } from "../../auth/permissions";

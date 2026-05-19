@@ -1,4 +1,8 @@
-import { usePermissions, useRecordContext, ResourceContextProvider } from "ra-core";
+import {
+  usePermissions,
+  useRecordContext,
+  ResourceContextProvider,
+} from "ra-core";
 import { Link, useLocation } from "react-router-dom";
 import { Datagrid, List } from "../../components/EDS-ra/list";
 import {
@@ -95,9 +99,7 @@ export const ServiceProvidingGroupProductSuspensionList = () => {
             {isURLFlat && (
               <DateField source={fields.recorded_at.source} showTime />
             )}
-            {isURLFlat && (
-              <IdentityField source={fields.recorded_by.source} />
-            )}
+            {isURLFlat && <IdentityField source={fields.recorded_by.source} />}
             {canDelete && <DeleteButton />}
           </Datagrid>
         </List>

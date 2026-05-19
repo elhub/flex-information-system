@@ -93,18 +93,22 @@ export const DataTable = <T extends RaRecord>({
       <Table.Header>
         <Table.Row>
           {columns.map((child, index) => {
-            const { source, label, reference, headerTooltip, children } = child.props as {
-              source: string;
-              label?: string;
-              reference: string;
-              headerTooltip?: boolean;
-              // Children is only set when it is a reference field
-              children: React.ReactElement<{ source: string }>;
-            };
+            const { source, label, reference, headerTooltip, children } =
+              child.props as {
+                source: string;
+                label?: string;
+                reference: string;
+                headerTooltip?: boolean;
+                // Children is only set when it is a reference field
+                children: React.ReactElement<{ source: string }>;
+              };
             const childSource = children?.props?.source;
 
             return (
-              <Table.ColumnHeader key={childSource ?? source ?? index} scope="col">
+              <Table.ColumnHeader
+                key={childSource ?? source ?? index}
+                scope="col"
+              >
                 <span className="flex items-center gap-1">
                   <FieldTitle
                     source={childSource ?? source}

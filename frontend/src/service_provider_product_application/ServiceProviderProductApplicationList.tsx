@@ -6,7 +6,10 @@ import {
   ReferenceField,
   TextField,
 } from "../components/EDS-ra/fields";
-import { EnumArrayInput, PartyReferenceInput } from "../components/EDS-ra/inputs";
+import {
+  EnumArrayInput,
+  PartyReferenceInput,
+} from "../components/EDS-ra/inputs";
 import { Button, Tooltip } from "../components/ui";
 import { IconPlus, IconQuestionCircleOutlined } from "@elhub/ds-icons";
 import { ProductTypeArrayField } from "../product_type/components";
@@ -80,12 +83,20 @@ export const ServiceProviderProductApplicationList = () => {
       actions={actions}
       filters={filters}
     >
-      <Datagrid rowClick={(r) => `/service_provider_product_application/${r.id}/show`}>
+      <Datagrid
+        rowClick={(r) => `/service_provider_product_application/${r.id}/show`}
+      >
         <TextField source={fields.id.source} />
-        <ReferenceField source={fields.service_provider_id.source} reference="party">
+        <ReferenceField
+          source={fields.service_provider_id.source}
+          reference="party"
+        >
           <TextField source="name" />
         </ReferenceField>
-        <ReferenceField source={fields.system_operator_id.source} reference="party">
+        <ReferenceField
+          source={fields.system_operator_id.source}
+          reference="party"
+        >
           <TextField source="name" />
         </ReferenceField>
         <ProductTypeArrayField source={fields.product_type_ids.source} />

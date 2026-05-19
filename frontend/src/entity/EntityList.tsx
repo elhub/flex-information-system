@@ -11,16 +11,8 @@ export const EntityList = () => {
   const fields = getFields(zEntity.shape);
 
   const entityFilters = [
-    <EnumArrayInput
-      key="type"
-      source="type@in"
-      enumKey="entity.type"
-    />,
-    <AutocompleteReferenceInput
-      key="id"
-      source="id"
-      reference="entity"
-    />,
+    <EnumArrayInput key="type" source="type@in" enumKey="entity.type" />,
+    <AutocompleteReferenceInput key="id" source="id" reference="entity" />,
   ];
 
   return (

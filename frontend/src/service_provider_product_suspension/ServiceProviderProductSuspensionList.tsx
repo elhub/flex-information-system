@@ -8,7 +8,10 @@ import {
   TextField,
 } from "../components/EDS-ra/fields";
 import { DeleteButton } from "../components/EDS-ra/buttons";
-import { EnumArrayInput, PartyReferenceInput } from "../components/EDS-ra/inputs";
+import {
+  EnumArrayInput,
+  PartyReferenceInput,
+} from "../components/EDS-ra/inputs";
 import { ProductTypeArrayField } from "../product_type/components";
 import { Permissions } from "../auth/permissions";
 import { zServiceProviderProductSuspension } from "../generated-client/zod.gen";
@@ -16,7 +19,10 @@ import { getFields } from "../zod";
 
 export const ServiceProviderProductSuspensionList = () => {
   const { permissions } = usePermissions<Permissions>();
-  const canDelete = permissions?.allow("service_provider_product_suspension", "delete");
+  const canDelete = permissions?.allow(
+    "service_provider_product_suspension",
+    "delete",
+  );
   const fields = getFields(zServiceProviderProductSuspension.shape);
 
   const filters = [
@@ -43,12 +49,20 @@ export const ServiceProviderProductSuspensionList = () => {
       empty={false}
       filters={filters}
     >
-      <Datagrid rowClick={(r) => `/service_provider_product_suspension/${r.id}/show`}>
+      <Datagrid
+        rowClick={(r) => `/service_provider_product_suspension/${r.id}/show`}
+      >
         <TextField source={fields.id.source} />
-        <ReferenceField source={fields.procuring_system_operator_id.source} reference="party">
+        <ReferenceField
+          source={fields.procuring_system_operator_id.source}
+          reference="party"
+        >
           <TextField source="name" />
         </ReferenceField>
-        <ReferenceField source={fields.service_provider_id.source} reference="party">
+        <ReferenceField
+          source={fields.service_provider_id.source}
+          reference="party"
+        >
           <TextField source="name" />
         </ReferenceField>
         <ProductTypeArrayField source={fields.product_type_ids.source} />
