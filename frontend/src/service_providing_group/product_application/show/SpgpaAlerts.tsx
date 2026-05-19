@@ -17,8 +17,8 @@ export const SpgpaAlerts = ({ spgpa }: Props) => {
   return (
     <Alert variant="info" className="max-w-3xl gap-4">
       <BodyText>
-        The procuring system operator must start prequalification or
-        verification within 4 weeks of this application{"'"}s creation.
+        The procuring system operator must now shortly start prequalification or
+        verification on this application.
       </BodyText>
     </Alert>
   );

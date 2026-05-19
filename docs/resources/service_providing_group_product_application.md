@@ -10,8 +10,8 @@ applications. This resource supports the application process and is updated as
 it progresses.
 
 The service provider is responsible for creating a new SPG product application.
-Initially, the status is set to `requested`. The system operator then has 4
-weeks to take over and choose whether the group needs a full prequalification or
+Initially, the status is set to `requested`. The system operator then must
+quickly take over and choose whether the group needs a full prequalification or
 only verification, by setting the status to either `prequalification` or
 `temporary_qualified`. They are responsible for taking to application to either
 `prequalified`, `verified` or `rejected`. If it is rejected, the service
