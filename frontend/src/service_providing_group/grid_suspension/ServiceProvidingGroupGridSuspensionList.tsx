@@ -1,139 +1,102 @@
-import {
-  List,
-  Button,
-  DeleteButton,
-  ReferenceField,
-  ResourceContextProvider,
-  TextField,
-  TopToolbar,
-  usePermissions,
-  useRecordContext,
-} from "react-admin";
-import { Datagrid } from "../../auth";
-import AddIcon from "@mui/icons-material/Add";
+import { usePermissions, useRecordContext, ResourceContextProvider } from "ra-core";
 import { Link, useLocation } from "react-router-dom";
+import { Datagrid, List } from "../../components/EDS-ra/list";
+import {
+  DateField,
+  EnumField,
+  IdentityField,
+  ReferenceField,
+  TextField,
+} from "../../components/EDS-ra/fields";
+import { DeleteButton } from "../../components/EDS-ra/buttons";
+import { Button } from "../../components/ui";
+import { IconPlus } from "@elhub/ds-icons";
 import { Permissions } from "../../auth/permissions";
-import { DateField } from "../../components/datetime";
-import { IdentityField } from "../../components/IdentityField";
-import { EnumField } from "../../components/enum";
+import { zServiceProvidingGroupGridSuspension } from "../../generated-client/zod.gen";
+import { getFields } from "../../zod";
 
 const CreateButton = ({ id }: { id: any }) => (
   <Button
-    component={Link}
+    as={Link}
+    icon={IconPlus}
     to={
       id
         ? `/service_providing_group/${id}/grid_suspension/create`
         : "/service_providing_group_grid_suspension/create"
     }
-    startIcon={<AddIcon />}
     state={{ service_providing_group_id: id }}
-    label="Create"
-  />
+    variant="invisible"
+  >
+    Create
+  </Button>
 );
 
-const ListActions = ({
-  permissions,
-  id,
-}: {
-  permissions: Permissions | undefined;
-  id: any;
-}) => {
-  const canCreate = permissions?.allow(
-    "service_providing_group_grid_suspension",
-    "create",
-  );
-
-  return <TopToolbar>{canCreate && <CreateButton id={id} />}</TopToolbar>;
-};
-
 export const ServiceProvidingGroupGridSuspensionList = () => {
-  // id of the SPG (present only when this page is a subresource of SPG)
   const record = useRecordContext();
   const id = record?.id;
   const { permissions } = usePermissions<Permissions>();
 
-  // Permission checks
   const canRead = permissions?.allow(
     "service_providing_group_grid_suspension",
     "read",
+  );
+  const canCreate = permissions?.allow(
+    "service_providing_group_grid_suspension",
+    "create",
   );
   const canDelete = permissions?.allow(
     "service_providing_group_grid_suspension",
     "delete",
   );
 
-  // are we in flat URL mode or nested
   const isURLFlat = useLocation().pathname.includes(
     "service_providing_group_grid_suspension",
   );
+
+  const fields = getFields(zServiceProvidingGroupGridSuspension.shape);
 
   return (
     canRead && (
       <ResourceContextProvider value="service_providing_group_grid_suspension">
         <List
-          title={false}
           perPage={10}
-          actions={<ListActions permissions={permissions} id={id} />}
-          exporter={false}
+          actions={canCreate ? [<CreateButton key="create" id={id} />] : []}
           empty={false}
           filter={id ? { service_providing_group_id: id } : undefined}
           sort={{ field: "id", order: "DESC" }}
-          sx={{ mb: 4 }}
-          // disable read/writes to/from the URL by this component
-          // (necessary on pages with several List components,
-          // i.e., in our case, subresources)
-          // see https://github.com/marmelab/react-admin/pull/5741
           disableSyncWithLocation
         >
           <Datagrid
-            bulkActionButtons={false}
-            rowClick={(_id, _res, record) =>
-              `/service_providing_group/${record.service_providing_group_id}/grid_suspension/${record.id}/show`
+            rowClick={(r) =>
+              `/service_providing_group/${r.service_providing_group_id}/grid_suspension/${r.id}/show`
             }
           >
-            <TextField
-              source="id"
-              label="field.service_providing_group_grid_suspension.id"
-            />
+            <TextField source={fields.id.source} />
             {(!record?.id || isURLFlat) && (
               <ReferenceField
-                source="service_providing_group_id"
+                source={fields.service_providing_group_id.source}
                 reference="service_providing_group"
-                sortable={false}
-                label="field.service_providing_group_grid_suspension.service_providing_group_id"
               >
                 <TextField source="name" />
               </ReferenceField>
             )}
             <ReferenceField
-              source="impacted_system_operator_id"
+              source={fields.impacted_system_operator_id.source}
               reference="party"
-              sortable={false}
-              label="field.service_providing_group_grid_suspension.impacted_system_operator_id"
             >
               <TextField source="name" />
             </ReferenceField>
             <EnumField
-              source="reason"
+              source={fields.reason.source}
               enumKey="service_providing_group_grid_suspension.reason"
-              label="field.service_providing_group_grid_suspension.reason"
             />
             {isURLFlat && (
-              <DateField
-                source="recorded_at"
-                showTime
-                label="field.service_providing_group_grid_suspension.recorded_at"
-              />
+              <DateField source={fields.recorded_at.source} showTime />
             )}
             {isURLFlat && (
-              <IdentityField
-                source="recorded_by"
-                label="field.service_providing_group_grid_suspension.recorded_by"
-              />
+              <IdentityField source={fields.recorded_by.source} />
             )}
-            {canDelete && (
-              <DeleteButton mutationMode="pessimistic" redirect="" />
-            )}
+            {canDelete && <DeleteButton />}
           </Datagrid>
         </List>
       </ResourceContextProvider>

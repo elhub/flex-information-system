@@ -1,14 +1,20 @@
-import { List, TextField } from "react-admin";
-import { Datagrid } from "../auth";
+import { Datagrid, List } from "../components/EDS-ra/list";
+import { TextField } from "../components/EDS-ra/fields";
+import { zProductType } from "../generated-client/zod.gen";
+import { getFields } from "../zod";
 
-export const ProductTypeList = () => (
-  <List perPage={25} sort={{ field: "id", order: "ASC" }}>
-    <Datagrid>
-      <TextField source="id" label="field.product_type.id" />
-      <TextField source="business_id" label="field.product_type.business_id" />
-      <TextField source="name" label="field.product_type.name" />
-      <TextField source="service" label="field.product_type.service" />
-      <TextField source="products" label="field.product_type.products" />
-    </Datagrid>
-  </List>
-);
+export const ProductTypeList = () => {
+  const fields = getFields(zProductType.shape);
+
+  return (
+    <List perPage={25} sort={{ field: "id", order: "ASC" }}>
+      <Datagrid>
+        <TextField source={fields.id.source} />
+        <TextField source={fields.business_id.source} />
+        <TextField source={fields.name.source} />
+        <TextField source={fields.service.source} />
+        <TextField source={fields.products.source} />
+      </Datagrid>
+    </List>
+  );
+};

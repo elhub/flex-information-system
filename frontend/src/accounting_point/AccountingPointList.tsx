@@ -1,23 +1,19 @@
-import { List, TextField, ExportButton, TopToolbar } from "react-admin";
-import { AutocompleteReferenceInput, Datagrid } from "../auth";
-
-const ListActions = () => {
-  return (
-    <TopToolbar>
-      <ExportButton />
-    </TopToolbar>
-  );
-};
+import { ExportButton } from "react-admin";
+import { Datagrid, List } from "../components/EDS-ra/list";
+import { TextField } from "../components/EDS-ra/fields";
+import { AutocompleteReferenceInput } from "../components/EDS-ra/inputs";
+import { zAccountingPoint } from "../generated-client/zod.gen";
+import { getFields } from "../zod";
 
 export const AccountingPointList = () => {
+  const fields = getFields(zAccountingPoint.shape);
+
   const filters = [
     <AutocompleteReferenceInput
       key="id"
       source="id@eq"
       reference="accounting_point"
-      label="field.controllable_unit.accounting_point_id"
       fieldName="business_id"
-      alwaysOn
     />,
   ];
 
@@ -27,14 +23,11 @@ export const AccountingPointList = () => {
       sort={{ field: "id", order: "DESC" }}
       empty={false}
       filters={filters}
-      actions={<ListActions />}
+      actions={[<ExportButton key="export" />]}
     >
       <Datagrid>
-        <TextField source="id" label="field.accounting_point.id" />
-        <TextField
-          source="business_id"
-          label="field.accounting_point.business_id"
-        />
+        <TextField source={fields.id.source} />
+        <TextField source={fields.business_id.source} />
       </Datagrid>
     </List>
   );
