@@ -454,7 +454,7 @@ def test_spggp_so(data):
         client=client_fiso,
         id=cast(int, spgpa.id),
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
-            status=ServiceProvidingGroupProductApplicationStatus.READY_FOR_GRID_PREQUALIFICATION,
+            status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFICATION,
         ),
     )
     assert not isinstance(u, ErrorMessage)

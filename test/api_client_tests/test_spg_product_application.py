@@ -362,7 +362,7 @@ def test_spgpa_fiso_sp_so(data):
         client=client_sp,
         id=cast(int, spgpa.id),
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
-            status=ServiceProvidingGroupProductApplicationStatus.IN_PROGRESS,
+            status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFICATION,
         ),
     )
     assert isinstance(u, ErrorMessage)
@@ -381,13 +381,11 @@ def test_spgpa_fiso_sp_so(data):
         id=cast(int, spgpa.id),
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
             additional_information="test by FISO",
-            status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFICATION_PENDING,
-            prequalified_at=None,
         ),
     )
     assert not isinstance(u, ErrorMessage)
 
-    # transition to ready_for_grid_prequalification triggers automatic creation of
+    # transition to prequalification triggers automatic creation of
     # SPGGP for all impacted SOs
 
     spggps_before = list_service_providing_group_grid_prequalification.sync(
@@ -400,7 +398,8 @@ def test_spgpa_fiso_sp_so(data):
         client=client_fiso,
         id=cast(int, spgpa.id),
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
-            status=ServiceProvidingGroupProductApplicationStatus.READY_FOR_GRID_PREQUALIFICATION,
+            status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFICATION,
+            prequalified_at=None,
         ),
     )
     assert not isinstance(u, ErrorMessage)
@@ -496,7 +495,7 @@ def test_spgpa_fiso_sp_so(data):
         client=client_fiso,
         id=cast(int, spgpa.id),
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
-            status=ServiceProvidingGroupProductApplicationStatus.IN_PROGRESS,
+            status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFICATION,
             verified_at=None,
             prequalified_at=datetime.datetime.fromisoformat(
                 "2024-01-01T00:00:00+01:00"
@@ -532,7 +531,7 @@ def test_spgpa_fiso_sp_so(data):
         client=client_sp,
         id=cast(int, spgpa.id),
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
-            status=ServiceProvidingGroupProductApplicationStatus.IN_PROGRESS,
+            status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFICATION,
         ),
     )
     assert isinstance(u, ErrorMessage)
