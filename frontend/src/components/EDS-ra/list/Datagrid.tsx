@@ -106,7 +106,7 @@ export const DataTable = <T extends RaRecord>({
 
             return (
               <Table.ColumnHeader
-                key={childSource ?? source ?? index}
+                key={source ?? childSource ?? index}
                 scope="col"
               >
                 <span className="flex items-center gap-1">
