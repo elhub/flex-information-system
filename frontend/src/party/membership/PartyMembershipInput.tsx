@@ -40,16 +40,9 @@ export const PartyMembershipInput = () => {
           Basic information
         </Heading>
         <div className="flex flex-col gap-3">
-          <PartyReferenceInput
-            {...fields.party_id}
-            readOnly
-          />
+          <PartyReferenceInput {...fields.party_id} readOnly />
           {overrideRecord?.showTechnicalEntityID ? (
-            <TextInput
-              {...fields.entity_id}
-              type="number"
-              readOnly
-            />
+            <TextInput {...fields.entity_id} type="number" readOnly />
           ) : (
             <AutocompleteReferenceInput
               {...fields.entity_id}

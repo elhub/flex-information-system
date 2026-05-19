@@ -34,10 +34,7 @@ export const EntityClientInput = () => {
           />
           <TextInput source="client_id" />
           <TextInput {...fields.name} />
-          <AutocompleteReferenceInput
-            {...fields.party_id}
-            reference="party"
-          />
+          <AutocompleteReferenceInput {...fields.party_id} reference="party" />
           <ScopesInput source="scopes" label="field.entity_client.scopes" />
           <TextInput {...fields.client_secret} type="password" />
           <TextAreaInput {...fields.public_key} rows={3} />

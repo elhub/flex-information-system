@@ -4,11 +4,8 @@ import { useEffect } from "react";
 import { zEntityCreateRequest } from "../generated-client/zod.gen";
 import { getFields, unTypedZodResolver } from "../zod";
 import { FormContainer, Heading } from "../components/ui";
-import {
-  TextInput,
-  EnumInput,
-  FormToolbar,
-} from "../components/EDS-ra/inputs";
+import { TextInput, EnumInput, FormToolbar } from "../components/EDS-ra/inputs";
+import { email, regex, regexes } from "zod";
 
 const businessIDTypeOfEntityType = (entityType: string) => {
   switch (entityType) {
@@ -22,15 +19,15 @@ const businessIDTypeOfEntityType = (entityType: string) => {
 };
 
 const EntityTypeInput = (props: any) => {
-  const formContext = useFormContext();
-  const entityType = formContext.watch("type");
+  const { setValue, watch } = useFormContext();
+  const entityType = watch("type");
 
   useEffect(() => {
-    formContext.setValue(
+    setValue(
       "business_id_type",
       businessIDTypeOfEntityType(entityType),
     );
-  });
+  }, [entityType, setValue]);
 
   return (
     <EnumInput
@@ -39,7 +36,7 @@ const EntityTypeInput = (props: any) => {
       defaultValue="person"
       required
       onChange={(value: string | null) => {
-        formContext.setValue(
+        setValue(
           "business_id_type",
           businessIDTypeOfEntityType(value ?? ""),
         );
@@ -48,17 +45,9 @@ const EntityTypeInput = (props: any) => {
   );
 };
 
-const EntityBusinessIDInput = (props: any) => {
-  const formContext = useFormContext();
-  const entityType = formContext.watch("type");
-  void entityType; // used for context, validation handled by Zod
-
-  return <TextInput {...props} />;
-};
-
-const fields = getFields(zEntityCreateRequest.shape);
 
 export const EntityInput = () => {
+  const fields = getFields(zEntityCreateRequest.shape);
   return (
     <Form resolver={unTypedZodResolver(zEntityCreateRequest)}>
       <FormContainer>
@@ -66,15 +55,14 @@ export const EntityInput = () => {
           Basic information
         </Heading>
         <div className="flex flex-col gap-3">
-          <EntityTypeInput source="type" />
+          <EntityTypeInput {...fields.type} />
           <EnumInput
-            source="business_id_type"
+            {...fields.business_id_type}
             enumKey="entity.business_id_type"
             defaultValue="person"
-            readOnly
           />
-          <EntityBusinessIDInput source="business_id" />
-          <TextInput source="name" />
+          <TextInput {...fields.business_id} />
+          <TextInput {...fields.name} />
         </div>
         <FormToolbar />
       </FormContainer>
