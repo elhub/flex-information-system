@@ -179,41 +179,10 @@ SECURITY DEFINER
 LANGUAGE plpgsql
 AS
 $$
-DECLARE
-    l_service_providing_group_id bigint := NEW.service_providing_group_id;
-    l_impacted_system_operator_id bigint;
 BEGIN
-    -- adds a SPG-GP resource for each ISO present in a SPG now or in the future
-    -- ISO are currently the CSO of the CUs currently in the updated SPG
-    -- TODO: update when a grid model is implemented
-
-    FOR l_impacted_system_operator_id IN
-        SELECT DISTINCT ap_so.system_operator_id
-        FROM flex.service_providing_group_membership AS spgm
-            INNER JOIN flex.controllable_unit cu
-                ON spgm.controllable_unit_id = cu.id
-            INNER JOIN flex.accounting_point_system_operator AS ap_so
-                ON ap_so.accounting_point_id = cu.accounting_point_id
-                    AND ap_so.valid_time_range @> current_timestamp
-        WHERE spgm.service_providing_group_id = l_service_providing_group_id
-            -- CU still in the SPG in the future
-            AND (
-                upper(spgm.valid_time_range) IS NULL OR
-                upper(spgm.valid_time_range) > current_timestamp
-            )
-    LOOP
-        INSERT INTO flex.service_providing_group_grid_prequalification (
-            service_providing_group_id,
-            impacted_system_operator_id,
-            recorded_by
-        ) VALUES (
-            l_service_providing_group_id,
-            l_impacted_system_operator_id,
-            0
-        )
-        ON CONFLICT DO NOTHING;
-    END LOOP;
-
+    -- NB: one SPG-PA change triggers the general SPG-GP sync on all SPGs
+    -- (this is intended: cheap to run and regularly ensures data consistency)
+    PERFORM flex.service_providing_group_grid_prequalification_sync();
     RETURN NEW;
 END;
 $$;
@@ -224,7 +193,7 @@ AFTER UPDATE OF status ON flex.service_providing_group_product_application
 FOR EACH ROW
 WHEN (
     NEW.status IS DISTINCT FROM OLD.status -- noqa
-    AND NEW.status = 'prequalification' --noqa
+    AND OLD.status = 'requested' AND NEW.status != 'rejected' -- noqa
 )
 EXECUTE FUNCTION
 spg_product_application_create_grid_prequalifications();

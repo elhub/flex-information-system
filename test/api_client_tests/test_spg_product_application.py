@@ -329,8 +329,17 @@ def test_spgpa_fiso_sp_so(data):
     )
     assert isinstance(s, ErrorMessage)
 
+    # measure SPGGP count before any status transition
+    # (trigger fires on leaving requested)
+    spggps_before = list_service_providing_group_grid_prequalification.sync(
+        client=client_fiso,
+        service_providing_group_id=f"eq.{spg_ids[0]}",
+    )
+    assert isinstance(spggps_before, list)
+
     # RLS: SPGPA-SO002
     # also they cannot update the ones they can read but that do not target them
+
     u = update_service_providing_group_product_application.sync(
         client=client_other_so,
         id=cast(int, spgpa.id),
@@ -385,15 +394,16 @@ def test_spgpa_fiso_sp_so(data):
     )
     assert not isinstance(u, ErrorMessage)
 
-    # transition to prequalification triggers automatic creation of
-    # SPGGP for all impacted SOs
-
-    spggps_before = list_service_providing_group_grid_prequalification.sync(
+    # the SO transition from requested to prequalified (above) triggered the
+    # SPGGP sync, we need to verify the count increased by 1
+    spggps_after = list_service_providing_group_grid_prequalification.sync(
         client=client_fiso,
         service_providing_group_id=f"eq.{spg_ids[0]}",
     )
-    assert isinstance(spggps_before, list)
+    assert isinstance(spggps_after, list)
+    assert len(spggps_after) == len(spggps_before) + 1
 
+    # clearing prequalified_at so we can test SPGPA-VAL004/005
     u = update_service_providing_group_product_application.sync(
         client=client_fiso,
         id=cast(int, spgpa.id),
@@ -403,14 +413,6 @@ def test_spgpa_fiso_sp_so(data):
         ),
     )
     assert not isinstance(u, ErrorMessage)
-
-    # the CU in the SPG is linked to Test SO (AP 1002), so one SPGGP should be created
-    spggps_after = list_service_providing_group_grid_prequalification.sync(
-        client=client_fiso,
-        service_providing_group_id=f"eq.{spg_ids[0]}",
-    )
-    assert isinstance(spggps_after, list)
-    assert len(spggps_after) == len(spggps_before) + 1
 
     # RLS: SPGPA-SO003
 
