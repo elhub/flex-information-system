@@ -22,7 +22,7 @@ export const ActivateControllableUnitButton = ({
           Activating the controllable unit will allow you to add it to service
           providing groups.
         </BodyText>
-        <BodyText class="mt-2">
+        <BodyText className="mt-2">
           Ensure the following before activating:
         </BodyText>
         <ul className="list-disc pl-5 mt-2">

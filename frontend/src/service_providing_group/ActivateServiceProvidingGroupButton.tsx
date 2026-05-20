@@ -21,7 +21,7 @@ export const ActivateServiceProvidingGroupButton = ({
           Activating the service providing group will allow you to use it in a
           product application.
         </BodyText>
-        <BodyText class="mt-2">
+        <BodyText className="mt-2">
           Ensure the following before activating:
         </BodyText>
         <ul className="list-disc pl-5 mt-2">
