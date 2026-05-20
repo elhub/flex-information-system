@@ -1,7 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useConfirmAction } from "../../../components/ConfirmAction";
 import { updateControllableUnit } from "../../../generated-client";
-import { Button } from "../../../components/ui";
+import { Button, BodyText } from "../../../components/ui";
 import { throwOnError } from "../../../util";
 import { controllableUnitViewModelQueryKey } from "../useControllableUnitViewModel";
 
@@ -16,8 +16,21 @@ export const ActivateControllableUnitButton = ({
 
   const { buttonProps, dialog } = useConfirmAction({
     title: "Activate controllable unit",
-    content:
-      "Activating the controllable unit will notify the system operator to validate the controllable unit.",
+    content: (
+      <div>
+        <BodyText>
+          Activating the controllable unit will allow you to add it to service
+          providing groups.
+        </BodyText>
+        <BodyText class="mt-2">
+          Ensure the following before activating:
+        </BodyText>
+        <ul className="list-disc pl-5 mt-2">
+          <li>all technical resources have been added</li>
+          <li>data is correct</li>
+        </ul>
+      </div>
+    ),
     confirmText: "Activate",
     onConfirmMutation: {
       mutationFn: () =>
