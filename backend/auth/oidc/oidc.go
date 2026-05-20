@@ -20,29 +20,46 @@ import (
 	"github.com/lestrrat-go/jwx/v4/jwt/openid"
 )
 
-// GetIdentifier returns the identifier and type from the token.
+// GetUserData returns the identifier, type, and name from the token.
 // Type is either "pid" (for person id) or "email".
-// This is just a convenience method since different OIDC providers have different claims for the identifier.
-func GetIdentifier(token openid.Token) (string, string) {
-	var id string
-	idType := "pid"
-	// iporten uses the pid claim
-	id, err := jwt.Get[string](token, "pid")
-	if err == nil {
-		return id, idType
+// This is just a convenience method since different OIDC providers have
+// different claims for the identifier.
+func GetUserData(token openid.Token) (string, string, string) {
+	// IDPorten uses the `pid` claim, and since we request the `profile` scope,
+	// we also get `given_name` and `family_name`.
+	// cf https://docs.digdir.no/docs/idporten/oidc/oidc_protocol_id_token.html
+	if pid, err := jwt.Get[string](token, "pid"); err == nil {
+		firstName, _ := jwt.Get[string](token, "given_name")
+		lastName, _ := jwt.Get[string](token, "family_name")
+		name := strings.TrimSpace(firstName + " " + lastName)
+		if name == "" {
+			name = pid
+		}
+		return pid, "pid", name
 	}
 
-	// authelia and entra uses the preferred_username claim
-	id, ok := token.PreferredUsername()
-	if !ok {
-		// oidcs uses the sub claim
+	// Entra and Authelia use the `preferred_username` claim, with `name`
+	// available when the `profile` scope is requested.
+	// cf https://learn.microsoft.com/en-us/entra/identity-platform/id-token-claims-reference
+	// for Entra and the local config for Authelia.
+	var id string
+	if username, ok := token.PreferredUsername(); ok {
+		id = username
+	} else {
+		// Fall back to the `sub` claim for other providers.
 		id, _ = token.Subject()
 	}
 
+	idType := "pid"
 	if strings.Contains(id, "@") {
 		idType = "email"
 		id = strings.ToLower(id)
 	}
 
-	return id, idType
+	name, ok := token.Name()
+	if !ok || name == "" {
+		name = id
+	}
+
+	return id, idType, name
 }

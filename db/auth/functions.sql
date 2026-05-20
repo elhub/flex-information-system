@@ -27,22 +27,48 @@ $$;
 GRANT EXECUTE ON FUNCTION auth.entity_of_credentials TO flex_anonymous;
 
 -- changeset flex:auth-entity-of-business-id runAlways:true endDelimiter:--
--- Gets entity details from the business id
-CREATE OR REPLACE FUNCTION auth.entity_of_business_id(
+-- Gets entity details from the business id, creating it if it does not exist.
+DROP FUNCTION IF EXISTS auth.entity_of_business_id(text, text);
+CREATE OR REPLACE FUNCTION auth.get_or_create_entity(
     in_business_id text,
-    in_business_id_type text
+    in_business_id_type text,
+    in_name text
 ) RETURNS TABLE (
     entity_id bigint,
     external_id uuid
 ) SECURITY DEFINER VOLATILE
-LANGUAGE sql
+LANGUAGE plpgsql
 AS $$
-    SELECT
-        e.id,
-        flex.identity_external_id(e.id, null, null) as external_id
+DECLARE
+    l_entity_id bigint;
+BEGIN
+    SELECT e.id INTO l_entity_id
     FROM flex.entity e
     WHERE e.business_id = in_business_id
-    AND e.business_id_type = in_business_id_type
+        AND e.business_id_type = in_business_id_type;
+
+    IF l_entity_id IS null THEN
+        INSERT INTO flex.entity (
+            name,
+            type,
+            business_id,
+            business_id_type,
+            recorded_by
+        ) VALUES (
+            in_name,
+            'person',
+            in_business_id,
+            in_business_id_type,
+            0
+        )
+        RETURNING id INTO l_entity_id;
+    END IF;
+
+    RETURN QUERY
+    SELECT
+        l_entity_id AS entity_id,
+        flex.identity_external_id(l_entity_id, null, null) AS external_id;
+END;
 $$;
 
 -- changeset flex:auth-entity-client-by-uuid runAlways:true endDelimiter:--
