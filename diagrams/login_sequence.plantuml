@@ -11,7 +11,7 @@ participant "FIS" as fis
 
 == Client Credentials step ==
 
-user -> fis: ""POST /auth/v0/token (<color #d58000>client_credentials</color>)""
+user -> fis: ""POST /auth/v1/token (<color #d58000>client_credentials</color>)""
 activate fis #d6e4d5
 activate user #d6e4d5
 rnote right of user
@@ -29,7 +29,7 @@ end note
 == Collecting information ==
 
 user -> fis:\
-""GET /auth/v0/userinfo""\n\
+""GET /auth/v1/userinfo""\n\
 ""Authorization: Bearer <color #05677d>x6E9g.bGEqW0.u4teR</color>""
 activate fis #d6e4d5
 
@@ -42,7 +42,7 @@ end note
 |||
 
 user -> fis:\
-""GET /api/v0/party_membership?entity_id=<color #05677d>12</color>""\n\
+""GET /api/v1/party_membership?entity_id=<color #05677d>12</color>""\n\
 ""Authorization: Bearer <color #05677d>x6E9g.bGEqW0.u4teR</color>""
 activate fis #d6e4d5
 
@@ -56,7 +56,7 @@ end note
 
 == Token Exchange step ==
 
-user -> fis: ""POST /auth/v0/token (<color #d58000>token_exchange</color>)""
+user -> fis: ""POST /auth/v1/token (<color #d58000>token_exchange</color>)""
 activate fis #d6e4d5
 rnote right of user
 As entity <color #05677d>12</color>, \

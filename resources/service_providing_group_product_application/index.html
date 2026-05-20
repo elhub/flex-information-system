@@ -3890,10 +3890,15 @@ product type, for the SPG to deliver a product to the SO later.</p>
 applications. This resource supports the application process and is updated as
 it progresses.</p>
 <p>The service provider is responsible for creating a new SPG product application.
-Initially, the status is set to <code>requested</code>. The system operator then takes over
-until the application is either <code>prequalified</code>, <code>verified</code> or <code>rejected</code>. If it
-rejected, the service provider can make updates and propose the application
-again.</p>
+Initially, the status is set to <code>requested</code>. The system operator then must
+quickly take over and choose whether the group needs a full prequalification or
+only verification, by setting the status to either <code>prequalification</code> or
+<code>temporary_qualified</code>. They are responsible for taking to application to either
+<code>prequalified</code>, <code>verified</code> or <code>rejected</code>. If it is rejected, the service
+provider can then make updates and propose the application again.</p>
+<p>The system will regularly check automatically whether SPG grid prequalification
+resources need to be created for each impacted system operator, and any status
+change from <code>requested</code> will trigger this check as well.</p>
 <p><a href="../../diagrams/service_providing_group_product_application_status.png">Full Size</a>
 |
 <a href="../../diagrams/service_providing_group_product_application_status.plantuml">Graphviz description</a>
@@ -3902,7 +3907,7 @@ again.</p>
 <p><img alt="Service provider product application status transitions" src="../../diagrams/service_providing_group_product_application_status.png" /></p>
 <h2 id="relevant-links">Relevant links</h2>
 <ul>
-<li><a href="../../api/v0/#/operations/list_service_providing_group_product_application">API Documentation</a></li>
+<li><a href="../../api/v1/#/operations/list_service_providing_group_product_application">API Documentation</a></li>
 <li><a href="../../download/service_providing_group_product_application.docx">Download docx</a></li>
 </ul>
 <h2 id="fields">Fields</h2>
@@ -3943,7 +3948,7 @@ again.</p>
 <tr>
 <td><a name="field-status" href="#field-status">status</a></td>
 <td>The status of the application.</td>
-<td>text<br/>One of: <code>requested</code>, <code>prequalification_pending</code>, <code>in_progress</code>, <code>temporary_qualified</code>, <code>prequalified</code>, <code>verified</code>, <code>rejected</code><br/>Default: <code>requested</code></td>
+<td>text<br/>One of: <code>requested</code>, <code>prequalification</code>, <code>temporary_qualified</code>, <code>prequalified</code>, <code>verified</code>, <code>rejected</code><br/>Default: <code>requested</code></td>
 <td></td>
 </tr>
 <tr>
@@ -4116,6 +4121,11 @@ resource. The default policy is <strong>deny</strong>.</p>
 <tr>
 <td>SPGPA-SO002</td>
 <td>Update SPGPA targeting them.</td>
+<td>DONE</td>
+</tr>
+<tr>
+<td>SPGPA-SO003</td>
+<td>Read SPGPA for SPGs on which they have a grid prequalification.</td>
 <td>DONE</td>
 </tr>
 </tbody>

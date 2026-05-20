@@ -3913,7 +3913,7 @@ and settled.</p>
 <p>The business identifier is the GSRN metering point id.</p>
 <h2 id="relevant-links">Relevant links</h2>
 <ul>
-<li><a href="../../api/v0/#/operations/list_accounting_point">API Documentation</a></li>
+<li><a href="../../api/v1/#/operations/list_accounting_point">API Documentation</a></li>
 <li><a href="../../download/accounting_point.docx">Download docx</a></li>
 </ul>
 <h2 id="fields">Fields</h2>
@@ -3973,6 +3973,14 @@ resource. The default policy is <strong>deny</strong>.</p>
 <h4 id="anonymous">Anonymous</h4>
 <p>No policies.</p>
 <h4 id="common">Common</h4>
+<p>No policies.</p>
+<h4 id="balance-responsible-party">Balance Responsible Party</h4>
+<p>No policies.</p>
+<h4 id="end-user">End User</h4>
+<p>No policies.</p>
+<h4 id="energy-supplier">Energy Supplier</h4>
+<p>No policies.</p>
+<h4 id="flexibility-information-system-operator">Flexibility Information System Operator</h4>
 <table>
 <thead>
 <tr>
@@ -3983,26 +3991,48 @@ resource. The default policy is <strong>deny</strong>.</p>
 </thead>
 <tbody>
 <tr>
-<td>AP-COM001</td>
+<td>AP-FISO001</td>
 <td>Read all accounting points.</td>
 <td>DONE</td>
 </tr>
 </tbody>
 </table>
-<h4 id="balance-responsible-party">Balance Responsible Party</h4>
-<p>No policies.</p>
-<h4 id="end-user">End User</h4>
-<p>No policies.</p>
-<h4 id="energy-supplier">Energy Supplier</h4>
-<p>No policies.</p>
-<h4 id="flexibility-information-system-operator">Flexibility Information System Operator</h4>
-<p>No policies.</p>
 <h4 id="organisation">Organisation</h4>
 <p>No policies.</p>
 <h4 id="system-operator">System Operator</h4>
-<p>No policies.</p>
+<table>
+<thead>
+<tr>
+<th>Policy key</th>
+<th>Policy</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AP-SO001</td>
+<td>Read accounting points where they are CSO, ISO or PSO.</td>
+<td>DONE</td>
+</tr>
+</tbody>
+</table>
 <h4 id="service-provider">Service Provider</h4>
-<p>No policies.</p>
+<table>
+<thead>
+<tr>
+<th>Policy key</th>
+<th>Policy</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AP-SP001</td>
+<td>Read accounting points where they are or have been SP on a CU.</td>
+<td>DONE</td>
+</tr>
+</tbody>
+</table>
 <h4 id="third-party">Third Party</h4>
 <p>No policies.</p>
 <h3 id="field-level-authorization">Field Level Authorization</h3>
