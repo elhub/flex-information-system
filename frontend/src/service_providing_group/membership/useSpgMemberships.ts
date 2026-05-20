@@ -1,6 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
-  AccountingPointBiddingZone,
   ControllableUnit,
   createServiceProvidingGroupMembership,
   deleteServiceProvidingGroupMembership,
@@ -19,10 +18,9 @@ const mapEmbeddedControllableUnit = (
   const brp = findCurrentlyValidRecord(
     cu.accounting_point?.balance_responsible_party ?? [],
   );
-  const biddingZone = cu.accounting_point?.bidding_zone as
-    | AccountingPointBiddingZone
-    | null
-    | undefined;
+  const biddingZone = findCurrentlyValidRecord(
+    cu.accounting_point?.bidding_zone ?? [],
+  );
 
   return {
     ...cu,
