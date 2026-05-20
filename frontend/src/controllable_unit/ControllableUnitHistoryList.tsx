@@ -1,70 +1,76 @@
-import { BooleanField, List, ReferenceField, TextField } from "react-admin";
-import { Datagrid } from "../auth";
+import { useRecordContext, useTranslate } from "ra-core";
 import { useParams } from "react-router-dom";
-import { DateField } from "../components/datetime";
-import { EnumField } from "../components/enum";
+import { Datagrid, List } from "../components/EDS-ra/list";
+import {
+  DateField,
+  EnumField,
+  ReferenceField,
+  TextField,
+} from "../components/EDS-ra/fields";
+import { BodyText, Tooltip } from "../components/ui";
+import {
+  zControllableUnit,
+  zControllableUnitHistory,
+} from "../generated-client/zod.gen";
+import { getFields } from "../zod";
+
+const IsSmallField = ({ source: _source }: { source: string }) => {
+  const record = useRecordContext();
+  const translate = useTranslate();
+  const isSmall: boolean | undefined = record?.is_small;
+
+  if (isSmall == null) return null;
+
+  const key = isSmall
+    ? "controllable_unit.is_small.true"
+    : "controllable_unit.is_small.false";
+  const labelKey = isSmall
+    ? "controllable_unit.is_small.true.label"
+    : "controllable_unit.is_small.false.label";
+
+  return (
+    <Tooltip content={translate(`text.${key}`)}>
+      <span>
+        <BodyText size="small">{translate(`text.${labelKey}`)}</BodyText>
+      </span>
+    </Tooltip>
+  );
+};
 
 export const ControllableUnitHistoryList = () => {
   const { controllable_unit_id } = useParams();
+
+  const fields = getFields(zControllableUnit.shape);
+  const historyFields = getFields(zControllableUnitHistory.shape);
+
   return (
     <List
-      title={`Full history of controllable unit #${controllable_unit_id}`}
       resource="controllable_unit_history"
-      filter={{ controllable_unit_id: controllable_unit_id }}
+      filter={{ controllable_unit_id }}
       perPage={25}
       sort={{ field: "recorded_at", order: "DESC" }}
       empty={false}
     >
       <Datagrid rowClick={false}>
-        <TextField source="id" label="field.controllable_unit_history.id" />
-        <TextField
-          source="controllable_unit_id"
-          label="field.controllable_unit_history.controllable_unit_id"
-        />
-        <TextField
-          source="business_id"
-          label="field.controllable_unit_history.business_id"
-        />
-        <TextField source="name" label="field.controllable_unit_history.name" />
-        <DateField
-          source="start_date"
-          label="field.controllable_unit_history.start_date"
-        />
+        <TextField {...fields.id} />
+        <TextField {...historyFields.controllable_unit_id} />
+        <TextField {...fields.business_id} />
+        <TextField {...fields.name} />
+        <DateField {...fields.start_date} />
+        <EnumField {...fields.status} enumKey="controllable_unit.status" />
         <EnumField
-          source="status"
-          label="field.controllable_unit_history.status"
-          enumKey="controllable_unit.status"
-        />
-        <EnumField
-          source="regulation_direction"
-          label="field.controllable_unit_history.regulation_direction"
+          {...fields.regulation_direction}
           enumKey="controllable_unit.regulation_direction"
         />
-        <BooleanField
-          source="is_small"
-          label="field.controllable_unit_history.is_small"
-        />
+        <IsSmallField source={fields.is_small.source} />
         <ReferenceField
-          source="accounting_point_id"
+          {...fields.accounting_point_id}
           reference="accounting_point"
-          label="field.controllable_unit_history.accounting_point_id"
         >
           <TextField source="business_id" />
         </ReferenceField>
-        <TextField
-          source="accounting_point_id"
-          label="field.controllable_unit_history.accounting_point_id"
-        />
-        <DateField
-          source="recorded_at"
-          showTime
-          label="field.controllable_unit_history.recorded_at"
-        />
-        <DateField
-          source="replaced_at"
-          showTime
-          label="field.controllable_unit_history.replaced_at"
-        />
+        <DateField {...fields.recorded_at} showTime />
+        <DateField {...historyFields.replaced_at} showTime />
       </Datagrid>
     </List>
   );

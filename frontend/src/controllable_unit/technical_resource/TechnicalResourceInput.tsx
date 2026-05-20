@@ -4,7 +4,7 @@ import { TechnicalResource } from "../../generated-client";
 import useLocationState from "../../hooks/useLocationState";
 import { zTechnicalResourceCreateRequest } from "../../generated-client/zod.gen";
 import { getFields, unTypedZodResolver } from "../../zod";
-import { FormContainer, Heading, FlexDiv } from "../../components/ui";
+import { FormContainer, BodyText, Heading, FlexDiv } from "../../components/ui";
 import {
   TextInput,
   TextAreaInput,
@@ -41,8 +41,13 @@ export const TechnicalResourceInput = () => {
     >
       <FormContainer>
         <Heading level={3} size="medium">
-          Basic information
+          Create technical resource
         </Heading>
+
+        <BodyText>
+          Each technical resource represents a specific device within the
+          controllable unit.
+        </BodyText>
 
         <FlexDiv style={{ gap: "var(--eds-size-3)", flexDirection: "column" }}>
           <TextInput {...fields.name} description tooltip={false} />
@@ -53,20 +58,27 @@ export const TechnicalResourceInput = () => {
             tooltip={false}
             readOnly
           />
-        </FlexDiv>
-
-        <Heading level={3} size="medium">
-          Technical information
-        </Heading>
-
-        <FlexDiv style={{ gap: "var(--eds-size-3)", flexDirection: "column" }}>
           <EnumArrayInput
             {...fields.technology}
             enumKey="technology"
             description
             tooltip={false}
           />
+        </FlexDiv>
 
+        <Heading level={3} size="medium" className="mt-8">
+          Device
+        </Heading>
+
+        <FlexDiv style={{ gap: "var(--eds-size-3)", flexDirection: "column" }}>
+          <EnumInput
+            {...fields.device_type}
+            enumKey="device_type"
+            description
+            tooltip={false}
+          />
+          <TextInput {...fields.make} description tooltip={false} />
+          <TextInput {...fields.model} description tooltip={false} />
           <UnitInput
             {...fields.maximum_active_power}
             units={[
@@ -76,14 +88,6 @@ export const TechnicalResourceInput = () => {
             description
             tooltip={false}
           />
-          <EnumInput
-            {...fields.device_type}
-            enumKey="device_type"
-            description
-            tooltip={false}
-          />
-          <TextInput {...fields.make} description tooltip={false} />
-          <TextInput {...fields.model} description tooltip={false} />
           <TextInput {...fields.business_id} description tooltip={false} />
           <EnumInput
             {...fields.business_id_type}
@@ -91,6 +95,13 @@ export const TechnicalResourceInput = () => {
             description
             tooltip={false}
           />
+        </FlexDiv>
+
+        <Heading level={3} size="medium" className="mt-8">
+          Other
+        </Heading>
+
+        <FlexDiv style={{ gap: "var(--eds-size-3)", flexDirection: "column" }}>
           <TextAreaInput
             {...fields.additional_information}
             rows={8}

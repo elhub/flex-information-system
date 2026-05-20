@@ -22,12 +22,12 @@ class TechnicalResourceCreateRequest:
         name (str): Name of the technical resource. Maximum 128 characters. Example: Battery Unit #1.
         controllable_unit_id (int): Reference to the controllable unit that this technical resource belongs to. Example:
             37.
-        technology (list[Technology]): Technologies of the technical resource using ltree path notation. Multiple
-            technologies can be specified for hybrid resources (e.g., solar + battery). Example: ['solar', 'battery'].
-        maximum_active_power (float): Maximum continuous active power (rated power) of the technical resource in
-            kilowatts. Example: 120.0.
+        technology (list[Technology]): Technologies of the technical resource. Multiple technologies can be given, e.g.
+            solar and battery for hybrid inverters. Example: ['solar', 'battery'].
+        maximum_active_power (float): Rated power in kilowatts. This is the maximum nominal continuous power of the
+            device, typically defined by the manufacturer. Example: 120.0.
         device_type (DeviceType): Type of device for technical resources.
-        make (None | str | Unset): The manufacturer of the device. Required if model or business_id is provided.
+        make (None | str | Unset): The manufacturer of the device. Required if model or business id is provided.
             Example: SolarEdge.
         model (None | str | Unset): The model of the device. Example: SE10K-RWS.
         business_id (None | str | Unset): Business identifier of the device, such as a serial number or MAC address.

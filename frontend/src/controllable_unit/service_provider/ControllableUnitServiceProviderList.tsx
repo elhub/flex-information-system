@@ -1,25 +1,22 @@
-import {
-  List,
-  Button,
-  DeleteButton,
-  ReferenceField,
-  ResourceContextProvider,
-  TextField,
-  TopToolbar,
-  usePermissions,
-  useGetOne,
-  Loading,
-} from "react-admin";
-import { Typography } from "@mui/material";
-import { Datagrid } from "../../auth";
-import AddIcon from "@mui/icons-material/Add";
+import { useGetOne, usePermissions, ResourceContextProvider } from "ra-core";
 import { Link, useParams } from "react-router-dom";
-import { DateField } from "../../components/datetime";
-import TravelExploreIcon from "@mui/icons-material/TravelExplore";
+import { Datagrid, List } from "../../components/EDS-ra/list";
+import {
+  DateField,
+  ReferenceField,
+  TextField,
+} from "../../components/EDS-ra/fields";
+import {
+  DeleteButton,
+  NestedResourceHistoryButton,
+} from "../../components/EDS-ra/buttons";
+import { Button, Heading, Loader } from "../../components/ui";
+import { IconPlus, IconSearch } from "@elhub/ds-icons";
 import { Permissions } from "../../auth/permissions";
 import { ControllableUnitServiceProviderLocationState } from "./ControllableUnitServiceProviderInput";
-import { NestedResourceHistoryButton } from "../../components/history";
 import { ControllableUnit } from "../../generated-client";
+import { zControllableUnitServiceProvider } from "../../generated-client/zod.gen";
+import { getFields } from "../../zod";
 
 const CreateButton = ({ id }: { id: number | undefined }) => {
   const locationState: ControllableUnitServiceProviderLocationState = {
@@ -27,12 +24,14 @@ const CreateButton = ({ id }: { id: number | undefined }) => {
   };
   return (
     <Button
-      component={Link}
+      as={Link}
+      icon={IconPlus}
       to={`/controllable_unit/${id}/service_provider/create`}
-      startIcon={<AddIcon />}
       state={id ? locationState : undefined}
-      label="Create"
-    />
+      variant="invisible"
+    >
+      Create
+    </Button>
   );
 };
 
@@ -42,38 +41,15 @@ const CULookupButton = ({
   business_id: string | undefined;
 }) => (
   <Button
-    component={Link}
+    as={Link}
+    icon={IconSearch}
     to="/controllable_unit/lookup"
-    startIcon={<TravelExploreIcon />}
     state={business_id ? { controllable_unit: business_id } : undefined}
-    label="Lookup this controllable unit"
-  />
+    variant="invisible"
+  >
+    Lookup this controllable unit
+  </Button>
 );
-
-const ListActions = ({
-  permissions,
-  id,
-  business_id,
-}: {
-  permissions: Permissions | undefined;
-  id: any;
-  business_id: string | undefined;
-}) => {
-  const canLookup = permissions?.allow("controllable_unit", "lookup");
-  const canCreate = permissions?.allow(
-    "controllable_unit_service_provider",
-    "create",
-  );
-
-  return (
-    <TopToolbar>
-      {/* id undefined = standalone CUSP list (so no lookup button) */}
-      {id && canLookup && <CULookupButton business_id={business_id} />}
-      {canCreate && <CreateButton id={id} />}
-      <NestedResourceHistoryButton child="service_provider" />
-    </TopToolbar>
-  );
-};
 
 export const ControllableUnitServiceProviderList = () => {
   const { controllable_unit_id } = useParams<{
@@ -86,83 +62,70 @@ export const ControllableUnitServiceProviderList = () => {
   );
   const { permissions } = usePermissions<Permissions>();
 
-  // Permission checks
   const canRead = permissions?.allow(
     "controllable_unit_service_provider",
     "read",
+  );
+  const canCreate = permissions?.allow(
+    "controllable_unit_service_provider",
+    "create",
   );
   const canDelete = permissions?.allow(
     "controllable_unit_service_provider",
     "delete",
   );
+  const canLookup = permissions?.allow("controllable_unit", "lookup");
 
-  if (isLoading) {
-    return <Loading />;
-  }
+  if (isLoading) return <Loader />;
+  if (!canRead) return null;
 
-  if (!canRead) {
-    return null; // or a fallback UI
-  }
+  const fields = getFields(zControllableUnitServiceProvider.shape);
+
+  const actions = [
+    ...(cu?.id && canLookup
+      ? [<CULookupButton key="lookup" business_id={cu.business_id} />]
+      : []),
+    ...(canCreate ? [<CreateButton key="create" id={cu?.id} />] : []),
+    <NestedResourceHistoryButton key="history" child="service_provider" />,
+  ];
 
   return (
     <ResourceContextProvider value="controllable_unit_service_provider">
-      <Typography variant="h5" mt={1} gutterBottom>
-        Service provider relations
-      </Typography>
-      <List
-        perPage={10}
-        actions={
-          <ListActions
-            permissions={permissions}
-            id={cu?.id}
-            business_id={cu?.business_id}
-          />
-        }
-        exporter={false}
-        empty={false}
-        filter={
-          cu
-            ? { controllable_unit_id: cu.id, "valid_from@not.is": null }
-            : { "valid_from@not.is": null }
-        }
-        sort={{ field: "valid_from", order: "DESC" }}
-        disableSyncWithLocation
-      >
-        <Datagrid
-          bulkActionButtons={false}
-          rowClick={(_id, _res, record) =>
-            `/controllable_unit/${record.controllable_unit_id}/service_provider/${record.id}/show`
+      <div className="flex flex-col gap-4">
+        <Heading level={2} size="small">
+          Service provider relations
+        </Heading>
+        <List
+          perPage={10}
+          actions={actions}
+          empty={false}
+          filter={
+            cu
+              ? { controllable_unit_id: cu.id, "valid_from@not.is": null }
+              : { "valid_from@not.is": null }
           }
+          sort={{ field: "valid_from", order: "DESC" }}
+          disableSyncWithLocation
         >
-          <TextField
-            source="id"
-            label="field.controllable_unit_service_provider.id"
-          />
-          <ReferenceField
-            source="service_provider_id"
-            reference="party"
-            sortable={false}
-            label="field.controllable_unit_service_provider.service_provider_id"
+          <Datagrid
+            rowClick={(r) =>
+              `/controllable_unit/${r.controllable_unit_id}/service_provider/${r.id}/show`
+            }
           >
-            <TextField source="name" />
-          </ReferenceField>
-          <TextField
-            source="contract_reference"
-            label="field.controllable_unit_service_provider.contract_reference"
-          />
-          <DateField
-            source="valid_from"
-            showTime
-            label="field.controllable_unit_service_provider.valid_from"
-          />
-          <DateField
-            source="valid_to"
-            showTime
-            label="field.controllable_unit_service_provider.valid_to"
-          />
-          {canDelete && <DeleteButton mutationMode="pessimistic" redirect="" />}
-        </Datagrid>
-      </List>
+            <TextField source={fields.id.source} />
+            <ReferenceField
+              source={fields.service_provider_id.source}
+              reference="party"
+            >
+              <TextField source="name" />
+            </ReferenceField>
+            <TextField source={fields.contract_reference.source} />
+            <DateField source={fields.valid_from.source} showTime />
+            <DateField source={fields.valid_to.source} showTime />
+            {canDelete && <DeleteButton />}
+          </Datagrid>
+        </List>
+      </div>
     </ResourceContextProvider>
   );
 };

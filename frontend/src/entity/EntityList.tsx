@@ -1,23 +1,18 @@
-import { List, TextField } from "react-admin";
-import { AutocompleteReferenceInput, Datagrid } from "../auth";
-import { EnumArrayInput, EnumField } from "../components/enum";
+import { Datagrid, List } from "../components/EDS-ra/list";
+import { EnumField, TextField } from "../components/EDS-ra/fields";
+import {
+  AutocompleteReferenceInput,
+  EnumArrayInput,
+} from "../components/EDS-ra/inputs";
+import { zEntity } from "../generated-client/zod.gen";
+import { getFields } from "../zod";
 
 export const EntityList = () => {
+  const fields = getFields(zEntity.shape);
+
   const entityFilters = [
-    <EnumArrayInput
-      key="type"
-      label="Type"
-      source="type@in"
-      enumKey="entity.type"
-      alwaysOn
-    />,
-    <AutocompleteReferenceInput
-      key="id"
-      source="id"
-      reference="entity"
-      label="Name"
-      alwaysOn
-    />,
+    <EnumArrayInput key="type" source="type@in" enumKey="entity.type" />,
+    <AutocompleteReferenceInput key="id" source="id" reference="entity" />,
   ];
 
   return (
@@ -28,17 +23,12 @@ export const EntityList = () => {
       filters={entityFilters}
     >
       <Datagrid>
-        <TextField source="id" label="field.entity.id" />
-        <TextField source="name" label="field.entity.name" />
+        <TextField source={fields.id.source} />
+        <TextField source={fields.name.source} />
+        <EnumField source={fields.type.source} enumKey="entity.type" />
+        <TextField source={fields.business_id.source} />
         <EnumField
-          source="type"
-          label="field.entity.type"
-          enumKey="entity.type"
-        />
-        <TextField source="business_id" label="field.entity.business_id" />
-        <EnumField
-          source="business_id_type"
-          label="field.entity.business_id_type"
+          source={fields.business_id_type.source}
           enumKey="entity.business_id_type"
         />
       </Datagrid>

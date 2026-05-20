@@ -20,7 +20,6 @@ def _get_kwargs(
     limit: str | Unset = UNSET,
     embed: str | Unset = UNSET,
 ) -> dict[str, Any]:
-
     params: dict[str, Any] = {}
 
     params["id"] = id

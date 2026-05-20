@@ -1,113 +1,90 @@
 import {
-  List,
-  Button,
-  ReferenceField,
-  ResourceContextProvider,
-  TextField,
-  TopToolbar,
   usePermissions,
   useRecordContext,
-} from "react-admin";
-import { Datagrid } from "../../auth";
-import AddIcon from "@mui/icons-material/Add";
+  ResourceContextProvider,
+} from "ra-core";
 import { Link } from "react-router-dom";
-import { DateField } from "../../components/datetime";
+import { Datagrid, List } from "../../components/EDS-ra/list";
+import {
+  DateField,
+  EnumField,
+  ReferenceField,
+  TextField,
+} from "../../components/EDS-ra/fields";
+import { Button } from "../../components/ui";
+import { IconPlus } from "@elhub/ds-icons";
 import { Permissions } from "../../auth/permissions";
-import { EnumField } from "../../components/enum";
+import { zServiceProvidingGroupGridPrequalification } from "../../generated-client/zod.gen";
+import { getFields } from "../../zod";
 
 const CreateButton = ({ id }: { id: any }) => (
   <Button
-    component={Link}
+    as={Link}
+    icon={IconPlus}
     to={
       id
         ? `/service_providing_group/${id}/grid_prequalification/create`
         : "/service_providing_group_grid_prequalification/create"
     }
-    startIcon={<AddIcon />}
     state={{ service_providing_group_id: id }}
-    label="Create"
-  />
+    variant="invisible"
+  >
+    Create
+  </Button>
 );
 
-const ListActions = ({
-  permissions,
-  id,
-}: {
-  permissions: Permissions | undefined;
-  id: any;
-}) => {
+export const ServiceProvidingGroupGridPrequalificationList = () => {
+  const record = useRecordContext();
+  const id = record?.id;
+  const { permissions } = usePermissions<Permissions>();
+
+  const canRead = permissions?.allow(
+    "service_providing_group_grid_prequalification",
+    "read",
+  );
   const canCreate = permissions?.allow(
     "service_providing_group_grid_prequalification",
     "create",
   );
 
-  return <TopToolbar>{canCreate && <CreateButton id={id} />}</TopToolbar>;
-};
-
-export const ServiceProvidingGroupGridPrequalificationList = () => {
-  // id of the SPG (present only when this page is a subresource of SPG)
-  const record = useRecordContext()!;
-  const id = record?.id;
-  const { permissions } = usePermissions<Permissions>();
-
-  // Permission checks
-  const canRead = permissions?.allow(
-    "service_providing_group_grid_prequalification",
-    "read",
-  );
+  const fields = getFields(zServiceProvidingGroupGridPrequalification.shape);
 
   return (
     canRead && (
       <ResourceContextProvider value="service_providing_group_grid_prequalification">
         <List
-          title={false}
           perPage={10}
-          actions={<ListActions permissions={permissions} id={id} />}
-          exporter={false}
+          actions={canCreate ? [<CreateButton key="create" id={id} />] : []}
           empty={false}
           filter={id ? { service_providing_group_id: id } : undefined}
           sort={{ field: "id", order: "DESC" }}
           disableSyncWithLocation
-          sx={{ mb: 4 }}
         >
           <Datagrid
-            bulkActionButtons={false}
-            rowClick={(_id, _res, record) =>
-              `/service_providing_group/${record.service_providing_group_id}/grid_prequalification/${record.id}/show`
+            rowClick={(r) =>
+              `/service_providing_group/${r.service_providing_group_id}/grid_prequalification/${r.id}/show`
             }
           >
-            <TextField
-              source="id"
-              label="field.service_providing_group_grid_prequalification.id"
-            />
+            <TextField source={fields.id.source} />
             {!record?.id && (
               <ReferenceField
-                source="service_providing_group_id"
+                source={fields.service_providing_group_id.source}
                 reference="service_providing_group"
-                sortable={false}
-                label="field.service_providing_group_grid_prequalification.service_providing_group_id"
               >
                 <TextField source="name" />
               </ReferenceField>
             )}
             <ReferenceField
-              source="impacted_system_operator_id"
+              source={fields.impacted_system_operator_id.source}
               reference="party"
-              sortable={false}
-              label="field.service_providing_group_grid_prequalification.impacted_system_operator_id"
             >
               <TextField source="name" />
             </ReferenceField>
             <EnumField
-              source="status"
+              source={fields.status.source}
               enumKey="service_providing_group_grid_prequalification.status"
-              label="field.service_providing_group_grid_prequalification.status"
             />
-            <DateField
-              source="prequalified_at"
-              showTime
-              label="field.service_providing_group_grid_prequalification.prequalified_at"
-            />
+            <DateField source={fields.prequalified_at.source} showTime />
           </Datagrid>
         </List>
       </ResourceContextProvider>

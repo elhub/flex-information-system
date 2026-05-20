@@ -3735,7 +3735,7 @@
                         "example": "Battery Unit #1"
                     },
                     "technology": {
-                        "description": "Technologies of the technical resource using ltree path notation. Multiple technologies can be specified for hybrid resources (e.g., solar + battery).",
+                        "description": "Technologies of the technical resource. Multiple technologies can be given, e.g. solar and battery for hybrid inverters.",
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/technology"
@@ -3747,7 +3747,7 @@
                         ]
                     },
                     "maximum_active_power": {
-                        "description": "Maximum continuous active power (rated power) of the technical resource in kilowatts.",
+                        "description": "Rated power in kilowatts. This is the maximum nominal continuous power of the device, typically defined by the manufacturer.",
                         "format": "decimal",
                         "type": "number",
                         "minimum": 0,
@@ -3767,7 +3767,7 @@
                         "example": "inverter"
                     },
                     "make": {
-                        "description": "The manufacturer of the device. Required if model or business_id is provided.",
+                        "description": "The manufacturer of the device. Required if model or business id is provided.",
                         "format": "text",
                         "type": "string",
                         "maxLength": 128,
@@ -3828,7 +3828,7 @@
                         "example": 37
                     },
                     "technology": {
-                        "description": "Technologies of the technical resource using ltree path notation. Multiple technologies can be specified for hybrid resources (e.g., solar + battery).",
+                        "description": "Technologies of the technical resource. Multiple technologies can be given, e.g. solar and battery for hybrid inverters.",
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/technology"
@@ -3840,7 +3840,7 @@
                         ]
                     },
                     "maximum_active_power": {
-                        "description": "Maximum continuous active power (rated power) of the technical resource in kilowatts.",
+                        "description": "Rated power in kilowatts. This is the maximum nominal continuous power of the device, typically defined by the manufacturer.",
                         "format": "decimal",
                         "type": "number",
                         "minimum": 0,
@@ -3860,7 +3860,7 @@
                         "example": "inverter"
                     },
                     "make": {
-                        "description": "The manufacturer of the device. Required if model or business_id is provided.",
+                        "description": "The manufacturer of the device. Required if model or business id is provided.",
                         "format": "text",
                         "type": "string",
                         "maxLength": 128,
@@ -3935,7 +3935,7 @@
                         "example": 37
                     },
                     "technology": {
-                        "description": "Technologies of the technical resource using ltree path notation. Multiple technologies can be specified for hybrid resources (e.g., solar + battery).",
+                        "description": "Technologies of the technical resource. Multiple technologies can be given, e.g. solar and battery for hybrid inverters.",
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/technology"
@@ -3959,7 +3959,7 @@
                         ]
                     },
                     "maximum_active_power": {
-                        "description": "Maximum continuous active power (rated power) of the technical resource in kilowatts.",
+                        "description": "Rated power in kilowatts. This is the maximum nominal continuous power of the device, typically defined by the manufacturer.",
                         "format": "decimal",
                         "type": "number",
                         "minimum": 0,
@@ -3979,7 +3979,7 @@
                         "example": "inverter"
                     },
                     "make": {
-                        "description": "The manufacturer of the device. Required if model or business_id is provided.",
+                        "description": "The manufacturer of the device. Required if model or business id is provided.",
                         "format": "text",
                         "type": "string",
                         "maxLength": 128,
@@ -7614,7 +7614,7 @@
                         "example": 37
                     },
                     "technology": {
-                        "description": "Technologies of the technical resource using ltree path notation. Multiple technologies can be specified for hybrid resources (e.g., solar + battery).",
+                        "description": "Technologies of the technical resource. Multiple technologies can be given, e.g. solar and battery for hybrid inverters.",
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/technology"
@@ -7638,7 +7638,7 @@
                         ]
                     },
                     "maximum_active_power": {
-                        "description": "Maximum continuous active power (rated power) of the technical resource in kilowatts.",
+                        "description": "Rated power in kilowatts. This is the maximum nominal continuous power of the device, typically defined by the manufacturer.",
                         "format": "decimal",
                         "type": "number",
                         "minimum": 0,
@@ -7658,7 +7658,7 @@
                         "example": "inverter"
                     },
                     "make": {
-                        "description": "The manufacturer of the device. Required if model or business_id is provided.",
+                        "description": "The manufacturer of the device. Required if model or business id is provided.",
                         "format": "text",
                         "type": "string",
                         "maxLength": 128,
