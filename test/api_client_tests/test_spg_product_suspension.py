@@ -197,7 +197,7 @@ def data():
             client=client_so,
             id=cast(int, spgpa.id),
             body=ServiceProvidingGroupProductApplicationUpdateRequest(
-                status=ServiceProvidingGroupProductApplicationStatus.IN_PROGRESS,
+                status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFIED,
                 prequalified_at=datetime.datetime.fromisoformat(
                     "2024-01-01T00:00:00+01:00"
                 ),

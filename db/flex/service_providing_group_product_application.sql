@@ -13,17 +13,7 @@ CREATE TABLE IF NOT EXISTS service_providing_group_product_application (
     product_type_ids bigint [] NOT NULL CHECK (
         product_type_ids_exists(product_type_ids)
     ),
-    status text NOT NULL DEFAULT 'requested' CHECK (
-        status IN (
-            'requested',
-            'prequalification_pending',
-            'in_progress',
-            'temporary_qualified',
-            'prequalified',
-            'verified',
-            'rejected'
-        )
-    ),
+    status text NOT NULL DEFAULT 'requested',
     maximum_active_power_up decimal(9, 3) NOT NULL,
     maximum_active_power_down decimal(9, 3) NOT NULL,
     additional_information text NULL,
@@ -34,6 +24,16 @@ CREATE TABLE IF NOT EXISTS service_providing_group_product_application (
     ),
     recorded_by bigint NOT NULL DEFAULT current_identity(),
 
+    CONSTRAINT spg_product_application_status_check CHECK (
+        status IN (
+            'requested',
+            'prequalification',
+            'temporary_qualified',
+            'prequalified',
+            'verified',
+            'rejected'
+        )
+    ),
     CONSTRAINT spg_product_application_maximum_active_power_up_check CHECK (
         maximum_active_power_up >= 0
     ),
@@ -170,3 +170,28 @@ EXECUTE FUNCTION utils.check_timestamp_on_status_update(
     '{verified}', -- SPGPA-VAL005
     '{rejected}'  -- SPGPA-VAL006
 );
+
+-- changeset flex:service-providing-group-product-application-sync-grid-prequalifications-function runOnChange:true endDelimiter:--
+CREATE OR REPLACE FUNCTION spgpa_sync_grid_prequalifications()
+RETURNS trigger
+SECURITY DEFINER
+LANGUAGE plpgsql
+AS
+$$
+BEGIN
+    -- NB: one SPG-PA change triggers the general SPG-GP sync on all SPGs
+    -- (this is intended: cheap to run and regularly ensures data consistency)
+    PERFORM flex.service_providing_group_grid_prequalification_sync();
+    RETURN NEW;
+END;
+$$;
+
+-- changeset flex:service-providing-group-product-application-sync-grid-prequalifications-trigger runOnChange:true endDelimiter:--
+CREATE OR REPLACE TRIGGER spgpa_sync_grid_prequalifications
+AFTER UPDATE OF status ON flex.service_providing_group_product_application
+FOR EACH ROW
+WHEN (
+    NEW.status IS DISTINCT FROM OLD.status -- noqa
+    AND OLD.status = 'requested' AND NEW.status != 'rejected' -- noqa
+)
+EXECUTE FUNCTION spgpa_sync_grid_prequalifications();

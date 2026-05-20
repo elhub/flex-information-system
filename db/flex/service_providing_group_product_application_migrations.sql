@@ -222,3 +222,35 @@ DROP COLUMN IF EXISTS maximum_active_power;
 
 ALTER TABLE flex.service_providing_group_product_application
 ENABLE TRIGGER USER;
+
+-- changeset flex:service-providing-group-product-application-ready-for-grid-prequalification-status runOnChange:false endDelimiter:;
+--preconditions onFail:MARK_RAN
+--precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM pg_catalog.pg_constraint WHERE conname = 'spg_product_application_status_check'
+ALTER TABLE flex.service_providing_group_product_application
+DISABLE TRIGGER USER;
+
+ALTER TABLE flex.service_providing_group_product_application
+DROP CONSTRAINT service_providing_group_product_application_status_check;
+
+UPDATE flex.service_providing_group_product_application
+SET status = 'prequalification'
+WHERE status IN ('in_progress', 'prequalification_pending');
+
+UPDATE flex.service_providing_group_product_application_history
+SET status = 'prequalification'
+WHERE status IN ('in_progress', 'prequalification_pending');
+
+ALTER TABLE flex.service_providing_group_product_application
+ADD CONSTRAINT spg_product_application_status_check CHECK (
+    status IN (
+        'requested',
+        'prequalification',
+        'temporary_qualified',
+        'prequalified',
+        'verified',
+        'rejected'
+    )
+);
+
+ALTER TABLE flex.service_providing_group_product_application
+ENABLE TRIGGER USER;

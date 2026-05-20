@@ -982,14 +982,13 @@
                 "type": "string",
                 "enum": [
                     "requested",
-                    "prequalification_pending",
-                    "in_progress",
+                    "prequalification",
                     "temporary_qualified",
                     "prequalified",
                     "verified",
                     "rejected"
                 ],
-                "example": "in_progress"
+                "example": "prequalification"
             },
             "service_providing_group_product_application_comment_visibility": {
                 "description": "The level of visibility of the comment.",

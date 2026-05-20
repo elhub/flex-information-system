@@ -35,15 +35,15 @@ const getActionsForStatus = (
       return [
         {
           label: "Start prequalification",
-          payload: { status: "in_progress" },
+          payload: { status: "prequalification" },
           confirmTitle: "Start prequalification",
           confirmContent:
-            "This will move the application to in progress. The service provider will be notified.",
+            "This will start prequalification on the service providing group. The service provider will be notified.",
           variant: "primary",
         },
         rejectAction,
       ];
-    case "in_progress":
+    case "prequalification":
       return [
         {
           label: "Mark prequalified",

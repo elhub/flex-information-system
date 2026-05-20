@@ -1024,7 +1024,7 @@ BEGIN
   ) RETURNING id INTO spgpa_id;
 
   UPDATE flex.service_providing_group_product_application
-  SET status = 'in_progress'
+  SET status = 'prequalification'
   WHERE service_providing_group_id = spg_id;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER VOLATILE;

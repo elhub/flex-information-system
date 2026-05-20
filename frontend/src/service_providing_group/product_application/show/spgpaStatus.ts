@@ -26,8 +26,7 @@ export const spgpaStatusVariantMap: Record<
   SpgpaBadgeVariant
 > = {
   requested: { status: "pending", icon: IconStopWatch15 },
-  prequalification_pending: { status: "ongoing", icon: IconStopWatch15 },
-  in_progress: { status: "ongoing", icon: IconStopWatch15 },
+  prequalification: { status: "ongoing", icon: IconStopWatch15 },
   temporary_qualified: {
     status: "approved-with-warning",
     icon: IconWarningCircle,

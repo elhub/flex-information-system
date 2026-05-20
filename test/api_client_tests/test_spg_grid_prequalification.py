@@ -17,8 +17,17 @@ from flex.models import (
     ServiceProvidingGroupGridPrequalificationHistoryResponse,
     ServiceProvidingGroupGridPrequalificationStatus,
     ServiceProvidingGroupMembershipCreateRequest,
-    ServiceProvidingGroupMembershipUpdateRequest,
     ServiceProvidingGroupMembershipResponse,
+    ServiceProvidingGroupProductApplicationCreateRequest,
+    ServiceProvidingGroupProductApplicationUpdateRequest,
+    ServiceProvidingGroupProductApplicationStatus,
+    ServiceProvidingGroupProductApplicationResponse,
+    SystemOperatorProductTypeCreateRequest,
+    SystemOperatorProductTypeResponse,
+    ServiceProviderProductApplicationCreateRequest,
+    ServiceProviderProductApplicationUpdateRequest,
+    ServiceProviderProductApplicationStatus,
+    ServiceProviderProductApplicationResponse,
     ErrorMessage,
 )
 from flex.api.controllable_unit import (
@@ -33,7 +42,6 @@ from flex.api.service_providing_group import (
 )
 from flex.api.service_providing_group_membership import (
     create_service_providing_group_membership,
-    update_service_providing_group_membership,
 )
 from flex.api.service_providing_group_grid_prequalification import (
     create_service_providing_group_grid_prequalification,
@@ -42,6 +50,17 @@ from flex.api.service_providing_group_grid_prequalification import (
     read_service_providing_group_grid_prequalification,
     list_service_providing_group_grid_prequalification_history,
     read_service_providing_group_grid_prequalification_history,
+)
+from flex.api.service_providing_group_product_application import (
+    create_service_providing_group_product_application,
+    update_service_providing_group_product_application,
+)
+from flex.api.system_operator_product_type import (
+    create_system_operator_product_type,
+)
+from flex.api.service_provider_product_application import (
+    create_service_provider_product_application,
+    update_service_provider_product_application,
 )
 import datetime
 import pytest
@@ -194,14 +213,62 @@ def data():
     )
     assert isinstance(spgm3, ServiceProvidingGroupMembershipResponse)
 
-    yield (sts, spg.id, so_id, other_so_id, spgm3.id)
+    # activate the SPG and qualify some product types for both SOs so that
+    # SPGPAs can be created in the tests
+
+    u = update_service_providing_group.sync(
+        client=client_fiso,
+        id=cast(int, spg.id),
+        body=ServiceProvidingGroupUpdateRequest(
+            status=ServiceProvidingGroupStatus.ACTIVE,
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
+
+    pt_ids = [5, 7]
+
+    for clt, id in [(client_so, so_id), (client_other_so, other_so_id)]:
+        for pt_id in pt_ids:
+            sopt = create_system_operator_product_type.sync(
+                client=clt,
+                body=SystemOperatorProductTypeCreateRequest(
+                    system_operator_id=id,
+                    product_type_id=pt_id,
+                ),
+            )
+            # ignore duplicate error: SOPT may already exist from a previous run
+            assert isinstance(sopt, (SystemOperatorProductTypeResponse, ErrorMessage))
+
+        sppa = create_service_provider_product_application.sync(
+            client=client_sp,
+            body=ServiceProviderProductApplicationCreateRequest(
+                service_provider_id=sp_id,
+                system_operator_id=id,
+                product_type_ids=pt_ids,
+            ),
+        )
+        assert isinstance(sppa, ServiceProviderProductApplicationResponse)
+
+        u = update_service_provider_product_application.sync(
+            client=clt,
+            id=cast(int, sppa.id),
+            body=ServiceProviderProductApplicationUpdateRequest(
+                status=ServiceProviderProductApplicationStatus.QUALIFIED,
+                qualified_at=datetime.datetime.fromisoformat(
+                    "2024-01-01T00:00:00+01:00"
+                ),
+            ),
+        )
+        assert not isinstance(u, ErrorMessage)
+
+    yield (sts, spg.id, so_id, other_so_id, client_sp, sp_id, pt_ids)
 
 
 # ---- ---- ---- ---- ----
 
 
 def test_spggp_fiso(data):
-    (sts, spg_id, _, so2_id, _) = data
+    (sts, spg_id, _, so2_id, _, _, _) = data
 
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
 
@@ -322,7 +389,7 @@ def test_spggp_fiso(data):
 
 
 def test_spggp_sp(data):
-    (sts, spg_id, _, so2_id, _) = data
+    (sts, spg_id, _, so2_id, _, _, _) = data
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
     client_sp = sts.get_client(TestEntity.TEST, "SP")
 
@@ -358,7 +425,7 @@ def test_spggp_sp(data):
 
 
 def test_spggp_so(data):
-    (sts, spg_id, so_id, _, spgm_id) = data
+    (sts, spg_id, so_id, other_so_id, client_sp, sp_id, pt_ids) = data
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
     client_so = sts.get_client(TestEntity.TEST, "SO")
 
@@ -368,25 +435,39 @@ def test_spggp_so(data):
     )
     assert isinstance(spggps_so, list)
 
-    # change the SPGM to make it valid in the future as well
-    u = update_service_providing_group_membership.sync(
-        client=client_fiso,
-        id=spgm_id,
-        body=ServiceProvidingGroupMembershipUpdateRequest(
-            valid_to=None,
-        ),
-    )
-    assert not (isinstance(u, ErrorMessage))
+    # open an SPGPA and make it ready for grid prequalification, so a SPGGP is
+    # created by the system for Test SO
 
-    # SPG activation triggers creation of SPGGP by the system
-    u = update_service_providing_group.sync(
-        client=client_fiso,
-        id=spg_id,
-        body=ServiceProvidingGroupUpdateRequest(
-            status=ServiceProvidingGroupStatus.ACTIVE,
+    spgpa = create_service_providing_group_product_application.sync(
+        client=client_sp,
+        body=ServiceProvidingGroupProductApplicationCreateRequest(
+            service_providing_group_id=spg_id,
+            procuring_system_operator_id=so_id,
+            product_type_ids=[pt_ids[0]],
+            maximum_active_power_up=3.5,
+            maximum_active_power_down=3.5,
         ),
     )
-    assert not (isinstance(u, ErrorMessage))
+    assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
+
+    u = update_service_providing_group_product_application.sync(
+        client=client_fiso,
+        id=cast(int, spgpa.id),
+        body=ServiceProvidingGroupProductApplicationUpdateRequest(
+            status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFICATION,
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
+
+    # create a second SPGGP manually for another SO, so we can test SO002
+    other_spggp = create_service_providing_group_grid_prequalification.sync(
+        client=client_fiso,
+        body=ServiceProvidingGroupGridPrequalificationCreateRequest(
+            service_providing_group_id=spg_id,
+            impacted_system_operator_id=other_so_id,
+        ),
+    )
+    assert isinstance(other_spggp, ServiceProvidingGroupGridPrequalificationResponse)
 
     # RLS: SPGGP-SO001
     # SO can read SPGGP where they are impacted
@@ -394,7 +475,7 @@ def test_spggp_so(data):
     # but also
 
     # RLS: SPGGP-SO002
-    # SO can see the SPGGP of other impacted SOs
+    # SO can see the SPGGP of other impacted SOs on the same SPG
 
     spggps_so2 = list_service_providing_group_grid_prequalification.sync(
         client=client_so,
@@ -410,8 +491,10 @@ def test_spggp_so(data):
     ]
     assert len(new_spggps) == 2
 
-    so_spggp = spggps_so[0]
-    other_spggp = new_spggps[0]
+    so_spggp = next(s for s in new_spggps if s.impacted_system_operator_id == so_id)
+    other_spggp_visible = next(
+        s for s in new_spggps if s.impacted_system_operator_id == other_so_id
+    )
 
     spggp = read_service_providing_group_grid_prequalification.sync(
         client=client_so, id=cast(int, so_spggp.id)
@@ -419,7 +502,7 @@ def test_spggp_so(data):
     assert isinstance(spggp, ServiceProvidingGroupGridPrequalificationResponse)
 
     spggp2 = read_service_providing_group_grid_prequalification.sync(
-        client=client_so, id=cast(int, other_spggp.id)
+        client=client_so, id=cast(int, other_spggp_visible.id)
     )
     assert isinstance(spggp2, ServiceProvidingGroupGridPrequalificationResponse)
 
@@ -460,7 +543,7 @@ def test_spggp_so(data):
 
 # RLS: SPGGP-COM001
 def test_spggp_common(data):
-    (sts, _, _, _, _) = data
+    (sts, _, _, _, _, _, _) = data
 
     for role in sts.COMMON_ROLES:
         client = sts.get_client(TestEntity.TEST, role)
@@ -493,7 +576,7 @@ def test_spggp_common(data):
 
 
 def test_rla_absence(data):
-    (sts, _, _, _, _) = data
+    (sts, _, _, _, _, _, _) = data
 
     roles_without_rla = ["BRP", "EU", "ES", "MO", "TP"]
 

@@ -28,7 +28,7 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
             maximum_active_power_down (float): The maximum active power applied for in regulation direction down. Stored in
                 kilowatts. Example: 150.5.
             status (ServiceProvidingGroupProductApplicationStatus | Unset): The status of the application. Example:
-                in_progress.
+                prequalification.
             additional_information (None | str | Unset): Free text field for extra information about the application if
                 needed (bidding periods, unavailabilities, etc).
             prequalified_at (datetime.datetime | None | Unset): When the product application was last prequalified. Example:

@@ -12,10 +12,8 @@ public enum class ServiceProvidingGroupProductApplicationStatus(
 ) {
   @SerialName("requested")
   REQUESTED("requested"),
-  @SerialName("prequalification_pending")
-  PREQUALIFICATION_PENDING("prequalification_pending"),
-  @SerialName("in_progress")
-  IN_PROGRESS("in_progress"),
+  @SerialName("prequalification")
+  PREQUALIFICATION("prequalification"),
   @SerialName("temporary_qualified")
   TEMPORARY_QUALIFIED("temporary_qualified"),
   @SerialName("prequalified")

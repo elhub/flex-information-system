@@ -59,6 +59,9 @@ from flex.api.service_providing_group_product_application import (
     list_service_providing_group_product_application_history,
     read_service_providing_group_product_application_history,
 )
+from flex.api.service_providing_group_grid_prequalification import (
+    list_service_providing_group_grid_prequalification,
+)
 from flex import AuthenticatedClient
 import datetime
 import pytest
@@ -326,8 +329,17 @@ def test_spgpa_fiso_sp_so(data):
     )
     assert isinstance(s, ErrorMessage)
 
+    # measure SPGGP count before any status transition
+    # (trigger fires on leaving requested)
+    spggps_before = list_service_providing_group_grid_prequalification.sync(
+        client=client_fiso,
+        service_providing_group_id=f"eq.{spg_ids[0]}",
+    )
+    assert isinstance(spggps_before, list)
+
     # RLS: SPGPA-SO002
     # also they cannot update the ones they can read but that do not target them
+
     u = update_service_providing_group_product_application.sync(
         client=client_other_so,
         id=cast(int, spgpa.id),
@@ -359,7 +371,7 @@ def test_spgpa_fiso_sp_so(data):
         client=client_sp,
         id=cast(int, spgpa.id),
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
-            status=ServiceProvidingGroupProductApplicationStatus.IN_PROGRESS,
+            status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFICATION,
         ),
     )
     assert isinstance(u, ErrorMessage)
@@ -378,11 +390,42 @@ def test_spgpa_fiso_sp_so(data):
         id=cast(int, spgpa.id),
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
             additional_information="test by FISO",
-            status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFICATION_PENDING,
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
+
+    # the SO transition away from `requested` (above) triggered the
+    # SPGGP sync, we need to verify the count increased by 1
+    spggps_after = list_service_providing_group_grid_prequalification.sync(
+        client=client_fiso,
+        service_providing_group_id=f"eq.{spg_ids[0]}",
+    )
+    assert isinstance(spggps_after, list)
+    assert len(spggps_after) == len(spggps_before) + 1
+
+    # clearing prequalified_at so we can test SPGPA-VAL004/005
+    u = update_service_providing_group_product_application.sync(
+        client=client_fiso,
+        id=cast(int, spgpa.id),
+        body=ServiceProvidingGroupProductApplicationUpdateRequest(
+            status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFICATION,
             prequalified_at=None,
         ),
     )
     assert not isinstance(u, ErrorMessage)
+
+    # RLS: SPGPA-SO003
+
+    # spgpa2 targets the other SO, so that SO can read it through policy SO001
+    # but Test SO cannot read it through this policy
+    # if they can read it, it is therefore through policy SO003 with the created
+    # SPGGP above
+
+    s = read_service_providing_group_product_application.sync(
+        client=client_so,
+        id=cast(int, spgpa2.id),
+    )
+    assert isinstance(s, ServiceProvidingGroupProductApplicationResponse)
 
     # prequalified or verified, but no timestamp: not ok
     # cross-verification there:
@@ -454,7 +497,7 @@ def test_spgpa_fiso_sp_so(data):
         client=client_fiso,
         id=cast(int, spgpa.id),
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
-            status=ServiceProvidingGroupProductApplicationStatus.IN_PROGRESS,
+            status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFICATION,
             verified_at=None,
             prequalified_at=datetime.datetime.fromisoformat(
                 "2024-01-01T00:00:00+01:00"
@@ -490,7 +533,7 @@ def test_spgpa_fiso_sp_so(data):
         client=client_sp,
         id=cast(int, spgpa.id),
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
-            status=ServiceProvidingGroupProductApplicationStatus.IN_PROGRESS,
+            status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFICATION,
         ),
     )
     assert isinstance(u, ErrorMessage)

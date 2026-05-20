@@ -2,8 +2,7 @@ from enum import Enum
 
 
 class ServiceProvidingGroupProductApplicationStatus(str, Enum):
-    IN_PROGRESS = "in_progress"
-    PREQUALIFICATION_PENDING = "prequalification_pending"
+    PREQUALIFICATION = "prequalification"
     PREQUALIFIED = "prequalified"
     REJECTED = "rejected"
     REQUESTED = "requested"

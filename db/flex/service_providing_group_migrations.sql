@@ -62,3 +62,10 @@ ADD COLUMN IF NOT EXISTS additional_information text;
 ALTER TABLE flex.service_providing_group_history
 ADD COLUMN IF NOT EXISTS additional_information text;
 --
+
+-- changeset flex:service-providing-group-grid-prequalification-trigger-delete runOnChange:true endDelimiter:;
+DROP TRIGGER IF EXISTS service_providing_group_activation
+ON flex.service_providing_group;
+DROP FUNCTION IF EXISTS service_providing_group_activation();
+DROP FUNCTION IF EXISTS
+add_spg_grid_prequalifications_for_future_impacted_system_operators(bigint);

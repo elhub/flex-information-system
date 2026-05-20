@@ -430,8 +430,7 @@ export const zServiceProviderProductSuspensionCommentVisibility = z.enum([
  */
 export const zServiceProvidingGroupProductApplicationStatus = z.enum([
   "requested",
-  "prequalification_pending",
-  "in_progress",
+  "prequalification",
   "temporary_qualified",
   "prequalified",
   "verified",

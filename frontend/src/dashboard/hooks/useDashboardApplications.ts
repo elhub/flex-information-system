@@ -17,7 +17,7 @@ export const ACTIVE_STATUSES = new Set([
   "requested",
   "in_progress",
   "communication_test",
-  "prequalification_pending",
+  "prequalification",
 ]);
 
 export const RESOLVED_SPPA = new Set(["qualified", "not_qualified"]);

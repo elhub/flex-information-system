@@ -32,7 +32,6 @@ from flex.api.service_providing_group_membership import (
     create_service_providing_group_membership,
 )
 from flex.api.service_providing_group_grid_prequalification import (
-    list_service_providing_group_grid_prequalification,
     create_service_providing_group_grid_prequalification,
 )
 from flex.api.controllable_unit import create_controllable_unit
@@ -98,8 +97,6 @@ def test_spg_fiso_sp(sts):
     spg_sp = read_service_providing_group.sync(client=client_sp, id=cast(int, spg.id))
     assert isinstance(spg_sp, ServiceProvidingGroupResponse)
 
-    # check SPG grid prequalification resources are created on SPG activation
-
     cu = create_controllable_unit.sync(
         client=client_fiso,
         body=ControllableUnitCreateRequest(
@@ -122,14 +119,6 @@ def test_spg_fiso_sp(sts):
         ),
     )
     assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
-
-    # before the update, no grid prequalification resources
-    spggp = list_service_providing_group_grid_prequalification.sync(
-        client=client_fiso,
-        service_providing_group_id=f"eq.{spg.id}",
-    )
-    assert isinstance(spggp, list)
-    assert len(spggp) == 0
 
     # cannot activate SPG as it is still empty
     u = update_service_providing_group.sync(
@@ -161,14 +150,6 @@ def test_spg_fiso_sp(sts):
         ),
     )
     assert not (isinstance(u, ErrorMessage))
-
-    # after the update, one grid prequalification resource
-    spggp = list_service_providing_group_grid_prequalification.sync(
-        client=client_fiso,
-        service_providing_group_id=f"eq.{spg.id}",
-    )
-    assert isinstance(spggp, list)
-    assert len(spggp) == 1
 
     # check status can be un-terminated by FISO
     u = update_service_providing_group.sync(
