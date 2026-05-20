@@ -103,13 +103,6 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
           description
           tooltip={false}
         />
-        <AutocompleteReferenceInput
-          {...fields.service_providing_group_id}
-          reference="service_providing_group"
-          readOnly={!!record?.service_providing_group_id}
-          description
-          tooltip={false}
-        />
         <PartyReferenceInput
           {...fields.procuring_system_operator_id}
           filter={{ type: "system_operator" }}
