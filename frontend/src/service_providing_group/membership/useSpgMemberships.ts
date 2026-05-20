@@ -1,79 +1,34 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
-  AccountingPointBiddingZone,
   ControllableUnit,
   createServiceProvidingGroupMembership,
   deleteServiceProvidingGroupMembership,
-  listAccountingPointBalanceResponsibleParty,
-  listAccountingPointBiddingZone,
   listControllableUnit,
   listServiceProvidingGroupMembership,
-  listTechnicalResource,
-  readAccountingPoint,
-  readParty,
 } from "../../generated-client";
 import { findCurrentlyValidRecord, throwOnError } from "../../util";
 
-const fetchCurrentBiddingZone = async (
-  accountingPointId: number,
-): Promise<AccountingPointBiddingZone | undefined> => {
-  const now = new Date().toISOString();
-  const results = await listAccountingPointBiddingZone({
-    query: {
-      accounting_point_id: "eq." + accountingPointId,
-      valid_from: "lte." + now,
-      order: "valid_from.desc",
-      limit: "1",
-    },
-  }).then(throwOnError);
+const CONTROLLABLE_UNIT_EMBED =
+  "accounting_point(bidding_zone,balance_responsible_party(balance_responsible_party)),summary";
 
-  const record = results[0];
-  if (record && record.valid_to && record.valid_to < now) {
-    return undefined;
-  }
-  return record;
-};
-
-const fetchCurrentBrpName = async (
-  accountingPointId: number,
-): Promise<string | undefined> => {
-  const apBrps = await listAccountingPointBalanceResponsibleParty({
-    query: { accounting_point_id: "eq." + accountingPointId },
-  }).then(throwOnError);
-
-  const current = findCurrentlyValidRecord(apBrps);
-  if (!current?.balance_responsible_party_id) return undefined;
-
-  const party = await readParty({
-    path: { id: current.balance_responsible_party_id },
-  }).then(throwOnError);
-
-  return party.name;
-};
-
-const enrichControllableUnit = async (
+const mapEmbeddedControllableUnit = (
   cu: ControllableUnit,
   membershipId: number | undefined,
 ) => {
-  const [accountingPoint, technicalResources, currentBiddingZone, brpName] =
-    await Promise.all([
-      readAccountingPoint({
-        path: { id: cu.accounting_point_id },
-      }).then(throwOnError),
-      listTechnicalResource({
-        query: { controllable_unit_id: "eq." + cu.id },
-      }).then(throwOnError),
-      fetchCurrentBiddingZone(cu.accounting_point_id),
-      fetchCurrentBrpName(cu.accounting_point_id),
-    ]);
+  const brp = findCurrentlyValidRecord(
+    cu.accounting_point?.balance_responsible_party ?? [],
+  );
+  const biddingZone = findCurrentlyValidRecord(
+    cu.accounting_point?.bidding_zone ?? [],
+  );
 
   return {
     ...cu,
     membershipId,
-    accounting_point_business_id: accountingPoint.business_id,
-    bidding_zone: currentBiddingZone?.bidding_zone,
-    brp_name: brpName,
-    technical_resource_count: technicalResources.length,
+    accounting_point_business_id: cu.accounting_point?.business_id,
+    bidding_zone: biddingZone?.bidding_zone,
+    brp_name: brp?.balance_responsible_party?.name,
+    technical_resource_count: cu.summary?.technical_resource?.count ?? 0,
     rated_power:
       cu.summary?.technical_resource?.maximum_active_power?.sum ?? undefined,
   };
@@ -95,14 +50,12 @@ const fetchControllableUnitsInSpg = async (spgId: number) => {
   const controllableUnits = await listControllableUnit({
     query: {
       id: `in.(${memberships.map((m) => m.controllable_unit_id).join(",")})`,
-      embed: "summary",
+      embed: CONTROLLABLE_UNIT_EMBED,
     },
   }).then(throwOnError);
 
-  return Promise.all(
-    controllableUnits.map((cu) =>
-      enrichControllableUnit(cu, membershipsById.get(cu.id)),
-    ),
+  return controllableUnits.map((cu) =>
+    mapEmbeddedControllableUnit(cu, membershipsById.get(cu.id)),
   );
 };
 
@@ -119,12 +72,12 @@ const fetchControllableUnitsNotInSpg = async (spgId: number) => {
   const controllableUnits = await listControllableUnit({
     query: {
       ...query,
-      embed: "summary",
+      embed: CONTROLLABLE_UNIT_EMBED,
     },
   }).then(throwOnError);
 
-  return Promise.all(
-    controllableUnits.map((cu) => enrichControllableUnit(cu, undefined)),
+  return controllableUnits.map((cu) =>
+    mapEmbeddedControllableUnit(cu, undefined),
   );
 };
 
