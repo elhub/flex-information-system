@@ -50,16 +50,29 @@ const roleAvatars: any = {
 
 export const sessionInfoKey = "flexSession";
 
-export interface FlexIdentity extends UserIdentity {
+interface FlexIdentityBase extends UserIdentity {
   id: string;
   entityID: number;
   entityName: string;
-  partyID?: number;
-  partyName?: string;
   fullName: string;
-  role: PartyRole | "flex_anonymous" | "flex_entity";
   avatar: string;
 }
+
+// Identity where a party has been assumed (all PartyRole roles).
+export interface FlexPartyIdentity extends FlexIdentityBase {
+  role: PartyRole;
+  partyID: number;
+  partyName?: string;
+}
+
+// Identity without an assumed party (entity-level or anonymous access).
+interface FlexEntityIdentity extends FlexIdentityBase {
+  role: "flex_anonymous" | "flex_entity";
+  partyID?: never;
+  partyName?: never;
+}
+
+export type FlexIdentity = FlexPartyIdentity | FlexEntityIdentity;
 
 export function authProvider(): AuthProvider {
   const getIdentity = async () => {

@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { readParty } from "../../generated-client";
+import { throwOnError } from "../../util";
 
 export const useOrgParties = (partyID: number) => {
   return useQuery({
@@ -10,6 +11,6 @@ export const useOrgParties = (partyID: number) => {
         query: {
           embed: "entity(party)",
         },
-      }).then((response) => response),
+      }).then(throwOnError),
   });
 };
