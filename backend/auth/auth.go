@@ -543,7 +543,7 @@ func (auth *API) GetCallbackHandler(ctx *gin.Context) { //nolint:funlen,cyclop
 		return
 	}
 
-	id, idType := oidc.GetIdentifier(token)
+	id, idType, name := oidc.GetUserData(token)
 
 	slog.DebugContext(ctx, "callback", "token", idToken, "id", id)
 
@@ -554,7 +554,7 @@ func (auth *API) GetCallbackHandler(ctx *gin.Context) { //nolint:funlen,cyclop
 	}
 	defer tx.Commit(ctx)
 
-	entityID, eid, err := models.GetEntityOfBusinessID(ctx, tx, id, idType)
+	entityID, eid, err := models.GetOrCreateEntity(ctx, tx, id, idType, name)
 	if err != nil {
 		slog.DebugContext(ctx, "getting identity of person identifier failed", "token", idToken, "id", id, "idType", idType, "error", err)
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{

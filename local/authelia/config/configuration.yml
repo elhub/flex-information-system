@@ -102,7 +102,7 @@ identity_providers:
     # TODO see if we want to keep using preferred_username
     claims_policies:
       default:
-        id_token: ['preferred_username']
+        id_token: ['preferred_username', 'name']
     # https://www.authelia.com/configuration/identity-providers/openid-connect/clients/
     clients:
       - client_id: 'flex_oidc_client_id_value'

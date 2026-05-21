@@ -10,6 +10,7 @@ from security_token_service import (
     SecurityTokenService,
     TestEntity,
     AuthenticatedClient,
+    API_VERSION,
 )
 from flex.models import (
     EntityClientCreateRequest,
@@ -493,6 +494,7 @@ def test_scopes_embedding(jwt_keys):
         base_url=SecurityTokenService.api_url,
         token=party_token,
         verify_ssl=False,
+        headers={"Api-Version": API_VERSION},
     )
 
     # embed request fails because client cannot read party
