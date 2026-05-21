@@ -1,13 +1,35 @@
-import { useAuthenticated, useGetIdentity } from "ra-core";
+import { useAuthenticated, useGetIdentity, useRedirect } from "ra-core";
+import type { FlexIdentity } from "../auth/authProvider";
 import { Heading, Loader } from "../components/ui";
 import { SpDashboard } from "./service_provider/SpDashboard";
 import { SoDashboard } from "./system_operator/SoDashboard";
+import { OrgDashboard } from "./organisation/OrgDashboard";
 import { DefaultDashboard } from "./DefaultDashboard";
+
+const RoleDashboard = ({ identity }: { identity: FlexIdentity }) => {
+  switch (identity.role) {
+    case "flex_service_provider":
+      return <SpDashboard />;
+    case "flex_system_operator":
+      return <SoDashboard />;
+    case "flex_organisation":
+      return <OrgDashboard identity={identity} />;
+    default:
+      return <DefaultDashboard />;
+  }
+};
 
 export const Dashboard = () => {
   useAuthenticated();
 
-  const { data: identity, isLoading } = useGetIdentity();
+  const redirect = useRedirect();
+  const { data: rawIdentity, isLoading } = useGetIdentity();
+  const identity = rawIdentity as FlexIdentity | undefined;
+
+  if (!isLoading && !identity) {
+    redirect("/login");
+    return null;
+  }
 
   return (
     <div
@@ -17,16 +39,11 @@ export const Dashboard = () => {
       <Heading level={2} size="large">
         Dashboard
       </Heading>
-      {isLoading && <Loader size="medium" />}
-      {!isLoading && identity?.role === "flex_service_provider" && (
-        <SpDashboard />
+      {isLoading ? (
+        <Loader size="medium" />
+      ) : (
+        <RoleDashboard identity={identity!} />
       )}
-      {!isLoading && identity?.role === "flex_system_operator" && (
-        <SoDashboard />
-      )}
-      {!isLoading &&
-        identity?.role !== "flex_service_provider" &&
-        identity?.role !== "flex_system_operator" && <DefaultDashboard />}
     </div>
   );
 };

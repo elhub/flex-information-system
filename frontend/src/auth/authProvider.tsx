@@ -1,6 +1,12 @@
-import { AuthProvider, fetchUtils, getStorage } from "react-admin";
+import {
+  AuthProvider,
+  fetchUtils,
+  getStorage,
+  UserIdentity,
+} from "react-admin";
 import permissions from "./permissions";
 import { authURL } from "../httpConfig";
+import type { PartyRole } from "../generated-client/types.gen";
 
 import anonymous_avatar from "./avatars/ANO.png";
 import balance_responsible_party_avatar from "./avatars/BRP.png";
@@ -44,6 +50,17 @@ const roleAvatars: any = {
 
 export const sessionInfoKey = "flexSession";
 
+export interface FlexIdentity extends UserIdentity {
+  id: string;
+  entityID: number;
+  entityName: string;
+  partyID?: number;
+  partyName?: string;
+  fullName: string;
+  role: PartyRole | "flex_anonymous" | "flex_entity";
+  avatar: string;
+}
+
 export function authProvider(): AuthProvider {
   const getIdentity = async () => {
     const sessionInfoString = getStorage().getItem(sessionInfoKey);
@@ -57,7 +74,7 @@ export function authProvider(): AuthProvider {
 
     const avatar = await toDataURL(roleAvatars[role]);
 
-    return Promise.resolve<any>({
+    return Promise.resolve<FlexIdentity>({
       id: sessionInfo["sub"],
       entityID: sessionInfo["entity_id"],
       entityName: entity_name,
@@ -65,7 +82,7 @@ export function authProvider(): AuthProvider {
       partyName: party_name,
       fullName: party_name ? `${entity_name} as ${party_name}` : entity_name,
       role: role,
-      avatar,
+      avatar: avatar as string,
     });
   };
 
