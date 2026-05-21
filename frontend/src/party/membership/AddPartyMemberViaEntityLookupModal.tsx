@@ -13,6 +13,7 @@ import {
 import { IconSearch, IconPlus } from "@elhub/ds-icons";
 import { apiURL, API_VERSION } from "../../httpConfig";
 import { createPartyMembership } from "../../generated-client";
+import { AuthScope } from "../../generated-client/types.gen";
 import { throwOnError } from "../../util";
 import { Identifier } from "ra-core";
 
@@ -20,7 +21,7 @@ import { Identifier } from "ra-core";
 // TODO: improve/move this component when we have support for general scopes
 // (this is reimplemented here to avoid z-index issues when mixing RA with EDS)
 
-const ALL_SCOPES = [
+const ALL_SCOPES: AuthScope[] = [
   "read:data",
   "use:data",
   "use:data:entity:lookup",
@@ -32,18 +33,18 @@ const ALL_SCOPES = [
   "manage:auth",
 ];
 
-const DEFAULT_SCOPES = ["manage:data", "manage:auth"];
+const DEFAULT_SCOPES: AuthScope[] = ["manage:data", "manage:auth"];
 
 const ScopesInput = ({
   value,
   onChange,
   disabled,
 }: {
-  value: string[];
-  onChange: (scopes: string[]) => void;
+  value: AuthScope[];
+  onChange: (scopes: AuthScope[]) => void;
   disabled?: boolean;
 }) => {
-  const toggle = (scope: string) => {
+  const toggle = (scope: AuthScope) => {
     if (disabled) return;
     onChange(
       value.includes(scope)
@@ -102,7 +103,7 @@ export const AddPartyMemberViaEntityLookupModal = ({
   const [businessId, setBusinessId] = useState("");
   const [name, setName] = useState("");
   const [entityId, setEntityId] = useState<number | null>(null);
-  const [scopes, setScopes] = useState<string[]>(DEFAULT_SCOPES);
+  const [scopes, setScopes] = useState<AuthScope[]>(DEFAULT_SCOPES);
   const [lookupError, setLookupError] = useState<string | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isLooking, setIsLooking] = useState(false);
@@ -168,7 +169,7 @@ export const AddPartyMemberViaEntityLookupModal = ({
         body: {
           party_id: Number(partyId),
           entity_id: entityId,
-          scopes: scopes as any,
+          scopes: scopes,
         },
       }).then(throwOnError);
 
