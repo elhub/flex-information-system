@@ -22,6 +22,7 @@ import {
   CardContent,
   CardHeader,
 } from "@mui/material";
+import { Alert, BodyText, Heading } from "./components/ui";
 import PersonIcon from "@mui/icons-material/Person";
 import { useState, useEffect } from "react";
 import { docsURL } from "./httpConfig";
@@ -139,11 +140,14 @@ export const AssumePartyPage = () => {
           sort={{ field: "id", order: "ASC" }}
           filter={{ entity_id: identity.data?.entityID ?? "" }}
           empty={
-            <Box textAlign="center" m={1}>
-              <Typography variant="h5">
-                You do not belong to any party.
-              </Typography>
-            </Box>
+            <Alert variant="info" className="gap-4">
+              <Heading size="small">No party membership</Heading>
+              <BodyText>
+                You are not a member of any party yet. If you are a new user,
+                please contact your organisation party administrator in order to
+                be added to one of your company{"'"}s parties.
+              </BodyText>
+            </Alert>
           }
           disableSyncWithLocation
         >
