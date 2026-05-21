@@ -26,9 +26,11 @@ $$;
 -- changeset flex:auth-entity-of-credentials-execute runAlways:true endDelimiter:--
 GRANT EXECUTE ON FUNCTION auth.entity_of_credentials TO flex_anonymous;
 
--- changeset flex:auth-entity-of-business-id runAlways:true endDelimiter:--
--- Gets entity details from the business id, creating it if it does not exist.
+-- changeset flex:auth-entity-of-business-id-drop runAlways:true endDelimiter:--
 DROP FUNCTION IF EXISTS auth.entity_of_business_id(text, text);
+
+-- changeset flex:auth-get-or-create-entity runAlways:true endDelimiter:--
+-- Gets entity details from the business id, creating it if it does not exist.
 CREATE OR REPLACE FUNCTION auth.get_or_create_entity(
     in_business_id text,
     in_business_id_type text,
