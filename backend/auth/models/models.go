@@ -68,7 +68,7 @@ func GetEntityIdentityByExternalID(
 	return eid, clientID, scopes, nil
 }
 
-// GetOrCreateEntity gets or create an entity and external ID based on a
+// GetOrCreateEntity gets or creates an entity and external ID based on a
 // business ID and a name.
 func GetOrCreateEntity(
 	ctx context.Context,
