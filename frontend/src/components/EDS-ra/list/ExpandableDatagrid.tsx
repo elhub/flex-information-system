@@ -35,7 +35,11 @@ export const ExpandableDatagrid = <T extends RaRecord>({
   }
 
   return (
-    <ExpandableDataTable<T> data={data} expandPanel={expandPanel} rowClick={rowClick}>
+    <ExpandableDataTable<T>
+      data={data}
+      expandPanel={expandPanel}
+      rowClick={rowClick}
+    >
       {children}
     </ExpandableDataTable>
   );

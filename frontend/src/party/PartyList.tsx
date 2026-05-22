@@ -5,7 +5,6 @@ import {
 } from "../components/EDS-ra/inputs";
 import { Datagrid, List } from "../components/EDS-ra/list";
 import {
-  DateField,
   EnumField,
   ReferenceField,
   StatusBadgeField,
@@ -56,7 +55,11 @@ export const PartyList = () => {
         >
           <TextField source="name" />
         </ReferenceField>
-        <TextField source={partyFields.name.source} label="Party Name" hideLabel />
+        <TextField
+          source={partyFields.name.source}
+          label="Party Name"
+          hideLabel
+        />
         <EnumField source={partyFields.type.source} enumKey="party.type" />
         <TextField source={partyFields.role.source} />
         <StatusBadgeField

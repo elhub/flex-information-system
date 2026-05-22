@@ -55,8 +55,13 @@ const RowItem = ({ name, statusBadge, id, to }: RowItemProps) => (
       textDecoration: "none",
       transition: "background 0.15s",
     }}
-    onMouseEnter={(e) => (e.currentTarget.style.background = "var(--eds-semantic-background-alternative)")}
-    onMouseLeave={(e) => (e.currentTarget.style.background = "var(--eds-color-neutral-0, #ffffff)")}
+    onMouseEnter={(e) =>
+      (e.currentTarget.style.background =
+        "var(--eds-semantic-background-alternative)")
+    }
+    onMouseLeave={(e) =>
+      (e.currentTarget.style.background = "var(--eds-color-neutral-0, #ffffff)")
+    }
   >
     <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
       <span

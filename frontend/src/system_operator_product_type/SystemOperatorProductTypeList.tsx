@@ -1,6 +1,5 @@
 import {
   Datagrid,
-  DateField,
   List,
   ReferenceField,
   StatusBadgeField,

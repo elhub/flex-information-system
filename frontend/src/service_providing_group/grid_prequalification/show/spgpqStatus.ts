@@ -11,9 +11,12 @@ export const spgpqStatusVariantMap: Record<
   ServiceProvidingGroupGridPrequalificationStatus,
   StatusVariant
 > = {
-  requested:              { status: "ongoing",               icon: IconStopWatch15    },
-  in_progress:            { status: "ongoing",               icon: IconStopWatch15    },
-  conditionally_approved: { status: "approved-with-warning", icon: IconWarningCircle  },
-  approved:               { status: "approved",              icon: IconQualitiesCircle },
-  not_approved:           { status: "failed",                icon: IconCrossCircle    },
+  requested: { status: "ongoing", icon: IconStopWatch15 },
+  in_progress: { status: "ongoing", icon: IconStopWatch15 },
+  conditionally_approved: {
+    status: "approved-with-warning",
+    icon: IconWarningCircle,
+  },
+  approved: { status: "approved", icon: IconQualitiesCircle },
+  not_approved: { status: "failed", icon: IconCrossCircle },
 };

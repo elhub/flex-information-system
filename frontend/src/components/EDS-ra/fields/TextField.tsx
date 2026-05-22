@@ -27,7 +27,9 @@ export const TextField = ({
         <BodyText size={textSize}>{emptyText}</BodyText>
       ) : null
     ) : (
-      <BodyText size={textSize} weight={weight}>{String(value)}</BodyText>
+      <BodyText size={textSize} weight={weight}>
+        {String(value)}
+      </BodyText>
     );
 
   return (

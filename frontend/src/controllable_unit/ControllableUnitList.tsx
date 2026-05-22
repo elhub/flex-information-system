@@ -11,7 +11,6 @@ import { ExportButton } from "react-admin";
 import { Datagrid, List } from "../components/EDS-ra/list";
 import {
   DateField,
-  EnumField,
   StatusBadgeField,
   TextField,
 } from "../components/EDS-ra/fields";
@@ -19,7 +18,7 @@ import { cuStatusVariantMap } from "./controllableUnitStatus";
 import { RegulationDirectionField } from "./RegulationDirectionField";
 import { AccountingPointLinkField } from "../accounting_point/AccountingPointLinkField";
 import { EnumArrayInput } from "../components/EDS-ra/inputs";
-import { BodyText, Button, Link, Tooltip } from "../components/ui";
+import { BodyText, Button, Tooltip } from "../components/ui";
 import { Permissions } from "../auth/permissions";
 import { zControllableUnit } from "../generated-client/zod.gen";
 import { getFields } from "../zod";
