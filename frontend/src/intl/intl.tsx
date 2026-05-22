@@ -49,6 +49,22 @@ export const useI18nProvider = () => {
         // custom text
         return customText[key.slice("text.".length) as TextKey] ?? key;
 
+      // React-Admin default field label gives
+      // "resources.{resource}.fields.{field}" which is not associated to
+      // anything special. We don't want the default RA translation because we
+      // get for example "Business" instead of "Business ID". Instead we now
+      // try to redirect to our fieldLabels.
+      if (key.startsWith("resources.") && key.includes(".fields.")) {
+        const withoutPrefix = key.slice("resources.".length);
+        const fieldsIdx = withoutPrefix.indexOf(".fields.");
+        const resource = withoutPrefix.slice(0, fieldsIdx);
+        const field = withoutPrefix.slice(fieldsIdx + ".fields.".length);
+        const fieldKey = `${resource}.${field}`;
+        // cast to less precise type because we don't want a failure here
+        const label = (fieldLabels as Record<string, string>)[fieldKey];
+        if (label !== undefined) return label;
+      }
+
       // default case: resort to React-Admin
       return defaultI18nProvider.translate(key, options);
     },
