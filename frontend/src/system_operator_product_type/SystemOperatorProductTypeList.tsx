@@ -1,9 +1,9 @@
 import {
   Datagrid,
   DateField,
-  EnumField,
   List,
   ReferenceField,
+  StatusBadgeField,
   TextField,
 } from "../components/EDS-ra";
 import {
@@ -16,6 +16,7 @@ import {
   ProductTypeArrayInput,
   ProductTypeField,
 } from "../product_type/components";
+import { soProductTypeStatusVariantMap } from "./systemOperatorProductTypeStatus";
 import { usePermissions } from "ra-core";
 import { Permissions } from "../auth/permissions";
 import { Link } from "react-router-dom";
@@ -71,11 +72,11 @@ export const SystemOperatorProductTypeList = () => {
           <TextField source="name" />
         </ReferenceField>
         <ProductTypeField source={fields.product_type_id.source} />
-        <EnumField
+        <StatusBadgeField
           source={fields.status.source}
           enumKey="system_operator_product_type.status"
+          variantMap={soProductTypeStatusVariantMap}
         />
-        <DateField source={fields.recorded_at.source} showTime />
       </Datagrid>
     </List>
   );

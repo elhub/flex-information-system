@@ -2,10 +2,11 @@ import { Link } from "react-router-dom";
 import { List, Datagrid } from "../components/EDS-ra/list";
 import {
   DateField,
-  EnumField,
   ReferenceField,
+  StatusBadgeField,
   TextField,
 } from "../components/EDS-ra/fields";
+import { sppaStatusVariantMap } from "./show/sppaStatus";
 import {
   EnumArrayInput,
   PartyReferenceInput,
@@ -100,9 +101,10 @@ export const ServiceProviderProductApplicationList = () => {
           <TextField source="name" />
         </ReferenceField>
         <ProductTypeArrayField source={fields.product_type_ids.source} />
-        <EnumField
+        <StatusBadgeField
           source={fields.status.source}
           enumKey="service_provider_product_application.status"
+          variantMap={sppaStatusVariantMap}
         />
         <DateField source={fields.qualified_at.source} showTime />
       </Datagrid>

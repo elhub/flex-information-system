@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import {
   useGetIdentity,
   useGetList,
@@ -12,11 +12,14 @@ import { Datagrid, List } from "../components/EDS-ra/list";
 import {
   DateField,
   EnumField,
-  ReferenceField,
+  StatusBadgeField,
   TextField,
 } from "../components/EDS-ra/fields";
+import { cuStatusVariantMap } from "./controllableUnitStatus";
+import { RegulationDirectionField } from "./RegulationDirectionField";
+import { AccountingPointLinkField } from "../accounting_point/AccountingPointLinkField";
 import { EnumArrayInput } from "../components/EDS-ra/inputs";
-import { BodyText, Button, Tooltip } from "../components/ui";
+import { BodyText, Button, Link, Tooltip } from "../components/ui";
 import { Permissions } from "../auth/permissions";
 import { zControllableUnit } from "../generated-client/zod.gen";
 import { getFields } from "../zod";
@@ -29,7 +32,7 @@ import type {
 
 const CULookupButton = () => (
   <Button
-    as={Link}
+    as={RouterLink}
     icon={IconPlus}
     to="/controllable_unit/lookup"
     variant="invisible"
@@ -40,7 +43,7 @@ const CULookupButton = () => (
 
 const CreateButton = () => (
   <Button
-    as={Link}
+    as={RouterLink}
     icon={IconPlus}
     to="/controllable_unit/create"
     variant="invisible"
@@ -170,27 +173,21 @@ export const ControllableUnitList = () => {
     >
       <Datagrid>
         <TextField source={fields.id.source} />
-        <TextField source={fields.business_id.source} />
-        <TextField source={fields.name.source} />
+        <TextField source={fields.name.source} weight="semibold" />
         <DateField source={fields.start_date.source} />
-        <EnumField
-          source={fields.status.source}
-          enumKey="controllable_unit.status"
-        />
-        <EnumField
-          source={fields.regulation_direction.source}
-          enumKey="controllable_unit.regulation_direction"
-        />
+        <RegulationDirectionField source={fields.regulation_direction.source} />
         <IsSmallField source={fields.is_small.source} headerTooltip />
-        <ReferenceField
+        <AccountingPointLinkField
           source={fields.accounting_point_id.source}
-          reference="accounting_point"
-        >
-          <TextField source="business_id" />
-        </ReferenceField>
+          label="Accounting Point"
+        />
         <BiddingZoneField source="bidding_zone" />
         <BalanceResponsiblePartyField source="balance_responsible_party" />
-        <DateField source={fields.recorded_at.source} showTime />
+        <StatusBadgeField
+          source={fields.status.source}
+          enumKey="controllable_unit.status"
+          variantMap={cuStatusVariantMap}
+        />
       </Datagrid>
     </List>
   );

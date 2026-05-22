@@ -1,15 +1,19 @@
-import { ReferenceManyField, usePermissions } from "react-admin";
-import { Datagrid, List } from "../components/EDS-ra/list";
+import { usePermissions } from "react-admin";
+import { List } from "../components/EDS-ra/list";
+import { ExpandableDatagrid } from "../components/EDS-ra/list";
 import {
-  DateField,
-  EnumField,
-  ReferenceField,
   TextField,
+  ReferenceField,
+  EnumField,
+  StatusBadgeField,
 } from "../components/EDS-ra/fields";
 import { zServiceProvidingGroup } from "../generated-client/zod.gen";
 import { getFields } from "../zod";
 import { Permissions } from "../auth/permissions";
 import { CreateButton } from "../components/EDS-ra";
+import { spgStatusVariantMap } from "./serviceProvidingGroupStatus";
+import { ServiceProvidingGroupExpandedRow } from "./ServiceProvidingGroupExpandedRow";
+import { RaRecord } from "ra-core";
 
 export const ServiceProvidingGroupList = () => {
   const fields = getFields(zServiceProvidingGroup.shape);
@@ -22,12 +26,20 @@ export const ServiceProvidingGroupList = () => {
       empty={false}
       actions={canCreate ? [<CreateButton key="create" />] : []}
     >
-      <Datagrid>
+      <ExpandableDatagrid
+        expandPanel={(record: RaRecord) => (
+          <ServiceProvidingGroupExpandedRow
+            record={record as RaRecord & { id: number }}
+          />
+        )}
+      >
         <TextField source={fields.id.source} />
-        <TextField source={fields.name.source} />
+        <TextField source={fields.name.source} weight="semibold" />
         <ReferenceField
           source={fields.service_provider_id.source}
           reference="party"
+          label="field.service_providing_group.service_provider_id"
+          hideLabel
         >
           <TextField source="name" />
         </ReferenceField>
@@ -35,50 +47,12 @@ export const ServiceProvidingGroupList = () => {
           source={fields.bidding_zone.source}
           enumKey="service_providing_group.bidding_zone"
         />
-        <EnumField
+        <StatusBadgeField
           source={fields.status.source}
           enumKey="service_providing_group.status"
+          variantMap={spgStatusVariantMap}
         />
-        <ReferenceManyField
-          reference="service_providing_group_grid_prequalification"
-          target="service_providing_group_id"
-          label="text.spg_grid_prequalification_header"
-          sortable={false}
-        >
-          <Datagrid>
-            <ReferenceField
-              source="impacted_system_operator_id"
-              reference="party"
-            >
-              <TextField source="name" />
-            </ReferenceField>
-            <EnumField
-              source="status"
-              enumKey="service_providing_group_grid_prequalification.status"
-            />
-          </Datagrid>
-        </ReferenceManyField>
-        <ReferenceManyField
-          reference="service_providing_group_product_application"
-          target="service_providing_group_id"
-          label="text.spg_product_application_header"
-          sortable={false}
-        >
-          <Datagrid>
-            <ReferenceField
-              source="procuring_system_operator_id"
-              reference="party"
-            >
-              <TextField source="name" />
-            </ReferenceField>
-            <EnumField
-              source="status"
-              enumKey="service_providing_group_product_application.status"
-            />
-          </Datagrid>
-        </ReferenceManyField>
-        <DateField source={fields.recorded_at.source} showTime />
-      </Datagrid>
+      </ExpandableDatagrid>
     </List>
   );
 };

@@ -1,4 +1,5 @@
 export * from "./BaseField";
+export * from "./StatusBadgeField";
 export * from "./DateField";
 export * from "./EnumField";
 export * from "./FieldTooltip";

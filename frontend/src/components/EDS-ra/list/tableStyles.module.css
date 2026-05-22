@@ -1,0 +1,38 @@
+/* Scoped overrides for EDS Table BEM classes.
+   BEM class names must be wrapped in :global() so CSS Modules
+   does not hash them — they need to match the real DOM class names
+   injected by @elhub/ds-components. */
+
+/* Header: sand background, forest green bold text, taller */
+.tableWrapper :global(.eds-table__header-cell) {
+  white-space: normal;
+  word-break: keep-all;
+  overflow-wrap: normal;
+}
+
+.tableWrapper :global(.eds-table__header) :global(.eds-table__header-cell) {
+  background-color: #dbdad9;
+  color: #003d2b;
+  font-weight: 700;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid #c7c6c5;
+  padding-top: 14px;
+  padding-bottom: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Reset text transform for tooltip content inside header cells */
+.tableWrapper :global(.eds-table__header-cell) :global(.eds-tooltip__inner) {
+  text-transform: none;
+  letter-spacing: normal;
+  white-space: normal;
+}
+.tableWrapper :global(.eds-table__body) :global(.eds-table__data-cell) {
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid #c7c6c5;
+  padding-top: 14px;
+  padding-bottom: 14px;
+}

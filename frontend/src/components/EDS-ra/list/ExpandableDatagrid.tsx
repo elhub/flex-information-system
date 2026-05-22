@@ -16,17 +16,17 @@ import { BodyText, Loader, Table } from "../../ui";
 import { FieldTooltip } from "../fields";
 import styles from "./tableStyles.module.css";
 
-type DatagridProps<T extends RaRecord = RaRecord> = {
+type ExpandableDatagridProps<T extends RaRecord = RaRecord> = {
   children: ReactNode;
-  empty?: boolean;
+  expandPanel: (record: T) => ReactNode;
   rowClick?: false | ((record: T) => string);
 };
 
-export const Datagrid = <T extends RaRecord>({
+export const ExpandableDatagrid = <T extends RaRecord>({
   children,
-  empty,
+  expandPanel,
   rowClick,
-}: DatagridProps<T>) => {
+}: ExpandableDatagridProps<T>) => {
   const { data: listData, isLoading } = useListContext<T>();
   const data = listData ?? [];
 
@@ -35,42 +35,36 @@ export const Datagrid = <T extends RaRecord>({
   }
 
   return (
-    <DataTable<T> data={data} empty={empty} rowClick={rowClick}>
+    <ExpandableDataTable<T> data={data} expandPanel={expandPanel} rowClick={rowClick}>
       {children}
-    </DataTable>
+    </ExpandableDataTable>
   );
 };
 
-type DataTableProps<T extends RaRecord = RaRecord> = {
+type ExpandableDataTableProps<T extends RaRecord = RaRecord> = {
   children: ReactNode;
-  empty?: boolean;
-  emptyNode?: ReactNode;
+  expandPanel: (record: T) => ReactNode;
   rowClick?: false | ((record: T) => string);
   data: T[];
 };
 
-export const DataTable = <T extends RaRecord>({
+export const ExpandableDataTable = <T extends RaRecord>({
   children,
-  empty,
-  emptyNode,
+  expandPanel,
   rowClick,
   data,
-}: DataTableProps<T>) => {
-  // try to get data from list context if not provided directly
+}: ExpandableDataTableProps<T>) => {
   const resource = useResourceContext();
   const columns = Children.toArray(children).filter(isValidElement);
   const navigate = useNavigate();
-  const hasRowClick = rowClick !== false;
 
   const handleRowClick = (
     e: React.MouseEvent<HTMLTableRowElement>,
     record: T,
   ) => {
-    if (!hasRowClick) return;
+    if (rowClick === false) return;
 
     const target = e.target as HTMLElement;
-    // We dont want to navigate if the target is a button or a link, or a modal
-    // overlay, because it's handled by the button or link itself.
     if (target.closest("button, a, .eds-modal__overlay")) {
       return;
     }
@@ -83,10 +77,8 @@ export const DataTable = <T extends RaRecord>({
     navigate(url);
   };
 
-  // Only show loading when using list context (not when data is passed directly)
-
-  if (data.length === 0 && empty !== false) {
-    return emptyNode ?? <BodyText>No results</BodyText>;
+  if (data.length === 0) {
+    return <BodyText>No results</BodyText>;
   }
 
   return (
@@ -94,6 +86,7 @@ export const DataTable = <T extends RaRecord>({
       <Table style={{ width: "100%" }}>
         <Table.Header>
           <Table.Row>
+            <Table.HeaderCell />
             {columns.map((child, index) => {
               const { source, label, reference, headerTooltip, children } =
                 child.props as {
@@ -101,13 +94,12 @@ export const DataTable = <T extends RaRecord>({
                   label?: string;
                   reference: string;
                   headerTooltip?: boolean;
-                  // Children is only set when it is a reference field
                   children: React.ReactElement<{ source: string }>;
                 };
               const childSource = children?.props?.source;
 
               return (
-                <Table.ColumnHeader
+                <Table.HeaderCell
                   key={source ?? childSource ?? index}
                   scope="col"
                 >
@@ -121,7 +113,7 @@ export const DataTable = <T extends RaRecord>({
                       <FieldTooltip resource={resource} field={source} />
                     )}
                   </span>
-                </Table.ColumnHeader>
+                </Table.HeaderCell>
               );
             })}
           </Table.Row>
@@ -129,9 +121,14 @@ export const DataTable = <T extends RaRecord>({
         <Table.Body>
           {data.map((record) => (
             <RecordContextProvider key={record.id} value={record}>
-              <Table.Row
-                style={hasRowClick ? { cursor: "pointer" } : undefined}
+              <Table.ExpandableRow
+                style={{ cursor: "pointer" }}
                 onClick={(e) => handleRowClick(e, record)}
+                content={
+                  <RecordContextProvider value={record}>
+                    {expandPanel(record)}
+                  </RecordContextProvider>
+                }
               >
                 {columns.map((child, index) => {
                   const key =
@@ -142,7 +139,7 @@ export const DataTable = <T extends RaRecord>({
                     </Table.DataCell>
                   );
                 })}
-              </Table.Row>
+              </Table.ExpandableRow>
             </RecordContextProvider>
           ))}
         </Table.Body>
