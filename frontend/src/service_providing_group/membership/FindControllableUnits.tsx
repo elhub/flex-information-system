@@ -11,6 +11,7 @@ import {
   Loader,
   Modal,
 } from "../../components/ui";
+import { ErrorMessage } from "../../generated-client";
 import { IconPlus } from "@elhub/ds-icons";
 import {
   useAddMemberships,
@@ -25,6 +26,14 @@ import { PowerRatio } from "../../components/PowerRatio";
 const toMidnightISO = (date: Date): string =>
   formatISO(date, { representation: "complete", in: tz("Europe/Oslo") });
 
+const isApiErrorMessage = (error: unknown): error is ErrorMessage =>
+  typeof error === "object" &&
+  error !== null &&
+  "message" in error &&
+  typeof (error as Record<string, unknown>).message === "string";
+
+type FailedCU = { cuId: number; error: unknown };
+
 type Props = {
   spgId: number;
   selectedCuIds: number[];
@@ -36,7 +45,8 @@ export const FindControllableUnits = ({
   selectedCuIds,
   setSelectedCuIds,
 }: Props) => {
-  const [failedCUs, setFailedCUs] = useState<number[]>([]);
+  const [failedCUs, setFailedCUs] = useState<FailedCU[]>([]);
+  const [showDetails, setShowDetails] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [validFrom, setValidFrom] = useState<Date>(
     startOfDay(new Date(), { in: tz("Europe/Oslo") }),
@@ -74,6 +84,7 @@ export const FindControllableUnits = ({
         // This always succeeds since its a promise.allSettled in the mutation
         onSuccess: (result) => {
           setFailedCUs(result.failed);
+          setShowDetails(false);
           setSelectedCuIds([]);
           setDialogOpen(false);
         },
@@ -82,10 +93,20 @@ export const FindControllableUnits = ({
   };
 
   const columns: ColumnOf<typeof availableCus>[] = [
+    {
+      key: "id",
+      header: t("controllable_unit.id"),
+      render: (v) => <span className="whitespace-nowrap">{String(v)}</span>,
+    },
     { key: "name", header: t("controllable_unit.name") },
     {
       key: "accounting_point_business_id",
       header: t("controllable_unit.accounting_point_id"),
+      render: (v) => (
+        <span className="whitespace-nowrap">
+          {(v as string | undefined) ?? "—"}
+        </span>
+      ),
     },
     {
       key: "bidding_zone",
@@ -130,8 +151,35 @@ export const FindControllableUnits = ({
     <div className="flex flex-col gap-3">
       {failedCUs.length > 0 && (
         <Alert variant="error">
-          {failedCUs.length} controllable unit{failedCUs.length > 1 ? "s" : ""}{" "}
-          failed to add
+          <div className="flex flex-col gap-2">
+            <span>
+              {failedCUs.length} controllable unit
+              {failedCUs.length > 1 ? "s" : ""} failed to add.{" "}
+              <Link
+                as="button"
+                onClick={() => setShowDetails((prev) => !prev)}
+                className="text-sm"
+              >
+                {showDetails ? "Hide details" : "See details"}
+              </Link>
+            </span>
+            {showDetails && (
+              <ul className="flex flex-col gap-1 list-none pl-0">
+                {failedCUs.map(({ cuId, error }) => {
+                  const msg = isApiErrorMessage(error)
+                    ? error.message
+                    : "Unknown error";
+                  const hint = isApiErrorMessage(error) ? error.hint : null;
+                  return (
+                    <li key={cuId}>
+                      <strong>CU {cuId}:</strong> {msg}
+                      {hint && <span className="ml-1 text-sm">— {hint}</span>}
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
         </Alert>
       )}
       <SimpleTable
