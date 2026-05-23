@@ -220,6 +220,9 @@ databaseChangeLog:
       file: ./service_providing_group_membership.sql
       relativeToChangelogFile: true
   - include:
+      file: ./service_providing_group_membership_migrations.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./service_providing_group_grid_prequalification.sql
       relativeToChangelogFile: true
   - include:
