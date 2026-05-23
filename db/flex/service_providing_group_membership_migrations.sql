@@ -1,3 +1,6 @@
+--liquibase formatted sql
+-- Manually managed file
+
 -- changeset flex:service-providing-group-membership-grid-prequalification-trigger-delete runOnChange:true endDelimiter:;
 -- TODO remove once rollout is complete
 DROP TRIGGER IF EXISTS spgm_insert_grid_prequalification
