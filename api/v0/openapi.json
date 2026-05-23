@@ -129,6 +129,10 @@
       "description": "Accounting Point Metering Grid Area"
     },
     {
+      "name": "accounting_point_grid_location",
+      "description": "Accounting Point Grid Location"
+    },
+    {
       "name": "product_type",
       "description": "Product Type"
     },
@@ -295,11 +299,11 @@
         "type": "object",
         "properties": {
           "end_user": {
-            "description": "Birth number or organisation number of the end user.",
+            "description": "Birth date (DDMMYY) of the end user if a person, or organisation number if an organisation.",
             "format": "text",
             "type": "string",
-            "pattern": "^[1-9]([0-9]{8}|[0-9]{10})$",
-            "example": "133700008"
+            "pattern": "^[0-9]{6}$|^[1-9][0-9]{8}$",
+            "example": "150190"
           },
           "controllable_unit": {
             "description": "The business ID of the controllable unit to lookup.",
@@ -500,8 +504,17 @@
         }
       },
       "notice_data_valid_time_outside_contract": {
-        "description": "Format of the data field in a notice of type no.elhub.flex.*.valid_time.outside_contract",
+        "type": "object",
+        "description": "Format of the data field in a notice with data.kind = notice.data.valid_time.outside_contract",
+        "required": [
+          "kind"
+        ],
         "properties": {
+          "kind": {
+            "description": "Identifies the notice data schema for discriminated union deserialization.",
+            "type": "string",
+            "const": "notice.data.valid_time.outside_contract"
+          },
           "invalid_timeline": {
             "description": "Part of the timeline where the end user on the CUSP relation does not match the end user on the accounting point.",
             "$ref": "#/components/schemas/timeline_multi_range"
@@ -509,8 +522,17 @@
         }
       },
       "notice_data_party_missing": {
-        "description": "Format of the data field in a notice of type no.elhub.flex.party.missing",
+        "type": "object",
+        "description": "Format of the data field in a notice with data.kind = notice.data.party.missing",
+        "required": [
+          "kind"
+        ],
         "properties": {
+          "kind": {
+            "description": "Identifies the notice data schema for discriminated union deserialization.",
+            "type": "string",
+            "const": "notice.data.party.missing"
+          },
           "entity": {
             "description": "Details about the entity owning the missing party.",
             "$ref": "#/components/schemas/entity_response"
@@ -522,8 +544,17 @@
         }
       },
       "notice_data_party_outdated": {
-        "description": "Format of the data field in a notice of type no.elhub.flex.party.outdated",
+        "type": "object",
+        "description": "Format of the data field in a notice with data.kind = notice.data.party.outdated",
+        "required": [
+          "kind"
+        ],
         "properties": {
+          "kind": {
+            "description": "Identifies the notice data schema for discriminated union deserialization.",
+            "type": "string",
+            "const": "notice.data.party.outdated"
+          },
           "entity": {
             "description": "Details about the possibly new entity owning the party.",
             "$ref": "#/components/schemas/entity_response"
@@ -535,8 +566,17 @@
         }
       },
       "notice_data_product_type_not_qualified": {
-        "description": "Format of the data field in a notice of type no.elhub.flex.service_provider_product_suspension.product_type.not_qualified",
+        "type": "object",
+        "description": "Format of the data field in a notice with data.kind = notice.data.product_type.not_qualified",
+        "required": [
+          "kind"
+        ],
         "properties": {
+          "kind": {
+            "description": "Identifies the notice data schema for discriminated union deserialization.",
+            "type": "string",
+            "const": "notice.data.product_type.not_qualified"
+          },
           "product_type_ids": {
             "description": "List of product types that are not qualified.",
             "type": "array",
@@ -562,7 +602,16 @@
           {
             "$ref": "#/components/schemas/notice_data_product_type_not_qualified"
           }
-        ]
+        ],
+        "discriminator": {
+          "propertyName": "kind",
+          "mapping": {
+            "notice.data.valid_time.outside_contract": "#/components/schemas/notice_data_valid_time_outside_contract",
+            "notice.data.party.missing": "#/components/schemas/notice_data_party_missing",
+            "notice.data.party.outdated": "#/components/schemas/notice_data_party_outdated",
+            "notice.data.product_type.not_qualified": "#/components/schemas/notice_data_product_type_not_qualified"
+          }
+        }
       },
       "numeric_aggregation": {
         "type": "object",
@@ -834,6 +883,50 @@
         ],
         "example": "eic_y"
       },
+      "metering_grid_area_status": {
+        "description": "The status of the metering grid area.",
+        "format": "text",
+        "type": "string",
+        "readOnly": true,
+        "example": "active",
+        "enum": [
+          "active",
+          "inactive"
+        ]
+      },
+      "accounting_point_grid_location_object_type": {
+        "description": "The type of object in the common grid model that the accounting point is at.",
+        "format": "text",
+        "type": "string",
+        "enum": [
+          "substation",
+          "transformer"
+        ],
+        "example": "substation"
+      },
+      "accounting_point_grid_location_source": {
+        "description": "How the grid location was determined. When a system operator creates or updates a grid location, this field is set automatically: `cso` if the SO is the connecting system operator, `so` otherwise.",
+        "format": "text",
+        "type": "string",
+        "readOnly": true,
+        "enum": [
+          "cso",
+          "so",
+          "grid_model",
+          "system"
+        ],
+        "example": "cso"
+      },
+      "accounting_point_grid_location_quality": {
+        "description": "The quality of the grid location registration.",
+        "format": "text",
+        "type": "string",
+        "enum": [
+          "confirmed",
+          "guessed"
+        ],
+        "example": "confirmed"
+      },
       "system_operator_product_type_status": {
         "description": "The status of the relation.",
         "format": "text",
@@ -981,7 +1074,7 @@
             "$ref": "#/components/schemas/controllable_unit_regulation_direction"
           },
           "maximum_active_power": {
-            "description": "Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
+            "description": "Maximum continuous active power (flexible power) that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
             "format": "decimal",
             "type": "number",
             "minimum": 0,
@@ -1025,7 +1118,7 @@
             "$ref": "#/components/schemas/controllable_unit_regulation_direction"
           },
           "maximum_active_power": {
-            "description": "Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
+            "description": "Maximum continuous active power (flexible power) that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
             "format": "decimal",
             "type": "number",
             "minimum": 0,
@@ -1097,7 +1190,7 @@
             "$ref": "#/components/schemas/controllable_unit_regulation_direction"
           },
           "maximum_active_power": {
-            "description": "Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
+            "description": "Maximum continuous active power (flexible power) that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
             "format": "decimal",
             "type": "number",
             "minimum": 0,
@@ -2884,17 +2977,11 @@
         "description": "Request schema for update operations - Entity - Natural or legal person\n\nAn entity is a natural or legal person that can be a party in the Flexibility Information System.\n\nExample entity types:\n\n* Person\n* Organisation",
         "type": "object",
         "properties": {
-          "business_id_type": {
-            "$ref": "#/components/schemas/entity_business_id_type"
-          },
           "name": {
             "description": "Name of the entity. Maximum 128 characters.",
             "format": "text",
             "type": "string",
             "example": "John Smith"
-          },
-          "type": {
-            "$ref": "#/components/schemas/entity_type"
           }
         }
       },
@@ -3272,21 +3359,11 @@
         "description": "Request schema for update operations - The body that interacts with the Flexibility Information System\n\nA party is the thing that is authorized to access or modify data in the Flexiblity Information System.\n\nExample party types:\n\n* Service Provider\n* System Operator\n* End User",
         "type": "object",
         "properties": {
-          "business_id_type": {
-            "$ref": "#/components/schemas/party_business_id_type",
-            "default": "uuid"
-          },
           "name": {
             "description": "Name of the party. Maximum 128 characters.",
             "format": "text",
             "type": "string",
             "example": "Flex Energy Supplier"
-          },
-          "role": {
-            "$ref": "#/components/schemas/party_role"
-          },
-          "type": {
-            "$ref": "#/components/schemas/party_type"
           },
           "status": {
             "$ref": "#/components/schemas/party_status",
@@ -4282,6 +4359,18 @@
               }
             ],
             "nullable": true
+          },
+          "grid_location": {
+            "description": "Embedded accounting_point_grid_location",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/accounting_point_grid_location_response"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
           }
         },
         "required": [
@@ -4312,7 +4401,8 @@
             "readOnly": true
           },
           "energy_direction": {
-            "$ref": "#/components/schemas/accounting_point_balance_responsible_party_energy_direction"
+            "$ref": "#/components/schemas/accounting_point_balance_responsible_party_energy_direction",
+            "readOnly": true
           },
           "valid_from": {
             "description": "The date from which the relation between the accounting point and the balance responsible party is valid. Midnight aligned on Norwegian timezone.",
@@ -4560,7 +4650,8 @@
             "example": "24YAOER9FNW34FNN"
           },
           "business_id_type": {
-            "$ref": "#/components/schemas/metering_grid_area_business_id_type"
+            "$ref": "#/components/schemas/metering_grid_area_business_id_type",
+            "readOnly": true
           },
           "name": {
             "description": "The name of the metering grid area.",
@@ -4569,6 +4660,10 @@
             "maxLength": 128,
             "readOnly": true,
             "example": "VN04VESTNORGEDX12"
+          },
+          "status": {
+            "$ref": "#/components/schemas/metering_grid_area_status",
+            "readOnly": true
           },
           "accounting_point_metering_grid_area": {
             "description": "Embedded accounting_point_metering_grid_area",
@@ -4590,7 +4685,8 @@
           "id",
           "business_id",
           "business_id_type",
-          "name"
+          "name",
+          "status"
         ]
       },
       "accounting_point_metering_grid_area_response": {
@@ -4656,6 +4752,205 @@
           "accounting_point_id",
           "metering_grid_area_id",
           "valid_from"
+        ]
+      },
+      "accounting_point_grid_location_update_request": {
+        "summary": "Update - Accounting Point Grid Location",
+        "description": "Request schema for update operations - The electrical (topological) location of an accounting point in the common grid model (Nemo).",
+        "type": "object",
+        "properties": {
+          "object_type": {
+            "$ref": "#/components/schemas/accounting_point_grid_location_object_type"
+          },
+          "business_id": {
+            "description": "Business identifier (mRID) referencing the object in the common grid model.",
+            "format": "text",
+            "type": "string",
+            "nullable": true,
+            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+            "example": "53919b79-876f-4dad-8bde-b29368367604"
+          },
+          "name": {
+            "description": "Name of the grid model object at the location.",
+            "format": "text",
+            "type": "string",
+            "maxLength": 512,
+            "example": "Snilldal 1 KRA"
+          },
+          "nominal_voltage": {
+            "description": "Nominal voltage level at the grid location, in kilovolt (kV).",
+            "format": "decimal",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 999999.999,
+            "multipleOf": 0.001,
+            "example": 22
+          },
+          "additional_information": {
+            "description": "Free text field for extra information about the grid location if needed.",
+            "format": "text",
+            "type": "string",
+            "nullable": true,
+            "example": null
+          },
+          "quality": {
+            "$ref": "#/components/schemas/accounting_point_grid_location_quality"
+          }
+        }
+      },
+      "accounting_point_grid_location_create_request": {
+        "summary": "Create - Accounting Point Grid Location",
+        "description": "Request schema for create operations - The electrical (topological) location of an accounting point in the common grid model (Nemo).",
+        "type": "object",
+        "properties": {
+          "accounting_point_id": {
+            "description": "The accounting point this grid location belongs to.",
+            "format": "bigint",
+            "type": "integer",
+            "example": 45
+          },
+          "object_type": {
+            "$ref": "#/components/schemas/accounting_point_grid_location_object_type"
+          },
+          "business_id": {
+            "description": "Business identifier (mRID) referencing the object in the common grid model.",
+            "format": "text",
+            "type": "string",
+            "nullable": true,
+            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+            "example": "53919b79-876f-4dad-8bde-b29368367604"
+          },
+          "name": {
+            "description": "Name of the grid model object at the location.",
+            "format": "text",
+            "type": "string",
+            "maxLength": 512,
+            "example": "Snilldal 1 KRA"
+          },
+          "nominal_voltage": {
+            "description": "Nominal voltage level at the grid location, in kilovolt (kV).",
+            "format": "decimal",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 999999.999,
+            "multipleOf": 0.001,
+            "example": 22
+          },
+          "additional_information": {
+            "description": "Free text field for extra information about the grid location if needed.",
+            "format": "text",
+            "type": "string",
+            "nullable": true,
+            "example": null
+          },
+          "quality": {
+            "$ref": "#/components/schemas/accounting_point_grid_location_quality"
+          }
+        },
+        "required": [
+          "accounting_point_id",
+          "object_type",
+          "name",
+          "nominal_voltage",
+          "quality"
+        ]
+      },
+      "accounting_point_grid_location_response": {
+        "summary": "Response - Accounting Point Grid Location",
+        "description": "Response schema - The electrical (topological) location of an accounting point in the common grid model (Nemo).",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Unique surrogate key.",
+            "format": "bigint",
+            "type": "integer",
+            "readOnly": true,
+            "example": 1
+          },
+          "accounting_point_id": {
+            "description": "The accounting point this grid location belongs to.",
+            "format": "bigint",
+            "type": "integer",
+            "example": 45
+          },
+          "object_type": {
+            "$ref": "#/components/schemas/accounting_point_grid_location_object_type"
+          },
+          "business_id": {
+            "description": "Business identifier (mRID) referencing the object in the common grid model.",
+            "format": "text",
+            "type": "string",
+            "nullable": true,
+            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+            "example": "53919b79-876f-4dad-8bde-b29368367604"
+          },
+          "name": {
+            "description": "Name of the grid model object at the location.",
+            "format": "text",
+            "type": "string",
+            "maxLength": 512,
+            "example": "Snilldal 1 KRA"
+          },
+          "nominal_voltage": {
+            "description": "Nominal voltage level at the grid location, in kilovolt (kV).",
+            "format": "decimal",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 999999.999,
+            "multipleOf": 0.001,
+            "example": 22
+          },
+          "additional_information": {
+            "description": "Free text field for extra information about the grid location if needed.",
+            "format": "text",
+            "type": "string",
+            "nullable": true,
+            "example": null
+          },
+          "source": {
+            "$ref": "#/components/schemas/accounting_point_grid_location_source",
+            "readOnly": true
+          },
+          "quality": {
+            "$ref": "#/components/schemas/accounting_point_grid_location_quality"
+          },
+          "recorded_at": {
+            "description": "When the resource was recorded (created or updated) in the system.",
+            "format": "date-time",
+            "type": "string",
+            "readOnly": true,
+            "example": "2023-12-31T23:59:00+00:00"
+          },
+          "recorded_by": {
+            "description": "The identity that recorded the resource.",
+            "format": "bigint",
+            "type": "integer",
+            "readOnly": true,
+            "example": 145
+          },
+          "accounting_point": {
+            "description": "Embedded accounting_point",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/accounting_point_response"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "accounting_point_id",
+          "object_type",
+          "name",
+          "nominal_voltage",
+          "source",
+          "quality",
+          "recorded_at",
+          "recorded_by"
         ]
       },
       "product_type_response": {
@@ -6283,7 +6578,7 @@
             "$ref": "#/components/schemas/controllable_unit_regulation_direction"
           },
           "maximum_active_power": {
-            "description": "Maximum continuous active power that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
+            "description": "Maximum continuous active power (flexible power) that the controllable unit can produce or consume, i.e. deliver for balancing and congestion services, in kilowatts.",
             "format": "decimal",
             "type": "number",
             "minimum": 0,
@@ -7436,6 +7731,112 @@
           "recorded_at",
           "recorded_by",
           "technical_resource_id"
+        ]
+      },
+      "accounting_point_grid_location_history_response": {
+        "summary": "Accounting Point Grid Location - history",
+        "description": "Accounting Point Grid Location - history",
+        "properties": {
+          "id": {
+            "description": "Unique surrogate key.",
+            "format": "bigint",
+            "type": "integer",
+            "readOnly": true,
+            "example": 1
+          },
+          "accounting_point_id": {
+            "description": "The accounting point this grid location belongs to.",
+            "format": "bigint",
+            "type": "integer",
+            "example": 45
+          },
+          "object_type": {
+            "$ref": "#/components/schemas/accounting_point_grid_location_object_type"
+          },
+          "business_id": {
+            "description": "Business identifier (mRID) referencing the object in the common grid model.",
+            "format": "text",
+            "type": "string",
+            "nullable": true,
+            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+            "example": "53919b79-876f-4dad-8bde-b29368367604"
+          },
+          "name": {
+            "description": "Name of the grid model object at the location.",
+            "format": "text",
+            "type": "string",
+            "maxLength": 512,
+            "example": "Snilldal 1 KRA"
+          },
+          "nominal_voltage": {
+            "description": "Nominal voltage level at the grid location, in kilovolt (kV).",
+            "format": "decimal",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 999999.999,
+            "multipleOf": 0.001,
+            "example": 22
+          },
+          "additional_information": {
+            "description": "Free text field for extra information about the grid location if needed.",
+            "format": "text",
+            "type": "string",
+            "nullable": true,
+            "example": null
+          },
+          "source": {
+            "$ref": "#/components/schemas/accounting_point_grid_location_source",
+            "readOnly": true
+          },
+          "quality": {
+            "$ref": "#/components/schemas/accounting_point_grid_location_quality"
+          },
+          "recorded_at": {
+            "description": "When the resource was recorded (created or updated) in the system.",
+            "format": "date-time",
+            "type": "string",
+            "readOnly": true,
+            "example": "2023-12-31T23:59:00+00:00"
+          },
+          "recorded_by": {
+            "description": "The identity that recorded the resource.",
+            "format": "bigint",
+            "type": "integer",
+            "readOnly": true,
+            "example": 145
+          },
+          "accounting_point_grid_location_id": {
+            "description": "Reference to the resource that was updated.",
+            "format": "bigint",
+            "type": "integer",
+            "example": 48
+          },
+          "replaced_by": {
+            "description": "The identity that updated the resource when it was replaced.",
+            "format": "bigint",
+            "type": "integer",
+            "nullable": true,
+            "example": 90
+          },
+          "replaced_at": {
+            "description": "When the resource was replaced in the system.",
+            "format": "date-time",
+            "type": "string",
+            "nullable": true,
+            "example": "2024-07-07T10:00:00+00:00"
+          }
+        },
+        "required": [
+          "id",
+          "accounting_point_id",
+          "object_type",
+          "name",
+          "nominal_voltage",
+          "source",
+          "quality",
+          "recorded_at",
+          "recorded_by",
+          "accounting_point_grid_location_id"
         ]
       },
       "system_operator_product_type_history_response": {
@@ -24801,6 +25202,860 @@
         ]
       }
     },
+    "/accounting_point_grid_location": {
+      "summary": "Accounting Point Grid Location",
+      "description": "",
+      "get": {
+        "operationId": "list_accounting_point_grid_location",
+        "summary": "List Accounting Point Grid Location",
+        "description": "List [Accounting Point Grid Location](https://elhub.github.io/flex-information-system/resources/accounting_point_grid_location/)",
+        "tags": [
+          "accounting_point_grid_location"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "pattern": "^eq\\.[0-9]+$"
+            },
+            "example": "eq.55",
+            "description": "Unique surrogate key.",
+            "name": "id"
+          },
+          {
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "pattern": "^eq\\.[0-9]+$"
+            },
+            "example": "eq.55",
+            "description": "The accounting point this grid location belongs to.",
+            "name": "accounting_point_id"
+          },
+          {
+            "description": "Filtering Columns",
+            "in": "query",
+            "name": "select",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Ordering",
+            "in": "query",
+            "name": "order",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Limiting and Pagination",
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Limiting and Pagination",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/accounting_point_grid_location_response"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "206": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/accounting_point_grid_location_response"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Partial Content"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/error_message"
+                    },
+                    {
+                      "$ref": "#/components/schemas/empty_object"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "406": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Not Acceptable"
+          },
+          "416": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Range Not Satisfiable"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read:data:accounting_point_grid_location"
+            ]
+          },
+          {}
+        ]
+      },
+      "post": {
+        "operationId": "create_accounting_point_grid_location",
+        "summary": "Create Accounting Point Grid Location",
+        "description": "Create [Accounting Point Grid Location](https://elhub.github.io/flex-information-system/resources/accounting_point_grid_location/)",
+        "tags": [
+          "accounting_point_grid_location"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/accounting_point_grid_location_create_request"
+              }
+            }
+          },
+          "description": "accounting_point_grid_location",
+          "required": false
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/accounting_point_grid_location_response"
+                }
+              }
+            },
+            "description": "Created"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/error_message"
+                    },
+                    {
+                      "$ref": "#/components/schemas/empty_object"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "406": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Not Acceptable"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "manage:data:accounting_point_grid_location"
+            ]
+          }
+        ]
+      }
+    },
+    "/accounting_point_grid_location/{id}": {
+      "summary": "Accounting Point Grid Location - single",
+      "description": "",
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "format": "bigint",
+            "type": "integer"
+          },
+          "example": 14
+        }
+      ],
+      "get": {
+        "operationId": "read_accounting_point_grid_location",
+        "summary": "Read Accounting Point Grid Location",
+        "description": "Read [Accounting Point Grid Location](https://elhub.github.io/flex-information-system/resources/accounting_point_grid_location/)",
+        "tags": [
+          "accounting_point_grid_location"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/accounting_point_grid_location_response"
+                }
+              }
+            },
+            "description": "OK",
+            "links": {
+              "accounting_point_id": {
+                "operationId": "read_accounting_point",
+                "parameters": {
+                  "path.id": "$response.body#/accounting_point_id"
+                },
+                "description": "The `accounting_point_id` value returned in the response can be used as the `id` parameter in `GET /accounting_point/{id}`."
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/error_message"
+                    },
+                    {
+                      "$ref": "#/components/schemas/empty_object"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "406": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Not Acceptable"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read:data:accounting_point_grid_location"
+            ]
+          },
+          {}
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "embed",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of related resources to embed in the response."
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "update_accounting_point_grid_location",
+        "summary": "Update Accounting Point Grid Location",
+        "description": "Update [Accounting Point Grid Location](https://elhub.github.io/flex-information-system/resources/accounting_point_grid_location/)",
+        "tags": [
+          "accounting_point_grid_location"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/accounting_point_grid_location_update_request"
+              }
+            }
+          },
+          "description": "accounting_point_grid_location",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/accounting_point_grid_location_response"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "204": {
+            "content": {},
+            "description": "No Content"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/error_message"
+                    },
+                    {
+                      "$ref": "#/components/schemas/empty_object"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "406": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Not Acceptable"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Conflict"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "manage:data:accounting_point_grid_location"
+            ]
+          }
+        ]
+      }
+    },
+    "/accounting_point_grid_location_history": {
+      "summary": "Accounting Point Grid Location - history",
+      "description": "",
+      "parameters": [
+        {
+          "in": "query",
+          "schema": {
+            "type": "string",
+            "pattern": "^eq\\.[0-9]+$"
+          },
+          "example": "eq.55",
+          "description": "Identifier of the history record.",
+          "name": "id"
+        },
+        {
+          "in": "query",
+          "schema": {
+            "type": "string",
+            "pattern": "^eq\\.[0-9]+$"
+          },
+          "example": "eq.55",
+          "description": "Identifier of the Accounting Point Grid Location whose history we want to inspect.",
+          "name": "accounting_point_grid_location_id"
+        }
+      ],
+      "get": {
+        "operationId": "list_accounting_point_grid_location_history",
+        "summary": "List Accounting Point Grid Location - history",
+        "description": "List [Accounting Point Grid Location - history](https://elhub.github.io/flex-information-system/resources/accounting_point_grid_location/)",
+        "tags": [
+          "accounting_point_grid_location"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "pattern": "^eq\\.[0-9]+$"
+            },
+            "example": "eq.55",
+            "description": "Unique surrogate key.",
+            "name": "id"
+          },
+          {
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "pattern": "^eq\\.[0-9]+$"
+            },
+            "example": "eq.55",
+            "description": "The accounting point this grid location belongs to.",
+            "name": "accounting_point_id"
+          },
+          {
+            "description": "Filtering Columns",
+            "in": "query",
+            "name": "select",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Ordering",
+            "in": "query",
+            "name": "order",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Limiting and Pagination",
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Limiting and Pagination",
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/accounting_point_grid_location_history_response"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "206": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/accounting_point_grid_location_history_response"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Partial Content"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/error_message"
+                    },
+                    {
+                      "$ref": "#/components/schemas/empty_object"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "406": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Not Acceptable"
+          },
+          "416": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Range Not Satisfiable"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read:data:accounting_point_grid_location_history"
+            ]
+          },
+          {}
+        ]
+      }
+    },
+    "/accounting_point_grid_location_history/{id}": {
+      "summary": "Accounting Point Grid Location - history record",
+      "description": "",
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "schema": {
+            "format": "bigint",
+            "type": "integer"
+          },
+          "example": 14,
+          "description": "Identifier of the history record we want to inspect."
+        }
+      ],
+      "get": {
+        "operationId": "read_accounting_point_grid_location_history",
+        "summary": "Read Accounting Point Grid Location - history",
+        "description": "Read [Accounting Point Grid Location - history](https://elhub.github.io/flex-information-system/resources/accounting_point_grid_location/)",
+        "tags": [
+          "accounting_point_grid_location"
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/accounting_point_grid_location_history_response"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/error_message"
+                    },
+                    {
+                      "$ref": "#/components/schemas/empty_object"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "406": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Not Acceptable"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_message"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read:data:accounting_point_grid_location_history"
+            ]
+          },
+          {}
+        ]
+      }
+    },
     "/product_type": {
       "summary": "Product Type",
       "description": "",
@@ -26050,6 +27305,14 @@
             "name": "product_type_ids"
           },
           {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somestatus"
+          },
+          {
             "description": "Filtering Columns",
             "in": "query",
             "name": "select",
@@ -26645,6 +27908,14 @@
             "example": "eq.55",
             "description": "References to the product types.",
             "name": "product_type_ids"
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somestatus"
           },
           {
             "description": "Filtering Columns",
@@ -33250,6 +34521,15 @@
             "example": "eq.55",
             "description": "Reference to the party targeted by the notice.",
             "name": "party_id"
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.sometype",
+            "description": "The type of the notice."
           },
           {
             "description": "Filtering Columns",
