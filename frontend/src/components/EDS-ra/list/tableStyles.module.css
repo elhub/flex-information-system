@@ -3,7 +3,6 @@
    does not hash them — they need to match the real DOM class names
    injected by @elhub/ds-components. */
 
-/* Header: sand background, forest green bold text, taller */
 .tableWrapper :global(.eds-table__header-cell) {
   white-space: normal;
   word-break: keep-all;
@@ -23,7 +22,6 @@
   letter-spacing: 0.05em;
 }
 
-/* Reset text transform for tooltip content inside header cells */
 .tableWrapper :global(.eds-table__header-cell) :global(.eds-tooltip__inner) {
   text-transform: none;
   letter-spacing: normal;
