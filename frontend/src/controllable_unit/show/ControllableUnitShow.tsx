@@ -1,44 +1,15 @@
-import { ComponentType } from "react";
-import {
-  IconCross,
-  IconCrossCircle,
-  IconQualitiesCircle,
-  IconStopWatch15,
-  SvgIconProps,
-} from "@elhub/ds-icons";
 import { Badge, Loader } from "../../components/ui";
 import { useParams } from "react-router-dom";
 import { ControllableUnitShowSummary } from "./ControllableUnitShowSummary";
 import { ControllableUnitShowTabs } from "./ControllableUnitShowTabs";
 import { ControllableUnitAlerts } from "./components/ControllableUnitAlerts";
-import { ControllableUnitStatus } from "../../generated-client";
 import { useControllableUnitViewModel } from "./useControllableUnitViewModel";
 import { useTranslateEnum } from "../../intl/intl";
 import { ActivateControllableUnitButton } from "./components/ActivateControllableUnitButton";
 import { Permissions } from "../../auth/permissions";
 import { usePermissions } from "ra-core";
 import { ShowPageLayout } from "../../components/ShowPageLayout";
-
-const statusVariantMap: Record<
-  ControllableUnitStatus,
-  {
-    status:
-      | "ongoing"
-      | "failed"
-      | "approved-with-warning"
-      | "approved"
-      | "stopped"
-      | "temporarily-stopped"
-      | "pending"
-      | "rejected";
-    icon: ComponentType<SvgIconProps>;
-  }
-> = {
-  new: { status: "ongoing", icon: IconStopWatch15 },
-  active: { status: "approved", icon: IconQualitiesCircle },
-  inactive: { status: "stopped", icon: IconCross },
-  terminated: { status: "rejected", icon: IconCrossCircle },
-};
+import { cuStatusVariantMap } from "../controllableUnitStatus";
 
 export const ControllableUnitShow = () => {
   const { id } = useParams<{ id: string }>();
@@ -79,9 +50,9 @@ export const ControllableUnitShow = () => {
         <>
           <Badge
             size="small"
-            status={statusVariantMap[cu.status].status}
+            status={cuStatusVariantMap[cu.status].status}
             variant="block"
-            icon={statusVariantMap[cu.status].icon}
+            icon={cuStatusVariantMap[cu.status].icon}
           >
             {translateEnum(`controllable_unit.status.${cu.status}`)}
           </Badge>
