@@ -55,10 +55,7 @@ export const PartyList = () => {
         >
           <TextField source="name" />
         </ReferenceField>
-        <TextField
-          source={partyFields.name.source}
-          hideLabel
-        />
+        <TextField source={partyFields.name.source} hideLabel />
         <EnumField source={partyFields.type.source} enumKey="party.type" />
         <TextField source={partyFields.role.source} />
         <StatusBadgeField

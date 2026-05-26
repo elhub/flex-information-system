@@ -176,9 +176,7 @@ export const ControllableUnitList = () => {
         <DateField source={fields.start_date.source} />
         <RegulationDirectionField source={fields.regulation_direction.source} />
         <IsSmallField source={fields.is_small.source} headerTooltip />
-        <AccountingPointLinkField
-          source={fields.accounting_point_id.source}
-        />
+        <AccountingPointLinkField source={fields.accounting_point_id.source} />
         <BiddingZoneField source="bidding_zone" />
         <BalanceResponsiblePartyField source="balance_responsible_party" />
         <StatusBadgeField

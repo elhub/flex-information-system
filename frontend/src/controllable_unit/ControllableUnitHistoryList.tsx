@@ -59,9 +59,7 @@ export const ControllableUnitHistoryList = () => {
         <DateField {...fields.start_date} />
         <RegulationDirectionField source={fields.regulation_direction.source} />
         <IsSmallField source={fields.is_small.source} />
-        <AccountingPointLinkField
-          source={fields.accounting_point_id.source}
-        />
+        <AccountingPointLinkField source={fields.accounting_point_id.source} />
         <StatusBadgeField
           source={fields.status.source}
           enumKey="controllable_unit.status"
