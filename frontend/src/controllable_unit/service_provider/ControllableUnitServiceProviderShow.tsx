@@ -13,6 +13,10 @@ import { EventButton } from "../../event/EventButton";
 import { RestoreButton } from "../../components/history";
 import { Permissions } from "../../auth/permissions";
 import { ControllableUnitServiceProvider } from "../../generated-client";
+import { getFields } from "../../zod";
+import { zControllableUnitServiceProviderHistory } from "../../generated-client/zod.gen";
+
+const fields = getFields(zControllableUnitServiceProviderHistory.shape);
 
 const EditButton = () => {
   const record = useRecordContext<ControllableUnitServiceProvider>();
@@ -87,38 +91,38 @@ export const ControllableUnitServiceProviderShow = () => {
         Basic information
       </Heading>
       <Content>
-        <TextField source="id" label />
-        <TextField source="controllable_unit_service_provider_id" label />
+        <TextField source={fields.id.source} label />
+        <TextField source={fields.controllable_unit_service_provider_id.source} label />
         <ReferenceField
-          source="controllable_unit_id"
+          source={fields.controllable_unit_id.source}
           reference="controllable_unit"
           label
         >
           <TextField source="name" />
         </ReferenceField>
-        <ReferenceField source="service_provider_id" reference="party" label>
+        <ReferenceField source={fields.service_provider_id.source} reference="party" label>
           <TextField source="name" />
         </ReferenceField>
-        <TextField source="end_user_id" label />
-        <TextField source="contract_reference" label />
+        <TextField source={fields.end_user_id.source} label />
+        <TextField source={fields.contract_reference.source} label />
       </Content>
 
       <Heading level={2} size="small" spacing>
         Valid time
       </Heading>
       <Content>
-        <DateField source="valid_from" showTime label />
-        <DateField source="valid_to" showTime label />
+        <DateField source={fields.valid_from.source} showTime label />
+        <DateField source={fields.valid_to.source} showTime label />
       </Content>
 
       <Heading level={2} size="small" spacing>
         Registration
       </Heading>
       <Content>
-        <DateField source="recorded_at" showTime label />
-        <IdentityField source="recorded_by" label />
-        <DateField source="replaced_at" showTime label />
-        <IdentityField source="replaced_by" label />
+        <DateField source={fields.recorded_at.source} showTime label />
+        <IdentityField source={fields.recorded_by.source} label />
+        <DateField source={fields.replaced_at.source} showTime label />
+        <IdentityField source={fields.replaced_by.source} label />
       </Content>
     </Show>
   );
