@@ -1,12 +1,12 @@
-import { ReactNode } from "react";
 import { ServiceProvidingGroup } from "../../generated-client";
-import { Alert, BodyText } from "../../components/ui";
+import { Alert, BodyText, Heading } from "../../components/ui";
 import { useSpgProductApplications } from "./useSpgProductApplications";
 import { useGetIdentity, UserIdentity } from "react-admin";
 
 type AlertType = {
   severity: "info" | "success" | "warning" | "error";
-  content: ReactNode;
+  heading: string;
+  body: string;
 };
 
 const useServiceProvidingGroupAlerts = (
@@ -25,14 +25,16 @@ const useServiceProvidingGroupAlerts = (
   if (spg.status === "new") {
     return {
       severity: "info",
-      content: "The service providing group is not active.",
+      heading: "Service providing group is not active",
+      body: "Activating the service providing group will allow it to be used in a product application.",
     };
   }
 
   if (productApplications?.length === 0) {
     return {
       severity: "info",
-      content: "You don't have a product application for this SPG.",
+      heading: "No product application",
+      body: "There are no product applications for this service providing group.",
     };
   }
 
@@ -52,7 +54,8 @@ export const ServiceProvidingGroupAlerts = (props: Props) => {
 
   return (
     <Alert variant={alert.severity} className="max-w-3xl gap-4">
-      <BodyText>{alert.content}</BodyText>
+      <Heading size="xsmall">{alert.heading}</Heading>
+      <BodyText>{alert.body}</BodyText>
     </Alert>
   );
 };

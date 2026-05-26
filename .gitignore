@@ -59,6 +59,8 @@ dist-docs
 docs/download
 docs/api/v0
 docs/auth/v0
+docs/api/v1
+docs/auth/v1
 out
 dist-ssr
 kbackend/bin

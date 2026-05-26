@@ -16,3 +16,8 @@ users:
     displayname: Emil Post
     email: emil.post@example.com
     password: $argon2id$v=19$m=65536,t=3,p=4$gwGspsuAbuUOhDCsgbSpqw$ihRZwb6FTICgT/8LWhQFNgmNZK/q957xQEle6R1Wsog
+  'new.user@example.com':
+    disabled: false
+    displayname: New User
+    email: new.user@example.com
+    password: $argon2id$v=19$m=65536,t=3,p=4$gwGspsuAbuUOhDCsgbSpqw$ihRZwb6FTICgT/8LWhQFNgmNZK/q957xQEle6R1Wsog

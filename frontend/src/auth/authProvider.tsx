@@ -1,6 +1,12 @@
-import { AuthProvider, fetchUtils, getStorage } from "react-admin";
+import {
+  AuthProvider,
+  fetchUtils,
+  getStorage,
+  UserIdentity,
+} from "react-admin";
 import permissions from "./permissions";
 import { authURL } from "../httpConfig";
+import type { PartyRole } from "../generated-client/types.gen";
 
 import anonymous_avatar from "./avatars/ANO.png";
 import balance_responsible_party_avatar from "./avatars/BRP.png";
@@ -44,6 +50,30 @@ const roleAvatars: any = {
 
 export const sessionInfoKey = "flexSession";
 
+interface FlexIdentityBase extends UserIdentity {
+  id: string;
+  entityID: number;
+  entityName: string;
+  fullName: string;
+  avatar: string;
+}
+
+// Identity where a party has been assumed (all PartyRole roles).
+export interface FlexPartyIdentity extends FlexIdentityBase {
+  role: PartyRole;
+  partyID: number;
+  partyName?: string;
+}
+
+// Identity without an assumed party (entity-level or anonymous access).
+interface FlexEntityIdentity extends FlexIdentityBase {
+  role: "flex_anonymous" | "flex_entity";
+  partyID?: never;
+  partyName?: never;
+}
+
+export type FlexIdentity = FlexPartyIdentity | FlexEntityIdentity;
+
 export function authProvider(): AuthProvider {
   const getIdentity = async () => {
     const sessionInfoString = getStorage().getItem(sessionInfoKey);
@@ -57,7 +87,7 @@ export function authProvider(): AuthProvider {
 
     const avatar = await toDataURL(roleAvatars[role]);
 
-    return Promise.resolve<any>({
+    return Promise.resolve<FlexIdentity>({
       id: sessionInfo["sub"],
       entityID: sessionInfo["entity_id"],
       entityName: entity_name,
@@ -65,7 +95,7 @@ export function authProvider(): AuthProvider {
       partyName: party_name,
       fullName: party_name ? `${entity_name} as ${party_name}` : entity_name,
       role: role,
-      avatar,
+      avatar: avatar as string,
     });
   };
 

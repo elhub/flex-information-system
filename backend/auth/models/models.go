@@ -68,12 +68,14 @@ func GetEntityIdentityByExternalID(
 	return eid, clientID, scopes, nil
 }
 
-// GetEntityOfBusinessID gets the entity and external ID of a entity business id.
-func GetEntityOfBusinessID(
+// GetOrCreateEntity gets or creates an entity and external ID based on a
+// business ID and a name.
+func GetOrCreateEntity(
 	ctx context.Context,
 	tx pgx.Tx,
 	businessID string,
 	businessIDType string,
+	name string,
 ) (int, string, error) {
 	var (
 		entityID int
@@ -82,9 +84,10 @@ func GetEntityOfBusinessID(
 
 	err := tx.QueryRow(
 		ctx,
-		"select entity_id, external_id from auth.entity_of_business_id($1, $2)",
+		"select entity_id, external_id from auth.get_or_create_entity($1, $2, $3)",
 		businessID,
 		businessIDType,
+		name,
 	).Scan(&entityID, &eid)
 	if err != nil {
 		return -1, "", fmt.Errorf("failed to get entity: %w", err)

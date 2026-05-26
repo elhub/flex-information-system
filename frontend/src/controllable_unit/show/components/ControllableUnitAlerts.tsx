@@ -1,9 +1,10 @@
 import type { ControllableUnitShowViewModel } from "../useControllableUnitViewModel";
-import { BodyText, Alert } from "../../../components/ui";
+import { BodyText, Alert, Heading } from "../../../components/ui";
 
 type AlertType = {
   severity: "info" | "success" | "warning" | "error";
-  content: string;
+  heading: string;
+  body: string;
 };
 
 const useControllableUnitAlerts = (
@@ -16,22 +17,24 @@ const useControllableUnitAlerts = (
     const suspension = suspensions[0];
     return {
       severity: "error",
-      content: `The controllable unit is suspended. Reason: ${suspension.reason}`,
+      heading: "Controllable unit is suspended",
+      body: `Reason: ${suspension.reason}`,
     };
   }
 
   if (technicalResources?.length === 0) {
     return {
       severity: "info",
-      content:
-        "To set the controllable unit as active, one technical resource is required.",
+      heading: "Add technical resources",
+      body: "To set the controllable unit as active, at least one technical resource is required.",
     };
   }
 
   if (controllableUnit.status === "new") {
     return {
       severity: "info",
-      content: "The controllable unit is not active.",
+      heading: "Controllable unit is not active",
+      body: "Controllable unit must be active to be added to a service providing group. Add all technical resources and ensure that data is correct before activating.",
     };
   }
   return null;
@@ -48,7 +51,8 @@ export const ControllableUnitAlerts = ({
   }
   return (
     <Alert variant={alert.severity} className="max-w-3xl">
-      <BodyText>{alert.content}</BodyText>
+      <Heading size="xsmall">{alert.heading}</Heading>
+      <BodyText>{alert.body}</BodyText>
     </Alert>
   );
 };
