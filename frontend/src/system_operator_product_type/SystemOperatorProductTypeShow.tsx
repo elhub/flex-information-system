@@ -10,6 +10,10 @@ import {
 } from "../components/EDS-ra";
 import { EventButton } from "../event/EventButton";
 import { ProductTypeField } from "../product_type/components";
+import { getFields } from "../zod";
+import { zSystemOperatorProductTypeHistory } from "../generated-client/zod.gen";
+
+const fields = getFields(zSystemOperatorProductTypeHistory.shape);
 
 export const SystemOperatorProductTypeShow = () => {
   const resource = useResourceContext();
@@ -21,12 +25,12 @@ export const SystemOperatorProductTypeShow = () => {
         Basic information
       </Heading>
       <Content>
-        <TextField source="id" label />
-        <TextField source="system_operator_product_type_id" label />
-        <ReferenceField source="system_operator_id" reference="party" label />
-        <ProductTypeField source="product_type_id" />
+        <TextField source={fields.id.source} label />
+        <TextField source={fields.system_operator_product_type_id.source} label />
+        <ReferenceField source={fields.system_operator_id.source} reference="party" label />
+        <ProductTypeField source={fields.product_type_id.source} />
         <EnumField
-          source="status"
+          source={fields.status.source}
           enumKey="system_operator_product_type.status"
           label
         />
@@ -36,10 +40,10 @@ export const SystemOperatorProductTypeShow = () => {
         Registration
       </Heading>
       <Content>
-        <DateField source="recorded_at" showTime label />
-        <IdentityField source="recorded_by" label />
-        <DateField source="replaced_at" showTime label />
-        <IdentityField source="replaced_by" label />
+        <DateField source={fields.recorded_at.source} showTime label />
+        <IdentityField source={fields.recorded_by.source} label />
+        <DateField source={fields.replaced_at.source} showTime label />
+        <IdentityField source={fields.replaced_by.source} label />
       </Content>
     </Show>
   );

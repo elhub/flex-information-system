@@ -1,4 +1,5 @@
 import { useGetOne, useRecordContext } from "ra-core";
+import { zNotification } from "../generated-client/zod.gen";
 import { Alert, BodyText, Content, Heading, Loader, VerticalSpace } from "../components/ui";
 import {
   Show,
@@ -8,7 +9,10 @@ import {
   IdentityField,
   ResourceButton,
 } from "../components/EDS-ra";
+import { getFields } from "../zod";
 import { AcknowledgeButton } from "./AcknowledgeButton";
+
+const notificationFields = getFields(zNotification.shape);
 
 const JsonDataField = () => {
   const record = useRecordContext();
@@ -57,39 +61,39 @@ export const NotificationShow = () => (
       Basic information
     </Heading>
     <Content>
-      <TextField source="id" label />
-      <TextField source="acknowledged" label />
-      <ReferenceField source="party_id" reference="party" label />
+      <TextField source={notificationFields.id.source} label />
+      <TextField source={notificationFields.acknowledged.source} label />
+      <ReferenceField source={notificationFields.party_id.source} reference="party" label />
     </Content>
     <VerticalSpace />
     <Heading level={2} size="small" spacing>
       Event
     </Heading>
     <Content>
-      <TextField source="event_id" label />
+      <TextField source={notificationFields.event_id.source} label />
       <ReferenceField
-        source="event_id"
+        source={notificationFields.event_id.source}
         reference="event"
         label="field.event.type"
       >
         <TextField source="type" />
       </ReferenceField>
       <ReferenceField
-        source="event_id"
+        source={notificationFields.event_id.source}
         reference="event"
         label="field.event.source"
       >
         <TextField source="source" />
       </ReferenceField>
       <ReferenceField
-        source="event_id"
+        source={notificationFields.event_id.source}
         reference="event"
         label="field.event.data"
       >
         <JsonDataField />
       </ReferenceField>
       <ReferenceField
-        source="event_id"
+        source={notificationFields.event_id.source}
         reference="event"
         label="field.event.time"
       >
@@ -101,8 +105,8 @@ export const NotificationShow = () => (
       Registration
     </Heading>
     <Content>
-      <DateField source="recorded_at" showTime label />
-      <IdentityField source="recorded_by" label />
+      <DateField source={notificationFields.recorded_at.source} showTime label />
+      <IdentityField source={notificationFields.recorded_by.source} label />
     </Content>
     <EventResourceButton />
     <AcknowledgeButton />

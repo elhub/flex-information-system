@@ -13,6 +13,10 @@ import {
 } from "../../components/EDS-ra";
 import { EventButton } from "../../event/EventButton";
 import { Permissions } from "../../auth/permissions";
+import { getFields } from "../../zod";
+import { zPartyMembershipHistory } from "../../generated-client/zod.gen";
+
+const fields = getFields(zPartyMembershipHistory.shape);
 
 const EditButton = () => {
   const record = useRecordContext();
@@ -48,21 +52,21 @@ export const PartyMembershipShow = () => {
         Basic information
       </Heading>
       <Content>
-        <TextField source="id" label />
-        <TextField source="party_membership_id" label />
-        <ReferenceField source="entity_id" reference="entity" label />
-        <ReferenceField source="party_id" reference="party" label />
-        <ScopesField source="scopes" label />
+        <TextField source={fields.id.source} label />
+        <TextField source={fields.party_membership_id.source} label />
+        <ReferenceField source={fields.entity_id.source} reference="entity" label />
+        <ReferenceField source={fields.party_id.source} reference="party" label />
+        <ScopesField source={fields.scopes.source} label />
       </Content>
       <VerticalSpace />
       <Heading level={2} size="small" spacing>
         Registration
       </Heading>
       <Content>
-        <DateField source="recorded_at" showTime label />
-        <IdentityField source="recorded_by" label />
-        <DateField source="replaced_at" showTime label />
-        <IdentityField source="replaced_by" label />
+        <DateField source={fields.recorded_at.source} showTime label />
+        <IdentityField source={fields.recorded_by.source} label />
+        <DateField source={fields.replaced_at.source} showTime label />
+        <IdentityField source={fields.replaced_by.source} label />
       </Content>
     </Show>
   );

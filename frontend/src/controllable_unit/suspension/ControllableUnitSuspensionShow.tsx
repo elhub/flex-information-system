@@ -14,6 +14,10 @@ import { EventButton } from "../../event/EventButton";
 import { Permissions } from "../../auth/permissions";
 import { usePermissions } from "ra-core";
 import { ControllableUnitSuspension } from "../../generated-client";
+import { getFields } from "../../zod";
+import { zControllableUnitSuspensionHistory } from "../../generated-client/zod.gen";
+
+const fields = getFields(zControllableUnitSuspensionHistory.shape);
 
 const EditButton = () => {
   const record = useRecordContext<ControllableUnitSuspension>();
@@ -83,17 +87,17 @@ export const ControllableUnitSuspensionShow = () => {
         Basic information
       </Heading>
       <Content>
-        <TextField source="id" label />
-        <TextField source="controllable_unit_suspension_id" label />
+        <TextField source={fields.id.source} label />
+        <TextField source={fields.controllable_unit_suspension_id.source} label />
         <ReferenceField
-          source="controllable_unit_id"
+          source={fields.controllable_unit_id.source}
           reference="controllable_unit"
           label
         >
           <TextField source="name" />
         </ReferenceField>
         <ReferenceField
-          source="impacted_system_operator_id"
+          source={fields.impacted_system_operator_id.source}
           reference="party"
           label
         >
@@ -106,14 +110,14 @@ export const ControllableUnitSuspensionShow = () => {
       </Heading>
       <Content>
         <EnumField
-          source="reason"
+          source={fields.reason.source}
           enumKey="controllable_unit_suspension.reason"
           label
         />
-        <DateField source="recorded_at" showTime label />
-        <IdentityField source="recorded_by" label />
-        <DateField source="replaced_at" showTime label />
-        <IdentityField source="replaced_by" label />
+        <DateField source={fields.recorded_at.source} showTime label />
+        <IdentityField source={fields.recorded_by.source} label />
+        <DateField source={fields.replaced_at.source} showTime label />
+        <IdentityField source={fields.replaced_by.source} label />
       </Content>
     </Show>
   );

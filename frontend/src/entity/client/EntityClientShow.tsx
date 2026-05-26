@@ -11,6 +11,10 @@ import {
   ScopesField,
 } from "../../components/EDS-ra";
 import { Permissions } from "../../auth/permissions";
+import { getFields } from "../../zod";
+import { zEntityClient } from "../../generated-client/zod.gen";
+
+const fields = getFields(zEntityClient.shape);
 
 const EditButton = () => {
   const record = useRecordContext();
@@ -38,22 +42,22 @@ export const EntityClientShow = () => {
         Basic information
       </Heading>
       <Content>
-        <TextField source="id" label />
-        <ReferenceField source="entity_id" reference="entity" label />
-        <TextField source="name" label />
-        <TextField source="client_id" label />
-        <ReferenceField source="party_id" reference="party" label />
-        <ScopesField source="scopes" label />
-        <TextField source="client_secret" label />
-        <TextField source="public_key" label emptyText="--" />
+        <TextField source={fields.id.source} label />
+        <ReferenceField source={fields.entity_id.source} reference="entity" label />
+        <TextField source={fields.name.source} label />
+        <TextField source={fields.client_id.source} label />
+        <ReferenceField source={fields.party_id.source} reference="party" label />
+        <ScopesField source={fields.scopes.source} label />
+        <TextField source={fields.client_secret.source} label />
+        <TextField source={fields.public_key.source} label emptyText="--" />
       </Content>
       <VerticalSpace />
       <Heading level={2} size="small" spacing>
         Registration
       </Heading>
       <Content>
-        <DateField source="recorded_at" showTime label />
-        <IdentityField source="recorded_by" label />
+        <DateField source={fields.recorded_at.source} showTime label />
+        <IdentityField source={fields.recorded_by.source} label />
       </Content>
     </Show>
   );

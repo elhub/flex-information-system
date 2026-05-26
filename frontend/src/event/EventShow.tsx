@@ -1,14 +1,18 @@
 import { useRecordContext } from "ra-core";
+import { zEvent } from "../generated-client/zod.gen";
 import { Show, TextField, DateField } from "../components/EDS-ra";
 import { BaseField } from "../components/EDS-ra/fields/BaseField";
 import { BodyText } from "../components/ui";
 import { Heading, Content } from "../components/ui";
+import { getFields } from "../zod";
+
+const eventFields = getFields(zEvent.shape);
 
 const DataField = () => {
   const record = useRecordContext();
   const value = record?.data;
   return (
-    <BaseField source="data" label>
+    <BaseField source={eventFields.data.source} label>
       <BodyText size="small">
         {value ? JSON.stringify(value) : "{}"}
       </BodyText>
@@ -22,12 +26,12 @@ export const EventShow = () => (
       Basic information
     </Heading>
     <Content>
-      <TextField source="id" label />
-      <TextField source="type" label />
-      <TextField source="source" label />
-      <TextField source="subject" label />
+      <TextField source={eventFields.id.source} label />
+      <TextField source={eventFields.type.source} label />
+      <TextField source={eventFields.source.source} label />
+      <TextField source={eventFields.subject.source} label />
       <DataField />
-      <DateField source="time" showTime label />
+      <DateField source={eventFields.time.source} showTime label />
     </Content>
   </Show>
 );

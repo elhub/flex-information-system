@@ -10,6 +10,10 @@ import {
 } from "../components/EDS-ra";
 import { EventButton } from "../event/EventButton";
 import { ProductTypeArrayField } from "../product_type/components";
+import { getFields } from "../zod";
+import { zServiceProviderProductSuspensionHistory } from "../generated-client/zod.gen";
+
+const fields = getFields(zServiceProviderProductSuspensionHistory.shape);
 
 export const ServiceProviderProductSuspensionShow = () => {
   const resource = useResourceContext();
@@ -21,17 +25,17 @@ export const ServiceProviderProductSuspensionShow = () => {
         Basic information
       </Heading>
       <Content>
-        <TextField source="id" label />
-        <TextField source="service_provider_product_suspension_id" label />
+        <TextField source={fields.id.source} label />
+        <TextField source={fields.service_provider_product_suspension_id.source} label />
         <ReferenceField
-          source="procuring_system_operator_id"
+          source={fields.procuring_system_operator_id.source}
           reference="party"
           label
         />
-        <ReferenceField source="service_provider_id" reference="party" label />
-        <ProductTypeArrayField source="product_type_ids" label />
+        <ReferenceField source={fields.service_provider_id.source} reference="party" label />
+        <ProductTypeArrayField source={fields.product_type_ids.source} label />
         <EnumField
-          source="reason"
+          source={fields.reason.source}
           enumKey="service_provider_product_suspension.reason"
           label
         />
@@ -41,10 +45,10 @@ export const ServiceProviderProductSuspensionShow = () => {
         Registration
       </Heading>
       <Content>
-        <DateField source="recorded_at" showTime label />
-        <IdentityField source="recorded_by" label />
-        <DateField source="replaced_at" showTime label />
-        <IdentityField source="replaced_by" label />
+        <DateField source={fields.recorded_at.source} showTime label />
+        <IdentityField source={fields.recorded_by.source} label />
+        <DateField source={fields.replaced_at.source} showTime label />
+        <IdentityField source={fields.replaced_by.source} label />
       </Content>
     </Show>
   );
