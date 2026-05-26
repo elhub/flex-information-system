@@ -1,19 +1,22 @@
+import { useGetOne, useRecordContext } from "ra-core";
+import { Alert, BodyText, Content, Heading, Loader, VerticalSpace } from "../components/ui";
 import {
-  BooleanField,
-  FunctionField,
-  ReferenceField,
   Show,
-  SimpleShowLayout,
   TextField,
-  useGetOne,
-  useRecordContext,
-} from "react-admin";
-import { Typography, Stack, CircularProgress, Alert } from "@mui/material";
-import { FieldStack } from "../auth";
-import { DateField } from "../components/datetime";
+  ReferenceField,
+  DateField,
+  IdentityField,
+  ResourceButton,
+} from "../components/EDS-ra";
 import { AcknowledgeButton } from "./AcknowledgeButton";
-import { ResourceButton } from "../components/ResourceButton";
-import { IdentityField } from "../components/IdentityField";
+
+const JsonDataField = () => {
+  const record = useRecordContext();
+  const value = record?.data;
+  return (
+    <BodyText size="small">{value ? JSON.stringify(value) : "{}"}</BodyText>
+  );
+};
 
 export const EventResourceButton = () => {
   const eventRecord = useRecordContext()!;
@@ -28,12 +31,12 @@ export const EventResourceButton = () => {
   );
 
   if (eventPending) {
-    return <CircularProgress size={25} thickness={2} />;
+    return <Loader size="small" />;
   }
 
   if (eventError) {
     return (
-      <Alert severity="info">
+      <Alert variant="info">
         The event that is connected to this notification could not be loaded.
         This might be due to a network error or you have lost access to see the
         event.
@@ -50,83 +53,58 @@ export const EventResourceButton = () => {
 
 export const NotificationShow = () => (
   <Show>
-    <SimpleShowLayout>
-      <Stack direction="column" spacing={2}>
-        <Typography variant="h6" gutterBottom>
-          Basic information
-        </Typography>
-        <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-          <TextField source="id" label="field.notification.id" />
-          <BooleanField
-            source="acknowledged"
-            label="field.notification.acknowledged"
-          />
-          <ReferenceField
-            source="party_id"
-            reference="party"
-            label="field.notification.party_id"
-          >
-            <TextField source="name" />
-          </ReferenceField>
-        </FieldStack>
-
-        <Typography variant="h6" gutterBottom>
-          Event
-        </Typography>
-        <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-          <TextField source="event_id" label="field.notification.event_id" />
-          <ReferenceField
-            source="event_id"
-            reference="event"
-            label="field.event.type"
-          >
-            <TextField source="type" />
-          </ReferenceField>
-          <ReferenceField
-            source="event_id"
-            reference="event"
-            label="field.event.source"
-          >
-            <TextField source="source" label="field.notification.source" />
-          </ReferenceField>
-          <ReferenceField
-            source="event_id"
-            reference="event"
-            label="field.event.data"
-          >
-            <FunctionField
-              source="data"
-              render={(record) =>
-                record.data ? JSON.stringify(record.data) : "{}"
-              }
-            />
-          </ReferenceField>
-          <ReferenceField
-            source="event_id"
-            reference="event"
-            label="field.event.time"
-          >
-            <DateField source="time" showTime />
-          </ReferenceField>
-        </FieldStack>
-
-        <Typography variant="h6" gutterBottom>
-          Registration
-        </Typography>
-        <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-          <DateField
-            source="recorded_at"
-            showTime
-            label="field.notification.recorded_at"
-          />
-          <IdentityField
-            source="recorded_by"
-            label="field.notification.recorded_by"
-          />
-        </FieldStack>
-      </Stack>
-      <EventResourceButton />
-      <AcknowledgeButton />
-    </SimpleShowLayout>
+    <Heading level={2} size="small" spacing>
+      Basic information
+    </Heading>
+    <Content>
+      <TextField source="id" label />
+      <TextField source="acknowledged" label />
+      <ReferenceField source="party_id" reference="party" label />
+    </Content>
+    <VerticalSpace />
+    <Heading level={2} size="small" spacing>
+      Event
+    </Heading>
+    <Content>
+      <TextField source="event_id" label />
+      <ReferenceField
+        source="event_id"
+        reference="event"
+        label="field.event.type"
+      >
+        <TextField source="type" />
+      </ReferenceField>
+      <ReferenceField
+        source="event_id"
+        reference="event"
+        label="field.event.source"
+      >
+        <TextField source="source" />
+      </ReferenceField>
+      <ReferenceField
+        source="event_id"
+        reference="event"
+        label="field.event.data"
+      >
+        <JsonDataField />
+      </ReferenceField>
+      <ReferenceField
+        source="event_id"
+        reference="event"
+        label="field.event.time"
+      >
+        <DateField source="time" showTime />
+      </ReferenceField>
+    </Content>
+    <VerticalSpace />
+    <Heading level={2} size="small" spacing>
+      Registration
+    </Heading>
+    <Content>
+      <DateField source="recorded_at" showTime label />
+      <IdentityField source="recorded_by" label />
+    </Content>
+    <EventResourceButton />
+    <AcknowledgeButton />
   </Show>
 );

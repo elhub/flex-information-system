@@ -1,161 +1,110 @@
-import {
-  Button,
-  ReferenceField,
-  Show,
-  SimpleShowLayout,
-  TextField,
-  TopToolbar,
-  usePermissions,
-  useRecordContext,
-  useResourceContext,
-} from "react-admin";
-import { Typography, Stack } from "@mui/material";
-import { FieldStack } from "../../auth";
-import EditIcon from "@mui/icons-material/Edit";
+import { useRecordContext, useResourceContext, usePermissions } from "ra-core";
 import { Link } from "react-router-dom";
-import { DateField } from "../../components/datetime";
+import { IconPencil, IconClockReset } from "@elhub/ds-icons";
+import { Button, Content, Heading, VerticalSpace } from "../../components/ui";
+import {
+  Show,
+  TextField,
+  ReferenceField,
+  DateField,
+  IdentityField,
+} from "../../components/EDS-ra";
 import { EventButton } from "../../event/EventButton";
-import { IdentityField } from "../../components/IdentityField";
 import { Permissions } from "../../auth/permissions";
-import HistoryIcon from "@mui/icons-material/History";
 import { ServiceProvidingGroupMembership } from "../../generated-client";
 
 const EditButton = () => {
-  const record = useRecordContext();
+  const record = useRecordContext<ServiceProvidingGroupMembership>();
+  if (!record) return null;
   return (
     <Button
-      component={Link}
-      to={`/service_providing_group/${record?.service_providing_group_id}/membership/${record?.id}`}
-      startIcon={<EditIcon />}
-      label="Edit"
-    />
+      as={Link}
+      to={`/service_providing_group/${record.service_providing_group_id}/membership/${record.id}`}
+      variant="invisible"
+      size="medium"
+      icon={IconPencil}
+    >
+      Edit
+    </Button>
   );
 };
-
-// manual components to support both flat and nested URLs for this resource
 
 const HistoryButton = () => {
   const record = useRecordContext<ServiceProvidingGroupMembership>();
   const { permissions } = usePermissions<Permissions>();
 
+  if (!record) return null;
+
   const filter =
     `?filter=` +
     encodeURIComponent(
-      `{ "service_providing_group_membership_id": ${record?.id} }`,
+      `{ "service_providing_group_membership_id": ${record.id} }`,
     );
 
   return (
     <Button
-      component={Link}
+      as={Link}
+      to={`/service_providing_group/${record.service_providing_group_id}/membership_history${filter}`}
+      variant="invisible"
+      size="medium"
+      icon={IconClockReset}
       disabled={
         !permissions?.allow(
           "service_providing_group_membership_history",
           "read",
         )
       }
-      to={`/service_providing_group/${record?.service_providing_group_id}/membership_history${filter}`}
-      startIcon={<HistoryIcon />}
-      label="View History"
-    />
+    >
+      View History
+    </Button>
   );
 };
 
 export const ServiceProvidingGroupMembershipShow = () => {
-  const resource = useResourceContext()!;
-  const { permissions } = usePermissions<Permissions>();
-
-  const isHistory = resource.endsWith("_history");
-
-  // Permission checks
-  const canUpdate = permissions?.allow(
-    "service_providing_group_membership",
-    "update",
-  );
+  const resource = useResourceContext();
+  const isHistory = resource?.endsWith("_history");
 
   return (
     <Show
-      actions={
-        !isHistory &&
-        canUpdate && (
-          <TopToolbar>
-            <EditButton />
-          </TopToolbar>
-        )
-      }
+      editButton={<EditButton />}
+      historyButton={<HistoryButton />}
+      extraActions={!isHistory ? <EventButton filterOnSubject /> : undefined}
     >
-      <SimpleShowLayout>
-        <Stack direction="column" spacing={2}>
-          <Typography variant="h6" gutterBottom>
-            Basic information
-          </Typography>
-          <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField
-              source="id"
-              label="field.service_providing_group_membership.id"
-            />
-            <TextField
-              source="service_providing_group_membership_id"
-              label="field.service_providing_group_membership_history.service_providing_group_membership_id"
-            />
-            <ReferenceField
-              source="controllable_unit_id"
-              reference="controllable_unit"
-              label="field.service_providing_group_membership.controllable_unit_id"
-            >
-              <TextField source="name" />
-            </ReferenceField>
-            <ReferenceField
-              source="service_providing_group_id"
-              reference="service_providing_group"
-              label="field.service_providing_group_membership.service_providing_group_id"
-            >
-              <TextField source="name" />
-            </ReferenceField>
-          </FieldStack>
-
-          <Typography variant="h6" gutterBottom>
-            Valid time
-          </Typography>
-          <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <DateField
-              source="valid_from"
-              showTime
-              label="field.service_providing_group_membership.valid_from"
-            />
-            <DateField
-              source="valid_to"
-              showTime
-              label="field.service_providing_group_membership.valid_to"
-            />
-          </FieldStack>
-
-          <Typography variant="h6" gutterBottom>
-            Registration
-          </Typography>
-          <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <DateField
-              source="recorded_at"
-              showTime
-              label="field.service_providing_group_membership.recorded_at"
-            />
-            <IdentityField
-              source="recorded_by"
-              label="field.service_providing_group_membership.recorded_by"
-            />
-            <DateField
-              source="replaced_at"
-              showTime
-              label="field.service_providing_group_membership_history.replaced_at"
-            />
-            <IdentityField
-              source="replaced_by"
-              label="field.service_providing_group_membership_history.replaced_by"
-            />
-          </FieldStack>
-        </Stack>
-        <HistoryButton />
-        {!isHistory && <EventButton filterOnSubject />}
-      </SimpleShowLayout>
+      <Heading level={2} size="small" spacing>
+        Basic information
+      </Heading>
+      <Content>
+        <TextField source="id" label />
+        <TextField source="service_providing_group_membership_id" label />
+        <ReferenceField
+          source="controllable_unit_id"
+          reference="controllable_unit"
+          label
+        />
+        <ReferenceField
+          source="service_providing_group_id"
+          reference="service_providing_group"
+          label
+        />
+      </Content>
+      <VerticalSpace />
+      <Heading level={2} size="small" spacing>
+        Valid time
+      </Heading>
+      <Content>
+        <DateField source="valid_from" showTime label />
+        <DateField source="valid_to" showTime label />
+      </Content>
+      <VerticalSpace />
+      <Heading level={2} size="small" spacing>
+        Registration
+      </Heading>
+      <Content>
+        <DateField source="recorded_at" showTime label />
+        <IdentityField source="recorded_by" label />
+        <DateField source="replaced_at" showTime label />
+        <IdentityField source="replaced_by" label />
+      </Content>
     </Show>
   );
 };

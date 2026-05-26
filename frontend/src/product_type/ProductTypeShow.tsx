@@ -1,25 +1,17 @@
-import { Show, SimpleShowLayout, TextField } from "react-admin";
-import { Typography, Stack } from "@mui/material";
-import { FieldStack } from "../auth";
+import { Show, TextField } from "../components/EDS-ra";
+import { Heading, Content } from "../components/ui";
 
 export const ProductTypeShow = () => (
   <Show>
-    <SimpleShowLayout>
-      <Stack direction="column" spacing={2}>
-        <Typography variant="h6" gutterBottom>
-          Basic information
-        </Typography>
-        <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-          <TextField source="id" label="field.product_type.id" />
-          <TextField
-            source="business_id"
-            label="field.product_type.business_id"
-          />
-          <TextField source="name" label="field.product_type.name" />
-          <TextField source="service" label="field.product_type.service" />
-          <TextField source="products" label="field.product_type.products" />
-        </FieldStack>
-      </Stack>
-    </SimpleShowLayout>
+    <Heading level={2} size="small" spacing>
+      Basic information
+    </Heading>
+    <Content>
+      <TextField source="id" label />
+      <TextField source="business_id" label />
+      <TextField source="name" label />
+      <TextField source="service" label />
+      <TextField source="products" label />
+    </Content>
   </Show>
 );

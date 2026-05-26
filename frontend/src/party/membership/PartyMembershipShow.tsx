@@ -1,120 +1,69 @@
-import {
-  Button,
-  ReferenceField,
-  Show,
-  SimpleShowLayout,
-  TextField,
-  TopToolbar,
-  usePermissions,
-  useRecordContext,
-  useResourceContext,
-} from "react-admin";
-import { Typography, Stack } from "@mui/material";
-import { FieldStack } from "../../auth";
-import { DateField } from "../../components/datetime";
-import { NestedResourceHistoryButton } from "../../components/history";
-import { EventButton } from "../../event/EventButton";
-import { IdentityField } from "../../components/IdentityField";
-import { ScopesField } from "../../components/scopes";
+import { useRecordContext, useResourceContext, usePermissions } from "ra-core";
 import { Link } from "react-router-dom";
-import EditIcon from "@mui/icons-material/Edit";
+import { IconPencil } from "@elhub/ds-icons";
+import { Button, Content, Heading, VerticalSpace } from "../../components/ui";
+import {
+  Show,
+  TextField,
+  ReferenceField,
+  DateField,
+  IdentityField,
+  ScopesField,
+  NestedResourceHistoryButton,
+} from "../../components/EDS-ra";
+import { EventButton } from "../../event/EventButton";
 import { Permissions } from "../../auth/permissions";
 
 const EditButton = () => {
-  const record = useRecordContext()!;
+  const record = useRecordContext();
+  if (!record) return null;
   return (
     <Button
-      component={Link}
+      as={Link}
       to={`/party/${record.party_id}/membership/${record.id}`}
-      startIcon={<EditIcon />}
-      label="Edit"
-    />
+      variant="invisible"
+      size="medium"
+      icon={IconPencil}
+    >
+      Edit
+    </Button>
   );
 };
 
 export const PartyMembershipShow = () => {
-  const resource = useResourceContext()!;
+  const resource = useResourceContext();
   const { permissions } = usePermissions<Permissions>();
-
-  const isHistory = resource.endsWith("_history");
-
-  // Permission checks
+  const isHistory = resource?.endsWith("_history");
   const canUpdate = permissions?.allow("party_membership", "update");
 
   return (
     <Show
-      actions={
-        !isHistory &&
-        canUpdate && (
-          <TopToolbar>
-            <EditButton />
-          </TopToolbar>
-        )
+      editButton={canUpdate && !isHistory ? <EditButton /> : undefined}
+      historyButton={
+        <NestedResourceHistoryButton child="membership" label="party memberships" />
       }
+      extraActions={!isHistory ? <EventButton filterOnSubject /> : undefined}
     >
-      <SimpleShowLayout>
-        <Stack direction="column" spacing={2}>
-          <Typography variant="h6" gutterBottom>
-            Basic information
-          </Typography>
-          <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField source="id" label="field.party_membership.id" />
-            <TextField
-              source="party_membership_id"
-              label="field.party_membership_history.party_membership_id"
-            />
-            <ReferenceField
-              source="entity_id"
-              reference="entity"
-              link="show"
-              label="field.party_membership.entity_id"
-            >
-              <TextField source="name" />
-            </ReferenceField>
-            <ReferenceField
-              source="party_id"
-              reference="party"
-              link="show"
-              label="field.party_membership.party_id"
-            >
-              <TextField source="name" />
-            </ReferenceField>
-            <ScopesField
-              source="scopes"
-              label="field.party_membership.scopes"
-            />
-          </FieldStack>
-
-          <Typography variant="h6" gutterBottom>
-            Registration
-          </Typography>
-          <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <DateField
-              source="recorded_at"
-              showTime
-              label="field.party_membership.recorded_at"
-            />
-            <IdentityField
-              source="recorded_by"
-              label="field.party_membership.recorded_by"
-            />
-            <DateField
-              source="replaced_at"
-              showTime
-              label="field.party_membership_history.replaced_at"
-            />
-            <IdentityField
-              source="replaced_by"
-              label="field.party_membership_history.replaced_by"
-            />
-          </FieldStack>
-        </Stack>
-        <EventButton filterOnSubject />
-        <NestedResourceHistoryButton
-          child="membership"
-          label="party memberships"
-        />
-      </SimpleShowLayout>
+      <Heading level={2} size="small" spacing>
+        Basic information
+      </Heading>
+      <Content>
+        <TextField source="id" label />
+        <TextField source="party_membership_id" label />
+        <ReferenceField source="entity_id" reference="entity" label />
+        <ReferenceField source="party_id" reference="party" label />
+        <ScopesField source="scopes" label />
+      </Content>
+      <VerticalSpace />
+      <Heading level={2} size="small" spacing>
+        Registration
+      </Heading>
+      <Content>
+        <DateField source="recorded_at" showTime label />
+        <IdentityField source="recorded_by" label />
+        <DateField source="replaced_at" showTime label />
+        <IdentityField source="replaced_by" label />
+      </Content>
     </Show>
   );
 };
