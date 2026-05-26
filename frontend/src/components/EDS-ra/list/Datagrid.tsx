@@ -4,6 +4,7 @@ import React, {
   cloneElement,
   isValidElement,
 } from "react";
+import { humanize } from "inflection";
 import { useNavigate } from "react-router-dom";
 import {
   FieldTitle,
@@ -115,6 +116,11 @@ export const DataTable = <T extends RaRecord>({
                     label={label}
                     resource={reference ?? resource}
                   />
+                  {reference && !label && (
+                    <span className="text-neutral-500">
+                      ({humanize(reference)})
+                    </span>
+                  )}
                   {headerTooltip && source && (
                     <FieldTooltip resource={resource} field={source} />
                   )}
