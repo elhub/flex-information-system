@@ -113,7 +113,7 @@ export const ServiceProvidingGroupExpandedRow = ({ record }: Props) => {
         {isLoadingPrequal ? (
           <Loader />
         ) : !prequalifications || prequalifications.length === 0 ? (
-          <EmptyBox message="No grid prequalifications" />
+          <EmptyBox message={translate("text.spg_grid_prequalification_empty", { _: "No grid prequalifications" })} />
         ) : (
           prequalifications.map((prequal) => {
             const variant =
@@ -156,7 +156,7 @@ export const ServiceProvidingGroupExpandedRow = ({ record }: Props) => {
         {isLoadingPa ? (
           <Loader />
         ) : !productApplications || productApplications.length === 0 ? (
-          <EmptyBox message="No product applications" />
+          <EmptyBox message={translate("text.spg_product_application_empty", { _: "No product applications" })} />
         ) : (
           productApplications.map((pa) => {
             const variant =

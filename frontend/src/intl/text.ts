@@ -8,7 +8,9 @@ export type TextKey =
   | "lookup.input.controllable_unit"
   | "lookup.input.end_user"
   | "spg_grid_prequalification_header"
-  | "spg_product_application_header";
+  | "spg_product_application_header"
+  | "spg_grid_prequalification_empty"
+  | "spg_product_application_empty";
 
 export const text: Record<string, Record<TextKey, string>> = {
   en: {
@@ -23,6 +25,8 @@ export const text: Record<string, Record<TextKey, string>> = {
     "lookup.input.end_user": "End user",
     spg_grid_prequalification_header: "Grid prequalifications",
     spg_product_application_header: "Product applications",
+    spg_grid_prequalification_empty: "No grid prequalifications",
+    spg_product_application_empty: "No product applications",
   },
   nb: {
     entity_role: "Entitet",
@@ -36,5 +40,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "lookup.input.end_user": "Sluttbruker",
     spg_grid_prequalification_header: "Nettprekvalifiseringer",
     spg_product_application_header: "Produktsøknader",
+    spg_grid_prequalification_empty: "Ingen nettprekvalifiseringer",
+    spg_product_application_empty: "Ingen produktprekvalifiseringer",
   },
 };
