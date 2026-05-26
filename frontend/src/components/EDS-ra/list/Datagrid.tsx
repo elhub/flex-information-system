@@ -15,7 +15,6 @@ import {
 } from "ra-core";
 import { BodyText, Loader, Table } from "../../ui";
 import { FieldTooltip } from "../fields";
-import styles from "./tableStyles.module.css";
 
 type DatagridProps<T extends RaRecord = RaRecord> = {
   children: ReactNode;
@@ -91,68 +90,66 @@ export const DataTable = <T extends RaRecord>({
   }
 
   return (
-    <div className={styles.tableWrapper}>
-      <Table style={{ width: "100%" }}>
-        <Table.Header>
-          <Table.Row>
-            {columns.map((child, index) => {
-              const { source, label, reference, headerTooltip, children } =
-                child.props as {
-                  source: string;
-                  label?: string;
-                  reference: string;
-                  headerTooltip?: boolean;
-                  // Children is only set when it is a reference field
-                  children: React.ReactElement<{ source: string }>;
-                };
-              const childSource = children?.props?.source;
+    <Table size="medium" style={{ width: "100%" }}>
+      <Table.Header>
+        <Table.Row>
+          {columns.map((child, index) => {
+            const { source, label, reference, headerTooltip, children } =
+              child.props as {
+                source: string;
+                label?: string;
+                reference: string;
+                headerTooltip?: boolean;
+                // Children is only set when it is a reference field
+                children: React.ReactElement<{ source: string }>;
+              };
+            const childSource = children?.props?.source;
 
-              return (
-                <Table.ColumnHeader
-                  key={source ?? childSource ?? index}
-                  scope="col"
-                >
-                  <span className="flex items-center gap-1">
-                    <FieldTitle
-                      source={childSource ?? source}
-                      label={label}
-                      resource={reference ?? resource}
-                    />
-                    {reference && !label && (
-                      <span className="text-neutral-500">
-                        ({humanize(reference)})
-                      </span>
-                    )}
-                    {headerTooltip && source && (
-                      <FieldTooltip resource={resource} field={source} />
-                    )}
-                  </span>
-                </Table.ColumnHeader>
-              );
-            })}
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {data.map((record) => (
-            <RecordContextProvider key={record.id} value={record}>
-              <Table.Row
-                style={hasRowClick ? { cursor: "pointer" } : undefined}
-                onClick={(e) => handleRowClick(e, record)}
+            return (
+              <Table.ColumnHeader
+                key={source ?? childSource ?? index}
+                scope="col"
               >
-                {columns.map((child, index) => {
-                  const key =
-                    (child.props as { source?: string }).source ?? index;
-                  return (
-                    <Table.DataCell key={key}>
-                      {cloneElement(child)}
-                    </Table.DataCell>
-                  );
-                })}
-              </Table.Row>
-            </RecordContextProvider>
-          ))}
-        </Table.Body>
-      </Table>
-    </div>
+                <span className="flex items-center gap-1">
+                  <FieldTitle
+                    source={childSource ?? source}
+                    label={label}
+                    resource={reference ?? resource}
+                  />
+                  {reference && !label && (
+                    <span className="text-neutral-500">
+                      ({humanize(reference)})
+                    </span>
+                  )}
+                  {headerTooltip && source && (
+                    <FieldTooltip resource={resource} field={source} />
+                  )}
+                </span>
+              </Table.ColumnHeader>
+            );
+          })}
+        </Table.Row>
+      </Table.Header>
+      <Table.Body>
+        {data.map((record) => (
+          <RecordContextProvider key={record.id} value={record}>
+            <Table.Row
+              style={hasRowClick ? { cursor: "pointer" } : undefined}
+              onClick={(e) => handleRowClick(e, record)}
+            >
+              {columns.map((child, index) => {
+                const key =
+                  (child.props as { source?: string }).source ?? index;
+                return (
+                  <Table.DataCell key={key}>
+                    {cloneElement(child)}
+                  </Table.DataCell>
+                );
+              })}
+            </Table.Row>
+          </RecordContextProvider>
+        ))}
+      </Table.Body>
+    </Table>
   );
 };

@@ -14,7 +14,6 @@ import {
 } from "ra-core";
 import { BodyText, Loader, Table } from "../../ui";
 import { FieldTooltip } from "../fields";
-import styles from "./tableStyles.module.css";
 
 type ExpandableDatagridProps<T extends RaRecord = RaRecord> = {
   children: ReactNode;
@@ -86,68 +85,66 @@ export const ExpandableDataTable = <T extends RaRecord>({
   }
 
   return (
-    <div className={styles.tableWrapper}>
-      <Table style={{ width: "100%" }}>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell />
-            {columns.map((child, index) => {
-              const { source, label, reference, headerTooltip, children } =
-                child.props as {
-                  source: string;
-                  label?: string;
-                  reference: string;
-                  headerTooltip?: boolean;
-                  children: React.ReactElement<{ source: string }>;
-                };
-              const childSource = children?.props?.source;
+    <Table style={{ width: "100%" }}>
+      <Table.Header>
+        <Table.Row>
+          <Table.HeaderCell />
+          {columns.map((child, index) => {
+            const { source, label, reference, headerTooltip, children } =
+              child.props as {
+                source: string;
+                label?: string;
+                reference: string;
+                headerTooltip?: boolean;
+                children: React.ReactElement<{ source: string }>;
+              };
+            const childSource = children?.props?.source;
 
-              return (
-                <Table.HeaderCell
-                  key={source ?? childSource ?? index}
-                  scope="col"
-                >
-                  <span className="flex items-center gap-1">
-                    <FieldTitle
-                      source={childSource ?? source}
-                      label={label}
-                      resource={reference ?? resource}
-                    />
-                    {headerTooltip && source && (
-                      <FieldTooltip resource={resource} field={source} />
-                    )}
-                  </span>
-                </Table.HeaderCell>
-              );
-            })}
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {data.map((record) => (
-            <RecordContextProvider key={record.id} value={record}>
-              <Table.ExpandableRow
-                style={{ cursor: "pointer" }}
-                onClick={(e) => handleRowClick(e, record)}
-                content={
-                  <RecordContextProvider value={record}>
-                    {expandPanel(record)}
-                  </RecordContextProvider>
-                }
+            return (
+              <Table.HeaderCell
+                key={source ?? childSource ?? index}
+                scope="col"
               >
-                {columns.map((child, index) => {
-                  const key =
-                    (child.props as { source?: string }).source ?? index;
-                  return (
-                    <Table.DataCell key={key}>
-                      {cloneElement(child)}
-                    </Table.DataCell>
-                  );
-                })}
-              </Table.ExpandableRow>
-            </RecordContextProvider>
-          ))}
-        </Table.Body>
-      </Table>
-    </div>
+                <span className="flex items-center gap-1">
+                  <FieldTitle
+                    source={childSource ?? source}
+                    label={label}
+                    resource={reference ?? resource}
+                  />
+                  {headerTooltip && source && (
+                    <FieldTooltip resource={resource} field={source} />
+                  )}
+                </span>
+              </Table.HeaderCell>
+            );
+          })}
+        </Table.Row>
+      </Table.Header>
+      <Table.Body>
+        {data.map((record) => (
+          <RecordContextProvider key={record.id} value={record}>
+            <Table.ExpandableRow
+              style={{ cursor: "pointer" }}
+              onClick={(e) => handleRowClick(e, record)}
+              content={
+                <RecordContextProvider value={record}>
+                  {expandPanel(record)}
+                </RecordContextProvider>
+              }
+            >
+              {columns.map((child, index) => {
+                const key =
+                  (child.props as { source?: string }).source ?? index;
+                return (
+                  <Table.DataCell key={key}>
+                    {cloneElement(child)}
+                  </Table.DataCell>
+                );
+              })}
+            </Table.ExpandableRow>
+          </RecordContextProvider>
+        ))}
+      </Table.Body>
+    </Table>
   );
 };
