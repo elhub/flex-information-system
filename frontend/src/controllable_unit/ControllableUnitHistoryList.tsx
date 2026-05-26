@@ -61,7 +61,6 @@ export const ControllableUnitHistoryList = () => {
         <IsSmallField source={fields.is_small.source} />
         <AccountingPointLinkField
           source={fields.accounting_point_id.source}
-          label="Accounting Point"
         />
         <StatusBadgeField
           source={fields.status.source}

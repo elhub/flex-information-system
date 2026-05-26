@@ -50,14 +50,13 @@ export const PartyList = () => {
         <ReferenceField
           source={partyFields.entity_id.source}
           reference="entity"
-          label="Entity Name"
+          label="resources.party.fields.entity_id"
           hideLabel
         >
           <TextField source="name" />
         </ReferenceField>
         <TextField
           source={partyFields.name.source}
-          label="Party Name"
           hideLabel
         />
         <EnumField source={partyFields.type.source} enumKey="party.type" />

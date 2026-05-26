@@ -178,7 +178,6 @@ export const ControllableUnitList = () => {
         <IsSmallField source={fields.is_small.source} headerTooltip />
         <AccountingPointLinkField
           source={fields.accounting_point_id.source}
-          label="Accounting Point"
         />
         <BiddingZoneField source="bidding_zone" />
         <BalanceResponsiblePartyField source="balance_responsible_party" />
