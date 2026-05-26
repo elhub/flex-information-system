@@ -42,10 +42,7 @@ type RowItemProps = {
 };
 
 const RowItem = ({ name, statusBadge, id, to }: RowItemProps) => (
-  <Link
-    to={to}
-    className={styles.rowItem}
-  >
+  <Link to={to} className={styles.rowItem}>
     <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
       <span
         style={{
