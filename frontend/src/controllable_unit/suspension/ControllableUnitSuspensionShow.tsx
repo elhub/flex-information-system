@@ -15,7 +15,6 @@ import { Link } from "react-router-dom";
 import { EventButton } from "../../event/EventButton";
 import { DateField } from "../../components/datetime";
 import { FieldStack } from "../../auth";
-import { CommentList as GenericCommentList } from "../../components/comments";
 import { IdentityField } from "../../components/IdentityField";
 import { Permissions } from "../../auth/permissions";
 import HistoryIcon from "@mui/icons-material/History";
@@ -53,45 +52,6 @@ const HistoryButton = () => {
       to={`/controllable_unit/${record?.controllable_unit_id}/suspension_history${filter}`}
       startIcon={<HistoryIcon />}
       label="View History"
-    />
-  );
-};
-
-const CommentHistoryButton = () => {
-  const record = useRecordContext<ControllableUnitSuspension>();
-  const { permissions } = usePermissions<Permissions>();
-
-  return (
-    <Button
-      component={Link}
-      disabled={
-        !permissions?.allow(
-          "controllable_unit_suspension_comment_history",
-          "read",
-        )
-      }
-      to={`/controllable_unit/${record?.controllable_unit_id}/suspension/${record?.id}/comment_history`}
-      startIcon={<HistoryIcon />}
-      label="View History of Comments"
-    />
-  );
-};
-
-const CommentList = () => {
-  const record = useRecordContext<ControllableUnitSuspension>();
-  return (
-    <GenericCommentList
-      parentPath={
-        record
-          ? [
-              {
-                resource: "controllable_unit",
-                id: record.controllable_unit_id!,
-              },
-              { resource: "suspension", id: record.id! },
-            ]
-          : undefined
-      }
     />
   );
 };
@@ -180,15 +140,6 @@ export const ControllableUnitSuspensionShow = () => {
         </Stack>
         <HistoryButton />
         {!isHistory && <EventButton filterOnSubject />}
-        {!isHistory && (
-          <>
-            <Typography variant="h6" gutterBottom>
-              Comments
-            </Typography>
-            <CommentHistoryButton />
-            <CommentList />
-          </>
-        )}
       </SimpleShowLayout>
     </Show>
   );
