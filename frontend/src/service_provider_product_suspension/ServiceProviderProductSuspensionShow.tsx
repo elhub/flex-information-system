@@ -7,9 +7,7 @@ import {
 } from "react-admin";
 import { FieldStack } from "../auth";
 import { Typography, Stack } from "@mui/material";
-import {
-  ResourceHistoryButton,
-} from "../components/history";
+import { ResourceHistoryButton } from "../components/history";
 import { DateField } from "../components/datetime";
 import { EventButton } from "../event/EventButton";
 import { IdentityField } from "../components/IdentityField";

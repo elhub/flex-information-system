@@ -5,7 +5,6 @@ import { zEntityCreateRequest } from "../generated-client/zod.gen";
 import { getFields, unTypedZodResolver } from "../zod";
 import { FormContainer, Heading } from "../components/ui";
 import { TextInput, EnumInput, FormToolbar } from "../components/EDS-ra/inputs";
-import { email, regex, regexes } from "zod";
 
 const businessIDTypeOfEntityType = (entityType: string) => {
   switch (entityType) {
@@ -23,10 +22,7 @@ const EntityTypeInput = (props: any) => {
   const entityType = watch("type");
 
   useEffect(() => {
-    setValue(
-      "business_id_type",
-      businessIDTypeOfEntityType(entityType),
-    );
+    setValue("business_id_type", businessIDTypeOfEntityType(entityType));
   }, [entityType, setValue]);
 
   return (
@@ -36,15 +32,11 @@ const EntityTypeInput = (props: any) => {
       defaultValue="person"
       required
       onChange={(value: string | null) => {
-        setValue(
-          "business_id_type",
-          businessIDTypeOfEntityType(value ?? ""),
-        );
+        setValue("business_id_type", businessIDTypeOfEntityType(value ?? ""));
       }}
     />
   );
 };
-
 
 export const EntityInput = () => {
   const fields = getFields(zEntityCreateRequest.shape);
