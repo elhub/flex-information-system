@@ -1,4 +1,5 @@
 import { Loader, Badge, BodyText } from "../components/ui";
+import styles from "./ServiceProvidingGroupExpandedRow.module.css";
 import { useTranslate } from "ra-core";
 import { RaRecord } from "ra-core";
 import { Link } from "react-router-dom";
@@ -43,25 +44,7 @@ type RowItemProps = {
 const RowItem = ({ name, statusBadge, id, to }: RowItemProps) => (
   <Link
     to={to}
-    style={{
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-between",
-      padding: "10px 12px",
-      borderRadius: "8px",
-      background: "var(--eds-color-neutral-0, #ffffff)",
-      marginBottom: "6px",
-      gap: "12px",
-      textDecoration: "none",
-      transition: "background 0.15s",
-    }}
-    onMouseEnter={(e) =>
-      (e.currentTarget.style.background =
-        "var(--eds-semantic-background-alternative)")
-    }
-    onMouseLeave={(e) =>
-      (e.currentTarget.style.background = "var(--eds-color-neutral-0, #ffffff)")
-    }
+    className={styles.rowItem}
   >
     <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
       <span
