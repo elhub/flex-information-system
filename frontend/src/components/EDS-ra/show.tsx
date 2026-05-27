@@ -49,13 +49,9 @@ const SimpleShowLayout = ({
           {historyButton ?? <ResourceHistoryButton />}
           <EventButton />
         </div>
-      ) : (
-        historyOnlyActions ? (
-          <div className="flex justify-end gap-2">
-            {historyOnlyActions}
-          </div>
-        ) : null
-      )}
+      ) : historyOnlyActions ? (
+        <div className="flex justify-end gap-2">{historyOnlyActions}</div>
+      ) : null}
       <Panel border>
         <Content>{children}</Content>
       </Panel>
@@ -66,7 +62,14 @@ const SimpleShowLayout = ({
 export const Show = <RecordType extends RaRecord = any>(
   props: ShowBaseProps<RecordType> & SimpleShowLayoutProps,
 ) => {
-  const { children, extraActions, historyOnlyActions, editButton, historyButton, ...rest } = props;
+  const {
+    children,
+    extraActions,
+    historyOnlyActions,
+    editButton,
+    historyButton,
+    ...rest
+  } = props;
 
   return (
     <ShowBase

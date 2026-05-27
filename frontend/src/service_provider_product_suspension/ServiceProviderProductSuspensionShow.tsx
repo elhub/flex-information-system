@@ -26,13 +26,20 @@ export const ServiceProviderProductSuspensionShow = () => {
       </Heading>
       <Content>
         <TextField source={fields.id.source} label />
-        <TextField source={fields.service_provider_product_suspension_id.source} label />
+        <TextField
+          source={fields.service_provider_product_suspension_id.source}
+          label
+        />
         <ReferenceField
           source={fields.procuring_system_operator_id.source}
           reference="party"
           label
         />
-        <ReferenceField source={fields.service_provider_id.source} reference="party" label />
+        <ReferenceField
+          source={fields.service_provider_id.source}
+          reference="party"
+          label
+        />
         <ProductTypeArrayField source={fields.product_type_ids.source} label />
         <EnumField
           source={fields.reason.source}

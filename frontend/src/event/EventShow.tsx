@@ -13,9 +13,7 @@ const DataField = () => {
   const value = record?.data;
   return (
     <BaseField source={eventFields.data.source} label>
-      <BodyText size="small">
-        {value ? JSON.stringify(value) : "{}"}
-      </BodyText>
+      <BodyText size="small">{value ? JSON.stringify(value) : "{}"}</BodyText>
     </BaseField>
   );
 };

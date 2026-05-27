@@ -1,6 +1,13 @@
 import { useGetOne, useRecordContext } from "ra-core";
 import { zNotification } from "../generated-client/zod.gen";
-import { Alert, BodyText, Content, Heading, Loader, VerticalSpace } from "../components/ui";
+import {
+  Alert,
+  BodyText,
+  Content,
+  Heading,
+  Loader,
+  VerticalSpace,
+} from "../components/ui";
 import {
   Show,
   TextField,
@@ -63,7 +70,11 @@ export const NotificationShow = () => (
     <Content>
       <TextField source={notificationFields.id.source} label />
       <TextField source={notificationFields.acknowledged.source} label />
-      <ReferenceField source={notificationFields.party_id.source} reference="party" label />
+      <ReferenceField
+        source={notificationFields.party_id.source}
+        reference="party"
+        label
+      />
     </Content>
     <VerticalSpace />
     <Heading level={2} size="small" spacing>
@@ -105,7 +116,11 @@ export const NotificationShow = () => (
       Registration
     </Heading>
     <Content>
-      <DateField source={notificationFields.recorded_at.source} showTime label />
+      <DateField
+        source={notificationFields.recorded_at.source}
+        showTime
+        label
+      />
       <IdentityField source={notificationFields.recorded_by.source} label />
     </Content>
     <EventResourceButton />
