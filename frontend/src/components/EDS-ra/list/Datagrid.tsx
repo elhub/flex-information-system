@@ -99,7 +99,7 @@ export const DataTable = <T extends RaRecord>({
     <Table size="medium" style={{ width: "100%" }}>
       <Table.Header>
         <Table.Row>
-          {expandPanel && <Table.ColumnHeader />}
+          {expandPanel && <Table.ColumnHeader style={{ width: "1px" }} />}
           {columns.map((child, index) => {
             const { source, label, reference, headerTooltip, children } =
               child.props as {
