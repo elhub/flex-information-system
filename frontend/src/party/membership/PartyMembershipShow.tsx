@@ -44,7 +44,10 @@ export const PartyMembershipShow = () => {
     <Show
       editButton={canUpdate && !isHistory ? <EditButton /> : undefined}
       historyButton={
-        <NestedResourceHistoryButton child="membership" label="party memberships" />
+        <NestedResourceHistoryButton
+          child="membership"
+          label="party memberships"
+        />
       }
       extraActions={!isHistory ? <EventButton filterOnSubject /> : undefined}
     >
@@ -54,8 +57,16 @@ export const PartyMembershipShow = () => {
       <Content>
         <TextField source={fields.id.source} label />
         <TextField source={fields.party_membership_id.source} label />
-        <ReferenceField source={fields.entity_id.source} reference="entity" label />
-        <ReferenceField source={fields.party_id.source} reference="party" label />
+        <ReferenceField
+          source={fields.entity_id.source}
+          reference="entity"
+          label
+        />
+        <ReferenceField
+          source={fields.party_id.source}
+          reference="party"
+          label
+        />
         <ScopesField source={fields.scopes.source} label />
       </Content>
       <VerticalSpace />

@@ -80,7 +80,10 @@ export const ServiceProvidingGroupGridSuspensionShow = () => {
       </Heading>
       <Content>
         <TextField source={fields.id.source} label />
-        <TextField source={fields.service_providing_group_grid_suspension_id.source} label />
+        <TextField
+          source={fields.service_providing_group_grid_suspension_id.source}
+          label
+        />
         <ReferenceField
           source={fields.service_providing_group_id.source}
           reference="service_providing_group"

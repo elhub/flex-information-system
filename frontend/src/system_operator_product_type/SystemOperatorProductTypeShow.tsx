@@ -26,8 +26,15 @@ export const SystemOperatorProductTypeShow = () => {
       </Heading>
       <Content>
         <TextField source={fields.id.source} label />
-        <TextField source={fields.system_operator_product_type_id.source} label />
-        <ReferenceField source={fields.system_operator_id.source} reference="party" label />
+        <TextField
+          source={fields.system_operator_product_type_id.source}
+          label
+        />
+        <ReferenceField
+          source={fields.system_operator_id.source}
+          reference="party"
+          label
+        />
         <ProductTypeField source={fields.product_type_id.source} />
         <EnumField
           source={fields.status.source}

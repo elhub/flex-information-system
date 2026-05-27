@@ -79,7 +79,10 @@ export const ServiceProvidingGroupMembershipShow = () => {
       </Heading>
       <Content>
         <TextField source={fields.id.source} label />
-        <TextField source={fields.service_providing_group_membership_id.source} label />
+        <TextField
+          source={fields.service_providing_group_membership_id.source}
+          label
+        />
         <ReferenceField
           source={fields.controllable_unit_id.source}
           reference="controllable_unit"

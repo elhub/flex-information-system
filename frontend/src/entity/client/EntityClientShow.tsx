@@ -37,16 +37,27 @@ export const EntityClientShow = () => {
   const canUpdate = permissions?.allow("entity_client", "update");
 
   return (
-    <Show editButton={canUpdate ? <EditButton /> : undefined} historyButton={<></>}>
+    <Show
+      editButton={canUpdate ? <EditButton /> : undefined}
+      historyButton={<></>}
+    >
       <Heading level={2} size="small" spacing>
         Basic information
       </Heading>
       <Content>
         <TextField source={fields.id.source} label />
-        <ReferenceField source={fields.entity_id.source} reference="entity" label />
+        <ReferenceField
+          source={fields.entity_id.source}
+          reference="entity"
+          label
+        />
         <TextField source={fields.name.source} label />
         <TextField source={fields.client_id.source} label />
-        <ReferenceField source={fields.party_id.source} reference="party" label />
+        <ReferenceField
+          source={fields.party_id.source}
+          reference="party"
+          label
+        />
         <ScopesField source={fields.scopes.source} label />
         <TextField source={fields.client_secret.source} label />
         <TextField source={fields.public_key.source} label emptyText="--" />

@@ -88,7 +88,10 @@ export const ControllableUnitSuspensionShow = () => {
       </Heading>
       <Content>
         <TextField source={fields.id.source} label />
-        <TextField source={fields.controllable_unit_suspension_id.source} label />
+        <TextField
+          source={fields.controllable_unit_suspension_id.source}
+          label
+        />
         <ReferenceField
           source={fields.controllable_unit_id.source}
           reference="controllable_unit"

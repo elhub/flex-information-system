@@ -92,7 +92,10 @@ export const ControllableUnitServiceProviderShow = () => {
       </Heading>
       <Content>
         <TextField source={fields.id.source} label />
-        <TextField source={fields.controllable_unit_service_provider_id.source} label />
+        <TextField
+          source={fields.controllable_unit_service_provider_id.source}
+          label
+        />
         <ReferenceField
           source={fields.controllable_unit_id.source}
           reference="controllable_unit"
@@ -100,7 +103,11 @@ export const ControllableUnitServiceProviderShow = () => {
         >
           <TextField source="name" />
         </ReferenceField>
-        <ReferenceField source={fields.service_provider_id.source} reference="party" label>
+        <ReferenceField
+          source={fields.service_provider_id.source}
+          reference="party"
+          label
+        >
           <TextField source="name" />
         </ReferenceField>
         <TextField source={fields.end_user_id.source} label />
