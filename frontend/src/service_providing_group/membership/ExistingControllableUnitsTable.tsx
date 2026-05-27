@@ -37,7 +37,11 @@ const DeleteButton = ({
 
   return (
     <>
-      <Button variant="caution" onClick={() => buttonProps.onClick()}>
+      <Button
+        variant="caution"
+        onClick={() => buttonProps.onClick()}
+        className="whitespace-nowrap"
+      >
         Remove
       </Button>
       {dialog}
@@ -53,11 +57,20 @@ export const ExistingControllableUnitsTable = ({
   const t = useTranslateField();
 
   const columns: ColumnOf<typeof controllableUnits>[] = [
-    { key: "id", header: t("controllable_unit.id") },
+    {
+      key: "id",
+      header: t("controllable_unit.id"),
+      render: (v) => <span className="whitespace-nowrap">{String(v)}</span>,
+    },
     { key: "name", header: t("controllable_unit.name") },
     {
       key: "accounting_point_business_id",
       header: t("controllable_unit.accounting_point_id"),
+      render: (v) => (
+        <span className="whitespace-nowrap">
+          {(v as string | undefined) ?? "—"}
+        </span>
+      ),
     },
     {
       key: "bidding_zone",
