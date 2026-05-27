@@ -1,20 +1,18 @@
-import { required, SimpleForm, useRecordContext } from "react-admin";
-import { Typography, Stack } from "@mui/material";
+import { Form, useRecordContext } from "ra-core";
+import { useLocation } from "react-router-dom";
+import { useMemo } from "react";
 import {
   AutocompleteReferenceInput,
-  InputStack,
+  DateTimeInput,
+  EnumInput,
+  FormToolbar,
   PartyReferenceInput,
-  useCreateOrUpdate,
-} from "../../auth";
-import { useLocation } from "react-router-dom";
-import { Toolbar } from "../../components/Toolbar";
-import { DateTimeInput } from "../../components/datetime";
-import { useMemo } from "react";
+} from "../../components/EDS-ra/inputs";
+import { useCreateOrUpdate } from "../../auth";
 import { zServiceProvidingGroupGridPrequalificationCreateRequest } from "../../generated-client/zod.gen";
-import { EnumInput } from "../../components/enum";
-import { unTypedZodResolver } from "../../zod";
+import { getFields, unTypedZodResolver } from "../../zod";
+import { FormContainer, Heading } from "../../components/ui";
 
-// keep only the fields that map to the UI
 const filterRecord = ({
   service_providing_group_id,
   impacted_system_operator_id,
@@ -27,56 +25,51 @@ const filterRecord = ({
   prequalified_at,
 });
 
-// common layout to create and edit pages
+const fields = getFields(
+  zServiceProvidingGroupGridPrequalificationCreateRequest.shape,
+);
+
 export const ServiceProvidingGroupGridPrequalificationInput = () => {
   const createOrUpdate = useCreateOrUpdate();
   const { state: overrideRecord } = useLocation();
   const actualRecord = useRecordContext();
 
-  // priority to the restored values if they exist, otherwise normal edit mode
-  // Memoize the combined record to avoid re-renders causing errors
   const record = useMemo(
     () => filterRecord({ ...actualRecord, ...overrideRecord }),
     [actualRecord, overrideRecord],
   );
 
   return (
-    <SimpleForm
+    <Form
       record={record}
-      maxWidth={1280}
       resolver={unTypedZodResolver(
         zServiceProvidingGroupGridPrequalificationCreateRequest,
       )}
-      toolbar={<Toolbar />}
+      sanitizeEmptyValues
     >
-      <Stack direction="column" spacing={1}>
-        <Typography variant="h6" gutterBottom>
+      <FormContainer>
+        <Heading level={3} size="medium">
           Basic information
-        </Typography>
-        <InputStack direction="row" flexWrap="wrap">
+        </Heading>
+        <div className="flex flex-col gap-3">
           <AutocompleteReferenceInput
-            source="service_providing_group_id"
+            {...fields.service_providing_group_id}
             reference="service_providing_group"
-            label="field.service_providing_group_grid_prequalification.service_providing_group_id"
-            readOnly={record?.service_providing_group_id}
+            readOnly={!!record?.service_providing_group_id}
           />
           <PartyReferenceInput
-            source="impacted_system_operator_id"
-            label="field.service_providing_group_grid_prequalification.impacted_system_operator_id"
+            {...fields.impacted_system_operator_id}
             filter={{ type: "system_operator" }}
           />
           <EnumInput
-            source="status"
+            {...fields.status}
             enumKey="service_providing_group_grid_prequalification.status"
-            label="field.service_providing_group_grid_prequalification.status"
-            validate={createOrUpdate == "update" ? required() : undefined}
+            required={createOrUpdate == "update"}
           />
-          <DateTimeInput
-            source="prequalified_at"
-            label="field.service_providing_group_grid_prequalification.prequalified_at"
-          />
-        </InputStack>
-      </Stack>
-    </SimpleForm>
+          <DateTimeInput {...fields.prequalified_at} />
+        </div>
+        <FormToolbar />
+      </FormContainer>
+    </Form>
   );
 };

@@ -1,30 +1,25 @@
+import { Form, useGetIdentity, useRecordContext } from "ra-core";
 import {
-  required,
-  SimpleForm,
-  useGetIdentity,
-  useRecordContext,
-} from "react-admin";
-import { Typography, Stack } from "@mui/material";
-import { Toolbar } from "../../components/Toolbar";
-import {
-  PartyReferenceInput,
-  InputStack,
   AutocompleteReferenceInput,
-} from "../../auth";
+  EnumInput,
+  FormToolbar,
+  PartyReferenceInput,
+} from "../../components/EDS-ra/inputs";
 import { ControllableUnitSuspension } from "../../generated-client";
 import useLocationState from "../../hooks/useLocationState";
 import {
   zControllableUnitSuspension,
   zControllableUnitSuspensionCreateRequest,
 } from "../../generated-client/zod.gen";
-import { EnumInput } from "../../components/enum";
-import { unTypedZodResolver } from "../../zod";
+import { getFields, unTypedZodResolver } from "../../zod";
+import { FormContainer, Heading } from "../../components/ui";
 
 export type ControllableUnitSuspensionLocationState = {
   cus?: Partial<ControllableUnitSuspension>;
 };
 
-// common layout to create and edit pages
+const fields = getFields(zControllableUnitSuspensionCreateRequest.shape);
+
 export const ControllableUnitSuspensionInput = () => {
   const locationState =
     useLocationState<ControllableUnitSuspensionLocationState>();
@@ -41,45 +36,40 @@ export const ControllableUnitSuspensionInput = () => {
   };
 
   return (
-    <SimpleForm
+    <Form
       record={record}
-      maxWidth={1280}
       resolver={unTypedZodResolver(zControllableUnitSuspensionCreateRequest)}
-      toolbar={<Toolbar />}
+      sanitizeEmptyValues
     >
-      <Stack direction="column" spacing={1}>
-        <Typography variant="h6" gutterBottom>
+      <FormContainer>
+        <Heading level={3} size="medium">
           Basic information
-        </Typography>
-        <InputStack direction="row" flexWrap="wrap">
+        </Heading>
+        <div className="flex flex-col gap-3">
           <AutocompleteReferenceInput
-            source="controllable_unit_id"
+            {...fields.controllable_unit_id}
             reference="controllable_unit"
-            label="field.controllable_unit_suspension.controllable_unit_id"
             readOnly={!!record?.controllable_unit_id}
           />
-        </InputStack>
-        <InputStack direction="row" flexWrap="wrap">
           {!isSystemOperator && (
             <PartyReferenceInput
-              source="impacted_system_operator_id"
-              label="field.controllable_unit_suspension.impacted_system_operator_id"
+              {...fields.impacted_system_operator_id}
               filter={{ type: "system_operator" }}
             />
           )}
-        </InputStack>
-        <Typography variant="h6" gutterBottom>
+        </div>
+        <Heading level={3} size="medium">
           Controllable unit suspension process
-        </Typography>
-        <InputStack direction="row" flexWrap="wrap">
+        </Heading>
+        <div className="flex flex-col gap-3">
           <EnumInput
-            source="reason"
-            label="field.controllable_unit_suspension.reason"
-            validate={required()}
+            {...fields.reason}
             enumKey="controllable_unit_suspension.reason"
+            required
           />
-        </InputStack>
-      </Stack>
-    </SimpleForm>
+        </div>
+        <FormToolbar />
+      </FormContainer>
+    </Form>
   );
 };

@@ -1,15 +1,16 @@
-import { SimpleForm, useRecordContext } from "react-admin";
-import { Typography, Box, Stack } from "@mui/material";
-import { AutocompleteReferenceInput, InputStack } from "../../auth";
+import { Form, useRecordContext } from "ra-core";
 import { useLocation } from "react-router-dom";
-import { Toolbar } from "../../components/Toolbar";
-import { ValidTimeTooltip } from "../../components/ValidTimeTooltip";
-import { MidnightDateInput } from "../../components/datetime";
 import { useMemo } from "react";
 import { zServiceProvidingGroupMembershipCreateRequest } from "../../generated-client/zod.gen";
-import { unTypedZodResolver } from "../../zod";
+import { getFields, unTypedZodResolver } from "../../zod";
+import { FormContainer, Heading, FlexDiv } from "../../components/ui";
+import {
+  AutocompleteReferenceInput,
+  DateInput,
+  FormToolbar,
+} from "../../components/EDS-ra/inputs";
+import { ValidTimeTooltip } from "../../components/ValidTimeTooltip";
 
-// keep only the fields that map to the UI
 const filterRecord = ({
   service_providing_group_id,
   controllable_unit_id,
@@ -22,63 +23,61 @@ const filterRecord = ({
   valid_to,
 });
 
-// common layout to create and edit pages
+const fields = getFields(zServiceProvidingGroupMembershipCreateRequest.shape);
+
 export const ServiceProvidingGroupMembershipInput = () => {
   const { state: overrideRecord } = useLocation();
   const actualRecord = useRecordContext();
 
-  // priority to the restored values if they exist, otherwise normal edit mode
-  // Memoize the combined record to avoid re-renders causing errors
   const record = useMemo(
     () => filterRecord({ ...actualRecord, ...overrideRecord }),
     [actualRecord, overrideRecord],
   );
 
   return (
-    <SimpleForm
+    <Form
       record={record}
-      maxWidth={1280}
       resolver={unTypedZodResolver(
         zServiceProvidingGroupMembershipCreateRequest,
       )}
-      toolbar={<Toolbar />}
+      sanitizeEmptyValues
     >
-      <Stack direction="column" spacing={1}>
-        <Typography variant="h6" gutterBottom>
+      <FormContainer>
+        <Heading level={3} size="medium">
           Basic information
-        </Typography>
-        <InputStack direction="row" flexWrap="wrap">
+        </Heading>
+        <div className="flex flex-col gap-3">
           <AutocompleteReferenceInput
-            source="service_providing_group_id"
+            {...fields.service_providing_group_id}
             reference="service_providing_group"
-            label="field.service_providing_group_membership.service_providing_group_id"
             readOnly={!!overrideRecord?.service_providing_group_id}
           />
           <AutocompleteReferenceInput
-            source="controllable_unit_id"
+            {...fields.controllable_unit_id}
             reference="controllable_unit"
-            label="field.service_providing_group_membership.controllable_unit_id"
           />
-        </InputStack>
+        </div>
 
-        <Stack direction="row" flexWrap="wrap">
-          <Typography variant="h6" gutterBottom>
+        <FlexDiv
+          style={{
+            gap: "var(--eds-size-2)",
+            alignItems: "center",
+            flexWrap: "wrap",
+          }}
+        >
+          <Heading level={4} size="small">
             Valid time
-          </Typography>
-          <Box m={1} />
+          </Heading>
           <ValidTimeTooltip />
-        </Stack>
-        <InputStack direction="row" flexWrap="wrap">
-          <MidnightDateInput
-            source="valid_from"
-            label="field.service_providing_group_membership.valid_from"
-          />
-          <MidnightDateInput
-            source="valid_to"
-            label="field.service_providing_group_membership.valid_to"
-          />
-        </InputStack>
-      </Stack>
-    </SimpleForm>
+        </FlexDiv>
+
+        <div className="flex flex-col gap-3">
+          <DateInput {...fields.valid_from} outputFormat="date-time" />
+          <DateInput {...fields.valid_to} outputFormat="date-time" />
+        </div>
+
+        <FormToolbar />
+      </FormContainer>
+    </Form>
   );
 };

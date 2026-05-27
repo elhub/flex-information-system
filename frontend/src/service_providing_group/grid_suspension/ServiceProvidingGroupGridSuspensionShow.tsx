@@ -15,7 +15,6 @@ import { Link } from "react-router-dom";
 import { EventButton } from "../../event/EventButton";
 import { DateField } from "../../components/datetime";
 import { FieldStack } from "../../auth";
-import { CommentList as GenericCommentList } from "../../components/comments";
 import { IdentityField } from "../../components/IdentityField";
 import { Permissions } from "../../auth/permissions";
 import HistoryIcon from "@mui/icons-material/History";
@@ -58,45 +57,6 @@ const HistoryButton = () => {
       to={`/service_providing_group/${record?.service_providing_group_id}/grid_suspension_history${filter}`}
       startIcon={<HistoryIcon />}
       label="View History"
-    />
-  );
-};
-
-const CommentHistoryButton = () => {
-  const record = useRecordContext<ServiceProvidingGroupGridSuspension>();
-  const { permissions } = usePermissions<Permissions>();
-
-  return (
-    <Button
-      component={Link}
-      disabled={
-        !permissions?.allow(
-          "service_providing_group_grid_suspension_comment_history",
-          "read",
-        )
-      }
-      to={`/service_providing_group/${record?.service_providing_group_id}/grid_suspension/${record?.id}/comment_history`}
-      startIcon={<HistoryIcon />}
-      label="View History of Comments"
-    />
-  );
-};
-
-const CommentList = () => {
-  const record = useRecordContext<ServiceProvidingGroupGridSuspension>();
-  return (
-    <GenericCommentList
-      parentPath={
-        record
-          ? [
-              {
-                resource: "service_providing_group",
-                id: record.service_providing_group_id!,
-              },
-              { resource: "grid_suspension", id: record.id! },
-            ]
-          : undefined
-      }
     />
   );
 };
@@ -185,15 +145,6 @@ export const ServiceProvidingGroupGridSuspensionShow = () => {
         </Stack>
         <HistoryButton />
         {!isHistory && <EventButton filterOnSubject />}
-        {!isHistory && (
-          <>
-            <Typography variant="h6" gutterBottom>
-              Comments
-            </Typography>
-            <CommentHistoryButton />
-            <CommentList />
-          </>
-        )}
       </SimpleShowLayout>
     </Show>
   );
