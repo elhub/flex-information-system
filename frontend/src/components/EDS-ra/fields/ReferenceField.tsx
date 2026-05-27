@@ -10,6 +10,7 @@ import { BaseField, BaseFieldProps } from "./BaseField";
 type ReferenceFieldProps = ReferenceFieldBaseProps &
   Omit<BaseFieldProps, "children"> & {
     emptyText?: ReactNode;
+    hideLabel?: boolean;
   };
 
 export const ReferenceField = (props: ReferenceFieldProps) => {
@@ -17,6 +18,7 @@ export const ReferenceField = (props: ReferenceFieldProps) => {
     children,
     emptyText,
     label,
+    hideLabel,
     tooltip,
     labelDirection = "row",
     textSize = "small",
@@ -53,7 +55,7 @@ export const ReferenceField = (props: ReferenceFieldProps) => {
     <BaseField
       textSize={textSize}
       source={rest.source}
-      label={label}
+      label={hideLabel ? false : label}
       tooltip={tooltip}
       labelDirection={labelDirection}
     >

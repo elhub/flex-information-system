@@ -1,15 +1,15 @@
 import {
   AutocompleteInput,
   Datagrid,
-  DateField,
   EnumArrayInput,
-  EnumField,
   List,
   PartyReferenceInput,
   ReferenceField,
   ResourceButton,
+  StatusBadgeField,
   TextField,
 } from "../components/EDS-ra";
+import { noticeStatusVariantMap } from "./noticeStatus";
 import noticeTypes from "./noticeTypes";
 import { zNotice } from "../generated-client/zod.gen";
 import { getFields } from "../zod";
@@ -54,11 +54,11 @@ export const NoticeList = () => {
         </ReferenceField>
         <TextField source={noticeFields.type.source} />
         <TextField source={noticeFields.source.source} />
-        <EnumField
+        <StatusBadgeField
           source={noticeFields.status.source}
           enumKey="notice.status"
+          variantMap={noticeStatusVariantMap}
         />
-        <DateField source={noticeFields.recorded_at.source} showTime />
         <NoticeResourceButton />
       </Datagrid>
     </List>

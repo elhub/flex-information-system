@@ -1,31 +1,17 @@
-import { ComponentType } from "react";
 import {
   IconCrossCircle,
   IconQualitiesCircle,
   IconStopWatch15,
   IconWarningCircle,
-  SvgIconProps,
 } from "@elhub/ds-icons";
 import { ServiceProvidingGroupProductApplicationStatus } from "../../../generated-client";
-
-export type SpgpaBadgeVariant = {
-  status:
-    | "ongoing"
-    | "failed"
-    | "approved-with-warning"
-    | "approved"
-    | "stopped"
-    | "temporarily-stopped"
-    | "pending"
-    | "rejected";
-  icon: ComponentType<SvgIconProps>;
-};
+import { StatusVariant } from "../../../components/EDS-ra/fields/StatusBadgeField";
 
 export const spgpaStatusVariantMap: Record<
   ServiceProvidingGroupProductApplicationStatus,
-  SpgpaBadgeVariant
+  StatusVariant
 > = {
-  requested: { status: "pending", icon: IconStopWatch15 },
+  requested: { status: "ongoing", icon: IconStopWatch15 },
   prequalification: { status: "ongoing", icon: IconStopWatch15 },
   temporary_qualified: {
     status: "approved-with-warning",
@@ -33,5 +19,5 @@ export const spgpaStatusVariantMap: Record<
   },
   prequalified: { status: "approved", icon: IconQualitiesCircle },
   verified: { status: "approved", icon: IconQualitiesCircle },
-  rejected: { status: "rejected", icon: IconCrossCircle },
+  rejected: { status: "failed", icon: IconCrossCircle },
 };

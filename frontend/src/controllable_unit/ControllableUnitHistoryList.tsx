@@ -3,8 +3,7 @@ import { useParams } from "react-router-dom";
 import { Datagrid, List } from "../components/EDS-ra/list";
 import {
   DateField,
-  EnumField,
-  ReferenceField,
+  StatusBadgeField,
   TextField,
 } from "../components/EDS-ra/fields";
 import { BodyText, Tooltip } from "../components/ui";
@@ -13,6 +12,9 @@ import {
   zControllableUnitHistory,
 } from "../generated-client/zod.gen";
 import { getFields } from "../zod";
+import { cuStatusVariantMap } from "./controllableUnitStatus";
+import { RegulationDirectionField } from "./RegulationDirectionField";
+import { AccountingPointLinkField } from "../accounting_point/AccountingPointLinkField";
 
 const IsSmallField = ({ source: _source }: { source: string }) => {
   const record = useRecordContext();
@@ -53,22 +55,16 @@ export const ControllableUnitHistoryList = () => {
     >
       <Datagrid rowClick={false}>
         <TextField {...fields.id} />
-        <TextField {...historyFields.controllable_unit_id} />
-        <TextField {...fields.business_id} />
-        <TextField {...fields.name} />
+        <TextField {...fields.name} weight="semibold" />
         <DateField {...fields.start_date} />
-        <EnumField {...fields.status} enumKey="controllable_unit.status" />
-        <EnumField
-          {...fields.regulation_direction}
-          enumKey="controllable_unit.regulation_direction"
-        />
+        <RegulationDirectionField source={fields.regulation_direction.source} />
         <IsSmallField source={fields.is_small.source} />
-        <ReferenceField
-          {...fields.accounting_point_id}
-          reference="accounting_point"
-        >
-          <TextField source="business_id" />
-        </ReferenceField>
+        <AccountingPointLinkField source={fields.accounting_point_id.source} />
+        <StatusBadgeField
+          source={fields.status.source}
+          enumKey="controllable_unit.status"
+          variantMap={cuStatusVariantMap}
+        />
         <DateField {...fields.recorded_at} showTime />
         <DateField {...historyFields.replaced_at} showTime />
       </Datagrid>

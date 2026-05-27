@@ -20,12 +20,14 @@ type DatagridProps<T extends RaRecord = RaRecord> = {
   children: ReactNode;
   empty?: boolean;
   rowClick?: false | ((record: T) => string);
+  expandPanel?: (record: T) => ReactNode;
 };
 
 export const Datagrid = <T extends RaRecord>({
   children,
   empty,
   rowClick,
+  expandPanel,
 }: DatagridProps<T>) => {
   const { data: listData, isLoading } = useListContext<T>();
   const data = listData ?? [];
@@ -35,7 +37,12 @@ export const Datagrid = <T extends RaRecord>({
   }
 
   return (
-    <DataTable<T> data={data} empty={empty} rowClick={rowClick}>
+    <DataTable<T>
+      data={data}
+      empty={empty}
+      rowClick={rowClick}
+      expandPanel={expandPanel}
+    >
       {children}
     </DataTable>
   );
@@ -46,6 +53,7 @@ type DataTableProps<T extends RaRecord = RaRecord> = {
   empty?: boolean;
   emptyNode?: ReactNode;
   rowClick?: false | ((record: T) => string);
+  expandPanel?: (record: T) => ReactNode;
   data: T[];
 };
 
@@ -54,9 +62,9 @@ export const DataTable = <T extends RaRecord>({
   empty,
   emptyNode,
   rowClick,
+  expandPanel,
   data,
 }: DataTableProps<T>) => {
-  // try to get data from list context if not provided directly
   const resource = useResourceContext();
   const columns = Children.toArray(children).filter(isValidElement);
   const navigate = useNavigate();
@@ -83,16 +91,15 @@ export const DataTable = <T extends RaRecord>({
     navigate(url);
   };
 
-  // Only show loading when using list context (not when data is passed directly)
-
   if (data.length === 0 && empty !== false) {
     return emptyNode ?? <BodyText>No results</BodyText>;
   }
 
   return (
-    <Table>
+    <Table size="medium" style={{ width: "100%" }}>
       <Table.Header>
         <Table.Row>
+          {expandPanel && <Table.ColumnHeader style={{ width: "1px" }} />}
           {columns.map((child, index) => {
             const { source, label, reference, headerTooltip, children } =
               child.props as {
@@ -133,20 +140,42 @@ export const DataTable = <T extends RaRecord>({
       <Table.Body>
         {data.map((record) => (
           <RecordContextProvider key={record.id} value={record}>
-            <Table.Row
-              style={hasRowClick ? { cursor: "pointer" } : undefined}
-              onClick={(e) => handleRowClick(e, record)}
-            >
-              {columns.map((child, index) => {
-                const key =
-                  (child.props as { source?: string }).source ?? index;
-                return (
-                  <Table.DataCell key={key}>
-                    {cloneElement(child)}
-                  </Table.DataCell>
-                );
-              })}
-            </Table.Row>
+            {expandPanel ? (
+              <Table.ExpandableRow
+                style={hasRowClick ? { cursor: "pointer" } : undefined}
+                onClick={(e) => handleRowClick(e, record)}
+                content={
+                  <RecordContextProvider value={record}>
+                    {expandPanel(record)}
+                  </RecordContextProvider>
+                }
+              >
+                {columns.map((child, index) => {
+                  const key =
+                    (child.props as { source?: string }).source ?? index;
+                  return (
+                    <Table.DataCell key={key}>
+                      {cloneElement(child)}
+                    </Table.DataCell>
+                  );
+                })}
+              </Table.ExpandableRow>
+            ) : (
+              <Table.Row
+                style={hasRowClick ? { cursor: "pointer" } : undefined}
+                onClick={(e) => handleRowClick(e, record)}
+              >
+                {columns.map((child, index) => {
+                  const key =
+                    (child.props as { source?: string }).source ?? index;
+                  return (
+                    <Table.DataCell key={key}>
+                      {cloneElement(child)}
+                    </Table.DataCell>
+                  );
+                })}
+              </Table.Row>
+            )}
           </RecordContextProvider>
         ))}
       </Table.Body>
