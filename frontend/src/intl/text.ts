@@ -50,7 +50,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "lookup.input.controllable_unit": "Kontrollerbar enhet",
     "lookup.input.end_user": "Sluttbruker",
     spg_grid_prequalification_header: "Nettprekvalifiseringer",
-    spg_product_application_header: "Produktsøknader",
+    spg_product_application_header: "Produktprekvalifiseringer",
     spg_grid_prequalification_empty: "Ingen nettprekvalifiseringer",
     spg_product_application_empty: "Ingen produktprekvalifiseringer",
     spg_activate_group_notice:
