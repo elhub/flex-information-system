@@ -1,6 +1,5 @@
 import { usePermissions } from "react-admin";
-import { List } from "../components/EDS-ra/list";
-import { ExpandableDatagrid } from "../components/EDS-ra/list";
+import { List, Datagrid } from "../components/EDS-ra/list";
 import {
   TextField,
   ReferenceField,
@@ -26,7 +25,7 @@ export const ServiceProvidingGroupList = () => {
       empty={false}
       actions={canCreate ? [<CreateButton key="create" />] : []}
     >
-      <ExpandableDatagrid
+      <Datagrid
         expandPanel={(record: RaRecord) => (
           <ServiceProvidingGroupExpandedRow
             record={record as RaRecord & { id: number }}
@@ -52,7 +51,7 @@ export const ServiceProvidingGroupList = () => {
           enumKey="service_providing_group.status"
           variantMap={spgStatusVariantMap}
         />
-      </ExpandableDatagrid>
+      </Datagrid>
     </List>
   );
 };

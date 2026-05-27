@@ -15,19 +15,10 @@ type BoxHeaderProps = {
 };
 
 const BoxHeader = ({ title }: BoxHeaderProps) => (
-  <div
-    style={{
-      marginBottom: "16px",
-    }}
-  >
+  <div className="mb-4">
     <span
-      style={{
-        fontWeight: 700,
-        fontSize: "13px",
-        color: "#003d2b",
-        letterSpacing: "0.05em",
-        textTransform: "uppercase",
-      }}
+      style={{ color: "#003d2b", letterSpacing: "0.05em" }}
+      className="font-bold text-[13px] uppercase"
     >
       {title}
     </span>
@@ -43,14 +34,10 @@ type RowItemProps = {
 
 const RowItem = ({ name, statusBadge, id, to }: RowItemProps) => (
   <Link to={to} className={styles.rowItem}>
-    <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+    <div className="flex items-center gap-3">
       <span
-        style={{
-          fontSize: "12px",
-          color: "var(--eds-color-neutral-500, #6b7280)",
-          fontWeight: 500,
-          minWidth: "28px",
-        }}
+        style={{ color: "var(--eds-color-neutral-500, #6b7280)" }}
+        className="text-xs font-medium min-w-7"
       >
         #{id}
       </span>
@@ -62,11 +49,8 @@ const RowItem = ({ name, statusBadge, id, to }: RowItemProps) => (
 
 const EmptyBox = ({ message }: { message: string }) => (
   <div
-    style={{
-      padding: "16px 12px",
-      textAlign: "center",
-      color: "var(--eds-color-neutral-400, #9ca3af)",
-    }}
+    style={{ color: "var(--eds-color-neutral-400, #9ca3af)" }}
+    className="py-4 px-3 text-center"
   >
     <BodyText size="small">{message}</BodyText>
   </div>
@@ -87,24 +71,17 @@ export const ServiceProvidingGroupExpandedRow = ({ record }: Props) => {
     useSpgProductApplications(spgId);
 
   const boxStyle: React.CSSProperties = {
-    flex: "1 1 0",
-    minWidth: "280px",
     background: "var(--eds-color-neutral-100, #f3f4f6)",
-    borderRadius: "12px",
-    padding: "20px 20px 16px 20px",
     border: "1px solid var(--eds-color-neutral-200, #e5e7eb)",
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        gap: "20px",
-        flexWrap: "wrap",
-      }}
-    >
+    <div className="flex gap-5 flex-wrap">
       {/* Grid Prequalification box */}
-      <div style={boxStyle}>
+      <div
+        style={boxStyle}
+        className="flex-1 min-w-[280px] rounded-xl px-5 pt-5 pb-4"
+      >
         <BoxHeader
           title={translate("text.spg_grid_prequalification_header", {
             _: "Grid Prequalifications",
@@ -151,7 +128,10 @@ export const ServiceProvidingGroupExpandedRow = ({ record }: Props) => {
       </div>
 
       {/* Product Application box */}
-      <div style={boxStyle}>
+      <div
+        style={boxStyle}
+        className="flex-1 min-w-[280px] rounded-xl px-5 pt-5 pb-4"
+      >
         <BoxHeader
           title={translate("text.spg_product_application_header", {
             _: "Product Applications",
