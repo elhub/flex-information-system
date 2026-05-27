@@ -459,19 +459,45 @@ func (data *api) entityLookupHandler(
 		"entity type must be either 'person' or 'organisation'",
 	)
 
-	regexPersonBusinessID := regexp.MustCompile("^[1-9][0-9]{10}$")
-	if entityLookupRequestBody.Type == "person" {
+	validBusinessIDTypes := map[string]string{
+		"pid":   "person",
+		"email": "person",
+		"org":   "organisation",
+	}
+
+	expectedType, validBusinessIDType := validBusinessIDTypes[entityLookupRequestBody.BusinessIDType]
+	entityLookupValidator.Check(
+		validBusinessIDType,
+		"business_id_type must be one of 'pid', 'email', 'org'",
+	)
+
+	if validBusinessIDType {
 		entityLookupValidator.Check(
-			regexPersonBusinessID.MatchString(entityLookupRequestBody.BusinessID),
-			"person number must be 11 digit long",
+			expectedType == entityLookupRequestBody.Type,
+			"%s", "business_id_type '"+entityLookupRequestBody.BusinessIDType+
+				"' is not valid for entity type '"+entityLookupRequestBody.Type+"'",
 		)
 	}
 
+	regexPersonBusinessID := regexp.MustCompile("^[1-9][0-9]{10}$")
+	regexEmailBusinessID := regexp.MustCompile(`^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$`)
 	regexOrganisationBusinessID := regexp.MustCompile("^[1-9][0-9]{8}$")
-	if entityLookupRequestBody.Type == "organisation" {
+
+	switch entityLookupRequestBody.BusinessIDType {
+	case "pid":
+		entityLookupValidator.Check(
+			regexPersonBusinessID.MatchString(entityLookupRequestBody.BusinessID),
+			"person number must be 11 digits long",
+		)
+	case "email":
+		entityLookupValidator.Check(
+			regexEmailBusinessID.MatchString(entityLookupRequestBody.BusinessID),
+			"email address is not valid",
+		)
+	case "org":
 		entityLookupValidator.Check(
 			regexOrganisationBusinessID.MatchString(entityLookupRequestBody.BusinessID),
-			"organisation number must be 9 digit long",
+			"organisation number must be 9 digits long",
 		)
 	}
 
@@ -501,9 +527,12 @@ func (data *api) entityLookupHandler(
 
 	entityLookupRow, err := queries.EntityLookup(
 		ctx,
-		entityLookupRequestBody.BusinessID,
-		entityLookupRequestBody.Name,
-		entityLookupRequestBody.Type,
+		models.EntityLookupParams{
+			EntityBusinessID:     entityLookupRequestBody.BusinessID,
+			EntityName:           entityLookupRequestBody.Name,
+			EntityType:           entityLookupRequestBody.Type,
+			EntityBusinessIDType: entityLookupRequestBody.BusinessIDType,
+		},
 	)
 	if err != nil {
 		slog.ErrorContext(ctx, "entity lookup query failed", "error", err)

@@ -71,6 +71,7 @@ from .entity_client_response import EntityClientResponse
 from .entity_client_update_request import EntityClientUpdateRequest
 from .entity_create_request import EntityCreateRequest
 from .entity_lookup_request import EntityLookupRequest
+from .entity_lookup_request_business_id_type import EntityLookupRequestBusinessIdType
 from .entity_lookup_request_type import EntityLookupRequestType
 from .entity_lookup_response import EntityLookupResponse
 from .entity_response import EntityResponse
@@ -333,6 +334,7 @@ __all__ = (
     "EntityClientUpdateRequest",
     "EntityCreateRequest",
     "EntityLookupRequest",
+    "EntityLookupRequestBusinessIdType",
     "EntityLookupRequestType",
     "EntityLookupResponse",
     "EntityResponse",

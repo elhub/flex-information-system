@@ -59,7 +59,7 @@ const ListActions = ({
           variant="invisible"
           icon={IconSearch}
         >
-          Add member via lookup
+          Add new member
         </Button>
       )}
       <NestedResourceHistoryButton child="membership" label="View History" />

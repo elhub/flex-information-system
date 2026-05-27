@@ -386,11 +386,23 @@ components:
       properties:
         business_id:
           description: >-
-            The business identifier of the entity. Person number or
-            organisation number, according to `type`.
+            The business identifier of the entity. Person number, email address,
+            or organisation number, according to `business_id_type`.
           format: text
           type: string
           example: "13370000000"
+        business_id_type:
+          description: >-
+            The type of business identifier. For persons, either `pid`
+            (personnummer, 11 digits) or `email`. For organisations, `org`
+            (organisation number, 9 digits).
+          format: text
+          type: string
+          enum:
+            - pid
+            - email
+            - org
+          example: pid
         name:
           description: Name of the entity.
           format: text
@@ -406,6 +418,7 @@ components:
           example: person
       required:
         - business_id
+        - business_id_type
         - name
         - type
     entity_lookup_response:

@@ -1,8 +1,9 @@
-import { useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import {
   Alert,
-  BodyText,
   Button,
   Chips,
   FormItem,
@@ -10,10 +11,16 @@ import {
   Modal,
   TextField,
 } from "../../components/ui";
-import { IconSearch, IconPlus } from "@elhub/ds-icons";
-import { apiURL, API_VERSION } from "../../httpConfig";
-import { createPartyMembership } from "../../generated-client";
+import { IconPlus } from "@elhub/ds-icons";
+import {
+  callEntityLookup,
+  createPartyMembership,
+} from "../../generated-client";
 import { AuthScope } from "../../generated-client/types.gen";
+import {
+  zAuthScope,
+  zEntityLookupRequest,
+} from "../../generated-client/zod.gen";
 import { throwOnError } from "../../util";
 import { Identifier } from "ra-core";
 
@@ -21,17 +28,7 @@ import { Identifier } from "ra-core";
 // TODO: improve/move this component when we have support for general scopes
 // (this is reimplemented here to avoid z-index issues when mixing RA with EDS)
 
-const ALL_SCOPES: AuthScope[] = [
-  "read:data",
-  "use:data",
-  "use:data:entity:lookup",
-  "manage:data",
-  "manage:data:party_membership",
-  "manage:data:entity_client",
-  "read:auth",
-  "use:auth",
-  "manage:auth",
-];
+const ALL_SCOPES: AuthScope[] = zAuthScope.options;
 
 const DEFAULT_SCOPES: AuthScope[] = ["manage:data", "manage:auth"];
 
@@ -78,11 +75,13 @@ const ScopesInput = ({
 
 // -----------------------------------------------------------------------------
 
-// the modal is either
-//   - starting: entity lookup has to be done
-//   - entity_found: entity lookup was successful, now scopes can be chosen
-//   - submitting: the member is being added, inputs are disabled
-type Phase = "start" | "entity_found" | "submitting";
+const formSchema = zEntityLookupRequest
+  .pick({ business_id: true, name: true })
+  .extend({
+    scopes: z.array(zAuthScope),
+  });
+
+type FormValues = z.infer<typeof formSchema>;
 
 type Props = {
   partyId: Identifier;
@@ -90,8 +89,9 @@ type Props = {
   onClose: () => void;
 };
 
-// component to be able to perform entity lookup and party membership creation
-// to add the found entity to the current party in one flow
+// component to perform entity lookup and party membership creation in one step:
+// clicking "Add" will first look up the entity, then immediately add it to the
+// party (an error message is displayed if either step fails)
 export const AddPartyMemberViaEntityLookupModal = ({
   partyId,
   open,
@@ -99,181 +99,120 @@ export const AddPartyMemberViaEntityLookupModal = ({
 }: Props) => {
   const queryClient = useQueryClient();
 
-  const [phase, setPhase] = useState<Phase>("start");
-  const [businessId, setBusinessId] = useState("");
-  const [name, setName] = useState("");
-  const [entityId, setEntityId] = useState<number | null>(null);
-  const [scopes, setScopes] = useState<AuthScope[]>(DEFAULT_SCOPES);
-  const [lookupError, setLookupError] = useState<string | null>(null);
-  const [submitError, setSubmitError] = useState<string | null>(null);
-  const [isLooking, setIsLooking] = useState(false);
-
-  const reset = () => {
-    setPhase("start");
-    setBusinessId("");
-    setName("");
-    setEntityId(null);
-    setScopes(DEFAULT_SCOPES);
-    setLookupError(null);
-    setSubmitError(null);
-    setIsLooking(false);
-  };
+  const {
+    register,
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors, isValid },
+  } = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      business_id: "",
+      name: "",
+      scopes: DEFAULT_SCOPES,
+    },
+    mode: "onChange",
+  });
 
   const handleClose = () => {
     reset();
     onClose();
   };
 
-  // action when the user launches entity lookup
-  const handleLookup = async () => {
-    setLookupError(null);
-    setIsLooking(true);
-
-    try {
-      const response = await fetch(apiURL + "/entity/lookup", {
-        method: "POST",
-        headers: new Headers({
-          "Content-Type": "application/json",
-          "Api-Version": API_VERSION,
-        }),
-        body: JSON.stringify({ business_id: businessId, name, type: "person" }),
-      });
-
-      const result = await response.json();
-      if (!response.ok) {
-        setLookupError(
-          result.message ??
-            "Lookup failed. Please check the information provided.",
-        );
-      } else {
-        // set the entity ID and move to the found phase
-        setEntityId(result.entity_id);
-        setPhase("entity_found");
-      }
-    } catch {
-      setLookupError("An unexpected error occurred. Please try again.");
-    } finally {
-      setIsLooking(false);
-    }
-  };
-
-  // action when the user tries to add the member after lookup
-  const handleAdd = async () => {
-    if (entityId === null) return;
-
-    setSubmitError(null);
-    setPhase("submitting");
-
-    try {
-      await createPartyMembership({
+  const {
+    mutate: addMember,
+    isPending,
+    error: mutationError,
+  } = useMutation({
+    mutationFn: async (values: FormValues) => {
+      // step 1: entity lookup (infer business_id_type from the entered value)
+      const lookupResult = await callEntityLookup({
         body: {
-          party_id: Number(partyId),
-          entity_id: entityId,
-          scopes: scopes,
+          business_id: values.business_id,
+          business_id_type: values.business_id.includes("@") ? "email" : "pid",
+          name: values.name,
+          type: "person",
         },
       }).then(throwOnError);
 
-      // invalidate the party_membership list so it refreshes
+      // step 2: add entity to party
+      await createPartyMembership({
+        body: {
+          party_id: Number(partyId),
+          entity_id: lookupResult.entity_id!,
+          scopes: values.scopes,
+        },
+      }).then(throwOnError);
+    },
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["party_membership"] });
       handleClose();
-    } catch (e) {
-      setSubmitError(
-        e instanceof Error
-          ? e.message
-          : "Failed to add member. Please try again.",
-      );
-      setPhase("entity_found");
-    }
-  };
+    },
+  });
 
-  const canLookup = businessId.trim().length > 0 && name.trim().length > 0;
+  const errorMessage = mutationError
+    ? mutationError instanceof Error
+      ? mutationError.message
+      : "An unexpected error occurred. Please try again."
+    : null;
 
   return (
     <Modal open={open} onClose={handleClose} aria-label="Add member via lookup">
       <Modal.Header
         title="Add member via lookup"
-        description="Look up an entity by their business ID (personnummer) and name to add them as a member of this party."
+        description="Look up an entity by their personnummer or email address and name to add them as a member of this party."
       />
       <Modal.Content className="flex flex-col gap-4 min-w-lg">
-        {/* lookup form (always visible) */}
-        <div className="flex flex-col gap-3">
-          <FormItem>
-            <FormItemLabel htmlFor="lookup-business-id">
-              Business ID (personnummer)
-            </FormItemLabel>
-            <TextField
-              id="lookup-business-id"
-              value={businessId}
-              onChange={(e) => {
-                setBusinessId(e.target.value);
-                // reset found state if the user changes inputs
-                if (phase === "entity_found") {
-                  setPhase("start");
-                  setEntityId(null);
-                }
-              }}
-              disabled={phase === "submitting"}
-              placeholder="Enter the entity's business ID (personnummer)"
+        <FormItem>
+          <FormItemLabel htmlFor="lookup-business-id">
+            Business ID (personnummer or email)
+          </FormItemLabel>
+          <TextField
+            id="lookup-business-id"
+            {...register("business_id")}
+            disabled={isPending}
+            placeholder="Enter the entity's personnummer or email address"
+            aria-invalid={!!errors.business_id}
+          />
+          {errors.business_id && (
+            <Alert variant="error">{errors.business_id.message}</Alert>
+          )}
+        </FormItem>
+        <FormItem>
+          <FormItemLabel htmlFor="lookup-name">Name</FormItemLabel>
+          <TextField
+            id="lookup-name"
+            {...register("name")}
+            disabled={isPending}
+            placeholder="Enter the person's full name"
+            aria-invalid={!!errors.name}
+          />
+          {errors.name && <Alert variant="error">{errors.name.message}</Alert>}
+        </FormItem>
+        <Controller
+          name="scopes"
+          control={control}
+          render={({ field }) => (
+            <ScopesInput
+              value={field.value}
+              onChange={field.onChange}
+              disabled={isPending}
             />
-          </FormItem>
-          <FormItem>
-            <FormItemLabel htmlFor="lookup-name">Name</FormItemLabel>
-            <TextField
-              id="lookup-name"
-              value={name}
-              onChange={(e) => {
-                setName(e.target.value);
-                // reset found state if the user changes inputs
-                if (phase === "entity_found") {
-                  setPhase("start");
-                  setEntityId(null);
-                }
-              }}
-              disabled={phase === "submitting"}
-              placeholder="Enter the person's full name"
-            />
-          </FormItem>
-          {/* on error after lookup, display it under the lookup form */}
-          {lookupError && <Alert variant="error">{lookupError}</Alert>}
-          <Button
-            icon={IconSearch}
-            variant="secondary"
-            onClick={handleLookup}
-            disabled={!canLookup || isLooking || phase === "submitting"}
-          >
-            {isLooking ? "Searching…" : "Search"}
-          </Button>
-        </div>
-
-        {/* confirmation and scopes (visible when entity is found) */}
-        {phase === "entity_found" && entityId !== null && (
-          <div className="flex flex-col gap-3 border-t pt-4">
-            <Alert variant="info">
-              <BodyText>
-                Entity found (ID: {entityId}). Choose the scopes to grant and
-                confirm.
-              </BodyText>
-            </Alert>
-            <ScopesInput value={scopes} onChange={setScopes} disabled={false} />
-            {/* on error after submit, display it under the scopes input */}
-            {submitError && <Alert variant="error">{submitError}</Alert>}
-          </div>
-        )}
+          )}
+        />
+        {errorMessage && <Alert variant="error">{errorMessage}</Alert>}
       </Modal.Content>
       <Modal.Footer>
-        <Button
-          variant="secondary"
-          onClick={handleClose}
-          disabled={phase === "submitting"}
-        >
+        <Button variant="secondary" onClick={handleClose} disabled={isPending}>
           Cancel
         </Button>
         <Button
           icon={IconPlus}
-          onClick={handleAdd}
-          disabled={phase !== "entity_found" || entityId === null}
+          onClick={handleSubmit((values) => addMember(values))}
+          disabled={!isValid || isPending}
         >
-          {phase === "submitting" ? "Adding…" : "Add member"}
+          {isPending ? "Adding…" : "Add"}
         </Button>
       </Modal.Footer>
     </Modal>
