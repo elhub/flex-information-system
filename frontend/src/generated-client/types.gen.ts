@@ -164,9 +164,13 @@ export type ControllableUnitLookup = {
  */
 export type EntityLookupRequest = {
   /**
-   * The business identifier of the entity. Person number or organisation number, according to `type`.
+   * The business identifier of the entity. Email address or organisation number, according to `business_id_type`.
    */
   business_id: string;
+  /**
+   * The type of business identifier. For persons, `email`. For organisations, `org` (organisation number, 9 digits).
+   */
+  business_id_type: "email" | "org";
   /**
    * Name of the entity.
    */

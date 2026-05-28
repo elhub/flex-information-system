@@ -6,6 +6,7 @@ from typing import Any, TypeVar
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
+from ..models.entity_lookup_request_business_id_type import EntityLookupRequestBusinessIdType
 from ..models.entity_lookup_request_type import EntityLookupRequestType
 
 T = TypeVar("T", bound="EntityLookupRequest")
@@ -16,19 +17,24 @@ class EntityLookupRequest:
     """Request schema for entity lookup operations
 
     Attributes:
-        business_id (str): The business identifier of the entity. Person number or organisation number, according to
-            `type`. Example: 13370000000.
+        business_id (str): The business identifier of the entity. Email address or organisation number, according to
+            `business_id_type`. Example: john.smith@example.com.
+        business_id_type (EntityLookupRequestBusinessIdType): The type of business identifier. For persons, `email`. For
+            organisations, `org` (organisation number, 9 digits). Example: email.
         name (str): Name of the entity. Example: John Smith.
         type_ (EntityLookupRequestType): The type of the entity. Example: person.
     """
 
     business_id: str
+    business_id_type: EntityLookupRequestBusinessIdType
     name: str
     type_: EntityLookupRequestType
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         business_id = self.business_id
+
+        business_id_type = self.business_id_type.value
 
         name = self.name
 
@@ -39,6 +45,7 @@ class EntityLookupRequest:
         field_dict.update(
             {
                 "business_id": business_id,
+                "business_id_type": business_id_type,
                 "name": name,
                 "type": type_,
             }
@@ -51,12 +58,15 @@ class EntityLookupRequest:
         d = dict(src_dict)
         business_id = d.pop("business_id")
 
+        business_id_type = EntityLookupRequestBusinessIdType(d.pop("business_id_type"))
+
         name = d.pop("name")
 
         type_ = EntityLookupRequestType(d.pop("type"))
 
         entity_lookup_request = cls(
             business_id=business_id,
+            business_id_type=business_id_type,
             name=name,
             type_=type_,
         )

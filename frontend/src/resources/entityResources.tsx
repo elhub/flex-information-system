@@ -5,7 +5,6 @@ import { Permissions } from "../auth/permissions";
 import { EntityList } from "../entity/EntityList";
 import { EntityShow } from "../entity/EntityShow";
 import { EntityInput } from "../entity/EntityInput";
-import { EntityLookupInput } from "../entity/lookup/EntityLookupInput";
 import { EntityClientShow } from "../entity/client/EntityClientShow";
 import { EntityClientInput } from "../entity/client/EntityClientInput";
 
@@ -42,8 +41,6 @@ export const createEntityResources = (permissions: Permissions) => {
       }
       recordRepresentation="name"
     >
-      {/* lookup */}
-      <Route path="lookup" element={<EntityLookupInput />} />
       {/* client subresource */}
       {/* list is part of ENT show page */}
       <Route

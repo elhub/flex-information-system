@@ -4,6 +4,7 @@ from security_token_service import (
 )
 from flex.models import (
     EntityLookupRequest,
+    EntityLookupRequestBusinessIdType,
     EntityLookupRequestType,
     EntityLookupResponse,
     ErrorMessage,
@@ -32,6 +33,7 @@ def test_entity_lookup_params(sts):
         client=client_fiso,
         body=EntityLookupRequest(
             business_id="",
+            business_id_type=EntityLookupRequestBusinessIdType.ORG,
             name="TEST-ENTITY-LOOKUP",
             type_=EntityLookupRequestType.ORGANISATION,
         ),
@@ -44,6 +46,7 @@ def test_entity_lookup_params(sts):
         client=client_fiso,
         body=EntityLookupRequest(
             business_id="badformat",
+            business_id_type=EntityLookupRequestBusinessIdType.ORG,
             name="TEST-ENTITY-LOOKUP",
             type_=EntityLookupRequestType.ORGANISATION,
         ),
@@ -51,11 +54,12 @@ def test_entity_lookup_params(sts):
     assert isinstance(e, ErrorMessage)
     assert e.code == "HTTP400"
 
-    # mismatching type / business ID
+    # mismatching type / business ID (10 digits instead of 9 for org)
     e = call_entity_lookup.sync(
         client=client_fiso,
         body=EntityLookupRequest(
             business_id="4337000099",
+            business_id_type=EntityLookupRequestBusinessIdType.ORG,
             name="TEST-ENTITY-LOOKUP",
             type_=EntityLookupRequestType.ORGANISATION,
         ),
@@ -63,10 +67,12 @@ def test_entity_lookup_params(sts):
     assert isinstance(e, ErrorMessage)
     assert e.code == "HTTP400"
 
+    # mismatching business_id_type vs type (org given for person)
     e = call_entity_lookup.sync(
         client=client_fiso,
         body=EntityLookupRequest(
-            business_id="43370099",
+            business_id="433700009",
+            business_id_type=EntityLookupRequestBusinessIdType.ORG,
             name="TEST-ENTITY-LOOKUP",
             type_=EntityLookupRequestType.PERSON,
         ),
@@ -74,10 +80,12 @@ def test_entity_lookup_params(sts):
     assert isinstance(e, ErrorMessage)
     assert e.code == "HTTP400"
 
+    # invalid email
     e = call_entity_lookup.sync(
         client=client_fiso,
         body=EntityLookupRequest(
-            business_id="0337000099",
+            business_id="notanemail",
+            business_id_type=EntityLookupRequestBusinessIdType.EMAIL,
             name="TEST-ENTITY-LOOKUP",
             type_=EntityLookupRequestType.PERSON,
         ),
@@ -89,7 +97,8 @@ def test_entity_lookup_params(sts):
     e = call_entity_lookup.sync(
         client=client_fiso,
         body=EntityLookupRequest(
-            business_id="4337000099",
+            business_id="test@example.com",
+            business_id_type=EntityLookupRequestBusinessIdType.EMAIL,
             name="",
             type_=EntityLookupRequestType.PERSON,
         ),
@@ -106,17 +115,17 @@ def test_entity_lookup_fiso(sts):
     assert len(es) == 1
     ent_id = es[0].id
 
-    # lookup existing entity
+    # lookup existing entity (organisation)
     el = call_entity_lookup.sync(
         client=client_fiso,
         body=EntityLookupRequest(
             business_id="133700000",
+            business_id_type=EntityLookupRequestBusinessIdType.ORG,
             name="x",
             type_=EntityLookupRequestType.ORGANISATION,
         ),
     )
     assert isinstance(el, EntityLookupResponse)
-
     assert el.entity_id == ent_id
 
     def random_number(length):
@@ -127,12 +136,13 @@ def test_entity_lookup_fiso(sts):
 
     existing_entities_ids = [e.id for e in entities]
 
-    # lookup non-existing entity
+    # lookup non-existing person entity by email
     el = call_entity_lookup.sync(
         client=client_fiso,
         body=EntityLookupRequest(
-            business_id="3" + random_number(10),
-            name="TEST-ENTITY-LOOKUP",
+            business_id=f"test-lookup-{random_number(8)}@example.com",
+            business_id_type=EntityLookupRequestBusinessIdType.EMAIL,
+            name="TEST-ENTITY-LOOKUP-EMAIL",
             type_=EntityLookupRequestType.PERSON,
         ),
     )
@@ -151,7 +161,8 @@ def test_entity_lookup_other(sts):
         e = call_entity_lookup.sync(
             client=sts.get_client(TestEntity.TEST, role),
             body=EntityLookupRequest(
-                business_id="13370000000",
+                business_id="test@example.com",
+                business_id_type=EntityLookupRequestBusinessIdType.EMAIL,
                 name="x",
                 type_=EntityLookupRequestType.PERSON,
             ),

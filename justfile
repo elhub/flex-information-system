@@ -530,7 +530,7 @@ openapi-client-accounting-point-adapter:
     mkdir -p ./out
     rm -rf local/accounting-point/client/* ./out/openapi-client-accounting-point-adapter
 
-    ./.venv/bin/openapi-python-client generate \
+    PATH="$(pwd)/.venv/bin:$PATH" ./.venv/bin/openapi-python-client generate \
         --path ./kbackend/src/main/kotlin/no/elhub/flex/integration/accountingpointadapter/openapi.yaml \
         --output-path ./out/openapi-client-accounting-point-adapter \
         --config ./openapi/openapi-client-config.yml
@@ -565,7 +565,7 @@ openapi-client-test:
         < backend/data/static/openapi.json \
         > openapi/openapi-api-no-default.json
 
-    ./.venv/bin/openapi-python-client generate \
+    PATH="$(pwd)/.venv/bin:$PATH" ./.venv/bin/openapi-python-client generate \
         --path ./openapi/openapi-api-no-default.json \
         --output-path ./out/openapi-client \
         --config ./openapi/openapi-client-config.yml

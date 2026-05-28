@@ -1,5 +1,5 @@
 import { useResourceContext } from "ra-core";
-import { Content, Heading, VerticalSpace } from "../components/ui";
+import { BodyText, Content, Heading, VerticalSpace } from "../components/ui";
 import { PartyMembershipList } from "./membership/PartyMembershipList";
 import {
   DateField,
@@ -50,8 +50,13 @@ export const PartyShow = () => {
       {!isHistory && (
         <>
           <Heading level={2} size="small" spacing>
-            Party memberships
+            Party members
           </Heading>
+          <BodyText>
+            The following users are allowed to assume this party in the system.
+            If you are an organisation administrator, you can add more members
+            to this party by clicking the button on the right.
+          </BodyText>
           <PartyMembershipList />
         </>
       )}

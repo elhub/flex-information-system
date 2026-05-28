@@ -124,6 +124,7 @@ export const zControllableUnitLookup = z.object({
  */
 export const zEntityLookupRequest = z.object({
   business_id: z.string(),
+  business_id_type: z.enum(["email", "org"]),
   name: z.string(),
   type: z.enum(["person", "organisation"]),
 });
