@@ -18,6 +18,7 @@ import (
 	"log/slog"
 	"net/http"
 	"net/http/httputil"
+	"net/mail"
 	"net/url"
 	"regexp"
 	"slices"
@@ -478,13 +479,13 @@ func (data *api) entityLookupHandler(
 		)
 	}
 
-	regexEmailBusinessID := regexp.MustCompile(`^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$`)
 	regexOrganisationBusinessID := regexp.MustCompile("^[1-9][0-9]{8}$")
 
 	switch entityLookupRequestBody.BusinessIDType {
 	case "email":
+		_, err = mail.ParseAddress(entityLookupRequestBody.BusinessID)
 		entityLookupValidator.Check(
-			regexEmailBusinessID.MatchString(entityLookupRequestBody.BusinessID),
+			err == nil,
 			"email address is not valid",
 		)
 	case "org":

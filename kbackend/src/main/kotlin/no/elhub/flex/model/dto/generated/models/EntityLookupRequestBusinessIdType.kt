@@ -5,14 +5,12 @@ import kotlin.collections.Map
 import kotlinx.serialization.SerialName
 
 /**
- * The type of business identifier. For persons, either `pid` (personnummer, 11 digits) or `email`.
- * For organisations, `org` (organisation number, 9 digits).
+ * The type of business identifier. For persons, `email`. For organisations, `org` (organisation
+ * number, 9 digits).
  */
 public enum class EntityLookupRequestBusinessIdType(
   public val `value`: String,
 ) {
-  @SerialName("pid")
-  PID("pid"),
   @SerialName("email")
   EMAIL("email"),
   @SerialName("org")

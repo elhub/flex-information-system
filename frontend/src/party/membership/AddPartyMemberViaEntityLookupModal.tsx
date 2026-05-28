@@ -159,9 +159,9 @@ export const AddPartyMemberViaEntityLookupModal = ({
     : null;
 
   return (
-      <Modal open={open} onClose={handleClose} aria-label="Add member via lookup">
+      <Modal open={open} onClose={handleClose} aria-label="Add member">
       <Modal.Header
-        title="Add member via lookup"
+        title="Add member"
         description="Look up an entity by their email address and name to add them as a member of this party."
       />
       <Modal.Content className="flex flex-col gap-4 min-w-lg">

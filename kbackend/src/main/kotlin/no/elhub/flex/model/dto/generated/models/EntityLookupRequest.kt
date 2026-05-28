@@ -10,14 +10,14 @@ import kotlinx.serialization.Serializable
 @Serializable
 public data class EntityLookupRequest(
   /**
-   * The business identifier of the entity. Person number, email address, or organisation number,
-   * according to `business_id_type`.
+   * The business identifier of the entity. Email address or organisation number, according to
+   * `business_id_type`.
    */
   @SerialName("business_id")
   public val businessId: String,
   /**
-   * The type of business identifier. For persons, either `pid` (personnummer, 11 digits) or
-   * `email`. For organisations, `org` (organisation number, 9 digits).
+   * The type of business identifier. For persons, `email`. For organisations, `org` (organisation
+   * number, 9 digits).
    */
   @SerialName("business_id_type")
   public val businessIdType: EntityLookupRequestBusinessIdType,

@@ -784,8 +784,9 @@
                 "description": "The type of the business identifier.",
                 "format": "text",
                 "type": "string",
-                "example": "email",
+                "example": "pid",
                 "enum": [
+                    "pid",
                     "org",
                     "email"
                 ]

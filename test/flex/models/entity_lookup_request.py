@@ -17,10 +17,10 @@ class EntityLookupRequest:
     """Request schema for entity lookup operations
 
     Attributes:
-        business_id (str): The business identifier of the entity. Person number, email address, or organisation number,
-            according to `business_id_type`. Example: 13370000000.
-        business_id_type (EntityLookupRequestBusinessIdType): The type of business identifier. For persons, either `pid`
-            (personnummer, 11 digits) or `email`. For organisations, `org` (organisation number, 9 digits). Example: pid.
+        business_id (str): The business identifier of the entity. Email address or organisation number, according to
+            `business_id_type`. Example: john.smith@example.com.
+        business_id_type (EntityLookupRequestBusinessIdType): The type of business identifier. For persons, `email`. For
+            organisations, `org` (organisation number, 9 digits). Example: email.
         name (str): Name of the entity. Example: John Smith.
         type_ (EntityLookupRequestType): The type of the entity. Example: person.
     """
