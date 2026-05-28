@@ -48,7 +48,10 @@ export const useI18nProvider = () => {
       if (key.startsWith("text.")) {
         const template =
           customText[key.slice("text.".length) as TextKey] ?? key;
-        const data = options as Record<string, unknown> | undefined;
+        const data =
+          typeof options === "object" && options !== null
+            ? (options as Record<string, unknown>)
+            : undefined;
         return data
           ? template.replace(/%\{(\w+)\}/g, (_, k: string) =>
               String(data[k] ?? `%{${k}}`),
