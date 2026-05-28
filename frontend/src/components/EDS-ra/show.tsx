@@ -53,7 +53,9 @@ const SimpleShowLayout = ({
         <div className="flex justify-end gap-2">
           {canEdit && (editButton ?? <EditButton />)}
           {extraActions}
-          {historyButton === null ? null : (historyButton ?? <ResourceHistoryButton />)}
+          {historyButton === null
+            ? null
+            : (historyButton ?? <ResourceHistoryButton />)}
           {eventButton}
         </div>
       ) : historyOnlyActions ? (

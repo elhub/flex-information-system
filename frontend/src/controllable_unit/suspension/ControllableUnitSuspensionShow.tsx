@@ -1,7 +1,4 @@
-import {
-  useRecordContext,
-  usePermissions,
-} from "ra-core";
+import { useRecordContext, usePermissions } from "ra-core";
 import { useNavigate } from "react-router-dom";
 import { IconPencil, IconClockReset } from "@elhub/ds-icons";
 import { Button, Content, Heading } from "../../components/ui";
