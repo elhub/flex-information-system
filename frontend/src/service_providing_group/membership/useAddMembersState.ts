@@ -12,7 +12,10 @@ import {
 export type FailedCU = { cuId: number; error: unknown };
 
 const toMidnightISO = (date: Date): string =>
-  formatISO(date, { representation: "complete", in: tz("Europe/Oslo") });
+  formatISO(startOfDay(date, { in: tz("Europe/Oslo") }), {
+    representation: "complete",
+    in: tz("Europe/Oslo"),
+  });
 
 type Props = {
   spgId: number;
@@ -135,7 +138,7 @@ export const useAddMembersState = ({ spgId, destination }: Props) => {
 
     await Promise.allSettled(
       toRemove.map((id) => {
-        const cu = allCUs?.find((c) => c.id === id);
+        const cu = cuById.get(id);
         if (cu?.membershipId !== undefined) {
           return removeMembership(cu.membershipId).catch((error: unknown) => {
             errors.push({ cuId: id, error });

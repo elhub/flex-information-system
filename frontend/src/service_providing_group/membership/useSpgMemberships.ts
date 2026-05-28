@@ -25,7 +25,6 @@ const mapEmbeddedControllableUnit = (
   return {
     ...cu,
     membershipId,
-    accounting_point_id: cu.accounting_point?.id,
     accounting_point_business_id: cu.accounting_point?.business_id,
     bidding_zone: biddingZone?.bidding_zone,
     brp_name: brp?.balance_responsible_party?.name,
