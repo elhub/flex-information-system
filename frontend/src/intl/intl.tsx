@@ -45,9 +45,16 @@ export const useI18nProvider = () => {
         // enum value
         return enumLabels[key.slice("enum.".length) as EnumLabel] ?? key;
 
-      if (key.startsWith("text."))
-        // custom text
-        return customText[key.slice("text.".length) as TextKey] ?? key;
+      if (key.startsWith("text.")) {
+        const template =
+          customText[key.slice("text.".length) as TextKey] ?? key;
+        const data = options as Record<string, unknown> | undefined;
+        return data
+          ? template.replace(/%\{(\w+)\}/g, (_, k: string) =>
+              String(data[k] ?? `%{${k}}`),
+            )
+          : template;
+      }
 
       // React-Admin default field label gives
       // "resources.{resource}.fields.{field}" which is not associated to
