@@ -1,0 +1,16 @@
+.rowItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--eds-color-neutral-0, #ffffff);
+  margin-bottom: 6px;
+  gap: 12px;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.rowItem:hover {
+  background: var(--eds-table-row-background-color-hover);
+}

@@ -1,17 +1,11 @@
-import { ComponentType } from "react";
-import { IconStopWatch15, SvgIconProps } from "@elhub/ds-icons";
-import {
-  sppaStatusVariantMap,
-  SppaBadgeVariant,
-} from "../../service_provider_product_application/show/sppaStatus";
+import { IconStopWatch15 } from "@elhub/ds-icons";
+import { sppaStatusVariantMap } from "../../service_provider_product_application/show/sppaStatus";
+import { StatusVariant } from "../../components/EDS-ra/fields/StatusBadgeField";
 import { spgpaStatusVariantMap } from "../../service_providing_group/product_application/show/spgpaStatus";
 import { DashboardItemKind } from "../hooks/useDashboardApplications";
 import { spgpqStatusVariantMap } from "../../service_providing_group/grid_prequalification/show/spgpqStatus";
 
-export type BadgeVariant = {
-  status: SppaBadgeVariant["status"];
-  icon: ComponentType<SvgIconProps>;
-};
+export type BadgeVariant = StatusVariant;
 
 export const ENUM_KEY_PREFIX: Record<DashboardItemKind, string> = {
   sp_product_application: "service_provider_product_application.status",
@@ -21,7 +15,7 @@ export const ENUM_KEY_PREFIX: Record<DashboardItemKind, string> = {
 };
 
 export const fallbackVariant: BadgeVariant = {
-  status: "pending",
+  status: "ongoing",
   icon: IconStopWatch15,
 };
 

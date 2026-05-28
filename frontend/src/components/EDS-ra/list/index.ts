@@ -1,2 +1,2 @@
-export { Datagrid } from "./Datagrid";
+export { Datagrid, DataTable } from "./Datagrid";
 export { List } from "./List";

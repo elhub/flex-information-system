@@ -148,7 +148,13 @@ export const useAddMemberships = (spgId: number) => {
 
       return {
         succeeded: cuIds.filter((_, i) => results[i].status === "fulfilled"),
-        failed: cuIds.filter((_, i) => results[i].status === "rejected"),
+        failed: cuIds
+          .map((cuId, i) => ({ cuId, result: results[i] }))
+          .filter(({ result }) => result.status === "rejected")
+          .map(({ cuId, result }) => ({
+            cuId,
+            error: (result as PromiseRejectedResult).reason,
+          })),
       };
     },
     onSettled: () => {

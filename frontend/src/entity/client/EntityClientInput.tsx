@@ -1,15 +1,17 @@
-import {
-  PasswordInput,
-  SimpleForm,
-  TextInput,
-  useRecordContext,
-} from "react-admin";
-import { AutocompleteReferenceInput, InputStack } from "../../auth";
+import { Form, useRecordContext } from "ra-core";
 import { useLocation } from "react-router-dom";
-import { Toolbar } from "../../components/Toolbar";
-import { ScopesInput } from "../../components/scopes";
 import { zEntityClientCreateRequest } from "../../generated-client/zod.gen";
-import { unTypedZodResolver } from "../../zod";
+import { getFields, unTypedZodResolver } from "../../zod";
+import { FormContainer } from "../../components/ui";
+import {
+  TextInput,
+  TextAreaInput,
+  AutocompleteReferenceInput,
+  FormToolbar,
+} from "../../components/EDS-ra/inputs";
+import { ScopesInput } from "../../components/scopes";
+
+const fields = getFields(zEntityClientCreateRequest.shape);
 
 // common layout to create and edit pages
 export const EntityClientInput = () => {
@@ -18,39 +20,27 @@ export const EntityClientInput = () => {
   const record = { ...actualRecord, ...overrideRecord };
 
   return (
-    <SimpleForm
+    <Form
       record={record}
-      maxWidth={1280}
       resolver={unTypedZodResolver(zEntityClientCreateRequest)}
-      toolbar={<Toolbar />}
+      sanitizeEmptyValues
     >
-      <InputStack>
-        <AutocompleteReferenceInput
-          source="entity_id"
-          reference="entity"
-          label="field.entity_client.entity_id"
-          readOnly
-        />
-        <TextInput source="client_id" label="field.entity_client.client_id" />
-        <TextInput source="name" label="field.entity_client.name" />
-        <AutocompleteReferenceInput
-          source="party_id"
-          reference="party"
-          label="field.entity_client.party_id"
-        />
-        <ScopesInput source="scopes" label="field.entity_client.scopes" />
-        <PasswordInput
-          source="client_secret"
-          label="field.entity_client.client_secret"
-        />
-        <TextInput
-          source="public_key"
-          label="field.entity_client.public_key"
-          multiline={true}
-          minRows={3}
-          sx={{ minWidth: { xs: 300, md: 500 } }}
-        />
-      </InputStack>
-    </SimpleForm>
+      <FormContainer>
+        <div className="flex flex-col gap-3">
+          <AutocompleteReferenceInput
+            {...fields.entity_id}
+            reference="entity"
+            readOnly
+          />
+          <TextInput source="client_id" />
+          <TextInput {...fields.name} />
+          <AutocompleteReferenceInput {...fields.party_id} reference="party" />
+          <ScopesInput source="scopes" label="field.entity_client.scopes" />
+          <TextInput {...fields.client_secret} type="password" />
+          <TextAreaInput {...fields.public_key} rows={3} />
+        </div>
+        <FormToolbar />
+      </FormContainer>
+    </Form>
   );
 };

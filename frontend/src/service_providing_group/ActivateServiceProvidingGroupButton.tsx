@@ -1,4 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
+import { useTranslate } from "ra-core";
 import { useConfirmAction } from "../components/ConfirmAction";
 import { updateServiceProvidingGroup } from "../generated-client";
 import { Button, BodyText } from "../components/ui";
@@ -12,21 +13,19 @@ export const ActivateServiceProvidingGroupButton = ({
   disabled: boolean;
 }) => {
   const queryClient = useQueryClient();
+  const translate = useTranslate();
 
   const { buttonProps, dialog } = useConfirmAction({
-    title: "Activate service providing group",
+    title: translate("text.spg_activate_group_title"),
     content: (
       <div>
-        <BodyText>
-          Activating the service providing group will allow you to use it in a
-          product application.
-        </BodyText>
+        <BodyText>{translate("text.spg_activate_group_notice")}</BodyText>
         <BodyText className="mt-2">
-          Ensure the following before activating:
+          {translate("text.spg_activate_group_ensure")}
         </BodyText>
         <ul className="list-disc pl-5 mt-2">
-          <li>all controllable units have been added</li>
-          <li>data is correct</li>
+          <li>{translate("text.spg_activate_group_ensure_pt1")}</li>
+          <li>{translate("text.spg_activate_group_ensure_pt2")}</li>
         </ul>
       </div>
     ),

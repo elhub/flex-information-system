@@ -1,4 +1,3 @@
-import { Create } from "react-admin";
 import { ControllableUnitCreateForm } from "./ControllableUnitCreateForm";
 import { useSearchParams } from "react-router-dom";
 import { Alert } from "../components/ui";
@@ -34,13 +33,11 @@ const ControllableUnitCreate = () => {
     createParams.data;
 
   return (
-    <Create>
-      <ControllableUnitCreateForm
-        accountingPointId={accounting_point_id}
-        endUserId={end_user_id}
-        accountingPointBusinessId={accounting_point_business_id}
-      />
-    </Create>
+    <ControllableUnitCreateForm
+      accountingPointId={accounting_point_id}
+      endUserId={end_user_id}
+      accountingPointBusinessId={accounting_point_business_id}
+    />
   );
 };
 

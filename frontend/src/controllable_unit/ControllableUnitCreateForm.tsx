@@ -1,5 +1,4 @@
-import { Form, useGetIdentity, UserIdentity } from "ra-core";
-import { useNotify } from "react-admin";
+import { Form, useGetIdentity, useNotify, UserIdentity } from "ra-core";
 import { useNavigate } from "react-router-dom";
 import {
   createControllableUnit,

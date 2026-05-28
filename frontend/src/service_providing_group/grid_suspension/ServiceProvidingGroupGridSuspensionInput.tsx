@@ -1,16 +1,10 @@
+import { Form, useGetIdentity, useRecordContext } from "ra-core";
 import {
-  required,
-  SimpleForm,
-  useGetIdentity,
-  useRecordContext,
-} from "react-admin";
-import { Typography, Stack } from "@mui/material";
-import { Toolbar } from "../../components/Toolbar";
-import {
-  PartyReferenceInput,
-  InputStack,
   AutocompleteReferenceInput,
-} from "../../auth";
+  EnumInput,
+  FormToolbar,
+  PartyReferenceInput,
+} from "../../components/EDS-ra/inputs";
 import {
   ServiceProvidingGroupGridSuspension,
   ServiceProvidingGroupGridSuspensionCreateRequest,
@@ -21,14 +15,17 @@ import {
   zServiceProvidingGroupGridSuspension,
   zServiceProvidingGroupGridSuspensionCreateRequest,
 } from "../../generated-client/zod.gen";
-import { EnumInput } from "../../components/enum";
-import { unTypedZodResolver } from "../../zod";
+import { getFields, unTypedZodResolver } from "../../zod";
+import { FormContainer, Heading } from "../../components/ui";
 
 export type ServiceProvidingGroupGridSuspensionLocationState = {
   spggs: Partial<ServiceProvidingGroupGridSuspension>;
 };
 
-// common layout to create and edit pages
+const fields = getFields(
+  zServiceProvidingGroupGridSuspensionCreateRequest.shape,
+);
+
 export const ServiceProvidingGroupGridSuspensionInput = () => {
   const locationState =
     useLocationState<ServiceProvidingGroupGridSuspensionLocationState>();
@@ -44,54 +41,49 @@ export const ServiceProvidingGroupGridSuspensionInput = () => {
     | ServiceProvidingGroupGridSuspensionCreateRequest
     | ServiceProvidingGroupGridSuspensionUpdateRequest = {
     ...actualRecord,
-    ...overrideRecord,
+    ...(overrideRecord.data ?? {}),
   };
 
   return (
-    <SimpleForm
+    <Form
       record={record}
-      maxWidth={1280}
       resolver={unTypedZodResolver(
         zServiceProvidingGroupGridSuspensionCreateRequest,
       )}
-      toolbar={<Toolbar />}
+      sanitizeEmptyValues
     >
-      <Stack direction="column" spacing={1}>
-        <Typography variant="h6" gutterBottom>
+      <FormContainer>
+        <Heading level={3} size="medium">
           Basic information
-        </Typography>
-        <InputStack direction="row" flexWrap="wrap">
+        </Heading>
+        <div className="flex flex-col gap-3">
           <AutocompleteReferenceInput
-            source="service_providing_group_id"
+            {...fields.service_providing_group_id}
             reference="service_providing_group"
-            label="field.service_providing_group_grid_suspension.service_providing_group_id"
             readOnly={
               "service_providing_group_id" in record &&
               !!record.service_providing_group_id
             }
           />
-        </InputStack>
-        <InputStack direction="row" flexWrap="wrap">
           {!isSystemOperator && (
             <PartyReferenceInput
-              source="impacted_system_operator_id"
-              label="field.service_providing_group_grid_suspension.impacted_system_operator_id"
+              {...fields.impacted_system_operator_id}
               filter={{ type: "system_operator" }}
             />
           )}
-        </InputStack>
-        <Typography variant="h6" gutterBottom>
+        </div>
+        <Heading level={3} size="medium">
           Grid suspension process
-        </Typography>
-        <InputStack direction="row" flexWrap="wrap">
+        </Heading>
+        <div className="flex flex-col gap-3">
           <EnumInput
-            source="reason"
+            {...fields.reason}
             enumKey="service_providing_group_grid_suspension.reason"
-            label="field.service_providing_group_grid_suspension.reason"
-            validate={required()}
+            required
           />
-        </InputStack>
-      </Stack>
-    </SimpleForm>
+        </div>
+        <FormToolbar />
+      </FormContainer>
+    </Form>
   );
 };

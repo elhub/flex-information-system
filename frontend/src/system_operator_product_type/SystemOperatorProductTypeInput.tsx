@@ -1,18 +1,15 @@
+import { Form, useGetIdentity, useRecordContext } from "ra-core";
+import { FormContainer, Heading } from "../components/ui";
+import { useCreateOrUpdate } from "../auth";
 import {
-  required,
-  SimpleForm,
-  useGetIdentity,
-  useRecordContext,
-} from "react-admin";
-import { Typography, Stack } from "@mui/material";
-import { PartyReferenceInput, InputStack, useCreateOrUpdate } from "../auth";
-import { Toolbar } from "../components/Toolbar";
+  EnumInput,
+  FormToolbar,
+  PartyReferenceInput,
+} from "../components/EDS-ra/inputs";
 import { ProductTypeInput } from "../product_type/components";
 import { zSystemOperatorProductTypeCreateRequest } from "../generated-client/zod.gen";
-import { EnumInput } from "../components/enum";
-import { unTypedZodResolver } from "../zod";
+import { getFields, unTypedZodResolver } from "../zod";
 
-// keep only the fields that map to the UI
 const filterRecord = ({
   system_operator_id,
   product_type_id,
@@ -23,17 +20,14 @@ const filterRecord = ({
   status,
 });
 
-// common layout to create and edit pages
+const fields = getFields(zSystemOperatorProductTypeCreateRequest.shape);
+
 export const SystemOperatorProductTypeInput = () => {
   const currentRecord = useRecordContext();
   const createOrUpdate = useCreateOrUpdate();
-
   const { data: identity, isLoading: identityLoading } = useGetIdentity();
   if (identityLoading) return <>Loading...</>;
-
   const isSystemOperator = identity?.role == "flex_system_operator";
-
-  // an SO can only link product types to themselves
   const record = filterRecord({
     ...currentRecord,
     system_operator_id:
@@ -41,38 +35,33 @@ export const SystemOperatorProductTypeInput = () => {
         ? identity?.partyID
         : currentRecord?.system_operator_id,
   });
-
   return (
-    <SimpleForm
+    <Form
       record={record}
-      maxWidth={1280}
       resolver={unTypedZodResolver(zSystemOperatorProductTypeCreateRequest)}
-      toolbar={<Toolbar />}
+      sanitizeEmptyValues
     >
-      <Stack direction="column" spacing={1}>
-        <Typography variant="h6" gutterBottom>
+      <FormContainer>
+        <Heading level={3} size="medium">
           Basic information
-        </Typography>
-        <InputStack direction="row" flexWrap="wrap">
+        </Heading>
+        <div className="flex flex-col gap-3">
           <PartyReferenceInput
-            source="system_operator_id"
-            label="field.system_operator_product_type.system_operator_id"
+            {...fields.system_operator_id}
             readOnly={isSystemOperator}
           />
           <ProductTypeInput
             source="product_type_id"
             label="field.system_operator_product_type.product_type_id"
-            validate={required()}
           />
           <EnumInput
-            source="status"
+            {...fields.status}
             enumKey="system_operator_product_type.status"
-            label="field.system_operator_product_type.status"
-            validate={required()}
-            choices={["active", "inactive"]}
+            required={createOrUpdate == "update"}
           />
-        </InputStack>
-      </Stack>
-    </SimpleForm>
+        </div>
+        <FormToolbar />
+      </FormContainer>
+    </Form>
   );
 };

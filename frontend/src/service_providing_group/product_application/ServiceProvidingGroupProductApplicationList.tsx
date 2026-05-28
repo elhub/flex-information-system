@@ -6,10 +6,11 @@ import {
 import { Link } from "react-router-dom";
 import { Datagrid, List } from "../../components/EDS-ra/list";
 import {
-  EnumField,
   ReferenceField,
+  StatusBadgeField,
   TextField,
 } from "../../components/EDS-ra/fields";
+import { spgpaStatusVariantMap } from "./show/spgpaStatus";
 import { Button, Tooltip } from "../../components/ui";
 import { IconPlus, IconQuestionCircleOutlined } from "@elhub/ds-icons";
 import { Permissions } from "../../auth/permissions";
@@ -112,9 +113,10 @@ export const ServiceProvidingGroupProductApplicationList = () => {
             <TextField source="name" />
           </ReferenceField>
           <ProductTypeArrayField source={fields.product_type_ids.source} />
-          <EnumField
+          <StatusBadgeField
             source={fields.status.source}
             enumKey="service_providing_group_product_application.status"
+            variantMap={spgpaStatusVariantMap}
           />
         </Datagrid>
       </List>

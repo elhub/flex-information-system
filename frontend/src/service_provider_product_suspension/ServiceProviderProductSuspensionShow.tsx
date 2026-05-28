@@ -7,15 +7,11 @@ import {
 } from "react-admin";
 import { FieldStack } from "../auth";
 import { Typography, Stack } from "@mui/material";
-import {
-  NestedResourceHistoryButton,
-  ResourceHistoryButton,
-} from "../components/history";
+import { ResourceHistoryButton } from "../components/history";
 import { DateField } from "../components/datetime";
 import { EventButton } from "../event/EventButton";
 import { IdentityField } from "../components/IdentityField";
 import { ProductTypeArrayField } from "../product_type/components";
-import { CommentList } from "../components/comments";
 import { EnumField } from "../components/enum";
 
 export const ServiceProviderProductSuspensionShow = () => {
@@ -90,15 +86,6 @@ export const ServiceProviderProductSuspensionShow = () => {
         </Stack>
         <ResourceHistoryButton />
         {!isHistory && <EventButton />}
-        {!isHistory && (
-          <>
-            <Typography variant="h6" gutterBottom>
-              Comments
-            </Typography>
-            <NestedResourceHistoryButton child="comment" label="comments" />
-            <CommentList />
-          </>
-        )}
       </SimpleShowLayout>
     </Show>
   );

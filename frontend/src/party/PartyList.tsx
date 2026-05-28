@@ -5,11 +5,12 @@ import {
 } from "../components/EDS-ra/inputs";
 import { Datagrid, List } from "../components/EDS-ra/list";
 import {
-  DateField,
   EnumField,
   ReferenceField,
+  StatusBadgeField,
   TextField,
 } from "../components/EDS-ra/fields";
+import { partyStatusVariantMap } from "./partyStatus";
 import { zParty } from "../generated-client/zod.gen";
 import { getFields } from "../zod";
 import { CreateButton } from "../components/EDS-ra";
@@ -46,18 +47,22 @@ export const PartyList = () => {
     >
       <Datagrid>
         <TextField source={partyFields.id.source} />
-        <TextField source={partyFields.business_id.source} />
         <ReferenceField
           source={partyFields.entity_id.source}
           reference="entity"
+          label="resources.party.fields.entity_id"
+          hideLabel
         >
           <TextField source="name" />
         </ReferenceField>
-        <TextField source={partyFields.name.source} />
+        <TextField source={partyFields.name.source} hideLabel />
         <EnumField source={partyFields.type.source} enumKey="party.type" />
         <TextField source={partyFields.role.source} />
-        <EnumField source={partyFields.status.source} enumKey="party.status" />
-        <DateField source={partyFields.recorded_at.source} showTime />
+        <StatusBadgeField
+          source={partyFields.status.source}
+          enumKey="party.status"
+          variantMap={partyStatusVariantMap}
+        />
       </Datagrid>
     </List>
   );

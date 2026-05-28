@@ -19,11 +19,6 @@ import { ControllableUnitServiceProviderHistoryList } from "../controllable_unit
 import { TechnicalResourceShow } from "../controllable_unit/technical_resource/TechnicalResourceShow";
 import { TechnicalResourceInput } from "../controllable_unit/technical_resource/TechnicalResourceInput";
 import { TechnicalResourceHistoryList } from "../controllable_unit/technical_resource/TechnicalResourceHistoryList";
-import {
-  CommentShow,
-  CommentInput,
-  CommentHistoryList,
-} from "../components/comments";
 import { ControllableUnitSuspensionList } from "../controllable_unit";
 import { ControllableUnitServiceProviderList } from "../controllable_unit/service_provider/ControllableUnitServiceProviderList";
 import { ControllableUnitBalanceResponsiblePartyList } from "../controllable_unit/balance_responsible_party/ControllableUnitBalanceResponsiblePartyList";
@@ -120,47 +115,6 @@ export const createControllableUnitResources = (permissions: Permissions) => {
           element={
             <ResourceContextProvider value="controllable_unit_suspension">
               <ControllableUnitSuspensionShow />
-            </ResourceContextProvider>
-          }
-        />
-        {/* controllable unit suspension comments */}
-        <Route
-          path=":controllable_unit_id/suspension/:controllable_unit_suspension_id/comment/:id/show"
-          element={
-            <ResourceContextProvider value="controllable_unit_suspension_comment">
-              <CommentShow />
-            </ResourceContextProvider>
-          }
-        />
-        <Route
-          path=":controllable_unit_id/suspension/:controllable_unit_suspension_id/comment/create"
-          element={
-            <ResourceContextProvider value="controllable_unit_suspension_comment">
-              <CreateRedirectPreviousPage>
-                <CommentInput />
-              </CreateRedirectPreviousPage>
-            </ResourceContextProvider>
-          }
-        />
-        <Route
-          path=":controllable_unit_id/suspension/:controllable_unit_suspension_id/comment/:id"
-          element={
-            <ResourceContextProvider value="controllable_unit_suspension_comment">
-              <EditRedirectPreviousPage>
-                <CommentInput />
-              </EditRedirectPreviousPage>
-            </ResourceContextProvider>
-          }
-        />
-        <Route
-          path=":controllable_unit_id/suspension/:controllable_unit_suspension_id/comment_history"
-          element={<CommentHistoryList />}
-        />
-        <Route
-          path=":controllable_unit_id/suspension/:controllable_unit_suspension_id/comment_history/:id/show"
-          element={
-            <ResourceContextProvider value="controllable_unit_suspension_comment_history">
-              <CommentShow />
             </ResourceContextProvider>
           }
         />

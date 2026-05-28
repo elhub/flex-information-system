@@ -1,6 +1,6 @@
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNotify } from "ra-core";
+import { useNotify, useTranslate } from "ra-core";
 import {
   readServiceProvidingGroup,
   readParty,
@@ -22,6 +22,7 @@ import { useTranslateField } from "../../intl/intl";
 import { PowerRatio } from "../../components/PowerRatio";
 
 export const ServiceProvidingGroupActivate = () => {
+  const translate = useTranslate();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const notify = useNotify();
@@ -120,8 +121,7 @@ export const ServiceProvidingGroupActivate = () => {
 
       <div className="flex flex-col gap-5">
         <Alert variant="info">
-          Activating the service providing group will notify the system operator
-          to grid prequalify the group.
+          {translate("text.spg_activate_group_notice")}
         </Alert>
 
         <div>

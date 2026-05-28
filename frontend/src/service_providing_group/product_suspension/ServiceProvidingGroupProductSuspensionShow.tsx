@@ -15,7 +15,6 @@ import { Link } from "react-router-dom";
 import { EventButton } from "../../event/EventButton";
 import { DateField } from "../../components/datetime";
 import { FieldStack } from "../../auth";
-import { CommentList as GenericCommentList } from "../../components/comments";
 import { ProductTypeArrayField } from "../../product_type/components";
 import { IdentityField } from "../../components/IdentityField";
 import { Permissions } from "../../auth/permissions";
@@ -59,45 +58,6 @@ const HistoryButton = () => {
       to={`/service_providing_group/${record?.service_providing_group_id}/product_suspension_history${filter}`}
       startIcon={<HistoryIcon />}
       label="View History"
-    />
-  );
-};
-
-const CommentHistoryButton = () => {
-  const record = useRecordContext<ServiceProvidingGroupProductSuspension>();
-  const { permissions } = usePermissions<Permissions>();
-
-  return (
-    <Button
-      component={Link}
-      disabled={
-        !permissions?.allow(
-          "service_providing_group_product_suspension_comment_history",
-          "read",
-        )
-      }
-      to={`/service_providing_group/${record?.service_providing_group_id}/product_suspension/${record?.id}/comment_history`}
-      startIcon={<HistoryIcon />}
-      label="View History of Comments"
-    />
-  );
-};
-
-const CommentList = () => {
-  const record = useRecordContext<ServiceProvidingGroupProductSuspension>();
-  return (
-    <GenericCommentList
-      parentPath={
-        record
-          ? [
-              {
-                resource: "service_providing_group",
-                id: record.service_providing_group_id!,
-              },
-              { resource: "product_suspension", id: record.id! },
-            ]
-          : undefined
-      }
     />
   );
 };
@@ -190,15 +150,6 @@ export const ServiceProvidingGroupProductSuspensionShow = () => {
         </Stack>
         <HistoryButton />
         {!isHistory && <EventButton filterOnSubject />}
-        {!isHistory && (
-          <>
-            <Typography variant="h6" gutterBottom>
-              Comments
-            </Typography>
-            <CommentHistoryButton />
-            <CommentList />
-          </>
-        )}
       </SimpleShowLayout>
     </Show>
   );
