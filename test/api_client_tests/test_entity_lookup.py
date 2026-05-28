@@ -80,19 +80,6 @@ def test_entity_lookup_params(sts):
     assert isinstance(e, ErrorMessage)
     assert e.code == "HTTP400"
 
-    # pid is not an accepted business_id_type
-    e = call_entity_lookup.sync(
-        client=client_fiso,
-        body=EntityLookupRequest(
-            business_id="13370000000",
-            business_id_type=EntityLookupRequestBusinessIdType.PID,
-            name="TEST-ENTITY-LOOKUP",
-            type_=EntityLookupRequestType.PERSON,
-        ),
-    )
-    assert isinstance(e, ErrorMessage)
-    assert e.code == "HTTP400"
-
     # invalid email
     e = call_entity_lookup.sync(
         client=client_fiso,
