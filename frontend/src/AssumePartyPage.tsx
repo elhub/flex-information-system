@@ -148,10 +148,20 @@ export const AssumePartyPage = () => {
           <PartyMembershipEmpty />
           <Datagrid>
             <TextField hideLabel label="ID" source="party_id" />
-            <ReferenceField hideLabel label="Name" source="party_id" reference="party">
+            <ReferenceField
+              hideLabel
+              label="Name"
+              source="party_id"
+              reference="party"
+            >
               <TextField source="name" />
             </ReferenceField>
-            <ReferenceField hideLabel label="Type" source="party_id" reference="party">
+            <ReferenceField
+              hideLabel
+              label="Type"
+              source="party_id"
+              reference="party"
+            >
               <EnumField source="type" enumKey="party.type" />
             </ReferenceField>
             <ScopesField source="scopes" />
