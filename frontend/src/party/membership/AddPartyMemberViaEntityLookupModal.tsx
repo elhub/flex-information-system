@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import {
   Alert,
+  BodyText,
   Button,
   Chips,
   FormItem,
@@ -53,6 +54,10 @@ const ScopesInput = ({
   return (
     <FormItem>
       <FormItemLabel>Scopes</FormItemLabel>
+      <BodyText variant="subtle" className="mb-2">
+        Scopes determine the access level of the party member and what actions
+        they can perform on behalf of the party.
+      </BodyText>
       <Chips>
         {ALL_SCOPES.map((scope) => (
           <Chips.Chip
@@ -75,12 +80,10 @@ const ScopesInput = ({
 
 // -----------------------------------------------------------------------------
 
-const formSchema = zEntityLookupRequest
-  .pick({ name: true })
-  .extend({
-    business_id: z.string().email("Must be a valid email address"),
-    scopes: z.array(zAuthScope),
-  });
+const formSchema = zEntityLookupRequest.pick({ name: true }).extend({
+  business_id: z.string().email("Must be a valid email address"),
+  scopes: z.array(zAuthScope),
+});
 
 type FormValues = z.infer<typeof formSchema>;
 
@@ -159,16 +162,14 @@ export const AddPartyMemberViaEntityLookupModal = ({
     : null;
 
   return (
-      <Modal open={open} onClose={handleClose} aria-label="Add member">
+    <Modal open={open} onClose={handleClose} aria-label="Add member">
       <Modal.Header
         title="Add member"
-        description="Look up an entity by their email address and name to add them as a member of this party."
+        description="Add a member to the party. This will allow the person to act on behalf of the party."
       />
       <Modal.Content className="flex flex-col gap-4 min-w-lg">
         <FormItem>
-          <FormItemLabel htmlFor="lookup-business-id">
-            Email
-          </FormItemLabel>
+          <FormItemLabel htmlFor="lookup-business-id">Email</FormItemLabel>
           <TextField
             id="lookup-business-id"
             {...register("business_id")}
