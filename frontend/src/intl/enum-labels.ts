@@ -40,7 +40,6 @@ export type EnumLabel =
   | "device_type.water_heater"
   | "entity.business_id_type.email"
   | "entity.business_id_type.org"
-  | "entity.business_id_type.pid"
   | "entity.type.organisation"
   | "entity.type.person"
   | "metering_grid_area.business_id_type.eic_y"
@@ -174,7 +173,6 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_providing_group_grid_suspension.reason.significant_group_change":
       "Significant group change",
     "service_providing_group_grid_suspension.reason.other": "Other",
-    "entity.business_id_type.pid": "Personal ID number",
     "entity.business_id_type.org": "Organisation number",
     "entity.business_id_type.email": "Email",
     "entity.type.person": "Person",
@@ -336,7 +334,6 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_providing_group_grid_suspension.reason.significant_group_change":
       "Vesentlig endring i gruppen",
     "service_providing_group_grid_suspension.reason.other": "Annet",
-    "entity.business_id_type.pid": "Personnummer",
     "entity.business_id_type.org": "Organisasjonsnummer",
     "entity.business_id_type.email": "E-post",
     "entity.type.person": "Person",
@@ -498,7 +495,6 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_providing_group_grid_suspension.reason.significant_group_change":
       "Vesentleg endring i gruppa",
     "service_providing_group_grid_suspension.reason.other": "Anna",
-    "entity.business_id_type.pid": "Personnummer",
     "entity.business_id_type.org": "Organisasjonsnummer",
     "entity.business_id_type.email": "E-post",
     "entity.type.person": "Person",

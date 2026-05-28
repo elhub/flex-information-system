@@ -1152,17 +1152,12 @@ resources:
         type: string
         x-no-update: true
         x-filter: true
-        example: pid
+        example: email
         x-intl:
           en: Business ID type
           nb: Forretnings-ID-type
           nn: Forretnings-ID-type
         enum:
-          - id: pid
-            x-intl:
-              en: Personal ID number
-              nb: Personnummer
-              nn: Personnummer
           - id: org
             x-intl:
               en: Organisation number

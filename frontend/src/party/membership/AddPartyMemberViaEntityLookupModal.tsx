@@ -76,8 +76,9 @@ const ScopesInput = ({
 // -----------------------------------------------------------------------------
 
 const formSchema = zEntityLookupRequest
-  .pick({ business_id: true, name: true })
+  .pick({ name: true })
   .extend({
+    business_id: z.string().email("Must be a valid email address"),
     scopes: z.array(zAuthScope),
   });
 
@@ -126,11 +127,11 @@ export const AddPartyMemberViaEntityLookupModal = ({
     error: mutationError,
   } = useMutation({
     mutationFn: async (values: FormValues) => {
-      // step 1: entity lookup (infer business_id_type from the entered value)
+      // step 1: entity lookup
       const lookupResult = await callEntityLookup({
         body: {
           business_id: values.business_id,
-          business_id_type: values.business_id.includes("@") ? "email" : "pid",
+          business_id_type: "email",
           name: values.name,
           type: "person",
         },
@@ -158,21 +159,21 @@ export const AddPartyMemberViaEntityLookupModal = ({
     : null;
 
   return (
-    <Modal open={open} onClose={handleClose} aria-label="Add member via lookup">
+      <Modal open={open} onClose={handleClose} aria-label="Add member via lookup">
       <Modal.Header
         title="Add member via lookup"
-        description="Look up an entity by their personnummer or email address and name to add them as a member of this party."
+        description="Look up an entity by their email address and name to add them as a member of this party."
       />
       <Modal.Content className="flex flex-col gap-4 min-w-lg">
         <FormItem>
           <FormItemLabel htmlFor="lookup-business-id">
-            Business ID (personnummer or email)
+            Email
           </FormItemLabel>
           <TextField
             id="lookup-business-id"
             {...register("business_id")}
             disabled={isPending}
-            placeholder="Enter the entity's personnummer or email address"
+            placeholder="Enter the entity's email address"
             aria-invalid={!!errors.business_id}
           />
           {errors.business_id && (

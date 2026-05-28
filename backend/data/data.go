@@ -460,7 +460,6 @@ func (data *api) entityLookupHandler(
 	)
 
 	validBusinessIDTypes := map[string]string{
-		"pid":   "person",
 		"email": "person",
 		"org":   "organisation",
 	}
@@ -468,7 +467,7 @@ func (data *api) entityLookupHandler(
 	expectedType, validBusinessIDType := validBusinessIDTypes[entityLookupRequestBody.BusinessIDType]
 	entityLookupValidator.Check(
 		validBusinessIDType,
-		"business_id_type must be one of 'pid', 'email', 'org'",
+		"business_id_type must be one of 'email', 'org'",
 	)
 
 	if validBusinessIDType {
@@ -479,16 +478,10 @@ func (data *api) entityLookupHandler(
 		)
 	}
 
-	regexPersonBusinessID := regexp.MustCompile("^[1-9][0-9]{10}$")
 	regexEmailBusinessID := regexp.MustCompile(`^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$`)
 	regexOrganisationBusinessID := regexp.MustCompile("^[1-9][0-9]{8}$")
 
 	switch entityLookupRequestBody.BusinessIDType {
-	case "pid":
-		entityLookupValidator.Check(
-			regexPersonBusinessID.MatchString(entityLookupRequestBody.BusinessID),
-			"person number must be 11 digits long",
-		)
 	case "email":
 		entityLookupValidator.Check(
 			regexEmailBusinessID.MatchString(entityLookupRequestBody.BusinessID),

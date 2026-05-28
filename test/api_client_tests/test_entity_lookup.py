@@ -67,25 +67,12 @@ def test_entity_lookup_params(sts):
     assert isinstance(e, ErrorMessage)
     assert e.code == "HTTP400"
 
-    # mismatching business_id_type vs type (pid given for organisation)
+    # mismatching business_id_type vs type (org given for person)
     e = call_entity_lookup.sync(
         client=client_fiso,
         body=EntityLookupRequest(
             business_id="433700009",
-            business_id_type=EntityLookupRequestBusinessIdType.PID,
-            name="TEST-ENTITY-LOOKUP",
-            type_=EntityLookupRequestType.ORGANISATION,
-        ),
-    )
-    assert isinstance(e, ErrorMessage)
-    assert e.code == "HTTP400"
-
-    # pid too short for person
-    e = call_entity_lookup.sync(
-        client=client_fiso,
-        body=EntityLookupRequest(
-            business_id="43370099",
-            business_id_type=EntityLookupRequestBusinessIdType.PID,
+            business_id_type=EntityLookupRequestBusinessIdType.ORG,
             name="TEST-ENTITY-LOOKUP",
             type_=EntityLookupRequestType.PERSON,
         ),
@@ -93,11 +80,11 @@ def test_entity_lookup_params(sts):
     assert isinstance(e, ErrorMessage)
     assert e.code == "HTTP400"
 
-    # pid starting with 0
+    # pid is not an accepted business_id_type
     e = call_entity_lookup.sync(
         client=client_fiso,
         body=EntityLookupRequest(
-            business_id="03370000990",
+            business_id="13370000000",
             business_id_type=EntityLookupRequestBusinessIdType.PID,
             name="TEST-ENTITY-LOOKUP",
             type_=EntityLookupRequestType.PERSON,
@@ -123,8 +110,8 @@ def test_entity_lookup_params(sts):
     e = call_entity_lookup.sync(
         client=client_fiso,
         body=EntityLookupRequest(
-            business_id="43370000990",
-            business_id_type=EntityLookupRequestBusinessIdType.PID,
+            business_id="test@example.com",
+            business_id_type=EntityLookupRequestBusinessIdType.EMAIL,
             name="",
             type_=EntityLookupRequestType.PERSON,
         ),
@@ -162,25 +149,6 @@ def test_entity_lookup_fiso(sts):
 
     existing_entities_ids = [e.id for e in entities]
 
-    # lookup non-existing person entity by PID
-    el = call_entity_lookup.sync(
-        client=client_fiso,
-        body=EntityLookupRequest(
-            business_id="3" + random_number(10),
-            business_id_type=EntityLookupRequestBusinessIdType.PID,
-            name="TEST-ENTITY-LOOKUP-PID",
-            type_=EntityLookupRequestType.PERSON,
-        ),
-    )
-    assert isinstance(el, EntityLookupResponse)
-    assert el.entity_id not in existing_entities_ids
-
-    entities = list_entity.sync(client=client_fiso)
-    assert isinstance(entities, list)
-    assert len(entities) == len(existing_entities_ids) + 1
-
-    existing_entities_ids = [e.id for e in entities]
-
     # lookup non-existing person entity by email
     el = call_entity_lookup.sync(
         client=client_fiso,
@@ -206,8 +174,8 @@ def test_entity_lookup_other(sts):
         e = call_entity_lookup.sync(
             client=sts.get_client(TestEntity.TEST, role),
             body=EntityLookupRequest(
-                business_id="13370000000",
-                business_id_type=EntityLookupRequestBusinessIdType.PID,
+                business_id="test@example.com",
+                business_id_type=EntityLookupRequestBusinessIdType.EMAIL,
                 name="x",
                 type_=EntityLookupRequestType.PERSON,
             ),
