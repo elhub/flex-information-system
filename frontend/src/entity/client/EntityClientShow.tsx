@@ -39,7 +39,7 @@ export const EntityClientShow = () => {
   return (
     <Show
       editButton={canUpdate ? <EditButton /> : undefined}
-      historyButton={<></>}
+      historyButton={null}
     >
       <Heading level={2} size="small" spacing>
         Basic information

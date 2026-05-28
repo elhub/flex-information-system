@@ -1,4 +1,4 @@
-import { useRecordContext, useResourceContext } from "ra-core";
+import { useRecordContext, usePermissions } from "ra-core";
 import { useNavigate } from "react-router-dom";
 import { IconPencil, IconClockReset } from "@elhub/ds-icons";
 import { Button, Content, Heading } from "../../components/ui";
@@ -12,7 +12,6 @@ import {
 } from "../../components/EDS-ra";
 import { EventButton } from "../../event/EventButton";
 import { Permissions } from "../../auth/permissions";
-import { usePermissions } from "ra-core";
 import { ControllableUnitSuspension } from "../../generated-client";
 import { getFields } from "../../zod";
 import { zControllableUnitSuspensionHistory } from "../../generated-client/zod.gen";
@@ -74,14 +73,11 @@ const HistoryButton = () => {
 };
 
 export const ControllableUnitSuspensionShow = () => {
-  const resource = useResourceContext();
-  const isHistory = resource?.endsWith("_history");
-
   return (
     <Show
       editButton={<EditButton />}
       historyButton={<HistoryButton />}
-      extraActions={!isHistory ? <EventButton filterOnSubject /> : undefined}
+      eventButton={<EventButton filterOnSubject />}
     >
       <Heading level={2} size="small" spacing>
         Basic information

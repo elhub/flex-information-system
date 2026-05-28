@@ -32,7 +32,7 @@ const EditButton = () => {
       onClick={(e: React.MouseEvent) => {
         e.stopPropagation();
         navigate(
-          `/controllable_unit/${record.controllable_unit_id}/service_provider/${record.id}/edit`,
+          `/controllable_unit/${record.controllable_unit_id}/service_provider/${record.id}`,
         );
       }}
     >
@@ -82,7 +82,7 @@ export const ControllableUnitServiceProviderShow = () => {
     <Show
       editButton={<EditButton />}
       historyButton={<HistoryButton />}
-      extraActions={<EventButton filterOnSubject />}
+      eventButton={<EventButton filterOnSubject />}
       historyOnlyActions={
         <RestoreButton parent="controllable_unit" child="service_provider" />
       }

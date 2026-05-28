@@ -1,4 +1,4 @@
-import { useRecordContext, useResourceContext, usePermissions } from "ra-core";
+import { useRecordContext, usePermissions } from "ra-core";
 import { Link } from "react-router-dom";
 import { IconPencil, IconClockReset } from "@elhub/ds-icons";
 import { Button, Content, Heading, VerticalSpace } from "../../components/ui";
@@ -65,14 +65,11 @@ const HistoryButton = () => {
 };
 
 export const ServiceProvidingGroupMembershipShow = () => {
-  const resource = useResourceContext();
-  const isHistory = resource?.endsWith("_history");
-
   return (
     <Show
       editButton={<EditButton />}
       historyButton={<HistoryButton />}
-      extraActions={!isHistory ? <EventButton filterOnSubject /> : undefined}
+      eventButton={<EventButton filterOnSubject />}
     >
       <Heading level={2} size="small" spacing>
         Basic information

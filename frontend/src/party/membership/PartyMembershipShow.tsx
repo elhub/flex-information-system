@@ -1,4 +1,4 @@
-import { useRecordContext, useResourceContext, usePermissions } from "ra-core";
+import { useRecordContext, usePermissions } from "ra-core";
 import { Link } from "react-router-dom";
 import { IconPencil } from "@elhub/ds-icons";
 import { Button, Content, Heading, VerticalSpace } from "../../components/ui";
@@ -35,21 +35,19 @@ const EditButton = () => {
 };
 
 export const PartyMembershipShow = () => {
-  const resource = useResourceContext();
   const { permissions } = usePermissions<Permissions>();
-  const isHistory = resource?.endsWith("_history");
   const canUpdate = permissions?.allow("party_membership", "update");
 
   return (
     <Show
-      editButton={canUpdate && !isHistory ? <EditButton /> : undefined}
+      editButton={canUpdate ? <EditButton /> : undefined}
       historyButton={
         <NestedResourceHistoryButton
           child="membership"
           label="party memberships"
         />
       }
-      extraActions={!isHistory ? <EventButton filterOnSubject /> : undefined}
+      eventButton={<EventButton filterOnSubject />}
     >
       <Heading level={2} size="small" spacing>
         Basic information

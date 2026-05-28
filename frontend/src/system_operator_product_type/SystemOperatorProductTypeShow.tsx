@@ -1,4 +1,3 @@
-import { useResourceContext } from "ra-core";
 import { Content, Heading, VerticalSpace } from "../components/ui";
 import {
   Show,
@@ -8,7 +7,6 @@ import {
   IdentityField,
   EnumField,
 } from "../components/EDS-ra";
-import { EventButton } from "../event/EventButton";
 import { ProductTypeField } from "../product_type/components";
 import { getFields } from "../zod";
 import { zSystemOperatorProductTypeHistory } from "../generated-client/zod.gen";
@@ -16,11 +14,8 @@ import { zSystemOperatorProductTypeHistory } from "../generated-client/zod.gen";
 const fields = getFields(zSystemOperatorProductTypeHistory.shape);
 
 export const SystemOperatorProductTypeShow = () => {
-  const resource = useResourceContext();
-  const isHistory = resource?.endsWith("_history");
-
   return (
-    <Show extraActions={!isHistory ? <EventButton /> : undefined}>
+    <Show>
       <Heading level={2} size="small" spacing>
         Basic information
       </Heading>
