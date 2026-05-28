@@ -33,7 +33,7 @@ const EditButton = () => {
       onClick={(e: React.MouseEvent) => {
         e.stopPropagation();
         navigate(
-          `/controllable_unit/${record.controllable_unit_id}/suspension/${record.id}/edit`,
+          `/controllable_unit/${record.controllable_unit_id}/suspension/${record.id}`,
         );
       }}
     >
