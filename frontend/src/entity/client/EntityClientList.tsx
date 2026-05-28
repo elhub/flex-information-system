@@ -1,4 +1,8 @@
-import { usePermissions, useRecordContext, ResourceContextProvider } from "ra-core";
+import {
+  usePermissions,
+  useRecordContext,
+  ResourceContextProvider,
+} from "ra-core";
 import { Link as RouterLink } from "react-router-dom";
 import { Permissions } from "../../auth/permissions";
 import { List, Datagrid } from "../../components/EDS-ra/list";
@@ -65,10 +69,7 @@ export const EntityClientList = () => {
             >
               <TextField source="name" />
             </ReferenceField>
-            <ScopesField
-              source="scopes"
-              label="field.entity_client.scopes"
-            />
+            <ScopesField source="scopes" label="field.entity_client.scopes" />
             <DateField
               source="recorded_at"
               showTime

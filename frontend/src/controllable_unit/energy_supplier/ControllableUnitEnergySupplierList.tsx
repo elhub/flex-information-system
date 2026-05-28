@@ -1,4 +1,8 @@
-import { usePermissions, useRecordContext, ResourceContextProvider } from "ra-core";
+import {
+  usePermissions,
+  useRecordContext,
+  ResourceContextProvider,
+} from "ra-core";
 import { Permissions } from "../../auth/permissions";
 import { List, Datagrid } from "../../components/EDS-ra/list";
 import {
@@ -10,7 +14,10 @@ import {
 export const ControllableUnitEnergySupplierList = () => {
   const { accounting_point_id } = useRecordContext()!;
   const { permissions } = usePermissions<Permissions>();
-  const canRead = permissions?.allow("accounting_point_energy_supplier", "read");
+  const canRead = permissions?.allow(
+    "accounting_point_energy_supplier",
+    "read",
+  );
 
   return (
     canRead && (
@@ -24,9 +31,9 @@ export const ControllableUnitEnergySupplierList = () => {
         >
           <Datagrid>
             <ReferenceField
-            source="energy_supplier_id"
-            reference="party"
-            label="field.accounting_point_energy_supplier.energy_supplier_id"
+              source="energy_supplier_id"
+              reference="party"
+              label="field.accounting_point_energy_supplier.energy_supplier_id"
             >
               <TextField source="name" />
             </ReferenceField>
