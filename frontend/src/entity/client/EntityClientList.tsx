@@ -1,51 +1,35 @@
-import {
-  List,
-  Button,
-  DeleteButton,
-  ResourceContextProvider,
-  TextField,
-  TopToolbar,
-  usePermissions,
-  useRecordContext,
-  ReferenceField,
-} from "react-admin";
-import { Datagrid } from "../../auth";
-import AddIcon from "@mui/icons-material/Add";
-import { Link } from "react-router-dom";
-import { DateField } from "../../components/datetime";
-import { IdentityField } from "../../components/IdentityField";
-import { ScopesField } from "../../components/scopes";
+import { usePermissions, useRecordContext, ResourceContextProvider } from "ra-core";
+import { Link as RouterLink } from "react-router-dom";
 import { Permissions } from "../../auth/permissions";
+import { List, Datagrid } from "../../components/EDS-ra/list";
+import {
+  DateField,
+  IdentityField,
+  ReferenceField,
+  ScopesField,
+  TextField,
+} from "../../components/EDS-ra/fields";
+import { DeleteButton } from "../../components/EDS-ra/buttons";
+import { Button } from "../../components/ui";
+import { IconPlus } from "@elhub/ds-icons";
 
-const CreateButton = ({ id }: { id: any }) => (
+const CreateEntityClientButton = ({ entityId }: { entityId: any }) => (
   <Button
-    component={Link}
-    to={`/entity/${id}/client/create`}
-    startIcon={<AddIcon />}
-    state={{ entity_id: id }}
-    label="Create"
-  />
+    as={RouterLink}
+    to={`/entity/${entityId}/client/create`}
+    state={{ entity_id: entityId }}
+    variant="primary"
+    icon={IconPlus}
+  >
+    Create
+  </Button>
 );
 
-const ListActions = ({
-  permissions,
-  id,
-}: {
-  permissions: Permissions | undefined;
-  id: any;
-}) => {
-  const canCreate = permissions?.allow("entity_client", "create");
-
-  return <TopToolbar>{canCreate && <CreateButton id={id} />}</TopToolbar>;
-};
-
 export const EntityClientList = () => {
-  // id of the entity
   const { id } = useRecordContext()!;
   const { permissions } = usePermissions<Permissions>();
-
-  // Permission checks
   const canRead = permissions?.allow("entity_client", "read");
+  const canCreate = permissions?.allow("entity_client", "create");
   const canDelete = permissions?.allow("entity_client", "delete");
 
   return (
@@ -53,16 +37,18 @@ export const EntityClientList = () => {
       <ResourceContextProvider value="entity_client">
         <List
           perPage={10}
-          actions={<ListActions permissions={permissions} id={id} />}
-          exporter={false}
           empty={false}
-          title={false}
           filter={{ entity_id: id }}
           sort={{ field: "id", order: "DESC" }}
+          disableSyncWithLocation
+          actions={
+            canCreate
+              ? [<CreateEntityClientButton key="create" entityId={id} />]
+              : []
+          }
         >
           <Datagrid
-            bulkActionButtons={false}
-            rowClick={(_id, _res, record) =>
+            rowClick={(record) =>
               `/entity/${record.entity_id}/client/${record.id}/show`
             }
           >
@@ -75,12 +61,14 @@ export const EntityClientList = () => {
             <ReferenceField
               source="party_id"
               reference="party"
-              sortable={false}
               label="field.entity_client.party_id"
             >
               <TextField source="name" />
             </ReferenceField>
-            <ScopesField source="scopes" label="field.entity_client.scopes" />
+            <ScopesField
+              source="scopes"
+              label="field.entity_client.scopes"
+            />
             <DateField
               source="recorded_at"
               showTime
@@ -90,9 +78,7 @@ export const EntityClientList = () => {
               source="recorded_by"
               label="field.entity_client.recorded_by"
             />
-            {canDelete && (
-              <DeleteButton mutationMode="pessimistic" redirect="" />
-            )}
+            {canDelete && <DeleteButton />}
           </Datagrid>
         </List>
       </ResourceContextProvider>
