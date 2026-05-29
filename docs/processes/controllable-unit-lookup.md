@@ -7,6 +7,8 @@ processes:
 - [controllable unit registration](controllable-unit-registration.md)
 - [service provider switching](service-provider-switching.md)
 
+The lookup process is part of the controllabe unit registration flow.
+
 ## Why is CU lookup a necessary process?
 
 1. To verify whether the unit is already registered in the system

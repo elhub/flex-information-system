@@ -1,16 +1,11 @@
 # CU Registration
 
 This process describes the registration of a controllable unit (CU) in the
-flexibility register as a Service Provider. It also includes grid validation for
-the system operator to validate the information provided.
+flexibility register as a Service Provider.
 
 A CU is considered new until the status is changed to active.
-Once grid validation is requested, any changes to the CU is considered an
-update, and handled by the update process. Grid validation on the CU level
-is done by the connecting system operator.
-
-The connecting system operator will during the validation process be able to
-inform SP about missing details.
+Once a CU is activated, any changes to the CU is considered an
+update, and handled by the update process.
 
 ## Prerequisites
 
@@ -21,12 +16,6 @@ inform SP about missing details.
   controllable unit
 * Flexibility Information System knows
     * the system operator and end user of all metering points (from Elhub)
-    * mapping of grid nodes in local markets to grid nodes in transmission
-      system operator markets
-* There is no national grid model that includes all metering point ids. Requires
-  system operator to map metering points to grid nodes. If the service provider
-  has the information about the grid node, they can include it when they
-  register the controllable unit.
 
 ## Sequence
 
