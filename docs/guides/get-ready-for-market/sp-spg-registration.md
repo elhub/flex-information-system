@@ -57,13 +57,12 @@ The service providing group is now registered in the FIS and the controllable un
 have been added, but the service providing group is only visible for the SP because
 it has not been activated.
 
+**Add activation message from portal**
+
 Review all information to ensure everything is correct before activating the SPG.
 
-When a service providing group is activated, the impacted system operator(s) are
-notified. The impacted system operator will grid prequalify the SPG.
-
-The system operator sets a grid prequalification status and the SP is notified of
-the status. The status is registered on the SPG.
+When a service providing group is activated, it can be used in a service providing
+group product application.
 
 ## Next step: Apply for service providing group product prequalification
 
