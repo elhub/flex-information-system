@@ -173,6 +173,8 @@ accounting_point;;;;;;;;;;;;;R;R
 accounting_point;id;;R;R;R;R;R;R;R;R;;;;
 accounting_point;business_id;;R;R;R;R;R;R;R;R;;;;
 accounting_point;system_operator_id;;R;R;R;R;R;R;R;R;;;;
+accounting_point;latitude;;R;R;R;R;R;R;R;R;;;;
+accounting_point;longitude;;R;R;R;R;R;R;R;R;;;;
 accounting_point;recorded_at;;R;R;R;R;R;R;R;R;;;;
 accounting_point;recorded_by;;R;R;R;R;R;R;R;R;;;;
 accounting_point_balance_responsible_party;;;;;;;;;;;;;;

@@ -37,6 +37,8 @@ class AccountingPointResponse:
         recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
+        latitude (float | None | Unset): Geographic latitude of the accounting point (WGS84). Example: 59.9139.
+        longitude (float | None | Unset): Geographic longitude of the accounting point (WGS84). Example: 10.7522.
         controllable_unit (list[ControllableUnitResponse] | None | Unset): Embedded controllable_unit
         system_operator (None | PartyResponse | Unset): Embedded party
         balance_responsible_party (list[AccountingPointBalanceResponsiblePartyResponse] | None | Unset): Embedded
@@ -55,6 +57,8 @@ class AccountingPointResponse:
     system_operator_id: int
     recorded_at: datetime.datetime
     recorded_by: int
+    latitude: float | None | Unset = UNSET
+    longitude: float | None | Unset = UNSET
     controllable_unit: list[ControllableUnitResponse] | None | Unset = UNSET
     system_operator: None | PartyResponse | Unset = UNSET
     balance_responsible_party: list[AccountingPointBalanceResponsiblePartyResponse] | None | Unset = UNSET
@@ -78,6 +82,18 @@ class AccountingPointResponse:
         recorded_at = self.recorded_at.isoformat()
 
         recorded_by = self.recorded_by
+
+        latitude: float | None | Unset
+        if isinstance(self.latitude, Unset):
+            latitude = UNSET
+        else:
+            latitude = self.latitude
+
+        longitude: float | None | Unset
+        if isinstance(self.longitude, Unset):
+            longitude = UNSET
+        else:
+            longitude = self.longitude
 
         controllable_unit: list[dict[str, Any]] | None | Unset
         if isinstance(self.controllable_unit, Unset):
@@ -178,6 +194,10 @@ class AccountingPointResponse:
                 "recorded_by": recorded_by,
             }
         )
+        if latitude is not UNSET:
+            field_dict["latitude"] = latitude
+        if longitude is not UNSET:
+            field_dict["longitude"] = longitude
         if controllable_unit is not UNSET:
             field_dict["controllable_unit"] = controllable_unit
         if system_operator is not UNSET:
@@ -220,6 +240,24 @@ class AccountingPointResponse:
         recorded_at = isoparse(d.pop("recorded_at"))
 
         recorded_by = d.pop("recorded_by")
+
+        def _parse_latitude(data: object) -> float | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(float | None | Unset, data)
+
+        latitude = _parse_latitude(d.pop("latitude", UNSET))
+
+        def _parse_longitude(data: object) -> float | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(float | None | Unset, data)
+
+        longitude = _parse_longitude(d.pop("longitude", UNSET))
 
         def _parse_controllable_unit(data: object) -> list[ControllableUnitResponse] | None | Unset:
             if data is None:
@@ -405,6 +443,8 @@ class AccountingPointResponse:
             system_operator_id=system_operator_id,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
+            latitude=latitude,
+            longitude=longitude,
             controllable_unit=controllable_unit,
             system_operator=system_operator,
             balance_responsible_party=balance_responsible_party,

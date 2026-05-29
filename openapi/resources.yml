@@ -2170,6 +2170,34 @@ resources:
           en: System operator
           nb: Systemoperatør
           nn: Systemoperatør
+      latitude:
+        description: >-
+          Geographic latitude of the accounting point (WGS84).
+        type: number
+        format: float8
+        minimum: -90
+        maximum: 90
+        nullable: true
+        readOnly: true
+        example: 59.9139
+        x-intl:
+          en: Latitude
+          nb: Breddegrad
+          nn: Breiddegrad
+      longitude:
+        description: >-
+          Geographic longitude of the accounting point (WGS84).
+        type: number
+        format: float8
+        minimum: -180
+        maximum: 180
+        nullable: true
+        readOnly: true
+        example: 10.7522
+        x-intl:
+          en: Longitude
+          nb: Lengdegrad
+          nn: Lengdegrad
 
   - id: accounting_point_balance_responsible_party
     acronym: APBRP

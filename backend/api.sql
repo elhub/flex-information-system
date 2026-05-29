@@ -371,6 +371,8 @@ CREATE TABLE api.accounting_point (
     id bigint NOT NULL,
     business_id text NOT NULL,
     system_operator_id bigint NOT NULL,
+    latitude float8 NULL,
+    longitude float8 NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );

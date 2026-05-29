@@ -9,8 +9,12 @@ CREATE TABLE IF NOT EXISTS accounting_point (
     business_id text UNIQUE NOT NULL CHECK (
         validate_business_id(business_id, 'gsrn')
     ),
+    latitude double precision NULL,
+    longitude double precision NULL,
     record_time_range tstzrange NOT NULL DEFAULT tstzrange(
         localtimestamp, null, '[)'
     ),
-    recorded_by bigint NOT NULL DEFAULT current_identity()
+    recorded_by bigint NOT NULL DEFAULT current_identity(),
+    CONSTRAINT accounting_point_latitude_check CHECK (latitude BETWEEN -90 AND 90),
+    CONSTRAINT accounting_point_longitude_check CHECK (longitude BETWEEN -180 AND 180)
 );

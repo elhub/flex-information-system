@@ -4667,6 +4667,8 @@ GRANT SELECT (
     id,
     business_id,
     system_operator_id,
+    latitude,
+    longitude,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -4677,6 +4679,8 @@ GRANT SELECT (
     id,
     business_id,
     system_operator_id,
+    latitude,
+    longitude,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -4687,6 +4691,8 @@ GRANT SELECT (
     id,
     business_id,
     system_operator_id,
+    latitude,
+    longitude,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -4697,6 +4703,8 @@ GRANT SELECT (
     id,
     business_id,
     system_operator_id,
+    latitude,
+    longitude,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -4707,6 +4715,8 @@ GRANT SELECT (
     id,
     business_id,
     system_operator_id,
+    latitude,
+    longitude,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -4717,6 +4727,8 @@ GRANT SELECT (
     id,
     business_id,
     system_operator_id,
+    latitude,
+    longitude,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -4727,6 +4739,8 @@ GRANT SELECT (
     id,
     business_id,
     system_operator_id,
+    latitude,
+    longitude,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -4737,6 +4751,8 @@ GRANT SELECT (
     id,
     business_id,
     system_operator_id,
+    latitude,
+    longitude,
     recorded_at,
     recorded_by
 ) ON TABLE
