@@ -1,7 +1,7 @@
 --liquibase formatted sql
 -- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
 
--- changeset flex:api-notification-create endDelimiter:-- runAlways:true
+-- changeset flex:api-notification-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW
 api.notification
 WITH (security_invoker = true) AS (

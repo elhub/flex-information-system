@@ -1,7 +1,7 @@
 --liquibase formatted sql
 -- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
 
--- changeset flex:api-service-providing-group-membership-create endDelimiter:-- runAlways:true
+-- changeset flex:api-service-providing-group-membership-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW
 api.service_providing_group_membership
 WITH (security_invoker = true) AS (
@@ -15,7 +15,7 @@ WITH (security_invoker = true) AS (
         upper(valid_time_range) AS valid_to
     FROM flex.service_providing_group_membership
 );
--- changeset flex:api-service-providing-group-membership-history-create endDelimiter:-- runAlways:true
+-- changeset flex:api-service-providing-group-membership-history-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW
 api.service_providing_group_membership_history
 WITH (

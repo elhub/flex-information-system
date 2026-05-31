@@ -1,7 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:api-accounting-point-metering-grid-area-create endDelimiter:-- runAlways:true
+-- changeset flex:api-accounting-point-metering-grid-area-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW
 api.accounting_point_metering_grid_area
 WITH (security_invoker = false, security_barrier = true) AS (

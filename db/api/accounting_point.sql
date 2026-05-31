@@ -1,7 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:api-accounting-point-create endDelimiter:-- runAlways:true
+-- changeset flex:api-accounting-point-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW api.accounting_point
 WITH (security_invoker = true) AS (
     SELECT

@@ -1,7 +1,7 @@
 --liquibase formatted sql
 -- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
 
--- changeset flex:api-controllable-unit-service-provider-create endDelimiter:-- runAlways:true
+-- changeset flex:api-controllable-unit-service-provider-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW
 api.controllable_unit_service_provider
 WITH (security_invoker = true) AS (
@@ -17,7 +17,7 @@ WITH (security_invoker = true) AS (
         upper(valid_time_range) AS valid_to
     FROM flex.controllable_unit_service_provider
 );
--- changeset flex:api-controllable-unit-service-provider-history-create endDelimiter:-- runAlways:true
+-- changeset flex:api-controllable-unit-service-provider-history-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW
 api.controllable_unit_service_provider_history
 WITH (

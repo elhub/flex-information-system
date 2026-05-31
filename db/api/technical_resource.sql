@@ -1,7 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:api-technical-resource-history-create endDelimiter:-- runAlways:true
+-- changeset flex:api-technical-resource-history-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW api.technical_resource_history
 WITH (
     security_invoker = true
@@ -47,7 +47,7 @@ WITH (
     FROM flex.technical_resource_history
 );
 
--- changeset flex:api-technical-resource-create endDelimiter:-- runAlways:true
+-- changeset flex:api-technical-resource-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW api.technical_resource
 WITH (security_invoker = true) AS (
     SELECT
@@ -108,7 +108,7 @@ WITH (security_invoker = true) AS (
     WHERE trh.record_time_range @> coalesce(cu_asof.as_of, current_timestamp)
 );
 
--- changeset flex:api-technical-resource-modify-function endDelimiter:-- runAlways:true
+-- changeset flex:api-technical-resource-modify-function endDelimiter:-- runOnChange:true
 CREATE OR REPLACE FUNCTION api.technical_resource_modify()
 RETURNS TRIGGER
 SECURITY INVOKER
@@ -234,7 +234,7 @@ BEGIN
 END;
 $$;
 
--- changeset flex:api-technical-resource-modify-trigger endDelimiter:-- runAlways:true
+-- changeset flex:api-technical-resource-modify-trigger endDelimiter:-- runOnChange:true
 CREATE OR REPLACE TRIGGER technical_resource_modify_trg
 INSTEAD OF INSERT OR UPDATE OR DELETE
 ON api.technical_resource

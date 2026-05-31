@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 -- AUTO-GENERATED FILE (just permissions-to-db)
 
--- changeset flex:flex-field-level-authorization runAlways:true
+-- changeset flex:flex-field-level-authorization runOnChange:true
 
 GRANT SELECT ON TABLE
 flex.entity

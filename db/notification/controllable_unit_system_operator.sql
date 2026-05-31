@@ -1,7 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:notification-controllable-unit-system-operator runAlways:true endDelimiter:--
+-- changeset flex:notification-controllable-unit-system-operator runOnChange:true endDelimiter:--
 CREATE OR REPLACE VIEW notification.controllable_unit_system_operator
 WITH (security_invoker = true) AS (
     SELECT
@@ -11,6 +11,6 @@ WITH (security_invoker = true) AS (
     FROM flex.controllable_unit_system_operator
 );
 
--- changeset flex:notification-controllable-unit-system-operator-user-grant endDelimiter:; runAlways:true
+-- changeset flex:notification-controllable-unit-system-operator-user-grant endDelimiter:; runOnChange:true
 GRANT SELECT ON TABLE notification.controllable_unit_system_operator
 TO flex_internal_event_notification;

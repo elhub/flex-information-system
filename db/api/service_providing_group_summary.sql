@@ -1,7 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:api-service-providing-group-summary-create endDelimiter:-- runAlways:true
+-- changeset flex:api-service-providing-group-summary-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW
 api.service_providing_group_summary
 WITH (security_invoker = true) AS (
