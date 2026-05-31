@@ -1,13 +1,15 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:service-providing-group-membership-rls runAlways:true endDelimiter:;
+-- changeset flex:service-providing-group-membership-rls runOnChange:true endDelimiter:;
 ALTER TABLE IF EXISTS service_providing_group_membership
 ENABLE ROW LEVEL SECURITY;
 
 -- internal
 GRANT SELECT ON service_providing_group_membership
 TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "SPGM_INTERNAL_EVENT_NOTIFICATION"
+ON service_providing_group_membership;
 CREATE POLICY "SPGM_INTERNAL_EVENT_NOTIFICATION"
 ON service_providing_group_membership
 FOR SELECT
@@ -16,6 +18,8 @@ USING (true);
 
 GRANT SELECT ON service_providing_group_membership_history
 TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "SPGMH_INTERNAL_EVENT_NOTIFICATION"
+ON service_providing_group_membership_history;
 CREATE POLICY "SPGMH_INTERNAL_EVENT_NOTIFICATION"
 ON service_providing_group_membership_history
 FOR SELECT
@@ -25,6 +29,7 @@ USING (true);
 -- RLS: SPGM-FISO001
 GRANT SELECT, INSERT, UPDATE, DELETE ON service_providing_group_membership
 TO flex_flexibility_information_system_operator;
+DROP POLICY IF EXISTS "SPGM_FISO001" ON service_providing_group_membership;
 CREATE POLICY "SPGM_FISO001"
 ON service_providing_group_membership
 FOR ALL
@@ -34,6 +39,7 @@ USING (true);
 -- RLS: SPGM-FISO002
 GRANT SELECT ON service_providing_group_membership_history
 TO flex_flexibility_information_system_operator;
+DROP POLICY IF EXISTS "SPGM_FISO002" ON service_providing_group_membership_history;
 CREATE POLICY "SPGM_FISO002"
 ON service_providing_group_membership_history
 FOR ALL
@@ -46,6 +52,7 @@ TO flex_service_provider;
 
 -- RLS: SPGM-SP001
 -- RLS: SPGM-SP002
+DROP POLICY IF EXISTS "SPGM_SP001_SP002" ON service_providing_group_membership;
 CREATE POLICY "SPGM_SP001_SP002"
 ON service_providing_group_membership
 FOR ALL
@@ -67,7 +74,8 @@ WITH CHECK (
                 FROM controllable_unit_service_provider AS cusp
                     INNER JOIN service_providing_group AS spg
                         ON cusp.service_provider_id = spg.service_provider_id
-                WHERE spg.service_provider_id = (SELECT current_party())
+                WHERE
+                    spg.service_provider_id = (SELECT current_party())
                     AND cusp.controllable_unit_id
                     = service_providing_group_membership.controllable_unit_id -- noqa
                     AND spg.id
@@ -87,6 +95,7 @@ WITH CHECK (
 -- SPG cannot be deleted, SP ID is stable, no need to use history
 GRANT SELECT ON service_providing_group_membership_history
 TO flex_service_provider;
+DROP POLICY IF EXISTS "SPGM_SP003" ON service_providing_group_membership_history;
 CREATE POLICY "SPGM_SP003"
 ON service_providing_group_membership_history
 FOR SELECT
@@ -102,6 +111,7 @@ USING (EXISTS (
 -- RLS: SPGM-SO001
 GRANT SELECT ON service_providing_group_membership
 TO flex_system_operator;
+DROP POLICY IF EXISTS "SPGM_SO001" ON service_providing_group_membership;
 CREATE POLICY "SPGM_SO001"
 ON service_providing_group_membership
 FOR SELECT
@@ -120,6 +130,7 @@ USING (
 -- so we can use SPG for SO in a history policy as well
 GRANT SELECT ON service_providing_group_membership_history
 TO flex_system_operator;
+DROP POLICY IF EXISTS "SPGM_SO002" ON service_providing_group_membership_history;
 CREATE POLICY "SPGM_SO002"
 ON service_providing_group_membership_history
 FOR SELECT

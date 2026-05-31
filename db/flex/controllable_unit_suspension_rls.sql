@@ -1,13 +1,14 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:controllable-unit-suspension-rls runAlways:true endDelimiter:;
+-- changeset flex:controllable-unit-suspension-rls runOnChange:true endDelimiter:;
 ALTER TABLE IF EXISTS controllable_unit_suspension
 ENABLE ROW LEVEL SECURITY;
 
 -- internal
 GRANT SELECT ON controllable_unit_suspension
 TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "CUS_INTERNAL_EVENT_NOTIFICATION" ON controllable_unit_suspension;
 CREATE POLICY "CUS_INTERNAL_EVENT_NOTIFICATION"
 ON controllable_unit_suspension
 FOR SELECT
@@ -16,6 +17,8 @@ USING (true);
 
 GRANT SELECT ON controllable_unit_suspension_history
 TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "CUS_HISTORY_INTERNAL_EVENT_NOTIFICATION"
+ON controllable_unit_suspension_history;
 CREATE POLICY "CUS_HISTORY_INTERNAL_EVENT_NOTIFICATION"
 ON controllable_unit_suspension_history
 FOR SELECT
@@ -25,6 +28,7 @@ USING (true);
 -- RLS: CUS-FISO001
 GRANT SELECT, INSERT, UPDATE, DELETE ON controllable_unit_suspension
 TO flex_flexibility_information_system_operator;
+DROP POLICY IF EXISTS "CUS_FISO001" ON controllable_unit_suspension;
 CREATE POLICY "CUS_FISO001"
 ON controllable_unit_suspension
 FOR ALL
@@ -34,6 +38,7 @@ USING (true);
 -- RLS: CUS-FISO002
 GRANT SELECT ON controllable_unit_suspension_history
 TO flex_flexibility_information_system_operator;
+DROP POLICY IF EXISTS "CUS_FISO002" ON controllable_unit_suspension_history;
 CREATE POLICY "CUS_FISO002"
 ON controllable_unit_suspension_history
 FOR SELECT
@@ -43,6 +48,7 @@ USING (true);
 -- RLS: CUS-SP001
 GRANT SELECT ON controllable_unit_suspension
 TO flex_service_provider;
+DROP POLICY IF EXISTS "CUS_SP001" ON controllable_unit_suspension;
 CREATE POLICY "CUS_SP001"
 ON controllable_unit_suspension
 FOR SELECT
@@ -51,7 +57,8 @@ USING (
     EXISTS (
         SELECT 1
         FROM flex.controllable_unit_service_provider AS cusp
-        WHERE cusp.controllable_unit_id
+        WHERE
+            cusp.controllable_unit_id
         = controllable_unit_suspension.controllable_unit_id -- noqa
             AND cusp.service_provider_id = (SELECT flex.current_party())
             AND cusp.valid_time_range
@@ -62,6 +69,7 @@ USING (
 -- RLS: CUS-SP002
 GRANT SELECT ON controllable_unit_suspension_history
 TO flex_service_provider;
+DROP POLICY IF EXISTS "CUS_SP002" ON controllable_unit_suspension_history;
 CREATE POLICY "CUS_SP002"
 ON controllable_unit_suspension_history
 FOR SELECT
@@ -70,7 +78,8 @@ USING (
     EXISTS (
         SELECT 1
         FROM flex.controllable_unit_service_provider AS cusp
-        WHERE cusp.controllable_unit_id
+        WHERE
+            cusp.controllable_unit_id
         = controllable_unit_suspension_history.controllable_unit_id -- noqa
             AND cusp.service_provider_id = (SELECT flex.current_party())
             AND cusp.valid_time_range
@@ -81,6 +90,7 @@ USING (
 -- RLS: CUS-SO001
 GRANT SELECT, INSERT, UPDATE, DELETE ON controllable_unit_suspension
 TO flex_system_operator;
+DROP POLICY IF EXISTS "CUS_SO001" ON controllable_unit_suspension;
 CREATE POLICY "CUS_SO001"
 ON controllable_unit_suspension
 FOR ALL
@@ -90,6 +100,7 @@ USING (impacted_system_operator_id = (SELECT flex.current_party()));
 -- RLS: CUS-SO002
 GRANT SELECT ON controllable_unit_suspension_history
 TO flex_system_operator;
+DROP POLICY IF EXISTS "CUS_SO002" ON controllable_unit_suspension_history;
 CREATE POLICY "CUS_SO002"
 ON controllable_unit_suspension_history
 FOR SELECT
@@ -97,6 +108,7 @@ TO flex_system_operator
 USING (impacted_system_operator_id = (SELECT flex.current_party()));
 
 -- RLS: CUS-SO003
+DROP POLICY IF EXISTS "CUS_SO003" ON controllable_unit_suspension;
 CREATE POLICY "CUS_SO003"
 ON controllable_unit_suspension
 FOR SELECT
@@ -110,6 +122,7 @@ USING (
 );
 
 -- RLS: CUS-SO004
+DROP POLICY IF EXISTS "CUS_SO004" ON controllable_unit_suspension_history;
 CREATE POLICY "CUS_SO004"
 ON controllable_unit_suspension_history
 FOR SELECT

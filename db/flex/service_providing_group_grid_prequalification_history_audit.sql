@@ -25,11 +25,13 @@ ALTER TABLE IF EXISTS
 flex.service_providing_group_grid_prequalification_history
 ENABLE ROW LEVEL SECURITY;
 
--- changeset flex:service-providing-group-grid-prequalification-history-rls-com runAlways:true endDelimiter:--
+-- changeset flex:service-providing-group-grid-prequalification-history-rls-com runOnChange:true endDelimiter:--
 -- RLS: SPGGP-COM001
 GRANT SELECT ON flex.service_providing_group_grid_prequalification_history
 TO flex_common;
 
+DROP POLICY IF EXISTS "SPGGP_COM001"
+ON flex.service_providing_group_grid_prequalification_history;
 CREATE POLICY "SPGGP_COM001"
 ON flex.service_providing_group_grid_prequalification_history
 FOR SELECT

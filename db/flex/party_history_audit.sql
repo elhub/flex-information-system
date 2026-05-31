@@ -25,11 +25,13 @@ ALTER TABLE IF EXISTS
 flex.party_history
 ENABLE ROW LEVEL SECURITY;
 
--- changeset flex:party-history-rls-com runAlways:true endDelimiter:--
+-- changeset flex:party-history-rls-com runOnChange:true endDelimiter:--
 -- RLS: PTY-COM001
 GRANT SELECT ON flex.party_history
 TO flex_common;
 
+DROP POLICY IF EXISTS "PTY_COM001"
+ON flex.party_history;
 CREATE POLICY "PTY_COM001"
 ON flex.party_history
 FOR SELECT

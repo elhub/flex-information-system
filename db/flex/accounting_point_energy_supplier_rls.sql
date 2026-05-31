@@ -1,13 +1,15 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:accounting-point-energy-supplier-rls runAlways:true endDelimiter:;
+-- changeset flex:accounting-point-energy-supplier-rls runOnChange:true endDelimiter:;
 ALTER TABLE IF EXISTS accounting_point_energy_supplier
 ENABLE ROW LEVEL SECURITY;
 
 -- internal
 GRANT SELECT ON accounting_point_energy_supplier
 TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "APES_INTERNAL_EVENT_NOTIFICATION"
+ON accounting_point_energy_supplier;
 CREATE POLICY "APES_INTERNAL_EVENT_NOTIFICATION"
 ON accounting_point_energy_supplier
 FOR SELECT
@@ -16,6 +18,8 @@ USING (true);
 
 GRANT SELECT ON accounting_point_energy_supplier_history
 TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "APESH_INTERNAL_EVENT_NOTIFICATION"
+ON accounting_point_energy_supplier_history;
 CREATE POLICY "APESH_INTERNAL_EVENT_NOTIFICATION"
 ON accounting_point_energy_supplier_history
 FOR SELECT
@@ -24,6 +28,7 @@ USING (true);
 
 GRANT SELECT ON accounting_point_energy_supplier
 TO flex_common;
+DROP POLICY IF EXISTS "APES_INTERNAL_COMMON" ON accounting_point_energy_supplier;
 CREATE POLICY "APES_INTERNAL_COMMON"
 ON accounting_point_energy_supplier
 FOR SELECT
@@ -34,6 +39,7 @@ GRANT INSERT,
 SELECT,
 UPDATE,
 DELETE ON accounting_point_energy_supplier TO flex_internal_data;
+DROP POLICY IF EXISTS "APES_INTERNAL_DATA" ON accounting_point_energy_supplier;
 CREATE POLICY "APES_INTERNAL_DATA"
 ON accounting_point_energy_supplier
 FOR ALL

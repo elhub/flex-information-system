@@ -1,13 +1,15 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:service-provider-product-application-rls runAlways:true endDelimiter:;
+-- changeset flex:service-provider-product-application-rls runOnChange:true endDelimiter:;
 ALTER TABLE IF EXISTS service_provider_product_application
 ENABLE ROW LEVEL SECURITY;
 
 -- internal
 GRANT SELECT ON service_provider_product_application
 TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "SPPA_INTERNAL_EVENT_NOTIFICATION"
+ON service_provider_product_application;
 CREATE POLICY "SPPA_INTERNAL_EVENT_NOTIFICATION"
 ON service_provider_product_application
 FOR SELECT
@@ -16,6 +18,8 @@ USING (true);
 
 GRANT SELECT ON service_provider_product_application_history
 TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "SPPA_HISTORY_INTERNAL_EVENT_NOTIFICATION"
+ON service_provider_product_application_history;
 CREATE POLICY "SPPA_HISTORY_INTERNAL_EVENT_NOTIFICATION"
 ON service_provider_product_application_history
 FOR SELECT
@@ -25,6 +29,7 @@ USING (true);
 -- RLS: SPPA-FISO001
 GRANT SELECT, UPDATE ON service_provider_product_application
 TO flex_flexibility_information_system_operator;
+DROP POLICY IF EXISTS "SPPA_FISO001" ON service_provider_product_application;
 CREATE POLICY "SPPA_FISO001"
 ON service_provider_product_application
 FOR ALL
@@ -34,6 +39,7 @@ USING (true);
 -- RLS: SPPA-SP001
 GRANT SELECT, INSERT, UPDATE ON service_provider_product_application
 TO flex_service_provider;
+DROP POLICY IF EXISTS "SPPA_SP001" ON service_provider_product_application;
 CREATE POLICY "SPPA_SP001"
 ON service_provider_product_application
 FOR ALL
@@ -45,6 +51,7 @@ USING (
 -- RLS: SPPA-SO001
 GRANT SELECT, UPDATE ON service_provider_product_application
 TO flex_system_operator;
+DROP POLICY IF EXISTS "SPPA_SO001" ON service_provider_product_application;
 CREATE POLICY "SPPA_SO001"
 ON service_provider_product_application
 FOR SELECT
@@ -52,6 +59,7 @@ TO flex_system_operator
 USING (true);
 
 -- RLS: SPPA-SO002
+DROP POLICY IF EXISTS "SPPA_SO002" ON service_provider_product_application;
 CREATE POLICY "SPPA_SO002"
 ON service_provider_product_application
 FOR UPDATE

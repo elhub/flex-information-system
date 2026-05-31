@@ -1,13 +1,15 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:service-providing-group-product-suspension-rls runAlways:true endDelimiter:;
+-- changeset flex:service-providing-group-product-suspension-rls runOnChange:true endDelimiter:;
 ALTER TABLE IF EXISTS service_providing_group_product_suspension
 ENABLE ROW LEVEL SECURITY;
 
 -- internal
 GRANT SELECT ON service_providing_group_product_suspension
 TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "SPGPS_INTERNAL_EVENT_NOTIFICATION"
+ON service_providing_group_product_suspension;
 CREATE POLICY "SPGPS_INTERNAL_EVENT_NOTIFICATION"
 ON service_providing_group_product_suspension
 FOR SELECT
@@ -16,6 +18,8 @@ USING (true);
 
 GRANT SELECT ON service_providing_group_product_suspension_history
 TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "SPGPS_HISTORY_INTERNAL_EVENT_NOTIFICATION"
+ON service_providing_group_product_suspension_history;
 CREATE POLICY "SPGPS_HISTORY_INTERNAL_EVENT_NOTIFICATION"
 ON service_providing_group_product_suspension_history
 FOR SELECT
@@ -26,6 +30,7 @@ USING (true);
 GRANT SELECT, INSERT, UPDATE, DELETE
 ON service_providing_group_product_suspension
 TO flex_flexibility_information_system_operator;
+DROP POLICY IF EXISTS "SPGPS_FISO001" ON service_providing_group_product_suspension;
 CREATE POLICY "SPGPS_FISO001"
 ON service_providing_group_product_suspension
 FOR ALL
@@ -35,6 +40,8 @@ USING (true);
 -- RLS: SPGPS-FISO002
 GRANT SELECT ON service_providing_group_product_suspension_history
 TO flex_flexibility_information_system_operator;
+DROP POLICY IF EXISTS "SPGPS_FISO002"
+ON service_providing_group_product_suspension_history;
 CREATE POLICY "SPGPS_FISO002"
 ON service_providing_group_product_suspension_history
 FOR SELECT
@@ -44,6 +51,7 @@ USING (true);
 -- RLS: SPGPS-SP001
 GRANT SELECT ON service_providing_group_product_suspension
 TO flex_service_provider;
+DROP POLICY IF EXISTS "SPGPS_SP001" ON service_providing_group_product_suspension;
 CREATE POLICY "SPGPS_SP001"
 ON service_providing_group_product_suspension
 FOR SELECT
@@ -60,6 +68,8 @@ USING (
 -- RLS: SPGPS-SP002
 GRANT SELECT ON service_providing_group_product_suspension_history
 TO flex_service_provider;
+DROP POLICY IF EXISTS "SPGPS_SP002"
+ON service_providing_group_product_suspension_history;
 CREATE POLICY "SPGPS_SP002"
 ON service_providing_group_product_suspension_history
 FOR SELECT
@@ -79,6 +89,7 @@ INSERT,
 UPDATE,
 DELETE ON service_providing_group_product_suspension
 TO flex_system_operator;
+DROP POLICY IF EXISTS "SPGPS_SO001" ON service_providing_group_product_suspension;
 CREATE POLICY "SPGPS_SO001"
 ON service_providing_group_product_suspension
 FOR ALL
@@ -88,6 +99,8 @@ USING (procuring_system_operator_id = (SELECT flex.current_party()));
 -- RLS: SPGPS-SO002
 GRANT SELECT ON service_providing_group_product_suspension_history
 TO flex_system_operator;
+DROP POLICY IF EXISTS "SPGPS_SO002"
+ON service_providing_group_product_suspension_history;
 CREATE POLICY "SPGPS_SO002"
 ON service_providing_group_product_suspension_history
 FOR SELECT
@@ -95,6 +108,7 @@ TO flex_system_operator
 USING (procuring_system_operator_id = (SELECT flex.current_party()));
 
 -- RLS: SPGPS-SO003
+DROP POLICY IF EXISTS "SPGPS_SO003" ON service_providing_group_product_suspension;
 CREATE POLICY "SPGPS_SO003"
 ON service_providing_group_product_suspension
 FOR SELECT
@@ -103,7 +117,8 @@ USING (
     EXISTS (
         SELECT 1
         FROM flex.service_providing_group_product_application AS spgpa
-        WHERE spgpa.service_providing_group_id
+        WHERE
+            spgpa.service_providing_group_id
         = service_providing_group_product_suspension.service_providing_group_id -- noqa
             AND spgpa.procuring_system_operator_id
             = (SELECT flex.current_party())
@@ -114,6 +129,8 @@ USING (
 );
 
 -- RLS: SPGPS-SO004
+DROP POLICY IF EXISTS "SPGPS_SO004"
+ON service_providing_group_product_suspension_history;
 CREATE POLICY "SPGPS_SO004"
 ON service_providing_group_product_suspension_history
 FOR SELECT
@@ -132,7 +149,8 @@ USING (
                 FROM
                     flex.service_providing_group_product_application_history
                     AS spgpah -- noqa
-                WHERE spgpah.service_providing_group_id
+                WHERE
+                    spgpah.service_providing_group_id
                 = service_providing_group_product_suspension_history.service_providing_group_id -- noqa
                     AND spgpah.procuring_system_operator_id
                     = (SELECT flex.current_party())
@@ -144,7 +162,8 @@ USING (
                     spgpa.prequalified_at,
                     spgpa.verified_at
                 FROM flex.service_providing_group_product_application AS spgpa
-                WHERE spgpa.service_providing_group_id
+                WHERE
+                    spgpa.service_providing_group_id
                 = service_providing_group_product_suspension_history.service_providing_group_id -- noqa
                     AND spgpa.procuring_system_operator_id
                     = (SELECT flex.current_party())
@@ -152,7 +171,8 @@ USING (
 
         SELECT 1
         FROM spgpa_history
-        WHERE spgpa_history.record_time_range
+        WHERE
+            spgpa_history.record_time_range
             && service_providing_group_product_suspension_history.record_time_range -- noqa
             AND spg_product_application_ready_for_market_check(spgpa_history) -- noqa
             AND service_providing_group_product_suspension_history.product_type_ids -- noqa
