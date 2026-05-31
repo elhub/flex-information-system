@@ -14,7 +14,7 @@ pytest==9.0.3
 python-dotenv
 # ruff is a transitive dependency of openapi-python-client
 # (pinned to avoid blank lines being generated in some local setups)
-ruff==0.13.3
-schemathesis==4.20.0
+ruff==0.15.15
+schemathesis==4.20.2
 tabulate
 Flask
