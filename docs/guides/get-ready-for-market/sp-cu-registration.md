@@ -22,7 +22,7 @@ in the FIS.
 ## 1. Create a new CU
 
 To create a new CU, click **create new** from the dashboard or navigate to
-**Controllable units** on the menu ans select **create**
+**Controllable units** on the menu and select **create**
 
 This is where the [CU registration](../../processes/controllable-unit-registration.md) process begins.
 
@@ -39,14 +39,14 @@ If no CUs are registered on the accounting point, you will automatically continu
 to the CU creation step.
 
 If one or more CUs are already registered on the accounting point, the lookup process
-will return a list of the existing registrations. Review the list to determine whether
+will return a list of the existing CUs. Review the list to determine whether
 the CU has already been registered. If it has not, you can continue creating a new
 CU.
 
 If the CU is registered by a different service provider and the end user has changed
 service provider, follow the [service provider switching process](../../processes/service-provider-switching.md).
 
-## 4. Fill in CU form 
+## 3. Fill in CU form
 
 Provide the required information about the CU as described in the portal.
 
@@ -62,7 +62,7 @@ Provide the required information about the CU as described in the portal.
 > since the technical characteristics of the CU affect the overall
 > delivery potential of the group.
 
-## 5. Add technical resources
+## 4. Add technical resources
 
 The next step is to add [technical resources](../../resources/technical_resource.md),
 which represent the assets that the controllable unit consists of.
@@ -78,15 +78,17 @@ added individually in the portal.
 >* It enables more efficient evaluation when different CUs contain identical or
 > similar technical resources.
 
-## 6. Activate the controllable unit
-
-**Add activation message from portal here**
+## 5. Activate the controllable unit
 
 The controllable unit is now registered in the FIS, but it is only visible for the
 SP that has registered it because it has not been activated.
 
-Review all information to ensure everything is correct before activating the
-controllable unit.
+Activating the controllable unit will allow you to add it to service providing groups.
+
+Ensure the following before activating:
+
+* all technical resources have been added
+* data is correct
 
 ## Next step: Grouping controllable units in a service providing group
 
