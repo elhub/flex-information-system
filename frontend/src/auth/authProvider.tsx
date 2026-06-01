@@ -4,9 +4,9 @@ import {
   getStorage,
   UserIdentity,
 } from "react-admin";
+import { QueryClient } from "@tanstack/react-query";
 import permissions from "./permissions";
 import { authURL } from "../httpConfig";
-import { queryClient } from "../queryClient";
 import type { PartyRole } from "../generated-client/types.gen";
 
 import anonymous_avatar from "./avatars/ANO.png";
@@ -75,7 +75,7 @@ interface FlexEntityIdentity extends FlexIdentityBase {
 
 export type FlexIdentity = FlexPartyIdentity | FlexEntityIdentity;
 
-export function authProvider(): AuthProvider {
+export function authProvider(queryClient: QueryClient): AuthProvider {
   const getIdentity = async () => {
     const sessionInfoString = getStorage().getItem(sessionInfoKey);
     if (!sessionInfoString) return Promise.reject();
