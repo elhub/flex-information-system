@@ -1,11 +1,7 @@
 import {
-  Button,
-  Datagrid,
-  List,
-  ReferenceField,
   ResourceContextProvider,
-  TextField,
   useGetIdentity,
+  useListContext,
   useLogin,
   useNotify,
   usePermissions,
@@ -13,22 +9,26 @@ import {
   useRedirect,
   useRefresh,
   useResetStore,
-} from "react-admin";
-import Box from "@mui/material/Box";
+} from "ra-core";
 import {
-  Typography,
-  CircularProgress,
+  Alert,
+  BodyText,
+  Button,
   Card,
   CardContent,
   CardHeader,
-} from "@mui/material";
-import { Alert, BodyText, Heading } from "./components/ui";
-import PersonIcon from "@mui/icons-material/Person";
+  Heading,
+  Loader,
+} from "./components/ui";
 import { useState, useEffect } from "react";
 import { docsURL } from "./httpConfig";
-import { ScopesField } from "./components/scopes";
-import { useTheme } from "@mui/material/styles";
-import { EnumField } from "./components/enum";
+import { Datagrid, List } from "./components/EDS-ra/list";
+import {
+  EnumField,
+  ReferenceField,
+  ScopesField,
+  TextField,
+} from "./components/EDS-ra/fields";
 
 const AssumePartyButton = ({ field }: any) => {
   const notify = useNotify();
@@ -37,7 +37,6 @@ const AssumePartyButton = ({ field }: any) => {
   const permissions = usePermissions();
   const login = useLogin();
   const identity = useGetIdentity();
-  const elhubTheme = useTheme();
   const [loading, setLoading] = useState(false);
   const assumeParty = async () => {
     setLoading(true);
@@ -65,21 +64,29 @@ const AssumePartyButton = ({ field }: any) => {
 
   return (
     <Button
-      color="secondary"
-      size="medium"
+      variant="primary"
+      size="small"
       onClick={assumeParty}
-      sx={{
-        fontWeight: "bold",
-        border: "2px solid transparent",
-        ":hover": {
-          border: `2px solid ${elhubTheme.palette.primary.main}`,
-        },
-      }}
+      disabled={loading}
     >
-      {loading && <CircularProgress size={25} thickness={2} sx={{ mr: 1 }} />}
-      <PersonIcon sx={{ mr: 1 }} />
+      {loading && <Loader size="small" />}
       Act on behalf of {record.name}
     </Button>
+  );
+};
+
+const PartyMembershipEmpty = () => {
+  const { total, isPending } = useListContext();
+  if (isPending || total !== 0) return null;
+  return (
+    <Alert variant="info" className="gap-4">
+      <Heading size="small">No party membership</Heading>
+      <BodyText>
+        You are not a member of any party yet. If you are a new user, please
+        contact your organisation party administrator in order to be added to
+        one of your company{"'"}s parties.
+      </BodyText>
+    </Alert>
   );
 };
 
@@ -110,10 +117,9 @@ export const AssumePartyPage = () => {
   /* eslint-enable react-hooks/exhaustive-deps */
 
   return (
-    <>
-      <Box m={1} />
+    <div className="flex flex-col gap-2">
       <Card>
-        <CardHeader title="Assume a party" />
+        <CardHeader>Assume a party</CardHeader>
         <CardContent>
           You are now logged in to the Flexibility Information System. Your
           permissions may be restricted unless you <i>assume a party</i>. Below
@@ -126,48 +132,35 @@ export const AssumePartyPage = () => {
           </p>
         </CardContent>
       </Card>
-      <Box m={1} />
-      <Typography variant="h6" margin={1}>
+      <Heading level={2} size="small">
         Parties you belong to
-      </Typography>
-      {identity.isLoading ? (
-        <CircularProgress size={25} thickness={2} />
+      </Heading>
+      {identity.isPending || !identity.data ? (
+        <Loader size="medium" />
       ) : (
         <List
-          title="Assume a party"
-          actions={false}
           perPage={25}
           sort={{ field: "id", order: "ASC" }}
-          filter={{ entity_id: identity.data?.entityID ?? "" }}
-          empty={
-            <Alert variant="info" className="gap-4">
-              <Heading size="small">No party membership</Heading>
-              <BodyText>
-                You are not a member of any party yet. If you are a new user,
-                please contact your organisation party administrator in order to
-                be added to one of your company{"'"}s parties.
-              </BodyText>
-            </Alert>
-          }
+          filter={{ entity_id: identity.data.entityID }}
+          empty={false}
           disableSyncWithLocation
         >
-          <Datagrid bulkActionButtons={false}>
-            <TextField label="ID" source="party_id" />
+          <PartyMembershipEmpty />
+          <Datagrid emptyNode={null}>
+            <TextField hideLabel label="ID" source="party_id" />
             <ReferenceField
+              hideLabel
               label="Name"
               source="party_id"
               reference="party"
-              sortable={false}
-              link={false}
             >
               <TextField source="name" />
             </ReferenceField>
             <ReferenceField
+              hideLabel
               label="Type"
-              link={false}
               source="party_id"
               reference="party"
-              sortable={false}
             >
               <EnumField source="type" enumKey="party.type" />
             </ReferenceField>
@@ -176,44 +169,36 @@ export const AssumePartyPage = () => {
               label="Assume party"
               source="party_id"
               reference="party"
-              link={false}
-              sortable={false}
+              hideLabel
             >
               <AssumePartyButton field="id" />
             </ReferenceField>
           </Datagrid>
         </List>
       )}
-      <Typography variant="h6" margin={1}>
+      <Heading level={2} size="small">
         Parties you own
-      </Typography>
-      {identity.isLoading ? (
-        <CircularProgress size={25} thickness={2} />
+      </Heading>
+      {identity.isPending || !identity.data ? (
+        <Loader size="medium" />
       ) : (
         <ResourceContextProvider value="party">
           <List
-            title=""
-            actions={false}
             perPage={5}
             sort={{ field: "id", order: "ASC" }}
-            filter={{ entity_id: identity.data!.entityID }}
-            empty={
-              <Box textAlign="center" m={1}>
-                <Typography variant="h5">You do not own any party.</Typography>
-              </Box>
-            }
+            filter={{ entity_id: identity.data.entityID }}
+            empty={false}
             disableSyncWithLocation
           >
-            <Datagrid bulkActionButtons={false} rowClick={false}>
-              <TextField label="ID" source="id" />
-              <TextField source="name" />
+            <Datagrid rowClick={false}>
+              <TextField hideLabel source="id" />
+              <TextField hideLabel source="name" />
               <EnumField source="type" enumKey="party.type" />
               <ReferenceField
                 label="Assume party"
                 source="id"
                 reference="party"
-                link={false}
-                sortable={false}
+                hideLabel
               >
                 <AssumePartyButton field="id" />
               </ReferenceField>
@@ -221,6 +206,6 @@ export const AssumePartyPage = () => {
           </List>
         </ResourceContextProvider>
       )}
-    </>
+    </div>
   );
 };

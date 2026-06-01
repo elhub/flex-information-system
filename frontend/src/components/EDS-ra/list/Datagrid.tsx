@@ -19,6 +19,7 @@ import { FieldTooltip } from "../fields";
 type DatagridProps<T extends RaRecord = RaRecord> = {
   children: ReactNode;
   empty?: boolean;
+  emptyNode?: ReactNode;
   rowClick?: false | ((record: T) => string);
   expandPanel?: (record: T) => ReactNode;
 };
@@ -26,6 +27,7 @@ type DatagridProps<T extends RaRecord = RaRecord> = {
 export const Datagrid = <T extends RaRecord>({
   children,
   empty,
+  emptyNode,
   rowClick,
   expandPanel,
 }: DatagridProps<T>) => {
@@ -40,6 +42,7 @@ export const Datagrid = <T extends RaRecord>({
     <DataTable<T>
       data={data}
       empty={empty}
+      emptyNode={emptyNode}
       rowClick={rowClick}
       expandPanel={expandPanel}
     >
@@ -92,7 +95,11 @@ export const DataTable = <T extends RaRecord>({
   };
 
   if (data.length === 0 && empty !== false) {
-    return emptyNode ?? <BodyText>No results</BodyText>;
+    return emptyNode !== undefined ? (
+      emptyNode
+    ) : (
+      <BodyText>No results</BodyText>
+    );
   }
 
   return (
