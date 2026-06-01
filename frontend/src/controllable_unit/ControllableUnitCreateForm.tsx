@@ -18,6 +18,7 @@ import {
 } from "../components/ui";
 import {
   TextInput,
+  TextAreaInput,
   EnumInput,
   PartyReferenceInput,
   FormToolbar,
@@ -44,6 +45,8 @@ const zControllableUnitCreateForm = z.object({
     .refine((date) => isPast(date), {
       message: "Start date must be today or a past date",
     }),
+  additional_information:
+    zControllableUnitCreateRequest.shape.additional_information,
 });
 type ControllableUnitCreateFormValues = z.infer<
   typeof zControllableUnitCreateForm
@@ -204,6 +207,12 @@ export const ControllableUnitCreateForm = ({
               { label: "MW", scale: 1000 },
             ]}
             disabled={!!savedControllableUnitId}
+            description
+            tooltip={false}
+          />
+          <TextAreaInput
+            {...fields.additional_information}
+            rows={5}
             description
             tooltip={false}
           />
