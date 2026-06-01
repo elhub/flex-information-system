@@ -211,7 +211,10 @@ export function authProvider(): AuthProvider {
     },
     getPermissions: () => {
       const sessionInfoString = getStorage().getItem(sessionInfoKey);
-      if (!sessionInfoString) return Promise.resolve([]); // no session, no permissions
+
+      // no session, no permissions
+      if (!sessionInfoString) return Promise.resolve(permissions("flex_anonymous"));
+
       const sessionInfo = JSON.parse(sessionInfoString);
       const role = sessionInfo["role"];
       return Promise.resolve(
