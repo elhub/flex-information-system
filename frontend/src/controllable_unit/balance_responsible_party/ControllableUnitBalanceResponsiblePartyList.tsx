@@ -1,21 +1,18 @@
-import {
-  List,
-  Loading,
-  ReferenceField,
-  ResourceContextProvider,
-  TextField,
-  useGetOne,
-  usePermissions,
-} from "react-admin";
-import { Datagrid } from "../../auth";
-import { DateField } from "../../components/datetime";
-import { Permissions } from "../../auth/permissions";
-import { EnumField } from "../../components/enum";
-import { ControllableUnit } from "../../generated-client";
+import { useGetOne, usePermissions } from "ra-core";
+import { ResourceContextProvider } from "ra-core";
 import { useParams } from "react-router-dom";
+import { Permissions } from "../../auth/permissions";
+import { List, Datagrid } from "../../components/EDS-ra/list";
+import {
+  DateField,
+  EnumField,
+  ReferenceField,
+  TextField,
+} from "../../components/EDS-ra/fields";
+import { Loader } from "../../components/ui";
+import { ControllableUnit } from "../../generated-client";
 
 export const ControllableUnitBalanceResponsiblePartyList = () => {
-  // accounting point id of the controllable unit whose BRPs we want to get
   const { controllable_unit_id } = useParams<{
     controllable_unit_id: string;
   }>();
@@ -26,15 +23,13 @@ export const ControllableUnitBalanceResponsiblePartyList = () => {
   );
 
   const { permissions } = usePermissions<Permissions>();
-
-  // Permission checks
   const canRead = permissions?.allow(
     "accounting_point_balance_responsible_party",
     "read",
   );
 
   if (isLoading) {
-    return <Loading />;
+    return <Loader />;
   }
 
   if (!canRead) {
@@ -44,9 +39,7 @@ export const ControllableUnitBalanceResponsiblePartyList = () => {
   return (
     <ResourceContextProvider value="accounting_point_balance_responsible_party">
       <List
-        title={false}
         perPage={10}
-        exporter={false}
         empty={false}
         filter={
           cu ? { accounting_point_id: cu.accounting_point_id } : undefined
@@ -54,19 +47,18 @@ export const ControllableUnitBalanceResponsiblePartyList = () => {
         sort={{ field: "valid_from", order: "ASC" }}
         disableSyncWithLocation
       >
-        <Datagrid bulkActionButtons={false}>
+        <Datagrid>
           <ReferenceField
             source="balance_responsible_party_id"
             reference="party"
-            sortable={false}
             label="field.accounting_point_balance_responsible_party.balance_responsible_party_id"
           >
             <TextField source="name" />
           </ReferenceField>
           <EnumField
             source="energy_direction"
-            label="field.accounting_point_balance_responsible_party.energy_direction"
             enumKey="accounting_point_balance_responsible_party.energy_direction"
+            label="field.accounting_point_balance_responsible_party.energy_direction"
           />
           <DateField
             source="valid_from"
