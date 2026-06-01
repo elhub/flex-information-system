@@ -107,6 +107,7 @@ export const TechnicalResourceInput = () => {
             rows={8}
             description
             tooltip={false}
+            warning="Please remember not to write any sensitive information in this field."
           />
         </FlexDiv>
 
