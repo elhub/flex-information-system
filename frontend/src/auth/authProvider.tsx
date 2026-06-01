@@ -6,6 +6,7 @@ import {
 } from "react-admin";
 import permissions from "./permissions";
 import { authURL } from "../httpConfig";
+import { queryClient } from "../queryClient";
 import type { PartyRole } from "../generated-client/types.gen";
 
 import anonymous_avatar from "./avatars/ANO.png";
@@ -169,6 +170,10 @@ export function authProvider(): AuthProvider {
         if (status == 200) {
           sessionInfo = json;
           getStorage().setItem(sessionInfoKey, body);
+          // make sure permissions are refetched with the correct role
+          queryClient.invalidateQueries({
+            queryKey: ["auth", "getPermissions"],
+          });
         }
       } else {
         sessionInfo = JSON.parse(sessionInfoString);
@@ -213,7 +218,8 @@ export function authProvider(): AuthProvider {
       const sessionInfoString = getStorage().getItem(sessionInfoKey);
 
       // no session, no permissions
-      if (!sessionInfoString) return Promise.resolve(permissions("flex_anonymous"));
+      if (!sessionInfoString)
+        return Promise.resolve(permissions("flex_anonymous"));
 
       const sessionInfo = JSON.parse(sessionInfoString);
       const role = sessionInfo["role"];

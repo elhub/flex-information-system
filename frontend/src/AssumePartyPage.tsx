@@ -135,13 +135,13 @@ export const AssumePartyPage = () => {
       <Heading level={2} size="small">
         Parties you belong to
       </Heading>
-      {identity.isLoading ? (
+      {identity.isPending || !identity.data ? (
         <Loader size="medium" />
       ) : (
         <List
           perPage={25}
           sort={{ field: "id", order: "ASC" }}
-          filter={{ entity_id: identity.data?.entityID ?? "" }}
+          filter={{ entity_id: identity.data.entityID }}
           empty={false}
           disableSyncWithLocation
         >
@@ -179,14 +179,14 @@ export const AssumePartyPage = () => {
       <Heading level={2} size="small">
         Parties you own
       </Heading>
-      {identity.isLoading ? (
+      {identity.isPending || !identity.data ? (
         <Loader size="medium" />
       ) : (
         <ResourceContextProvider value="party">
           <List
             perPage={5}
             sort={{ field: "id", order: "ASC" }}
-            filter={{ entity_id: identity.data!.entityID }}
+            filter={{ entity_id: identity.data.entityID }}
             empty={false}
             disableSyncWithLocation
           >

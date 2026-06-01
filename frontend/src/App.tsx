@@ -15,6 +15,7 @@ import { authProvider } from "./auth";
 import { elhubTheme } from "./theme";
 import { LoginPage } from "./LoginPage";
 import { AssumePartyPage } from "./AssumePartyPage";
+import { queryClient } from "./queryClient";
 
 import { createAllResources } from "./resources";
 
@@ -73,6 +74,7 @@ export const App = () => (
     disableTelemetry
     layout={Layout}
     loginPage={LoginPage}
+    queryClient={queryClient}
     requireAuth={true}
     store={localStorageStore(undefined, "Flex")}
     theme={elhubTheme}
