@@ -10,7 +10,6 @@ title Service Providing Group (SPG) Registration
 
 actor "Service Provider (SP)" as SP
 participant "Flexibility Information System (FIS)" as FIS
-actor "System Operator (SO)" as SO
 
 
 == Service Providing Group (SPG) Registration ==
@@ -22,8 +21,7 @@ deactivate SP
 note left
     Data:
     - name
-    - description (optional)
-    - ID in SP system (optional)
+    - bidding zone
 end note
 
 activate FIS
@@ -35,74 +33,22 @@ activate SP
 
 == Add Controllable Units (CU) to Service Providing Group (SPG) ==
 
-SP -> FIS: List own CU's with input filters
+SP -> FIS: Choose CU's from list of CU's
 activate FIS
-FIS --> SP: Return list of CU's
+FIS --> SP: Return chosen CU's
 deactivate FIS
-|||
-loop For each relevant CU
-    SP -> FIS: Add CU to SPG
-    activate FIS
-    note left
-        Data:
-        - controllable unit ID
-        - valid from
-    end note
-    FIS --> SP: OK
-    deactivate FIS
-    |||
-end
 
-== Service Providing Group Grid Prequalification ==
+== Activate Service Providing Group ==
 
 SP -> FIS: Update\nstatus to [active]
 note right
     Setting the status to active
     indicates that the SP has added all
-    CUs and the SPG is ready for grid prequalification.
+    CUs and the SPG is ready to be used
+    in a product application.
 end note
 activate FIS
 FIS --> SP: OK
 deactivate SP
 
-loop All Impacted System Operators (ISOs)
-    FIS --> FIS: Add grid prequalification resource\nwith status [requested]
-    note left
-        If a SPG member CU is in the grid (CSO) or
-        observability area of a SO then they are ISO.
-    end note
-    FIS --> SO: Notify grid prequalification to ISO
-
-    deactivate FIS
-    activate SO
-
-
-    note over SO
-        SO initiates grid prequalification
-        without undue delay. Depending on the
-        SPG, the process might differ a bit
-        from SPG to SPG. Many small CUs might
-        require a different process that one big CU.
-        SO must keep status updated.
-    end note
-    loop When status changes
-        SO -> FIS: Update FIS with status
-        note left
-            Relevant statuses:
-
-            - in_progress
-            - approved
-            - conditionally_approved
-            - not_approved
-
-            The ISO should add notes and update
-            last approved time when relevant.
-        end note
-        activate FIS
-        FIS --> SO: OK
-        FIS --> SP: Notify SPG grid prequalification status updated
-        deactivate FIS
-        |||
-    end
-end
 @enduml
