@@ -1,7 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:api-controllable-unit-service-provider-upsert endDelimiter:-- runAlways:true
+-- changeset flex:api-controllable-unit-service-provider-upsert endDelimiter:-- runOnChange:true
 CREATE OR REPLACE TRIGGER controllable_unit_service_provider_upsert
 INSTEAD OF INSERT OR UPDATE
 ON api.controllable_unit_service_provider

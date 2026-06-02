@@ -1,7 +1,7 @@
 --liquibase formatted sql
 -- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
 {% for rel in rels %}
--- changeset flex:{{ rel.child.resource }}-{{ rel.child.name }}-to-{{ rel.parent.resource }} runAlways:true endDelimiter:--
+-- changeset flex:{{ rel.child.resource }}-{{ rel.child.name }}-to-{{ rel.parent.resource }} runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.{{ rel.name }}(
     api.{{ rel.child.resource }}
 )

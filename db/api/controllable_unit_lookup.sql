@@ -1,7 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:api-current-controllable-unit-accounting-point endDelimiter:-- runAlways:true
+-- changeset flex:api-current-controllable-unit-accounting-point endDelimiter:-- runOnChange:true
 CREATE OR REPLACE FUNCTION
 api.current_controllable_unit_accounting_point(
     l_controllable_unit_business_id text
@@ -23,12 +23,12 @@ AS $$
 $$;
 
 
--- changeset flex:api-controllable-unit-lookup-sync-accounting-point endDelimiter:-- runAlways:true
+-- changeset flex:api-controllable-unit-lookup-sync-accounting-point endDelimiter:-- runOnChange:true
 DROP FUNCTION IF EXISTS api.controllable_unit_lookup_sync_accounting_point(
     text, text, text
 );
 
--- changeset flex:api-controllable-unit-lookup-check-end-user-matches-accounting-point endDelimiter:-- runAlways:true
+-- changeset flex:api-controllable-unit-lookup-check-end-user-matches-accounting-point endDelimiter:-- runOnChange:true
 CREATE OR REPLACE FUNCTION
 api.controllable_unit_lookup_check_end_user_matches_accounting_point(
     l_end_user_business_id text,
@@ -62,7 +62,7 @@ AS $$
         AND apeu.valid_time_range @> current_timestamp;
 $$;
 
--- changeset flex:api-controllable-unit-lookup endDelimiter:-- runAlways:true
+-- changeset flex:api-controllable-unit-lookup endDelimiter:-- runOnChange:true
 CREATE OR REPLACE FUNCTION api.controllable_unit_lookup(
     l_controllable_unit_business_id text,
     l_accounting_point_business_id text

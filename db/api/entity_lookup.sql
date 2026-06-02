@@ -1,7 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:api-entity-lookup endDelimiter:-- runAlways:true
+-- changeset flex:api-entity-lookup endDelimiter:-- runOnChange:true
 CREATE OR REPLACE FUNCTION api.entity_lookup(
     l_entity_business_id text,
     l_entity_name text,

@@ -1,7 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:api-controllable-unit-history-create endDelimiter:-- runAlways:true
+-- changeset flex:api-controllable-unit-history-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW api.controllable_unit_history WITH (
     security_invoker = true
 ) AS (
@@ -42,7 +42,7 @@ CREATE OR REPLACE VIEW api.controllable_unit_history WITH (
     FROM flex.controllable_unit_history AS cu
 );
 
--- changeset flex:api-controllable-unit-create endDelimiter:-- runAlways:true
+-- changeset flex:api-controllable-unit-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW api.controllable_unit
 WITH (security_invoker = true) AS (
     SELECT
@@ -78,11 +78,11 @@ WITH (security_invoker = true) AS (
     WHERE cu.rn = 1
 );
 
--- changeset flex:api-controllable-unit-status-default endDelimiter:-- runAlways:true
+-- changeset flex:api-controllable-unit-status-default endDelimiter:-- runOnChange:true
 ALTER VIEW IF EXISTS api.controllable_unit
 ALTER COLUMN status SET DEFAULT 'new';
 
--- changeset flex:api-controllable-unit-modify-function endDelimiter:-- runAlways:true
+-- changeset flex:api-controllable-unit-modify-function endDelimiter:-- runOnChange:true
 CREATE OR REPLACE FUNCTION api.controllable_unit_modify()
 RETURNS TRIGGER
 SECURITY INVOKER
@@ -203,7 +203,7 @@ BEGIN
 END;
 $$;
 
--- changeset flex:api-controllable-unit-modify-trigger endDelimiter:-- runAlways:true
+-- changeset flex:api-controllable-unit-modify-trigger endDelimiter:-- runOnChange:true
 CREATE OR REPLACE TRIGGER controllable_unit_modify_trg
 INSTEAD OF INSERT OR UPDATE OR DELETE
 ON api.controllable_unit

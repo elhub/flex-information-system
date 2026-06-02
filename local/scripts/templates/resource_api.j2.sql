@@ -6,7 +6,7 @@
 {%- set has_valid_time = "valid_from" in all_fields %}
 {%- set has_record_time = data.get('audit') %}
 
--- changeset flex:api-{{ resource | replace("_", "-") }}-create endDelimiter:-- runAlways:true
+-- changeset flex:api-{{ resource | replace("_", "-") }}-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW
 api.{{ resource }}
 WITH (security_invoker = true) AS (
@@ -24,7 +24,7 @@ WITH (security_invoker = true) AS (
 );
 
 {%- if data.get('history') %}
--- changeset flex:api-{{ resource | replace("_", "-") }}-history-create endDelimiter:-- runAlways:true
+-- changeset flex:api-{{ resource | replace("_", "-") }}-history-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW
 api.{{ resource }}_history
 WITH (

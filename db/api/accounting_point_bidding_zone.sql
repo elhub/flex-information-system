@@ -1,7 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:api-accounting-point-bidding-zone-create endDelimiter:-- runAlways:true
+-- changeset flex:api-accounting-point-bidding-zone-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW
 api.accounting_point_bidding_zone
 WITH (security_invoker = false, security_barrier = true) AS (

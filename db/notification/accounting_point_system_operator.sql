@@ -1,7 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:notification-accounting-point-system-operator runAlways:true endDelimiter:--
+-- changeset flex:notification-accounting-point-system-operator runOnChange:true endDelimiter:--
 CREATE OR REPLACE VIEW notification.accounting_point_system_operator
 WITH (security_invoker = true) AS (
     SELECT
@@ -11,6 +11,6 @@ WITH (security_invoker = true) AS (
     FROM flex.accounting_point_system_operator
 );
 
--- changeset flex:notification-accounting-point-system-operator-grant endDelimiter:; runAlways:true
+-- changeset flex:notification-accounting-point-system-operator-grant endDelimiter:; runOnChange:true
 GRANT SELECT ON TABLE notification.accounting_point_system_operator
 TO flex_internal_event_notification;

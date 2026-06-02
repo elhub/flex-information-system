@@ -1,7 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:notification-event endDelimiter:-- runAlways:true
+-- changeset flex:notification-event endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW notification.event
 WITH (security_invoker = true) AS (
     SELECT
@@ -19,7 +19,7 @@ WITH (security_invoker = true) AS (
     FROM flex.event
 );
 
--- changeset flex:notification-event-user-grant endDelimiter:; runAlways:true
+-- changeset flex:notification-event-user-grant endDelimiter:; runOnChange:true
 GRANT SELECT ON TABLE notification.event
 TO flex_internal_event_notification;
 

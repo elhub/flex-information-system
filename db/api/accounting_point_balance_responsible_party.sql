@@ -1,7 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:api-accounting-point-balance-responsible-party-create endDelimiter:-- runAlways:true
+-- changeset flex:api-accounting-point-balance-responsible-party-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW api.accounting_point_balance_responsible_party
 -- We are enforcing "RLS" in the view definition. Therefore we want
 --  * security definer (invoker = false) to avoid the performance hit of RLS
@@ -36,9 +36,11 @@ WITH (security_invoker = false, security_barrier = true) AS (
             ) AS valid_time_range
         FROM flex.accounting_point_balance_responsible_party AS ap_brp -- noqa
             INNER JOIN flex.accounting_point_system_operator AS ap_so
-                ON ap_so.accounting_point_id = ap_brp.accounting_point_id
+                ON
+                    ap_so.accounting_point_id = ap_brp.accounting_point_id
                     AND ap_so.valid_time_range && ap_brp.valid_time_range
-        WHERE current_role = 'flex_system_operator'
+        WHERE
+            current_role = 'flex_system_operator'
             AND ap_so.system_operator_id = (SELECT flex.current_party())
         GROUP BY
             ap_brp.accounting_point_id,
@@ -54,7 +56,8 @@ WITH (security_invoker = false, security_barrier = true) AS (
         energy_direction,
         lower(valid_time_range) AS valid_from,
         -- allow window so SP does not see too far in the future
-        CASE WHEN upper(valid_time_range) > current_timestamp + '2w'::interval
+        CASE
+            WHEN upper(valid_time_range) > current_timestamp + '2w'::interval
                 THEN null
             ELSE upper(valid_time_range)
         END AS valid_to
@@ -70,9 +73,11 @@ WITH (security_invoker = false, security_barrier = true) AS (
             ) AS valid_time_range
         FROM flex.accounting_point_balance_responsible_party AS ap_brp -- noqa
             INNER JOIN flex.accounting_point_service_provider AS ap_sp
-                ON ap_sp.accounting_point_id = ap_brp.accounting_point_id
+                ON
+                    ap_sp.accounting_point_id = ap_brp.accounting_point_id
                     AND ap_sp.valid_time_range && ap_brp.valid_time_range
-        WHERE current_role = 'flex_service_provider'
+        WHERE
+            current_role = 'flex_service_provider'
             AND ap_sp.service_provider_id = (SELECT flex.current_party())
         GROUP BY
             ap_brp.accounting_point_id,
