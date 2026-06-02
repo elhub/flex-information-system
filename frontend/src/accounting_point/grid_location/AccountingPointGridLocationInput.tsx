@@ -104,6 +104,7 @@ export const AccountingPointGridLocationInput = ({
             {...fields.additional_information}
             tooltip={false}
             rows={5}
+            warning="Please remember not to write any sensitive (power/market/personal) information in this field."
           />
           <FormToolbar onCancel={onDone} />
         </FormContainer>
