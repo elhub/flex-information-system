@@ -16,17 +16,30 @@ SELECT
 FROM api.entity_lookup(
   $1::text,
   $2::text,
-  $3::text
+  $3::text,
+  $4::text
 )
 `
+
+type EntityLookupParams struct {
+	EntityBusinessID     string
+	EntityName           string
+	EntityType           string
+	EntityBusinessIDType string
+}
 
 type EntityLookupRow struct {
 	EntityID    int
 	EntityFound bool
 }
 
-func (q *Queries) EntityLookup(ctx context.Context, entityBusinessID string, entityName string, entityType string) (EntityLookupRow, error) {
-	row := q.db.QueryRow(ctx, entityLookup, entityBusinessID, entityName, entityType)
+func (q *Queries) EntityLookup(ctx context.Context, arg EntityLookupParams) (EntityLookupRow, error) {
+	row := q.db.QueryRow(ctx, entityLookup,
+		arg.EntityBusinessID,
+		arg.EntityName,
+		arg.EntityType,
+		arg.EntityBusinessIDType,
+	)
 	var i EntityLookupRow
 	err := row.Scan(&i.EntityID, &i.EntityFound)
 	return i, err

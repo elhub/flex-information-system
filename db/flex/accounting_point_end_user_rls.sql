@@ -1,12 +1,13 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:accounting-point-end-user-rls runAlways:true endDelimiter:;
+-- changeset flex:accounting-point-end-user-rls runOnChange:true endDelimiter:;
 ALTER TABLE IF EXISTS accounting_point_end_user
 ENABLE ROW LEVEL SECURITY;
 
 GRANT SELECT ON accounting_point_end_user
 TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "APEU_INTERNAL_EVENT_NOTIFICATION" ON accounting_point_end_user;
 CREATE POLICY "APEU_INTERNAL_EVENT_NOTIFICATION"
 ON accounting_point_end_user
 FOR SELECT
@@ -15,6 +16,8 @@ USING (true);
 
 GRANT SELECT ON accounting_point_end_user_history
 TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "APEUH_INTERNAL_EVENT_NOTIFICATION"
+ON accounting_point_end_user_history;
 CREATE POLICY "APEUH_INTERNAL_EVENT_NOTIFICATION"
 ON accounting_point_end_user_history
 FOR SELECT
@@ -28,6 +31,7 @@ GRANT SELECT ON accounting_point_end_user
 TO flex_common;
 
 GRANT INSERT, SELECT, UPDATE, DELETE ON accounting_point_end_user TO flex_internal_data;
+DROP POLICY IF EXISTS "APEU_INTERNAL_DATA" ON accounting_point_end_user;
 CREATE POLICY "APEU_INTERNAL_DATA"
 ON accounting_point_end_user
 FOR ALL

@@ -4,7 +4,7 @@
 {%- set liquibase_resource = resource | replace("_", "-") %}
 {%- set lower_acronym = data.acronym | lower %}
 
--- changeset flex:{{ liquibase_resource }}-comment-rls runAlways:true endDelimiter:;
+-- changeset flex:{{ liquibase_resource }}-comment-rls runOnChange:true endDelimiter:;
 ALTER TABLE IF EXISTS
 {{ resource }}_comment
 ENABLE ROW LEVEL SECURITY;
@@ -13,6 +13,8 @@ ENABLE ROW LEVEL SECURITY;
 GRANT SELECT
 ON {{ resource }}_comment
 TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "{{ data.acronym }}C_INTERNAL_EVENT_NOTIFICATION"
+ON {{ resource }}_comment;
 CREATE POLICY "{{ data.acronym }}C_INTERNAL_EVENT_NOTIFICATION"
 ON {{ resource }}_comment
 FOR SELECT
@@ -22,6 +24,8 @@ USING (true);
 GRANT SELECT
 ON {{ resource }}_comment_history
 TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "{{ data.acronym }}CH_INTERNAL_EVENT_NOTIFICATION"
+ON {{ resource }}_comment_history;
 CREATE POLICY "{{ data.acronym }}CH_INTERNAL_EVENT_NOTIFICATION"
 ON {{ resource }}_comment_history
 FOR SELECT
@@ -33,6 +37,8 @@ ON {{ resource }}_comment
 TO flex_common;
 
 -- RLS: {{ data.acronym }}C-COM001
+DROP POLICY IF EXISTS "{{ data.acronym }}C_COM001"
+ON {{ resource }}_comment;
 CREATE POLICY "{{ data.acronym }}C_COM001"
 ON {{ resource }}_comment
 FOR UPDATE
@@ -41,6 +47,8 @@ USING (created_by = (SELECT flex.current_identity()));
 
 -- RLS: {{ data.acronym }}C-SO001
 -- RLS: {{ data.acronym }}C-SP001
+DROP POLICY IF EXISTS "{{ data.acronym }}C_SO001_SP001"
+ON {{ resource }}_comment;
 CREATE POLICY "{{ data.acronym }}C_SO001_SP001"
 ON {{ resource }}_comment
 FOR INSERT
@@ -56,6 +64,8 @@ WITH CHECK (
 
 -- RLS: {{ data.acronym }}C-SO002
 -- RLS: {{ data.acronym }}C-SP002
+DROP POLICY IF EXISTS "{{ data.acronym }}C_SO002_SP002_same_party"
+ON {{ resource }}_comment;
 CREATE POLICY "{{ data.acronym }}C_SO002_SP002_same_party"
 ON {{ resource }}_comment
 FOR SELECT
@@ -71,6 +81,8 @@ USING (
     )
 );
 
+DROP POLICY IF EXISTS "{{ data.acronym }}C_SO002_SP002_any_involved_party"
+ON {{ resource }}_comment;
 CREATE POLICY "{{ data.acronym }}C_SO002_SP002_any_involved_party"
 ON {{ resource }}_comment
 FOR SELECT
@@ -118,6 +130,8 @@ $$;
 GRANT SELECT
 ON {{ resource }}_comment_history
 TO flex_system_operator, flex_service_provider;
+DROP POLICY IF EXISTS "{{ data.acronym }}C_SO003_SP003_same_party"
+ON {{ resource }}_comment_history;
 CREATE POLICY "{{ data.acronym }}C_SO003_SP003_same_party"
 ON {{ resource }}_comment_history
 FOR SELECT
@@ -135,6 +149,8 @@ USING (
     )
 );
 
+DROP POLICY IF EXISTS "{{ data.acronym }}C_SO003_SP003_any_involved_party"
+ON {{ resource }}_comment_history;
 CREATE POLICY "{{ data.acronym }}C_SO003_SP003_any_involved_party"
 ON {{ resource }}_comment_history
 FOR SELECT
@@ -152,6 +168,8 @@ USING (
 );
 
 -- RLS: {{ data.acronym }}C-FISO001
+DROP POLICY IF EXISTS "{{ data.acronym }}C_FISO001"
+ON {{ resource }}_comment;
 CREATE POLICY "{{ data.acronym }}C_FISO001"
 ON {{ resource }}_comment
 FOR ALL
@@ -159,6 +177,8 @@ TO flex_flexibility_information_system_operator
 USING (true);
 
 -- RLS: {{ data.acronym }}C-FISO002
+DROP POLICY IF EXISTS "{{ data.acronym }}C_FISO002"
+ON {{ resource }}_comment_history;
 CREATE POLICY "{{ data.acronym }}C_FISO002"
 ON {{ resource }}_comment_history
 FOR ALL

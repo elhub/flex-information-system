@@ -25,11 +25,13 @@ ALTER TABLE IF EXISTS
 flex.accounting_point_grid_location_history
 ENABLE ROW LEVEL SECURITY;
 
--- changeset flex:accounting-point-grid-location-history-rls-com runAlways:true endDelimiter:--
+-- changeset flex:accounting-point-grid-location-history-rls-com runOnChange:true endDelimiter:--
 -- RLS: APGL-COM001
 GRANT SELECT ON flex.accounting_point_grid_location_history
 TO flex_common;
 
+DROP POLICY IF EXISTS "APGL_COM001"
+ON flex.accounting_point_grid_location_history;
 CREATE POLICY "APGL_COM001"
 ON flex.accounting_point_grid_location_history
 FOR SELECT

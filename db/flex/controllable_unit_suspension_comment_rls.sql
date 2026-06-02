@@ -1,7 +1,7 @@
 --liquibase formatted sql
 -- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
 
--- changeset flex:controllable-unit-suspension-comment-rls runAlways:true endDelimiter:;
+-- changeset flex:controllable-unit-suspension-comment-rls runOnChange:true endDelimiter:;
 ALTER TABLE IF EXISTS
 controllable_unit_suspension_comment
 ENABLE ROW LEVEL SECURITY;
@@ -10,6 +10,8 @@ ENABLE ROW LEVEL SECURITY;
 GRANT SELECT
 ON controllable_unit_suspension_comment
 TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "CUSC_INTERNAL_EVENT_NOTIFICATION"
+ON controllable_unit_suspension_comment;
 CREATE POLICY "CUSC_INTERNAL_EVENT_NOTIFICATION"
 ON controllable_unit_suspension_comment
 FOR SELECT
@@ -19,6 +21,8 @@ USING (true);
 GRANT SELECT
 ON controllable_unit_suspension_comment_history
 TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "CUSCH_INTERNAL_EVENT_NOTIFICATION"
+ON controllable_unit_suspension_comment_history;
 CREATE POLICY "CUSCH_INTERNAL_EVENT_NOTIFICATION"
 ON controllable_unit_suspension_comment_history
 FOR SELECT
@@ -30,6 +34,8 @@ ON controllable_unit_suspension_comment
 TO flex_common;
 
 -- RLS: CUSC-COM001
+DROP POLICY IF EXISTS "CUSC_COM001"
+ON controllable_unit_suspension_comment;
 CREATE POLICY "CUSC_COM001"
 ON controllable_unit_suspension_comment
 FOR UPDATE
@@ -38,6 +44,8 @@ USING (created_by = (SELECT flex.current_identity()));
 
 -- RLS: CUSC-SO001
 -- RLS: CUSC-SP001
+DROP POLICY IF EXISTS "CUSC_SO001_SP001"
+ON controllable_unit_suspension_comment;
 CREATE POLICY "CUSC_SO001_SP001"
 ON controllable_unit_suspension_comment
 FOR INSERT
@@ -53,6 +61,8 @@ WITH CHECK (
 
 -- RLS: CUSC-SO002
 -- RLS: CUSC-SP002
+DROP POLICY IF EXISTS "CUSC_SO002_SP002_same_party"
+ON controllable_unit_suspension_comment;
 CREATE POLICY "CUSC_SO002_SP002_same_party"
 ON controllable_unit_suspension_comment
 FOR SELECT
@@ -68,6 +78,8 @@ USING (
     )
 );
 
+DROP POLICY IF EXISTS "CUSC_SO002_SP002_any_involved_party"
+ON controllable_unit_suspension_comment;
 CREATE POLICY "CUSC_SO002_SP002_any_involved_party"
 ON controllable_unit_suspension_comment
 FOR SELECT
@@ -115,6 +127,8 @@ $$;
 GRANT SELECT
 ON controllable_unit_suspension_comment_history
 TO flex_system_operator, flex_service_provider;
+DROP POLICY IF EXISTS "CUSC_SO003_SP003_same_party"
+ON controllable_unit_suspension_comment_history;
 CREATE POLICY "CUSC_SO003_SP003_same_party"
 ON controllable_unit_suspension_comment_history
 FOR SELECT
@@ -132,6 +146,8 @@ USING (
     )
 );
 
+DROP POLICY IF EXISTS "CUSC_SO003_SP003_any_involved_party"
+ON controllable_unit_suspension_comment_history;
 CREATE POLICY "CUSC_SO003_SP003_any_involved_party"
 ON controllable_unit_suspension_comment_history
 FOR SELECT
@@ -149,6 +165,8 @@ USING (
 );
 
 -- RLS: CUSC-FISO001
+DROP POLICY IF EXISTS "CUSC_FISO001"
+ON controllable_unit_suspension_comment;
 CREATE POLICY "CUSC_FISO001"
 ON controllable_unit_suspension_comment
 FOR ALL
@@ -156,6 +174,8 @@ TO flex_flexibility_information_system_operator
 USING (true);
 
 -- RLS: CUSC-FISO002
+DROP POLICY IF EXISTS "CUSC_FISO002"
+ON controllable_unit_suspension_comment_history;
 CREATE POLICY "CUSC_FISO002"
 ON controllable_unit_suspension_comment_history
 FOR ALL

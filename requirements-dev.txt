@@ -12,6 +12,9 @@ psycopg[binary,pool]
 pyjwt
 pytest==9.0.3
 python-dotenv
-schemathesis==4.20.0
+# ruff is a transitive dependency of openapi-python-client
+# (pinned to avoid blank lines being generated in some local setups)
+ruff==0.15.15
+schemathesis==4.20.2
 tabulate
 Flask
