@@ -1,11 +1,10 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:notice-service-provider-product-suspension runAlways:true endDelimiter:--
+-- changeset flex:notice-service-provider-product-suspension runOnChange:true endDelimiter:--
 
 -- Suspension on product type no longer qualified
-DROP VIEW IF EXISTS notice_spps_product_type_not_qualified CASCADE;
-CREATE VIEW notice_spps_product_type_not_qualified
+CREATE OR REPLACE VIEW notice_spps_product_type_not_qualified
 WITH (security_invoker = false) AS (
     WITH
         qualified_product_types AS (
@@ -50,8 +49,7 @@ WITH (security_invoker = false) AS (
 );
 
 -- Inactive suspension
-DROP VIEW IF EXISTS notice_spps_lingering CASCADE;
-CREATE VIEW notice_spps_lingering
+CREATE OR REPLACE VIEW notice_spps_lingering
 WITH (security_invoker = false) AS (
     SELECT
         spps.procuring_system_operator_id AS party_id,

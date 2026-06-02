@@ -1,5 +1,5 @@
 --liquibase formatted sql
--- changeset flex:controllable-unit-suspension-involved-parties endDelimiter:-- runAlways:true
+-- changeset flex:controllable-unit-suspension-involved-parties endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW flex.controllable_unit_suspension_involved_parties
 WITH (security_invoker = false)
 AS (
@@ -12,7 +12,8 @@ AS (
         ]) AS party_id
     FROM flex.controllable_unit_suspension AS cus
         LEFT JOIN flex.controllable_unit_service_provider AS cusp
-            ON cus.controllable_unit_id = cusp.controllable_unit_id
+            ON
+                cus.controllable_unit_id = cusp.controllable_unit_id
                 AND cusp.valid_time_range @> current_timestamp
 
     UNION
@@ -26,11 +27,12 @@ AS (
         ]) AS party_id
     FROM flex.controllable_unit_suspension_history AS cush
         LEFT JOIN flex.controllable_unit_service_provider AS cusp
-            ON cush.controllable_unit_id = cusp.controllable_unit_id
+            ON
+                cush.controllable_unit_id = cusp.controllable_unit_id
                 AND cusp.valid_time_range @> current_timestamp
 );
 
--- changeset flex:controllable-unit-suspension-involved-parties-grants runAlways:true endDelimiter:;
+-- changeset flex:controllable-unit-suspension-involved-parties-grants runOnChange:true endDelimiter:;
 GRANT SELECT ON TABLE
 flex.controllable_unit_suspension_involved_parties
 TO flex_common;

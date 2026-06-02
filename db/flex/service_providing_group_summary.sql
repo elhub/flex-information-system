@@ -134,5 +134,5 @@ WITH (security_invoker = false) AS (
         ) AS tr_aggregates ON TRUE
 );
 
--- changeset flex:service-providing-group-summary-grants runAlways:true endDelimiter:;
+-- changeset flex:service-providing-group-summary-grants runOnChange:true endDelimiter:;
 GRANT SELECT ON TABLE service_providing_group_summary TO flex_common;

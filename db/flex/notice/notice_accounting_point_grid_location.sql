@@ -1,11 +1,10 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:notice-accounting-point-grid-location runAlways:true endDelimiter:--
+-- changeset flex:notice-accounting-point-grid-location runOnChange:true endDelimiter:--
 
-DROP VIEW IF EXISTS notice_accounting_point_grid_location_missing CASCADE;
 -- APs with no grid location registered
-CREATE VIEW notice_accounting_point_grid_location_missing
+CREATE OR REPLACE VIEW notice_accounting_point_grid_location_missing
 WITH (security_invoker = false) AS (
     SELECT
         ap_so.system_operator_id AS party_id,
@@ -25,9 +24,8 @@ WITH (security_invoker = false) AS (
     )
 );
 
-DROP VIEW IF EXISTS notice_accounting_point_grid_location_source_insufficient CASCADE;
 -- APs with a grid location registered but source is not cso or grid_model
-CREATE VIEW notice_accounting_point_grid_location_source_insufficient
+CREATE OR REPLACE VIEW notice_accounting_point_grid_location_source_insufficient
 WITH (security_invoker = false) AS (
     SELECT
         ap_so.system_operator_id AS party_id,
