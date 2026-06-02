@@ -15,27 +15,6 @@ databaseChangeLog:
       changes:
         - sql: SELECT set_config('flex.current_identity', '0', false);
 
-  # Dropping policies to provide a clean slate on every migration
-  - changeSet:
-      id: drop-policies
-      author: flex
-
-      runAlways: true
-      changes:
-        - sql:
-            endDelimiter: "/"
-            sql: |
-              DO
-              $$
-              declare
-                rec record;
-              begin
-                for rec in (SELECT tablename, schemaname, policyname FROM pg_policies where schemaname = 'flex')
-                loop
-                  execute 'drop policy "'||rec.policyname||'" on '||rec.schemaname||'.'||rec.tablename;
-                end loop;
-              end;
-              $$;
   # Current user setting logic
   - include:
       file: ./current_user_setting.sql

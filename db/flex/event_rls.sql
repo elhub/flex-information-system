@@ -44,17 +44,19 @@ EXCEPTION
 END;
 $$;
 
--- changeset flex:event-rls runAlways:true endDelimiter:;
+-- changeset flex:event-rls runOnChange:true endDelimiter:;
 ALTER TABLE IF EXISTS event ENABLE ROW LEVEL SECURITY;
 
 -- internal
 GRANT SELECT ON event TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "EVENT_INTERNAL_EVENT_NOTIFICATION_SELECT" ON event;
 CREATE POLICY "EVENT_INTERNAL_EVENT_NOTIFICATION_SELECT" ON event
 FOR SELECT
 TO flex_internal_event_notification
 USING (true);
 
 GRANT UPDATE (processed) ON event TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "EVENT_INTERNAL_EVENT_NOTIFICATION_UPDATE" ON event;
 CREATE POLICY "EVENT_INTERNAL_EVENT_NOTIFICATION_UPDATE" ON event
 FOR UPDATE
 TO flex_internal_event_notification
@@ -66,6 +68,7 @@ GRANT SELECT ON event TO flex_end_user;
 -- RLS: EVENT-EU001
 -- RLS: EVENT-EU002
 -- RLS: EVENT-EU003
+DROP POLICY IF EXISTS "EVENT_EU001_002_003" ON event;
 CREATE POLICY "EVENT_EU001_002_003" ON event
 FOR SELECT
 TO flex_end_user
@@ -81,6 +84,7 @@ USING (
 
 -- RLS: EVENT-FISO001
 GRANT SELECT ON event TO flex_flexibility_information_system_operator;
+DROP POLICY IF EXISTS "EVENT_FISO001" ON event;
 CREATE POLICY "EVENT_FISO001" ON event
 FOR SELECT
 TO flex_flexibility_information_system_operator
@@ -88,6 +92,7 @@ USING (true);
 
 -- RLS: EVENT-COM001
 GRANT SELECT ON event TO flex_common;
+DROP POLICY IF EXISTS "EVENT_COM001" ON event;
 CREATE POLICY "EVENT_COM001" ON event
 FOR SELECT
 TO flex_common

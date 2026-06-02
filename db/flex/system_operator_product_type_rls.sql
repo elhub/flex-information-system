@@ -1,13 +1,15 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:system-operator-product-type-rls runAlways:true endDelimiter:;
+-- changeset flex:system-operator-product-type-rls runOnChange:true endDelimiter:;
 ALTER TABLE IF EXISTS system_operator_product_type
 ENABLE ROW LEVEL SECURITY;
 
 -- internal
 GRANT SELECT ON system_operator_product_type
 TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "SOPT_INTERNAL_EVENT_NOTIFICATION"
+ON system_operator_product_type;
 CREATE POLICY "SOPT_INTERNAL_EVENT_NOTIFICATION"
 ON system_operator_product_type
 FOR SELECT
@@ -16,6 +18,8 @@ USING (true);
 
 GRANT SELECT ON system_operator_product_type_history
 TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "SOPTH_INTERNAL_EVENT_NOTIFICATION"
+ON system_operator_product_type_history;
 CREATE POLICY "SOPTH_INTERNAL_EVENT_NOTIFICATION"
 ON system_operator_product_type_history
 FOR SELECT
@@ -25,6 +29,7 @@ USING (true);
 -- RLS: SOPT-FISO001
 GRANT SELECT, INSERT, UPDATE ON system_operator_product_type
 TO flex_flexibility_information_system_operator;
+DROP POLICY IF EXISTS "SOPT_FISO001" ON system_operator_product_type;
 CREATE POLICY "SOPT_FISO001"
 ON system_operator_product_type
 FOR ALL
@@ -34,6 +39,7 @@ USING (true);
 -- RLS: SOPT-COM002
 GRANT SELECT ON system_operator_product_type
 TO flex_common;
+DROP POLICY IF EXISTS "SOPT_COM002" ON system_operator_product_type;
 CREATE POLICY "SOPT_COM002"
 ON system_operator_product_type
 FOR SELECT
@@ -43,6 +49,7 @@ USING (true);
 -- RLS: SOPT-SO001
 GRANT SELECT, INSERT, UPDATE ON system_operator_product_type
 TO flex_system_operator;
+DROP POLICY IF EXISTS "SOPT_SO001" ON system_operator_product_type;
 CREATE POLICY "SOPT_SO001"
 ON system_operator_product_type
 FOR ALL

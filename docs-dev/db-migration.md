@@ -19,8 +19,6 @@ definition, like triggers, functions, _etc._, can be changed without a
 migration.
 This is also why a lot of SQL definitions leverage `IF NOT EXISTS`,
 `CREATE OR REPLACE`, _etc_, as well as `runOnChange` in Liquibase.
-Some types of objects (_e.g._, policies) are marked `runAlways` so we always
-drop and recreate them.
 
 ## Writing the migration
 
@@ -31,10 +29,11 @@ migrations that were applied to it, to get an idea of what a table looks like.
 
 Instead, we choose to also make the definition evolve alongside the migrations,
 for documentation purposes, and also because this allows deleting the migrations
-over time, once they have been run on the live environment.
-However, this means the definition must only be run once, when the system is
-launched for the first time.
-Therefore, we mark the table definitions with `runOnChange:false`.
+over time, once they have been run on the live environment. The table must only
+be created once, when the system is launched for the first time. We ensure that
+by using `IF NOT EXISTS` in the `CREATE TABLE` statement, so that it does not
+throw an error if the table already exists. We mark the table definitions
+changeset with `runOnChange:false` to avoid liquibase checksum errors.
 
 In order to apply a migration to a database table, you need to add a new
 _changeset_ in Liquibase where the actual changes are made on the table.
