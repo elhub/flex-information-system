@@ -70,11 +70,5 @@ USING (
     )
 );
 
--- RLS: ENT-ORG002
+-- TODO: delete after migration has run once
 DROP POLICY IF EXISTS "ENT_ORG002" ON entity;
-CREATE POLICY "ENT_ORG002" ON entity
-FOR SELECT
-TO flex_organisation
-USING (
-    business_id_type = 'email'
-);
