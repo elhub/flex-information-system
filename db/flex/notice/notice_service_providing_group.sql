@@ -1,13 +1,12 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:notice-service-providing-group runAlways:true endDelimiter:--
+-- changeset flex:notice-service-providing-group runOnChange:true endDelimiter:--
 
 -- SPG containing CUs with more than one BRP
 -- TODO: consider energy direction in the check
 --       (cf. https://elhub.atlassian.net/browse/FLEX-615)
-DROP VIEW IF EXISTS notice_spg_brp_multiple CASCADE;
-CREATE VIEW notice_spg_brp_multiple
+CREATE OR REPLACE VIEW notice_spg_brp_multiple
 WITH (security_invoker = false) AS (
     SELECT
         sp_id AS party_id,

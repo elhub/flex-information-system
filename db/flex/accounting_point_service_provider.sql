@@ -14,7 +14,7 @@ WITH (security_invoker = false) AS (
     WHERE cusp.valid_time_range IS NOT null
 );
 
--- changeset flex:accounting-point-service-provider-grants runAlways:true endDelimiter:;
+-- changeset flex:accounting-point-service-provider-grants runOnChange:true endDelimiter:;
 GRANT SELECT ON TABLE accounting_point_service_provider
 TO flex_common;
 

@@ -1,11 +1,10 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:notice-service-providing-group-grid-prequalification runAlways:true endDelimiter:--
+-- changeset flex:notice-service-providing-group-grid-prequalification runOnChange:true endDelimiter:--
 
 -- SPG grid prequalification status requested
-DROP VIEW IF EXISTS notice_spggp_status_requested CASCADE;
-CREATE VIEW notice_spggp_status_requested
+CREATE OR REPLACE VIEW notice_spggp_status_requested
 WITH (security_invoker = false) AS (
     SELECT
         spggp.impacted_system_operator_id AS party_id,

@@ -1,7 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:service-providing-group-grid-suspension-involved-parties endDelimiter:-- runAlways:true
+-- changeset flex:service-providing-group-grid-suspension-involved-parties endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW
 service_providing_group_grid_suspension_involved_parties
 WITH (security_invoker = false)
@@ -27,7 +27,7 @@ AS (
             ON spggsh.service_providing_group_id = spg.id
 );
 
--- changeset flex:service-providing-group-grid-suspension-involved-parties-grants runAlways:true endDelimiter:;
+-- changeset flex:service-providing-group-grid-suspension-involved-parties-grants runOnChange:true endDelimiter:;
 GRANT SELECT ON TABLE
 service_providing_group_grid_suspension_involved_parties
 TO flex_common;

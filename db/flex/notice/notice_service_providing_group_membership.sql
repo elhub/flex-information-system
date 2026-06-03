@@ -1,11 +1,10 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:notice-service-providing-group-membership runAlways:true endDelimiter:--
+-- changeset flex:notice-service-providing-group-membership runOnChange:true endDelimiter:--
 
 -- SPGM CUSP inconsistency
-DROP VIEW IF EXISTS notice_spgm_valid_time_outside_contract CASCADE;
-CREATE VIEW notice_spgm_valid_time_outside_contract
+CREATE OR REPLACE VIEW notice_spgm_valid_time_outside_contract
 WITH (security_invoker = false) AS (
     SELECT -- noqa
         spg.service_provider_id AS party_id,
@@ -35,8 +34,7 @@ WITH (security_invoker = false) AS (
 );
 
 -- SPGM CUBZ inconsistency
-DROP VIEW IF EXISTS notice_spgm_bidding_zone_mismatch CASCADE;
-CREATE VIEW notice_spgm_bidding_zone_mismatch
+CREATE OR REPLACE VIEW notice_spgm_bidding_zone_mismatch
 WITH (security_invoker = false) AS (
     SELECT -- noqa
         spg.service_provider_id AS party_id,

@@ -1,11 +1,10 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:notice-service-provider-product-application runAlways:true endDelimiter:--
+-- changeset flex:notice-service-provider-product-application runOnChange:true endDelimiter:--
 
 -- SP product application status requested
-DROP VIEW IF EXISTS notice_sppa_status_requested CASCADE;
-CREATE VIEW notice_sppa_status_requested
+CREATE OR REPLACE VIEW notice_sppa_status_requested
 WITH (security_invoker = false) AS (
     SELECT
         sppa.system_operator_id AS party_id,
