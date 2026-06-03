@@ -146,7 +146,7 @@ export const AssumePartyPage = () => {
           disableSyncWithLocation
         >
           <PartyMembershipEmpty />
-          <Datagrid emptyNode={null}>
+          <Datagrid emptyNode={null} rowClick={false}>
             <TextField hideLabel label="ID" source="party_id" />
             <ReferenceField
               hideLabel
