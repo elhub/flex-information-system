@@ -49,6 +49,7 @@ export const SystemOperatorProductTypeInput = () => {
           <PartyReferenceInput
             {...fields.system_operator_id}
             readOnly={isSystemOperator}
+            optionText={(record) => record.name}
           />
           <ProductTypeInput
             source="product_type_id"

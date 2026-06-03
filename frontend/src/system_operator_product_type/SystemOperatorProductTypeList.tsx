@@ -45,6 +45,7 @@ export const SystemOperatorProductTypeList = () => {
     <PartyReferenceInput
       key="system_operator_id"
       source={fields.system_operator_id.source}
+      optionText={(record) => record.name}
     />,
     <ProductTypeArrayInput key="product_type_id" source="product_type_id@in" />,
     <EnumArrayInput
