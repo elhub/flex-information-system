@@ -9,12 +9,13 @@ CREATE TABLE IF NOT EXISTS accounting_point (
     business_id text UNIQUE NOT NULL CHECK (
         validate_business_id(business_id, 'gsrn')
     ),
-    latitude double precision NULL,
-    longitude double precision NULL,
+    location geometry(Point, 4326) NULL,
     record_time_range tstzrange NOT NULL DEFAULT tstzrange(
         localtimestamp, null, '[)'
     ),
-    recorded_by bigint NOT NULL DEFAULT current_identity(),
-    CONSTRAINT accounting_point_latitude_check CHECK (latitude BETWEEN -90 AND 90),
-    CONSTRAINT accounting_point_longitude_check CHECK (longitude BETWEEN -180 AND 180)
+    recorded_by bigint NOT NULL DEFAULT current_identity()
 );
+
+-- changeset flex:accounting-point-location-index runOnChange:true endDelimiter:--
+CREATE INDEX IF NOT EXISTS accounting_point_location_idx
+ON accounting_point USING gist(location);

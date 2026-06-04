@@ -4268,25 +4268,12 @@
                         "type": "integer",
                         "readOnly": true
                     },
-                    "latitude": {
-                        "description": "Geographic latitude of the accounting point (WGS84).",
-                        "type": "number",
-                        "format": "double",
-                        "minimum": -90,
-                        "maximum": 90,
+                    "location": {
+                        "description": "Geographic location of the accounting point (WGS84), as a PostGIS geometry point. Serialized as a WKB hex string by PostgREST. Can be written as an EWKT string (e.g. \"SRID=4326;POINT(10.7522 59.9139)\").",
+                        "type": "string",
                         "nullable": true,
                         "readOnly": true,
-                        "example": 59.9139
-                    },
-                    "longitude": {
-                        "description": "Geographic longitude of the accounting point (WGS84).",
-                        "type": "number",
-                        "format": "double",
-                        "minimum": -180,
-                        "maximum": 180,
-                        "nullable": true,
-                        "readOnly": true,
-                        "example": 10.7522
+                        "example": "0101000020E6100000F6285C8FC2F52540F8DBD781734B4D40"
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",

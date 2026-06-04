@@ -3,6 +3,7 @@
 export type FieldLabel =
   | "accounting_point.business_id"
   | "accounting_point.id"
+  | "accounting_point.location"
   | "accounting_point.recorded_at"
   | "accounting_point.recorded_by"
   | "accounting_point.system_operator_id"
@@ -921,6 +922,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "accounting_point.id": "ID",
     "accounting_point.business_id": "Business ID",
     "accounting_point.system_operator_id": "System operator",
+    "accounting_point.location": "Location",
     "accounting_point.recorded_at": "Recorded at",
     "accounting_point.recorded_by": "Recorded by",
     "accounting_point_balance_responsible_party.accounting_point_id":
@@ -1641,6 +1643,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "accounting_point.id": "ID",
     "accounting_point.business_id": "Forretnings-ID",
     "accounting_point.system_operator_id": "Systemoperatør",
+    "accounting_point.location": "Lokasjon",
     "accounting_point.recorded_at": "Registrert",
     "accounting_point.recorded_by": "Registrert av",
     "accounting_point_balance_responsible_party.accounting_point_id":
@@ -2358,6 +2361,7 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "accounting_point.id": "ID",
     "accounting_point.business_id": "Forretnings-ID",
     "accounting_point.system_operator_id": "Systemoperatør",
+    "accounting_point.location": "Lokasjon",
     "accounting_point.recorded_at": "Registrert",
     "accounting_point.recorded_by": "Registrert av",
     "accounting_point_balance_responsible_party.accounting_point_id":

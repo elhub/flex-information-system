@@ -8,8 +8,7 @@ WITH (security_invoker = true) AS (
         ap.id,
         ap.business_id,
         ap_so.system_operator_id,
-        ap.latitude,
-        ap.longitude,
+        ap.location,
         ap.recorded_by,
         lower(ap.record_time_range) AS recorded_at
     FROM flex.accounting_point AS ap

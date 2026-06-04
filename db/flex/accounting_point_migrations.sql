@@ -22,22 +22,15 @@ DROP COLUMN system_operator_party_type;
 ALTER TABLE flex.accounting_point_history
 DROP COLUMN system_operator_id;
 
--- changeset flex:accounting-point-add-geolocation runOnChange:false endDelimiter:;
+-- changeset flex:accounting-point-add-location runOnChange:false endDelimiter:;
 --preconditions onFail:MARK_RAN
---precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = 'flex' AND table_name = 'accounting_point' AND column_name = 'latitude';
+--precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = 'flex' AND table_name = 'accounting_point' AND column_name = 'location';
 
 ALTER TABLE flex.accounting_point
-ADD COLUMN IF NOT EXISTS latitude double precision NULL,
-ADD COLUMN IF NOT EXISTS longitude double precision NULL;
+ADD COLUMN IF NOT EXISTS location geometry(Point, 4326) NULL;
 
-ALTER TABLE flex.accounting_point
-DROP CONSTRAINT IF EXISTS accounting_point_latitude_check,
-ADD CONSTRAINT accounting_point_latitude_check CHECK (latitude BETWEEN -90 AND 90);
-
-ALTER TABLE flex.accounting_point
-DROP CONSTRAINT IF EXISTS accounting_point_longitude_check,
-ADD CONSTRAINT accounting_point_longitude_check CHECK (longitude BETWEEN -180 AND 180);
+CREATE INDEX IF NOT EXISTS accounting_point_location_idx
+ON flex.accounting_point USING gist(location);
 
 ALTER TABLE flex.accounting_point_history
-ADD COLUMN IF NOT EXISTS latitude double precision NULL,
-ADD COLUMN IF NOT EXISTS longitude double precision NULL;
+ADD COLUMN IF NOT EXISTS location geometry(Point, 4326) NULL;

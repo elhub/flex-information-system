@@ -2170,34 +2170,19 @@ resources:
           en: System operator
           nb: Systemoperatør
           nn: Systemoperatør
-      latitude:
+      location:
         description: >-
-          Geographic latitude of the accounting point (WGS84).
-        type: number
-        format: float8
-        minimum: -90
-        maximum: 90
+          Geographic location of the accounting point (WGS84), as a PostGIS
+          geometry point. Serialized as a WKB hex string by PostgREST.
+          Can be written as an EWKT string (e.g. "SRID=4326;POINT(10.7522 59.9139)").
+        type: string
         nullable: true
         readOnly: true
-        example: 59.9139
+        example: "0101000020E6100000F6285C8FC2F52540F8DBD781734B4D40"
         x-intl:
-          en: Latitude
-          nb: Breddegrad
-          nn: Breiddegrad
-      longitude:
-        description: >-
-          Geographic longitude of the accounting point (WGS84).
-        type: number
-        format: float8
-        minimum: -180
-        maximum: 180
-        nullable: true
-        readOnly: true
-        example: 10.7522
-        x-intl:
-          en: Longitude
-          nb: Lengdegrad
-          nn: Lengdegrad
+          en: Location
+          nb: Lokasjon
+          nn: Lokasjon
 
   - id: accounting_point_balance_responsible_party
     acronym: APBRP

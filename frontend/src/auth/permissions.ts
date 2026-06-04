@@ -18,8 +18,7 @@ export type PermissionTarget =
   | "accounting_point"
   | "accounting_point.business_id"
   | "accounting_point.id"
-  | "accounting_point.latitude"
-  | "accounting_point.longitude"
+  | "accounting_point.location"
   | "accounting_point.recorded_at"
   | "accounting_point.recorded_by"
   | "accounting_point.system_operator_id"
@@ -630,11 +629,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "accounting_point.latitude",
-      operation: "read",
-    },
-    {
-      target: "accounting_point.longitude",
+      target: "accounting_point.location",
       operation: "read",
     },
     {
@@ -3052,11 +3047,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "accounting_point.latitude",
-      operation: "read",
-    },
-    {
-      target: "accounting_point.longitude",
+      target: "accounting_point.location",
       operation: "read",
     },
     {
@@ -5474,11 +5465,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "accounting_point.latitude",
-      operation: "read",
-    },
-    {
-      target: "accounting_point.longitude",
+      target: "accounting_point.location",
       operation: "read",
     },
     {
@@ -7896,11 +7883,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "accounting_point.latitude",
-      operation: "read",
-    },
-    {
-      target: "accounting_point.longitude",
+      target: "accounting_point.location",
       operation: "read",
     },
     {
@@ -11245,11 +11228,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "accounting_point.latitude",
-      operation: "read",
-    },
-    {
-      target: "accounting_point.longitude",
+      target: "accounting_point.location",
       operation: "read",
     },
     {
@@ -13667,11 +13646,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "accounting_point.latitude",
-      operation: "read",
-    },
-    {
-      target: "accounting_point.longitude",
+      target: "accounting_point.location",
       operation: "read",
     },
     {
@@ -16599,11 +16574,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "accounting_point.latitude",
-      operation: "read",
-    },
-    {
-      target: "accounting_point.longitude",
+      target: "accounting_point.location",
       operation: "read",
     },
     {
@@ -19590,11 +19561,7 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target: "accounting_point.latitude",
-      operation: "read",
-    },
-    {
-      target: "accounting_point.longitude",
+      target: "accounting_point.location",
       operation: "read",
     },
     {

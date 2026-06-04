@@ -28,6 +28,13 @@ public data class AccountingPointResponse(
   @SerialName("system_operator_id")
   public val systemOperatorId: Long? = null,
   /**
+   * Geographic location of the accounting point (WGS84), as a PostGIS geometry point. Serialized as
+   * a WKB hex string by PostgREST. Can be written as an EWKT string (e.g. "SRID=4326;POINT(10.7522
+   * 59.9139)").
+   */
+  @SerialName("location")
+  public val location: String? = null,
+  /**
    * When the resource was recorded (created or updated) in the system.
    */
   @SerialName("recorded_at")
