@@ -20,11 +20,11 @@ import no.elhub.flex.model.error.AppError
 import no.elhub.flex.model.error.BadRequestError
 import no.elhub.flex.model.error.InternalServerError
 import no.elhub.flex.util.TraceIdUtil.Companion.traceIdOrUnknown
-import no.elhub.flex.util.asLocalStartOfDayInstant
-import no.elhub.flex.util.atLocalStartOfToday
+import no.elhub.flex.util.asNorwegianMidnightInstant
 import no.elhub.flex.util.body
 import no.elhub.flex.util.logger
 import no.elhub.flex.util.respondJson
+import no.elhub.flex.util.todayNorwegianMidnight
 import org.koin.core.annotation.Property
 import org.koin.core.annotation.Single
 import kotlin.time.Instant
@@ -59,8 +59,8 @@ class ControllableUnitLookup(
                 ).bind()
                 logger.debug { "Found ${controllableUnits.size} controllable units on accounting point $accountingPointBusinessId" }
 
-                val validFrom = controllableUnits.mapNotNull { it.startDate }.minByOrNull { it }?.asLocalStartOfDayInstant()
-                    ?: Instant.atLocalStartOfToday()
+                val validFrom = controllableUnits.mapNotNull { it.startDate }.minByOrNull { it }?.asNorwegianMidnightInstant()
+                    ?: Instant.todayNorwegianMidnight()
                 logger.debug { "Using $validFrom as start date for accounting point sync" }
 
                 if (accountingPointAdapterSyncEnabled) {

@@ -8,8 +8,8 @@ import kotlin.time.Clock
 import kotlin.time.Instant
 import java.time.Instant as JavaInstant
 
-fun Instant.Companion.atLocalStartOfToday(): Instant {
-    val tz = TimeZone.currentSystemDefault()
+fun Instant.Companion.todayNorwegianMidnight(): Instant {
+    val tz = TimeZone.of("Europe/Oslo")
     return Clock.System.todayIn(tz).atStartOfDayIn(tz)
 }
 
