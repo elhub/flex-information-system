@@ -6,7 +6,6 @@ from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-from dateutil.parser import isoparse
 
 from ..models.service_providing_group_grid_suspension_comment_visibility import (
     ServiceProvidingGroupGridSuspensionCommentVisibility,
@@ -112,13 +111,13 @@ class ServiceProvidingGroupGridSuspensionCommentResponse:
 
         created_by = d.pop("created_by")
 
-        created_at = isoparse(d.pop("created_at"))
+        created_at = datetime.datetime.fromisoformat(d.pop("created_at"))
 
         visibility = ServiceProvidingGroupGridSuspensionCommentVisibility(d.pop("visibility"))
 
         content = d.pop("content")
 
-        recorded_at = isoparse(d.pop("recorded_at"))
+        recorded_at = datetime.datetime.fromisoformat(d.pop("recorded_at"))
 
         recorded_by = d.pop("recorded_by")
 

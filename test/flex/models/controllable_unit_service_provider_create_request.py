@@ -6,7 +6,6 @@ from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-from dateutil.parser import isoparse
 
 from ..types import UNSET, Unset
 
@@ -100,7 +99,7 @@ class ControllableUnitServiceProviderCreateRequest:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                valid_from_type_0 = isoparse(data)
+                valid_from_type_0 = datetime.datetime.fromisoformat(data)
 
                 return valid_from_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
@@ -117,7 +116,7 @@ class ControllableUnitServiceProviderCreateRequest:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                valid_to_type_0 = isoparse(data)
+                valid_to_type_0 = datetime.datetime.fromisoformat(data)
 
                 return valid_to_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
