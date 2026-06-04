@@ -60,7 +60,7 @@ def random_org():
 
 
 def random_pid():
-    return "4" + random_number(10)
+    return "0" + random_number(10)
 
 
 # RLS: ENT-FISO001
