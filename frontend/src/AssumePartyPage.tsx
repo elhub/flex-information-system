@@ -132,19 +132,25 @@ export const AssumePartyPage = () => {
           </p>
         </CardContent>
       </Card>
-      <Heading level={2} size="small">
-        Parties you belong to
-      </Heading>
+
       {identity.isPending || !identity.data ? (
         <Loader size="medium" />
       ) : (
         <List
-          perPage={25}
+          perPage={1000}
           sort={{ field: "id", order: "ASC" }}
-          filter={{ entity_id: identity.data.entityID }}
+          filter={{
+            embed: "party!",
+            entity_id: identity.data.entityID,
+            "party.type@neq": "organisation",
+          }}
           empty={false}
+          pagination={false}
           disableSyncWithLocation
         >
+          <Heading level={2} size="small">
+            Act on behalf of
+          </Heading>
           <PartyMembershipEmpty />
           <Datagrid emptyNode={null} rowClick={false}>
             <TextField hideLabel label="ID" source="party_id" />
@@ -176,20 +182,68 @@ export const AssumePartyPage = () => {
           </Datagrid>
         </List>
       )}
-      <Heading level={2} size="small">
-        Parties you own
-      </Heading>
+
+      {!identity.isPending && identity.data && (
+        <List
+          perPage={1000}
+          sort={{ field: "id", order: "ASC" }}
+          filter={{
+            embed: "party!",
+            entity_id: identity.data.entityID,
+            "party.type": "organisation",
+          }}
+          pagination={false}
+          empty={false}
+          disableSyncWithLocation
+        >
+          <Heading level={2} size="small">
+            Manage users and API clients
+          </Heading>
+          <Datagrid emptyNode={null} rowClick={false}>
+            <TextField hideLabel label="ID" source="party_id" />
+            <ReferenceField
+              hideLabel
+              label="Name"
+              source="party_id"
+              reference="party"
+            >
+              <TextField source="name" />
+            </ReferenceField>
+            <ReferenceField
+              hideLabel
+              label="Type"
+              source="party_id"
+              reference="party"
+            >
+              <EnumField source="type" enumKey="party.type" />
+            </ReferenceField>
+            <ScopesField source="scopes" />
+            <ReferenceField
+              label="Assume party"
+              source="party_id"
+              reference="party"
+              hideLabel
+            >
+              <AssumePartyButton field="id" />
+            </ReferenceField>
+          </Datagrid>
+        </List>
+      )}
       {identity.isPending || !identity.data ? (
         <Loader size="medium" />
       ) : (
         <ResourceContextProvider value="party">
           <List
-            perPage={5}
+            perPage={1000}
             sort={{ field: "id", order: "ASC" }}
             filter={{ entity_id: identity.data.entityID }}
             empty={false}
+            pagination={false}
             disableSyncWithLocation
           >
+            <Heading level={2} size="small">
+              Parties you own
+            </Heading>
             <Datagrid rowClick={false}>
               <TextField hideLabel source="id" />
               <TextField hideLabel source="name" />

@@ -8,42 +8,46 @@ export const docsURL = "https://elhub.github.io/flex-information-system";
 export const API_VERSION = "2026-06-08";
 
 export async function httpClient(url: string, options: any = {}) {
-  // --- workaround for array filter in the URL query --------------------------
-
-  // Suppose we want to filter a list in the UI, keeping only rows where the
-  // value of a field belongs to a fixed list of possible values.
-  // For example, let's say we want to keep only rows where field `a` has value
-  // `1` or `2`.
-
-  // We will use a React-Admin array input component for this, such as a
-  // SelectArrayInput (https://marmelab.com/react-admin/SelectArrayInput.html).
-  // If we tick boxes or select values corresponding to `1` and `2`, the input
-  // component will store `1,2` in the form state.
-
-  // When the form is turned into a network call to actually apply the filter,
-  // React-Admin will generate a URL query that looks like `?a=eq.1,2`.
-  // As we use PostgREST, we can add `@in` to the `source` property, i.e.,
-  // `a@in`, so the URL query becomes `&a=in.1,2` and performs a "contains"
-  // query instead of just an equality check that would fail here.
-  // Unfortunately, this is not sufficient because PostgREST's "contains" query
-  // syntax uses parentheses. It should look like `?a=in.(1,2)`.
-
-  // This wrong URL translation comes from a bug in the data provider:
-  // https://github.com/raphiniert-com/ra-data-postgrest/issues/173
-
-  // It is not possible to edit the input component to change the format of the
-  // stored form state, because having any other format than the comma-separated
-  // list basically breaks the UI component.
-
-  // The solution we use here is to intercept the network call and change the
-  // URL before it is sent. We find an occurrence of `=in.` meaning that we
-  // are doing this kind of "contains" query, and we add the parentheses around
-  // the values.
   const u = new URL(url);
 
   u.searchParams.forEach((value, key) => {
+    // --- workaround for array filter in the URL query --------------------------
+
+    // Suppose we want to filter a list in the UI, keeping only rows where the
+    // value of a field belongs to a fixed list of possible values.
+    // For example, let's say we want to keep only rows where field `a` has value
+    // `1` or `2`.
+
+    // We will use a React-Admin array input component for this, such as a
+    // SelectArrayInput (https://marmelab.com/react-admin/SelectArrayInput.html).
+    // If we tick boxes or select values corresponding to `1` and `2`, the input
+    // component will store `1,2` in the form state.
+
+    // When the form is turned into a network call to actually apply the filter,
+    // React-Admin will generate a URL query that looks like `?a=eq.1,2`.
+    // As we use PostgREST, we can add `@in` to the `source` property, i.e.,
+    // `a@in`, so the URL query becomes `&a=in.1,2` and performs a "contains"
+    // query instead of just an equality check that would fail here.
+    // Unfortunately, this is not sufficient because PostgREST's "contains" query
+    // syntax uses parentheses. It should look like `?a=in.(1,2)`.
+
+    // This wrong URL translation comes from a bug in the data provider:
+    // https://github.com/raphiniert-com/ra-data-postgrest/issues/173
+
+    // It is not possible to edit the input component to change the format of the
+    // stored form state, because having any other format than the comma-separated
+    // list basically breaks the UI component.
+
+    // The solution we use here is to intercept the network call and change the
+    // URL before it is sent. We find an occurrence of `=in.` meaning that we
+    // are doing this kind of "contains" query, and we add the parentheses around
+    // the values.
     if (value.startsWith("in") && !value.startsWith("in.(")) {
       u.searchParams.set(key, value.replace("in.", "in.(") + ")");
+    }
+    // workaround for the "embed" filter, avoid the automatic inclusion of "eq."
+    if (key === "embed" && value.startsWith("eq.")) {
+      u.searchParams.set(key, value.slice(3));
     }
   });
 
