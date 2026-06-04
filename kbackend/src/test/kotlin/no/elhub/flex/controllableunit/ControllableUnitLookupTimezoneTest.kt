@@ -27,7 +27,7 @@ import no.elhub.flex.controllableunit.db.ControllableUnitRepositoryImpl
 import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterHttpService
 import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterWireMockServer
 import no.elhub.flex.routes.controllableunit.ControllableUnitLookup
-import no.elhub.flex.util.todayNorwegianMidnight
+import no.elhub.flex.util.todayLocalMidnight
 import no.elhub.flex.util.uniqueGsrn
 import java.util.UUID
 import kotlin.time.Instant
@@ -62,6 +62,7 @@ class ControllableUnitLookupTimezoneTest : FunSpec({
             accountingPointService = AccountingPointServiceImpl(AccountingPointRepositoryImpl(), adapterService),
             // keep enabled so that we check that checks in the DB pass
             accountingPointAdapterSyncEnabled = true,
+            timezone = osloTz,
         )
     }
 
@@ -209,7 +210,7 @@ class ControllableUnitLookupTimezoneTest : FunSpec({
         test("AP has no CU") {
             val endUserOrg = "123456002"
             val gsrn = uniqueGsrn()
-            val expectedValidFrom = Instant.todayNorwegianMidnight() // should be the default used when no CU
+            val expectedValidFrom = Instant.todayLocalMidnight(osloTz) // should be the default used when no CU
 
             seedAccountingPoint(gsrn, cuStartDate = null)
             stubAdapter(gsrn, endUserOrg, expectedValidFrom)

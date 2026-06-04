@@ -14,6 +14,7 @@ ktor:
 
 flex:
   jwt-secret: ${FLEX_JWT_SECRET}
+  timezone: ${FLEX_TIMEZONE:Europe/Oslo}
 
 accounting-point-adapter:
   base-url: ${ACCOUNTING_POINT_ADAPTER_BASE_URL}
