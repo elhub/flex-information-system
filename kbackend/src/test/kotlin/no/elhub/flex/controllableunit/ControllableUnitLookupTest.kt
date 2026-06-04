@@ -532,7 +532,7 @@ class ControllableUnitLookupTest :
                         businessId = controllableUnitBusinessId,
                         name = "My CU",
                         technicalResources = emptyList(),
-                        startDate = Clock.System.todayIn(TimeZone.currentSystemDefault()),
+                        startDate = Clock.System.todayIn(TimeZone.of("Europe/Oslo")),
                     ),
                 ).right()
 
