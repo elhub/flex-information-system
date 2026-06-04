@@ -35,10 +35,7 @@ export const ServiceProvidingGroupActivate = () => {
   const { data: spg, isLoading: spgLoading } = useQuery({
     queryKey: ["service_providing_group", spgId],
     queryFn: () =>
-      readServiceProvidingGroup({
-        path: { id: spgId },
-        query: { embed: "summary" },
-      }).then(throwOnError),
+      readServiceProvidingGroup({ path: { id: spgId } }).then(throwOnError),
     enabled: !!spgId,
   });
 
