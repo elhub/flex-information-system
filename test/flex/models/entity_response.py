@@ -6,7 +6,6 @@ from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-from dateutil.parser import isoparse
 
 from ..models.entity_business_id_type import EntityBusinessIdType
 from ..models.entity_type import EntityType
@@ -170,7 +169,7 @@ class EntityResponse:
 
         type_ = EntityType(d.pop("type"))
 
-        recorded_at = isoparse(d.pop("recorded_at"))
+        recorded_at = datetime.datetime.fromisoformat(d.pop("recorded_at"))
 
         recorded_by = d.pop("recorded_by")
 

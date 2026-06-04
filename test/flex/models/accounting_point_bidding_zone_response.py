@@ -6,7 +6,6 @@ from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-from dateutil.parser import isoparse
 
 from ..models.accounting_point_bidding_zone_bidding_zone import AccountingPointBiddingZoneBiddingZone
 from ..types import UNSET, Unset
@@ -89,7 +88,7 @@ class AccountingPointBiddingZoneResponse:
 
         bidding_zone = AccountingPointBiddingZoneBiddingZone(d.pop("bidding_zone"))
 
-        valid_from = isoparse(d.pop("valid_from"))
+        valid_from = datetime.datetime.fromisoformat(d.pop("valid_from"))
 
         def _parse_valid_to(data: object) -> datetime.datetime | None | Unset:
             if data is None:
@@ -99,7 +98,7 @@ class AccountingPointBiddingZoneResponse:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                valid_to_type_0 = isoparse(data)
+                valid_to_type_0 = datetime.datetime.fromisoformat(data)
 
                 return valid_to_type_0
             except (TypeError, ValueError, AttributeError, KeyError):

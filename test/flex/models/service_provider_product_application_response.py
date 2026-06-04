@@ -6,7 +6,6 @@ from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-from dateutil.parser import isoparse
 
 from ..models.service_provider_product_application_status import ServiceProviderProductApplicationStatus
 from ..types import UNSET, Unset
@@ -151,7 +150,7 @@ class ServiceProviderProductApplicationResponse:
 
         status = ServiceProviderProductApplicationStatus(d.pop("status"))
 
-        recorded_at = isoparse(d.pop("recorded_at"))
+        recorded_at = datetime.datetime.fromisoformat(d.pop("recorded_at"))
 
         recorded_by = d.pop("recorded_by")
 
@@ -163,7 +162,7 @@ class ServiceProviderProductApplicationResponse:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                qualified_at_type_0 = isoparse(data)
+                qualified_at_type_0 = datetime.datetime.fromisoformat(data)
 
                 return qualified_at_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
