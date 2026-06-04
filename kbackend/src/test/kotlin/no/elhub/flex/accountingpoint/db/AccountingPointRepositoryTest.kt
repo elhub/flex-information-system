@@ -688,11 +688,11 @@ class AccountingPointRepositoryTest : FunSpec({
     }
 })
 
-private val pidCounter = AtomicLong(10_000_000_000L)
+private val pidCounter = AtomicLong(0L)
 private val orgCounter = AtomicLong(100_000_000L)
 private val glnCounter = AtomicLong(10_000_000L)
 
-private fun uniquePid(): String = pidCounter.getAndIncrement().toString()
+private fun uniquePid(): String = pidCounter.getAndIncrement().toString().padStart(6, '0') + "12345"
 
 private fun uniqueOrgNumber(): String {
     val next = orgCounter.getAndIncrement()
