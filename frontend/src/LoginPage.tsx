@@ -8,7 +8,8 @@ import {
 } from "@mui/material";
 import LockIcon from "@mui/icons-material/Lock";
 import { Form, useRedirect } from "react-admin";
-import { authURL, docsURL } from "./httpConfig";
+import { Link } from "react-router-dom";
+import { authURL } from "./httpConfig";
 
 import Box from "@mui/material/Box";
 
@@ -60,12 +61,9 @@ export const LoginPage = () => {
               Sign in to the Flexibility Information System
             </Typography>
             <Box textAlign={"center"} fontSize="0.8em" color="text.secondary">
-              This page stores strictly neccessary cookies in your browser when
+              This page stores strictly necessary cookies in your browser when
               you use it. Read about what we store in{" "}
-              <a href="https://elhub.github.io/flex-information-system/privacy/">
-                our documentation
-              </a>
-              .
+              <Link to="/privacy-policy">our privacy policy</Link>.
             </Box>
             <CardActions sx={{ padding: "0 1em 1em 1em" }}>
               <Button
@@ -82,7 +80,7 @@ export const LoginPage = () => {
               fontSize="0.8em"
               color="text.secondary"
             >
-              <a href={`${docsURL}/privacy/`}>Privacy and cookies</a>
+              <Link to="/privacy-policy">Privacy and cookies</Link>
             </Typography>
           </Stack>
         </Card>

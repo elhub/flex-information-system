@@ -8,13 +8,14 @@ import {
 
 import { DataProvider } from "ra-core";
 
-import { Route } from "react-router-dom";
+import { HashRouter, Route, Routes } from "react-router-dom";
 import { apiURL, httpClient } from "./httpConfig";
 
 import { authProvider } from "./auth";
 import { elhubTheme } from "./theme";
 import { LoginPage } from "./LoginPage";
 import { AssumePartyPage } from "./AssumePartyPage";
+import { PrivacyPolicyPage } from "./privacy-policy/PrivacyPolicyPage";
 import { QueryClient } from "@tanstack/react-query";
 
 import { createAllResources } from "./resources";
@@ -72,32 +73,46 @@ const queryClient = new QueryClient();
 
 export const App = () => {
   return (
-    <Admin
-      authProvider={authProvider(queryClient)}
-      i18nProvider={useI18nProvider()}
-      dashboard={Dashboard}
-      dataProvider={dataProvider}
-      disableTelemetry
-      layout={Layout}
-      loginPage={LoginPage}
-      queryClient={queryClient}
-      requireAuth={true}
-      store={localStorageStore(undefined, "Flex")}
-      theme={elhubTheme}
-    >
-      {(permissions) =>
-        permissions.allow ? <>{createAllResources(permissions)}</> : null
-      }
-      <CustomRoutes>
+    <HashRouter>
+      <Routes>
+        {/* no auth */}
+        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+        {/* auth */}
         <Route
-          path="/login/assumeParty"
+          path="/*"
           element={
-            <ResourceContextProvider value="party_membership">
-              <AssumePartyPage />
-            </ResourceContextProvider>
+            <Admin
+              authProvider={authProvider(queryClient)}
+              i18nProvider={useI18nProvider()}
+              dashboard={Dashboard}
+              dataProvider={dataProvider}
+              disableTelemetry
+              layout={Layout}
+              loginPage={LoginPage}
+              queryClient={queryClient}
+              requireAuth={true}
+              store={localStorageStore(undefined, "Flex")}
+              theme={elhubTheme}
+            >
+              {(permissions) =>
+                permissions.allow ? (
+                  <>{createAllResources(permissions)}</>
+                ) : null
+              }
+              <CustomRoutes>
+                <Route
+                  path="/login/assumeParty"
+                  element={
+                    <ResourceContextProvider value="party_membership">
+                      <AssumePartyPage />
+                    </ResourceContextProvider>
+                  }
+                />
+              </CustomRoutes>
+            </Admin>
           }
         />
-      </CustomRoutes>
-    </Admin>
+      </Routes>
+    </HashRouter>
   );
 };
