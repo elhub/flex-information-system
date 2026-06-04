@@ -61,7 +61,7 @@ export const LoginPage = () => {
               Sign in to the Flexibility Information System
             </Typography>
             <Box textAlign={"center"} fontSize="0.8em" color="text.secondary">
-              This page stores strictly neccessary cookies in your browser when
+              This page stores strictly necessary cookies in your browser when
               you use it. Read about what we store in{" "}
               <Link to="/privacy-policy">our privacy policy</Link>.
             </Box>
