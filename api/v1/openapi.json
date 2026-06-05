@@ -452,10 +452,20 @@
         "type": "object",
         "properties": {
           "business_id": {
-            "description": "The business identifier of the entity. Person number or organisation number, according to `type`.",
+            "description": "The business identifier of the entity. Email address or organisation number, according to `business_id_type`.",
             "format": "text",
             "type": "string",
-            "example": "13370000000"
+            "example": "john.smith@example.com"
+          },
+          "business_id_type": {
+            "description": "The type of business identifier. For persons, `email`. For organisations, `org` (organisation number, 9 digits).",
+            "format": "text",
+            "type": "string",
+            "enum": [
+              "email",
+              "org"
+            ],
+            "example": "email"
           },
           "name": {
             "description": "Name of the entity.",
@@ -476,6 +486,7 @@
         },
         "required": [
           "business_id",
+          "business_id_type",
           "name",
           "type"
         ]
