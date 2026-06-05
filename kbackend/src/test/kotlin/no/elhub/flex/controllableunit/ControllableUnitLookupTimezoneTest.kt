@@ -29,7 +29,6 @@ import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterHt
 import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterWireMockServer
 import no.elhub.flex.meteringgridarea.db.MeteringGridAreaRepositoryImpl
 import no.elhub.flex.routes.controllableunit.ControllableUnitLookup
-import no.elhub.flex.util.atLocalMidnight
 import no.elhub.flex.util.todayLocalMidnight
 import no.elhub.flex.util.uniqueEicY
 import no.elhub.flex.util.uniqueGsrn

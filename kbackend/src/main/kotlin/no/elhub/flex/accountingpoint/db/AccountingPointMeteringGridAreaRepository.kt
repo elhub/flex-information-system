@@ -9,6 +9,7 @@ import no.elhub.flex.db.prepareNamed
 import no.elhub.flex.model.domain.AccountingPointMeteringGridArea
 import no.elhub.flex.model.domain.db.DatabaseError
 import no.elhub.flex.model.domain.db.RepositoryError
+import no.elhub.flex.util.toSqlTimestamp
 import no.elhub.flex.util.toSqlTimestampOrNull
 import org.koin.core.annotation.Single
 
@@ -67,7 +68,7 @@ class AccountingPointMeteringGridAreaRepositoryImpl : AccountingPointMeteringGri
                         mapOf(
                             "accountingPointId" to mga.accountingPointId,
                             "meteringGridAreaId" to mga.meteringGridAreaId,
-                            "validFrom" to mga.validFrom.toSqlTimestampOrNull(),
+                            "validFrom" to mga.validFrom.toSqlTimestamp(),
                             "validTo" to mga.validTo.toSqlTimestampOrNull(),
                         )
                     },
