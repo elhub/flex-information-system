@@ -23,21 +23,18 @@ export const EntityCard = ({ entity }: Props) => {
           >
             {entity.name} ({entity.business_id})
           </Link>
-          .
+          . You can now manage
         </p>
-        <p>
-          This allows you to manage
-          <dl className="pl-2">
-            <dt className="mt-2 font-semibold">Party access</dt>
-            <dd>
-              Allow people to act on behalf of the organisations market parties.
-            </dd>
-            <dt className="mt-2 font-semibold">API clients</dt>
-            <dd>Manage entity clients for the organisation.</dd>
-            <dt className="mt-2 font-semibold">Organisation representatives</dt>
-            <dd>Add and remove representatives for the organisation.</dd>
-          </dl>
-        </p>
+        <dl className="pl-2">
+          <dt className="mt-2 font-semibold">Party access</dt>
+          <dd>
+            Allow people to act on behalf of the organisations market parties.
+          </dd>
+          <dt className="mt-2 font-semibold">API clients</dt>
+          <dd>Manage entity clients for the organisation.</dd>
+          <dt className="mt-2 font-semibold">Organisation representatives</dt>
+          <dd>Add and remove representatives for the organisation.</dd>
+        </dl>
       </CardContent>
     </Card>
   );
