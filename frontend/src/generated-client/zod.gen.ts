@@ -2241,7 +2241,23 @@ export const zAccountingPoint = z.object({
     .regex(/^[1-9][0-9]{17}$/)
     .readonly(),
   system_operator_id: z.coerce.number().readonly(),
-  location: z.string().readonly().optional(),
+  location: z
+    .object({
+      type: z.enum(["Point"]).optional(),
+      crs: z
+        .object({
+          type: z.enum(["name"]).optional(),
+          properties: z
+            .object({
+              name: z.enum(["EPSG:4326"]).optional(),
+            })
+            .optional(),
+        })
+        .optional(),
+      coordinates: z.tuple([z.coerce.number(), z.coerce.number()]).optional(),
+    })
+    .readonly()
+    .optional(),
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
   controllable_unit: z.array(zControllableUnit).nullish(),

@@ -18,6 +18,7 @@ if TYPE_CHECKING:
     from ..models.accounting_point_energy_supplier_response import AccountingPointEnergySupplierResponse
     from ..models.accounting_point_grid_location_response import AccountingPointGridLocationResponse
     from ..models.accounting_point_metering_grid_area_response import AccountingPointMeteringGridAreaResponse
+    from ..models.accounting_point_response_location_type_0 import AccountingPointResponseLocationType0
     from ..models.controllable_unit_response import ControllableUnitResponse
     from ..models.party_response import PartyResponse
 
@@ -36,9 +37,9 @@ class AccountingPointResponse:
         recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
-        location (None | str | Unset): Geographic location of the accounting point (WGS84), as a PostGIS geometry point.
-            Serialized as a WKB hex string by PostgREST. Can be written as an EWKT string (e.g. "SRID=4326;POINT(10.7522
-            59.9139)"). Example: 0101000020E6100000F6285C8FC2F52540F8DBD781734B4D40.
+        location (AccountingPointResponseLocationType0 | None | Unset): Geographic location of the accounting point
+            (WGS84), as a GeoJSON point object. Example: {'type': 'Point', 'crs': {'type': 'name', 'properties': {'name':
+            'EPSG:4326'}}, 'coordinates': [-2.0259056, 48.6504504]}.
         controllable_unit (list[ControllableUnitResponse] | None | Unset): Embedded controllable_unit
         system_operator (None | PartyResponse | Unset): Embedded party
         balance_responsible_party (list[AccountingPointBalanceResponsiblePartyResponse] | None | Unset): Embedded
@@ -57,7 +58,7 @@ class AccountingPointResponse:
     system_operator_id: int
     recorded_at: datetime.datetime
     recorded_by: int
-    location: None | str | Unset = UNSET
+    location: AccountingPointResponseLocationType0 | None | Unset = UNSET
     controllable_unit: list[ControllableUnitResponse] | None | Unset = UNSET
     system_operator: None | PartyResponse | Unset = UNSET
     balance_responsible_party: list[AccountingPointBalanceResponsiblePartyResponse] | None | Unset = UNSET
@@ -70,6 +71,7 @@ class AccountingPointResponse:
 
     def to_dict(self) -> dict[str, Any]:
         from ..models.accounting_point_grid_location_response import AccountingPointGridLocationResponse
+        from ..models.accounting_point_response_location_type_0 import AccountingPointResponseLocationType0
         from ..models.party_response import PartyResponse
 
         id = self.id
@@ -82,9 +84,11 @@ class AccountingPointResponse:
 
         recorded_by = self.recorded_by
 
-        location: None | str | Unset
+        location: dict[str, Any] | None | Unset
         if isinstance(self.location, Unset):
             location = UNSET
+        elif isinstance(self.location, AccountingPointResponseLocationType0):
+            location = self.location.to_dict()
         else:
             location = self.location
 
@@ -218,6 +222,7 @@ class AccountingPointResponse:
         from ..models.accounting_point_energy_supplier_response import AccountingPointEnergySupplierResponse
         from ..models.accounting_point_grid_location_response import AccountingPointGridLocationResponse
         from ..models.accounting_point_metering_grid_area_response import AccountingPointMeteringGridAreaResponse
+        from ..models.accounting_point_response_location_type_0 import AccountingPointResponseLocationType0
         from ..models.controllable_unit_response import ControllableUnitResponse
         from ..models.party_response import PartyResponse
 
@@ -232,12 +237,20 @@ class AccountingPointResponse:
 
         recorded_by = d.pop("recorded_by")
 
-        def _parse_location(data: object) -> None | str | Unset:
+        def _parse_location(data: object) -> AccountingPointResponseLocationType0 | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(None | str | Unset, data)
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                location_type_0 = AccountingPointResponseLocationType0.from_dict(data)
+
+                return location_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(AccountingPointResponseLocationType0 | None | Unset, data)
 
         location = _parse_location(d.pop("location", UNSET))
 

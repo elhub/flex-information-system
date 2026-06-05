@@ -537,7 +537,7 @@ export const tooltips = {
   "accounting_point.system_operator_id":
     "The system operator of the accounting point.",
   "accounting_point.location":
-    'Geographic location of the accounting point (WGS84), as a PostGIS geometry point. Serialized as a WKB hex string by PostgREST. Can be written as an EWKT string (e.g. "SRID=4326;POINT(10.7522 59.9139)").',
+    "Geographic location of the accounting point (WGS84), as a GeoJSON point object.",
   "accounting_point.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "accounting_point.recorded_by": "The identity that recorded the resource.",

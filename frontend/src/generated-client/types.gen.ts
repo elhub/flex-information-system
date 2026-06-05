@@ -2080,9 +2080,21 @@ export type AccountingPoint = {
    */
   readonly system_operator_id: number;
   /**
-   * Geographic location of the accounting point (WGS84), as a PostGIS geometry point. Serialized as a WKB hex string by PostgREST. Can be written as an EWKT string (e.g. "SRID=4326;POINT(10.7522 59.9139)").
+   * Geographic location of the accounting point (WGS84), as a GeoJSON point object.
    */
-  readonly location?: string;
+  readonly location?: {
+    type?: "Point";
+    crs?: {
+      type?: "name";
+      properties?: {
+        name?: "EPSG:4326";
+      };
+    };
+    /**
+     * [longitude, latitude] in decimal degrees (WGS84)
+     */
+    coordinates?: [number, number];
+  };
   /**
    * When the resource was recorded (created or updated) in the system.
    */

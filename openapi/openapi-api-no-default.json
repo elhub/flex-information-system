@@ -4216,11 +4216,62 @@
                         "readOnly": true
                     },
                     "location": {
-                        "description": "Geographic location of the accounting point (WGS84), as a PostGIS geometry point. Serialized as a WKB hex string by PostgREST. Can be written as an EWKT string (e.g. \"SRID=4326;POINT(10.7522 59.9139)\").",
-                        "type": "string",
+                        "description": "Geographic location of the accounting point (WGS84), as a GeoJSON point object.",
+                        "type": "object",
                         "nullable": true,
                         "readOnly": true,
-                        "example": "0101000020E6100000F6285C8FC2F52540F8DBD781734B4D40"
+                        "example": {
+                            "type": "Point",
+                            "crs": {
+                                "type": "name",
+                                "properties": {
+                                    "name": "EPSG:4326"
+                                }
+                            },
+                            "coordinates": [
+                                -2.0259056,
+                                48.6504504
+                            ]
+                        },
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "enum": [
+                                    "Point"
+                                ]
+                            },
+                            "crs": {
+                                "type": "object",
+                                "properties": {
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "name"
+                                        ]
+                                    },
+                                    "properties": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "EPSG:4326"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "coordinates": {
+                                "type": "array",
+                                "description": "[longitude, latitude] in decimal degrees (WGS84)",
+                                "items": {
+                                    "type": "number"
+                                },
+                                "minItems": 2,
+                                "maxItems": 2
+                            }
+                        }
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
