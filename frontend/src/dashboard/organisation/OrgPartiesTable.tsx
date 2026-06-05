@@ -15,7 +15,7 @@ export const OrgPartiesTable = ({ parties }: Props) => {
   const columns: Column<Party>[] = [
     {
       key: "name",
-      header: "Name",
+      header: "Party",
       render: (_, row) => (
         <div>
           <div className="font-medium text-semantic-text">{row.name}</div>
@@ -48,7 +48,7 @@ export const OrgPartiesTable = ({ parties }: Props) => {
   return (
     <SimpleTable
       columns={columns}
-      data={parties}
+      data={parties.filter((p) => p.type !== "organisation")}
       empty="No parties found."
       className="w-full"
       rowClick={(party) => navigate(`/party/${party.id}/show`)}
