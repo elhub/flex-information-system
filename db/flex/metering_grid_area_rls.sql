@@ -13,9 +13,9 @@ TO flex_common
 USING (true);
 
 -- RLS: MGA-INT001
-GRANT INSERT, SELECT, UPDATE, DELETE ON metering_grid_area TO flex_internal_data;
+GRANT SELECT ON metering_grid_area TO flex_internal_data;
 DROP POLICY IF EXISTS "MGA_INT001" ON metering_grid_area;
 CREATE POLICY "MGA_INT001" ON metering_grid_area
-FOR ALL
+FOR SELECT
 TO flex_internal_data
 USING (true);
