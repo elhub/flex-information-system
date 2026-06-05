@@ -4,10 +4,9 @@ import arrow.core.Either
 import arrow.core.raise.either
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.server.routing.RoutingCall
+import kotlinx.datetime.TimeZone
 import no.elhub.flex.accountingpoint.AccountingPointService
-import no.elhub.flex.auth.AccessTokenKey
 import no.elhub.flex.auth.FlexPrincipal
-import no.elhub.flex.auth.toFlexPrincipal
 import no.elhub.flex.controllableunit.db.ControllableUnitRepository
 import no.elhub.flex.model.domain.ControllableUnit
 import no.elhub.flex.model.domain.GSRN
@@ -20,11 +19,10 @@ import no.elhub.flex.model.error.AppError
 import no.elhub.flex.model.error.BadRequestError
 import no.elhub.flex.model.error.InternalServerError
 import no.elhub.flex.util.TraceIdUtil.Companion.traceIdOrUnknown
-import no.elhub.flex.util.asLocalStartOfDayInstant
-import no.elhub.flex.util.atLocalStartOfToday
+import no.elhub.flex.util.asLocalMidnightInstant
 import no.elhub.flex.util.body
-import no.elhub.flex.util.logger
 import no.elhub.flex.util.respondJson
+import no.elhub.flex.util.todayLocalMidnight
 import org.koin.core.annotation.Property
 import org.koin.core.annotation.Single
 import kotlin.time.Instant
@@ -38,6 +36,7 @@ class ControllableUnitLookup(
     private val repo: ControllableUnitRepository,
     private val accountingPointService: AccountingPointService,
     @Property("accounting-point-adapter.sync-enabled") private val accountingPointAdapterSyncEnabled: Boolean = true,
+    @Property("flex.timezone") private val timezone: TimeZone = TimeZone.of("Europe/Oslo"),
 ) {
     private val logger = KotlinLogging.logger {}
 
@@ -59,8 +58,8 @@ class ControllableUnitLookup(
                 ).bind()
                 logger.debug { "Found ${controllableUnits.size} controllable units on accounting point $accountingPointBusinessId" }
 
-                val validFrom = controllableUnits.mapNotNull { it.startDate }.minByOrNull { it }?.asLocalStartOfDayInstant()
-                    ?: Instant.atLocalStartOfToday()
+                val validFrom = controllableUnits.mapNotNull { it.startDate }.minByOrNull { it }?.asLocalMidnightInstant(timezone)
+                    ?: Instant.todayLocalMidnight(timezone)
                 logger.debug { "Using $validFrom as start date for accounting point sync" }
 
                 if (accountingPointAdapterSyncEnabled) {

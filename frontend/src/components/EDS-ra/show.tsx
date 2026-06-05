@@ -12,22 +12,32 @@ import { EditButton, EventButton, ResourceHistoryButton } from "./buttons";
 
 type SimpleShowLayoutProps = {
   children: ReactNode;
-  /*
-
-   Edit button, resource history button, event button are there by default
-  */
+  /** Extra actions rendered alongside the default buttons (non-history view only) */
   extraActions?: ReactNode;
+  /** Actions rendered only when viewing a history record (e.g. RestoreButton) */
+  historyOnlyActions?: ReactNode;
   /** Override the default EditButton (e.g. for nested-route resources) */
   editButton?: ReactNode;
-  /** Override the default ResourceHistoryButton (e.g. for nested-route resources) */
-  historyButton?: ReactNode;
+  /**
+   * Override the default ResourceHistoryButton.
+   * Pass `null` to hide it entirely.
+   */
+  historyButton?: ReactNode | null;
+  /**
+   * Override the default EventButton.
+   * Pass `null` to hide it, or e.g. `<EventButton filterOnSubject />` to customise.
+   * Defaults to `<EventButton />`.
+   */
+  eventButton?: ReactNode | null;
 };
 
 const SimpleShowLayout = ({
   children,
   extraActions,
+  historyOnlyActions,
   editButton,
   historyButton,
+  eventButton = <EventButton />,
 }: SimpleShowLayoutProps) => {
   const resource = useResourceContext();
   const { permissions } = usePermissions<Permissions>();
@@ -43,9 +53,13 @@ const SimpleShowLayout = ({
         <div className="flex justify-end gap-2">
           {canEdit && (editButton ?? <EditButton />)}
           {extraActions}
-          {historyButton ?? <ResourceHistoryButton />}
-          <EventButton />
+          {historyButton === null
+            ? null
+            : (historyButton ?? <ResourceHistoryButton />)}
+          {eventButton}
         </div>
+      ) : historyOnlyActions ? (
+        <div className="flex justify-end gap-2">{historyOnlyActions}</div>
       ) : null}
       <Panel border>
         <Content>{children}</Content>
@@ -57,7 +71,15 @@ const SimpleShowLayout = ({
 export const Show = <RecordType extends RaRecord = any>(
   props: ShowBaseProps<RecordType> & SimpleShowLayoutProps,
 ) => {
-  const { children, extraActions, editButton, historyButton, ...rest } = props;
+  const {
+    children,
+    extraActions,
+    historyOnlyActions,
+    editButton,
+    historyButton,
+    eventButton,
+    ...rest
+  } = props;
 
   return (
     <ShowBase
@@ -67,8 +89,10 @@ export const Show = <RecordType extends RaRecord = any>(
     >
       <SimpleShowLayout
         extraActions={extraActions}
+        historyOnlyActions={historyOnlyActions}
         editButton={editButton}
         historyButton={historyButton}
+        eventButton={eventButton}
       >
         {children}
       </SimpleShowLayout>

@@ -6,7 +6,6 @@ from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-from dateutil.parser import isoparse
 
 from ..types import UNSET, Unset
 
@@ -53,14 +52,14 @@ class TimelineMultiRangeItem:
         if isinstance(_valid_from, Unset):
             valid_from = UNSET
         else:
-            valid_from = isoparse(_valid_from)
+            valid_from = datetime.datetime.fromisoformat(_valid_from)
 
         _valid_to = d.pop("valid_to", UNSET)
         valid_to: datetime.datetime | Unset
         if isinstance(_valid_to, Unset):
             valid_to = UNSET
         else:
-            valid_to = isoparse(_valid_to)
+            valid_to = datetime.datetime.fromisoformat(_valid_to)
 
         timeline_multi_range_item = cls(
             valid_from=valid_from,

@@ -1,3 +1,4 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 @config "@elhub/ds-tokens/dist/tailwind.config.js";
 @import "@elhub/ds-css/dist/index.css" layer(components);

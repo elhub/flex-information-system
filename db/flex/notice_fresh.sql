@@ -1,11 +1,9 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:notice-fresh-create runAlways:true endDelimiter:;
--- DROP + CREATE instead of CREATE OR REPLACE: cf https://stackoverflow.com/a/65118443
+-- changeset flex:notice-fresh-create runOnChange:true endDelimiter:;
 -- This view combines all notice types from individual views.
 -- Individual views are defined in separate files for maintainability.
-DROP VIEW IF EXISTS notice_fresh CASCADE;
 -- noqa: disable=AM04
 CREATE MATERIALIZED VIEW IF NOT EXISTS notice_fresh AS (
     -- Controllable Unit notices
@@ -74,7 +72,7 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS notice_fresh AS (
 );
 -- noqa: enable=AM04
 
--- changeset flex:notice-sync-function runAlways:true endDelimiter:--
+-- changeset flex:notice-sync-function runOnChange:true endDelimiter:--
 -- synchronise the notice table with the fresh notice discovery
 CREATE OR REPLACE FUNCTION notice_sync()
 RETURNS void
@@ -134,7 +132,7 @@ BEGIN
 END;
 $$;
 
--- changeset flex:notice-sync-job-schedule runAlways:true endDelimiter:;
+-- changeset flex:notice-sync-job-schedule runOnChange:true endDelimiter:;
 SELECT cron.schedule(
     'notice-sync',
     '*/15 * * * *', -- every 15 minutes

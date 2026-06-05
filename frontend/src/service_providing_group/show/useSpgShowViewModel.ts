@@ -39,6 +39,7 @@ export type SpgShowViewModel = {
 const serviceProvidingGroupQueryKey = (spgId: number | undefined) => [
   "service_providing_group",
   spgId,
+  "summary",
 ];
 export const useServiceProvidingGroup = (spgId: number | undefined) =>
   useQuery({

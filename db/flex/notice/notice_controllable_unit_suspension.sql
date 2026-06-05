@@ -1,11 +1,10 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:notice-controllable-unit-suspension runAlways:true endDelimiter:--
+-- changeset flex:notice-controllable-unit-suspension runOnChange:true endDelimiter:--
 
-DROP VIEW IF EXISTS notice_cus_not_active CASCADE;
 -- suspension on CU no longer active
-CREATE VIEW notice_cus_not_active
+CREATE OR REPLACE VIEW notice_cus_not_active
 WITH (security_invoker = false) AS (
     SELECT
         cus.impacted_system_operator_id AS party_id,
@@ -24,9 +23,8 @@ WITH (security_invoker = false) AS (
     )
 );
 
-DROP VIEW IF EXISTS notice_cus_lingering CASCADE;
 -- inactive suspension
-CREATE VIEW notice_cus_lingering
+CREATE OR REPLACE VIEW notice_cus_lingering
 WITH (security_invoker = false) AS (
     SELECT
         cus.impacted_system_operator_id AS party_id,

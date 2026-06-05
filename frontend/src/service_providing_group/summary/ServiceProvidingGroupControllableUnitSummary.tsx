@@ -55,12 +55,12 @@ export const ServiceProvidingGroupControllableUnitSummary = ({
           unit="kW"
         />
         <LabelValue
-          label="Aggregated flexible power (consumption)"
+          label="Aggregated flexible power (down)"
           value={spgViewModel.consumptionCapacityKw}
           unit="kW"
         />
         <LabelValue
-          label="Aggregated flexible power (production)"
+          label="Aggregated flexible power (up)"
           value={spgViewModel.productionCapacityKw}
           unit="kW"
         />

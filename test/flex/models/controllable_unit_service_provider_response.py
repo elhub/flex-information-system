@@ -6,7 +6,6 @@ from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-from dateutil.parser import isoparse
 
 from ..types import UNSET, Unset
 
@@ -157,7 +156,7 @@ class ControllableUnitServiceProviderResponse:
 
         contract_reference = d.pop("contract_reference")
 
-        recorded_at = isoparse(d.pop("recorded_at"))
+        recorded_at = datetime.datetime.fromisoformat(d.pop("recorded_at"))
 
         recorded_by = d.pop("recorded_by")
 
@@ -169,7 +168,7 @@ class ControllableUnitServiceProviderResponse:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                valid_from_type_0 = isoparse(data)
+                valid_from_type_0 = datetime.datetime.fromisoformat(data)
 
                 return valid_from_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
@@ -186,7 +185,7 @@ class ControllableUnitServiceProviderResponse:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                valid_to_type_0 = isoparse(data)
+                valid_to_type_0 = datetime.datetime.fromisoformat(data)
 
                 return valid_to_type_0
             except (TypeError, ValueError, AttributeError, KeyError):

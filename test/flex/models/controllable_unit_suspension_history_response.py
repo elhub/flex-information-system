@@ -6,7 +6,6 @@ from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-from dateutil.parser import isoparse
 
 from ..models.controllable_unit_suspension_reason import ControllableUnitSuspensionReason
 from ..types import UNSET, Unset
@@ -104,7 +103,7 @@ class ControllableUnitSuspensionHistoryResponse:
 
         reason = ControllableUnitSuspensionReason(d.pop("reason"))
 
-        recorded_at = isoparse(d.pop("recorded_at"))
+        recorded_at = datetime.datetime.fromisoformat(d.pop("recorded_at"))
 
         recorded_by = d.pop("recorded_by")
 
@@ -127,7 +126,7 @@ class ControllableUnitSuspensionHistoryResponse:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                replaced_at_type_0 = isoparse(data)
+                replaced_at_type_0 = datetime.datetime.fromisoformat(data)
 
                 return replaced_at_type_0
             except (TypeError, ValueError, AttributeError, KeyError):

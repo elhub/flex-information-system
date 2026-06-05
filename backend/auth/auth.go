@@ -429,7 +429,11 @@ func (auth *API) GetLoginHandler(ctx *gin.Context) {
 	// We need to set lax mode to allow the cookie to be sent when a user is navigating to the origin site from an external site
 	ctx.SetSameSite(http.SameSiteLaxMode)
 
-	maxAge := 120
+	// We need to allow for slow logins, so we set a fairly long max age for the cookie
+	// Slow logins are typically on first user login (if they need to set up MFA etc in IDP)
+	// 10 minutes should be more than enough for that, and if the user takes longer than that,
+	// they can just try logging in again, which will set a new cookie.
+	maxAge := 600
 	ctx.SetCookie("flex_login", string(signedLoginCookie), maxAge, callbackPath, "", true, true)
 
 	ctx.Redirect(http.StatusFound, url)

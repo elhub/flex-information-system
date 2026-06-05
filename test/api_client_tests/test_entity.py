@@ -60,7 +60,7 @@ def random_org():
 
 
 def random_pid():
-    return "4" + random_number(10)
+    return "0" + random_number(10)
 
 
 # RLS: ENT-FISO001
@@ -294,13 +294,6 @@ def test_entity_org(sts):
         client=client_fiso, id=cast(int, pm.id), body=EmptyObject()
     )
     assert not isinstance(d, ErrorMessage)
-
-    # organisation should by default see the entity with email business id type
-    # TODO this is a temporary solution for pilot testing w/ email based entities
-    # RLS: ENT-ORG002
-    ent = list_entity.sync(client=client_org, business_id_type="eq.email")
-    assert isinstance(ent, list)
-    assert len(ent) >= 1
 
 
 def test_entity_com(sts):

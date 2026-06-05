@@ -1,7 +1,7 @@
 --liquibase formatted sql
 -- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
 
--- changeset flex:api-service-provider-product-suspension-comment-create endDelimiter:-- runAlways:true
+-- changeset flex:api-service-provider-product-suspension-comment-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW
 api.service_provider_product_suspension_comment
 WITH (security_invoker = true) AS (
@@ -16,7 +16,7 @@ WITH (security_invoker = true) AS (
         lower(record_time_range) AS recorded_at
     FROM flex.service_provider_product_suspension_comment
 );
--- changeset flex:api-service-provider-product-suspension-comment-history-create endDelimiter:-- runAlways:true
+-- changeset flex:api-service-provider-product-suspension-comment-history-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW
 api.service_provider_product_suspension_comment_history
 WITH (

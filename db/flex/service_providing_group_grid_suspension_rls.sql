@@ -1,13 +1,15 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:service-providing-group-grid-suspension-rls runAlways:true endDelimiter:;
+-- changeset flex:service-providing-group-grid-suspension-rls runOnChange:true endDelimiter:;
 ALTER TABLE IF EXISTS service_providing_group_grid_suspension
 ENABLE ROW LEVEL SECURITY;
 
 -- internal
 GRANT SELECT ON service_providing_group_grid_suspension
 TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "SPGGS_INTERNAL_EVENT_NOTIFICATION"
+ON service_providing_group_grid_suspension;
 CREATE POLICY "SPGGS_INTERNAL_EVENT_NOTIFICATION"
 ON service_providing_group_grid_suspension
 FOR SELECT
@@ -16,6 +18,8 @@ USING (true);
 
 GRANT SELECT ON service_providing_group_grid_suspension_history
 TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "SPGGS_HISTORY_INTERNAL_EVENT_NOTIFICATION"
+ON service_providing_group_grid_suspension_history;
 CREATE POLICY "SPGGS_HISTORY_INTERNAL_EVENT_NOTIFICATION"
 ON service_providing_group_grid_suspension_history
 FOR SELECT
@@ -25,6 +29,7 @@ USING (true);
 -- RLS: SPGGS-FISO001
 GRANT SELECT, INSERT, UPDATE, DELETE ON service_providing_group_grid_suspension
 TO flex_flexibility_information_system_operator;
+DROP POLICY IF EXISTS "SPGGS_FISO001" ON service_providing_group_grid_suspension;
 CREATE POLICY "SPGGS_FISO001"
 ON service_providing_group_grid_suspension
 FOR ALL
@@ -34,6 +39,8 @@ USING (true);
 -- RLS: SPGGS-FISO002
 GRANT SELECT ON service_providing_group_grid_suspension_history
 TO flex_flexibility_information_system_operator;
+DROP POLICY IF EXISTS "SPGGS_FISO002"
+ON service_providing_group_grid_suspension_history;
 CREATE POLICY "SPGGS_FISO002"
 ON service_providing_group_grid_suspension_history
 FOR SELECT
@@ -43,6 +50,7 @@ USING (true);
 -- RLS: SPGGS-SP001
 GRANT SELECT ON service_providing_group_grid_suspension
 TO flex_service_provider;
+DROP POLICY IF EXISTS "SPGGS_SP001" ON service_providing_group_grid_suspension;
 CREATE POLICY "SPGGS_SP001"
 ON service_providing_group_grid_suspension
 FOR SELECT
@@ -59,6 +67,7 @@ USING (
 -- RLS: SPGGS-SP002
 GRANT SELECT ON service_providing_group_grid_suspension_history
 TO flex_service_provider;
+DROP POLICY IF EXISTS "SPGGS_SP002" ON service_providing_group_grid_suspension_history;
 CREATE POLICY "SPGGS_SP002"
 ON service_providing_group_grid_suspension_history
 FOR SELECT
@@ -75,6 +84,7 @@ USING (
 -- RLS: SPGGS-SO001
 GRANT SELECT, INSERT, UPDATE, DELETE ON service_providing_group_grid_suspension
 TO flex_system_operator;
+DROP POLICY IF EXISTS "SPGGS_SO001" ON service_providing_group_grid_suspension;
 CREATE POLICY "SPGGS_SO001"
 ON service_providing_group_grid_suspension
 FOR ALL
@@ -84,6 +94,7 @@ USING (impacted_system_operator_id = (SELECT flex.current_party()));
 -- RLS: SPGGS-SO002
 GRANT SELECT ON service_providing_group_grid_suspension_history
 TO flex_system_operator;
+DROP POLICY IF EXISTS "SPGGS_SO002" ON service_providing_group_grid_suspension_history;
 CREATE POLICY "SPGGS_SO002"
 ON service_providing_group_grid_suspension_history
 FOR SELECT
@@ -91,6 +102,7 @@ TO flex_system_operator
 USING (impacted_system_operator_id = (SELECT flex.current_party()));
 
 -- RLS: SPGGS-SO003
+DROP POLICY IF EXISTS "SPGGS_SO003" ON service_providing_group_grid_suspension;
 CREATE POLICY "SPGGS_SO003"
 ON service_providing_group_grid_suspension
 FOR SELECT
@@ -99,12 +111,14 @@ USING (
     EXISTS (
         SELECT 1
         FROM flex.service_providing_group AS spg
-        WHERE spg.id
+        WHERE
+            spg.id
             = service_providing_group_grid_suspension.service_providing_group_id -- noqa
     )
 );
 
 -- RLS: SPGGS-SO004
+DROP POLICY IF EXISTS "SPGGS_SO004" ON service_providing_group_grid_suspension_history;
 CREATE POLICY "SPGGS_SO004"
 ON service_providing_group_grid_suspension_history
 FOR SELECT
@@ -113,12 +127,14 @@ USING (
     EXISTS (
         SELECT 1
         FROM flex.service_providing_group AS spg
-        WHERE spg.id
+        WHERE
+            spg.id
             = service_providing_group_grid_suspension_history.service_providing_group_id -- noqa
         UNION ALL
         SELECT 1
         FROM flex.service_providing_group_history AS spgh
-        WHERE spgh.id
+        WHERE
+            spgh.id
             = service_providing_group_grid_suspension_history.service_providing_group_id -- noqa
             AND spgh.record_time_range && service_providing_group_grid_suspension_history.record_time_range -- noqa
     )

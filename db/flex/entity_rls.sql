@@ -1,18 +1,20 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:entity-rls runAlways:true endDelimiter:;
+-- changeset flex:entity-rls runOnChange:true endDelimiter:;
 ALTER TABLE IF EXISTS entity ENABLE ROW LEVEL SECURITY;
 
 -- RLS: ENT-COM001
 -- RLS: ENT-ENT001
 GRANT SELECT ON entity TO flex_common;
+DROP POLICY IF EXISTS "ENT_COM001_ENT001" ON entity;
 CREATE POLICY "ENT_COM001_ENT001" ON entity
 FOR SELECT
 TO flex_common
 USING (type = 'organisation' OR id = (SELECT flex.current_entity()));
 
 GRANT SELECT ON entity TO flex_entity;
+DROP POLICY IF EXISTS "ENT_ENT001" ON entity;
 CREATE POLICY "ENT_ENT001" ON entity
 FOR SELECT
 TO flex_entity
@@ -20,6 +22,7 @@ USING (id = (SELECT flex.current_entity()));
 
 -- RLS: ENT-COM002
 -- RLS: ENT-COM003
+DROP POLICY IF EXISTS "ENT_COM002_COM003" ON entity;
 CREATE POLICY "ENT_COM002_COM003" ON entity
 FOR SELECT
 TO flex_common
@@ -35,12 +38,14 @@ USING (EXISTS (
 
 -- RLS: ENT-FISO001
 GRANT SELECT, INSERT ON entity TO flex_flexibility_information_system_operator;
+DROP POLICY IF EXISTS "ENT_FISO001" ON entity;
 CREATE POLICY "ENT_FISO001" ON entity
 FOR ALL
 TO flex_flexibility_information_system_operator
 USING (true);
 
 GRANT SELECT, INSERT ON entity TO flex_internal_data;
+DROP POLICY IF EXISTS "ENT_INTERNAL_DATA" ON entity;
 CREATE POLICY "ENT_INTERNAL_DATA" ON entity
 FOR ALL
 TO flex_internal_data
@@ -48,6 +53,7 @@ USING (true);
 
 -- RLS: ENT-ORG001
 GRANT SELECT ON entity TO flex_organisation;
+DROP POLICY IF EXISTS "ENT_ORG001" ON entity;
 CREATE POLICY "ENT_ORG001" ON entity
 FOR SELECT
 TO flex_organisation
@@ -64,10 +70,5 @@ USING (
     )
 );
 
--- RLS: ENT-ORG002
-CREATE POLICY "ENT_ORG002" ON entity
-FOR SELECT
-TO flex_organisation
-USING (
-    business_id_type = 'email'
-);
+-- TODO: delete after migration has run once
+DROP POLICY IF EXISTS "ENT_ORG002" ON entity;

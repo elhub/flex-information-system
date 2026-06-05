@@ -3,10 +3,9 @@ databaseChangeLog:
   - changeSet:
       id: notification-schema
       author: flex
-      runAlways: true
+      runOnChange: true
       changes:
-        - sql: DROP SCHEMA IF EXISTS notification CASCADE
-        - sql: CREATE SCHEMA notification AUTHORIZATION flex
+        - sql: CREATE SCHEMA IF NOT EXISTS notification AUTHORIZATION flex
         - sql: GRANT USAGE ON SCHEMA notification TO flex_internal_event_notification, flex_internal
         - sql: GRANT USAGE ON SCHEMA notification TO flex_operation_readonly, flex_operation_update, flex_operation_readwrite
   - includeAll:

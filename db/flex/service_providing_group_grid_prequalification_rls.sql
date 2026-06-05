@@ -1,13 +1,15 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:service-providing-group-grid-prequalification-rls runAlways:true endDelimiter:;
+-- changeset flex:service-providing-group-grid-prequalification-rls runOnChange:true endDelimiter:;
 ALTER TABLE IF EXISTS service_providing_group_grid_prequalification
 ENABLE ROW LEVEL SECURITY;
 
 -- internal
 GRANT SELECT ON service_providing_group_grid_prequalification
 TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "SPGGP_INTERNAL_EVENT_NOTIFICATION"
+ON service_providing_group_grid_prequalification;
 CREATE POLICY "SPGGP_INTERNAL_EVENT_NOTIFICATION"
 ON service_providing_group_grid_prequalification
 FOR SELECT
@@ -16,6 +18,8 @@ USING (true);
 
 GRANT SELECT ON service_providing_group_grid_prequalification_history
 TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "SPGGPH_INTERNAL_EVENT_NOTIFICATION"
+ON service_providing_group_grid_prequalification_history;
 CREATE POLICY "SPGGPH_INTERNAL_EVENT_NOTIFICATION"
 ON service_providing_group_grid_prequalification_history
 FOR SELECT
@@ -26,6 +30,7 @@ USING (true);
 GRANT SELECT, INSERT, UPDATE ON service_providing_group_grid_prequalification
 TO flex_flexibility_information_system_operator;
 
+DROP POLICY IF EXISTS "SPGGP_FISO001" ON service_providing_group_grid_prequalification;
 CREATE POLICY "SPGGP_FISO001"
 ON service_providing_group_grid_prequalification
 FOR ALL
@@ -36,6 +41,7 @@ USING (true);
 GRANT SELECT ON service_providing_group_grid_prequalification
 TO flex_service_provider;
 
+DROP POLICY IF EXISTS "SPGGP_SP001" ON service_providing_group_grid_prequalification;
 CREATE POLICY "SPGGP_SP001"
 ON service_providing_group_grid_prequalification
 FOR ALL
@@ -53,6 +59,7 @@ USING (
 GRANT SELECT, UPDATE ON service_providing_group_grid_prequalification
 TO flex_system_operator;
 
+DROP POLICY IF EXISTS "SPGGP_SO001" ON service_providing_group_grid_prequalification;
 CREATE POLICY "SPGGP_SO001"
 ON service_providing_group_grid_prequalification
 FOR ALL
@@ -82,6 +89,7 @@ SELECT EXISTS (
 )
 $$;
 
+DROP POLICY IF EXISTS "SPGGP_SO002" ON service_providing_group_grid_prequalification;
 CREATE POLICY "SPGGP_SO002"
 ON service_providing_group_grid_prequalification
 FOR SELECT

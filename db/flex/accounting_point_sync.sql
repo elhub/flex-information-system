@@ -38,7 +38,7 @@ AFTER INSERT ON flex.accounting_point
 FOR EACH ROW
 EXECUTE FUNCTION accounting_point_insert_sync();
 
--- changeset flex:accounting-point-sync-fill runAlways:false endDelimiter:--
+-- changeset flex:accounting-point-sync-fill runOnChange:false endDelimiter:--
 MERGE INTO flex.accounting_point_sync AS target
 USING flex.accounting_point AS source
     ON target.accounting_point_id = source.id

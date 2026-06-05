@@ -1,7 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:controllable-unit-bidding-zone-create runAlways:true endDelimiter:--
+-- changeset flex:controllable-unit-bidding-zone-create runOnChange:true endDelimiter:--
 CREATE OR REPLACE VIEW controllable_unit_bidding_zone
 WITH (security_invoker = false) AS (
     SELECT
@@ -13,7 +13,7 @@ WITH (security_invoker = false) AS (
             ON cu.accounting_point_id = apbz.accounting_point_id
 );
 
--- changeset flex:controllable-unit-bidding-zone-grants runAlways:true endDelimiter:;
+-- changeset flex:controllable-unit-bidding-zone-grants runOnChange:true endDelimiter:;
 GRANT SELECT ON TABLE controllable_unit_bidding_zone
 TO flex_common;
 

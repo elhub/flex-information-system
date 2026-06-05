@@ -1,21 +1,19 @@
 import {
-  List,
-  ReferenceField,
-  ResourceContextProvider,
-  TextField,
   usePermissions,
   useRecordContext,
-} from "react-admin";
-import { Datagrid } from "../../auth";
-import { DateField } from "../../components/datetime";
+  ResourceContextProvider,
+} from "ra-core";
 import { Permissions } from "../../auth/permissions";
+import { List, Datagrid } from "../../components/EDS-ra/list";
+import {
+  DateField,
+  ReferenceField,
+  TextField,
+} from "../../components/EDS-ra/fields";
 
 export const ControllableUnitEnergySupplierList = () => {
-  // accounting point id of the controllable unit whose ESs we want to get
   const { accounting_point_id } = useRecordContext()!;
   const { permissions } = usePermissions<Permissions>();
-
-  // Permission checks
   const canRead = permissions?.allow(
     "accounting_point_energy_supplier",
     "read",
@@ -25,19 +23,16 @@ export const ControllableUnitEnergySupplierList = () => {
     canRead && (
       <ResourceContextProvider value="accounting_point_energy_supplier">
         <List
-          title={false}
           perPage={10}
-          exporter={false}
           empty={false}
           filter={{ accounting_point_id: accounting_point_id }}
           sort={{ field: "valid_from", order: "ASC" }}
           disableSyncWithLocation
         >
-          <Datagrid bulkActionButtons={false}>
+          <Datagrid>
             <ReferenceField
               source="energy_supplier_id"
               reference="party"
-              sortable={false}
               label="field.accounting_point_energy_supplier.energy_supplier_id"
             >
               <TextField source="name" />

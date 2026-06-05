@@ -1,14 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- NB: the precondition in addition to IF EXISTS is necessary, because if
--- notice already exists as a table, this line will make the DB complain
--- changeset flex:notice-view-remove runAlways:true endDelimiter:;
---preconditions onFail:MARK_RAN
---precondition-sql-check expectedResult:1 SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'flex' AND table_name = 'notice' AND table_type = 'VIEW'
-DROP VIEW IF EXISTS notice CASCADE;
-
--- changeset flex:notice-create runAlways:true endDelimiter:--
+-- changeset flex:notice-create runOnChange:true endDelimiter:--
 CREATE TABLE IF NOT EXISTS notice (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     party_id bigint NOT NULL,
@@ -33,7 +26,7 @@ CREATE TABLE IF NOT EXISTS notice (
     )
 );
 
--- changeset flex:notice-index runAlways:true endDelimiter:--
+-- changeset flex:notice-index runOnChange:true endDelimiter:--
 CREATE INDEX IF NOT EXISTS notice_index_party_id_status
 ON flex.notice (party_id, status);
 

@@ -1,92 +1,57 @@
+import { Content, Heading, VerticalSpace } from "../components/ui";
 import {
-  ReferenceField,
   Show,
-  SimpleShowLayout,
   TextField,
-  useResourceContext,
-} from "react-admin";
-import { FieldStack } from "../auth";
-import { Typography, Stack } from "@mui/material";
-import { ResourceHistoryButton } from "../components/history";
-import { DateField } from "../components/datetime";
-import { EventButton } from "../event/EventButton";
-import { IdentityField } from "../components/IdentityField";
+  ReferenceField,
+  DateField,
+  IdentityField,
+  EnumField,
+} from "../components/EDS-ra";
 import { ProductTypeArrayField } from "../product_type/components";
-import { EnumField } from "../components/enum";
+import { getFields } from "../zod";
+import { zServiceProviderProductSuspensionHistory } from "../generated-client/zod.gen";
+
+const fields = getFields(zServiceProviderProductSuspensionHistory.shape);
 
 export const ServiceProviderProductSuspensionShow = () => {
-  const resource = useResourceContext()!;
-
-  const isHistory = resource.endsWith("_history");
-
   return (
     <Show>
-      <SimpleShowLayout>
-        <Stack direction="column" spacing={2}>
-          <Typography variant="h6" gutterBottom>
-            Basic information
-          </Typography>
-          <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField
-              source="id"
-              label="field.service_provider_product_suspension.id"
-            />
-            <TextField
-              source="service_provider_product_suspension_id"
-              label="field.service_provider_product_suspension_history.service_provider_product_suspension_id"
-            />
-            <ReferenceField
-              source="procuring_system_operator_id"
-              reference="party"
-              label="field.service_provider_product_suspension.procuring_system_operator_id"
-            >
-              <TextField source="name" />
-            </ReferenceField>
-            <ReferenceField
-              source="service_provider_id"
-              reference="party"
-              label="field.service_provider_product_suspension.service_provider_id"
-            >
-              <TextField source="name" />
-            </ReferenceField>
-            <ProductTypeArrayField
-              label="field.service_provider_product_suspension.product_type_ids"
-              source="product_type_ids"
-            />
-            <EnumField
-              source="reason"
-              enumKey="service_provider_product_suspension.reason"
-              label="field.service_provider_product_suspension.reason"
-            />
-          </FieldStack>
-
-          <Typography variant="h6" gutterBottom>
-            Registration
-          </Typography>
-          <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <DateField
-              source="recorded_at"
-              showTime
-              label="field.service_provider_product_suspension.recorded_at"
-            />
-            <IdentityField
-              source="recorded_by"
-              label="field.service_provider_product_suspension.recorded_by"
-            />
-            <DateField
-              source="replaced_at"
-              showTime
-              label="field.service_provider_product_suspension_history.replaced_at"
-            />
-            <IdentityField
-              source="replaced_by"
-              label="field.service_provider_product_suspension_history.replaced_by"
-            />
-          </FieldStack>
-        </Stack>
-        <ResourceHistoryButton />
-        {!isHistory && <EventButton />}
-      </SimpleShowLayout>
+      <Heading level={2} size="small" spacing>
+        Basic information
+      </Heading>
+      <Content>
+        <TextField source={fields.id.source} label />
+        <TextField
+          source={fields.service_provider_product_suspension_id.source}
+          label
+        />
+        <ReferenceField
+          source={fields.procuring_system_operator_id.source}
+          reference="party"
+          label
+        />
+        <ReferenceField
+          source={fields.service_provider_id.source}
+          reference="party"
+          label
+        />
+        <ProductTypeArrayField source={fields.product_type_ids.source} label />
+        <EnumField
+          source={fields.reason.source}
+          enumKey="service_provider_product_suspension.reason"
+          label
+        />
+      </Content>
+      <VerticalSpace />
+      <Heading level={2} size="small" spacing>
+        Registration
+      </Heading>
+      <Content>
+        <DateField source={fields.recorded_at.source} showTime label />
+        <IdentityField source={fields.recorded_by.source} label />
+        <DateField source={fields.replaced_at.source} showTime label />
+        <IdentityField source={fields.replaced_by.source} label />
+      </Content>
     </Show>
   );
 };

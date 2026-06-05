@@ -1,24 +1,27 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:technical-resource-rls runAlways:true endDelimiter:;
+-- changeset flex:technical-resource-rls runOnChange:true endDelimiter:;
 ALTER TABLE IF EXISTS technical_resource ENABLE ROW LEVEL SECURITY;
 ALTER TABLE IF EXISTS technical_resource_history ENABLE ROW LEVEL SECURITY;
 
 -- internal
 GRANT SELECT ON technical_resource TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "TRG_INTERNAL_EVENT_NOTIFICATION" ON technical_resource;
 CREATE POLICY "TRG_INTERNAL_EVENT_NOTIFICATION" ON technical_resource
 FOR SELECT
 TO flex_internal_event_notification
 USING (true);
 
 GRANT SELECT ON technical_resource_history TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "TRH_INTERNAL_EVENT_NOTIFICATION" ON technical_resource_history;
 CREATE POLICY "TRH_INTERNAL_EVENT_NOTIFICATION" ON technical_resource_history
 FOR SELECT
 TO flex_internal_event_notification
 USING (true);
 
 GRANT SELECT ON technical_resource TO flex_internal_data;
+DROP POLICY IF EXISTS "TR_INTERNAL_DATA" ON technical_resource;
 CREATE POLICY "TR_INTERNAL_DATA" ON technical_resource
 FOR SELECT
 TO flex_internal_data
@@ -26,6 +29,7 @@ USING (true);
 
 -- RLS: TR-BRP001
 GRANT SELECT ON technical_resource TO flex_balance_responsible_party;
+DROP POLICY IF EXISTS "TR_BRP001" ON technical_resource;
 CREATE POLICY "TR_BRP001" ON technical_resource
 FOR SELECT
 TO flex_balance_responsible_party
@@ -41,6 +45,7 @@ USING (
 
 -- RLS: TR-BRP002
 GRANT SELECT ON technical_resource_history TO flex_balance_responsible_party;
+DROP POLICY IF EXISTS "TR_BRP002" ON technical_resource_history;
 CREATE POLICY "TR_BRP002"
 ON technical_resource_history
 FOR SELECT
@@ -59,6 +64,7 @@ USING (
 
 -- RLS: TR-EU001
 GRANT SELECT ON technical_resource TO flex_end_user;
+DROP POLICY IF EXISTS "TR_EU001" ON technical_resource;
 CREATE POLICY "TR_EU001" ON technical_resource
 FOR SELECT
 TO flex_end_user
@@ -74,6 +80,7 @@ USING (
 
 -- RLS: TR-EU002
 GRANT SELECT ON technical_resource_history TO flex_end_user;
+DROP POLICY IF EXISTS "TR_EU002" ON technical_resource_history;
 CREATE POLICY "TR_EU002"
 ON technical_resource_history
 FOR SELECT
@@ -92,6 +99,7 @@ USING (
 
 -- RLS: TR-ES001
 GRANT SELECT ON technical_resource TO flex_energy_supplier;
+DROP POLICY IF EXISTS "TR_ES001" ON technical_resource;
 CREATE POLICY "TR_ES001" ON technical_resource
 FOR SELECT
 TO flex_energy_supplier
@@ -107,6 +115,7 @@ USING (
 
 -- RLS: TR-ES002
 GRANT SELECT ON technical_resource_history TO flex_energy_supplier;
+DROP POLICY IF EXISTS "TR_ES002" ON technical_resource_history;
 CREATE POLICY "TR_ES002"
 ON technical_resource_history
 FOR SELECT
@@ -128,6 +137,7 @@ GRANT INSERT,
 SELECT,
 UPDATE,
 DELETE ON technical_resource TO flex_flexibility_information_system_operator;
+DROP POLICY IF EXISTS "TR_FISO001" ON technical_resource;
 CREATE POLICY "TR_FISO001" ON technical_resource
 FOR ALL
 TO flex_flexibility_information_system_operator
@@ -136,6 +146,7 @@ USING (true);
 -- RLS: TR-FISO002
 GRANT SELECT ON technical_resource_history
 TO flex_flexibility_information_system_operator;
+DROP POLICY IF EXISTS "TR_FISO002" ON technical_resource_history;
 CREATE POLICY "TR_FISO002" ON technical_resource_history
 FOR SELECT
 TO flex_flexibility_information_system_operator
@@ -143,6 +154,7 @@ USING (true);
 
 -- RLS: TR-SO001
 GRANT SELECT ON technical_resource TO flex_system_operator;
+DROP POLICY IF EXISTS "TR_SO001" ON technical_resource;
 CREATE POLICY "TR_SO001" ON technical_resource
 FOR SELECT
 TO flex_system_operator
@@ -157,6 +169,7 @@ USING (
 -- RLS: TR-SO002
 GRANT SELECT ON technical_resource_history
 TO flex_system_operator;
+DROP POLICY IF EXISTS "TR_SO002" ON technical_resource_history;
 CREATE POLICY "TR_SO002"
 ON technical_resource_history
 FOR SELECT
@@ -171,6 +184,7 @@ USING (
 
 -- RLS: TR-SP001
 GRANT INSERT, UPDATE, DELETE ON technical_resource TO flex_service_provider;
+DROP POLICY IF EXISTS "TR_SP001" ON technical_resource;
 CREATE POLICY "TR_SP001" ON technical_resource
 FOR ALL
 TO flex_service_provider
@@ -186,6 +200,7 @@ USING (
 
 -- RLS: TR-SP002
 GRANT SELECT ON technical_resource TO flex_service_provider;
+DROP POLICY IF EXISTS "TR_SP002" ON technical_resource;
 CREATE POLICY "TR_SP002" ON technical_resource
 FOR SELECT
 TO flex_service_provider
@@ -204,6 +219,7 @@ USING (
 -- RLS: TR-SP003
 GRANT SELECT ON technical_resource_history
 TO flex_service_provider;
+DROP POLICY IF EXISTS "TR_SP003" ON technical_resource_history;
 CREATE POLICY "TR_SP003"
 ON technical_resource_history
 FOR SELECT

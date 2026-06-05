@@ -442,7 +442,7 @@ private fun Connection.createTimestampArray(instants: List<Instant>): Array =
 
 private fun resolveOrCreateEntity(conn: Connection, endUserBusinessId: String): Long {
     val (entityType, businessIdType) = when {
-        endUserBusinessId.matches(Regex("^[1-9][0-9]{10}$")) -> "person" to "pid"
+        endUserBusinessId.matches(Regex("^[0-9]{11}$")) -> "person" to "pid"
         endUserBusinessId.matches(Regex("^[1-9][0-9]{8}$")) -> "organisation" to "org"
         else -> error("Cannot determine entity type for end user business ID")
     }

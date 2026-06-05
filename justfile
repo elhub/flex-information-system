@@ -615,9 +615,9 @@ permissions-to-db:
     echo "-- liquibase formatted sql\n-- AUTO-GENERATED FILE (just permissions-to-db)\n" \
         | tee db/api/grants/field_level_authorization.sql > db/flex/grants/field_level_authorization.sql
 
-    echo "-- changeset flex:api-field-level-authorization runAlways:true" \
+    echo "-- changeset flex:api-field-level-authorization runOnChange:true" \
         >> db/api/grants/field_level_authorization.sql
-    echo "-- changeset flex:flex-field-level-authorization runAlways:true" \
+    echo "-- changeset flex:flex-field-level-authorization runOnChange:true" \
         >> db/flex/grants/field_level_authorization.sql
 
     cat local/input/permissions.csv \
