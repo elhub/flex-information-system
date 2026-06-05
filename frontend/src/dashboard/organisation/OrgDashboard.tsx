@@ -19,7 +19,7 @@ export const OrgDashboard = ({ identity }: { identity: FlexPartyIdentity }) => {
       </Heading>
       <p className="mb-6">
         The organisation has the following parties. Click a party to view more
-        details or manage people and accesses for them.
+        details or manage people and access for them.
       </p>
       <OrgPartiesTable parties={data?.entity?.party ?? []} />
       <Heading size="medium" className="mb-2 mt-6">
