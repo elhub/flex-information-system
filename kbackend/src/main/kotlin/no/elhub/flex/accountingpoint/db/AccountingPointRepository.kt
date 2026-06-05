@@ -15,6 +15,7 @@ import no.elhub.flex.db.querySingle
 import no.elhub.flex.model.domain.AccountingPoint
 import no.elhub.flex.model.domain.AccountingPointEndUser
 import no.elhub.flex.model.domain.AccountingPointEnergySupplier
+import no.elhub.flex.model.domain.AccountingPointMeteringGridArea
 import no.elhub.flex.model.domain.db.DatabaseError
 import no.elhub.flex.model.domain.db.LockTimeoutError
 import no.elhub.flex.model.domain.db.NoMatchError
@@ -92,6 +93,18 @@ interface AccountingPointRepository {
     context(principal: FlexPrincipal)
     suspend fun upsertAccountingPointEnergySupplier(
         accountingPointEnergySuppliers: List<AccountingPointEnergySupplier>
+    ): Either<RepositoryError, Unit>
+
+    /**
+     * Upserts metering-grid-area timeline entries for accounting points into
+     * flex.accounting_point_metering_grid_area.
+     *
+     * Metering grid areas are looked up by EIC-Y business_id and must already exist in
+     * flex.metering_grid_area; a [DatabaseError] is returned if any business_id is unknown.
+     */
+    context(principal: FlexPrincipal)
+    suspend fun upsertAccountingPointMeteringGridArea(
+        accountingPointMeteringGridAreas: List<AccountingPointMeteringGridArea>
     ): Either<RepositoryError, Unit>
 
     /**
@@ -381,6 +394,11 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
                 DatabaseError("Failed to upsert accounting point energy suppliers")
             }
         }
+
+    context(principal: FlexPrincipal)
+    override suspend fun upsertAccountingPointMeteringGridArea(
+        accountingPointMeteringGridAreas: List<AccountingPointMeteringGridArea>
+    ): Either<RepositoryError, Unit> = Unit.right()
 
     context(principal: FlexPrincipal)
     override suspend fun lockSyncRowAndMarkStart(accountingPointId: Long): Either<RepositoryError, Unit> =

@@ -13,6 +13,7 @@ import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterSe
 import no.elhub.flex.model.domain.AccountingPoint
 import no.elhub.flex.model.domain.AccountingPointEndUser
 import no.elhub.flex.model.domain.AccountingPointEnergySupplier
+import no.elhub.flex.model.domain.AccountingPointMeteringGridArea
 import no.elhub.flex.model.domain.db.LockTimeoutError
 import no.elhub.flex.model.domain.db.NoMatchError
 import no.elhub.flex.model.domain.db.NotFoundError
@@ -103,12 +104,16 @@ class AccountingPointServiceImpl(
 
                             val endUsers = adapterAccountingPoint.toAccountingPointEndUsers(accountingPointId)
                             val energySuppliers = adapterAccountingPoint.toAccountingPointEnergySuppliers(accountingPointId)
+                            val meteringGridAreas = adapterAccountingPoint.toAccountingPointMeteringGridAreas(accountingPointId)
 
                             accountingPointRepository.upsertAccountingPointEndUsers(endUsers)
                                 .mapLeft { it.toInternalServerError("upsertAccountingPointEndUsers") }.bind()
 
                             accountingPointRepository.upsertAccountingPointEnergySupplier(energySuppliers)
                                 .mapLeft { it.toInternalServerError("upsertAccountingPointEnergySupplier") }.bind()
+
+                            accountingPointRepository.upsertAccountingPointMeteringGridArea(meteringGridAreas)
+                                .mapLeft { it.toInternalServerError("upsertAccountingPointMeteringGridArea") }.bind()
 
                             accountingPointRepository.markSyncComplete(accountingPointId)
                                 .mapLeft { it.toInternalServerError("markSyncComplete") }.bind()
@@ -143,6 +148,16 @@ class AccountingPointServiceImpl(
                 energySupplierBusinessId = es.businessId,
                 validFrom = es.validFrom,
                 validTo = es.validTo,
+            )
+        }
+
+    private fun AdapterAccountingPoint.toAccountingPointMeteringGridAreas(accountingPointId: Long): List<AccountingPointMeteringGridArea> =
+        meteringGridArea.map { mga ->
+            AccountingPointMeteringGridArea(
+                accountingPointId = accountingPointId,
+                meteringGridAreaBusinessId = mga.businessId,
+                validFrom = mga.validFrom,
+                validTo = mga.validTo,
             )
         }
 

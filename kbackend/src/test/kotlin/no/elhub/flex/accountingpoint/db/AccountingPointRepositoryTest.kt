@@ -9,6 +9,7 @@ import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.model.domain.AccountingPoint
 import no.elhub.flex.model.domain.AccountingPointEndUser
 import no.elhub.flex.model.domain.AccountingPointEnergySupplier
+import no.elhub.flex.model.domain.AccountingPointMeteringGridArea
 import no.elhub.flex.model.domain.db.DatabaseError
 import no.elhub.flex.model.domain.db.NoMatchError
 import no.elhub.flex.model.domain.db.NotFoundError
@@ -33,6 +34,7 @@ class AccountingPointRepositoryTest : FunSpec({
         PostgresTestContainer.withConnection { conn ->
             conn.createStatement().use {
                 it.execute("TRUNCATE flex.accounting_point CASCADE")
+                it.execute("TRUNCATE flex.metering_grid_area CASCADE")
             }
         }
     }
@@ -607,6 +609,161 @@ class AccountingPointRepositoryTest : FunSpec({
         }
     }
 
+    // -------------------------------------------------------------------------
+    // upsertAccountingPointMeteringGridArea
+    // -------------------------------------------------------------------------
+
+    context("upsertAccountingPointMeteringGridArea") {
+
+        test("inserts new MGA rows") {
+            // given
+            val apId = insertAccountingPoint(uniqueGsrn())
+            val mgaId = insertMeteringGridArea(MGA_1)
+
+            // when
+            val result = with(internalDataPrincipal) {
+                repo.upsertAccountingPointMeteringGridArea(
+                    listOf(
+                        AccountingPointMeteringGridArea(apId, MGA_1, Instant.parse("2023-12-31T23:00:00Z"), null),
+                    ),
+                )
+            }
+
+            // then
+            result.shouldBeRight()
+            val rows = queryMeteringGridAreaRows(apId)
+            rows.size shouldBe 1
+            rows[0].meteringGridAreaId shouldBe mgaId
+            rows[0].validFrom shouldBe Instant.parse("2023-12-31T23:00:00Z")
+            rows[0].validTo shouldBe null
+        }
+
+        test("is idempotent when called twice") {
+            // given
+            val apId = insertAccountingPoint(uniqueGsrn())
+            insertMeteringGridArea(MGA_1)
+            val mga = AccountingPointMeteringGridArea(apId, MGA_1, Instant.parse("2023-12-31T23:00:00Z"), null)
+
+            // when
+            with(internalDataPrincipal) {
+                repo.upsertAccountingPointMeteringGridArea(listOf(mga)).shouldBeRight()
+                repo.upsertAccountingPointMeteringGridArea(listOf(mga)).shouldBeRight()
+            }
+
+            // then
+            val rows = queryMeteringGridAreaRows(apId)
+            rows.size shouldBe 1
+        }
+
+        test("updates a changed MGA (same start, different MGA)") {
+            // given
+            val apId = insertAccountingPoint(uniqueGsrn())
+            val mga1Id = insertMeteringGridArea(MGA_1)
+            val mga2Id = insertMeteringGridArea(MGA_2)
+            linkApToMeteringGridAreaAt(apId, mga1Id, Instant.parse("2023-12-31T23:00:00Z"))
+
+            // when
+            with(internalDataPrincipal) {
+                repo.upsertAccountingPointMeteringGridArea(
+                    listOf(
+                        AccountingPointMeteringGridArea(apId, MGA_2, Instant.parse("2023-12-31T23:00:00Z"), null),
+                    ),
+                )
+            }.shouldBeRight()
+
+            // then
+            val rows = queryMeteringGridAreaRows(apId)
+            rows.size shouldBe 1
+            rows[0].meteringGridAreaId shouldBe mga2Id
+        }
+
+        test("updates a changed valid_to") {
+            // given
+            val apId = insertAccountingPoint(uniqueGsrn())
+            val mgaId = insertMeteringGridArea(MGA_1)
+            linkApToMeteringGridAreaAt(apId, mgaId, Instant.parse("2023-12-31T23:00:00Z"))
+
+            // when
+            with(internalDataPrincipal) {
+                repo.upsertAccountingPointMeteringGridArea(
+                    listOf(
+                        AccountingPointMeteringGridArea(
+                            apId,
+                            MGA_1,
+                            Instant.parse("2023-12-31T23:00:00Z"),
+                            Instant.parse("2024-05-31T22:00:00Z"),
+                        ),
+                    ),
+                )
+            }.shouldBeRight()
+
+            // then
+            val rows = queryMeteringGridAreaRows(apId)
+            rows.size shouldBe 1
+            rows[0].validTo shouldBe Instant.parse("2024-05-31T22:00:00Z")
+        }
+
+        test("deletes a stale row") {
+            // given
+            val apId = insertAccountingPoint(uniqueGsrn())
+            val mgaId = insertMeteringGridArea(MGA_1)
+            linkApToMeteringGridAreaAt(apId, mgaId, Instant.parse("2022-12-31T23:00:00Z"))
+
+            // when
+            with(internalDataPrincipal) {
+                repo.upsertAccountingPointMeteringGridArea(
+                    listOf(
+                        AccountingPointMeteringGridArea(apId, MGA_1, Instant.parse("2024-05-31T22:00:00Z"), null),
+                    ),
+                )
+            }.shouldBeRight()
+
+            // then
+            val rows = queryMeteringGridAreaRows(apId)
+            rows.size shouldBe 1
+            rows[0].validFrom shouldBe Instant.parse("2024-05-31T22:00:00Z")
+        }
+
+        test("does not touch rows for a different accounting point") {
+            // given
+            val ap1Id = insertAccountingPoint(uniqueGsrn())
+            val ap2Id = insertAccountingPoint(uniqueGsrn())
+            val mgaId = insertMeteringGridArea(MGA_1)
+            linkApToMeteringGridAreaAt(ap1Id, mgaId, Instant.parse("2023-12-31T23:00:00Z"))
+            linkApToMeteringGridAreaAt(ap2Id, mgaId, Instant.parse("2023-12-31T23:00:00Z"))
+
+            // when
+            with(internalDataPrincipal) {
+                repo.upsertAccountingPointMeteringGridArea(
+                    listOf(
+                        AccountingPointMeteringGridArea(ap1Id, MGA_1, Instant.parse("2024-12-31T23:00:00Z"), null),
+                    ),
+                )
+            }.shouldBeRight()
+
+            // then
+            val ap2Rows = queryMeteringGridAreaRows(ap2Id)
+            ap2Rows.size shouldBe 1
+            ap2Rows[0].validFrom shouldBe Instant.parse("2023-12-31T23:00:00Z")
+        }
+
+        test("returns error when business ID is unknown") {
+            // given
+            val apId = insertAccountingPoint(uniqueGsrn())
+            // MGA_1 is never inserted
+
+            // when
+            val result = with(internalDataPrincipal) {
+                repo.upsertAccountingPointMeteringGridArea(
+                    listOf(AccountingPointMeteringGridArea(apId, MGA_1, Instant.parse("2023-12-31T23:00:00Z"), null)),
+                )
+            }
+
+            // then
+            result.shouldBeLeft() shouldBe DatabaseError("Failed to upsert accounting point metering grid areas")
+        }
+    }
+
     context("lockSyncRowAndMarkStart") {
 
         test("acquires the lock, stamps last_sync_start, and returns Right") {
@@ -688,6 +845,10 @@ class AccountingPointRepositoryTest : FunSpec({
     }
 })
 
+/** Hardcoded EIC-Y business IDs for metering grid area tests. */
+private const val MGA_1 = "10Y1001A1001A264"
+private const val MGA_2 = "10YNO-1--------2"
+
 private val pidCounter = AtomicLong(0L)
 private val orgCounter = AtomicLong(100_000_000L)
 private val glnCounter = AtomicLong(10_000_000L)
@@ -711,6 +872,8 @@ private fun uniqueGln(): String {
 private data class EndUserRow(val endUserPartyId: Long, val validFrom: Instant, val validTo: Instant?)
 
 private data class EnergySupplierRow(val energySupplierPartyId: Long, val validFrom: Instant, val validTo: Instant?)
+
+private data class MeteringGridAreaRow(val meteringGridAreaId: Long, val validFrom: Instant, val validTo: Instant?)
 
 private data class SyncRow(val lastSyncedAt: java.sql.Timestamp?, val lastSyncStart: java.sql.Timestamp?, val version: Long)
 
@@ -944,6 +1107,67 @@ private fun linkApToEnergySupplierAt(apId: Long, esPartyId: Long, validFrom: Ins
         ).use { stmt ->
             stmt.setLong(1, apId)
             stmt.setLong(2, esPartyId)
+            stmt.setString(3, validFrom.toString())
+            stmt.executeUpdate()
+        }
+        conn.commit()
+    }
+}
+
+private fun queryMeteringGridAreaRows(apId: Long): List<MeteringGridAreaRow> =
+    PostgresTestContainer.withConnection { conn ->
+        conn.prepareStatement(
+            """
+            SELECT metering_grid_area_id, lower(valid_time_range), upper(valid_time_range)
+            FROM flex.accounting_point_metering_grid_area
+            WHERE accounting_point_id = ?
+            ORDER BY lower(valid_time_range)
+            """.trimIndent(),
+        ).use { stmt ->
+            stmt.setLong(1, apId)
+            stmt.executeQuery().use { rs ->
+                val rows = mutableListOf<MeteringGridAreaRow>()
+                while (rs.next()) {
+                    rows += MeteringGridAreaRow(
+                        meteringGridAreaId = rs.getLong(1),
+                        validFrom = rs.getTimestamp(2).toKotlinInstant(),
+                        validTo = rs.getTimestamp(3).toKotlinInstantOrNull(),
+                    )
+                }
+                rows
+            }
+        }
+    }
+
+/** Inserts a metering grid area with the given EIC-Y business ID. Returns the ID. */
+private fun insertMeteringGridArea(businessId: String): Long =
+    PostgresTestContainer.withConnection { conn ->
+        conn.autoCommit = false
+        conn.createStatement().use { it.execute("SELECT flex.set_entity_party_identity(0, 0, 0)") }
+        val id = conn.prepareStatement(
+            "INSERT INTO flex.metering_grid_area (business_id, name) VALUES (?, ?) RETURNING id",
+        ).use { stmt ->
+            stmt.setString(1, businessId)
+            stmt.setString(2, "MGA $businessId")
+            stmt.executeQuery().use { rs ->
+                rs.next()
+                rs.getLong(1)
+            }
+        }
+        conn.commit()
+        id
+    }
+
+/** Inserts an AP-MGA link with an explicit valid_from timestamp (for pre-seeding tests). */
+private fun linkApToMeteringGridAreaAt(apId: Long, mgaId: Long, validFrom: Instant) {
+    PostgresTestContainer.withConnection { conn ->
+        conn.autoCommit = false
+        conn.createStatement().use { it.execute("SELECT flex.set_entity_party_identity(0, 0, 0)") }
+        conn.prepareStatement(
+            "INSERT INTO flex.accounting_point_metering_grid_area (accounting_point_id, metering_grid_area_id, valid_time_range) VALUES (?, ?, tstzrange(?::timestamptz, null, '[)'))",
+        ).use { stmt ->
+            stmt.setLong(1, apId)
+            stmt.setLong(2, mgaId)
             stmt.setString(3, validFrom.toString())
             stmt.executeUpdate()
         }

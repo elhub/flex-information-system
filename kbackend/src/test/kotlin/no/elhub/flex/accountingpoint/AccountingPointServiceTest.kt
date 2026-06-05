@@ -20,6 +20,7 @@ import no.elhub.flex.integration.accountingpointadapter.NetworkError
 import no.elhub.flex.integration.accountingpointadapter.NotFoundError
 import no.elhub.flex.integration.accountingpointadapter.generated.models.EndUser
 import no.elhub.flex.integration.accountingpointadapter.generated.models.EnergySupplier
+import no.elhub.flex.integration.accountingpointadapter.generated.models.MeteringGridArea
 import no.elhub.flex.model.domain.db.DatabaseError
 import no.elhub.flex.model.domain.db.LockTimeoutError
 import no.elhub.flex.model.error.InternalServerError
@@ -45,11 +46,12 @@ class AccountingPointServiceTest : FunSpec({
 
     val adapterEndUser = EndUser(businessId = "12345678901", validFrom = VALID_FROM)
     val adapterEnergySupplier = EnergySupplier(businessId = "7080001234567", validFrom = VALID_FROM)
+    val adapterMeteringGridArea = MeteringGridArea(businessId = "10Y1001A1001A264", validFrom = VALID_FROM)
     val adapterAccountingPoint = AdapterAccountingPoint(
         gsrn = GSRN,
         endUser = listOf(adapterEndUser),
         energySupplier = listOf(adapterEnergySupplier),
-        meteringGridArea = emptyList(),
+        meteringGridArea = listOf(adapterMeteringGridArea),
     )
 
     context("synchronizeAccountingPoint") {
@@ -88,6 +90,7 @@ class AccountingPointServiceTest : FunSpec({
                 coEvery { mockRepo.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
                 coEvery { mockRepo.upsertAccountingPointEndUsers(any()) } returns Unit.right()
                 coEvery { mockRepo.upsertAccountingPointEnergySupplier(any()) } returns Unit.right()
+                coEvery { mockRepo.upsertAccountingPointMeteringGridArea(any()) } returns Unit.right()
                 coEvery { mockRepo.markSyncComplete(any()) } returns Unit.right()
             }
 
@@ -101,6 +104,7 @@ class AccountingPointServiceTest : FunSpec({
                 coVerify(exactly = 1) { mockRepo.lockSyncRowAndMarkStart(AP_ID) }
                 coVerify(exactly = 1) { mockRepo.upsertAccountingPointEndUsers(any()) }
                 coVerify(exactly = 1) { mockRepo.upsertAccountingPointEnergySupplier(any()) }
+                coVerify(exactly = 1) { mockRepo.upsertAccountingPointMeteringGridArea(any()) }
                 coVerify(exactly = 1) { mockRepo.markSyncComplete(AP_ID) }
             }
         }
@@ -122,6 +126,7 @@ class AccountingPointServiceTest : FunSpec({
             with(internalPrincipal) {
                 coVerify(exactly = 0) { mockRepo.upsertAccountingPointEndUsers(any()) }
                 coVerify(exactly = 0) { mockRepo.upsertAccountingPointEnergySupplier(any()) }
+                coVerify(exactly = 0) { mockRepo.upsertAccountingPointMeteringGridArea(any()) }
                 coVerify(exactly = 0) { mockRepo.markSyncComplete(any()) }
             }
         }
@@ -134,6 +139,7 @@ class AccountingPointServiceTest : FunSpec({
                 coEvery { mockRepo.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
                 coEvery { mockRepo.upsertAccountingPointEndUsers(any()) } returns Unit.right()
                 coEvery { mockRepo.upsertAccountingPointEnergySupplier(any()) } returns Unit.right()
+                coEvery { mockRepo.upsertAccountingPointMeteringGridArea(any()) } returns Unit.right()
                 coEvery { mockRepo.markSyncComplete(any()) } returns Unit.right()
             }
 
@@ -157,6 +163,14 @@ class AccountingPointServiceTest : FunSpec({
                                 list[0].accountingPointId == AP_ID &&
                                 list[0].energySupplierBusinessId == adapterEnergySupplier.businessId &&
                                 list[0].validFrom == adapterEnergySupplier.validFrom
+                        },
+                    )
+                    mockRepo.upsertAccountingPointMeteringGridArea(
+                        match { list ->
+                            list.size == 1 &&
+                                list[0].accountingPointId == AP_ID &&
+                                list[0].meteringGridAreaBusinessId == adapterMeteringGridArea.businessId &&
+                                list[0].validFrom == adapterMeteringGridArea.validFrom
                         },
                     )
                 }
@@ -224,6 +238,7 @@ class AccountingPointServiceTest : FunSpec({
                 coEvery { mockRepo.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
                 coEvery { mockRepo.upsertAccountingPointEndUsers(any()) } returns Unit.right()
                 coEvery { mockRepo.upsertAccountingPointEnergySupplier(any()) } returns Unit.right()
+                coEvery { mockRepo.upsertAccountingPointMeteringGridArea(any()) } returns Unit.right()
                 coEvery { mockRepo.markSyncComplete(any()) } returns DatabaseError("No sync row found for accounting point $AP_ID").left()
             }
 
@@ -249,6 +264,48 @@ class AccountingPointServiceTest : FunSpec({
             // then
             with(internalPrincipal) {
                 coVerify(exactly = 0) { mockRepo.upsertAccountingPointEnergySupplier(any()) }
+                coVerify(exactly = 0) { mockRepo.upsertAccountingPointMeteringGridArea(any()) }
+                coVerify(exactly = 0) { mockRepo.markSyncComplete(any()) }
+            }
+        }
+
+        test("upsertAccountingPointMeteringGridArea failure returns InternalServerError") {
+            // given
+            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns adapterAccountingPoint.right()
+            with(internalPrincipal) {
+                coEvery { mockRepo.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
+                coEvery { mockRepo.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
+                coEvery { mockRepo.upsertAccountingPointEndUsers(any()) } returns Unit.right()
+                coEvery { mockRepo.upsertAccountingPointEnergySupplier(any()) } returns Unit.right()
+                coEvery { mockRepo.upsertAccountingPointMeteringGridArea(any()) } returns DatabaseError("MGA error").left()
+            }
+
+            // when
+            val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM)
+
+            // then
+            result.shouldBeLeft().shouldBeInstanceOf<InternalServerError>()
+            with(internalPrincipal) {
+                coVerify(exactly = 0) { mockRepo.markSyncComplete(any()) }
+            }
+        }
+
+        test("MGA upsert is not called when energy supplier upsert fails") {
+            // given
+            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns adapterAccountingPoint.right()
+            with(internalPrincipal) {
+                coEvery { mockRepo.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
+                coEvery { mockRepo.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
+                coEvery { mockRepo.upsertAccountingPointEndUsers(any()) } returns Unit.right()
+                coEvery { mockRepo.upsertAccountingPointEnergySupplier(any()) } returns DatabaseError("not found").left()
+            }
+
+            // when
+            service.synchronizeAccountingPoint(GSRN, VALID_FROM)
+
+            // then
+            with(internalPrincipal) {
+                coVerify(exactly = 0) { mockRepo.upsertAccountingPointMeteringGridArea(any()) }
                 coVerify(exactly = 0) { mockRepo.markSyncComplete(any()) }
             }
         }
