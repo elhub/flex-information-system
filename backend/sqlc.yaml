@@ -34,12 +34,3 @@ sql:
             go_type:
               type: "float64"
               pointer: true
-          # use (*)float64 for double precision (float8)
-          - db_type: "pg_catalog.float8"
-            nullable: false
-            go_type: "float64"
-          - db_type: "pg_catalog.float8"
-            nullable: true
-            go_type:
-              type: "float64"
-              pointer: true
