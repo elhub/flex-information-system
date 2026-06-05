@@ -13,3 +13,14 @@ ON accounting_point_metering_grid_area
 FOR SELECT
 TO flex_common
 USING (true);
+
+GRANT INSERT,
+SELECT,
+UPDATE,
+DELETE ON accounting_point_metering_grid_area TO flex_internal_data;
+DROP POLICY IF EXISTS "APMGA_INTERNAL_DATA" ON accounting_point_metering_grid_area;
+CREATE POLICY "APMGA_INTERNAL_DATA"
+ON accounting_point_metering_grid_area
+FOR ALL
+TO flex_internal_data
+USING (true);

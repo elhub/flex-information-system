@@ -6,9 +6,7 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.server.routing.RoutingCall
 import kotlinx.datetime.TimeZone
 import no.elhub.flex.accountingpoint.AccountingPointService
-import no.elhub.flex.auth.AccessTokenKey
 import no.elhub.flex.auth.FlexPrincipal
-import no.elhub.flex.auth.toFlexPrincipal
 import no.elhub.flex.controllableunit.db.ControllableUnitRepository
 import no.elhub.flex.model.domain.ControllableUnit
 import no.elhub.flex.model.domain.GSRN
@@ -23,7 +21,6 @@ import no.elhub.flex.model.error.InternalServerError
 import no.elhub.flex.util.TraceIdUtil.Companion.traceIdOrUnknown
 import no.elhub.flex.util.asLocalMidnightInstant
 import no.elhub.flex.util.body
-import no.elhub.flex.util.logger
 import no.elhub.flex.util.respondJson
 import no.elhub.flex.util.todayLocalMidnight
 import org.koin.core.annotation.Property

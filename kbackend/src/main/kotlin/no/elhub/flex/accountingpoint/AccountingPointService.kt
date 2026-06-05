@@ -6,14 +6,16 @@ import arrow.core.raise.either
 import arrow.core.right
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.http.HttpStatusCode
+import no.elhub.flex.accountingpoint.db.AccountingPointMeteringGridAreaRepository
 import no.elhub.flex.accountingpoint.db.AccountingPointRepository
 import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.db.FlexTransaction.flexTransaction
 import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterService
+import no.elhub.flex.meteringgridarea.db.MeteringGridAreaRepository
 import no.elhub.flex.model.domain.AccountingPoint
 import no.elhub.flex.model.domain.AccountingPointEndUser
 import no.elhub.flex.model.domain.AccountingPointEnergySupplier
-import no.elhub.flex.model.domain.db.LockTimeoutError
+import no.elhub.flex.model.domain.AccountingPointMeteringGridArea
 import no.elhub.flex.model.domain.db.NoMatchError
 import no.elhub.flex.model.domain.db.NotFoundError
 import no.elhub.flex.model.domain.db.RepositoryError
@@ -71,6 +73,8 @@ interface AccountingPointService {
 @Single(createdAtStart = true)
 class AccountingPointServiceImpl(
     private val accountingPointRepository: AccountingPointRepository,
+    private val meteringGridAreaRepository: MeteringGridAreaRepository,
+    private val accountingPointMeteringGridAreaRepository: AccountingPointMeteringGridAreaRepository,
     private val accountingPointAdapter: AccountingPointAdapterService,
 ) : AccountingPointService {
     companion object {
@@ -103,6 +107,25 @@ class AccountingPointServiceImpl(
 
                             val endUsers = adapterAccountingPoint.toAccountingPointEndUsers(accountingPointId)
                             val energySuppliers = adapterAccountingPoint.toAccountingPointEnergySuppliers(accountingPointId)
+
+                            val mgaBusinessIds = adapterAccountingPoint.meteringGridArea.map { it.businessId }
+                            val mgaMap = meteringGridAreaRepository
+                                .getMeteringGridAreasByBusinessIds(mgaBusinessIds)
+                                .mapLeft { err -> err.toInternalServerError("getMeteringGridAreasByBusinessIds") }
+                                .bind()
+
+                            val accountingPointMgas = adapterAccountingPoint.meteringGridArea.map { adapterMga ->
+                                AccountingPointMeteringGridArea(
+                                    id = 0L,
+                                    accountingPointId = accountingPointId,
+                                    meteringGridAreaId = mgaMap.getValue(adapterMga.businessId).id,
+                                    validFrom = adapterMga.validFrom,
+                                    validTo = adapterMga.validTo,
+                                )
+                            }
+                            accountingPointMeteringGridAreaRepository.upsertAll(accountingPointMgas)
+                                .mapLeft { err -> err.toInternalServerError("upsertAll MGAs") }
+                                .bind()
 
                             accountingPointRepository.upsertAccountingPointEndUsers(endUsers)
                                 .mapLeft { it.toInternalServerError("upsertAccountingPointEndUsers") }.bind()

@@ -20,14 +20,18 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 import no.elhub.flex.PostgresTestContainer
 import no.elhub.flex.accountingpoint.AccountingPointServiceImpl
+import no.elhub.flex.accountingpoint.db.AccountingPointMeteringGridAreaRepositoryImpl
 import no.elhub.flex.accountingpoint.db.AccountingPointRepositoryImpl
 import no.elhub.flex.config.Tracing
 import no.elhub.flex.config.configureSerialization
 import no.elhub.flex.controllableunit.db.ControllableUnitRepositoryImpl
 import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterHttpService
 import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterWireMockServer
+import no.elhub.flex.meteringgridarea.db.MeteringGridAreaRepositoryImpl
 import no.elhub.flex.routes.controllableunit.ControllableUnitLookup
+import no.elhub.flex.util.atLocalMidnight
 import no.elhub.flex.util.todayLocalMidnight
+import no.elhub.flex.util.uniqueEicY
 import no.elhub.flex.util.uniqueGsrn
 import java.util.UUID
 import kotlin.time.Instant
@@ -51,6 +55,7 @@ class ControllableUnitLookupTimezoneTest : FunSpec({
     val osloTz = TimeZone.of("Europe/Oslo")
 
     lateinit var lookup: ControllableUnitLookup
+    lateinit var mgaBusinessId: String
 
     beforeSpec {
         val adapterService = AccountingPointAdapterHttpService(
@@ -59,7 +64,12 @@ class ControllableUnitLookupTimezoneTest : FunSpec({
         )
         lookup = ControllableUnitLookup(
             repo = ControllableUnitRepositoryImpl(),
-            accountingPointService = AccountingPointServiceImpl(AccountingPointRepositoryImpl(), adapterService),
+            accountingPointService = AccountingPointServiceImpl(
+                AccountingPointRepositoryImpl(),
+                MeteringGridAreaRepositoryImpl(),
+                AccountingPointMeteringGridAreaRepositoryImpl(),
+                adapterService,
+            ),
             // keep enabled so that we check that checks in the DB pass
             accountingPointAdapterSyncEnabled = true,
             timezone = osloTz,
@@ -72,7 +82,15 @@ class ControllableUnitLookupTimezoneTest : FunSpec({
             conn.autoCommit = false
             conn.createStatement().use { stmt ->
                 stmt.execute("SELECT flex.set_entity_party_identity(0, 0, 0)")
+                stmt.execute("TRUNCATE flex.metering_grid_area CASCADE")
                 stmt.execute("TRUNCATE flex.accounting_point CASCADE")
+            }
+            mgaBusinessId = uniqueEicY()
+            conn.prepareStatement(
+                "INSERT INTO flex.metering_grid_area (business_id, name, status) VALUES (?, 'Test MGA', 'active')",
+            ).use { stmt ->
+                stmt.setString(1, mgaBusinessId)
+                stmt.execute()
             }
             conn.commit()
         }
@@ -133,7 +151,7 @@ class ControllableUnitLookupTimezoneTest : FunSpec({
      * Stubs the adapter so that, when looking up the accounting point identified by [gsrn] with end user identified by
      * [endUserID], it responds with an end user contract whose starting date is [validFrom].
      */
-    fun stubAdapter(gsrn: String, endUserID: String, validFrom: Instant) {
+    fun stubAdapter(gsrn: String, endUserID: String, validFrom: Instant, mgaId: String) {
         AccountingPointAdapterWireMockServer.stubFor(
             get(urlPathEqualTo("/accounting_point/$gsrn"))
                 .willReturn(
@@ -152,7 +170,12 @@ class ControllableUnitLookupTimezoneTest : FunSpec({
                                     }
                                 ],
                                 "energy_supplier": [],
-                                "metering_grid_area": []
+                                "metering_grid_area": [
+                                    {
+                                        "business_id": "$mgaId",
+                                        "valid_from": "$validFrom"
+                                    }
+                                ]
                             }
                             """.trimIndent(),
                         ),
@@ -195,7 +218,7 @@ class ControllableUnitLookupTimezoneTest : FunSpec({
             val expectedValidFrom = cuStartDate.atStartOfDayIn(osloTz) // 2024-01-14T23:00:00Z
 
             seedAccountingPoint(gsrn, cuStartDate)
-            stubAdapter(gsrn, endUserOrg, expectedValidFrom)
+            stubAdapter(gsrn, endUserOrg, expectedValidFrom, mgaBusinessId)
 
             testApp().client.post("/controllable_unit/lookup") {
                 contentType(ContentType.Application.Json)
@@ -213,7 +236,7 @@ class ControllableUnitLookupTimezoneTest : FunSpec({
             val expectedValidFrom = Instant.todayLocalMidnight(osloTz) // should be the default used when no CU
 
             seedAccountingPoint(gsrn, cuStartDate = null)
-            stubAdapter(gsrn, endUserOrg, expectedValidFrom)
+            stubAdapter(gsrn, endUserOrg, expectedValidFrom, mgaBusinessId)
 
             testApp().client.post("/controllable_unit/lookup") {
                 contentType(ContentType.Application.Json)
