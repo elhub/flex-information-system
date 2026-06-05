@@ -21,7 +21,7 @@ import {
   Loader,
 } from "./components/ui";
 import { useState, useEffect } from "react";
-import { docsURL } from "./httpConfig";
+import { docsURL, userGuideURL, userGuideCreateUsersURL } from "./httpConfig";
 import { Datagrid, List } from "./components/EDS-ra/list";
 import {
   EnumField,
@@ -127,8 +127,44 @@ export const AssumePartyPage = () => {
           one of them to act on behalf of it.
           <p>
             You can also check the{" "}
-            <a href={`${docsURL}/guides/getting-started`}>tutorial</a> or the{" "}
-            <a href={docsURL}>documentation</a> to get started.
+            <a className="underline" href={`${docsURL}/guides/getting-started`}>
+              tutorial
+            </a>{" "}
+            or the{" "}
+            <a className="underline" href={docsURL}>
+              documentation
+            </a>{" "}
+            to get started.
+            {userGuideURL && (
+              <>
+                {" "}
+                You can also read the{" "}
+                <a
+                  className="underline"
+                  href={userGuideURL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  user guide
+                </a>
+                .
+              </>
+            )}
+            {userGuideCreateUsersURL && (
+              <>
+                {" "}
+                See the{" "}
+                <a
+                  className="underline"
+                  href={userGuideCreateUsersURL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  user guide for creating users
+                </a>
+                .
+              </>
+            )}
           </p>
         </CardContent>
       </Card>

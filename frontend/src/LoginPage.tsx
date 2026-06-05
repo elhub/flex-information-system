@@ -9,7 +9,7 @@ import {
 import LockIcon from "@mui/icons-material/Lock";
 import { Form, useRedirect } from "react-admin";
 import { Link } from "react-router-dom";
-import { authURL } from "./httpConfig";
+import { authURL, userGuideURL, userGuideCreateUsersURL } from "./httpConfig";
 
 import Box from "@mui/material/Box";
 
@@ -82,6 +82,36 @@ export const LoginPage = () => {
             >
               <Link to="/privacy-policy">Privacy and cookies</Link>
             </Typography>
+            {userGuideURL && (
+              <Typography
+                textAlign={"center"}
+                fontSize="0.8em"
+                color="text.secondary"
+              >
+                <a
+                  href={userGuideURL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  User guide
+                </a>
+              </Typography>
+            )}
+            {userGuideCreateUsersURL && (
+              <Typography
+                textAlign={"center"}
+                fontSize="0.8em"
+                color="text.secondary"
+              >
+                <a
+                  href={userGuideCreateUsersURL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  User guide for creating users
+                </a>
+              </Typography>
+            )}
           </Stack>
         </Card>
       </Box>

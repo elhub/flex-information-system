@@ -5,6 +5,12 @@ export const serverURL =
 export const apiURL = serverURL + "/api/v1";
 export const authURL = serverURL + "/auth/v1";
 export const docsURL = "https://elhub.github.io/flex-information-system";
+export const userGuideURL: string | undefined =
+  window.env.VITE_FLEX_USER_GUIDE_URL ??
+  import.meta.env.VITE_FLEX_USER_GUIDE_URL;
+export const userGuideCreateUsersURL: string | undefined =
+  window.env.VITE_FLEX_USER_GUIDE_CREATE_USERS_URL ??
+  import.meta.env.VITE_FLEX_USER_GUIDE_CREATE_USERS_URL;
 export const API_VERSION = "2026-06-08";
 
 export async function httpClient(url: string, options: any = {}) {
