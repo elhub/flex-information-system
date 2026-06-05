@@ -7,6 +7,7 @@ databaseChangeLog:
       changes:
         - sql: CREATE SCHEMA IF NOT EXISTS api AUTHORIZATION flex
         - sql: GRANT USAGE ON SCHEMA api TO flex_anonymous, flex_internal
+        - sql: GRANT USAGE ON SCHEMA api TO flex_operation_readonly, flex_operation_update, flex_operation_readwrite
   - includeAll:
       path: ./
       relativeToChangelogFile: true
@@ -23,3 +24,9 @@ databaseChangeLog:
       path: ./embedding/
       relativeToChangelogFile: true
       endsWithFilter: .sql
+  - changeSet:
+      id: api-operation-roles-grants
+      author: flex
+      runAlways: true
+      changes:
+        - sql: GRANT SELECT ON ALL TABLES IN SCHEMA api TO flex_operation_readonly
