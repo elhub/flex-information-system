@@ -11,3 +11,11 @@ CREATE POLICY "MGA_COM001" ON metering_grid_area
 FOR SELECT
 TO flex_common
 USING (true);
+
+-- RLS: MGA-INT001
+GRANT SELECT ON metering_grid_area TO flex_internal_data;
+DROP POLICY IF EXISTS "MGA_INT001" ON metering_grid_area;
+CREATE POLICY "MGA_INT001" ON metering_grid_area
+FOR SELECT
+TO flex_internal_data
+USING (true);
