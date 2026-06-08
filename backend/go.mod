@@ -1,6 +1,6 @@
 module flex
 
-go 1.26.3
+go 1.26.4
 
 require (
 	github.com/cenkalti/backoff/v5 v5.0.3
@@ -8,7 +8,7 @@ require (
 	github.com/gin-contrib/graceful v1.2.1
 	github.com/gin-gonic/gin v1.12.0
 	github.com/google/uuid v1.6.0
-	github.com/jackc/pgx/v5 v5.9.2
+	github.com/jackc/pgx/v5 v5.10.0
 	github.com/jwx-go/jwkfetch/v4 v4.0.2
 	github.com/lestrrat-go/httprc/v3 v3.0.5
 	github.com/prometheus/client_golang v1.23.2
