@@ -106,7 +106,7 @@ class AccountingPointServiceTest : FunSpec({
                 coEvery { accountingPointRepository.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
                 coEvery { accountingPointRepository.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
                 coEvery { meteringGridAreaRepository.getMeteringGridAreasByBusinessIds(any()) } returns mgaMap.right()
-                coEvery { accountingPointMeteringGridAreaRepository.syncAll(any()) } returns Unit.right()
+                coEvery { accountingPointMeteringGridAreaRepository.replaceAllFor(any()) } returns Unit.right()
                 coEvery { accountingPointRepository.upsertAccountingPointEndUsers(any()) } returns Unit.right()
                 coEvery { accountingPointRepository.upsertAccountingPointEnergySupplier(any()) } returns Unit.right()
                 coEvery { accountingPointRepository.markSyncComplete(any()) } returns Unit.right()
@@ -120,7 +120,7 @@ class AccountingPointServiceTest : FunSpec({
             with(internalPrincipal) {
                 coVerify(exactly = 1) { accountingPointRepository.insertAccountingPointIfNotExists(any()) }
                 coVerify(exactly = 1) { accountingPointRepository.lockSyncRowAndMarkStart(AP_ID) }
-                coVerify(exactly = 1) { accountingPointMeteringGridAreaRepository.syncAll(any()) }
+                coVerify(exactly = 1) { accountingPointMeteringGridAreaRepository.replaceAllFor(any()) }
                 coVerify(exactly = 1) { accountingPointRepository.upsertAccountingPointEndUsers(any()) }
                 coVerify(exactly = 1) { accountingPointRepository.upsertAccountingPointEnergySupplier(any()) }
                 coVerify(exactly = 1) { accountingPointRepository.markSyncComplete(AP_ID) }
@@ -155,7 +155,7 @@ class AccountingPointServiceTest : FunSpec({
                 coEvery { accountingPointRepository.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
                 coEvery { accountingPointRepository.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
                 coEvery { meteringGridAreaRepository.getMeteringGridAreasByBusinessIds(any()) } returns mgaMap.right()
-                coEvery { accountingPointMeteringGridAreaRepository.syncAll(any()) } returns Unit.right()
+                coEvery { accountingPointMeteringGridAreaRepository.replaceAllFor(any()) } returns Unit.right()
                 coEvery { accountingPointRepository.upsertAccountingPointEndUsers(any()) } returns Unit.right()
                 coEvery { accountingPointRepository.upsertAccountingPointEnergySupplier(any()) } returns Unit.right()
                 coEvery { accountingPointRepository.markSyncComplete(any()) } returns Unit.right()
@@ -208,7 +208,7 @@ class AccountingPointServiceTest : FunSpec({
                 coEvery { accountingPointRepository.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
                 coEvery { accountingPointRepository.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
                 coEvery { meteringGridAreaRepository.getMeteringGridAreasByBusinessIds(any()) } returns mgaMap.right()
-                coEvery { accountingPointMeteringGridAreaRepository.syncAll(any()) } returns Unit.right()
+                coEvery { accountingPointMeteringGridAreaRepository.replaceAllFor(any()) } returns Unit.right()
                 coEvery { accountingPointRepository.upsertAccountingPointEndUsers(any()) } returns DatabaseError("constraint violation").left()
             }
 
@@ -229,7 +229,7 @@ class AccountingPointServiceTest : FunSpec({
                 coEvery { accountingPointRepository.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
                 coEvery { accountingPointRepository.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
                 coEvery { meteringGridAreaRepository.getMeteringGridAreasByBusinessIds(any()) } returns mgaMap.right()
-                coEvery { accountingPointMeteringGridAreaRepository.syncAll(any()) } returns Unit.right()
+                coEvery { accountingPointMeteringGridAreaRepository.replaceAllFor(any()) } returns Unit.right()
                 coEvery { accountingPointRepository.upsertAccountingPointEndUsers(any()) } returns Unit.right()
                 coEvery { accountingPointRepository.upsertAccountingPointEnergySupplier(any()) } returns DatabaseError("not found").left()
             }
@@ -251,7 +251,7 @@ class AccountingPointServiceTest : FunSpec({
                 coEvery { accountingPointRepository.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
                 coEvery { accountingPointRepository.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
                 coEvery { meteringGridAreaRepository.getMeteringGridAreasByBusinessIds(any()) } returns mgaMap.right()
-                coEvery { accountingPointMeteringGridAreaRepository.syncAll(any()) } returns Unit.right()
+                coEvery { accountingPointMeteringGridAreaRepository.replaceAllFor(any()) } returns Unit.right()
                 coEvery { accountingPointRepository.upsertAccountingPointEndUsers(any()) } returns Unit.right()
                 coEvery { accountingPointRepository.upsertAccountingPointEnergySupplier(any()) } returns Unit.right()
                 coEvery { accountingPointRepository.markSyncComplete(any()) } returns DatabaseError("No sync row found for accounting point $AP_ID").left()
@@ -271,7 +271,7 @@ class AccountingPointServiceTest : FunSpec({
                 coEvery { accountingPointRepository.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
                 coEvery { accountingPointRepository.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
                 coEvery { meteringGridAreaRepository.getMeteringGridAreasByBusinessIds(any()) } returns mgaMap.right()
-                coEvery { accountingPointMeteringGridAreaRepository.syncAll(any()) } returns Unit.right()
+                coEvery { accountingPointMeteringGridAreaRepository.replaceAllFor(any()) } returns Unit.right()
                 coEvery { accountingPointRepository.upsertAccountingPointEndUsers(any()) } returns DatabaseError("error").left()
             }
 
@@ -316,7 +316,7 @@ class AccountingPointServiceTest : FunSpec({
                 coEvery { accountingPointRepository.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
                 coEvery { accountingPointRepository.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
                 coEvery { meteringGridAreaRepository.getMeteringGridAreasByBusinessIds(any()) } returns allMgasMap.right()
-                coEvery { accountingPointMeteringGridAreaRepository.syncAll(any()) } returns Unit.right()
+                coEvery { accountingPointMeteringGridAreaRepository.replaceAllFor(any()) } returns Unit.right()
                 coEvery { accountingPointRepository.upsertAccountingPointEndUsers(any()) } returns Unit.right()
                 coEvery { accountingPointRepository.upsertAccountingPointEnergySupplier(any()) } returns Unit.right()
                 coEvery { accountingPointRepository.markSyncComplete(any()) } returns Unit.right()
@@ -334,7 +334,7 @@ class AccountingPointServiceTest : FunSpec({
                     )
                 }
                 coVerify(exactly = 1) {
-                    accountingPointMeteringGridAreaRepository.syncAll(
+                    accountingPointMeteringGridAreaRepository.replaceAllFor(
                         match { list -> list.size == 3 },
                     )
                 }

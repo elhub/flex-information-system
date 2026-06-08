@@ -35,7 +35,7 @@ class AccountingPointMeteringGridAreaRepositoryTest : FunSpec({
         }
     }
 
-    context("syncAll") {
+    context("replaceAllFor") {
 
         test("inserts a new row when none exists") {
             // given
@@ -44,7 +44,7 @@ class AccountingPointMeteringGridAreaRepositoryTest : FunSpec({
 
             // when
             with(principal) {
-                repo.syncAll(
+                repo.replaceAllFor(
                     listOf(
                         AccountingPointMeteringGridArea(
                             id = 0,
@@ -81,8 +81,8 @@ class AccountingPointMeteringGridAreaRepositoryTest : FunSpec({
 
             // when
             with(principal) {
-                repo.syncAll(listOf(apmga))
-                repo.syncAll(listOf(apmga))
+                repo.replaceAllFor(listOf(apmga))
+                repo.replaceAllFor(listOf(apmga))
             }.shouldBeRight()
 
             // then
@@ -95,7 +95,7 @@ class AccountingPointMeteringGridAreaRepositoryTest : FunSpec({
             val mga1 = insertMeteringGridArea("MGA Old")
             val mga2 = insertMeteringGridArea("MGA New")
             with(principal) {
-                repo.syncAll(
+                repo.replaceAllFor(
                     listOf(
                         AccountingPointMeteringGridArea(
                             id = 0,
@@ -110,7 +110,7 @@ class AccountingPointMeteringGridAreaRepositoryTest : FunSpec({
 
             // when
             with(principal) {
-                repo.syncAll(
+                repo.replaceAllFor(
                     listOf(
                         AccountingPointMeteringGridArea(
                             id = 0,
@@ -134,7 +134,7 @@ class AccountingPointMeteringGridAreaRepositoryTest : FunSpec({
             val apId = insertAccountingPoint(uniqueGsrn())
             val mga = insertMeteringGridArea("MGA ValidTo")
             with(principal) {
-                repo.syncAll(
+                repo.replaceAllFor(
                     listOf(
                         AccountingPointMeteringGridArea(
                             id = 0,
@@ -149,7 +149,7 @@ class AccountingPointMeteringGridAreaRepositoryTest : FunSpec({
 
             // when
             with(principal) {
-                repo.syncAll(
+                repo.replaceAllFor(
                     listOf(
                         AccountingPointMeteringGridArea(
                             id = 0,
@@ -168,13 +168,13 @@ class AccountingPointMeteringGridAreaRepositoryTest : FunSpec({
             rows.first().validTo shouldBe validTo
         }
 
-        test("does not affect rows for a different accounting point") {
+        test("does not affect rows for a different accounting point when no deletion occurs") {
             // given
             val noiseApId = insertAccountingPoint(uniqueGsrn())
             val targetApId = insertAccountingPoint(uniqueGsrn())
             val mga = insertMeteringGridArea("MGA Isolation")
             with(principal) {
-                repo.syncAll(
+                repo.replaceAllFor(
                     listOf(
                         AccountingPointMeteringGridArea(
                             id = 0,
@@ -189,7 +189,7 @@ class AccountingPointMeteringGridAreaRepositoryTest : FunSpec({
 
             // when
             with(principal) {
-                repo.syncAll(
+                repo.replaceAllFor(
                     listOf(
                         AccountingPointMeteringGridArea(
                             id = 0,
@@ -216,7 +216,7 @@ class AccountingPointMeteringGridAreaRepositoryTest : FunSpec({
 
             // when
             with(principal) {
-                repo.syncAll(
+                repo.replaceAllFor(
                     listOf(
                         AccountingPointMeteringGridArea(
                             id = 0,
@@ -249,7 +249,7 @@ class AccountingPointMeteringGridAreaRepositoryTest : FunSpec({
             val mga = insertMeteringGridArea("MGA Stale")
             val secondValidFrom = Instant.parse("2024-02-01T00:00:00Z").atLocalMidnight(timezone)
             with(principal) {
-                repo.syncAll(
+                repo.replaceAllFor(
                     listOf(
                         AccountingPointMeteringGridArea(
                             id = 0,
@@ -271,7 +271,7 @@ class AccountingPointMeteringGridAreaRepositoryTest : FunSpec({
 
             // when — omit the first row; its validFrom should be deleted
             with(principal) {
-                repo.syncAll(
+                repo.replaceAllFor(
                     listOf(
                         AccountingPointMeteringGridArea(
                             id = 0,
@@ -290,9 +290,59 @@ class AccountingPointMeteringGridAreaRepositoryTest : FunSpec({
             rows.first().validFrom shouldBe secondValidFrom
         }
 
+        test("does not delete rows for accounting points absent from the input when deletion is triggered") {
+            // given
+            val apId = insertAccountingPoint(uniqueGsrn())
+            val otherApId = insertAccountingPoint(uniqueGsrn())
+            val mga = insertMeteringGridArea("MGA Absent AP Isolation")
+            val secondValidFrom = Instant.parse("2024-02-01T00:00:00Z").atLocalMidnight(timezone)
+            with(principal) {
+                repo.replaceAllFor(
+                    listOf(
+                        AccountingPointMeteringGridArea(
+                            id = 0,
+                            accountingPointId = apId,
+                            meteringGridAreaId = mga.id,
+                            validFrom = validFrom,
+                            validTo = null,
+                        ),
+                        AccountingPointMeteringGridArea(
+                            id = 0,
+                            accountingPointId = otherApId,
+                            meteringGridAreaId = mga.id,
+                            validFrom = validFrom,
+                            validTo = null,
+                        ),
+                    ),
+                )
+            }
+
+            // when — call with apId using a different validFrom, triggering deletion of apId's stale row;
+            with(principal) {
+                repo.replaceAllFor(
+                    listOf(
+                        AccountingPointMeteringGridArea(
+                            id = 0,
+                            accountingPointId = apId,
+                            meteringGridAreaId = mga.id,
+                            validFrom = secondValidFrom,
+                            validTo = null,
+                        ),
+                    ),
+                ).shouldBeRight()
+            }
+
+            // then — apId's stale row is gone, otherApId's row is untouched
+            val apRows = queryMgaRows(apId)
+            apRows shouldHaveSize 1
+            apRows.first().validFrom shouldBe secondValidFrom
+
+            queryMgaRows(otherApId) shouldHaveSize 1
+        }
+
         test("returns Right(Unit) immediately for an empty list without touching the database") {
             // when
-            val result = with(principal) { repo.syncAll(emptyList()) }
+            val result = with(principal) { repo.replaceAllFor(emptyList()) }
 
             // then
             result.shouldBeRight()
