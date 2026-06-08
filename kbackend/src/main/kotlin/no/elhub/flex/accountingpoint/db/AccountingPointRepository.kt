@@ -417,17 +417,23 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
         }
 }
 
+internal fun entityTypeFor(businessId: String): String = when {
+    businessId.matches(Regex("^[0-9]{11}$")) -> "person"
+    businessId.matches(Regex("^[1-9][0-9]{8}$")) -> "organisation"
+    else -> error("Cannot determine entity type for end user business ID")
+}
+
+internal fun anonymizePersonId(businessId: String): String = businessId.take(6)
+
 private fun resolveOrCreateEntity(conn: Connection, endUserBusinessId: String): Long {
-    val (entityType, businessIdType) = when {
-        endUserBusinessId.matches(Regex("^[0-9]{11}$")) -> "person" to "pid"
-        endUserBusinessId.matches(Regex("^[1-9][0-9]{8}$")) -> "organisation" to "org"
-        else -> error("Cannot determine entity type for end user business ID")
-    }
+    val entityType = entityTypeFor(endUserBusinessId)
+    val businessIdType = if (entityType == "person") "pid" else "org"
+    val name = if (entityType == "person") anonymizePersonId(endUserBusinessId) else endUserBusinessId
 
     conn.prepareNamed(
         "INSERT INTO flex.entity (name, type, business_id, business_id_type) VALUES (:name, :type, :businessId, :businessIdType) ON CONFLICT (business_id) DO NOTHING",
         mapOf(
-            "name" to "$endUserBusinessId - ENT",
+            "name" to "$name - ENT",
             "type" to entityType,
             "businessId" to endUserBusinessId,
             "businessIdType" to businessIdType,
@@ -446,6 +452,8 @@ private fun resolveOrCreateEntity(conn: Connection, endUserBusinessId: String): 
  * If a new party is inserted it is immediately activated (status 'new' → 'active')
  */
 private fun resolveOrCreateEndUserParty(conn: Connection, entityId: Long, endUserBusinessId: String): Long {
+    val entityType = entityTypeFor(endUserBusinessId)
+    val name = if (entityType == "person") anonymizePersonId(endUserBusinessId) else endUserBusinessId
     conn.prepareNamed(
         """
         INSERT INTO flex.party (entity_id, name, type, role)
@@ -455,7 +463,7 @@ private fun resolveOrCreateEndUserParty(conn: Connection, entityId: Long, endUse
         """,
         mapOf(
             "entityId" to entityId,
-            "name" to "$endUserBusinessId - EU",
+            "name" to "$name - EU",
         ),
     ).querySingle { rs -> rs.getLong("id") }?.let { newPartyId ->
         conn.prepareNamed(
