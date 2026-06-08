@@ -87,7 +87,7 @@ class AccountingPointMeteringGridAreaRepositoryImpl : AccountingPointMeteringGri
                     THEN INSERT (accounting_point_id, metering_grid_area_id, valid_time_range)
                     VALUES (src.accounting_point_id, src.metering_grid_area_id, tstzrange(src.valid_from, src.valid_to, '[)'))
                     """,
-                        accountingPointMeteringGridAreas.map { mga ->
+                        meteringGridAreas.map { mga ->
                             mapOf(
                                 "accountingPointId" to mga.accountingPointId,
                                 "meteringGridAreaId" to mga.meteringGridAreaId,
@@ -99,7 +99,7 @@ class AccountingPointMeteringGridAreaRepositoryImpl : AccountingPointMeteringGri
                 }
             }.mapLeft { e ->
                 logger.error { "syncAll AccountingPointMeteringGridArea failed: ${e.message}" }
-                DatabaseError("Failed to upsert accounting point metering grid areas")
+                DatabaseError("Failed to sync accounting point metering grid areas")
             }
         }
     }

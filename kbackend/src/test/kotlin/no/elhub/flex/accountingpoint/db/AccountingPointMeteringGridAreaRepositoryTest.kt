@@ -267,7 +267,7 @@ class AccountingPointMeteringGridAreaRepositoryTest : FunSpec({
                         ),
                     ),
                 )
-            }
+            }.shouldBeRight()
 
             // when — omit the first row; its validFrom should be deleted
             with(principal) {
