@@ -123,8 +123,8 @@ class AccountingPointServiceImpl(
                                     validTo = adapterMga.validTo,
                                 )
                             }
-                            accountingPointMeteringGridAreaRepository.upsertAll(accountingPointMgas)
-                                .mapLeft { err -> err.toInternalServerError("upsertAll MGAs") }
+                            accountingPointMeteringGridAreaRepository.syncAll(accountingPointMgas)
+                                .mapLeft { err -> err.toInternalServerError("syncAll MGAs") }
                                 .bind()
 
                             accountingPointRepository.upsertAccountingPointEndUsers(endUsers)

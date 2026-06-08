@@ -20,6 +20,7 @@ import no.elhub.flex.model.domain.db.LockTimeoutError
 import no.elhub.flex.model.domain.db.NoMatchError
 import no.elhub.flex.model.domain.db.NotFoundError
 import no.elhub.flex.model.domain.db.RepositoryError
+import no.elhub.flex.util.createTimestampArray
 import no.elhub.flex.util.toSqlTimestamp
 import no.elhub.flex.util.toSqlTimestampOrNull
 import org.koin.core.annotation.Single
@@ -432,13 +433,6 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
             }
         }
 }
-
-/**
- * Builds a PostgreSQL timestamptz array from a list of Instants representing valid_from values.
- * Used for the `!= ALL(?::timestamptz[])` clause in the stale-record DELETE.
- */
-private fun Connection.createTimestampArray(instants: List<Instant>): Array =
-    createArrayOf("timestamptz", instants.map { it.toString() }.toTypedArray())
 
 private fun resolveOrCreateEntity(conn: Connection, endUserBusinessId: String): Long {
     val (entityType, businessIdType) = when {
