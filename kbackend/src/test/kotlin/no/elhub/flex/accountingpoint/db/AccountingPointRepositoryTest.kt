@@ -443,6 +443,83 @@ class AccountingPointRepositoryTest : FunSpec({
             noiseRows.size shouldBe 1
             noiseRows[0].validFrom shouldBe noiseStart
         }
+
+        test("uses anonymized person ID as name for entity and party when end user is a person") {
+            // given
+            val apId = insertAccountingPoint(uniqueGsrn())
+            val pid = uniquePid() // e.g. "00000012345"
+
+            // when
+            with(internalDataPrincipal) {
+                repo.upsertAccountingPointEndUsers(
+                    listOf(AccountingPointEndUser(apId, pid, Instant.parse("2023-12-31T23:00:00Z"), null)),
+                )
+            }.shouldBeRight()
+
+            // then — entity and party names use only the anonymized version of the PID
+            val expectedName = anonymizePersonId(pid)
+            val entityName = PostgresTestContainer.withConnection { conn ->
+                conn.prepareStatement("SELECT name FROM flex.entity WHERE business_id = ?").use { stmt ->
+                    stmt.setString(1, pid)
+                    stmt.executeQuery().use { rs ->
+                        rs.next()
+                        rs.getString(1)
+                    }
+                }
+            }
+            entityName shouldBe "$expectedName - ENT"
+
+            val partyName = PostgresTestContainer.withConnection { conn ->
+                conn.prepareStatement(
+                    "SELECT p.name FROM flex.party p JOIN flex.entity e ON e.id = p.entity_id WHERE e.business_id = ? AND p.type = 'end_user'",
+                ).use { stmt ->
+                    stmt.setString(1, pid)
+                    stmt.executeQuery().use { rs ->
+                        rs.next()
+                        rs.getString(1)
+                    }
+                }
+            }
+            partyName shouldBe "$expectedName - EU"
+        }
+
+        test("uses full business ID as name for entity and party when end user is an organisation") {
+            // given
+            val apId = insertAccountingPoint(uniqueGsrn())
+            val orgNumber = uniqueOrgNumber()
+
+            // when
+            with(internalDataPrincipal) {
+                repo.upsertAccountingPointEndUsers(
+                    listOf(AccountingPointEndUser(apId, orgNumber, Instant.parse("2023-12-31T23:00:00Z"), null)),
+                )
+            }.shouldBeRight()
+
+            // then — entity and party names use the full org number
+            val entityName = PostgresTestContainer.withConnection { conn ->
+                conn.prepareStatement("SELECT name FROM flex.entity WHERE business_id = ?").use { stmt ->
+                    stmt.setString(1, orgNumber)
+                    stmt.executeQuery().use { rs ->
+                        rs.next()
+                        rs.getString(1)
+                    }
+                }
+            }
+            entityName shouldBe "$orgNumber - ENT"
+
+            val partyName = PostgresTestContainer.withConnection { conn ->
+                conn.prepareStatement(
+                    "SELECT p.name FROM flex.party p JOIN flex.entity e ON e.id = p.entity_id WHERE e.business_id = ? AND p.type = 'end_user'",
+                ).use { stmt ->
+                    stmt.setString(1, orgNumber)
+                    stmt.executeQuery().use { rs ->
+                        rs.next()
+                        rs.getString(1)
+                    }
+                }
+            }
+            partyName shouldBe "$orgNumber - EU"
+        }
     }
 
     // -------------------------------------------------------------------------
