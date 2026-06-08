@@ -8,9 +8,11 @@ skinparam note {
     BackgroundColor #FFFFBD
 }
 
+actor "End User (EU)" as EU
 actor "Service Provider (SP)" as SP
 participant "Flexibility Information System (FIS)" as FIS
 
+EU <-> SP: Contractual agreement
 activate SP
 
 == Register Controllable Unit (CU) ==
@@ -28,6 +30,12 @@ activate FIS
 FIS -> FIS: Assign unique ID
 FIS -> FIS: Set status to [new]
 FIS --> SP: Return w/ unique ID
+FIS --> EU : Notify new CU
+note right
+    FIS knows who the end user is
+    based on the accounting point 
+    and data from Elhub.
+end note
 deactivate FIS
 
 == Update Controllable Unit Data ==
