@@ -4,7 +4,9 @@ Service Providing Group registration is the process of registering a new SPG and
 adding CUs.
 
 A Service Providing Group (SPG) is considered as new until the status is changed
-to active. When this happens, the SPG can be used in a product application.
+to active. When this happens, the SPG can be used in a product application. Once
+a product application is considered complete enough for prequalification, grid
+prequalification is initiated.
 
 ## Prerequisites
 
