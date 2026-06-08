@@ -40,7 +40,7 @@ const UserDropdown = () => {
     redirect(`/entity/${identity?.entityID}/show`);
   };
 
-  const handleCurrentParty = async () => {
+  const handleParty = async () => {
     if (identity?.role === "flex_organisation" && identity?.partyID) {
       const { data: party } = await dataProvider.getOne("party", {
         id: identity.partyID,
@@ -62,7 +62,7 @@ const UserDropdown = () => {
           {
             label: identity?.partyName,
             icon: IconBuilding,
-            onClick: handleCurrentParty,
+            onClick: handleParty,
           },
         ]
       : []),
