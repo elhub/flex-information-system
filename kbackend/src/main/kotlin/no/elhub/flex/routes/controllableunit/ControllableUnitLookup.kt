@@ -6,8 +6,10 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.server.routing.RoutingCall
 import kotlinx.datetime.TimeZone
 import no.elhub.flex.accountingpoint.AccountingPointService
+import no.elhub.flex.auth.AccessTokenKey
 import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.controllableunit.db.ControllableUnitRepository
+import no.elhub.flex.event.db.EventRepository
 import no.elhub.flex.model.domain.ControllableUnit
 import no.elhub.flex.model.domain.GSRN
 import no.elhub.flex.model.dto.generated.models.ControllableUnitLookupRequest
@@ -35,12 +37,14 @@ private val CONTROLLABLE_UNIT_BUSINESS_ID_REGEX =
 class ControllableUnitLookup(
     private val repo: ControllableUnitRepository,
     private val accountingPointService: AccountingPointService,
+    private val eventRepo: EventRepository,
     @Property("accounting-point-adapter.sync-enabled") private val accountingPointAdapterSyncEnabled: Boolean = true,
     @Property("flex.timezone") private val timezone: TimeZone = TimeZone.of("Europe/Oslo"),
 ) {
     private val logger = KotlinLogging.logger {}
 
     suspend fun handle(call: RoutingCall) {
+        val requestingPartyId = call.attributes[AccessTokenKey].partyId
         with(FlexPrincipal.internalData()) {
             either {
                 val request = call.body<ControllableUnitLookupRequest>().bind()
@@ -74,6 +78,12 @@ class ControllableUnitLookup(
                 ).bind()
                 val accountingPoint = accountingPointService.getAccountingPointByBusinessId(accountingPointBusinessId).bind()
 
+                insertEvent(
+                    accountingPointBusinessId,
+                    request.controllableUnitBusinessId.takeIf { it.isNotEmpty() },
+                    requestingPartyId
+                ).bind()
+
                 ControllableUnitLookupResponse(
                     accountingPoint = ControllableUnitLookupResponseAccountingPoint(
                         id = accountingPoint.id,
@@ -94,6 +104,18 @@ class ControllableUnitLookup(
         repo.lookupControllableUnits(controllableUnitBusinessId, accountingPointBusinessId)
             .mapLeft { e ->
                 logger.error { "Failed to lookup controllable units: ${e.message}" }
+                InternalServerError(traceIdOrUnknown())
+            }
+
+    context(principal: FlexPrincipal)
+    private suspend fun insertEvent(
+        accountingPointBusinessId: String,
+        controllableUnitBusinessId: String?,
+        requestingPartyId: Int,
+    ): Either<AppError, Unit> =
+        eventRepo.insertLookupEvent(accountingPointBusinessId, controllableUnitBusinessId, requestingPartyId)
+            .mapLeft { e ->
+                logger.error { "Failed to insert lookup event: ${e.message}" }
                 InternalServerError(traceIdOrUnknown())
             }
 }

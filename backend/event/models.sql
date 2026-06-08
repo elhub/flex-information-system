@@ -327,11 +327,19 @@ INSERT INTO api.notification (event_id, party_id)
 SELECT @event_id, unnest(@party_ids::bigint[])
 ON CONFLICT DO NOTHING;
 
--- name: GetControllableUnitLookupNotificationRecipients :many
+-- name: GetControllableUnitLookupNotificationRecipientsCU :many
 SELECT cueu.end_user_id
 FROM notification.controllable_unit_end_user AS cueu
-WHERE cueu.controllable_unit_id = @resource_id
+WHERE cueu.controllable_unit_id = @cu_id
     AND cueu.valid_time_range @> @recorded_at::timestamptz;
+
+-- name: GetControllableUnitLookupNotificationRecipientsAP :many
+SELECT cueu.end_user_id
+FROM api.controllable_unit AS cu
+    INNER JOIN notification.controllable_unit_end_user AS cueu
+        ON cu.id = cueu.controllable_unit_id
+            AND cueu.valid_time_range @> @recorded_at::timestamptz
+WHERE cu.accounting_point_id = @ap_id;
 
 -- name: GetServiceProvidingGroupGridSuspensionNotificationRecipients :many
 -- SP

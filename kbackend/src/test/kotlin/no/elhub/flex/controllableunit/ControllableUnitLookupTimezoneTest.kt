@@ -6,6 +6,7 @@ import com.github.tomakehurst.wiremock.client.WireMock.get
 import com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
+import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -22,13 +23,17 @@ import no.elhub.flex.PostgresTestContainer
 import no.elhub.flex.accountingpoint.AccountingPointServiceImpl
 import no.elhub.flex.accountingpoint.db.AccountingPointMeteringGridAreaRepositoryImpl
 import no.elhub.flex.accountingpoint.db.AccountingPointRepositoryImpl
+import no.elhub.flex.auth.FlexAuthentication
 import no.elhub.flex.config.Tracing
 import no.elhub.flex.config.configureSerialization
 import no.elhub.flex.controllableunit.db.ControllableUnitRepositoryImpl
+import no.elhub.flex.event.db.EventRepositoryImpl
 import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterHttpService
 import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterWireMockServer
 import no.elhub.flex.meteringgridarea.db.MeteringGridAreaRepositoryImpl
 import no.elhub.flex.routes.controllableunit.ControllableUnitLookup
+import no.elhub.flex.util.TEST_JWT_SECRET
+import no.elhub.flex.util.makeJwt
 import no.elhub.flex.util.todayLocalMidnight
 import no.elhub.flex.util.uniqueEicY
 import no.elhub.flex.util.uniqueGsrn
@@ -69,6 +74,7 @@ class ControllableUnitLookupTimezoneTest : FunSpec({
                 AccountingPointMeteringGridAreaRepositoryImpl(),
                 adapterService,
             ),
+            eventRepo = EventRepositoryImpl(),
             // keep enabled so that we check that checks in the DB pass
             accountingPointAdapterSyncEnabled = true,
             timezone = osloTz,
@@ -96,10 +102,10 @@ class ControllableUnitLookupTimezoneTest : FunSpec({
     }
 
     // minimal app just calling the raw handler
-    // (we avoid auth and other stuff we don't need to have in the test)
     fun testApp() = TestApplication {
         application {
             install(Tracing.plugin)
+            install(FlexAuthentication) { jwtSecret = TEST_JWT_SECRET }
             configureSerialization()
             routing {
                 post("/controllable_unit/lookup") { lookup.handle(call) }
@@ -221,6 +227,7 @@ class ControllableUnitLookupTimezoneTest : FunSpec({
 
             testApp().client.post("/controllable_unit/lookup") {
                 contentType(ContentType.Application.Json)
+                header("Authorization", "Bearer ${makeJwt()}")
                 setBody("""{"end_user":"$endUserOrg","accounting_point":"$gsrn"}""")
             }.status shouldBe HttpStatusCode.OK
 
@@ -239,6 +246,7 @@ class ControllableUnitLookupTimezoneTest : FunSpec({
 
             testApp().client.post("/controllable_unit/lookup") {
                 contentType(ContentType.Application.Json)
+                header("Authorization", "Bearer ${makeJwt()}")
                 setBody("""{"end_user":"$endUserOrg","accounting_point":"$gsrn"}""")
             }.status shouldBe HttpStatusCode.OK
 

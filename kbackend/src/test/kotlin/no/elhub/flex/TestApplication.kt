@@ -14,6 +14,7 @@ import no.elhub.flex.config.configureMonitoring
 import no.elhub.flex.config.configureRouting
 import no.elhub.flex.config.configureSerialization
 import no.elhub.flex.controllableunit.db.ControllableUnitRepository
+import no.elhub.flex.event.db.EventRepository
 import no.elhub.flex.model.domain.db.DatabaseError
 import no.elhub.flex.model.error.DataFetchError
 import no.elhub.flex.routes.controllableunit.ControllableUnitLookup
@@ -35,6 +36,9 @@ fun defaultTestApplication(): TestApplication {
         coEvery { with(any<FlexPrincipal>()) { repo.lookupControllableUnits(any(), any()) } } returns
             DatabaseError("stub").left()
     }
+    val mockEventRepo = mockk<EventRepository>().also { repo ->
+        coEvery { with(any<FlexPrincipal>()) { repo.insertLookupEvent(any(), any(), any()) } } returns Unit.right()
+    }
 
     return TestApplication {
         application {
@@ -47,7 +51,8 @@ fun defaultTestApplication(): TestApplication {
                     module {
                         single<AccountingPointService> { mockAccountingPointService }
                         single<ControllableUnitRepository> { mockRepo }
-                        single { ControllableUnitLookup(get(), get()) }
+                        single<EventRepository> { mockEventRepo }
+                        single { ControllableUnitLookup(get(), get(), get()) }
                     },
                 )
             }
