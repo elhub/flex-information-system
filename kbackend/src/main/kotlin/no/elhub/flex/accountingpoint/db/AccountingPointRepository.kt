@@ -20,9 +20,9 @@ import no.elhub.flex.model.domain.db.LockTimeoutError
 import no.elhub.flex.model.domain.db.NoMatchError
 import no.elhub.flex.model.domain.db.NotFoundError
 import no.elhub.flex.model.domain.db.RepositoryError
+import no.elhub.flex.util.createBigintArray
+import no.elhub.flex.util.createNullableTimestampArray
 import no.elhub.flex.util.createTimestampArray
-import no.elhub.flex.util.toSqlTimestamp
-import no.elhub.flex.util.toSqlTimestampOrNull
 import org.koin.core.annotation.Single
 import java.sql.Array
 import java.sql.Connection
@@ -73,25 +73,42 @@ interface AccountingPointRepository {
     ): Either<RepositoryError, Long>
 
     /**
-     * Upserts end-user timeline entries for accounting points into flex.accounting_point_end_user.
+     * Replaces the end-user timeline for each accounting point present in
+     * [accountingPointEndUsers] by synchronising flex.accounting_point_end_user to exactly
+     * match the incoming data for those accounting points.
      *
      * The flex.entity and flex.party (type='end_user') rows for each end user are created
      * on demand if they do not already exist.
+     *
+     * Matches on (accounting_point_id, lower(valid_time_range)):
+     * - Updates end_user_id and valid_time_range when they differ.
+     * - Inserts new rows when no match is found.
+     * - Deletes existing rows whose start time is not present in the incoming data.
+     *
+     * Accounting points not present in [accountingPointEndUsers] are not affected.
      */
     context(principal: FlexPrincipal)
-    suspend fun upsertAccountingPointEndUsers(
+    suspend fun replaceAllAccountingPointEndUsers(
         accountingPointEndUsers: List<AccountingPointEndUser>
     ): Either<RepositoryError, Unit>
 
     /**
-     * Upserts energy-supplier timeline entries for accounting points into
-     * flex.accounting_point_energy_supplier.
+     * Replaces the energy-supplier timeline for each accounting point present in
+     * [accountingPointEnergySuppliers] by synchronising flex.accounting_point_energy_supplier
+     * to exactly match the incoming data for those accounting points.
      *
      * Energy supplier parties (type='energy_supplier') are looked up by GLN business_id and
      * must already exist in flex.party; a [DatabaseError] is returned if any GLN is unknown.
+     *
+     * Matches on (accounting_point_id, lower(valid_time_range)):
+     * - Updates energy_supplier_id and valid_time_range when they differ.
+     * - Inserts new rows when no match is found.
+     * - Deletes existing rows whose start time is not present in the incoming data.
+     *
+     * Accounting points not present in [accountingPointEnergySuppliers] are not affected.
      */
     context(principal: FlexPrincipal)
-    suspend fun upsertAccountingPointEnergySupplier(
+    suspend fun replaceAllAccountingPointEnergySupplier(
         accountingPointEnergySuppliers: List<AccountingPointEnergySupplier>
     ): Either<RepositoryError, Unit>
 
@@ -242,144 +259,110 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
         }
 
     context(principal: FlexPrincipal)
-    override suspend fun upsertAccountingPointEndUsers(
+    override suspend fun replaceAllAccountingPointEndUsers(
         accountingPointEndUsers: List<AccountingPointEndUser>
     ): Either<RepositoryError, Unit> =
         flexTransaction { conn ->
             Either.catch {
-                val byAccountingPoint = accountingPointEndUsers.groupBy { it.accountingPointId }
+                // Resolve or create flex.entity + flex.party for each distinct end user.
+                val partyIdByBusinessId = accountingPointEndUsers
+                    .map { it.endUserBusinessId }
+                    .distinct()
+                    .associateWith { businessId ->
+                        val entityId = resolveOrCreateEntity(conn, businessId)
+                        resolveOrCreateEndUserParty(conn, entityId, businessId)
+                    }
 
-                for ((accountingPointId, endUsers) in byAccountingPoint) {
-                    // Resolve or create flex.entity + flex.party for each distinct end user.
-                    val partyIdByBusinessId = endUsers
-                        .map { it.endUserBusinessId }
-                        .distinct()
-                        .associateWith { businessId ->
-                            val entityId = resolveOrCreateEntity(conn, businessId)
-                            resolveOrCreateEndUserParty(conn, entityId, businessId)
-                        }
-
-                    val incomingStarts = endUsers.map { it.validFrom }
-                    val validFromDates = conn.createTimestampArray(incomingStarts)
-
-                    // Delete stale records (start time no longer present in incoming data).
-                    conn.prepareNamed(
-                        """
-                        DELETE FROM flex.accounting_point_end_user
-                        WHERE accounting_point_id = :accountingPointId
-                        AND lower(valid_time_range) != ALL(:validFromDates::timestamptz[])
-                        """,
-                        mapOf(
-                            "accountingPointId" to accountingPointId,
-                            "validFromDates" to validFromDates,
-                        ),
-                    ).use { stmt -> stmt.execute() }
-
-                    conn.prepareNamed(
-                        """
-                        MERGE INTO flex.accounting_point_end_user AS apeu
-                        USING (
-                            SELECT
-                                unnest(:accountingPointId::bigint[])   AS accounting_point_id,
-                                unnest(:endUserId::bigint[])            AS end_user_id,
-                                unnest(:validFrom::timestamptz[])       AS valid_from,
-                                unnest(:validTo::timestamptz[])         AS valid_to
-                        ) AS src
-                        ON (
-                            apeu.accounting_point_id = src.accounting_point_id
-                            AND lower(apeu.valid_time_range) = src.valid_from
-                        )
-                        WHEN MATCHED AND (
-                            apeu.end_user_id IS DISTINCT FROM src.end_user_id
-                            OR upper(apeu.valid_time_range) IS DISTINCT FROM src.valid_to
-                        ) THEN UPDATE SET
-                            end_user_id      = src.end_user_id,
-                            valid_time_range = tstzrange(src.valid_from, src.valid_to, '[)')
-                        WHEN NOT MATCHED
+                conn.prepareNamed(
+                    """
+                    MERGE INTO flex.accounting_point_end_user AS apeu
+                    USING (
+                        SELECT
+                            unnest(:accountingPointId::bigint[]) AS accounting_point_id,
+                            unnest(:endUserId::bigint[])         AS end_user_id,
+                            unnest(:validFrom::timestamptz[])    AS valid_from,
+                            unnest(:validTo::timestamptz[])      AS valid_to
+                    ) AS src
+                    ON (
+                        apeu.accounting_point_id = src.accounting_point_id
+                        AND lower(apeu.valid_time_range) = src.valid_from
+                    )
+                    WHEN MATCHED AND (
+                        apeu.end_user_id IS DISTINCT FROM src.end_user_id
+                        OR upper(apeu.valid_time_range) IS DISTINCT FROM src.valid_to
+                    ) THEN UPDATE SET
+                        end_user_id      = src.end_user_id,
+                        valid_time_range = tstzrange(src.valid_from, src.valid_to, '[)')
+                    WHEN NOT MATCHED BY TARGET
                         THEN INSERT (accounting_point_id, end_user_id, valid_time_range)
                         VALUES (src.accounting_point_id, src.end_user_id, tstzrange(src.valid_from, src.valid_to, '[)'))
-                        """,
-                        endUsers.map { endUser ->
-                            mapOf(
-                                "accountingPointId" to accountingPointId,
-                                "endUserId" to partyIdByBusinessId.getValue(endUser.endUserBusinessId),
-                                "validFrom" to endUser.validFrom.toSqlTimestamp(),
-                                "validTo" to endUser.validTo.toSqlTimestampOrNull(),
-                            )
-                        },
-                    ).use { stmt -> stmt.execute() }
-                }
+                    WHEN NOT MATCHED BY SOURCE
+                        AND apeu.accounting_point_id = ANY(:accountingPointIds::bigint[])
+                        THEN DELETE
+                    """,
+                    mapOf(
+                        "accountingPointId" to conn.createBigintArray(accountingPointEndUsers.map { it.accountingPointId }),
+                        "endUserId" to conn.createBigintArray(accountingPointEndUsers.map { partyIdByBusinessId.getValue(it.endUserBusinessId) }),
+                        "validFrom" to conn.createTimestampArray(accountingPointEndUsers.map { it.validFrom }),
+                        "validTo" to conn.createNullableTimestampArray(accountingPointEndUsers.map { it.validTo }),
+                        "accountingPointIds" to conn.createBigintArray(accountingPointEndUsers.map { it.accountingPointId }.distinct()),
+                    ),
+                ).use { stmt -> stmt.execute() }
+                Unit
             }.mapLeft { e ->
-                logger.error { "upsertAccountingPointEndUsers failed: ${e.message}" }
-                DatabaseError("Failed to upsert accounting point end users")
+                logger.error { "replaceAllAccountingPointEndUsers failed: ${e.message}" }
+                DatabaseError("Failed to replace accounting point end users")
             }
         }
 
     context(principal: FlexPrincipal)
-    override suspend fun upsertAccountingPointEnergySupplier(
+    override suspend fun replaceAllAccountingPointEnergySupplier(
         accountingPointEnergySuppliers: List<AccountingPointEnergySupplier>
     ): Either<RepositoryError, Unit> =
         flexTransaction { conn ->
             Either.catch {
-                val byAccountingPoint = accountingPointEnergySuppliers.groupBy { it.accountingPointId }
+                val glns = accountingPointEnergySuppliers.map { it.energySupplierBusinessId }.distinct()
+                val partyIdByBusinessId = conn.fetchEnergySupplierPartyIds(glns)
 
-                for ((accountingPointId, energySuppliers) in byAccountingPoint) {
-                    val glns = energySuppliers.map { it.energySupplierBusinessId }.distinct()
-                    val partyIdByBusinessId = conn.fetchEnergySupplierPartyIds(glns)
-
-                    val incomingStarts = energySuppliers.map { it.validFrom }
-                    val pgArray = conn.createTimestampArray(incomingStarts)
-
-                    // Delete stale records
-                    conn.prepareNamed(
-                        """
-                        DELETE FROM flex.accounting_point_energy_supplier
-                        WHERE accounting_point_id = :accountingPointId
-                        AND lower(valid_time_range) != ALL(:validFromDates::timestamptz[])
-                        """,
-                        mapOf(
-                            "accountingPointId" to accountingPointId,
-                            "validFromDates" to pgArray,
-                        ),
-                    ).use { stmt -> stmt.execute() }
-
-                    conn.prepareNamed(
-                        """
-                        MERGE INTO flex.accounting_point_energy_supplier AS apes
-                        USING (
-                            SELECT
-                                unnest(:accountingPointId::bigint[])   AS accounting_point_id,
-                                unnest(:energySupplierId::bigint[])    AS energy_supplier_id,
-                                unnest(:validFrom::timestamptz[])      AS valid_from,
-                                unnest(:validTo::timestamptz[])        AS valid_to
-                        ) AS src
-                        ON (
-                            apes.accounting_point_id = src.accounting_point_id
-                            AND lower(apes.valid_time_range) = src.valid_from
-                        )
-                        WHEN MATCHED AND (
-                            apes.energy_supplier_id IS DISTINCT FROM src.energy_supplier_id
-                            OR upper(apes.valid_time_range) IS DISTINCT FROM src.valid_to
-                        ) THEN UPDATE SET
-                            energy_supplier_id = src.energy_supplier_id,
-                            valid_time_range   = tstzrange(src.valid_from, src.valid_to, '[)')
-                        WHEN NOT MATCHED
+                conn.prepareNamed(
+                    """
+                    MERGE INTO flex.accounting_point_energy_supplier AS apes
+                    USING (
+                        SELECT
+                            unnest(:accountingPointId::bigint[])  AS accounting_point_id,
+                            unnest(:energySupplierId::bigint[])   AS energy_supplier_id,
+                            unnest(:validFrom::timestamptz[])     AS valid_from,
+                            unnest(:validTo::timestamptz[])       AS valid_to
+                    ) AS src
+                    ON (
+                        apes.accounting_point_id = src.accounting_point_id
+                        AND lower(apes.valid_time_range) = src.valid_from
+                    )
+                    WHEN MATCHED AND (
+                        apes.energy_supplier_id IS DISTINCT FROM src.energy_supplier_id
+                        OR upper(apes.valid_time_range) IS DISTINCT FROM src.valid_to
+                    ) THEN UPDATE SET
+                        energy_supplier_id = src.energy_supplier_id,
+                        valid_time_range   = tstzrange(src.valid_from, src.valid_to, '[)')
+                    WHEN NOT MATCHED BY TARGET
                         THEN INSERT (accounting_point_id, energy_supplier_id, valid_time_range)
                         VALUES (src.accounting_point_id, src.energy_supplier_id, tstzrange(src.valid_from, src.valid_to, '[)'))
-                        """,
-                        energySuppliers.map { energySupplier ->
-                            mapOf(
-                                "accountingPointId" to accountingPointId,
-                                "energySupplierId" to partyIdByBusinessId.getValue(energySupplier.energySupplierBusinessId),
-                                "validFrom" to energySupplier.validFrom.toSqlTimestamp(),
-                                "validTo" to energySupplier.validTo.toSqlTimestampOrNull(),
-                            )
-                        },
-                    ).use { stmt -> stmt.execute() }
-                }
+                    WHEN NOT MATCHED BY SOURCE
+                        AND apes.accounting_point_id = ANY(:accountingPointIds::bigint[])
+                        THEN DELETE
+                    """,
+                    mapOf(
+                        "accountingPointId" to conn.createBigintArray(accountingPointEnergySuppliers.map { it.accountingPointId }),
+                        "energySupplierId" to conn.createBigintArray(accountingPointEnergySuppliers.map { partyIdByBusinessId.getValue(it.energySupplierBusinessId) }),
+                        "validFrom" to conn.createTimestampArray(accountingPointEnergySuppliers.map { it.validFrom }),
+                        "validTo" to conn.createNullableTimestampArray(accountingPointEnergySuppliers.map { it.validTo }),
+                        "accountingPointIds" to conn.createBigintArray(accountingPointEnergySuppliers.map { it.accountingPointId }.distinct()),
+                    ),
+                ).use { stmt -> stmt.execute() }
+                Unit
             }.mapLeft { e ->
-                logger.error { "upsertAccountingPointEnergySupplier failed: ${e.message}" }
-                DatabaseError("Failed to upsert accounting point energy suppliers")
+                logger.error { "replaceAllAccountingPointEnergySupplier failed: ${e.message}" }
+                DatabaseError("Failed to replace accounting point energy suppliers")
             }
         }
 
