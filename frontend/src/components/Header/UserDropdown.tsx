@@ -60,7 +60,7 @@ const UserDropdown = () => {
     ...(identity?.partyID
       ? [
           {
-            label: identity?.partyName,
+            label: identity?.partyName ?? "My party",
             icon: IconBuilding,
             onClick: handleParty,
           },
@@ -74,7 +74,7 @@ const UserDropdown = () => {
   ];
   const dropDownEntityItems = [
     {
-      label: identity?.entityName,
+      label: identity?.entityName ?? "My entity",
       icon: IconUser,
       onClick: handleMe,
     },
