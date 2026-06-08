@@ -41,14 +41,19 @@ const UserDropdown = () => {
   };
 
   const handleParty = async () => {
-    if (identity?.role === "flex_organisation" && identity?.partyID) {
-      const { data: party } = await dataProvider.getOne("party", {
-        id: identity.partyID,
-      });
-      redirect(`/entity/${party.entity_id}/show`);
-    } else {
-      redirect(`/party/${identity?.partyID}/show`);
+    if (!identity?.partyID) return;
+    if (identity.role === "flex_organisation") {
+      try {
+        const { data: party } = await dataProvider.getOne("party", {
+          id: identity.partyID,
+        });
+        redirect(`/entity/${party.entity_id}/show`);
+      } catch {
+        redirect(`/party/${identity.partyID}/show`);
+      }
+      return;
     }
+    redirect(`/party/${identity.partyID}/show`);
   };
 
   const handleLogout = () => {
