@@ -10,7 +10,7 @@ WHERE processed = false;
 
 -- changeset flex:event-lookup-source-accounting-point runOnChange:false endDelimiter:;
 --preconditions onFail:MARK_RAN
---precondition-sql-check expectedResult:true SELECT EXISTS (SELECT 1 FROM flex.event WHERE type = 'no.elhub.flex.controllable_unit.lookup' AND source_resource = 'controllable_unit')
+--precondition-sql-check expectedResult:t SELECT EXISTS (SELECT 1 FROM flex.event WHERE type = 'no.elhub.flex.controllable_unit.lookup' AND source_resource = 'controllable_unit')
 WITH
     lookup_event_data AS (
         SELECT
