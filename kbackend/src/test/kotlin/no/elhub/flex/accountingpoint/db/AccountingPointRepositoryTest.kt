@@ -483,7 +483,7 @@ class AccountingPointRepositoryTest : FunSpec({
 
             // when
             with(internalDataPrincipal) {
-                repo.upsertAccountingPointEndUsers(
+                repo.replaceAllAccountingPointEndUsers(
                     listOf(AccountingPointEndUser(apId, pid, Instant.parse("2023-12-31T23:00:00Z"), null)),
                 )
             }.shouldBeRight()
@@ -522,7 +522,7 @@ class AccountingPointRepositoryTest : FunSpec({
 
             // when
             with(internalDataPrincipal) {
-                repo.upsertAccountingPointEndUsers(
+                repo.replaceAllAccountingPointEndUsers(
                     listOf(AccountingPointEndUser(apId, orgNumber, Instant.parse("2023-12-31T23:00:00Z"), null)),
                 )
             }.shouldBeRight()
