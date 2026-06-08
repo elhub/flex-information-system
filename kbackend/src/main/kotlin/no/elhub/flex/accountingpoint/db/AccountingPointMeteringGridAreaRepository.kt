@@ -16,15 +16,16 @@ import org.koin.core.annotation.Single
 
 interface AccountingPointMeteringGridAreaRepository {
     /**
-     * Upserts metering grid area timeline entries for accounting points into
-     * flex.accounting_point_metering_grid_area.
+     * Replaces the metering grid area timeline for each accounting point present in
+     * [accountingPointMeteringGridAreas] by synchronising flex.accounting_point_metering_grid_area
+     * to exactly match the incoming data for those accounting points.
      *
-     * For each accounting point present in [accountingPointMeteringGridAreas], first deletes any
-     * existing rows whose start time (lower bound of valid_time_range) is not present in the
-     * incoming data for that accounting point, so that stale entries are removed.
+     * Matches on (accounting_point_id, lower(valid_time_range)):
+     * - Updates metering_grid_area_id and valid_time_range when they differ.
+     * - Inserts new rows when no match is found.
+     * - Deletes existing rows whose start time is not present in the incoming data.
      *
-     * Matches on (accounting_point_id, lower(valid_time_range)) and updates metering_grid_area_id
-     * and valid_time_range when they differ. Inserts new rows when no match is found.
+     * Accounting points not present in [accountingPointMeteringGridAreas] are not affected.
      *
      * Returns [Unit] immediately when [accountingPointMeteringGridAreas] is empty.
      */
