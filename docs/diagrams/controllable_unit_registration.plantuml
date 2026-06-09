@@ -38,6 +38,19 @@ note right
 end note
 deactivate FIS
 
+== Register Controllable Unit Service Provider Contract ==
+
+SP -> FIS: Register CU service provider contract
+activate FIS
+FIS --> SP: OK
+FIS --> EU : Notify CU SP contract
+deactivate FIS
+
+SP -> FIS: Get (possibly) updated CU data
+activate FIS
+FIS --> SP: Return CU data
+deactivate FIS
+
 == Update Controllable Unit Data ==
 
 SP -> FIS: Update CU data
