@@ -6,18 +6,15 @@ import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/**
- * Geographic location of the accounting point (WGS84), as a GeoJSON point object.
- */
 @Serializable
-public data class AccountingPointResponseLocation(
+public data class GeojsonPoint(
   @SerialName("type")
-  public val type: LocationType? = null,
+  public val type: GeojsonPointType,
   @SerialName("crs")
-  public val crs: AccountingPointResponseCrs? = null,
+  public val crs: GeojsonPointCrs,
   /**
    * [longitude, latitude] in decimal degrees (WGS84)
    */
   @SerialName("coordinates")
-  public val coordinates: List<@Contextual BigDecimal>? = null,
+  public val coordinates: List<@Contextual BigDecimal>,
 )

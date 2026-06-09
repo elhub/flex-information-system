@@ -290,6 +290,20 @@ export type NumericAggregation = {
   max?: number;
 };
 
+export type GeojsonPoint = {
+  type: "Point";
+  crs: {
+    type: "name";
+    properties: {
+      name: "EPSG:4326";
+    };
+  };
+  /**
+   * [longitude, latitude] in decimal degrees (WGS84)
+   */
+  coordinates: [number, number];
+};
+
 /**
  * An empty object
  */
@@ -2082,19 +2096,7 @@ export type AccountingPoint = {
   /**
    * Geographic location of the accounting point (WGS84), as a GeoJSON point object.
    */
-  readonly location?: {
-    type?: "Point";
-    crs?: {
-      type?: "name";
-      properties?: {
-        name?: "EPSG:4326";
-      };
-    };
-    /**
-     * [longitude, latitude] in decimal degrees (WGS84)
-     */
-    coordinates?: [number, number];
-  };
+  readonly location?: GeojsonPoint;
   /**
    * When the resource was recorded (created or updated) in the system.
    */
@@ -3134,6 +3136,10 @@ export type Notice = {
    * The URI of the resource concerned by the event.
    */
   readonly source?: string;
+  /**
+   * The data of the notice.
+   */
+  readonly data?: NoticeData;
   /**
    * When the resource was recorded (created or updated) in the system.
    */

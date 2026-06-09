@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-public data class AccountingPointResponseProperties(
+public data class GeojsonPointProperties(
   @SerialName("name")
-  public val name: PropertiesName? = null,
+  public val name: PropertiesName,
 )

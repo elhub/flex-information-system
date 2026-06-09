@@ -544,6 +544,40 @@ components:
         max:
           type: number
       additionalProperties: false
+    geojson_point:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [Point]
+        crs:
+          type: object
+          properties:
+            type:
+              type: string
+              enum: [name]
+            properties:
+              type: object
+              properties:
+                name:
+                  type: string
+                  enum: [EPSG:4326]
+              required:
+                - name
+          required:
+            - type
+            - properties
+        coordinates:
+          type: array
+          description: "[longitude, latitude] in decimal degrees (WGS84)"
+          items:
+            type: number
+          minItems: 2
+          maxItems: 2
+      required:
+        - type
+        - crs
+        - coordinates
 paths:
   /openapi.json:
     get:

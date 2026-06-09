@@ -24,6 +24,12 @@ output_file_embedding = f"{DB_DIR}/api/embedding/embedding.sql"
 
 
 def sql_type_of_field_attr(attr):
+    # used for fields that are objects but it is only possible to know it
+    # through more advanced reference mechanisms (allOf / $ref / etc)
+    # in those cases, we just repeat the information more directly to make
+    # codegen easier
+    if attr.get("x-object"):
+        return "jsonb"
     # allOf with a single $ref means a referenced enum type — treat as text
     if "allOf" in attr:
         return "text"

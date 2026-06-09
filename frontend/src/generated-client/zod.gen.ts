@@ -169,6 +169,17 @@ export const zNumericAggregation = z.object({
   max: z.coerce.number().optional(),
 });
 
+export const zGeojsonPoint = z.object({
+  type: z.enum(["Point"]),
+  crs: z.object({
+    type: z.enum(["name"]),
+    properties: z.object({
+      name: z.enum(["EPSG:4326"]),
+    }),
+  }),
+  coordinates: z.tuple([z.coerce.number(), z.coerce.number()]),
+});
+
 /**
  * An empty object
  */
@@ -2241,23 +2252,7 @@ export const zAccountingPoint = z.object({
     .regex(/^[1-9][0-9]{17}$/)
     .readonly(),
   system_operator_id: z.coerce.number().readonly(),
-  location: z
-    .object({
-      type: z.enum(["Point"]).optional(),
-      crs: z
-        .object({
-          type: z.enum(["name"]).optional(),
-          properties: z
-            .object({
-              name: z.enum(["EPSG:4326"]).optional(),
-            })
-            .optional(),
-        })
-        .optional(),
-      coordinates: z.tuple([z.coerce.number(), z.coerce.number()]).optional(),
-    })
-    .readonly()
-    .optional(),
+  location: zGeojsonPoint.readonly().optional(),
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
   controllable_unit: z.array(zControllableUnit).nullish(),
@@ -2562,6 +2557,7 @@ export const zNotice = z.object({
     .regex(/^(\/([a-z][a-z_]*|[0-9]+))+$/)
     .readonly()
     .optional(),
+  data: zNoticeData.readonly().optional(),
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
   party: zParty.nullish(),

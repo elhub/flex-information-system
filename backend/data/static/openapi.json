@@ -656,6 +656,60 @@
                 },
                 "additionalProperties": false
             },
+            "geojson_point": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "Point"
+                        ]
+                    },
+                    "crs": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "enum": [
+                                    "name"
+                                ]
+                            },
+                            "properties": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "enum": [
+                                            "EPSG:4326"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "name"
+                                ]
+                            }
+                        },
+                        "required": [
+                            "type",
+                            "properties"
+                        ]
+                    },
+                    "coordinates": {
+                        "type": "array",
+                        "description": "[longitude, latitude] in decimal degrees (WGS84)",
+                        "items": {
+                            "type": "number"
+                        },
+                        "minItems": 2,
+                        "maxItems": 2
+                    }
+                },
+                "required": [
+                    "type",
+                    "crs",
+                    "coordinates"
+                ]
+            },
             "empty_object": {
                 "description": "An empty object",
                 "type": "object",
@@ -4270,7 +4324,6 @@
                     },
                     "location": {
                         "description": "Geographic location of the accounting point (WGS84), as a GeoJSON point object.",
-                        "type": "object",
                         "nullable": true,
                         "readOnly": true,
                         "example": {
@@ -4286,45 +4339,11 @@
                                 48.6504504
                             ]
                         },
-                        "properties": {
-                            "type": {
-                                "type": "string",
-                                "enum": [
-                                    "Point"
-                                ]
-                            },
-                            "crs": {
-                                "type": "object",
-                                "properties": {
-                                    "type": {
-                                        "type": "string",
-                                        "enum": [
-                                            "name"
-                                        ]
-                                    },
-                                    "properties": {
-                                        "type": "object",
-                                        "properties": {
-                                            "name": {
-                                                "type": "string",
-                                                "enum": [
-                                                    "EPSG:4326"
-                                                ]
-                                            }
-                                        }
-                                    }
-                                }
-                            },
-                            "coordinates": {
-                                "type": "array",
-                                "description": "[longitude, latitude] in decimal degrees (WGS84)",
-                                "items": {
-                                    "type": "number"
-                                },
-                                "minItems": 2,
-                                "maxItems": 2
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/geojson_point"
                             }
-                        }
+                        ]
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
@@ -6578,10 +6597,13 @@
                     "data": {
                         "description": "The data of the notice.",
                         "type": "object",
-                        "$ref": "#/components/schemas/notice_data",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/notice_data"
+                            }
+                        ],
                         "readOnly": true,
-                        "nullable": true,
-                        "example": null
+                        "nullable": true
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",

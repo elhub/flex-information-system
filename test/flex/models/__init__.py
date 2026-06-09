@@ -17,14 +17,6 @@ from .accounting_point_grid_location_source import AccountingPointGridLocationSo
 from .accounting_point_grid_location_update_request import AccountingPointGridLocationUpdateRequest
 from .accounting_point_metering_grid_area_response import AccountingPointMeteringGridAreaResponse
 from .accounting_point_response import AccountingPointResponse
-from .accounting_point_response_location_type_0 import AccountingPointResponseLocationType0
-from .accounting_point_response_location_type_0_crs import AccountingPointResponseLocationType0Crs
-from .accounting_point_response_location_type_0_crs_properties import AccountingPointResponseLocationType0CrsProperties
-from .accounting_point_response_location_type_0_crs_properties_name import (
-    AccountingPointResponseLocationType0CrsPropertiesName,
-)
-from .accounting_point_response_location_type_0_crs_type import AccountingPointResponseLocationType0CrsType
-from .accounting_point_response_location_type_0_type import AccountingPointResponseLocationType0Type
 from .auth_scope import AuthScope
 from .category import Category
 from .controllable_unit_create_request import ControllableUnitCreateRequest
@@ -87,6 +79,12 @@ from .entity_type import EntityType
 from .entity_update_request import EntityUpdateRequest
 from .error_message import ErrorMessage
 from .event_response import EventResponse
+from .geojson_point import GeojsonPoint
+from .geojson_point_crs import GeojsonPointCrs
+from .geojson_point_crs_properties import GeojsonPointCrsProperties
+from .geojson_point_crs_properties_name import GeojsonPointCrsPropertiesName
+from .geojson_point_crs_type import GeojsonPointCrsType
+from .geojson_point_type import GeojsonPointType
 from .identity_response import IdentityResponse
 from .metering_grid_area_business_id_type import MeteringGridAreaBusinessIdType
 from .metering_grid_area_response import MeteringGridAreaResponse
@@ -300,12 +298,6 @@ __all__ = (
     "AccountingPointGridLocationUpdateRequest",
     "AccountingPointMeteringGridAreaResponse",
     "AccountingPointResponse",
-    "AccountingPointResponseLocationType0",
-    "AccountingPointResponseLocationType0Crs",
-    "AccountingPointResponseLocationType0CrsProperties",
-    "AccountingPointResponseLocationType0CrsPropertiesName",
-    "AccountingPointResponseLocationType0CrsType",
-    "AccountingPointResponseLocationType0Type",
     "AuthScope",
     "Category",
     "ControllableUnitCreateRequest",
@@ -356,6 +348,12 @@ __all__ = (
     "EntityUpdateRequest",
     "ErrorMessage",
     "EventResponse",
+    "GeojsonPoint",
+    "GeojsonPointCrs",
+    "GeojsonPointCrsProperties",
+    "GeojsonPointCrsPropertiesName",
+    "GeojsonPointCrsType",
+    "GeojsonPointType",
     "IdentityResponse",
     "MeteringGridAreaBusinessIdType",
     "MeteringGridAreaResponse",

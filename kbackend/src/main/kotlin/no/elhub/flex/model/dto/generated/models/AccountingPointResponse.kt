@@ -27,11 +27,8 @@ public data class AccountingPointResponse(
    */
   @SerialName("system_operator_id")
   public val systemOperatorId: Long? = null,
-  /**
-   * Geographic location of the accounting point (WGS84), as a GeoJSON point object.
-   */
   @SerialName("location")
-  public val location: AccountingPointResponseLocation? = null,
+  public val location: GeojsonPoint? = null,
   /**
    * When the resource was recorded (created or updated) in the system.
    */

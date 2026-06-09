@@ -4,9 +4,9 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-public data class AccountingPointResponseCrs(
+public data class GeojsonPointCrs(
   @SerialName("type")
-  public val type: CrsType? = null,
+  public val type: CrsType,
   @SerialName("properties")
-  public val properties: AccountingPointResponseProperties? = null,
+  public val properties: GeojsonPointProperties,
 )
