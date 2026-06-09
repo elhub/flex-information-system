@@ -13,8 +13,19 @@ import { noticeStatusVariantMap } from "./noticeStatus";
 import noticeTypes from "./noticeTypes";
 import { zNotice } from "../generated-client/zod.gen";
 import { getFields } from "../zod";
-import { useRecordContext } from "react-admin";
+import { useListContext, useRecordContext } from "react-admin";
 import { Link as RouterLink } from "react-router-dom";
+import { useEffect } from "react";
+
+const DefaultStatusFilter = () => {
+  const { filterValues, setFilters } = useListContext();
+  useEffect(() => {
+    if (!filterValues["status@in"]?.length) {
+      setFilters({ ...filterValues, "status@in": ["active"] });
+    }
+  }, []);
+  return null;
+};
 
 const SourceLink = ({ label: _label }: { label?: string }) => {
   const noticeRecord = useRecordContext()!;
@@ -52,6 +63,7 @@ export const NoticeList = () => {
 
   return (
     <List perPage={25} filters={filters} empty={false}>
+      <DefaultStatusFilter />
       <Datagrid>
         <TextField source={noticeFields.id.source} />
         <ReferenceField source={noticeFields.party_id.source} reference="party">
