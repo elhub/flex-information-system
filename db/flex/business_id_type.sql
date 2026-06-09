@@ -61,7 +61,7 @@ BEGIN
         );
     ELSIF business_id_type = 'email' THEN
         -- Email validation: check if business_id is a valid email address
-        RETURN (business_id ~ '^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$');
+        RETURN (business_id ~ '^[^@\s]+@[^@\s]+\.[^@\s]+$');
     ELSIF business_id_type = 'pid' THEN
         -- PID validation: check if business_id is a valid personal identification number
         RETURN (business_id ~ '^[0-9]{11}$');
