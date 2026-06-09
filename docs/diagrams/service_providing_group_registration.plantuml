@@ -36,11 +36,27 @@ activate SP
 
 SP -> FIS: Choose CU's from list of CU's
 activate FIS
-FIS --> SP: Return chosen CU's
+FIS --> SP: Return list of CU's
+deactivate FIS
+
+|||
+loop For each relevant CU
+    SP -> FIS: Add CU to SPG
+    activate FIS
+    note left
+        Data:
+        - controllable unit ID
+        - valid from
+    end note
+    FIS --> SP: OK
+    deactivate FIS
+    |||
+end
 
 == Activate Service Providing Group ==
 
 SP -> FIS: Activate SPG
+activate FIS
 note right
     Setting the status to active
     indicates that the SP has added all
