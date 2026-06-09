@@ -22,7 +22,6 @@ fun Application.configureDatabase(): HikariDataSource {
         maximumPoolSize =
             environment.config.propertyOrNull("ktor.database.hikari.maximumPoolSize")?.getString()?.toInt() ?: 10
         schema = "api"
-        isAutoCommit = false
         transactionIsolation = "TRANSACTION_READ_COMMITTED"
         validate()
     }
