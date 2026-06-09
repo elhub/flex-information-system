@@ -90,15 +90,44 @@ func (q *Queries) GetControllableUnitCreateNotificationRecipients(ctx context.Co
 	return items, nil
 }
 
-const getControllableUnitLookupNotificationRecipients = `-- name: GetControllableUnitLookupNotificationRecipients :many
+const getControllableUnitLookupNotificationRecipientsAP = `-- name: GetControllableUnitLookupNotificationRecipientsAP :many
+SELECT cueu.end_user_id
+FROM api.controllable_unit AS cu
+    INNER JOIN notification.controllable_unit_end_user AS cueu
+        ON cu.id = cueu.controllable_unit_id
+            AND cueu.valid_time_range @> $1::timestamptz
+WHERE cu.accounting_point_id = $2
+`
+
+func (q *Queries) GetControllableUnitLookupNotificationRecipientsAP(ctx context.Context, recordedAt pgtype.Timestamptz, apID int) ([]int, error) {
+	rows, err := q.db.Query(ctx, getControllableUnitLookupNotificationRecipientsAP, recordedAt, apID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []int
+	for rows.Next() {
+		var end_user_id int
+		if err := rows.Scan(&end_user_id); err != nil {
+			return nil, err
+		}
+		items = append(items, end_user_id)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getControllableUnitLookupNotificationRecipientsCU = `-- name: GetControllableUnitLookupNotificationRecipientsCU :many
 SELECT cueu.end_user_id
 FROM notification.controllable_unit_end_user AS cueu
 WHERE cueu.controllable_unit_id = $1
     AND cueu.valid_time_range @> $2::timestamptz
 `
 
-func (q *Queries) GetControllableUnitLookupNotificationRecipients(ctx context.Context, resourceID int, recordedAt pgtype.Timestamptz) ([]int, error) {
-	rows, err := q.db.Query(ctx, getControllableUnitLookupNotificationRecipients, resourceID, recordedAt)
+func (q *Queries) GetControllableUnitLookupNotificationRecipientsCU(ctx context.Context, cuID int, recordedAt pgtype.Timestamptz) ([]int, error) {
+	rows, err := q.db.Query(ctx, getControllableUnitLookupNotificationRecipientsCU, cuID, recordedAt)
 	if err != nil {
 		return nil, err
 	}
