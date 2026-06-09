@@ -7,7 +7,6 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.db.FlexTransaction.flexTransaction
 import no.elhub.flex.db.prepareNamed
-import no.elhub.flex.model.domain.ControllableUnit
 import no.elhub.flex.model.domain.db.DatabaseError
 import no.elhub.flex.model.domain.db.RepositoryError
 import org.koin.core.annotation.Single
