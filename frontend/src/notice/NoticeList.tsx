@@ -5,21 +5,26 @@ import {
   List,
   PartyReferenceInput,
   ReferenceField,
-  ResourceButton,
   StatusBadgeField,
   TextField,
 } from "../components/EDS-ra";
+import { Link } from "../components/ui";
 import { noticeStatusVariantMap } from "./noticeStatus";
 import noticeTypes from "./noticeTypes";
 import { zNotice } from "../generated-client/zod.gen";
 import { getFields } from "../zod";
 import { useRecordContext } from "react-admin";
+import { Link as RouterLink } from "react-router-dom";
 
-const NoticeResourceButton = () => {
+const SourceLink = ({ label: _label }: { label?: string }) => {
   const noticeRecord = useRecordContext()!;
-  return noticeRecord.source ? (
-    <ResourceButton source={noticeRecord.source} />
-  ) : null;
+  return (
+    <span onClick={(e) => e.stopPropagation()}>
+      <Link as={RouterLink} to={`${noticeRecord.source}/show`}>
+        {noticeRecord.source}
+      </Link>
+    </span>
+  );
 };
 
 export const NoticeList = () => {
@@ -53,13 +58,12 @@ export const NoticeList = () => {
           <TextField source="name" />
         </ReferenceField>
         <TextField source={noticeFields.type.source} />
-        <TextField source={noticeFields.source.source} />
+        <SourceLink label="field.notice.source" />
         <StatusBadgeField
           source={noticeFields.status.source}
           enumKey="notice.status"
           variantMap={noticeStatusVariantMap}
         />
-        <NoticeResourceButton />
       </Datagrid>
     </List>
   );
