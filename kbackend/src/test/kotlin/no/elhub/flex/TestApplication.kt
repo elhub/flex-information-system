@@ -37,7 +37,7 @@ fun defaultTestApplication(): TestApplication {
             DatabaseError("stub").left()
     }
     val mockEventRepo = mockk<EventRepository>().also { repo ->
-        coEvery { with(any<FlexPrincipal>()) { repo.insertLookupEvent(any(), any(), any()) } } returns Unit.right()
+        coEvery { with(any<FlexPrincipal>()) { repo.insertEvent(any(), any(), any(), any(), any(), any()) } } returns Unit.right()
     }
 
     return TestApplication {

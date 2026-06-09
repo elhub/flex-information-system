@@ -48,7 +48,7 @@ class ControllableUnitLookupTest :
         beforeTest {
             clearAllMocks(answers = false)
             coEvery {
-                with(any<FlexPrincipal>()) { mockEventRepo.insertLookupEvent(any(), any(), any()) }
+                with(any<FlexPrincipal>()) { mockEventRepo.insertEvent(any(), any(), any(), any(), any(), any()) }
             } returns Unit.right()
         }
 
@@ -609,7 +609,16 @@ class ControllableUnitLookupTest :
                     setBody("""{"end_user":"$endUserBusinessId","accounting_point":"$accountingPointBusinessId"}""")
                 }
                 coVerify(exactly = 1) {
-                    with(any<FlexPrincipal>()) { mockEventRepo.insertLookupEvent(accountingPointBusinessId, null, 1) }
+                    with(any<FlexPrincipal>()) {
+                        mockEventRepo.insertEvent(
+                            "no.elhub.flex.controllable_unit.lookup",
+                            "accounting_point",
+                            1,
+                            null,
+                            null,
+                            "{\"requesting_party_id\": 1}"
+                        )
+                    }
                 }
                 app.stop()
             }
@@ -644,7 +653,16 @@ class ControllableUnitLookupTest :
                     setBody("""{"end_user":"$endUserBusinessId","accounting_point":"$accountingPointBusinessId"}""")
                 }
                 coVerify(exactly = 1) {
-                    with(any<FlexPrincipal>()) { mockEventRepo.insertLookupEvent(accountingPointBusinessId, null, 1) }
+                    with(any<FlexPrincipal>()) {
+                        mockEventRepo.insertEvent(
+                            "no.elhub.flex.controllable_unit.lookup",
+                            "accounting_point",
+                            1,
+                            null,
+                            null,
+                            "{\"requesting_party_id\": 1}"
+                        )
+                    }
                 }
                 app.stop()
             }
@@ -682,7 +700,16 @@ class ControllableUnitLookupTest :
                     setBody("""{"end_user":"$endUserBusinessId","controllable_unit":"$controllableUnitBusinessId"}""")
                 }
                 coVerify(exactly = 1) {
-                    with(any<FlexPrincipal>()) { mockEventRepo.insertLookupEvent(accountingPointBusinessId, controllableUnitBusinessId, 1) }
+                    with(any<FlexPrincipal>()) {
+                        mockEventRepo.insertEvent(
+                            "no.elhub.flex.controllable_unit.lookup",
+                            "accounting_point",
+                            1,
+                            "controllable_unit",
+                            10,
+                            "{\"requesting_party_id\": 1}"
+                        )
+                    }
                 }
                 app.stop()
             }

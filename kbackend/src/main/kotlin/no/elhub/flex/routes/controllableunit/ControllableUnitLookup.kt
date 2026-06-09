@@ -78,9 +78,9 @@ class ControllableUnitLookup(
                 ).bind()
                 val accountingPoint = accountingPointService.getAccountingPointByBusinessId(accountingPointBusinessId).bind()
 
-                insertEvent(
-                    accountingPointBusinessId,
-                    request.controllableUnitBusinessId.takeIf { it.isNotEmpty() },
+                insertLookupEvent(
+                    accountingPoint.id,
+                    if (request.controllableUnitBusinessId.isNotEmpty()) controllableUnits.firstOrNull()?.id else null,
                     requestingPartyId
                 ).bind()
 
@@ -108,12 +108,19 @@ class ControllableUnitLookup(
             }
 
     context(principal: FlexPrincipal)
-    private suspend fun insertEvent(
-        accountingPointBusinessId: String,
-        controllableUnitBusinessId: String?,
+    private suspend fun insertLookupEvent(
+        accountingPointId: Long,
+        controllableUnitId: Long?,
         requestingPartyId: Int,
     ): Either<AppError, Unit> =
-        eventRepo.insertLookupEvent(accountingPointBusinessId, controllableUnitBusinessId, requestingPartyId)
+        eventRepo.insertEvent(
+            "no.elhub.flex.controllable_unit.lookup",
+            "accounting_point",
+            accountingPointId,
+            controllableUnitId?.let { "controllable_unit" },
+            controllableUnitId,
+            "{\"requesting_party_id\": $requestingPartyId}"
+        )
             .mapLeft { e ->
                 logger.error { "Failed to insert lookup event: ${e.message}" }
                 InternalServerError(traceIdOrUnknown())

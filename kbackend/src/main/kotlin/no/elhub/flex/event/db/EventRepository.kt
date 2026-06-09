@@ -20,14 +20,15 @@ import org.koin.core.annotation.Single
  */
 interface EventRepository {
 
-    /**
-     * Creates one `no.elhub.flex.controllable_unit.lookup` event per entry in [controllableUnitIds], giving information
-     * about [requestingPartyId] in the event data. */
+    /** Inserts an event in the database. */
     context(principal: FlexPrincipal)
-    suspend fun insertLookupEvent(
-        accountingPointBusinessId: String,
-        controllableUnitBusinessId: String?,
-        requestingPartyId: Int
+    suspend fun insertEvent(
+        type: String,
+        source: String,
+        sourceId: Long,
+        subjectResource: String?,
+        subjectId: Long?,
+        data: String?,
     ): Either<RepositoryError, Unit>
 }
 
@@ -37,59 +38,40 @@ private val logger = KotlinLogging.logger {}
 class EventRepositoryImpl : EventRepository {
 
     context(principal: FlexPrincipal)
-    override suspend fun insertLookupEvent(
-        accountingPointBusinessId: String,
-        controllableUnitBusinessId: String?,
-        requestingPartyId: Int,
+    override suspend fun insertEvent(
+        type: String,
+        source: String,
+        sourceId: Long,
+        subjectResource: String?,
+        subjectId: Long?,
+        data: String?,
     ): Either<RepositoryError, Unit> = flexTransaction { conn ->
         runCatching {
-            if (controllableUnitBusinessId != null) {
-                // lookup was done on specific CU: add it as subject of the event
-                conn.prepareNamed(
-                    """
-                INSERT INTO flex.event (type, source_resource, source_id, subject_resource, subject_id, data)
-                SELECT
-                    public.text2ltree('no.elhub.flex.controllable_unit.lookup'),
-                    'accounting_point',
-                    (SELECT id FROM flex.accounting_point WHERE business_id::text = :apBusinessId),
-                    'controllable_unit',
-                    (SELECT id FROM flex.controllable_unit WHERE business_id::text = :cuBusinessId),
-                    jsonb_build_object(
-                        'requesting_party_name',
-                        (SELECT name FROM flex.party WHERE id = :partyId)
-                    )
-                """,
-                    mapOf(
-                        "apBusinessId" to accountingPointBusinessId,
-                        "cuBusinessId" to controllableUnitBusinessId,
-                        "partyId" to requestingPartyId
-                    ),
-                ).use { it.execute() }
-            } else {
-                // general lookup on the AP: no subject
-                conn.prepareNamed(
-                    """
-                INSERT INTO flex.event (type, source_resource, source_id, data)
-                SELECT
-                    public.text2ltree('no.elhub.flex.controllable_unit.lookup'),
-                    'accounting_point',
-                    (SELECT id FROM flex.accounting_point WHERE business_id::text = :apBusinessId),
-                    jsonb_build_object(
-                        'requesting_party_name',
-                        (SELECT name FROM flex.party WHERE id = :partyId)
-                    )
-                """,
-                    mapOf(
-                        "apBusinessId" to accountingPointBusinessId,
-                        "partyId" to requestingPartyId
-                    ),
-                ).use { it.execute() }
-            }
+            conn.prepareNamed(
+                """
+            INSERT INTO flex.event (type, source_resource, source_id, subject_resource, subject_id, data)
+            SELECT
+                public.text2ltree(:type),
+                :source,
+                :sourceId,
+                :subjectResource,
+                :subjectId,
+                :data::jsonb
+            """,
+                mapOf(
+                    "type" to type,
+                    "source" to source,
+                    "sourceId" to sourceId,
+                    "subjectResource" to subjectResource,
+                    "subjectId" to subjectId,
+                    "data" to data,
+                ),
+            ).use { it.execute() }
         }.fold(
             onSuccess = { Unit.right() },
             onFailure = { e ->
-                logger.error { "insertLookupEvent failed: ${e.message}" }
-                DatabaseError("failed to insert lookup events: ${e.message}").left()
+                logger.error { "insertEvent failed: ${e.message}" }
+                DatabaseError("failed to insert event: ${e.message}").left()
             },
         )
     }

@@ -334,12 +334,10 @@ WHERE cueu.controllable_unit_id = @cu_id
     AND cueu.valid_time_range @> @recorded_at::timestamptz;
 
 -- name: GetControllableUnitLookupNotificationRecipientsAP :many
-SELECT cueu.end_user_id
-FROM api.controllable_unit AS cu
-    INNER JOIN notification.controllable_unit_end_user AS cueu
-        ON cu.id = cueu.controllable_unit_id
-            AND cueu.valid_time_range @> @recorded_at::timestamptz
-WHERE cu.accounting_point_id = @ap_id;
+SELECT apeu.end_user_id
+FROM api.accounting_point_end_user AS apeu
+WHERE apeu.accounting_point_id = @ap_id
+    AND apeu.valid_time_range @> @recorded_at::timestamptz;
 
 -- name: GetServiceProvidingGroupGridSuspensionNotificationRecipients :many
 -- SP
