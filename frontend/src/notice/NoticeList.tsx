@@ -8,6 +8,7 @@ import {
   StatusBadgeField,
   TextField,
 } from "../components/EDS-ra";
+import { BodyText } from "../components/ui";
 import { Link } from "../components/ui";
 import { noticeStatusVariantMap } from "./noticeStatus";
 import noticeTypes from "./noticeTypes";
@@ -35,6 +36,16 @@ const SourceLink = ({ label: _label }: { label?: string }) => {
         {noticeRecord.source}
       </Link>
     </span>
+  );
+};
+
+const NoticeType = ({ label: _label }: { label?: string }) => {
+  const noticeRecord = useRecordContext()!;
+  return (
+    <BodyText size={"small"}>
+      {noticeTypes.find((nt) => nt.id === noticeRecord.type)?.label ??
+        noticeRecord.type}
+    </BodyText>
   );
 };
 
@@ -69,7 +80,7 @@ export const NoticeList = () => {
         <ReferenceField source={noticeFields.party_id.source} reference="party">
           <TextField source="name" />
         </ReferenceField>
-        <TextField source={noticeFields.type.source} />
+        <NoticeType label="field.notice.type" />
         <SourceLink label="field.notice.source" />
         <StatusBadgeField
           source={noticeFields.status.source}
