@@ -138,3 +138,12 @@ SELECT cron.schedule(
     '*/15 * * * *', -- every 15 minutes
     $$SELECT flex.notice_sync()$$
 );
+
+-- changeset flex:notice-sync-job-alter runOnChange:true endDelimiter:;
+SELECT cron.alter_job(
+    (
+        SELECT jobid FROM cron.job
+        WHERE jobname = 'notice-sync'
+    ),
+    '54 seconds'
+);
