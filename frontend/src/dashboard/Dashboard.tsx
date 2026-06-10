@@ -4,6 +4,7 @@ import { Heading, Loader } from "../components/ui";
 import { SpDashboard } from "./service_provider/SpDashboard";
 import { SoDashboard } from "./system_operator/SoDashboard";
 import { OrgDashboard } from "./organisation/OrgDashboard";
+import { FisoDashboard } from "./flexibility_information_system_operator/FisoDashboard";
 import { DefaultDashboard } from "./DefaultDashboard";
 
 const RoleDashboard = ({ identity }: { identity: FlexIdentity }) => {
@@ -14,6 +15,8 @@ const RoleDashboard = ({ identity }: { identity: FlexIdentity }) => {
       return <SoDashboard />;
     case "flex_organisation":
       return <OrgDashboard identity={identity} />;
+    case "flex_flexibility_information_system_operator":
+      return <FisoDashboard />;
     default:
       return <DefaultDashboard />;
   }
