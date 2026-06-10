@@ -23,7 +23,7 @@ const DefaultFilters = ({
   partyID,
 }: {
   isFiso: boolean;
-  partyID?: string;
+  partyID?: number;
 }) => {
   const { filterValues, setFilters } = useListContext();
   const applied = useRef(false);
