@@ -41,6 +41,7 @@ const DefaultFilters = ({
 
 const SourceLink = ({ label: _label }: { label?: string }) => {
   const noticeRecord = useRecordContext()!;
+  if (!noticeRecord.source) return null;
   return (
     <span onClick={(e) => e.stopPropagation()}>
       <Link as={RouterLink} to={`${noticeRecord.source}/show`}>
