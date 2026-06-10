@@ -84,11 +84,8 @@ CREATE UNIQUE INDEX IF NOT EXISTS uk_entity_end_user ON party (entity_id) WHERE 
     type = 'end_user'
 );
 
--- changeset flex:party-status-insert-trigger runOnChange:true endDelimiter:--
-CREATE OR REPLACE TRIGGER party_status_insert
-BEFORE INSERT ON flex.party
-FOR EACH ROW
-EXECUTE FUNCTION status.restrict_insert('new');
+-- changeset flex:party-status-insert-trigger-drop runOnChange:true endDelimiter:--
+DROP TRIGGER IF EXISTS party_status_insert ON flex.party;
 
 -- changeset flex:party-status-update-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER party_status_update
