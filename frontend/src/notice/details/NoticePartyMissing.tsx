@@ -18,7 +18,8 @@ export const NoticePartyMissing = ({ noticeData }: NoticePartyMissingProps) => {
 
   const { buttonProps, dialog } = useConfirmAction({
     title: "Create party",
-    content: "Are you sure you want to create this party in the system?",
+    content:
+      "This will create a new party in the system. It may take a minute or two for the notice to resolve itself.",
     onConfirmMutation: {
       mutationFn: async () => {
         if (noticeData.party == undefined)
