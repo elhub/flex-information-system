@@ -225,6 +225,7 @@ def test_entity_fiso(sts):
         "@missingusername.com",
         "username@.com",
         "username@com",
+        "Valid.But.Upper.Case@example.com",
     ]:
         e = create_entity.sync(
             client=client_fiso,
