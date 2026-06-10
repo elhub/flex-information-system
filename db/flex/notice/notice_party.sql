@@ -1,8 +1,8 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:notice-party runOnChange:true endDelimiter:--
 
+-- changeset flex:notice-party-missing runOnChange:true endDelimiter:--
 -- new staging parties synced from external source but not in the system yet
 CREATE OR REPLACE VIEW notice_party_missing
 WITH (security_invoker = false) AS (
@@ -46,6 +46,7 @@ WITH (security_invoker = false) AS (
     )
 );
 
+-- changeset flex:notice-party-outdated runOnChange:true endDelimiter:--
 -- parties already in the system, but with staging updates
 CREATE OR REPLACE VIEW notice_party_outdated
 WITH (security_invoker = false) AS (
@@ -94,6 +95,7 @@ WITH (security_invoker = false) AS (
             ON p_fiso.type = 'flexibility_information_system_operator'
 );
 
+-- changeset flex:notice-party-residual runOnChange:true endDelimiter:--
 -- parties deleted after sync, but still actually in the system
 CREATE OR REPLACE VIEW notice_party_residual
 WITH (security_invoker = false) AS (
@@ -110,6 +112,7 @@ WITH (security_invoker = false) AS (
             ON p_fiso.type = 'flexibility_information_system_operator'
     WHERE
         p.business_id_type = 'gln'
+        AND p.type != 'flexibility_information_system_operator'
         AND p.status != 'terminated'
         AND NOT EXISTS (
             SELECT 1 FROM flex.party_staging AS p_stg
