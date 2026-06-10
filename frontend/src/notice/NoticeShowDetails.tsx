@@ -28,6 +28,7 @@ import {
 import { getFields } from "../zod";
 import { DataTable } from "../components/EDS-ra/list/Datagrid";
 import { NoticePartyMissing } from "./details/NoticePartyMissing";
+import noticeTypes from "./noticeTypes";
 
 type Notice = GNotice & {
   data: any;
@@ -234,17 +235,48 @@ const NoticeSPPSProductTypeNotQualifiedShowDetails = ({
 
 export const NoticeShowDetails = () => {
   const record = useRecordContext<Notice>();
+  const noticeType = noticeTypes.find((nt) => nt.id === record?.type);
 
-  switch (record?.type) {
-    case "no.elhub.flex.party.outdated":
-      return <NoticePartyOutdatedShowDetails notice={record} />;
-    case "no.elhub.flex.party.missing":
-      return <NoticePartyMissing noticeData={record.data} />;
-    case "no.elhub.flex.controllable_unit_service_provider.valid_time.outside_contract":
-      return <NoticeCUSPValidTimeOutsideContractShowDetails notice={record} />;
-    case "no.elhub.flex.service_provider_product_suspension.product_type.not_qualified":
-      return <NoticeSPPSProductTypeNotQualifiedShowDetails notice={record} />;
-    default:
-      return <BodyText>No additional details on this notice.</BodyText>;
-  }
+  const typeSpecificDetails = () => {
+    switch (record?.type) {
+      case "no.elhub.flex.party.outdated":
+        return <NoticePartyOutdatedShowDetails notice={record} />;
+      case "no.elhub.flex.party.missing":
+        return <NoticePartyMissing noticeData={record.data} />;
+      case "no.elhub.flex.controllable_unit_service_provider.valid_time.outside_contract":
+        return (
+          <NoticeCUSPValidTimeOutsideContractShowDetails notice={record} />
+        );
+      case "no.elhub.flex.service_provider_product_suspension.product_type.not_qualified":
+        return <NoticeSPPSProductTypeNotQualifiedShowDetails notice={record} />;
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <>
+      {noticeType?.description && (
+        <>
+          <Heading level={3} size="xsmall" spacing>
+            Description
+          </Heading>
+          <BodyText>{noticeType.description}</BodyText>
+          <VerticalSpace />
+        </>
+      )}
+      {noticeType?.action && (
+        <>
+          <Heading level={3} size="xsmall" spacing>
+            Action
+          </Heading>
+          <BodyText>{noticeType.action}</BodyText>
+          <VerticalSpace />
+        </>
+      )}
+      {typeSpecificDetails() ?? (
+        <BodyText>No additional details on this notice.</BodyText>
+      )}
+    </>
+  );
 };
