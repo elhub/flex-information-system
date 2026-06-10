@@ -30,7 +30,7 @@ func (q *Queries) GetNotificationRecipients( //nolint:cyclop,funlen
 			return q.GetControllableUnitLookupNotificationRecipientsCU(ctx, *subjectID, recordedAt)
 		}
 		// general AP lookup, identify recipients from AP ID
-		return q.GetControllableUnitLookupNotificationRecipientsAP(ctx, recordedAt, sourceID)
+		return q.GetControllableUnitLookupNotificationRecipientsAP(ctx, sourceID, recordedAt)
 	case "no.elhub.flex.controllable_unit.create":
 		return q.GetControllableUnitCreateNotificationRecipients(ctx, recordedAt, resourceID)
 	case "no.elhub.flex.controllable_unit.update":
