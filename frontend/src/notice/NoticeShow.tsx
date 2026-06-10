@@ -45,7 +45,7 @@ const NoticeShowSummary = () => {
           <LabelValue size="small" labelKey="notice.id" value={notice.id} />
           <LabelValue
             size="small"
-            label="Reciever"
+            label="Receiver"
             value={
               <Link as={RouterLink} to={`/party/${notice.party_id}/show`}>
                 {party?.name ??
