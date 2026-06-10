@@ -17,6 +17,7 @@ ALTER USER flex WITH REPLICATION;
 CREATE SCHEMA flex AUTHORIZATION flex;
 -- grant cron job execution to flex
 GRANT USAGE ON SCHEMA cron TO flex;
+GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA cron TO flex;
 
 -- authenticator is used by backend/postgREST to connect to the database
 CREATE ROLE flex_authenticator

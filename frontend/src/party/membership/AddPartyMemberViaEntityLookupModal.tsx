@@ -170,12 +170,19 @@ export const AddPartyMemberViaEntityLookupModal = ({
       <Modal.Content className="flex flex-col gap-4 min-w-lg">
         <FormItem>
           <FormItemLabel htmlFor="lookup-business-id">Email</FormItemLabel>
-          <TextField
-            id="lookup-business-id"
-            {...register("business_id")}
-            disabled={isPending}
-            placeholder="Enter the entity's email address"
-            aria-invalid={!!errors.business_id}
+          <Controller
+            name="business_id"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                id="lookup-business-id"
+                {...field}
+                onChange={(e) => field.onChange(e.target.value.toLowerCase())}
+                disabled={isPending}
+                placeholder="Enter the entity's email address"
+                aria-invalid={!!errors.business_id}
+              />
+            )}
           />
           {errors.business_id && (
             <Alert variant="error">{errors.business_id.message}</Alert>
