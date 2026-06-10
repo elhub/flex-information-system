@@ -102,8 +102,8 @@ const noticeTypes = [
     action: "Initiate SPG product prequalification and update status",
   },
   {
-    id: "no.elhub.flex.service_provider_product_suspension.product_id.not_qualified",
-    shortId: "service_provider_product_suspension.product_id.not_qualified",
+    id: "no.elhub.flex.service_provider_product_suspension.product_type.not_qualified",
+    shortId: "service_provider_product_suspension.product_type.not_qualified",
     label: "Inconsistency: SP product type suspension",
     description:
       "Inconsistency: suspending a SP on a product type that they are no longer qualified for",
