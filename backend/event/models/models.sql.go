@@ -91,16 +91,14 @@ func (q *Queries) GetControllableUnitCreateNotificationRecipients(ctx context.Co
 }
 
 const getControllableUnitLookupNotificationRecipientsAP = `-- name: GetControllableUnitLookupNotificationRecipientsAP :many
-SELECT cueu.end_user_id
-FROM api.controllable_unit AS cu
-    INNER JOIN notification.controllable_unit_end_user AS cueu
-        ON cu.id = cueu.controllable_unit_id
-            AND cueu.valid_time_range @> $1::timestamptz
-WHERE cu.accounting_point_id = $2
+SELECT apeu.end_user_id
+FROM notification.accounting_point_end_user AS apeu
+WHERE apeu.accounting_point_id = $1
+    AND apeu.valid_time_range @> $2::timestamptz
 `
 
-func (q *Queries) GetControllableUnitLookupNotificationRecipientsAP(ctx context.Context, recordedAt pgtype.Timestamptz, apID int) ([]int, error) {
-	rows, err := q.db.Query(ctx, getControllableUnitLookupNotificationRecipientsAP, recordedAt, apID)
+func (q *Queries) GetControllableUnitLookupNotificationRecipientsAP(ctx context.Context, apID int, recordedAt pgtype.Timestamptz) ([]int, error) {
+	rows, err := q.db.Query(ctx, getControllableUnitLookupNotificationRecipientsAP, apID, recordedAt)
 	if err != nil {
 		return nil, err
 	}

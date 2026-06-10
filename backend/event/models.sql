@@ -335,7 +335,7 @@ WHERE cueu.controllable_unit_id = @cu_id
 
 -- name: GetControllableUnitLookupNotificationRecipientsAP :many
 SELECT apeu.end_user_id
-FROM api.accounting_point_end_user AS apeu
+FROM notification.accounting_point_end_user AS apeu
 WHERE apeu.accounting_point_id = @ap_id
     AND apeu.valid_time_range @> @recorded_at::timestamptz;
 
