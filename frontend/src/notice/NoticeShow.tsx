@@ -10,6 +10,7 @@ import { Badge, BodyText, Link, Loader, Panel, Tabs } from "../components/ui";
 import { Notice } from "../generated-client";
 import { noticeStatusVariantMap } from "./noticeStatus";
 import { NoticeShowDetails } from "./NoticeShowDetails";
+import noticeTypes from "./noticeTypes";
 
 const NoticeShowTabs = () => {
   const [tab, setTab] = useTabSearchParam("details");
@@ -101,7 +102,11 @@ const NoticeShowContent = () => {
   return (
     <ShowPageLayout
       backTo={{ pathname: "/notice", label: "Notices" }}
-      title={notice?.id ? `Notice - ${notice.id}` : "Notice"}
+      title={
+        notice?.id
+          ? `Notice - ${noticeTypes.find((nt) => nt.id === notice.type)?.label ?? notice.type}`
+          : "Notice"
+      }
       badge={
         notice?.status ? (
           <Badge
