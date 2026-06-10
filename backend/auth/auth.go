@@ -551,6 +551,14 @@ func (auth *API) GetCallbackHandler(ctx *gin.Context) { //nolint:funlen,cyclop
 
 	slog.DebugContext(ctx, "callback", "token", idToken, "id", id)
 
+	if idType == "email" && id != strings.ToLower(id) {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, oauthErrorMessage{
+			Error:            oauthErrorInvalidClient,
+			ErrorDescription: "email address must be lowercase",
+		})
+		return
+	}
+
 	tx, err := auth.db.Begin(ctx)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, newErrorMessage(http.StatusInternalServerError, "could not begin tx in callback handler", err))
