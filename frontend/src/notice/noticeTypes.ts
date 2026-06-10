@@ -44,26 +44,26 @@ const noticeTypes = [
     shortId: "party.missing",
     label: "Party missing",
     description:
-      "Party listed by an external source but not registered in the system",
+      "Party exists in the party register but is not registered in the system",
     action:
-      "Create party to match the latest data fetched from the external source",
+      "Create party to match the latest data fetched from the party register",
   },
   {
     id: "no.elhub.flex.party.outdated",
     shortId: "party.outdated",
     label: "Party outdated",
-    description: "Mismatch in party data between system and an external source",
+    description: "Mismatch in party data between system and the party register",
     action:
-      "Update party to match the latest data fetched from the external source",
+      "Update party to match the latest data fetched from the party register",
   },
   {
     id: "no.elhub.flex.party.residual",
     shortId: "party.residual",
     label: "Party residual",
     description:
-      "Party registered in the system but not listed by an external source",
+      "Party registered in the system but not present in the party register",
     action:
-      "Delete party to match the latest data fetched from the external source",
+      "Terminate party to match the latest data fetched from the party register",
   },
   {
     id: "no.elhub.flex.service_provider_product_application.status.requested",
