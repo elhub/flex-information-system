@@ -22,8 +22,7 @@ deactivate SP
 note left
     Data:
     - name
-    - description (optional)
-    - ID in SP system (optional)
+    - bidding zone
 end note
 
 activate FIS
@@ -35,10 +34,11 @@ activate SP
 
 == Add Controllable Units (CU) to Service Providing Group (SPG) ==
 
-SP -> FIS: List own CU's with input filters
+SP -> FIS: Choose CU's from list of CU's
 activate FIS
 FIS --> SP: Return list of CU's
 deactivate FIS
+
 |||
 loop For each relevant CU
     SP -> FIS: Add CU to SPG
@@ -53,17 +53,35 @@ loop For each relevant CU
     |||
 end
 
-== Service Providing Group Grid Prequalification ==
+== Activate Service Providing Group ==
 
-SP -> FIS: Update\nstatus to [active]
+SP -> FIS: Activate SPG
+activate FIS
 note right
     Setting the status to active
     indicates that the SP has added all
-    CUs and the SPG is ready for grid prequalification.
+    CUs and the SPG is ready to be used
+    in a product application.
 end note
-activate FIS
 FIS --> SP: OK
 deactivate SP
+deactivate FIS
+
+== Service Providing Group grid prequalification ==
+
+
+note over SO
+    When PSO receives an SPG product application, the PSO
+    reviews the application to determine whether it is sufficiently
+    complete enought to begin the grid prequalification. Once PSO
+    chooses to start prequalification, SPG grid prequalification is
+    initated.
+end note
+
+activate SO
+SO -> FIS: Start prequalification
+deactivate SO
+activate FIS
 
 loop All Impacted System Operators (ISOs)
     FIS --> FIS: Add grid prequalification resource\nwith status [requested]
@@ -82,7 +100,7 @@ loop All Impacted System Operators (ISOs)
         without undue delay. Depending on the
         SPG, the process might differ a bit
         from SPG to SPG. Many small CUs might
-        require a different process that one big CU.
+        require a different process than one big CU.
         SO must keep status updated.
     end note
     loop When status changes
@@ -105,4 +123,6 @@ loop All Impacted System Operators (ISOs)
         |||
     end
 end
+
+
 @enduml
