@@ -77,7 +77,12 @@ export const NoticeList = () => {
       <DefaultStatusFilter />
       <Datagrid>
         <TextField source={noticeFields.id.source} />
-        <ReferenceField source={noticeFields.party_id.source} reference="party">
+        <ReferenceField
+          source={noticeFields.party_id.source}
+          reference="party"
+          label="Recipient"
+          hideLabel={true}
+        >
           <TextField source="name" />
         </ReferenceField>
         <NoticeType label="field.notice.type" />
