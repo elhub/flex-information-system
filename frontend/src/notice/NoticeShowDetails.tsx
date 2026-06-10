@@ -5,7 +5,7 @@ import {
   useGetOne,
 } from "ra-core";
 import { Link } from "react-router-dom";
-import { IconPlus, IconPencil } from "@elhub/ds-icons";
+import { IconPencil } from "@elhub/ds-icons";
 import {
   Alert,
   BodyText,
@@ -17,7 +17,6 @@ import {
 } from "../components/ui";
 import { DateField, EnumField, TextField } from "../components/EDS-ra";
 import { ProductTypeArrayField } from "../product_type/components";
-import { PartyInputLocationState } from "../party/PartyInput";
 import { DiffTextField } from "../components/EDS-ra/fields/DiffTextField";
 import { Party, Notice as GNotice } from "../generated-client";
 import {
@@ -28,6 +27,7 @@ import {
 } from "../generated-client/zod.gen";
 import { getFields } from "../zod";
 import { DataTable } from "../components/EDS-ra/list/Datagrid";
+import { NoticePartyMissing } from "./details/NoticePartyMissing";
 
 type Notice = GNotice & {
   data: any;
@@ -59,115 +59,6 @@ const PartyUpdateButton = ({
     Update party
   </Button>
 );
-
-type PartyCreateButtonProps = {
-  partyData: Party;
-  disabled?: boolean;
-};
-
-// button to jump to the party input page in create mode with autofilled form
-const PartyCreateButton = ({ partyData, disabled }: PartyCreateButtonProps) => {
-  const locationState: PartyInputLocationState = { party: partyData };
-
-  return (
-    <Button
-      as={Link}
-      to="/party/create"
-      state={locationState}
-      icon={IconPlus}
-      disabled={disabled}
-    >
-      Create party
-    </Button>
-  );
-};
-
-// component to show details of a notice of type no.elhub.flex.party.missing
-const NoticePartyMissingShowDetails = ({ notice }: NoticeShowDetailsProps) => {
-  const entityExists = notice.data.party?.entity_id != undefined;
-
-  const entityAlert = entityExists ? (
-    <>
-      <Alert variant="success">Found</Alert>
-      <VerticalSpace />
-      <BodyText>
-        The entity owning the missing party already exists in the system.
-      </BodyText>
-    </>
-  ) : (
-    <>
-      <Alert variant="warning">Not found</Alert>
-      <VerticalSpace />
-      <BodyText>
-        The owning entity of the missing party is also missing from the system.
-        It must be created before the missing party can be added.
-      </BodyText>
-    </>
-  );
-
-  const entityFields = getFields(zEntity.shape);
-  const partyFields = getFields(zParty.shape);
-
-  return (
-    <>
-      <Heading level={3} size="xsmall" spacing>
-        A party is missing in the system.
-      </Heading>
-      <VerticalSpace />
-
-      <BodyText weight="bold">Entity owning the missing party</BodyText>
-      <VerticalSpace size="small" />
-      <ResourceContextProvider value="entity">
-        <RecordContextProvider value={notice.data.entity}>
-          <Content>
-            <TextField source={entityFields.business_id.source} label />
-            <EnumField
-              source={entityFields.business_id_type.source}
-              enumKey="entity.business_id_type"
-              label
-            />
-            <TextField source={entityFields.name.source} label />
-            <EnumField
-              source={entityFields.type.source}
-              enumKey="entity.type"
-              label
-            />
-          </Content>
-          <VerticalSpace size="small" />
-          {entityAlert}
-        </RecordContextProvider>
-      </ResourceContextProvider>
-
-      <VerticalSpace />
-      <BodyText weight="bold">Missing party</BodyText>
-      <VerticalSpace size="small" />
-      <ResourceContextProvider value="party">
-        <RecordContextProvider value={notice.data.party}>
-          <Content>
-            <TextField source={partyFields.business_id.source} label />
-            <EnumField
-              source={partyFields.business_id_type.source}
-              enumKey="party.business_id_type"
-              label
-            />
-            <TextField source={partyFields.entity_id.source} label />
-            <TextField source={partyFields.name.source} label />
-            <EnumField
-              source={partyFields.type.source}
-              enumKey="party.type"
-              label
-            />
-          </Content>
-          <VerticalSpace size="small" />
-          <PartyCreateButton
-            disabled={!entityExists}
-            partyData={notice.data.party}
-          />
-        </RecordContextProvider>
-      </ResourceContextProvider>
-    </>
-  );
-};
 
 // component to show details of a notice of type no.elhub.flex.party.outdated
 const NoticePartyOutdatedShowDetails = ({ notice }: NoticeShowDetailsProps) => {
@@ -348,7 +239,7 @@ export const NoticeShowDetails = () => {
     case "no.elhub.flex.party.outdated":
       return <NoticePartyOutdatedShowDetails notice={record} />;
     case "no.elhub.flex.party.missing":
-      return <NoticePartyMissingShowDetails notice={record} />;
+      return <NoticePartyMissing noticeData={record.data} />;
     case "no.elhub.flex.controllable_unit_service_provider.valid_time.outside_contract":
       return <NoticeCUSPValidTimeOutsideContractShowDetails notice={record} />;
     case "no.elhub.flex.service_provider_product_suspension.product_type.not_qualified":

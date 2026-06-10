@@ -81,6 +81,7 @@ const PartyShowSummary = ({
         )}
         <div className="flex flex-col gap-4">
           <LabelValue size="small" labelKey="party.id" value={party.id} />
+          <LabelValue size="small" labelKey="party.name" value={party.name} />
           <LabelValue
             size="small"
             labelKey="party.business_id"
@@ -103,17 +104,10 @@ const PartyShowSummary = ({
               </Link>
             }
           />
-          <LabelValue size="small" labelKey="party.name" value={party.name} />
           <LabelValue
             size="small"
             labelKey="party.type"
             value={translateEnum(`party.type.${party.type}`)}
-            tooltip
-          />
-          <LabelValue
-            size="small"
-            labelKey="party.role"
-            value={translateEnum(`party.role.${party.role}`)}
             tooltip
           />
           <LabelValue
