@@ -14,17 +14,28 @@ import { noticeStatusVariantMap } from "./noticeStatus";
 import noticeTypes from "./noticeTypes";
 import { zNotice } from "../generated-client/zod.gen";
 import { getFields } from "../zod";
-import { useListContext, useRecordContext } from "react-admin";
+import { useGetIdentity, useListContext, useRecordContext } from "react-admin";
 import { Link as RouterLink } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
-const DefaultStatusFilter = () => {
+const DefaultFilters = ({
+  isFiso,
+  partyID,
+}: {
+  isFiso: boolean;
+  partyID?: string;
+}) => {
   const { filterValues, setFilters } = useListContext();
+  const applied = useRef(false);
   useEffect(() => {
-    if (!filterValues["status@in"]?.length) {
-      setFilters({ ...filterValues, "status@in": ["active"] });
-    }
-  }, []);
+    if (applied.current || !partyID) return;
+    applied.current = true;
+    const updates: Record<string, unknown> = {};
+    if (!filterValues["status@in"]?.length) updates["status@in"] = ["active"];
+    if (!filterValues["party_id"]) updates["party_id"] = partyID;
+    if (Object.keys(updates).length)
+      setFilters({ ...filterValues, ...updates });
+  }, [filterValues, setFilters, isFiso, partyID]);
   return null;
 };
 
@@ -51,19 +62,26 @@ const NoticeType = ({ label: _label }: { label?: string }) => {
 
 export const NoticeList = () => {
   const noticeFields = getFields(zNotice.shape);
+  const { data: identity } = useGetIdentity();
+  const isFiso =
+    identity?.role === "flex_flexibility_information_system_operator";
 
   const filters = [
-    <PartyReferenceInput
-      source={noticeFields.party_id.source}
-      label="field.notice.party_id"
-      noTypeFilter
-      key="party"
-    />,
+    ...(isFiso
+      ? [
+          <PartyReferenceInput
+            source={noticeFields.party_id.source}
+            label="field.notice.party_id"
+            noTypeFilter
+            key="party"
+          />,
+        ]
+      : []),
     <AutocompleteInput
       key="notice_type"
       source={noticeFields.type.source}
       choices={noticeTypes.map((nt) => ({ id: nt.id, name: nt.label }))}
-      style={{ width: "600px" }}
+      style={{ width: "400px" }}
     />,
     <EnumArrayInput
       key="notice_status"
@@ -74,7 +92,7 @@ export const NoticeList = () => {
 
   return (
     <List perPage={25} filters={filters} empty={false}>
-      <DefaultStatusFilter />
+      <DefaultFilters isFiso={isFiso} partyID={identity?.partyID} />
       <Datagrid>
         <TextField source={noticeFields.id.source} />
         <ReferenceField
