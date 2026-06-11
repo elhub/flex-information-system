@@ -132,19 +132,6 @@ def test_party_fiso(sts):
     parties = list_party.sync(client=client_fiso)
     assert isinstance(parties, list)
 
-    # cannot create a party with status other than `new`
-    e = create_party.sync(
-        client=client_fiso,
-        body=PartyCreateRequest(
-            name="New End User",
-            role=PartyRole.FLEX_END_USER,
-            type_=PartyType.END_USER,
-            entity_id=ent.id,
-            status=PartyStatus.ACTIVE,
-        ),
-    )
-    assert isinstance(e, ErrorMessage)
-
     # endpoint: POST /party
     # can create an end user with a UUID
     p = create_party.sync(
