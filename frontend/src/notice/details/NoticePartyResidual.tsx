@@ -41,6 +41,7 @@ export const NoticePartyResidual = ({ source }: NoticePartyResidualProps) => {
       onSettled: () => {
         void queryClient.invalidateQueries({ queryKey: ["party", partyId] });
         void queryClient.invalidateQueries({ queryKey: ["notices"] });
+      },
     },
   });
 
