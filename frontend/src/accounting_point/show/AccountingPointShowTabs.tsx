@@ -48,20 +48,11 @@ export const AccountingPointShowTabs = ({
   return (
     <Tabs value={tab} onChange={setTab} className="relative top-[-24px]">
       <Tabs.List>
-        {canViewLocation && (
-          <Tabs.Tab label="Geographic location" value="location" />
-        )}
-        {canViewGridLocation && (
-          <Tabs.Tab label="Grid Location" value="grid_location" />
-        )}
+        <Tabs.Tab label="Location" value="location" />
       </Tabs.List>
-      {canViewLocation && (
-        <Tabs.Panel value="location">
-          <AccountingPointLocationMap location={location} />
-        </Tabs.Panel>
-      )}
-      {canViewGridLocation && (
-        <Tabs.Panel value="grid_location">
+      <Tabs.Panel value="location">
+        {canViewLocation && <AccountingPointLocationMap location={location} />}
+        {canViewGridLocation && (
           <AccountingPointGridLocationPanel
             apId={accountingPoint.id}
             gridLocation={gridLocation}
@@ -71,8 +62,8 @@ export const AccountingPointShowTabs = ({
               gridLocation,
             )}
           />
-        </Tabs.Panel>
-      )}
+        )}
+      </Tabs.Panel>
     </Tabs>
   );
 };
