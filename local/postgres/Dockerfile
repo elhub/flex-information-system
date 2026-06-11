@@ -7,5 +7,4 @@ RUN apt-get update \
           postgresql-17-postgis-3 \
           postgresql-17-wal2json \
           postgresql-17-cron \
-          postgresql-17-postgis-3 \
       && rm -rf /var/lib/apt/lists/*

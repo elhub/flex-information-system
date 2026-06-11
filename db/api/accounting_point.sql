@@ -2,14 +2,15 @@
 -- Manually managed file
 
 -- changeset flex:api-accounting-point-create endDelimiter:-- runOnChange:true
-CREATE OR REPLACE VIEW api.accounting_point
+DROP VIEW IF EXISTS api.accounting_point CASCADE;
+CREATE VIEW api.accounting_point
 WITH (security_invoker = true) AS (
     SELECT
         ap.id,
         ap.business_id,
         ap_so.system_operator_id,
-        ap.location,
         ap.recorded_by,
+        ap.location,
         lower(ap.record_time_range) AS recorded_at
     FROM flex.accounting_point AS ap
         INNER JOIN flex.accounting_point_system_operator AS ap_so
