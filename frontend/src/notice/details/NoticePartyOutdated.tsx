@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { BodyText, Button, Heading, VerticalSpace } from "../../components/ui";
+import { Button, VerticalSpace } from "../../components/ui";
 import { LabelValue } from "../../components/LabelValue";
 import { useConfirmAction } from "../../components/ConfirmAction";
 import {
@@ -68,17 +68,7 @@ export const NoticePartyOutdated = ({
   });
 
   if (partyId == undefined) {
-    return (
-      <>
-        <Heading level={3} size="xsmall" spacing>
-          A party is outdated in the system.
-        </Heading>
-        <BodyText>
-          The notice does not contain a valid party reference in its source
-          field.
-        </BodyText>
-      </>
-    );
+    return null;
   }
 
   if (isPending) {
@@ -91,15 +81,6 @@ export const NoticePartyOutdated = ({
 
   return (
     <>
-      <Heading level={3} size="xsmall" spacing>
-        A party is outdated in the system.
-      </Heading>
-      <BodyText>
-        This party&apos;s information has changed in the party register. Review
-        the changes below and use the button to update the party.
-      </BodyText>
-      <VerticalSpace />
-
       <VerticalSpace size="small" />
       <div className="flex flex-col gap-4 mb-4">
         {noticeData.party?.name != undefined && (

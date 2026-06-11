@@ -1,5 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { BodyText, Button, Heading, VerticalSpace } from "../../components/ui";
+import { Button, VerticalSpace } from "../../components/ui";
 import { LabelValue } from "../../components/LabelValue";
 import { useConfirmAction } from "../../components/ConfirmAction";
 import { updateParty } from "../../generated-client";
@@ -46,17 +46,7 @@ export const NoticePartyResidual = ({ source }: NoticePartyResidualProps) => {
   });
 
   if (partyId == undefined) {
-    return (
-      <>
-        <Heading level={3} size="xsmall" spacing>
-          A party is residual in the system.
-        </Heading>
-        <BodyText>
-          The notice does not contain a valid party reference in its source
-          field.
-        </BodyText>
-      </>
-    );
+    return null;
   }
 
   if (isPending) {
@@ -69,16 +59,6 @@ export const NoticePartyResidual = ({ source }: NoticePartyResidualProps) => {
 
   return (
     <>
-      <Heading level={3} size="xsmall" spacing>
-        A residual party exists in the system.
-      </Heading>
-      <BodyText>
-        This party should no longer be active in the flexibility information
-        system. Review the information below and use the button to terminate the
-        party.
-      </BodyText>
-      <VerticalSpace />
-
       <VerticalSpace size="small" />
       <div className="flex flex-col gap-4 mb-4">
         <LabelValue size="small" labelKey="party.name" value={party?.name} />
