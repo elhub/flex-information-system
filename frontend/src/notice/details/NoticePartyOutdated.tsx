@@ -62,8 +62,7 @@ export const NoticePartyOutdated = ({
       },
       onSettled: () => {
         void queryClient.invalidateQueries({ queryKey: ["party", partyId] });
-        void queryClient.invalidateQueries({ queryKey: ["notice"] });
-      },
+        void queryClient.invalidateQueries({ queryKey: ["notices"] });
     },
   });
 
