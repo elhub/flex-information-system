@@ -218,7 +218,7 @@ class AccountingPointRepositoryTest : FunSpec({
         }
     }
 
-    context("upsertAccountingPointEndUsers") {
+    context("replaceAllAccountingPointEndUsers") {
 
         test("inserts new end-user rows") {
             // given
@@ -228,7 +228,7 @@ class AccountingPointRepositoryTest : FunSpec({
 
             // when
             with(internalDataPrincipal) {
-                repo.upsertAccountingPointEndUsers(
+                repo.replaceAllAccountingPointEndUsers(
                     listOf(AccountingPointEndUser(apId, pid, validFrom, null)),
                 )
             }.shouldBeRight()
@@ -247,7 +247,7 @@ class AccountingPointRepositoryTest : FunSpec({
 
             // when
             with(internalDataPrincipal) {
-                repo.upsertAccountingPointEndUsers(
+                repo.replaceAllAccountingPointEndUsers(
                     listOf(AccountingPointEndUser(apId, pid, Instant.parse("2023-12-31T23:00:00Z"), null)),
                 )
             }.shouldBeRight()
@@ -285,7 +285,7 @@ class AccountingPointRepositoryTest : FunSpec({
 
             // when
             with(internalDataPrincipal) {
-                repo.upsertAccountingPointEndUsers(
+                repo.replaceAllAccountingPointEndUsers(
                     listOf(AccountingPointEndUser(apId, orgNumber, Instant.parse("2023-12-31T23:00:00Z"), null)),
                 )
             }.shouldBeRight()
@@ -310,8 +310,8 @@ class AccountingPointRepositoryTest : FunSpec({
             val endUsers = listOf(AccountingPointEndUser(apId, pid, Instant.parse("2023-12-31T23:00:00Z"), null))
 
             // when — called twice with the same end user
-            with(internalDataPrincipal) { repo.upsertAccountingPointEndUsers(endUsers) }.shouldBeRight()
-            with(internalDataPrincipal) { repo.upsertAccountingPointEndUsers(endUsers) }.shouldBeRight()
+            with(internalDataPrincipal) { repo.replaceAllAccountingPointEndUsers(endUsers) }.shouldBeRight()
+            with(internalDataPrincipal) { repo.replaceAllAccountingPointEndUsers(endUsers) }.shouldBeRight()
 
             // then — exactly one party row exists for this end user
             val partyCount = PostgresTestContainer.withConnection { conn ->
@@ -336,14 +336,14 @@ class AccountingPointRepositoryTest : FunSpec({
             val validFrom = Instant.parse("2023-12-31T23:00:00Z")
 
             with(internalDataPrincipal) {
-                repo.upsertAccountingPointEndUsers(
+                repo.replaceAllAccountingPointEndUsers(
                     listOf(AccountingPointEndUser(apId, originalPid, validFrom, null)),
                 )
             }.shouldBeRight()
 
             // when — same start, different end user
             with(internalDataPrincipal) {
-                repo.upsertAccountingPointEndUsers(
+                repo.replaceAllAccountingPointEndUsers(
                     listOf(AccountingPointEndUser(apId, newPid, validFrom, null)),
                 )
             }.shouldBeRight()
@@ -376,14 +376,14 @@ class AccountingPointRepositoryTest : FunSpec({
             val newValidTo = Instant.parse("2024-12-31T23:00:00Z")
 
             with(internalDataPrincipal) {
-                repo.upsertAccountingPointEndUsers(
+                repo.replaceAllAccountingPointEndUsers(
                     listOf(AccountingPointEndUser(apId, pid, validFrom, originalValidTo)),
                 )
             }.shouldBeRight()
 
             // when
             with(internalDataPrincipal) {
-                repo.upsertAccountingPointEndUsers(
+                repo.replaceAllAccountingPointEndUsers(
                     listOf(AccountingPointEndUser(apId, pid, validFrom, newValidTo)),
                 )
             }.shouldBeRight()
@@ -402,14 +402,14 @@ class AccountingPointRepositoryTest : FunSpec({
             val newStart = Instant.parse("2023-12-31T23:00:00Z")
 
             with(internalDataPrincipal) {
-                repo.upsertAccountingPointEndUsers(
+                repo.replaceAllAccountingPointEndUsers(
                     listOf(AccountingPointEndUser(apId, pid, oldStart, null)),
                 )
             }.shouldBeRight()
 
             // when — incoming only contains newStart; oldStart should be deleted
             with(internalDataPrincipal) {
-                repo.upsertAccountingPointEndUsers(
+                repo.replaceAllAccountingPointEndUsers(
                     listOf(AccountingPointEndUser(apId, pid, newStart, null)),
                 )
             }.shouldBeRight()
@@ -420,7 +420,39 @@ class AccountingPointRepositoryTest : FunSpec({
             rows[0].validFrom shouldBe newStart
         }
 
-        test("does not touch rows for a different accounting point") {
+        test("does not delete rows for accounting points absent from the input when deletion is triggered") {
+            // given
+            val apId = insertAccountingPoint(uniqueGsrn())
+            val otherApId = insertAccountingPoint(uniqueGsrn())
+            val pid = uniquePid()
+            val oldStart = Instant.parse("2022-12-31T23:00:00Z")
+            val newStart = Instant.parse("2023-12-31T23:00:00Z")
+
+            with(internalDataPrincipal) {
+                repo.replaceAllAccountingPointEndUsers(
+                    listOf(
+                        AccountingPointEndUser(apId, pid, oldStart, null),
+                        AccountingPointEndUser(otherApId, pid, oldStart, null),
+                    ),
+                )
+            }.shouldBeRight()
+
+            // when — call for apId only with a different start, triggering deletion of apId's stale row
+            with(internalDataPrincipal) {
+                repo.replaceAllAccountingPointEndUsers(
+                    listOf(AccountingPointEndUser(apId, pid, newStart, null)),
+                )
+            }.shouldBeRight()
+
+            // then — apId's stale row is gone, otherApId's row is untouched
+            val apRows = queryEndUserRows(apId)
+            apRows.size shouldBe 1
+            apRows[0].validFrom shouldBe newStart
+
+            queryEndUserRows(otherApId).size shouldBe 1
+        }
+
+        test("does not touch rows for a different accounting point when no deletion occurs") {
             // given
             val noiseApId = insertAccountingPoint(uniqueGsrn())
             val noisePid = uniquePid()
@@ -433,7 +465,7 @@ class AccountingPointRepositoryTest : FunSpec({
 
             // when
             with(internalDataPrincipal) {
-                repo.upsertAccountingPointEndUsers(
+                repo.replaceAllAccountingPointEndUsers(
                     listOf(AccountingPointEndUser(targetApId, targetPid, Instant.parse("2023-12-31T23:00:00Z"), null)),
                 )
             }.shouldBeRight()
@@ -443,13 +475,86 @@ class AccountingPointRepositoryTest : FunSpec({
             noiseRows.size shouldBe 1
             noiseRows[0].validFrom shouldBe noiseStart
         }
+
+        test("uses anonymized person ID as name for entity and party when end user is a person") {
+            // given
+            val apId = insertAccountingPoint(uniqueGsrn())
+            val pid = uniquePid() // e.g. "00000012345"
+
+            // when
+            with(internalDataPrincipal) {
+                repo.replaceAllAccountingPointEndUsers(
+                    listOf(AccountingPointEndUser(apId, pid, Instant.parse("2023-12-31T23:00:00Z"), null)),
+                )
+            }.shouldBeRight()
+
+            // then — entity and party names use only the anonymized version of the PID
+            val expectedName = anonymizePersonId(pid)
+            val entityName = PostgresTestContainer.withConnection { conn ->
+                conn.prepareStatement("SELECT name FROM flex.entity WHERE business_id = ?").use { stmt ->
+                    stmt.setString(1, pid)
+                    stmt.executeQuery().use { rs ->
+                        rs.next()
+                        rs.getString(1)
+                    }
+                }
+            }
+            entityName shouldBe "$expectedName - ENT"
+
+            val partyName = PostgresTestContainer.withConnection { conn ->
+                conn.prepareStatement(
+                    "SELECT p.name FROM flex.party p JOIN flex.entity e ON e.id = p.entity_id WHERE e.business_id = ? AND p.type = 'end_user'",
+                ).use { stmt ->
+                    stmt.setString(1, pid)
+                    stmt.executeQuery().use { rs ->
+                        rs.next()
+                        rs.getString(1)
+                    }
+                }
+            }
+            partyName shouldBe "$expectedName - EU"
+        }
+
+        test("uses full business ID as name for entity and party when end user is an organisation") {
+            // given
+            val apId = insertAccountingPoint(uniqueGsrn())
+            val orgNumber = uniqueOrgNumber()
+
+            // when
+            with(internalDataPrincipal) {
+                repo.replaceAllAccountingPointEndUsers(
+                    listOf(AccountingPointEndUser(apId, orgNumber, Instant.parse("2023-12-31T23:00:00Z"), null)),
+                )
+            }.shouldBeRight()
+
+            // then — entity and party names use the full org number
+            val entityName = PostgresTestContainer.withConnection { conn ->
+                conn.prepareStatement("SELECT name FROM flex.entity WHERE business_id = ?").use { stmt ->
+                    stmt.setString(1, orgNumber)
+                    stmt.executeQuery().use { rs ->
+                        rs.next()
+                        rs.getString(1)
+                    }
+                }
+            }
+            entityName shouldBe "$orgNumber - ENT"
+
+            val partyName = PostgresTestContainer.withConnection { conn ->
+                conn.prepareStatement(
+                    "SELECT p.name FROM flex.party p JOIN flex.entity e ON e.id = p.entity_id WHERE e.business_id = ? AND p.type = 'end_user'",
+                ).use { stmt ->
+                    stmt.setString(1, orgNumber)
+                    stmt.executeQuery().use { rs ->
+                        rs.next()
+                        rs.getString(1)
+                    }
+                }
+            }
+            partyName shouldBe "$orgNumber - EU"
+        }
     }
 
-    // -------------------------------------------------------------------------
-    // upsertAccountingPointEnergySupplier
-    // -------------------------------------------------------------------------
-
-    context("upsertAccountingPointEnergySupplier") {
+    context("replaceAllAccountingPointEnergySupplier") {
 
         test("inserts new energy-supplier rows") {
             // given
@@ -460,7 +565,7 @@ class AccountingPointRepositoryTest : FunSpec({
 
             // when
             with(internalDataPrincipal) {
-                repo.upsertAccountingPointEnergySupplier(
+                repo.replaceAllAccountingPointEnergySupplier(
                     listOf(AccountingPointEnergySupplier(apId, gln, validFrom, null)),
                 )
             }.shouldBeRight()
@@ -482,14 +587,14 @@ class AccountingPointRepositoryTest : FunSpec({
             val validFrom = Instant.parse("2023-12-31T23:00:00Z")
 
             with(internalDataPrincipal) {
-                repo.upsertAccountingPointEnergySupplier(
+                repo.replaceAllAccountingPointEnergySupplier(
                     listOf(AccountingPointEnergySupplier(apId, originalGln, validFrom, null)),
                 )
             }.shouldBeRight()
 
             // when
             with(internalDataPrincipal) {
-                repo.upsertAccountingPointEnergySupplier(
+                repo.replaceAllAccountingPointEnergySupplier(
                     listOf(AccountingPointEnergySupplier(apId, newGln, validFrom, null)),
                 )
             }.shouldBeRight()
@@ -520,14 +625,14 @@ class AccountingPointRepositoryTest : FunSpec({
             val newValidTo = Instant.parse("2024-12-31T23:00:00Z")
 
             with(internalDataPrincipal) {
-                repo.upsertAccountingPointEnergySupplier(
+                repo.replaceAllAccountingPointEnergySupplier(
                     listOf(AccountingPointEnergySupplier(apId, gln, validFrom, originalValidTo)),
                 )
             }.shouldBeRight()
 
             // when
             with(internalDataPrincipal) {
-                repo.upsertAccountingPointEnergySupplier(
+                repo.replaceAllAccountingPointEnergySupplier(
                     listOf(AccountingPointEnergySupplier(apId, gln, validFrom, newValidTo)),
                 )
             }.shouldBeRight()
@@ -547,14 +652,14 @@ class AccountingPointRepositoryTest : FunSpec({
             val newStart = Instant.parse("2023-12-31T23:00:00Z")
 
             with(internalDataPrincipal) {
-                repo.upsertAccountingPointEnergySupplier(
+                repo.replaceAllAccountingPointEnergySupplier(
                     listOf(AccountingPointEnergySupplier(apId, gln, oldStart, null)),
                 )
             }.shouldBeRight()
 
             // when
             with(internalDataPrincipal) {
-                repo.upsertAccountingPointEnergySupplier(
+                repo.replaceAllAccountingPointEnergySupplier(
                     listOf(AccountingPointEnergySupplier(apId, gln, newStart, null)),
                 )
             }.shouldBeRight()
@@ -565,7 +670,40 @@ class AccountingPointRepositoryTest : FunSpec({
             rows[0].validFrom shouldBe newStart
         }
 
-        test("does not touch rows for a different accounting point") {
+        test("does not delete rows for accounting points absent from the input when deletion is triggered") {
+            // given
+            val apId = insertAccountingPoint(uniqueGsrn())
+            val otherApId = insertAccountingPoint(uniqueGsrn())
+            val gln = uniqueGln()
+            insertEnergySupplierParty(gln)
+            val oldStart = Instant.parse("2022-12-31T23:00:00Z")
+            val newStart = Instant.parse("2023-12-31T23:00:00Z")
+
+            with(internalDataPrincipal) {
+                repo.replaceAllAccountingPointEnergySupplier(
+                    listOf(
+                        AccountingPointEnergySupplier(apId, gln, oldStart, null),
+                        AccountingPointEnergySupplier(otherApId, gln, oldStart, null),
+                    ),
+                )
+            }.shouldBeRight()
+
+            // when — call for apId only with a different start, triggering deletion of apId's stale row
+            with(internalDataPrincipal) {
+                repo.replaceAllAccountingPointEnergySupplier(
+                    listOf(AccountingPointEnergySupplier(apId, gln, newStart, null)),
+                )
+            }.shouldBeRight()
+
+            // then — apId's stale row is gone, otherApId's row is untouched
+            val apRows = queryEnergySupplierRows(apId)
+            apRows.size shouldBe 1
+            apRows[0].validFrom shouldBe newStart
+
+            queryEnergySupplierRows(otherApId).size shouldBe 1
+        }
+
+        test("does not touch rows for a different accounting point when no deletion occurs") {
             // given
             val noiseApId = insertAccountingPoint(uniqueGsrn())
             val noiseGln = uniqueGln()
@@ -579,7 +717,7 @@ class AccountingPointRepositoryTest : FunSpec({
 
             // when
             with(internalDataPrincipal) {
-                repo.upsertAccountingPointEnergySupplier(
+                repo.replaceAllAccountingPointEnergySupplier(
                     listOf(AccountingPointEnergySupplier(targetApId, targetGln, Instant.parse("2023-12-31T23:00:00Z"), null)),
                 )
             }.shouldBeRight()
@@ -597,13 +735,13 @@ class AccountingPointRepositoryTest : FunSpec({
 
             // when
             val result = with(internalDataPrincipal) {
-                repo.upsertAccountingPointEnergySupplier(
+                repo.replaceAllAccountingPointEnergySupplier(
                     listOf(AccountingPointEnergySupplier(apId, unknownGln, Instant.parse("2023-12-31T23:00:00Z"), null)),
                 )
             }
 
             // then
-            result.shouldBeLeft() shouldBe DatabaseError("Failed to upsert accounting point energy suppliers")
+            result.shouldBeLeft() shouldBe DatabaseError("Failed to replace accounting point energy suppliers")
         }
     }
 

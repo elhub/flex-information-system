@@ -123,15 +123,15 @@ class AccountingPointServiceImpl(
                                     validTo = adapterMga.validTo,
                                 )
                             }
-                            accountingPointMeteringGridAreaRepository.upsertAll(accountingPointMgas)
-                                .mapLeft { err -> err.toInternalServerError("upsertAll MGAs") }
+                            accountingPointMeteringGridAreaRepository.replaceAllFor(accountingPointMgas)
+                                .mapLeft { err -> err.toInternalServerError("replaceAllFor MGAs") }
                                 .bind()
 
-                            accountingPointRepository.upsertAccountingPointEndUsers(endUsers)
-                                .mapLeft { it.toInternalServerError("upsertAccountingPointEndUsers") }.bind()
+                            accountingPointRepository.replaceAllAccountingPointEndUsers(endUsers)
+                                .mapLeft { it.toInternalServerError("replaceAllAccountingPointEndUsers") }.bind()
 
-                            accountingPointRepository.upsertAccountingPointEnergySupplier(energySuppliers)
-                                .mapLeft { it.toInternalServerError("upsertAccountingPointEnergySupplier") }.bind()
+                            accountingPointRepository.replaceAllAccountingPointEnergySupplier(energySuppliers)
+                                .mapLeft { it.toInternalServerError("replaceAllAccountingPointEnergySupplier") }.bind()
 
                             accountingPointRepository.markSyncComplete(accountingPointId)
                                 .mapLeft { it.toInternalServerError("markSyncComplete") }.bind()

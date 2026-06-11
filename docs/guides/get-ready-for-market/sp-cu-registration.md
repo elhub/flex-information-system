@@ -19,42 +19,41 @@ in the FIS.
 
 ![SP CU registration path](../../diagrams/sp_cu_registration.drawio.png)
 
-## 1. Start at CU registrations
+## 1. Create a new CU
 
-Begin by navigating to CU registrations.
-This is where the [CU registration](../../processes/controllable-unit-registration.md)
-process starts.
+To create a new CU, click **create new** from the dashboard or navigate to
+**Controllable units** on the menu and select **create**
 
-## 2. Look up the controllable unit
+This is where the [CU registration](../../processes/controllable-unit-registration.md) process begins.
 
-Before creating a new controllable unit, ensure that it does **not** already
-exist in the register by performing the [CU lookup](../../processes/controllable-unit-lookup.md)
-process.
+## 2. Look up the CU
 
-This process also confirms that the accounting point belongs to the end user.
-The end user ID is required in order to prevent unauthorized use of the lookup function.
+The first step in the registration flow is the [CU lookup](../../processes/controllable-unit-lookup.md)
+process. This process is done to ensure that the CU does **not** already exist
+in the register.
 
-## 3. Check if the controllable unit already exists
+The lookup process also verifies that the accounting point belongs to the end user.
+An end user ID is required to prevent unauthorized use of the lookup function.
 
-Inspect the list of CUs at the accounting point:
+If no CUs are registered on the accounting point, you will automatically continue
+to the CU creation step.
 
-* If the CU does **not** appear → proceed to `Create a new controllable unit`.
-* If the CU **does** appear → the CU is already registered.
-  *If the CU is receiving a new contract to switch service provider, follow the
-  [service provider switching process](../../processes/service-provider-switching.md).*
+If one or more CUs are already registered on the accounting point, the lookup process
+will return a list of the existing CUs. Review the list to determine whether
+the CU has already been registered. If it has not, you can continue creating a new
+CU.
 
-## 4. Create a new controllable unit
+If the CU is registered by a different service provider and the end user has changed
+service provider, follow the [service provider switching process](../../processes/service-provider-switching.md).
 
-Create a new controllable unit and provide the required information as described
-in the portal.
+## 3. Fill in CU form
+
+Provide the required information about the CU as described in the portal.
 
 > [!NOTE]
 >
 > The information required supports several processes:
 >
-> * [Grid validation](../../processes/controllable-unit-registration.md):
-> It enables the system operator to assess whether the CU can operate safely
-> within the grid.
 > * [SPG registration](../../processes/service-providing-group-registration.md):
 > It ensures that the CU can be correctly linked to a service providing group (SPG),
 > which determines how the CU will participate in flexibility markets.
@@ -63,20 +62,7 @@ in the portal.
 > since the technical characteristics of the CU affect the overall
 > delivery potential of the group.
 
-## 5. Add reference to the end‑user contract
-
-The [contract reference](../../resources/controllable_unit_service_provider.md)
-between the service provider and the end user needs to be registered.
-
-The contract establishes the service provider’s right to control the CU and
-functions as the authorization mechanism within the register. This enables the
-service provider to manage the CU in the system.
-
-> [!NOTE]
-> It is not possible to add contracts with start dates in the future when
-> registering a new CU.
-
-## 6. Add technical resources
+## 4. Add technical resources
 
 The next step is to add [technical resources](../../resources/technical_resource.md),
 which represent the assets that the controllable unit consists of.
@@ -92,24 +78,21 @@ added individually in the portal.
 >* It enables more efficient evaluation when different CUs contain identical or
 > similar technical resources.
 
-## 7. Activate the controllable unit
+## 5. Activate the controllable unit
 
 The controllable unit is now registered in the FIS, but it is only visible for the
 SP that has registered it because it has not been activated.
 
-Review all information to ensure everything is correct before activating the
-controllable unit.
+Activating the controllable unit will allow you to add it to service providing groups.
 
-When a controllable unit is activated, the connecting system operator is notified.
-The connecting system operator will grid validate the controllable unit.
+Ensure the following before activating:
 
-The system operator sets a grid validation status and the service provider is notified
-of the status. The status is registered on the controllable unit.
+* all technical resources have been added
+* data is correct
 
 ## Next step: Grouping controllable units in a service providing group
 
-Once the CU is registered, it can be added to a service providing group (SPG) -
-also before the CU is grid validated.
+Once the CU is registered, it can be added to a service providing group (SPG).
 
 You may choose between two valid workflows:
 

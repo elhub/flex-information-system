@@ -48,6 +48,14 @@ $$;
 ALTER TABLE IF EXISTS event ENABLE ROW LEVEL SECURITY;
 
 -- internal
+GRANT INSERT, SELECT ON event TO flex_internal_data;
+DROP POLICY IF EXISTS "EVENT_INTERNAL_DATA" ON event;
+CREATE POLICY "EVENT_INTERNAL_DATA" ON event
+FOR ALL
+TO flex_internal_data
+USING (true)
+WITH CHECK (true);
+
 GRANT SELECT ON event TO flex_internal_event_notification;
 DROP POLICY IF EXISTS "EVENT_INTERNAL_EVENT_NOTIFICATION_SELECT" ON event;
 CREATE POLICY "EVENT_INTERNAL_EVENT_NOTIFICATION_SELECT" ON event
@@ -77,6 +85,37 @@ USING (
         SELECT 1
         FROM flex.controllable_unit_end_user AS cueu
         WHERE cueu.controllable_unit_id = event.source_id -- noqa
+            AND cueu.end_user_id = (SELECT flex.current_party())
+            AND cueu.valid_time_range @> lower(event.record_time_range) -- noqa
+    )
+);
+
+DROP POLICY IF EXISTS "EVENT_EU001_LOOKUP" ON event;
+CREATE POLICY "EVENT_EU001_LOOKUP" ON event
+FOR SELECT
+TO flex_end_user
+USING (
+    source_resource = 'accounting_point'
+    AND type ~ 'no.elhub.flex.controllable_unit.lookup'
+    AND EXISTS (
+        SELECT 1
+        FROM (
+            SELECT
+                id AS cu_id,
+                accounting_point_id,
+                record_time_range
+            FROM flex.controllable_unit
+            UNION ALL
+            SELECT
+                id AS cu_id,
+                accounting_point_id,
+                record_time_range
+            FROM flex.controllable_unit_history
+        ) AS cu_timeline
+            INNER JOIN flex.controllable_unit_end_user AS cueu
+                ON cu_timeline.cu_id = cueu.controllable_unit_id
+        WHERE cu_timeline.accounting_point_id = event.source_id -- noqa
+            AND cu_timeline.record_time_range @> lower(event.record_time_range) -- noqa
             AND cueu.end_user_id = (SELECT flex.current_party())
             AND cueu.valid_time_range @> lower(event.record_time_range) -- noqa
     )

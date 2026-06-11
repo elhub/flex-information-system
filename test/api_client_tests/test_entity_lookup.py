@@ -93,6 +93,20 @@ def test_entity_lookup_params(sts):
     assert isinstance(e, ErrorMessage)
     assert e.code == "HTTP400"
 
+    # uppercase email
+    e = call_entity_lookup.sync(
+        client=client_fiso,
+        body=EntityLookupRequest(
+            business_id="User@Example.COM",
+            business_id_type=EntityLookupRequestBusinessIdType.EMAIL,
+            name="TEST-ENTITY-LOOKUP",
+            type_=EntityLookupRequestType.PERSON,
+        ),
+    )
+    assert isinstance(e, ErrorMessage)
+    assert e.code == "HTTP400"
+    assert e.message == "email address must be lowercase"
+
     # empty name
     e = call_entity_lookup.sync(
         client=client_fiso,

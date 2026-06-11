@@ -115,12 +115,6 @@ func (eventWorker *Worker) processBatch(ctx context.Context) (bool, error) {
 			ctx, "handling event", "type", event.Type, "id", event.ID,
 		)
 
-		// Determine resource ID (use subject_id if present, otherwise source_id)
-		resourceID := event.SourceID
-		if event.SubjectID != nil {
-			resourceID = *event.SubjectID
-		}
-
 		// TODO (improvement): go through the auth API instead of the models
 		eventPartyID, err := authModels.PartyOfIdentity(ctx, tx, event.RecordedBy)
 		if err != nil {
@@ -131,7 +125,8 @@ func (eventWorker *Worker) processBatch(ctx context.Context) (bool, error) {
 		notificationRecipients, err := queries.GetNotificationRecipients(
 			ctx,
 			event.Type,
-			resourceID,
+			event.SourceID,
+			event.SubjectID,
 			event.RecordedAt,
 		)
 		if err != nil {

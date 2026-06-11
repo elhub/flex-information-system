@@ -40,10 +40,10 @@ def sts():
     yield SecurityTokenService()
 
 
-def random_email():
+def random_email(domain="example.com"):
     return (
         "".join([random.choice(string.ascii_lowercase) for _ in range(10)])
-        + "@example.com"
+        + f"@{domain}"
     )
 
 
@@ -201,6 +201,17 @@ def test_entity_fiso(sts):
     e = create_entity.sync(
         client=client_fiso,
         body=EntityCreateRequest(
+            name="Test Entity WACKY EMAIL",
+            business_id=random_email("something.energy"),
+            business_id_type=EntityBusinessIdType.EMAIL,
+            type_=EntityType.PERSON,
+        ),
+    )
+    assert isinstance(e, EntityResponse)
+
+    e = create_entity.sync(
+        client=client_fiso,
+        body=EntityCreateRequest(
             name="Test Entity VALID EMAIL",
             business_id=random_email(),
             business_id_type=EntityBusinessIdType.EMAIL,
@@ -208,6 +219,24 @@ def test_entity_fiso(sts):
         ),
     )
     assert isinstance(e, EntityResponse)
+
+    for email in [
+        "plainaddress",
+        "@missingusername.com",
+        "username@.com",
+        "username@com",
+        "Valid.But.Upper.Case@example.com",
+    ]:
+        e = create_entity.sync(
+            client=client_fiso,
+            body=EntityCreateRequest(
+                name="Test Entity Invalid EMAIL",
+                business_id=email,
+                business_id_type=EntityBusinessIdType.EMAIL,
+                type_=EntityType.PERSON,
+            ),
+        )
+        assert isinstance(e, ErrorMessage)
 
     new_entity_pid = random_pid()
     e = create_entity.sync(

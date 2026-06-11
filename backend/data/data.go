@@ -488,6 +488,10 @@ func (data *api) entityLookupHandler(
 			err == nil,
 			"email address is not valid",
 		)
+		entityLookupValidator.Check(
+			entityLookupRequestBody.BusinessID == strings.ToLower(entityLookupRequestBody.BusinessID),
+			"email address must be lowercase",
+		)
 	case "org":
 		entityLookupValidator.Check(
 			regexOrganisationBusinessID.MatchString(entityLookupRequestBody.BusinessID),
