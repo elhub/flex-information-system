@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { IconPlus } from "@elhub/ds-icons";
-import { BodyText, Button, Heading, VerticalSpace } from "../../components/ui";
+import { Button, VerticalSpace } from "../../components/ui";
 import { LabelValue } from "../../components/LabelValue";
 import { useConfirmAction } from "../../components/ConfirmAction";
 import { useTranslateEnum } from "../../intl/intl";
@@ -18,7 +18,8 @@ export const NoticePartyMissing = ({ noticeData }: NoticePartyMissingProps) => {
 
   const { buttonProps, dialog } = useConfirmAction({
     title: "Create party",
-    content: "Are you sure you want to create this party in the system?",
+    content:
+      "This will create a new party in the system. It may take a minute or two for the notice to resolve itself.",
     onConfirmMutation: {
       mutationFn: async () => {
         if (noticeData.party == undefined)
@@ -45,16 +46,6 @@ export const NoticePartyMissing = ({ noticeData }: NoticePartyMissingProps) => {
 
   return (
     <>
-      <Heading level={3} size="xsmall" spacing>
-        A party is missing in the system.
-      </Heading>
-      <BodyText>
-        This party is present in the party register, but is not yet created in
-        the flexibility information system. Review the information below and use
-        the button to create the party.
-      </BodyText>
-      <VerticalSpace />
-
       <VerticalSpace size="small" />
       <div className="flex flex-col gap-4 mb-4">
         <LabelValue
