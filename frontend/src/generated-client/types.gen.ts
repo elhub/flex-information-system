@@ -2090,7 +2090,7 @@ export type AccountingPoint = {
   /**
    * Geographic location of the accounting point (WGS84), as a GeoJSON point object.
    */
-  readonly location?: GeojsonPoint;
+  readonly location?: GeojsonPoint | null;
   /**
    * When the resource was recorded (created or updated) in the system.
    */
@@ -3133,7 +3133,7 @@ export type Notice = {
   /**
    * The data of the notice.
    */
-  readonly data?: NoticeData;
+  readonly data?: NoticeData | null;
   /**
    * When the resource was recorded (created or updated) in the system.
    */

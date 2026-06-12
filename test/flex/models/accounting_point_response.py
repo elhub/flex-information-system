@@ -244,9 +244,9 @@ class AccountingPointResponse:
             try:
                 if not isinstance(data, dict):
                     raise TypeError()
-                location_type_1 = GeojsonPoint.from_dict(data)
+                location_type_0 = GeojsonPoint.from_dict(data)
 
-                return location_type_1
+                return location_type_0
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
             return cast(GeojsonPoint | None | Unset, data)

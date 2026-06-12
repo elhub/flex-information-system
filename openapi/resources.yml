@@ -2179,9 +2179,10 @@ resources:
         example:
           type: "Point"
           coordinates: [-2.0259056, 48.6504504]
-        allOf:
+        type: object
+        oneOf:
           - $ref: '#/components/schemas/geojson_point'
-        x-object: true
+          - type: "null"
         x-intl:
           en: Location
           nb: Lokasjon
@@ -3617,9 +3618,9 @@ resources:
       data:
         description: The data of the notice.
         type: object
-        allOf:
+        oneOf:
           - $ref: '#/components/schemas/notice_data'
-        x-object: true
+          - type: "null"
         readOnly: true
         nullable: true
         x-intl:

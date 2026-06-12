@@ -4303,9 +4303,13 @@
                                 48.6504504
                             ]
                         },
-                        "allOf": [
+                        "type": "object",
+                        "oneOf": [
                             {
                                 "$ref": "#/components/schemas/geojson_point"
+                            },
+                            {
+                                "type": "null"
                             }
                         ]
                     },
@@ -6561,9 +6565,12 @@
                     "data": {
                         "description": "The data of the notice.",
                         "type": "object",
-                        "allOf": [
+                        "oneOf": [
                             {
                                 "$ref": "#/components/schemas/notice_data"
+                            },
+                            {
+                                "type": "null"
                             }
                         ],
                         "readOnly": true,

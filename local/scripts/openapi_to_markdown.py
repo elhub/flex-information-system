@@ -112,7 +112,7 @@ for field, prop in properties.items():
                 [f"`{e['id'] if 'id' in e else e}`" for e in enum["enum"]]
             )
 
-    if prop.get("type") == "object" or prop.get("x-object"):
+    if prop.get("type") == "object":
         format += "<br/>Object"
 
     if default:
