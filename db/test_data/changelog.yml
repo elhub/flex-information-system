@@ -1,0 +1,38 @@
+---
+databaseChangeLog:
+  - include:
+      file: ./test_data.sql
+      relativeToChangelogFile: true
+      # `@` means run only when the context is explicitly set
+      context: "@test"
+  - changeSet:
+      id: test-data-substation
+      author: flex
+      context: "@test"
+      runOnChange: true
+      changes:
+        - sql:
+            sql: SELECT staging.substation_prepare()
+        - loadData:
+            file: ./staging/substation_cluster.csv
+            relativeToChangelogFile: true
+            schemaName: staging
+            tableName: substation_cluster
+            separator: ","
+        - loadData:
+            file: ./staging/substation.csv
+            relativeToChangelogFile: true
+            schemaName: staging
+            tableName: substation
+            separator: ","
+            columns:
+              - name: voltage_levels
+                type: other
+        - loadData:
+            file: ./staging/line.csv
+            relativeToChangelogFile: true
+            schemaName: staging
+            tableName: line
+            separator: ","
+        - sql:
+            sql: SELECT staging.substation_finalise()

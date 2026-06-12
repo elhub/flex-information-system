@@ -160,7 +160,7 @@ BEGIN
         SELECT 1 FROM substation WHERE business_id = NEW.business_id
     ) THEN
         RAISE EXCEPTION
-            'business_id % does not exist in substation.', NEW.business_id;
+            '% is not a valid %', NEW.business_id, NEW.object_type;
     END IF;
     RETURN NEW;
 END;
