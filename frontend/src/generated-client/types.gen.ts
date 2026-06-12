@@ -472,9 +472,7 @@ export type MeteringGridAreaStatus = "active" | "inactive";
 /**
  * The type of object in the common grid model that the accounting point is at.
  */
-export type AccountingPointGridLocationObjectType =
-  | "substation"
-  | "transformer";
+export type AccountingPointGridLocationObjectType = "substation";
 
 /**
  * How the grid location was determined. When a system operator creates or updates a grid location, this field is set automatically: `cso` if the SO is the connecting system operator, `so` otherwise.

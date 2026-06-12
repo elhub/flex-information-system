@@ -2729,11 +2729,6 @@ resources:
               en: Substation
               nb: Stasjon
               nn: Stasjon
-          - id: transformer
-            x-intl:
-              en: Transformer
-              nb: Transformator
-              nn: Transformator
         example: substation
         x-intl:
           en: Object type

@@ -948,8 +948,7 @@
                 "format": "text",
                 "type": "string",
                 "enum": [
-                    "substation",
-                    "transformer"
+                    "substation"
                 ],
                 "example": "substation"
             },

@@ -9,7 +9,6 @@ export type EnumLabel =
   | "accounting_point_bidding_zone.bidding_zone.NO4"
   | "accounting_point_bidding_zone.bidding_zone.NO5"
   | "accounting_point_grid_location.object_type.substation"
-  | "accounting_point_grid_location.object_type.transformer"
   | "accounting_point_grid_location.quality.confirmed"
   | "accounting_point_grid_location.quality.guessed"
   | "accounting_point_grid_location.source.cso"
@@ -226,7 +225,6 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "metering_grid_area.status.active": "Active",
     "metering_grid_area.status.inactive": "Inactive",
     "accounting_point_grid_location.object_type.substation": "Substation",
-    "accounting_point_grid_location.object_type.transformer": "Transformer",
     "accounting_point_grid_location.source.cso": "Connecting system operator",
     "accounting_point_grid_location.source.so": "System operator",
     "accounting_point_grid_location.source.grid_model": "Grid model",
@@ -388,7 +386,6 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "metering_grid_area.status.active": "Aktiv",
     "metering_grid_area.status.inactive": "Inaktiv",
     "accounting_point_grid_location.object_type.substation": "Stasjon",
-    "accounting_point_grid_location.object_type.transformer": "Transformator",
     "accounting_point_grid_location.source.cso": "Tilknyttende systemoperatør",
     "accounting_point_grid_location.source.so": "Systemoperatør",
     "accounting_point_grid_location.source.grid_model": "Nettmodell",
@@ -550,7 +547,6 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "metering_grid_area.status.active": "Aktiv",
     "metering_grid_area.status.inactive": "Inaktiv",
     "accounting_point_grid_location.object_type.substation": "Stasjon",
-    "accounting_point_grid_location.object_type.transformer": "Transformator",
     "accounting_point_grid_location.source.cso": "Tilknyttande systemoperatør",
     "accounting_point_grid_location.source.so": "Systemoperatør",
     "accounting_point_grid_location.source.grid_model": "Nettmodell",
