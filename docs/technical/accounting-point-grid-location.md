@@ -158,7 +158,7 @@ This is how we derive the geometry.
 | Nemo type         | Geometry type | Description                                                                                                  |
 |-------------------|---------------|--------------------------------------------------------------------------------------------------------------|
 | Substation        | Point         | We use the Location of the Substation.                                                                       |
-| SubstationCluster | Polygon       | The convex hull of the Location of the SubstationParts, with a fixed buffer.                                 |
+| SubstationCluster | Polygon       | The convex hull of the Location of the Substations, with a fixed buffer.                                 |
 | Line              | LineString    | Line from center to center of to/from SubstationClusters. Center is the average of the Substation locations. |
 
 This allows us to display the three things. Shown in the example below. The
