@@ -124,6 +124,15 @@ databaseChangeLog:
       file: ./grid_edge.sql
       relativeToChangelogFile: true
   - include:
+      file: ./substation_cluster.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./substation.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./line.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./metering_grid_area.sql
       relativeToChangelogFile: true
   - include:
