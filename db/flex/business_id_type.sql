@@ -39,7 +39,7 @@ BEGIN
         );
     ELSIF business_id_type = 'uuid' THEN
         RETURN (
-            business_id ~ '^[0-9a-f]{8}-[0-9a-f]{4}-[47][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$'
+            business_id ~ '^[0-9a-f]{8}-[0-9a-f]{4}-[347][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$'
         );
     ELSIF business_id_type = 'gln' THEN
         IF business_id !~ '^[1-9][0-9]{12}$' THEN

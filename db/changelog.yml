@@ -48,9 +48,8 @@ databaseChangeLog:
       file: ./operations/changelog.yml
       relativeToChangelogFile: true
   - include:
-      file: ./test_data/test_data.sql
+      file: ./test_data/changelog.yml
       relativeToChangelogFile: true
-      # `@` means run only when the context is explicitly set
       context: "@test"
   # make sure the changes made by Liquibase are exposed in PostgREST
   - changeSet:

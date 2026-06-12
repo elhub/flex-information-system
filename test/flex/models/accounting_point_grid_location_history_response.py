@@ -24,6 +24,8 @@ class AccountingPointGridLocationHistoryResponse:
         accounting_point_id (int): The accounting point this grid location belongs to. Example: 45.
         object_type (AccountingPointGridLocationObjectType): The type of object in the common grid model that the
             accounting point is at. Example: substation.
+        business_id (str): Business identifier (mRID) referencing the object in the common grid model. Example:
+            53919b79-876f-4dad-8bde-b29368367604.
         name (str): Name of the grid model object at the location. Example: Snilldal 1 KRA.
         nominal_voltage (float): Nominal voltage level at the grid location, in kilovolt (kV). Example: 22.
         source (AccountingPointGridLocationSource): How the grid location was determined. When a system operator creates
@@ -34,8 +36,6 @@ class AccountingPointGridLocationHistoryResponse:
             2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
         accounting_point_grid_location_id (int): Reference to the resource that was updated. Example: 48.
-        business_id (None | str | Unset): Business identifier (mRID) referencing the object in the common grid model.
-            Example: 53919b79-876f-4dad-8bde-b29368367604.
         additional_information (None | str | Unset): Free text field for extra information about the grid location if
             needed.
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
@@ -46,6 +46,7 @@ class AccountingPointGridLocationHistoryResponse:
     id: int
     accounting_point_id: int
     object_type: AccountingPointGridLocationObjectType
+    business_id: str
     name: str
     nominal_voltage: float
     source: AccountingPointGridLocationSource
@@ -53,7 +54,6 @@ class AccountingPointGridLocationHistoryResponse:
     recorded_at: datetime.datetime
     recorded_by: int
     accounting_point_grid_location_id: int
-    business_id: None | str | Unset = UNSET
     additional_information: None | str | Unset = UNSET
     replaced_by: int | None | Unset = UNSET
     replaced_at: datetime.datetime | None | Unset = UNSET
@@ -65,6 +65,8 @@ class AccountingPointGridLocationHistoryResponse:
         accounting_point_id = self.accounting_point_id
 
         object_type = self.object_type.value
+
+        business_id = self.business_id
 
         name = self.name
 
@@ -79,12 +81,6 @@ class AccountingPointGridLocationHistoryResponse:
         recorded_by = self.recorded_by
 
         accounting_point_grid_location_id = self.accounting_point_grid_location_id
-
-        business_id: None | str | Unset
-        if isinstance(self.business_id, Unset):
-            business_id = UNSET
-        else:
-            business_id = self.business_id
 
         additional_information: None | str | Unset
         if isinstance(self.additional_information, Unset):
@@ -113,6 +109,7 @@ class AccountingPointGridLocationHistoryResponse:
                 "id": id,
                 "accounting_point_id": accounting_point_id,
                 "object_type": object_type,
+                "business_id": business_id,
                 "name": name,
                 "nominal_voltage": nominal_voltage,
                 "source": source,
@@ -122,8 +119,6 @@ class AccountingPointGridLocationHistoryResponse:
                 "accounting_point_grid_location_id": accounting_point_grid_location_id,
             }
         )
-        if business_id is not UNSET:
-            field_dict["business_id"] = business_id
         if additional_information is not UNSET:
             field_dict["additional_information"] = additional_information
         if replaced_by is not UNSET:
@@ -142,6 +137,8 @@ class AccountingPointGridLocationHistoryResponse:
 
         object_type = AccountingPointGridLocationObjectType(d.pop("object_type"))
 
+        business_id = d.pop("business_id")
+
         name = d.pop("name")
 
         nominal_voltage = d.pop("nominal_voltage")
@@ -155,15 +152,6 @@ class AccountingPointGridLocationHistoryResponse:
         recorded_by = d.pop("recorded_by")
 
         accounting_point_grid_location_id = d.pop("accounting_point_grid_location_id")
-
-        def _parse_business_id(data: object) -> None | str | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            return cast(None | str | Unset, data)
-
-        business_id = _parse_business_id(d.pop("business_id", UNSET))
 
         def _parse_additional_information(data: object) -> None | str | Unset:
             if data is None:
@@ -204,6 +192,7 @@ class AccountingPointGridLocationHistoryResponse:
             id=id,
             accounting_point_id=accounting_point_id,
             object_type=object_type,
+            business_id=business_id,
             name=name,
             nominal_voltage=nominal_voltage,
             source=source,
@@ -211,7 +200,6 @@ class AccountingPointGridLocationHistoryResponse:
             recorded_at=recorded_at,
             recorded_by=recorded_by,
             accounting_point_grid_location_id=accounting_point_grid_location_id,
-            business_id=business_id,
             additional_information=additional_information,
             replaced_by=replaced_by,
             replaced_at=replaced_at,

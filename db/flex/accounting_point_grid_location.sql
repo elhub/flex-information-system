@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS accounting_point_grid_location (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     accounting_point_id bigint NOT NULL,
     object_type text NOT NULL,
-    business_id text,
+    business_id text NOT NULL,
     name text NOT NULL,
     nominal_voltage decimal(9, 3) NOT NULL,
     additional_information text,
@@ -19,12 +19,10 @@ CREATE TABLE IF NOT EXISTS accounting_point_grid_location (
     recorded_by bigint NOT NULL DEFAULT current_identity(),
 
     CONSTRAINT accounting_point_grid_location_object_type_check CHECK (
-        object_type IN ('substation', 'transformer')
+        object_type IN ('substation')
     ),
     CONSTRAINT accounting_point_grid_location_business_id_check CHECK (
-        business_id IS NULL
-        OR business_id
-        ~* '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+        validate_business_id(business_id, 'uuid')
     ),
     CONSTRAINT accounting_point_grid_location_name_check CHECK (
         char_length(name) <= 512
@@ -145,6 +143,34 @@ BEFORE INSERT OR UPDATE ON accounting_point_grid_location
 FOR EACH ROW
 WHEN (current_role != 'flex_flexibility_information_system_operator')
 EXECUTE FUNCTION accounting_point_grid_location_quality_source_check();
+
+-- changeset flex:accounting-point-grid-location-business-id-substation-check-function runOnChange:true endDelimiter:--
+CREATE OR REPLACE FUNCTION accounting_point_grid_location_business_id_substation_check()
+RETURNS trigger
+SECURITY DEFINER
+LANGUAGE plpgsql
+AS
+$$
+BEGIN
+    IF TG_OP = 'UPDATE' AND NEW.business_id IS NOT DISTINCT FROM OLD.business_id THEN
+        RETURN NEW;
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1 FROM substation WHERE business_id = NEW.business_id
+    ) THEN
+        RAISE EXCEPTION
+            '% is not a valid %', NEW.business_id, NEW.object_type;
+    END IF;
+    RETURN NEW;
+END;
+$$;
+
+-- changeset flex:accounting-point-grid-location-business-id-substation-check-trigger runOnChange:true endDelimiter:--
+CREATE OR REPLACE TRIGGER b_accounting_point_grid_location_business_id_substation_check
+BEFORE INSERT OR UPDATE ON accounting_point_grid_location
+FOR EACH ROW
+EXECUTE FUNCTION accounting_point_grid_location_business_id_substation_check();
 
 -- changeset flex:accounting-point-grid-location-event-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER z_accounting_point_grid_location_event

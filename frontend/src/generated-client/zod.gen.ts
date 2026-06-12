@@ -367,10 +367,7 @@ export const zMeteringGridAreaStatus = z
 /**
  * The type of object in the common grid model that the accounting point is at.
  */
-export const zAccountingPointGridLocationObjectType = z.enum([
-  "substation",
-  "transformer",
-]);
+export const zAccountingPointGridLocationObjectType = z.enum(["substation"]);
 
 /**
  * How the grid location was determined. When a system operator creates or updates a grid location, this field is set automatically: `cso` if the SO is the connecting system operator, `so` otherwise.
@@ -851,8 +848,7 @@ export const zAccountingPointGridLocationCreateRequest = z.object({
     .string()
     .regex(
       /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
-    )
-    .optional(),
+    ),
   name: z.string().max(512),
   nominal_voltage: z.coerce.number().gte(0).lte(999999.999),
   additional_information: z.string().optional(),
@@ -1282,8 +1278,7 @@ export const zAccountingPointGridLocationHistory = z.object({
     .string()
     .regex(
       /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
-    )
-    .optional(),
+    ),
   name: z.string().max(512),
   nominal_voltage: z.coerce.number().gte(0).lte(999999.999),
   additional_information: z.string().optional(),
@@ -1645,8 +1640,7 @@ export const zAccountingPointGridLocationHistoryWritable = z.object({
     .string()
     .regex(
       /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
-    )
-    .optional(),
+    ),
   name: z.string().max(512),
   nominal_voltage: z.coerce.number().gte(0).lte(999999.999),
   additional_information: z.string().optional(),
@@ -2353,8 +2347,7 @@ export const zAccountingPointGridLocation = z.object({
     .string()
     .regex(
       /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
-    )
-    .optional(),
+    ),
   name: z.string().max(512),
   nominal_voltage: z.coerce.number().gte(0).lte(999999.999),
   additional_information: z.string().optional(),
@@ -2975,8 +2968,7 @@ export const zAccountingPointGridLocationWritable = z.object({
     .string()
     .regex(
       /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
-    )
-    .optional(),
+    ),
   name: z.string().max(512),
   nominal_voltage: z.coerce.number().gte(0).lte(999999.999),
   additional_information: z.string().optional(),
