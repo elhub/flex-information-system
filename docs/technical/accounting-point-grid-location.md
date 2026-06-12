@@ -199,15 +199,15 @@ The information is given in a dedicated resource
 > directly, using Nemo as reference. Using FIS surrogate keys is not recommended
 > in this context.
 
-| Field name               | Description                                        | Format                              | Example                              | Nullable | Note |
-|--------------------------|----------------------------------------------------|-------------------------------------|--------------------------------------|----------|------|
-| `object_type`            | The type of object in the grid model               | `substation`, `transformer`         | substation                           | no       |      |
-| `business_id`            | Business ID (mRID) referencing national grid model | UUID                                | 123e4567-e89b-12d3-a456-426614174000 | yes      |      |
-| `name`                   | Name of the grid model object                      | Free text                           | Snilldal 1 KRA                       | no       |      |
-| `nominal_voltage`        | Voltage level in kV                                | Numeric value                       | 22                                   | no       |      |
-| `additional_information` | Additional information about the grid location     | Free text                           |                                      | yes      |      |
-| `source`                 | Who the grid location was determined by            | `cso`, `so`, `grid_model`, `system` | cso                                  | no       |      |
-| `quality`                | The quality of the grid location registration      | `confirmed`, `guessed`              | confirmed                            | no       |      |
+| Field name               | Description                                        | Format                              | Example                              | Nullable |
+|--------------------------|----------------------------------------------------|-------------------------------------|--------------------------------------|----------|
+| `object_type`            | The type of object in the grid model               | `substation`                        | substation                           | no       |
+| `business_id`            | Business ID (mRID) referencing national grid model | UUID                                | 123e4567-e89b-12d3-a456-426614174000 | no       |
+| `name`                   | Name of the grid model object                      | Free text                           | Snilldal 1 KRA                       | no       |
+| `nominal_voltage`        | Voltage level in kV                                | Numeric value                       | 22                                   | no       |
+| `additional_information` | Additional information about the grid location     | Free text                           |                                      | yes      |
+| `source`                 | Who the grid location was determined by            | `cso`, `so`, `grid_model`, `system` | cso                                  | no       |
+| `quality`                | The quality of the grid location registration      | `confirmed`, `guessed`              | confirmed                            | no       |
 
 ### Location source
 
@@ -244,11 +244,6 @@ location based on the current source.
 
 The table shows that the priority order of the source is `grid_model` > `cso` >
 `so` > `system`.
-
-> [!NOTE]
->
-> Note that transformer is part of the location but not discussed above. We are
-> still debating if/when transformers should be part of the grid location.
 
 ## Guessing grid location
 
