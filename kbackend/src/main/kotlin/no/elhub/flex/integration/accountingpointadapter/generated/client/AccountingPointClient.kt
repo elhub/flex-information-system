@@ -30,7 +30,7 @@ public class AccountingPointClient(
    * 	 @param validFrom Filter results to include only data valid from this date/time. ISO 8601
    * format.
    * 	 @param validTo Filter results to include only data valid up to this date/time. ISO 8601
-   * format. Defaults to tomorrow midnight in the Norwegian time zone.
+   * format. Defaults to open end if not provided.
    *
    * Returns:
    * 	[NetworkResult.Success] with

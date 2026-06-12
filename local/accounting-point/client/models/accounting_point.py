@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import TYPE_CHECKING, Any, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -31,6 +31,8 @@ class AccountingPoint:
             accounting point
         energy_direction (list[EnergyDirection] | Unset): Time-dependent list of energy directions associated with this
             accounting point
+        latitude (float | None | Unset): Geographic latitude of the accounting point (WGS84). Example: 59.9139.
+        longitude (float | None | Unset): Geographic longitude of the accounting point (WGS84). Example: 10.7522.
     """
 
     gsrn: str
@@ -38,6 +40,8 @@ class AccountingPoint:
     energy_supplier: list[EnergySupplier]
     metering_grid_area: list[MeteringGridArea]
     energy_direction: list[EnergyDirection] | Unset = UNSET
+    latitude: float | None | Unset = UNSET
+    longitude: float | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -65,6 +69,18 @@ class AccountingPoint:
                 energy_direction_item = energy_direction_item_data.to_dict()
                 energy_direction.append(energy_direction_item)
 
+        latitude: float | None | Unset
+        if isinstance(self.latitude, Unset):
+            latitude = UNSET
+        else:
+            latitude = self.latitude
+
+        longitude: float | None | Unset
+        if isinstance(self.longitude, Unset):
+            longitude = UNSET
+        else:
+            longitude = self.longitude
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -77,6 +93,10 @@ class AccountingPoint:
         )
         if energy_direction is not UNSET:
             field_dict["energy_direction"] = energy_direction
+        if latitude is not UNSET:
+            field_dict["latitude"] = latitude
+        if longitude is not UNSET:
+            field_dict["longitude"] = longitude
 
         return field_dict
 
@@ -124,12 +144,32 @@ class AccountingPoint:
 
                 energy_direction.append(energy_direction_item)
 
+        def _parse_latitude(data: object) -> float | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(float | None | Unset, data)
+
+        latitude = _parse_latitude(d.pop("latitude", UNSET))
+
+        def _parse_longitude(data: object) -> float | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(float | None | Unset, data)
+
+        longitude = _parse_longitude(d.pop("longitude", UNSET))
+
         accounting_point = cls(
             gsrn=gsrn,
             end_user=end_user,
             energy_supplier=energy_supplier,
             metering_grid_area=metering_grid_area,
             energy_direction=energy_direction,
+            latitude=latitude,
+            longitude=longitude,
         )
 
         accounting_point.additional_properties = d
