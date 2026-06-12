@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS substation_cluster (
     business_id_type text NOT NULL DEFAULT 'uuid' REFERENCES business_id_type (name),
     averaged_position GEOMETRY (POINT, 4326) NOT NULL,
     area GEOMETRY (POLYGON, 4326) NOT NULL,
+    status text NOT NULL DEFAULT 'active',
     record_time_range tstzrange NOT NULL DEFAULT tstzrange(
         localtimestamp, null, '[)'
     ),
@@ -18,5 +19,8 @@ CREATE TABLE IF NOT EXISTS substation_cluster (
     ),
     CONSTRAINT substation_cluster_business_id_type_check CHECK (
         business_id_type = 'uuid'
+    ),
+    CONSTRAINT substation_cluster_status_check CHECK (
+        status IN ('active', 'inactive')
     )
 );

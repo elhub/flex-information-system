@@ -156,15 +156,17 @@ BEGIN
     USING staging.substation_cluster_v AS stg
         ON tgt.business_id = stg.mrid
     WHEN MATCHED AND (
-        stg.name IS DISTINCT FROM tgt.name
+        tgt.status = 'inactive'
+        OR stg.name IS DISTINCT FROM tgt.name
         OR stg.averaged_position IS DISTINCT FROM tgt.averaged_position::geometry
         OR stg.area IS DISTINCT FROM tgt.area::geometry
     ) THEN
         UPDATE SET
             name = stg.name,
             averaged_position = stg.averaged_position,
-            area = stg.area
-    WHEN NOT MATCHED /* BY TARGET */ THEN
+            area = stg.area,
+            status = 'active'
+    WHEN NOT MATCHED BY TARGET THEN
         INSERT (
             business_id,
             name,
@@ -175,7 +177,9 @@ BEGIN
             stg.name,
             stg.averaged_position,
             stg.area
-        );
+        )
+    WHEN NOT MATCHED BY SOURCE AND tgt.status != 'inactive' THEN
+        UPDATE SET status = 'inactive';
 END;
 $$;
 
@@ -191,7 +195,8 @@ BEGIN
     USING staging.substation_v AS stg
         ON tgt.business_id = stg.mrid
     WHEN MATCHED AND (
-        stg.name IS DISTINCT FROM tgt.name
+        tgt.status = 'inactive'
+        OR stg.name IS DISTINCT FROM tgt.name
         OR stg.kind IS DISTINCT FROM tgt.kind
         OR stg.primary_concessionaire
         IS DISTINCT FROM tgt.primary_concessionaire
@@ -206,8 +211,9 @@ BEGIN
             primary_concessionaire = stg.primary_concessionaire,
             substation_cluster_id = stg.substation_cluster_id,
             voltage_levels = stg.voltage_levels,
-            position = stg.position
-    WHEN NOT MATCHED /* BY TARGET */ THEN
+            position = stg.position,
+            status = 'active'
+    WHEN NOT MATCHED BY TARGET THEN
         INSERT (
             business_id,
             name,
@@ -224,7 +230,9 @@ BEGIN
             stg.substation_cluster_id,
             stg.voltage_levels,
             stg.position
-        );
+        )
+    WHEN NOT MATCHED BY SOURCE AND tgt.status != 'inactive' THEN
+        UPDATE SET status = 'inactive';
 END;
 $$;
 
@@ -240,7 +248,8 @@ BEGIN
     USING staging.line_v AS stg
         ON tgt.business_id = stg.mrid
     WHEN MATCHED AND (
-        stg.name IS DISTINCT FROM tgt.name
+        tgt.status = 'inactive'
+        OR stg.name IS DISTINCT FROM tgt.name
         OR stg.from_substation_cluster_id
         IS DISTINCT FROM tgt.from_substation_cluster_id
         OR stg.to_substation_cluster_id
@@ -250,8 +259,9 @@ BEGIN
             name = stg.name,
             from_substation_cluster_id = stg.from_substation_cluster_id,
             to_substation_cluster_id = stg.to_substation_cluster_id,
-            line = stg.line
-    WHEN NOT MATCHED /* BY TARGET */ THEN
+            line = stg.line,
+            status = 'active'
+    WHEN NOT MATCHED BY TARGET THEN
         INSERT (
             business_id,
             name,
@@ -264,7 +274,9 @@ BEGIN
             stg.from_substation_cluster_id,
             stg.to_substation_cluster_id,
             stg.line
-        );
+        )
+    WHEN NOT MATCHED BY SOURCE AND tgt.status != 'inactive' THEN
+        UPDATE SET status = 'inactive';
 END;
 $$;
 
@@ -282,21 +294,17 @@ DECLARE
 BEGIN
     PERFORM set_config('flex.current_identity', '0', false);
 
-    -- defer (NB: not disable) FK and uniqueness checks until the update
-    -- procedure is done, as we will be doing stateful operations in an
-    -- arbitrary order that may temporarily violate them
-    SET CONSTRAINTS ALL DEFERRED;
-
     -- safety check: substation_cluster count
     SELECT COUNT(*) INTO l_staging_count
     FROM staging.substation_cluster;
 
     SELECT COUNT(*) INTO l_flex_count
-    FROM flex.substation_cluster;
+    FROM flex.substation_cluster
+    WHERE status = 'active';
 
     IF l_flex_count > 0 AND l_staging_count::numeric / l_flex_count < 0.8 THEN
         RAISE EXCEPTION USING
-            MESSAGE = 'The number of substation clusters in staging is lower than 80% of the current amount, aborting update';
+            MESSAGE = 'The number of substation clusters in staging is lower than 80% of the current active amount, aborting update';
     END IF;
 
     -- safety check: substation count
@@ -304,11 +312,12 @@ BEGIN
     FROM staging.substation;
 
     SELECT COUNT(*) INTO l_flex_count
-    FROM flex.substation;
+    FROM flex.substation
+    WHERE status = 'active';
 
     IF l_flex_count > 0 AND l_staging_count::numeric / l_flex_count < 0.8 THEN
         RAISE EXCEPTION USING
-            MESSAGE = 'The number of substations in staging is lower than 80% of the current amount, aborting update';
+            MESSAGE = 'The number of substations in staging is lower than 80% of the current active amount, aborting update';
     END IF;
 
     -- safety check: line count
@@ -316,35 +325,13 @@ BEGIN
     FROM staging.line;
 
     SELECT COUNT(*) INTO l_flex_count
-    FROM flex.line;
+    FROM flex.line
+    WHERE status = 'active';
 
     IF l_flex_count > 0 AND l_staging_count::numeric / l_flex_count < 0.8 THEN
         RAISE EXCEPTION USING
-            MESSAGE = 'The number of lines in staging is lower than 80% of the current amount, aborting update';
+            MESSAGE = 'The number of lines in staging is lower than 80% of the current active amount, aborting update';
     END IF;
-
-    -- delete records not present in staging, in dependency order (leaves first)
-    -- to avoid FK violations when removing substation_cluster records
-    DELETE FROM flex.line AS tgt
-    WHERE NOT EXISTS (
-        SELECT 1
-        FROM staging.line AS stg
-        WHERE stg.mrid = tgt.business_id
-    );
-
-    DELETE FROM flex.substation AS tgt
-    WHERE NOT EXISTS (
-        SELECT 1
-        FROM staging.substation AS stg
-        WHERE stg.mrid = tgt.business_id
-    );
-
-    DELETE FROM flex.substation_cluster AS tgt
-    WHERE NOT EXISTS (
-        SELECT 1
-        FROM staging.substation_cluster AS stg
-        WHERE stg.mrid = tgt.business_id
-    );
 
     -- apply upserts, in dependency order (roots first) so that FK references
     -- are satisfied when inserting substations and lines

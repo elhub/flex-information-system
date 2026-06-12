@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS line (
     from_substation_cluster_id bigint NOT NULL,
     to_substation_cluster_id bigint NOT NULL,
     line GEOMETRY (LINESTRING, 4326) NOT NULL,
+    status text NOT NULL DEFAULT 'active',
     record_time_range tstzrange NOT NULL DEFAULT tstzrange(
         localtimestamp, null, '[)'
     ),
@@ -19,6 +20,9 @@ CREATE TABLE IF NOT EXISTS line (
     ),
     CONSTRAINT line_business_id_type_check CHECK (
         business_id_type = 'uuid'
+    ),
+    CONSTRAINT line_status_check CHECK (
+        status IN ('active', 'inactive')
     ),
     CONSTRAINT fk_line_from_substation_cluster FOREIGN KEY (
         from_substation_cluster_id

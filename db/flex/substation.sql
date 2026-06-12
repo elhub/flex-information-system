@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS substation (
     substation_cluster_id bigint NOT NULL,
     voltage_levels numeric(9, 3) [] NOT NULL,
     position GEOMETRY (POINT, 4326) NOT NULL,
+    status text NOT NULL DEFAULT 'active',
     record_time_range tstzrange NOT NULL DEFAULT tstzrange(
         localtimestamp, null, '[)'
     ),
@@ -24,6 +25,9 @@ CREATE TABLE IF NOT EXISTS substation (
     ),
     CONSTRAINT substation_kind_check CHECK (
         kind IN ('coupling', 'junction', 'power', 'transformer')
+    ),
+    CONSTRAINT substation_status_check CHECK (
+        status IN ('active', 'inactive')
     ),
     CONSTRAINT fk_substation_substation_cluster FOREIGN KEY (
         substation_cluster_id
