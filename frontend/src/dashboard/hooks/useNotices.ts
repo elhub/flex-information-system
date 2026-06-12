@@ -8,7 +8,7 @@ export const useNotices = (status?: NoticeStatus) => {
   const partyID = identity?.partyID as number | undefined;
 
   return useQuery({
-    queryKey: ["notices", { party_id: partyID }],
+    queryKey: ["notices", { party_id: partyID, status }],
     enabled: partyID != null,
     queryFn: () =>
       listNotice({
