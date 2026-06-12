@@ -1,16 +1,12 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import TYPE_CHECKING, Any, TypeVar, cast
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..models.geojson_point_type import GeojsonPointType
-
-if TYPE_CHECKING:
-    from ..models.geojson_point_crs import GeojsonPointCrs
-
 
 T = TypeVar("T", bound="GeojsonPoint")
 
@@ -20,19 +16,15 @@ class GeojsonPoint:
     """
     Attributes:
         type_ (GeojsonPointType):
-        crs (GeojsonPointCrs):
         coordinates (list[float]): [longitude, latitude] in decimal degrees (WGS84)
     """
 
     type_: GeojsonPointType
-    crs: GeojsonPointCrs
     coordinates: list[float]
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         type_ = self.type_.value
-
-        crs = self.crs.to_dict()
 
         coordinates = self.coordinates
 
@@ -41,7 +33,6 @@ class GeojsonPoint:
         field_dict.update(
             {
                 "type": type_,
-                "crs": crs,
                 "coordinates": coordinates,
             }
         )
@@ -50,18 +41,13 @@ class GeojsonPoint:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.geojson_point_crs import GeojsonPointCrs
-
         d = dict(src_dict)
         type_ = GeojsonPointType(d.pop("type"))
-
-        crs = GeojsonPointCrs.from_dict(d.pop("crs"))
 
         coordinates = cast(list[float], d.pop("coordinates"))
 
         geojson_point = cls(
             type_=type_,
-            crs=crs,
             coordinates=coordinates,
         )
 

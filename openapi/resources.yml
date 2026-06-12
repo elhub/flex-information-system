@@ -2178,10 +2178,6 @@ resources:
         readOnly: true
         example:
           type: "Point"
-          crs:
-            type: "name"
-            properties:
-              name: "EPSG:4326"
           coordinates: [-2.0259056, 48.6504504]
         allOf:
           - $ref: '#/components/schemas/geojson_point'

@@ -10,8 +10,6 @@ import kotlinx.serialization.Serializable
 public data class GeojsonPoint(
   @SerialName("type")
   public val type: GeojsonPointType,
-  @SerialName("crs")
-  public val crs: GeojsonPointCrs,
   /**
    * [longitude, latitude] in decimal degrees (WGS84)
    */

@@ -38,8 +38,7 @@ class AccountingPointResponse:
             2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
         location (GeojsonPoint | None | Unset): Geographic location of the accounting point (WGS84), as a GeoJSON point
-            object. Example: {'type': 'Point', 'crs': {'type': 'name', 'properties': {'name': 'EPSG:4326'}}, 'coordinates':
-            [-2.0259056, 48.6504504]}.
+            object. Example: {'type': 'Point', 'coordinates': [-2.0259056, 48.6504504]}.
         controllable_unit (list[ControllableUnitResponse] | None | Unset): Embedded controllable_unit
         system_operator (None | PartyResponse | Unset): Embedded party
         balance_responsible_party (list[AccountingPointBalanceResponsiblePartyResponse] | None | Unset): Embedded

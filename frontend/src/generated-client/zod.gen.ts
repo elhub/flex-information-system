@@ -171,12 +171,6 @@ export const zNumericAggregation = z.object({
 
 export const zGeojsonPoint = z.object({
   type: z.enum(["Point"]),
-  crs: z.object({
-    type: z.enum(["name"]),
-    properties: z.object({
-      name: z.enum(["EPSG:4326"]),
-    }),
-  }),
   coordinates: z.tuple([z.coerce.number(), z.coerce.number()]),
 });
 

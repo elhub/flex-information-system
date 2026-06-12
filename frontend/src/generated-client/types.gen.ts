@@ -292,12 +292,6 @@ export type NumericAggregation = {
 
 export type GeojsonPoint = {
   type: "Point";
-  crs: {
-    type: "name";
-    properties: {
-      name: "EPSG:4326";
-    };
-  };
   /**
    * [longitude, latitude] in decimal degrees (WGS84)
    */

@@ -665,35 +665,6 @@
                             "Point"
                         ]
                     },
-                    "crs": {
-                        "type": "object",
-                        "properties": {
-                            "type": {
-                                "type": "string",
-                                "enum": [
-                                    "name"
-                                ]
-                            },
-                            "properties": {
-                                "type": "object",
-                                "properties": {
-                                    "name": {
-                                        "type": "string",
-                                        "enum": [
-                                            "EPSG:4326"
-                                        ]
-                                    }
-                                },
-                                "required": [
-                                    "name"
-                                ]
-                            }
-                        },
-                        "required": [
-                            "type",
-                            "properties"
-                        ]
-                    },
                     "coordinates": {
                         "type": "array",
                         "description": "[longitude, latitude] in decimal degrees (WGS84)",
@@ -706,7 +677,6 @@
                 },
                 "required": [
                     "type",
-                    "crs",
                     "coordinates"
                 ]
             },
@@ -4328,12 +4298,6 @@
                         "readOnly": true,
                         "example": {
                             "type": "Point",
-                            "crs": {
-                                "type": "name",
-                                "properties": {
-                                    "name": "EPSG:4326"
-                                }
-                            },
                             "coordinates": [
                                 -2.0259056,
                                 48.6504504
