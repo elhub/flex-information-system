@@ -175,6 +175,9 @@ databaseChangeLog:
       file: ./accounting_point_grid_location.sql
       relativeToChangelogFile: true
   - include:
+      file: ./accounting_point_grid_location_migrations.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./controllable_unit.sql
       relativeToChangelogFile: true
   - include:
