@@ -3560,6 +3560,7 @@ resources:
         format: text
         type: string
         default: active
+        x-filter: true
         enum:
           - id: active
             x-intl:
