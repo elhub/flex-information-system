@@ -14,7 +14,7 @@ export const useNotices = (status?: NoticeStatus) => {
       listNotice({
         query: {
           party_id: `eq.${partyID}`,
-          ...(status != null && { status: `eq.${status}` }),
+          ...(status != null ? { status: `eq.${status}` } : {}),
         },
         headers: {
           Prefer: "count=exact",

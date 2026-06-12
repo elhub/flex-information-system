@@ -14,6 +14,7 @@ from ...types import UNSET, Response, Unset
 def _get_kwargs(
     *,
     id: str | Unset = UNSET,
+    status: str | Unset = UNSET,
     party_id: str | Unset = UNSET,
     type_: str | Unset = UNSET,
     select: str | Unset = UNSET,
@@ -26,6 +27,8 @@ def _get_kwargs(
     params: dict[str, Any] = {}
 
     params["id"] = id
+
+    params["status"] = status
 
     params["party_id"] = party_id
 
@@ -147,6 +150,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     id: str | Unset = UNSET,
+    status: str | Unset = UNSET,
     party_id: str | Unset = UNSET,
     type_: str | Unset = UNSET,
     select: str | Unset = UNSET,
@@ -161,6 +165,7 @@ def sync_detailed(
 
     Args:
         id (str | Unset):
+        status (str | Unset):
         party_id (str | Unset):
         type_ (str | Unset):
         select (str | Unset):
@@ -179,6 +184,7 @@ def sync_detailed(
 
     kwargs = _get_kwargs(
         id=id,
+        status=status,
         party_id=party_id,
         type_=type_,
         select=select,
@@ -199,6 +205,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     id: str | Unset = UNSET,
+    status: str | Unset = UNSET,
     party_id: str | Unset = UNSET,
     type_: str | Unset = UNSET,
     select: str | Unset = UNSET,
@@ -213,6 +220,7 @@ def sync(
 
     Args:
         id (str | Unset):
+        status (str | Unset):
         party_id (str | Unset):
         type_ (str | Unset):
         select (str | Unset):
@@ -232,6 +240,7 @@ def sync(
     return sync_detailed(
         client=client,
         id=id,
+        status=status,
         party_id=party_id,
         type_=type_,
         select=select,
@@ -246,6 +255,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     id: str | Unset = UNSET,
+    status: str | Unset = UNSET,
     party_id: str | Unset = UNSET,
     type_: str | Unset = UNSET,
     select: str | Unset = UNSET,
@@ -260,6 +270,7 @@ async def asyncio_detailed(
 
     Args:
         id (str | Unset):
+        status (str | Unset):
         party_id (str | Unset):
         type_ (str | Unset):
         select (str | Unset):
@@ -278,6 +289,7 @@ async def asyncio_detailed(
 
     kwargs = _get_kwargs(
         id=id,
+        status=status,
         party_id=party_id,
         type_=type_,
         select=select,
@@ -296,6 +308,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     id: str | Unset = UNSET,
+    status: str | Unset = UNSET,
     party_id: str | Unset = UNSET,
     type_: str | Unset = UNSET,
     select: str | Unset = UNSET,
@@ -310,6 +323,7 @@ async def asyncio(
 
     Args:
         id (str | Unset):
+        status (str | Unset):
         party_id (str | Unset):
         type_ (str | Unset):
         select (str | Unset):
@@ -330,6 +344,7 @@ async def asyncio(
         await asyncio_detailed(
             client=client,
             id=id,
+            status=status,
             party_id=party_id,
             type_=type_,
             select=select,
