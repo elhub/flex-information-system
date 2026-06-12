@@ -2745,7 +2745,7 @@ resources:
           grid model.
         format: text
         type: string
-        nullable: true
+        nullable: false
         # yamllint disable-line rule:line-length
         pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
         example: '53919b79-876f-4dad-8bde-b29368367604'

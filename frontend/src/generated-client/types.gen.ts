@@ -2337,7 +2337,7 @@ export type AccountingPointGridLocationCreateRequest = {
   /**
    * Business identifier (mRID) referencing the object in the common grid model.
    */
-  business_id?: string;
+  business_id: string;
   /**
    * Name of the grid model object at the location.
    */
@@ -2369,7 +2369,7 @@ export type AccountingPointGridLocation = {
   /**
    * Business identifier (mRID) referencing the object in the common grid model.
    */
-  business_id?: string;
+  business_id: string;
   /**
    * Name of the grid model object at the location.
    */
@@ -3789,7 +3789,7 @@ export type AccountingPointGridLocationHistory = {
   /**
    * Business identifier (mRID) referencing the object in the common grid model.
    */
-  business_id?: string;
+  business_id: string;
   /**
    * Name of the grid model object at the location.
    */
@@ -5002,7 +5002,7 @@ export type AccountingPointGridLocationWritable = {
   /**
    * Business identifier (mRID) referencing the object in the common grid model.
    */
-  business_id?: string;
+  business_id: string;
   /**
    * Name of the grid model object at the location.
    */
@@ -5735,7 +5735,7 @@ export type AccountingPointGridLocationHistoryWritable = {
   /**
    * Business identifier (mRID) referencing the object in the common grid model.
    */
-  business_id?: string;
+  business_id: string;
   /**
    * Name of the grid model object at the location.
    */

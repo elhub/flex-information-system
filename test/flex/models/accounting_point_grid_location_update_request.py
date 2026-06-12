@@ -21,8 +21,8 @@ class AccountingPointGridLocationUpdateRequest:
         Attributes:
             object_type (AccountingPointGridLocationObjectType | Unset): The type of object in the common grid model that
                 the accounting point is at. Example: substation.
-            business_id (None | str | Unset): Business identifier (mRID) referencing the object in the common grid model.
-                Example: 53919b79-876f-4dad-8bde-b29368367604.
+            business_id (str | Unset): Business identifier (mRID) referencing the object in the common grid model. Example:
+                53919b79-876f-4dad-8bde-b29368367604.
             name (str | Unset): Name of the grid model object at the location. Example: Snilldal 1 KRA.
             nominal_voltage (float | Unset): Nominal voltage level at the grid location, in kilovolt (kV). Example: 22.
             additional_information (None | str | Unset): Free text field for extra information about the grid location if
@@ -32,7 +32,7 @@ class AccountingPointGridLocationUpdateRequest:
     """
 
     object_type: AccountingPointGridLocationObjectType | Unset = UNSET
-    business_id: None | str | Unset = UNSET
+    business_id: str | Unset = UNSET
     name: str | Unset = UNSET
     nominal_voltage: float | Unset = UNSET
     additional_information: None | str | Unset = UNSET
@@ -44,11 +44,7 @@ class AccountingPointGridLocationUpdateRequest:
         if not isinstance(self.object_type, Unset):
             object_type = self.object_type.value
 
-        business_id: None | str | Unset
-        if isinstance(self.business_id, Unset):
-            business_id = UNSET
-        else:
-            business_id = self.business_id
+        business_id = self.business_id
 
         name = self.name
 
@@ -92,14 +88,7 @@ class AccountingPointGridLocationUpdateRequest:
         else:
             object_type = AccountingPointGridLocationObjectType(_object_type)
 
-        def _parse_business_id(data: object) -> None | str | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            return cast(None | str | Unset, data)
-
-        business_id = _parse_business_id(d.pop("business_id", UNSET))
+        business_id = d.pop("business_id", UNSET)
 
         name = d.pop("name", UNSET)
 

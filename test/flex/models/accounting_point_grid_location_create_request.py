@@ -22,21 +22,21 @@ class AccountingPointGridLocationCreateRequest:
             accounting_point_id (int): The accounting point this grid location belongs to. Example: 45.
             object_type (AccountingPointGridLocationObjectType): The type of object in the common grid model that the
                 accounting point is at. Example: substation.
+            business_id (str): Business identifier (mRID) referencing the object in the common grid model. Example:
+                53919b79-876f-4dad-8bde-b29368367604.
             name (str): Name of the grid model object at the location. Example: Snilldal 1 KRA.
             nominal_voltage (float): Nominal voltage level at the grid location, in kilovolt (kV). Example: 22.
             quality (AccountingPointGridLocationQuality): The quality of the grid location registration. Example: confirmed.
-            business_id (None | str | Unset): Business identifier (mRID) referencing the object in the common grid model.
-                Example: 53919b79-876f-4dad-8bde-b29368367604.
             additional_information (None | str | Unset): Free text field for extra information about the grid location if
                 needed.
     """
 
     accounting_point_id: int
     object_type: AccountingPointGridLocationObjectType
+    business_id: str
     name: str
     nominal_voltage: float
     quality: AccountingPointGridLocationQuality
-    business_id: None | str | Unset = UNSET
     additional_information: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -45,17 +45,13 @@ class AccountingPointGridLocationCreateRequest:
 
         object_type = self.object_type.value
 
+        business_id = self.business_id
+
         name = self.name
 
         nominal_voltage = self.nominal_voltage
 
         quality = self.quality.value
-
-        business_id: None | str | Unset
-        if isinstance(self.business_id, Unset):
-            business_id = UNSET
-        else:
-            business_id = self.business_id
 
         additional_information: None | str | Unset
         if isinstance(self.additional_information, Unset):
@@ -69,13 +65,12 @@ class AccountingPointGridLocationCreateRequest:
             {
                 "accounting_point_id": accounting_point_id,
                 "object_type": object_type,
+                "business_id": business_id,
                 "name": name,
                 "nominal_voltage": nominal_voltage,
                 "quality": quality,
             }
         )
-        if business_id is not UNSET:
-            field_dict["business_id"] = business_id
         if additional_information is not UNSET:
             field_dict["additional_information"] = additional_information
 
@@ -88,20 +83,13 @@ class AccountingPointGridLocationCreateRequest:
 
         object_type = AccountingPointGridLocationObjectType(d.pop("object_type"))
 
+        business_id = d.pop("business_id")
+
         name = d.pop("name")
 
         nominal_voltage = d.pop("nominal_voltage")
 
         quality = AccountingPointGridLocationQuality(d.pop("quality"))
-
-        def _parse_business_id(data: object) -> None | str | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            return cast(None | str | Unset, data)
-
-        business_id = _parse_business_id(d.pop("business_id", UNSET))
 
         def _parse_additional_information(data: object) -> None | str | Unset:
             if data is None:
@@ -115,10 +103,10 @@ class AccountingPointGridLocationCreateRequest:
         accounting_point_grid_location_create_request = cls(
             accounting_point_id=accounting_point_id,
             object_type=object_type,
+            business_id=business_id,
             name=name,
             nominal_voltage=nominal_voltage,
             quality=quality,
-            business_id=business_id,
             additional_information=additional_information,
         )
 

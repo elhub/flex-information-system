@@ -4782,7 +4782,7 @@
                         "description": "Business identifier (mRID) referencing the object in the common grid model.",
                         "format": "text",
                         "type": "string",
-                        "nullable": true,
+                        "nullable": false,
                         "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
                         "example": "53919b79-876f-4dad-8bde-b29368367604"
                     },
@@ -4832,7 +4832,7 @@
                         "description": "Business identifier (mRID) referencing the object in the common grid model.",
                         "format": "text",
                         "type": "string",
-                        "nullable": true,
+                        "nullable": false,
                         "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
                         "example": "53919b79-876f-4dad-8bde-b29368367604"
                     },
@@ -4866,6 +4866,7 @@
                 "required": [
                     "accounting_point_id",
                     "object_type",
+                    "business_id",
                     "name",
                     "nominal_voltage",
                     "quality"
@@ -4896,7 +4897,7 @@
                         "description": "Business identifier (mRID) referencing the object in the common grid model.",
                         "format": "text",
                         "type": "string",
-                        "nullable": true,
+                        "nullable": false,
                         "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
                         "example": "53919b79-876f-4dad-8bde-b29368367604"
                     },
@@ -4961,6 +4962,7 @@
                     "id",
                     "accounting_point_id",
                     "object_type",
+                    "business_id",
                     "name",
                     "nominal_voltage",
                     "source",
@@ -7749,7 +7751,7 @@
                         "description": "Business identifier (mRID) referencing the object in the common grid model.",
                         "format": "text",
                         "type": "string",
-                        "nullable": true,
+                        "nullable": false,
                         "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
                         "example": "53919b79-876f-4dad-8bde-b29368367604"
                     },
@@ -7822,6 +7824,7 @@
                     "id",
                     "accounting_point_id",
                     "object_type",
+                    "business_id",
                     "name",
                     "nominal_voltage",
                     "source",
