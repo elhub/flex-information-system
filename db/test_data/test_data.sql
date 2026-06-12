@@ -475,9 +475,11 @@ BEGIN
       )
   LOOP
     INSERT INTO flex.accounting_point (
-      business_id
+      business_id,
+      location
     ) VALUES (
-      gs1.add_check_digit(partial_gsrn::text)
+      gs1.add_check_digit(partial_gsrn::text),
+      ST_GeomFromEWKT('SRID=4326;POINT(5.3234103 60.3972037)')
     ) RETURNING id INTO ap_id;
 
     INSERT INTO flex.accounting_point_metering_grid_area (

@@ -4,12 +4,13 @@
 -- changeset flex:api-accounting-point-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW api.accounting_point
 WITH (security_invoker = true) AS (
-    SELECT
+    SELECT -- noqa
         ap.id,
         ap.business_id,
         ap_so.system_operator_id,
         ap.recorded_by,
-        lower(ap.record_time_range) AS recorded_at
+        lower(ap.record_time_range) AS recorded_at, -- noqa
+        ST_AsGeoJSON(ap.location, 9, 0)::jsonb AS location -- noqa
     FROM flex.accounting_point AS ap
         INNER JOIN flex.accounting_point_system_operator AS ap_so
             ON

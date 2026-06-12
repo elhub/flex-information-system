@@ -139,6 +139,9 @@ databaseChangeLog:
       file: ./accounting_point.sql
       relativeToChangelogFile: true
   - include:
+      file: ./accounting_point_migrations.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./accounting_point_sync.sql
       relativeToChangelogFile: true
   - include:

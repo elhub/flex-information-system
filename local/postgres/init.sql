@@ -1,5 +1,6 @@
 -- NOTE: Init scripts only runs on first start of the container
 -- It will NOT run on restarts
+CREATE EXTENSION IF NOT EXISTS postgis;
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp"; -- noqa: RF05
 CREATE EXTENSION IF NOT EXISTS btree_gist;
