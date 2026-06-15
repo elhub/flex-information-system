@@ -15,6 +15,7 @@ import no.elhub.flex.db.querySingle
 import no.elhub.flex.model.domain.AccountingPoint
 import no.elhub.flex.model.domain.AccountingPointEndUser
 import no.elhub.flex.model.domain.AccountingPointEnergySupplier
+import no.elhub.flex.model.domain.Location
 import no.elhub.flex.model.domain.db.DatabaseError
 import no.elhub.flex.model.domain.db.LockTimeoutError
 import no.elhub.flex.model.domain.db.NoMatchError
@@ -110,6 +111,17 @@ interface AccountingPointRepository {
     context(principal: FlexPrincipal)
     suspend fun replaceAllAccountingPointEnergySupplier(
         accountingPointEnergySuppliers: List<AccountingPointEnergySupplier>
+    ): Either<RepositoryError, Unit>
+
+    /**
+     * Updates the location of an accounting point with the given coordinates.
+     *
+     * Returns [DatabaseError] if no row exists for [accountingPointId].
+     */
+    context(principal: FlexPrincipal)
+    suspend fun updateAccountingPointLocation(
+        accountingPointId: Long,
+        location: Location,
     ): Either<RepositoryError, Unit>
 
     /**
@@ -255,6 +267,34 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
             }.mapLeft { e ->
                 logger.error { "insertAccountingPointIfNotExists failed: ${e.message}" }
                 DatabaseError("Failed to upsert accounting point")
+            }
+        }
+
+    context(principal: FlexPrincipal)
+    override suspend fun updateAccountingPointLocation(
+        accountingPointId: Long,
+        location: Location,
+    ): Either<RepositoryError, Unit> =
+        flexTransaction { conn ->
+            Either.catch {
+                conn.prepareNamed(
+                    """
+                    UPDATE flex.accounting_point
+                    SET location = public.ST_SetSRID(public.ST_MakePoint(:longitude, :latitude), 4326)
+                    WHERE id = :accountingPointId
+                    """,
+                    mapOf(
+                        "longitude" to location.longitude,
+                        "latitude" to location.latitude,
+                        "accountingPointId" to accountingPointId,
+                    ),
+                ).use { stmt ->
+                    val updated = stmt.executeUpdate()
+                    if (updated == 0) error("No accounting point found with id $accountingPointId")
+                }
+            }.mapLeft { e ->
+                logger.error { "updateAccountingPointLocation failed: ${e.message}" }
+                DatabaseError("Failed to update accounting point location")
             }
         }
 

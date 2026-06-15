@@ -71,5 +71,41 @@ class AccountingPointAdapterServiceTest : FunSpec({
             val error = result.shouldBeLeft().shouldBeInstanceOf<HttpError>()
             error.statusCode shouldBe HttpStatusCode.InternalServerError.value
         }
+
+        test("200 response with lat/lon is parsed correctly") {
+            AccountingPointAdapterWireMockServer.stubFor(
+                get(urlPathEqualTo("/accounting_point/$GSRN"))
+                    .willReturn(
+                        aResponse()
+                            .withStatus(HttpStatusCode.OK.value)
+                            .withHeader("Content-Type", "application/json")
+                            .withBodyFile("accounting-point-200-with-location.json"),
+                    ),
+            )
+
+            val result = service.getAccountingPoint(GSRN, VALID_FROM)
+
+            val accountingPoint = result.shouldBeRight()
+            accountingPoint.latitude shouldBe 59.9139
+            accountingPoint.longitude shouldBe 10.7522
+        }
+
+        test("200 response with explicit null lat/lon is parsed correctly") {
+            AccountingPointAdapterWireMockServer.stubFor(
+                get(urlPathEqualTo("/accounting_point/$GSRN"))
+                    .willReturn(
+                        aResponse()
+                            .withStatus(HttpStatusCode.OK.value)
+                            .withHeader("Content-Type", "application/json")
+                            .withBodyFile("accounting-point-200-with-null-location.json"),
+                    ),
+            )
+
+            val result = service.getAccountingPoint(GSRN, VALID_FROM)
+
+            val accountingPoint = result.shouldBeRight()
+            accountingPoint.latitude shouldBe null
+            accountingPoint.longitude shouldBe null
+        }
     }
 })

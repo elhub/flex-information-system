@@ -189,6 +189,22 @@ components:
             accounting point
           items:
             $ref: '#/components/schemas/energy_direction'
+        latitude:
+          type: number
+          description: Geographic latitude of the accounting point (WGS84).
+          format: double
+          minimum: -90
+          maximum: 90
+          nullable: true
+          example: 59.9139
+        longitude:
+          description: Geographic longitude of the accounting point (WGS84).
+          type: number
+          format: double
+          minimum: -180
+          maximum: 180
+          nullable: true
+          example: 10.7522
 
 paths:
   /accounting_point/{gsrn}:
@@ -224,8 +240,7 @@ paths:
           required: false
           description: >-
             Filter results to include only data valid up to this date/time.
-            ISO 8601 format. Defaults to tomorrow midnight in the Norwegian
-            time zone.
+            ISO 8601 format. Defaults to open end if not provided.
           schema:
             type: string
             format: date-time

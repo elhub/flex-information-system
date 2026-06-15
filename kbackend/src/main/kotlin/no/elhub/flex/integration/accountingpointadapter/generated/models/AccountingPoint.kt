@@ -1,5 +1,6 @@
 package no.elhub.flex.integration.accountingpointadapter.generated.models
 
+import kotlin.Double
 import kotlin.String
 import kotlin.collections.List
 import kotlinx.serialization.SerialName
@@ -32,4 +33,14 @@ public data class AccountingPoint(
    */
   @SerialName("energy_direction")
   public val energyDirection: List<EnergyDirection>? = null,
+  /**
+   * Geographic latitude of the accounting point (WGS84).
+   */
+  @SerialName("latitude")
+  public val latitude: Double? = null,
+  /**
+   * Geographic longitude of the accounting point (WGS84).
+   */
+  @SerialName("longitude")
+  public val longitude: Double? = null,
 )
