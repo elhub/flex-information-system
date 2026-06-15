@@ -4,11 +4,12 @@ import arrow.core.Either
 import arrow.core.raise.either
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.server.routing.RoutingCall
+import kotlinx.datetime.TimeZone
 import no.elhub.flex.accountingpoint.AccountingPointService
 import no.elhub.flex.auth.AccessTokenKey
 import no.elhub.flex.auth.FlexPrincipal
-import no.elhub.flex.auth.toFlexPrincipal
 import no.elhub.flex.controllableunit.db.ControllableUnitRepository
+import no.elhub.flex.event.db.EventRepository
 import no.elhub.flex.model.domain.ControllableUnit
 import no.elhub.flex.model.domain.GSRN
 import no.elhub.flex.model.dto.generated.models.ControllableUnitLookupRequest
@@ -20,11 +21,10 @@ import no.elhub.flex.model.error.AppError
 import no.elhub.flex.model.error.BadRequestError
 import no.elhub.flex.model.error.InternalServerError
 import no.elhub.flex.util.TraceIdUtil.Companion.traceIdOrUnknown
-import no.elhub.flex.util.asLocalStartOfDayInstant
-import no.elhub.flex.util.atLocalStartOfToday
+import no.elhub.flex.util.asLocalMidnightInstant
 import no.elhub.flex.util.body
-import no.elhub.flex.util.logger
 import no.elhub.flex.util.respondJson
+import no.elhub.flex.util.todayLocalMidnight
 import org.koin.core.annotation.Property
 import org.koin.core.annotation.Single
 import kotlin.time.Instant
@@ -37,11 +37,14 @@ private val CONTROLLABLE_UNIT_BUSINESS_ID_REGEX =
 class ControllableUnitLookup(
     private val repo: ControllableUnitRepository,
     private val accountingPointService: AccountingPointService,
+    private val eventRepo: EventRepository,
     @Property("accounting-point-adapter.sync-enabled") private val accountingPointAdapterSyncEnabled: Boolean = true,
+    @Property("flex.timezone") private val timezone: TimeZone = TimeZone.of("Europe/Oslo"),
 ) {
     private val logger = KotlinLogging.logger {}
 
     suspend fun handle(call: RoutingCall) {
+        val requestingPartyId = call.attributes[AccessTokenKey].partyId
         with(FlexPrincipal.internalData()) {
             either {
                 val request = call.body<ControllableUnitLookupRequest>().bind()
@@ -59,8 +62,8 @@ class ControllableUnitLookup(
                 ).bind()
                 logger.debug { "Found ${controllableUnits.size} controllable units on accounting point $accountingPointBusinessId" }
 
-                val validFrom = controllableUnits.mapNotNull { it.startDate }.minByOrNull { it }?.asLocalStartOfDayInstant()
-                    ?: Instant.atLocalStartOfToday()
+                val validFrom = controllableUnits.mapNotNull { it.startDate }.minByOrNull { it }?.asLocalMidnightInstant(timezone)
+                    ?: Instant.todayLocalMidnight(timezone)
                 logger.debug { "Using $validFrom as start date for accounting point sync" }
 
                 if (accountingPointAdapterSyncEnabled) {
@@ -74,6 +77,12 @@ class ControllableUnitLookup(
                     accountingPointBusinessId
                 ).bind()
                 val accountingPoint = accountingPointService.getAccountingPointByBusinessId(accountingPointBusinessId).bind()
+
+                insertLookupEvent(
+                    accountingPoint.id,
+                    if (request.controllableUnitBusinessId.isNotEmpty()) controllableUnits.firstOrNull()?.id else null,
+                    requestingPartyId
+                ).bind()
 
                 ControllableUnitLookupResponse(
                     accountingPoint = ControllableUnitLookupResponseAccountingPoint(
@@ -95,6 +104,25 @@ class ControllableUnitLookup(
         repo.lookupControllableUnits(controllableUnitBusinessId, accountingPointBusinessId)
             .mapLeft { e ->
                 logger.error { "Failed to lookup controllable units: ${e.message}" }
+                InternalServerError(traceIdOrUnknown())
+            }
+
+    context(principal: FlexPrincipal)
+    private suspend fun insertLookupEvent(
+        accountingPointId: Long,
+        controllableUnitId: Long?,
+        requestingPartyId: Int,
+    ): Either<AppError, Unit> =
+        eventRepo.insertEvent(
+            "no.elhub.flex.controllable_unit.lookup",
+            "accounting_point",
+            accountingPointId,
+            controllableUnitId?.let { "controllable_unit" },
+            controllableUnitId,
+            "{\"requesting_party_id\": $requestingPartyId}"
+        )
+            .mapLeft { e ->
+                logger.error { "Failed to insert lookup event: ${e.message}" }
                 InternalServerError(traceIdOrUnknown())
             }
 }

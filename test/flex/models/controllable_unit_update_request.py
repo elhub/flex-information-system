@@ -6,7 +6,6 @@ from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-from dateutil.parser import isoparse
 
 from ..models.controllable_unit_regulation_direction import ControllableUnitRegulationDirection
 from ..models.controllable_unit_status import ControllableUnitStatus
@@ -99,7 +98,7 @@ class ControllableUnitUpdateRequest:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                start_date_type_0 = isoparse(data).date()
+                start_date_type_0 = datetime.date.fromisoformat(data)
 
                 return start_date_type_0
             except (TypeError, ValueError, AttributeError, KeyError):

@@ -656,6 +656,30 @@
                 },
                 "additionalProperties": false
             },
+            "geojson_point": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "Point"
+                        ]
+                    },
+                    "coordinates": {
+                        "type": "array",
+                        "description": "[longitude, latitude] in decimal degrees (WGS84)",
+                        "items": {
+                            "type": "number"
+                        },
+                        "minItems": 2,
+                        "maxItems": 2
+                    }
+                },
+                "required": [
+                    "type",
+                    "coordinates"
+                ]
+            },
             "empty_object": {
                 "description": "An empty object",
                 "type": "object",
@@ -4268,6 +4292,27 @@
                         "type": "integer",
                         "readOnly": true
                     },
+                    "location": {
+                        "description": "Geographic location of the accounting point (WGS84), as a GeoJSON point object.",
+                        "nullable": true,
+                        "readOnly": true,
+                        "example": {
+                            "type": "Point",
+                            "coordinates": [
+                                -2.0259056,
+                                48.6504504
+                            ]
+                        },
+                        "type": "object",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/geojson_point"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
                         "format": "date-time",
@@ -6520,10 +6565,16 @@
                     "data": {
                         "description": "The data of the notice.",
                         "type": "object",
-                        "$ref": "#/components/schemas/notice_data",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/notice_data"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
                         "readOnly": true,
-                        "nullable": true,
-                        "example": null
+                        "nullable": true
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
@@ -35236,6 +35287,14 @@
                         "example": "eq.55",
                         "description": "Unique surrogate identifier.",
                         "name": "id"
+                    },
+                    {
+                        "in": "query",
+                        "name": "status",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somestatus"
                     },
                     {
                         "in": "query",

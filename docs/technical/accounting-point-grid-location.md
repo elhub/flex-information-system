@@ -7,8 +7,9 @@ use-cases](../concepts/grid-model.md).
 Grid location means the *electrical* or *topological* location in the grid. This
 is different from the geographical location, given as coordinates or address.
 
-Since a controllable unit is always "behind" an accounting point, the grid
-location on accounting point will give the location for the CUs as well.
+> [!NOTE]
+> Since a controllable unit is always "behind" an accounting point, the grid
+> location on accounting point will give the location for the CUs as well.
 
 ## Accounting point geographical location
 
@@ -41,9 +42,8 @@ The Norwegian common grid model is [Nemo](https://nemo.elbits.no/modell/) from
 [Elbits](https://www.elbits.no/).
 
 Nemo is used by [Tilko](https://www.elbits.no/tjenester/tilko), a digital portal
-for grid connection requests that affects more than one grid owner. Tilko has
-been rolled out to almost all of Norway as of writing this. We are taking a lot
-inspiration from Tilko in how we exchange grid location.
+for grid connection requests that affects more than one grid owner. We are
+taking a lot inspiration from Tilko in how we exchange grid location.
 
 ### Common grid model basics
 
@@ -53,12 +53,12 @@ for a representation of a graph as a set of triples.
 
 The main objects are
 
-* [Substation](https://nemo.elbits.no/modell/Dokumentasjon/substation/) : the
-  "main" station - hovedstasjon
-* [SubstationPart](https://nemo.elbits.no/modell/Dokumentasjon/substationpart/)
-  : a part of a substation - understasjon
+* [SubstationCluster](https://nemo.elbits.no/modell/Dokumentasjon/substation/) :
+  the "main" station - hovedstasjon (previously called `Substation`)
+* [Substation](https://nemo.elbits.no/modell/Dokumentasjon/substationpart/) : a
+  part of a substation cluster - understasjon (previously called `SubstationPart`)
 * [Line](https://nemo.elbits.no/modell/Dokumentasjon/line/) : grid connections
-  between substations
+  between substation clusters
 
 An important field on these objects are their unique business identifiers -
 mRID. mRID is the [Master resource identifier issued by a model
@@ -95,51 +95,57 @@ The grid model service will serve data as an aid in picking the grid location.
 We model a condensed data model with the following resources in this service,
 based on Nemo.
 
-* `substation` from `Substation` and `SubstationPart`
+* `substation_cluster` from `SubstationCluster`
+* `substation` from `Substation`
 * `line` from `Line`
+
+### substation_cluster
+
+The `substation_cluster` resource models
+[SubstationCluster](https://nemo.elbits.no/modell/Dokumentasjon/substation/)
+(previously called `Substation`) — the "main" station (hovedstasjon).
+
+| Field name        | Description                                       | Format          | Example                                   | Nullable |
+|-------------------|---------------------------------------------------|-----------------|-------------------------------------------|----------|
+| id                | Surrogate identifier                              | Integer         | 1234                                      | no       |
+| name              | Name of the substation cluster.                   | Free text       | Snilldal                                  | no       |
+| business_id       | Business identifier - mRID                        | UUID            | 550e8400-e29b-41d4-a716-446655440000      | no       |
+| business_id_type  | Type of business identifier.                      | `uuid`          | uuid                                      | no       |
+| averaged_position | The average geographical position of the cluster. | GeoJSON Point   | See [GeoJSON Geometry](#geojson-geometry) | no       |
+| geometry          | For displaying on a map.                          | GeoJSON Polygon | See [GeoJSON Geometry](#geojson-geometry) | no       |
 
 ### substation
 
-The `substation` resource is modelling
-[elb:SubstationPart](https://nemo.elbits.no/modell/Dokumentasjon/substationpart/)
-and [cim:Substation](https://nemo.elbits.no/modell/Dokumentasjon/substation/) as
-a single resource. This is based on an understanding that the substationpart as
-a name/concept will not be used in future versions of a common grid model.
+The `substation` resource models
+[cim:Substation](https://nemo.elbits.no/modell/Dokumentasjon/substationpart/)
+(previously called `SubstationPart`) — a part of a substation cluster
+(understasjon). Each substation belongs to exactly one substation cluster via
+`substation_cluster_id`.
 
-We use substation kind and a foreign key to distinguish between the two. If the
-substation does not have a kind, then it is a child substation. A child
-substation will also have a foreign key to its parent substation.
-
-The following fields exist on the substation resource
-
-| Field name             | Description                                          | Format                                         | Example                                   | Nullable | Note                       |
-|------------------------|------------------------------------------------------|------------------------------------------------|-------------------------------------------|----------|----------------------------|
-| id                     | Surrogate identifier                                 | Integer                                        | 1234                                      | no       |                            |
-| name                   | Name of the substation.                              | Free text                                      | Snilldal 1 KRA                            | no       |                            |
-| business_id            | Business identifier for the substation - mRID        | UUID                                           | 550e8400-e29b-41d4-a716-446655440000      | no       |                            |
-| business_id_type       | Type of business identifier.                         | `uuid`                                         | uuid                                      | no       |                            |
-| kind                   | Kind of substation                                   | `coupling`, `junction`, `power`, `transformer` | coupling                                  | yes      |                            |
-| substation_id          | Foreign key to parent substation.                    | Integer                                        | 1234                                      | yes      |                            |
-| longitude              | Longitude of the substation.                         | Numeric                                        | 10.1234                                   | yes      | Center for parent          |
-| latitude               | Latitude of the substation.                          | Numeric                                        | 63.1234                                   | yes      | Center for parent          |
-| nominal_voltage_levels | List of voltage levels on the substation and parent. | Array of numeric. kV with three decimals.      | [22, 33]                                  | yes      | Extracted from BaseVoltage |
-| concessionaires        | Name and org number of the main concessionaires.     | Array of free text                             | ["SønderEnergi Nett (987654321)"]         | yes      |                            |
-| geometry               | For displaying on a map. GeoJSON Polygon or Point.   | GeoJSON Polygon or Point                       | See [GeoJSON Geometry](#geojson-geometry) | yes      |                            |
+| Field name             | Description                                     | Format                                         | Example                                   | Nullable |
+|------------------------|-------------------------------------------------|------------------------------------------------|-------------------------------------------|----------|
+| id                     | Surrogate identifier                            | Integer                                        | 1234                                      | no       |
+| name                   | Name of the substation.                         | Free text                                      | Snilldal 1 KRA                            | no       |
+| business_id            | Business identifier - mRID                      | UUID                                           | 550e8400-e29b-41d4-a716-446655440000      | no       |
+| business_id_type       | Type of business identifier.                    | `uuid`                                         | uuid                                      | no       |
+| kind                   | Kind of substation                              | `coupling`, `junction`, `power`, `transformer` | coupling                                  | no       |
+| primary_concessionaire | Name and org number of the main concessionaire. | text                                           | SønderEnergi Nett (987654321)             | no       |
+| substation_cluster_id  | Foreign key to parent substation cluster.       | Integer                                        | 1234                                      | no       |
+| voltage_levels         | List of voltage levels on the substation.       | Array of numeric. kV with three decimals.      | [22, 33]                                  | no       |
+| geometry               | For displaying on a map.                        | GeoJSON Point                                  | See [GeoJSON Geometry](#geojson-geometry) | no       |
 
 ### line
 
-| Field name           | Description                                      | Format             | Example                                   | Nullable | Note                       |
-|----------------------|--------------------------------------------------|--------------------|-------------------------------------------|----------|----------------------------|
-| id                   | Surrogate identifier                             | Integer            | 1234                                      | no       |                            |
-| name                 | Name of the line.                                | Free text          | Snilldal-Høyeng                           | no       |                            |
-| business_id          | Business identifier for the line - mRID          | UUID               | 123e4567-e89b-12d3-a456-426614174000      | no       |                            |
-| business_id_type     | Type of business identifier. Just `uuid`         | `uuid`             | uuid                                      | no       |                            |
-| from_substation_id   | Foreign key to the substation the line starts at | Integer            | 1234                                      | no       |                            |
-| from_nominal_voltage | Voltage level on the line. kV.                   | Numeric            | 22                                        | no       | Extracted from BaseVoltage |
-| to_substation_id     | Foreign key to the substation the line ends at   | Integer            | 1234                                      | no       |                            |
-| to_nominal_voltage   | Voltage level on the line. kV.                   | Numeric            | 22                                        | no       | Extracted from BaseVoltage |
-| consessionaires      | Name and org number of the main consessionaires. | Array of free text | ["SønderEnergi Nett (987654321)"]         | yes      |                            |
-| geometry             | For displaying on a map. GeoJSON LineString.     | GeoJSON LineString | See [GeoJSON Geometry](#geojson-geometry) | yes      |                            |
+| Field name                 | Description                                                                 | Format             | Example                                   | Nullable |
+|----------------------------|-----------------------------------------------------------------------------|--------------------|-------------------------------------------|----------|
+| id                         | Surrogate identifier                                                        | Integer            | 1234                                      | no       |
+| name                       | Name of the line.                                                           | Free text          | Snilldal-Høyeng                           | no       |
+| business_id                | Business identifier for the line - mRID                                     | UUID               | 123e4567-e89b-12d3-a456-426614174000      | no       |
+| business_id_type           | Type of business identifier. Just `uuid`                                    | `uuid`             | uuid                                      | no       |
+| from_substation_cluster_id | Foreign key to the substation cluster the line starts at                    | Integer            | 1234                                      | no       |
+| to_substation_cluster_id   | Foreign key to the substation cluster the line ends at                      | Integer            | 1234                                      | no       |
+| concessionaires            | Name and org number of the main concessionaires. Used for display purposes. | Array of free text | ["SønderEnergi Nett (987654321)"]         | no       |
+| geometry                   | For displaying on a map. From-to substation cluster averaged position.      | GeoJSON LineString | See [GeoJSON Geometry](#geojson-geometry) | no       |
 
 ### GeoJSON Geometry
 
@@ -149,11 +155,11 @@ substations and lines. This is for displaying the grid model on a map.
 
 This is how we derive the geometry.
 
-| Nemo type      | Geometry type | Description                                                                                               |
-|----------------|---------------|-----------------------------------------------------------------------------------------------------------|
-| SubstationPart | Point         | We use the Location of the SubstationPart.                                                                |
-| Substation     | Polygon       | The convex hull of the Location of the SubstationParts, with a fixed buffer.                              |
-| Line           | LineString    | Line from center to center of to/from Substations. Center is the average of the SubstationPart locations. |
+| Nemo type         | Geometry type | Description                                                                                                  |
+|-------------------|---------------|--------------------------------------------------------------------------------------------------------------|
+| Substation        | Point         | We use the Location of the Substation.                                                                       |
+| SubstationCluster | Polygon       | The convex hull of the Location of the Substations, with a fixed buffer.                                 |
+| Line              | LineString    | Line from center to center of to/from SubstationClusters. Center is the average of the Substation locations. |
 
 This allows us to display the three things. Shown in the example below. The
 example shows two main substations. One has three children and a few connecting
@@ -258,37 +264,3 @@ create more elaborate strategies once we see it in action.
 This shows an example of how the grid location UI can be in a flexibility register.
 
 ![Grid location UI](../diagrams/grid-location-ui.drawio.png)
-
-## Voltage level standardisation
-
-Voltage levels in Nemo are all-over-the-place. For simpler user interaction, we
-might want to standardise voltage levels. The way we do it is by combining
-ranges into a single nominal voltage level. The following table shows the
-thresholds and which nominal voltage level it maps to. If a voltage level equal
-or higher than a threshold, and lower than the next, then it maps to the given
-nominal voltage. All voltages are given as kilovolt (kV).
-
-| Threshold | Nominal |
-|-----------|---------|
-| 0         | 0.23    |
-| 0.34      | 0.4     |
-| 0.6       | 0.69    |
-| 0.8       | 1       |
-| 2         | 3.3     |
-| 4         | 5       |
-| 5.5       | 6.6     |
-| 8         | 11      |
-| 12        | 15      |
-| 18        | 22      |
-| 27        | 33      |
-| 40        | 47      |
-| 55        | 66      |
-| 80        | 110     |
-| 120       | 132     |
-| 200       | 300     |
-| 350       | 420     |
-
-> [!WARNING]
->
-> This topic is still up for discussion and we might never do any
-> standardisation at all.

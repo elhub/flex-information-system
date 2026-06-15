@@ -25,11 +25,13 @@ ALTER TABLE IF EXISTS
 flex.service_provider_product_application_history
 ENABLE ROW LEVEL SECURITY;
 
--- changeset flex:service-provider-product-application-history-rls-com runAlways:true endDelimiter:--
+-- changeset flex:service-provider-product-application-history-rls-com runOnChange:true endDelimiter:--
 -- RLS: SPPA-COM001
 GRANT SELECT ON flex.service_provider_product_application_history
 TO flex_common;
 
+DROP POLICY IF EXISTS "SPPA_COM001"
+ON flex.service_provider_product_application_history;
 CREATE POLICY "SPPA_COM001"
 ON flex.service_provider_product_application_history
 FOR SELECT

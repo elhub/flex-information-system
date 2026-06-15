@@ -81,6 +81,7 @@ export const AccountingPointShow = () => {
       <AccountingPointShowTabs
         accountingPoint={ap}
         gridLocation={viewModel.gridLocation}
+        location={ap.location}
       />
     </ShowPageLayout>
   );

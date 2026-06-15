@@ -12,6 +12,7 @@ type ApiAccountingPoint struct {
 	ID               int
 	BusinessID       string
 	SystemOperatorID int
+	Location         []byte
 	RecordedBy       int
 	RecordedAt       pgtype.Timestamptz
 }

@@ -18,6 +18,7 @@ export type PermissionTarget =
   | "accounting_point"
   | "accounting_point.business_id"
   | "accounting_point.id"
+  | "accounting_point.location"
   | "accounting_point.recorded_at"
   | "accounting_point.recorded_by"
   | "accounting_point.system_operator_id"
@@ -625,6 +626,10 @@ const rawPermissions: Record<
     },
     {
       target: "accounting_point.id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.location",
       operation: "read",
     },
     {
@@ -3042,6 +3047,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "accounting_point.location",
+      operation: "read",
+    },
+    {
       target: "accounting_point",
       operation: "read",
     },
@@ -5456,6 +5465,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "accounting_point.location",
+      operation: "read",
+    },
+    {
       target: "accounting_point",
       operation: "read",
     },
@@ -7867,6 +7880,10 @@ const rawPermissions: Record<
     },
     {
       target: "accounting_point.id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.location",
       operation: "read",
     },
     {
@@ -11211,6 +11228,10 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "accounting_point.location",
+      operation: "read",
+    },
+    {
       target: "accounting_point",
       operation: "read",
     },
@@ -13622,6 +13643,10 @@ const rawPermissions: Record<
     },
     {
       target: "accounting_point.id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.location",
       operation: "read",
     },
     {
@@ -16546,6 +16571,10 @@ const rawPermissions: Record<
     },
     {
       target: "accounting_point.id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.location",
       operation: "read",
     },
     {
@@ -19529,6 +19558,10 @@ const rawPermissions: Record<
     },
     {
       target: "accounting_point.id",
+      operation: "read",
+    },
+    {
+      target: "accounting_point.location",
       operation: "read",
     },
     {

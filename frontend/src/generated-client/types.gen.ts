@@ -290,6 +290,14 @@ export type NumericAggregation = {
   max?: number;
 };
 
+export type GeojsonPoint = {
+  type: "Point";
+  /**
+   * [longitude, latitude] in decimal degrees (WGS84)
+   */
+  coordinates: [number, number];
+};
+
 /**
  * An empty object
  */
@@ -2080,6 +2088,10 @@ export type AccountingPoint = {
    */
   readonly system_operator_id: number;
   /**
+   * Geographic location of the accounting point (WGS84), as a GeoJSON point object.
+   */
+  readonly location?: GeojsonPoint | null;
+  /**
    * When the resource was recorded (created or updated) in the system.
    */
   readonly recorded_at: string;
@@ -3118,6 +3130,10 @@ export type Notice = {
    * The URI of the resource concerned by the event.
    */
   readonly source?: string;
+  /**
+   * The data of the notice.
+   */
+  readonly data?: NoticeData | null;
   /**
    * When the resource was recorded (created or updated) in the system.
    */
@@ -17609,6 +17625,7 @@ export type ListNoticeData = {
      * Unique surrogate identifier.
      */
     id?: string;
+    status?: string;
     /**
      * Reference to the party targeted by the notice.
      */

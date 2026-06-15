@@ -81,5 +81,5 @@ WITH (security_invoker = false) AS (
     GROUP BY cu.id
 );
 
--- changeset flex:controllable-unit-summary-grants runAlways:true endDelimiter:;
+-- changeset flex:controllable-unit-summary-grants runOnChange:true endDelimiter:;
 GRANT SELECT ON TABLE controllable_unit_summary TO flex_common;

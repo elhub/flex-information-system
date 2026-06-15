@@ -1,109 +1,75 @@
-import {
-  Button,
-  FunctionField,
-  ReferenceField,
-  Show,
-  SimpleShowLayout,
-  TextField,
-  TopToolbar,
-  usePermissions,
-  useRecordContext,
-} from "react-admin";
-import { Typography, Stack } from "@mui/material";
-import { FieldStack } from "../../auth";
-import { DateField } from "../../components/datetime";
-import { IdentityField } from "../../components/IdentityField";
-import EditIcon from "@mui/icons-material/Edit";
+import { useRecordContext, usePermissions } from "ra-core";
 import { Link } from "react-router-dom";
-import { ScopesField } from "../../components/scopes";
+import { IconPencil } from "@elhub/ds-icons";
+import { Button, Content, Heading, VerticalSpace } from "../../components/ui";
+import {
+  Show,
+  TextField,
+  ReferenceField,
+  DateField,
+  IdentityField,
+  ScopesField,
+} from "../../components/EDS-ra";
 import { Permissions } from "../../auth/permissions";
+import { getFields } from "../../zod";
+import { zEntityClient } from "../../generated-client/zod.gen";
+
+const fields = getFields(zEntityClient.shape);
 
 const EditButton = () => {
-  const record = useRecordContext()!;
+  const record = useRecordContext();
+  if (!record) return null;
   return (
     <Button
-      component={Link}
+      as={Link}
       to={`/entity/${record.entity_id}/client/${record.id}`}
-      startIcon={<EditIcon />}
-      label="Edit"
-    />
+      variant="invisible"
+      size="medium"
+      icon={IconPencil}
+    >
+      Edit
+    </Button>
   );
 };
 
 export const EntityClientShow = () => {
   const { permissions } = usePermissions<Permissions>();
-
-  // Permission checks
   const canUpdate = permissions?.allow("entity_client", "update");
 
   return (
     <Show
-      actions={
-        canUpdate && (
-          <TopToolbar>
-            <EditButton />
-          </TopToolbar>
-        )
-      }
+      editButton={canUpdate ? <EditButton /> : undefined}
+      historyButton={null}
     >
-      <SimpleShowLayout>
-        <Stack direction="column" spacing={2}>
-          <Typography variant="h6" gutterBottom>
-            Basic information
-          </Typography>
-          <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField source="id" label="field.entity_client.id" />
-            <ReferenceField
-              source="entity_id"
-              reference="entity"
-              link="show"
-              label="field.entity_client.entity_id"
-            >
-              <TextField source="name" />
-            </ReferenceField>
-            <TextField source="name" label="field.entity_client.name" />
-            <TextField
-              source="client_id"
-              label="field.entity_client.client_id"
-            />
-            <ReferenceField
-              source="party_id"
-              reference="party"
-              link="show"
-              label="field.entity_client.party_id"
-            >
-              <TextField source="name" />
-            </ReferenceField>
-            <ScopesField source="scopes" label="field.entity_client.scopes" />
-            <TextField
-              source="client_secret"
-              label="field.entity_client.client_secret"
-            />
-          </FieldStack>
-          <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <FunctionField
-              sx={{ whiteSpace: "pre-wrap" }}
-              source="public_key"
-              render={(record) => record.public_key ?? "--"}
-              label="field.entity_client.public_key"
-            />
-          </FieldStack>
-          <Typography variant="h6" gutterBottom>
-            Registration
-          </Typography>
-          <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <DateField
-              source="recorded_at"
-              showTime
-              label="field.entity_client.recorded_at"
-            />
-            <IdentityField
-              source="recorded_by"
-              label="field.entity_client.recorded_by"
-            />
-          </FieldStack>
-        </Stack>
-      </SimpleShowLayout>
+      <Heading level={2} size="small" spacing>
+        Basic information
+      </Heading>
+      <Content>
+        <TextField source={fields.id.source} label />
+        <ReferenceField
+          source={fields.entity_id.source}
+          reference="entity"
+          label
+        />
+        <TextField source={fields.name.source} label />
+        <TextField source={fields.client_id.source} label />
+        <ReferenceField
+          source={fields.party_id.source}
+          reference="party"
+          label
+        />
+        <ScopesField source={fields.scopes.source} label />
+        <TextField source={fields.client_secret.source} label />
+        <TextField source={fields.public_key.source} label emptyText="--" />
+      </Content>
+      <VerticalSpace />
+      <Heading level={2} size="small" spacing>
+        Registration
+      </Heading>
+      <Content>
+        <DateField source={fields.recorded_at.source} showTime label />
+        <IdentityField source={fields.recorded_by.source} label />
+      </Content>
     </Show>
   );
 };

@@ -5,4 +5,4 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 import kotlin.time.Instant
 
-fun LocalDate.asLocalStartOfDayInstant(): Instant = this.atStartOfDayIn(TimeZone.currentSystemDefault())
+fun LocalDate.asLocalMidnightInstant(timezone: TimeZone): Instant = this.atStartOfDayIn(timezone)

@@ -1,7 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:api-accounting-point-energy-supplier-create endDelimiter:-- runAlways:true
+-- changeset flex:api-accounting-point-energy-supplier-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW api.accounting_point_energy_supplier
 WITH (security_invoker = false, security_barrier = true) AS ( -- cf AP-BRP
     -- RLS: APES-FISO001
@@ -30,9 +30,11 @@ WITH (security_invoker = false, security_barrier = true) AS ( -- cf AP-BRP
             ) AS valid_time_range
         FROM flex.accounting_point_energy_supplier AS ap_es -- noqa
             INNER JOIN flex.accounting_point_system_operator AS ap_so
-                ON ap_so.accounting_point_id = ap_es.accounting_point_id
+                ON
+                    ap_so.accounting_point_id = ap_es.accounting_point_id
                     AND ap_so.valid_time_range && ap_es.valid_time_range
-        WHERE current_role = 'flex_system_operator'
+        WHERE
+            current_role = 'flex_system_operator'
             AND ap_so.system_operator_id = (SELECT flex.current_party())
         GROUP BY
             ap_es.accounting_point_id,

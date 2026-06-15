@@ -10,7 +10,6 @@ import { List, Datagrid } from "../../components/EDS-ra/list";
 import {
   DeleteButton,
   DateField,
-  IdentityField,
   ReferenceField,
   ScopesField,
   TextField,
@@ -67,7 +66,11 @@ const ListActions = ({
   );
 };
 
-export const PartyMembershipList = () => {
+export const PartyMembershipList = ({
+  borderless = false,
+}: {
+  borderless?: boolean;
+}) => {
   const { id } = useRecordContext()!;
   const { permissions } = usePermissions<Permissions>();
   const { data: identity } = useGetIdentity();
@@ -101,6 +104,7 @@ export const PartyMembershipList = () => {
           ]}
           exporter={false}
           empty={false}
+          borderless={borderless}
           filter={{ party_id: id }}
           sort={{ field: "id", order: "DESC" }}
         >
@@ -115,7 +119,6 @@ export const PartyMembershipList = () => {
             </ReferenceField>
             <ScopesField source="scopes" />
             <DateField source="recorded_at" showTime />
-            <IdentityField source="recorded_by" />
             {canDelete && <DeleteButton />}
           </Datagrid>
         </List>

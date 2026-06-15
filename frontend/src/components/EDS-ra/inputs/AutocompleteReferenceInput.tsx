@@ -1,4 +1,5 @@
 import {
+  RaRecord,
   ReferenceInput,
   UseReferenceInputControllerParams,
   useResourceContext,
@@ -13,6 +14,7 @@ type AutocompleteReferenceInputProps = Omit<
   BaseInputProps & {
     reference: string;
     fieldName?: string;
+    optionText?: (record: RaRecord) => string;
   };
 
 export const AutocompleteReferenceInput = ({
@@ -20,6 +22,7 @@ export const AutocompleteReferenceInput = ({
   required,
   reference,
   fieldName,
+  optionText,
   overrideLabel,
   readOnly,
   disabled,
@@ -42,6 +45,7 @@ export const AutocompleteReferenceInput = ({
         required={required}
         overrideLabel={overrideLabel}
         fieldName={fieldName}
+        optionText={optionText}
         readOnly={readOnly}
         resource={resource}
         disabled={disabled}

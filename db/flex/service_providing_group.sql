@@ -1,7 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:service-providing-group-create runAlways:true endDelimiter:--
+-- changeset flex:service-providing-group-create runOnChange:true endDelimiter:--
 CREATE TABLE IF NOT EXISTS service_providing_group (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     name text NOT NULL,

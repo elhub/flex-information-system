@@ -1,146 +1,123 @@
+import { useRecordContext, usePermissions } from "ra-core";
+import { useNavigate } from "react-router-dom";
+import { IconPencil, IconClockReset } from "@elhub/ds-icons";
+import { Button, Content, Heading } from "../../components/ui";
 import {
-  Button,
+  DateField,
+  EnumField,
+  IdentityField,
   ReferenceField,
   Show,
-  SimpleShowLayout,
   TextField,
-  TopToolbar,
-  usePermissions,
-  useRecordContext,
-  useResourceContext,
-} from "react-admin";
-import { Typography, Stack } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import { Link } from "react-router-dom";
+} from "../../components/EDS-ra";
 import { EventButton } from "../../event/EventButton";
-import { DateField } from "../../components/datetime";
-import { FieldStack } from "../../auth";
-import { IdentityField } from "../../components/IdentityField";
 import { Permissions } from "../../auth/permissions";
-import HistoryIcon from "@mui/icons-material/History";
 import { ControllableUnitSuspension } from "../../generated-client";
-import { EnumField } from "../../components/enum";
+import { getFields } from "../../zod";
+import { zControllableUnitSuspensionHistory } from "../../generated-client/zod.gen";
+
+const fields = getFields(zControllableUnitSuspensionHistory.shape);
 
 const EditButton = () => {
   const record = useRecordContext<ControllableUnitSuspension>();
+  const navigate = useNavigate();
+
+  if (!record || record.id == null) return null;
+
   return (
     <Button
-      component={Link}
-      to={`/controllable_unit/${record?.controllable_unit_id}/suspension/${record?.id}`}
-      startIcon={<EditIcon />}
-      label="Edit"
-    />
+      variant="invisible"
+      size="medium"
+      icon={IconPencil}
+      onClick={(e: React.MouseEvent) => {
+        e.stopPropagation();
+        navigate(
+          `/controllable_unit/${record.controllable_unit_id}/suspension/${record.id}`,
+        );
+      }}
+    >
+      Edit
+    </Button>
   );
 };
-
-// manual components to support both flat and nested URLs for this resource
 
 const HistoryButton = () => {
   const record = useRecordContext<ControllableUnitSuspension>();
   const { permissions } = usePermissions<Permissions>();
+  const navigate = useNavigate();
+
+  if (!record || record.id == null) return null;
 
   const filter =
     `?filter=` +
-    encodeURIComponent(`{ "controllable_unit_suspension_id": ${record?.id} }`);
+    encodeURIComponent(`{ "controllable_unit_suspension_id": ${record.id} }`);
 
   return (
     <Button
-      component={Link}
+      variant="invisible"
+      size="medium"
+      icon={IconClockReset}
       disabled={
         !permissions?.allow("controllable_unit_suspension_history", "read")
       }
-      to={`/controllable_unit/${record?.controllable_unit_id}/suspension_history${filter}`}
-      startIcon={<HistoryIcon />}
-      label="View History"
-    />
+      onClick={(e: React.MouseEvent) => {
+        e.stopPropagation();
+        navigate(
+          `/controllable_unit/${record.controllable_unit_id}/suspension_history${filter}`,
+        );
+      }}
+    >
+      View History
+    </Button>
   );
 };
 
 export const ControllableUnitSuspensionShow = () => {
-  const resource = useResourceContext()!;
-  const { permissions } = usePermissions<Permissions>();
-
-  const isHistory = resource.endsWith("_history");
-
-  // Permission checks
-  const canUpdate = permissions?.allow(
-    "controllable_unit_suspension",
-    "update",
-  );
-
   return (
     <Show
-      actions={
-        !isHistory &&
-        canUpdate && (
-          <TopToolbar>
-            <EditButton />
-          </TopToolbar>
-        )
-      }
+      editButton={<EditButton />}
+      historyButton={<HistoryButton />}
+      eventButton={<EventButton filterOnSubject />}
     >
-      <SimpleShowLayout>
-        <Stack direction="column" spacing={2}>
-          <Typography variant="h6" gutterBottom>
-            Basic information
-          </Typography>
-          <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField
-              source="id"
-              label="field.controllable_unit_suspension.id"
-            />
-            <TextField
-              source="controllable_unit_suspension_id"
-              label="field.controllable_unit_suspension_history.controllable_unit_suspension_id"
-            />
-            <ReferenceField
-              source="controllable_unit_id"
-              reference="controllable_unit"
-              label="field.controllable_unit_suspension.controllable_unit_id"
-            >
-              <TextField source="name" />
-            </ReferenceField>
-            <ReferenceField
-              source="impacted_system_operator_id"
-              reference="party"
-              label="field.controllable_unit_suspension.impacted_system_operator_id"
-            >
-              <TextField source="name" />
-            </ReferenceField>
-          </FieldStack>
+      <Heading level={2} size="small" spacing>
+        Basic information
+      </Heading>
+      <Content>
+        <TextField source={fields.id.source} label />
+        <TextField
+          source={fields.controllable_unit_suspension_id.source}
+          label
+        />
+        <ReferenceField
+          source={fields.controllable_unit_id.source}
+          reference="controllable_unit"
+          label
+        >
+          <TextField source="name" />
+        </ReferenceField>
+        <ReferenceField
+          source={fields.impacted_system_operator_id.source}
+          reference="party"
+          label
+        >
+          <TextField source="name" />
+        </ReferenceField>
+      </Content>
 
-          <Typography variant="h6" gutterBottom>
-            Controllable unit suspension process
-          </Typography>
-          <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <EnumField
-              source="reason"
-              label="field.controllable_unit_suspension.reason"
-              enumKey="controllable_unit_suspension.reason"
-            />
-            <DateField
-              source="recorded_at"
-              showTime
-              label="field.controllable_unit_suspension.recorded_at"
-            />
-            <IdentityField
-              source="recorded_by"
-              label="field.controllable_unit_suspension.recorded_by"
-            />
-            <DateField
-              source="replaced_at"
-              showTime
-              label="field.controllable_unit_suspension_history.replaced_at"
-            />
-            <IdentityField
-              source="replaced_by"
-              label="field.controllable_unit_suspension_history.replaced_by"
-            />
-          </FieldStack>
-        </Stack>
-        <HistoryButton />
-        {!isHistory && <EventButton filterOnSubject />}
-      </SimpleShowLayout>
+      <Heading level={2} size="small" spacing>
+        Controllable unit suspension process
+      </Heading>
+      <Content>
+        <EnumField
+          source={fields.reason.source}
+          enumKey="controllable_unit_suspension.reason"
+          label
+        />
+        <DateField source={fields.recorded_at.source} showTime label />
+        <IdentityField source={fields.recorded_by.source} label />
+        <DateField source={fields.replaced_at.source} showTime label />
+        <IdentityField source={fields.replaced_by.source} label />
+      </Content>
     </Show>
   );
 };

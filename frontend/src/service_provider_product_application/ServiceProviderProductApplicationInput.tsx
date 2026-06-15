@@ -91,8 +91,12 @@ export const ServiceProviderProductApplicationInput = () => {
         <PartyReferenceInput
           {...fields.service_provider_id}
           readOnly={isServiceProvider}
+          optionText={(record) => record.name}
         />
-        <PartyReferenceInput {...fields.system_operator_id} />
+        <PartyReferenceInput
+          {...fields.system_operator_id}
+          optionText={(record) => record.name}
+        />
         <ProductTypesInput {...fields.product_type_ids} />
 
         <VerticalSpace size="small" />

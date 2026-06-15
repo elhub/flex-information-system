@@ -1,11 +1,10 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:notice-service-providing-group-grid-suspension runAlways:true endDelimiter:--
+-- changeset flex:notice-service-providing-group-grid-suspension runOnChange:true endDelimiter:--
 
 -- Suspension on SPG no longer qualified
-DROP VIEW IF EXISTS notice_spggs_not_grid_prequalified CASCADE;
-CREATE VIEW notice_spggs_not_grid_prequalified
+CREATE OR REPLACE VIEW notice_spggs_not_grid_prequalified
 WITH (security_invoker = false) AS (
     SELECT
         spggs.impacted_system_operator_id AS party_id,
@@ -28,8 +27,7 @@ WITH (security_invoker = false) AS (
 );
 
 -- Inactive suspension
-DROP VIEW IF EXISTS notice_spggs_lingering CASCADE;
-CREATE VIEW notice_spggs_lingering
+CREATE OR REPLACE VIEW notice_spggs_lingering
 WITH (security_invoker = false) AS (
     SELECT
         spggs.impacted_system_operator_id AS party_id,

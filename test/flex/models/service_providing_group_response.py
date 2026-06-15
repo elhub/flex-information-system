@@ -6,7 +6,6 @@ from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-from dateutil.parser import isoparse
 
 from ..models.service_providing_group_bidding_zone import ServiceProvidingGroupBiddingZone
 from ..models.service_providing_group_status import ServiceProvidingGroupStatus
@@ -239,7 +238,7 @@ class ServiceProvidingGroupResponse:
 
         status = ServiceProvidingGroupStatus(d.pop("status"))
 
-        recorded_at = isoparse(d.pop("recorded_at"))
+        recorded_at = datetime.datetime.fromisoformat(d.pop("recorded_at"))
 
         recorded_by = d.pop("recorded_by")
 

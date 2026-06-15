@@ -25,8 +25,8 @@ note left
     SP must ensure that the CU
     data is up to date:
     - name
+    - flexible power
     - regulation direction
-    - durations
     - etc.
 end note
 activate FIS
@@ -38,7 +38,8 @@ else "Add or update Technical Resource"
     note left
         Data:
         - name
-        - technical information
+        - technology
+        - device information
     end note
     FIS --> SP: OK
     deactivate SP
@@ -50,61 +51,11 @@ loop All Impacted and Procuring System Operators
     |||
     FIS --> SO: Notify update to ISO and PSO
     note left
-        ISOs and PSOs are notified, but does
-        <b>not</b> take part in grid validation.
+        ISOs and PSOs are notified.
     end note
     |||
 end
 FIS --> SO: Notify update to CSO
 deactivate FIS
-
-== Controllable Unit Grid Validation ==
-
-activate SO
-    |||
-note over SO
-    CSO reviews the change and
-    evaluates if the update triggers
-    the need for new grid validation.
-end note
-
-alt "No grid validation needed"
-    |||
-    SO -> FIS: Update last validated time
-    note left
-        Updating last validated time allows
-        the FIS and SP to know that the
-        CSO has reviewed the update.
-    end note
-    activate FIS
-    FIS --> SO: OK
-    FIS --> SP: Notify last validated time updated
-    deactivate FIS
-    |||
-else "Grid validation needed"
-    |||
-    loop When status changes
-        SO -> FIS: Update FIS with status
-        deactivate SO
-        note left
-            Relevant statuses:
-
-            - pending
-            - in progress
-            - incomplete_information
-            - validated
-            - validation_failed
-
-            The CSO should add notes and update
-            last validated time when relevant.
-        end note
-        activate FIS
-        FIS --> SO: OK
-        FIS --> SP: Notify SP grid validation status updated
-        deactivate FIS
-        |||
-    end
-    |||
-end
 
 @enduml

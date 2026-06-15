@@ -12,6 +12,7 @@ type ApiAccountingPoint struct {
 	ID               int
 	BusinessID       string
 	SystemOperatorID int
+	Location         []byte
 	RecordedBy       int
 	RecordedAt       pgtype.Timestamptz
 }
@@ -731,6 +732,12 @@ type ApiTechnicalResourceHistory struct {
 	RecordedAt            pgtype.Timestamptz
 	ReplacedBy            *int
 	ReplacedAt            pgtype.Timestamptz
+}
+
+type NotificationAccountingPointEndUser struct {
+	AccountingPointID int
+	EndUserID         int
+	ValidTimeRange    pgtype.Range[pgtype.Timestamptz]
 }
 
 type NotificationAccountingPointSystemOperator struct {

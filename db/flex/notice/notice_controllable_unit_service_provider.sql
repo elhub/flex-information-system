@@ -1,11 +1,10 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:notice-controllable-unit-service-provider runAlways:true endDelimiter:--
+-- changeset flex:notice-controllable-unit-service-provider runOnChange:true endDelimiter:--
 
-DROP VIEW IF EXISTS notice_cusp_valid_time_outside_contract CASCADE;
 -- CUSPs not fully covered by the end user contract
-CREATE VIEW notice_cusp_valid_time_outside_contract
+CREATE OR REPLACE VIEW notice_cusp_valid_time_outside_contract
 WITH (security_invoker = false) AS (
     SELECT
         service_provider_id AS party_id,

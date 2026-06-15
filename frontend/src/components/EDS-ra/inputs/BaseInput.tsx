@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { FormItem, FormItemLabel, FlexDiv } from "../../ui";
+import { FormItem, FormItemLabel, FlexDiv, Alert } from "../../ui";
 import { FormItemDescription } from "../../ui/types";
 import { usePermissions, useResourceContext, useTranslate } from "ra-core";
 import { Permissions, PermissionTarget } from "../../../auth/permissions";
@@ -17,6 +17,7 @@ export type BaseInputProps = {
   overrideLabel?: string;
   description?: boolean;
   descriptionOverride?: string;
+  warning?: string;
 };
 
 type BaseInputPropsWithChildren = BaseInputProps & {
@@ -35,6 +36,7 @@ export const BaseInput = ({
   error,
   description,
   descriptionOverride,
+  warning,
   children,
   resource: resourceProp,
   overrideLabel,
@@ -84,6 +86,7 @@ export const BaseInput = ({
       {description || descriptionOverride ? (
         <FormItemDescription>{descriptionText}</FormItemDescription>
       ) : null}
+      {warning ? <Alert variant="warning">{warning}</Alert> : null}
       {children}
     </FormItem>
   );

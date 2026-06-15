@@ -19,6 +19,7 @@ def _get_kwargs(
     *,
     embed: str | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["embed"] = embed

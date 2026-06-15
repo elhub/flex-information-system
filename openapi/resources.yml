@@ -2170,6 +2170,23 @@ resources:
           en: System operator
           nb: Systemoperatør
           nn: Systemoperatør
+      location:
+        description: >-
+          Geographic location of the accounting point (WGS84), as a GeoJSON
+          point object.
+        nullable: true
+        readOnly: true
+        example:
+          type: "Point"
+          coordinates: [-2.0259056, 48.6504504]
+        type: object
+        oneOf:
+          - $ref: '#/components/schemas/geojson_point'
+          - type: "null"
+        x-intl:
+          en: Location
+          nb: Lokasjon
+          nn: Lokasjon
 
   - id: accounting_point_balance_responsible_party
     acronym: APBRP
@@ -3543,6 +3560,7 @@ resources:
         format: text
         type: string
         default: active
+        x-filter: true
         enum:
           - id: active
             x-intl:
@@ -3601,10 +3619,11 @@ resources:
       data:
         description: The data of the notice.
         type: object
-        $ref: '#/components/schemas/notice_data'
+        oneOf:
+          - $ref: '#/components/schemas/notice_data'
+          - type: "null"
         readOnly: true
         nullable: true
-        example:
         x-intl:
           en: Data
           nb: Data

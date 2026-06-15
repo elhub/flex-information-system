@@ -24,7 +24,7 @@ export const ServiceProvidingGroupShow = () => {
     isPending: isSPGPending,
     error: errorSPG,
   } = useQuery({
-    queryKey: ["service_providing_group", spgId],
+    queryKey: ["service_providing_group", spgId, "summary"],
     queryFn: () =>
       readServiceProvidingGroup({
         path: { id: spgId },

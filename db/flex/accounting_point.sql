@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS accounting_point (
     business_id text UNIQUE NOT NULL CHECK (
         validate_business_id(business_id, 'gsrn')
     ),
+    location GEOMETRY (POINT, 4326) NULL,
     record_time_range tstzrange NOT NULL DEFAULT tstzrange(
         localtimestamp, null, '[)'
     ),

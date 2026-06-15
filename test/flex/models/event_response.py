@@ -6,7 +6,6 @@ from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-from dateutil.parser import isoparse
 
 from ..types import UNSET, Unset
 
@@ -107,7 +106,7 @@ class EventResponse:
 
         specversion = d.pop("specversion")
 
-        time = isoparse(d.pop("time"))
+        time = datetime.datetime.fromisoformat(d.pop("time"))
 
         type_ = d.pop("type")
 

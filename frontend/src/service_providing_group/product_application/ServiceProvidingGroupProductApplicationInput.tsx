@@ -144,6 +144,7 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
           rows={8}
           description
           tooltip={false}
+          warning="Please remember not to write any sensitive (power/market/personal) information in this field."
         />
         <DateTimeInput
           {...fields.prequalified_at}

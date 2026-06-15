@@ -21,6 +21,7 @@ def _get_kwargs(
     limit: str | Unset = UNSET,
     accounting_point_grid_location_id: str | Unset = UNSET,
 ) -> dict[str, Any]:
+
     params: dict[str, Any] = {}
 
     params["id"] = id

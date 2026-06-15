@@ -6,7 +6,6 @@ from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-from dateutil.parser import isoparse
 
 from ..types import UNSET, Unset
 
@@ -20,6 +19,7 @@ if TYPE_CHECKING:
     from ..models.accounting_point_grid_location_response import AccountingPointGridLocationResponse
     from ..models.accounting_point_metering_grid_area_response import AccountingPointMeteringGridAreaResponse
     from ..models.controllable_unit_response import ControllableUnitResponse
+    from ..models.geojson_point import GeojsonPoint
     from ..models.party_response import PartyResponse
 
 
@@ -37,6 +37,8 @@ class AccountingPointResponse:
         recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.
+        location (GeojsonPoint | None | Unset): Geographic location of the accounting point (WGS84), as a GeoJSON point
+            object. Example: {'type': 'Point', 'coordinates': [-2.0259056, 48.6504504]}.
         controllable_unit (list[ControllableUnitResponse] | None | Unset): Embedded controllable_unit
         system_operator (None | PartyResponse | Unset): Embedded party
         balance_responsible_party (list[AccountingPointBalanceResponsiblePartyResponse] | None | Unset): Embedded
@@ -55,6 +57,7 @@ class AccountingPointResponse:
     system_operator_id: int
     recorded_at: datetime.datetime
     recorded_by: int
+    location: GeojsonPoint | None | Unset = UNSET
     controllable_unit: list[ControllableUnitResponse] | None | Unset = UNSET
     system_operator: None | PartyResponse | Unset = UNSET
     balance_responsible_party: list[AccountingPointBalanceResponsiblePartyResponse] | None | Unset = UNSET
@@ -67,6 +70,7 @@ class AccountingPointResponse:
 
     def to_dict(self) -> dict[str, Any]:
         from ..models.accounting_point_grid_location_response import AccountingPointGridLocationResponse
+        from ..models.geojson_point import GeojsonPoint
         from ..models.party_response import PartyResponse
 
         id = self.id
@@ -78,6 +82,14 @@ class AccountingPointResponse:
         recorded_at = self.recorded_at.isoformat()
 
         recorded_by = self.recorded_by
+
+        location: dict[str, Any] | None | Unset
+        if isinstance(self.location, Unset):
+            location = UNSET
+        elif isinstance(self.location, GeojsonPoint):
+            location = self.location.to_dict()
+        else:
+            location = self.location
 
         controllable_unit: list[dict[str, Any]] | None | Unset
         if isinstance(self.controllable_unit, Unset):
@@ -178,6 +190,8 @@ class AccountingPointResponse:
                 "recorded_by": recorded_by,
             }
         )
+        if location is not UNSET:
+            field_dict["location"] = location
         if controllable_unit is not UNSET:
             field_dict["controllable_unit"] = controllable_unit
         if system_operator is not UNSET:
@@ -208,6 +222,7 @@ class AccountingPointResponse:
         from ..models.accounting_point_grid_location_response import AccountingPointGridLocationResponse
         from ..models.accounting_point_metering_grid_area_response import AccountingPointMeteringGridAreaResponse
         from ..models.controllable_unit_response import ControllableUnitResponse
+        from ..models.geojson_point import GeojsonPoint
         from ..models.party_response import PartyResponse
 
         d = dict(src_dict)
@@ -217,9 +232,26 @@ class AccountingPointResponse:
 
         system_operator_id = d.pop("system_operator_id")
 
-        recorded_at = isoparse(d.pop("recorded_at"))
+        recorded_at = datetime.datetime.fromisoformat(d.pop("recorded_at"))
 
         recorded_by = d.pop("recorded_by")
+
+        def _parse_location(data: object) -> GeojsonPoint | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                location_type_0 = GeojsonPoint.from_dict(data)
+
+                return location_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(GeojsonPoint | None | Unset, data)
+
+        location = _parse_location(d.pop("location", UNSET))
 
         def _parse_controllable_unit(data: object) -> list[ControllableUnitResponse] | None | Unset:
             if data is None:
@@ -405,6 +437,7 @@ class AccountingPointResponse:
             system_operator_id=system_operator_id,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
+            location=location,
             controllable_unit=controllable_unit,
             system_operator=system_operator,
             balance_responsible_party=balance_responsible_party,

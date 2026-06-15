@@ -27,6 +27,8 @@ public data class AccountingPointResponse(
    */
   @SerialName("system_operator_id")
   public val systemOperatorId: Long? = null,
+  @SerialName("location")
+  public val location: GeojsonPoint? = null,
   /**
    * When the resource was recorded (created or updated) in the system.
    */

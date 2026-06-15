@@ -6,7 +6,6 @@ from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-from dateutil.parser import isoparse
 
 from ..models.service_providing_group_product_suspension_comment_visibility import (
     ServiceProvidingGroupProductSuspensionCommentVisibility,
@@ -118,13 +117,13 @@ class ServiceProvidingGroupProductSuspensionCommentHistoryResponse:
 
         created_by = d.pop("created_by")
 
-        created_at = isoparse(d.pop("created_at"))
+        created_at = datetime.datetime.fromisoformat(d.pop("created_at"))
 
         visibility = ServiceProvidingGroupProductSuspensionCommentVisibility(d.pop("visibility"))
 
         content = d.pop("content")
 
-        recorded_at = isoparse(d.pop("recorded_at"))
+        recorded_at = datetime.datetime.fromisoformat(d.pop("recorded_at"))
 
         recorded_by = d.pop("recorded_by")
 
@@ -149,7 +148,7 @@ class ServiceProvidingGroupProductSuspensionCommentHistoryResponse:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                replaced_at_type_0 = isoparse(data)
+                replaced_at_type_0 = datetime.datetime.fromisoformat(data)
 
                 return replaced_at_type_0
             except (TypeError, ValueError, AttributeError, KeyError):

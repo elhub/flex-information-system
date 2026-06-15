@@ -79,6 +79,8 @@ from .entity_type import EntityType
 from .entity_update_request import EntityUpdateRequest
 from .error_message import ErrorMessage
 from .event_response import EventResponse
+from .geojson_point import GeojsonPoint
+from .geojson_point_type import GeojsonPointType
 from .identity_response import IdentityResponse
 from .metering_grid_area_business_id_type import MeteringGridAreaBusinessIdType
 from .metering_grid_area_response import MeteringGridAreaResponse
@@ -342,6 +344,8 @@ __all__ = (
     "EntityUpdateRequest",
     "ErrorMessage",
     "EventResponse",
+    "GeojsonPoint",
+    "GeojsonPointType",
     "IdentityResponse",
     "MeteringGridAreaBusinessIdType",
     "MeteringGridAreaResponse",

@@ -315,7 +315,7 @@ Start by enabling RLS on the table so that we deny by default.
 If notifications are planned on this resource, the internal role should be able to read it.
 
 ```sql
--- changeset flex:<resource>-rls runAlways:true endDelimiter:;
+-- changeset flex:<resource>-rls runOnChange:true endDelimiter:;
 ALTER TABLE IF EXISTS <resource> ENABLE ROW LEVEL SECURITY;
 
 -- internal

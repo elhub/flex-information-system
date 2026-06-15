@@ -12,6 +12,7 @@ type ListProps = ListBaseProps & {
   empty?: boolean;
   actions?: ReactNode[];
   pagination?: boolean;
+  borderless?: boolean;
 };
 
 export const List = ({
@@ -20,17 +21,28 @@ export const List = ({
   empty,
   actions,
   pagination = true,
+  borderless = false,
   ...rest
 }: ListProps) => {
+  const content = (
+    <>
+      {filters?.length ? <ListFilters filters={filters} /> : null}
+      {empty ? <BodyText>No results</BodyText> : children}
+      {pagination && <ListPagination />}
+    </>
+  );
+
   return (
     <ListBase {...rest}>
       <div className="flex flex-col gap-2">
         {actions && <ListActions actions={actions} />}
-        <Panel border className="flex flex-col gap-5">
-          {filters?.length ? <ListFilters filters={filters} /> : null}
-          {empty ? <BodyText>No results</BodyText> : children}
-          {pagination && <ListPagination />}
-        </Panel>
+        {borderless ? (
+          <div className="flex flex-col gap-5">{content}</div>
+        ) : (
+          <Panel border className="flex flex-col gap-5">
+            {content}
+          </Panel>
+        )}
       </div>
     </ListBase>
   );
