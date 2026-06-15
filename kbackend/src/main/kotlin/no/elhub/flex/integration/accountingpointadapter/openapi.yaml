@@ -192,7 +192,7 @@ components:
         latitude:
           type: number
           description: Geographic latitude of the accounting point (WGS84).
-          format: float8
+          format: double
           minimum: -90
           maximum: 90
           nullable: true
@@ -200,7 +200,7 @@ components:
         longitude:
           description: Geographic longitude of the accounting point (WGS84).
           type: number
-          format: float8
+          format: double
           minimum: -180
           maximum: 180
           nullable: true

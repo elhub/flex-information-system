@@ -105,6 +105,14 @@ class AccountingPointServiceImpl(
                             accountingPointRepository.lockSyncRowAndMarkStart(accountingPointId)
                                 .mapLeft { err -> err.toInternalServerError("lockSyncRowAndMarkStart") }.bind()
 
+                            if (adapterAccountingPoint.latitude != null && adapterAccountingPoint.longitude != null) {
+                                accountingPointRepository.updateAccountingPointLocation(
+                                    accountingPointId,
+                                    adapterAccountingPoint.latitude,
+                                    adapterAccountingPoint.longitude,
+                                ).mapLeft { it.toInternalServerError("updateAccountingPointLocation") }.bind()
+                            }
+
                             val endUsers = adapterAccountingPoint.toAccountingPointEndUsers(accountingPointId)
                             val energySuppliers = adapterAccountingPoint.toAccountingPointEnergySuppliers(accountingPointId)
 

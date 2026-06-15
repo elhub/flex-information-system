@@ -1,9 +1,8 @@
 package no.elhub.flex.integration.accountingpointadapter.generated.models
 
-import java.math.BigDecimal
+import kotlin.Double
 import kotlin.String
 import kotlin.collections.List
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -37,13 +36,11 @@ public data class AccountingPoint(
   /**
    * Geographic latitude of the accounting point (WGS84).
    */
-  @Contextual
   @SerialName("latitude")
-  public val latitude: BigDecimal? = null,
+  public val latitude: Double? = null,
   /**
    * Geographic longitude of the accounting point (WGS84).
    */
-  @Contextual
   @SerialName("longitude")
-  public val longitude: BigDecimal? = null,
+  public val longitude: Double? = null,
 )

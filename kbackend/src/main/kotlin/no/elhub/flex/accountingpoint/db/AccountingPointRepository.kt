@@ -113,6 +113,18 @@ interface AccountingPointRepository {
     ): Either<RepositoryError, Unit>
 
     /**
+     * Updates the location of an accounting point with the given coordinates.
+     *
+     * Returns [DatabaseError] if no row exists for [accountingPointId].
+     */
+    context(principal: FlexPrincipal)
+    suspend fun updateAccountingPointLocation(
+        accountingPointId: Long,
+        latitude: Double,
+        longitude: Double,
+    ): Either<RepositoryError, Unit>
+
+    /**
      * Acquires a row-level lock on the sync row for [accountingPointId], waiting up to 1 second.
      *
      * On acquiring the lock, stamps [last_sync_start] with the current time so that in-progress
@@ -255,6 +267,35 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
             }.mapLeft { e ->
                 logger.error { "insertAccountingPointIfNotExists failed: ${e.message}" }
                 DatabaseError("Failed to upsert accounting point")
+            }
+        }
+
+    context(principal: FlexPrincipal)
+    override suspend fun updateAccountingPointLocation(
+        accountingPointId: Long,
+        latitude: Double,
+        longitude: Double,
+    ): Either<RepositoryError, Unit> =
+        flexTransaction { conn ->
+            Either.catch {
+                conn.prepareNamed(
+                    """
+                    UPDATE flex.accounting_point
+                    SET location = ST_SetSRID(ST_MakePoint(:longitude, :latitude), 4326)
+                    WHERE id = :accountingPointId
+                    """,
+                    mapOf(
+                        "longitude" to longitude,
+                        "latitude" to latitude,
+                        "accountingPointId" to accountingPointId,
+                    ),
+                ).use { stmt ->
+                    val updated = stmt.executeUpdate()
+                    if (updated == 0) error("No accounting point found with id $accountingPointId")
+                }
+            }.mapLeft { e ->
+                logger.error { "updateAccountingPointLocation failed: ${e.message}" }
+                DatabaseError("Failed to update accounting point location")
             }
         }
 
