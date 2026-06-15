@@ -3534,20 +3534,15 @@
 
 
 <h1 id="cu-update">CU Update</h1>
-<p>Update of controllable unit information from service provider. Includes steps
-for connecting system operators to validate the information provided (CU grid
-validation) if needed.</p>
+<p>Update of controllable unit information from service provider.</p>
 <h2 id="prerequisites">Prerequisites</h2>
 <ul>
 <li>Controllable Unit exist in the flexibility information system.</li>
 <li>Service provider has access to the controllable unit.</li>
-<li>The system operator evaluates if the update triggers the need for new grid validation.<ul>
-<li>If the change does not trigger new grid validation, system operator should
-  update last validated time.</li>
-<li>If the change triggers new grid validation, system operator should update
-  to relevant status and initiate grid validation without undue delay.</li>
-</ul>
-</li>
+<li>If the Controllable Unit is part of a Service Providing Group (SPG) product
+application or a prequalified Service providing group, the system operator
+evaluates if the update triggers the need for a new SPG product application
+or grid prequlaification.</li>
 </ul>
 <h2 id="sequence">Sequence</h2>
 <p><a href="../../diagrams/controllable_unit_update.png">Full Size</a> | <a href="../../diagrams/controllable_unit_update.plantuml">PlantUML description</a></p>

@@ -3353,6 +3353,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#substation_cluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        substation_cluster
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#substation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3445,17 +3456,6 @@
     <span class="md-ellipsis">
       
         Example user interface
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#voltage-level-standardisation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Voltage level standardisation
       
     </span>
   </a>
@@ -3707,6 +3707,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#substation_cluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        substation_cluster
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#substation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3805,17 +3816,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#voltage-level-standardisation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Voltage level standardisation
-      
-    </span>
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -3839,8 +3839,11 @@ flexibility register. The location is used in the <a href="../../concepts/grid-m
 use-cases</a>.</p>
 <p>Grid location means the <em>electrical</em> or <em>topological</em> location in the grid. This
 is different from the geographical location, given as coordinates or address.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <p>Since a controllable unit is always "behind" an accounting point, the grid
 location on accounting point will give the location for the CUs as well.</p>
+</div>
 <h2 id="accounting-point-geographical-location">Accounting point geographical location</h2>
 <p>The accounting point geographical location is loaded as part of the <a href="../accounting-point-data/">accounting
 point data sync</a>. This location is used for
@@ -3864,21 +3867,20 @@ their individual grid model to a common grid model.</p>
 <p>The Norwegian common grid model is <a href="https://nemo.elbits.no/modell/">Nemo</a> from
 <a href="https://www.elbits.no/">Elbits</a>.</p>
 <p>Nemo is used by <a href="https://www.elbits.no/tjenester/tilko">Tilko</a>, a digital portal
-for grid connection requests that affects more than one grid owner. Tilko has
-been rolled out to almost all of Norway as of writing this. We are taking a lot
-inspiration from Tilko in how we exchange grid location.</p>
+for grid connection requests that affects more than one grid owner. We are
+taking a lot inspiration from Tilko in how we exchange grid location.</p>
 <h3 id="common-grid-model-basics">Common grid model basics</h3>
 <p>The Nemo model is modelled in <a href="https://no.wikipedia.org/wiki/Resource_Description_Framework">Resource Description Framework
 (RDF)</a>, allowing
 for a representation of a graph as a set of triples.</p>
 <p>The main objects are</p>
 <ul>
-<li><a href="https://nemo.elbits.no/modell/Dokumentasjon/substation/">Substation</a> : the
-  "main" station - hovedstasjon</li>
-<li><a href="https://nemo.elbits.no/modell/Dokumentasjon/substationpart/">SubstationPart</a>
-  : a part of a substation - understasjon</li>
+<li><a href="https://nemo.elbits.no/modell/Dokumentasjon/substation/">SubstationCluster</a> :
+  the "main" station - hovedstasjon (previously called <code>Substation</code>)</li>
+<li><a href="https://nemo.elbits.no/modell/Dokumentasjon/substationpart/">Substation</a> : a
+  part of a substation cluster - understasjon (previously called <code>SubstationPart</code>)</li>
 <li><a href="https://nemo.elbits.no/modell/Dokumentasjon/line/">Line</a> : grid connections
-  between substations</li>
+  between substation clusters</li>
 </ul>
 <p>An important field on these objects are their unique business identifiers -
 mRID. mRID is the <a href="https://ontology.tno.nl/cerise/cim-profile/cim_IdentifiedObject.mRID.html">Master resource identifier issued by a model
@@ -3907,19 +3909,14 @@ The grid model service will serve data as an aid in picking the grid location.</
 <p>We model a condensed data model with the following resources in this service,
 based on Nemo.</p>
 <ul>
-<li><code>substation</code> from <code>Substation</code> and <code>SubstationPart</code></li>
+<li><code>substation_cluster</code> from <code>SubstationCluster</code></li>
+<li><code>substation</code> from <code>Substation</code></li>
 <li><code>line</code> from <code>Line</code></li>
 </ul>
-<h3 id="substation">substation</h3>
-<p>The <code>substation</code> resource is modelling
-<a href="https://nemo.elbits.no/modell/Dokumentasjon/substationpart/">elb:SubstationPart</a>
-and <a href="https://nemo.elbits.no/modell/Dokumentasjon/substation/">cim:Substation</a> as
-a single resource. This is based on an understanding that the substationpart as
-a name/concept will not be used in future versions of a common grid model.</p>
-<p>We use substation kind and a foreign key to distinguish between the two. If the
-substation does not have a kind, then it is a child substation. A child
-substation will also have a foreign key to its parent substation.</p>
-<p>The following fields exist on the substation resource</p>
+<h3 id="substation_cluster">substation_cluster</h3>
+<p>The <code>substation_cluster</code> resource models
+<a href="https://nemo.elbits.no/modell/Dokumentasjon/substation/">SubstationCluster</a>
+(previously called <code>Substation</code>) — the "main" station (hovedstasjon).</p>
 <table>
 <thead>
 <tr>
@@ -3928,7 +3925,6 @@ substation will also have a foreign key to its parent substation.</p>
 <th>Format</th>
 <th>Example</th>
 <th>Nullable</th>
-<th>Note</th>
 </tr>
 </thead>
 <tbody>
@@ -3938,23 +3934,20 @@ substation will also have a foreign key to its parent substation.</p>
 <td>Integer</td>
 <td>1234</td>
 <td>no</td>
-<td></td>
 </tr>
 <tr>
 <td>name</td>
-<td>Name of the substation.</td>
+<td>Name of the substation cluster.</td>
 <td>Free text</td>
-<td>Snilldal 1 KRA</td>
+<td>Snilldal</td>
 <td>no</td>
-<td></td>
 </tr>
 <tr>
 <td>business_id</td>
-<td>Business identifier for the substation - mRID</td>
+<td>Business identifier - mRID</td>
 <td>UUID</td>
 <td>550e8400-e29b-41d4-a716-446655440000</td>
 <td>no</td>
-<td></td>
 </tr>
 <tr>
 <td>business_id_type</td>
@@ -3962,63 +3955,102 @@ substation will also have a foreign key to its parent substation.</p>
 <td><code>uuid</code></td>
 <td>uuid</td>
 <td>no</td>
-<td></td>
+</tr>
+<tr>
+<td>averaged_position</td>
+<td>The average geographical position of the cluster.</td>
+<td>GeoJSON Point</td>
+<td>See <a href="#geojson-geometry">GeoJSON Geometry</a></td>
+<td>no</td>
+</tr>
+<tr>
+<td>geometry</td>
+<td>For displaying on a map.</td>
+<td>GeoJSON Polygon</td>
+<td>See <a href="#geojson-geometry">GeoJSON Geometry</a></td>
+<td>no</td>
+</tr>
+</tbody>
+</table>
+<h3 id="substation">substation</h3>
+<p>The <code>substation</code> resource models
+<a href="https://nemo.elbits.no/modell/Dokumentasjon/substationpart/">cim:Substation</a>
+(previously called <code>SubstationPart</code>) — a part of a substation cluster
+(understasjon). Each substation belongs to exactly one substation cluster via
+<code>substation_cluster_id</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Field name</th>
+<th>Description</th>
+<th>Format</th>
+<th>Example</th>
+<th>Nullable</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>Surrogate identifier</td>
+<td>Integer</td>
+<td>1234</td>
+<td>no</td>
+</tr>
+<tr>
+<td>name</td>
+<td>Name of the substation.</td>
+<td>Free text</td>
+<td>Snilldal 1 KRA</td>
+<td>no</td>
+</tr>
+<tr>
+<td>business_id</td>
+<td>Business identifier - mRID</td>
+<td>UUID</td>
+<td>550e8400-e29b-41d4-a716-446655440000</td>
+<td>no</td>
+</tr>
+<tr>
+<td>business_id_type</td>
+<td>Type of business identifier.</td>
+<td><code>uuid</code></td>
+<td>uuid</td>
+<td>no</td>
 </tr>
 <tr>
 <td>kind</td>
 <td>Kind of substation</td>
 <td><code>coupling</code>, <code>junction</code>, <code>power</code>, <code>transformer</code></td>
 <td>coupling</td>
-<td>yes</td>
-<td></td>
+<td>no</td>
 </tr>
 <tr>
-<td>substation_id</td>
-<td>Foreign key to parent substation.</td>
+<td>primary_concessionaire</td>
+<td>Name and org number of the main concessionaire.</td>
+<td>text</td>
+<td>SønderEnergi Nett (987654321)</td>
+<td>no</td>
+</tr>
+<tr>
+<td>substation_cluster_id</td>
+<td>Foreign key to parent substation cluster.</td>
 <td>Integer</td>
 <td>1234</td>
-<td>yes</td>
-<td></td>
+<td>no</td>
 </tr>
 <tr>
-<td>longitude</td>
-<td>Longitude of the substation.</td>
-<td>Numeric</td>
-<td>10.1234</td>
-<td>yes</td>
-<td>Center for parent</td>
-</tr>
-<tr>
-<td>latitude</td>
-<td>Latitude of the substation.</td>
-<td>Numeric</td>
-<td>63.1234</td>
-<td>yes</td>
-<td>Center for parent</td>
-</tr>
-<tr>
-<td>nominal_voltage_levels</td>
-<td>List of voltage levels on the substation and parent.</td>
+<td>voltage_levels</td>
+<td>List of voltage levels on the substation.</td>
 <td>Array of numeric. kV with three decimals.</td>
 <td>[22, 33]</td>
-<td>yes</td>
-<td>Extracted from BaseVoltage</td>
-</tr>
-<tr>
-<td>concessionaires</td>
-<td>Name and org number of the main concessionaires.</td>
-<td>Array of free text</td>
-<td>["SønderEnergi Nett (987654321)"]</td>
-<td>yes</td>
-<td></td>
+<td>no</td>
 </tr>
 <tr>
 <td>geometry</td>
-<td>For displaying on a map. GeoJSON Polygon or Point.</td>
-<td>GeoJSON Polygon or Point</td>
+<td>For displaying on a map.</td>
+<td>GeoJSON Point</td>
 <td>See <a href="#geojson-geometry">GeoJSON Geometry</a></td>
-<td>yes</td>
-<td></td>
+<td>no</td>
 </tr>
 </tbody>
 </table>
@@ -4031,7 +4063,6 @@ substation will also have a foreign key to its parent substation.</p>
 <th>Format</th>
 <th>Example</th>
 <th>Nullable</th>
-<th>Note</th>
 </tr>
 </thead>
 <tbody>
@@ -4041,7 +4072,6 @@ substation will also have a foreign key to its parent substation.</p>
 <td>Integer</td>
 <td>1234</td>
 <td>no</td>
-<td></td>
 </tr>
 <tr>
 <td>name</td>
@@ -4049,7 +4079,6 @@ substation will also have a foreign key to its parent substation.</p>
 <td>Free text</td>
 <td>Snilldal-Høyeng</td>
 <td>no</td>
-<td></td>
 </tr>
 <tr>
 <td>business_id</td>
@@ -4057,7 +4086,6 @@ substation will also have a foreign key to its parent substation.</p>
 <td>UUID</td>
 <td>123e4567-e89b-12d3-a456-426614174000</td>
 <td>no</td>
-<td></td>
 </tr>
 <tr>
 <td>business_id_type</td>
@@ -4065,55 +4093,34 @@ substation will also have a foreign key to its parent substation.</p>
 <td><code>uuid</code></td>
 <td>uuid</td>
 <td>no</td>
-<td></td>
 </tr>
 <tr>
-<td>from_substation_id</td>
-<td>Foreign key to the substation the line starts at</td>
+<td>from_substation_cluster_id</td>
+<td>Foreign key to the substation cluster the line starts at</td>
 <td>Integer</td>
 <td>1234</td>
 <td>no</td>
-<td></td>
 </tr>
 <tr>
-<td>from_nominal_voltage</td>
-<td>Voltage level on the line. kV.</td>
-<td>Numeric</td>
-<td>22</td>
-<td>no</td>
-<td>Extracted from BaseVoltage</td>
-</tr>
-<tr>
-<td>to_substation_id</td>
-<td>Foreign key to the substation the line ends at</td>
+<td>to_substation_cluster_id</td>
+<td>Foreign key to the substation cluster the line ends at</td>
 <td>Integer</td>
 <td>1234</td>
 <td>no</td>
-<td></td>
 </tr>
 <tr>
-<td>to_nominal_voltage</td>
-<td>Voltage level on the line. kV.</td>
-<td>Numeric</td>
-<td>22</td>
-<td>no</td>
-<td>Extracted from BaseVoltage</td>
-</tr>
-<tr>
-<td>consessionaires</td>
-<td>Name and org number of the main consessionaires.</td>
+<td>concessionaires</td>
+<td>Name and org number of the main concessionaires. Used for display purposes.</td>
 <td>Array of free text</td>
 <td>["SønderEnergi Nett (987654321)"]</td>
-<td>yes</td>
-<td></td>
+<td>no</td>
 </tr>
 <tr>
 <td>geometry</td>
-<td>For displaying on a map. GeoJSON LineString.</td>
+<td>For displaying on a map. From-to substation cluster averaged position.</td>
 <td>GeoJSON LineString</td>
 <td>See <a href="#geojson-geometry">GeoJSON Geometry</a></td>
-<td>yes</td>
-<td></td>
+<td>no</td>
 </tr>
 </tbody>
 </table>
@@ -4132,19 +4139,19 @@ substations and lines. This is for displaying the grid model on a map.</p>
 </thead>
 <tbody>
 <tr>
-<td>SubstationPart</td>
+<td>Substation</td>
 <td>Point</td>
-<td>We use the Location of the SubstationPart.</td>
+<td>We use the Location of the Substation.</td>
 </tr>
 <tr>
-<td>Substation</td>
+<td>SubstationCluster</td>
 <td>Polygon</td>
-<td>The convex hull of the Location of the SubstationParts, with a fixed buffer.</td>
+<td>The convex hull of the Location of the Substations, with a fixed buffer.</td>
 </tr>
 <tr>
 <td>Line</td>
 <td>LineString</td>
-<td>Line from center to center of to/from Substations. Center is the average of the SubstationPart locations.</td>
+<td>Line from center to center of to/from SubstationClusters. Center is the average of the Substation locations.</td>
 </tr>
 </tbody>
 </table>
@@ -4332,96 +4339,6 @@ create more elaborate strategies once we see it in action.</p>
 <h2 id="example-user-interface">Example user interface</h2>
 <p>This shows an example of how the grid location UI can be in a flexibility register.</p>
 <p><img alt="Grid location UI" src="../../diagrams/grid-location-ui.drawio.png" /></p>
-<h2 id="voltage-level-standardisation">Voltage level standardisation</h2>
-<p>Voltage levels in Nemo are all-over-the-place. For simpler user interaction, we
-might want to standardise voltage levels. The way we do it is by combining
-ranges into a single nominal voltage level. The following table shows the
-thresholds and which nominal voltage level it maps to. If a voltage level equal
-or higher than a threshold, and lower than the next, then it maps to the given
-nominal voltage. All voltages are given as kilovolt (kV).</p>
-<table>
-<thead>
-<tr>
-<th>Threshold</th>
-<th>Nominal</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>0</td>
-<td>0.23</td>
-</tr>
-<tr>
-<td>0.34</td>
-<td>0.4</td>
-</tr>
-<tr>
-<td>0.6</td>
-<td>0.69</td>
-</tr>
-<tr>
-<td>0.8</td>
-<td>1</td>
-</tr>
-<tr>
-<td>2</td>
-<td>3.3</td>
-</tr>
-<tr>
-<td>4</td>
-<td>5</td>
-</tr>
-<tr>
-<td>5.5</td>
-<td>6.6</td>
-</tr>
-<tr>
-<td>8</td>
-<td>11</td>
-</tr>
-<tr>
-<td>12</td>
-<td>15</td>
-</tr>
-<tr>
-<td>18</td>
-<td>22</td>
-</tr>
-<tr>
-<td>27</td>
-<td>33</td>
-</tr>
-<tr>
-<td>40</td>
-<td>47</td>
-</tr>
-<tr>
-<td>55</td>
-<td>66</td>
-</tr>
-<tr>
-<td>80</td>
-<td>110</td>
-</tr>
-<tr>
-<td>120</td>
-<td>132</td>
-</tr>
-<tr>
-<td>200</td>
-<td>300</td>
-</tr>
-<tr>
-<td>350</td>
-<td>420</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>This topic is still up for discussion and we might never do any
-standardisation at all.</p>
-</div>
 
 
 
