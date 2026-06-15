@@ -281,7 +281,7 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
                 conn.prepareNamed(
                     """
                     UPDATE flex.accounting_point
-                    SET location = ST_SetSRID(ST_MakePoint(:longitude, :latitude), 4326)
+                    SET location = public.ST_SetSRID(public.ST_MakePoint(:longitude, :latitude), 4326)
                     WHERE id = :accountingPointId
                     """,
                     mapOf(
