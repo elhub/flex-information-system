@@ -23,7 +23,6 @@ note left
     - name
     - flexible power
     - regulation direction
-    - contract reference
 end note
 
 activate FIS
@@ -33,7 +32,7 @@ FIS --> SP: Return w/ unique ID
 FIS --> EU : Notify new CU
 note right
     FIS knows who the end user is
-    based on the accounting point 
+    based on the accounting point
     and data from Elhub.
 end note
 deactivate FIS
@@ -41,6 +40,11 @@ deactivate FIS
 == Register Controllable Unit Service Provider Contract ==
 
 SP -> FIS: Register CU service provider contract
+note left
+    Data:
+    - contract reference
+    - start date
+end note
 activate FIS
 FIS --> SP: OK
 FIS --> EU : Notify CU SP contract
@@ -83,6 +87,7 @@ loop Relevant technical resources
         Data:
         - name
         - technology
+        - rated power
         - device information
     end note
     activate FIS
