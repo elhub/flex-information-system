@@ -23,6 +23,7 @@ import no.elhub.flex.integration.accountingpointadapter.NotFoundError
 import no.elhub.flex.integration.accountingpointadapter.generated.models.EndUser
 import no.elhub.flex.integration.accountingpointadapter.generated.models.EnergySupplier
 import no.elhub.flex.meteringgridarea.db.MeteringGridAreaRepository
+import no.elhub.flex.model.domain.Location
 import no.elhub.flex.model.domain.MeteringGridArea
 import no.elhub.flex.model.domain.MeteringGridAreaStatus
 import no.elhub.flex.model.domain.db.DatabaseError
@@ -120,7 +121,7 @@ class AccountingPointServiceTest : FunSpec({
             with(internalPrincipal) {
                 coVerify(exactly = 1) { accountingPointRepository.insertAccountingPointIfNotExists(any()) }
                 coVerify(exactly = 1) { accountingPointRepository.lockSyncRowAndMarkStart(AP_ID) }
-                coVerify(exactly = 0) { accountingPointRepository.updateAccountingPointLocation(any(), any(), any()) }
+                coVerify(exactly = 0) { accountingPointRepository.updateAccountingPointLocation(any(), any()) }
                 coVerify(exactly = 1) { accountingPointMeteringGridAreaRepository.replaceAllFor(any()) }
                 coVerify(exactly = 1) { accountingPointRepository.replaceAllAccountingPointEndUsers(any()) }
                 coVerify(exactly = 1) { accountingPointRepository.replaceAllAccountingPointEnergySupplier(any()) }
@@ -293,7 +294,7 @@ class AccountingPointServiceTest : FunSpec({
             with(internalPrincipal) {
                 coEvery { accountingPointRepository.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
                 coEvery { accountingPointRepository.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
-                coEvery { accountingPointRepository.updateAccountingPointLocation(AP_ID, 59.9139, 10.7522) } returns Unit.right()
+                coEvery { accountingPointRepository.updateAccountingPointLocation(AP_ID, Location(10.7522, 59.9139)) } returns Unit.right()
                 coEvery { meteringGridAreaRepository.getMeteringGridAreasByBusinessIds(any()) } returns mgaMap.right()
                 coEvery { accountingPointMeteringGridAreaRepository.replaceAllFor(any()) } returns Unit.right()
                 coEvery { accountingPointRepository.replaceAllAccountingPointEndUsers(any()) } returns Unit.right()
@@ -307,7 +308,7 @@ class AccountingPointServiceTest : FunSpec({
             // then
             result.shouldBeRight()
             with(internalPrincipal) {
-                coVerify(exactly = 1) { accountingPointRepository.updateAccountingPointLocation(AP_ID, 59.9139, 10.7522) }
+                coVerify(exactly = 1) { accountingPointRepository.updateAccountingPointLocation(AP_ID, Location(10.7522, 59.9139)) }
             }
         }
 
@@ -331,7 +332,7 @@ class AccountingPointServiceTest : FunSpec({
             // then
             result.shouldBeRight()
             with(internalPrincipal) {
-                coVerify(exactly = 0) { accountingPointRepository.updateAccountingPointLocation(any(), any(), any()) }
+                coVerify(exactly = 0) { accountingPointRepository.updateAccountingPointLocation(any(), any()) }
             }
         }
 
@@ -354,7 +355,7 @@ class AccountingPointServiceTest : FunSpec({
             // then
             result.shouldBeRight()
             with(internalPrincipal) {
-                coVerify(exactly = 0) { accountingPointRepository.updateAccountingPointLocation(any(), any(), any()) }
+                coVerify(exactly = 0) { accountingPointRepository.updateAccountingPointLocation(any(), any()) }
             }
         }
 

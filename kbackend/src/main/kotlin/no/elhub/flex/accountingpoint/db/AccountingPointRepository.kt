@@ -15,6 +15,7 @@ import no.elhub.flex.db.querySingle
 import no.elhub.flex.model.domain.AccountingPoint
 import no.elhub.flex.model.domain.AccountingPointEndUser
 import no.elhub.flex.model.domain.AccountingPointEnergySupplier
+import no.elhub.flex.model.domain.Location
 import no.elhub.flex.model.domain.db.DatabaseError
 import no.elhub.flex.model.domain.db.LockTimeoutError
 import no.elhub.flex.model.domain.db.NoMatchError
@@ -120,8 +121,7 @@ interface AccountingPointRepository {
     context(principal: FlexPrincipal)
     suspend fun updateAccountingPointLocation(
         accountingPointId: Long,
-        latitude: Double,
-        longitude: Double,
+        location: Location,
     ): Either<RepositoryError, Unit>
 
     /**
@@ -273,8 +273,7 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
     context(principal: FlexPrincipal)
     override suspend fun updateAccountingPointLocation(
         accountingPointId: Long,
-        latitude: Double,
-        longitude: Double,
+        location: Location,
     ): Either<RepositoryError, Unit> =
         flexTransaction { conn ->
             Either.catch {
@@ -285,8 +284,8 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
                     WHERE id = :accountingPointId
                     """,
                     mapOf(
-                        "longitude" to longitude,
-                        "latitude" to latitude,
+                        "longitude" to location.longitude,
+                        "latitude" to location.latitude,
                         "accountingPointId" to accountingPointId,
                     ),
                 ).use { stmt ->

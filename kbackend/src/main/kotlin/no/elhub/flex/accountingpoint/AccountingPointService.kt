@@ -16,6 +16,7 @@ import no.elhub.flex.model.domain.AccountingPoint
 import no.elhub.flex.model.domain.AccountingPointEndUser
 import no.elhub.flex.model.domain.AccountingPointEnergySupplier
 import no.elhub.flex.model.domain.AccountingPointMeteringGridArea
+import no.elhub.flex.model.domain.Location
 import no.elhub.flex.model.domain.db.NoMatchError
 import no.elhub.flex.model.domain.db.NotFoundError
 import no.elhub.flex.model.domain.db.RepositoryError
@@ -108,8 +109,10 @@ class AccountingPointServiceImpl(
                             if (adapterAccountingPoint.latitude != null && adapterAccountingPoint.longitude != null) {
                                 accountingPointRepository.updateAccountingPointLocation(
                                     accountingPointId,
-                                    adapterAccountingPoint.latitude,
-                                    adapterAccountingPoint.longitude,
+                                    Location(
+                                        longitude = adapterAccountingPoint.longitude,
+                                        latitude = adapterAccountingPoint.latitude,
+                                    )
                                 ).mapLeft { it.toInternalServerError("updateAccountingPointLocation") }.bind()
                             }
 
