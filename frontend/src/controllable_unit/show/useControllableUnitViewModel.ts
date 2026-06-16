@@ -7,6 +7,7 @@ import {
   ControllableUnitSuspension,
   listAccountingPointBalanceResponsibleParty,
   listAccountingPointBiddingZone,
+  listAccountingPointEnergySupplier,
   listAccountingPointMeteringGridArea,
   listControllableUnitServiceProvider,
   listControllableUnitSuspension,
@@ -36,6 +37,7 @@ export type ControllableUnitShowViewModel = {
     | undefined;
   biddingZone: string | undefined;
   meteringGridArea: MeteringGridArea | undefined;
+  energySupplier: Party | undefined;
 };
 
 const findCurrentCusp = async (controllableUnitId: number) => {
@@ -111,6 +113,18 @@ const getCurrentMeteringGridArea = async (accountingPointId: number) => {
   return mgaList[0]?.metering_grid_area ?? undefined;
 };
 
+const getCurrentEnergySupplier = async (accountingPointId: number) => {
+  const esList = await listAccountingPointEnergySupplier({
+    query: {
+      accounting_point_id: "eq." + accountingPointId,
+      valid_at: new Date().toISOString(),
+      embed: "energy_supplier",
+    },
+  }).then(throwOnError);
+
+  return esList[0]?.energy_supplier ?? undefined;
+};
+
 const getAccountingPointData = async (
   accountingPointId: number | undefined,
 ) => {
@@ -122,6 +136,7 @@ const getAccountingPointData = async (
       accountingPointBalanceResponsibleParty: undefined,
       biddingZone: undefined,
       meteringGridArea: undefined,
+      energySupplier: undefined,
     };
   }
 
@@ -138,17 +153,20 @@ const getAccountingPointData = async (
 
   const biddingZonePromise = getCurrentBiddingZone(accountingPointId);
   const meteringGridAreaPromise = getCurrentMeteringGridArea(accountingPointId);
+  const energySupplierPromise = getCurrentEnergySupplier(accountingPointId);
 
   const [
     systemOperator,
     balanceResponsibleParty,
     biddingZone,
     meteringGridArea,
+    energySupplier,
   ] = await Promise.all([
     systemOperatorPromise,
     balanceResponsiblePartyPromise,
     biddingZonePromise,
     meteringGridAreaPromise,
+    energySupplierPromise,
   ]);
 
   return {
@@ -159,6 +177,7 @@ const getAccountingPointData = async (
       balanceResponsibleParty?.accountingPointBalanceResponsibleParty,
     biddingZone,
     meteringGridArea,
+    energySupplier,
   };
 };
 
@@ -201,6 +220,7 @@ export const getControllableUnitData = async (
       accountingPoint.accountingPointBalanceResponsibleParty,
     biddingZone: accountingPoint.biddingZone,
     meteringGridArea: accountingPoint.meteringGridArea,
+    energySupplier: accountingPoint.energySupplier,
     suspensions: suspensions,
     controllableUnitServiceProvider: cuspData.cusp,
   };
