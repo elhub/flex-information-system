@@ -3,6 +3,8 @@ package no.elhub.flex.accountingpoint.db
 import io.kotest.assertions.arrow.core.shouldBeLeft
 import io.kotest.assertions.arrow.core.shouldBeRight
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
+import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
 import no.elhub.flex.PostgresTestContainer
 import no.elhub.flex.auth.FlexPrincipal
@@ -822,6 +824,52 @@ class AccountingPointRepositoryTest : FunSpec({
 
             // then
             result.shouldBeLeft() shouldBe DatabaseError("No sync row found for accounting point $missingApId")
+        }
+    }
+
+    context("getByIds") {
+
+        test("returns matching accounting points for the given IDs") {
+            // given
+            val businessId1 = uniqueGsrn()
+            val businessId2 = uniqueGsrn()
+            val id1 = insertAccountingPoint(businessId1)
+            val id2 = insertAccountingPoint(businessId2)
+
+            // when
+            val result = with(principal) { repo.getByIds(listOf(id1, id2)) }.shouldBeRight()
+
+            // then
+            result.map { it.id } shouldContainExactlyInAnyOrder listOf(id1, id2)
+            result.map { it.businessId } shouldContainExactlyInAnyOrder listOf(businessId1, businessId2)
+        }
+
+        test("silently omits IDs with no matching row") {
+            // given
+            val existingId = insertAccountingPoint(uniqueGsrn())
+            val missingId = Long.MAX_VALUE
+
+            // when
+            val result = with(principal) { repo.getByIds(listOf(existingId, missingId)) }.shouldBeRight()
+
+            // then — only the existing one is returned
+            result.map { it.id } shouldContainExactlyInAnyOrder listOf(existingId)
+        }
+
+        test("returns empty list for empty input") {
+            // when
+            val result = with(principal) { repo.getByIds(emptyList()) }.shouldBeRight()
+
+            // then
+            result shouldHaveSize 0
+        }
+
+        test("returns empty list when no IDs match") {
+            // given — IDs that do not exist
+            val result = with(principal) { repo.getByIds(listOf(Long.MAX_VALUE - 1, Long.MAX_VALUE)) }.shouldBeRight()
+
+            // then
+            result shouldHaveSize 0
         }
     }
 })

@@ -68,6 +68,18 @@ interface AccountingPointService {
      */
     context(principal: FlexPrincipal)
     suspend fun getCurrentAccountingPoint(controllableUnitBusinessId: String): Either<AppError, AccountingPoint>
+
+    /**
+     * Retrieves accounting points by their internal IDs.
+     *
+     * IDs with no matching row are silently omitted from the result.
+     *
+     * Returns [InternalServerError] if the query fails.
+     *
+     * @param accountingPointIds the internal IDs of the accounting points to retrieve.
+     */
+    context(principal: FlexPrincipal)
+    suspend fun getByIds(accountingPointIds: List<Long>): Either<AppError, List<AccountingPoint>>
 }
 
 @Single(createdAtStart = true)
@@ -197,6 +209,11 @@ class AccountingPointServiceImpl(
             else -> InternalServerError(traceIdOrUnknown())
         }
     }
+
+    context(principal: FlexPrincipal)
+    override suspend fun getByIds(accountingPointIds: List<Long>): Either<AppError, List<AccountingPoint>> =
+        accountingPointRepository.getByIds(accountingPointIds)
+            .mapLeft { InternalServerError(traceIdOrUnknown()) }
 
     private suspend fun fetchAccountingPointData(
         accountingPointBusinessId: String,

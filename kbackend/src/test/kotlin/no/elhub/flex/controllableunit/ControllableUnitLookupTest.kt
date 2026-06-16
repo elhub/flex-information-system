@@ -28,7 +28,7 @@ import no.elhub.flex.config.configureSerialization
 import no.elhub.flex.controllableunit.db.ControllableUnitRepository
 import no.elhub.flex.event.db.EventRepository
 import no.elhub.flex.model.domain.AccountingPoint
-import no.elhub.flex.model.domain.ControllableUnit
+import no.elhub.flex.model.domain.ControllableUnitForLookup
 import no.elhub.flex.model.error.InternalServerError
 import no.elhub.flex.model.error.ResourceNotFoundError
 import no.elhub.flex.routes.controllableunit.ControllableUnitLookup
@@ -85,7 +85,7 @@ class ControllableUnitLookupTest :
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
                 coEvery {
                     with(any<FlexPrincipal>()) { mockRepo.lookupControllableUnits(any(), any()) }
-                } returns emptyList<ControllableUnit>().right()
+                } returns emptyList<ControllableUnitForLookup>().right()
 
                 val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo)
                 val response = app.client.post("/controllable_unit/lookup") {
@@ -118,7 +118,7 @@ class ControllableUnitLookupTest :
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
                 coEvery {
                     with(any<FlexPrincipal>()) { mockRepo.lookupControllableUnits(any(), any()) }
-                } returns emptyList<ControllableUnit>().right()
+                } returns emptyList<ControllableUnitForLookup>().right()
 
                 val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo)
                 val response = app.client.post("/controllable_unit/lookup") {
@@ -174,7 +174,7 @@ class ControllableUnitLookupTest :
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
                 coEvery {
                     with(any<FlexPrincipal>()) { mockRepo.lookupControllableUnits(any(), any()) }
-                } returns emptyList<ControllableUnit>().right()
+                } returns emptyList<ControllableUnitForLookup>().right()
 
                 val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo)
                 val response = app.client.post("/controllable_unit/lookup") {
@@ -255,7 +255,7 @@ class ControllableUnitLookupTest :
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
                 coEvery {
                     with(any<FlexPrincipal>()) { mockRepo.lookupControllableUnits(any(), any()) }
-                } returns emptyList<ControllableUnit>().right()
+                } returns emptyList<ControllableUnitForLookup>().right()
 
                 val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo)
                 val response = app.client.post("/controllable_unit/lookup") {
@@ -322,7 +322,7 @@ class ControllableUnitLookupTest :
                 } returns ResourceNotFoundError("end user does not match accounting point / controllable unit").left()
                 coEvery {
                     with(any<FlexPrincipal>()) { mockRepo.lookupControllableUnits(any(), any()) }
-                } returns emptyList<ControllableUnit>().right()
+                } returns emptyList<ControllableUnitForLookup>().right()
 
                 val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo)
                 val response = app.client.post("/controllable_unit/lookup") {
@@ -352,7 +352,7 @@ class ControllableUnitLookupTest :
                 } returns ResourceNotFoundError("AP not found").left()
                 coEvery {
                     with(any<FlexPrincipal>()) { mockRepo.lookupControllableUnits(any(), any()) }
-                } returns emptyList<ControllableUnit>().right()
+                } returns emptyList<ControllableUnitForLookup>().right()
 
                 val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo)
                 val response = app.client.post("/controllable_unit/lookup") {
@@ -383,7 +383,7 @@ class ControllableUnitLookupTest :
                     } returns ResourceNotFoundError("AP not found").left()
                     coEvery {
                         with(any<FlexPrincipal>()) { syncDisabledRepo.lookupControllableUnits(any(), any()) }
-                    } returns emptyList<ControllableUnit>().right()
+                    } returns emptyList<ControllableUnitForLookup>().right()
 
                     val app = testApp(syncDisabledRepo, syncDisabledAccountingPointService, mockEventRepo, syncEnabled = false)
                     val response = app.client.post("/controllable_unit/lookup") {
@@ -415,7 +415,7 @@ class ControllableUnitLookupTest :
                     } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
                     coEvery {
                         with(any<FlexPrincipal>()) { syncDisabledRepo.lookupControllableUnits(any(), any()) }
-                    } returns emptyList<ControllableUnit>().right()
+                    } returns emptyList<ControllableUnitForLookup>().right()
 
                     val app = testApp(syncDisabledRepo, syncDisabledAccountingPointService, mockEventRepo, syncEnabled = false)
                     val response = app.client.post("/controllable_unit/lookup") {
@@ -450,7 +450,7 @@ class ControllableUnitLookupTest :
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
                 coEvery {
                     with(any<FlexPrincipal>()) { mockRepo.lookupControllableUnits(any(), any()) }
-                } returns emptyList<ControllableUnit>().right()
+                } returns emptyList<ControllableUnitForLookup>().right()
 
                 val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo)
                 val response = app.client.post("/controllable_unit/lookup") {
@@ -484,7 +484,7 @@ class ControllableUnitLookupTest :
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
                 coEvery {
                     with(any<FlexPrincipal>()) { mockRepo.lookupControllableUnits(any(), any()) }
-                } returns emptyList<ControllableUnit>().right()
+                } returns emptyList<ControllableUnitForLookup>().right()
 
                 val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo)
                 val response = app.client.post("/controllable_unit/lookup") {
@@ -536,7 +536,7 @@ class ControllableUnitLookupTest :
                 coEvery {
                     with(any<FlexPrincipal>()) { mockRepo.lookupControllableUnits(any(), any()) }
                 } returns listOf(
-                    ControllableUnit(
+                    ControllableUnitForLookup(
                         id = 1,
                         businessId = controllableUnitBusinessId,
                         name = "My CU",
@@ -598,8 +598,8 @@ class ControllableUnitLookupTest :
                 coEvery {
                     with(any<FlexPrincipal>()) { mockRepo.lookupControllableUnits(any(), any()) }
                 } returns listOf(
-                    ControllableUnit(id = 10L, businessId = "550e8400-e29b-41d4-a716-446655440000", name = "CU 1", technicalResources = emptyList(), startDate = null),
-                    ControllableUnit(id = 20L, businessId = "660e8400-e29b-41d4-a716-446655440001", name = "CU 2", technicalResources = emptyList(), startDate = null),
+                    ControllableUnitForLookup(id = 10L, businessId = "550e8400-e29b-41d4-a716-446655440000", name = "CU 1", technicalResources = emptyList(), startDate = null),
+                    ControllableUnitForLookup(id = 20L, businessId = "660e8400-e29b-41d4-a716-446655440001", name = "CU 2", technicalResources = emptyList(), startDate = null),
                 ).right()
 
                 val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo)
@@ -644,7 +644,7 @@ class ControllableUnitLookupTest :
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
                 coEvery {
                     with(any<FlexPrincipal>()) { mockRepo.lookupControllableUnits(any(), any()) }
-                } returns emptyList<ControllableUnit>().right()
+                } returns emptyList<ControllableUnitForLookup>().right()
 
                 val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo)
                 app.client.post("/controllable_unit/lookup") {
@@ -690,7 +690,7 @@ class ControllableUnitLookupTest :
                 coEvery {
                     with(any<FlexPrincipal>()) { mockRepo.lookupControllableUnits(any(), any()) }
                 } returns listOf(
-                    ControllableUnit(id = 10L, businessId = controllableUnitBusinessId, name = "CU 1", technicalResources = emptyList(), startDate = null),
+                    ControllableUnitForLookup(id = 10L, businessId = controllableUnitBusinessId, name = "CU 1", technicalResources = emptyList(), startDate = null),
                 ).right()
 
                 val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo)

@@ -163,14 +163,8 @@ The following participants are involved in the flows:
 
 ### Background sync flow
 
-The batch size for the background sync can be established upon application
-startup. We generally want all accounting points to be synced within 24 hours.
-The batch size should be configured as follows. We can use startup since
-we assume that we will deploy/recycle the application quite often.
-
-```none
-Batch size = nb_accounting_points / ((24h / interval) * nb_workers)
-```
+The batch size for the background sync is set to a static size of 50.
+A batch will be processed every 5 minutes.
 
 We can make this better in the future, but for now we can live with this simple
 approach.

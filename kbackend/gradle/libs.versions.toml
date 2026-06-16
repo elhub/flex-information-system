@@ -80,6 +80,7 @@ ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-conte
 ktor-server-netty = { group = "io.ktor", name = "ktor-server-netty", version.ref = "ktor" }
 ktor-server-swagger = { group = "io.ktor", name = "ktor-server-swagger", version.ref = "ktor" }
 ktor-server-status-pages = { group = "io.ktor", name = "ktor-server-status-pages", version.ref = "ktor" }
+krontab = { group = "dev.inmo", name = "krontab", version.ref = "krontab" }
 logging-logback = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback" }
 logging-slf4j-simple = { group = "org.slf4j", name = "slf4j-simple", version.ref = "slf4j" }
 logging-oshai-kotlin-logging = { group = "io.github.oshai", name = "kotlin-logging-jvm", version.ref = "kotlin-logging" }
@@ -137,3 +138,4 @@ slf4j = "2.0.18"
 snakeyaml = "2.6"
 testcontainers = "2.0.5"
 wiremock = "3.13.2"
+krontab = "2.9.0"

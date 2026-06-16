@@ -2,15 +2,19 @@ package no.elhub.flex.controllableunit.db
 
 import io.kotest.assertions.arrow.core.shouldBeRight
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
 import no.elhub.flex.PostgresTestContainer
 import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.model.domain.ControllableUnit
-import no.elhub.flex.model.domain.TechnicalResource
+import no.elhub.flex.model.domain.ControllableUnitStatus
+import no.elhub.flex.model.domain.RegulationDirection
 import no.elhub.flex.util.uniqueGsrn
+import java.math.BigDecimal
 import java.sql.Connection
 import java.util.UUID
 import kotlin.time.Clock
@@ -35,51 +39,45 @@ class ControllableUnitRepositoryTest : FunSpec({
         test("returns expected CUs when queried by CU business ID") {
             // given
             val apBusinessId = uniqueGsrn()
-            val expected = seedControllableUnits(
+            val seeded = seedControllableUnits(
                 apBusinessId = apBusinessId,
-                cus = listOf(
-                    ControllableUnit(
-                        id = 0,
-                        businessId = uniqueUuid(),
-                        name = "CU Beta",
-                        startDate = Clock.System.todayIn(TimeZone.of("Europe/Oslo")),
-                        technicalResources = listOf(
-                            TechnicalResource(id = 0, name = "TR One"),
-                            TechnicalResource(id = 0, name = "TR Two"),
-                        ),
-                    ),
-                ),
+                cus = listOf(testControllableUnit(name = "CU Beta")),
             )
+            val cuId = seeded.first().id
+            insertTechnicalResource(name = "TR One", cuId = cuId)
+            insertTechnicalResource(name = "TR Two", cuId = cuId)
             seedControllableUnits(
                 apBusinessId = uniqueGsrn(),
-                cus = listOf(ControllableUnit(id = 0, businessId = uniqueUuid(), name = "Noise CU", startDate = Clock.System.todayIn(TimeZone.of("Europe/Oslo")), technicalResources = emptyList())),
+                cus = listOf(testControllableUnit(name = "Noise CU")),
             )
 
             // when
             val result = with(principal) {
                 repo.lookupControllableUnits(
-                    controllableUnitBusinessId = expected.first().businessId,
+                    controllableUnitBusinessId = seeded.first().businessId,
                     accountingPointBusinessId = "",
                 )
             }.shouldBeRight()
 
             // then
-            result shouldBe expected
+            result shouldHaveSize 1
+            result.first().businessId shouldBe seeded.first().businessId
+            result.first().technicalResources.map { it.name } shouldContainExactlyInAnyOrder listOf("TR One", "TR Two")
         }
 
         test("returns expected CUs when queried by accounting point") {
             // given
             val apBusinessId = uniqueGsrn()
-            val expected = seedControllableUnits(
+            val seeded = seedControllableUnits(
                 apBusinessId = apBusinessId,
                 cus = listOf(
-                    ControllableUnit(id = 0, businessId = uniqueUuid(), name = "CU One", startDate = Clock.System.todayIn(TimeZone.of("Europe/Oslo")), technicalResources = emptyList()),
-                    ControllableUnit(id = 0, businessId = uniqueUuid(), name = "CU Two", startDate = Clock.System.todayIn(TimeZone.of("Europe/Oslo")), technicalResources = emptyList()),
+                    testControllableUnit(name = "CU One"),
+                    testControllableUnit(name = "CU Two"),
                 ),
             )
             seedControllableUnits(
                 apBusinessId = uniqueGsrn(),
-                cus = listOf(ControllableUnit(id = 0, businessId = uniqueUuid(), name = "Noise CU", startDate = Clock.System.todayIn(TimeZone.of("Europe/Oslo")), technicalResources = emptyList())),
+                cus = listOf(testControllableUnit(name = "Noise CU")),
             )
 
             // when
@@ -89,7 +87,7 @@ class ControllableUnitRepositoryTest : FunSpec({
 
             // then
             result shouldHaveSize 2
-            result.toSet() shouldBe expected.toSet()
+            result.map { it.businessId } shouldContainExactlyInAnyOrder seeded.map { it.businessId }
         }
 
         test("returns empty list when CU business ID does not exist") {
@@ -105,9 +103,96 @@ class ControllableUnitRepositoryTest : FunSpec({
             result shouldHaveSize 0
         }
     }
+
+    context("getByAccountingPointId") {
+
+        test("returns all CUs for the given accounting point") {
+            // given
+            val apBusinessId = uniqueGsrn()
+            val seeded = seedControllableUnits(
+                apBusinessId = apBusinessId,
+                cus = listOf(
+                    testControllableUnit(name = "CU One"),
+                    testControllableUnit(name = "CU Two"),
+                ),
+            )
+            val apId = seeded.first().accountingPointId
+
+            // when
+            val result = with(principal) { repo.getByAccountingPointId(apId) }.shouldBeRight()
+
+            // then
+            result shouldContainExactlyInAnyOrder seeded
+        }
+
+        test("returns empty list when no CUs exist for the given accounting point") {
+            // given — AP with no CUs
+            val apId = insertAccountingPoint(uniqueGsrn())
+
+            // when
+            val result = with(principal) { repo.getByAccountingPointId(apId) }.shouldBeRight()
+
+            // then
+            result shouldHaveSize 0
+        }
+
+        test("does not return CUs belonging to a different accounting point") {
+            // given
+            val targetSeeded = seedControllableUnits(
+                apBusinessId = uniqueGsrn(),
+                cus = listOf(testControllableUnit(name = "Target CU")),
+            )
+            seedControllableUnits(
+                apBusinessId = uniqueGsrn(),
+                cus = listOf(testControllableUnit(name = "Noise CU")),
+            )
+            val targetApId = targetSeeded.first().accountingPointId
+
+            // when
+            val result = with(principal) { repo.getByAccountingPointId(targetApId) }.shouldBeRight()
+
+            // then
+            result shouldContainExactlyInAnyOrder targetSeeded
+        }
+    }
 })
 
 private fun uniqueUuid(): String = UUID.randomUUID().toString()
+
+private fun testControllableUnit(
+    businessId: String = uniqueUuid(),
+    name: String = "CU $businessId",
+    startDate: LocalDate? = Clock.System.todayIn(TimeZone.of("Europe/Oslo")),
+    accountingPointId: Long = 0L,
+): ControllableUnit = ControllableUnit(
+    id = 0,
+    businessId = businessId,
+    name = name,
+    startDate = startDate,
+    status = ControllableUnitStatus.NEW,
+    regulationDirection = RegulationDirection.UP,
+    maximumActivePower = BigDecimal("100.000"),
+    isSmall = false,
+    additionalInformation = null,
+    accountingPointId = accountingPointId,
+    createdByPartyId = 0L,
+)
+
+private fun insertAccountingPoint(apBusinessId: String): Long =
+    PostgresTestContainer.withConnection { conn ->
+        conn.autoCommit = false
+        conn.createStatement().use { it.execute("SELECT flex.set_entity_party_identity(0, 0, 0)") }
+        val id = conn.prepareStatement("INSERT INTO flex.accounting_point (business_id) VALUES (?) RETURNING id")
+            .use { stmt ->
+                stmt.setString(1, apBusinessId)
+                stmt.executeQuery().use { rs ->
+                    rs.next()
+                    rs.getLong(1)
+                }
+            }
+        conn.commit()
+        id
+    }
 
 private fun seedControllableUnits(
     apBusinessId: String,
@@ -134,8 +219,7 @@ private fun seedControllableUnits(
 
         val result = cus.map { cu ->
             val cuId = insertControllableUnit(conn, cu, apId)
-            val trs = cu.technicalResources.map { tr -> insertTechnicalResource(conn, tr, cuId) }
-            cu.copy(id = cuId, technicalResources = trs)
+            cu.copy(id = cuId, accountingPointId = apId)
         }
 
         conn.commit()
@@ -146,32 +230,35 @@ private fun insertControllableUnit(conn: Connection, cu: ControllableUnit, apId:
     conn.prepareStatement(
         """
         INSERT INTO flex.controllable_unit (business_id, name, start_date, regulation_direction, maximum_active_power, accounting_point_id)
-        VALUES (?::uuid, ?, ?::date, 'up', 100.0, ?)
+        VALUES (?::uuid, ?, ?::date, ?, ?, ?)
         RETURNING id
         """.trimIndent(),
     ).use { stmt ->
         stmt.setString(1, cu.businessId)
         stmt.setString(2, cu.name)
         stmt.setString(3, cu.startDate.toString())
-        stmt.setLong(4, apId)
+        stmt.setString(4, cu.regulationDirection.direction)
+        stmt.setBigDecimal(5, cu.maximumActivePower)
+        stmt.setLong(6, apId)
         stmt.executeQuery().use { rs ->
             rs.next()
             rs.getLong(1)
         }
     }
 
-private fun insertTechnicalResource(conn: Connection, tr: TechnicalResource, cuId: Long): TechnicalResource =
-    conn.prepareStatement(
-        """
-        INSERT INTO flex.technical_resource (name, controllable_unit_id, technology, maximum_active_power, device_type)
-        VALUES (?, ?, '{other.consumption}', 0.001, 'other')
-        RETURNING id
-        """.trimIndent(),
-    ).use { stmt ->
-        stmt.setString(1, tr.name)
-        stmt.setLong(2, cuId)
-        stmt.executeQuery().use { rs ->
-            rs.next()
-            tr.copy(id = rs.getLong(1))
+private fun insertTechnicalResource(name: String, cuId: Long) =
+    PostgresTestContainer.withConnection { conn ->
+        conn.autoCommit = false
+        conn.createStatement().use { it.execute("SELECT flex.set_entity_party_identity(0, 0, 0)") }
+        conn.prepareStatement(
+            """
+            INSERT INTO flex.technical_resource (name, controllable_unit_id, technology, maximum_active_power, device_type)
+            VALUES (?, ?, '{other.consumption}', 0.001, 'other')
+            """.trimIndent(),
+        ).use { stmt ->
+            stmt.setString(1, name)
+            stmt.setLong(2, cuId)
+            stmt.executeUpdate()
         }
+        conn.commit()
     }

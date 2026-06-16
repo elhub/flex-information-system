@@ -10,6 +10,7 @@ import no.elhub.flex.config.configureDatabase
 import no.elhub.flex.config.configureLogging
 import no.elhub.flex.config.configureMonitoring
 import no.elhub.flex.config.configureRouting
+import no.elhub.flex.config.configureScheduling
 import no.elhub.flex.config.configureSerialization
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.KoinApplication
@@ -32,7 +33,7 @@ class FlexApp
 
 /**
  * Configures the main application module with logging, serialization, routing,
- * authentication and database connectivity.
+ * authentication, scheduling and database connectivity.
  */
 fun Application.module() {
     install(Tracing.plugin)
@@ -65,4 +66,6 @@ fun Application.module() {
         )
         slf4jLogger()
     }
+
+    configureScheduling()
 }
