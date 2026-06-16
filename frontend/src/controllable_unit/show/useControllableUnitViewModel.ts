@@ -108,7 +108,7 @@ const getCurrentMeteringGridArea = async (accountingPointId: number) => {
     },
   }).then(throwOnError);
 
-  return findCurrentlyValidRecord(mgaList)?.metering_grid_area ?? undefined;
+  return mgaList[0]?.metering_grid_area ?? undefined;
 };
 
 const getAccountingPointData = async (
