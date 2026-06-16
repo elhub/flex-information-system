@@ -103,13 +103,13 @@ CREATE OR REPLACE VIEW staging.substation_cluster_v AS (
                 ST_CONVEXHULL(
                     ST_COLLECT(
                         ST_TRANSFORM(
-                            ST_MAKEPOINT(sub.lon, sub.lat), 'EPSG:4326', 'EPSG:3857'
+                            ST_SETSRID(ST_MAKEPOINT(sub.lon, sub.lat), 4326), 3857
                         )
                     )
                 ),
                 50
             ),
-            'EPSG:3857', 'EPSG:4326'
+            4326
         ) AS area
     FROM staging.substation_cluster AS sc
         INNER JOIN staging.substation AS sub
