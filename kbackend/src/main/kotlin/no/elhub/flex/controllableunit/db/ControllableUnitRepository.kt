@@ -17,7 +17,6 @@ import no.elhub.flex.model.domain.RegulationDirection
 import no.elhub.flex.model.domain.db.DatabaseError
 import no.elhub.flex.model.domain.db.RepositoryError
 import org.koin.core.annotation.Single
-import java.math.BigDecimal
 import java.sql.ResultSet
 
 /**
@@ -107,7 +106,7 @@ class ControllableUnitRepositoryImpl : ControllableUnitRepository {
             ).query { it.toControllableUnit() }
         }.mapLeft { e ->
             logger.error { "getByAccountingPointId failed: ${e.message}" }
-            DatabaseError("Failed to query accounting point by id")
+            DatabaseError("Failed to query  by accounting point id")
         }
     }
 

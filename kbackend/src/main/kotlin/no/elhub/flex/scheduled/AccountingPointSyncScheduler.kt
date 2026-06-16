@@ -1,6 +1,5 @@
 package no.elhub.flex.scheduled
 
-import arrow.core.Either
 import arrow.core.raise.context.bind
 import arrow.core.raise.context.either
 import dev.inmo.krontab.doInfinity
@@ -10,8 +9,6 @@ import no.elhub.flex.accountingpoint.AccountingPointService
 import no.elhub.flex.accountingpoint.db.AccountingPointSyncRepository
 import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.controllableunit.db.ControllableUnitRepository
-import no.elhub.flex.model.error.AppError
-import no.elhub.flex.util.TraceIdUtil.Companion.traceIdOrUnknown
 import no.elhub.flex.util.asLocalMidnightInstant
 import no.elhub.flex.util.todayLocalMidnight
 import org.koin.core.annotation.Property
@@ -27,7 +24,7 @@ class AccountingPointSyncScheduler(
 ) {
     suspend fun start() {
         val batchSize = 50
-        doInfinity("* */5 * * *") { runBatch(batchSize) }
+        doInfinity("* /5 * * *") { runBatch(batchSize) }
     }
 
     internal suspend fun runBatch(batchSize: Int = 50) {
@@ -37,7 +34,7 @@ class AccountingPointSyncScheduler(
                 val accountingPointIdBatch = accountingPointSyncRepository.getBatchForSync(batchSize).bind()
 
                 if (accountingPointIdBatch.isEmpty()) {
-                    logger.info { "No accounting points to to sync" }
+                    logger.info { "No accounting points to sync" }
                     return
                 }
 
