@@ -112,7 +112,7 @@ The `substation_cluster` resource models
 | business_id       | Business identifier - mRID                        | UUID            | 550e8400-e29b-41d4-a716-446655440000      | no       |
 | business_id_type  | Type of business identifier.                      | `uuid`          | uuid                                      | no       |
 | averaged_position | The average geographical position of the cluster. | GeoJSON Point   | See [GeoJSON Geometry](#geojson-geometry) | no       |
-| geometry          | For displaying on a map.                          | GeoJSON Polygon | See [GeoJSON Geometry](#geojson-geometry) | no       |
+| area              | For displaying on a map.                          | GeoJSON Polygon | See [GeoJSON Geometry](#geojson-geometry) | no       |
 
 ### substation
 
@@ -132,20 +132,19 @@ The `substation` resource models
 | primary_concessionaire | Name and org number of the main concessionaire. | text                                           | SønderEnergi Nett (987654321)             | no       |
 | substation_cluster_id  | Foreign key to parent substation cluster.       | Integer                                        | 1234                                      | no       |
 | voltage_levels         | List of voltage levels on the substation.       | Array of numeric. kV with three decimals.      | [22, 33]                                  | no       |
-| geometry               | For displaying on a map.                        | GeoJSON Point                                  | See [GeoJSON Geometry](#geojson-geometry) | no       |
+| position               | For displaying on a map.                        | GeoJSON Point                                  | See [GeoJSON Geometry](#geojson-geometry) | no       |
 
 ### line
 
-| Field name                 | Description                                                                 | Format             | Example                                   | Nullable |
-|----------------------------|-----------------------------------------------------------------------------|--------------------|-------------------------------------------|----------|
-| id                         | Surrogate identifier                                                        | Integer            | 1234                                      | no       |
-| name                       | Name of the line.                                                           | Free text          | Snilldal-Høyeng                           | no       |
-| business_id                | Business identifier for the line - mRID                                     | UUID               | 123e4567-e89b-12d3-a456-426614174000      | no       |
-| business_id_type           | Type of business identifier. Just `uuid`                                    | `uuid`             | uuid                                      | no       |
-| from_substation_cluster_id | Foreign key to the substation cluster the line starts at                    | Integer            | 1234                                      | no       |
-| to_substation_cluster_id   | Foreign key to the substation cluster the line ends at                      | Integer            | 1234                                      | no       |
-| concessionaires            | Name and org number of the main concessionaires. Used for display purposes. | Array of free text | ["SønderEnergi Nett (987654321)"]         | no       |
-| geometry                   | For displaying on a map. From-to substation cluster averaged position.      | GeoJSON LineString | See [GeoJSON Geometry](#geojson-geometry) | no       |
+| Field name                 | Description                                                            | Format             | Example                                   | Nullable |
+|----------------------------|------------------------------------------------------------------------|--------------------|-------------------------------------------|----------|
+| id                         | Surrogate identifier                                                   | Integer            | 1234                                      | no       |
+| name                       | Name of the line.                                                      | Free text          | Snilldal-Høyeng                           | no       |
+| business_id                | Business identifier for the line - mRID                                | UUID               | 123e4567-e89b-12d3-a456-426614174000      | no       |
+| business_id_type           | Type of business identifier. Just `uuid`                               | `uuid`             | uuid                                      | no       |
+| from_substation_cluster_id | Foreign key to the substation cluster the line starts at               | Integer            | 1234                                      | no       |
+| to_substation_cluster_id   | Foreign key to the substation cluster the line ends at                 | Integer            | 1234                                      | no       |
+| line                       | For displaying on a map. From-to substation cluster averaged position. | GeoJSON LineString | See [GeoJSON Geometry](#geojson-geometry) | no       |
 
 ### GeoJSON Geometry
 
@@ -157,9 +156,9 @@ This is how we derive the geometry.
 
 | Nemo type         | Geometry type | Description                                                                                                  |
 |-------------------|---------------|--------------------------------------------------------------------------------------------------------------|
-| Substation        | Point         | We use the Location of the Substation.                                                                       |
-| SubstationCluster | Polygon       | The convex hull of the Location of the Substations, with a fixed buffer.                                 |
-| Line              | LineString    | Line from center to center of to/from SubstationClusters. Center is the average of the Substation locations. |
+| Substation        | Point         | We use the position of the Substation.                                                                       |
+| SubstationCluster | Polygon       | The convex hull of the positions of the Substations, with a fixed buffer.                                    |
+| Line              | LineString    | Line from center to center of to/from SubstationClusters. Center is the average of the Substation positions. |
 
 This allows us to display the three things. Shown in the example below. The
 example shows two main substations. One has three children and a few connecting
@@ -170,7 +169,7 @@ displayed on top of a map.
 
 > [!NOTE]
 >
-> The Point geometry should probably use pins for location. That allows us to
+> The Point geometry should probably use pins for position. That allows us to
 > use different colors and icons/letters for different kinds of substations. See
 > example below.
 
@@ -200,15 +199,15 @@ The information is given in a dedicated resource
 > directly, using Nemo as reference. Using FIS surrogate keys is not recommended
 > in this context.
 
-| Field name               | Description                                        | Format                              | Example                              | Nullable | Note |
-|--------------------------|----------------------------------------------------|-------------------------------------|--------------------------------------|----------|------|
-| `object_type`            | The type of object in the grid model               | `substation`, `transformer`         | substation                           | no       |      |
-| `business_id`            | Business ID (mRID) referencing national grid model | UUID                                | 123e4567-e89b-12d3-a456-426614174000 | yes      |      |
-| `name`                   | Name of the grid model object                      | Free text                           | Snilldal 1 KRA                       | no       |      |
-| `nominal_voltage`        | Voltage level in kV                                | Numeric value                       | 22                                   | no       |      |
-| `additional_information` | Additional information about the grid location     | Free text                           |                                      | yes      |      |
-| `source`                 | Who the grid location was determined by            | `cso`, `so`, `grid_model`, `system` | cso                                  | no       |      |
-| `quality`                | The quality of the grid location registration      | `confirmed`, `guessed`              | confirmed                            | no       |      |
+| Field name               | Description                                        | Format                              | Example                              | Nullable |
+|--------------------------|----------------------------------------------------|-------------------------------------|--------------------------------------|----------|
+| `object_type`            | The type of object in the grid model               | `substation`                        | substation                           | no       |
+| `business_id`            | Business ID (mRID) referencing national grid model | UUID                                | 123e4567-e89b-12d3-a456-426614174000 | no       |
+| `name`                   | Name of the grid model object                      | Free text                           | Snilldal 1 KRA                       | no       |
+| `nominal_voltage`        | Voltage level in kV                                | Numeric value                       | 22                                   | no       |
+| `additional_information` | Additional information about the grid location     | Free text                           |                                      | yes      |
+| `source`                 | Who the grid location was determined by            | `cso`, `so`, `grid_model`, `system` | cso                                  | no       |
+| `quality`                | The quality of the grid location registration      | `confirmed`, `guessed`              | confirmed                            | no       |
 
 ### Location source
 
@@ -245,11 +244,6 @@ location based on the current source.
 
 The table shows that the priority order of the source is `grid_model` > `cso` >
 `so` > `system`.
-
-> [!NOTE]
->
-> Note that transformer is part of the location but not discussed above. We are
-> still debating if/when transformers should be part of the grid location.
 
 ## Guessing grid location
 

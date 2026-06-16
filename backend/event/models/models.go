@@ -50,7 +50,7 @@ type ApiAccountingPointGridLocation struct {
 	ID                    int
 	AccountingPointID     int
 	ObjectType            string
-	BusinessID            *string
+	BusinessID            string
 	Name                  string
 	NominalVoltage        float64
 	AdditionalInformation *string
@@ -65,7 +65,7 @@ type ApiAccountingPointGridLocationHistory struct {
 	ID                            int
 	AccountingPointID             int
 	ObjectType                    string
-	BusinessID                    *string
+	BusinessID                    string
 	Name                          string
 	NominalVoltage                float64
 	AdditionalInformation         *string
