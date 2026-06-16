@@ -6099,6 +6099,7 @@ export const zListNoticeQuery = z.object({
     .string()
     .regex(/^eq\.[0-9]+$/)
     .optional(),
+  status: z.string().optional(),
   party_id: z
     .string()
     .regex(/^eq\.[0-9]+$/)

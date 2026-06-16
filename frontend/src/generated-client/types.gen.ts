@@ -17623,6 +17623,7 @@ export type ListNoticeData = {
      * Unique surrogate identifier.
      */
     id?: string;
+    status?: string;
     /**
      * Reference to the party targeted by the notice.
      */

@@ -6,7 +6,7 @@ import { useNotices } from "../hooks/useNotices";
 
 export const SoStatCards = () => {
   const { activeItems, isLoading, error } = useDashboardApplications();
-  const noticeQuery = useNotices();
+  const noticeQuery = useNotices("active");
 
   if (isLoading || noticeQuery.isLoading) return <Loader size="small" />;
   if (error || noticeQuery.error)

@@ -5,7 +5,7 @@ import { StatCard } from "../shared/StatCard";
 import { useGetIdentity } from "ra-core";
 
 export const FisoDashboard = () => {
-  const noticeQuery = useNotices();
+  const noticeQuery = useNotices("active");
   const { data: identity } = useGetIdentity();
 
   const noticeQueryParams = identity

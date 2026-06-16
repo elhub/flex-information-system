@@ -19,7 +19,7 @@ export const SpStatCards = () => {
   const applicationsQuery = useDashboardApplications();
   const spgQuery = useServiceProvidingGroups();
   const cuQuery = useControllableUnits();
-  const noticeQuery = useNotices();
+  const noticeQuery = useNotices("active");
   const { data: identity } = useGetIdentity();
 
   const noticeQueryParams = identity

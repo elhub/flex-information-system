@@ -1,13 +1,12 @@
 # SPG Registration
 
-Service Providing Group registration is the process of registering a new SPG,
-adding CUs and ends once grid prequalification is completed. The process is
-initiated by the Service Provider.
+Service Providing Group registration is the process of registering a new SPG and
+adding CUs.
 
 A Service Providing Group (SPG) is considered as new until the status is changed
-to active. When this happens, grid prequalification notifications are sent to
-all ISOs. Once grid prequalification has been requested, any changes to the SPG
-is considered an update, and handled by the update process.
+to active. When this happens, the SPG can be used in a product application. Once
+a product application is considered complete enough for prequalification, grid
+prequalification is initiated.
 
 ## Prerequisites
 

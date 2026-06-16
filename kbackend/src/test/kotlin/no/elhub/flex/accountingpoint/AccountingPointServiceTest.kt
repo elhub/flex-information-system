@@ -23,6 +23,7 @@ import no.elhub.flex.integration.accountingpointadapter.NotFoundError
 import no.elhub.flex.integration.accountingpointadapter.generated.models.EndUser
 import no.elhub.flex.integration.accountingpointadapter.generated.models.EnergySupplier
 import no.elhub.flex.meteringgridarea.db.MeteringGridAreaRepository
+import no.elhub.flex.model.domain.Location
 import no.elhub.flex.model.domain.MeteringGridArea
 import no.elhub.flex.model.domain.MeteringGridAreaStatus
 import no.elhub.flex.model.domain.db.DatabaseError
@@ -120,6 +121,7 @@ class AccountingPointServiceTest : FunSpec({
             with(internalPrincipal) {
                 coVerify(exactly = 1) { accountingPointRepository.insertAccountingPointIfNotExists(any()) }
                 coVerify(exactly = 1) { accountingPointRepository.lockSyncRowAndMarkStart(AP_ID) }
+                coVerify(exactly = 0) { accountingPointRepository.updateAccountingPointLocation(any(), any()) }
                 coVerify(exactly = 1) { accountingPointMeteringGridAreaRepository.replaceAllFor(any()) }
                 coVerify(exactly = 1) { accountingPointRepository.replaceAllAccountingPointEndUsers(any()) }
                 coVerify(exactly = 1) { accountingPointRepository.replaceAllAccountingPointEnergySupplier(any()) }
@@ -282,6 +284,78 @@ class AccountingPointServiceTest : FunSpec({
             with(internalPrincipal) {
                 coVerify(exactly = 0) { accountingPointRepository.replaceAllAccountingPointEnergySupplier(any()) }
                 coVerify(exactly = 0) { accountingPointRepository.markSyncComplete(any()) }
+            }
+        }
+
+        test("syncs location when lat/lon are both non-null") {
+            // given
+            val apWithLocation = adapterAccountingPoint.copy(latitude = 59.9139, longitude = 10.7522)
+            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns apWithLocation.right()
+            with(internalPrincipal) {
+                coEvery { accountingPointRepository.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
+                coEvery { accountingPointRepository.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
+                coEvery { accountingPointRepository.updateAccountingPointLocation(AP_ID, Location(10.7522, 59.9139)) } returns Unit.right()
+                coEvery { meteringGridAreaRepository.getMeteringGridAreasByBusinessIds(any()) } returns mgaMap.right()
+                coEvery { accountingPointMeteringGridAreaRepository.replaceAllFor(any()) } returns Unit.right()
+                coEvery { accountingPointRepository.replaceAllAccountingPointEndUsers(any()) } returns Unit.right()
+                coEvery { accountingPointRepository.replaceAllAccountingPointEnergySupplier(any()) } returns Unit.right()
+                coEvery { accountingPointRepository.markSyncComplete(any()) } returns Unit.right()
+            }
+
+            // when
+            val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM)
+
+            // then
+            result.shouldBeRight()
+            with(internalPrincipal) {
+                coVerify(exactly = 1) { accountingPointRepository.updateAccountingPointLocation(AP_ID, Location(10.7522, 59.9139)) }
+            }
+        }
+
+        test("does not sync location when lat/lon are explicitly null") {
+            // given
+            val apWithNullLocation = adapterAccountingPoint.copy(latitude = null, longitude = null)
+            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns apWithNullLocation.right()
+            with(internalPrincipal) {
+                coEvery { accountingPointRepository.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
+                coEvery { accountingPointRepository.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
+                coEvery { meteringGridAreaRepository.getMeteringGridAreasByBusinessIds(any()) } returns mgaMap.right()
+                coEvery { accountingPointMeteringGridAreaRepository.replaceAllFor(any()) } returns Unit.right()
+                coEvery { accountingPointRepository.replaceAllAccountingPointEndUsers(any()) } returns Unit.right()
+                coEvery { accountingPointRepository.replaceAllAccountingPointEnergySupplier(any()) } returns Unit.right()
+                coEvery { accountingPointRepository.markSyncComplete(any()) } returns Unit.right()
+            }
+
+            // when
+            val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM)
+
+            // then
+            result.shouldBeRight()
+            with(internalPrincipal) {
+                coVerify(exactly = 0) { accountingPointRepository.updateAccountingPointLocation(any(), any()) }
+            }
+        }
+
+        test("does not sync location when lat/lon are absent from response") {
+            // given — adapterAccountingPoint has no lat/lon (defaults to null)
+            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns adapterAccountingPoint.right()
+            with(internalPrincipal) {
+                coEvery { accountingPointRepository.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
+                coEvery { accountingPointRepository.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
+                coEvery { meteringGridAreaRepository.getMeteringGridAreasByBusinessIds(any()) } returns mgaMap.right()
+                coEvery { accountingPointMeteringGridAreaRepository.replaceAllFor(any()) } returns Unit.right()
+                coEvery { accountingPointRepository.replaceAllAccountingPointEndUsers(any()) } returns Unit.right()
+                coEvery { accountingPointRepository.replaceAllAccountingPointEnergySupplier(any()) } returns Unit.right()
+                coEvery { accountingPointRepository.markSyncComplete(any()) } returns Unit.right()
+            }
+
+            // when
+            val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM)
+
+            // then
+            result.shouldBeRight()
+            with(internalPrincipal) {
+                coVerify(exactly = 0) { accountingPointRepository.updateAccountingPointLocation(any(), any()) }
             }
         }
 
