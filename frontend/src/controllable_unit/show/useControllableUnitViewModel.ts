@@ -7,9 +7,11 @@ import {
   ControllableUnitSuspension,
   listAccountingPointBalanceResponsibleParty,
   listAccountingPointBiddingZone,
+  listAccountingPointMeteringGridArea,
   listControllableUnitServiceProvider,
   listControllableUnitSuspension,
   listTechnicalResource,
+  MeteringGridArea,
   Party,
   readAccountingPoint,
   readControllableUnit,
@@ -33,6 +35,7 @@ export type ControllableUnitShowViewModel = {
     | AccountingPointBalanceResponsibleParty
     | undefined;
   biddingZone: string | undefined;
+  meteringGridArea: MeteringGridArea | undefined;
 };
 
 const findCurrentCusp = async (controllableUnitId: number) => {
@@ -96,6 +99,18 @@ const getCurrentBiddingZone = async (accountingPointId: number) => {
   return currentBiddingZone?.bidding_zone;
 };
 
+const getCurrentMeteringGridArea = async (accountingPointId: number) => {
+  const mgaList = await listAccountingPointMeteringGridArea({
+    query: {
+      accounting_point_id: "eq." + accountingPointId,
+      valid_at: new Date().toISOString(),
+      embed: "metering_grid_area",
+    },
+  }).then(throwOnError);
+
+  return findCurrentlyValidRecord(mgaList)?.metering_grid_area ?? undefined;
+};
+
 const getAccountingPointData = async (
   accountingPointId: number | undefined,
 ) => {
@@ -106,6 +121,7 @@ const getAccountingPointData = async (
       balanceResponsibleParty: undefined,
       accountingPointBalanceResponsibleParty: undefined,
       biddingZone: undefined,
+      meteringGridArea: undefined,
     };
   }
 
@@ -121,13 +137,19 @@ const getAccountingPointData = async (
     getCurrentBalanceResponsibleParty(accountingPointId);
 
   const biddingZonePromise = getCurrentBiddingZone(accountingPointId);
+  const meteringGridAreaPromise = getCurrentMeteringGridArea(accountingPointId);
 
-  const [systemOperator, balanceResponsibleParty, biddingZone] =
-    await Promise.all([
-      systemOperatorPromise,
-      balanceResponsiblePartyPromise,
-      biddingZonePromise,
-    ]);
+  const [
+    systemOperator,
+    balanceResponsibleParty,
+    biddingZone,
+    meteringGridArea,
+  ] = await Promise.all([
+    systemOperatorPromise,
+    balanceResponsiblePartyPromise,
+    biddingZonePromise,
+    meteringGridAreaPromise,
+  ]);
 
   return {
     accountingPoint,
@@ -136,6 +158,7 @@ const getAccountingPointData = async (
     accountingPointBalanceResponsibleParty:
       balanceResponsibleParty?.accountingPointBalanceResponsibleParty,
     biddingZone,
+    meteringGridArea,
   };
 };
 
@@ -177,6 +200,7 @@ export const getControllableUnitData = async (
     accountingPointBalanceResponsibleParty:
       accountingPoint.accountingPointBalanceResponsibleParty,
     biddingZone: accountingPoint.biddingZone,
+    meteringGridArea: accountingPoint.meteringGridArea,
     suspensions: suspensions,
     controllableUnitServiceProvider: cuspData.cusp,
   };

@@ -33,6 +33,7 @@ export const ControllableUnitShowSummary = ({
     accountingPoint,
     systemOperator,
     biddingZone,
+    meteringGridArea,
   } = viewModel;
 
   const translate = useTranslate();
@@ -103,6 +104,11 @@ export const ControllableUnitShowSummary = ({
                 </Link>
               ) : undefined
             }
+          />
+          <LabelValue
+            size="small"
+            labelKey="accounting_point_metering_grid_area.metering_grid_area_id"
+            value={meteringGridArea?.name}
           />
           <LabelValue
             size="small"
