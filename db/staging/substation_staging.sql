@@ -68,7 +68,7 @@ staging.line (
 
 -- prepare function empties all three staging tables before loading new data
 
--- changeset flex:substation-staging-prepare runOnChange:false endDelimiter:--
+-- changeset flex:substation-staging-prepare runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION
 staging.substation_prepare()
 RETURNS void
@@ -87,25 +87,32 @@ $$;
 -- views to resolve foreign keys (substation_cluster must be synced first so
 -- that the views reflect the updated state)
 
+-- also handles setting the SRID - World Geodetic System 1984 (WGS 84) numbers
+-- EPSG:4326 - degrees - "Geographic" - The one used in GeoJSON
+-- EPSG:3857 - meters - "Web Mercator"
+
 -- changeset flex:substation-cluster-staging-view runOnChange:true endDelimiter:--
 CREATE OR REPLACE VIEW staging.substation_cluster_v AS (
     SELECT
         sc.mrid,
         sc.name,
         ST_SETSRID(ST_MAKEPOINT(sc.lon, sc.lat), 4326) AS averaged_position,
-        ST_BUFFER(
-            COALESCE(
+        -- Transforming 4326->3857->4326 to get a nicer buffer size in meters
+        ST_TRANSFORM(
+            ST_BUFFER(
                 ST_CONVEXHULL(
                     ST_COLLECT(
-                        ST_SETSRID(ST_MAKEPOINT(sub.lon, sub.lat), 4326)
+                        ST_TRANSFORM(
+                            ST_MAKEPOINT(sub.lon, sub.lat), 'EPSG:4326', 'EPSG:3857'
+                        )
                     )
                 ),
-                ST_SETSRID(ST_MAKEPOINT(sc.lon, sc.lat), 4326)
+                50
             ),
-            0.001
+            'EPSG:3857', 'EPSG:4326'
         ) AS area
     FROM staging.substation_cluster AS sc
-        LEFT JOIN staging.substation AS sub
+        INNER JOIN staging.substation AS sub
             ON sc.mrid = sub.substation_cluster_mrid
     GROUP BY sc.mrid, sc.name, sc.lat, sc.lon
 );
@@ -118,7 +125,13 @@ CREATE OR REPLACE VIEW staging.substation_v AS (
         stg.kind,
         stg.primary_concessionaire,
         sc.id AS substation_cluster_id,
-        stg.voltage_levels,
+        --sorting voltage levels to ensure consistent ordering for comparison in update function
+        (
+            SELECT ARRAY(
+                SELECT DISTINCT UNNEST(stg.voltage_levels) AS vl
+                ORDER BY vl ASC
+            )
+        )::numeric(9, 3) [] AS voltage_levels,
         ST_SETSRID(ST_MAKEPOINT(stg.lon, stg.lat), 4326) AS position -- noqa
     FROM staging.substation AS stg
         INNER JOIN flex.substation_cluster AS sc
