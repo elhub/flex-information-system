@@ -1124,8 +1124,7 @@ resources:
   - id: entity
     acronym: ENT
     name: Entity
-    summary:
-      Entity
+    summary: Entity
       # yamllint disable rule:line-length
     description: |-
       Entity - Natural or legal person
@@ -1376,8 +1375,7 @@ resources:
   - id: party
     acronym: PTY
     name: Party
-    summary:
-      Party
+    summary: Party
       # yamllint disable rule:line-length
     description: |-
       The body that interacts with the Flexibility Information System
