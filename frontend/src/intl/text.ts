@@ -24,6 +24,7 @@ export type TextKey =
   | "spg_manage_members_search_placeholder"
   | "spg_manage_members_empty"
   | "spg_manage_members_open_in_new_tab"
+  | "spg_manage_members_show_selected_only"
   | "spg_manage_members_selected_singular"
   | "spg_manage_members_selected_plural"
   | "spg_manage_members_total_capacity"
@@ -71,6 +72,7 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Filter by name, id or accounting point id",
     spg_manage_members_empty: "No controllable units found.",
     spg_manage_members_open_in_new_tab: "Open in new tab",
+    spg_manage_members_show_selected_only: "Show selected only",
     spg_manage_members_selected_singular: "1 member selected",
     spg_manage_members_selected_plural: "%{count} members selected",
     spg_manage_members_total_capacity:
@@ -124,6 +126,7 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Filtrer på navn, id eller avregningspunkt",
     spg_manage_members_empty: "Fant ingen kontrollerbare enheter.",
     spg_manage_members_open_in_new_tab: "Åpne i ny fane",
+    spg_manage_members_show_selected_only: "Vis kun valgte",
     spg_manage_members_selected_singular: "1 medlem valgt",
     spg_manage_members_selected_plural: "%{count} medlemmer valgt",
     spg_manage_members_total_capacity:

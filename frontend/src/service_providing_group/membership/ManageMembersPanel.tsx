@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { IconExternal } from "@elhub/ds-icons";
-import { Checkbox, Loader, Search } from "../../components/ui";
+import { Switch } from "@elhub/ds-components";
+import { Checkbox, FormItem, FormItemLabel, Loader, Search } from "../../components/ui";
 import { Column, SimpleTable } from "../../components/SimpleTable";
 import { PowerRatio } from "../../components/PowerRatio";
 import { AccountingPointLink } from "../../components/AccountingPointLink";
@@ -37,6 +38,8 @@ export const ManageMembersPanel = ({
     setCheckedIds,
     searchQuery,
     setSearchQuery,
+    showSelectedOnly,
+    setShowSelectedOnly,
     reviewOpen,
     setReviewOpen,
     datePickerOpen,
@@ -137,15 +140,28 @@ export const ManageMembersPanel = ({
     <div className="flex flex-col gap-4 pb-20">
       <UpdateErrorAlert failedCUs={failedCUs} />
 
-      <Search
-        label={translate("text.spg_manage_members_search_label")}
-        hideLabel
-        clearButtonLabel={translate("text.spg_manage_members_search_clear")}
-        placeholder={translate("text.spg_manage_members_search_placeholder")}
-        value={searchQuery}
-        onChange={(value) => setSearchQuery(value)}
-        onClear={() => setSearchQuery("")}
-      />
+      <div className="flex items-center gap-4">
+        <div className="flex-1">
+          <Search
+            label={translate("text.spg_manage_members_search_label")}
+            hideLabel
+            clearButtonLabel={translate("text.spg_manage_members_search_clear")}
+            placeholder={translate("text.spg_manage_members_search_placeholder")}
+            value={searchQuery}
+            onChange={(value) => setSearchQuery(value)}
+            onClear={() => setSearchQuery("")}
+          />
+        </div>
+        <FormItem id="show-selected-only">
+          <FormItemLabel>
+            {translate("text.spg_manage_members_show_selected_only")}
+          </FormItemLabel>
+          <Switch
+            checked={showSelectedOnly}
+            onChange={(e) => setShowSelectedOnly(e.target.checked)}
+          />
+        </FormItem>
+      </div>
 
       <SimpleTable
         size="small"

@@ -42,6 +42,7 @@ export const useAddMembersState = ({ spgId, destination }: Props) => {
   const effectiveCheckedIds = checkedIds ?? originalMemberIds;
 
   const [searchQuery, setSearchQuery] = useState("");
+  const [showSelectedOnly, setShowSelectedOnly] = useState(false);
   const [reviewOpen, setReviewOpen] = useState(false);
   const [datePickerOpen, setDatePickerOpen] = useState(false);
   const [validFrom, setValidFrom] = useState<Date>(
@@ -66,14 +67,20 @@ export const useAddMembersState = ({ spgId, destination }: Props) => {
   const filteredCUs = useMemo(() => {
     if (!allCUs) return [];
     const q = searchQuery.trim().toLowerCase();
-    if (!q) return allCUs;
-    return allCUs.filter(
-      (cu) =>
-        cu.name?.toLowerCase().includes(q) ||
-        (cu.id != null && String(cu.id).includes(q)) ||
-        (cu.accounting_point_business_id ?? "").toLowerCase().includes(q),
-    );
-  }, [allCUs, searchQuery]);
+    let result = allCUs;
+    if (q) {
+      result = result.filter(
+        (cu) =>
+          cu.name?.toLowerCase().includes(q) ||
+          (cu.id != null && String(cu.id).includes(q)) ||
+          (cu.accounting_point_business_id ?? "").toLowerCase().includes(q),
+      );
+    }
+    if (showSelectedOnly) {
+      result = result.filter((cu) => effectiveCheckedIds.has(cu.id));
+    }
+    return result;
+  }, [allCUs, searchQuery, showSelectedOnly, effectiveCheckedIds]);
 
   const totalFlexibleCapacity = useMemo(
     () =>
@@ -176,6 +183,8 @@ export const useAddMembersState = ({ spgId, destination }: Props) => {
     setCheckedIds,
     searchQuery,
     setSearchQuery,
+    showSelectedOnly,
+    setShowSelectedOnly,
     reviewOpen,
     setReviewOpen,
     datePickerOpen,
