@@ -132,9 +132,13 @@ if __name__ == "__main__":
             # generate views and history views
             if resource.get("generate_views", False):
                 j2.template(
-                    {"resource": resource["id"], "data": resource},
-                    "resource_api.j2.sql",
-                    f"{DB_DIR}/api/{resource['id']}.sql",
+                    {
+                        "resource": resource["id"],
+                        "module": resource["module"],
+                        "data": resource,
+                    },
+                    "resource_view.j2.sql",
+                    f"{DB_DIR}/{resource['module']}/{resource['id']}.sql",
                 )
 
             # generate files for the comment resource
@@ -182,9 +186,13 @@ if __name__ == "__main__":
                 )
 
                 j2.template(
-                    {"resource": resource["id"], "data": resource},
-                    "resource_api.j2.sql",
-                    f"{DB_DIR}/api/{resource['id']}.sql",
+                    {
+                        "resource": resource["id"],
+                        "module": resource["module"],
+                        "data": resource,
+                    },
+                    "resource_view.j2.sql",
+                    f"{DB_DIR}/{resource['module']}/{resource['id']}.sql",
                 )
 
         # generate embedding functions for all FK relationships with cardinality

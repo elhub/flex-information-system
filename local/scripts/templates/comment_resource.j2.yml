@@ -1,6 +1,7 @@
 {%- set resource_spaces = resource | replace("_", " ") %}
 data:
   id: {{ resource }}_comment
+  module: {{ data.module }}
   acronym: {{ data.acronym }}C
   summary: {{ data.summary }} Comment
   description: >-

@@ -216,6 +216,7 @@ $defs:
       - history
       - history_rls
       - id
+      - module
       - name
       - operations
       - properties
@@ -293,6 +294,13 @@ $defs:
         description: >-
           When true, a comment sub-resource is automatically added to
           this resource.
+
+      module:
+        type: string
+        enum: [api, grid]
+        description: >-
+          The module this resource belongs to. Used to group resources
+          and control which parts of the system they are generated for.
 
       properties:
         type: object

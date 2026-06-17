@@ -5,10 +5,11 @@
 {%- set fields = all_fields | reject("in", ["id", "valid_to", "valid_from"]) | list %}
 {%- set has_valid_time = "valid_from" in all_fields %}
 {%- set has_record_time = data.get('audit') %}
+{%- set schema = data.get('module') %}
 
--- changeset flex:api-{{ resource | replace("_", "-") }}-create endDelimiter:-- runOnChange:true
+-- changeset flex:{{ schema }}-{{ resource | replace("_", "-") }}-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW
-api.{{ resource }}
+{{ schema }}.{{ resource }}
 WITH (security_invoker = true) AS (
     SELECT
         id,
@@ -24,9 +25,9 @@ WITH (security_invoker = true) AS (
 );
 
 {%- if data.get('history') %}
--- changeset flex:api-{{ resource | replace("_", "-") }}-history-create endDelimiter:-- runOnChange:true
+-- changeset flex:{{ schema }}-{{ resource | replace("_", "-") }}-history-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW
-api.{{ resource }}_history
+{{ schema }}.{{ resource }}_history
 WITH (
     security_invoker = true
 ) AS (
