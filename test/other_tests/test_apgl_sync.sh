@@ -30,9 +30,6 @@ silent_query() {
 
 echo "=== APGL sync test ==="
 
-echo ""
-
-# look up the substation business IDs used in assertions
 sol_business_id="b1000001-0000-4000-8000-000000000012"
 rese_business_id="a5000003-0000-4000-8000-000000000032"
 banan_business_id="fa000002-0000-4000-8000-000000000022"
@@ -42,6 +39,7 @@ banan_business_id="fa000002-0000-4000-8000-000000000022"
 # they should point to Sol even though Kobl is geometrically closer, because
 # Kobl is a coupling substation (not a transformer)
 
+echo ""
 ap1=1
 
 silent_query "SELECT flex.accounting_point_grid_location_sync();"
