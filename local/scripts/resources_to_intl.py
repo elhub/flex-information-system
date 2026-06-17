@@ -181,7 +181,7 @@ def generate_field_translations(resources):
         if len(resource_translations) > 0:
             translations[resource["id"]] = resource_translations
             tooltips[resource["id"]] = resource_tooltips
-        if "history" in resource:
+        if resource.get("history"):
             resource_translations = deepcopy(resource_translations)
             resource_translations[f"{resource['id']}_id"] = resource["x-intl"]
             resource_tooltips = deepcopy(resource_tooltips)

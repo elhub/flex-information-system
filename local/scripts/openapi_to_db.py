@@ -112,7 +112,7 @@ if __name__ == "__main__":
                 ),
                 file=backend_schema_f,
             )
-            if "history" in resource:
+            if resource.get("history"):
                 print(
                     fake_history_table_create_statement(
                         resource["id"],

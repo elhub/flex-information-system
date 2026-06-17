@@ -389,7 +389,13 @@ openapi-postgrest:
 
     rm -rf out/*
 
-openapi: resources-to-diagram resources-to-openapi openapi-to-md openapi-to-db openapi-to-embed-relations sqlc openapi-client-test openapi-client-frontend resources-to-intl-and-tooltips openapi-to-kbackend
+openapi: resources-validate resources-to-diagram resources-to-openapi openapi-to-md openapi-to-db openapi-to-embed-relations sqlc openapi-client-test openapi-client-frontend resources-to-intl-and-tooltips openapi-to-kbackend
+
+resources-validate:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    # uses https://github.com/sourcemeta/jsonschema
+    jsonschema validate ./openapi/schema.yml ./openapi/resources.yml
 
 openapi-to-kbackend:
     kbackend/scripts/generate-openapi-models.sh
