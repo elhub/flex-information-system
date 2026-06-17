@@ -2771,7 +2771,7 @@ resources:
           nn: Gyldig til
 
   - id: substation_cluster
-    acronym: SC
+    acronym: SSC
     name: Substation Cluster
     summary: Substation Cluster
     description: >-
@@ -2898,7 +2898,7 @@ resources:
           nn: Status
 
   - id: substation
-    acronym: SUB
+    acronym: SS
     name: Substation
     summary: Substation
     description: >-
