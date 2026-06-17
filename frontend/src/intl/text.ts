@@ -27,7 +27,7 @@ export type TextKey =
   | "spg_manage_members_show_selected_only"
   | "spg_manage_members_selected_singular"
   | "spg_manage_members_selected_plural"
-  | "spg_manage_members_total_capacity"
+  | "spg_manage_members_total_flexible_power"
   | "spg_manage_members_clear_selection"
   | "spg_manage_members_review"
   | "spg_manage_members_submit_next"
@@ -75,8 +75,8 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_manage_members_show_selected_only: "Show selected only",
     spg_manage_members_selected_singular: "1 member selected",
     spg_manage_members_selected_plural: "%{count} members selected",
-    spg_manage_members_total_capacity:
-      "Total Flexible Capacity: %{capacity} kW",
+    spg_manage_members_total_flexible_power:
+      "Total Flexible Power: %{power} kW",
     spg_manage_members_clear_selection: "Clear selection",
     spg_manage_members_review: "Review selected",
     spg_manage_members_submit_next: "Next",
@@ -129,8 +129,8 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_manage_members_show_selected_only: "Vis kun valgte",
     spg_manage_members_selected_singular: "1 medlem valgt",
     spg_manage_members_selected_plural: "%{count} medlemmer valgt",
-    spg_manage_members_total_capacity:
-      "Total fleksibel kapasitet: %{capacity} kW",
+    spg_manage_members_total_flexible_power:
+      "Total fleksibel kapasitet: %{power} kW",
     spg_manage_members_clear_selection: "Fjern valgte",
     spg_manage_members_review: "Se over endringer",
     spg_manage_members_submit_next: "Gå videre",

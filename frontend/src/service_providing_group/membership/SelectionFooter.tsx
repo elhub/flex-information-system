@@ -36,8 +36,8 @@ export const SelectionFooter = ({
       <div className="flex flex-col leading-tight">
         <span className="font-semibold text-sm">{selectedLabel}</span>
         <span className="text-xs text-neutral-500">
-          {translate("text.spg_manage_members_total_capacity", {
-            capacity: totalFlexibleCapacity,
+          {translate("text.spg_manage_members_total_flexible_power", {
+            power: totalFlexibleCapacity,
           })}
         </span>
       </div>
