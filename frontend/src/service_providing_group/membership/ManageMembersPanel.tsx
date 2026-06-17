@@ -59,11 +59,21 @@ export const ManageMembersPanel = ({
   const baseColumns: Column<CuWithMembership>[] = useMemo(
     () => [
       {
-        key: "id",
-        header: t("controllable_unit.id"),
-        render: (v) => <span className="whitespace-nowrap">{String(v)}</span>,
+        key: "name",
+        header: t("controllable_unit.name"),
+        render: (v, row) => (
+          <a
+            href={`#/controllable_unit/${row.id}/show`}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            className="inline-flex items-center gap-1"
+          >
+            {String(v)}
+            <IconExternal size="small" />
+          </a>
+        ),
       },
-      { key: "name", header: t("controllable_unit.name") },
       {
         key: "accounting_point_business_id",
         header: t("controllable_unit.accounting_point_id"),
@@ -97,7 +107,7 @@ export const ManageMembersPanel = ({
 
   const mainColumns: Column<CuWithMembership>[] = useMemo(
     () => [
-      ...baseColumns.slice(0, 5), // id, name, accounting point, bidding zone, brp
+      ...baseColumns.slice(0, 4), // name, accounting point, bidding zone, brp
       {
         key: "rated_power",
         header: t("technical_resource.maximum_active_power"),
@@ -116,7 +126,7 @@ export const ManageMembersPanel = ({
           </div>
         ),
       },
-      baseColumns[5], // status
+      baseColumns[4], // status
     ],
     [baseColumns, t],
   );
@@ -156,20 +166,7 @@ export const ManageMembersPanel = ({
             />
           ),
         }}
-        action={{
-          header: "",
-          render: (row) => (
-            <a
-              href={`#/controllable_unit/${row.id}/show`}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={(e) => e.stopPropagation()}
-              aria-label={translate("text.spg_manage_members_open_in_new_tab")}
-            >
-              <IconExternal size="small" />
-            </a>
-          ),
-        }}
+
       />
 
       <ReviewModal
