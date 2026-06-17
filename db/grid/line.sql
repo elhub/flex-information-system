@@ -3,16 +3,20 @@
 -- noqa: disable=RF04
 -- RF04 - Keywords should not be used as identifiers.
 
--- changeset flex:api-notification-create endDelimiter:-- runOnChange:true
+-- changeset flex:grid-line-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW
-api.notification
+grid.line
 WITH (security_invoker = true) AS (
     SELECT
         id,
-        acknowledged,
-        event_id,
-        party_id,
+        business_id,
+        business_id_type,
+        from_substation_cluster_id,
+        st_asgeojson(line, 9, 0)::jsonb AS line,
+        name,
+        status,
+        to_substation_cluster_id,
         recorded_by,
         lower(record_time_range) AS recorded_at
-    FROM flex.notification
+    FROM flex.line
 );

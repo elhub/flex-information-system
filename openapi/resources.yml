@@ -2770,6 +2770,457 @@ resources:
           nb: Gyldig til
           nn: Gyldig til
 
+  - id: substation_cluster
+    acronym: SC
+    name: Substation Cluster
+    summary: Substation Cluster
+    description: >-
+      A cluster of substations in the common grid model (Nemo), representing
+      a group of electrically related substations in a geographic area.
+    x-intl:
+      en: Substation Cluster
+      nb: Stasjonsklynge
+      nn: Stasjonsklynge
+    operations:
+      - read
+      - list
+    history: []
+    history_rls: false
+    audit: true
+    generate_views: true
+    comments: false
+    module: grid
+    properties:
+      id:
+        description: Unique surrogate identifier.
+        format: bigint
+        type: integer
+        readOnly: true
+        x-filter: true
+        example: 1
+        x-intl:
+          en: ID
+          nb: ID
+          nn: ID
+      name:
+        description: The name of the substation cluster.
+        format: text
+        type: string
+        readOnly: true
+        x-filter: true
+        example: "Snilldal"
+        x-intl:
+          en: Name
+          nb: Navn
+          nn: Namn
+      business_id:
+        description: The business identifier (mRID) of the substation cluster.
+        format: text
+        type: string
+        readOnly: true
+        x-filter: true
+        example: "53919b79-876f-4dad-8bde-b29368367604"
+        x-intl:
+          en: Business ID
+          nb: Forretnings-ID
+          nn: Forretnings-ID
+      business_id_type:
+        description: The type of the business identifier.
+        format: text
+        type: string
+        readOnly: true
+        x-filter: true
+        enum:
+          - id: uuid
+            x-intl:
+              en: UUID
+              nb: UUID
+              nn: UUID
+        example: uuid
+        x-intl:
+          en: Business ID type
+          nb: Forretnings-ID-type
+          nn: Forretnings-ID-type
+      averaged_position:
+        description: >-
+          Averaged geographic position of the substation cluster (WGS84), as a
+          GeoJSON point object.
+        readOnly: true
+        type: object
+        oneOf:
+          - $ref: "#/components/schemas/geojson_point"
+        example:
+          type: "Point"
+          coordinates: [10.757933, 59.911491]
+        x-sql: st_asgeojson(averaged_position, 9, 0)::jsonb
+        x-intl:
+          en: Averaged position
+          nb: Gjennomsnittlig posisjon
+          nn: Gjennomsnittleg posisjon
+      area:
+        description: >-
+          Geographic area covered by the substation cluster (WGS84), as a
+          GeoJSON polygon object.
+        readOnly: true
+        type: object
+        oneOf:
+          - $ref: "#/components/schemas/geojson_polygon"
+        example:
+          type: "Polygon"
+          coordinates:
+            - [[10.757933, 59.911491], [10.758933, 59.911491], [10.758933, 59.912491], [10.757933, 59.912491], [10.757933, 59.911491]]
+        x-sql: st_asgeojson(area, 9, 0)::jsonb
+        x-intl:
+          en: Area
+          nb: Område
+          nn: Område
+      status:
+        description: The status of the substation cluster.
+        format: text
+        type: string
+        readOnly: true
+        x-filter: true
+        enum:
+          - id: active
+            x-intl:
+              en: Active
+              nb: Aktiv
+              nn: Aktiv
+          - id: inactive
+            x-intl:
+              en: Inactive
+              nb: Inaktiv
+              nn: Inaktiv
+        example: active
+        x-intl:
+          en: Status
+          nb: Status
+          nn: Status
+
+  - id: substation
+    acronym: SUB
+    name: Substation
+    summary: Substation
+    description: >-
+      A substation in the common grid model (Nemo), representing a node in the
+      electricity grid.
+    x-intl:
+      en: Substation
+      nb: Stasjon
+      nn: Stasjon
+    operations:
+      - read
+      - list
+    history: []
+    history_rls: false
+    audit: true
+    generate_views: true
+    comments: false
+    module: grid
+    properties:
+      id:
+        description: Unique surrogate identifier.
+        format: bigint
+        type: integer
+        readOnly: true
+        x-filter: true
+        example: 1
+        x-intl:
+          en: ID
+          nb: ID
+          nn: ID
+      name:
+        description: The name of the substation.
+        format: text
+        type: string
+        readOnly: true
+        x-filter: true
+        example: "Snilldal 1 KRA"
+        x-intl:
+          en: Name
+          nb: Navn
+          nn: Namn
+      business_id:
+        description: The business identifier (mRID) of the substation.
+        format: text
+        type: string
+        readOnly: true
+        x-filter: true
+        example: "6f3a1b9e-2c4d-4e5f-8a7b-9c0d1e2f3a4b"
+        x-intl:
+          en: Business ID
+          nb: Forretnings-ID
+          nn: Forretnings-ID
+      business_id_type:
+        description: The type of the business identifier.
+        format: text
+        type: string
+        readOnly: true
+        x-filter: true
+        enum:
+          - id: uuid
+            x-intl:
+              en: UUID
+              nb: UUID
+              nn: UUID
+        example: uuid
+        x-intl:
+          en: Business ID type
+          nb: Forretnings-ID-type
+          nn: Forretnings-ID-type
+      kind:
+        description: The type of substation.
+        format: text
+        type: string
+        readOnly: true
+        x-filter: true
+        enum:
+          - id: coupling
+            x-intl:
+              en: Coupling
+              nb: Koblingsstasjon
+              nn: Koblingsstasjon
+          - id: junction
+            x-intl:
+              en: Junction
+              nb: Knutepunktstasjon
+              nn: Knutepunktstasjon
+          - id: power
+            x-intl:
+              en: Power
+              nb: Kraftstasjon
+              nn: Kraftstasjon
+          - id: transformer
+            x-intl:
+              en: Transformer
+              nb: Transformatorstasjon
+              nn: Transformatorstasjon
+        example: transformer
+        x-intl:
+          en: Kind
+          nb: Type
+          nn: Type
+      primary_concessionaire:
+        description: >-
+          The name of the primary grid concessionaire responsible for this
+          substation.
+        format: text
+        type: string
+        readOnly: true
+        x-filter: true
+        example: "Statnett SF"
+        x-intl:
+          en: Primary concessionaire
+          nb: Primær konsesjonær
+          nn: Primær konsesjonær
+      substation_cluster_id:
+        description: The substation cluster this substation belongs to.
+        format: bigint
+        type: integer
+        readOnly: true
+        x-filter: true
+        x-foreign-key:
+          resource: substation_cluster
+          field: id
+          cardinality: many-to-one
+        example: 1
+        x-intl:
+          en: Substation cluster
+          nb: Stasjonsklynge
+          nn: Stasjonsklynge
+      voltage_levels:
+        description: >-
+          List of nominal voltage levels present at the substation, in
+          kilovolt (kV).
+        type: array
+        readOnly: true
+        items:
+          type: number
+        example: [22.0, 132.0]
+        x-intl:
+          en: Voltage levels
+          nb: Spenningsnivåer
+          nn: Spenningsnivå
+      position:
+        description: >-
+          Geographic position of the substation (WGS84), as a GeoJSON point
+          object.
+        readOnly: true
+        type: object
+        oneOf:
+          - $ref: "#/components/schemas/geojson_point"
+        example:
+          type: "Point"
+          coordinates: [10.757933, 59.911491]
+        x-sql: st_asgeojson(position, 9, 0)::jsonb
+        x-intl:
+          en: Position
+          nb: Posisjon
+          nn: Posisjon
+      status:
+        description: The status of the substation.
+        format: text
+        type: string
+        readOnly: true
+        x-filter: true
+        enum:
+          - id: active
+            x-intl:
+              en: Active
+              nb: Aktiv
+              nn: Aktiv
+          - id: inactive
+            x-intl:
+              en: Inactive
+              nb: Inaktiv
+              nn: Inaktiv
+        example: active
+        x-intl:
+          en: Status
+          nb: Status
+          nn: Status
+
+  - id: line
+    acronym: LN
+    name: Line
+    summary: Line
+    description: >-
+      A transmission or distribution line in the common grid model (Nemo),
+      connecting two substation clusters.
+    x-intl:
+      en: Line
+      nb: Linje
+      nn: Linje
+    operations:
+      - read
+      - list
+    history: []
+    history_rls: false
+    audit: true
+    generate_views: true
+    comments: false
+    module: grid
+    properties:
+      id:
+        description: Unique surrogate identifier.
+        format: bigint
+        type: integer
+        readOnly: true
+        x-filter: true
+        example: 1
+        x-intl:
+          en: ID
+          nb: ID
+          nn: ID
+      name:
+        description: The name of the line.
+        format: text
+        type: string
+        readOnly: true
+        x-filter: true
+        example: "Snilldal - Trollheim"
+        x-intl:
+          en: Name
+          nb: Navn
+          nn: Namn
+      business_id:
+        description: The business identifier (mRID) of the line.
+        format: text
+        type: string
+        readOnly: true
+        x-filter: true
+        example: "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d"
+        x-intl:
+          en: Business ID
+          nb: Forretnings-ID
+          nn: Forretnings-ID
+      business_id_type:
+        description: The type of the business identifier.
+        format: text
+        type: string
+        readOnly: true
+        x-filter: true
+        enum:
+          - id: uuid
+            x-intl:
+              en: UUID
+              nb: UUID
+              nn: UUID
+        example: uuid
+        x-intl:
+          en: Business ID type
+          nb: Forretnings-ID-type
+          nn: Forretnings-ID-type
+      from_substation_cluster_id:
+        description: The substation cluster at the start of the line.
+        format: bigint
+        type: integer
+        readOnly: true
+        x-filter: true
+        x-foreign-key:
+          resource: substation_cluster
+          field: id
+          cardinality: many-to-one
+        example: 1
+        x-intl:
+          en: From substation cluster
+          nb: Fra stasjonsklynge
+          nn: Frå stasjonsklynge
+      to_substation_cluster_id:
+        description: The substation cluster at the end of the line.
+        format: bigint
+        type: integer
+        readOnly: true
+        x-filter: true
+        x-foreign-key:
+          resource: substation_cluster
+          field: id
+          cardinality: many-to-one
+        example: 2
+        x-intl:
+          en: To substation cluster
+          nb: Til stasjonsklynge
+          nn: Til stasjonsklynge
+      line:
+        description: >-
+          Geographic path of the line (WGS84), as a GeoJSON linestring object.
+        readOnly: true
+        type: object
+        oneOf:
+          - $ref: "#/components/schemas/geojson_linestring"
+        example:
+          type: "LineString"
+          coordinates:
+            - [10.757933, 59.911491]
+            - [10.858933, 59.951491]
+        x-sql: st_asgeojson(line, 9, 0)::jsonb
+        x-intl:
+          en: Line
+          nb: Linje
+          nn: Linje
+      status:
+        description: The status of the line.
+        format: text
+        type: string
+        readOnly: true
+        x-filter: true
+        enum:
+          - id: active
+            x-intl:
+              en: Active
+              nb: Aktiv
+              nn: Aktiv
+          - id: inactive
+            x-intl:
+              en: Inactive
+              nb: Inaktiv
+              nn: Inaktiv
+        example: active
+        x-intl:
+          en: Status
+          nb: Status
+          nn: Status
+
   - id: accounting_point_grid_location
     acronym: APGL
     name: Accounting Point Grid Location

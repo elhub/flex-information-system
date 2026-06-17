@@ -1,5 +1,7 @@
 --liquibase formatted sql
 -- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
+-- noqa: disable=RF04
+-- RF04 - Keywords should not be used as identifiers.
 
 {%- set all_fields = data.properties.keys() | sort %}
 {%- set fields = all_fields | reject("in", ["id", "valid_to", "valid_from"]) | list %}
@@ -14,7 +16,7 @@ WITH (security_invoker = true) AS (
     SELECT
         id,
 {%- for field in fields %}
-        {{ field }}{{ "," if not loop.last else "" }}
+        {{ data.properties[field]["x-sql"] + " AS " if "x-sql" in data.properties[field] }}{{ field }}{{ "," if not loop.last else "" }}
 {%- endfor %}{% if has_record_time %},
         recorded_by,
         lower(record_time_range) AS recorded_at{% endif %}{% if has_valid_time %},
@@ -35,7 +37,7 @@ WITH (
         id,
         id AS {{ resource }}_id,
 {%- for field in fields %}
-        {{ field }}{{ "," if not loop.last else "" }}
+        {{ data.properties[field]["x-sql"] + " AS " if "x-sql" in data.properties[field] }}{{ field }}{{ "," if not loop.last else "" }}
 {%- endfor %}{% if has_record_time %},
         recorded_by,
         lower(record_time_range) AS recorded_at,
@@ -50,7 +52,7 @@ WITH (
         history_id AS id,
         id AS {{ resource }}_id,
 {%- for field in fields %}
-        {{ field }}{{ "," if not loop.last else "" }}
+        {{ data.properties[field]["x-sql"] + " AS " if "x-sql" in data.properties[field] }}{{ field }}{{ "," if not loop.last else "" }}
 {%- endfor %}{% if has_record_time %},
         recorded_by,
         lower(record_time_range) AS recorded_at,

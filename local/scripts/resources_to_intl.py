@@ -326,7 +326,9 @@ if __name__ == "__main__":
 
     with open(args.resources) as f:
         resources = yaml.safe_load(f)
-    resources = resources["resources"]
+
+    # TODO support other modules than api
+    resources = [r for r in resources["resources"] if r.get("module") == "api"]
 
     base_schemas = base.get("components", {}).get("schemas", {})
 

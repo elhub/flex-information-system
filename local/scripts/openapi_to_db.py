@@ -104,22 +104,23 @@ if __name__ == "__main__":
 
         for resource in resources:
             # generate fake table for sqlc in the backend
-            print(
-                fake_table_create_statement(
-                    resource["id"],
-                    resource["properties"],
-                    resource.get("audit"),
-                ),
-                file=backend_schema_f,
-            )
-            if resource.get("history"):
+            if resource.get("module") == "api":
                 print(
-                    fake_history_table_create_statement(
+                    fake_table_create_statement(
                         resource["id"],
                         resource["properties"],
+                        resource.get("audit"),
                     ),
                     file=backend_schema_f,
                 )
+                if resource.get("history"):
+                    print(
+                        fake_history_table_create_statement(
+                            resource["id"],
+                            resource["properties"],
+                        ),
+                        file=backend_schema_f,
+                    )
 
             # generate sql for history table and audit triggers
             if resource.get("audit"):

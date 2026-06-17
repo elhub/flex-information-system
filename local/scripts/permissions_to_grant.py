@@ -112,6 +112,11 @@ def read_csv(csvReader: csv.DictReader) -> dict[str, dict[str, dict[str, list[st
 
 
 if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Usage: permissions_to_grant.py <schema>", file=sys.stderr)
+        sys.exit(1)
+
+    schema = sys.argv[1]
     csvReader = csv.DictReader(sys.stdin, delimiter=";")
     grants = read_csv(csvReader)
 
@@ -136,7 +141,7 @@ if __name__ == "__main__":
 
                 if columns is not None:
                     print(
-                        f"\nGRANT {grant}{columns} ON TABLE\napi.{resource}\nTO flex_{party_type_abbr[party_type]};",
+                        f"\nGRANT {grant}{columns} ON TABLE\n{schema}.{resource}\nTO flex_{party_type_abbr[party_type]};",
                         file=sys.stdout,
                     )
                     print(
