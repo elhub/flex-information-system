@@ -79,6 +79,12 @@ BEGIN
         AND pre.value IS DISTINCT FROM post.value
         -- excluding audit fields because otherwise they will show up everywhere
         AND pre.key NOT IN ('record_time_range', 'recorded_by');
+
+        IF l_event_data IS NULL THEN
+            -- if no fields changed (except audit fields), we can skip creating an event
+            RETURN NULL;
+        END IF;
+
     END IF;
 
     l_operation := lower(TG_OP);
