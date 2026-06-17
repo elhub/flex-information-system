@@ -3,6 +3,7 @@ package no.elhub.flex.scheduled
 import arrow.core.left
 import arrow.core.right
 import io.kotest.core.spec.style.FunSpec
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -13,6 +14,7 @@ import no.elhub.flex.accountingpoint.AccountingPointService
 import no.elhub.flex.accountingpoint.db.AccountingPointSyncRepository
 import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.controllableunit.db.ControllableUnitRepository
+import no.elhub.flex.metrics.FlexMetrics
 import no.elhub.flex.model.domain.AccountingPoint
 import no.elhub.flex.model.domain.ControllableUnit
 import no.elhub.flex.model.domain.ControllableUnitStatus
@@ -35,6 +37,7 @@ class AccountingPointSyncSchedulerTest : FunSpec({
         accountingPointSyncRepository = syncRepository,
         accountingPointService = accountingPointService,
         controllableUnitRepository = controllableUnitRepository,
+        metrics = FlexMetrics(SimpleMeterRegistry()),
         timezone = TimeZone.of("Europe/Oslo"),
     )
 

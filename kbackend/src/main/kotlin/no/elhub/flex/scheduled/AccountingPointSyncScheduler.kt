@@ -9,6 +9,7 @@ import no.elhub.flex.accountingpoint.AccountingPointService
 import no.elhub.flex.accountingpoint.db.AccountingPointSyncRepository
 import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.controllableunit.db.ControllableUnitRepository
+import no.elhub.flex.metrics.FlexMetrics
 import no.elhub.flex.util.asLocalMidnightInstant
 import no.elhub.flex.util.todayLocalMidnight
 import org.koin.core.annotation.Property
@@ -20,6 +21,7 @@ class AccountingPointSyncScheduler(
     private val accountingPointSyncRepository: AccountingPointSyncRepository,
     private val accountingPointService: AccountingPointService,
     private val controllableUnitRepository: ControllableUnitRepository,
+    private val metrics: FlexMetrics,
     @Property("flex.timezone") private val timezone: TimeZone = TimeZone.of("Europe/Oslo"),
 ) {
     suspend fun start() {
@@ -50,8 +52,11 @@ class AccountingPointSyncScheduler(
                             ?: Instant.todayLocalMidnight(timezone)
                         accountingPointService.synchronizeAccountingPoint(accountingPoint.businessId, validFrom).bind()
                         logger.debug { "Completed ${accountingPoint.id}" }
+                    }.onRight {
+                        metrics.accountingPointSync.success()
                     }.onLeft { e ->
                         logger.error { "Failed to sync accounting point ${accountingPoint.id}: $e" }
+                        metrics.accountingPointSync.failure()
                     }
                 }
                 logger.info { "Completed accounting point sync" }

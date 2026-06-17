@@ -7,11 +7,13 @@ import kotlinx.datetime.TimeZone
 import no.elhub.flex.auth.FlexAuthentication
 import no.elhub.flex.config.Tracing
 import no.elhub.flex.config.configureDatabase
+import no.elhub.flex.config.configureHealth
 import no.elhub.flex.config.configureLogging
-import no.elhub.flex.config.configureMonitoring
+import no.elhub.flex.config.configureMetrics
 import no.elhub.flex.config.configureRouting
 import no.elhub.flex.config.configureScheduling
 import no.elhub.flex.config.configureSerialization
+import no.elhub.flex.metrics.MetricsModule
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.KoinApplication
 import org.koin.core.annotation.Module
@@ -24,7 +26,7 @@ fun main(args: Array<String>) {
     EngineMain.main(args)
 }
 
-@Module
+@Module(includes = [MetricsModule::class])
 @ComponentScan("no.elhub.flex")
 class AppModule
 
@@ -38,7 +40,6 @@ class FlexApp
 fun Application.module() {
     install(Tracing.plugin)
     configureLogging()
-    configureMonitoring()
     configureSerialization()
     configureDatabase()
     configureRouting()
@@ -67,5 +68,7 @@ fun Application.module() {
         slf4jLogger()
     }
 
+    configureMetrics()
+    configureHealth()
     configureScheduling()
 }
