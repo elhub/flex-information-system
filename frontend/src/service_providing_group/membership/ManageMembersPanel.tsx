@@ -76,7 +76,7 @@ export const ManageMembersPanel = ({
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
-            className="inline-flex items-center gap-1"
+            className="eds-link inline-flex items-center gap-1"
           >
             {String(v)}
             <IconExternal size="small" />
