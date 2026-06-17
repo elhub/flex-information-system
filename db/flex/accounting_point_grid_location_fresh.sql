@@ -10,7 +10,8 @@ CREATE OR REPLACE VIEW accounting_point_grid_location_fresh AS (
         'substation' AS object_type,
         closest_sub.business_id,
         closest_sub.name,
-        0 AS nominal_voltage, -- TODO: closest_sub.voltage_levels[1] ?
+        -- system guess so we have no idea what the voltage level is
+        0 AS nominal_voltage,
         'system' AS source,
         'guessed' AS quality
     FROM flex.accounting_point AS ap

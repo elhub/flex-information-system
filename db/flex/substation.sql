@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS substation (
     ) REFERENCES substation_cluster (id)
 );
 
--- changeset flex:substation-active-transformer-position-index runOnChange:false endDelimiter:;
+-- changeset flex:substation-active-transformer-position-index runOnChange:false runInTransaction:false endDelimiter:;
 CREATE INDEX CONCURRENTLY IF NOT EXISTS
 substation_active_transformer_position_idx
 ON flex.substation USING gist (position)
