@@ -48,6 +48,7 @@ export const ServiceProvidingGroupFields = ({ isEdit }: Props) => {
         rows={5}
         description
         tooltip={false}
+        warning="Please remember not to write any sensitive (power/market/personal) information in this field."
       />
     </>
   );

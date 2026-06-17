@@ -10,16 +10,31 @@ import (
 func (q *Queries) GetNotificationRecipients( //nolint:cyclop,funlen
 	ctx context.Context,
 	eventType string,
-	resourceID int,
+	sourceID int,
+	subjectID *int,
 	recordedAt pgtype.Timestamptz,
 ) ([]int, error) {
+	// in many cases, only one ID is used to determine recipients
+	// (subject_id if present, otherwise source_id)
+	// TODO: consider removing this merging logic and stating explicitly which of
+	// these IDs we use in each of the queries below
+	resourceID := sourceID
+	if subjectID != nil {
+		resourceID = *subjectID
+	}
+
 	switch eventType {
+	case "no.elhub.flex.controllable_unit.lookup":
+		if subjectID != nil {
+			// CU-specific lookup, identify recipients from CU ID
+			return q.GetControllableUnitLookupNotificationRecipientsCU(ctx, *subjectID, recordedAt)
+		}
+		// general AP lookup, identify recipients from AP ID
+		return q.GetControllableUnitLookupNotificationRecipientsAP(ctx, sourceID, recordedAt)
 	case "no.elhub.flex.controllable_unit.create":
 		return q.GetControllableUnitCreateNotificationRecipients(ctx, recordedAt, resourceID)
 	case "no.elhub.flex.controllable_unit.update":
 		return q.GetControllableUnitUpdateNotificationRecipients(ctx, resourceID, recordedAt)
-	case "no.elhub.flex.controllable_unit.lookup":
-		return q.GetControllableUnitLookupNotificationRecipients(ctx, resourceID, recordedAt)
 	case "no.elhub.flex.controllable_unit_suspension.create",
 		"no.elhub.flex.controllable_unit_suspension.update",
 		"no.elhub.flex.controllable_unit_suspension.delete":

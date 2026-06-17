@@ -44,17 +44,27 @@ EXCEPTION
 END;
 $$;
 
--- changeset flex:event-rls runAlways:true endDelimiter:;
+-- changeset flex:event-rls runOnChange:true endDelimiter:;
 ALTER TABLE IF EXISTS event ENABLE ROW LEVEL SECURITY;
 
 -- internal
+GRANT INSERT, SELECT ON event TO flex_internal_data;
+DROP POLICY IF EXISTS "EVENT_INTERNAL_DATA" ON event;
+CREATE POLICY "EVENT_INTERNAL_DATA" ON event
+FOR ALL
+TO flex_internal_data
+USING (true)
+WITH CHECK (true);
+
 GRANT SELECT ON event TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "EVENT_INTERNAL_EVENT_NOTIFICATION_SELECT" ON event;
 CREATE POLICY "EVENT_INTERNAL_EVENT_NOTIFICATION_SELECT" ON event
 FOR SELECT
 TO flex_internal_event_notification
 USING (true);
 
 GRANT UPDATE (processed) ON event TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "EVENT_INTERNAL_EVENT_NOTIFICATION_UPDATE" ON event;
 CREATE POLICY "EVENT_INTERNAL_EVENT_NOTIFICATION_UPDATE" ON event
 FOR UPDATE
 TO flex_internal_event_notification
@@ -66,6 +76,7 @@ GRANT SELECT ON event TO flex_end_user;
 -- RLS: EVENT-EU001
 -- RLS: EVENT-EU002
 -- RLS: EVENT-EU003
+DROP POLICY IF EXISTS "EVENT_EU001_002_003" ON event;
 CREATE POLICY "EVENT_EU001_002_003" ON event
 FOR SELECT
 TO flex_end_user
@@ -79,8 +90,40 @@ USING (
     )
 );
 
+DROP POLICY IF EXISTS "EVENT_EU001_LOOKUP" ON event;
+CREATE POLICY "EVENT_EU001_LOOKUP" ON event
+FOR SELECT
+TO flex_end_user
+USING (
+    source_resource = 'accounting_point'
+    AND type ~ 'no.elhub.flex.controllable_unit.lookup'
+    AND EXISTS (
+        SELECT 1
+        FROM (
+            SELECT
+                id AS cu_id,
+                accounting_point_id,
+                record_time_range
+            FROM flex.controllable_unit
+            UNION ALL
+            SELECT
+                id AS cu_id,
+                accounting_point_id,
+                record_time_range
+            FROM flex.controllable_unit_history
+        ) AS cu_timeline
+            INNER JOIN flex.controllable_unit_end_user AS cueu
+                ON cu_timeline.cu_id = cueu.controllable_unit_id
+        WHERE cu_timeline.accounting_point_id = event.source_id -- noqa
+            AND cu_timeline.record_time_range @> lower(event.record_time_range) -- noqa
+            AND cueu.end_user_id = (SELECT flex.current_party())
+            AND cueu.valid_time_range @> lower(event.record_time_range) -- noqa
+    )
+);
+
 -- RLS: EVENT-FISO001
 GRANT SELECT ON event TO flex_flexibility_information_system_operator;
+DROP POLICY IF EXISTS "EVENT_FISO001" ON event;
 CREATE POLICY "EVENT_FISO001" ON event
 FOR SELECT
 TO flex_flexibility_information_system_operator
@@ -88,6 +131,7 @@ USING (true);
 
 -- RLS: EVENT-COM001
 GRANT SELECT ON event TO flex_common;
+DROP POLICY IF EXISTS "EVENT_COM001" ON event;
 CREATE POLICY "EVENT_COM001" ON event
 FOR SELECT
 TO flex_common

@@ -25,11 +25,13 @@ ALTER TABLE IF EXISTS
 flex.system_operator_product_type_history
 ENABLE ROW LEVEL SECURITY;
 
--- changeset flex:system-operator-product-type-history-rls-com runAlways:true endDelimiter:--
+-- changeset flex:system-operator-product-type-history-rls-com runOnChange:true endDelimiter:--
 -- RLS: SOPT-COM001
 GRANT SELECT ON flex.system_operator_product_type_history
 TO flex_common;
 
+DROP POLICY IF EXISTS "SOPT_COM001"
+ON flex.system_operator_product_type_history;
 CREATE POLICY "SOPT_COM001"
 ON flex.system_operator_product_type_history
 FOR SELECT

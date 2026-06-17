@@ -1,11 +1,9 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:notice-fresh-create runAlways:true endDelimiter:;
--- DROP + CREATE instead of CREATE OR REPLACE: cf https://stackoverflow.com/a/65118443
+-- changeset flex:notice-fresh-create runOnChange:true endDelimiter:;
 -- This view combines all notice types from individual views.
 -- Individual views are defined in separate files for maintainability.
-DROP VIEW IF EXISTS notice_fresh CASCADE;
 -- noqa: disable=AM04
 CREATE MATERIALIZED VIEW IF NOT EXISTS notice_fresh AS (
     -- Controllable Unit notices
@@ -74,7 +72,7 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS notice_fresh AS (
 );
 -- noqa: enable=AM04
 
--- changeset flex:notice-sync-function runAlways:true endDelimiter:--
+-- changeset flex:notice-sync-function runOnChange:true endDelimiter:--
 -- synchronise the notice table with the fresh notice discovery
 CREATE OR REPLACE FUNCTION notice_sync()
 RETURNS void
@@ -90,17 +88,13 @@ BEGIN
         AND np.type = nf.type
         AND np.deduplication_key = nf.deduplication_key
     -- resolved notices that are recomputed must be reactivated
-    WHEN MATCHED AND np.status = 'resolved' THEN
-        UPDATE SET
-            data = nf.data,
-            status = 'active'
     -- active notices with data changes must be updated
-    WHEN MATCHED AND np.data IS DISTINCT FROM nf.data THEN
+    WHEN MATCHED AND (np.status = 'resolved' OR np.data IS DISTINCT FROM nf.data) THEN
         UPDATE SET
             data = nf.data,
             status = 'active'
     -- notices freshly computed but not registered must be created
-    WHEN NOT MATCHED /* BY TARGET */ THEN
+    WHEN NOT MATCHED BY TARGET THEN
         INSERT (
             party_id,
             type,
@@ -117,26 +111,26 @@ BEGIN
             nf.source_id,
             nf.data,
             'active'
-        );
+        )
+    -- notices previously active but not recomputed must be resolved
+    WHEN NOT MATCHED BY SOURCE AND np.status != 'resolved' THEN
+        UPDATE SET status = 'resolved';
 
-    -- notices already registered but not recomputed must be resolved
-    -- NB: this is the 'NOT MATCHED BY SOURCE' part, available only in PG>=17
-    -- WHEN NOT MATCHED BY SOURCE THEN
-    --     UPDATE SET status = 'resolved';
-    UPDATE flex.notice AS np
-    SET status = 'resolved'
-    WHERE NOT EXISTS (
-        SELECT 1 FROM flex.notice_fresh AS nf
-        WHERE nf.party_id = np.party_id
-            AND nf.type = np.type
-            AND nf.deduplication_key = np.deduplication_key
-    );
 END;
 $$;
 
--- changeset flex:notice-sync-job-schedule runAlways:true endDelimiter:;
+-- changeset flex:notice-sync-job-schedule runOnChange:true endDelimiter:;
 SELECT cron.schedule(
     'notice-sync',
     '*/15 * * * *', -- every 15 minutes
     $$SELECT flex.notice_sync()$$
+);
+
+-- changeset flex:notice-sync-job-alter runOnChange:true endDelimiter:;
+SELECT cron.alter_job(
+    (
+        SELECT jobid FROM cron.job
+        WHERE jobname = 'notice-sync'
+    ),
+    '54 seconds'
 );

@@ -371,6 +371,7 @@ CREATE TABLE api.accounting_point (
     id bigint NOT NULL,
     business_id text NOT NULL,
     system_operator_id bigint NOT NULL,
+    location jsonb NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
 );
@@ -416,7 +417,7 @@ CREATE TABLE api.accounting_point_grid_location (
     id bigint NOT NULL,
     accounting_point_id bigint NOT NULL,
     object_type text NOT NULL,
-    business_id text NULL,
+    business_id text NOT NULL,
     name text NOT NULL,
     nominal_voltage decimal NOT NULL,
     additional_information text NULL,
@@ -430,7 +431,7 @@ CREATE TABLE api.accounting_point_grid_location_history (
     id bigint NOT NULL,
     accounting_point_id bigint NOT NULL,
     object_type text NOT NULL,
-    business_id text NULL,
+    business_id text NOT NULL,
     name text NOT NULL,
     nominal_voltage decimal NOT NULL,
     additional_information text NULL,

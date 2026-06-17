@@ -1,7 +1,13 @@
 import { useMemo } from "react";
 import { IconExternal } from "@elhub/ds-icons";
-import { Switch } from "@elhub/ds-components";
-import { Checkbox, FormItem, FormItemLabel, Loader, Search } from "../../components/ui";
+import {
+  Checkbox,
+  FormItem,
+  FormItemLabel,
+  Loader,
+  Search,
+  Switch,
+} from "../../components/ui";
 import { Column, SimpleTable } from "../../components/SimpleTable";
 import { PowerRatio } from "../../components/PowerRatio";
 import { AccountingPointLink } from "../../components/AccountingPointLink";
@@ -146,7 +152,9 @@ export const ManageMembersPanel = ({
             label={translate("text.spg_manage_members_search_label")}
             hideLabel
             clearButtonLabel={translate("text.spg_manage_members_search_clear")}
-            placeholder={translate("text.spg_manage_members_search_placeholder")}
+            placeholder={translate(
+              "text.spg_manage_members_search_placeholder",
+            )}
             value={searchQuery}
             onChange={(value) => setSearchQuery(value)}
             onClear={() => setSearchQuery("")}
@@ -182,7 +190,6 @@ export const ManageMembersPanel = ({
             />
           ),
         }}
-
       />
 
       <ReviewModal

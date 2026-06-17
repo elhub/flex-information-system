@@ -1,5 +1,6 @@
 import { Combobox } from "../../ui";
 import {
+  RaRecord,
   useChoicesContext,
   useGetRecordRepresentation,
   useInput,
@@ -9,6 +10,7 @@ import { BaseInput, BaseInputProps } from "./BaseInput";
 
 type ReferenceComboboxInputProps = BaseInputProps & {
   fieldName?: string;
+  optionText?: (record: RaRecord) => string;
 };
 
 export const ReferenceComboboxInput = ({
@@ -16,6 +18,7 @@ export const ReferenceComboboxInput = ({
   required,
   tooltip,
   fieldName,
+  optionText,
   overrideLabel,
   readOnly,
   disabled,
@@ -34,7 +37,9 @@ export const ReferenceComboboxInput = ({
   const getRecordRepresentation = useGetRecordRepresentation(resource);
 
   const options = allChoices?.map((choice) => ({
-    label: String(getRecordRepresentation(choice)),
+    label: String(
+      optionText ? optionText(choice) : getRecordRepresentation(choice),
+    ),
     value: String(choice.id),
     id: choice.id,
   }));

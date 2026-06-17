@@ -39,7 +39,7 @@ BEGIN
         );
     ELSIF business_id_type = 'uuid' THEN
         RETURN (
-            business_id ~ '^[0-9a-f]{8}-[0-9a-f]{4}-[47][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$'
+            business_id ~ '^[0-9a-f]{8}-[0-9a-f]{4}-[347][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$'
         );
     ELSIF business_id_type = 'gln' THEN
         IF business_id !~ '^[1-9][0-9]{12}$' THEN
@@ -61,10 +61,13 @@ BEGIN
         );
     ELSIF business_id_type = 'email' THEN
         -- Email validation: check if business_id is a valid email address
-        RETURN (business_id ~ '^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$');
+        RETURN (
+            business_id ~ '^[^@\s]+@[^@\s]+\.[^@\s]+$'
+            AND business_id = lower(business_id)
+        );
     ELSIF business_id_type = 'pid' THEN
         -- PID validation: check if business_id is a valid personal identification number
-        RETURN (business_id ~ '^[1-9][0-9]{10}$');
+        RETURN (business_id ~ '^[0-9]{11}$');
     ELSIF business_id_type = 'org' THEN
         -- Validate organisation number
         RETURN (business_id ~ '^[1-9][0-9]{8}$');

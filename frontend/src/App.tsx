@@ -8,13 +8,15 @@ import {
 
 import { DataProvider } from "ra-core";
 
-import { Route } from "react-router-dom";
+import { HashRouter, Route, Routes } from "react-router-dom";
 import { apiURL, httpClient } from "./httpConfig";
 
 import { authProvider } from "./auth";
 import { elhubTheme } from "./theme";
 import { LoginPage } from "./LoginPage";
 import { AssumePartyPage } from "./AssumePartyPage";
+import { PrivacyPolicyPage } from "./privacy-policy/PrivacyPolicyPage";
+import { QueryClient } from "@tanstack/react-query";
 
 import { createAllResources } from "./resources";
 
@@ -64,31 +66,53 @@ const Layout = ({ children }: LayoutProps) => (
   </NavigationHistoryProvider>
 );
 
-export const App = () => (
-  <Admin
-    authProvider={authProvider()}
-    i18nProvider={useI18nProvider()}
-    dashboard={Dashboard}
-    dataProvider={dataProvider}
-    disableTelemetry
-    layout={Layout}
-    loginPage={LoginPage}
-    requireAuth={true}
-    store={localStorageStore(undefined, "Flex")}
-    theme={elhubTheme}
-  >
-    {(permissions) =>
-      permissions.allow ? <>{createAllResources(permissions)}</> : null
-    }
-    <CustomRoutes>
-      <Route
-        path="/login/assumeParty"
-        element={
-          <ResourceContextProvider value="party_membership">
-            <AssumePartyPage />
-          </ResourceContextProvider>
-        }
-      />
-    </CustomRoutes>
-  </Admin>
-);
+// shared QueryClient instance used by both the Admin component and the auth
+// provider (allows auth provider to invalidate permissions cache after
+// checkAuth populates local storage)
+const queryClient = new QueryClient();
+
+export const App = () => {
+  return (
+    <HashRouter>
+      <Routes>
+        {/* no auth */}
+        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+        {/* auth */}
+        <Route
+          path="/*"
+          element={
+            <Admin
+              authProvider={authProvider(queryClient)}
+              i18nProvider={useI18nProvider()}
+              dashboard={Dashboard}
+              dataProvider={dataProvider}
+              disableTelemetry
+              layout={Layout}
+              loginPage={LoginPage}
+              queryClient={queryClient}
+              requireAuth={true}
+              store={localStorageStore(undefined, "Flex")}
+              theme={elhubTheme}
+            >
+              {(permissions) =>
+                permissions.allow ? (
+                  <>{createAllResources(permissions)}</>
+                ) : null
+              }
+              <CustomRoutes>
+                <Route
+                  path="/login/assumeParty"
+                  element={
+                    <ResourceContextProvider value="party_membership">
+                      <AssumePartyPage />
+                    </ResourceContextProvider>
+                  }
+                />
+              </CustomRoutes>
+            </Admin>
+          }
+        />
+      </Routes>
+    </HashRouter>
+  );
+};

@@ -43,7 +43,9 @@ to their organisation, and possibly create entities for their colleagues.
 
 ## Validation Rules
 
-No validation rules.
+| Policy key | Policy                                                               | Status |
+|------------|----------------------------------------------------------------------|--------|
+| ENT-VAL001 | Email addresses used as `business_id` on entities must be lowercase. | DONE   |
 
 ## Notifications
 
@@ -97,10 +99,9 @@ No policies.
 
 #### Organisation
 
-| Policy key | Policy                                                                                                                                    | Status |
-|------------|-------------------------------------------------------------------------------------------------------------------------------------------|--------|
-| ENT-ORG001 | Read all entities belonging to parties owned by the organisation.                                                                         | DONE   |
-| ENT-ORG002 | Read all entities with business id type `email`. Temporary policy for test environments with email based entities for professional users. | DONE   |
+| Policy key | Policy                                                            | Status |
+|------------|-------------------------------------------------------------------|--------|
+| ENT-ORG001 | Read all entities belonging to parties owned by the organisation. | DONE   |
 
 #### System Operator
 

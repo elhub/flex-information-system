@@ -1,36 +1,32 @@
-import { Show, SimpleShowLayout, TextField } from "react-admin";
-import { FieldStack } from "../auth";
-import { Typography, Stack } from "@mui/material";
+import { zEntity } from "../generated-client/zod.gen";
+import { Show, TextField, EnumField } from "../components/EDS-ra";
+import { Heading, VerticalSpace, Content } from "../components/ui";
+import { getFields } from "../zod";
 import { EntityClientList } from "./client/EntityClientList";
-import { EnumField } from "../components/enum";
 
-export const EntityShow = () => (
-  <Show>
-    <SimpleShowLayout>
-      <Stack direction="column" spacing={2}>
-        <Typography variant="h6" gutterBottom>
-          Basic information
-        </Typography>
-        <FieldStack direction="row" spacing={2}>
-          <TextField source="id" label="field.entity.id" />
-          <TextField source="name" label="field.entity.name" />
-          <EnumField
-            source="type"
-            label="field.entity.type"
-            enumKey="entity.type"
-          />
-          <TextField source="business_id" label="field.entity.business_id" />
-          <EnumField
-            source="business_id_type"
-            label="field.entity.business_id_type"
-            enumKey="entity.business_id_type"
-          />
-        </FieldStack>
-        <Typography variant="h6" gutterBottom>
-          Clients
-        </Typography>
-        <EntityClientList />
-      </Stack>
-    </SimpleShowLayout>
-  </Show>
-);
+export const EntityShow = () => {
+  const fields = getFields(zEntity.shape);
+  return (
+    <Show>
+      <Heading level={2} size="small" spacing>
+        Basic information
+      </Heading>
+      <Content>
+        <TextField source={fields.id.source} label />
+        <TextField source={fields.name.source} label />
+        <EnumField source={fields.type.source} enumKey="entity.type" label />
+        <TextField source={fields.business_id.source} label />
+        <EnumField
+          source={fields.business_id_type.source}
+          enumKey="entity.business_id_type"
+          label
+        />
+      </Content>
+      <VerticalSpace />
+      <Heading level={2} size="small" spacing>
+        Clients
+      </Heading>
+      <EntityClientList />
+    </Show>
+  );
+};

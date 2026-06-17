@@ -73,6 +73,7 @@ def _base_create_request(
     return AccountingPointGridLocationCreateRequest(
         accounting_point_id=accounting_point_id,
         object_type=AccountingPointGridLocationObjectType.SUBSTATION,
+        business_id="b1000001-0000-4000-8000-000000000011",
         name="Test Substation",
         nominal_voltage=22.0,
         quality=AccountingPointGridLocationQuality.CONFIRMED,
@@ -363,6 +364,7 @@ def test_apgl_validation_name_too_long(sts):
         body=AccountingPointGridLocationCreateRequest(
             accounting_point_id=1005,
             object_type=AccountingPointGridLocationObjectType.SUBSTATION,
+            business_id="b1000001-0000-4000-8000-000000000011",
             name="x" * 513,
             nominal_voltage=22.0,
             quality=AccountingPointGridLocationQuality.CONFIRMED,
@@ -379,6 +381,7 @@ def test_apgl_validation_nominal_voltage_negative(sts):
         body=AccountingPointGridLocationCreateRequest(
             accounting_point_id=1006,
             object_type=AccountingPointGridLocationObjectType.SUBSTATION,
+            business_id="b1000001-0000-4000-8000-000000000011",
             name="Test",
             nominal_voltage=-1.0,
             quality=AccountingPointGridLocationQuality.CONFIRMED,
@@ -423,5 +426,45 @@ def test_apgl_validation_quality(sts):
         client=client_fiso,
         id=cast(int, apgl.id),
         body=req,
+    )
+    assert isinstance(result, ErrorMessage)
+
+
+def test_apgl_validation_business_id_missing(sts):
+    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+
+    # Create a valid record first, then PATCH with business_id=null,
+    # which violates the NOT NULL constraint on the column.
+    apgl = create_accounting_point_grid_location.sync(
+        client=client_fiso,
+        body=_base_create_request(1009),
+    )
+    assert isinstance(apgl, AccountingPointGridLocationResponse)
+
+    req = AccountingPointGridLocationUpdateRequest()
+    req.additional_properties["business_id"] = None
+
+    result = update_accounting_point_grid_location.sync(
+        client=client_fiso,
+        id=cast(int, apgl.id),
+        body=req,
+    )
+    assert isinstance(result, ErrorMessage)
+
+
+def test_apgl_validation_business_id_not_in_db(sts):
+    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+
+    # A well-formed UUID that does not exist in the substation table.
+    result = create_accounting_point_grid_location.sync(
+        client=client_fiso,
+        body=AccountingPointGridLocationCreateRequest(
+            accounting_point_id=1010,
+            object_type=AccountingPointGridLocationObjectType.SUBSTATION,
+            business_id="00000000-0000-4000-8000-000000000000",
+            name="Test",
+            nominal_voltage=22.0,
+            quality=AccountingPointGridLocationQuality.CONFIRMED,
+        ),
     )
     assert isinstance(result, ErrorMessage)

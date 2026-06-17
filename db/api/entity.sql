@@ -1,7 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:api-entity-create endDelimiter:-- runAlways:true
+-- changeset flex:api-entity-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW
 api.entity
 WITH (security_invoker = true) AS (
@@ -21,7 +21,7 @@ WITH (security_invoker = true) AS (
     FROM flex.entity
 );
 
--- changeset flex:api-entity-modify-function endDelimiter:-- runAlways:true
+-- changeset flex:api-entity-modify-function endDelimiter:-- runOnChange:true
 CREATE OR REPLACE FUNCTION api.entity_modify()
 RETURNS TRIGGER
 SECURITY INVOKER
@@ -84,7 +84,7 @@ BEGIN
 END;
 $$;
 
--- changeset flex:api-entity-modify-trigger endDelimiter:-- runAlways:true
+-- changeset flex:api-entity-modify-trigger endDelimiter:-- runOnChange:true
 CREATE OR REPLACE TRIGGER entity_modify_trg
 INSTEAD OF INSERT OR UPDATE OR DELETE
 ON api.entity

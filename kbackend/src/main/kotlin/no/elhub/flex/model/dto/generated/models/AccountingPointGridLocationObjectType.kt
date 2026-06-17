@@ -12,8 +12,6 @@ public enum class AccountingPointGridLocationObjectType(
 ) {
   @SerialName("substation")
   SUBSTATION("substation"),
-  @SerialName("transformer")
-  TRANSFORMER("transformer"),
   ;
 
   override fun toString(): String = value

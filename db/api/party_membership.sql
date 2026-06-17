@@ -1,7 +1,7 @@
 --liquibase formatted sql
 -- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
 
--- changeset flex:api-party-membership-create endDelimiter:-- runAlways:true
+-- changeset flex:api-party-membership-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW
 api.party_membership
 WITH (security_invoker = true) AS (
@@ -14,7 +14,7 @@ WITH (security_invoker = true) AS (
         lower(record_time_range) AS recorded_at
     FROM flex.party_membership
 );
--- changeset flex:api-party-membership-history-create endDelimiter:-- runAlways:true
+-- changeset flex:api-party-membership-history-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW
 api.party_membership_history
 WITH (

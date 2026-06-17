@@ -1,5 +1,6 @@
 -- NOTE: Init scripts only runs on first start of the container
 -- It will NOT run on restarts
+CREATE EXTENSION IF NOT EXISTS postgis;
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp"; -- noqa: RF05
 CREATE EXTENSION IF NOT EXISTS btree_gist;
@@ -17,6 +18,7 @@ ALTER USER flex WITH REPLICATION;
 CREATE SCHEMA flex AUTHORIZATION flex;
 -- grant cron job execution to flex
 GRANT USAGE ON SCHEMA cron TO flex;
+GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA cron TO flex;
 
 -- authenticator is used by backend/postgREST to connect to the database
 CREATE ROLE flex_authenticator

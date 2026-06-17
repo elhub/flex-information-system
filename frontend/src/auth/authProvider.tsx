@@ -4,6 +4,7 @@ import {
   getStorage,
   UserIdentity,
 } from "react-admin";
+import { QueryClient } from "@tanstack/react-query";
 import permissions from "./permissions";
 import { authURL } from "../httpConfig";
 import type { PartyRole } from "../generated-client/types.gen";
@@ -74,7 +75,7 @@ interface FlexEntityIdentity extends FlexIdentityBase {
 
 export type FlexIdentity = FlexPartyIdentity | FlexEntityIdentity;
 
-export function authProvider(): AuthProvider {
+export function authProvider(queryClient: QueryClient): AuthProvider {
   const getIdentity = async () => {
     const sessionInfoString = getStorage().getItem(sessionInfoKey);
     if (!sessionInfoString) return Promise.reject();
@@ -169,6 +170,10 @@ export function authProvider(): AuthProvider {
         if (status == 200) {
           sessionInfo = json;
           getStorage().setItem(sessionInfoKey, body);
+          // make sure permissions are refetched with the correct role
+          queryClient.invalidateQueries({
+            queryKey: ["auth", "getPermissions"],
+          });
         }
       } else {
         sessionInfo = JSON.parse(sessionInfoString);
@@ -211,7 +216,11 @@ export function authProvider(): AuthProvider {
     },
     getPermissions: () => {
       const sessionInfoString = getStorage().getItem(sessionInfoKey);
-      if (!sessionInfoString) return Promise.resolve([]); // no session, no permissions
+
+      // no session, no permissions
+      if (!sessionInfoString)
+        return Promise.resolve(permissions("flex_anonymous"));
+
       const sessionInfo = JSON.parse(sessionInfoString);
       const role = sessionInfo["role"];
       return Promise.resolve(

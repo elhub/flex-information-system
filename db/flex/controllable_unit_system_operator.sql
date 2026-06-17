@@ -13,6 +13,6 @@ WITH (security_invoker = false) AS (
             ON cu.accounting_point_id = apso.accounting_point_id
 );
 
--- changeset flex:flex-controllable-unit-system-operator-user-grant endDelimiter:; runAlways:true
+-- changeset flex:flex-controllable-unit-system-operator-user-grant endDelimiter:; runOnChange:true
 GRANT SELECT ON TABLE flex.controllable_unit_system_operator
 TO flex_internal_event_notification;

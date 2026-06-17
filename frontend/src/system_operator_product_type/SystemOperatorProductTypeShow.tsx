@@ -1,81 +1,52 @@
+import { Content, Heading, VerticalSpace } from "../components/ui";
 import {
-  ReferenceField,
   Show,
-  SimpleShowLayout,
   TextField,
-  useResourceContext,
-} from "react-admin";
-import { FieldStack } from "../auth";
-import { Typography, Stack } from "@mui/material";
-import { ResourceHistoryButton } from "../components/history";
-import { DateField } from "../components/datetime";
-import { EventButton } from "../event/EventButton";
-import { IdentityField } from "../components/IdentityField";
-import { EnumField } from "../components/enum";
+  ReferenceField,
+  DateField,
+  IdentityField,
+  EnumField,
+} from "../components/EDS-ra";
 import { ProductTypeField } from "../product_type/components";
+import { getFields } from "../zod";
+import { zSystemOperatorProductTypeHistory } from "../generated-client/zod.gen";
+
+const fields = getFields(zSystemOperatorProductTypeHistory.shape);
 
 export const SystemOperatorProductTypeShow = () => {
-  const resource = useResourceContext()!;
-
-  const isHistory = resource.endsWith("_history");
-
   return (
     <Show>
-      <SimpleShowLayout>
-        <Stack direction="column" spacing={2}>
-          <Typography variant="h6" gutterBottom>
-            Basic information
-          </Typography>
-          <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <TextField
-              source="id"
-              label="field.system_operator_product_type.id"
-            />
-            <TextField
-              source="system_operator_product_type_id"
-              label="field.system_operator_product_type_history.system_operator_product_type_id"
-            />
-            <ReferenceField
-              source="system_operator_id"
-              reference="party"
-              label="field.system_operator_product_type.system_operator_id"
-            >
-              <TextField source="name" />
-            </ReferenceField>
-            <ProductTypeField source="product_type_id" />
-            <EnumField
-              source="status"
-              enumKey="system_operator_product_type.status"
-              label="field.system_operator_product_type.status"
-            />
-          </FieldStack>
-          <Typography variant="h6" gutterBottom>
-            Registration
-          </Typography>
-          <FieldStack direction="row" flexWrap="wrap" spacing={2}>
-            <DateField
-              source="recorded_at"
-              showTime
-              label="field.system_operator_product_type.recorded_at"
-            />
-            <IdentityField
-              source="recorded_by"
-              label="field.system_operator_product_type.recorded_by"
-            />
-            <DateField
-              source="replaced_at"
-              showTime
-              label="field.system_operator_product_type_history.replaced_at"
-            />
-            <IdentityField
-              source="replaced_by"
-              label="field.system_operator_product_type_history.replaced_by"
-            />
-          </FieldStack>
-        </Stack>
-        <ResourceHistoryButton />
-        {!isHistory && <EventButton />}
-      </SimpleShowLayout>
+      <Heading level={2} size="small" spacing>
+        Basic information
+      </Heading>
+      <Content>
+        <TextField source={fields.id.source} label />
+        <TextField
+          source={fields.system_operator_product_type_id.source}
+          label
+        />
+        <ReferenceField
+          source={fields.system_operator_id.source}
+          reference="party"
+          label
+        />
+        <ProductTypeField source={fields.product_type_id.source} />
+        <EnumField
+          source={fields.status.source}
+          enumKey="system_operator_product_type.status"
+          label
+        />
+      </Content>
+      <VerticalSpace />
+      <Heading level={2} size="small" spacing>
+        Registration
+      </Heading>
+      <Content>
+        <DateField source={fields.recorded_at.source} showTime label />
+        <IdentityField source={fields.recorded_by.source} label />
+        <DateField source={fields.replaced_at.source} showTime label />
+        <IdentityField source={fields.replaced_by.source} label />
+      </Content>
     </Show>
   );
 };

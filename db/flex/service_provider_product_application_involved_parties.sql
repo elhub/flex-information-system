@@ -1,7 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:service-provider-product-application-involved-parties endDelimiter:-- runAlways:true
+-- changeset flex:service-provider-product-application-involved-parties endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW
 service_provider_product_application_involved_parties
 WITH (security_invoker = false)
@@ -23,7 +23,7 @@ AS (
     FROM flex.service_provider_product_application_history AS sppah
 );
 
--- changeset flex:service-provider-product-application-involved-parties-grants runAlways:true endDelimiter:;
+-- changeset flex:service-provider-product-application-involved-parties-grants runOnChange:true endDelimiter:;
 GRANT SELECT ON TABLE
 service_provider_product_application_involved_parties
 TO flex_common;

@@ -17,7 +17,8 @@ in the FIS portal.
 
 ## 1. Start at SPG registrations
 
-Begin by navigating to SPG registrations.  
+Begin by navigating to SPG registrations or choose to create a new service
+providing group from the dashboard.  
 This is the entry point for [grouping of controllable units](../../processes/service-providing-group-registration.md).
 
 ## 2. Create a new service providing group
@@ -57,13 +58,12 @@ The service providing group is now registered in the FIS and the controllable un
 have been added, but the service providing group is only visible for the SP because
 it has not been activated.
 
-Review all information to ensure everything is correct before activating the SPG.
+Activating the service providing group will allow it to be used in a product application
 
-When a service providing group is activated, the impacted system operator(s) are
-notified. The impacted system operator will grid prequalify the SPG.
+Ensure the following before activating:
 
-The system operator sets a grid prequalification status and the SP is notified of
-the status. The status is registered on the SPG.
+* all controllable units have been added
+* data is correct
 
 ## Next step: Apply for service providing group product prequalification
 

@@ -164,9 +164,13 @@ export type ControllableUnitLookup = {
  */
 export type EntityLookupRequest = {
   /**
-   * The business identifier of the entity. Person number or organisation number, according to `type`.
+   * The business identifier of the entity. Email address or organisation number, according to `business_id_type`.
    */
   business_id: string;
+  /**
+   * The type of business identifier. For persons, `email`. For organisations, `org` (organisation number, 9 digits).
+   */
+  business_id_type: "email" | "org";
   /**
    * Name of the entity.
    */
@@ -284,6 +288,14 @@ export type NumericAggregation = {
   average?: number;
   min?: number;
   max?: number;
+};
+
+export type GeojsonPoint = {
+  type: "Point";
+  /**
+   * [longitude, latitude] in decimal degrees (WGS84)
+   */
+  coordinates: [number, number];
 };
 
 /**
@@ -460,9 +472,7 @@ export type MeteringGridAreaStatus = "active" | "inactive";
 /**
  * The type of object in the common grid model that the accounting point is at.
  */
-export type AccountingPointGridLocationObjectType =
-  | "substation"
-  | "transformer";
+export type AccountingPointGridLocationObjectType = "substation";
 
 /**
  * How the grid location was determined. When a system operator creates or updates a grid location, this field is set automatically: `cso` if the SO is the connecting system operator, `so` otherwise.
@@ -2076,6 +2086,10 @@ export type AccountingPoint = {
    */
   readonly system_operator_id: number;
   /**
+   * Geographic location of the accounting point (WGS84), as a GeoJSON point object.
+   */
+  readonly location?: GeojsonPoint | null;
+  /**
    * When the resource was recorded (created or updated) in the system.
    */
   readonly recorded_at: string;
@@ -2321,7 +2335,7 @@ export type AccountingPointGridLocationCreateRequest = {
   /**
    * Business identifier (mRID) referencing the object in the common grid model.
    */
-  business_id?: string;
+  business_id: string;
   /**
    * Name of the grid model object at the location.
    */
@@ -2353,7 +2367,7 @@ export type AccountingPointGridLocation = {
   /**
    * Business identifier (mRID) referencing the object in the common grid model.
    */
-  business_id?: string;
+  business_id: string;
   /**
    * Name of the grid model object at the location.
    */
@@ -3115,6 +3129,10 @@ export type Notice = {
    */
   readonly source?: string;
   /**
+   * The data of the notice.
+   */
+  readonly data?: NoticeData | null;
+  /**
    * When the resource was recorded (created or updated) in the system.
    */
   readonly recorded_at: string;
@@ -3769,7 +3787,7 @@ export type AccountingPointGridLocationHistory = {
   /**
    * Business identifier (mRID) referencing the object in the common grid model.
    */
-  business_id?: string;
+  business_id: string;
   /**
    * Name of the grid model object at the location.
    */
@@ -4982,7 +5000,7 @@ export type AccountingPointGridLocationWritable = {
   /**
    * Business identifier (mRID) referencing the object in the common grid model.
    */
-  business_id?: string;
+  business_id: string;
   /**
    * Name of the grid model object at the location.
    */
@@ -5715,7 +5733,7 @@ export type AccountingPointGridLocationHistoryWritable = {
   /**
    * Business identifier (mRID) referencing the object in the common grid model.
    */
-  business_id?: string;
+  business_id: string;
   /**
    * Name of the grid model object at the location.
    */
@@ -17605,6 +17623,7 @@ export type ListNoticeData = {
      * Unique surrogate identifier.
      */
     id?: string;
+    status?: string;
     /**
      * Reference to the party targeted by the notice.
      */

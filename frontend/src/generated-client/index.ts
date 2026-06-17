@@ -440,6 +440,7 @@ export type {
   ErrorMessage,
   Event,
   EventWritable,
+  GeojsonPoint,
   Identity,
   IdentityWritable,
   ListAccountingPointBalanceResponsiblePartyData,

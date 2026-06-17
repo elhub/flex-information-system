@@ -1,13 +1,15 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:service-providing-group-product-application-rls runAlways:true endDelimiter:;
+-- changeset flex:service-providing-group-product-application-rls runOnChange:true endDelimiter:;
 ALTER TABLE IF EXISTS service_providing_group_product_application
 ENABLE ROW LEVEL SECURITY;
 
 -- internal
 GRANT SELECT ON service_providing_group_product_application
 TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "SPGPA_INTERNAL_EVENT_NOTIFICATION"
+ON service_providing_group_product_application;
 CREATE POLICY "SPGPA_INTERNAL_EVENT_NOTIFICATION"
 ON service_providing_group_product_application
 FOR SELECT
@@ -16,6 +18,8 @@ USING (true);
 
 GRANT SELECT ON service_providing_group_product_application_history
 TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "SPGPA_HISTORY_INTERNAL_EVENT_NOTIFICATION"
+ON service_providing_group_product_application_history;
 CREATE POLICY "SPGPA_HISTORY_INTERNAL_EVENT_NOTIFICATION"
 ON service_providing_group_product_application_history
 FOR SELECT
@@ -25,6 +29,7 @@ USING (true);
 -- RLS: SPGPA-FISO001
 GRANT SELECT, UPDATE ON service_providing_group_product_application
 TO flex_flexibility_information_system_operator;
+DROP POLICY IF EXISTS "SPGPA_FISO001" ON service_providing_group_product_application;
 CREATE POLICY "SPGPA_FISO001"
 ON service_providing_group_product_application
 FOR ALL
@@ -34,6 +39,7 @@ USING (true);
 -- RLS: SPGPA-SP001
 GRANT SELECT, INSERT, UPDATE ON service_providing_group_product_application
 TO flex_service_provider;
+DROP POLICY IF EXISTS "SPGPA_SP001" ON service_providing_group_product_application;
 CREATE POLICY "SPGPA_SP001"
 ON service_providing_group_product_application
 FOR ALL
@@ -67,6 +73,7 @@ $$;
 
 GRANT SELECT, UPDATE ON service_providing_group_product_application
 TO flex_system_operator;
+DROP POLICY IF EXISTS "SPGPA_SO001" ON service_providing_group_product_application;
 CREATE POLICY "SPGPA_SO001"
 ON service_providing_group_product_application
 FOR SELECT
@@ -78,6 +85,7 @@ USING (
 );
 
 -- RLS: SPGPA-SO002
+DROP POLICY IF EXISTS "SPGPA_SO002" ON service_providing_group_product_application;
 CREATE POLICY "SPGPA_SO002"
 ON service_providing_group_product_application
 FOR UPDATE
@@ -104,6 +112,7 @@ SELECT EXISTS (
 $$;
 
 -- RLS: SPGPA-SO003
+DROP POLICY IF EXISTS "SPGPA_SO003" ON service_providing_group_product_application;
 CREATE POLICY "SPGPA_SO003"
 ON service_providing_group_product_application
 FOR SELECT

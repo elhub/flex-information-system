@@ -3,6 +3,7 @@ package no.elhub.flex
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.netty.EngineMain
+import kotlinx.datetime.TimeZone
 import no.elhub.flex.auth.FlexAuthentication
 import no.elhub.flex.config.Tracing
 import no.elhub.flex.config.configureDatabase
@@ -52,6 +53,7 @@ fun Application.module() {
         "accounting-point-adapter.base-url" to { it },
         "accounting-point-adapter.api-key" to { it },
         "accounting-point-adapter.sync-enabled" to { it.toBoolean() },
+        "flex.timezone" to { TimeZone.of(it) },
     )
 
     startKoin<FlexApp> {

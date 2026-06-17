@@ -33,6 +33,8 @@ export const ControllableUnitShowSummary = ({
     accountingPoint,
     systemOperator,
     biddingZone,
+    meteringGridArea,
+    energySupplier,
   } = viewModel;
 
   const translate = useTranslate();
@@ -106,6 +108,11 @@ export const ControllableUnitShowSummary = ({
           />
           <LabelValue
             size="small"
+            labelKey="accounting_point_metering_grid_area.metering_grid_area_id"
+            value={meteringGridArea?.name}
+          />
+          <LabelValue
+            size="small"
             labelKey="accounting_point_bidding_zone.bidding_zone"
             value={
               biddingZone
@@ -152,6 +159,11 @@ export const ControllableUnitShowSummary = ({
                 ? "See all balance responsible parties"
                 : undefined
             }
+          />
+          <LabelValue
+            size="small"
+            labelKey="accounting_point_energy_supplier.energy_supplier_id"
+            value={energySupplier?.name}
           />
           <LabelValue
             size="small"

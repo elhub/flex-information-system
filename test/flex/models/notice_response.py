@@ -6,7 +6,6 @@ from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-from dateutil.parser import isoparse
 
 from ..models.notice_status import NoticeStatus
 from ..types import UNSET, Unset
@@ -37,8 +36,8 @@ class NoticeResponse:
         recorded_by (int): The identity that recorded the resource. Example: 145.
         source (None | str | Unset): The URI of the resource concerned by the event. Example:
             /service_providing_group_membership/4.
-        data (NoticeDataPartyMissing | NoticeDataPartyOutdated | NoticeDataProductTypeNotQualified |
-            NoticeDataValidTimeOutsideContract | Unset):
+        data (None | NoticeDataPartyMissing | NoticeDataPartyOutdated | NoticeDataProductTypeNotQualified |
+            NoticeDataValidTimeOutsideContract | Unset): The data of the notice.
         party (None | PartyResponse | Unset): Embedded party
     """
 
@@ -50,7 +49,8 @@ class NoticeResponse:
     recorded_by: int
     source: None | str | Unset = UNSET
     data: (
-        NoticeDataPartyMissing
+        None
+        | NoticeDataPartyMissing
         | NoticeDataPartyOutdated
         | NoticeDataProductTypeNotQualified
         | NoticeDataValidTimeOutsideContract
@@ -62,6 +62,7 @@ class NoticeResponse:
     def to_dict(self) -> dict[str, Any]:
         from ..models.notice_data_party_missing import NoticeDataPartyMissing
         from ..models.notice_data_party_outdated import NoticeDataPartyOutdated
+        from ..models.notice_data_product_type_not_qualified import NoticeDataProductTypeNotQualified
         from ..models.notice_data_valid_time_outside_contract import NoticeDataValidTimeOutsideContract
         from ..models.party_response import PartyResponse
 
@@ -83,7 +84,7 @@ class NoticeResponse:
         else:
             source = self.source
 
-        data: dict[str, Any] | Unset
+        data: dict[str, Any] | None | Unset
         if isinstance(self.data, Unset):
             data = UNSET
         elif isinstance(self.data, NoticeDataValidTimeOutsideContract):
@@ -92,8 +93,10 @@ class NoticeResponse:
             data = self.data.to_dict()
         elif isinstance(self.data, NoticeDataPartyOutdated):
             data = self.data.to_dict()
-        else:
+        elif isinstance(self.data, NoticeDataProductTypeNotQualified):
             data = self.data.to_dict()
+        else:
+            data = self.data
 
         party: dict[str, Any] | None | Unset
         if isinstance(self.party, Unset):
@@ -141,7 +144,7 @@ class NoticeResponse:
 
         type_ = d.pop("type")
 
-        recorded_at = isoparse(d.pop("recorded_at"))
+        recorded_at = datetime.datetime.fromisoformat(d.pop("recorded_at"))
 
         recorded_by = d.pop("recorded_by")
 
@@ -157,12 +160,15 @@ class NoticeResponse:
         def _parse_data(
             data: object,
         ) -> (
-            NoticeDataPartyMissing
+            None
+            | NoticeDataPartyMissing
             | NoticeDataPartyOutdated
             | NoticeDataProductTypeNotQualified
             | NoticeDataValidTimeOutsideContract
             | Unset
         ):
+            if data is None:
+                return data
             if isinstance(data, Unset):
                 return data
             try:
@@ -189,11 +195,23 @@ class NoticeResponse:
                 return componentsschemasnotice_data_type_2
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
-            if not isinstance(data, dict):
-                raise TypeError()
-            componentsschemasnotice_data_type_3 = NoticeDataProductTypeNotQualified.from_dict(data)
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                componentsschemasnotice_data_type_3 = NoticeDataProductTypeNotQualified.from_dict(data)
 
-            return componentsschemasnotice_data_type_3
+                return componentsschemasnotice_data_type_3
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(
+                None
+                | NoticeDataPartyMissing
+                | NoticeDataPartyOutdated
+                | NoticeDataProductTypeNotQualified
+                | NoticeDataValidTimeOutsideContract
+                | Unset,
+                data,
+            )
 
         data = _parse_data(d.pop("data", UNSET))
 

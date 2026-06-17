@@ -1,12 +1,13 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:accounting-point-rls runAlways:true endDelimiter:;
+-- changeset flex:accounting-point-rls runOnChange:true endDelimiter:;
 ALTER TABLE IF EXISTS accounting_point ENABLE ROW LEVEL SECURITY;
 
 -- internal
 GRANT SELECT ON accounting_point
 TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "AP_INTERNAL_EVENT_NOTIFICATION" ON accounting_point;
 CREATE POLICY "AP_INTERNAL_EVENT_NOTIFICATION"
 ON accounting_point
 FOR SELECT
@@ -15,6 +16,7 @@ USING (true);
 
 GRANT SELECT ON accounting_point_history
 TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "APH_INTERNAL_EVENT_NOTIFICATION" ON accounting_point_history;
 CREATE POLICY "APH_INTERNAL_EVENT_NOTIFICATION"
 ON accounting_point_history
 FOR SELECT
@@ -24,6 +26,7 @@ USING (true);
 -- RLS: AP-FISO001
 GRANT SELECT ON accounting_point
 TO flex_flexibility_information_system_operator;
+DROP POLICY IF EXISTS "AP_FISO001" ON accounting_point;
 CREATE POLICY "AP_FISO001"
 ON accounting_point
 FOR SELECT
@@ -33,6 +36,7 @@ USING (true);
 -- RLS: AP-SO001
 GRANT SELECT ON accounting_point
 TO flex_system_operator;
+DROP POLICY IF EXISTS "AP_SO001" ON accounting_point;
 CREATE POLICY "AP_SO001"
 ON accounting_point
 FOR SELECT
@@ -95,6 +99,7 @@ USING (
 -- RLS: AP-SP001
 GRANT SELECT ON accounting_point
 TO flex_service_provider;
+DROP POLICY IF EXISTS "AP_SP001" ON accounting_point;
 CREATE POLICY "AP_SP001"
 ON accounting_point
 FOR SELECT
@@ -115,6 +120,7 @@ USING (
 );
 
 GRANT INSERT, SELECT, UPDATE, DELETE ON accounting_point TO flex_internal_data;
+DROP POLICY IF EXISTS "AP_INTERNAL_DATA" ON accounting_point;
 CREATE POLICY "AP_INTERNAL_DATA"
 ON accounting_point
 FOR ALL

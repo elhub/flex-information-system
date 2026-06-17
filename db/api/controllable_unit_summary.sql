@@ -1,7 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:api-controllable-unit-summary-create endDelimiter:-- runAlways:true
+-- changeset flex:api-controllable-unit-summary-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW
 api.controllable_unit_summary
 WITH (security_invoker = true) AS (

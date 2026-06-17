@@ -27,7 +27,7 @@ public data class AccountingPointGridLocationCreateRequest(
    * Business identifier (mRID) referencing the object in the common grid model.
    */
   @SerialName("business_id")
-  public val businessId: String? = null,
+  public val businessId: String,
   /**
    * Name of the grid model object at the location.
    */

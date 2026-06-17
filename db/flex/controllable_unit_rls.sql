@@ -1,23 +1,26 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:controllable-unit-rls runAlways:true endDelimiter:;
+-- changeset flex:controllable-unit-rls runOnChange:true endDelimiter:;
 ALTER TABLE IF EXISTS controllable_unit ENABLE ROW LEVEL SECURITY;
 
 -- internal
 GRANT SELECT ON controllable_unit TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "CU_INTERNAL_EVENT_NOTIFICATION" ON controllable_unit;
 CREATE POLICY "CU_INTERNAL_EVENT_NOTIFICATION" ON controllable_unit
 FOR SELECT
 TO flex_internal_event_notification
 USING (true);
 
 GRANT SELECT ON controllable_unit_history TO flex_internal_event_notification;
+DROP POLICY IF EXISTS "CUH_INTERNAL_EVENT_NOTIFICATION" ON controllable_unit_history;
 CREATE POLICY "CUH_INTERNAL_EVENT_NOTIFICATION" ON controllable_unit_history
 FOR SELECT
 TO flex_internal_event_notification
 USING (true);
 
 GRANT SELECT ON controllable_unit TO flex_internal_data;
+DROP POLICY IF EXISTS "CU_INTERNAL_DATA" ON controllable_unit;
 CREATE POLICY "CU_INTERNAL_DATA" ON controllable_unit
 FOR SELECT
 TO flex_internal_data
@@ -26,6 +29,7 @@ USING (true);
 -- RLS: CU-FISO001
 GRANT SELECT, INSERT, UPDATE ON controllable_unit
 TO flex_flexibility_information_system_operator;
+DROP POLICY IF EXISTS "CU_FISO001" ON controllable_unit;
 CREATE POLICY "CU_FISO001" ON controllable_unit
 FOR ALL
 TO flex_flexibility_information_system_operator
@@ -33,6 +37,7 @@ USING (true);
 
 -- RLS: CU-SO001
 GRANT SELECT, UPDATE ON controllable_unit TO flex_system_operator;
+DROP POLICY IF EXISTS "CU_SO001" ON controllable_unit;
 CREATE POLICY "CU_SO001" ON controllable_unit
 FOR ALL
 TO flex_system_operator
@@ -47,6 +52,7 @@ USING (
 );
 
 -- RLS: CU-SO002
+DROP POLICY IF EXISTS "CU_SO002" ON controllable_unit;
 CREATE POLICY "CU_SO002" ON controllable_unit
 FOR SELECT
 TO flex_system_operator
@@ -60,6 +66,7 @@ USING (
 GRANT SELECT, INSERT, UPDATE ON controllable_unit TO flex_service_provider;
 -- RLS: CU-SP001
 -- RLS: CU-SP005
+DROP POLICY IF EXISTS "CU_SP001_SP005" ON controllable_unit;
 CREATE POLICY "CU_SP001_SP005" ON controllable_unit
 FOR SELECT
 TO flex_service_provider
@@ -81,12 +88,14 @@ USING (
 );
 
 -- RLS: CU-SP002
+DROP POLICY IF EXISTS "CU_SP002" ON controllable_unit;
 CREATE POLICY "CU_SP002" ON controllable_unit
 FOR INSERT
 TO flex_service_provider
 WITH CHECK (true);
 
 -- RLS: CU-SP003
+DROP POLICY IF EXISTS "CU_SP003" ON controllable_unit;
 CREATE POLICY "CU_SP003" ON controllable_unit
 FOR UPDATE
 TO flex_service_provider
@@ -104,6 +113,7 @@ USING (
 
 -- RLS: CU-EU001
 GRANT SELECT ON controllable_unit TO flex_end_user;
+DROP POLICY IF EXISTS "CU_EU001" ON controllable_unit;
 CREATE POLICY "CU_EU001" ON controllable_unit
 FOR SELECT
 TO flex_end_user
@@ -119,6 +129,7 @@ USING (
 
 -- RLS: CU-ES001
 GRANT SELECT ON controllable_unit TO flex_energy_supplier;
+DROP POLICY IF EXISTS "CU_ES001" ON controllable_unit;
 CREATE POLICY "CU_ES001" ON controllable_unit
 FOR SELECT
 TO flex_energy_supplier
@@ -134,6 +145,7 @@ USING (
 
 -- RLS: CU-BRP001
 GRANT SELECT ON controllable_unit TO flex_balance_responsible_party;
+DROP POLICY IF EXISTS "CU_BRP001" ON controllable_unit;
 CREATE POLICY "CU_BRP001" ON controllable_unit
 FOR SELECT
 TO flex_balance_responsible_party
@@ -152,6 +164,7 @@ ENABLE ROW LEVEL SECURITY;
 
 -- RLS: CU-EU002
 GRANT SELECT ON controllable_unit_history TO flex_end_user;
+DROP POLICY IF EXISTS "CU_EU002" ON controllable_unit_history;
 CREATE POLICY "CU_EU002"
 ON controllable_unit_history
 FOR SELECT
@@ -170,6 +183,7 @@ USING (
 
 -- RLS: CU-ES002
 GRANT SELECT ON controllable_unit_history TO flex_energy_supplier;
+DROP POLICY IF EXISTS "CU_ES002" ON controllable_unit_history;
 CREATE POLICY "CU_ES002"
 ON controllable_unit_history
 FOR SELECT
@@ -188,6 +202,7 @@ USING (
 
 -- RLS: CU-BRP002
 GRANT SELECT ON controllable_unit_history TO flex_balance_responsible_party;
+DROP POLICY IF EXISTS "CU_BRP002" ON controllable_unit_history;
 CREATE POLICY "CU_BRP002"
 ON controllable_unit_history
 FOR SELECT
@@ -207,6 +222,7 @@ USING (
 -- RLS: CU-FISO002
 GRANT SELECT ON controllable_unit_history
 TO flex_flexibility_information_system_operator;
+DROP POLICY IF EXISTS "CU_FISO002" ON controllable_unit_history;
 CREATE POLICY "CU_FISO002"
 ON controllable_unit_history
 FOR SELECT
@@ -216,6 +232,7 @@ USING (true);
 -- RLS: CU-SO003
 GRANT SELECT ON controllable_unit_history
 TO flex_system_operator;
+DROP POLICY IF EXISTS "CU_SO003" ON controllable_unit_history;
 CREATE POLICY "CU_SO003"
 ON controllable_unit_history
 FOR SELECT
@@ -231,6 +248,7 @@ USING (
 -- RLS: CU-SP004
 GRANT SELECT ON controllable_unit_history
 TO flex_service_provider;
+DROP POLICY IF EXISTS "CU_SP004" ON controllable_unit_history;
 CREATE POLICY "CU_SP004"
 ON controllable_unit_history
 FOR SELECT

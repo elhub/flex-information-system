@@ -54,6 +54,6 @@ AS (
     GROUP BY cubrp.controllable_unit_id, cubrp.balance_responsible_party_id
 );
 
--- changeset flex:controllable-unit-as-of-grants runAlways:true endDelimiter:;
+-- changeset flex:controllable-unit-as-of-grants runOnChange:true endDelimiter:;
 GRANT SELECT ON TABLE controllable_unit_as_of
 TO flex_common;

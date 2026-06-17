@@ -42,7 +42,7 @@ class ControllableUnitRepositoryTest : FunSpec({
                         id = 0,
                         businessId = uniqueUuid(),
                         name = "CU Beta",
-                        startDate = Clock.System.todayIn(TimeZone.currentSystemDefault()),
+                        startDate = Clock.System.todayIn(TimeZone.of("Europe/Oslo")),
                         technicalResources = listOf(
                             TechnicalResource(id = 0, name = "TR One"),
                             TechnicalResource(id = 0, name = "TR Two"),
@@ -52,7 +52,7 @@ class ControllableUnitRepositoryTest : FunSpec({
             )
             seedControllableUnits(
                 apBusinessId = uniqueGsrn(),
-                cus = listOf(ControllableUnit(id = 0, businessId = uniqueUuid(), name = "Noise CU", startDate = Clock.System.todayIn(TimeZone.currentSystemDefault()), technicalResources = emptyList())),
+                cus = listOf(ControllableUnit(id = 0, businessId = uniqueUuid(), name = "Noise CU", startDate = Clock.System.todayIn(TimeZone.of("Europe/Oslo")), technicalResources = emptyList())),
             )
 
             // when
@@ -73,13 +73,13 @@ class ControllableUnitRepositoryTest : FunSpec({
             val expected = seedControllableUnits(
                 apBusinessId = apBusinessId,
                 cus = listOf(
-                    ControllableUnit(id = 0, businessId = uniqueUuid(), name = "CU One", startDate = Clock.System.todayIn(TimeZone.currentSystemDefault()), technicalResources = emptyList()),
-                    ControllableUnit(id = 0, businessId = uniqueUuid(), name = "CU Two", startDate = Clock.System.todayIn(TimeZone.currentSystemDefault()), technicalResources = emptyList()),
+                    ControllableUnit(id = 0, businessId = uniqueUuid(), name = "CU One", startDate = Clock.System.todayIn(TimeZone.of("Europe/Oslo")), technicalResources = emptyList()),
+                    ControllableUnit(id = 0, businessId = uniqueUuid(), name = "CU Two", startDate = Clock.System.todayIn(TimeZone.of("Europe/Oslo")), technicalResources = emptyList()),
                 ),
             )
             seedControllableUnits(
                 apBusinessId = uniqueGsrn(),
-                cus = listOf(ControllableUnit(id = 0, businessId = uniqueUuid(), name = "Noise CU", startDate = Clock.System.todayIn(TimeZone.currentSystemDefault()), technicalResources = emptyList())),
+                cus = listOf(ControllableUnit(id = 0, businessId = uniqueUuid(), name = "Noise CU", startDate = Clock.System.todayIn(TimeZone.of("Europe/Oslo")), technicalResources = emptyList())),
             )
 
             // when

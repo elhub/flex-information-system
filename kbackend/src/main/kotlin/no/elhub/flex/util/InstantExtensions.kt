@@ -2,16 +2,18 @@ package no.elhub.flex.util
 
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
+import kotlinx.datetime.toLocalDateTime
 import kotlinx.datetime.todayIn
 import java.sql.Timestamp
 import kotlin.time.Clock
 import kotlin.time.Instant
 import java.time.Instant as JavaInstant
 
-fun Instant.Companion.atLocalStartOfToday(): Instant {
-    val tz = TimeZone.currentSystemDefault()
-    return Clock.System.todayIn(tz).atStartOfDayIn(tz)
-}
+fun Instant.Companion.todayLocalMidnight(timezone: TimeZone): Instant =
+    Clock.System.todayIn(timezone).atStartOfDayIn(timezone)
+
+fun Instant.atLocalMidnight(timezone: TimeZone): Instant =
+    this.toLocalDateTime(timezone).date.atStartOfDayIn(timezone)
 
 fun Instant.toSqlTimestamp(): Timestamp =
     Timestamp.from(JavaInstant.ofEpochSecond(epochSeconds, nanosecondsOfSecond.toLong()))

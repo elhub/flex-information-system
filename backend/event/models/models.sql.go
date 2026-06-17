@@ -90,15 +90,42 @@ func (q *Queries) GetControllableUnitCreateNotificationRecipients(ctx context.Co
 	return items, nil
 }
 
-const getControllableUnitLookupNotificationRecipients = `-- name: GetControllableUnitLookupNotificationRecipients :many
+const getControllableUnitLookupNotificationRecipientsAP = `-- name: GetControllableUnitLookupNotificationRecipientsAP :many
+SELECT apeu.end_user_id
+FROM notification.accounting_point_end_user AS apeu
+WHERE apeu.accounting_point_id = $1
+    AND apeu.valid_time_range @> $2::timestamptz
+`
+
+func (q *Queries) GetControllableUnitLookupNotificationRecipientsAP(ctx context.Context, apID int, recordedAt pgtype.Timestamptz) ([]int, error) {
+	rows, err := q.db.Query(ctx, getControllableUnitLookupNotificationRecipientsAP, apID, recordedAt)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []int
+	for rows.Next() {
+		var end_user_id int
+		if err := rows.Scan(&end_user_id); err != nil {
+			return nil, err
+		}
+		items = append(items, end_user_id)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getControllableUnitLookupNotificationRecipientsCU = `-- name: GetControllableUnitLookupNotificationRecipientsCU :many
 SELECT cueu.end_user_id
 FROM notification.controllable_unit_end_user AS cueu
 WHERE cueu.controllable_unit_id = $1
     AND cueu.valid_time_range @> $2::timestamptz
 `
 
-func (q *Queries) GetControllableUnitLookupNotificationRecipients(ctx context.Context, resourceID int, recordedAt pgtype.Timestamptz) ([]int, error) {
-	rows, err := q.db.Query(ctx, getControllableUnitLookupNotificationRecipients, resourceID, recordedAt)
+func (q *Queries) GetControllableUnitLookupNotificationRecipientsCU(ctx context.Context, cuID int, recordedAt pgtype.Timestamptz) ([]int, error) {
+	rows, err := q.db.Query(ctx, getControllableUnitLookupNotificationRecipientsCU, cuID, recordedAt)
 	if err != nil {
 		return nil, err
 	}

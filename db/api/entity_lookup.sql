@@ -1,11 +1,12 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:api-entity-lookup endDelimiter:-- runAlways:true
+-- changeset flex:api-entity-lookup endDelimiter:-- runOnChange:true
 CREATE OR REPLACE FUNCTION api.entity_lookup(
     l_entity_business_id text,
     l_entity_name text,
-    l_entity_type text
+    l_entity_type text,
+    l_entity_business_id_type text
 )
 RETURNS TABLE (
     entity_id bigint,
@@ -27,7 +28,7 @@ BEGIN
         INSERT INTO flex.entity (business_id, business_id_type, name, type)
         VALUES (
           l_entity_business_id,
-          CASE WHEN l_entity_type = 'person' THEN 'pid' ELSE 'org' END,
+          l_entity_business_id_type,
           l_entity_name,
           l_entity_type
         )

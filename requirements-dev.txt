@@ -5,13 +5,16 @@ hypothesis
 Jinja2
 markdown-callouts
 mkdocs-material
-openapi-python-client==0.28.4
+openapi-python-client==0.29.0
 openpyxl
 pandas
 psycopg[binary,pool]
 pyjwt
 pytest==9.0.3
 python-dotenv
-schemathesis==4.20.0
+# ruff is a transitive dependency of openapi-python-client
+# (pinned to avoid blank lines being generated in some local setups)
+ruff==0.15.17
+schemathesis==4.21.5
 tabulate
 Flask

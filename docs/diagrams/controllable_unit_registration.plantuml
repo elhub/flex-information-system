@@ -8,10 +8,9 @@ skinparam note {
     BackgroundColor #FFFFBD
 }
 
-actor "End User (EU)" AS EU
+actor "End User (EU)" as EU
 actor "Service Provider (SP)" as SP
 participant "Flexibility Information System (FIS)" as FIS
-actor "System Operator (SO)" as SO
 
 EU <-> SP: Contractual agreement
 activate SP
@@ -22,8 +21,7 @@ SP -> FIS: Register new CU
 note left
     Minimum data required:
     - name
-    - accounting point
-    - max. available capacity
+    - flexible power
     - regulation direction
 end note
 
@@ -34,27 +32,22 @@ FIS --> SP: Return w/ unique ID
 FIS --> EU : Notify new CU
 note right
     FIS knows who the end user is
-    based on the accounting point 
+    based on the accounting point
     and data from Elhub.
 end note
-FIS --> SO: Notify new CU to\nConnecting System Operator
-deactivate FIS
-
-activate SO
-SO -> SO: Map accounting point \nto grid node
-SO -> FIS: Update CU with grid node
-deactivate SO
-activate FIS
-FIS --> SP: Notify CU updated
 deactivate FIS
 
 == Register Controllable Unit Service Provider Contract ==
 
 SP -> FIS: Register CU service provider contract
+note left
+    Data:
+    - contract reference
+    - start date
+end note
 activate FIS
 FIS --> SP: OK
 FIS --> EU : Notify CU SP contract
-FIS --> SO: Notify CU SP contract to\nConnecting System Operator
 deactivate FIS
 
 SP -> FIS: Get (possibly) updated CU data
@@ -69,8 +62,8 @@ note left
     SP must ensure that the CU
     data is up to date:
     - name
+    - flexible power
     - regulation direction
-    - durations
     - etc.
 end note
 activate FIS
@@ -93,7 +86,9 @@ loop Relevant technical resources
     note left
         Data:
         - name
-        - technical information
+        - technology
+        - rated power
+        - device information
     end note
     activate FIS
     FIS --> SP: OK
@@ -101,61 +96,9 @@ loop Relevant technical resources
     |||
 end
 
-== Controllable Unit Grid Validation ==
+== Activate Controllable Unit ==
 
 SP -> FIS: Update status to [active]
-deactivate SP
-activate FIS
-note right
-    Setting the status to active
-    indicates that the CU's data is
-    ready for validation by SO.
-end note
 FIS --> SP: OK
-
-loop All Impacted System Operators
-    |||
-    FIS --> SO: Notify update to ISO
-    note left
-        ISOs are notified, but does <b>not</b>
-        take part in grid validations.
-
-        ISOs are SOs whose observability area includes
-        the grid node where the CU is connected.
-    end note
-    |||
-end
-
-FIS --> SO: Notify update to CSO
-deactivate FIS
-activate SO
-
-note over SO
-    CSO initiates grid validation
-    without undue delay.
-    The validation status is set to
-    pending by FIS
-end note
-loop When status changes
-    SO -> FIS: Update FIS with status
-    note left
-        Relevant statuses:
-
-        - pending
-        - in progress
-        - incomplete_information
-        - validated
-        - validation_failed
-
-        The CSO should add notes and update
-        last validated time when relevant.
-    end note
-    activate FIS
-    FIS --> SO: OK
-    FIS --> SP: Notify SP grid validation status updated
-    deactivate FIS
-    |||
-end
-
 
 @enduml

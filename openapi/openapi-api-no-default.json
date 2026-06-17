@@ -438,10 +438,20 @@
                 "type": "object",
                 "properties": {
                     "business_id": {
-                        "description": "The business identifier of the entity. Person number or organisation number, according to `type`.",
+                        "description": "The business identifier of the entity. Email address or organisation number, according to `business_id_type`.",
                         "format": "text",
                         "type": "string",
-                        "example": "13370000000"
+                        "example": "john.smith@example.com"
+                    },
+                    "business_id_type": {
+                        "description": "The type of business identifier. For persons, `email`. For organisations, `org` (organisation number, 9 digits).",
+                        "format": "text",
+                        "type": "string",
+                        "enum": [
+                            "email",
+                            "org"
+                        ],
+                        "example": "email"
                     },
                     "name": {
                         "description": "Name of the entity.",
@@ -462,6 +472,7 @@
                 },
                 "required": [
                     "business_id",
+                    "business_id_type",
                     "name",
                     "type"
                 ]
@@ -630,6 +641,30 @@
                     }
                 },
                 "additionalProperties": false
+            },
+            "geojson_point": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "Point"
+                        ]
+                    },
+                    "coordinates": {
+                        "type": "array",
+                        "description": "[longitude, latitude] in decimal degrees (WGS84)",
+                        "items": {
+                            "type": "number"
+                        },
+                        "minItems": 2,
+                        "maxItems": 2
+                    }
+                },
+                "required": [
+                    "type",
+                    "coordinates"
+                ]
             },
             "empty_object": {
                 "description": "An empty object",
@@ -891,8 +926,7 @@
                 "format": "text",
                 "type": "string",
                 "enum": [
-                    "substation",
-                    "transformer"
+                    "substation"
                 ],
                 "example": "substation"
             },
@@ -4204,6 +4238,27 @@
                         "type": "integer",
                         "readOnly": true
                     },
+                    "location": {
+                        "description": "Geographic location of the accounting point (WGS84), as a GeoJSON point object.",
+                        "nullable": true,
+                        "readOnly": true,
+                        "example": {
+                            "type": "Point",
+                            "coordinates": [
+                                -2.0259056,
+                                48.6504504
+                            ]
+                        },
+                        "type": "object",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/geojson_point"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
                         "format": "date-time",
@@ -4726,7 +4781,7 @@
                         "description": "Business identifier (mRID) referencing the object in the common grid model.",
                         "format": "text",
                         "type": "string",
-                        "nullable": true,
+                        "nullable": false,
                         "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
                         "example": "53919b79-876f-4dad-8bde-b29368367604"
                     },
@@ -4776,7 +4831,7 @@
                         "description": "Business identifier (mRID) referencing the object in the common grid model.",
                         "format": "text",
                         "type": "string",
-                        "nullable": true,
+                        "nullable": false,
                         "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
                         "example": "53919b79-876f-4dad-8bde-b29368367604"
                     },
@@ -4810,6 +4865,7 @@
                 "required": [
                     "accounting_point_id",
                     "object_type",
+                    "business_id",
                     "name",
                     "nominal_voltage",
                     "quality"
@@ -4840,7 +4896,7 @@
                         "description": "Business identifier (mRID) referencing the object in the common grid model.",
                         "format": "text",
                         "type": "string",
-                        "nullable": true,
+                        "nullable": false,
                         "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
                         "example": "53919b79-876f-4dad-8bde-b29368367604"
                     },
@@ -4905,6 +4961,7 @@
                     "id",
                     "accounting_point_id",
                     "object_type",
+                    "business_id",
                     "name",
                     "nominal_voltage",
                     "source",
@@ -6434,10 +6491,16 @@
                     "data": {
                         "description": "The data of the notice.",
                         "type": "object",
-                        "$ref": "#/components/schemas/notice_data",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/notice_data"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
                         "readOnly": true,
-                        "nullable": true,
-                        "example": null
+                        "nullable": true
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
@@ -7687,7 +7750,7 @@
                         "description": "Business identifier (mRID) referencing the object in the common grid model.",
                         "format": "text",
                         "type": "string",
-                        "nullable": true,
+                        "nullable": false,
                         "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
                         "example": "53919b79-876f-4dad-8bde-b29368367604"
                     },
@@ -7760,6 +7823,7 @@
                     "id",
                     "accounting_point_id",
                     "object_type",
+                    "business_id",
                     "name",
                     "nominal_voltage",
                     "source",
@@ -34519,6 +34583,14 @@
                         "example": "eq.55",
                         "description": "Unique surrogate identifier.",
                         "name": "id"
+                    },
+                    {
+                        "in": "query",
+                        "name": "status",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somestatus"
                     },
                     {
                         "in": "query",

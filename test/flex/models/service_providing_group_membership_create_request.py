@@ -6,7 +6,6 @@ from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-from dateutil.parser import isoparse
 
 from ..types import UNSET, Unset
 
@@ -70,7 +69,7 @@ class ServiceProvidingGroupMembershipCreateRequest:
 
         service_providing_group_id = d.pop("service_providing_group_id")
 
-        valid_from = isoparse(d.pop("valid_from"))
+        valid_from = datetime.datetime.fromisoformat(d.pop("valid_from"))
 
         def _parse_valid_to(data: object) -> datetime.datetime | None | Unset:
             if data is None:
@@ -80,7 +79,7 @@ class ServiceProvidingGroupMembershipCreateRequest:
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                valid_to_type_0 = isoparse(data)
+                valid_to_type_0 = datetime.datetime.fromisoformat(data)
 
                 return valid_to_type_0
             except (TypeError, ValueError, AttributeError, KeyError):

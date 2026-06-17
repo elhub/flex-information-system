@@ -40,10 +40,12 @@ export const ServiceProviderProductApplicationList = () => {
     <PartyReferenceInput
       key="service_provider_id"
       source="service_provider_id"
+      optionText={(record) => record.name}
     />,
     <PartyReferenceInput
       key="system_operator_id"
       source="system_operator_id"
+      optionText={(record) => record.name}
     />,
     <EnumArrayInput
       key="status"
