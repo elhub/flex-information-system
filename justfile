@@ -389,16 +389,16 @@ openapi-postgrest:
 
     rm -rf out/*
 
-openapi: resources-to-diagram template-to-openapi openapi-to-md openapi-to-db openapi-to-embed-relations sqlc openapi-client-test openapi-client-frontend resources-to-intl-and-tooltips kbackend-models
+openapi: resources-to-diagram resources-to-openapi openapi-to-md openapi-to-db openapi-to-embed-relations sqlc openapi-client-test openapi-client-frontend resources-to-intl-and-tooltips openapi-to-kbackend
 
-kbackend-models:
+openapi-to-kbackend:
     kbackend/scripts/generate-openapi-models.sh
 
-template-to-openapi:
+resources-to-openapi:
     #!/usr/bin/env bash
     set -euo pipefail
 
-    .venv/bin/python3 local/scripts/template_to_openapi.py \
+    .venv/bin/python3 local/scripts/resources_to_openapi.py \
     --base-file openapi/openapi-api-base.yml \
     --servers-file openapi/servers.yml \
     --resources-file openapi/resources.yml > backend/data/static/openapi.json
