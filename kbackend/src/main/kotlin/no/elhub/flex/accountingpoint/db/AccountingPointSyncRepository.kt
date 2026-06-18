@@ -26,7 +26,7 @@ class AccountingPointSyncRepositoryImpl : AccountingPointSyncRepository {
                     SELECT accounting_point_id
                     FROM flex.accounting_point_sync
                     WHERE (last_synced_at IS NULL OR last_synced_at < NOW() - INTERVAL '23 hours')
-                      AND (last_sync_start IS NULL OR last_sync_start < NOW() - INTERVAL '5 minutes')
+                      AND (last_sync_start IS NULL OR last_sync_start < NOW() - INTERVAL '1 hour')
                     ORDER BY last_sync_start, last_synced_at
                     LIMIT :batchSize
                     FOR UPDATE SKIP LOCKED

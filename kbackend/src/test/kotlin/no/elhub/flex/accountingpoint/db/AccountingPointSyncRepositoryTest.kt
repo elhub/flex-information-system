@@ -55,10 +55,10 @@ class AccountingPointSyncRepositoryTest : FunSpec({
             result shouldContainExactlyInAnyOrder listOf(apId)
         }
 
-        test("selects rows where last_sync_start is older than 5 minutes (stale lock)") {
+        test("selects rows where last_sync_start is older than 1 hour (stale lock)") {
             // given — overdue for sync, and previous sync attempt timed out
             val apId = insertSyncTestAccountingPoint(uniqueGsrn())
-            setSyncTimestamps(apId, lastSyncedAt = Clock.System.now() - 24.hours, lastSyncStart = Clock.System.now() - 10.minutes)
+            setSyncTimestamps(apId, lastSyncedAt = Clock.System.now() - 24.hours, lastSyncStart = Clock.System.now() - 2.hours)
 
             // when
             val result = with(principal) { repo.getBatchForSync(10) }.shouldBeRight()
@@ -82,7 +82,7 @@ class AccountingPointSyncRepositoryTest : FunSpec({
         test("skips rows with recent last_sync_start (sync in progress)") {
             // given — overdue for sync, but a sync was recently started
             val apId = insertSyncTestAccountingPoint(uniqueGsrn())
-            setSyncTimestamps(apId, lastSyncedAt = Clock.System.now() - 24.hours, lastSyncStart = Clock.System.now() - 1.minutes)
+            setSyncTimestamps(apId, lastSyncedAt = Clock.System.now() - 24.hours, lastSyncStart = Clock.System.now() - 30.minutes)
 
             // when
             val result = with(principal) { repo.getBatchForSync(10) }.shouldBeRight()
