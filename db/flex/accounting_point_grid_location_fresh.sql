@@ -2,7 +2,7 @@
 -- Manually managed file
 
 -- changeset flex:accounting-point-grid-location-fresh-view runOnChange:true endDelimiter:--
--- fresh guesses for accounting point grid locations based on transformators'
+-- fresh guesses for accounting point grid locations based on transformers'
 -- and accounting points' geographical locations
 CREATE OR REPLACE VIEW accounting_point_grid_location_fresh AS (
     SELECT
@@ -52,7 +52,10 @@ BEGIN
     -- existing previous system guess has changed
     WHEN MATCHED
         AND apgl.source = 'system'
-        AND apgl.business_id IS DISTINCT FROM apglf.business_id
+        AND (
+            apgl.business_id IS DISTINCT FROM apglf.business_id
+            OR apgl.name IS DISTINCT FROM apglf.name
+        )
     THEN
         UPDATE SET
             object_type = apglf.object_type,

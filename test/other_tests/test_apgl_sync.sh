@@ -52,6 +52,29 @@ assert_eq "nearest active transformer chosen (Sol)" \
 	"$sol_business_id" "$actual_business_id"
 
 # ------------------------------------------------------------------------------
+# update in substation name triggers update in APGL
+
+echo ""
+
+# rename the Sol substation
+silent_query "
+    SELECT set_config('flex.current_identity', '0', true);
+    UPDATE flex.substation
+    SET name = 'Sol renamed'
+    WHERE business_id = '$sol_business_id';
+"
+
+# resync
+silent_query "SELECT flex.accounting_point_grid_location_sync();"
+
+actual_name=$(query "
+    SELECT name FROM flex.accounting_point_grid_location
+    WHERE accounting_point_id = $ap1;
+")
+assert_eq "update in substation name triggers update in APGL" \
+	"Sol renamed" "$actual_name"
+
+# ------------------------------------------------------------------------------
 # temporarily inactivate Sol, so the sync should skip it and choose the next
 # nearest active transformer instead (Rese)
 
@@ -140,7 +163,6 @@ assert_eq "user-set business_id not overwritten" \
 	"$banan_business_id" "$actual_business_id"
 
 # ------------------------------------------------------------------------------
-# 5: Existing system APGL is updated when the AP location moves
 # existing system APGL is updated when there is a new nearest transformer
 # (here we cause this by changing the AP's location)
 
