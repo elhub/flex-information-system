@@ -4,6 +4,7 @@ export const serverURL =
   window.env.VITE_FLEX_URL ?? import.meta.env.VITE_FLEX_URL;
 export const apiURL = serverURL + "/api/v1";
 export const authURL = serverURL + "/auth/v1";
+export const gridURL = serverURL + "/grid/v0";
 export const docsURL = "https://elhub.github.io/flex-information-system";
 export const userGuideURL: string | undefined =
   window.env.VITE_FLEX_USER_GUIDE_URL ??
