@@ -4,12 +4,15 @@ import io.kotest.assertions.arrow.core.shouldBeRight
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.maps.shouldBeEmpty
+import io.kotest.matchers.maps.shouldHaveSize
 import io.kotest.matchers.shouldBe
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
 import no.elhub.flex.PostgresTestContainer
 import no.elhub.flex.auth.FlexPrincipal
+import no.elhub.flex.model.domain.AccountingPointId
 import no.elhub.flex.model.domain.ControllableUnit
 import no.elhub.flex.model.domain.ControllableUnitStatus
 import no.elhub.flex.model.domain.RegulationDirection
@@ -153,6 +156,90 @@ class ControllableUnitRepositoryTest : FunSpec({
 
             // then
             result shouldContainExactlyInAnyOrder targetSeeded
+        }
+    }
+
+    context("getEarliestStartDateByAccountingPointIds") {
+
+        test("returns the earliest start date per accounting point") {
+            // given — two APs, each with two CUs with different start dates
+            val earlierDate = LocalDate(2024, 1, 1)
+            val laterDate = LocalDate(2025, 6, 1)
+            val seeded1 = seedControllableUnits(
+                apBusinessId = uniqueGsrn(),
+                cus = listOf(
+                    testControllableUnit(name = "CU A", startDate = earlierDate),
+                    testControllableUnit(name = "CU B", startDate = laterDate),
+                ),
+            )
+            val seeded2 = seedControllableUnits(
+                apBusinessId = uniqueGsrn(),
+                cus = listOf(
+                    testControllableUnit(name = "CU C", startDate = laterDate),
+                    testControllableUnit(name = "CU D", startDate = earlierDate),
+                ),
+            )
+            val apId1 = seeded1.first().accountingPointId
+            val apId2 = seeded2.first().accountingPointId
+
+            // when
+            val result = with(principal) {
+                repo.getEarliestStartDateByAccountingPointIds(listOf(apId1, apId2))
+            }.shouldBeRight()
+
+            // then
+            result shouldHaveSize 2
+            result[AccountingPointId(apId1)] shouldBe earlierDate
+            result[AccountingPointId(apId2)] shouldBe earlierDate
+        }
+
+        test("does not include APs not in the input list") {
+            // given — two APs seeded, only one queried
+            val seeded1 = seedControllableUnits(
+                apBusinessId = uniqueGsrn(),
+                cus = listOf(testControllableUnit(name = "CU One")),
+            )
+            seedControllableUnits(
+                apBusinessId = uniqueGsrn(),
+                cus = listOf(testControllableUnit(name = "Noise CU")),
+            )
+            val apId1 = seeded1.first().accountingPointId
+
+            // when
+            val result = with(principal) {
+                repo.getEarliestStartDateByAccountingPointIds(listOf(apId1))
+            }.shouldBeRight()
+
+            // then
+            result shouldHaveSize 1
+            result.keys shouldContainExactlyInAnyOrder listOf(AccountingPointId(apId1))
+        }
+
+        test("omits APs where all start_dates are NULL") {
+            // given
+            val seeded = seedControllableUnits(
+                apBusinessId = uniqueGsrn(),
+                cus = listOf(testControllableUnit(name = "CU No Date", startDate = null)),
+            )
+            val apId = seeded.first().accountingPointId
+
+            // when
+            val result = with(principal) {
+                repo.getEarliestStartDateByAccountingPointIds(listOf(apId))
+            }.shouldBeRight()
+
+            // then
+            result.shouldBeEmpty()
+        }
+
+        test("returns empty map for empty input") {
+            // when
+            val result = with(principal) {
+                repo.getEarliestStartDateByAccountingPointIds(emptyList())
+            }.shouldBeRight()
+
+            // then
+            result.shouldBeEmpty()
         }
     }
 })

@@ -10,6 +10,7 @@ import no.elhub.flex.accountingpoint.db.AccountingPointSyncRepository
 import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.controllableunit.db.ControllableUnitRepository
 import no.elhub.flex.metrics.FlexMetrics
+import no.elhub.flex.model.domain.AccountingPointId
 import no.elhub.flex.util.asLocalMidnightInstant
 import no.elhub.flex.util.todayLocalMidnight
 import org.koin.core.annotation.Property
@@ -44,11 +45,15 @@ class AccountingPointSyncScheduler(
 
                 val accountingPoints = accountingPointService.getByIds(accountingPointIdBatch).bind()
 
+                val earliestStartDates = controllableUnitRepository
+                    .getEarliestStartDateByAccountingPointIds(accountingPoints.map { it.id })
+                    .bind()
+
                 accountingPoints.forEach { accountingPoint ->
                     either {
                         logger.debug { "Syncing accounting point with id ${accountingPoint.id}.." }
-                        val controllableUnits = controllableUnitRepository.getByAccountingPointId(accountingPoint.id).bind()
-                        val validFrom = controllableUnits.mapNotNull { it.startDate }.minByOrNull { it }?.asLocalMidnightInstant(timezone)
+                        val validFrom = earliestStartDates[AccountingPointId(accountingPoint.id)]
+                            ?.asLocalMidnightInstant(timezone)
                             ?: Instant.todayLocalMidnight(timezone)
                         accountingPointService.synchronizeAccountingPoint(accountingPoint.businessId, validFrom).bind()
                         logger.debug { "Completed ${accountingPoint.id}" }
