@@ -323,7 +323,7 @@ private fun insertControllableUnit(conn: Connection, cu: ControllableUnit, apId:
     ).use { stmt ->
         stmt.setString(1, cu.businessId)
         stmt.setString(2, cu.name)
-        stmt.setString(3, cu.startDate.toString())
+        stmt.setObject(3, cu.startDate?.toString(), java.sql.Types.DATE)
         stmt.setString(4, cu.regulationDirection.direction)
         stmt.setBigDecimal(5, cu.maximumActivePower)
         stmt.setLong(6, apId)

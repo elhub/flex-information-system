@@ -18,6 +18,7 @@ import no.elhub.flex.model.domain.ControllableUnitStatus
 import no.elhub.flex.model.domain.RegulationDirection
 import no.elhub.flex.model.domain.db.DatabaseError
 import no.elhub.flex.model.domain.db.RepositoryError
+import no.elhub.flex.util.createBigintArray
 import org.koin.core.annotation.Single
 import java.sql.ResultSet
 
@@ -135,11 +136,11 @@ class ControllableUnitRepositoryImpl : ControllableUnitRepository {
                 """
                 SELECT accounting_point_id, MIN(start_date) AS earliest_start_date
                 FROM flex.controllable_unit
-                WHERE accounting_point_id IN (:accountingPointIds)
+                WHERE accounting_point_id = ANY(:accountingPointIds)
                   AND start_date IS NOT NULL
                 GROUP BY accounting_point_id
                 """.trimIndent(),
-                mapOf("accountingPointIds" to accountingPointIds)
+                mapOf("accountingPointIds" to conn.createBigintArray(accountingPointIds))
             ).query { rs ->
                 AccountingPointId(rs.getLong("accounting_point_id")) to
                     rs.getDate("earliest_start_date").toLocalDate().toKotlinLocalDate()
