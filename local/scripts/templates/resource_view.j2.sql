@@ -1,19 +1,22 @@
 --liquibase formatted sql
 -- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
+-- noqa: disable=RF04
+-- RF04 - Keywords should not be used as identifiers.
 
 {%- set all_fields = data.properties.keys() | sort %}
 {%- set fields = all_fields | reject("in", ["id", "valid_to", "valid_from"]) | list %}
 {%- set has_valid_time = "valid_from" in all_fields %}
 {%- set has_record_time = data.get('audit') %}
+{%- set schema = data.get('module') %}
 
--- changeset flex:api-{{ resource | replace("_", "-") }}-create endDelimiter:-- runOnChange:true
+-- changeset flex:{{ schema }}-{{ resource | replace("_", "-") }}-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW
-api.{{ resource }}
+{{ schema }}.{{ resource }}
 WITH (security_invoker = true) AS (
     SELECT
         id,
 {%- for field in fields %}
-        {{ field }}{{ "," if not loop.last else "" }}
+        {{ data.properties[field]["x-sql"] + " AS " if "x-sql" in data.properties[field] }}{{ field }}{{ "," if not loop.last else "" }}
 {%- endfor %}{% if has_record_time %},
         recorded_by,
         lower(record_time_range) AS recorded_at{% endif %}{% if has_valid_time %},
@@ -24,9 +27,9 @@ WITH (security_invoker = true) AS (
 );
 
 {%- if data.get('history') %}
--- changeset flex:api-{{ resource | replace("_", "-") }}-history-create endDelimiter:-- runOnChange:true
+-- changeset flex:{{ schema }}-{{ resource | replace("_", "-") }}-history-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW
-api.{{ resource }}_history
+{{ schema }}.{{ resource }}_history
 WITH (
     security_invoker = true
 ) AS (
@@ -34,7 +37,7 @@ WITH (
         id,
         id AS {{ resource }}_id,
 {%- for field in fields %}
-        {{ field }}{{ "," if not loop.last else "" }}
+        {{ data.properties[field]["x-sql"] + " AS " if "x-sql" in data.properties[field] }}{{ field }}{{ "," if not loop.last else "" }}
 {%- endfor %}{% if has_record_time %},
         recorded_by,
         lower(record_time_range) AS recorded_at,
@@ -49,7 +52,7 @@ WITH (
         history_id AS id,
         id AS {{ resource }}_id,
 {%- for field in fields %}
-        {{ field }}{{ "," if not loop.last else "" }}
+        {{ data.properties[field]["x-sql"] + " AS " if "x-sql" in data.properties[field] }}{{ field }}{{ "," if not loop.last else "" }}
 {%- endfor %}{% if has_record_time %},
         recorded_by,
         lower(record_time_range) AS recorded_at,

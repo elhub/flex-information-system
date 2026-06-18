@@ -389,16 +389,22 @@ openapi-postgrest:
 
     rm -rf out/*
 
-openapi: resources-to-diagram template-to-openapi openapi-to-md openapi-to-db openapi-to-embed-relations sqlc openapi-client-test openapi-client-frontend resources-to-intl-and-tooltips kbackend-models
+openapi: resources-validate resources-to-diagram resources-to-openapi openapi-to-md openapi-to-db openapi-to-embed-relations sqlc openapi-client-test openapi-client-frontend resources-to-intl-and-tooltips openapi-to-kbackend
 
-kbackend-models:
+resources-validate:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    # uses https://github.com/sourcemeta/jsonschema
+    jsonschema validate ./openapi/schema.yml ./openapi/resources.yml
+
+openapi-to-kbackend:
     kbackend/scripts/generate-openapi-models.sh
 
-template-to-openapi:
+resources-to-openapi:
     #!/usr/bin/env bash
     set -euo pipefail
 
-    .venv/bin/python3 local/scripts/template_to_openapi.py \
+    .venv/bin/python3 local/scripts/resources_to_openapi.py \
     --base-file openapi/openapi-api-base.yml \
     --servers-file openapi/servers.yml \
     --resources-file openapi/resources.yml > backend/data/static/openapi.json
@@ -613,17 +619,27 @@ permissions: permissions-to-frontend permissions-to-md permissions-to-db
 
 permissions-to-db:
     echo "-- liquibase formatted sql\n-- AUTO-GENERATED FILE (just permissions-to-db)\n" \
-        | tee db/api/grants/field_level_authorization.sql > db/flex/grants/field_level_authorization.sql
+        | tee db/api/grants/field_level_authorization.sql \
+        | tee db/grid/grants/field_level_authorization.sql \
+        > db/flex/grants/field_level_authorization.sql
 
     echo "-- changeset flex:api-field-level-authorization runOnChange:true" \
         >> db/api/grants/field_level_authorization.sql
+    echo "-- changeset flex:grid-field-level-authorization runOnChange:true" \
+        >> db/grid/grants/field_level_authorization.sql
     echo "-- changeset flex:flex-field-level-authorization runOnChange:true" \
         >> db/flex/grants/field_level_authorization.sql
 
     cat local/input/permissions.csv \
-        | .venv/bin/python3 local/scripts/permissions_to_grant.py \
+        | .venv/bin/python3 local/scripts/permissions_to_grant.py api \
         >> db/api/grants/field_level_authorization.sql \
         2>> db/flex/grants/field_level_authorization.sql
+
+    cat local/input/permissions-grid.csv \
+        | .venv/bin/python3 local/scripts/permissions_to_grant.py grid \
+        >> db/grid/grants/field_level_authorization.sql \
+        2>> db/flex/grants/field_level_authorization.sql
+
 
 permissions-to-md:
     #!/usr/bin/env bash

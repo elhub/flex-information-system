@@ -401,7 +401,8 @@ def generate_openapi_document(base_file, resources_file, servers_file):
     base = yaml.safe_load(base_file)
     servers = yaml.safe_load(servers_file)
 
-    resources = resources["resources"]
+    # TODO support multiple modules
+    resources = [r for r in resources["resources"] if r.get("module") == "api"]
 
     # generate and add comment resources
 

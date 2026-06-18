@@ -181,7 +181,7 @@ def generate_field_translations(resources):
         if len(resource_translations) > 0:
             translations[resource["id"]] = resource_translations
             tooltips[resource["id"]] = resource_tooltips
-        if "history" in resource:
+        if resource.get("history"):
             resource_translations = deepcopy(resource_translations)
             resource_translations[f"{resource['id']}_id"] = resource["x-intl"]
             resource_tooltips = deepcopy(resource_tooltips)
@@ -326,7 +326,9 @@ if __name__ == "__main__":
 
     with open(args.resources) as f:
         resources = yaml.safe_load(f)
-    resources = resources["resources"]
+
+    # TODO support other modules than api
+    resources = [r for r in resources["resources"] if r.get("module") == "api"]
 
     base_schemas = base.get("components", {}).get("schemas", {})
 

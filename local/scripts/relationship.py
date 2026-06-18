@@ -80,6 +80,9 @@ def collect(resources) -> list[Relationship]:
     rels = []
     for resource in resources:
         child = resource["id"]
+        # TODO support other modules than api
+        if resource.get("module") != "api":
+            continue
         props = resource.get("properties", {})
         for field, attr in props.items():
             if not field.endswith("_id"):

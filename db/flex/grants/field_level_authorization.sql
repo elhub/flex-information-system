@@ -2746,3 +2746,27 @@ TO flex_service_provider;
 GRANT SELECT ON TABLE
 flex.notice
 TO flex_third_party;
+
+GRANT SELECT ON TABLE
+flex.substation_cluster
+TO flex_flexibility_information_system_operator;
+
+GRANT SELECT ON TABLE
+flex.substation_cluster
+TO flex_system_operator;
+
+GRANT SELECT ON TABLE
+flex.substation
+TO flex_flexibility_information_system_operator;
+
+GRANT SELECT ON TABLE
+flex.substation
+TO flex_system_operator;
+
+GRANT SELECT ON TABLE
+flex.line
+TO flex_flexibility_information_system_operator;
+
+GRANT SELECT ON TABLE
+flex.line
+TO flex_system_operator;

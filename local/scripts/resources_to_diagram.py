@@ -19,7 +19,9 @@ def edge(from_id, to_id, label):
 
 if __name__ == "__main__":
     resources = yaml.safe_load(sys.stdin)
-    resources = resources["resources"]
+
+    # TODO support other modules than api
+    resources = [r for r in resources["resources"] if r.get("module") == "api"]
 
     comment_resources = []
     shift = 0

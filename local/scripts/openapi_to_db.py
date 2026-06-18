@@ -104,22 +104,23 @@ if __name__ == "__main__":
 
         for resource in resources:
             # generate fake table for sqlc in the backend
-            print(
-                fake_table_create_statement(
-                    resource["id"],
-                    resource["properties"],
-                    resource.get("audit"),
-                ),
-                file=backend_schema_f,
-            )
-            if "history" in resource:
+            if resource.get("module") == "api":
                 print(
-                    fake_history_table_create_statement(
+                    fake_table_create_statement(
                         resource["id"],
                         resource["properties"],
+                        resource.get("audit"),
                     ),
                     file=backend_schema_f,
                 )
+                if resource.get("history"):
+                    print(
+                        fake_history_table_create_statement(
+                            resource["id"],
+                            resource["properties"],
+                        ),
+                        file=backend_schema_f,
+                    )
 
             # generate sql for history table and audit triggers
             if resource.get("audit"):
@@ -132,9 +133,13 @@ if __name__ == "__main__":
             # generate views and history views
             if resource.get("generate_views", False):
                 j2.template(
-                    {"resource": resource["id"], "data": resource},
-                    "resource_api.j2.sql",
-                    f"{DB_DIR}/api/{resource['id']}.sql",
+                    {
+                        "resource": resource["id"],
+                        "module": resource["module"],
+                        "data": resource,
+                    },
+                    "resource_view.j2.sql",
+                    f"{DB_DIR}/{resource['module']}/{resource['id']}.sql",
                 )
 
             # generate files for the comment resource
@@ -182,9 +187,13 @@ if __name__ == "__main__":
                 )
 
                 j2.template(
-                    {"resource": resource["id"], "data": resource},
-                    "resource_api.j2.sql",
-                    f"{DB_DIR}/api/{resource['id']}.sql",
+                    {
+                        "resource": resource["id"],
+                        "module": resource["module"],
+                        "data": resource,
+                    },
+                    "resource_view.j2.sql",
+                    f"{DB_DIR}/{resource['module']}/{resource['id']}.sql",
                 )
 
         # generate embedding functions for all FK relationships with cardinality

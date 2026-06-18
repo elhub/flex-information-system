@@ -1,0 +1,310 @@
+---
+$schema: https://json-schema.org/draft/2020-12/schema
+title: Resources
+description: The schema for the FIS resource definitions file (openapi/resources.yml).
+type: object
+required:
+  - resources
+additionalProperties: false
+properties:
+  resources:
+    description: List of all resource definitions in the system.
+    type: array
+    minItems: 1
+    items:
+      $ref: "#/$defs/resource"
+
+$defs:
+  intl:
+    description: >-
+      Internationalisation map with translations in English (en),
+      Norwegian Bokmål (nb) and Norwegian Nynorsk (nn).
+    type: object
+    required: [en, nb, nn]
+    additionalProperties: false
+    properties:
+      en:
+        type: string
+        minLength: 1
+      nb:
+        type: string
+        minLength: 1
+      nn:
+        type: string
+        minLength: 1
+
+  foreign_key:
+    description: Reference to a field on another resource.
+    type: object
+    required: [resource, field, cardinality]
+    additionalProperties: false
+    properties:
+      resource:
+        type: string
+        description: The `id` of the referenced resource.
+      field:
+        type: string
+        description: Field name on the referenced resource.
+      cardinality:
+        type: string
+        enum: [one-to-one, many-to-one, many-to-many]
+        description: Multiplicity of the relationship.
+
+  enum_value:
+    description: A single option in a string enum field.
+    type: object
+    required: [id, x-intl]
+    additionalProperties: false
+    properties:
+      id:
+        type: string
+        description: The raw string value stored in the database / API.
+      x-intl:
+        $ref: "#/$defs/intl"
+
+  schema_fragment:
+    description: >-
+      A permissive JSON Schema fragment used for nested or pass-through
+      schema constructs (e.g. items schemas, nested object properties,
+      oneOf/allOf entries). No structural validation is enforced here
+      because these fragments are forwarded verbatim into the generated
+      OpenAPI specification.
+    type: object
+
+  property:
+    description: >-
+      Definition of a single field on a resource, including its type,
+      validation constraints, internationalisation, and code-generation hints.
+    type: object
+    required: [description, x-intl]
+    properties:
+      description:
+        type: string
+        description: Human-readable description of the field.
+
+      format:
+        type: string
+        enum: [bigint, text, boolean, date, date-time, decimal]
+        description: >-
+          Internal storage format used by code-generation scripts.
+          Not a standard JSON Schema format — values like `bigint`, `text`,
+          and `decimal` are FIS-specific.
+
+      type:
+        type: string
+        enum: [integer, string, number, boolean, object, array]
+        description: JSON Schema primitive type of the field.
+
+      readOnly:
+        type: boolean
+        description: >-
+          If true, the field is excluded from Create and Update request schemas
+          but is present in response schemas.
+
+      nullable:
+        type: boolean
+        description: Whether the field value may be null.
+
+      required:
+        type: boolean
+        description: >-
+          Non-standard per-property flag. When false the field is optional on
+          creation even though it has no default value.
+
+      x-filter:
+        type: boolean
+        description: Whether the field is exposed as a filter parameter in list endpoints.
+
+      x-no-update:
+        type: boolean
+        description: >-
+          If true, the field may be set on creation but cannot be changed
+          afterwards via update operations.
+
+      x-details:
+        type: string
+        description: Extra prose included in the generated Markdown field table.
+
+      x-intl:
+        $ref: "#/$defs/intl"
+
+      x-foreign-key:
+        $ref: "#/$defs/foreign_key"
+
+      # Annotation-only keywords — any value is valid.
+      example: true
+      default: true
+
+      enum:
+        type: array
+        minItems: 1
+        items:
+          $ref: "#/$defs/enum_value"
+        description: >-
+          Allowed values for the field. Uses a custom object format with
+          `id` (raw value) and `x-intl` (translations) rather than the
+          standard JSON Schema array-of-scalars.
+
+      pattern:
+        type: string
+        description: Regular expression that the field value must match.
+
+      maxLength:
+        type: integer
+        minimum: 0
+        description: Maximum number of characters for string fields.
+
+      minLength:
+        type: integer
+        minimum: 0
+        description: Minimum number of characters for string fields.
+
+      minimum:
+        type: number
+        description: Minimum inclusive numeric value.
+
+      maximum:
+        type: number
+        description: Maximum inclusive numeric value.
+
+      multipleOf:
+        type: number
+        exclusiveMinimum: 0
+        description: Numeric value must be a multiple of this number.
+
+      minItems:
+        type: integer
+        minimum: 0
+        description: Minimum number of items allowed in an array field.
+
+      # Pass-through JSON Schema keywords forwarded verbatim to OpenAPI.
+      # Their internal structure is not validated here.
+      items:
+        $ref: "#/$defs/schema_fragment"
+      properties:
+        type: object
+        additionalProperties:
+          $ref: "#/$defs/schema_fragment"
+      additionalProperties:
+        description: Pass-through JSON Schema keyword for object fields.
+      propertyNames:
+        $ref: "#/$defs/schema_fragment"
+      oneOf:
+        type: array
+        items:
+          $ref: "#/$defs/schema_fragment"
+      allOf:
+        type: array
+        items:
+          $ref: "#/$defs/schema_fragment"
+      $ref:
+        type: string
+        description: Reference to an OpenAPI component schema.
+
+  resource:
+    description: >-
+      Complete definition of a resource in the Flexibility Information System,
+      covering its identity, CRUD operations, audit, view-generation flags,
+      and field definitions.
+    type: object
+    required:
+      - acronym
+      - audit
+      - comments
+      - description
+      - generate_views
+      - history
+      - history_rls
+      - id
+      - module
+      - name
+      - operations
+      - properties
+      - summary
+      - x-intl
+    additionalProperties: false
+    properties:
+      id:
+        type: string
+        pattern: "^[a-z][a-z_]*$"
+        description: >-
+          Snake_case unique identifier for the resource. Used as the
+          table name, URL path segment, and key throughout generated code.
+
+      acronym:
+        type: string
+        pattern: "^[A-Z]+$"
+        description: Short uppercase acronym used in policy names and comments.
+
+      name:
+        type: string
+        description: >-
+          Human-readable display name.
+
+      summary:
+        type: string
+        description: One-line summary used as the OpenAPI resource description.
+
+      description:
+        type: string
+        description: Longer description of the resource and its purpose.
+
+      x-intl:
+        $ref: "#/$defs/intl"
+
+      operations:
+        type: array
+        minItems: 1
+        uniqueItems: true
+        items:
+          type: string
+          enum: [list, read, create, update, delete]
+        description: CRUD operations for which endpoints are generated.
+
+      history:
+        type: array
+        uniqueItems: true
+        items:
+          type: string
+          enum: [list, read]
+        description: >-
+          Operations to generate for the temporal history sub-resource.
+
+      history_rls:
+        type: boolean
+        description: >-
+          Whether to auto-generate Row-Level Security policies for the
+          history table. Set to false for resources with hand-written
+          history RLS.
+
+      audit:
+        type: boolean
+        description: >-
+          When true, the system automatically records `recorded_at` and
+          `recorded_by` on every change and exposes them in the API.
+
+      generate_views:
+        type: boolean
+        description: >-
+          When false, skips auto-generation of the `api` schema views.
+          Use for resources with hand-written views.
+
+      comments:
+        type: boolean
+        description: >-
+          When true, a comment sub-resource is automatically added to
+          this resource.
+
+      module:
+        type: string
+        enum: [api, grid]
+        description: >-
+          The module this resource belongs to. Used to group resources
+          and control which parts of the system they are generated for.
+
+      properties:
+        type: object
+        minProperties: 1
+        additionalProperties:
+          $ref: "#/$defs/property"
+        description: Field definitions for the resource (API-level, `api` schema).
