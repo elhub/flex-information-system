@@ -89,8 +89,8 @@ func (grid *grid) substationHandler(w http.ResponseWriter, req *http.Request) {
 		req.URL.RawQuery = query.Encode()
 
 		// set a limit to max 10 if not set, so we do not return the whole dataset
-		limit, err := strconv.Atoi(query.Get("limit"))
-		if err != nil || limit > 10 {
+		_, err := strconv.Atoi(query.Get("limit"))
+		if err != nil {
 			query.Set("limit", "10")
 		}
 	}

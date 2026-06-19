@@ -8,7 +8,7 @@ CREATE OR REPLACE FUNCTION grid.substation_distance(
     latitude double precision
 )
 RETURNS SETOF grid.substation
-SECURITY DEFINER
+SECURITY INVOKER
 IMMUTABLE
 LANGUAGE sql
 AS $$
