@@ -147,6 +147,18 @@ interface AccountingPointRepository {
      */
     context(principal: FlexPrincipal)
     suspend fun markSyncComplete(accountingPointId: Long): Either<RepositoryError, Unit>
+
+    /**
+     * Retrieves accounting points by their internal IDs.
+     *
+     * IDs with no matching row are silently omitted from the result.
+     *
+     * Returns [DatabaseError] if the query fails.
+     *
+     * @param accountingPointIds the internal IDs of the accounting points to retrieve.
+     */
+    context(principal: FlexPrincipal)
+    suspend fun getByIds(accountingPointIds: List<Long>): Either<RepositoryError, List<AccountingPoint>>
 }
 
 private val logger = KotlinLogging.logger {}
@@ -453,6 +465,26 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
             }.mapLeft { e ->
                 logger.error { "markSyncComplete failed: ${e.message}" }
                 DatabaseError("No sync row found for accounting point $accountingPointId")
+            }
+        }
+
+    context(principal: FlexPrincipal)
+    override suspend fun getByIds(accountingPointIds: List<Long>): Either<RepositoryError, List<AccountingPoint>> =
+        flexTransaction { conn ->
+            Either.catch {
+                val ids = conn.createBigintArray(accountingPointIds)
+                conn.prepareNamed(
+                    "SELECT id, business_id FROM flex.accounting_point WHERE id = ANY(:accountingPointIds)",
+                    mapOf("accountingPointIds" to ids)
+                ).query { rs ->
+                    AccountingPoint(
+                        id = rs.getLong("id"),
+                        businessId = rs.getString("business_id")
+                    )
+                }
+            }.mapLeft { e ->
+                logger.error { "getByIds failed: ${e.message}" }
+                DatabaseError("Failed to read accounting points by ids")
             }
         }
 }

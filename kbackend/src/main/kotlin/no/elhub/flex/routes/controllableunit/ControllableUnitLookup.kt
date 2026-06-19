@@ -10,7 +10,7 @@ import no.elhub.flex.auth.AccessTokenKey
 import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.controllableunit.db.ControllableUnitRepository
 import no.elhub.flex.event.db.EventRepository
-import no.elhub.flex.model.domain.ControllableUnit
+import no.elhub.flex.model.domain.ControllableUnitForLookup
 import no.elhub.flex.model.domain.GSRN
 import no.elhub.flex.model.dto.generated.models.ControllableUnitLookupRequest
 import no.elhub.flex.model.dto.generated.models.ControllableUnitLookupResponse
@@ -100,7 +100,7 @@ class ControllableUnitLookup(
     private suspend fun fetchControllableUnits(
         controllableUnitBusinessId: String,
         accountingPointBusinessId: String,
-    ): Either<AppError, List<ControllableUnit>> =
+    ): Either<AppError, List<ControllableUnitForLookup>> =
         repo.lookupControllableUnits(controllableUnitBusinessId, accountingPointBusinessId)
             .mapLeft { e ->
                 logger.error { "Failed to lookup controllable units: ${e.message}" }

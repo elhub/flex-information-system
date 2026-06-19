@@ -28,6 +28,8 @@ dependencies {
     implementation(libs.bundles.logging)
     implementation(libs.bundles.monitoring)
     implementation(libs.elhub.jsonapi)
+    // Scheduling
+    implementation(libs.krontab)
     // Unit Testing
     testImplementation(testFixtures(libs.elhub.jsonapi))
     testImplementation(libs.database.postgresql)

@@ -415,4 +415,36 @@ class AccountingPointServiceTest : FunSpec({
             }
         }
     }
+
+    context("getByIds") {
+
+        val ap1 = no.elhub.flex.model.domain.AccountingPoint(id = 1L, businessId = "133700000000000001")
+        val ap2 = no.elhub.flex.model.domain.AccountingPoint(id = 2L, businessId = "133700000000000002")
+
+        test("returns accounting points from repository on success") {
+            // given
+            with(internalPrincipal) {
+                coEvery { accountingPointRepository.getByIds(listOf(ap1.id, ap2.id)) } returns listOf(ap1, ap2).right()
+            }
+
+            // when
+            val result = with(internalPrincipal) { service.getByIds(listOf(ap1.id, ap2.id)) }
+
+            // then
+            result.shouldBeRight() shouldBe listOf(ap1, ap2)
+        }
+
+        test("maps repository error to InternalServerError") {
+            // given
+            with(internalPrincipal) {
+                coEvery { accountingPointRepository.getByIds(any()) } returns DatabaseError("db failure").left()
+            }
+
+            // when
+            val result = with(internalPrincipal) { service.getByIds(listOf(ap1.id)) }
+
+            // then
+            result.shouldBeLeft().shouldBeInstanceOf<InternalServerError>()
+        }
+    }
 })

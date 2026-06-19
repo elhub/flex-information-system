@@ -4,13 +4,15 @@ import arrow.core.left
 import arrow.core.right
 import io.ktor.server.application.install
 import io.ktor.server.testing.TestApplication
+import io.micrometer.core.instrument.MeterRegistry
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import io.mockk.coEvery
 import io.mockk.mockk
 import no.elhub.flex.accountingpoint.AccountingPointService
 import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.config.Tracing
+import no.elhub.flex.config.configureHealth
 import no.elhub.flex.config.configureLogging
-import no.elhub.flex.config.configureMonitoring
 import no.elhub.flex.config.configureRouting
 import no.elhub.flex.config.configureSerialization
 import no.elhub.flex.controllableunit.db.ControllableUnitRepository
@@ -44,11 +46,11 @@ fun defaultTestApplication(): TestApplication {
         application {
             install(Tracing.plugin)
             configureLogging()
-            configureMonitoring()
             configureSerialization()
             install(Koin) {
                 modules(
                     module {
+                        single<MeterRegistry> { SimpleMeterRegistry() }
                         single<AccountingPointService> { mockAccountingPointService }
                         single<ControllableUnitRepository> { mockRepo }
                         single<EventRepository> { mockEventRepo }
@@ -57,6 +59,7 @@ fun defaultTestApplication(): TestApplication {
                 )
             }
             configureRouting()
+            configureHealth()
         }
     }
 }
