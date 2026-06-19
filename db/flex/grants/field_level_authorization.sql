@@ -2770,11 +2770,3 @@ TO flex_flexibility_information_system_operator;
 GRANT SELECT ON TABLE
 flex.line
 TO flex_system_operator;
-
-GRANT SELECT ON TABLE
-flex.accounting_point_near_transformer
-TO flex_flexibility_information_system_operator;
-
-GRANT SELECT ON TABLE
-flex.accounting_point_near_transformer
-TO flex_system_operator;

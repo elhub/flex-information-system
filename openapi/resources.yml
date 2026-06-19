@@ -3219,53 +3219,6 @@ resources:
           nb: Status
           nn: Status
 
-  - id: accounting_point_near_transformer
-    acronym: APNT
-    name: Accounting Point Near Transformer
-    summary: Accounting Point Near Transformer
-    description: >-
-      Transformers within 10 km of each accounting point's geographical
-      location.
-    x-intl:
-      en: Accounting Point Near Transformer
-      nb: Målepunkt nær transformator
-      nn: Målepunkt nær transformator
-    operations:
-      - list
-    history: []
-    history_rls: false
-    audit: false
-    generate_views: false
-    comments: false
-    module: grid
-    properties:
-      accounting_point_id:
-        description: The accounting point identifier.
-        format: bigint
-        type: integer
-        readOnly: true
-        x-filter: true
-        example: 1
-        x-intl:
-          en: Accounting point
-          nb: Målepunkt
-          nn: Målepunkt
-      substation_id:
-        description: The nearby substation identifier.
-        format: bigint
-        type: integer
-        readOnly: true
-        x-filter: true
-        x-foreign-key:
-          resource: substation
-          field: id
-          cardinality: many-to-one
-        example: 1
-        x-intl:
-          en: Substation
-          nb: Stasjon
-          nn: Stasjon
-
   - id: accounting_point_grid_location
     acronym: APGL
     name: Accounting Point Grid Location

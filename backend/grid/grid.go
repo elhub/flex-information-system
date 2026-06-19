@@ -43,6 +43,9 @@ func NewAPIHandler(postgRESTUpstream string) (http.Handler, error) {
 	postgRESTHandler := auth.CheckScopeForRequest(
 		"data", http.HandlerFunc(grid.postgRESTHandler),
 	)
+	substationHandler := auth.CheckScopeForRequest(
+		"data", http.HandlerFunc(grid.substationHandler),
+	)
 
 	mux.Handle("GET /line", listPostgRESTHandler)
 	mux.Handle("GET /line/{id}", postgRESTHandler)
@@ -50,7 +53,7 @@ func NewAPIHandler(postgRESTUpstream string) (http.Handler, error) {
 	mux.Handle("GET /line_history", listPostgRESTHandler)
 	mux.Handle("GET /line_history/{id}", postgRESTHandler)
 
-	mux.Handle("GET /substation", listPostgRESTHandler)
+	mux.Handle("GET /substation", substationHandler)
 	mux.Handle("GET /substation/{id}", postgRESTHandler)
 
 	mux.Handle("GET /substation_history", listPostgRESTHandler)
@@ -73,9 +76,29 @@ func (grid *grid) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	grid.mux.ServeHTTP(w, req)
 }
 
-// postgRESTHandler forwards the request to the PostgREST API.
-//
+// handler for /substation.
+func (grid *grid) substationHandler(w http.ResponseWriter, req *http.Request) {
+	query := req.URL.Query()
 
+	if query.Get("order") == "proximity" {
+		query.Del("order")
+
+		// target the function instead of the table, so we can use the geographical
+		// filtering mechanism
+		req.URL.Path = "/rpc/substation_distance"
+		req.URL.RawQuery = query.Encode()
+
+		// set a limit to max 10 if not set, so we do not return the whole dataset
+		limit, err := strconv.Atoi(query.Get("limit"))
+		if err != nil || limit > 10 {
+			query.Set("limit", "10")
+		}
+	}
+
+	grid.postgRESTHandler(w, req)
+}
+
+// postgRESTHandler forwards the request to the PostgREST API.
 func (grid *grid) postgRESTHandler(w http.ResponseWriter, req *http.Request) {
 	// regex for calls targeting single ID pages, not a valid format in PostgREST
 	regexSingleID := regexp.MustCompile("^/([a-z_]+)/([0-9]+)$")

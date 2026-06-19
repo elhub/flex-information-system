@@ -33,6 +33,3 @@ line;line;;;;;R;;R;;;;;;
 line;status;;;;;R;;R;;;;;;
 line;recorded_at;;;;;R;;R;;;;;;
 line;recorded_by;;;;;R;;R;;;;;;
-accounting_point_near_transformer;;;;;;;;;;;;;;
-accounting_point_near_transformer;accounting_point_id;;;;;R;;R;;;;;;
-accounting_point_near_transformer;substation_id;;;;;R;;R;;;;;;

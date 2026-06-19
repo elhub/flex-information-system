@@ -94,17 +94,3 @@ GRANT SELECT (
 ) ON TABLE
 grid.line
 TO flex_system_operator;
-
-GRANT SELECT (
-    accounting_point_id,
-    substation_id
-) ON TABLE
-grid.accounting_point_near_transformer
-TO flex_flexibility_information_system_operator;
-
-GRANT SELECT (
-    accounting_point_id,
-    substation_id
-) ON TABLE
-grid.accounting_point_near_transformer
-TO flex_system_operator;

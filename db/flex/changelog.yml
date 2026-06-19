@@ -294,9 +294,6 @@ databaseChangeLog:
   - include:
       file: ./service_providing_group_summary.sql
       relativeToChangelogFile: true
-  - include:
-      file: ./accounting_point_near_transformer.sql
-      relativeToChangelogFile: true
   # notice
   - includeAll:
       path: ./notice/

@@ -60,7 +60,6 @@ export const AccountingPointShowTabs = ({
       <Tabs.Panel value="location">
         {canViewLocation && (
           <AccountingPointLocationMap
-            accountingPointId={accountingPoint.id}
             location={location}
             canViewGrid={userCanViewGrid(identity)}
             onSubstationClick={handleSubstationClick}

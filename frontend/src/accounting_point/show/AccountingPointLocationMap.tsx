@@ -12,11 +12,6 @@ const OPENFREEMAP_STYLE = "https://tiles.openfreemap.org/styles/liberty";
 
 // TODO: generate these types from a spec as we do for the data API
 
-type AccountingPointNearTransformer = {
-  accounting_point_id: number;
-  substation_id: number;
-};
-
 export type Substation = {
   id: number;
   name: string;
@@ -92,34 +87,24 @@ const toLineFC = (items: Line[]): FeatureCollection<LineString> => ({
 
 // TODO: replace with embeddings when supported?
 
-const useGridData = (accountingPointId: number | undefined) => {
+const useGridData = (location: AccountingPoint["location"]) => {
   // get nearby transformers for the AP
-  const nearTransformerIds = useQuery({
-    queryKey: ["grid", "near_transformer_ids", accountingPointId],
+  const queryParams = new URLSearchParams({
+    kind: "eq.transformer",
+    status: "eq.active",
+    order: "proximity",
+    longitude: location?.coordinates[0].toString() ?? "",
+    latitude: location?.coordinates[1].toString() ?? "",
+  });
+  const nearTransformers = useQuery({
+    queryKey: ["grid", "near_transformers", location],
     queryFn: () =>
-      fetchJSON<AccountingPointNearTransformer>(
-        `${gridURL}/accounting_point_near_transformer?accounting_point_id=eq.${accountingPointId}`,
-      ),
-    enabled: !!accountingPointId,
+      fetchJSON<Substation>(`${gridURL}/substation?${queryParams.toString()}`),
+    enabled: !!location,
   });
 
-  const substationIds = nearTransformerIds.data
-    ? nearTransformerIds.data.map((r) => r.substation_id)
-    : [];
-
-  // fetch full transformer substation details
-  const hasSubstationIds = substationIds.length > 0;
-  const substations = useQuery({
-    queryKey: ["grid", "near_substations", substationIds],
-    queryFn: () =>
-      fetchJSON<Substation>(
-        `${gridURL}/substation?id=in.(${substationIds.join(",")})&status=eq.active&kind=eq.transformer`,
-      ),
-    enabled: hasSubstationIds,
-  });
-
-  const clusterIds = substations.data
-    ? [...new Set(substations.data.map((s) => s.substation_cluster_id))]
+  const clusterIds = nearTransformers.data
+    ? [...new Set(nearTransformers.data.map((s) => s.substation_cluster_id))]
     : [];
 
   // fetch clusters and lines connecting them
@@ -142,26 +127,24 @@ const useGridData = (accountingPointId: number | undefined) => {
     enabled: hasClusterIds,
   });
 
-  return { substations, substationClusters, lines };
+  return { substations: nearTransformers, substationClusters, lines };
 };
 
 // component
 
 type Props = {
-  accountingPointId: number;
   location: AccountingPoint["location"];
   canViewGrid: boolean;
   onSubstationClick?: (substation: Substation) => void;
 };
 
 export const AccountingPointLocationMap = ({
-  accountingPointId,
   location,
   canViewGrid,
   onSubstationClick,
 }: Props) => {
   const { substations, substationClusters, lines } = useGridData(
-    canViewGrid ? accountingPointId : undefined,
+    canViewGrid ? location : undefined,
   );
 
   const [hoveredSubstation, setHoveredSubstation] = useState<{
