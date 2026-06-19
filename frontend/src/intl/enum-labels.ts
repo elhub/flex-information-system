@@ -102,6 +102,9 @@ export type EnumLabel =
   | "service_providing_group_grid_suspension.reason.breach_of_conditions"
   | "service_providing_group_grid_suspension.reason.other"
   | "service_providing_group_grid_suspension.reason.significant_group_change"
+  | "service_providing_group_product_application.ramping_capability.always"
+  | "service_providing_group_product_application.ramping_capability.never"
+  | "service_providing_group_product_application.ramping_capability.partial"
   | "service_providing_group_product_application.status.prequalification"
   | "service_providing_group_product_application.status.prequalified"
   | "service_providing_group_product_application.status.rejected"
@@ -259,6 +262,12 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
       "Prequalified",
     "service_providing_group_product_application.status.verified": "Verified",
     "service_providing_group_product_application.status.rejected": "Rejected",
+    "service_providing_group_product_application.ramping_capability.always":
+      "Always",
+    "service_providing_group_product_application.ramping_capability.partial":
+      "Partial",
+    "service_providing_group_product_application.ramping_capability.never":
+      "Never",
     "service_providing_group_product_suspension.reason.failed_verification":
       "Failed verification",
     "service_providing_group_product_suspension.reason.other": "Other",
@@ -422,6 +431,12 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
       "Prekvalifisert",
     "service_providing_group_product_application.status.verified": "Verifisert",
     "service_providing_group_product_application.status.rejected": "Avvist",
+    "service_providing_group_product_application.ramping_capability.always":
+      "Always",
+    "service_providing_group_product_application.ramping_capability.partial":
+      "Partial",
+    "service_providing_group_product_application.ramping_capability.never":
+      "Never",
     "service_providing_group_product_suspension.reason.failed_verification":
       "Feilet verifisering",
     "service_providing_group_product_suspension.reason.other": "Annet",
@@ -582,6 +597,12 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
       "Prekvalifisert",
     "service_providing_group_product_application.status.verified": "Verifisert",
     "service_providing_group_product_application.status.rejected": "Avvist",
+    "service_providing_group_product_application.ramping_capability.always":
+      "Always",
+    "service_providing_group_product_application.ramping_capability.partial":
+      "Partial",
+    "service_providing_group_product_application.ramping_capability.never":
+      "Never",
     "service_providing_group_product_suspension.reason.failed_verification":
       "Feila verifisering",
     "service_providing_group_product_suspension.reason.other": "Anna",

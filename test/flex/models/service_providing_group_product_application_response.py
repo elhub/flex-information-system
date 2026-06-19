@@ -7,6 +7,9 @@ from typing import TYPE_CHECKING, Any, TypeVar, cast
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
+from ..models.service_providing_group_product_application_ramping_capability import (
+    ServiceProvidingGroupProductApplicationRampingCapability,
+)
 from ..models.service_providing_group_product_application_status import ServiceProvidingGroupProductApplicationStatus
 from ..types import UNSET, Unset
 
@@ -37,6 +40,8 @@ class ServiceProvidingGroupProductApplicationResponse:
                 kilowatts. Example: 150.5.
             maximum_active_power_down (float): The maximum active power applied for in regulation direction down. Stored in
                 kilowatts. Example: 150.5.
+            ramping_capability (ServiceProvidingGroupProductApplicationRampingCapability): The ramping capability of the
+                service providing group for this product application. Example: always.
             recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
                 2023-12-31T23:59:00+00:00.
             recorded_by (int): The identity that recorded the resource. Example: 145.
@@ -46,6 +51,8 @@ class ServiceProvidingGroupProductApplicationResponse:
                 2022-08-08T12:00:00+02.
             verified_at (datetime.datetime | None | Unset): When the product application was last verified. Example:
                 2021-08-08T10:00:00+02.
+            ramping_description (None | str | Unset): Free text description of ramping details. Example: Ramp rate limited
+                during peak hours..
             service_providing_group (None | ServiceProvidingGroupResponse | Unset): Embedded service_providing_group
             procuring_system_operator (None | PartyResponse | Unset): Embedded party
             comment (list[ServiceProvidingGroupProductApplicationCommentResponse] | None | Unset): Embedded
@@ -59,11 +66,13 @@ class ServiceProvidingGroupProductApplicationResponse:
     status: ServiceProvidingGroupProductApplicationStatus
     maximum_active_power_up: float
     maximum_active_power_down: float
+    ramping_capability: ServiceProvidingGroupProductApplicationRampingCapability
     recorded_at: datetime.datetime
     recorded_by: int
     additional_information: None | str | Unset = UNSET
     prequalified_at: datetime.datetime | None | Unset = UNSET
     verified_at: datetime.datetime | None | Unset = UNSET
+    ramping_description: None | str | Unset = UNSET
     service_providing_group: None | ServiceProvidingGroupResponse | Unset = UNSET
     procuring_system_operator: None | PartyResponse | Unset = UNSET
     comment: list[ServiceProvidingGroupProductApplicationCommentResponse] | None | Unset = UNSET
@@ -86,6 +95,8 @@ class ServiceProvidingGroupProductApplicationResponse:
         maximum_active_power_up = self.maximum_active_power_up
 
         maximum_active_power_down = self.maximum_active_power_down
+
+        ramping_capability = self.ramping_capability.value
 
         recorded_at = self.recorded_at.isoformat()
 
@@ -112,6 +123,12 @@ class ServiceProvidingGroupProductApplicationResponse:
             verified_at = self.verified_at.isoformat()
         else:
             verified_at = self.verified_at
+
+        ramping_description: None | str | Unset
+        if isinstance(self.ramping_description, Unset):
+            ramping_description = UNSET
+        else:
+            ramping_description = self.ramping_description
 
         service_providing_group: dict[str, Any] | None | Unset
         if isinstance(self.service_providing_group, Unset):
@@ -152,6 +169,7 @@ class ServiceProvidingGroupProductApplicationResponse:
                 "status": status,
                 "maximum_active_power_up": maximum_active_power_up,
                 "maximum_active_power_down": maximum_active_power_down,
+                "ramping_capability": ramping_capability,
                 "recorded_at": recorded_at,
                 "recorded_by": recorded_by,
             }
@@ -162,6 +180,8 @@ class ServiceProvidingGroupProductApplicationResponse:
             field_dict["prequalified_at"] = prequalified_at
         if verified_at is not UNSET:
             field_dict["verified_at"] = verified_at
+        if ramping_description is not UNSET:
+            field_dict["ramping_description"] = ramping_description
         if service_providing_group is not UNSET:
             field_dict["service_providing_group"] = service_providing_group
         if procuring_system_operator is not UNSET:
@@ -193,6 +213,8 @@ class ServiceProvidingGroupProductApplicationResponse:
         maximum_active_power_up = d.pop("maximum_active_power_up")
 
         maximum_active_power_down = d.pop("maximum_active_power_down")
+
+        ramping_capability = ServiceProvidingGroupProductApplicationRampingCapability(d.pop("ramping_capability"))
 
         recorded_at = datetime.datetime.fromisoformat(d.pop("recorded_at"))
 
@@ -240,6 +262,15 @@ class ServiceProvidingGroupProductApplicationResponse:
             return cast(datetime.datetime | None | Unset, data)
 
         verified_at = _parse_verified_at(d.pop("verified_at", UNSET))
+
+        def _parse_ramping_description(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        ramping_description = _parse_ramping_description(d.pop("ramping_description", UNSET))
 
         def _parse_service_providing_group(data: object) -> None | ServiceProvidingGroupResponse | Unset:
             if data is None:
@@ -307,11 +338,13 @@ class ServiceProvidingGroupProductApplicationResponse:
             status=status,
             maximum_active_power_up=maximum_active_power_up,
             maximum_active_power_down=maximum_active_power_down,
+            ramping_capability=ramping_capability,
             recorded_at=recorded_at,
             recorded_by=recorded_by,
             additional_information=additional_information,
             prequalified_at=prequalified_at,
             verified_at=verified_at,
+            ramping_description=ramping_description,
             service_providing_group=service_providing_group,
             procuring_system_operator=procuring_system_operator,
             comment=comment,

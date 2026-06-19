@@ -1148,6 +1148,7 @@ export type {
   ServiceProvidingGroupProductApplicationCreateRequest,
   ServiceProvidingGroupProductApplicationHistory,
   ServiceProvidingGroupProductApplicationHistoryWritable,
+  ServiceProvidingGroupProductApplicationRampingCapability,
   ServiceProvidingGroupProductApplicationStatus,
   ServiceProvidingGroupProductApplicationUpdateRequest,
   ServiceProvidingGroupProductApplicationWritable,

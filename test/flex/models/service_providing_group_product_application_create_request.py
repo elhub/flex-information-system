@@ -7,6 +7,9 @@ from typing import Any, TypeVar, cast
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
+from ..models.service_providing_group_product_application_ramping_capability import (
+    ServiceProvidingGroupProductApplicationRampingCapability,
+)
 from ..models.service_providing_group_product_application_status import ServiceProvidingGroupProductApplicationStatus
 from ..types import UNSET, Unset
 
@@ -26,6 +29,8 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
                 kilowatts. Example: 150.5.
             maximum_active_power_down (float): The maximum active power applied for in regulation direction down. Stored in
                 kilowatts. Example: 150.5.
+            ramping_capability (ServiceProvidingGroupProductApplicationRampingCapability): The ramping capability of the
+                service providing group for this product application. Example: always.
             status (ServiceProvidingGroupProductApplicationStatus | Unset): The status of the application. Example:
                 prequalification.
             additional_information (None | str | Unset): Free text field for extra information about the application if
@@ -34,6 +39,8 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
                 2022-08-08T12:00:00+02.
             verified_at (datetime.datetime | None | Unset): When the product application was last verified. Example:
                 2021-08-08T10:00:00+02.
+            ramping_description (None | str | Unset): Free text description of ramping details. Example: Ramp rate limited
+                during peak hours..
     """
 
     service_providing_group_id: int
@@ -41,10 +48,12 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
     product_type_ids: list[int]
     maximum_active_power_up: float
     maximum_active_power_down: float
+    ramping_capability: ServiceProvidingGroupProductApplicationRampingCapability
     status: ServiceProvidingGroupProductApplicationStatus | Unset = UNSET
     additional_information: None | str | Unset = UNSET
     prequalified_at: datetime.datetime | None | Unset = UNSET
     verified_at: datetime.datetime | None | Unset = UNSET
+    ramping_description: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -57,6 +66,8 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
         maximum_active_power_up = self.maximum_active_power_up
 
         maximum_active_power_down = self.maximum_active_power_down
+
+        ramping_capability = self.ramping_capability.value
 
         status: str | Unset = UNSET
         if not isinstance(self.status, Unset):
@@ -84,6 +95,12 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
         else:
             verified_at = self.verified_at
 
+        ramping_description: None | str | Unset
+        if isinstance(self.ramping_description, Unset):
+            ramping_description = UNSET
+        else:
+            ramping_description = self.ramping_description
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -93,6 +110,7 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
                 "product_type_ids": product_type_ids,
                 "maximum_active_power_up": maximum_active_power_up,
                 "maximum_active_power_down": maximum_active_power_down,
+                "ramping_capability": ramping_capability,
             }
         )
         if status is not UNSET:
@@ -103,6 +121,8 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
             field_dict["prequalified_at"] = prequalified_at
         if verified_at is not UNSET:
             field_dict["verified_at"] = verified_at
+        if ramping_description is not UNSET:
+            field_dict["ramping_description"] = ramping_description
 
         return field_dict
 
@@ -118,6 +138,8 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
         maximum_active_power_up = d.pop("maximum_active_power_up")
 
         maximum_active_power_down = d.pop("maximum_active_power_down")
+
+        ramping_capability = ServiceProvidingGroupProductApplicationRampingCapability(d.pop("ramping_capability"))
 
         _status = d.pop("status", UNSET)
         status: ServiceProvidingGroupProductApplicationStatus | Unset
@@ -169,16 +191,27 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
 
         verified_at = _parse_verified_at(d.pop("verified_at", UNSET))
 
+        def _parse_ramping_description(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        ramping_description = _parse_ramping_description(d.pop("ramping_description", UNSET))
+
         service_providing_group_product_application_create_request = cls(
             service_providing_group_id=service_providing_group_id,
             procuring_system_operator_id=procuring_system_operator_id,
             product_type_ids=product_type_ids,
             maximum_active_power_up=maximum_active_power_up,
             maximum_active_power_down=maximum_active_power_down,
+            ramping_capability=ramping_capability,
             status=status,
             additional_information=additional_information,
             prequalified_at=prequalified_at,
             verified_at=verified_at,
+            ramping_description=ramping_description,
         )
 
         service_providing_group_product_application_create_request.additional_properties = d

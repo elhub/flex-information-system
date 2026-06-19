@@ -1,10 +1,33 @@
 --liquibase formatted sql
 -- Manually managed file
 
+-- changeset flex:spgpa-add-ramping-columns runOnChange:false endDelimiter:;
+ALTER TABLE flex.service_providing_group_product_application
+ADD COLUMN ramping_capability text NOT NULL
+CONSTRAINT spg_product_application_ramping_capability_check
+CHECK (ramping_capability IN ('always', 'partial', 'never'));
+
+ALTER TABLE flex.service_providing_group_product_application
+ADD COLUMN ramping_description text NULL;
+
+ALTER TABLE flex.service_providing_group_product_application
+ADD CONSTRAINT spg_product_application_ramping_description_check CHECK (
+    ramping_description IS NOT NULL
+    OR NOT (1 = ANY(product_type_ids))
+);
+
+ALTER TABLE flex.service_providing_group_product_application_history
+ADD COLUMN ramping_capability text NOT NULL
+CONSTRAINT spg_product_application_history_ramping_capability_check
+CHECK (ramping_capability IN ('always', 'partial', 'never'));
+
+ALTER TABLE flex.service_providing_group_product_application_history
+ADD COLUMN ramping_description text NULL;
+
 -- changeset flex:service-providing-group-product-application-product-type-insert-function runOnChange:true endDelimiter:--
 -- trigger to check that the upserted product types are active for the SO
 CREATE OR REPLACE FUNCTION
-service_providing_group_product_application_product_type_insert()
+SERVICE_PROVIDING_GROUP_PRODUCT_APPLICATION_PRODUCT_TYPE_INSERT()
 RETURNS trigger
 SECURITY INVOKER
 LANGUAGE plpgsql
@@ -41,13 +64,13 @@ service_providing_group_product_application_product_type_insert
 BEFORE INSERT OR UPDATE ON service_providing_group_product_application
 FOR EACH ROW
 EXECUTE FUNCTION
-service_providing_group_product_application_product_type_insert();
+SERVICE_PROVIDING_GROUP_PRODUCT_APPLICATION_PRODUCT_TYPE_INSERT();
 
 -- changeset flex:service-providing-group-product-application-sp-qualified-insert-function runOnChange:true endDelimiter:--
 -- trigger to check that the SP upserting the SPGPA is (being) qualified by the
 -- SO for these product types
 CREATE OR REPLACE FUNCTION
-service_providing_group_product_application_sp_qualified_insert()
+SERVICE_PROVIDING_GROUP_PRODUCT_APPLICATION_SP_QUALIFIED_INSERT()
 RETURNS trigger
 SECURITY INVOKER
 LANGUAGE plpgsql
@@ -94,4 +117,4 @@ service_providing_group_product_application_sp_qualified_insert
 BEFORE INSERT OR UPDATE ON service_providing_group_product_application
 FOR EACH ROW
 EXECUTE FUNCTION
-service_providing_group_product_application_sp_qualified_insert();
+SERVICE_PROVIDING_GROUP_PRODUCT_APPLICATION_SP_QUALIFIED_INSERT();

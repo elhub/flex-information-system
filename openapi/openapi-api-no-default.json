@@ -1024,6 +1024,17 @@
                 ],
                 "example": "prequalification"
             },
+            "service_providing_group_product_application_ramping_capability": {
+                "description": "The ramping capability of the service providing group for this product application.",
+                "format": "text",
+                "type": "string",
+                "enum": [
+                    "always",
+                    "partial",
+                    "never"
+                ],
+                "example": "always"
+            },
             "service_providing_group_product_application_comment_visibility": {
                 "description": "The level of visibility of the comment.",
                 "format": "text",
@@ -5806,6 +5817,16 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2021-08-08T10:00:00+02"
+                    },
+                    "ramping_capability": {
+                        "$ref": "#/components/schemas/service_providing_group_product_application_ramping_capability"
+                    },
+                    "ramping_description": {
+                        "description": "Free text description of ramping details.",
+                        "format": "text",
+                        "type": "string",
+                        "nullable": true,
+                        "example": "Ramp rate limited during peak hours."
                     }
                 }
             },
@@ -5881,6 +5902,16 @@
                         "type": "string",
                         "nullable": true,
                         "example": "2021-08-08T10:00:00+02"
+                    },
+                    "ramping_capability": {
+                        "$ref": "#/components/schemas/service_providing_group_product_application_ramping_capability"
+                    },
+                    "ramping_description": {
+                        "description": "Free text description of ramping details.",
+                        "format": "text",
+                        "type": "string",
+                        "nullable": true,
+                        "example": "Ramp rate limited during peak hours."
                     }
                 },
                 "required": [
@@ -5888,7 +5919,8 @@
                     "procuring_system_operator_id",
                     "product_type_ids",
                     "maximum_active_power_up",
-                    "maximum_active_power_down"
+                    "maximum_active_power_down",
+                    "ramping_capability"
                 ]
             },
             "service_providing_group_product_application_response": {
@@ -5971,6 +6003,16 @@
                         "nullable": true,
                         "example": "2021-08-08T10:00:00+02"
                     },
+                    "ramping_capability": {
+                        "$ref": "#/components/schemas/service_providing_group_product_application_ramping_capability"
+                    },
+                    "ramping_description": {
+                        "description": "Free text description of ramping details.",
+                        "format": "text",
+                        "type": "string",
+                        "nullable": true,
+                        "example": "Ramp rate limited during peak hours."
+                    },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
                         "format": "date-time",
@@ -6033,6 +6075,7 @@
                     "status",
                     "maximum_active_power_up",
                     "maximum_active_power_down",
+                    "ramping_capability",
                     "recorded_at",
                     "recorded_by"
                 ]
@@ -8335,6 +8378,16 @@
                         "nullable": true,
                         "example": "2021-08-08T10:00:00+02"
                     },
+                    "ramping_capability": {
+                        "$ref": "#/components/schemas/service_providing_group_product_application_ramping_capability"
+                    },
+                    "ramping_description": {
+                        "description": "Free text description of ramping details.",
+                        "format": "text",
+                        "type": "string",
+                        "nullable": true,
+                        "example": "Ramp rate limited during peak hours."
+                    },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
                         "format": "date-time",
@@ -8378,6 +8431,7 @@
                     "status",
                     "maximum_active_power_up",
                     "maximum_active_power_down",
+                    "ramping_capability",
                     "recorded_at",
                     "recorded_by",
                     "service_providing_group_product_application_id"

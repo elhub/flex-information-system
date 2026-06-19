@@ -3988,6 +3988,43 @@ resources:
           en: Verified at
           nb: Verifisert
           nn: Verifisert
+      ramping_capability:
+        description: >-
+          The ramping capability of the service providing group for this product application.
+        format: text
+        type: string
+        enum:
+          - id: always
+            x-intl:
+              en: Always
+              nb: Always
+              nn: Always
+          - id: partial
+            x-intl:
+              en: Partial
+              nb: Partial
+              nn: Partial
+          - id: never
+            x-intl:
+              en: Never
+              nb: Never
+              nn: Never
+        example: always
+        x-intl:
+          en: Ramping capability
+          nb: Ramping capability
+          nn: Ramping capability
+      ramping_description:
+        description: >-
+          Free text description of ramping details.
+        format: text
+        type: string
+        nullable: true
+        example: "Ramp rate limited during peak hours."
+        x-intl:
+          en: Ramping description
+          nb: Ramping description
+          nn: Ramping description
 
   - id: service_providing_group_product_suspension
     acronym: SPGPS

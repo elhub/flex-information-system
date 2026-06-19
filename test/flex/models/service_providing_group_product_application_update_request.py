@@ -7,6 +7,9 @@ from typing import Any, TypeVar, cast
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
+from ..models.service_providing_group_product_application_ramping_capability import (
+    ServiceProvidingGroupProductApplicationRampingCapability,
+)
 from ..models.service_providing_group_product_application_status import ServiceProvidingGroupProductApplicationStatus
 from ..types import UNSET, Unset
 
@@ -32,6 +35,10 @@ class ServiceProvidingGroupProductApplicationUpdateRequest:
                 2022-08-08T12:00:00+02.
             verified_at (datetime.datetime | None | Unset): When the product application was last verified. Example:
                 2021-08-08T10:00:00+02.
+            ramping_capability (ServiceProvidingGroupProductApplicationRampingCapability | Unset): The ramping capability of
+                the service providing group for this product application. Example: always.
+            ramping_description (None | str | Unset): Free text description of ramping details. Example: Ramp rate limited
+                during peak hours..
     """
 
     product_type_ids: list[int] | Unset = UNSET
@@ -41,6 +48,8 @@ class ServiceProvidingGroupProductApplicationUpdateRequest:
     additional_information: None | str | Unset = UNSET
     prequalified_at: datetime.datetime | None | Unset = UNSET
     verified_at: datetime.datetime | None | Unset = UNSET
+    ramping_capability: ServiceProvidingGroupProductApplicationRampingCapability | Unset = UNSET
+    ramping_description: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -78,6 +87,16 @@ class ServiceProvidingGroupProductApplicationUpdateRequest:
         else:
             verified_at = self.verified_at
 
+        ramping_capability: str | Unset = UNSET
+        if not isinstance(self.ramping_capability, Unset):
+            ramping_capability = self.ramping_capability.value
+
+        ramping_description: None | str | Unset
+        if isinstance(self.ramping_description, Unset):
+            ramping_description = UNSET
+        else:
+            ramping_description = self.ramping_description
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
@@ -95,6 +114,10 @@ class ServiceProvidingGroupProductApplicationUpdateRequest:
             field_dict["prequalified_at"] = prequalified_at
         if verified_at is not UNSET:
             field_dict["verified_at"] = verified_at
+        if ramping_capability is not UNSET:
+            field_dict["ramping_capability"] = ramping_capability
+        if ramping_description is not UNSET:
+            field_dict["ramping_description"] = ramping_description
 
         return field_dict
 
@@ -157,6 +180,22 @@ class ServiceProvidingGroupProductApplicationUpdateRequest:
 
         verified_at = _parse_verified_at(d.pop("verified_at", UNSET))
 
+        _ramping_capability = d.pop("ramping_capability", UNSET)
+        ramping_capability: ServiceProvidingGroupProductApplicationRampingCapability | Unset
+        if isinstance(_ramping_capability, Unset):
+            ramping_capability = UNSET
+        else:
+            ramping_capability = ServiceProvidingGroupProductApplicationRampingCapability(_ramping_capability)
+
+        def _parse_ramping_description(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        ramping_description = _parse_ramping_description(d.pop("ramping_description", UNSET))
+
         service_providing_group_product_application_update_request = cls(
             product_type_ids=product_type_ids,
             status=status,
@@ -165,6 +204,8 @@ class ServiceProvidingGroupProductApplicationUpdateRequest:
             additional_information=additional_information,
             prequalified_at=prequalified_at,
             verified_at=verified_at,
+            ramping_capability=ramping_capability,
+            ramping_description=ramping_description,
         )
 
         service_providing_group_product_application_update_request.additional_properties = d
