@@ -41,3 +41,23 @@ BEGIN
     RETURN flex.spg_product_application_ready_for_market_check(spgpa);
 END;
 $$;
+
+-- changeset flex:notification-function-grants runOnChange:true
+REVOKE EXECUTE ON FUNCTION
+notification.sp_product_application_ready_for_market_check(record)
+FROM public;
+GRANT EXECUTE ON FUNCTION
+notification.sp_product_application_ready_for_market_check(record)
+TO flex_internal_event_notification;
+REVOKE EXECUTE ON FUNCTION
+notification.spg_grid_prequalification_ready_for_market_check(record)
+FROM public;
+GRANT EXECUTE ON FUNCTION
+notification.spg_grid_prequalification_ready_for_market_check(record)
+TO flex_internal_event_notification;
+REVOKE EXECUTE ON FUNCTION
+notification.spg_product_application_ready_for_market_check(record)
+FROM public;
+GRANT EXECUTE ON FUNCTION
+notification.spg_product_application_ready_for_market_check(record)
+TO flex_internal_event_notification;

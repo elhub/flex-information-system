@@ -271,3 +271,17 @@ $$;
 
 -- changeset flex:pre-request-execute runOnChange:true endDelimiter:;
 GRANT EXECUTE ON FUNCTION auth.pre_request TO flex_anonymous;
+
+-- changeset flex:auth-function-grants runOnChange:true endDelimiter:;
+REVOKE EXECUTE ON FUNCTION auth.entity_of_credentials(text, text) FROM public;
+REVOKE EXECUTE ON FUNCTION auth.get_or_create_entity(text, text, text) FROM public;
+GRANT EXECUTE ON FUNCTION auth.get_or_create_entity(text, text, text) TO flex_anonymous;
+REVOKE EXECUTE ON FUNCTION auth.entity_client_by_uuid(text) FROM public;
+GRANT EXECUTE ON FUNCTION auth.entity_client_by_uuid(text) TO flex_anonymous;
+REVOKE EXECUTE ON FUNCTION auth.entity_identity_of_external_id(text) FROM public;
+GRANT EXECUTE ON FUNCTION auth.entity_identity_of_external_id(text) TO flex_common;
+REVOKE EXECUTE ON FUNCTION auth.assume_party(bigint) FROM public;
+REVOKE EXECUTE ON FUNCTION auth.party_of_identity(bigint) FROM public;
+REVOKE EXECUTE ON FUNCTION auth.eid_details(text) FROM public;
+REVOKE EXECUTE ON FUNCTION auth.current_user_info() FROM public;
+REVOKE EXECUTE ON FUNCTION auth.pre_request() FROM public;

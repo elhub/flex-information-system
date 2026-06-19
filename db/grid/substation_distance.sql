@@ -28,3 +28,10 @@ SELECT
 FROM flex.substation
 ORDER BY position <-> ST_SetSRID(ST_MakePoint(longitude, latitude), 4326);
 $$;
+
+-- changeset flex:grid-substation-distance-grants runOnChange:true
+REVOKE EXECUTE ON FUNCTION grid.substation_distance(
+    double precision, double precision
+) FROM public;
+GRANT EXECUTE ON FUNCTION grid.substation_distance(double precision, double precision)
+TO flex_flexibility_information_system_operator, flex_system_operator;
