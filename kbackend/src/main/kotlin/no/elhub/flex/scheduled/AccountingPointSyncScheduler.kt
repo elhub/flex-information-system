@@ -27,7 +27,7 @@ class AccountingPointSyncScheduler(
 ) {
     suspend fun start() {
         val batchSize = 50
-        doInfinity("* /5 * * *") { runBatch(batchSize) }
+        doInfinity("0 /5 * * *") { runBatch(batchSize) }
     }
 
     internal suspend fun runBatch(batchSize: Int = 50) {
