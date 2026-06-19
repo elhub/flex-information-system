@@ -46,6 +46,10 @@ export default defineConfig({
         target: "http://dev.flex.internal:5444",
         changeOrigin: true,
       },
+      "/grid": {
+        target: "http://dev.flex.internal:5444",
+        changeOrigin: true,
+      },
       "/readyz": {
         target: "http://dev.flex.internal:5444",
         changeOrigin: true,
