@@ -20,7 +20,7 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/cenkalti/backoff/v5"
+	"github.com/cenkalti/backoff/v6"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/graceful"
 	"github.com/gin-gonic/gin"
