@@ -6,13 +6,6 @@ import { z } from "zod";
 import { getFields, unTypedZodResolver } from "../../zod";
 import { useCreateOrUpdate } from "../../auth";
 import { zServiceProvidingGroupProductApplicationCreateRequest } from "../../generated-client/zod.gen";
-
-// ramping_description is required in the frontend even though the API allows
-// null (the API-level constraint only enforces non-null for manual_congestion)
-const spgpaFormSchema =
-  zServiceProvidingGroupProductApplicationCreateRequest.extend({
-    ramping_description: z.string(),
-  });
 import {
   Alert,
   FormContainer,
@@ -34,6 +27,13 @@ import {
   DateTimeInput,
 } from "../../components/EDS-ra/inputs";
 import { ProductTypeArrayInput } from "../../product_type/components";
+
+// ramping_description is required in the frontend even though the API allows
+// null (the API-level constraint only enforces non-null for manual_congestion)
+const spgpaFormSchema =
+  zServiceProvidingGroupProductApplicationCreateRequest.extend({
+    ramping_description: z.string(),
+  });
 
 // component restricting the selectable product types based on the
 // already selected procuring system operator
