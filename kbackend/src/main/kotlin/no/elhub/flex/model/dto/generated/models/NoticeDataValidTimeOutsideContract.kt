@@ -15,5 +15,5 @@ public data class NoticeDataValidTimeOutsideContract(
    * i.e., array of start/end timestamp pairs.
    */
   @SerialName("invalid_timeline")
-  public val invalidTimeline: List<NoticeDataValidTimeOutsideContractTimelineMultiRange>? = null,
+  public val invalidTimeline: List<TimelineMultiRange>? = null,
 ) : NoticeData
