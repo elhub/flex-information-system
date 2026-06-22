@@ -3,9 +3,12 @@
 
 -- changeset flex:spgpa-add-ramping-columns runOnChange:false endDelimiter:;
 ALTER TABLE flex.service_providing_group_product_application
-ADD COLUMN IF NOT EXISTS ramping_capability text NOT NULL
+ADD COLUMN IF NOT EXISTS ramping_capability text NOT NULL DEFAULT 'always'
 CONSTRAINT spg_product_application_ramping_capability_check
 CHECK (ramping_capability IN ('always', 'partial', 'never'));
+
+ALTER TABLE flex.service_providing_group_product_application
+ALTER COLUMN ramping_capability DROP DEFAULT;
 
 ALTER TABLE flex.service_providing_group_product_application
 ADD COLUMN IF NOT EXISTS ramping_description text NULL
@@ -15,9 +18,12 @@ CONSTRAINT spg_product_application_ramping_description_check CHECK (
 );
 
 ALTER TABLE flex.service_providing_group_product_application_history
-ADD COLUMN IF NOT EXISTS ramping_capability text NOT NULL
+ADD COLUMN IF NOT EXISTS ramping_capability text NOT NULL DEFAULT 'always'
 CONSTRAINT spg_product_application_history_ramping_capability_check
 CHECK (ramping_capability IN ('always', 'partial', 'never'));
+
+ALTER TABLE flex.service_providing_group_product_application_history
+ALTER COLUMN ramping_capability DROP DEFAULT;
 
 ALTER TABLE flex.service_providing_group_product_application_history
 ADD COLUMN IF NOT EXISTS ramping_description text NULL;
