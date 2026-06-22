@@ -26,7 +26,7 @@ class AccountingPointRepositoryTest : FunSpec({
 
     val repo = AccountingPointRepositoryImpl()
 
-    val principal = FlexPrincipal(role = "flex_flexibility_information_system_operator", eid = "0")
+    val principal = FlexPrincipal(role = "flex_internal_data", eid = "0")
     val internalDataPrincipal = FlexPrincipal.internalData()
 
     beforeTest {
