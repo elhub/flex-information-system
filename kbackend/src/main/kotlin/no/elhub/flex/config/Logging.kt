@@ -11,6 +11,7 @@ import org.slf4j.event.Level
 fun Application.configureLogging() {
     install(CallLogging) {
         level = Level.INFO
+        filter { call -> call.request.path() != "/healthz" }
 
         mdc("trace_id") { call -> call.attributes.getOrNull(TraceKey)?.traceID }
         mdc("span_id") { call -> call.attributes.getOrNull(TraceKey)?.spanID }
