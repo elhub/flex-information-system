@@ -1,33 +1,6 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:spgpa-add-ramping-columns runOnChange:false endDelimiter:;
-ALTER TABLE flex.service_providing_group_product_application
-ADD COLUMN IF NOT EXISTS ramping_capability text NOT NULL DEFAULT 'always'
-CONSTRAINT spg_product_application_ramping_capability_check
-CHECK (ramping_capability IN ('always', 'partial', 'never'));
-
-ALTER TABLE flex.service_providing_group_product_application
-ALTER COLUMN ramping_capability DROP DEFAULT;
-
-ALTER TABLE flex.service_providing_group_product_application
-ADD COLUMN IF NOT EXISTS ramping_description text NULL
-CONSTRAINT spg_product_application_ramping_description_check CHECK (
-    ramping_description IS NOT NULL
-    OR NOT (1 = ANY(product_type_ids))
-);
-
-ALTER TABLE flex.service_providing_group_product_application_history
-ADD COLUMN IF NOT EXISTS ramping_capability text NOT NULL DEFAULT 'always'
-CONSTRAINT spg_product_application_history_ramping_capability_check
-CHECK (ramping_capability IN ('always', 'partial', 'never'));
-
-ALTER TABLE flex.service_providing_group_product_application_history
-ALTER COLUMN ramping_capability DROP DEFAULT;
-
-ALTER TABLE flex.service_providing_group_product_application_history
-ADD COLUMN IF NOT EXISTS ramping_description text NULL;
-
 -- changeset flex:service-providing-group-product-application-product-type-insert-function runOnChange:true endDelimiter:--
 -- trigger to check that the upserted product types are active for the SO
 CREATE OR REPLACE FUNCTION
@@ -122,3 +95,32 @@ BEFORE INSERT OR UPDATE ON service_providing_group_product_application
 FOR EACH ROW
 EXECUTE FUNCTION
 SERVICE_PROVIDING_GROUP_PRODUCT_APPLICATION_SP_QUALIFIED_INSERT();
+
+-- changeset flex:spgpa-add-ramping-columns runOnChange:false endDelimiter:;
+ALTER TABLE flex.service_providing_group_product_application
+ADD COLUMN IF NOT EXISTS ramping_capability text NOT NULL DEFAULT 'always'
+CONSTRAINT spg_product_application_ramping_capability_check
+CHECK (ramping_capability IN ('always', 'partial', 'never'));
+
+ALTER TABLE flex.service_providing_group_product_application
+ALTER COLUMN ramping_capability DROP DEFAULT;
+
+-- SPGPA-VAL007
+ALTER TABLE flex.service_providing_group_product_application
+ADD COLUMN IF NOT EXISTS ramping_description text NULL
+CONSTRAINT spg_product_application_ramping_description_check CHECK (
+    ramping_description IS NOT NULL
+    -- manual_congestion has product_type.id = 1 (relies on reference_data/product_type.csv insertion order)
+    OR NOT (1 = ANY(product_type_ids))
+);
+
+ALTER TABLE flex.service_providing_group_product_application_history
+ADD COLUMN IF NOT EXISTS ramping_capability text NOT NULL DEFAULT 'always'
+CONSTRAINT spg_product_application_history_ramping_capability_check
+CHECK (ramping_capability IN ('always', 'partial', 'never'));
+
+ALTER TABLE flex.service_providing_group_product_application_history
+ALTER COLUMN ramping_capability DROP DEFAULT;
+
+ALTER TABLE flex.service_providing_group_product_application_history
+ADD COLUMN IF NOT EXISTS ramping_description text NULL;

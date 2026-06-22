@@ -2810,7 +2810,7 @@ export type ServiceProvidingGroupProductApplicationUpdateRequest = {
   verified_at?: string;
   ramping_capability?: ServiceProvidingGroupProductApplicationRampingCapability;
   /**
-   * Free text description of ramping details.
+   * Free text description of ramping details. Only required for product Manual Congestion.
    */
   ramping_description?: string;
 };
@@ -2854,7 +2854,7 @@ export type ServiceProvidingGroupProductApplicationCreateRequest = {
   verified_at?: string;
   ramping_capability: ServiceProvidingGroupProductApplicationRampingCapability;
   /**
-   * Free text description of ramping details.
+   * Free text description of ramping details. Only required for product Manual Congestion.
    */
   ramping_description?: string;
 };
@@ -2902,7 +2902,7 @@ export type ServiceProvidingGroupProductApplication = {
   verified_at?: string;
   ramping_capability: ServiceProvidingGroupProductApplicationRampingCapability;
   /**
-   * Free text description of ramping details.
+   * Free text description of ramping details. Only required for product Manual Congestion.
    */
   ramping_description?: string;
   /**
@@ -4113,7 +4113,7 @@ export type ServiceProvidingGroupProductApplicationHistory = {
   verified_at?: string;
   ramping_capability: ServiceProvidingGroupProductApplicationRampingCapability;
   /**
-   * Free text description of ramping details.
+   * Free text description of ramping details. Only required for product Manual Congestion.
    */
   ramping_description?: string;
   /**
@@ -5224,7 +5224,7 @@ export type ServiceProvidingGroupProductApplicationWritable = {
   verified_at?: string;
   ramping_capability: ServiceProvidingGroupProductApplicationRampingCapability;
   /**
-   * Free text description of ramping details.
+   * Free text description of ramping details. Only required for product Manual Congestion.
    */
   ramping_description?: string;
   /**
@@ -5980,7 +5980,7 @@ export type ServiceProvidingGroupProductApplicationHistoryWritable = {
   verified_at?: string;
   ramping_capability: ServiceProvidingGroupProductApplicationRampingCapability;
   /**
-   * Free text description of ramping details.
+   * Free text description of ramping details. Only required for product Manual Congestion.
    */
   ramping_description?: string;
   /**

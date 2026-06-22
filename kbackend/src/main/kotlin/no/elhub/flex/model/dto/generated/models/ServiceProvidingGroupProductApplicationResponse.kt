@@ -74,7 +74,7 @@ public data class ServiceProvidingGroupProductApplicationResponse(
   @SerialName("ramping_capability")
   public val rampingCapability: ServiceProvidingGroupProductApplicationRampingCapability,
   /**
-   * Free text description of ramping details.
+   * Free text description of ramping details. Only required for product Manual Congestion.
    */
   @SerialName("ramping_description")
   public val rampingDescription: String? = null,

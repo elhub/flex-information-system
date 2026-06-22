@@ -51,8 +51,8 @@ class ServiceProvidingGroupProductApplicationResponse:
                 2022-08-08T12:00:00+02.
             verified_at (datetime.datetime | None | Unset): When the product application was last verified. Example:
                 2021-08-08T10:00:00+02.
-            ramping_description (None | str | Unset): Free text description of ramping details. Example: Ramp rate limited
-                during peak hours..
+            ramping_description (None | str | Unset): Free text description of ramping details. Only required for product
+                Manual Congestion. Example: Ramp rate limited during peak hours..
             service_providing_group (None | ServiceProvidingGroupResponse | Unset): Embedded service_providing_group
             procuring_system_operator (None | PartyResponse | Unset): Embedded party
             comment (list[ServiceProvidingGroupProductApplicationCommentResponse] | None | Unset): Embedded

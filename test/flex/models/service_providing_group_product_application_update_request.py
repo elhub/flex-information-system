@@ -37,8 +37,8 @@ class ServiceProvidingGroupProductApplicationUpdateRequest:
                 2021-08-08T10:00:00+02.
             ramping_capability (ServiceProvidingGroupProductApplicationRampingCapability | Unset): The ramping capability of
                 the service providing group for this product application. Example: always.
-            ramping_description (None | str | Unset): Free text description of ramping details. Example: Ramp rate limited
-                during peak hours..
+            ramping_description (None | str | Unset): Free text description of ramping details. Only required for product
+                Manual Congestion. Example: Ramp rate limited during peak hours..
     """
 
     product_type_ids: list[int] | Unset = UNSET
