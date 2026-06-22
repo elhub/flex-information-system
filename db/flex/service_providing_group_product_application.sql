@@ -50,6 +50,7 @@ CREATE TABLE IF NOT EXISTS service_providing_group_product_application (
     ),
     CONSTRAINT spg_product_application_ramping_description_check CHECK (
         ramping_description IS NOT null
+        -- manual_congestion has product_type.id = 1 (relies on reference_data/product_type.csv insertion order)
         OR NOT (1 = any(product_type_ids))
     ),
     CONSTRAINT service_providing_group_product_application_spg_fkey
