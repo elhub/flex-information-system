@@ -37,6 +37,7 @@ func NewAPIHandler(postgRESTUpstream string) (http.Handler, error) {
 		mux:          mux,
 	}
 
+	// TODO: add `grid` asset in scopes and use it here
 	listPostgRESTHandler := middleware.DefaultQueryLimit(
 		auth.CheckScopeForRequest("data", http.HandlerFunc(grid.postgRESTHandler)),
 	)
