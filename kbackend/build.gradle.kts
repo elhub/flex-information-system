@@ -63,3 +63,12 @@ application {
     val isDevelopment: Boolean = project.ext.has("development")
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
 }
+
+configurations.all {
+    resolutionStrategy.eachDependency {
+        if (requested.group == "io.netty") {
+            useVersion("4.2.15.Final")
+            because("CVE-2026-48006: RedisArrayAggregator direct-memory leak fixed in 4.2.15.Final")
+        }
+    }
+}
