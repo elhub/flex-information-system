@@ -38,8 +38,3 @@ BEGIN
     RETURN QUERY SELECT l_id AS entity_id, l_found AS entity_found;
 END;
 $$;
-
--- changeset flex:api-entity-lookup-grants runOnChange:true
-REVOKE EXECUTE ON FUNCTION api.entity_lookup(text, text, text, text) FROM public;
-GRANT EXECUTE ON FUNCTION api.entity_lookup(text, text, text, text)
-TO flex_flexibility_information_system_operator, flex_organisation;

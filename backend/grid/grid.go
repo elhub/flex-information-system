@@ -65,8 +65,6 @@ func NewAPIHandler(postgRESTUpstream string) (http.Handler, error) {
 	mux.Handle("GET /substation_cluster_history", listPostgRESTHandler)
 	mux.Handle("GET /substation_cluster_history/{id}", postgRESTHandler)
 
-	mux.Handle("GET /accounting_point_near_transformer", listPostgRESTHandler)
-
 	mux.HandleFunc("/", grid.notFoundHandler)
 
 	return grid, nil
@@ -119,7 +117,7 @@ func (grid *grid) postgRESTHandler(w http.ResponseWriter, req *http.Request) {
 		query.Set("id", "eq."+match[2])
 		// force PostgREST to return a single object
 		header.Set("Accept", "application/vnd.pgrst.object+json")
-		slog.InfoContext(
+		slog.DebugContext(
 			ctx,
 			"API call targeting a single-ID record. Rewriting into PostgREST format.",
 			"new url", url, "new query", query.Encode(),

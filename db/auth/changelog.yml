@@ -7,7 +7,6 @@ databaseChangeLog:
       changes:
         - sql: CREATE SCHEMA IF NOT EXISTS auth AUTHORIZATION flex
         - sql: GRANT USAGE ON SCHEMA auth TO flex_anonymous, flex_internal
-        - sql: ALTER DEFAULT PRIVILEGES IN SCHEMA auth REVOKE EXECUTE ON FUNCTIONS FROM PUBLIC
   - includeAll:
       path: ./
       relativeToChangelogFile: true
