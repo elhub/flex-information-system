@@ -15,7 +15,9 @@ export type TextKey =
   | "spg_activate_group_title"
   | "spg_activate_group_ensure"
   | "spg_activate_group_ensure_pt1"
-  | "spg_activate_group_ensure_pt2";
+  | "spg_activate_group_ensure_pt2"
+  | "spgpa_ramping_details"
+  | "spgpa_ramping_deviations";
 
 export const text: Record<string, Record<TextKey, string>> = {
   en: {
@@ -38,6 +40,9 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_activate_group_ensure: "Ensure the following before activating",
     spg_activate_group_ensure_pt1: "all controllable units have been added",
     spg_activate_group_ensure_pt2: "data is correct",
+    spgpa_ramping_details:
+      "Describe how the units in the service providing group are regulated to deliver this response. (E.g. units are switched off one by one to achieve a stepwise profile, or each unit gradually adjusts production/consumption simultaneously)",
+    spgpa_ramping_deviations: "Describe when and how the profile will deviate.",
   },
   nb: {
     entity_role: "Entitet",
@@ -59,5 +64,8 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_activate_group_ensure: "Sjekk følgende før du aktiverer",
     spg_activate_group_ensure_pt1: "alle enheter har blitt lagt til",
     spg_activate_group_ensure_pt2: "data er korrekt",
+    spgpa_ramping_details:
+      "Beskriv hvordan enhetene som inngår i fleksibilitetsgruppen reguleres for å gi denne responsen. (F.eks. enhetene kobles ut én og én for å oppnå en trinnvis profil, eller hver enhet regulerer produksjon/forbruk gradvis samtidig)",
+    spgpa_ramping_deviations: "Beskriv når og hvordan profil vil avvike.",
   },
 };

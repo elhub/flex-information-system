@@ -1,10 +1,18 @@
-import { Form, useRecordContext } from "ra-core";
+import { Form, useRecordContext, useTranslate } from "ra-core";
 import { useFormContext } from "react-hook-form";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { z } from "zod";
 import { getFields, unTypedZodResolver } from "../../zod";
 import { useCreateOrUpdate } from "../../auth";
 import { zServiceProvidingGroupProductApplicationCreateRequest } from "../../generated-client/zod.gen";
+
+// ramping_description is required in the frontend even though the API allows
+// null (the API-level constraint only enforces non-null for manual_congestion)
+const spgpaFormSchema =
+  zServiceProvidingGroupProductApplicationCreateRequest.extend({
+    ramping_description: z.string(),
+  });
 import {
   Alert,
   FormContainer,
@@ -53,14 +61,30 @@ const ProductTypesInput = (
   );
 };
 
+const RampingNotice = () => {
+  const translate = useTranslate();
+  const { watch } = useFormContext();
+  const rampingCapability = watch("ramping_capability");
+
+  return (
+    <Alert variant="info">
+      <ul className="list-disc pl-4">
+        <li>{translate("text.spgpa_ramping_details")}</li>
+        {rampingCapability !== "always" && (
+          <li>{translate("text.spgpa_ramping_deviations")}</li>
+        )}
+      </ul>
+    </Alert>
+  );
+};
+
 // common layout to create and edit pages
 export const ServiceProvidingGroupProductApplicationInput = () => {
   const { state: overrideRecord } = useLocation();
   const actualRecord = useRecordContext();
-  const parsedOverrideRecord =
-    zServiceProvidingGroupProductApplicationCreateRequest
-      .partial()
-      .parse(overrideRecord ?? {});
+  const parsedOverrideRecord = spgpaFormSchema
+    .partial()
+    .parse(overrideRecord ?? {});
 
   const record = { ...actualRecord, ...parsedOverrideRecord };
   const createOrUpdate = useCreateOrUpdate();
@@ -76,16 +100,12 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
     );
   }
 
-  const fields = getFields(
-    zServiceProvidingGroupProductApplicationCreateRequest.shape,
-  );
+  const fields = getFields(spgpaFormSchema.shape);
 
   return (
     <Form
       record={record}
-      resolver={unTypedZodResolver(
-        zServiceProvidingGroupProductApplicationCreateRequest,
-      )}
+      resolver={unTypedZodResolver(spgpaFormSchema)}
       sanitizeEmptyValues
     >
       <FormContainer>
@@ -136,6 +156,19 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
             { label: "kW", scale: 1 },
             { label: "MW", scale: 1000 },
           ]}
+          description
+          tooltip={false}
+        />
+        <EnumInput
+          {...fields.ramping_capability}
+          enumKey="service_providing_group_product_application.ramping_capability"
+          description
+          tooltip={false}
+        />
+        <RampingNotice />
+        <TextAreaInput
+          {...fields.ramping_description}
+          rows={5}
           description
           tooltip={false}
         />
