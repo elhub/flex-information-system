@@ -3,26 +3,24 @@
 
 -- changeset flex:spgpa-add-ramping-columns runOnChange:false endDelimiter:;
 ALTER TABLE flex.service_providing_group_product_application
-ADD COLUMN ramping_capability text NOT NULL
+ADD COLUMN IF NOT EXISTS ramping_capability text NOT NULL
 CONSTRAINT spg_product_application_ramping_capability_check
 CHECK (ramping_capability IN ('always', 'partial', 'never'));
 
 ALTER TABLE flex.service_providing_group_product_application
-ADD COLUMN ramping_description text NULL;
-
-ALTER TABLE flex.service_providing_group_product_application
-ADD CONSTRAINT spg_product_application_ramping_description_check CHECK (
+ADD COLUMN IF NOT EXISTS ramping_description text NULL
+CONSTRAINT spg_product_application_ramping_description_check CHECK (
     ramping_description IS NOT NULL
     OR NOT (1 = ANY(product_type_ids))
 );
 
 ALTER TABLE flex.service_providing_group_product_application_history
-ADD COLUMN ramping_capability text NOT NULL
+ADD COLUMN IF NOT EXISTS ramping_capability text NOT NULL
 CONSTRAINT spg_product_application_history_ramping_capability_check
 CHECK (ramping_capability IN ('always', 'partial', 'never'));
 
 ALTER TABLE flex.service_providing_group_product_application_history
-ADD COLUMN ramping_description text NULL;
+ADD COLUMN IF NOT EXISTS ramping_description text NULL;
 
 -- changeset flex:service-providing-group-product-application-product-type-insert-function runOnChange:true endDelimiter:--
 -- trigger to check that the upserted product types are active for the SO
