@@ -86,13 +86,13 @@ func (grid *grid) substationHandler(w http.ResponseWriter, req *http.Request) {
 		// target the function instead of the table, so we can use the geographical
 		// filtering mechanism
 		req.URL.Path = "/rpc/substation_distance"
-		req.URL.RawQuery = query.Encode()
 
 		// set a limit to max 10 if not set, so we do not return the whole dataset
-		_, err := strconv.Atoi(query.Get("limit"))
-		if err != nil {
+		if _, err := strconv.Atoi(query.Get("limit")); err != nil {
 			query.Set("limit", "10")
 		}
+
+		req.URL.RawQuery = query.Encode()
 	}
 
 	grid.postgRESTHandler(w, req)

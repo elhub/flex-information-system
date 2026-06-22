@@ -14,5 +14,5 @@ api.{{ rel.name }}(api.{{ rel.child.resource }})
 FROM public;
 GRANT EXECUTE ON FUNCTION
 api.{{ rel.name }}(api.{{ rel.child.resource }})
-TO flex_common;
+TO flex_common, flex_entity;
 {% endfor %}
