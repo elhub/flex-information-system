@@ -8,6 +8,7 @@ import {
   readParty,
   readServiceProvidingGroup,
 } from "../../generated-client";
+import { allControllableUnitsWithMembershipQueryKey } from "../membership/useSpgMemberships";
 import {
   findCurrentlyValidRecord,
   throwOnError,
@@ -198,6 +199,9 @@ export const useRemoveMembershipFromShow = (spgId: number) => {
     onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: spgShowViewModelQueryKey(spgId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: allControllableUnitsWithMembershipQueryKey(spgId),
       });
     },
   });

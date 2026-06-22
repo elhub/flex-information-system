@@ -59,35 +59,8 @@ const fetchControllableUnitsInSpg = async (spgId: number) => {
   );
 };
 
-const fetchControllableUnitsNotInSpg = async (spgId: number) => {
-  const memberships = await listServiceProvidingGroupMembership({
-    query: { service_providing_group_id: "eq." + spgId },
-  }).then(throwOnError);
-
-  const memberCuIds = memberships.map((m) => m.controllable_unit_id);
-
-  const query =
-    memberCuIds.length > 0 ? { id: `not.in.(${memberCuIds.join(",")})` } : {};
-
-  const controllableUnits = await listControllableUnit({
-    query: {
-      ...query,
-      embed: CONTROLLABLE_UNIT_EMBED,
-    },
-  }).then(throwOnError);
-
-  return controllableUnits.map((cu) =>
-    mapEmbeddedControllableUnit(cu, undefined),
-  );
-};
-
 export const controllableUnitsInSpgQueryKey = (spgId: number) => [
   "controllableUnitsInSpg",
-  spgId,
-];
-
-export const controllableUnitsNotInSpgQueryKey = (spgId: number) => [
-  "controllableUnitsNotInSpg",
   spgId,
 ];
 
@@ -98,12 +71,40 @@ export const useControllableUnitsInSpg = (spgId: number) =>
     enabled: !!spgId,
   });
 
-export const useControllableUnitsNotInSpg = (spgId: number) =>
+const fetchAllControllableUnitsWithMembership = async (spgId: number) => {
+  const [memberships, allCUs] = await Promise.all([
+    listServiceProvidingGroupMembership({
+      query: { service_providing_group_id: "eq." + spgId },
+    }).then(throwOnError),
+    listControllableUnit({
+      query: { embed: CONTROLLABLE_UNIT_EMBED },
+    }).then(throwOnError),
+  ]);
+
+  const membershipIdByCuId = new Map(
+    memberships.map((m) => [m.controllable_unit_id, m.id]),
+  );
+
+  return allCUs.map((cu) =>
+    mapEmbeddedControllableUnit(cu, membershipIdByCuId.get(cu.id)),
+  );
+};
+
+export const allControllableUnitsWithMembershipQueryKey = (spgId: number) => [
+  "allControllableUnitsWithMembership",
+  spgId,
+];
+
+export const useAllControllableUnitsWithMembership = (spgId: number) =>
   useQuery({
-    queryKey: controllableUnitsNotInSpgQueryKey(spgId),
-    queryFn: () => fetchControllableUnitsNotInSpg(spgId),
+    queryKey: allControllableUnitsWithMembershipQueryKey(spgId),
+    queryFn: () => fetchAllControllableUnitsWithMembership(spgId),
     enabled: !!spgId,
   });
+
+export type CuWithMembership = NonNullable<
+  ReturnType<typeof useAllControllableUnitsWithMembership>["data"]
+>[number];
 
 export const useRemoveMembership = (spgId: number) => {
   const queryClient = useQueryClient();
@@ -117,7 +118,7 @@ export const useRemoveMembership = (spgId: number) => {
         queryKey: controllableUnitsInSpgQueryKey(spgId),
       });
       queryClient.invalidateQueries({
-        queryKey: controllableUnitsNotInSpgQueryKey(spgId),
+        queryKey: allControllableUnitsWithMembershipQueryKey(spgId),
       });
     },
   });
@@ -162,7 +163,7 @@ export const useAddMemberships = (spgId: number) => {
         queryKey: controllableUnitsInSpgQueryKey(spgId),
       });
       queryClient.invalidateQueries({
-        queryKey: controllableUnitsNotInSpgQueryKey(spgId),
+        queryKey: allControllableUnitsWithMembershipQueryKey(spgId),
       });
     },
   });
