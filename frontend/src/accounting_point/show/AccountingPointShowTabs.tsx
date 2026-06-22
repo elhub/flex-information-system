@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useGetIdentity, usePermissions, UserIdentity } from "ra-core";
 import { Tabs } from "../../components/ui";
 import {
@@ -5,22 +6,16 @@ import {
   AccountingPointGridLocation,
 } from "../../generated-client";
 import { AccountingPointGridLocationPanel } from "../grid_location/AccountingPointGridLocationPanel";
-import { AccountingPointLocationMap } from "./AccountingPointLocationMap";
+import {
+  AccountingPointLocationMap,
+  Substation,
+} from "./AccountingPointLocationMap";
 import { Permissions } from "../../auth/permissions";
 import { useTabSearchParam } from "../../hooks/useTabSearchParam";
 
-const userCanEditGridLocation = (
-  identity: UserIdentity | undefined,
-  accountingPoint: AccountingPoint,
-  gridLocation: AccountingPointGridLocation | undefined,
-) => {
-  const isFISO =
-    identity?.role === "flex_flexibility_information_system_operator";
-  if (isFISO) return true;
-  const isCSO = identity?.partyID == accountingPoint.system_operator_id;
-  if (gridLocation?.source === "grid_model") return false;
-  return !(gridLocation?.source === "cso" && !isCSO);
-};
+const userCanViewGrid = (identity: UserIdentity | undefined) =>
+  identity?.role === "flex_flexibility_information_system_operator" ||
+  identity?.role === "flex_system_operator";
 
 type Props = {
   accountingPoint: AccountingPoint;
@@ -43,7 +38,19 @@ export const AccountingPointShowTabs = ({
     "accounting_point_grid_location",
     "read",
   );
+  const canEditGridLocation = !!permissions?.allow(
+    "accounting_point_grid_location",
+    "update",
+  );
   const [tab, setTab] = useTabSearchParam("location");
+  const [selectedSubstation, setSelectedSubstation] =
+    useState<Substation | null>(null);
+
+  const handleSubstationClick = canEditGridLocation
+    ? (substation: Substation) => setSelectedSubstation(substation)
+    : undefined;
+
+  const handleClearSelection = () => setSelectedSubstation(null);
 
   return (
     <Tabs value={tab} onChange={setTab} className="relative top-[-24px]">
@@ -51,16 +58,20 @@ export const AccountingPointShowTabs = ({
         <Tabs.Tab label="Location" value="location" />
       </Tabs.List>
       <Tabs.Panel value="location">
-        {canViewLocation && <AccountingPointLocationMap location={location} />}
+        {canViewLocation && (
+          <AccountingPointLocationMap
+            location={location}
+            canViewGrid={userCanViewGrid(identity)}
+            onSubstationClick={handleSubstationClick}
+          />
+        )}
         {canViewGridLocation && (
           <AccountingPointGridLocationPanel
             apId={accountingPoint.id}
             gridLocation={gridLocation}
-            userCanEdit={userCanEditGridLocation(
-              identity,
-              accountingPoint,
-              gridLocation,
-            )}
+            userCanEdit={canEditGridLocation}
+            selectedSubstation={selectedSubstation}
+            onClearSelection={handleClearSelection}
           />
         )}
       </Tabs.Panel>

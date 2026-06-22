@@ -20,6 +20,7 @@ import {
 } from "../../components/EDS-ra";
 import { accountingPointViewModelQueryKey } from "../show/useAccountingPointViewModel";
 import { unTypedZodResolver, getFields } from "../../zod";
+import { Substation } from "../show/AccountingPointLocationMap";
 
 const fields = getFields(zAccountingPointGridLocationCreateRequest.shape);
 
@@ -27,16 +28,19 @@ export const AccountingPointGridLocationInput = ({
   apId,
   gridLocation,
   onDone,
+  selectedSubstation,
 }: {
   apId: number;
   gridLocation: AccountingPointGridLocation | undefined;
   onDone: () => void;
+  selectedSubstation?: Substation | null;
 }) => {
   const queryClient = useQueryClient();
   const notify = useNotify();
   const isCreate = gridLocation === undefined;
 
-  const record: Partial<
+  // initial form values + override with selected substation if present
+  const baseRecord: Partial<
     z.infer<typeof zAccountingPointGridLocationCreateRequest>
   > = isCreate
     ? { accounting_point_id: apId }
@@ -49,6 +53,15 @@ export const AccountingPointGridLocationInput = ({
         quality: gridLocation.quality,
         additional_information: gridLocation.additional_information ?? "",
       };
+
+  const record = selectedSubstation
+    ? {
+        ...baseRecord,
+        name: selectedSubstation.name,
+        object_type: "substation" as const,
+        business_id: selectedSubstation.business_id,
+      }
+    : baseRecord;
 
   const onSubmit = async (values: object) => {
     if (isCreate) {
@@ -77,6 +90,12 @@ export const AccountingPointGridLocationInput = ({
 
   return (
     <ResourceContextProvider value="accounting_point_grid_location">
+      {selectedSubstation && (
+        <div className="mb-4 rounded bg-green-50 border border-green-200 px-3 py-2 text-sm text-green-800">
+          Selected transformer from map:{" "}
+          <strong>{selectedSubstation.name}</strong>
+        </div>
+      )}
       <Form
         record={record}
         resolver={unTypedZodResolver(zAccountingPointGridLocationCreateRequest)}

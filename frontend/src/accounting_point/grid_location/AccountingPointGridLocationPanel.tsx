@@ -5,18 +5,32 @@ import { Button, Panel } from "../../components/ui";
 import { useTranslate } from "ra-core";
 import { IconPencil } from "@elhub/ds-icons";
 import { AccountingPointGridLocationInput } from "./AccountingPointGridLocationInput";
+import { Substation } from "../show/AccountingPointLocationMap";
 
 export const AccountingPointGridLocationPanel = ({
   apId,
   gridLocation,
   userCanEdit,
+  selectedSubstation,
+  onClearSelection,
 }: {
   apId: number;
   gridLocation: AccountingPointGridLocation | undefined;
   userCanEdit: boolean;
+  selectedSubstation?: Substation | null;
+  onClearSelection?: () => void;
 }) => {
   const translate = useTranslate();
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditingManual, setIsEditingManual] = useState(false);
+
+  // when a substation is clicked on the map, open the edit form
+  const isEditing = isEditingManual || (!!selectedSubstation && userCanEdit);
+  const setIsEditing = (value: boolean) => setIsEditingManual(value);
+
+  const handleDone = () => {
+    setIsEditing(false);
+    onClearSelection?.();
+  };
 
   return (
     <Panel border className="bg-white h-fit p-4">
@@ -39,7 +53,8 @@ export const AccountingPointGridLocationPanel = ({
         <AccountingPointGridLocationInput
           apId={apId}
           gridLocation={gridLocation}
-          onDone={() => setIsEditing(false)}
+          onDone={handleDone}
+          selectedSubstation={selectedSubstation}
         />
       ) : gridLocation == null ? (
         <div className="flex flex-col gap-4">
