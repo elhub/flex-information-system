@@ -130,10 +130,10 @@ AS $$
     WHERE i.eid::text = in_external_id
 $$;
 
--- changeset flex:auth-entity-identity-of-external-id-revoke runOnChange:false endDelimiter--
+-- changeset flex:auth-entity-identity-of-external-id-revoke runOnChange:false endDelimiter:--
 REVOKE EXECUTE ON FUNCTION auth.entity_identity_of_external_id(text) FROM public;
 
--- changeset flex:auth-entity-identity-of-external-id-grant runOnChange:true endDelimiter--
+-- changeset flex:auth-entity-identity-of-external-id-grant runOnChange:true endDelimiter:--
 GRANT EXECUTE ON FUNCTION auth.entity_identity_of_external_id(text) TO flex_common;
 
 -- changeset flex:auth-assume-party runOnChange:true endDelimiter:--
