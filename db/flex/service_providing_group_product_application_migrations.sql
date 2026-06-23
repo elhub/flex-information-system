@@ -4,7 +4,7 @@
 -- changeset flex:service-providing-group-product-application-product-type-insert-function runOnChange:true endDelimiter:--
 -- trigger to check that the upserted product types are active for the SO
 CREATE OR REPLACE FUNCTION
-SERVICE_PROVIDING_GROUP_PRODUCT_APPLICATION_PRODUCT_TYPE_INSERT()
+service_providing_group_product_application_product_type_insert()
 RETURNS trigger
 SECURITY INVOKER
 LANGUAGE plpgsql
@@ -41,13 +41,13 @@ service_providing_group_product_application_product_type_insert
 BEFORE INSERT OR UPDATE ON service_providing_group_product_application
 FOR EACH ROW
 EXECUTE FUNCTION
-SERVICE_PROVIDING_GROUP_PRODUCT_APPLICATION_PRODUCT_TYPE_INSERT();
+service_providing_group_product_application_product_type_insert();
 
 -- changeset flex:service-providing-group-product-application-sp-qualified-insert-function runOnChange:true endDelimiter:--
 -- trigger to check that the SP upserting the SPGPA is (being) qualified by the
 -- SO for these product types
 CREATE OR REPLACE FUNCTION
-SERVICE_PROVIDING_GROUP_PRODUCT_APPLICATION_SP_QUALIFIED_INSERT()
+service_providing_group_product_application_sp_qualified_insert()
 RETURNS trigger
 SECURITY INVOKER
 LANGUAGE plpgsql
@@ -94,7 +94,7 @@ service_providing_group_product_application_sp_qualified_insert
 BEFORE INSERT OR UPDATE ON service_providing_group_product_application
 FOR EACH ROW
 EXECUTE FUNCTION
-SERVICE_PROVIDING_GROUP_PRODUCT_APPLICATION_SP_QUALIFIED_INSERT();
+service_providing_group_product_application_sp_qualified_insert();
 
 -- changeset flex:spgpa-add-ramping-columns runOnChange:false endDelimiter:;
 ALTER TABLE flex.service_providing_group_product_application
@@ -104,7 +104,7 @@ CHECK (ramping_capability IN ('always', 'partial', 'never'))
 -- SPGPA-VAL007
 CONSTRAINT spg_product_application_ramping_capability_required_check CHECK (
     ramping_capability IS NOT NULL
-    OR NOT (1 = ANY(product_type_ids))
+    OR NOT (1 = any(product_type_ids))
 );
 
 ALTER TABLE flex.service_providing_group_product_application
@@ -112,7 +112,7 @@ ADD COLUMN IF NOT EXISTS ramping_description text NULL
 CONSTRAINT spg_product_application_ramping_description_check CHECK (
     ramping_description IS NOT NULL
     -- SPGPA-VAL008
-    OR NOT (1 = ANY(product_type_ids))
+    OR NOT (1 = any(product_type_ids))
 );
 
 ALTER TABLE flex.service_providing_group_product_application_history
