@@ -26,6 +26,7 @@ from flex.models import (
     ServiceProvidingGroupProductApplicationHistoryResponse,
     ServiceProvidingGroupProductApplicationUpdateRequest,
     ServiceProvidingGroupProductApplicationStatus,
+    ServiceProvidingGroupProductApplicationRampingCapability,
     ErrorMessage,
     EmptyObject,
 )
@@ -176,8 +177,8 @@ def data():
 
     # apply for some product types for both SO and qualify the applications
 
-    # random choice of product type, it does not matter
-    pt_ids = [5, 7]
+    # random choice of product type. 1 is required for a few tests
+    pt_ids = [5, 7, 1]
 
     for clt, id in [(client_so, so_id), (client_other_so, other_so_id)]:
         for pt_id in pt_ids:
@@ -537,6 +538,40 @@ def test_spgpa_fiso_sp_so(data):
         ),
     )
     assert isinstance(u, ErrorMessage)
+
+    # SPGPA-VAL007 - ramping for manual congestion(product type 1)
+    u = update_service_providing_group_product_application.sync(
+        client=client_fiso,
+        id=cast(int, spgpa.id),
+        body=ServiceProvidingGroupProductApplicationUpdateRequest(
+            product_type_ids=[1],
+            ramping_description="Description",
+        ),
+    )
+    # missing ramping capability
+    assert isinstance(u, ErrorMessage)
+
+    u = update_service_providing_group_product_application.sync(
+        client=client_fiso,
+        id=cast(int, spgpa.id),
+        body=ServiceProvidingGroupProductApplicationUpdateRequest(
+            product_type_ids=[1],
+            ramping_capability=ServiceProvidingGroupProductApplicationRampingCapability.ALWAYS,
+        ),
+    )
+    # missing ramping description
+    assert isinstance(u, ErrorMessage)
+
+    u = update_service_providing_group_product_application.sync(
+        client=client_fiso,
+        id=cast(int, spgpa.id),
+        body=ServiceProvidingGroupProductApplicationUpdateRequest(
+            product_type_ids=[1],
+            ramping_capability=ServiceProvidingGroupProductApplicationRampingCapability.ALWAYS,
+            ramping_description="Description",
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
 
     # rejected -> requested : ok
     # TODO - this test is disabled since we have remove the

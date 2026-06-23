@@ -29,8 +29,6 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
                 kilowatts. Example: 150.5.
             maximum_active_power_down (float): The maximum active power applied for in regulation direction down. Stored in
                 kilowatts. Example: 150.5.
-            ramping_capability (ServiceProvidingGroupProductApplicationRampingCapability): The ramping capability of the
-                service providing group for this product application. Example: always.
             status (ServiceProvidingGroupProductApplicationStatus | Unset): The status of the application. Example:
                 prequalification.
             additional_information (None | str | Unset): Free text field for extra information about the application if
@@ -39,6 +37,7 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
                 2022-08-08T12:00:00+02.
             verified_at (datetime.datetime | None | Unset): When the product application was last verified. Example:
                 2021-08-08T10:00:00+02.
+            ramping_capability (None | ServiceProvidingGroupProductApplicationRampingCapability | Unset):
             ramping_description (None | str | Unset): Free text description of ramping details. Only required for product
                 Manual Congestion. Example: Ramp rate limited during peak hours..
     """
@@ -48,11 +47,11 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
     product_type_ids: list[int]
     maximum_active_power_up: float
     maximum_active_power_down: float
-    ramping_capability: ServiceProvidingGroupProductApplicationRampingCapability
     status: ServiceProvidingGroupProductApplicationStatus | Unset = UNSET
     additional_information: None | str | Unset = UNSET
     prequalified_at: datetime.datetime | None | Unset = UNSET
     verified_at: datetime.datetime | None | Unset = UNSET
+    ramping_capability: None | ServiceProvidingGroupProductApplicationRampingCapability | Unset = UNSET
     ramping_description: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -66,8 +65,6 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
         maximum_active_power_up = self.maximum_active_power_up
 
         maximum_active_power_down = self.maximum_active_power_down
-
-        ramping_capability = self.ramping_capability.value
 
         status: str | Unset = UNSET
         if not isinstance(self.status, Unset):
@@ -95,6 +92,14 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
         else:
             verified_at = self.verified_at
 
+        ramping_capability: None | str | Unset
+        if isinstance(self.ramping_capability, Unset):
+            ramping_capability = UNSET
+        elif isinstance(self.ramping_capability, ServiceProvidingGroupProductApplicationRampingCapability):
+            ramping_capability = self.ramping_capability.value
+        else:
+            ramping_capability = self.ramping_capability
+
         ramping_description: None | str | Unset
         if isinstance(self.ramping_description, Unset):
             ramping_description = UNSET
@@ -110,7 +115,6 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
                 "product_type_ids": product_type_ids,
                 "maximum_active_power_up": maximum_active_power_up,
                 "maximum_active_power_down": maximum_active_power_down,
-                "ramping_capability": ramping_capability,
             }
         )
         if status is not UNSET:
@@ -121,6 +125,8 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
             field_dict["prequalified_at"] = prequalified_at
         if verified_at is not UNSET:
             field_dict["verified_at"] = verified_at
+        if ramping_capability is not UNSET:
+            field_dict["ramping_capability"] = ramping_capability
         if ramping_description is not UNSET:
             field_dict["ramping_description"] = ramping_description
 
@@ -138,8 +144,6 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
         maximum_active_power_up = d.pop("maximum_active_power_up")
 
         maximum_active_power_down = d.pop("maximum_active_power_down")
-
-        ramping_capability = ServiceProvidingGroupProductApplicationRampingCapability(d.pop("ramping_capability"))
 
         _status = d.pop("status", UNSET)
         status: ServiceProvidingGroupProductApplicationStatus | Unset
@@ -191,6 +195,25 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
 
         verified_at = _parse_verified_at(d.pop("verified_at", UNSET))
 
+        def _parse_ramping_capability(
+            data: object,
+        ) -> None | ServiceProvidingGroupProductApplicationRampingCapability | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                ramping_capability_type_0 = ServiceProvidingGroupProductApplicationRampingCapability(data)
+
+                return ramping_capability_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(None | ServiceProvidingGroupProductApplicationRampingCapability | Unset, data)
+
+        ramping_capability = _parse_ramping_capability(d.pop("ramping_capability", UNSET))
+
         def _parse_ramping_description(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -206,11 +229,11 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
             product_type_ids=product_type_ids,
             maximum_active_power_up=maximum_active_power_up,
             maximum_active_power_down=maximum_active_power_down,
-            ramping_capability=ramping_capability,
             status=status,
             additional_information=additional_information,
             prequalified_at=prequalified_at,
             verified_at=verified_at,
+            ramping_capability=ramping_capability,
             ramping_description=ramping_description,
         )
 

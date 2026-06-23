@@ -105,13 +105,15 @@ export const SpgpaShowSummary = ({ spgpa, spg }: Props) => {
             unit="kW"
           />
 
-          <LabelValue
-            size="small"
-            labelKey="service_providing_group_product_application.ramping_capability"
-            value={translateEnum(
-              `service_providing_group_product_application.ramping_capability.${spgpa.ramping_capability}`,
-            )}
-          />
+          {spgpa.ramping_capability && (
+            <LabelValue
+              size="small"
+              labelKey="service_providing_group_product_application.ramping_capability"
+              value={translateEnum(
+                `service_providing_group_product_application.ramping_capability.${spgpa.ramping_capability}`,
+              )}
+            />
+          )}
 
           {spgpa.ramping_description && (
             <LabelValue

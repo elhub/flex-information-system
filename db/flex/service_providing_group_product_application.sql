@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS service_providing_group_product_application (
     maximum_active_power_up decimal(9, 3) NOT NULL,
     maximum_active_power_down decimal(9, 3) NOT NULL,
     additional_information text NULL,
-    ramping_capability text NOT NULL,
+    ramping_capability text NULL,
     ramping_description text NULL,
     prequalified_at timestamp with time zone NULL,
     verified_at timestamp with time zone NULL,
@@ -48,6 +48,12 @@ CREATE TABLE IF NOT EXISTS service_providing_group_product_application (
     CONSTRAINT spg_product_application_ramping_capability_check CHECK (
         ramping_capability IN ('always', 'partial', 'never')
     ),
+    -- SPGPA-VAL007
+    CONSTRAINT spg_product_application_ramping_capability_required_check CHECK (
+        ramping_capability IS NOT null
+        OR NOT (1 = any(product_type_ids))
+    ),
+    -- SPGPA-VAL008
     CONSTRAINT spg_product_application_ramping_description_check CHECK (
         ramping_description IS NOT null
         -- manual_congestion has product_type.id = 1 (relies on reference_data/product_type.csv insertion order)

@@ -2808,7 +2808,7 @@ export type ServiceProvidingGroupProductApplicationUpdateRequest = {
    * When the product application was last verified.
    */
   verified_at?: string;
-  ramping_capability?: ServiceProvidingGroupProductApplicationRampingCapability;
+  ramping_capability?: ServiceProvidingGroupProductApplicationRampingCapability | null;
   /**
    * Free text description of ramping details. Only required for product Manual Congestion.
    */
@@ -2852,7 +2852,7 @@ export type ServiceProvidingGroupProductApplicationCreateRequest = {
    * When the product application was last verified.
    */
   verified_at?: string;
-  ramping_capability: ServiceProvidingGroupProductApplicationRampingCapability;
+  ramping_capability?: ServiceProvidingGroupProductApplicationRampingCapability | null;
   /**
    * Free text description of ramping details. Only required for product Manual Congestion.
    */
@@ -2900,7 +2900,7 @@ export type ServiceProvidingGroupProductApplication = {
    * When the product application was last verified.
    */
   verified_at?: string;
-  ramping_capability: ServiceProvidingGroupProductApplicationRampingCapability;
+  ramping_capability?: ServiceProvidingGroupProductApplicationRampingCapability | null;
   /**
    * Free text description of ramping details. Only required for product Manual Congestion.
    */
@@ -4111,7 +4111,7 @@ export type ServiceProvidingGroupProductApplicationHistory = {
    * When the product application was last verified.
    */
   verified_at?: string;
-  ramping_capability: ServiceProvidingGroupProductApplicationRampingCapability;
+  ramping_capability?: ServiceProvidingGroupProductApplicationRampingCapability | null;
   /**
    * Free text description of ramping details. Only required for product Manual Congestion.
    */
@@ -5222,7 +5222,7 @@ export type ServiceProvidingGroupProductApplicationWritable = {
    * When the product application was last verified.
    */
   verified_at?: string;
-  ramping_capability: ServiceProvidingGroupProductApplicationRampingCapability;
+  ramping_capability?: ServiceProvidingGroupProductApplicationRampingCapability | null;
   /**
    * Free text description of ramping details. Only required for product Manual Congestion.
    */
@@ -5978,7 +5978,7 @@ export type ServiceProvidingGroupProductApplicationHistoryWritable = {
    * When the product application was last verified.
    */
   verified_at?: string;
-  ramping_capability: ServiceProvidingGroupProductApplicationRampingCapability;
+  ramping_capability?: ServiceProvidingGroupProductApplicationRampingCapability | null;
   /**
    * Free text description of ramping details. Only required for product Manual Congestion.
    */

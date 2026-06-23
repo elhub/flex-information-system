@@ -5,7 +5,10 @@ import { useLocation } from "react-router-dom";
 import { z } from "zod";
 import { getFields, unTypedZodResolver } from "../../zod";
 import { useCreateOrUpdate } from "../../auth";
-import { zServiceProvidingGroupProductApplicationCreateRequest } from "../../generated-client/zod.gen";
+import {
+  zServiceProvidingGroupProductApplicationCreateRequest,
+  zServiceProvidingGroupProductApplicationRampingCapability,
+} from "../../generated-client/zod.gen";
 import {
   Alert,
   FormContainer,
@@ -28,10 +31,14 @@ import {
 } from "../../components/EDS-ra/inputs";
 import { ProductTypeArrayInput } from "../../product_type/components";
 
-// ramping_description is required in the frontend even though the API allows
-// null (the API-level constraint only enforces non-null for manual_congestion)
+// ramping_capability and ramping_description are required in the frontend even
+// though the API allows null (the API-level constraint only enforces non-null
+// for manual_congestion, but this form is only used for applications where
+// they are required)
 const spgpaFormSchema =
   zServiceProvidingGroupProductApplicationCreateRequest.extend({
+    ramping_capability:
+      zServiceProvidingGroupProductApplicationRampingCapability,
     ramping_description: z.string(),
   });
 

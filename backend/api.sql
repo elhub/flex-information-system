@@ -569,7 +569,7 @@ CREATE TABLE api.service_providing_group_product_application (
     additional_information text NULL,
     prequalified_at timestamp with time zone NULL,
     verified_at timestamp with time zone NULL,
-    ramping_capability text NOT NULL,
+    ramping_capability text NULL,
     ramping_description text NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL
@@ -586,7 +586,7 @@ CREATE TABLE api.service_providing_group_product_application_history (
     additional_information text NULL,
     prequalified_at timestamp with time zone NULL,
     verified_at timestamp with time zone NULL,
-    ramping_capability text NOT NULL,
+    ramping_capability text NULL,
     ramping_description text NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL,

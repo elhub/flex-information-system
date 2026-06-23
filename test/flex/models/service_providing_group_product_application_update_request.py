@@ -35,8 +35,7 @@ class ServiceProvidingGroupProductApplicationUpdateRequest:
                 2022-08-08T12:00:00+02.
             verified_at (datetime.datetime | None | Unset): When the product application was last verified. Example:
                 2021-08-08T10:00:00+02.
-            ramping_capability (ServiceProvidingGroupProductApplicationRampingCapability | Unset): The ramping capability of
-                the service providing group for this product application. Example: always.
+            ramping_capability (None | ServiceProvidingGroupProductApplicationRampingCapability | Unset):
             ramping_description (None | str | Unset): Free text description of ramping details. Only required for product
                 Manual Congestion. Example: Ramp rate limited during peak hours..
     """
@@ -48,7 +47,7 @@ class ServiceProvidingGroupProductApplicationUpdateRequest:
     additional_information: None | str | Unset = UNSET
     prequalified_at: datetime.datetime | None | Unset = UNSET
     verified_at: datetime.datetime | None | Unset = UNSET
-    ramping_capability: ServiceProvidingGroupProductApplicationRampingCapability | Unset = UNSET
+    ramping_capability: None | ServiceProvidingGroupProductApplicationRampingCapability | Unset = UNSET
     ramping_description: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -87,9 +86,13 @@ class ServiceProvidingGroupProductApplicationUpdateRequest:
         else:
             verified_at = self.verified_at
 
-        ramping_capability: str | Unset = UNSET
-        if not isinstance(self.ramping_capability, Unset):
+        ramping_capability: None | str | Unset
+        if isinstance(self.ramping_capability, Unset):
+            ramping_capability = UNSET
+        elif isinstance(self.ramping_capability, ServiceProvidingGroupProductApplicationRampingCapability):
             ramping_capability = self.ramping_capability.value
+        else:
+            ramping_capability = self.ramping_capability
 
         ramping_description: None | str | Unset
         if isinstance(self.ramping_description, Unset):
@@ -180,12 +183,24 @@ class ServiceProvidingGroupProductApplicationUpdateRequest:
 
         verified_at = _parse_verified_at(d.pop("verified_at", UNSET))
 
-        _ramping_capability = d.pop("ramping_capability", UNSET)
-        ramping_capability: ServiceProvidingGroupProductApplicationRampingCapability | Unset
-        if isinstance(_ramping_capability, Unset):
-            ramping_capability = UNSET
-        else:
-            ramping_capability = ServiceProvidingGroupProductApplicationRampingCapability(_ramping_capability)
+        def _parse_ramping_capability(
+            data: object,
+        ) -> None | ServiceProvidingGroupProductApplicationRampingCapability | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                ramping_capability_type_0 = ServiceProvidingGroupProductApplicationRampingCapability(data)
+
+                return ramping_capability_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(None | ServiceProvidingGroupProductApplicationRampingCapability | Unset, data)
+
+        ramping_capability = _parse_ramping_capability(d.pop("ramping_capability", UNSET))
 
         def _parse_ramping_description(data: object) -> None | str | Unset:
             if data is None:

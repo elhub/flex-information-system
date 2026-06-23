@@ -3993,6 +3993,7 @@ resources:
           The ramping capability of the service providing group for this product application.
         format: text
         type: string
+        nullable: true
         enum:
           - id: always
             x-intl:

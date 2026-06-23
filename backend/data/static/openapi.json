@@ -1055,6 +1055,7 @@
                 "description": "The ramping capability of the service providing group for this product application.",
                 "format": "text",
                 "type": "string",
+                "nullable": true,
                 "enum": [
                     "always",
                     "partial",
@@ -5885,7 +5886,15 @@
                         "example": "2021-08-08T10:00:00+02"
                     },
                     "ramping_capability": {
-                        "$ref": "#/components/schemas/service_providing_group_product_application_ramping_capability"
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/service_providing_group_product_application_ramping_capability"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     },
                     "ramping_description": {
                         "description": "Free text description of ramping details. Only required for product Manual Congestion.",
@@ -5971,7 +5980,15 @@
                         "example": "2021-08-08T10:00:00+02"
                     },
                     "ramping_capability": {
-                        "$ref": "#/components/schemas/service_providing_group_product_application_ramping_capability"
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/service_providing_group_product_application_ramping_capability"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     },
                     "ramping_description": {
                         "description": "Free text description of ramping details. Only required for product Manual Congestion.",
@@ -5986,8 +6003,7 @@
                     "procuring_system_operator_id",
                     "product_type_ids",
                     "maximum_active_power_up",
-                    "maximum_active_power_down",
-                    "ramping_capability"
+                    "maximum_active_power_down"
                 ]
             },
             "service_providing_group_product_application_response": {
@@ -6072,7 +6088,15 @@
                         "example": "2021-08-08T10:00:00+02"
                     },
                     "ramping_capability": {
-                        "$ref": "#/components/schemas/service_providing_group_product_application_ramping_capability"
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/service_providing_group_product_application_ramping_capability"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     },
                     "ramping_description": {
                         "description": "Free text description of ramping details. Only required for product Manual Congestion.",
@@ -6143,7 +6167,6 @@
                     "status",
                     "maximum_active_power_up",
                     "maximum_active_power_down",
-                    "ramping_capability",
                     "recorded_at",
                     "recorded_by"
                 ]
@@ -8467,7 +8490,15 @@
                         "example": "2021-08-08T10:00:00+02"
                     },
                     "ramping_capability": {
-                        "$ref": "#/components/schemas/service_providing_group_product_application_ramping_capability"
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/service_providing_group_product_application_ramping_capability"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     },
                     "ramping_description": {
                         "description": "Free text description of ramping details. Only required for product Manual Congestion.",
@@ -8519,7 +8550,6 @@
                     "status",
                     "maximum_active_power_up",
                     "maximum_active_power_down",
-                    "ramping_capability",
                     "recorded_at",
                     "recorded_by",
                     "service_providing_group_product_application_id"

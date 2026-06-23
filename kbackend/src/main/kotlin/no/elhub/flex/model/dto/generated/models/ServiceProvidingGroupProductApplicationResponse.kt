@@ -72,7 +72,7 @@ public data class ServiceProvidingGroupProductApplicationResponse(
    * The ramping capability of the service providing group for this product application.
    */
   @SerialName("ramping_capability")
-  public val rampingCapability: ServiceProvidingGroupProductApplicationRampingCapability,
+  public val rampingCapability: ServiceProvidingGroupProductApplicationRampingCapability? = null,
   /**
    * Free text description of ramping details. Only required for product Manual Congestion.
    */
