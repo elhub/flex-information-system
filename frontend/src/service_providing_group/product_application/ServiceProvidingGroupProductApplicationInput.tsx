@@ -74,14 +74,12 @@ const RampingNotice = () => {
   const rampingCapability = watch("ramping_capability");
 
   return (
-    <Alert variant="info">
-      <ul className="list-disc pl-4">
-        <li>{translate("text.spgpa_ramping_details")}</li>
-        {rampingCapability !== "always" && (
-          <li>{translate("text.spgpa_ramping_deviations")}</li>
-        )}
-      </ul>
-    </Alert>
+    <ul className="list-disc pl-4">
+      <li>{translate("text.spgpa_ramping_details")}</li>
+      {rampingCapability !== "always" && (
+        <li>{translate("text.spgpa_ramping_deviations")}</li>
+      )}
+    </ul>
   );
 };
 
@@ -172,12 +170,12 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
           description
           tooltip={false}
         />
-        <RampingNotice />
         <TextAreaInput
           {...fields.ramping_description}
           rows={5}
           description
           tooltip={false}
+          infoElement={<RampingNotice />}
         />
         <TextAreaInput
           {...fields.additional_information}
