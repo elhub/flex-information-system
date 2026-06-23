@@ -41,6 +41,13 @@
             "matchFileNames": ["frontend/**"],
             "commitMessageSuffix": "",
         },
+        // react-admin v5 only supports MUI up to v7. Remove this rule when react-admin
+        // adds support for a newer MUI major version.
+        {
+            "matchPackageNames": ["@mui/icons-material", "@mui/material"],
+            "matchFileNames": ["frontend/**"],
+            "allowedVersions": "<8",
+        },
         {
             "groupName": "local",
             "matchFileNames": ["test/**", "requirements-dev.txt" ],

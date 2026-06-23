@@ -8,6 +8,7 @@ import (
 	"flex/auth/scope"
 	"flex/data"
 	"flex/event"
+	"flex/grid"
 	"flex/internal/middleware"
 	"flex/internal/openapi"
 	"flex/internal/trace"
@@ -352,6 +353,13 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 		return fmt.Errorf("could not create data API module: %w", err)
 	}
 
+	slog.DebugContext(ctx, "Creating grid API")
+
+	gridAPIHandler, err := grid.NewAPIHandler(postgRESTUpstream)
+	if err != nil {
+		return fmt.Errorf("could not create grid API module: %w", err)
+	}
+
 	// launch the event worker
 	go func() {
 		select {
@@ -469,6 +477,13 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 			[]string{"HEAD", "GET", "POST", "PATCH", "DELETE", "OPTIONS"},
 			"/api/v1/*url",
 			WrapHandler(http.StripPrefix("/api/v1", middleware.RequireAPIVersion(middleware.PrometheusMuxInstrumentation(dataAPIHandler)))), //nolint:contextcheck
+		)
+
+		// grid API endpoint
+		router.Match(
+			[]string{"HEAD", "GET", "OPTIONS"},
+			"/grid/v0/*url",
+			WrapHandler(http.StripPrefix("/grid/v0", gridAPIHandler)), //nolint:contextcheck
 		)
 	} //end:nolint:contextcheck
 
