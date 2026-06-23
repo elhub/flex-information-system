@@ -76,10 +76,10 @@ BEGIN
 END;
 $$;
 
--- changeset flex:auth-get-or-create-entity-revoke runOnChange:false endDelimiter--
+-- changeset flex:auth-get-or-create-entity-revoke runOnChange:false endDelimiter:--
 REVOKE EXECUTE ON FUNCTION auth.get_or_create_entity(text, text, text) FROM public;
 
--- changeset flex:auth-get-or-create-entity-grant runOnChange:true endDelimiter--
+-- changeset flex:auth-get-or-create-entity-grant runOnChange:true endDelimiter:--
 GRANT EXECUTE ON FUNCTION auth.get_or_create_entity(text, text, text) TO flex_anonymous;
 
 -- changeset flex:auth-entity-client-by-uuid runOnChange:true endDelimiter:--
