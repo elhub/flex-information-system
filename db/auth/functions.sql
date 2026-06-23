@@ -104,10 +104,10 @@ AS $$
     WHERE clt.client_id::text = in_client_id
 $$;
 
--- changeset flex:auth-entity-client-by-uuid-revoke runOnChange:false endDelimiter--
+-- changeset flex:auth-entity-client-by-uuid-revoke runOnChange:false endDelimiter:--
 REVOKE EXECUTE ON FUNCTION auth.entity_client_by_uuid(text) FROM public;
 
--- changeset flex:auth-entity-client-by-uuid-grant runOnChange:true endDelimiter--
+-- changeset flex:auth-entity-client-by-uuid-grant runOnChange:true endDelimiter:--
 GRANT EXECUTE ON FUNCTION auth.entity_client_by_uuid(text) TO flex_anonymous;
 
 -- changeset flex:entity-identity-of-external-id runOnChange:true endDelimiter:--
