@@ -23,7 +23,7 @@ AS $$
         AND clt.client_secret = public.crypt(_client_secret, clt.client_secret)
 $$;
 
--- changeset flex:auth-entity-of-credentials-revoke runOnChange:false endDelimiter--
+-- changeset flex:auth-entity-of-credentials-revoke runOnChange:false endDelimiter:--
 REVOKE EXECUTE ON FUNCTION auth.entity_of_credentials(text, text) FROM public;
 
 -- changeset flex:auth-entity-of-credentials-execute runOnChange:true endDelimiter:--
