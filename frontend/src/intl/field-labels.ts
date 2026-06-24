@@ -1862,9 +1862,9 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Prekvalifisert",
     "service_providing_group_product_application.verified_at": "Verifisert",
     "service_providing_group_product_application.ramping_capability":
-      "Ramping capability",
+      "Rampingevne",
     "service_providing_group_product_application.ramping_description":
-      "Ramping description",
+      "Rampingbeskrivelse",
     "service_providing_group_product_application.recorded_at": "Registrert",
     "service_providing_group_product_application.recorded_by": "Registrert av",
     "service_providing_group_product_application_history.id": "ID",
@@ -1886,9 +1886,9 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application_history.verified_at":
       "Verifisert",
     "service_providing_group_product_application_history.ramping_capability":
-      "Ramping capability",
+      "Rampingevne",
     "service_providing_group_product_application_history.ramping_description":
-      "Ramping description",
+      "Rampingbeskrivelse",
     "service_providing_group_product_application_history.recorded_at":
       "Registrert",
     "service_providing_group_product_application_history.recorded_by":
@@ -2588,9 +2588,9 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Prekvalifisert",
     "service_providing_group_product_application.verified_at": "Verifisert",
     "service_providing_group_product_application.ramping_capability":
-      "Ramping capability",
+      "Rampingevne",
     "service_providing_group_product_application.ramping_description":
-      "Ramping description",
+      "Rampingbeskriving",
     "service_providing_group_product_application.recorded_at": "Registrert",
     "service_providing_group_product_application.recorded_by": "Registrert av",
     "service_providing_group_product_application_history.id": "ID",
@@ -2612,9 +2612,9 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application_history.verified_at":
       "Verifisert",
     "service_providing_group_product_application_history.ramping_capability":
-      "Ramping capability",
+      "Rampingevne",
     "service_providing_group_product_application_history.ramping_description":
-      "Ramping description",
+      "Rampingbeskriving",
     "service_providing_group_product_application_history.recorded_at":
       "Registrert",
     "service_providing_group_product_application_history.recorded_by":

@@ -3998,23 +3998,23 @@ resources:
           - id: always
             x-intl:
               en: Always
-              nb: Always
-              nn: Always
+              nb: Alltid
+              nn: Alltid
           - id: partial
             x-intl:
               en: Partial
-              nb: Partial
-              nn: Partial
+              nb: Noen ganger
+              nn: Nokre gonger
           - id: never
             x-intl:
               en: Never
-              nb: Never
-              nn: Never
+              nb: Aldri
+              nn: Aldri
         example: always
         x-intl:
           en: Ramping capability
-          nb: Ramping capability
-          nn: Ramping capability
+          nb: Rampingevne
+          nn: Rampingevne
       ramping_description:
         description: >-
           Free text description of ramping details. Only required for product Manual Congestion.
@@ -4024,8 +4024,8 @@ resources:
         example: "Units are (dis)connected one by one to achieve a stepwise profile. We ensure linearity on a minute resolution."
         x-intl:
           en: Ramping description
-          nb: Ramping description
-          nn: Ramping description
+          nb: Rampingbeskrivelse
+          nn: Rampingbeskriving
 
   - id: service_providing_group_product_suspension
     acronym: SPGPS

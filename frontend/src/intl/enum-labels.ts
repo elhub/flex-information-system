@@ -432,11 +432,11 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_providing_group_product_application.status.verified": "Verifisert",
     "service_providing_group_product_application.status.rejected": "Avvist",
     "service_providing_group_product_application.ramping_capability.always":
-      "Always",
+      "Alltid",
     "service_providing_group_product_application.ramping_capability.partial":
-      "Partial",
+      "Noen ganger",
     "service_providing_group_product_application.ramping_capability.never":
-      "Never",
+      "Aldri",
     "service_providing_group_product_suspension.reason.failed_verification":
       "Feilet verifisering",
     "service_providing_group_product_suspension.reason.other": "Annet",
@@ -598,11 +598,11 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_providing_group_product_application.status.verified": "Verifisert",
     "service_providing_group_product_application.status.rejected": "Avvist",
     "service_providing_group_product_application.ramping_capability.always":
-      "Always",
+      "Alltid",
     "service_providing_group_product_application.ramping_capability.partial":
-      "Partial",
+      "Nokre gonger",
     "service_providing_group_product_application.ramping_capability.never":
-      "Never",
+      "Aldri",
     "service_providing_group_product_suspension.reason.failed_verification":
       "Feila verifisering",
     "service_providing_group_product_suspension.reason.other": "Anna",
