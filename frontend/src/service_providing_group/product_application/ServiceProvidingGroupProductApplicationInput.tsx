@@ -76,6 +76,7 @@ const RampingNotice = () => {
   return (
     <ul className="list-disc pl-4">
       <li>{translate("text.spgpa_ramping_details")}</li>
+      <li>{translate("text.spgpa_ramping_rate")}</li>
       {rampingCapability !== "always" && (
         <li>{translate("text.spgpa_ramping_deviations")}</li>
       )}
