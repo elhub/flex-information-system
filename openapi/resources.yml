@@ -4021,7 +4021,7 @@ resources:
         format: text
         type: string
         nullable: true
-        example: "Ramp rate limited during peak hours."
+        example: "Units are (dis)connected one by one to achieve a stepwise profile. We ensure linearity on a minute resolution."
         x-intl:
           en: Ramping description
           nb: Ramping description

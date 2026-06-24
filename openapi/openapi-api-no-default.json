@@ -5835,7 +5835,7 @@
                         "format": "text",
                         "type": "string",
                         "nullable": true,
-                        "example": "Ramp rate limited during peak hours."
+                        "example": "Units are (dis)connected one by one to achieve a stepwise profile. We ensure linearity on a minute resolution."
                     }
                 }
             },
@@ -5928,7 +5928,7 @@
                         "format": "text",
                         "type": "string",
                         "nullable": true,
-                        "example": "Ramp rate limited during peak hours."
+                        "example": "Units are (dis)connected one by one to achieve a stepwise profile. We ensure linearity on a minute resolution."
                     }
                 },
                 "required": [
@@ -6035,7 +6035,7 @@
                         "format": "text",
                         "type": "string",
                         "nullable": true,
-                        "example": "Ramp rate limited during peak hours."
+                        "example": "Units are (dis)connected one by one to achieve a stepwise profile. We ensure linearity on a minute resolution."
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
@@ -8417,7 +8417,7 @@
                         "format": "text",
                         "type": "string",
                         "nullable": true,
-                        "example": "Ramp rate limited during peak hours."
+                        "example": "Units are (dis)connected one by one to achieve a stepwise profile. We ensure linearity on a minute resolution."
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",

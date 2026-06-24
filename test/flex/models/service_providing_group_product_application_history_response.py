@@ -43,7 +43,8 @@ class ServiceProvidingGroupProductApplicationHistoryResponse:
             2021-08-08T10:00:00+02.
         ramping_capability (None | ServiceProvidingGroupProductApplicationRampingCapability | Unset):
         ramping_description (None | str | Unset): Free text description of ramping details. Only required for product
-            Manual Congestion. Example: Ramp rate limited during peak hours..
+            Manual Congestion. Example: Units are (dis)connected one by one to achieve a stepwise profile. We ensure
+            linearity on a minute resolution..
         replaced_by (int | None | Unset): The identity that updated the resource when it was replaced. Example: 90.
         replaced_at (datetime.datetime | None | Unset): When the resource was replaced in the system. Example:
             2024-07-07T10:00:00+00:00.
