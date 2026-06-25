@@ -4,9 +4,9 @@ const noticeTypes = [
     shortId: "accounting_point_grid_location.source_insufficient",
     label: "Insufficient Grid Location Source",
     description:
-      "Accounting point has a grid location registered, but the source is not trusted (not cso or grid_model).",
+      "As the accounting point has at least one non-small controllable unit, its grid location must come from a reliable source (CSO or grid model) and be confirmed. The currently registered information is not of high enough quality.",
     action:
-      "Update the grid location source to a trusted source (cso or grid_model).",
+      "Check the grid location information on the accounting point, set a voltage level and confirm it.",
   },
   {
     id: "no.elhub.flex.accounting_point_grid_location.missing",
