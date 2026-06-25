@@ -29,7 +29,6 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         sonarProjectSources = "backend"
                         workingDir = "backend"
                     }
-                    analyzeDependencies = false
                 }
 
                 dockerBuild {
@@ -134,6 +133,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
                 gradleVerify {
                     workingDir = "kbackend"
                     enablePublishMetrics = true
+                    analyzeDependencies = false
                 }.buildType.triggerOnVcsChange {
                     triggerRules = """
                         -:*
