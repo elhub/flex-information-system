@@ -94,6 +94,32 @@ USING (
     )
 );
 
+DROP POLICY IF EXISTS "CUSC_SO002_SP002_same_party_type"
+ON controllable_unit_suspension_comment;
+CREATE POLICY "CUSC_SO002_SP002_same_party_type"
+ON controllable_unit_suspension_comment
+FOR SELECT
+TO flex_system_operator, flex_service_provider
+USING (
+    controllable_unit_suspension_comment.visibility = 'same_party_type' -- noqa
+    AND EXISTS (
+        SELECT 1
+        FROM flex.identity AS comment_creator
+            INNER JOIN flex.party AS creator_party
+                ON comment_creator.party_id = creator_party.id
+            INNER JOIN flex.party AS current_party
+                ON current_party.id = (SELECT flex.current_party())
+        WHERE comment_creator.id = controllable_unit_suspension_comment.created_by -- noqa
+            AND creator_party.type = current_party.type
+    )
+    AND EXISTS (
+        SELECT 1
+        FROM flex.controllable_unit_suspension_involved_parties AS cus_ip -- noqa
+        WHERE cus_ip.controllable_unit_suspension_id = controllable_unit_suspension_comment.controllable_unit_suspension_id -- noqa
+            AND cus_ip.party_id = (SELECT flex.current_party())
+    )
+);
+
 CREATE OR REPLACE FUNCTION
 cus_comment_latest_visibility(in_cusc_id bigint)
 RETURNS text
@@ -156,6 +182,34 @@ USING (
     cus_comment_latest_visibility(
         controllable_unit_suspension_comment_history.id -- noqa
     ) = 'any_involved_party'
+    AND EXISTS (
+        SELECT 1
+        FROM flex.controllable_unit_suspension_involved_parties AS cus_ip -- noqa
+        WHERE cus_ip.controllable_unit_suspension_id = controllable_unit_suspension_comment_history.controllable_unit_suspension_id -- noqa
+            AND cus_ip.party_id = (SELECT flex.current_party())
+    )
+);
+
+DROP POLICY IF EXISTS "CUSC_SO003_SP003_same_party_type"
+ON controllable_unit_suspension_comment_history;
+CREATE POLICY "CUSC_SO003_SP003_same_party_type"
+ON controllable_unit_suspension_comment_history
+FOR SELECT
+TO flex_system_operator, flex_service_provider
+USING (
+    cus_comment_latest_visibility(
+        controllable_unit_suspension_comment_history.id -- noqa
+    ) = 'same_party_type'
+    AND EXISTS (
+        SELECT 1
+        FROM flex.identity AS comment_creator
+            INNER JOIN flex.party AS creator_party
+                ON comment_creator.party_id = creator_party.id
+            INNER JOIN flex.party AS current_party
+                ON current_party.id = (SELECT flex.current_party())
+        WHERE comment_creator.id = controllable_unit_suspension_comment_history.created_by -- noqa
+            AND creator_party.type = current_party.type
+    )
     AND EXISTS (
         SELECT 1
         FROM flex.controllable_unit_suspension_involved_parties AS cus_ip -- noqa

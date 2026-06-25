@@ -12,6 +12,8 @@ public enum class ServiceProvidingGroupProductSuspensionCommentVisibility(
 ) {
   @SerialName("same_party")
   SAME_PARTY("same_party"),
+  @SerialName("same_party_type")
+  SAME_PARTY_TYPE("same_party_type"),
   @SerialName("any_involved_party")
   ANY_INVOLVED_PARTY("any_involved_party"),
   ;

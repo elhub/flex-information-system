@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS service_provider_product_application_comment (
     CHECK (
         visibility IN (
             'same_party',
+            'same_party_type',
             'any_involved_party'
         )
     ),

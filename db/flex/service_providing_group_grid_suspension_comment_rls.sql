@@ -94,6 +94,32 @@ USING (
     )
 );
 
+DROP POLICY IF EXISTS "SPGGSC_SO002_SP002_same_party_type"
+ON service_providing_group_grid_suspension_comment;
+CREATE POLICY "SPGGSC_SO002_SP002_same_party_type"
+ON service_providing_group_grid_suspension_comment
+FOR SELECT
+TO flex_system_operator, flex_service_provider
+USING (
+    service_providing_group_grid_suspension_comment.visibility = 'same_party_type' -- noqa
+    AND EXISTS (
+        SELECT 1
+        FROM flex.identity AS comment_creator
+            INNER JOIN flex.party AS creator_party
+                ON comment_creator.party_id = creator_party.id
+            INNER JOIN flex.party AS current_party
+                ON current_party.id = (SELECT flex.current_party())
+        WHERE comment_creator.id = service_providing_group_grid_suspension_comment.created_by -- noqa
+            AND creator_party.type = current_party.type
+    )
+    AND EXISTS (
+        SELECT 1
+        FROM flex.service_providing_group_grid_suspension_involved_parties AS spggs_ip -- noqa
+        WHERE spggs_ip.service_providing_group_grid_suspension_id = service_providing_group_grid_suspension_comment.service_providing_group_grid_suspension_id -- noqa
+            AND spggs_ip.party_id = (SELECT flex.current_party())
+    )
+);
+
 CREATE OR REPLACE FUNCTION
 spggs_comment_latest_visibility(in_spggsc_id bigint)
 RETURNS text
@@ -156,6 +182,34 @@ USING (
     spggs_comment_latest_visibility(
         service_providing_group_grid_suspension_comment_history.id -- noqa
     ) = 'any_involved_party'
+    AND EXISTS (
+        SELECT 1
+        FROM flex.service_providing_group_grid_suspension_involved_parties AS spggs_ip -- noqa
+        WHERE spggs_ip.service_providing_group_grid_suspension_id = service_providing_group_grid_suspension_comment_history.service_providing_group_grid_suspension_id -- noqa
+            AND spggs_ip.party_id = (SELECT flex.current_party())
+    )
+);
+
+DROP POLICY IF EXISTS "SPGGSC_SO003_SP003_same_party_type"
+ON service_providing_group_grid_suspension_comment_history;
+CREATE POLICY "SPGGSC_SO003_SP003_same_party_type"
+ON service_providing_group_grid_suspension_comment_history
+FOR SELECT
+TO flex_system_operator, flex_service_provider
+USING (
+    spggs_comment_latest_visibility(
+        service_providing_group_grid_suspension_comment_history.id -- noqa
+    ) = 'same_party_type'
+    AND EXISTS (
+        SELECT 1
+        FROM flex.identity AS comment_creator
+            INNER JOIN flex.party AS creator_party
+                ON comment_creator.party_id = creator_party.id
+            INNER JOIN flex.party AS current_party
+                ON current_party.id = (SELECT flex.current_party())
+        WHERE comment_creator.id = service_providing_group_grid_suspension_comment_history.created_by -- noqa
+            AND creator_party.type = current_party.type
+    )
     AND EXISTS (
         SELECT 1
         FROM flex.service_providing_group_grid_suspension_involved_parties AS spggs_ip -- noqa

@@ -190,6 +190,9 @@ databaseChangeLog:
       file: ./controllable_unit_suspension_comment.sql
       relativeToChangelogFile: true
   - include:
+      file: ./controllable_unit_suspension_comment_migrations.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./controllable_unit_service_provider.sql
       relativeToChangelogFile: true
   - include:
@@ -223,10 +226,16 @@ databaseChangeLog:
       file: ./service_providing_group_grid_prequalification_comment.sql
       relativeToChangelogFile: true
   - include:
+      file: ./service_providing_group_grid_prequalification_comment_migrations.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./service_providing_group_grid_suspension.sql
       relativeToChangelogFile: true
   - include:
       file: ./service_providing_group_grid_suspension_comment.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./service_providing_group_grid_suspension_comment_migrations.sql
       relativeToChangelogFile: true
   - include:
       file: ./service_providing_group_product_application.sql
@@ -238,10 +247,16 @@ databaseChangeLog:
       file: ./service_providing_group_product_application_comment.sql
       relativeToChangelogFile: true
   - include:
+      file: ./service_providing_group_product_application_comment_migrations.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./service_providing_group_product_suspension.sql
       relativeToChangelogFile: true
   - include:
       file: ./service_providing_group_product_suspension_comment.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./service_providing_group_product_suspension_comment_migrations.sql
       relativeToChangelogFile: true
   - include:
       file: ./service_provider_product_application_comment.sql

@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS {{ resource }}_comment (
     CHECK (
         visibility IN (
             'same_party',
+            'same_party_type',
             'any_involved_party'
         )
     ),

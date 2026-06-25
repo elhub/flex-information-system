@@ -94,6 +94,32 @@ USING (
     )
 );
 
+DROP POLICY IF EXISTS "SPPAC_SO002_SP002_same_party_type"
+ON service_provider_product_application_comment;
+CREATE POLICY "SPPAC_SO002_SP002_same_party_type"
+ON service_provider_product_application_comment
+FOR SELECT
+TO flex_system_operator, flex_service_provider
+USING (
+    service_provider_product_application_comment.visibility = 'same_party_type' -- noqa
+    AND EXISTS (
+        SELECT 1
+        FROM flex.identity AS comment_creator
+            INNER JOIN flex.party AS creator_party
+                ON comment_creator.party_id = creator_party.id
+            INNER JOIN flex.party AS current_party
+                ON current_party.id = (SELECT flex.current_party())
+        WHERE comment_creator.id = service_provider_product_application_comment.created_by -- noqa
+            AND creator_party.type = current_party.type
+    )
+    AND EXISTS (
+        SELECT 1
+        FROM flex.service_provider_product_application_involved_parties AS sppa_ip -- noqa
+        WHERE sppa_ip.service_provider_product_application_id = service_provider_product_application_comment.service_provider_product_application_id -- noqa
+            AND sppa_ip.party_id = (SELECT flex.current_party())
+    )
+);
+
 CREATE OR REPLACE FUNCTION
 sppa_comment_latest_visibility(in_sppac_id bigint)
 RETURNS text
@@ -156,6 +182,34 @@ USING (
     sppa_comment_latest_visibility(
         service_provider_product_application_comment_history.id -- noqa
     ) = 'any_involved_party'
+    AND EXISTS (
+        SELECT 1
+        FROM flex.service_provider_product_application_involved_parties AS sppa_ip -- noqa
+        WHERE sppa_ip.service_provider_product_application_id = service_provider_product_application_comment_history.service_provider_product_application_id -- noqa
+            AND sppa_ip.party_id = (SELECT flex.current_party())
+    )
+);
+
+DROP POLICY IF EXISTS "SPPAC_SO003_SP003_same_party_type"
+ON service_provider_product_application_comment_history;
+CREATE POLICY "SPPAC_SO003_SP003_same_party_type"
+ON service_provider_product_application_comment_history
+FOR SELECT
+TO flex_system_operator, flex_service_provider
+USING (
+    sppa_comment_latest_visibility(
+        service_provider_product_application_comment_history.id -- noqa
+    ) = 'same_party_type'
+    AND EXISTS (
+        SELECT 1
+        FROM flex.identity AS comment_creator
+            INNER JOIN flex.party AS creator_party
+                ON comment_creator.party_id = creator_party.id
+            INNER JOIN flex.party AS current_party
+                ON current_party.id = (SELECT flex.current_party())
+        WHERE comment_creator.id = service_provider_product_application_comment_history.created_by -- noqa
+            AND creator_party.type = current_party.type
+    )
     AND EXISTS (
         SELECT 1
         FROM flex.service_provider_product_application_involved_parties AS sppa_ip -- noqa

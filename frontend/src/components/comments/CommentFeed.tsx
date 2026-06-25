@@ -105,6 +105,9 @@ export function CommentFeed({
                 <SelectItem value="same_party">
                   {enumTranslation("comment.visibility.same_party")}
                 </SelectItem>
+                <SelectItem value="same_party_type">
+                  {enumTranslation("comment.visibility.same_party_type")}
+                </SelectItem>
                 <SelectItem value="any_involved_party">
                   {enumTranslation("comment.visibility.any_involved_party")}
                 </SelectItem>

@@ -25,7 +25,7 @@ export function CommentBubble({
   identity,
   isCurrentUser,
 }: CommentBubbleProps) {
-  const isInternal = comment.visibility === "same_party";
+  const isInternal = comment.visibility !== "any_involved_party";
   const authorName = identity?.entity_name ?? String(comment.created_by);
   const enumTranslation = useTranslateEnum();
   const bodyClass = `border-b px-3 py-1 text-base text-gray-700 leading-relaxed whitespace-pre-wrap ${
@@ -48,7 +48,11 @@ export function CommentBubble({
         </span>
         {isInternal ? (
           <Tag size="small" variant="warning">
-            {enumTranslation("comment.visibility.same_party")}
+            {enumTranslation(
+              comment.visibility === "same_party"
+                ? "comment.visibility.same_party"
+                : "comment.visibility.same_party_type",
+            )}
           </Tag>
         ) : (
           <Tag size="small" variant="success">

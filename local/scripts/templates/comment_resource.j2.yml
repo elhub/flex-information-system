@@ -55,12 +55,19 @@ data:
       default: same_party
       enum:
         - id: same_party
+        - id: same_party_type
+          x-intl:
+            en: Same party type
+            nb: Samme aktørtype
+            nn: Same aktørtype
         - id: any_involved_party
       example: same_party
       x-details: >-
-        Comments marked `same_party` are visible only to the party that
-        creates them, whereas comments marked `any_involved_party` can be seen
-        by all parties involved in the {{ data.acronym }}.
+        Comments marked `same_party` are visible only to the party that creates
+        them. Comments marked `same_party_type` are visible to all involved
+        parties of the same type as the creator (e.g. all involved system
+        operators). Comments marked `any_involved_party` can be seen by all
+        parties involved in the {{ data.acronym }}.
     content:
       description: Free text content of the comment.
       format: text

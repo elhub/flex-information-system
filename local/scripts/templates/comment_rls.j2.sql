@@ -97,6 +97,32 @@ USING (
     )
 );
 
+DROP POLICY IF EXISTS "{{ data.acronym }}C_SO002_SP002_same_party_type"
+ON {{ resource }}_comment;
+CREATE POLICY "{{ data.acronym }}C_SO002_SP002_same_party_type"
+ON {{ resource }}_comment
+FOR SELECT
+TO flex_system_operator, flex_service_provider
+USING (
+    {{ resource }}_comment.visibility = 'same_party_type' -- noqa
+    AND EXISTS (
+        SELECT 1
+        FROM flex.identity AS comment_creator
+        INNER JOIN flex.party AS creator_party
+            ON creator_party.id = comment_creator.party_id
+        INNER JOIN flex.party AS current_party
+            ON current_party.id = (SELECT flex.current_party())
+        WHERE comment_creator.id = {{ resource }}_comment.created_by -- noqa
+            AND creator_party.type = current_party.type
+    )
+    AND EXISTS (
+        SELECT 1
+        FROM flex.{{ resource }}_involved_parties AS {{ lower_acronym }}_ip -- noqa
+        WHERE {{ lower_acronym }}_ip.{{ resource }}_id = {{ resource }}_comment.{{ resource }}_id -- noqa
+            AND {{ lower_acronym }}_ip.party_id = (SELECT flex.current_party())
+    )
+);
+
 CREATE OR REPLACE FUNCTION
 {{ lower_acronym }}_comment_latest_visibility(in_{{ lower_acronym }}c_id bigint)
 RETURNS text
@@ -159,6 +185,34 @@ USING (
     {{ lower_acronym }}_comment_latest_visibility(
         {{ resource }}_comment_history.id -- noqa
     ) = 'any_involved_party'
+    AND EXISTS (
+        SELECT 1
+        FROM flex.{{ resource }}_involved_parties AS {{ lower_acronym }}_ip -- noqa
+        WHERE {{ lower_acronym }}_ip.{{ resource }}_id = {{ resource }}_comment_history.{{ resource }}_id -- noqa
+            AND {{ lower_acronym }}_ip.party_id = (SELECT flex.current_party())
+    )
+);
+
+DROP POLICY IF EXISTS "{{ data.acronym }}C_SO003_SP003_same_party_type"
+ON {{ resource }}_comment_history;
+CREATE POLICY "{{ data.acronym }}C_SO003_SP003_same_party_type"
+ON {{ resource }}_comment_history
+FOR SELECT
+TO flex_system_operator, flex_service_provider
+USING (
+    {{ lower_acronym }}_comment_latest_visibility(
+        {{ resource }}_comment_history.id -- noqa
+    ) = 'same_party_type'
+    AND EXISTS (
+        SELECT 1
+        FROM flex.identity AS comment_creator
+        INNER JOIN flex.party AS creator_party
+            ON creator_party.id = comment_creator.party_id
+        INNER JOIN flex.party AS current_party
+            ON current_party.id = (SELECT flex.current_party())
+        WHERE comment_creator.id = {{ resource }}_comment_history.created_by -- noqa
+            AND creator_party.type = current_party.type
+    )
     AND EXISTS (
         SELECT 1
         FROM flex.{{ resource }}_involved_parties AS {{ lower_acronym }}_ip -- noqa
