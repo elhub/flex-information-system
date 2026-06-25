@@ -55,6 +55,7 @@ export const AccountingPointGridLocationPanel = ({
           gridLocation={gridLocation}
           onDone={handleDone}
           selectedSubstation={selectedSubstation}
+          onClearMapSelection={onClearSelection}
         />
       ) : gridLocation == null ? (
         <div className="flex flex-col gap-4">
