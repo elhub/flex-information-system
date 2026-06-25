@@ -1,8 +1,10 @@
 // frontend/src/components/CommentBubble.tsx
-import { Tag } from "../ui";
+import { Tag, Tooltip } from "../ui";
+import { IconViewOff, IconViewOn } from "@elhub/ds-icons";
 import type { Identity } from "../../generated-client/types.gen";
 import { Comment } from "./types";
 import { useTranslateEnum } from "../../intl/intl";
+import { useTranslate } from "ra-core";
 
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleString("en-GB", {
@@ -25,9 +27,10 @@ export function CommentBubble({
   identity,
   isCurrentUser,
 }: CommentBubbleProps) {
-  const isInternal = comment.visibility !== "any_involved_party";
+  const isRestrictedVisibility = comment.visibility !== "any_involved_party";
   const authorName = identity?.entity_name ?? String(comment.created_by);
   const enumTranslation = useTranslateEnum();
+  const translate = useTranslate();
   const bodyClass = `border-b px-3 py-1 text-base text-gray-700 leading-relaxed whitespace-pre-wrap ${
     isCurrentUser ? "bg-semantic-background-action-selected" : "bg-white"
   }`;
@@ -46,18 +49,44 @@ export function CommentBubble({
         <span className="text-xs text-gray-400">
           {formatDate(comment.created_at)}
         </span>
-        {isInternal ? (
-          <Tag size="small" variant="warning">
-            {enumTranslation(
+        {isRestrictedVisibility ? (
+          <Tooltip
+            content={translate(
               comment.visibility === "same_party"
-                ? "comment.visibility.same_party"
-                : "comment.visibility.same_party_type",
+                ? "text.comment.visibility.same_party.description"
+                : "text.comment.visibility.same_party_type.description",
             )}
-          </Tag>
+            placement="top"
+          >
+            <span>
+              <Tag size="small" variant="warning">
+                <span className="flex items-center gap-1">
+                  <IconViewOff size="small" />
+                  {enumTranslation(
+                    comment.visibility === "same_party"
+                      ? "comment.visibility.same_party"
+                      : "comment.visibility.same_party_type",
+                  )}
+                </span>
+              </Tag>
+            </span>
+          </Tooltip>
         ) : (
-          <Tag size="small" variant="success">
-            {enumTranslation("comment.visibility.any_involved_party")}
-          </Tag>
+          <Tooltip
+            content={translate(
+              "text.comment.visibility.any_involved_party.description",
+            )}
+            placement="top"
+          >
+            <span>
+              <Tag size="small" variant="success">
+                <span className="flex items-center gap-1">
+                  <IconViewOn size="small" />
+                  {enumTranslation("comment.visibility.any_involved_party")}
+                </span>
+              </Tag>
+            </span>
+          </Tooltip>
         )}
       </div>
 
