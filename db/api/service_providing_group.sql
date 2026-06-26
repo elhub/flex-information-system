@@ -4,6 +4,9 @@
 -- RF04 - Keywords should not be used as identifiers.
 
 -- changeset flex:api-service-providing-group-create endDelimiter:-- runOnChange:true
+DROP VIEW IF EXISTS
+api.service_providing_group
+CASCADE;
 CREATE OR REPLACE VIEW
 api.service_providing_group
 WITH (security_invoker = true) AS (
@@ -19,6 +22,9 @@ WITH (security_invoker = true) AS (
     FROM flex.service_providing_group
 );
 -- changeset flex:api-service-providing-group-history-create endDelimiter:-- runOnChange:true
+DROP VIEW IF EXISTS
+api.service_providing_group_history
+CASCADE;
 CREATE OR REPLACE VIEW
 api.service_providing_group_history
 WITH (

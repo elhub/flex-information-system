@@ -10,6 +10,9 @@
 {%- set schema = data.get('module') %}
 
 -- changeset flex:{{ schema }}-{{ resource | replace("_", "-") }}-create endDelimiter:-- runOnChange:true
+DROP VIEW IF EXISTS
+{{ schema }}.{{ resource }}
+CASCADE;
 CREATE OR REPLACE VIEW
 {{ schema }}.{{ resource }}
 WITH (security_invoker = true) AS (
@@ -28,6 +31,9 @@ WITH (security_invoker = true) AS (
 
 {%- if data.get('history') %}
 -- changeset flex:{{ schema }}-{{ resource | replace("_", "-") }}-history-create endDelimiter:-- runOnChange:true
+DROP VIEW IF EXISTS
+{{ schema }}.{{ resource }}_history
+CASCADE;
 CREATE OR REPLACE VIEW
 {{ schema }}.{{ resource }}_history
 WITH (

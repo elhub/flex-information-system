@@ -4,6 +4,9 @@
 -- RF04 - Keywords should not be used as identifiers.
 
 -- changeset flex:api-service-providing-group-grid-suspension-comment-create endDelimiter:-- runOnChange:true
+DROP VIEW IF EXISTS
+api.service_providing_group_grid_suspension_comment
+CASCADE;
 CREATE OR REPLACE VIEW
 api.service_providing_group_grid_suspension_comment
 WITH (security_invoker = true) AS (
@@ -19,6 +22,9 @@ WITH (security_invoker = true) AS (
     FROM flex.service_providing_group_grid_suspension_comment
 );
 -- changeset flex:api-service-providing-group-grid-suspension-comment-history-create endDelimiter:-- runOnChange:true
+DROP VIEW IF EXISTS
+api.service_providing_group_grid_suspension_comment_history
+CASCADE;
 CREATE OR REPLACE VIEW
 api.service_providing_group_grid_suspension_comment_history
 WITH (

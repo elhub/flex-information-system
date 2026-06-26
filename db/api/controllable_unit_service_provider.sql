@@ -4,6 +4,9 @@
 -- RF04 - Keywords should not be used as identifiers.
 
 -- changeset flex:api-controllable-unit-service-provider-create endDelimiter:-- runOnChange:true
+DROP VIEW IF EXISTS
+api.controllable_unit_service_provider
+CASCADE;
 CREATE OR REPLACE VIEW
 api.controllable_unit_service_provider
 WITH (security_invoker = true) AS (
@@ -20,6 +23,9 @@ WITH (security_invoker = true) AS (
     FROM flex.controllable_unit_service_provider
 );
 -- changeset flex:api-controllable-unit-service-provider-history-create endDelimiter:-- runOnChange:true
+DROP VIEW IF EXISTS
+api.controllable_unit_service_provider_history
+CASCADE;
 CREATE OR REPLACE VIEW
 api.controllable_unit_service_provider_history
 WITH (

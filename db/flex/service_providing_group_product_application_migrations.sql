@@ -96,29 +96,39 @@ FOR EACH ROW
 EXECUTE FUNCTION
 service_providing_group_product_application_sp_qualified_insert();
 
--- changeset flex:spgpa-add-ramping-columns runOnChange:false endDelimiter:;
+-- changeset flex:spgpa-add-ramping-columns runOnChange:true endDelimiter:;
 ALTER TABLE flex.service_providing_group_product_application
 ADD COLUMN IF NOT EXISTS ramping_capability text NULL
 CONSTRAINT spg_product_application_ramping_capability_check
-CHECK (ramping_capability IN ('always', 'partial', 'never'))
+CHECK (ramping_capability IN ('always', 'partial', 'never'));
+
+ALTER TABLE flex.service_providing_group_product_application_history
+ADD COLUMN IF NOT EXISTS ramping_capability text NULL;
+
+ALTER TABLE flex.service_providing_group_product_application
+ADD COLUMN IF NOT EXISTS ramping_description text NULL;
+
+ALTER TABLE flex.service_providing_group_product_application_history
+ADD COLUMN IF NOT EXISTS ramping_description text NULL;
+
+UPDATE flex.service_providing_group_product_application
+SET
+    ramping_capability = 'always',
+    ramping_description = 'default ramping description'
+WHERE (
+    ramping_capability IS NULL OR ramping_description IS NULL
+) AND 1 = any(product_type_ids);
+
 -- SPGPA-VAL007
-CONSTRAINT spg_product_application_ramping_capability_required_check CHECK (
+ALTER TABLE flex.service_providing_group_product_application
+ADD CONSTRAINT spg_product_application_ramping_capability_required_check CHECK (
     ramping_capability IS NOT NULL
     OR NOT (1 = any(product_type_ids))
 );
 
+-- SPGPA-VAL008
 ALTER TABLE flex.service_providing_group_product_application
-ADD COLUMN IF NOT EXISTS ramping_description text NULL
-CONSTRAINT spg_product_application_ramping_description_check CHECK (
+ADD CONSTRAINT spg_product_application_ramping_description_check CHECK (
     ramping_description IS NOT NULL
-    -- SPGPA-VAL008
     OR NOT (1 = any(product_type_ids))
 );
-
-ALTER TABLE flex.service_providing_group_product_application_history
-ADD COLUMN IF NOT EXISTS ramping_capability text NULL
-CONSTRAINT spg_product_application_history_ramping_capability_check
-CHECK (ramping_capability IN ('always', 'partial', 'never'));
-
-ALTER TABLE flex.service_providing_group_product_application_history
-ADD COLUMN IF NOT EXISTS ramping_description text NULL;

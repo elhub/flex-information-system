@@ -4,6 +4,9 @@
 -- RF04 - Keywords should not be used as identifiers.
 
 -- changeset flex:api-accounting-point-grid-location-create endDelimiter:-- runOnChange:true
+DROP VIEW IF EXISTS
+api.accounting_point_grid_location
+CASCADE;
 CREATE OR REPLACE VIEW
 api.accounting_point_grid_location
 WITH (security_invoker = true) AS (
@@ -22,6 +25,9 @@ WITH (security_invoker = true) AS (
     FROM flex.accounting_point_grid_location
 );
 -- changeset flex:api-accounting-point-grid-location-history-create endDelimiter:-- runOnChange:true
+DROP VIEW IF EXISTS
+api.accounting_point_grid_location_history
+CASCADE;
 CREATE OR REPLACE VIEW
 api.accounting_point_grid_location_history
 WITH (

@@ -4,6 +4,9 @@
 -- RF04 - Keywords should not be used as identifiers.
 
 -- changeset flex:api-system-operator-product-type-create endDelimiter:-- runOnChange:true
+DROP VIEW IF EXISTS
+api.system_operator_product_type
+CASCADE;
 CREATE OR REPLACE VIEW
 api.system_operator_product_type
 WITH (security_invoker = true) AS (
@@ -17,6 +20,9 @@ WITH (security_invoker = true) AS (
     FROM flex.system_operator_product_type
 );
 -- changeset flex:api-system-operator-product-type-history-create endDelimiter:-- runOnChange:true
+DROP VIEW IF EXISTS
+api.system_operator_product_type_history
+CASCADE;
 CREATE OR REPLACE VIEW
 api.system_operator_product_type_history
 WITH (

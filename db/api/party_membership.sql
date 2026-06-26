@@ -4,6 +4,9 @@
 -- RF04 - Keywords should not be used as identifiers.
 
 -- changeset flex:api-party-membership-create endDelimiter:-- runOnChange:true
+DROP VIEW IF EXISTS
+api.party_membership
+CASCADE;
 CREATE OR REPLACE VIEW
 api.party_membership
 WITH (security_invoker = true) AS (
@@ -17,6 +20,9 @@ WITH (security_invoker = true) AS (
     FROM flex.party_membership
 );
 -- changeset flex:api-party-membership-history-create endDelimiter:-- runOnChange:true
+DROP VIEW IF EXISTS
+api.party_membership_history
+CASCADE;
 CREATE OR REPLACE VIEW
 api.party_membership_history
 WITH (

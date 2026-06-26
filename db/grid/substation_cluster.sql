@@ -4,6 +4,9 @@
 -- RF04 - Keywords should not be used as identifiers.
 
 -- changeset flex:grid-substation-cluster-create endDelimiter:-- runOnChange:true
+DROP VIEW IF EXISTS
+grid.substation_cluster
+CASCADE;
 CREATE OR REPLACE VIEW
 grid.substation_cluster
 WITH (security_invoker = true) AS (
