@@ -8,4 +8,14 @@ CREATE OR REPLACE FUNCTION api.{{ rel.name }}(
 RETURNS SETOF api.{{ rel.parent.resource }}{% if rel.cardinality == 'one' %} ROWS 1{% endif %} AS $$
   select * from api.{{ rel.parent.resource }} where {{ rel.parent.name }} = $1.{{ rel.child.name }}
 $$ STABLE LANGUAGE sql;
+
+-- changeset flex:{{ rel.child.resource }}-{{ rel.child.name }}-to-{{ rel.parent.resource }}-revoke runOnChange:false endDelimiter:--
+REVOKE EXECUTE ON FUNCTION
+api.{{ rel.name }}(api.{{ rel.child.resource }})
+FROM public;
+
+-- changeset flex:{{ rel.child.resource }}-{{ rel.child.name }}-to-{{ rel.parent.resource }}-grant runOnChange:true endDelimiter:--
+GRANT EXECUTE ON FUNCTION
+api.{{ rel.name }}(api.{{ rel.child.resource }})
+TO flex_common, flex_entity;
 {% endfor %}

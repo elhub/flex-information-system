@@ -23,6 +23,9 @@ AS $$
         AND clt.client_secret = public.crypt(_client_secret, clt.client_secret)
 $$;
 
+-- changeset flex:auth-entity-of-credentials-revoke runOnChange:false endDelimiter:--
+REVOKE EXECUTE ON FUNCTION auth.entity_of_credentials(text, text) FROM public;
+
 -- changeset flex:auth-entity-of-credentials-execute runOnChange:true endDelimiter:--
 GRANT EXECUTE ON FUNCTION auth.entity_of_credentials TO flex_anonymous;
 
@@ -73,6 +76,12 @@ BEGIN
 END;
 $$;
 
+-- changeset flex:auth-get-or-create-entity-revoke runOnChange:false endDelimiter:--
+REVOKE EXECUTE ON FUNCTION auth.get_or_create_entity(text, text, text) FROM public;
+
+-- changeset flex:auth-get-or-create-entity-grant runOnChange:true endDelimiter:--
+GRANT EXECUTE ON FUNCTION auth.get_or_create_entity(text, text, text) TO flex_anonymous;
+
 -- changeset flex:auth-entity-client-by-uuid runOnChange:true endDelimiter:--
 -- Gets entity details from the entity client uuid
 CREATE OR REPLACE FUNCTION auth.entity_client_by_uuid(in_client_id text)
@@ -95,6 +104,12 @@ AS $$
     WHERE clt.client_id::text = in_client_id
 $$;
 
+-- changeset flex:auth-entity-client-by-uuid-revoke runOnChange:false endDelimiter:--
+REVOKE EXECUTE ON FUNCTION auth.entity_client_by_uuid(text) FROM public;
+
+-- changeset flex:auth-entity-client-by-uuid-grant runOnChange:true endDelimiter:--
+GRANT EXECUTE ON FUNCTION auth.entity_client_by_uuid(text) TO flex_anonymous;
+
 -- changeset flex:entity-identity-of-external-id runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION auth.entity_identity_of_external_id(
     in_external_id text
@@ -114,6 +129,12 @@ AS $$
             ON i.client_id = clt.id
     WHERE i.eid::text = in_external_id
 $$;
+
+-- changeset flex:auth-entity-identity-of-external-id-revoke runOnChange:false endDelimiter:--
+REVOKE EXECUTE ON FUNCTION auth.entity_identity_of_external_id(text) FROM public;
+
+-- changeset flex:auth-entity-identity-of-external-id-grant runOnChange:true endDelimiter:--
+GRANT EXECUTE ON FUNCTION auth.entity_identity_of_external_id(text) TO flex_common;
 
 -- changeset flex:auth-assume-party runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION auth.assume_party(in_party_id bigint)
@@ -174,6 +195,9 @@ begin
 end;
 $$;
 
+-- changeset flex:auth-assume-party-revoke runOnChange:false endDelimiter:--
+REVOKE EXECUTE ON FUNCTION auth.assume_party(bigint) FROM public;
+
 -- changeset flex:auth-assume-party-execute runOnChange:true endDelimiter:--
 GRANT EXECUTE ON FUNCTION auth.assume_party TO flex_entity;
 
@@ -185,6 +209,9 @@ LANGUAGE sql
 AS $$
   SELECT party_id FROM flex.identity WHERE id = _identity;
 $$;
+
+-- changeset flex:auth-party-of-identity-revoke runOnChange:false endDelimiter:--
+REVOKE EXECUTE ON FUNCTION auth.party_of_identity(bigint) FROM public;
 
 -- changeset flex:auth-party-of-identity-execute runOnChange:true endDelimiter:--
 GRANT EXECUTE ON FUNCTION auth.party_of_identity
@@ -210,6 +237,9 @@ AS $$
     left join flex.party p on i.party_id = p.id
     where i.eid = _eid::uuid;
 $$;
+
+-- changeset flex:auth-eid-details-revoke runOnChange:false endDelimiter:;
+REVOKE EXECUTE ON FUNCTION auth.eid_details(text) FROM public;
 
 -- changeset flex:auth-eid-details-execute runOnChange:true endDelimiter:;
 GRANT EXECUTE ON FUNCTION auth.eid_details TO flex_entity;
@@ -243,6 +273,9 @@ $$
     WHERE i.id = (SELECT flex.current_identity());
 $$;
 
+-- changeset flex:auth-current-user-info-revoke runOnChange:false endDelimiter:;
+REVOKE EXECUTE ON FUNCTION auth.current_user_info() FROM public;
+
 -- changeset flex:auth-current-user-info-execute runOnChange:true endDelimiter:;
 GRANT EXECUTE ON FUNCTION auth.current_user_info TO flex_entity;
 GRANT EXECUTE ON FUNCTION auth.current_user_info TO flex_common;
@@ -268,6 +301,9 @@ BEGIN
     return;
 END;
 $$;
+
+-- changeset flex:pre-request-revoke runOnChange:false endDelimiter:;
+REVOKE EXECUTE ON FUNCTION auth.pre_request() FROM public;
 
 -- changeset flex:pre-request-execute runOnChange:true endDelimiter:;
 GRANT EXECUTE ON FUNCTION auth.pre_request TO flex_anonymous;
