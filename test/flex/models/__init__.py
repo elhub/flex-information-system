@@ -212,6 +212,9 @@ from .service_providing_group_product_application_create_request import (
 from .service_providing_group_product_application_history_response import (
     ServiceProvidingGroupProductApplicationHistoryResponse,
 )
+from .service_providing_group_product_application_ramping_capability import (
+    ServiceProvidingGroupProductApplicationRampingCapability,
+)
 from .service_providing_group_product_application_response import ServiceProvidingGroupProductApplicationResponse
 from .service_providing_group_product_application_status import ServiceProvidingGroupProductApplicationStatus
 from .service_providing_group_product_application_update_request import (
@@ -427,6 +430,7 @@ __all__ = (
     "ServiceProvidingGroupProductApplicationCommentVisibility",
     "ServiceProvidingGroupProductApplicationCreateRequest",
     "ServiceProvidingGroupProductApplicationHistoryResponse",
+    "ServiceProvidingGroupProductApplicationRampingCapability",
     "ServiceProvidingGroupProductApplicationResponse",
     "ServiceProvidingGroupProductApplicationStatus",
     "ServiceProvidingGroupProductApplicationUpdateRequest",

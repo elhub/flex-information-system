@@ -14,6 +14,7 @@ import {
   EventButton,
   NestedResourceHistoryButton,
 } from "../../../components/EDS-ra/buttons";
+import { useTranslateEnum } from "../../../intl/intl";
 
 type Props = {
   spgpa: ServiceProvidingGroupProductApplication;
@@ -22,6 +23,7 @@ type Props = {
 
 export const SpgpaShowSummary = ({ spgpa, spg }: Props) => {
   const { permissions } = usePermissions<Permissions>();
+  const translateEnum = useTranslateEnum();
   const canEdit = permissions?.allow(
     "service_providing_group_product_application",
     "update",
@@ -103,6 +105,27 @@ export const SpgpaShowSummary = ({ spgpa, spg }: Props) => {
             unit="kW"
           />
 
+          {spgpa.ramping_capability && (
+            <LabelValue
+              size="small"
+              labelKey="service_providing_group_product_application.ramping_capability"
+              value={translateEnum(
+                `service_providing_group_product_application.ramping_capability.${spgpa.ramping_capability}`,
+              )}
+            />
+          )}
+
+          {spgpa.ramping_description && (
+            <LabelValue
+              labelKey="service_providing_group_product_application.ramping_description"
+              value={
+                <span className="whitespace-pre-wrap">
+                  {spgpa.ramping_description}
+                </span>
+              }
+            />
+          )}
+
           <LabelValue
             size="small"
             label="Prequalified at"
@@ -117,7 +140,11 @@ export const SpgpaShowSummary = ({ spgpa, spg }: Props) => {
           {spgpa.additional_information && (
             <LabelValue
               label="Additional information"
-              value={spgpa.additional_information}
+              value={
+                <span className="whitespace-pre-wrap">
+                  {spgpa.additional_information}
+                </span>
+              }
             />
           )}
         </div>

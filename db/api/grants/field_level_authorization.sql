@@ -6504,6 +6504,8 @@ GRANT SELECT (
     additional_information,
     prequalified_at,
     verified_at,
+    ramping_capability,
+    ramping_description,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -6521,6 +6523,8 @@ GRANT SELECT (
     additional_information,
     prequalified_at,
     verified_at,
+    ramping_capability,
+    ramping_description,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -6538,6 +6542,8 @@ GRANT SELECT (
     additional_information,
     prequalified_at,
     verified_at,
+    ramping_capability,
+    ramping_description,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -6555,6 +6561,8 @@ GRANT SELECT (
     additional_information,
     prequalified_at,
     verified_at,
+    ramping_capability,
+    ramping_description,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -6568,7 +6576,9 @@ GRANT UPDATE (
     maximum_active_power_down,
     additional_information,
     prequalified_at,
-    verified_at
+    verified_at,
+    ramping_capability,
+    ramping_description
 ) ON TABLE
 api.service_providing_group_product_application
 TO flex_flexibility_information_system_operator;
@@ -6584,6 +6594,8 @@ GRANT SELECT (
     additional_information,
     prequalified_at,
     verified_at,
+    ramping_capability,
+    ramping_description,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -6601,6 +6613,8 @@ GRANT SELECT (
     additional_information,
     prequalified_at,
     verified_at,
+    ramping_capability,
+    ramping_description,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -6623,7 +6637,9 @@ GRANT INSERT (
     status,
     maximum_active_power_up,
     maximum_active_power_down,
-    additional_information
+    additional_information,
+    ramping_capability,
+    ramping_description
 ) ON TABLE
 api.service_providing_group_product_application
 TO flex_service_provider;
@@ -6639,6 +6655,8 @@ GRANT SELECT (
     additional_information,
     prequalified_at,
     verified_at,
+    ramping_capability,
+    ramping_description,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -6649,7 +6667,9 @@ GRANT UPDATE (
     product_type_ids,
     maximum_active_power_up,
     maximum_active_power_down,
-    additional_information
+    additional_information,
+    ramping_capability,
+    ramping_description
 ) ON TABLE
 api.service_providing_group_product_application
 TO flex_service_provider;
@@ -6665,6 +6685,8 @@ GRANT SELECT (
     additional_information,
     prequalified_at,
     verified_at,
+    ramping_capability,
+    ramping_description,
     recorded_at,
     recorded_by
 ) ON TABLE
@@ -6687,6 +6709,8 @@ GRANT SELECT (
     additional_information,
     prequalified_at,
     verified_at,
+    ramping_capability,
+    ramping_description,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -6707,6 +6731,8 @@ GRANT SELECT (
     additional_information,
     prequalified_at,
     verified_at,
+    ramping_capability,
+    ramping_description,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -6727,6 +6753,8 @@ GRANT SELECT (
     additional_information,
     prequalified_at,
     verified_at,
+    ramping_capability,
+    ramping_description,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -6747,6 +6775,8 @@ GRANT SELECT (
     additional_information,
     prequalified_at,
     verified_at,
+    ramping_capability,
+    ramping_description,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -6767,6 +6797,8 @@ GRANT SELECT (
     additional_information,
     prequalified_at,
     verified_at,
+    ramping_capability,
+    ramping_description,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -6787,6 +6819,8 @@ GRANT SELECT (
     additional_information,
     prequalified_at,
     verified_at,
+    ramping_capability,
+    ramping_description,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -6807,6 +6841,8 @@ GRANT SELECT (
     additional_information,
     prequalified_at,
     verified_at,
+    ramping_capability,
+    ramping_description,
     recorded_at,
     replaced_at,
     recorded_by,
@@ -6827,6 +6863,8 @@ GRANT SELECT (
     additional_information,
     prequalified_at,
     verified_at,
+    ramping_capability,
+    ramping_description,
     recorded_at,
     replaced_at,
     recorded_by,

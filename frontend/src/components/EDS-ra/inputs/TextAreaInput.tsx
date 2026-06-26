@@ -21,6 +21,7 @@ export const TextAreaInput = ({
   description,
   descriptionOverride,
   warning,
+  infoElement,
   ...rest
 }: TextAreaInputProps) => {
   const { id, field, fieldState } = useInput({ source, ...rest });
@@ -41,6 +42,7 @@ export const TextAreaInput = ({
       description={description}
       descriptionOverride={descriptionOverride}
       warning={warning}
+      infoElement={infoElement}
     >
       <Textarea
         id={id}
