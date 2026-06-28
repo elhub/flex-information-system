@@ -10,11 +10,11 @@ openpyxl
 pandas
 psycopg[binary,pool]
 pyjwt
-pytest==9.0.3
+pytest==9.1.1
 python-dotenv
 # ruff is a transitive dependency of openapi-python-client
 # (pinned to avoid blank lines being generated in some local setups)
-ruff==0.15.17
-schemathesis==4.21.5
+ruff==0.15.20
+schemathesis==4.21.10
 tabulate
 Flask
