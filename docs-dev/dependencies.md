@@ -91,7 +91,7 @@ Then maybe rerun govulncheck 😉?
 
 ### Python
 
-Python is handled via mise and uv. Requriements are specified in
+Python is handled via mise and uv. Requirements are specified in
 [pyproject.toml](../pyproject.toml). Versions are managed in
 [uv.lock](../uv.lock). To upgrade python dependencies, use the following commands:
 

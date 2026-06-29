@@ -288,7 +288,7 @@ _check_main:
 # generate documentation using mkdocs
 mkdocs: _mkdocs
 _mkdocs:
-    .venv/bin/mkdocs serve
+    uv run mkdocs serve
 
 _mkdocs_build_resource_docx:
     #!/usr/bin/env bash
@@ -326,7 +326,7 @@ _mkdocs_build_elements:
 # deploy documentation to GitHub Pages
 mkdocs_deploy: _check_main _mkdocs_build_resource_docx _mkdocs_build_elements _mkdocs_deploy
 _mkdocs_deploy:
-    .venv/bin/mkdocs gh-deploy
+    uv run mkdocs gh-deploy
 
 diagrams: tbls plantuml
 
