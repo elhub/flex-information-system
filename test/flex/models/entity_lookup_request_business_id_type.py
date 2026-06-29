@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class EntityLookupRequestBusinessIdType(str, Enum):
+class EntityLookupRequestBusinessIdType(StrEnum):
     EMAIL = "email"
     ORG = "org"
 

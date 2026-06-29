@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class ServiceProvidingGroupStatus(str, Enum):
+class ServiceProvidingGroupStatus(StrEnum):
     ACTIVE = "active"
     INACTIVE = "inactive"
     NEW = "new"

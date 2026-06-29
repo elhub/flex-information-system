@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class TechnicalResourceBusinessIdType(str, Enum):
+class TechnicalResourceBusinessIdType(StrEnum):
     MAC = "mac"
     OTHER = "other"
     SERIAL_NUMBER = "serial_number"

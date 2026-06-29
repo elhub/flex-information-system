@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class MeteringGridAreaStatus(str, Enum):
+class MeteringGridAreaStatus(StrEnum):
     ACTIVE = "active"
     INACTIVE = "inactive"
 

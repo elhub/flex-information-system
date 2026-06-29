@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class ControllableUnitStatus(str, Enum):
+class ControllableUnitStatus(StrEnum):
     ACTIVE = "active"
     INACTIVE = "inactive"
     NEW = "new"

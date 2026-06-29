@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class PartyRole(str, Enum):
+class PartyRole(StrEnum):
     FLEX_BALANCE_RESPONSIBLE_PARTY = "flex_balance_responsible_party"
     FLEX_END_USER = "flex_end_user"
     FLEX_ENERGY_SUPPLIER = "flex_energy_supplier"

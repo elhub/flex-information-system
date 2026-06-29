@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class ServiceProviderProductSuspensionReason(str, Enum):
+class ServiceProviderProductSuspensionReason(StrEnum):
     BREACH_OF_CONDITIONS = "breach_of_conditions"
     CLEARING_ISSUES = "clearing_issues"
     COMMUNICATION_ISSUES = "communication_issues"

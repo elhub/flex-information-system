@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class AccountingPointGridLocationSource(str, Enum):
+class AccountingPointGridLocationSource(StrEnum):
     CSO = "cso"
     GRID_MODEL = "grid_model"
     SO = "so"

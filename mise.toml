@@ -1,6 +1,12 @@
 [tools]
+python = "3.12"
 go = "1.26.4"
-jsonschema = "latest"
+uv = "0.11.24"
+jsonschema = "16.0.0"
+
+[settings]
+python.uv_venv_auto = "create|source"
 
 [env]
 GOEXPERIMENT = 'jsonv2'
+REQUESTS_CA_BUNDLE = '/etc/ssl/certs/ca-certificates.crt'

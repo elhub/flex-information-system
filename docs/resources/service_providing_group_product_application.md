@@ -48,6 +48,8 @@ change from `requested` will trigger this check as well.
 | <a name="field-additional_information" href="#field-additional_information">additional_information</a>                   | Free text field for extra information about the application if needed (bidding periods, unavailabilities, etc). | text<br/>Max length: `512`                                                                                                               |                                                                   |
 | <a name="field-prequalified_at" href="#field-prequalified_at">prequalified_at</a>                                        | When the product application was last prequalified.                                                             | date-time                                                                                                                                |                                                                   |
 | <a name="field-verified_at" href="#field-verified_at">verified_at</a>                                                    | When the product application was last verified.                                                                 | date-time                                                                                                                                |                                                                   |
+| <a name="field-ramping_capability" href="#field-ramping_capability">ramping_capability</a>                               | The ramping capability of the service providing group for this product application.                             | text<br/>One of: `always`, `partial`, `never`                                                                                            |                                                                   |
+| <a name="field-ramping_description" href="#field-ramping_description">ramping_description</a>                            | Free text description of ramping details. Only required for product Manual Congestion.                          | text                                                                                                                                     |                                                                   |
 | <a name="field-recorded_at" href="#field-recorded_at">recorded_at</a>                                                    | When the resource was recorded (created or updated) in the system.                                              | date-time<br/>Read only                                                                                                                  |                                                                   |
 | <a name="field-recorded_by" href="#field-recorded_by">recorded_by</a>                                                    | The identity that recorded the resource.                                                                        | bigint<br/>Read only                                                                                                                     |                                                                   |
 
@@ -61,6 +63,8 @@ change from `requested` will trigger this check as well.
 | SPGPA-VAL004        | If `status` is set to `prequalified`, then `prequalified_at` must already be specified in the resource or the request.           | DONE   |
 | SPGPA-VAL005        | If `status` is set to `verified`, then `verified_at` must already be specified in the resource or the request.                   | DONE   |
 | SPGPA-VAL006        | If `status` is set to `rejected`, then both `prequalified_at` and `verified_at` must be unset in the resource or by the request. | DONE   |
+| SPGPA-VAL007        | If `product_type_ids` contains Manual Congestion, then `ramping_capability` must be set                                          | DONE   |
+| SPGPA-VAL008        | If `product_type_ids` contains Manual Congestion, then `ramping_description` must be set                                         | DONE   |
 
 ## Notifications
 
@@ -144,5 +148,7 @@ For party type abbreviations, check
 | additional_information       |      | R   | R  | R  | RU   | R  | RCU | R  |     |
 | prequalified_at              |      | R   | R  | R  | RU   | RU | R   | R  |     |
 | verified_at                  |      | R   | R  | R  | RU   | RU | R   | R  |     |
+| ramping_capability           |      | R   | R  | R  | RU   | R  | RCU | R  |     |
+| ramping_description          |      | R   | R  | R  | RU   | R  | RCU | R  |     |
 | recorded_at                  |      | R   | R  | R  | R    | R  | R   | R  |     |
 | recorded_by                  |      | R   | R  | R  | R    | R  | R   | R  |     |

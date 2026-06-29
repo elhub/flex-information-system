@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class ServiceProvidingGroupProductSuspensionReason(str, Enum):
+class ServiceProvidingGroupProductSuspensionReason(StrEnum):
     FAILED_VERIFICATION = "failed_verification"
     OTHER = "other"
 

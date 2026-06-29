@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class ControllableUnitSuspensionReason(str, Enum):
+class ControllableUnitSuspensionReason(StrEnum):
     COMPROMISES_SAFE_OPERATION = "compromises_safe_operation"
     OTHER = "other"
 

@@ -58,14 +58,23 @@ export const LoginPage = () => {
               </Avatar>
             </Box>
             <Typography textAlign={"center"}>
-              Sign in to the Flexibility Information System
+              Sign in to the flexibility register
             </Typography>
+            <Box textAlign={"center"} fontSize="0.8em" color="text.primary">
+              The flexibility register is the central platform for service
+              providers and system operators to exchange information about
+              controllable units and service providing groups, and to carry out
+              the prequalification of these flexible resources.
+            </Box>
             <Box textAlign={"center"} fontSize="0.8em" color="text.secondary">
               This page stores strictly necessary cookies in your browser when
-              you use it. Read about what we store in{" "}
-              <Link to="/privacy-policy">our privacy policy</Link>.
+              you use it. Read about what we store in our{" "}
+              <Link className="underline" to="/privacy-policy">
+                privacy policy
+              </Link>
+              .
             </Box>
-            <CardActions sx={{ padding: "0 1em 1em 1em" }}>
+            <CardActions>
               <Button
                 variant="contained"
                 type="submit"
@@ -75,13 +84,6 @@ export const LoginPage = () => {
                 Sign in
               </Button>
             </CardActions>
-            <Typography
-              textAlign={"center"}
-              fontSize="0.8em"
-              color="text.secondary"
-            >
-              <Link to="/privacy-policy">Privacy and cookies</Link>
-            </Typography>
             {userGuideURL && (
               <Typography
                 textAlign={"center"}
@@ -90,6 +92,7 @@ export const LoginPage = () => {
               >
                 <a
                   href={userGuideURL}
+                  className="underline"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -104,6 +107,7 @@ export const LoginPage = () => {
                 color="text.secondary"
               >
                 <a
+                  className="underline"
                   href={userGuideCreateUsersURL}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -112,6 +116,21 @@ export const LoginPage = () => {
                 </a>
               </Typography>
             )}
+            <Typography
+              textAlign={"center"}
+              fontSize="0.8em"
+              color="text.secondary"
+            >
+              Made with 💚 by{" "}
+              <a
+                className="underline"
+                href="https://www.elhub.no/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Elhub
+              </a>
+            </Typography>
           </Stack>
         </Card>
       </Box>

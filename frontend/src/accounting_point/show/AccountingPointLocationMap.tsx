@@ -7,6 +7,7 @@ import { Panel } from "../../components/ui";
 import { elhubTheme } from "../../theme";
 import { gridURL } from "../../httpConfig";
 import type { MapLayerMouseEvent } from "react-map-gl/maplibre";
+import { fetchJSON } from "../../util";
 
 const OPENFREEMAP_STYLE = "https://tiles.openfreemap.org/styles/liberty";
 
@@ -17,6 +18,7 @@ export type Substation = {
   name: string;
   business_id: string;
   substation_cluster_id: number;
+  voltage_levels: number[];
   position: Point;
 };
 
@@ -30,24 +32,6 @@ type Line = {
   id: number;
   name: string;
   line: LineString;
-};
-
-// TODO: replace with an API client generated from the spec
-
-const fetchJSON = async <T,>(url: string): Promise<T[]> => {
-  const response = await fetch(url, {
-    headers: { Accept: "application/json" },
-    credentials: "include",
-  });
-
-  if (!response.ok) {
-    const detail = await response.text().catch(() => "");
-    throw new Error(
-      `Grid API request failed (${response.status} ${response.statusText})${detail ? `: ${detail}` : ""}`,
-    );
-  }
-
-  return response.json();
 };
 
 // --- GeoJSON builders ---

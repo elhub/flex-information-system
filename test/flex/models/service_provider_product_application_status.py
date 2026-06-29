@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class ServiceProviderProductApplicationStatus(str, Enum):
+class ServiceProviderProductApplicationStatus(StrEnum):
     COMMUNICATION_TEST = "communication_test"
     IN_PROGRESS = "in_progress"
     NOT_QUALIFIED = "not_qualified"
