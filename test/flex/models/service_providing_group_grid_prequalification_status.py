@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class ServiceProvidingGroupGridPrequalificationStatus(str, Enum):
+class ServiceProvidingGroupGridPrequalificationStatus(StrEnum):
     APPROVED = "approved"
     CONDITIONALLY_APPROVED = "conditionally_approved"
     IN_PROGRESS = "in_progress"

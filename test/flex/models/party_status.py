@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class PartyStatus(str, Enum):
+class PartyStatus(StrEnum):
     ACTIVE = "active"
     INACTIVE = "inactive"
     NEW = "new"

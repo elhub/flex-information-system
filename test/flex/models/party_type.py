@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class PartyType(str, Enum):
+class PartyType(StrEnum):
     BALANCE_RESPONSIBLE_PARTY = "balance_responsible_party"
     END_USER = "end_user"
     ENERGY_SUPPLIER = "energy_supplier"
