@@ -9,6 +9,17 @@ databaseChangeLog:
         - sql: GRANT USAGE ON SCHEMA api TO flex_anonymous, flex_internal
         - sql: GRANT USAGE ON SCHEMA api TO flex_operation_readonly, flex_operation_update, flex_operation_readwrite
         - sql: ALTER DEFAULT PRIVILEGES IN SCHEMA api REVOKE EXECUTE ON FUNCTIONS FROM PUBLIC
+  - changeSet:
+      id: fix-spgpa-view
+      author: flex
+      runOnChange: false
+      context: "@test"
+      changes:
+        - sql: DROP FUNCTION IF EXISTS api.service_providing_group(api.service_providing_group_product_application)
+        - sql: DROP FUNCTION IF EXISTS api.product_application(api.service_providing_group)
+        - sql: DROP FUNCTION IF EXISTS api.procuring_system_operator(api.service_providing_group_product_application)
+        - sql: DROP VIEW IF EXISTS api.service_providing_group_product_application_history
+        - sql: DROP VIEW IF EXISTS api.service_providing_group_product_application
   - includeAll:
       path: ./
       relativeToChangelogFile: true
