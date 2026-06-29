@@ -134,3 +134,32 @@ ADD CONSTRAINT spg_product_application_ramping_description_check CHECK (
     ramping_description IS NOT NULL
     OR NOT (1 = any(product_type_ids))
 );
+
+-- changeset flex:service-providing-group-product-application-product-type-ids-not-empty-function runOnChange:true endDelimiter:--
+-- trigger to check that product_type_ids is not empty
+CREATE OR REPLACE FUNCTION
+service_providing_group_product_application_product_type_ids_not_empty()
+RETURNS trigger
+SECURITY INVOKER
+LANGUAGE plpgsql
+AS
+$$
+BEGIN
+    IF array_length(NEW.product_type_ids, 1) IS NULL THEN
+        RAISE sqlstate 'PT400' using
+            message = 'product_type_ids must not be empty';
+        RETURN null;
+    END IF;
+
+    RETURN NEW;
+END;
+$$;
+
+-- changeset flex:service-providing-group-product-application-product-type-ids-not-empty-trigger runOnChange:true endDelimiter:--
+-- SPGPA-VAL009
+CREATE OR REPLACE TRIGGER
+service_providing_group_product_application_product_type_ids_not_empty
+BEFORE INSERT OR UPDATE ON service_providing_group_product_application
+FOR EACH ROW
+EXECUTE FUNCTION
+service_providing_group_product_application_product_type_ids_not_empty();
