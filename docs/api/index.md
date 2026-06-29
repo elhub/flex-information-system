@@ -9,7 +9,7 @@ Here are some quick links as well.
 <!-- markdownlint-disable MD033 -->
 <div class="grid cards" markdown>
 
-* :fontawesome-solid-rocket: [Getting started](../guides/getting-started.md)
+* :fontawesome-solid-rocket: [Getting started](./guides/getting-started.md)
   Get started using the API
 * :fontawesome-solid-lightbulb: [Troubleshooting](./guides/troubleshooting.md)
   Common issues and solutions
