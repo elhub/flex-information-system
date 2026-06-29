@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class ServiceProvidingGroupGridSuspensionReason(str, Enum):
+class ServiceProvidingGroupGridSuspensionReason(StrEnum):
     BREACH_OF_CONDITIONS = "breach_of_conditions"
     OTHER = "other"
     SIGNIFICANT_GROUP_CHANGE = "significant_group_change"

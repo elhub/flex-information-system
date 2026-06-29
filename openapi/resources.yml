@@ -3988,6 +3988,44 @@ resources:
           en: Verified at
           nb: Verifisert
           nn: Verifisert
+      ramping_capability:
+        description: >-
+          The ramping capability of the service providing group for this product application.
+        format: text
+        type: string
+        nullable: true
+        enum:
+          - id: always
+            x-intl:
+              en: Always
+              nb: Alltid
+              nn: Alltid
+          - id: partial
+            x-intl:
+              en: Partial
+              nb: Noen ganger
+              nn: Nokre gonger
+          - id: never
+            x-intl:
+              en: Never
+              nb: Aldri
+              nn: Aldri
+        example: always
+        x-intl:
+          en: Ramping capability
+          nb: Rampingevne
+          nn: Rampingevne
+      ramping_description:
+        description: >-
+          Free text description of ramping details. Only required for product Manual Congestion.
+        format: text
+        type: string
+        nullable: true
+        example: "Units are (dis)connected one by one to achieve a stepwise profile. We ensure linearity on a minute resolution."
+        x-intl:
+          en: Ramping description
+          nb: Rampingbeskrivelse
+          nn: Rampingbeskriving
 
   - id: service_providing_group_product_suspension
     acronym: SPGPS

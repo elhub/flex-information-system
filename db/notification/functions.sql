@@ -14,6 +14,16 @@ BEGIN
 END;
 $$;
 
+-- changeset flex:notification-service-provider-product-application-ready-for-market-revoke runOnChange:false
+REVOKE EXECUTE ON FUNCTION
+notification.sp_product_application_ready_for_market_check(record)
+FROM public;
+
+-- changeset flex:notification-service-provider-product-application-ready-for-market-grant runOnChange:true
+GRANT EXECUTE ON FUNCTION
+notification.sp_product_application_ready_for_market_check(record)
+TO flex_internal_event_notification;
+
 -- changeset flex:notification-service-providing-group-grid-prequalification-ready-for-market-function runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION
 notification.spg_grid_prequalification_ready_for_market_check(spggp record)
@@ -28,6 +38,16 @@ BEGIN
 END;
 $$;
 
+-- changeset flex:notification-service-providing-group-grid-prequalification-ready-for-market-revoke runOnChange:false endDelimiter:--
+REVOKE EXECUTE ON FUNCTION
+notification.spg_grid_prequalification_ready_for_market_check(record)
+FROM public;
+
+-- changeset flex:notification-service-providing-group-grid-prequalification-ready-for-market-grant runOnChange:true endDelimiter:--
+GRANT EXECUTE ON FUNCTION
+notification.spg_grid_prequalification_ready_for_market_check(record)
+TO flex_internal_event_notification;
+
 -- changeset flex:notification-service-providing-group-product-application-ready-for-market-function runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION
 notification.spg_product_application_ready_for_market_check(spgpa record)
@@ -41,3 +61,13 @@ BEGIN
     RETURN flex.spg_product_application_ready_for_market_check(spgpa);
 END;
 $$;
+
+-- changeset flex:notification-service-providing-group-product-application-ready-for-market-revoke runOnChange:false endDelimiter:--
+REVOKE EXECUTE ON FUNCTION
+notification.spg_product_application_ready_for_market_check(record)
+FROM public;
+
+-- changeset flex:notification-service-providing-group-product-application-ready-for-market-grant runOnChange:true endDelimiter:--
+GRANT EXECUTE ON FUNCTION
+notification.spg_product_application_ready_for_market_check(record)
+TO flex_internal_event_notification;

@@ -416,6 +416,8 @@ export type FieldLabel =
   | "service_providing_group_product_application.prequalified_at"
   | "service_providing_group_product_application.procuring_system_operator_id"
   | "service_providing_group_product_application.product_type_ids"
+  | "service_providing_group_product_application.ramping_capability"
+  | "service_providing_group_product_application.ramping_description"
   | "service_providing_group_product_application.recorded_at"
   | "service_providing_group_product_application.recorded_by"
   | "service_providing_group_product_application.service_providing_group_id"
@@ -447,6 +449,8 @@ export type FieldLabel =
   | "service_providing_group_product_application_history.prequalified_at"
   | "service_providing_group_product_application_history.procuring_system_operator_id"
   | "service_providing_group_product_application_history.product_type_ids"
+  | "service_providing_group_product_application_history.ramping_capability"
+  | "service_providing_group_product_application_history.ramping_description"
   | "service_providing_group_product_application_history.recorded_at"
   | "service_providing_group_product_application_history.recorded_by"
   | "service_providing_group_product_application_history.replaced_at"
@@ -1130,6 +1134,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application.prequalified_at":
       "Prequalified at",
     "service_providing_group_product_application.verified_at": "Verified at",
+    "service_providing_group_product_application.ramping_capability":
+      "Ramping capability",
+    "service_providing_group_product_application.ramping_description":
+      "Ramping description",
     "service_providing_group_product_application.recorded_at": "Recorded at",
     "service_providing_group_product_application.recorded_by": "Recorded by",
     "service_providing_group_product_application_history.id": "ID",
@@ -1150,6 +1158,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Prequalified at",
     "service_providing_group_product_application_history.verified_at":
       "Verified at",
+    "service_providing_group_product_application_history.ramping_capability":
+      "Ramping capability",
+    "service_providing_group_product_application_history.ramping_description":
+      "Ramping description",
     "service_providing_group_product_application_history.recorded_at":
       "Recorded at",
     "service_providing_group_product_application_history.recorded_by":
@@ -1849,6 +1861,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application.prequalified_at":
       "Prekvalifisert",
     "service_providing_group_product_application.verified_at": "Verifisert",
+    "service_providing_group_product_application.ramping_capability":
+      "Rampingevne",
+    "service_providing_group_product_application.ramping_description":
+      "Rampingbeskrivelse",
     "service_providing_group_product_application.recorded_at": "Registrert",
     "service_providing_group_product_application.recorded_by": "Registrert av",
     "service_providing_group_product_application_history.id": "ID",
@@ -1869,6 +1885,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Prekvalifisert",
     "service_providing_group_product_application_history.verified_at":
       "Verifisert",
+    "service_providing_group_product_application_history.ramping_capability":
+      "Rampingevne",
+    "service_providing_group_product_application_history.ramping_description":
+      "Rampingbeskrivelse",
     "service_providing_group_product_application_history.recorded_at":
       "Registrert",
     "service_providing_group_product_application_history.recorded_by":
@@ -2567,6 +2587,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "service_providing_group_product_application.prequalified_at":
       "Prekvalifisert",
     "service_providing_group_product_application.verified_at": "Verifisert",
+    "service_providing_group_product_application.ramping_capability":
+      "Rampingevne",
+    "service_providing_group_product_application.ramping_description":
+      "Rampingbeskriving",
     "service_providing_group_product_application.recorded_at": "Registrert",
     "service_providing_group_product_application.recorded_by": "Registrert av",
     "service_providing_group_product_application_history.id": "ID",
@@ -2587,6 +2611,10 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Prekvalifisert",
     "service_providing_group_product_application_history.verified_at":
       "Verifisert",
+    "service_providing_group_product_application_history.ramping_capability":
+      "Rampingevne",
+    "service_providing_group_product_application_history.ramping_description":
+      "Rampingbeskriving",
     "service_providing_group_product_application_history.recorded_at":
       "Registrert",
     "service_providing_group_product_application_history.recorded_by":

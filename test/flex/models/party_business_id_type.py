@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class PartyBusinessIdType(str, Enum):
+class PartyBusinessIdType(StrEnum):
     EIC_X = "eic_x"
     GLN = "gln"
     ORG = "org"

@@ -545,6 +545,14 @@ export type ServiceProvidingGroupProductApplicationStatus =
   | "rejected";
 
 /**
+ * The ramping capability of the service providing group for this product application.
+ */
+export type ServiceProvidingGroupProductApplicationRampingCapability =
+  | "always"
+  | "partial"
+  | "never";
+
+/**
  * The level of visibility of the comment.
  */
 export type ServiceProvidingGroupProductApplicationCommentVisibility =
@@ -2807,6 +2815,11 @@ export type ServiceProvidingGroupProductApplicationUpdateRequest = {
    * When the product application was last verified.
    */
   verified_at?: string;
+  ramping_capability?: ServiceProvidingGroupProductApplicationRampingCapability | null;
+  /**
+   * Free text description of ramping details. Only required for product Manual Congestion.
+   */
+  ramping_description?: string;
 };
 
 /**
@@ -2846,6 +2859,11 @@ export type ServiceProvidingGroupProductApplicationCreateRequest = {
    * When the product application was last verified.
    */
   verified_at?: string;
+  ramping_capability?: ServiceProvidingGroupProductApplicationRampingCapability | null;
+  /**
+   * Free text description of ramping details. Only required for product Manual Congestion.
+   */
+  ramping_description?: string;
 };
 
 /**
@@ -2889,6 +2907,11 @@ export type ServiceProvidingGroupProductApplication = {
    * When the product application was last verified.
    */
   verified_at?: string;
+  ramping_capability?: ServiceProvidingGroupProductApplicationRampingCapability | null;
+  /**
+   * Free text description of ramping details. Only required for product Manual Congestion.
+   */
+  ramping_description?: string;
   /**
    * When the resource was recorded (created or updated) in the system.
    */
@@ -4095,6 +4118,11 @@ export type ServiceProvidingGroupProductApplicationHistory = {
    * When the product application was last verified.
    */
   verified_at?: string;
+  ramping_capability?: ServiceProvidingGroupProductApplicationRampingCapability | null;
+  /**
+   * Free text description of ramping details. Only required for product Manual Congestion.
+   */
+  ramping_description?: string;
   /**
    * When the resource was recorded (created or updated) in the system.
    */
@@ -5201,6 +5229,11 @@ export type ServiceProvidingGroupProductApplicationWritable = {
    * When the product application was last verified.
    */
   verified_at?: string;
+  ramping_capability?: ServiceProvidingGroupProductApplicationRampingCapability | null;
+  /**
+   * Free text description of ramping details. Only required for product Manual Congestion.
+   */
+  ramping_description?: string;
   /**
    * Embedded service_providing_group
    */
@@ -5952,6 +5985,11 @@ export type ServiceProvidingGroupProductApplicationHistoryWritable = {
    * When the product application was last verified.
    */
   verified_at?: string;
+  ramping_capability?: ServiceProvidingGroupProductApplicationRampingCapability | null;
+  /**
+   * Free text description of ramping details. Only required for product Manual Congestion.
+   */
+  ramping_description?: string;
   /**
    * Reference to the resource that was updated.
    */

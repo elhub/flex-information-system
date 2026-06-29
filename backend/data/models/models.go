@@ -574,6 +574,8 @@ type ApiServiceProvidingGroupProductApplication struct {
 	AdditionalInformation     *string
 	PrequalifiedAt            pgtype.Timestamptz
 	VerifiedAt                pgtype.Timestamptz
+	RampingCapability         *string
+	RampingDescription        *string
 	RecordedBy                int
 	RecordedAt                pgtype.Timestamptz
 }
@@ -615,6 +617,8 @@ type ApiServiceProvidingGroupProductApplicationHistory struct {
 	AdditionalInformation                     *string
 	PrequalifiedAt                            pgtype.Timestamptz
 	VerifiedAt                                pgtype.Timestamptz
+	RampingCapability                         *string
+	RampingDescription                        *string
 	RecordedBy                                int
 	RecordedAt                                pgtype.Timestamptz
 	ReplacedBy                                *int

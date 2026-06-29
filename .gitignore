@@ -8,6 +8,7 @@
 !.markdownlint.json
 !.mega-linter.yml
 !.npmrc
+!.python-version
 !.gitleaks.toml
 !.gitleaksignore
 !.secretlintignore

@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class ServiceProvidingGroupProductSuspensionCommentVisibility(str, Enum):
+class ServiceProvidingGroupProductSuspensionCommentVisibility(StrEnum):
     ANY_INVOLVED_PARTY = "any_involved_party"
     SAME_PARTY = "same_party"
     SAME_PARTY_TYPE = "same_party_type"

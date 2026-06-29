@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class GeojsonPointType(str, Enum):
+class GeojsonPointType(StrEnum):
     POINT = "Point"
 
     def __str__(self) -> str:

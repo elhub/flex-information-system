@@ -1,3 +1,33 @@
+[project]
+name = "flex-information-system"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+  "argon2-cffi",
+  "click",
+  "cryptography",
+  "flask",
+  "hypothesis",
+  "jinja2",
+  "markdown-callouts",
+  "mkdocs-material",
+  "openapi-python-client",
+  "openpyxl",
+  "pandas",
+  "psycopg[binary,pool]",
+  "pyjwt",
+  "pytest",
+  "python-dotenv",
+  "ruff",
+  "schemathesis",
+  "tabulate",
+]
+
+[tool.uv]
+# Align with renovate
+exclude-newer = "3 days"
+system-certs = true
+
 [tool.pyright]
 venvPath = "."
 venv = ".venv"

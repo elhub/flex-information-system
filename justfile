@@ -135,7 +135,7 @@ connect user="postgres":
     pgcli -h localhost -p 5432 -d flex -u {{ user }}
 
 # initialize local development environment
-init: && _venv _java_install _plantuml_install _liquibase_install _keypair
+init: && _java_install _plantuml_install _liquibase_install _keypair
     rm -rf .bin .venv
     pre-commit install
 
@@ -182,54 +182,41 @@ _plantuml_install:
 
     ln -sf "${PLANTUML_JAR}" plantuml.jar
 
-# Set up a fresh Python virtual environment
-venv: && _venv
-    rm -rf .venv
-
-_venv:
-    #!/usr/bin/env bash
-    set -euo pipefail
-
-    if [ ! -d '.venv' ]; then
-        python3.12 -m venv .venv --prompt flex
-        .venv/bin/pip3 install --upgrade pip
-        .venv/bin/pip3 install -r requirements-dev.txt
-    fi
+# Ensure Python virtual environment
+venv:
+    uv sync
 
 # Generate a RSA keypair used in test
 _keypair:
     ./local/scripts/generate_keypair.sh ./test/keys/ test
     ./local/scripts/generate_keypair.sh ./test/keys/ common
 
-test-local *args: (_venv)
+test-local *args:
     #!/usr/bin/env bash
     set -euo pipefail
     export FLEX_URL_BASE="https://test.flex.internal:6443"
     export FLEX_AUTH_BASE="${FLEX_URL_BASE}"
-    .venv/bin/python test/test.py {{args}}
+    uv run --env-file .env test/test.py {{args}}
 
 test-dev *args:
     #!/usr/bin/env bash
     set -euo pipefail
     export FLEX_URL_BASE="https://dev.flex.internal:5443"
     export FLEX_AUTH_BASE="${FLEX_URL_BASE}"
-    .venv/bin/python test/test.py {{args}}
+    uv run test/test.py {{args}}
 
 test *args:
     @just test-local {{args}}
 
 # directly use pytest
 # e.g. just pytest test/api_client_tests/test_cu.py
-pytest *args: (_venv)
+pytest *args:
     #!/usr/bin/env bash
     set -euo pipefail
     export FLEX_URL_BASE="https://test.flex.internal:6443"
     export FLEX_AUTH_BASE="${FLEX_URL_BASE}"
 
-    .venv/bin/python \
-    -m pytest \
-    -v test/security_token_service.py \
-    {{args}}
+    uv run pytest -v test/security_token_service.py {{args}}
 
 # Test migrations resetting the database to a given revision, and running the migrations on the current branch
 test-migrations revision="main":
@@ -267,7 +254,7 @@ test-migrations revision="main":
     echo "Migration test completed successfully!"
 
 coverage:
-    .venv/bin/python test/check_coverage.py
+    uv run test/check_coverage.py
 
 liquibase pghost='localhost' password='flex_password' action='update' changelog='db/changelog.yml':
     #!/usr/bin/env bash
@@ -299,9 +286,9 @@ _check_main:
     fi
 
 # generate documentation using mkdocs
-mkdocs: _venv _mkdocs
+mkdocs: _mkdocs
 _mkdocs:
-    .venv/bin/mkdocs serve
+    uv run mkdocs serve
 
 _mkdocs_build_resource_docx:
     #!/usr/bin/env bash
@@ -337,9 +324,9 @@ _mkdocs_build_elements:
         >"./docs/auth/v1/openapi.json"
 
 # deploy documentation to GitHub Pages
-mkdocs_deploy: _check_main _venv _mkdocs_build_resource_docx _mkdocs_build_elements _mkdocs_deploy
+mkdocs_deploy: _check_main _mkdocs_build_resource_docx _mkdocs_build_elements _mkdocs_deploy
 _mkdocs_deploy:
-    .venv/bin/mkdocs gh-deploy
+    uv run mkdocs gh-deploy
 
 diagrams: tbls plantuml
 
@@ -536,14 +523,14 @@ openapi-client-accounting-point-adapter:
     mkdir -p ./out
     rm -rf local/accounting-point/client/* ./out/openapi-client-accounting-point-adapter
 
-    PATH="$(pwd)/.venv/bin:$PATH" ./.venv/bin/openapi-python-client generate \
+    uv run openapi-python-client generate \
         --path ./kbackend/src/main/kotlin/no/elhub/flex/integration/accountingpointadapter/openapi.yaml \
         --output-path ./out/openapi-client-accounting-point-adapter \
         --config ./openapi/openapi-client-config.yml
     mv ./out/openapi-client-accounting-point-adapter/flex/models local/accounting-point/client/models
     mv ./out/openapi-client-accounting-point-adapter/flex/types.py local/accounting-point/client/types.py
 
-    ruff format local/accounting-point/client
+    uv run ruff format local/accounting-point/client
 
 openapi-client-test:
     #!/usr/bin/env bash
@@ -571,7 +558,7 @@ openapi-client-test:
         < backend/data/static/openapi.json \
         > openapi/openapi-api-no-default.json
 
-    PATH="$(pwd)/.venv/bin:$PATH" ./.venv/bin/openapi-python-client generate \
+    uv run openapi-python-client generate \
         --path ./openapi/openapi-api-no-default.json \
         --output-path ./out/openapi-client \
         --config ./openapi/openapi-client-config.yml
@@ -623,7 +610,7 @@ permissions-to-db:
         | tee db/grid/grants/field_level_authorization.sql \
         > db/flex/grants/field_level_authorization.sql
 
-    echo "-- changeset flex:api-field-level-authorization runOnChange:true" \
+    echo "-- changeset flex:api-field-level-authorization runAlways:true" \
         >> db/api/grants/field_level_authorization.sql
     echo "-- changeset flex:grid-field-level-authorization runOnChange:true" \
         >> db/grid/grants/field_level_authorization.sql

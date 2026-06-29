@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class Technology(str, Enum):
+class Technology(StrEnum):
     BACKUP_GENERATOR = "backup_generator"
     BATTERY = "battery"
     BOILER = "boiler"

@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class ServiceProvidingGroupProductApplicationStatus(str, Enum):
+class ServiceProvidingGroupProductApplicationStatus(StrEnum):
     PREQUALIFICATION = "prequalification"
     PREQUALIFIED = "prequalified"
     REJECTED = "rejected"

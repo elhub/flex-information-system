@@ -32,7 +32,8 @@ import java.sql.ResultSet
 interface ControllableUnitRepository {
 
     /**
-     * Calls `api.controllable_unit_lookup` and deserialises the returned JSONB array.
+     * Retrieves all controllable units associated with either the given [controllableUnitBusinessId] or the given
+     * [accountingPointBusinessId].
      *
      * Returns [RepositoryError] when the query fails.
      */
