@@ -89,10 +89,21 @@ def test_apgl_fiso(sts):
     apgls = list_accounting_point_grid_location.sync(client=client_fiso)
     assert isinstance(apgls, list)
 
+    create_body = _base_create_request(1001)
+
+    # APGL-VAL003
+    create_body.nominal_voltage = 0.0
+    e = create_accounting_point_grid_location.sync(
+        client=client_fiso,
+        body=create_body,
+    )
+    assert isinstance(e, ErrorMessage)
+    create_body.nominal_voltage = 22.0
+
     # endpoint: POST /accounting_point_grid_location
     apgl = create_accounting_point_grid_location.sync(
         client=client_fiso,
-        body=_base_create_request(1001),
+        body=create_body,
     )
     assert isinstance(apgl, AccountingPointGridLocationResponse)
     assert apgl.accounting_point_id == 1001
