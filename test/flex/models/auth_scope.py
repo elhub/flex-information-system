@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class AuthScope(str, Enum):
+class AuthScope(StrEnum):
     MANAGEAUTH = "manage:auth"
     MANAGEDATA = "manage:data"
     MANAGEDATAENTITY_CLIENT = "manage:data:entity_client"

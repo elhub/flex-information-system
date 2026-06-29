@@ -95,3 +95,42 @@ BEFORE INSERT OR UPDATE ON service_providing_group_product_application
 FOR EACH ROW
 EXECUTE FUNCTION
 service_providing_group_product_application_sp_qualified_insert();
+
+-- changeset flex:spgpa-add-ramping-columns runOnChange:true endDelimiter:;
+--preconditions onFail:MARK_RAN
+--precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = 'flex' AND table_name = 'service_providing_group_product_application' AND column_name = 'ramping_capability'
+ALTER TABLE flex.service_providing_group_product_application
+ADD COLUMN IF NOT EXISTS ramping_capability text NULL
+CONSTRAINT spg_product_application_ramping_capability_check
+CHECK (ramping_capability IN ('always', 'partial', 'never'));
+
+ALTER TABLE flex.service_providing_group_product_application_history
+ADD COLUMN IF NOT EXISTS ramping_capability text NULL;
+
+ALTER TABLE flex.service_providing_group_product_application
+ADD COLUMN IF NOT EXISTS ramping_description text NULL;
+
+ALTER TABLE flex.service_providing_group_product_application_history
+ADD COLUMN IF NOT EXISTS ramping_description text NULL;
+
+UPDATE flex.service_providing_group_product_application
+SET
+    ramping_capability = 'always',
+    ramping_description = 'default ramping description'
+WHERE (
+    ramping_capability IS NULL OR ramping_description IS NULL
+) AND 1 = any(product_type_ids);
+
+-- SPGPA-VAL007
+ALTER TABLE flex.service_providing_group_product_application
+ADD CONSTRAINT spg_product_application_ramping_capability_required_check CHECK (
+    ramping_capability IS NOT NULL
+    OR NOT (1 = any(product_type_ids))
+);
+
+-- SPGPA-VAL008
+ALTER TABLE flex.service_providing_group_product_application
+ADD CONSTRAINT spg_product_application_ramping_description_check CHECK (
+    ramping_description IS NOT NULL
+    OR NOT (1 = any(product_type_ids))
+);

@@ -18,6 +18,7 @@ export type BaseInputProps = {
   description?: boolean;
   descriptionOverride?: string;
   warning?: string;
+  infoElement?: React.ReactNode;
 };
 
 type BaseInputPropsWithChildren = BaseInputProps & {
@@ -37,6 +38,7 @@ export const BaseInput = ({
   description,
   descriptionOverride,
   warning,
+  infoElement,
   children,
   resource: resourceProp,
   overrideLabel,
@@ -87,6 +89,7 @@ export const BaseInput = ({
         <FormItemDescription>{descriptionText}</FormItemDescription>
       ) : null}
       {warning ? <Alert variant="warning">{warning}</Alert> : null}
+      {infoElement ? <Alert variant="info">{infoElement}</Alert> : null}
       {children}
     </FormItem>
   );

@@ -71,7 +71,7 @@ Then we need to make sure that these domains resolve. Add the following to your
 ::1                idp.flex.internal
 ```
 
-Then you can start the Python virtual environment with `just _venv`. You should
+Then you can start the Python virtual environment with `just venv`. You should
 now be able to run the project, after having generated all the files through
 the scripts, with the following commands:
 

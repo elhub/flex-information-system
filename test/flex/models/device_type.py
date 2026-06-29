@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class DeviceType(str, Enum):
+class DeviceType(StrEnum):
     BOILER = "boiler"
     ENERGY_MANAGEMENT_SYSTEM = "energy_management_system"
     EV_CHARGING_DEVICE = "ev_charging_device"

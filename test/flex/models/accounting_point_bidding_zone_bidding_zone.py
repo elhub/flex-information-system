@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class AccountingPointBiddingZoneBiddingZone(str, Enum):
+class AccountingPointBiddingZoneBiddingZone(StrEnum):
     NO1 = "NO1"
     NO2 = "NO2"
     NO3 = "NO3"
