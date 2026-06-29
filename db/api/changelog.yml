@@ -13,7 +13,6 @@ databaseChangeLog:
       id: fix-spgpa-view
       author: flex
       runOnChange: false
-      context: "@test"
       changes:
         - sql: DROP FUNCTION IF EXISTS api.service_providing_group(api.service_providing_group_product_application)
         - sql: DROP FUNCTION IF EXISTS api.product_application(api.service_providing_group)
