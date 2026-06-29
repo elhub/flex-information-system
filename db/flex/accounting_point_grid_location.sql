@@ -183,7 +183,7 @@ $$
 BEGIN
     IF NEW.nominal_voltage = 0 THEN
         RAISE EXCEPTION
-            'nominal voltage must be greater than zero when confirming the location',
+            'nominal voltage must be greater than zero when confirming the location';
     END IF;
 
     RETURN NEW;
