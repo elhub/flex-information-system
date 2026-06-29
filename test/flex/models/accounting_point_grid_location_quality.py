@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class AccountingPointGridLocationQuality(str, Enum):
+class AccountingPointGridLocationQuality(StrEnum):
     CONFIRMED = "confirmed"
     GUESSED = "guessed"
 

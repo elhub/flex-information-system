@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class ControllableUnitRegulationDirection(str, Enum):
+class ControllableUnitRegulationDirection(StrEnum):
     BOTH = "both"
     DOWN = "down"
     UP = "up"

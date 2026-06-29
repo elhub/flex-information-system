@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class EntityBusinessIdType(str, Enum):
+class EntityBusinessIdType(StrEnum):
     EMAIL = "email"
     ORG = "org"
     PID = "pid"

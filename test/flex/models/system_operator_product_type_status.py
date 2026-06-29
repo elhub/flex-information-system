@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class SystemOperatorProductTypeStatus(str, Enum):
+class SystemOperatorProductTypeStatus(StrEnum):
     ACTIVE = "active"
     INACTIVE = "inactive"
 

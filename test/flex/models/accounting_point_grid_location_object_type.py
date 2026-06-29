@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class AccountingPointGridLocationObjectType(str, Enum):
+class AccountingPointGridLocationObjectType(StrEnum):
     SUBSTATION = "substation"
 
     def __str__(self) -> str:

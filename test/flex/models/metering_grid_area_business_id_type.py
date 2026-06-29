@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class MeteringGridAreaBusinessIdType(str, Enum):
+class MeteringGridAreaBusinessIdType(StrEnum):
     EIC_Y = "eic_y"
 
     def __str__(self) -> str:

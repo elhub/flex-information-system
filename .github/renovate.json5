@@ -50,7 +50,7 @@
         },
         {
             "groupName": "local",
-            "matchFileNames": ["test/**", "requirements-dev.txt" ],
+            "matchFileNames": ["test/**", "pyproject.toml", "uv.lock" ],
             "commitMessageSuffix": "",
         },
     ],

@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class EntityLookupRequestType(str, Enum):
+class EntityLookupRequestType(StrEnum):
     ORGANISATION = "organisation"
     PERSON = "person"
 
