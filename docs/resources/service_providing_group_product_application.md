@@ -148,5 +148,7 @@ For party type abbreviations, check
 | additional_information       |      | R   | R  | R  | RU   | R  | RCU | R  |     |
 | prequalified_at              |      | R   | R  | R  | RU   | RU | R   | R  |     |
 | verified_at                  |      | R   | R  | R  | RU   | RU | R   | R  |     |
+| ramping_capability           |      | R   | R  | R  | RU   | R  | RCU | R  |     |
+| ramping_description          |      | R   | R  | R  | RU   | R  | RCU | R  |     |
 | recorded_at                  |      | R   | R  | R  | R    | R  | R   | R  |     |
 | recorded_by                  |      | R   | R  | R  | R    | R  | R   | R  |     |

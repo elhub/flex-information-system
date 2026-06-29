@@ -4,9 +4,6 @@
 -- RF04 - Keywords should not be used as identifiers.
 
 -- changeset flex:grid-line-create endDelimiter:-- runOnChange:true
-DROP VIEW IF EXISTS
-grid.line
-CASCADE;
 CREATE OR REPLACE VIEW
 grid.line
 WITH (security_invoker = true) AS (

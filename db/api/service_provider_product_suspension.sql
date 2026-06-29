@@ -4,9 +4,6 @@
 -- RF04 - Keywords should not be used as identifiers.
 
 -- changeset flex:api-service-provider-product-suspension-create endDelimiter:-- runOnChange:true
-DROP VIEW IF EXISTS
-api.service_provider_product_suspension
-CASCADE;
 CREATE OR REPLACE VIEW
 api.service_provider_product_suspension
 WITH (security_invoker = true) AS (
@@ -21,9 +18,6 @@ WITH (security_invoker = true) AS (
     FROM flex.service_provider_product_suspension
 );
 -- changeset flex:api-service-provider-product-suspension-history-create endDelimiter:-- runOnChange:true
-DROP VIEW IF EXISTS
-api.service_provider_product_suspension_history
-CASCADE;
 CREATE OR REPLACE VIEW
 api.service_provider_product_suspension_history
 WITH (

@@ -4,9 +4,6 @@
 -- RF04 - Keywords should not be used as identifiers.
 
 -- changeset flex:api-controllable-unit-suspension-comment-create endDelimiter:-- runOnChange:true
-DROP VIEW IF EXISTS
-api.controllable_unit_suspension_comment
-CASCADE;
 CREATE OR REPLACE VIEW
 api.controllable_unit_suspension_comment
 WITH (security_invoker = true) AS (
@@ -22,9 +19,6 @@ WITH (security_invoker = true) AS (
     FROM flex.controllable_unit_suspension_comment
 );
 -- changeset flex:api-controllable-unit-suspension-comment-history-create endDelimiter:-- runOnChange:true
-DROP VIEW IF EXISTS
-api.controllable_unit_suspension_comment_history
-CASCADE;
 CREATE OR REPLACE VIEW
 api.controllable_unit_suspension_comment_history
 WITH (

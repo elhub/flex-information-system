@@ -4,9 +4,6 @@
 -- RF04 - Keywords should not be used as identifiers.
 
 -- changeset flex:api-product-type-create endDelimiter:-- runOnChange:true
-DROP VIEW IF EXISTS
-api.product_type
-CASCADE;
 CREATE OR REPLACE VIEW
 api.product_type
 WITH (security_invoker = true) AS (

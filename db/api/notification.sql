@@ -4,9 +4,6 @@
 -- RF04 - Keywords should not be used as identifiers.
 
 -- changeset flex:api-notification-create endDelimiter:-- runOnChange:true
-DROP VIEW IF EXISTS
-api.notification
-CASCADE;
 CREATE OR REPLACE VIEW
 api.notification
 WITH (security_invoker = true) AS (

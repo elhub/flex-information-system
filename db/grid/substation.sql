@@ -4,9 +4,6 @@
 -- RF04 - Keywords should not be used as identifiers.
 
 -- changeset flex:grid-substation-create endDelimiter:-- runOnChange:true
-DROP VIEW IF EXISTS
-grid.substation
-CASCADE;
 CREATE OR REPLACE VIEW
 grid.substation
 WITH (security_invoker = true) AS (
