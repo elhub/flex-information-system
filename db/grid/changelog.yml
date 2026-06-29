@@ -9,6 +9,17 @@ databaseChangeLog:
         - sql: GRANT USAGE ON SCHEMA grid TO flex_anonymous, flex_internal
         - sql: GRANT USAGE ON SCHEMA grid TO flex_operation_readonly, flex_operation_update, flex_operation_readwrite
         - sql: ALTER DEFAULT PRIVILEGES IN SCHEMA grid REVOKE EXECUTE ON FUNCTIONS FROM PUBLIC
+  - changeSet:
+      id: grid-schema-drop
+      author: flex
+      runOnChange: false
+      changes:
+        # recreated by a dedicated migration (became runAlways)
+        - sql: DROP FUNCTION IF EXISTS grid.substation_distance(double precision, double precision)
+        # recreated by dedicated migrations (runOnChange, changed in current PR)
+        - sql: DROP VIEW IF EXISTS grid.substation
+        - sql: DROP VIEW IF EXISTS grid.substation_cluster
+        - sql: DROP VIEW IF EXISTS grid.line
   - includeAll:
       path: ./
       relativeToChangelogFile: true

@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class ServiceProvidingGroupProductApplicationRampingCapability(str, Enum):
+class ServiceProvidingGroupProductApplicationRampingCapability(StrEnum):
     ALWAYS = "always"
     NEVER = "never"
     PARTIAL = "partial"

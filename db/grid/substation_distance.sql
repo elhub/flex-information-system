@@ -1,7 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:grid-substation-distance endDelimiter:-- runOnChange:true
+-- changeset flex:grid-substation-distance endDelimiter:-- runAlways:true
 -- substations ordered by distance to a given point
 CREATE OR REPLACE FUNCTION grid.substation_distance(
     longitude double precision,
@@ -29,6 +29,6 @@ FROM flex.substation
 ORDER BY position <-> ST_SetSRID(ST_MakePoint(longitude, latitude), 4326);
 $$;
 
--- changeset flex:grid-substation-distance-grants runOnChange:true
+-- changeset flex:grid-substation-distance-grants runAlways:true
 GRANT EXECUTE ON FUNCTION grid.substation_distance(double precision, double precision)
 TO flex_flexibility_information_system_operator, flex_system_operator;
