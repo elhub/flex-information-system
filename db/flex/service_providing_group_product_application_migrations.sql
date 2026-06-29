@@ -97,6 +97,8 @@ EXECUTE FUNCTION
 service_providing_group_product_application_sp_qualified_insert();
 
 -- changeset flex:spgpa-add-ramping-columns runOnChange:true endDelimiter:;
+--preconditions onFail:MARK_RAN
+--precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = 'flex' AND table_name = 'service_providing_group_product_application' AND column_name = 'ramping_capability'
 ALTER TABLE flex.service_providing_group_product_application
 ADD COLUMN IF NOT EXISTS ramping_capability text NULL
 CONSTRAINT spg_product_application_ramping_capability_check
