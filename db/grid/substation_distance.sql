@@ -14,17 +14,17 @@ LANGUAGE sql
 AS $$
 SELECT
     id,
+    recorded_by,
+    lower(record_time_range) AS recorded_at,
+    name,
     business_id,
     business_id_type,
     kind,
-    name,
-    st_asgeojson(position, 9, 0)::jsonb AS position,
     primary_concessionaire,
-    status,
     substation_cluster_id,
     voltage_levels,
-    recorded_by,
-    lower(record_time_range) AS recorded_at
+    st_asgeojson(position, 9, 0)::jsonb AS position,
+    status
 FROM flex.substation
 ORDER BY position <-> ST_SetSRID(ST_MakePoint(longitude, latitude), 4326);
 $$;

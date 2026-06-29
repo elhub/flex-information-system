@@ -10,15 +10,108 @@ databaseChangeLog:
         - sql: GRANT USAGE ON SCHEMA api TO flex_operation_readonly, flex_operation_update, flex_operation_readwrite
         - sql: ALTER DEFAULT PRIVILEGES IN SCHEMA api REVOKE EXECUTE ON FUNCTIONS FROM PUBLIC
   - changeSet:
-      id: fix-spgpa-view
+      id: api-schema-drop
       author: flex
       runOnChange: false
       changes:
-        - sql: DROP FUNCTION IF EXISTS api.service_providing_group(api.service_providing_group_product_application)
-        - sql: DROP FUNCTION IF EXISTS api.product_application(api.service_providing_group)
+        # all recreated by embedding migrations (runAlways)
+        - sql: DROP FUNCTION IF EXISTS api.accounting_point(api.accounting_point_grid_location)
+        - sql: DROP FUNCTION IF EXISTS api.balance_responsible_party(api.accounting_point_balance_responsible_party)
+        - sql: DROP FUNCTION IF EXISTS api.controllable_unit(api.controllable_unit_service_provider)
+        - sql: DROP FUNCTION IF EXISTS api.controllable_unit(api.controllable_unit_suspension)
+        - sql: DROP FUNCTION IF EXISTS api.controllable_unit(api.service_providing_group_membership)
+        - sql: DROP FUNCTION IF EXISTS api.end_user(api.accounting_point_end_user)
+        - sql: DROP FUNCTION IF EXISTS api.end_user(api.controllable_unit_service_provider)
+        - sql: DROP FUNCTION IF EXISTS api.energy_supplier(api.accounting_point_energy_supplier)
+        - sql: DROP FUNCTION IF EXISTS api.entity(api.party)
+        - sql: DROP FUNCTION IF EXISTS api.entity(api.party_membership)
+        - sql: DROP FUNCTION IF EXISTS api.event(api.notification)
+        - sql: DROP FUNCTION IF EXISTS api.grid_location(api.accounting_point)
+        - sql: DROP FUNCTION IF EXISTS api.grid_prequalification(api.service_providing_group)
+        - sql: DROP FUNCTION IF EXISTS api.grid_suspension(api.service_providing_group)
+        - sql: DROP FUNCTION IF EXISTS api.impacted_system_operator(api.controllable_unit_suspension)
+        - sql: DROP FUNCTION IF EXISTS api.impacted_system_operator(api.service_providing_group_grid_prequalification)
+        - sql: DROP FUNCTION IF EXISTS api.impacted_system_operator(api.service_providing_group_grid_suspension)
+        - sql: DROP FUNCTION IF EXISTS api.membership(api.service_providing_group)
+        - sql: DROP FUNCTION IF EXISTS api.notification(api.event)
+        - sql: DROP FUNCTION IF EXISTS api.party(api.entity)
+        - sql: DROP FUNCTION IF EXISTS api.party(api.entity_client)
+        - sql: DROP FUNCTION IF EXISTS api.party(api.identity)
+        - sql: DROP FUNCTION IF EXISTS api.party(api.notice)
+        - sql: DROP FUNCTION IF EXISTS api.party(api.notification)
+        - sql: DROP FUNCTION IF EXISTS api.party(api.party_membership)
+        - sql: DROP FUNCTION IF EXISTS api.party_membership(api.entity)
+        - sql: DROP FUNCTION IF EXISTS api.procuring_system_operator(api.service_provider_product_suspension)
         - sql: DROP FUNCTION IF EXISTS api.procuring_system_operator(api.service_providing_group_product_application)
+        - sql: DROP FUNCTION IF EXISTS api.procuring_system_operator(api.service_providing_group_product_suspension)
+        - sql: DROP FUNCTION IF EXISTS api.product_application(api.service_providing_group)
+        - sql: DROP FUNCTION IF EXISTS api.product_suspension(api.service_providing_group)
+        - sql: DROP FUNCTION IF EXISTS api.product_type(api.system_operator_product_type)
+        - sql: DROP FUNCTION IF EXISTS api.service_provider(api.controllable_unit)
+        - sql: DROP FUNCTION IF EXISTS api.service_provider(api.controllable_unit_service_provider)
+        - sql: DROP FUNCTION IF EXISTS api.service_provider(api.service_provider_product_application)
+        - sql: DROP FUNCTION IF EXISTS api.service_provider(api.service_provider_product_suspension)
+        - sql: DROP FUNCTION IF EXISTS api.service_provider(api.service_providing_group)
+        - sql: DROP FUNCTION IF EXISTS api.service_providing_group(api.service_providing_group_grid_prequalification)
+        - sql: DROP FUNCTION IF EXISTS api.service_providing_group(api.service_providing_group_grid_suspension)
+        - sql: DROP FUNCTION IF EXISTS api.service_providing_group(api.service_providing_group_membership)
+        - sql: DROP FUNCTION IF EXISTS api.service_providing_group(api.service_providing_group_product_application)
+        - sql: DROP FUNCTION IF EXISTS api.service_providing_group(api.service_providing_group_product_suspension)
+        - sql: DROP FUNCTION IF EXISTS api.service_providing_group(api.service_providing_group_summary)
+        - sql: DROP FUNCTION IF EXISTS api.service_providing_group_membership(api.controllable_unit)
+        - sql: DROP FUNCTION IF EXISTS api.summary(api.service_providing_group)
+        - sql: DROP FUNCTION IF EXISTS api.suspension(api.controllable_unit)
+        - sql: DROP FUNCTION IF EXISTS api.system_operator(api.accounting_point)
+        - sql: DROP FUNCTION IF EXISTS api.system_operator(api.service_provider_product_application)
+        - sql: DROP FUNCTION IF EXISTS api.system_operator(api.system_operator_product_type)
+        - sql: DROP FUNCTION IF EXISTS api.system_operator_product_type(api.product_type)
+        # all recreated by dedicated migrations (runOnChange, changed in current PR)
+        # .. history
+        - sql: DROP VIEW IF EXISTS api.accounting_point_grid_location_history
+        - sql: DROP VIEW IF EXISTS api.controllable_unit_service_provider_history
+        - sql: DROP VIEW IF EXISTS api.controllable_unit_suspension_history
+        - sql: DROP VIEW IF EXISTS api.controllable_unit_suspension_comment_history
+        - sql: DROP VIEW IF EXISTS api.party_history
+        - sql: DROP VIEW IF EXISTS api.party_membership_history
+        - sql: DROP VIEW IF EXISTS api.service_provider_product_application_history
+        - sql: DROP VIEW IF EXISTS api.service_provider_product_application_comment_history
+        - sql: DROP VIEW IF EXISTS api.service_provider_product_suspension_history
+        - sql: DROP VIEW IF EXISTS api.service_provider_product_suspension_comment_history
+        - sql: DROP VIEW IF EXISTS api.service_providing_group_history
+        - sql: DROP VIEW IF EXISTS api.service_providing_group_grid_prequalification_history
+        - sql: DROP VIEW IF EXISTS api.service_providing_group_grid_prequalification_comment_history
+        - sql: DROP VIEW IF EXISTS api.service_providing_group_grid_suspension_history
+        - sql: DROP VIEW IF EXISTS api.service_providing_group_grid_suspension_comment_history
+        - sql: DROP VIEW IF EXISTS api.service_providing_group_membership_history
         - sql: DROP VIEW IF EXISTS api.service_providing_group_product_application_history
+        - sql: DROP VIEW IF EXISTS api.service_providing_group_product_application_comment_history
+        - sql: DROP VIEW IF EXISTS api.service_providing_group_product_suspension_history
+        - sql: DROP VIEW IF EXISTS api.service_providing_group_product_suspension_comment_history
+        - sql: DROP VIEW IF EXISTS api.system_operator_product_type_history
+        # .. main
+        - sql: DROP VIEW IF EXISTS api.accounting_point_grid_location
+        - sql: DROP VIEW IF EXISTS api.controllable_unit_service_provider
+        - sql: DROP VIEW IF EXISTS api.controllable_unit_suspension
+        - sql: DROP VIEW IF EXISTS api.controllable_unit_suspension_comment
+        - sql: DROP VIEW IF EXISTS api.notification
+        - sql: DROP VIEW IF EXISTS api.party
+        - sql: DROP VIEW IF EXISTS api.party_membership
+        - sql: DROP VIEW IF EXISTS api.product_type
+        - sql: DROP VIEW IF EXISTS api.service_provider_product_application
+        - sql: DROP VIEW IF EXISTS api.service_provider_product_application_comment
+        - sql: DROP VIEW IF EXISTS api.service_provider_product_suspension
+        - sql: DROP VIEW IF EXISTS api.service_provider_product_suspension_comment
+        - sql: DROP VIEW IF EXISTS api.service_providing_group
+        - sql: DROP VIEW IF EXISTS api.service_providing_group_grid_prequalification
+        - sql: DROP VIEW IF EXISTS api.service_providing_group_grid_prequalification_comment
+        - sql: DROP VIEW IF EXISTS api.service_providing_group_grid_suspension
+        - sql: DROP VIEW IF EXISTS api.service_providing_group_grid_suspension_comment
+        - sql: DROP VIEW IF EXISTS api.service_providing_group_membership
         - sql: DROP VIEW IF EXISTS api.service_providing_group_product_application
+        - sql: DROP VIEW IF EXISTS api.service_providing_group_product_application_comment
+        - sql: DROP VIEW IF EXISTS api.service_providing_group_product_suspension
+        - sql: DROP VIEW IF EXISTS api.service_providing_group_product_suspension_comment
+        - sql: DROP VIEW IF EXISTS api.system_operator_product_type
   - includeAll:
       path: ./
       relativeToChangelogFile: true
