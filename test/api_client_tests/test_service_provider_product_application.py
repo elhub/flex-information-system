@@ -350,6 +350,61 @@ def test_sppa_so(sts):
     assert isinstance(u, ErrorMessage)
 
 
+# SPPA-VAL004
+def test_sppa_product_type_ids_not_empty(sts):
+    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+
+    client_sp = sts.fresh_client(TestEntity.TEST, "SP")
+    sp_id = sts.get_userinfo(client_sp)["party_id"]
+
+    client_so = sts.fresh_client(TestEntity.TEST, "SO")
+    so_id = sts.get_userinfo(client_so)["party_id"]
+
+    pts = list_product_type.sync(client=client_fiso)
+    assert isinstance(pts, list)
+
+    sopt = create_system_operator_product_type.sync(
+        client=client_fiso,
+        body=SystemOperatorProductTypeCreateRequest(
+            system_operator_id=so_id,
+            product_type_id=cast(int, pts[0].id),
+        ),
+    )
+    assert isinstance(sopt, SystemOperatorProductTypeResponse)
+
+    # insert with empty product_type_ids must fail
+    sppa = create_service_provider_product_application.sync(
+        client=client_sp,
+        body=ServiceProviderProductApplicationCreateRequest(
+            service_provider_id=sp_id,
+            system_operator_id=so_id,
+            product_type_ids=[],
+        ),
+    )
+    assert isinstance(sppa, ErrorMessage)
+
+    # but with a product type it's ok
+    sppa = create_service_provider_product_application.sync(
+        client=client_sp,
+        body=ServiceProviderProductApplicationCreateRequest(
+            service_provider_id=sp_id,
+            system_operator_id=so_id,
+            product_type_ids=[cast(int, pts[0].id)],
+        ),
+    )
+    assert isinstance(sppa, ServiceProviderProductApplicationResponse)
+
+    # update with empty product_type_ids must also fail
+    u = update_service_provider_product_application.sync(
+        client=client_fiso,
+        id=cast(int, sppa.id),
+        body=ServiceProviderProductApplicationUpdateRequest(
+            product_type_ids=[],
+        ),
+    )
+    assert isinstance(u, ErrorMessage)
+
+
 def test_sppa_common(sts):
     for role in sts.COMMON_ROLES:
         client = sts.get_client(TestEntity.TEST, role)
