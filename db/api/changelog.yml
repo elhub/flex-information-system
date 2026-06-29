@@ -66,6 +66,29 @@ databaseChangeLog:
         - sql: DROP FUNCTION IF EXISTS api.system_operator(api.system_operator_product_type)
         - sql: DROP FUNCTION IF EXISTS api.system_operator_product_type(api.product_type)
         # all recreated by dedicated migrations (runOnChange, changed in current PR)
+        # .. history
+        - sql: DROP VIEW IF EXISTS api.accounting_point_grid_location_history
+        - sql: DROP VIEW IF EXISTS api.controllable_unit_service_provider_history
+        - sql: DROP VIEW IF EXISTS api.controllable_unit_suspension_history
+        - sql: DROP VIEW IF EXISTS api.controllable_unit_suspension_comment_history
+        - sql: DROP VIEW IF EXISTS api.party_history
+        - sql: DROP VIEW IF EXISTS api.party_membership_history
+        - sql: DROP VIEW IF EXISTS api.service_provider_product_application_history
+        - sql: DROP VIEW IF EXISTS api.service_provider_product_application_comment_history
+        - sql: DROP VIEW IF EXISTS api.service_provider_product_suspension_history
+        - sql: DROP VIEW IF EXISTS api.service_provider_product_suspension_comment_history
+        - sql: DROP VIEW IF EXISTS api.service_providing_group_history
+        - sql: DROP VIEW IF EXISTS api.service_providing_group_grid_prequalification_history
+        - sql: DROP VIEW IF EXISTS api.service_providing_group_grid_prequalification_comment_history
+        - sql: DROP VIEW IF EXISTS api.service_providing_group_grid_suspension_history
+        - sql: DROP VIEW IF EXISTS api.service_providing_group_grid_suspension_comment_history
+        - sql: DROP VIEW IF EXISTS api.service_providing_group_membership_history
+        - sql: DROP VIEW IF EXISTS api.service_providing_group_product_application_history
+        - sql: DROP VIEW IF EXISTS api.service_providing_group_product_application_comment_history
+        - sql: DROP VIEW IF EXISTS api.service_providing_group_product_suspension_history
+        - sql: DROP VIEW IF EXISTS api.service_providing_group_product_suspension_comment_history
+        - sql: DROP VIEW IF EXISTS api.system_operator_product_type_history
+        # .. main
         - sql: DROP VIEW IF EXISTS api.accounting_point_grid_location
         - sql: DROP VIEW IF EXISTS api.controllable_unit_service_provider
         - sql: DROP VIEW IF EXISTS api.controllable_unit_suspension
