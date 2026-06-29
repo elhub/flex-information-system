@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 -- AUTO-GENERATED FILE (just permissions-to-db)
 
--- changeset flex:grid-field-level-authorization runAlways:true
+-- changeset flex:grid-field-level-authorization runOnChange:true
 
 GRANT SELECT (
     id,
