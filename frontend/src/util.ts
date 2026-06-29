@@ -109,3 +109,20 @@ export const findCurrentlyValidRecord = <
     return true;
   });
 };
+
+// TODO: replace all occurrences with calls to a generated API client
+export const fetchJSON = async <T>(url: string): Promise<T[]> => {
+  const response = await fetch(url, {
+    headers: { Accept: "application/json" },
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    const detail = await response.text().catch(() => "");
+    throw new Error(
+      `API request failed (${response.status} ${response.statusText})${detail ? `: ${detail}` : ""}`,
+    );
+  }
+
+  return response.json();
+};
