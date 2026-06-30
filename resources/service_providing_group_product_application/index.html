@@ -464,6 +464,8 @@
       
         
       
+        
+      
     
     
     
@@ -556,6 +558,34 @@
     
   
     Controllable Unit registration - API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/guides/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API troubleshooting
   
 
     
@@ -4009,6 +4039,18 @@ change from <code>requested</code> will trigger this check as well.</p>
 <td></td>
 </tr>
 <tr>
+<td><a name="field-ramping_capability" href="#field-ramping_capability">ramping_capability</a></td>
+<td>The ramping capability of the service providing group for this product application.</td>
+<td>text<br/>One of: <code>always</code>, <code>partial</code>, <code>never</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a name="field-ramping_description" href="#field-ramping_description">ramping_description</a></td>
+<td>Free text description of ramping details. Only required for product Manual Congestion.</td>
+<td>text</td>
+<td></td>
+</tr>
+<tr>
 <td><a name="field-recorded_at" href="#field-recorded_at">recorded_at</a></td>
 <td>When the resource was recorded (created or updated) in the system.</td>
 <td>date-time<br/>Read only</td>
@@ -4060,6 +4102,21 @@ change from <code>requested</code> will trigger this check as well.</p>
 <tr>
 <td>SPGPA-VAL006</td>
 <td>If <code>status</code> is set to <code>rejected</code>, then both <code>prequalified_at</code> and <code>verified_at</code> must be unset in the resource or by the request.</td>
+<td>DONE</td>
+</tr>
+<tr>
+<td>SPGPA-VAL007</td>
+<td>If <code>product_type_ids</code> contains Manual Congestion, then <code>ramping_capability</code> must be set</td>
+<td>DONE</td>
+</tr>
+<tr>
+<td>SPGPA-VAL008</td>
+<td>If <code>product_type_ids</code> contains Manual Congestion, then <code>ramping_description</code> must be set</td>
+<td>DONE</td>
+</tr>
+<tr>
+<td>SPGPA-VAL009</td>
+<td><code>product_type_ids</code> must not be empty.</td>
 <td>DONE</td>
 </tr>
 </tbody>
@@ -4317,6 +4374,30 @@ resource. The default policy is <strong>deny</strong>.</p>
 <td>RU</td>
 <td>RU</td>
 <td>R</td>
+<td>R</td>
+<td></td>
+</tr>
+<tr>
+<td>ramping_capability</td>
+<td></td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>RU</td>
+<td>R</td>
+<td>RCU</td>
+<td>R</td>
+<td></td>
+</tr>
+<tr>
+<td>ramping_description</td>
+<td></td>
+<td>R</td>
+<td>R</td>
+<td>R</td>
+<td>RU</td>
+<td>R</td>
+<td>RCU</td>
 <td>R</td>
 <td></td>
 </tr>

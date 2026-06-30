@@ -12,13 +12,13 @@
       
       
       
-        <link rel="canonical" href="https://elhub.github.io/flex-information-system/api/guides/sp-cu-registration/">
+        <link rel="canonical" href="https://elhub.github.io/flex-information-system/api/guides/troubleshooting/">
       
       
-        <link rel="prev" href="../getting-started/">
+        <link rel="prev" href="../sp-cu-registration/">
       
       
-        <link rel="next" href="../troubleshooting/">
+        <link rel="next" href="../../../auth/">
       
       
         
@@ -29,7 +29,7 @@
     
     
       
-        <title>Controllable Unit registration - API - Flexibility Information System Documentation</title>
+        <title>API troubleshooting - Flexibility Information System Documentation</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#controllable-unit-registration-api" class="md-skip">
+        <a href="#api-troubleshooting" class="md-skip">
           Skip to content
         </a>
       
@@ -126,7 +126,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Controllable Unit registration - API
+              API troubleshooting
             
           </span>
         </div>
@@ -551,6 +551,34 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../sp-cu-registration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controllable Unit registration - API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -570,7 +598,7 @@
   <span class="md-ellipsis">
     
   
-    Controllable Unit registration - API
+    API troubleshooting
   
 
     
@@ -588,7 +616,7 @@
   <span class="md-ellipsis">
     
   
-    Controllable Unit registration - API
+    API troubleshooting
   
 
     
@@ -614,21 +642,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#resources-and-endpoints" class="md-nav__link">
+  <a href="#the-api-returns-a-403-with-no-error-message" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Resources and endpoints
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#steps-to-register-a-cu" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Steps to register a CU
+        The API returns a 403 with no error message
       
     </span>
   </a>
@@ -639,34 +656,6 @@
   
 </nav>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../troubleshooting/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    API troubleshooting
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -3527,21 +3516,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#resources-and-endpoints" class="md-nav__link">
+  <a href="#the-api-returns-a-403-with-no-error-message" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Resources and endpoints
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#steps-to-register-a-cu" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Steps to register a CU
+        The API returns a 403 with no error message
       
     </span>
   </a>
@@ -3565,37 +3543,19 @@
 
 
 
-<h1 id="controllable-unit-registration-api">Controllable Unit registration - API</h1>
-<p>This guide explains how a Service Provider (SP) can register a Controllable Unit
-(CU) in the Flexibility Information System using the API.</p>
-<p>The same steps apply when using the portal, but the user will be guided through
-forms instead of API calls.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If you are looking for how to do it in the portal, check the <a href="../../../guides/get-ready-for-market/sp-cu-registration/">companion
-guide</a>. That guide
-also contains more detailed explanations of the steps and why they are needed.</p>
-</div>
-<h2 id="resources-and-endpoints">Resources and endpoints</h2>
-<p>Registering a CU involves creating and updating several resources in the FIS.</p>
+<h1 id="api-troubleshooting">API troubleshooting</h1>
+<p>This page is for you if you are having trouble using the API. Maybe you have
+encountered a weird error message or experienced unexpected behavior.</p>
+<p>We acknowledge that the API is not perfect yet (but we are working hard to make
+it so 🤓). In the interim, this is where you can find common issues (and
+solutions 🤞).</p>
+<p>Reach out to us if you have a problem that is not listed here.</p>
+<h2 id="the-api-returns-a-403-with-no-error-message">The API returns a 403 with no error message</h2>
+<p>The request was probably flagged as malicious. Check the following:</p>
 <ul>
-<li><a href="../../../resources/controllable_unit/">Controllable Unit</a></li>
-<li><a href="../../../resources/technical_resource/">Technical Resource</a></li>
-<li><a href="../../../resources/controllable_unit_service_provider/">Controllable Unit Service Provider</a></li>
+<li>Did you set a <code>User-Agent</code> header? The API requires a <code>User-Agent</code> header to
+  be set.</li>
 </ul>
-<p>In addition, <a href="../../../processes/controllable-unit-lookup/">controllable unit
-lookup</a> must be used to confirm that
-the CU does not already exist and that the end user is linked to the accounting
-point.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>CU lookup is mandatory when registering a new CU. Do not create a CU before
-confirming that it does not already exist.</p>
-</div>
-<h2 id="steps-to-register-a-cu">Steps to register a CU</h2>
-<p>The following diagram shows the steps that must be taken to register a CU. Where
-necessary, the steps are explained in detail with notes.</p>
-<p><img alt="CU registration process" src="../../../diagrams/sp_cu_registration.png" /></p>
 
 
 

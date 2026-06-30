@@ -464,6 +464,8 @@
       
         
       
+        
+      
     
     
     
@@ -556,6 +558,34 @@
     
   
     Controllable Unit registration - API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/guides/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API troubleshooting
   
 
     
@@ -3964,7 +3994,7 @@ based on Nemo.</p>
 <td>no</td>
 </tr>
 <tr>
-<td>geometry</td>
+<td>area</td>
 <td>For displaying on a map.</td>
 <td>GeoJSON Polygon</td>
 <td>See <a href="#geojson-geometry">GeoJSON Geometry</a></td>
@@ -4046,7 +4076,7 @@ based on Nemo.</p>
 <td>no</td>
 </tr>
 <tr>
-<td>geometry</td>
+<td>position</td>
 <td>For displaying on a map.</td>
 <td>GeoJSON Point</td>
 <td>See <a href="#geojson-geometry">GeoJSON Geometry</a></td>
@@ -4109,14 +4139,7 @@ based on Nemo.</p>
 <td>no</td>
 </tr>
 <tr>
-<td>concessionaires</td>
-<td>Name and org number of the main concessionaires. Used for display purposes.</td>
-<td>Array of free text</td>
-<td>["SønderEnergi Nett (987654321)"]</td>
-<td>no</td>
-</tr>
-<tr>
-<td>geometry</td>
+<td>line</td>
 <td>For displaying on a map. From-to substation cluster averaged position.</td>
 <td>GeoJSON LineString</td>
 <td>See <a href="#geojson-geometry">GeoJSON Geometry</a></td>
@@ -4141,17 +4164,17 @@ substations and lines. This is for displaying the grid model on a map.</p>
 <tr>
 <td>Substation</td>
 <td>Point</td>
-<td>We use the Location of the Substation.</td>
+<td>We use the position of the Substation.</td>
 </tr>
 <tr>
 <td>SubstationCluster</td>
 <td>Polygon</td>
-<td>The convex hull of the Location of the Substations, with a fixed buffer.</td>
+<td>The convex hull of the positions of the Substations, with a fixed buffer.</td>
 </tr>
 <tr>
 <td>Line</td>
 <td>LineString</td>
-<td>Line from center to center of to/from SubstationClusters. Center is the average of the Substation locations.</td>
+<td>Line from center to center of to/from SubstationClusters. Center is the average of the Substation positions.</td>
 </tr>
 </tbody>
 </table>
@@ -4162,7 +4185,7 @@ displayed on top of a map.</p>
 <p><img alt="Nemo display" src="../../diagrams/nemo-display.png" /></p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The Point geometry should probably use pins for location. That allows us to
+<p>The Point geometry should probably use pins for position. That allows us to
 use different colors and icons/letters for different kinds of substations. See
 example below.</p>
 </div>
@@ -4194,25 +4217,22 @@ in this context.</p>
 <th>Format</th>
 <th>Example</th>
 <th>Nullable</th>
-<th>Note</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>object_type</code></td>
 <td>The type of object in the grid model</td>
-<td><code>substation</code>, <code>transformer</code></td>
+<td><code>substation</code></td>
 <td>substation</td>
 <td>no</td>
-<td></td>
 </tr>
 <tr>
 <td><code>business_id</code></td>
 <td>Business ID (mRID) referencing national grid model</td>
 <td>UUID</td>
 <td>123e4567-e89b-12d3-a456-426614174000</td>
-<td>yes</td>
-<td></td>
+<td>no</td>
 </tr>
 <tr>
 <td><code>name</code></td>
@@ -4220,7 +4240,6 @@ in this context.</p>
 <td>Free text</td>
 <td>Snilldal 1 KRA</td>
 <td>no</td>
-<td></td>
 </tr>
 <tr>
 <td><code>nominal_voltage</code></td>
@@ -4228,7 +4247,6 @@ in this context.</p>
 <td>Numeric value</td>
 <td>22</td>
 <td>no</td>
-<td></td>
 </tr>
 <tr>
 <td><code>additional_information</code></td>
@@ -4236,7 +4254,6 @@ in this context.</p>
 <td>Free text</td>
 <td></td>
 <td>yes</td>
-<td></td>
 </tr>
 <tr>
 <td><code>source</code></td>
@@ -4244,7 +4261,6 @@ in this context.</p>
 <td><code>cso</code>, <code>so</code>, <code>grid_model</code>, <code>system</code></td>
 <td>cso</td>
 <td>no</td>
-<td></td>
 </tr>
 <tr>
 <td><code>quality</code></td>
@@ -4252,7 +4268,6 @@ in this context.</p>
 <td><code>confirmed</code>, <code>guessed</code></td>
 <td>confirmed</td>
 <td>no</td>
-<td></td>
 </tr>
 </tbody>
 </table>
@@ -4326,11 +4341,6 @@ location based on the current source.</p>
 </table>
 <p>The table shows that the priority order of the source is <code>grid_model</code> &gt; <code>cso</code> &gt;
 <code>so</code> &gt; <code>system</code>.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Note that transformer is part of the location but not discussed above. We are
-still debating if/when transformers should be part of the grid location.</p>
-</div>
 <h2 id="guessing-grid-location">Guessing grid location</h2>
 <p>Since we know the geographical location of the accounting point and substations,
 we can make an educated guess on the grid location.</p>

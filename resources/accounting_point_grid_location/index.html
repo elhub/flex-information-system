@@ -464,6 +464,8 @@
       
         
       
+        
+      
     
     
     
@@ -556,6 +558,34 @@
     
   
     Controllable Unit registration - API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/guides/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API troubleshooting
   
 
     
@@ -3963,13 +3993,13 @@ see <a href="../../technical/accounting-point-grid-location/">Accounting Point G
 <tr>
 <td><a name="field-object_type" href="#field-object_type">object_type</a></td>
 <td>The type of object in the common grid model that the accounting point is at.</td>
-<td>text<br/>One of: <code>substation</code>, <code>transformer</code><br/>Required</td>
+<td>text<br/>One of: <code>substation</code><br/>Required</td>
 <td></td>
 </tr>
 <tr>
 <td><a name="field-business_id" href="#field-business_id">business_id</a></td>
 <td>Business identifier (mRID) referencing the object in the common grid model.</td>
-<td>text<br/>Pattern: <code>^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$</code></td>
+<td>text<br/>Pattern: <code>^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$</code><br/>Required</td>
 <td></td>
 </tr>
 <tr>
@@ -4034,6 +4064,11 @@ see <a href="../../technical/accounting-point-grid-location/">Accounting Point G
 <tr>
 <td>APGL-VAL002</td>
 <td><code>quality=confirmed</code> is only permitted when <code>source</code> is <code>cso</code>, <code>so</code> or <code>grid_model</code>.</td>
+<td>DONE</td>
+</tr>
+<tr>
+<td>APGL-VAL003</td>
+<td>A grid location can only be <code>confirmed</code> with a non-zero voltage level.</td>
 <td>DONE</td>
 </tr>
 </tbody>

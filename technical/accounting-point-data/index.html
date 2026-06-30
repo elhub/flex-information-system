@@ -464,6 +464,8 @@
       
         
       
+        
+      
     
     
     
@@ -556,6 +558,34 @@
     
   
     Controllable Unit registration - API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/guides/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API troubleshooting
   
 
     
@@ -3826,12 +3856,8 @@ is used in each of them.</p>
 <h3 id="lookup-flow">Lookup flow</h3>
 <p><img alt="Accounting point internal lookup flow" src="../../diagrams/accounting-point-sync-lookup.png" /></p>
 <h3 id="background-sync-flow">Background sync flow</h3>
-<p>The batch size for the background sync can be established upon application
-startup. We generally want all accounting points to be synced within 24 hours.
-The batch size should be configured as follows. We can use startup since
-we assume that we will deploy/recycle the application quite often.</p>
-<div class="highlight"><pre><span></span><code>Batch size = nb_accounting_points / ((24h / interval) * nb_workers)
-</code></pre></div>
+<p>The batch size for the background sync is set to a static size of 50.
+A batch will be processed every 5 minutes.</p>
 <p>We can make this better in the future, but for now we can live with this simple
 approach.</p>
 <p>Our goal is either way that we want to spread the load out during the whole day,
