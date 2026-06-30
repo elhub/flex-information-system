@@ -2,7 +2,7 @@
 -- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
 
 -- changeset flex:service-provider-product-application-comment-create runOnChange:true endDelimiter:--
-CREATE TABLE IF NOT EXISTS service_provider_product_application_comment (
+CREATE TABLE IF NOT EXISTS flex.service_provider_product_application_comment (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     service_provider_product_application_id bigint NOT NULL,
     visibility text NOT NULL DEFAULT 'same_party',
@@ -17,19 +17,27 @@ CREATE TABLE IF NOT EXISTS service_provider_product_application_comment (
     recorded_by bigint NOT NULL DEFAULT current_identity(),
 
     CONSTRAINT
-    service_provider_product_application_comment_visibility_check
-    CHECK (
-        visibility IN (
-            'same_party',
-            'same_party_type',
-            'any_involved_party'
-        )
-    ),
-    CONSTRAINT
     service_provider_product_application_comment_sppa_fkey
     FOREIGN KEY (service_provider_product_application_id)
     REFERENCES service_provider_product_application (id)
 );
+
+-- changeset flex:service-provider-product-application-comment-visibility-check runOnChange:true endDelimiter:--
+ALTER TABLE flex.service_provider_product_application_comment
+DROP CONSTRAINT IF EXISTS
+service_provider_product_application_comment_visibility_check;
+
+ALTER TABLE flex.controllable_unit_suspension_comment
+ADD CONSTRAINT
+service_provider_product_application_comment_visibility_check
+CHECK (
+    visibility IN (
+        'same_party',
+        'same_party_type',
+        'any_involved_party'
+    )
+);
+
 
 -- changeset flex:service-provider-product-application-comment-capture-event runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER

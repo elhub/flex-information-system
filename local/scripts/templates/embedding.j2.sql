@@ -13,4 +13,4 @@ $$ STABLE LANGUAGE sql;
 GRANT EXECUTE ON FUNCTION
 api.{{ rel.name }}(api.{{ rel.child.resource }})
 TO flex_common, flex_entity;
-{% endfor %}
+{% endfor -%}

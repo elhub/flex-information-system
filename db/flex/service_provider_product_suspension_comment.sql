@@ -2,7 +2,7 @@
 -- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
 
 -- changeset flex:service-provider-product-suspension-comment-create runOnChange:true endDelimiter:--
-CREATE TABLE IF NOT EXISTS service_provider_product_suspension_comment (
+CREATE TABLE IF NOT EXISTS flex.service_provider_product_suspension_comment (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     service_provider_product_suspension_id bigint NOT NULL,
     visibility text NOT NULL DEFAULT 'same_party',
@@ -17,20 +17,28 @@ CREATE TABLE IF NOT EXISTS service_provider_product_suspension_comment (
     recorded_by bigint NOT NULL DEFAULT current_identity(),
 
     CONSTRAINT
-    service_provider_product_suspension_comment_visibility_check
-    CHECK (
-        visibility IN (
-            'same_party',
-            'same_party_type',
-            'any_involved_party'
-        )
-    ),
-    CONSTRAINT
     service_provider_product_suspension_comment_spps_fkey
     FOREIGN KEY (service_provider_product_suspension_id)
     REFERENCES service_provider_product_suspension (id)
     ON DELETE CASCADE
 );
+
+-- changeset flex:service-provider-product-suspension-comment-visibility-check runOnChange:true endDelimiter:--
+ALTER TABLE flex.service_provider_product_suspension_comment
+DROP CONSTRAINT IF EXISTS
+service_provider_product_suspension_comment_visibility_check;
+
+ALTER TABLE flex.controllable_unit_suspension_comment
+ADD CONSTRAINT
+service_provider_product_suspension_comment_visibility_check
+CHECK (
+    visibility IN (
+        'same_party',
+        'same_party_type',
+        'any_involved_party'
+    )
+);
+
 
 -- changeset flex:service-provider-product-suspension-comment-capture-event runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER

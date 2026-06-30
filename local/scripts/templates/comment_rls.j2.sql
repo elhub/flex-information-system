@@ -108,10 +108,10 @@ USING (
     AND EXISTS (
         SELECT 1
         FROM flex.identity AS comment_creator
-        INNER JOIN flex.party AS creator_party
-            ON creator_party.id = comment_creator.party_id
-        INNER JOIN flex.party AS current_party
-            ON current_party.id = (SELECT flex.current_party())
+            INNER JOIN flex.party AS creator_party
+                ON comment_creator.party_id = creator_party.id
+            INNER JOIN flex.party AS current_party
+                ON current_party.id = (SELECT flex.current_party())
         WHERE comment_creator.id = {{ resource }}_comment.created_by -- noqa
             AND creator_party.type = current_party.type
     )
@@ -206,10 +206,10 @@ USING (
     AND EXISTS (
         SELECT 1
         FROM flex.identity AS comment_creator
-        INNER JOIN flex.party AS creator_party
-            ON creator_party.id = comment_creator.party_id
-        INNER JOIN flex.party AS current_party
-            ON current_party.id = (SELECT flex.current_party())
+            INNER JOIN flex.party AS creator_party
+                ON comment_creator.party_id = creator_party.id
+            INNER JOIN flex.party AS current_party
+                ON current_party.id = (SELECT flex.current_party())
         WHERE comment_creator.id = {{ resource }}_comment_history.created_by -- noqa
             AND creator_party.type = current_party.type
     )

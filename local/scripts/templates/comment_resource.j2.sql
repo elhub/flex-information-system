@@ -6,7 +6,7 @@
 {%- set lower_acronym = data.acronym | lower %}
 
 -- changeset flex:{{ liquibase_resource }}-comment-create runOnChange:true endDelimiter:--
-CREATE TABLE IF NOT EXISTS {{ resource }}_comment (
+CREATE TABLE IF NOT EXISTS flex.{{ resource }}_comment (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     {{ resource }}_id bigint NOT NULL,
     visibility text NOT NULL DEFAULT 'same_party',
@@ -21,15 +21,6 @@ CREATE TABLE IF NOT EXISTS {{ resource }}_comment (
     recorded_by bigint NOT NULL DEFAULT current_identity(),
 
     CONSTRAINT
-    {{ resource }}_comment_visibility_check
-    CHECK (
-        visibility IN (
-            'same_party',
-            'same_party_type',
-            'any_involved_party'
-        )
-    ),
-    CONSTRAINT
     {{ resource }}_comment_{{ lower_acronym }}_fkey
     FOREIGN KEY ({{ resource }}_id)
     REFERENCES {{ resource }} (id)
@@ -37,6 +28,23 @@ CREATE TABLE IF NOT EXISTS {{ resource }}_comment (
     ON DELETE CASCADE
     {%- endif %}
 );
+
+-- changeset flex:{{ liquibase_resource }}-comment-visibility-check runOnChange:true endDelimiter:--
+ALTER TABLE flex.{{ resource }}_comment
+DROP CONSTRAINT IF EXISTS
+{{ resource }}_comment_visibility_check;
+
+ALTER TABLE flex.controllable_unit_suspension_comment
+ADD CONSTRAINT
+{{ resource }}_comment_visibility_check
+CHECK (
+    visibility IN (
+        'same_party',
+        'same_party_type',
+        'any_involved_party'
+    )
+);
+
 
 -- changeset flex:{{ liquibase_resource }}-comment-capture-event runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER
