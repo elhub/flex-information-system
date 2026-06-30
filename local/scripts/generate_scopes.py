@@ -40,9 +40,6 @@ EXTRA_USE_SCOPES = {
         "use:data:controllable_unit:lookup",
         "use:data:entity:lookup",
     ],
-    "grid": [
-        "use:grid:substation_distance",
-    ],
 }
 
 WRITE_OPS = {"create", "update", "delete"}

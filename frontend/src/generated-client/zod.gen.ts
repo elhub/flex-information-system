@@ -116,7 +116,6 @@ export const zAuthScope = z.enum([
   "read:grid:substation_cluster",
   "read:grid:substation",
   "read:grid:line",
-  "use:grid:substation_distance",
 ]);
 
 /**

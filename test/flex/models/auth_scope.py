@@ -140,7 +140,6 @@ class AuthScope(StrEnum):
     USEDATA = "use:data"
     USEDATACONTROLLABLE_UNITLOOKUP = "use:data:controllable_unit:lookup"
     USEDATAENTITYLOOKUP = "use:data:entity:lookup"
-    USEGRIDSUBSTATION_DISTANCE = "use:grid:substation_distance"
 
     def __str__(self) -> str:
         return str(self.value)

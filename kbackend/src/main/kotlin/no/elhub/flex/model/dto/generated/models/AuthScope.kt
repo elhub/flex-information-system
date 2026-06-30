@@ -210,8 +210,6 @@ public enum class AuthScope(
   READ_GRID_SUBSTATION("read:grid:substation"),
   @SerialName("read:grid:line")
   READ_GRID_LINE("read:grid:line"),
-  @SerialName("use:grid:substation_distance")
-  USE_GRID_SUBSTATION_DISTANCE("use:grid:substation_distance"),
   ;
 
   override fun toString(): String = value

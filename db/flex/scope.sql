@@ -111,7 +111,6 @@ ADD CONSTRAINT check_scope CHECK (
         'read:grid',
         'read:grid:substation_cluster',
         'read:grid:substation',
-        'read:grid:line',
-        'use:grid:substation_distance'
+        'read:grid:line'
     )
 ) NOT VALID;
