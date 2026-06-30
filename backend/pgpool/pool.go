@@ -60,6 +60,11 @@ func New(ctx context.Context, connString string, ctxKey string) (*Pool, error) {
 		return nil, fmt.Errorf("failed to create db pool: %w", err)
 	}
 
+	err = pgxp.Ping(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to ping db: %w", err)
+	}
+
 	pool := Pool{pgxp: pgxp, ctxKey: ctxKey}
 
 	return &pool, nil
