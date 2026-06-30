@@ -1,4 +1,6 @@
+import { useEffect, useState } from "react";
 import { Form, ResourceContextProvider, useNotify } from "ra-core";
+import { useFormContext } from "react-hook-form";
 import { useQueryClient } from "@tanstack/react-query";
 import z from "zod";
 import {
@@ -12,7 +14,6 @@ import {
 } from "../../generated-client/zod.gen";
 import { FormContainer } from "../../components/ui";
 import {
-  TextInput,
   EnumInput,
   UnitInput,
   TextAreaInput,
@@ -21,19 +22,101 @@ import {
 import { accountingPointViewModelQueryKey } from "../show/useAccountingPointViewModel";
 import { unTypedZodResolver, getFields } from "../../zod";
 import { Substation } from "../show/AccountingPointLocationMap";
+import { SubstationReferenceInput } from "./SubstationReferenceInput";
 
 const fields = getFields(zAccountingPointGridLocationCreateRequest.shape);
+
+const GridLocationFormFields = ({
+  onDone,
+  selectedSubstation,
+  onClearMapSelection,
+}: {
+  onDone: () => void;
+  selectedSubstation?: Substation | null;
+  onClearMapSelection?: () => void;
+}) => {
+  const { setValue, watch } = useFormContext();
+
+  // track voltage levels selected via the combobox
+  const [comboboxVoltageLevels, setComboboxVoltageLevels] = useState<number[]>(
+    [],
+  );
+
+  const selectedVoltageLevels =
+    selectedSubstation?.voltage_levels ?? comboboxVoltageLevels;
+
+  const handleSubstationSelect = (substation: Substation | null) => {
+    if (substation) {
+      // derive name from the selected substation
+      setValue("name", substation.name);
+      setComboboxVoltageLevels(substation.voltage_levels);
+      // the user picked via the combobox, so the map selection is stale
+      onClearMapSelection?.();
+    } else {
+      setValue("name", "");
+      setComboboxVoltageLevels([]);
+    }
+  };
+
+  // when the map-selected substation changes, sync the form fields
+  useEffect(() => {
+    if (selectedSubstation) {
+      setValue("business_id", selectedSubstation.business_id);
+      setValue("name", selectedSubstation.name);
+      setValue("object_type", "substation");
+    }
+  }, [selectedSubstation, setValue, watch]);
+
+  const nominalVoltage = watch("nominal_voltage");
+
+  return (
+    <>
+      <SubstationReferenceInput
+        source="business_id"
+        required={fields.business_id.required}
+        tooltip={false}
+        onSelect={handleSubstationSelect}
+      />
+      {/* show possible voltage levels when no meaningful voltage is set yet */}
+      {selectedVoltageLevels.length > 0 && !nominalVoltage && (
+        <p className="text-xs text-gray-500 -mt-2">
+          Substation voltage levels:{" "}
+          {selectedVoltageLevels.map((v) => `${v} kV`).join(", ")}
+        </p>
+      )}
+      <UnitInput
+        {...fields.nominal_voltage}
+        units={[{ label: "kV", scale: 1 }]}
+        tooltip={false}
+      />
+      <EnumInput
+        {...fields.quality}
+        enumKey="accounting_point_grid_location.quality"
+        tooltip={false}
+      />
+      <TextAreaInput
+        {...fields.additional_information}
+        tooltip={false}
+        rows={5}
+        warning="Please remember not to write any sensitive (power/market/personal) information in this field."
+      />
+      <FormToolbar onCancel={onDone} />
+    </>
+  );
+};
 
 export const AccountingPointGridLocationInput = ({
   apId,
   gridLocation,
   onDone,
   selectedSubstation,
+  onClearMapSelection,
 }: {
   apId: number;
   gridLocation: AccountingPointGridLocation | undefined;
   onDone: () => void;
   selectedSubstation?: Substation | null;
+  onClearMapSelection?: () => void;
 }) => {
   const queryClient = useQueryClient();
   const notify = useNotify();
@@ -60,6 +143,7 @@ export const AccountingPointGridLocationInput = ({
         name: selectedSubstation.name,
         object_type: "substation" as const,
         business_id: selectedSubstation.business_id,
+        nominal_voltage: baseRecord.nominal_voltage ?? 0,
       }
     : baseRecord;
 
@@ -102,30 +186,11 @@ export const AccountingPointGridLocationInput = ({
         onSubmit={onSubmit}
       >
         <FormContainer>
-          <TextInput {...fields.name} tooltip={false} />
-          <EnumInput
-            {...fields.object_type}
-            enumKey="accounting_point_grid_location.object_type"
-            tooltip={false}
+          <GridLocationFormFields
+            onDone={onDone}
+            selectedSubstation={selectedSubstation}
+            onClearMapSelection={onClearMapSelection}
           />
-          <TextInput {...fields.business_id} tooltip={false} />
-          <UnitInput
-            {...fields.nominal_voltage}
-            units={[{ label: "kV", scale: 1 }]}
-            tooltip={false}
-          />
-          <EnumInput
-            {...fields.quality}
-            enumKey="accounting_point_grid_location.quality"
-            tooltip={false}
-          />
-          <TextAreaInput
-            {...fields.additional_information}
-            tooltip={false}
-            rows={5}
-            warning="Please remember not to write any sensitive (power/market/personal) information in this field."
-          />
-          <FormToolbar onCancel={onDone} />
         </FormContainer>
       </Form>
     </ResourceContextProvider>

@@ -25,6 +25,7 @@ WITH (security_invoker = false) AS (
 );
 
 -- APs with a grid location registered but source is not cso or grid_model
+-- notice only generated when there is a non-small CU connected to the AP
 CREATE OR REPLACE VIEW notice_accounting_point_grid_location_source_insufficient
 WITH (security_invoker = false) AS (
     SELECT
@@ -39,5 +40,13 @@ WITH (security_invoker = false) AS (
             ON
                 apgl.accounting_point_id = ap_so.accounting_point_id
                 AND ap_so.valid_time_range @> current_timestamp
-    WHERE apgl.source NOT IN ('cso', 'grid_model')
+    WHERE
+        apgl.source NOT IN ('cso', 'grid_model')
+        AND EXISTS (
+            SELECT 1
+            FROM flex.controllable_unit AS cu
+            WHERE
+                cu.accounting_point_id = apgl.accounting_point_id
+                AND NOT cu.is_small
+        )
 );

@@ -595,6 +595,50 @@ def test_spgpa_fiso_sp_so(data):
         assert not (isinstance(d, ErrorMessage))
 
 
+# SPGPA-VAL009
+def test_spgpa_product_type_ids_not_empty(data):
+    (sts, spg_ids, _, client_sp, _, so_ids, pt_ids) = data
+
+    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    so_id = so_ids[0]
+
+    # insert with empty product_type_ids must fail
+    e = create_service_providing_group_product_application.sync(
+        client=client_sp,
+        body=ServiceProvidingGroupProductApplicationCreateRequest(
+            service_providing_group_id=spg_ids[0],
+            procuring_system_operator_id=so_id,
+            product_type_ids=[],
+            maximum_active_power_up=3.5,
+            maximum_active_power_down=3.5,
+        ),
+    )
+    assert isinstance(e, ErrorMessage)
+
+    # but with a product type it's ok
+    spgpa = create_service_providing_group_product_application.sync(
+        client=client_sp,
+        body=ServiceProvidingGroupProductApplicationCreateRequest(
+            service_providing_group_id=spg_ids[0],
+            procuring_system_operator_id=so_id,
+            product_type_ids=[pt_ids[0]],
+            maximum_active_power_up=3.5,
+            maximum_active_power_down=3.5,
+        ),
+    )
+    assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
+
+    # update with empty product_type_ids must also fail
+    u = update_service_providing_group_product_application.sync(
+        client=client_fiso,
+        id=cast(int, spgpa.id),
+        body=ServiceProvidingGroupProductApplicationUpdateRequest(
+            product_type_ids=[],
+        ),
+    )
+    assert isinstance(u, ErrorMessage)
+
+
 def test_spgpa_common(data):
     (sts, _, _, _, _, _, _) = data
 

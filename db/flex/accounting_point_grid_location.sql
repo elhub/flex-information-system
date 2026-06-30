@@ -172,6 +172,32 @@ BEFORE INSERT OR UPDATE ON accounting_point_grid_location
 FOR EACH ROW
 EXECUTE FUNCTION accounting_point_grid_location_business_id_substation_check();
 
+-- changeset flex:accounting-point-grid-location-non-zero-voltage-check-function runOnChange:true endDelimiter:--
+CREATE OR REPLACE FUNCTION
+accounting_point_grid_location_non_zero_voltage_check()
+RETURNS trigger
+SECURITY DEFINER
+LANGUAGE plpgsql
+AS
+$$
+BEGIN
+    IF NEW.nominal_voltage = 0 THEN
+        RAISE EXCEPTION
+            'nominal voltage must be greater than zero when confirming the location';
+    END IF;
+
+    RETURN NEW;
+END;
+$$;
+
+-- changeset flex:accounting-point-grid-location-non-zero-voltage-check-trigger runOnChange:true endDelimiter:--
+CREATE OR REPLACE TRIGGER
+b_accounting_point_grid_location_non_zero_voltage_check
+BEFORE INSERT OR UPDATE ON accounting_point_grid_location
+FOR EACH ROW
+WHEN (NEW.quality = 'confirmed') -- noqa
+EXECUTE FUNCTION accounting_point_grid_location_non_zero_voltage_check();
+
 -- changeset flex:accounting-point-grid-location-event-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER z_accounting_point_grid_location_event
 AFTER INSERT OR UPDATE ON accounting_point_grid_location
