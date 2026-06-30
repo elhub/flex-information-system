@@ -29,3 +29,20 @@ SET scopes = '{manage:data, manage:auth}';
 
 ALTER TABLE flex.party_membership
 ENABLE TRIGGER USER;
+
+-- changeset flex:party-membership-add-grid-scopes runOnChange:false endDelimiter:;
+--preconditions onFail:MARK_RAN
+--precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM flex.party_membership WHERE 'read:grid' = ANY(scopes)
+ALTER TABLE flex.party_membership
+DISABLE TRIGGER USER;
+
+UPDATE flex.party_membership
+SET scopes = array_append(scopes, 'read:grid')
+WHERE NOT ('read:grid' = any(scopes));
+
+UPDATE flex.party_membership_history
+SET scopes = array_append(scopes, 'read:grid')
+WHERE NOT ('read:grid' = any(scopes));
+
+ALTER TABLE flex.party_membership
+ENABLE TRIGGER USER;

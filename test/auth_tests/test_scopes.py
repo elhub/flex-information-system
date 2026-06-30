@@ -42,6 +42,7 @@ from typing import cast
 from api_client_tests.test_party import unique_gln
 
 auth_url = os.environ["FLEX_AUTH_BASE"] + "/auth/v1"
+grid_url = os.environ["FLEX_URL_BASE"] + "/grid/v0"
 auth_headers = {"Content-Type": "application/x-www-form-urlencoded"}
 client_secret = "qwertyuiop123456"
 
@@ -508,6 +509,87 @@ def test_scopes_embedding(jwt_keys):
     # cleanup
     delete_entity_client.sync(
         id=cast(int, clt.id),
+        client=client_ent,
+        body=EmptyObject(),
+    )
+
+
+def test_scopes_grid_read_grid_required():
+    sts = SecurityTokenService()
+    client_ent = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST))
+
+    ent_id = sts.get_userinfo(client_ent)["entity_id"]
+
+    # client with read:grid
+    clt_with_grid = create_entity_client.sync(
+        client=client_ent,
+        body=EntityClientCreateRequest(
+            entity_id=ent_id,
+            scopes=[AuthScope.READGRID, AuthScope.MANAGEAUTH],
+            client_secret=client_secret,
+        ),
+    )
+    assert isinstance(clt_with_grid, EntityClientResponse)
+
+    response = requests.post(
+        auth_url + "/token",
+        headers=auth_headers,
+        data={
+            "grant_type": "client_credentials",
+            "client_id": clt_with_grid.client_id,
+            "client_secret": client_secret,
+        },
+    )
+    assert response.status_code == 200
+    token_with_grid = response.json()["access_token"]
+
+    # can read grid
+    r = requests.get(
+        grid_url + "/substation",
+        headers={"Authorization": f"Bearer {token_with_grid}"},
+        verify=False,
+    )
+    assert r.status_code == 200
+
+    # client with only read:data
+    clt_data_only = create_entity_client.sync(
+        client=client_ent,
+        body=EntityClientCreateRequest(
+            entity_id=ent_id,
+            scopes=[AuthScope.READDATA, AuthScope.MANAGEAUTH],
+            client_secret=client_secret,
+        ),
+    )
+    assert isinstance(clt_data_only, EntityClientResponse)
+
+    response = requests.post(
+        auth_url + "/token",
+        headers=auth_headers,
+        data={
+            "grant_type": "client_credentials",
+            "client_id": clt_data_only.client_id,
+            "client_secret": client_secret,
+        },
+    )
+    assert response.status_code == 200
+    token_data_only = response.json()["access_token"]
+
+    # cannot read grid
+    r = requests.get(
+        grid_url + "/substation",
+        headers={"Authorization": f"Bearer {token_data_only}"},
+        verify=False,
+    )
+    assert r.status_code == 403
+
+    # cleanup
+    delete_entity_client.sync(
+        id=cast(int, clt_with_grid.id),
+        client=client_ent,
+        body=EmptyObject(),
+    )
+    delete_entity_client.sync(
+        id=cast(int, clt_data_only.id),
         client=client_ent,
         body=EmptyObject(),
     )

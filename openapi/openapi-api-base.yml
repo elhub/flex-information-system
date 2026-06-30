@@ -72,16 +72,8 @@ components:
         Authorization scopes.
       format: text
       type: string
-      enum:
-        - "read:data"
-        - "use:data"
-        - "use:data:entity:lookup"
-        - "manage:data"
-        - "manage:data:party_membership"
-        - "manage:data:entity_client"
-        - "read:auth"
-        - "use:auth"
-        - "manage:auth"
+      # populated at codegen from openapi/scopes.yml by resources_to_openapi.py
+      enum: []
     category:
       description: >-
         Resource category classification. Derived from technologies.
