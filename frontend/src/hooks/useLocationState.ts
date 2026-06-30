@@ -1,4 +1,4 @@
-import { useLocation } from "react-router";
+import { useLocation } from "react-router-dom";
 
 const useLocationState = <T>(): T | undefined => {
   const { state } = useLocation();
