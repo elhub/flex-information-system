@@ -28,14 +28,17 @@ const fields = getFields(zAccountingPointGridLocationCreateRequest.shape);
 
 const GridLocationFormFields = ({
   onDone,
-  selectedSubstation,
+  selectedSubstation, // selected via the map
   onClearMapSelection,
+  existingGridLocation, // existing record (if editing)
 }: {
   onDone: () => void;
   selectedSubstation?: Substation | null;
   onClearMapSelection?: () => void;
+  existingGridLocation?: { name: string; business_id: string } | null;
 }) => {
   const { setValue, watch } = useFormContext();
+  const currentBusinessId = watch("business_id");
 
   // track voltage levels selected via the combobox
   const [comboboxVoltageLevels, setComboboxVoltageLevels] = useState<number[]>(
@@ -47,13 +50,15 @@ const GridLocationFormFields = ({
 
   const handleSubstationSelect = (substation: Substation | null) => {
     if (substation) {
-      // derive name from the selected substation
       setValue("name", substation.name);
+      const isNewSubstation = substation.business_id !== currentBusinessId;
+      if (isNewSubstation) setValue("nominal_voltage", null);
       setComboboxVoltageLevels(substation.voltage_levels);
       // the user picked via the combobox, so the map selection is stale
       onClearMapSelection?.();
     } else {
       setValue("name", "");
+      setValue("nominal_voltage", null);
       setComboboxVoltageLevels([]);
     }
   };
@@ -64,8 +69,11 @@ const GridLocationFormFields = ({
       setValue("business_id", selectedSubstation.business_id);
       setValue("name", selectedSubstation.name);
       setValue("object_type", "substation");
+      const isNewSubstation =
+        selectedSubstation.business_id !== currentBusinessId;
+      if (isNewSubstation) setValue("nominal_voltage", null);
     }
-  }, [selectedSubstation, setValue, watch]);
+  }, [selectedSubstation, setValue]);
 
   const nominalVoltage = watch("nominal_voltage");
 
@@ -76,6 +84,7 @@ const GridLocationFormFields = ({
         required={fields.business_id.required}
         tooltip={false}
         onSelect={handleSubstationSelect}
+        knownSubstation={selectedSubstation ?? existingGridLocation}
       />
       {/* show possible voltage levels when no meaningful voltage is set yet */}
       {selectedVoltageLevels.length > 0 && !nominalVoltage && (
@@ -100,7 +109,7 @@ const GridLocationFormFields = ({
         rows={5}
         warning="Please remember not to write any sensitive (power/market/personal) information in this field."
       />
-      <FormToolbar onCancel={onDone} />
+      <FormToolbar onCancel={onDone} saveAlwaysEnabled />
     </>
   );
 };
@@ -126,7 +135,11 @@ export const AccountingPointGridLocationInput = ({
   const baseRecord: Partial<
     z.infer<typeof zAccountingPointGridLocationCreateRequest>
   > = isCreate
-    ? { accounting_point_id: apId }
+    ? {
+        accounting_point_id: apId,
+        object_type: "substation",
+        quality: "guessed",
+      }
     : {
         accounting_point_id: apId,
         name: gridLocation.name,
@@ -143,7 +156,7 @@ export const AccountingPointGridLocationInput = ({
         name: selectedSubstation.name,
         object_type: "substation" as const,
         business_id: selectedSubstation.business_id,
-        nominal_voltage: baseRecord.nominal_voltage ?? 0,
+        nominal_voltage: undefined,
       }
     : baseRecord;
 
@@ -182,7 +195,11 @@ export const AccountingPointGridLocationInput = ({
       )}
       <Form
         record={record}
-        resolver={unTypedZodResolver(zAccountingPointGridLocationCreateRequest)}
+        resolver={unTypedZodResolver(
+          isCreate
+            ? zAccountingPointGridLocationCreateRequest
+            : zAccountingPointGridLocationUpdateRequest,
+        )}
         onSubmit={onSubmit}
       >
         <FormContainer>
@@ -190,6 +207,7 @@ export const AccountingPointGridLocationInput = ({
             onDone={onDone}
             selectedSubstation={selectedSubstation}
             onClearMapSelection={onClearMapSelection}
+            existingGridLocation={gridLocation ?? null}
           />
         </FormContainer>
       </Form>

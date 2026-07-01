@@ -7,11 +7,15 @@ import { gridURL } from "../../httpConfig";
 import { Substation } from "../show/AccountingPointLocationMap";
 import { fetchJSON } from "../../util";
 
+// need at least a name and a business ID to render a substation in the combobox
+type SubstationLabel = Pick<Substation, "name" | "business_id">;
+
 type Props = {
   source: string;
   required?: boolean;
   tooltip?: boolean;
   onSelect: (substation: Substation | null) => void;
+  knownSubstation?: SubstationLabel | null;
 };
 
 export const SubstationReferenceInput = ({
@@ -19,6 +23,7 @@ export const SubstationReferenceInput = ({
   required,
   tooltip,
   onSelect,
+  knownSubstation,
 }: Props) => {
   const { id: inputId, field, fieldState } = useInput({ source });
   const fallbackId = useId();
@@ -29,7 +34,7 @@ export const SubstationReferenceInput = ({
   const queryParams = new URLSearchParams({
     kind: "eq.transformer",
     status: "eq.active",
-    business_id: `ilike.${search}*`,
+    or: `(business_id.ilike.${search}*,name.ilike.*${search}*)`,
     limit: "10",
     order: "name",
   });
@@ -49,7 +54,14 @@ export const SubstationReferenceInput = ({
 
   const selectedOption =
     options.find((o) => o.value === field.value) ??
-    (field.value ? { label: field.value, value: field.value } : undefined);
+    (field.value && knownSubstation?.business_id === field.value
+      ? {
+          label: `${knownSubstation!.name} (${knownSubstation!.business_id})`,
+          value: field.value,
+        }
+      : field.value
+        ? { label: field.value, value: field.value }
+        : undefined);
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement> | null,
