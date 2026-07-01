@@ -38,7 +38,6 @@ CHECK (
     )
 );
 
-
 -- changeset flex:service-providing-group-grid-suspension-comment-capture-event runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER
 service_providing_group_grid_suspension_comment_event

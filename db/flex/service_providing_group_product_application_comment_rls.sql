@@ -115,6 +115,7 @@ AS $$
             FROM flex.service_providing_group_product_application_comment_history AS spgpach -- noqa
             WHERE spgpach.id = in_spgpac_id
         )
+
     SELECT spgpa_history.visibility
     FROM spgpa_history
     ORDER BY spgpa_history.record_time_range DESC

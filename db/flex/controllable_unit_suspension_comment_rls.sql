@@ -115,6 +115,7 @@ AS $$
             FROM flex.controllable_unit_suspension_comment_history AS cusch -- noqa
             WHERE cusch.id = in_cusc_id
         )
+
     SELECT cus_history.visibility
     FROM cus_history
     ORDER BY cus_history.record_time_range DESC

@@ -115,6 +115,7 @@ AS $$
             FROM flex.service_providing_group_grid_prequalification_comment_history AS spggpch -- noqa
             WHERE spggpch.id = in_spggpc_id
         )
+
     SELECT spggp_history.visibility
     FROM spggp_history
     ORDER BY spggp_history.record_time_range DESC

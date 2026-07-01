@@ -38,7 +38,6 @@ CHECK (
     )
 );
 
-
 -- changeset flex:controllable-unit-suspension-comment-capture-event runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER
 controllable_unit_suspension_comment_event

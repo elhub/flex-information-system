@@ -37,7 +37,6 @@ CHECK (
     )
 );
 
-
 -- changeset flex:service-provider-product-application-comment-capture-event runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER
 service_provider_product_application_comment_event

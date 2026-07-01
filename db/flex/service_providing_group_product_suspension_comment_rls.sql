@@ -115,6 +115,7 @@ AS $$
             FROM flex.service_providing_group_product_suspension_comment_history AS spgpsch -- noqa
             WHERE spgpsch.id = in_spgpsc_id
         )
+
     SELECT spgps_history.visibility
     FROM spgps_history
     ORDER BY spgps_history.record_time_range DESC

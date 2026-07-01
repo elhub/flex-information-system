@@ -118,6 +118,7 @@ AS $$
             FROM flex.{{ resource }}_comment_history AS {{ lower_acronym }}ch -- noqa
             WHERE {{ lower_acronym }}ch.id = in_{{ lower_acronym }}c_id
         )
+
     SELECT {{ lower_acronym }}_history.visibility
     FROM {{ lower_acronym }}_history
     ORDER BY {{ lower_acronym }}_history.record_time_range DESC

@@ -44,7 +44,6 @@ CHECK (
     )
 );
 
-
 -- changeset flex:{{ liquibase_resource }}-comment-capture-event runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER
 {{ resource }}_comment_event

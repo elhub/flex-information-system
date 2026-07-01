@@ -38,7 +38,6 @@ CHECK (
     )
 );
 
-
 -- changeset flex:service-provider-product-suspension-comment-capture-event runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER
 service_provider_product_suspension_comment_event
