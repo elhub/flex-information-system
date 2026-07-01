@@ -24,18 +24,25 @@ type PostInput = {
   visibility: Visibility;
 };
 
+type EditInput = {
+  id: number;
+  content: string;
+  visibility: Visibility;
+};
+
 type CommentFeedProps = {
   commentsQuery: UseQueryResult<Comment[]>;
   postComment: UseMutationResult<unknown, Error, PostInput>;
+  editComment?: UseMutationResult<unknown, Error, EditInput>;
   canCreate: boolean;
 };
 
 function useIdentityMap(
   comments: Comment[] | undefined,
 ): Record<number, Identity> {
-  const ids = [...new Set((comments ?? []).map((c) => c.created_by))].sort(
-    (a, b) => a - b,
-  );
+  const ids = [
+    ...new Set((comments ?? []).flatMap((c) => [c.created_by, c.recorded_by])),
+  ].sort((a, b) => a - b);
 
   const { data } = useQuery({
     queryKey: ["identities", ids],
@@ -52,6 +59,7 @@ function useIdentityMap(
 export function CommentFeed({
   commentsQuery,
   postComment,
+  editComment,
   canCreate,
 }: CommentFeedProps) {
   const [text, setText] = useState("");
@@ -169,9 +177,16 @@ export function CommentFeed({
             <CommentBubble
               key={comment.id}
               comment={comment}
-              identity={identityMap[comment.created_by]}
+              createdByIdentity={identityMap[comment.created_by]}
+              recordedByIdentity={identityMap[comment.recorded_by]}
               isCurrentUser={
                 identityMap[comment.created_by]?.entity_id === currentEntityId
+              }
+              onEdit={
+                editComment
+                  ? (id, content, visibility) =>
+                      editComment.mutateAsync({ id, content, visibility })
+                  : undefined
               }
             />
           ))

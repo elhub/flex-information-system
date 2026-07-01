@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   createServiceProvidingGroupGridPrequalificationComment,
   listServiceProvidingGroupGridPrequalificationComment,
+  updateServiceProvidingGroupGridPrequalificationComment,
 } from "../../../generated-client";
 import type { ServiceProvidingGroupGridPrequalificationCommentVisibility } from "../../../generated-client/types.gen";
 import { throwOnError } from "../../../util";
@@ -46,5 +47,25 @@ export function useSpgpqComments(spgpqId: number | undefined) {
       }),
   });
 
-  return { commentsQuery, postComment };
+  const editComment = useMutation({
+    mutationFn: ({
+      id,
+      content,
+      visibility,
+    }: {
+      id: number;
+      content: string;
+      visibility: ServiceProvidingGroupGridPrequalificationCommentVisibility;
+    }) =>
+      updateServiceProvidingGroupGridPrequalificationComment({
+        path: { id },
+        body: { content, visibility },
+      }).then(throwOnError),
+    onSettled: () =>
+      queryClient.invalidateQueries({
+        queryKey: spgpqCommentsQueryKey(spgpqId ?? 0),
+      }),
+  });
+
+  return { commentsQuery, postComment, editComment };
 }

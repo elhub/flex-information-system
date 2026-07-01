@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   createServiceProviderProductApplicationComment,
   listServiceProviderProductApplicationComment,
+  updateServiceProviderProductApplicationComment,
 } from "../../generated-client";
 import type { ServiceProviderProductApplicationCommentVisibility } from "../../generated-client/types.gen";
 import { throwOnError } from "../../util";
@@ -46,5 +47,25 @@ export function useSppaComments(sppaId: number | undefined) {
       }),
   });
 
-  return { commentsQuery, postComment };
+  const editComment = useMutation({
+    mutationFn: ({
+      id,
+      content,
+      visibility,
+    }: {
+      id: number;
+      content: string;
+      visibility: ServiceProviderProductApplicationCommentVisibility;
+    }) =>
+      updateServiceProviderProductApplicationComment({
+        path: { id },
+        body: { content, visibility },
+      }).then(throwOnError),
+    onSettled: () =>
+      queryClient.invalidateQueries({
+        queryKey: sppaCommentsQueryKey(sppaId ?? 0),
+      }),
+  });
+
+  return { commentsQuery, postComment, editComment };
 }
