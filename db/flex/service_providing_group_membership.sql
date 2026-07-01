@@ -134,3 +134,13 @@ service_providing_group_membership_timeline_midnight_aligned
 AFTER INSERT OR UPDATE ON service_providing_group_membership
 FOR EACH ROW
 EXECUTE FUNCTION timeline.midnight_aligned();
+
+-- changeset flex:service-providing-group-membership-controllable-unit-idx runOnChange:true endDelimiter:-- runInTransaction:false
+CREATE INDEX CONCURRENTLY IF NOT EXISTS
+service_providing_group_membership_controllable_unit_idx
+ON service_providing_group_membership (controllable_unit_id);
+
+-- changeset flex:service-providing-group-membership-service-providing-group-idx runOnChange:true endDelimiter:-- runInTransaction:false
+CREATE INDEX CONCURRENTLY IF NOT EXISTS
+service_providing_group_membership_service_providing_group_idx
+ON service_providing_group_membership (service_providing_group_id);
