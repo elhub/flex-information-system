@@ -37,34 +37,24 @@ func NewAPIHandler(postgRESTUpstream string) (http.Handler, error) {
 		mux:          mux,
 	}
 
-	// TODO: add `grid` asset in scopes and use it here
 	listPostgRESTHandler := middleware.DefaultQueryLimit(
-		auth.CheckScopeForRequest("data", http.HandlerFunc(grid.postgRESTHandler)),
+		auth.CheckScopeForRequest("grid", http.HandlerFunc(grid.postgRESTHandler)),
 	)
 	postgRESTHandler := auth.CheckScopeForRequest(
-		"data", http.HandlerFunc(grid.postgRESTHandler),
+		"grid", http.HandlerFunc(grid.postgRESTHandler),
 	)
 	substationHandler := auth.CheckScopeForRequest(
-		"data", http.HandlerFunc(grid.substationHandler),
+		"grid", http.HandlerFunc(grid.substationHandler),
 	)
 
 	mux.Handle("GET /line", listPostgRESTHandler)
 	mux.Handle("GET /line/{id}", postgRESTHandler)
 
-	mux.Handle("GET /line_history", listPostgRESTHandler)
-	mux.Handle("GET /line_history/{id}", postgRESTHandler)
-
 	mux.Handle("GET /substation", substationHandler)
 	mux.Handle("GET /substation/{id}", postgRESTHandler)
 
-	mux.Handle("GET /substation_history", listPostgRESTHandler)
-	mux.Handle("GET /substation_history/{id}", postgRESTHandler)
-
 	mux.Handle("GET /substation_cluster", listPostgRESTHandler)
 	mux.Handle("GET /substation_cluster/{id}", postgRESTHandler)
-
-	mux.Handle("GET /substation_cluster_history", listPostgRESTHandler)
-	mux.Handle("GET /substation_cluster_history/{id}", postgRESTHandler)
 
 	mux.HandleFunc("/", grid.notFoundHandler)
 
