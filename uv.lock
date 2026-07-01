@@ -409,7 +409,7 @@ requires-dist = [
     { name = "python-dotenv" },
     { name = "ruff" },
     { name = "schemathesis" },
-    { name = "sourcemeta-jsonschema" },
+    { name = "sourcemeta-jsonschema", specifier = ">=16.0.0" },
     { name = "tabulate" },
 ]
 
