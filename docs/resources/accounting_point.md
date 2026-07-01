@@ -79,9 +79,10 @@ No policies.
 
 #### System Operator
 
-| Policy key | Policy                                                 | Status |
-|------------|--------------------------------------------------------|--------|
-| AP-SO001   | Read accounting points where they are CSO, ISO or PSO. | DONE   |
+| Policy key | Policy                                            | Status |
+|------------|---------------------------------------------------|--------|
+| AP-SO001   | Read accounting points where they are CSO         | DONE   |
+| AP-SO002   | Read accounting points where they are ISO or PSO. | DONE   |
 
 #### Service Provider
 

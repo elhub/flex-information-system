@@ -2,7 +2,7 @@
 -- Manually managed file
 
 -- changeset flex:accounting-point-system-operator-create runOnChange:true endDelimiter:--
-CREATE OR REPLACE VIEW accounting_point_system_operator
+CREATE OR REPLACE VIEW flex.accounting_point_system_operator
 WITH (security_invoker = false) AS (
     SELECT
         ap_mga.accounting_point_id,
@@ -20,8 +20,8 @@ WITH (security_invoker = false) AS (
 );
 
 -- changeset flex:accounting-point-system-operator-grants runOnChange:true endDelimiter:;
-GRANT SELECT ON TABLE accounting_point_system_operator
+GRANT SELECT ON TABLE flex.accounting_point_system_operator
 TO flex_common;
 
-GRANT SELECT ON TABLE accounting_point_system_operator
+GRANT SELECT ON TABLE flex.accounting_point_system_operator
 TO flex_internal_event_notification;

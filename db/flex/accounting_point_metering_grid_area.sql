@@ -40,3 +40,8 @@ EXECUTE FUNCTION timeline.midnight_aligned();
 CREATE INDEX CONCURRENTLY IF NOT EXISTS
 accounting_point_metering_grid_area_accounting_point_idx
 ON accounting_point_metering_grid_area (accounting_point_id);
+
+-- changeset flex:accounting-point-metering-grid-area-metering-grid-area-idx runOnChange:true endDelimiter:-- runInTransaction:false
+CREATE INDEX CONCURRENTLY IF NOT EXISTS
+accounting_point_metering_grid_area_metering_grid_area_idx
+ON accounting_point_metering_grid_area (metering_grid_area_id);
