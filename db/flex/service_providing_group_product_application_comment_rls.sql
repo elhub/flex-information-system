@@ -94,32 +94,6 @@ USING (
     )
 );
 
-DROP POLICY IF EXISTS "SPGPAC_SO002_SP002_same_party_type"
-ON service_providing_group_product_application_comment;
-CREATE POLICY "SPGPAC_SO002_SP002_same_party_type"
-ON service_providing_group_product_application_comment
-FOR SELECT
-TO flex_system_operator, flex_service_provider
-USING (
-    service_providing_group_product_application_comment.visibility = 'same_party_type' -- noqa
-    AND EXISTS (
-        SELECT 1
-        FROM flex.identity AS comment_creator
-            INNER JOIN flex.party AS creator_party
-                ON comment_creator.party_id = creator_party.id
-            INNER JOIN flex.party AS current_party
-                ON current_party.id = (SELECT flex.current_party())
-        WHERE comment_creator.id = service_providing_group_product_application_comment.created_by -- noqa
-            AND creator_party.type = current_party.type
-    )
-    AND EXISTS (
-        SELECT 1
-        FROM flex.service_providing_group_product_application_involved_parties AS spgpa_ip -- noqa
-        WHERE spgpa_ip.service_providing_group_product_application_id = service_providing_group_product_application_comment.service_providing_group_product_application_id -- noqa
-            AND spgpa_ip.party_id = (SELECT flex.current_party())
-    )
-);
-
 CREATE OR REPLACE FUNCTION
 spgpa_comment_latest_visibility(in_spgpac_id bigint)
 RETURNS text
@@ -141,7 +115,6 @@ AS $$
             FROM flex.service_providing_group_product_application_comment_history AS spgpach -- noqa
             WHERE spgpach.id = in_spgpac_id
         )
-
     SELECT spgpa_history.visibility
     FROM spgpa_history
     ORDER BY spgpa_history.record_time_range DESC
@@ -182,34 +155,6 @@ USING (
     spgpa_comment_latest_visibility(
         service_providing_group_product_application_comment_history.id -- noqa
     ) = 'any_involved_party'
-    AND EXISTS (
-        SELECT 1
-        FROM flex.service_providing_group_product_application_involved_parties AS spgpa_ip -- noqa
-        WHERE spgpa_ip.service_providing_group_product_application_id = service_providing_group_product_application_comment_history.service_providing_group_product_application_id -- noqa
-            AND spgpa_ip.party_id = (SELECT flex.current_party())
-    )
-);
-
-DROP POLICY IF EXISTS "SPGPAC_SO003_SP003_same_party_type"
-ON service_providing_group_product_application_comment_history;
-CREATE POLICY "SPGPAC_SO003_SP003_same_party_type"
-ON service_providing_group_product_application_comment_history
-FOR SELECT
-TO flex_system_operator, flex_service_provider
-USING (
-    spgpa_comment_latest_visibility(
-        service_providing_group_product_application_comment_history.id -- noqa
-    ) = 'same_party_type'
-    AND EXISTS (
-        SELECT 1
-        FROM flex.identity AS comment_creator
-            INNER JOIN flex.party AS creator_party
-                ON comment_creator.party_id = creator_party.id
-            INNER JOIN flex.party AS current_party
-                ON current_party.id = (SELECT flex.current_party())
-        WHERE comment_creator.id = service_providing_group_product_application_comment_history.created_by -- noqa
-            AND creator_party.type = current_party.type
-    )
     AND EXISTS (
         SELECT 1
         FROM flex.service_providing_group_product_application_involved_parties AS spgpa_ip -- noqa

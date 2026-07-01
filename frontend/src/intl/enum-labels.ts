@@ -20,7 +20,6 @@ export type EnumLabel =
   | "category.production"
   | "comment.visibility.any_involved_party"
   | "comment.visibility.same_party"
-  | "comment.visibility.same_party_type"
   | "controllable_unit.regulation_direction.both"
   | "controllable_unit.regulation_direction.down"
   | "controllable_unit.regulation_direction.up"
@@ -143,7 +142,6 @@ export type EnumLabel =
 export const enumLabels: Record<string, Record<EnumLabel, string>> = {
   en: {
     "comment.visibility.same_party": "Same party",
-    "comment.visibility.same_party_type": "Same party type",
     "comment.visibility.any_involved_party": "Any involved party",
     "controllable_unit.status.new": "New",
     "controllable_unit.status.active": "Active",
@@ -311,7 +309,6 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
   },
   nb: {
     "comment.visibility.same_party": "Samme aktør",
-    "comment.visibility.same_party_type": "Samme aktørtype",
     "comment.visibility.any_involved_party": "Alle involverte aktører",
     "controllable_unit.status.new": "Ny",
     "controllable_unit.status.active": "Aktiv",
@@ -479,7 +476,6 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
   },
   nn: {
     "comment.visibility.same_party": "Same aktør",
-    "comment.visibility.same_party_type": "Same aktørtype",
     "comment.visibility.any_involved_party": "Alle involverte aktørar",
     "controllable_unit.status.new": "Ny",
     "controllable_unit.status.active": "Aktiv",

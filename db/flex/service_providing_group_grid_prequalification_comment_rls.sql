@@ -94,32 +94,6 @@ USING (
     )
 );
 
-DROP POLICY IF EXISTS "SPGGPC_SO002_SP002_same_party_type"
-ON service_providing_group_grid_prequalification_comment;
-CREATE POLICY "SPGGPC_SO002_SP002_same_party_type"
-ON service_providing_group_grid_prequalification_comment
-FOR SELECT
-TO flex_system_operator, flex_service_provider
-USING (
-    service_providing_group_grid_prequalification_comment.visibility = 'same_party_type' -- noqa
-    AND EXISTS (
-        SELECT 1
-        FROM flex.identity AS comment_creator
-            INNER JOIN flex.party AS creator_party
-                ON comment_creator.party_id = creator_party.id
-            INNER JOIN flex.party AS current_party
-                ON current_party.id = (SELECT flex.current_party())
-        WHERE comment_creator.id = service_providing_group_grid_prequalification_comment.created_by -- noqa
-            AND creator_party.type = current_party.type
-    )
-    AND EXISTS (
-        SELECT 1
-        FROM flex.service_providing_group_grid_prequalification_involved_parties AS spggp_ip -- noqa
-        WHERE spggp_ip.service_providing_group_grid_prequalification_id = service_providing_group_grid_prequalification_comment.service_providing_group_grid_prequalification_id -- noqa
-            AND spggp_ip.party_id = (SELECT flex.current_party())
-    )
-);
-
 CREATE OR REPLACE FUNCTION
 spggp_comment_latest_visibility(in_spggpc_id bigint)
 RETURNS text
@@ -141,7 +115,6 @@ AS $$
             FROM flex.service_providing_group_grid_prequalification_comment_history AS spggpch -- noqa
             WHERE spggpch.id = in_spggpc_id
         )
-
     SELECT spggp_history.visibility
     FROM spggp_history
     ORDER BY spggp_history.record_time_range DESC
@@ -182,34 +155,6 @@ USING (
     spggp_comment_latest_visibility(
         service_providing_group_grid_prequalification_comment_history.id -- noqa
     ) = 'any_involved_party'
-    AND EXISTS (
-        SELECT 1
-        FROM flex.service_providing_group_grid_prequalification_involved_parties AS spggp_ip -- noqa
-        WHERE spggp_ip.service_providing_group_grid_prequalification_id = service_providing_group_grid_prequalification_comment_history.service_providing_group_grid_prequalification_id -- noqa
-            AND spggp_ip.party_id = (SELECT flex.current_party())
-    )
-);
-
-DROP POLICY IF EXISTS "SPGGPC_SO003_SP003_same_party_type"
-ON service_providing_group_grid_prequalification_comment_history;
-CREATE POLICY "SPGGPC_SO003_SP003_same_party_type"
-ON service_providing_group_grid_prequalification_comment_history
-FOR SELECT
-TO flex_system_operator, flex_service_provider
-USING (
-    spggp_comment_latest_visibility(
-        service_providing_group_grid_prequalification_comment_history.id -- noqa
-    ) = 'same_party_type'
-    AND EXISTS (
-        SELECT 1
-        FROM flex.identity AS comment_creator
-            INNER JOIN flex.party AS creator_party
-                ON comment_creator.party_id = creator_party.id
-            INNER JOIN flex.party AS current_party
-                ON current_party.id = (SELECT flex.current_party())
-        WHERE comment_creator.id = service_providing_group_grid_prequalification_comment_history.created_by -- noqa
-            AND creator_party.type = current_party.type
-    )
     AND EXISTS (
         SELECT 1
         FROM flex.service_providing_group_grid_prequalification_involved_parties AS spggp_ip -- noqa

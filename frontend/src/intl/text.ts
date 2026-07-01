@@ -45,7 +45,6 @@ export type TextKey =
   | "spg_manage_members_review_modal_removing_plural"
   | "spg_manage_members_review_modal_close"
   | "comment.visibility.same_party.description"
-  | "comment.visibility.same_party_type.description"
   | "comment.visibility.any_involved_party.description";
 
 export const text: Record<string, Record<TextKey, string>> = {
@@ -108,8 +107,6 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_manage_members_review_modal_close: "Close",
     "comment.visibility.same_party.description":
       "Only visible to your current party",
-    "comment.visibility.same_party_type.description":
-      "Visible to all involved parties of the same type (e.g. all system operators)",
     "comment.visibility.any_involved_party.description":
       "Visible to all parties involved in this resource",
   },
@@ -171,8 +168,6 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_manage_members_review_modal_close: "Lukk",
     "comment.visibility.same_party.description":
       "Kun synlig for din nåværende aktør",
-    "comment.visibility.same_party_type.description":
-      "Synlig for alle involverte aktører av samme type (f.eks. alle systemoperatører)",
     "comment.visibility.any_involved_party.description":
       "Synlig for alle parter involvert i denne ressursen",
   },

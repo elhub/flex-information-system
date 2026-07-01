@@ -331,7 +331,6 @@ export type ControllableUnitSuspensionReason =
  */
 export type ControllableUnitSuspensionCommentVisibility =
   | "same_party"
-  | "same_party_type"
   | "any_involved_party";
 
 /**
@@ -368,7 +367,6 @@ export type ServiceProvidingGroupGridPrequalificationStatus =
  */
 export type ServiceProvidingGroupGridPrequalificationCommentVisibility =
   | "same_party"
-  | "same_party_type"
   | "any_involved_party";
 
 /**
@@ -384,7 +382,6 @@ export type ServiceProvidingGroupGridSuspensionReason =
  */
 export type ServiceProvidingGroupGridSuspensionCommentVisibility =
   | "same_party"
-  | "same_party_type"
   | "any_involved_party";
 
 /**
@@ -511,7 +508,6 @@ export type ServiceProviderProductApplicationStatus =
  */
 export type ServiceProviderProductApplicationCommentVisibility =
   | "same_party"
-  | "same_party_type"
   | "any_involved_party";
 
 /**
@@ -530,7 +526,6 @@ export type ServiceProviderProductSuspensionReason =
  */
 export type ServiceProviderProductSuspensionCommentVisibility =
   | "same_party"
-  | "same_party_type"
   | "any_involved_party";
 
 /**
@@ -557,7 +552,6 @@ export type ServiceProvidingGroupProductApplicationRampingCapability =
  */
 export type ServiceProvidingGroupProductApplicationCommentVisibility =
   | "same_party"
-  | "same_party_type"
   | "any_involved_party";
 
 /**
@@ -572,7 +566,6 @@ export type ServiceProvidingGroupProductSuspensionReason =
  */
 export type ServiceProvidingGroupProductSuspensionCommentVisibility =
   | "same_party"
-  | "same_party_type"
   | "any_involved_party";
 
 /**

@@ -264,11 +264,6 @@ comment_visibility_enum_translation = {
         "nb": "Samme aktør",
         "nn": "Same aktør",
     },
-    "comment.visibility.same_party_type": {
-        "en": "Same party type",
-        "nb": "Samme aktørtype",
-        "nn": "Same aktørtype",
-    },
     "comment.visibility.any_involved_party": {
         "en": "Any involved party",
         "nb": "Alle involverte aktører",

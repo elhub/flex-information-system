@@ -52,9 +52,7 @@ export function CommentBubble({
         {isRestrictedVisibility ? (
           <Tooltip
             content={translate(
-              comment.visibility === "same_party"
-                ? "text.comment.visibility.same_party.description"
-                : "text.comment.visibility.same_party_type.description",
+              "text.comment.visibility.same_party.description",
             )}
             placement="top"
           >
@@ -62,11 +60,7 @@ export function CommentBubble({
               <Tag size="small" variant="warning">
                 <span className="flex items-center gap-1">
                   <IconViewOff size="small" />
-                  {enumTranslation(
-                    comment.visibility === "same_party"
-                      ? "comment.visibility.same_party"
-                      : "comment.visibility.same_party_type",
-                  )}
+                  {enumTranslation("comment.visibility.same_party")}
                 </span>
               </Tag>
             </span>

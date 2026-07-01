@@ -33,7 +33,6 @@ service_providing_group_product_application_comment_visibility_check
 CHECK (
     visibility IN (
         'same_party',
-        'same_party_type',
         'any_involved_party'
     )
 );

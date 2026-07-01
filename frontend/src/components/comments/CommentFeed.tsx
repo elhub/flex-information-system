@@ -122,23 +122,6 @@ export function CommentFeed({
                     </span>
                   </span>
                 </SelectItem>
-                <SelectItem value="same_party_type">
-                  <span className="flex items-start gap-2">
-                    <span className="shrink-0 mt-0.5">
-                      <IconViewOff size="small" />
-                    </span>
-                    <span className="flex flex-col">
-                      <span>
-                        {enumTranslation("comment.visibility.same_party_type")}
-                      </span>
-                      <span className="text-xs text-gray-500">
-                        {translate(
-                          "text.comment.visibility.same_party_type.description",
-                        )}
-                      </span>
-                    </span>
-                  </span>
-                </SelectItem>
                 <SelectItem value="any_involved_party">
                   <span className="flex items-start gap-2">
                     <span className="shrink-0 mt-0.5">

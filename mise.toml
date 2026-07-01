@@ -1,8 +1,7 @@
 [tools]
-python = "3.12"
-go = "1.26.4"
-uv = "0.11.24"
-jsonschema = "16.0.0"
+"python" = "3.12"
+"go" = "1.26.4"
+"uv" = "0.11.24"
 
 [settings]
 python.uv_venv_auto = "create|source"

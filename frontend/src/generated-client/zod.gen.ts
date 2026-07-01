@@ -211,7 +211,6 @@ export const zControllableUnitSuspensionReason = z.enum([
  */
 export const zControllableUnitSuspensionCommentVisibility = z.enum([
   "same_party",
-  "same_party_type",
   "any_involved_party",
 ]);
 
@@ -251,7 +250,7 @@ export const zServiceProvidingGroupGridPrequalificationStatus = z.enum([
  * The level of visibility of the comment.
  */
 export const zServiceProvidingGroupGridPrequalificationCommentVisibility =
-  z.enum(["same_party", "same_party_type", "any_involved_party"]);
+  z.enum(["same_party", "any_involved_party"]);
 
 /**
  * The reason for the suspension.
@@ -267,7 +266,6 @@ export const zServiceProvidingGroupGridSuspensionReason = z.enum([
  */
 export const zServiceProvidingGroupGridSuspensionCommentVisibility = z.enum([
   "same_party",
-  "same_party_type",
   "any_involved_party",
 ]);
 
@@ -407,7 +405,6 @@ export const zServiceProviderProductApplicationStatus = z.enum([
  */
 export const zServiceProviderProductApplicationCommentVisibility = z.enum([
   "same_party",
-  "same_party_type",
   "any_involved_party",
 ]);
 
@@ -428,7 +425,6 @@ export const zServiceProviderProductSuspensionReason = z.enum([
  */
 export const zServiceProviderProductSuspensionCommentVisibility = z.enum([
   "same_party",
-  "same_party_type",
   "any_involved_party",
 ]);
 
@@ -455,7 +451,7 @@ export const zServiceProvidingGroupProductApplicationRampingCapability = z.enum(
  * The level of visibility of the comment.
  */
 export const zServiceProvidingGroupProductApplicationCommentVisibility = z.enum(
-  ["same_party", "same_party_type", "any_involved_party"],
+  ["same_party", "any_involved_party"],
 );
 
 /**
@@ -471,7 +467,6 @@ export const zServiceProvidingGroupProductSuspensionReason = z.enum([
  */
 export const zServiceProvidingGroupProductSuspensionCommentVisibility = z.enum([
   "same_party",
-  "same_party_type",
   "any_involved_party",
 ]);
 
