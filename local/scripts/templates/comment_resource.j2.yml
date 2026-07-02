@@ -58,9 +58,9 @@ data:
         - id: any_involved_party
       example: same_party
       x-details: >-
-        Comments marked `same_party` are visible only to the party that
-        creates them, whereas comments marked `any_involved_party` can be seen
-        by all parties involved in the {{ data.acronym }}.
+        Comments marked `same_party` are visible only to the party that creates
+        them. Comments marked `any_involved_party` can be seen by all
+        parties involved in the {{ data.acronym }}.
     content:
       description: Free text content of the comment.
       format: text
