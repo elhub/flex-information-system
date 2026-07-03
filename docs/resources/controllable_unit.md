@@ -125,7 +125,7 @@ No policies.
 | Policy key | Policy                                                       | Status |
 |------------|--------------------------------------------------------------|--------|
 | CU-SO001   | Read and update CU that are connected to AP belonging to SO. | DONE   |
-| CU-SO002   | Read CU belonging to SPG that the SO can see.                | DONE   |
+| CU-SO002   | Read CU where they are ISO or PSO.                           | DONE   |
 | CU-SO003   | Read history on CU that they can read.                       | DONE   |
 
 #### Service Provider

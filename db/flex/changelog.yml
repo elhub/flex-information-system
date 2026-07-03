@@ -295,6 +295,12 @@ databaseChangeLog:
       file: ./controllable_unit_system_operator.sql
       relativeToChangelogFile: true
   - include:
+      file: ./controllable_unit_procuring_system_operator.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./controllable_unit_impacted_system_operator.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./controllable_unit_summary.sql
       relativeToChangelogFile: true
   - include:
