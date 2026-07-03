@@ -6,7 +6,7 @@ CREATE OR REPLACE VIEW controllable_unit_procuring_system_operator
 WITH (security_invoker = false) AS (
     -- Use for auth. Security invoker to bypass RLS
     SELECT
-        spgm.id AS controllable_unit_id,
+        spgm.controllable_unit_id,
         spgpa.service_providing_group_id,
         spgpa.procuring_system_operator_id,
         spgm.valid_time_range
