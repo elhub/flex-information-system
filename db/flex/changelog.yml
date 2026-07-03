@@ -262,6 +262,12 @@ databaseChangeLog:
       file: ./accounting_point_service_provider.sql
       relativeToChangelogFile: true
   - include:
+      file: ./accounting_point_impacted_system_operator.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./accounting_point_procuring_system_operator.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./accounting_point_bidding_zone.sql
       relativeToChangelogFile: true
   - include:
@@ -281,6 +287,12 @@ databaseChangeLog:
       relativeToChangelogFile: true
   - include:
       file: ./controllable_unit_system_operator.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./controllable_unit_procuring_system_operator.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./controllable_unit_impacted_system_operator.sql
       relativeToChangelogFile: true
   - include:
       file: ./controllable_unit_summary.sql

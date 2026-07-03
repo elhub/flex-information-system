@@ -3,6 +3,7 @@
 
 -- changeset flex:flex-controllable-unit-system-operator runOnChange:true endDelimiter:--
 CREATE OR REPLACE VIEW controllable_unit_system_operator
+-- TODO: Should really be renamed controllable_unit_connecting_system_operator
 WITH (security_invoker = false) AS (
     SELECT
         cu.id AS controllable_unit_id,

@@ -58,8 +58,15 @@ FOR SELECT
 TO flex_system_operator
 USING (
     EXISTS (
-        SELECT 1 FROM service_providing_group_membership
-        WHERE service_providing_group_membership.controllable_unit_id = controllable_unit.id -- noqa
+        SELECT 1 FROM flex.controllable_unit_impacted_system_operator AS cu_iso
+        WHERE cu_iso.controllable_unit_id = controllable_unit.id -- noqa
+            AND cu_iso.impacted_system_operator_id = (SELECT current_party())
+    )
+    OR
+    EXISTS (
+        SELECT 1 FROM flex.controllable_unit_procuring_system_operator AS cu_pso
+        WHERE cu_pso.controllable_unit_id = controllable_unit.id -- noqa
+            AND cu_pso.procuring_system_operator_id = (SELECT current_party())
     )
 );
 

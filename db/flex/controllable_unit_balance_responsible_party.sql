@@ -2,7 +2,8 @@
 -- Manually managed file
 
 -- changeset flex:controllable-unit-balance-responsible-party-create runOnChange:true endDelimiter:--
-CREATE OR REPLACE VIEW controllable_unit_balance_responsible_party AS (
+CREATE OR REPLACE VIEW controllable_unit_balance_responsible_party
+WITH (security_invoker = false) AS (
     SELECT
         cu.id AS controllable_unit_id,
         apbrp.balance_responsible_party_id,
