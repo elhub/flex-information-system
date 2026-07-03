@@ -32,7 +32,7 @@ CREATE POLICY "APGL_SO001" ON accounting_point_grid_location
 FOR ALL
 TO flex_system_operator
 USING (
-    -- CSO: SO is the current connecting system operator for the AP
+    -- CSO
     EXISTS (
         SELECT 1
         FROM accounting_point_system_operator AS ap_so
@@ -41,19 +41,11 @@ USING (
             AND ap_so.valid_time_range @> current_timestamp
     )
     OR
-    -- Procuring SO: SO has a product application on an SPG
-    -- that currently has a CU behind this accounting point as an active member
+    -- PSO
     EXISTS (
         SELECT 1
-        FROM service_providing_group_product_application AS spgpa
-            INNER JOIN service_providing_group_membership AS spgm
-                ON
-                    spgpa.service_providing_group_id = spgm.service_providing_group_id
-                    AND spgm.valid_time_range @> current_timestamp
-            INNER JOIN controllable_unit AS cu
-                ON spgm.controllable_unit_id = cu.id
-        WHERE
-            spgpa.procuring_system_operator_id = (SELECT current_party())
-            AND cu.accounting_point_id = accounting_point_grid_location.accounting_point_id -- noqa
+        FROM accounting_point_procuring_system_operator AS ap_pso
+        WHERE ap_pso.accounting_point_id = accounting_point_grid_location.accounting_point_id -- noqa
+            AND ap_pso.procuring_system_operator_id = (SELECT current_party())
     )
 );

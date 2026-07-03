@@ -9,7 +9,8 @@ WITH (security_invoker = false) AS (
         cu.accounting_point_id,
         cu.id AS controllable_unit_id,
         spggp.service_providing_group_id,
-        spggp.impacted_system_operator_id
+        spggp.impacted_system_operator_id,
+        spgm.valid_time_range
     FROM flex.service_providing_group_membership AS spgm
         INNER JOIN flex.controllable_unit AS cu
             ON spgm.controllable_unit_id = cu.id
@@ -17,6 +18,6 @@ WITH (security_invoker = false) AS (
             ON spgm.service_providing_group_id = spggp.service_providing_group_id
 );
 
--- changeset flex:accounting-point-bidding-zone-grants runOnChange:true endDelimiter:;
+-- changeset flex:accounting-point-impacted-system-operator-grants runOnChange:true endDelimiter:;
 GRANT SELECT ON TABLE accounting_point_impacted_system_operator
 TO flex_common;

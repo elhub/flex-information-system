@@ -9,7 +9,8 @@ WITH (security_invoker = false) AS (
         cu.accounting_point_id,
         cu.id AS controllable_unit_id,
         spgpa.service_providing_group_id,
-        spgpa.procuring_system_operator_id
+        spgpa.procuring_system_operator_id,
+        spgm.valid_time_range
     FROM flex.service_providing_group_membership AS spgm
         INNER JOIN flex.controllable_unit AS cu
             ON spgm.controllable_unit_id = cu.id
