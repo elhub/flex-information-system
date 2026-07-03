@@ -61,25 +61,28 @@ ON accounting_point
 FOR SELECT
 TO flex_system_operator
 USING (
-    -- ISO: SO is targeted by a grid prequalification for an SPG that has had a
-    -- CU behind this AP
-    -- PSO: SO is targeted by a product application for an SPG that has had a CU
-    -- behind this AP
     EXISTS (
         SELECT 1
-        FROM flex.controllable_unit AS cu
-            INNER JOIN flex.service_providing_group_membership AS spgm
-                ON cu.id = spgm.controllable_unit_id
-            LEFT JOIN flex.service_providing_group_grid_prequalification AS spggp
-                ON spgm.service_providing_group_id = spggp.service_providing_group_id
-            LEFT JOIN flex.service_providing_group_product_application AS spgpa
-                ON spgm.service_providing_group_id = spgpa.service_providing_group_id
-        WHERE cu.accounting_point_id = accounting_point.id -- noqa
-            AND (
-                spggp.impacted_system_operator_id = (SELECT flex.current_party())
-                OR
-                spgpa.procuring_system_operator_id = (SELECT flex.current_party())
-            )
+        FROM flex.accounting_point_impacted_system_operator AS ap_iso
+        WHERE ap_iso.accounting_point_id = accounting_point.id -- noqa
+            AND ap_iso.impacted_system_operator_id = (SELECT flex.current_party())
+    )
+);
+
+-- RLS: AP-SO003
+GRANT SELECT ON accounting_point
+TO flex_system_operator;
+DROP POLICY IF EXISTS "AP_SO003" ON accounting_point;
+CREATE POLICY "AP_SO003"
+ON accounting_point
+FOR SELECT
+TO flex_system_operator
+USING (
+    EXISTS (
+        SELECT 1
+        FROM flex.accounting_point_procuring_system_operator AS ap_pso
+        WHERE ap_pso.accounting_point_id = accounting_point.id -- noqa
+            AND ap_pso.procuring_system_operator_id = (SELECT flex.current_party())
     )
 );
 
