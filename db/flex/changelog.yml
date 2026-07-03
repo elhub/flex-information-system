@@ -247,9 +247,6 @@ databaseChangeLog:
       file: ./service_provider_product_application_comment.sql
       relativeToChangelogFile: true
   - include:
-      file: ./service_provider_product_application_comment_migrations.sql
-      relativeToChangelogFile: true
-  - include:
       file: ./service_provider_product_suspension.sql
       relativeToChangelogFile: true
   - include:
@@ -257,9 +254,6 @@ databaseChangeLog:
       relativeToChangelogFile: true
   - include:
       file: ./service_provider_product_suspension_comment.sql
-      relativeToChangelogFile: true
-  - include:
-      file: ./service_provider_product_suspension_comment_migrations.sql
       relativeToChangelogFile: true
 
   # Views

@@ -2,7 +2,7 @@
 -- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
 
 -- changeset flex:service-providing-group-grid-prequalification-comment-create runOnChange:true endDelimiter:--
-CREATE TABLE IF NOT EXISTS service_providing_group_grid_prequalification_comment (
+CREATE TABLE IF NOT EXISTS flex.service_providing_group_grid_prequalification_comment (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     service_providing_group_grid_prequalification_id bigint NOT NULL,
     visibility text NOT NULL DEFAULT 'same_party',
@@ -17,17 +17,24 @@ CREATE TABLE IF NOT EXISTS service_providing_group_grid_prequalification_comment
     recorded_by bigint NOT NULL DEFAULT current_identity(),
 
     CONSTRAINT
-    service_providing_group_grid_prequalification_comment_visibility_check
-    CHECK (
-        visibility IN (
-            'same_party',
-            'any_involved_party'
-        )
-    ),
-    CONSTRAINT
     service_providing_group_grid_prequalification_comment_spggp_fkey
     FOREIGN KEY (service_providing_group_grid_prequalification_id)
     REFERENCES service_providing_group_grid_prequalification (id)
+);
+
+-- changeset flex:service-providing-group-grid-prequalification-comment-visibility-check runOnChange:true endDelimiter:--
+ALTER TABLE flex.service_providing_group_grid_prequalification_comment
+DROP CONSTRAINT IF EXISTS
+service_providing_group_grid_prequalification_comment_visibility_check;
+
+ALTER TABLE flex.controllable_unit_suspension_comment
+ADD CONSTRAINT
+service_providing_group_grid_prequalification_comment_visibility_check
+CHECK (
+    visibility IN (
+        'same_party',
+        'any_involved_party'
+    )
 );
 
 -- changeset flex:service-providing-group-grid-prequalification-comment-capture-event runOnChange:true endDelimiter:--

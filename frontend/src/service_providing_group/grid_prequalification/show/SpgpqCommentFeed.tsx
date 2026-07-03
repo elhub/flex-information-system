@@ -8,7 +8,7 @@ type SpgpqCommentFeedProps = {
 };
 
 export function SpgpqCommentFeed({ spgpqId }: SpgpqCommentFeedProps) {
-  const { commentsQuery, postComment } = useSpgpqComments(spgpqId);
+  const { commentsQuery, postComment, editComment } = useSpgpqComments(spgpqId);
   const { permissions } = usePermissions<Permissions>();
 
   const canCreate =
@@ -21,6 +21,7 @@ export function SpgpqCommentFeed({ spgpqId }: SpgpqCommentFeedProps) {
     <CommentFeed
       commentsQuery={commentsQuery}
       postComment={postComment}
+      editComment={editComment}
       canCreate={canCreate}
     />
   );

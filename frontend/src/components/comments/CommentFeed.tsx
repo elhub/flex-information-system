@@ -1,7 +1,7 @@
 // frontend/src/components/CommentFeed.tsx
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useGetIdentity } from "ra-core";
+import { useGetIdentity, useTranslate } from "ra-core";
 import type { UseMutationResult, UseQueryResult } from "@tanstack/react-query";
 import {
   Button,
@@ -11,6 +11,7 @@ import {
   SelectItem,
   Textarea,
 } from "../ui";
+import { IconViewOff, IconViewOn } from "@elhub/ds-icons";
 import { CommentBubble } from "./CommentBubble";
 import { listIdentity } from "../../generated-client";
 import type { Identity } from "../../generated-client/types.gen";
@@ -23,18 +24,25 @@ type PostInput = {
   visibility: Visibility;
 };
 
+type EditInput = {
+  id: number;
+  content: string;
+  visibility: Visibility;
+};
+
 type CommentFeedProps = {
   commentsQuery: UseQueryResult<Comment[]>;
   postComment: UseMutationResult<unknown, Error, PostInput>;
+  editComment?: UseMutationResult<unknown, Error, EditInput>;
   canCreate: boolean;
 };
 
 function useIdentityMap(
   comments: Comment[] | undefined,
 ): Record<number, Identity> {
-  const ids = [...new Set((comments ?? []).map((c) => c.created_by))].sort(
-    (a, b) => a - b,
-  );
+  const ids = [
+    ...new Set((comments ?? []).flatMap((c) => [c.created_by, c.recorded_by])),
+  ].sort((a, b) => a - b);
 
   const { data } = useQuery({
     queryKey: ["identities", ids],
@@ -51,12 +59,14 @@ function useIdentityMap(
 export function CommentFeed({
   commentsQuery,
   postComment,
+  editComment,
   canCreate,
 }: CommentFeedProps) {
   const [text, setText] = useState("");
   const [visibility, setVisibility] = useState<Visibility>("same_party");
 
   const { data: identity } = useGetIdentity();
+  const translate = useTranslate();
   const currentEntityId =
     identity?.entityID !== undefined ? Number(identity.entityID) : undefined;
 
@@ -97,16 +107,47 @@ export function CommentFeed({
           )}
           <div className="flex justify-end items-center gap-2 mt-2">
             <Select
+              className="w-80"
               value={visibility}
               onValueChange={(v) => setVisibility(v as Visibility)}
               placeholder="Visibility"
             >
               <SelectContent>
                 <SelectItem value="same_party">
-                  {enumTranslation("comment.visibility.same_party")}
+                  <span className="flex items-start gap-2">
+                    <span className="shrink-0 mt-0.5">
+                      <IconViewOff size="small" />
+                    </span>
+                    <span className="flex flex-col">
+                      <span>
+                        {enumTranslation("comment.visibility.same_party")}
+                      </span>
+                      <span className="text-xs text-gray-500">
+                        {translate(
+                          "text.comment.visibility.same_party.description",
+                        )}
+                      </span>
+                    </span>
+                  </span>
                 </SelectItem>
                 <SelectItem value="any_involved_party">
-                  {enumTranslation("comment.visibility.any_involved_party")}
+                  <span className="flex items-start gap-2">
+                    <span className="shrink-0 mt-0.5">
+                      <IconViewOn size="small" />
+                    </span>
+                    <span className="flex flex-col">
+                      <span>
+                        {enumTranslation(
+                          "comment.visibility.any_involved_party",
+                        )}
+                      </span>
+                      <span className="text-xs text-gray-500">
+                        {translate(
+                          "text.comment.visibility.any_involved_party.description",
+                        )}
+                      </span>
+                    </span>
+                  </span>
                 </SelectItem>
               </SelectContent>
             </Select>
@@ -136,9 +177,16 @@ export function CommentFeed({
             <CommentBubble
               key={comment.id}
               comment={comment}
-              identity={identityMap[comment.created_by]}
+              createdByIdentity={identityMap[comment.created_by]}
+              recordedByIdentity={identityMap[comment.recorded_by]}
               isCurrentUser={
                 identityMap[comment.created_by]?.entity_id === currentEntityId
+              }
+              onEdit={
+                editComment
+                  ? (id, content, visibility) =>
+                      editComment.mutateAsync({ id, content, visibility })
+                  : undefined
               }
             />
           ))
