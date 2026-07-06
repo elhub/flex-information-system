@@ -102,6 +102,31 @@ func NewAPIHandler(
 		"data", http.HandlerFunc(data.postgRESTHandler),
 	)
 
+	// attachment read handled by PostgREST
+	// we just enforce the presence of the query parameter
+	mux.Handle(
+		"GET /service_providing_group_product_application_attachment",
+		requireQueryParameter(
+			"service_providing_group_product_application_id",
+			dataListPostgRESTHandler,
+		),
+	)
+	mux.Handle("GET /service_providing_group_product_application_attachment/{id}", dataPostgRESTHandler)
+
+	// attachment write handled by the Kotlin backend
+	mux.HandleFunc(
+		"POST /service_providing_group_product_application_attachment",
+		data.kbackendProxyHandler,
+	)
+	mux.HandleFunc(
+		"GET /service_providing_group_product_application_attachment/{id}/download",
+		data.kbackendProxyHandler,
+	)
+	mux.HandleFunc(
+		"DELETE /service_providing_group_product_application_attachment/{id}",
+		data.kbackendProxyHandler,
+	)
+
 	// all other requests are forwarded to PostgREST
 	mux.Handle("GET /accounting_point", dataListPostgRESTHandler)
 	mux.Handle("GET /accounting_point/{id}", dataPostgRESTHandler)
@@ -377,6 +402,18 @@ func (data *api) kbackendProxyHandler(w http.ResponseWriter, req *http.Request) 
 	}
 
 	proxy.ServeHTTP(w, req)
+}
+
+func requireQueryParameter(name string, next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+		if _, ok := req.URL.Query()[name]; !ok {
+			writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
+				Code:    http.StatusText(http.StatusBadRequest),
+				Message: "missing required query parameter: " + name,
+			})
+		}
+		next.ServeHTTP(w, req)
+	})
 }
 
 // blockBeforeDate returns a handler that rejects requests with a 403 error

@@ -75,6 +75,17 @@ services:
         condition: service_healthy
     extra_hosts:
       - "idp.flex.internal:host-gateway"
+  s3mock:
+    image: adobe/s3mock:latest
+    environment:
+      - COM_ADOBE_TESTING_S3MOCK_STORE_INITIAL_BUCKETS=flex-attachments
+    ports:
+      - "9090:9090"
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:9090/favicon.ico"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
   kbackend:
     image: flex-kbackend
     pull_policy: never # the image is always built locally
@@ -83,6 +94,8 @@ services:
     env_file: "./local/kbackend/test.env"
     depends_on:
       db:
+        condition: service_healthy
+      s3mock:
         condition: service_healthy
   frontend:
     build: ./frontend

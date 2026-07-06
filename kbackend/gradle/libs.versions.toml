@@ -99,8 +99,11 @@ test-ktor-server-test-host = { group = "io.ktor", name = "ktor-server-test-host"
 test-mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 test-testcontainers = { group = "org.testcontainers", name = "testcontainers", version.ref = "testcontainers" }
 test-testcontainers-postgres = { group = "org.testcontainers", name = "testcontainers-postgresql", version.ref = "testcontainers" }
+test-testcontainers-s3mock = { group = "com.adobe.testing", name = "s3mock-testcontainers", version.ref = "s3mock" }
 test-mybatis = { group = "org.mybatis", name = "mybatis", version.ref = "mybatis" }
 test-wiremock = { group = "org.wiremock", name = "wiremock", version.ref = "wiremock" }
+storage-aws-s3 = { group = "aws.sdk.kotlin", name = "s3", version.ref = "aws-sdk-kotlin" }
+storage-pdfbox = { group = "org.apache.pdfbox", name = "pdfbox", version.ref = "pdfbox" }
 
 [metadata]
 format.version = "1.1"
@@ -139,3 +142,6 @@ snakeyaml = "2.6"
 testcontainers = "2.0.5"
 wiremock = "3.13.2"
 krontab = "2.9.0"
+aws-sdk-kotlin = "1.4.97"
+pdfbox = "3.0.5"
+s3mock = "4.3.0"

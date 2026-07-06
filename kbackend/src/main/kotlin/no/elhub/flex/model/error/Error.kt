@@ -80,6 +80,30 @@ data class MissingPathParameterError(
 }
 
 /**
+ * Error indicating a query parameter is missing from the request.
+ *
+ * @property name the name of the missing parameter
+ * @property code the HTTP status code
+ */
+data class MissingQueryParameterError(
+    val name: String,
+    override val code: HttpStatusCode = HttpStatusCode.BadRequest,
+) : AppError() {
+    override val message: String = "Missing query parameter '$name'"
+}
+
+/**
+ * Error indicating that a multipart body could not be parsed from the request.
+ *
+ * @property code the HTTP status code
+ */
+data class MultipartError(
+    override val code: HttpStatusCode = HttpStatusCode.BadRequest,
+) : AppError() {
+    override val message: String = "Could not parse multipart body"
+}
+
+/**
  * Error indicating bad input data as part of a request.
  *
  * @property name the parameter name of the bad input
