@@ -21,19 +21,9 @@ sealed class StorageError {
     data class ObjectNotFound(val objectId: String) : StorageError()
 }
 
-/**
- * Abstraction over an object storage backend (S3-compatible or otherwise).
- *
- * All implementations must be safe to call concurrently.
- * The only implementation in production is [S3AttachmentStorageService]; other implementations
- * can be used in tests.
- */
+/** Abstraction over an object storage backend (S3-compatible or otherwise). */
 interface AttachmentStorageService {
-    /**
-     * Upload [content] under the key [objectId] in the configured bucket.
-     *
-     * [objectId] must be unique (a UUID is recommended).
-     */
+    /** Upload [content] under the key [objectId] and filename [fileName] in the configured bucket. */
     suspend fun upload(
         objectId: String,
         fileName: String,
@@ -43,20 +33,16 @@ interface AttachmentStorageService {
     /**
      * Generate a pre-signed URL that allows the bearer to download [objectId] directly from storage.
      *
-     * The URL is only valid for a short time (implementation-defined, typically a few minutes).
-     * The [fileName] is set as the `Content-Disposition: attachment; filename=...` header on the
-     * storage response so that browsers suggest a sensible filename when saving.
+     * The URL is only valid for a short time. The [fileName] is set as the
+     * `Content-Disposition: attachment; filename=...` header on the storage response so that browsers
+     * suggest a sensible filename when saving.
      */
     suspend fun presignedDownloadUrl(
         objectId: String,
         fileName: String,
     ): Either<StorageError, String>
 
-    /**
-     * Delete the object identified by [objectId] from storage.
-     *
-     * Returns [StorageError.ObjectNotFound] if the object does not exist.
-     */
+    /** Delete the object identified by [objectId] from storage. */
     suspend fun delete(objectId: String): Either<StorageError, Unit>
 }
 
@@ -65,15 +51,11 @@ private val logger = KotlinLogging.logger {}
 /**
  * S3-backed implementation of [AttachmentStorageService].
  *
- * Two endpoints are configured deliberately:
+ * Two endpoints are configured:
  * - [internalEndpoint]: used for actual operations (putObject, deleteObject) from within
  *   the kbackend container where the S3 service is reachable by its Docker service name.
  * - [publicEndpoint]: used only when building pre-signed download URLs, since those URLs
  *   are returned to the browser which must be able to resolve the host directly.
- *
- * In production both would be real AWS endpoints (the public endpoint being the bucket's
- * regional endpoint); in local development [publicEndpoint] is `http://localhost:9090`
- * while [internalEndpoint] is `http://s3mock:9090`.
  */
 @Single(createdAtStart = true)
 class S3AttachmentStorageService(

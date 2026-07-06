@@ -20,8 +20,7 @@ import java.time.OffsetDateTime
 /**
  * A single row of a `<baseResource>_attachment` table.
  *
- * [parentId] is the surrogate id of the owning base resource row, i.e. the value of that
- * table's `<baseResource>_id` foreign key column.
+ * [parentId] is the foreign key to the owning resource table.
  */
 data class AttachmentRecord(
     val id: Long,
@@ -50,11 +49,6 @@ data class AttachmentRecord(
 /**
  * Repository for the attachments of a single base resource, e.g.
  * `service_providing_group_product_application_attachment`.
- *
- * Every resource that supports attachments (`attachments: true` in `openapi/resources.yml`) gets
- * a generated `<baseResource>_attachment` table shaped exactly the same way — see
- * `local/scripts/templates/attachment_resource.j2.sql` — so a single implementation parameterised
- * by the base resource name covers all of them; no per-resource repository class is needed.
  */
 interface AttachmentRepository {
     context(principal: FlexPrincipal)
@@ -81,15 +75,10 @@ interface AttachmentRepository {
  *
  * [baseResource] is interpolated directly into SQL to build the table name
  * (`flex.<baseResource>_attachment`) and its foreign key column (`<baseResource>_id`), since JDBC
- * can only bind parameter *values*, not identifiers. It is validated against [BASE_RESOURCE_REGEX]
- * to guard against SQL injection, but callers must still only ever pass fixed literals defined in
- * code (e.g. `AttachmentRepositoryImpl("service_providing_group_product_application")`) — never a
- * value derived from user input.
+ * can only bind parameter *values*, not identifiers.
  *
  * One instance is required per base resource; this class is not a Koin `@Single` because Koin has
- * no way to supply [baseResource] automatically. Construct and wire up one instance per resource
- * that needs it, similar to how [no.elhub.flex.storage.S3AttachmentStorageService] is manually
- * constructed in `no.elhub.flex.storage.attachmentStorageModule`.
+ * no way to supply [baseResource] automatically.
  */
 class AttachmentRepositoryImpl(private val baseResource: String) : AttachmentRepository {
     private val table = "flex.${baseResource}_attachment"
