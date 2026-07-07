@@ -49,5 +49,3 @@ changes:
 - _nested comments_ so that the comment section looks more like a list of
   _threads_ of discussion, through the addition of a `parent_id` field linking a
   comment to its parent (the depth level can be limited);
-- an _attachment_ resource inspired from comments, where the content is a _file_
-  instead of just text (NB: file ID, actual data would be stored externally).
