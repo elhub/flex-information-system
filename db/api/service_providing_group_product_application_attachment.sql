@@ -13,7 +13,6 @@ WITH (security_invoker = true) AS (
         recorded_by,
         lower(record_time_range) AS recorded_at,
         service_providing_group_product_application_id,
-        object_id,
         name,
         content_type,
         size_bytes

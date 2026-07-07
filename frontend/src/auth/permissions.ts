@@ -476,23 +476,10 @@ export type PermissionTarget =
   | "service_providing_group_product_application_attachment.content_type"
   | "service_providing_group_product_application_attachment.id"
   | "service_providing_group_product_application_attachment.name"
-  | "service_providing_group_product_application_attachment.object_id"
   | "service_providing_group_product_application_attachment.recorded_at"
   | "service_providing_group_product_application_attachment.recorded_by"
   | "service_providing_group_product_application_attachment.service_providing_group_product_application_id"
   | "service_providing_group_product_application_attachment.size_bytes"
-  | "service_providing_group_product_application_attachment_history"
-  | "service_providing_group_product_application_attachment_history.content_type"
-  | "service_providing_group_product_application_attachment_history.id"
-  | "service_providing_group_product_application_attachment_history.name"
-  | "service_providing_group_product_application_attachment_history.object_id"
-  | "service_providing_group_product_application_attachment_history.recorded_at"
-  | "service_providing_group_product_application_attachment_history.recorded_by"
-  | "service_providing_group_product_application_attachment_history.replaced_at"
-  | "service_providing_group_product_application_attachment_history.replaced_by"
-  | "service_providing_group_product_application_attachment_history.service_providing_group_product_application_attachment_id"
-  | "service_providing_group_product_application_attachment_history.service_providing_group_product_application_id"
-  | "service_providing_group_product_application_attachment_history.size_bytes"
   | "service_providing_group_product_application_comment"
   | "service_providing_group_product_application_comment.content"
   | "service_providing_group_product_application_comment.created_at"
@@ -2518,11 +2505,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target:
-        "service_providing_group_product_application_attachment.object_id",
-      operation: "read",
-    },
-    {
       target: "service_providing_group_product_application_attachment",
       operation: "read",
     },
@@ -2544,65 +2526,6 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_product_application_attachment.size_bytes",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.content_type",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.id",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.name",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.object_id",
-      operation: "read",
-    },
-    {
-      target: "service_providing_group_product_application_attachment_history",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.recorded_at",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.recorded_by",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.replaced_at",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.replaced_by",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.service_providing_group_product_application_attachment_id",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.service_providing_group_product_application_id",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.size_bytes",
       operation: "read",
     },
     {
@@ -5055,11 +4978,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target:
-        "service_providing_group_product_application_attachment.object_id",
-      operation: "read",
-    },
-    {
       target: "service_providing_group_product_application_attachment",
       operation: "read",
     },
@@ -5081,65 +4999,6 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_product_application_attachment.size_bytes",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.content_type",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.id",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.name",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.object_id",
-      operation: "read",
-    },
-    {
-      target: "service_providing_group_product_application_attachment_history",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.recorded_at",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.recorded_by",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.replaced_at",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.replaced_by",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.service_providing_group_product_application_attachment_id",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.service_providing_group_product_application_id",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.size_bytes",
       operation: "read",
     },
     {
@@ -7592,11 +7451,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target:
-        "service_providing_group_product_application_attachment.object_id",
-      operation: "read",
-    },
-    {
       target: "service_providing_group_product_application_attachment",
       operation: "read",
     },
@@ -7618,65 +7472,6 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_product_application_attachment.size_bytes",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.content_type",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.id",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.name",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.object_id",
-      operation: "read",
-    },
-    {
-      target: "service_providing_group_product_application_attachment_history",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.recorded_at",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.recorded_by",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.replaced_at",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.replaced_by",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.service_providing_group_product_application_attachment_id",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.service_providing_group_product_application_id",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.size_bytes",
       operation: "read",
     },
     {
@@ -10873,11 +10668,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target:
-        "service_providing_group_product_application_attachment.object_id",
-      operation: "read",
-    },
-    {
       target: "service_providing_group_product_application_attachment",
       operation: "read",
     },
@@ -10909,65 +10699,6 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_product_application_attachment.size_bytes",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.content_type",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.id",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.name",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.object_id",
-      operation: "read",
-    },
-    {
-      target: "service_providing_group_product_application_attachment_history",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.recorded_at",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.recorded_by",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.replaced_at",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.replaced_by",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.service_providing_group_product_application_attachment_id",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.service_providing_group_product_application_id",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.size_bytes",
       operation: "read",
     },
     {
@@ -13628,11 +13359,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target:
-        "service_providing_group_product_application_attachment.object_id",
-      operation: "read",
-    },
-    {
       target: "service_providing_group_product_application_attachment",
       operation: "read",
     },
@@ -13654,65 +13380,6 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_product_application_attachment.size_bytes",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.content_type",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.id",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.name",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.object_id",
-      operation: "read",
-    },
-    {
-      target: "service_providing_group_product_application_attachment_history",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.recorded_at",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.recorded_by",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.replaced_at",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.replaced_by",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.service_providing_group_product_application_attachment_id",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.service_providing_group_product_application_id",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.size_bytes",
       operation: "read",
     },
     {
@@ -16572,11 +16239,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target:
-        "service_providing_group_product_application_attachment.object_id",
-      operation: "read",
-    },
-    {
       target: "service_providing_group_product_application_attachment",
       operation: "read",
     },
@@ -16608,65 +16270,6 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_product_application_attachment.size_bytes",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.content_type",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.id",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.name",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.object_id",
-      operation: "read",
-    },
-    {
-      target: "service_providing_group_product_application_attachment_history",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.recorded_at",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.recorded_by",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.replaced_at",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.replaced_by",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.service_providing_group_product_application_attachment_id",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.service_providing_group_product_application_id",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.size_bytes",
       operation: "read",
     },
     {
@@ -19691,11 +19294,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target:
-        "service_providing_group_product_application_attachment.object_id",
-      operation: "read",
-    },
-    {
       target: "service_providing_group_product_application_attachment",
       operation: "read",
     },
@@ -19727,65 +19325,6 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_product_application_attachment.size_bytes",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.content_type",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.id",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.name",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.object_id",
-      operation: "read",
-    },
-    {
-      target: "service_providing_group_product_application_attachment_history",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.recorded_at",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.recorded_by",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.replaced_at",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.replaced_by",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.service_providing_group_product_application_attachment_id",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.service_providing_group_product_application_id",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.size_bytes",
       operation: "read",
     },
     {
@@ -22384,11 +21923,6 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
-      target:
-        "service_providing_group_product_application_attachment.object_id",
-      operation: "read",
-    },
-    {
       target: "service_providing_group_product_application_attachment",
       operation: "read",
     },
@@ -22410,65 +21944,6 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_product_application_attachment.size_bytes",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.content_type",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.id",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.name",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.object_id",
-      operation: "read",
-    },
-    {
-      target: "service_providing_group_product_application_attachment_history",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.recorded_at",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.recorded_by",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.replaced_at",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.replaced_by",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.service_providing_group_product_application_attachment_id",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.service_providing_group_product_application_id",
-      operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment_history.size_bytes",
       operation: "read",
     },
     {
