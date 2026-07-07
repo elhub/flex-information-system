@@ -2,7 +2,8 @@
 -- Manually managed file
 
 -- changeset flex:accounting-point-end-user-create runOnChange:true endDelimiter:--
-CREATE OR REPLACE VIEW controllable_unit_end_user AS (
+CREATE OR REPLACE VIEW controllable_unit_end_user
+WITH (security_invoker = false) AS (
     SELECT
         cu.id AS controllable_unit_id,
         apeu.end_user_id,

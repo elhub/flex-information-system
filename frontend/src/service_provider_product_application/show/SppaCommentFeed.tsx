@@ -8,7 +8,7 @@ type SppaCommentFeedProps = {
 };
 
 export function SppaCommentFeed({ sppaId }: SppaCommentFeedProps) {
-  const { commentsQuery, postComment } = useSppaComments(sppaId);
+  const { commentsQuery, postComment, editComment } = useSppaComments(sppaId);
   const { permissions } = usePermissions<Permissions>();
 
   const canCreate =
@@ -21,6 +21,7 @@ export function SppaCommentFeed({ sppaId }: SppaCommentFeedProps) {
     <CommentFeed
       commentsQuery={commentsQuery}
       postComment={postComment}
+      editComment={editComment}
       canCreate={canCreate}
     />
   );

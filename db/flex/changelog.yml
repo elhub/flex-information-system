@@ -250,9 +250,6 @@ databaseChangeLog:
       file: ./service_provider_product_application_comment.sql
       relativeToChangelogFile: true
   - include:
-      file: ./service_provider_product_application_comment_migrations.sql
-      relativeToChangelogFile: true
-  - include:
       file: ./service_provider_product_suspension.sql
       relativeToChangelogFile: true
   - include:
@@ -261,14 +258,17 @@ databaseChangeLog:
   - include:
       file: ./service_provider_product_suspension_comment.sql
       relativeToChangelogFile: true
-  - include:
-      file: ./service_provider_product_suspension_comment_migrations.sql
-      relativeToChangelogFile: true
 
   # Views
 
   - include:
       file: ./accounting_point_service_provider.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./accounting_point_impacted_system_operator.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./accounting_point_procuring_system_operator.sql
       relativeToChangelogFile: true
   - include:
       file: ./accounting_point_bidding_zone.sql
@@ -290,6 +290,12 @@ databaseChangeLog:
       relativeToChangelogFile: true
   - include:
       file: ./controllable_unit_system_operator.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./controllable_unit_procuring_system_operator.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./controllable_unit_impacted_system_operator.sql
       relativeToChangelogFile: true
   - include:
       file: ./controllable_unit_summary.sql
