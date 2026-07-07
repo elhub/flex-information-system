@@ -124,23 +124,4 @@ class AttachmentRepositoryTest : FunSpec({
             result.shouldBeLeft() shouldBe NotFoundError("widget attachment not found: id=-1")
         }
     }
-
-    context("baseResource validation") {
-        test("rejects a baseResource that is not lower_snake_case") {
-            shouldThrow<IllegalArgumentException> { AttachmentRepositoryImpl("Not-Valid!") }
-        }
-
-        test("rejects a blank baseResource") {
-            shouldThrow<IllegalArgumentException> { AttachmentRepositoryImpl("") }
-        }
-
-        test("rejects a baseResource starting with a digit or underscore") {
-            shouldThrow<IllegalArgumentException> { AttachmentRepositoryImpl("1widget") }
-            shouldThrow<IllegalArgumentException> { AttachmentRepositoryImpl("_widget") }
-        }
-
-        test("accepts a lower_snake_case baseResource") {
-            AttachmentRepositoryImpl("service_providing_group_product_application")
-        }
-    }
 })

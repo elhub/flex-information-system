@@ -1,9 +1,9 @@
 package no.elhub.flex.generic.attachment
 
+import io.ktor.http.HttpMethod
 import io.ktor.server.application.Application
-import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
-import io.ktor.server.routing.post
+import io.ktor.server.routing.method
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
 import no.elhub.flex.auth.FlexRole
@@ -30,25 +30,30 @@ fun Application.attachmentRoutes(
 
     val handler = AttachmentHandler(baseResource, storage, fileParser)
 
+    // use of `method` to make sure plugins are not installed twice or applied to subroutes meant to override
+    // scope or role check with potentially different values
     routing {
-        route("/${baseResource}_attachment/{id}/download") {
-            requireScope(Scope(ScopeVerb.Read, "data"))
-            requireScope(Scope(ScopeVerb.Read, "data:${baseResource}_attachment"))
-            get { handler.download(call) }
-        }
         route("/${baseResource}_attachment") {
-            requireScope(Scope(ScopeVerb.Manage, "data:${baseResource}_attachment"))
-            editRoles.takeIf { it.isNotEmpty() }?.let {
-                requireRoles(*it.toTypedArray())
+            method(HttpMethod.Post) {
+                requireScope(Scope(ScopeVerb.Manage, "data:${baseResource}_attachment"))
+                editRoles.takeIf { it.isNotEmpty() }?.let {
+                    requireRoles(*it.toTypedArray())
+                }
+                handle { handler.create(call) }
             }
-            post { handler.create(call) }
         }
         route("/${baseResource}_attachment/{id}") {
-            requireScope(Scope(ScopeVerb.Manage, "data:${baseResource}_attachment"))
-            editRoles.takeIf { it.isNotEmpty() }?.let {
-                requireRoles(*it.toTypedArray())
+            method(HttpMethod.Delete) {
+                requireScope(Scope(ScopeVerb.Manage, "data:${baseResource}_attachment"))
+                editRoles.takeIf { it.isNotEmpty() }?.let {
+                    requireRoles(*it.toTypedArray())
+                }
+                handle { handler.delete(call) }
             }
-            delete { handler.delete(call) }
+            route("/download") {
+                requireScope(Scope(ScopeVerb.Read, "data:${baseResource}_attachment"))
+                get { handler.download(call) }
+            }
         }
     }
 }
