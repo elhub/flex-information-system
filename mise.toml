@@ -1,7 +1,7 @@
 [tools]
 "python" = "3.12"
 "go" = "1.26.4"
-"uv" = "0.11.24"
+"uv" = "0.11.26"
 
 [settings]
 python.uv_venv_auto = "create|source"
