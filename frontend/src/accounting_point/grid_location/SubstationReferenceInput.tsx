@@ -66,7 +66,10 @@ export const SubstationReferenceInput = ({
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement> | null,
   ) => {
-    setSearch(event?.currentTarget.value ?? "");
+    const search = event?.currentTarget.value ?? "";
+    // sanitise the search string to avoid malformed query params
+    const cleanSearch = search.trim().replace(/[^a-zA-Z0-9-\s]/, "");
+    setSearch(cleanSearch);
   };
 
   const handleToggle = (value: string, isSelected: boolean) => {
