@@ -136,8 +136,15 @@ connect user="postgres":
 
 # initialize local development environment
 init: && _java_install _plantuml_install _liquibase_install _keypair
-    rm -rf .bin .venv
+    #!/usr/bin/env bash
+    set -euo pipefail
+    rm -rf .bin
     pre-commit install
+
+    # install node modules for frontend
+    (cd frontend && npm install)
+    # ensure uv has installed all-the-things in the virtual environment
+    uv sync
 
 _java_install:
     #!/usr/bin/env bash
