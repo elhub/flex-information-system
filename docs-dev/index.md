@@ -16,30 +16,7 @@ To get started, you must install a lot of local dependencies. Elhubbers do this
 via `devxp-wsl`. We have not yet documented the dependencies for external
 users/contributors.
 
-Some additional tools are required:
-
-```bash
-# go-licenses is used to vet go licenses
-go install github.com/google/go-licenses@latest
-#  govulncheck is used to check for vulnerabilities in go dependencies
-go install golang.org/x/vuln/cmd/govulncheck@latest
-# stringer is used to generate string methods for enums
-go install golang.org/x/tools/cmd/stringer@latest
-# enumer is similar to stringer, but generates string to enum-method as well
-go install github.com/dmarkham/enumer@latest
-# air is used to hot reload the go backend
-go install github.com/air-verse/air@latest
-```
-
-```bash
-# golangci-lint is used to lint go code
-brew install golangci-lint
-brew install pandoc
-brew install ruff
-brew install sqlc
-```
-
-We also need to generate certificates for the local development and test
+You need to generate certificates for the local development and test
 environments. We use
 [.flex.internal](https://datatracker.ietf.org/doc/html/draft-davies-internal-tld-02)
 as our domain names. Use the following commands.
@@ -60,7 +37,7 @@ addition we are also using the root certificate (at `~/.ca/root/ca.cert.pem`
 * `<domain>.key.pem` - The private key
 
 Then we need to make sure that these domains resolve. Add the following to your
-(Windows) hosts file and restart wsl:
+(Windows) hosts file (at C:\Windows\System32\drivers\etc) and restart wsl:
 
 ```text
 127.0.0.1          dev.flex.internal
@@ -71,13 +48,11 @@ Then we need to make sure that these domains resolve. Add the following to your
 ::1                idp.flex.internal
 ```
 
-Then you can start the Python virtual environment with `just venv`. You should
-now be able to run the project, after having generated all the files through
-the scripts, with the following commands:
+Install and set up project-local dependencies with mise (+ some extras).
 
 ```bash
-just permissions
-just openapi
+mise trust
+mise install
 just init
 ```
 
@@ -96,3 +71,13 @@ To start the `dev` environment, first stop the backend container with
 `docker compose stop backend` and run `just frontend` for frontend and
 `just backend` for the backend (in separate terminals). The dev environment is
 available at [https://dev.flex.internal:5443](https://dev.flex.internal:5443).
+
+## Code generation
+
+Test code generation with the following commands.
+
+```bash
+just permissions
+just generate
+just openapi
+```
