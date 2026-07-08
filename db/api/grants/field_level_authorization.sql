@@ -7219,6 +7219,10 @@ GRANT SELECT (
 api.service_providing_group_product_application_attachment
 TO flex_flexibility_information_system_operator;
 
+GRANT DELETE ON TABLE
+api.service_providing_group_product_application_attachment
+TO flex_flexibility_information_system_operator;
+
 GRANT SELECT (
     id,
     service_providing_group_product_application_id,
@@ -7230,19 +7234,6 @@ GRANT SELECT (
 ) ON TABLE
 api.service_providing_group_product_application_attachment
 TO flex_market_operator;
-
-GRANT DELETE ON TABLE
-api.service_providing_group_product_application_attachment
-TO flex_market_operator;
-
-GRANT INSERT (
-    service_providing_group_product_application_id,
-    name,
-    content_type,
-    size_bytes
-) ON TABLE
-api.service_providing_group_product_application_attachment
-TO flex_system_operator;
 
 GRANT SELECT (
     id,

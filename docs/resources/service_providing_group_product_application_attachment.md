@@ -70,9 +70,9 @@ For party type abbreviations, check
 | FIELD                                          | ANON | BRP | ES | EU | FISO | SO | SP | TP | ORG |
 |------------------------------------------------|------|-----|----|----|------|----|----|----|-----|
 | id                                             |      | R   | R  | R  | R    | R  | R  | R  |     |
-| service_providing_group_product_application_id |      | R   | R  | R  | RC   | RC | RC | R  |     |
-| name                                           |      | R   | R  | R  | RC   | RC | RC | R  |     |
-| content_type                                   |      | R   | R  | R  | RC   | RC | RC | R  |     |
-| size_bytes                                     |      | R   | R  | R  | RC   | RC | RC | R  |     |
+| service_providing_group_product_application_id |      | R   | R  | R  | RC   | R  | RC | R  |     |
+| name                                           |      | R   | R  | R  | RC   | R  | RC | R  |     |
+| content_type                                   |      | R   | R  | R  | RC   | R  | RC | R  |     |
+| size_bytes                                     |      | R   | R  | R  | RC   | R  | RC | R  |     |
 | recorded_at                                    |      | R   | R  | R  | R    | R  | R  | R  |     |
 | recorded_by                                    |      | R   | R  | R  | R    | R  | R  | R  |     |

@@ -10656,6 +10656,10 @@ const rawPermissions: Record<
       operation: "create",
     },
     {
+      target: "service_providing_group_product_application_attachment",
+      operation: "delete",
+    },
+    {
       target: "service_providing_group_product_application_attachment.id",
       operation: "read",
     },
@@ -13345,10 +13349,6 @@ const rawPermissions: Record<
       target:
         "service_providing_group_product_application_attachment.content_type",
       operation: "read",
-    },
-    {
-      target: "service_providing_group_product_application_attachment",
-      operation: "delete",
     },
     {
       target: "service_providing_group_product_application_attachment.id",
@@ -16215,24 +16215,11 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_product_application_attachment.content_type",
-      operation: "create",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment.content_type",
       operation: "read",
-    },
-    {
-      target: "service_providing_group_product_application_attachment",
-      operation: "create",
     },
     {
       target: "service_providing_group_product_application_attachment.id",
       operation: "read",
-    },
-    {
-      target: "service_providing_group_product_application_attachment.name",
-      operation: "create",
     },
     {
       target: "service_providing_group_product_application_attachment.name",
@@ -16255,17 +16242,7 @@ const rawPermissions: Record<
     {
       target:
         "service_providing_group_product_application_attachment.service_providing_group_product_application_id",
-      operation: "create",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment.service_providing_group_product_application_id",
       operation: "read",
-    },
-    {
-      target:
-        "service_providing_group_product_application_attachment.size_bytes",
-      operation: "create",
     },
     {
       target:

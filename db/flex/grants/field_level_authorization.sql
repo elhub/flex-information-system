@@ -2447,17 +2447,13 @@ GRANT SELECT ON TABLE
 flex.service_providing_group_product_application_attachment
 TO flex_flexibility_information_system_operator;
 
+GRANT DELETE ON TABLE
+flex.service_providing_group_product_application_attachment
+TO flex_flexibility_information_system_operator;
+
 GRANT SELECT ON TABLE
 flex.service_providing_group_product_application_attachment
 TO flex_market_operator;
-
-GRANT DELETE ON TABLE
-flex.service_providing_group_product_application_attachment
-TO flex_market_operator;
-
-GRANT INSERT ON TABLE
-flex.service_providing_group_product_application_attachment
-TO flex_system_operator;
 
 GRANT SELECT ON TABLE
 flex.service_providing_group_product_application_attachment
