@@ -142,9 +142,7 @@ init: && _java_install _plantuml_install _liquibase_install _keypair
     pre-commit install
 
     # install node modules for frontend
-    cd frontend
-    npm install
-
+    (cd frontend && npm install)
     # ensure uv has installed all-the-things in the virtual environment
     uv sync
 
