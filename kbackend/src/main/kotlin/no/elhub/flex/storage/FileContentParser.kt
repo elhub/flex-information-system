@@ -16,9 +16,8 @@ interface FileContentParser {
      * Parses [bytes] and returns a [FileContent] if valid, or a [FileValidationError] otherwise.
      *
      * @param bytes raw bytes from the upload
-     * @param contentType expected type of the content
      */
-    fun parse(bytes: ByteArray, contentType: FileContentType): Either<FileValidationError, FileContent>
+    fun parse(bytes: ByteArray): Either<FileValidationError, FileContent>
 }
 
 /** Validates and parses uploaded file bytes using Apache PDFBox for PDF structural validation. */
@@ -26,13 +25,8 @@ interface FileContentParser {
 class DefaultFileContentParser() : FileContentParser {
     override fun parse(
         bytes: ByteArray,
-        contentType: FileContentType,
     ): Either<FileValidationError, FileContent> =
-        when (contentType) {
-            FileContentType.PDF -> {
-                parsePdf(bytes)
-            }
-        }
+        parsePdf(bytes)
 
     private fun parsePdf(bytes: ByteArray): Either<FileValidationError, PdfFileContent> =
         Either.catch {

@@ -25,14 +25,14 @@ fun Application.attachmentRoutes(
     baseResource: String,
     editRoles: List<FlexRole>,
 ) {
-    val storage: AttachmentStorageService by inject()
-    val fileParser: FileContentParser by inject()
-
-    val handler = AttachmentHandler(baseResource, storage, fileParser)
-
     // use of `method` to make sure plugins are not installed twice or applied to subroutes meant to override
     // scope or role check with potentially different values
     routing {
+        val storage: AttachmentStorageService by inject()
+        val fileParser: FileContentParser by inject()
+
+        val handler = AttachmentHandler(baseResource, storage, fileParser)
+
         route("/${baseResource}_attachment") {
             method(HttpMethod.Post) {
                 requireScope(Scope(ScopeVerb.Manage, "data:${baseResource}_attachment"))

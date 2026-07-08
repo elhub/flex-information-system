@@ -42,7 +42,6 @@ fun Application.module() {
     configureLogging()
     configureSerialization()
     configureDatabase()
-    configureRouting()
 
     val jwtSecret = environment.config.property("flex.jwt-secret").getString()
     install(FlexAuthentication) {
@@ -74,6 +73,7 @@ fun Application.module() {
         slf4jLogger()
     }
 
+    configureRouting()
     configureMetrics()
     configureHealth()
     configureScheduling()

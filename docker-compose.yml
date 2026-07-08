@@ -144,6 +144,7 @@ services:
       NGINX_UPSTREAM_POSTGREST: http://postgrest:3000
       NGINX_UPSTREAM_FRONTEND: http://frontend:8080
       NGINX_UPSTREAM_BACKEND: http://backend:7001
+      NGINX_UPSTREAM_S3: http://s3mock:9090
       NGINX_SSL_CERTIFICATE: /etc/oci/certificates/certificate_fullchain_pem
       NGINX_SSL_CERTIFICATE_KEY: /etc/oci/certificates/private_key_pem
       NGINX_REAL_IP_FROM: 172.16.0.0/12

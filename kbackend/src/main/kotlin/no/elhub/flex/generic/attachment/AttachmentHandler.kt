@@ -75,6 +75,10 @@ class AttachmentHandler(
                     logger.error { "Failed to generate presigned URL for attachment id=$id: $e" }
                     InternalServerError(traceIdOrUnknown())
                 }
+                .map { url ->
+                    logger.debug { "Redirecting download for attachment id=$id to: $url" }
+                    url
+                }
                 .bind()
         }.respondRedirect(call, true)
     }
@@ -86,9 +90,6 @@ class AttachmentHandler(
             var parentId: Long? = null
             var fileBytes: ByteArray? = null
             var fileName: String? = null
-
-            // TODO: read content type from the multipart form? for now, just supporting/assuming PDF
-            val contentType = FileContentType.PDF
 
             call.multipart(MAX_MULTIPART_SIZE_BYTES).bind().forEachPart { part ->
                 when {
@@ -114,7 +115,7 @@ class AttachmentHandler(
             }
 
             // validate file content
-            val fileContent = fileContentParser.parse(fileBytes, contentType)
+            val fileContent = fileContentParser.parse(fileBytes)
                 .mapLeft { e ->
                     logger.error { "File validation failed for new attachment: $e" }
                     when (e) {
