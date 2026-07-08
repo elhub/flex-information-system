@@ -56,6 +56,8 @@ def test_apbrp_so(sts):
 
 
 # RLS: APBRP-SP001
+# This test must run first since it depends on the test data being in a certain state
+@pytest.mark.first
 def test_apbrp_sp(sts):
     client_sp = sts.get_client(TestEntity.TEST, "SP")
 
