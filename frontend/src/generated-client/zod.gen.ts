@@ -1813,18 +1813,10 @@ export const zNoticeDataPartyOutdated = z.object({
 });
 
 export const zNoticeData = z.discriminatedUnion("kind", [
-  zNoticeDataValidTimeOutsideContract.extend({
-    kind: z.literal("notice.data.valid_time.outside_contract"),
-  }),
-  zNoticeDataPartyMissing.extend({
-    kind: z.literal("notice.data.party.missing"),
-  }),
-  zNoticeDataPartyOutdated.extend({
-    kind: z.literal("notice.data.party.outdated"),
-  }),
-  zNoticeDataProductTypeNotQualified.extend({
-    kind: z.literal("notice.data.product_type.not_qualified"),
-  }),
+  zNoticeDataValidTimeOutsideContract,
+  zNoticeDataPartyMissing,
+  zNoticeDataPartyOutdated,
+  zNoticeDataProductTypeNotQualified,
 ]);
 
 /**
@@ -2591,18 +2583,10 @@ export const zNoticeDataPartyOutdatedWritable = z.object({
 });
 
 export const zNoticeDataWritable = z.discriminatedUnion("kind", [
-  zNoticeDataValidTimeOutsideContract.extend({
-    kind: z.literal("notice.data.valid_time.outside_contract"),
-  }),
-  zNoticeDataPartyMissingWritable.extend({
-    kind: z.literal("notice.data.party.missing"),
-  }),
-  zNoticeDataPartyOutdatedWritable.extend({
-    kind: z.literal("notice.data.party.outdated"),
-  }),
-  zNoticeDataProductTypeNotQualified.extend({
-    kind: z.literal("notice.data.product_type.not_qualified"),
-  }),
+  zNoticeDataValidTimeOutsideContract,
+  zNoticeDataPartyMissingWritable,
+  zNoticeDataPartyOutdatedWritable,
+  zNoticeDataProductTypeNotQualified,
 ]);
 
 /**

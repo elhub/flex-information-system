@@ -13,7 +13,7 @@ repos:
   ## Commits
   #
   - repo: https://github.com/compilerla/conventional-pre-commit
-    rev: v4.2.0
+    rev: v4.4.0
     hooks:
       - id: conventional-pre-commit
         stages: [commit-msg]
@@ -41,7 +41,7 @@ repos:
   ## Basics
   #
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: trailing-whitespace
         exclude: "(test/flex/.*)|(docs/.*)"
@@ -89,13 +89,13 @@ repos:
   ## YAML
   #
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: check-yaml
         args: []
         exclude: ^(local/scripts/templates/.*)|(mkdocs.yml)$
   - repo: https://github.com/adrienverge/yamllint.git
-    rev: v1.37.1
+    rev: v1.38.0
     hooks:
       - id: yamllint
         exclude: ^local/scripts/templates/.*$
@@ -108,7 +108,7 @@ repos:
       - id: check-json5
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: pretty-format-json
         args: ['--indent', '4', '--autofix', '--no-sort-keys', '--no-ensure-ascii']
@@ -116,7 +116,7 @@ repos:
   ## Markdown
   #
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.21.0
+    rev: v0.23.0
     hooks:
       - id: markdownlint-cli2
         language_version: lts
@@ -125,7 +125,7 @@ repos:
   ## SQL
   #
   - repo: https://github.com/sqlfluff/sqlfluff
-    rev: 3.4.0
+    rev: 4.2.2
     hooks:
       - id: sqlfluff-fix
         exclude: ^(backend/event/.*)|(backend/data/.*)|(.*j2\.sql)$
@@ -169,11 +169,11 @@ repos:
   ## Bash / Shell
   #
   - repo: https://github.com/koalaman/shellcheck-precommit
-    rev: v0.10.0
+    rev: v0.11.0
     hooks:
       - id: shellcheck
   - repo: https://github.com/scop/pre-commit-shfmt
-    rev: v3.11.0-1
+    rev: v3.13.1-1
     hooks:
       - id: shfmt
   #
@@ -200,7 +200,7 @@ repos:
     hooks:
       - id: prettier
         additional_dependencies:
-          - prettier@3.4.2
+          - prettier@3.9.4
         name: prettier
         entry: prettier --write --ignore-unknown --print-width 80
         language: node
@@ -286,7 +286,7 @@ repos:
   ## Python
   #
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: "v0.11.8"
+    rev: "v0.15.20"
     hooks:
       - id: ruff-format
         exclude: "test/flex/.*"
@@ -295,7 +295,7 @@ repos:
         # test/flex is excluded because it is a generated directory
         exclude: "test/flex/.*"
   - repo: https://github.com/RobertCraigie/pyright-python
-    rev: v1.1.400
+    rev: v1.1.411
     hooks:
       - id: pyright
         # test/flex is excluded because it is a generated directory
@@ -310,7 +310,7 @@ repos:
       - id: taplo-format
         exclude: "test/flex/.*"
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: check-toml
         exclude: "test/flex/.*"
@@ -336,7 +336,7 @@ repos:
   ## Secret linting
   #
   - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.24.2
+    rev: v8.30.0
     hooks:
       - id: gitleaks
         name: gitleaks

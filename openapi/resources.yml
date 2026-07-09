@@ -181,7 +181,6 @@ resources:
         format: text
         type: string
         nullable: true
-        example:
         x-intl:
           en: Additional information
           nb: Tilleggsinformasjon
@@ -809,7 +808,6 @@ resources:
         format: text
         type: string
         nullable: true
-        example:
         x-intl:
           en: Additional information
           nb: Tilleggsinformasjon
@@ -902,7 +900,6 @@ resources:
         type: string
         x-filter: true
         nullable: true
-        example:
         x-intl:
           en: Valid to
           nb: Gyldig til
@@ -2006,7 +2003,6 @@ resources:
         format: text
         type: string
         nullable: true
-        example:
         x-intl:
           en: Additional information
           nb: Tilleggsinformasjon
@@ -2105,7 +2101,6 @@ resources:
         type: string
         readOnly: true
         nullable: true
-        example:
         x-intl:
           en: Data
           nb: Data
@@ -2349,7 +2344,6 @@ resources:
         readOnly: true
         x-filter: true
         nullable: true
-        example:
         x-intl:
           en: Valid to
           nb: Gyldig til
@@ -2444,7 +2438,6 @@ resources:
         readOnly: true
         nullable: true
         x-filter: true
-        example:
         x-intl:
           en: Valid to
           nb: Gyldig til
@@ -2517,7 +2510,6 @@ resources:
         type: string
         readOnly: true
         nullable: true
-        example:
         x-filter: true
         x-intl:
           en: Valid to
@@ -2593,7 +2585,6 @@ resources:
         readOnly: true
         x-filter: true
         nullable: true
-        example:
         x-intl:
           en: Valid to
           nb: Gyldig til
@@ -2761,7 +2752,6 @@ resources:
         type: string
         readOnly: true
         nullable: true
-        example:
         x-filter: true
         x-intl:
           en: Valid to
@@ -3331,7 +3321,6 @@ resources:
         format: text
         type: string
         nullable: true
-        example:
         x-intl:
           en: Additional information
           nb: Tilleggsinformasjon
@@ -3963,7 +3952,6 @@ resources:
         type: string
         maxLength: 512
         nullable: true
-        example:
         x-intl:
           en: Additional information
           nb: Tilleggsinformasjon

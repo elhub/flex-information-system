@@ -203,16 +203,14 @@
                             "string",
                             "null"
                         ],
-                        "description": "Detailed information about the error.",
-                        "example": null
+                        "description": "Detailed information about the error."
                     },
                     "hint": {
                         "type": [
                             "string",
                             "null"
                         ],
-                        "description": "A hint to help resolve the error.",
-                        "example": null
+                        "description": "A hint to help resolve the error."
                     },
                     "message": {
                         "type": "string",
@@ -1114,8 +1112,7 @@
                         "description": "Free text field for extra information about the controllable unit if needed.",
                         "format": "text",
                         "type": "string",
-                        "nullable": true,
-                        "example": null
+                        "nullable": true
                     }
                 }
             },
@@ -1164,8 +1161,7 @@
                         "description": "Free text field for extra information about the controllable unit if needed.",
                         "format": "text",
                         "type": "string",
-                        "nullable": true,
-                        "example": null
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -1242,8 +1238,7 @@
                         "description": "Free text field for extra information about the controllable unit if needed.",
                         "format": "text",
                         "type": "string",
-                        "nullable": true,
-                        "example": null
+                        "nullable": true
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
@@ -2115,8 +2110,7 @@
                         "description": "Free text field for extra information about the service providing group if needed.",
                         "format": "text",
                         "type": "string",
-                        "nullable": true,
-                        "example": null
+                        "nullable": true
                     }
                 }
             },
@@ -2148,8 +2142,7 @@
                         "description": "Free text field for extra information about the service providing group if needed.",
                         "format": "text",
                         "type": "string",
-                        "nullable": true,
-                        "example": null
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -2193,8 +2186,7 @@
                         "description": "Free text field for extra information about the service providing group if needed.",
                         "format": "text",
                         "type": "string",
-                        "nullable": true,
-                        "example": null
+                        "nullable": true
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
@@ -2335,8 +2327,7 @@
                         "description": "The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.",
                         "format": "date-time",
                         "type": "string",
-                        "nullable": true,
-                        "example": null
+                        "nullable": true
                     }
                 }
             },
@@ -2367,8 +2358,7 @@
                         "description": "The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.",
                         "format": "date-time",
                         "type": "string",
-                        "nullable": true,
-                        "example": null
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -2411,8 +2401,7 @@
                         "description": "The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.",
                         "format": "date-time",
                         "type": "string",
-                        "nullable": true,
-                        "example": null
+                        "nullable": true
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
@@ -3797,8 +3786,7 @@
                         "description": "Free text field for extra information about the technical resource if needed.",
                         "format": "text",
                         "type": "string",
-                        "nullable": true,
-                        "example": null
+                        "nullable": true
                     }
                 }
             },
@@ -3890,8 +3878,7 @@
                         "description": "Free text field for extra information about the technical resource if needed.",
                         "format": "text",
                         "type": "string",
-                        "nullable": true,
-                        "example": null
+                        "nullable": true
                     }
                 },
                 "required": [
@@ -4009,8 +3996,7 @@
                         "description": "Free text field for extra information about the technical resource if needed.",
                         "format": "text",
                         "type": "string",
-                        "nullable": true,
-                        "example": null
+                        "nullable": true
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
@@ -4106,8 +4092,7 @@
                         "format": "text",
                         "type": "string",
                         "readOnly": true,
-                        "nullable": true,
-                        "example": null
+                        "nullable": true
                     },
                     "notification": {
                         "description": "Embedded notification",
@@ -4443,8 +4428,7 @@
                         "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "nullable": true,
-                        "example": null
+                        "nullable": true
                     },
                     "accounting_point": {
                         "description": "Embedded accounting_point",
@@ -4505,8 +4489,7 @@
                         "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "nullable": true,
-                        "example": null
+                        "nullable": true
                     },
                     "accounting_point": {
                         "description": "Embedded accounting_point",
@@ -4558,8 +4541,7 @@
                         "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "nullable": true,
-                        "example": null
+                        "nullable": true
                     },
                     "accounting_point": {
                         "description": "Embedded accounting_point",
@@ -4623,8 +4605,7 @@
                         "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "nullable": true,
-                        "example": null
+                        "nullable": true
                     },
                     "accounting_point": {
                         "description": "Embedded accounting_point",
@@ -4747,8 +4728,7 @@
                         "format": "date-time",
                         "type": "string",
                         "readOnly": true,
-                        "nullable": true,
-                        "example": null
+                        "nullable": true
                     },
                     "accounting_point": {
                         "description": "Embedded accounting_point",
@@ -4817,8 +4797,7 @@
                         "description": "Free text field for extra information about the grid location if needed.",
                         "format": "text",
                         "type": "string",
-                        "nullable": true,
-                        "example": null
+                        "nullable": true
                     },
                     "quality": {
                         "$ref": "#/components/schemas/accounting_point_grid_location_quality"
@@ -4867,8 +4846,7 @@
                         "description": "Free text field for extra information about the grid location if needed.",
                         "format": "text",
                         "type": "string",
-                        "nullable": true,
-                        "example": null
+                        "nullable": true
                     },
                     "quality": {
                         "$ref": "#/components/schemas/accounting_point_grid_location_quality"
@@ -4932,8 +4910,7 @@
                         "description": "Free text field for extra information about the grid location if needed.",
                         "format": "text",
                         "type": "string",
-                        "nullable": true,
-                        "example": null
+                        "nullable": true
                     },
                     "source": {
                         "$ref": "#/components/schemas/accounting_point_grid_location_source",
@@ -5802,8 +5779,7 @@
                         "format": "text",
                         "type": "string",
                         "maxLength": 512,
-                        "nullable": true,
-                        "example": null
+                        "nullable": true
                     },
                     "prequalified_at": {
                         "description": "When the product application was last prequalified.",
@@ -5895,8 +5871,7 @@
                         "format": "text",
                         "type": "string",
                         "maxLength": 512,
-                        "nullable": true,
-                        "example": null
+                        "nullable": true
                     },
                     "prequalified_at": {
                         "description": "When the product application was last prequalified.",
@@ -6002,8 +5977,7 @@
                         "format": "text",
                         "type": "string",
                         "maxLength": 512,
-                        "nullable": true,
-                        "example": null
+                        "nullable": true
                     },
                     "prequalified_at": {
                         "description": "When the product application was last prequalified.",
@@ -6670,8 +6644,7 @@
                         "description": "Free text field for extra information about the controllable unit if needed.",
                         "format": "text",
                         "type": "string",
-                        "nullable": true,
-                        "example": null
+                        "nullable": true
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
@@ -7011,8 +6984,7 @@
                         "description": "Free text field for extra information about the service providing group if needed.",
                         "format": "text",
                         "type": "string",
-                        "nullable": true,
-                        "example": null
+                        "nullable": true
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
@@ -7093,8 +7065,7 @@
                         "description": "The date until which the relation between the controllable unit and the service providing group is valid. Midnight aligned on Norwegian timezone.",
                         "format": "date-time",
                         "type": "string",
-                        "nullable": true,
-                        "example": null
+                        "nullable": true
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
@@ -7741,8 +7712,7 @@
                         "description": "Free text field for extra information about the technical resource if needed.",
                         "format": "text",
                         "type": "string",
-                        "nullable": true,
-                        "example": null
+                        "nullable": true
                     },
                     "recorded_at": {
                         "description": "When the resource was recorded (created or updated) in the system.",
@@ -7840,8 +7810,7 @@
                         "description": "Free text field for extra information about the grid location if needed.",
                         "format": "text",
                         "type": "string",
-                        "nullable": true,
-                        "example": null
+                        "nullable": true
                     },
                     "source": {
                         "$ref": "#/components/schemas/accounting_point_grid_location_source",
@@ -8384,8 +8353,7 @@
                         "format": "text",
                         "type": "string",
                         "maxLength": 512,
-                        "nullable": true,
-                        "example": null
+                        "nullable": true
                     },
                     "prequalified_at": {
                         "description": "When the product application was last prequalified.",

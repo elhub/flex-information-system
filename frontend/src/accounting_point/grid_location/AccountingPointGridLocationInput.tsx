@@ -73,7 +73,7 @@ const GridLocationFormFields = ({
         selectedSubstation.business_id !== currentBusinessId;
       if (isNewSubstation) setValue("nominal_voltage", null);
     }
-  }, [selectedSubstation, setValue]);
+  }, [selectedSubstation, currentBusinessId, setValue]);
 
   const nominalVoltage = watch("nominal_voltage");
 
