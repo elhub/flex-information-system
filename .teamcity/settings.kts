@@ -30,6 +30,8 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         workingDir = "backend"
                     }
                     uploadSbom = true
+                    goModPath = "." // relative to workingDir
+                    dependencyTrackProjectName = "flex-information-system-backend"
                 }
 
                 dockerBuild {
@@ -134,6 +136,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
                 gradleVerify {
                     workingDir = "kbackend"
                     enablePublishMetrics = true
+                    dependencyTrackProjectName = "flex-information-system-kbackend"
                 }.buildType.triggerOnVcsChange {
                     triggerRules = """
                         -:*
