@@ -30,7 +30,6 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         workingDir = "backend"
                     }
                     uploadSbom = true
-                    goModPath = "backend"
                 }
 
                 dockerBuild {
