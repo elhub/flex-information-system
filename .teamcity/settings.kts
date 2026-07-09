@@ -29,6 +29,8 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         sonarProjectSources = "backend"
                         workingDir = "backend"
                     }
+                    uploadSbom = true
+                    goModPath = "backend"
                 }
 
                 dockerBuild {
