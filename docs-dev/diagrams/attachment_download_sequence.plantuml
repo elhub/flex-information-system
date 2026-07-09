@@ -1,0 +1,51 @@
+@startuml attachment_download_sequence
+!theme plain
+
+title Attachment Download Sequence
+
+skinparam LifelineStrategy solid
+skinparam SequenceMessageAlign direction
+
+participant User as user
+participant "FIS" as fis
+participant Bucket as bucket
+
+user -> fis: ""GET /res_attachment/<color #d58000>19</color>/download""
+activate fis #d6e4d5
+activate user #d6e4d5
+
+fis -> fis: Get metadata for attachment <color #d58000>19</color>
+rnote right of fis
+""<color #05677d>object_id</color>"", ""<color #05677d>name</color>""
+end note
+
+fis -> bucket:\
+Get presigned download URL for ""<color #05677d>object_id</color>/<color #05677d>name</color>""\n\
+(with credentials for bucket)
+activate bucket #d6e4d5
+
+bucket -> fis: ""200 OK""
+rnote left of bucket
+""<color #886599>url</color>"", valid for 1 minute
+end note
+deactivate bucket
+
+fis -> user:\
+""301 Moved Permanently""\n\
+Redirect to ""<color #886599>url</color>""
+rnote left of fis
+""Content-Disposition: attachment""
+end note
+deactivate fis
+
+user -> bucket: ""GET <color #886599>url</color>""
+activate bucket #d6e4d5
+bucket -> user: ""200 OK""
+deactivate bucket
+deactivate user
+rnote left of bucket
+File contents
+""Content-Disposition: attachment"" so that the browser downloads the file
+end note
+
+@enduml

@@ -111,7 +111,7 @@ class S3AttachmentStorageService(
                         key = objectId
                         responseContentDisposition = "attachment; filename=\"$fileName\""
                     },
-                    duration = 5.minutes,
+                    duration = 1.minutes,
                 )
                 presigner.url.toString()
             }
