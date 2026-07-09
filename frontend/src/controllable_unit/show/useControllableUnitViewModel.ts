@@ -33,8 +33,7 @@ export type ControllableUnitShowViewModel = {
   suspensions: ControllableUnitSuspension[] | undefined;
   balanceResponsibleParty: Party | undefined;
   accountingPointBalanceResponsibleParty:
-    | AccountingPointBalanceResponsibleParty
-    | undefined;
+    AccountingPointBalanceResponsibleParty | undefined;
   biddingZone: string | undefined;
   meteringGridArea: MeteringGridArea | undefined;
   energySupplier: Party | undefined;

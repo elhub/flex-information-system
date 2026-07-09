@@ -309,10 +309,7 @@ export type EmptyObject = {
  * The status of the controllable unit.
  */
 export type ControllableUnitStatus =
-  | "new"
-  | "active"
-  | "inactive"
-  | "terminated";
+  "new" | "active" | "inactive" | "terminated";
 
 /**
  * The regulation direction of the controllable unit. `up` means it can be used to increase production or decrease consumption, while `down` means to decrease production or increase consumption.
@@ -323,34 +320,25 @@ export type ControllableUnitRegulationDirection = "up" | "down" | "both";
  * The reason for the suspension.
  */
 export type ControllableUnitSuspensionReason =
-  | "compromises_safe_operation"
-  | "other";
+  "compromises_safe_operation" | "other";
 
 /**
  * The level of visibility of the comment.
  */
 export type ControllableUnitSuspensionCommentVisibility =
-  | "same_party"
-  | "any_involved_party";
+  "same_party" | "any_involved_party";
 
 /**
  * The bidding zone that restricts which CUs that can be added to the group. Also known as scheduling area or price area for TSO.
  */
 export type ServiceProvidingGroupBiddingZone =
-  | "NO1"
-  | "NO2"
-  | "NO3"
-  | "NO4"
-  | "NO5";
+  "NO1" | "NO2" | "NO3" | "NO4" | "NO5";
 
 /**
  * The status of the group.
  */
 export type ServiceProvidingGroupStatus =
-  | "new"
-  | "active"
-  | "inactive"
-  | "terminated";
+  "new" | "active" | "inactive" | "terminated";
 
 /**
  * The status of the grid prequalification for this service providing group.
@@ -366,23 +354,19 @@ export type ServiceProvidingGroupGridPrequalificationStatus =
  * The level of visibility of the comment.
  */
 export type ServiceProvidingGroupGridPrequalificationCommentVisibility =
-  | "same_party"
-  | "any_involved_party";
+  "same_party" | "any_involved_party";
 
 /**
  * The reason for the suspension.
  */
 export type ServiceProvidingGroupGridSuspensionReason =
-  | "breach_of_conditions"
-  | "significant_group_change"
-  | "other";
+  "breach_of_conditions" | "significant_group_change" | "other";
 
 /**
  * The level of visibility of the comment.
  */
 export type ServiceProvidingGroupGridSuspensionCommentVisibility =
-  | "same_party"
-  | "any_involved_party";
+  "same_party" | "any_involved_party";
 
 /**
  * The type of the business identifier.
@@ -431,11 +415,7 @@ export type PartyType =
  * The status of the party.
  */
 export type PartyStatus =
-  | "new"
-  | "active"
-  | "inactive"
-  | "suspended"
-  | "terminated";
+  "new" | "active" | "inactive" | "suspended" | "terminated";
 
 /**
  * The type of business identifier used for the device.
@@ -446,18 +426,13 @@ export type TechnicalResourceBusinessIdType = "serial_number" | "mac" | "other";
  * The direction of the effect on the balance that the BRP takes responsibility for.
  */
 export type AccountingPointBalanceResponsiblePartyEnergyDirection =
-  | "consumption"
-  | "production";
+  "consumption" | "production";
 
 /**
  * The bidding zone of the accounting point.
  */
 export type AccountingPointBiddingZoneBiddingZone =
-  | "NO1"
-  | "NO2"
-  | "NO3"
-  | "NO4"
-  | "NO5";
+  "NO1" | "NO2" | "NO3" | "NO4" | "NO5";
 
 /**
  * The type of the business identifier.
@@ -478,10 +453,7 @@ export type AccountingPointGridLocationObjectType = "substation";
  * How the grid location was determined. When a system operator creates or updates a grid location, this field is set automatically: `cso` if the SO is the connecting system operator, `so` otherwise.
  */
 export type AccountingPointGridLocationSource =
-  | "cso"
-  | "so"
-  | "grid_model"
-  | "system";
+  "cso" | "so" | "grid_model" | "system";
 
 /**
  * The quality of the grid location registration.
@@ -507,8 +479,7 @@ export type ServiceProviderProductApplicationStatus =
  * The level of visibility of the comment.
  */
 export type ServiceProviderProductApplicationCommentVisibility =
-  | "same_party"
-  | "any_involved_party";
+  "same_party" | "any_involved_party";
 
 /**
  * The reason for the suspension.
@@ -525,8 +496,7 @@ export type ServiceProviderProductSuspensionReason =
  * The level of visibility of the comment.
  */
 export type ServiceProviderProductSuspensionCommentVisibility =
-  | "same_party"
-  | "any_involved_party";
+  "same_party" | "any_involved_party";
 
 /**
  * The status of the application.
@@ -543,30 +513,25 @@ export type ServiceProvidingGroupProductApplicationStatus =
  * The ramping capability of the service providing group for this product application.
  */
 export type ServiceProvidingGroupProductApplicationRampingCapability =
-  | "always"
-  | "partial"
-  | "never";
+  "always" | "partial" | "never";
 
 /**
  * The level of visibility of the comment.
  */
 export type ServiceProvidingGroupProductApplicationCommentVisibility =
-  | "same_party"
-  | "any_involved_party";
+  "same_party" | "any_involved_party";
 
 /**
  * The reason for the suspension.
  */
 export type ServiceProvidingGroupProductSuspensionReason =
-  | "failed_verification"
-  | "other";
+  "failed_verification" | "other";
 
 /**
  * The level of visibility of the comment.
  */
 export type ServiceProvidingGroupProductSuspensionCommentVisibility =
-  | "same_party"
-  | "any_involved_party";
+  "same_party" | "any_involved_party";
 
 /**
  * The status of the notice.

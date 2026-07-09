@@ -55,11 +55,9 @@ components:
         details:
           type: [string, "null"]
           description: Detailed information about the error.
-          example: null
         hint:
           type: [string, "null"]
           description: A hint to help resolve the error.
-          example: null
         message:
           type: string
           description: The error message.
