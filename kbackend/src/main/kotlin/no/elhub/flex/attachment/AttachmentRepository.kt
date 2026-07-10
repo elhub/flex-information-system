@@ -1,4 +1,4 @@
-package no.elhub.flex.generic.attachment
+package no.elhub.flex.attachment
 
 import arrow.core.Either
 import arrow.core.left
@@ -18,7 +18,7 @@ import java.sql.ResultSet
 import java.time.OffsetDateTime
 
 /**
- * A single row of a `<baseResource>_attachment` table.
+ * A single row of a `<baseResource>_attachment` view.
  *
  * [parentId] is the foreign key to the owning resource table.
  */
@@ -57,6 +57,9 @@ interface AttachmentRepository {
     suspend fun get(id: Long): Either<RepositoryError, AttachmentRecord>
 
     context(principal: FlexPrincipal)
+    suspend fun canEdit(parentId: Long): Either<RepositoryError, Boolean>
+
+    context(principal: FlexPrincipal)
     suspend fun insert(
         parentId: Long,
         objectId: String,
@@ -70,22 +73,21 @@ interface AttachmentRepository {
 }
 
 /**
- * [AttachmentRepository] for the `flex.<baseResource>_attachment` table.
+ * Database implementation of [AttachmentRepository] for a given [baseResource].
  *
- * [baseResource] is interpolated directly into SQL to build the table name
- * (`flex.<baseResource>_attachment`) and its foreign key column (`<baseResource>_id`), since JDBC
+ * [baseResource] is interpolated directly into SQL to build the view name
+ * (`<baseResource>_attachment`) and its foreign key column (`<baseResource>_id`), since JDBC
  * can only bind parameter *values*, not identifiers.
  *
  * One instance is required per base resource; this class is not a Koin `@Single` because Koin has
  * no way to supply [baseResource] automatically.
  */
 class AttachmentRepositoryImpl(private val baseResource: String) : AttachmentRepository {
-    private val table = "flex.${baseResource}_attachment"
+    private val view = "api.${baseResource}_attachment"
     private val parentIdColumn = "${baseResource}_id"
 
     private val selectColumns =
-        "id, $parentIdColumn AS parent_id, object_id, name, content_type, size_bytes, " +
-            "lower(record_time_range) AS recorded_at, recorded_by"
+        "id, $parentIdColumn AS parent_id, object_id, name, content_type, size_bytes, recorded_at, recorded_by"
 
     private fun rowMapper(rs: ResultSet) = AttachmentRecord(
         id = rs.getLong("id"),
@@ -105,9 +107,9 @@ class AttachmentRepositoryImpl(private val baseResource: String) : AttachmentRep
                 conn.prepareNamed(
                     """
                     SELECT $selectColumns
-                    FROM $table
+                    FROM $view
                     WHERE $parentIdColumn = :parentId
-                    ORDER BY lower(record_time_range) DESC
+                    ORDER BY recorded_at DESC
                     """,
                     mapOf("parentId" to parentId),
                 ).query(::rowMapper)
@@ -123,7 +125,7 @@ class AttachmentRepositoryImpl(private val baseResource: String) : AttachmentRep
                 val row = conn.prepareNamed(
                     """
                     SELECT $selectColumns
-                    FROM $table
+                    FROM $view
                     WHERE id = :id
                     """,
                     mapOf("id" to id),
@@ -131,6 +133,24 @@ class AttachmentRepositoryImpl(private val baseResource: String) : AttachmentRep
                 row ?: return@flexTransaction NotFoundError("$baseResource attachment not found: id=$id").left()
             }.mapLeft { e ->
                 DatabaseError("Failed to read $baseResource attachment id=$id: ${e.message}")
+            }
+        }
+
+    context(principal: FlexPrincipal)
+    override suspend fun canEdit(parentId: Long): Either<RepositoryError, Boolean> =
+        flexTransaction { conn ->
+            Either.catch {
+                val canEdit = conn.prepareNamed(
+                    """
+                    SELECT api.service_providing_group_product_application_attachment_can_edit(:parentId) AS can_edit
+                    """,
+                    mapOf(
+                        "parentId" to parentId,
+                    ),
+                ).querySingle { rs -> rs.getBoolean("can_edit") }
+                canEdit ?: return@flexTransaction NotFoundError("$baseResource attachment not found: parentId=$parentId").left()
+            }.mapLeft { e ->
+                DatabaseError("Failed to check edit permission for $baseResource attachment parentId=$parentId: ${e.message}")
             }
         }
 
@@ -146,8 +166,8 @@ class AttachmentRepositoryImpl(private val baseResource: String) : AttachmentRep
             Either.catch {
                 conn.prepareNamed(
                     """
-                    INSERT INTO $table ($parentIdColumn, object_id, name, content_type, size_bytes)
-                    VALUES (:parentId, :objectId, :name, :contentType, :sizeBytes)
+                    INSERT INTO $view ($parentIdColumn, object_id, name, content_type, size_bytes)
+                    VALUES (:parentId, :objectId::uuid, :name, :contentType, :sizeBytes)
                     RETURNING $selectColumns
                     """,
                     mapOf(
@@ -169,7 +189,7 @@ class AttachmentRepositoryImpl(private val baseResource: String) : AttachmentRep
             Either.catch {
                 val row = conn.prepareNamed(
                     """
-                    DELETE FROM $table
+                    DELETE FROM $view
                     WHERE id = :id
                     RETURNING $selectColumns
                     """,

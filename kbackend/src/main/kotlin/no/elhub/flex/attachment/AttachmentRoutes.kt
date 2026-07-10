@@ -1,4 +1,4 @@
-package no.elhub.flex.generic.attachment
+package no.elhub.flex.attachment
 
 import io.ktor.http.HttpMethod
 import io.ktor.server.application.Application
@@ -11,8 +11,6 @@ import no.elhub.flex.auth.Scope
 import no.elhub.flex.auth.ScopeVerb
 import no.elhub.flex.auth.requireRoles
 import no.elhub.flex.auth.requireScope
-import no.elhub.flex.routes.attachment.AttachmentHandler
-import no.elhub.flex.storage.AttachmentStorageService
 import no.elhub.flex.storage.FileContentParser
 import org.koin.ktor.ext.inject
 

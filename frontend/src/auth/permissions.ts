@@ -476,6 +476,7 @@ export type PermissionTarget =
   | "service_providing_group_product_application_attachment.content_type"
   | "service_providing_group_product_application_attachment.id"
   | "service_providing_group_product_application_attachment.name"
+  | "service_providing_group_product_application_attachment.object_id"
   | "service_providing_group_product_application_attachment.recorded_at"
   | "service_providing_group_product_application_attachment.recorded_by"
   | "service_providing_group_product_application_attachment.service_providing_group_product_application_id"
@@ -2502,6 +2503,11 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_product_application_attachment.name",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.object_id",
       operation: "read",
     },
     {
@@ -4978,6 +4984,11 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target:
+        "service_providing_group_product_application_attachment.object_id",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application_attachment",
       operation: "read",
     },
@@ -7448,6 +7459,11 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_product_application_attachment.name",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.object_id",
       operation: "read",
     },
     {
@@ -10672,6 +10688,16 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target:
+        "service_providing_group_product_application_attachment.object_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.object_id",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application_attachment",
       operation: "read",
     },
@@ -13356,6 +13382,11 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_product_application_attachment.name",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.object_id",
       operation: "read",
     },
     {
@@ -16223,6 +16254,11 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_product_application_attachment.name",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.object_id",
       operation: "read",
     },
     {
@@ -19271,6 +19307,16 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target:
+        "service_providing_group_product_application_attachment.object_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.object_id",
+      operation: "read",
+    },
+    {
       target: "service_providing_group_product_application_attachment",
       operation: "read",
     },
@@ -21897,6 +21943,11 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_product_application_attachment.name",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.object_id",
       operation: "read",
     },
     {

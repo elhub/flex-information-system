@@ -1,25 +1,21 @@
-package no.elhub.flex.routes.attachment
+package no.elhub.flex.attachment
 
+import arrow.core.Either
 import arrow.core.left
 import arrow.core.raise.either
-import arrow.core.right
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.content.PartData
-import io.ktor.http.content.forEachPart
 import io.ktor.server.routing.RoutingCall
 import io.ktor.utils.io.toByteArray
 import no.elhub.flex.auth.AccessTokenKey
+import no.elhub.flex.auth.FlexRole
 import no.elhub.flex.auth.toFlexPrincipal
-import no.elhub.flex.generic.attachment.AttachmentRepository
-import no.elhub.flex.generic.attachment.AttachmentRepositoryImpl
 import no.elhub.flex.model.domain.db.NotFoundError
 import no.elhub.flex.model.error.InternalServerError
 import no.elhub.flex.model.error.ParsingError
 import no.elhub.flex.model.error.ResourceNotFoundError
-import no.elhub.flex.storage.AttachmentStorageService
 import no.elhub.flex.storage.FileContentParser
-import no.elhub.flex.storage.FileContentType
 import no.elhub.flex.storage.InvalidFileContent
 import no.elhub.flex.util.TraceIdUtil.Companion.traceIdOrUnknown
 import no.elhub.flex.util.multipart
@@ -69,8 +65,15 @@ class AttachmentHandler(
                 }
                 .bind()
 
+            val filename = AttachmentFilename.parse(record.name)
+                .mapLeft { e ->
+                    logger.error { "Invalid filename in DB for attachment id=$id: $e" }
+                    InternalServerError(traceIdOrUnknown())
+                }
+                .bind()
+
             // redirect to presigned URL for downloading this object
-            attachmentStorageService.presignedDownloadUrl(record.objectId, record.name)
+            attachmentStorageService.presignedDownloadUrl(record.objectId, filename)
                 .mapLeft { e ->
                     logger.error { "Failed to generate presigned URL for attachment id=$id: $e" }
                     InternalServerError(traceIdOrUnknown())
@@ -87,32 +90,49 @@ class AttachmentHandler(
         either {
             val principal = call.attributes[AccessTokenKey].toFlexPrincipal()
 
-            var parentId: Long? = null
-            var fileBytes: ByteArray? = null
-            var fileName: String? = null
+            val body = call.multipart(MAX_MULTIPART_SIZE_BYTES).bind()
 
-            call.multipart(MAX_MULTIPART_SIZE_BYTES).bind().forEachPart { part ->
-                when {
-                    part is PartData.FormItem && part.name == "${baseResource}_id" ->
-                        parentId = part.value.toLongOrNull()
+            // parent ID part expected first, allowing to check authorisation before the file bytes
+            val parentIdPart = body.readPart()
+            if (parentIdPart == null || parentIdPart !is PartData.FormItem || parentIdPart.name != "${baseResource}_id") {
+                parentIdPart?.release()
+                raise(ParsingError("Expected ${baseResource}_id as first multipart field"))
+            }
+            val parentId = parentIdPart.value.toLongOrNull()
+            parentIdPart.release()
+            if (parentId == null) raise(ParsingError("Invalid ${baseResource}_id"))
 
-                    part is PartData.FileItem && part.name == "file" -> {
-                        fileName = part.originalFileName
-                        fileBytes = part.provider().toByteArray()
-                    }
+            // authorisation check
+            val canEdit =
+                if (principal.role == FlexRole.FLEXIBILITY_INFORMATION_SYSTEM_OPERATOR.roleName) {
+                    true
+                } else {
+                    with(principal) { repo.canEdit(parentId) }
+                        .mapLeft { e ->
+                            logger.error { "Failed authorisation check on attachment for parentId=$parentId: $e" }
+                            InternalServerError(traceIdOrUnknown())
+                        }.bind()
                 }
-                part.release()
+            if (!canEdit) {
+                raise(ParsingError("User cannot upload attachment to this resource"))
             }
 
-            if (parentId == null) {
-                raise(ParsingError("Missing or invalid form field: ${baseResource}_id"))
+            // now file part
+            val filePart = body.readPart()
+            if (filePart == null || filePart !is PartData.FileItem || filePart.name != "file") {
+                filePart?.release()
+                raise(ParsingError("Expected file as second multipart field"))
             }
-            if (fileName == null || fileName?.isEmpty() ?: false) {
-                raise(ParsingError("Missing or invalid file name"))
+            val fileNameStr = filePart.originalFileName
+            if (fileNameStr == null) {
+                filePart.release()
+                raise(ParsingError("Missing file name"))
             }
-            if (fileBytes == null) {
-                raise(ParsingError("Missing file"))
-            }
+            val filename = AttachmentFilename.parse(fileNameStr)
+                .onLeft { filePart.release() }
+                .bind()
+            val fileBytes = filePart.provider().toByteArray()
+            filePart.release()
 
             // validate file content
             val fileContent = fileContentParser.parse(fileBytes)
@@ -127,7 +147,7 @@ class AttachmentHandler(
 
             // upload to storage
             val objectId = UUID.randomUUID().toString()
-            attachmentStorageService.upload(objectId, fileName!!, fileContent)
+            attachmentStorageService.upload(objectId, filename, fileContent)
                 .mapLeft { e ->
                     logger.error { "Error while uploading $objectId: $e" }
                     InternalServerError(traceIdOrUnknown())
@@ -137,9 +157,9 @@ class AttachmentHandler(
             // insert metadata into DB
             with(principal) {
                 repo.insert(
-                    parentId!!,
+                    parentId,
                     objectId,
-                    fileName!!,
+                    filename.value,
                     fileContent.contentType.toString(),
                     fileContent.bytes.size.toLong(),
                 )
@@ -161,8 +181,7 @@ class AttachmentHandler(
                 .bind()
                 ?: raise(ParsingError("id should be an integer"))
 
-            // delete DB row and get object ID
-            val objectId = with(principal) {
+            with(principal) {
                 repo.delete(id)
                     .map { it.objectId }
                     .mapLeft { e ->
@@ -178,16 +197,8 @@ class AttachmentHandler(
                     .bind()
             }
 
-            // try deleting from storage
-            // NB: failing here means dead object on the storage container, but it will be garbage collected
-            // by a background task when we implement it, so we make the failure silent
-            attachmentStorageService.delete(objectId)
-                .fold(
-                    ifLeft = { e ->
-                        logger.warn { "Storage delete failed for attachment id=$id, objectId=$objectId: $e" }
-                    },
-                    ifRight = { }
-                )
+            // NB: no need to delete from the storage: the object will remain in the bucket because we keep history,
+            // and will be garbage collected by a background task if/when we implement it
         }.fold(
             ifLeft = { e -> e.left().respondJson<Unit>(call) },
             ifRight = { call.response.status(HttpStatusCode.NoContent) }

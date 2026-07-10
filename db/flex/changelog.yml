@@ -82,6 +82,9 @@ databaseChangeLog:
 
   # Tables & views - order is important!
   - include:
+      file: ./attachment.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./event.sql
       relativeToChangelogFile: true
   - include:

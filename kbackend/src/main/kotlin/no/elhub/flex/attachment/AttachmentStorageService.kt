@@ -1,14 +1,17 @@
-package no.elhub.flex.storage
+package no.elhub.flex.attachment
 
 import arrow.core.Either
+import aws.sdk.kotlin.runtime.auth.credentials.StaticCredentialsProvider
 import aws.sdk.kotlin.services.s3.S3Client
 import aws.sdk.kotlin.services.s3.deleteObject
+import aws.sdk.kotlin.services.s3.model.GetObjectRequest
 import aws.sdk.kotlin.services.s3.model.NoSuchKey
 import aws.sdk.kotlin.services.s3.presigners.presignGetObject
 import aws.sdk.kotlin.services.s3.putObject
 import aws.smithy.kotlin.runtime.content.ByteStream
 import aws.smithy.kotlin.runtime.net.url.Url
 import io.github.oshai.kotlinlogging.KotlinLogging
+import no.elhub.flex.storage.FileContent
 import org.koin.core.annotation.Property
 import org.koin.core.annotation.Single
 import kotlin.time.Duration.Companion.minutes
@@ -26,7 +29,7 @@ interface AttachmentStorageService {
     /** Upload [content] under the key [objectId] and filename [fileName] in the configured bucket. */
     suspend fun upload(
         objectId: String,
-        fileName: String,
+        fileName: AttachmentFilename,
         content: FileContent,
     ): Either<StorageError, Unit>
 
@@ -39,11 +42,11 @@ interface AttachmentStorageService {
      */
     suspend fun presignedDownloadUrl(
         objectId: String,
-        fileName: String,
+        fileName: AttachmentFilename,
     ): Either<StorageError, String>
 
     /** Delete the object identified by [objectId] from storage. */
-    suspend fun delete(objectId: String): Either<StorageError, Unit>
+    suspend fun delete(objectId: String, fileName: AttachmentFilename): Either<StorageError, Unit>
 }
 
 private val logger = KotlinLogging.logger {}
@@ -72,7 +75,7 @@ class S3AttachmentStorageService(
             this.region = this@S3AttachmentStorageService.region
             endpointUrl = Url.parse(endpoint)
             forcePathStyle = true // required for S3Mock and path-style-only compatible endpoints
-            credentialsProvider = aws.sdk.kotlin.runtime.auth.credentials.StaticCredentialsProvider {
+            credentialsProvider = StaticCredentialsProvider {
                 this.accessKeyId = this@S3AttachmentStorageService.accessKey
                 this.secretAccessKey = this@S3AttachmentStorageService.secretKey
             }
@@ -80,17 +83,17 @@ class S3AttachmentStorageService(
 
     override suspend fun upload(
         objectId: String,
-        fileName: String,
+        fileName: AttachmentFilename,
         content: FileContent,
     ): Either<StorageError, Unit> =
         Either.catch {
             buildClient(internalEndpoint).use { client ->
                 client.putObject {
                     bucket = this@S3AttachmentStorageService.bucket
-                    key = objectId
+                    key = "$objectId/${fileName.value}"
                     body = ByteStream.fromBytes(content.bytes)
                     contentType = content.contentType.toString()
-                    contentDisposition = "attachment; filename=\"${fileName}\""
+                    contentDisposition = "attachment; filename=\"${fileName.value}\""
                 }
             }
         }.mapLeft { e ->
@@ -100,16 +103,16 @@ class S3AttachmentStorageService(
 
     override suspend fun presignedDownloadUrl(
         objectId: String,
-        fileName: String,
+        fileName: AttachmentFilename,
     ): Either<StorageError, String> =
         Either.catch {
             // Presigning must use the PUBLIC endpoint so the generated URL is reachable by the browser.
             buildClient(publicEndpoint).use { client ->
                 val presigner = client.presignGetObject(
-                    input = aws.sdk.kotlin.services.s3.model.GetObjectRequest {
+                    input = GetObjectRequest {
                         bucket = this@S3AttachmentStorageService.bucket
-                        key = objectId
-                        responseContentDisposition = "attachment; filename=\"$fileName\""
+                        key = "$objectId/${fileName.value}"
+                        responseContentDisposition = "attachment; filename=\"${fileName.value}\""
                     },
                     duration = 1.minutes,
                 )
@@ -120,20 +123,20 @@ class S3AttachmentStorageService(
             StorageError.PresignFailed(e.message ?: "unknown error")
         }
 
-    override suspend fun delete(objectId: String): Either<StorageError, Unit> =
+    override suspend fun delete(objectId: String, fileName: AttachmentFilename): Either<StorageError, Unit> =
         Either.catch {
             buildClient(internalEndpoint).use { client ->
                 client.deleteObject {
                     bucket = this@S3AttachmentStorageService.bucket
-                    key = objectId
+                    key = "$objectId/${fileName.value}"
                 }
             }
         }.mapLeft { e ->
             if (e is NoSuchKey) {
-                logger.warn { "Tried to delete object $objectId but it does not exist" }
+                logger.warn { "Tried to delete object $objectId/${fileName.value} but it does not exist" }
                 StorageError.ObjectNotFound(objectId)
             } else {
-                logger.error(e) { "Failed to delete object $objectId from S3" }
+                logger.error(e) { "Failed to delete object $objectId/${fileName.value} from S3" }
                 StorageError.DeleteFailed(e.message ?: "unknown error")
             }
         }.map { }

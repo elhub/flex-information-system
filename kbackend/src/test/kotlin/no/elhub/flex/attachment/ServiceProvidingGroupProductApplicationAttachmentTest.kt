@@ -23,7 +23,6 @@ import no.elhub.flex.config.Tracing
 import no.elhub.flex.config.configureSerialization
 import no.elhub.flex.routes.attachment.attachmentRoutes
 import no.elhub.flex.storage.DefaultFileContentParser
-import no.elhub.flex.storage.S3AttachmentStorageService
 import no.elhub.flex.util.TEST_JWT_SECRET
 import no.elhub.flex.util.makeJwt
 import no.elhub.flex.util.uniqueEicY
@@ -191,7 +190,7 @@ class ServiceProvidingGroupProductApplicationAttachmentTest : FunSpec({
                     modules(
                         module {
                             single { storageService }
-                            single<no.elhub.flex.storage.AttachmentStorageService> { storageService }
+                            single<AttachmentStorageService> { storageService }
                             single<no.elhub.flex.storage.FileContentParser> { fileParser }
                             single { io.micrometer.core.instrument.MeterRegistry::class }
                             single<io.micrometer.core.instrument.MeterRegistry> { SimpleMeterRegistry() }

@@ -9,6 +9,7 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import io.mockk.coEvery
 import io.mockk.mockk
 import no.elhub.flex.accountingpoint.AccountingPointService
+import no.elhub.flex.attachment.AttachmentStorageService
 import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.config.Tracing
 import no.elhub.flex.config.configureHealth
@@ -20,7 +21,6 @@ import no.elhub.flex.event.db.EventRepository
 import no.elhub.flex.model.domain.db.DatabaseError
 import no.elhub.flex.model.error.DataFetchError
 import no.elhub.flex.routes.controllableunit.ControllableUnitLookup
-import no.elhub.flex.storage.AttachmentStorageService
 import no.elhub.flex.storage.FileContentParser
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin

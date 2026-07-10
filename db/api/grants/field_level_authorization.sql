@@ -7165,6 +7165,7 @@ TO flex_internal_event_notification;
 GRANT SELECT (
     id,
     service_providing_group_product_application_id,
+    object_id,
     name,
     content_type,
     size_bytes,
@@ -7177,6 +7178,7 @@ TO flex_balance_responsible_party;
 GRANT SELECT (
     id,
     service_providing_group_product_application_id,
+    object_id,
     name,
     content_type,
     size_bytes,
@@ -7189,6 +7191,7 @@ TO flex_energy_supplier;
 GRANT SELECT (
     id,
     service_providing_group_product_application_id,
+    object_id,
     name,
     content_type,
     size_bytes,
@@ -7200,6 +7203,7 @@ TO flex_end_user;
 
 GRANT INSERT (
     service_providing_group_product_application_id,
+    object_id,
     name,
     content_type,
     size_bytes
@@ -7210,6 +7214,7 @@ TO flex_flexibility_information_system_operator;
 GRANT SELECT (
     id,
     service_providing_group_product_application_id,
+    object_id,
     name,
     content_type,
     size_bytes,
@@ -7226,6 +7231,7 @@ TO flex_flexibility_information_system_operator;
 GRANT SELECT (
     id,
     service_providing_group_product_application_id,
+    object_id,
     name,
     content_type,
     size_bytes,
@@ -7238,6 +7244,7 @@ TO flex_market_operator;
 GRANT SELECT (
     id,
     service_providing_group_product_application_id,
+    object_id,
     name,
     content_type,
     size_bytes,
@@ -7249,6 +7256,7 @@ TO flex_system_operator;
 
 GRANT INSERT (
     service_providing_group_product_application_id,
+    object_id,
     name,
     content_type,
     size_bytes
@@ -7259,6 +7267,7 @@ TO flex_service_provider;
 GRANT SELECT (
     id,
     service_providing_group_product_application_id,
+    object_id,
     name,
     content_type,
     size_bytes,
@@ -7275,6 +7284,7 @@ TO flex_service_provider;
 GRANT SELECT (
     id,
     service_providing_group_product_application_id,
+    object_id,
     name,
     content_type,
     size_bytes,
