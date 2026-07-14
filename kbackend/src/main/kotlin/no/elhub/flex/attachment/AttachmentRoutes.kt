@@ -11,7 +11,6 @@ import no.elhub.flex.auth.Scope
 import no.elhub.flex.auth.ScopeVerb
 import no.elhub.flex.auth.requireRoles
 import no.elhub.flex.auth.requireScope
-import no.elhub.flex.storage.FileContentParser
 import org.koin.ktor.ext.inject
 
 /**
@@ -27,9 +26,8 @@ fun Application.attachmentRoutes(
     // scope or role check with potentially different values
     routing {
         val storage: AttachmentStorageService by inject()
-        val fileParser: FileContentParser by inject()
 
-        val handler = AttachmentHandler(baseResource, storage, fileParser)
+        val handler = AttachmentHandler(baseResource, storage)
 
         route("/${baseResource}_attachment") {
             method(HttpMethod.Post) {

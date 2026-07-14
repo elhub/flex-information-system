@@ -72,7 +72,8 @@ For party type abbreviations, check
 | id                                             |      | R   | R  | R  | R    | R  | R  | R  |     |
 | service_providing_group_product_application_id |      | R   | R  | R  | RC   | R  | RC | R  |     |
 | object_id                                      |      | R   | R  | R  | RC   | R  | RC | R  |     |
-| name                                           |      | R   | R  | R  | RC   | R  | RC | R  |     |
+| filename                                       |      | R   | R  | R  | R    | R  | R  | R  |     |
+| filename_sanitised                             |      | R   | R  | R  | R    | R  | R  | R  |     |
 | content_type                                   |      | R   | R  | R  | RC   | R  | RC | R  |     |
 | size_bytes                                     |      | R   | R  | R  | RC   | R  | RC | R  |     |
 | recorded_at                                    |      | R   | R  | R  | R    | R  | R  | R  |     |

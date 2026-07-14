@@ -699,7 +699,7 @@ class ServiceProvidingGroupProductApplicationAttachmentTest : FunSpec({
 
             response.status shouldBe HttpStatusCode.Created
             val json = response.bodyAsText()
-            json shouldContain "\"name\":\"hello.pdf\""
+            json shouldContain "\"filename\":\"hello.pdf\""
             json shouldContain "\"content_type\":\"application/pdf\""
             json shouldContain "\"service_providing_group_product_application_id\":$spgpaId"
             app.stop()

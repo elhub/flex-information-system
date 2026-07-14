@@ -14,7 +14,8 @@ WITH (security_invoker = true) AS (
         lower(spgpaa.record_time_range) AS recorded_at,
         spgpaa.service_providing_group_product_application_id,
         att.object_id,
-        att.name,
+        att.filename,
+        att.filename_sanitised,
         att.content_type,
         att.size_bytes
     FROM flex.service_providing_group_product_application_attachment AS spgpaa
@@ -38,12 +39,14 @@ BEGIN
         -- first create the attachment
         INSERT INTO flex.attachment (
             object_id,
-            name,
+            filename,
+            filename_sanitised,
             content_type,
             size_bytes
         ) VALUES (
             NEW.object_id,
-            NEW.name,
+            NEW.filename,
+            NEW.filename_sanitised,
             NEW.content_type,
             NEW.size_bytes
         ) RETURNING id INTO l_attachment_id;

@@ -1,6 +1,7 @@
 export type Attachment = {
   id: number;
-  name: string;
+  filename: string;
+  filename_sanitised: string;
   content_type: string;
   size_bytes: number;
   recorded_at: string;

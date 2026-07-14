@@ -1,6 +1,5 @@
 package no.elhub.flex.attachment
 
-import arrow.core.Either
 import arrow.core.left
 import arrow.core.raise.either
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -15,8 +14,9 @@ import no.elhub.flex.model.domain.db.NotFoundError
 import no.elhub.flex.model.error.InternalServerError
 import no.elhub.flex.model.error.ParsingError
 import no.elhub.flex.model.error.ResourceNotFoundError
-import no.elhub.flex.storage.FileContentParser
-import no.elhub.flex.storage.InvalidFileContent
+import no.elhub.flex.util.FileContent
+import no.elhub.flex.util.FileContentType
+import no.elhub.flex.util.InvalidFileContent
 import no.elhub.flex.util.TraceIdUtil.Companion.traceIdOrUnknown
 import no.elhub.flex.util.multipart
 import no.elhub.flex.util.pathParameter
@@ -33,12 +33,10 @@ private const val MAX_MULTIPART_SIZE_BYTES: Long = 20_000_000L
  *
  * @param baseResource the resource the attachments belong to
  * @param attachmentStorageService the service enabling connection to the storage container
- * @param fileContentParser the parser checking validity of the uploaded files
  */
 class AttachmentHandler(
     val baseResource: String,
     private val attachmentStorageService: AttachmentStorageService,
-    private val fileContentParser: FileContentParser,
 ) {
     private val repo: AttachmentRepository = AttachmentRepositoryImpl(baseResource)
 
@@ -65,9 +63,9 @@ class AttachmentHandler(
                 }
                 .bind()
 
-            val filename = AttachmentFilename.parse(record.name)
+            val filename = AttachmentFilename.parse(record.filenameSanitised)
                 .mapLeft { e ->
-                    logger.error { "Invalid filename in DB for attachment id=$id: $e" }
+                    logger.error { "Invalid sanitised filename in DB for attachment id=$id: $e" }
                     InternalServerError(traceIdOrUnknown())
                 }
                 .bind()
@@ -123,19 +121,25 @@ class AttachmentHandler(
                 filePart?.release()
                 raise(ParsingError("Expected file as second multipart field"))
             }
-            val fileNameStr = filePart.originalFileName
-            if (fileNameStr == null) {
+            val filename = filePart.originalFileName
+            if (filename == null) {
                 filePart.release()
                 raise(ParsingError("Missing file name"))
             }
-            val filename = AttachmentFilename.parse(fileNameStr)
+            val extensionContentType = FileContentType.fromFilename(filename)
+            val filenameSanitised = AttachmentFilename.parse(filename)
                 .onLeft { filePart.release() }
                 .bind()
+            val contentType = filePart.contentType?.let { FileContentType.fromString(it.toString()) }
             val fileBytes = filePart.provider().toByteArray()
             filePart.release()
 
+            if (contentType != null && extensionContentType != null && contentType != extensionContentType) {
+                raise(ParsingError("Content type $contentType does not match file extension for '$filename'"))
+            }
+
             // validate file content
-            val fileContent = fileContentParser.parse(fileBytes)
+            val fileContent = FileContent.parse(contentType ?: extensionContentType, fileBytes)
                 .mapLeft { e ->
                     logger.error { "File validation failed for new attachment: $e" }
                     when (e) {
@@ -147,7 +151,7 @@ class AttachmentHandler(
 
             // upload to storage
             val objectId = UUID.randomUUID().toString()
-            attachmentStorageService.upload(objectId, filename, fileContent)
+            attachmentStorageService.upload(objectId, filenameSanitised, fileContent)
                 .mapLeft { e ->
                     logger.error { "Error while uploading $objectId: $e" }
                     InternalServerError(traceIdOrUnknown())
@@ -159,8 +163,9 @@ class AttachmentHandler(
                 repo.insert(
                     parentId,
                     objectId,
-                    filename.value,
-                    fileContent.contentType.toString(),
+                    filename,
+                    filenameSanitised,
+                    fileContent.contentType,
                     fileContent.bytes.size.toLong(),
                 )
             }

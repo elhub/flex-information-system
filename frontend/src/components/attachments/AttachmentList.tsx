@@ -96,7 +96,7 @@ function AttachmentCard({
     setDownloadError(false);
     setIsDownloading(true);
     try {
-      await triggerDownload(downloadUrl, attachment.name);
+      await triggerDownload(downloadUrl, attachment.filename);
     } catch {
       setDownloadError(true);
     } finally {
@@ -110,8 +110,8 @@ function AttachmentCard({
       title: "Delete attachment",
       content: (
         <span>
-          Are you sure you want to delete <strong>{attachment.name}</strong>?
-          This action cannot be undone.
+          Are you sure you want to delete <strong>{attachment.filename}</strong>
+          ? This action cannot be undone.
         </span>
       ),
       onConfirmMutation: { mutationFn: onDelete },
@@ -138,7 +138,7 @@ function AttachmentCard({
       {/* file-type icon button, switches to download icon on hover */}
       <button
         type="button"
-        aria-label={`Download ${attachment.name}`}
+        aria-label={`Download ${attachment.filename}`}
         onMouseEnter={() => setDownloadHovered(true)}
         onMouseLeave={() => setDownloadHovered(false)}
         onClick={handleDownload}
@@ -157,7 +157,7 @@ function AttachmentCard({
       {/* name + metadata */}
       <div className="flex-1 min-w-0">
         <p className="text-sm font-medium text-semantic-text truncate">
-          {attachment.name}
+          {attachment.filename}
         </p>
         <p className="text-xs text-semantic-text-subtle truncate">
           {attachment.content_type} · {formatBytes(attachment.size_bytes)} ·{" "}
@@ -175,7 +175,7 @@ function AttachmentCard({
         <>
           <button
             type="button"
-            aria-label={`Delete ${attachment.name}`}
+            aria-label={`Delete ${attachment.filename}`}
             style={deleteStyle}
             onMouseEnter={() => setDeleteHovered(true)}
             onMouseLeave={() => setDeleteHovered(false)}

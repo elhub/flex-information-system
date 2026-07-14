@@ -14,6 +14,7 @@ import no.elhub.flex.db.querySingle
 import no.elhub.flex.model.domain.db.DatabaseError
 import no.elhub.flex.model.domain.db.NotFoundError
 import no.elhub.flex.model.domain.db.RepositoryError
+import no.elhub.flex.util.FileContentType
 import java.sql.ResultSet
 import java.time.OffsetDateTime
 
@@ -26,7 +27,8 @@ data class AttachmentRecord(
     val id: Long,
     val parentId: Long,
     val objectId: String,
-    val name: String,
+    val filename: String,
+    val filenameSanitised: String,
     val contentType: String,
     val sizeBytes: Long,
     val recordedAt: OffsetDateTime,
@@ -37,7 +39,8 @@ data class AttachmentRecord(
         buildJsonObject {
             put("id", JsonPrimitive(id))
             put("${baseResource}_id", JsonPrimitive(parentId))
-            put("name", JsonPrimitive(name))
+            put("filename", JsonPrimitive(filename))
+            put("filename_sanitised", JsonPrimitive(filenameSanitised))
             put("content_type", JsonPrimitive(contentType))
             put("size_bytes", JsonPrimitive(sizeBytes))
             put("recorded_at", JsonPrimitive(recordedAt.toString()))
@@ -63,8 +66,9 @@ interface AttachmentRepository {
     suspend fun insert(
         parentId: Long,
         objectId: String,
-        name: String,
-        contentType: String,
+        filename: String,
+        sanitisedFilename: AttachmentFilename,
+        contentType: FileContentType,
         sizeBytes: Long,
     ): Either<RepositoryError, AttachmentRecord>
 
@@ -87,13 +91,14 @@ class AttachmentRepositoryImpl(private val baseResource: String) : AttachmentRep
     private val parentIdColumn = "${baseResource}_id"
 
     private val selectColumns =
-        "id, $parentIdColumn AS parent_id, object_id, name, content_type, size_bytes, recorded_at, recorded_by"
+        "id, $parentIdColumn AS parent_id, object_id, filename, filename_sanitised, content_type, size_bytes, recorded_at, recorded_by"
 
     private fun rowMapper(rs: ResultSet) = AttachmentRecord(
         id = rs.getLong("id"),
         parentId = rs.getLong("parent_id"),
         objectId = rs.getString("object_id"),
-        name = rs.getString("name"),
+        filename = rs.getString("filename"),
+        filenameSanitised = rs.getString("filename_sanitised"),
         contentType = rs.getString("content_type"),
         sizeBytes = rs.getLong("size_bytes"),
         recordedAt = rs.getObject("recorded_at", OffsetDateTime::class.java),
@@ -158,22 +163,24 @@ class AttachmentRepositoryImpl(private val baseResource: String) : AttachmentRep
     override suspend fun insert(
         parentId: Long,
         objectId: String,
-        name: String,
-        contentType: String,
+        filename: String,
+        sanitisedFilename: AttachmentFilename,
+        contentType: FileContentType,
         sizeBytes: Long,
     ): Either<RepositoryError, AttachmentRecord> =
         flexTransaction { conn ->
             Either.catch {
                 conn.prepareNamed(
                     """
-                    INSERT INTO $view ($parentIdColumn, object_id, name, content_type, size_bytes)
-                    VALUES (:parentId, :objectId::uuid, :name, :contentType, :sizeBytes)
+                    INSERT INTO $view ($parentIdColumn, object_id, filename, filename_sanitised, content_type, size_bytes)
+                    VALUES (:parentId, :objectId::uuid, :filename, :filenameSanitised, :contentType, :sizeBytes)
                     RETURNING $selectColumns
                     """,
                     mapOf(
                         "parentId" to parentId,
                         "objectId" to objectId,
-                        "name" to name,
+                        "filename" to filename,
+                        "filenameSanitised" to sanitisedFilename.value,
                         "contentType" to contentType,
                         "sizeBytes" to sizeBytes,
                     ),

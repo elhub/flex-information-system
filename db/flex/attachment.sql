@@ -5,7 +5,8 @@
 CREATE TABLE IF NOT EXISTS attachment (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     object_id uuid NOT NULL DEFAULT public.uuid_generate_v4(),
-    name text NOT NULL,
+    filename text NOT NULL,
+    filename_sanitised text NOT NULL,
     content_type text NOT NULL DEFAULT 'application/pdf',
     size_bytes bigint NOT NULL,
     record_time_range tstzrange NOT NULL DEFAULT tstzrange(
@@ -22,9 +23,13 @@ CREATE TABLE IF NOT EXISTS attachment (
         )
     ),
     CONSTRAINT attachment_size_bytes_check CHECK (size_bytes > 0),
-    CONSTRAINT attachment_name_check CHECK (
-        char_length(name) >= 1
-        AND char_length(name) <= 256
+    CONSTRAINT attachment_filename_check CHECK (
+        char_length(filename) >= 1
+        AND char_length(filename) <= 256
+    ),
+    CONSTRAINT attachment_filename_sanitised_check CHECK (
+        char_length(filename_sanitised) >= 1
+        AND char_length(filename_sanitised) <= 256
     )
 );
 

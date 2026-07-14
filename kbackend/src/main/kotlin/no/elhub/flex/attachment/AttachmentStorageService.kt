@@ -11,7 +11,7 @@ import aws.sdk.kotlin.services.s3.putObject
 import aws.smithy.kotlin.runtime.content.ByteStream
 import aws.smithy.kotlin.runtime.net.url.Url
 import io.github.oshai.kotlinlogging.KotlinLogging
-import no.elhub.flex.storage.FileContent
+import no.elhub.flex.util.FileContent
 import org.koin.core.annotation.Property
 import org.koin.core.annotation.Single
 import kotlin.time.Duration.Companion.minutes
