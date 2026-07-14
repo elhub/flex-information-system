@@ -22,7 +22,6 @@ import no.elhub.flex.auth.FlexAuthentication
 import no.elhub.flex.config.Tracing
 import no.elhub.flex.config.configureSerialization
 import no.elhub.flex.routes.attachment.attachmentRoutes
-import no.elhub.flex.storage.DefaultFileContentParser
 import no.elhub.flex.util.TEST_JWT_SECRET
 import no.elhub.flex.util.makeJwt
 import no.elhub.flex.util.uniqueEicY
@@ -179,8 +178,6 @@ class ServiceProvidingGroupProductApplicationAttachmentTest : FunSpec({
             accessKey = "dummy",
             secretKey = "dummy",
         )
-        val fileParser = DefaultFileContentParser()
-
         return TestApplication {
             application {
                 install(Tracing.plugin)
@@ -191,7 +188,6 @@ class ServiceProvidingGroupProductApplicationAttachmentTest : FunSpec({
                         module {
                             single { storageService }
                             single<AttachmentStorageService> { storageService }
-                            single<no.elhub.flex.storage.FileContentParser> { fileParser }
                             single { io.micrometer.core.instrument.MeterRegistry::class }
                             single<io.micrometer.core.instrument.MeterRegistry> { SimpleMeterRegistry() }
                         },
@@ -636,25 +632,6 @@ class ServiceProvidingGroupProductApplicationAttachmentTest : FunSpec({
             }
 
             response.status shouldBe HttpStatusCode.Forbidden
-            app.stop()
-        }
-
-        test("upload a non-PDF file returns 400") {
-            val app = testApp()
-            val notAPdf = "this is just plain text".toByteArray()
-            val (ct, body) = multipartBody(spgpaId, notAPdf, fileName = "doc.pdf")
-
-            val response = app.client.post(baseUrl) {
-                header(
-                    HttpHeaders.Authorization,
-                    "Bearer ${makeJwt(role = fisoRole, scope = fisoManageScope, eid = fisoEid)}",
-                )
-                header(HttpHeaders.ContentType, ct.toString())
-                setBody(body)
-            }
-
-            response.status shouldBe HttpStatusCode.BadRequest
-            response.bodyAsText() shouldContain "Invalid file content"
             app.stop()
         }
 

@@ -21,7 +21,6 @@ import no.elhub.flex.event.db.EventRepository
 import no.elhub.flex.model.domain.db.DatabaseError
 import no.elhub.flex.model.error.DataFetchError
 import no.elhub.flex.routes.controllableunit.ControllableUnitLookup
-import no.elhub.flex.storage.FileContentParser
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 import kotlin.time.Instant
@@ -58,7 +57,6 @@ fun defaultTestApplication(): TestApplication {
                         single<EventRepository> { mockEventRepo }
                         single { ControllableUnitLookup(get(), get(), get()) }
                         single<AttachmentStorageService> { mockk(relaxed = true) }
-                        single<FileContentParser> { mockk(relaxed = true) }
                     },
                 )
             }

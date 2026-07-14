@@ -73,9 +73,10 @@ TO flex_common
 USING (
     EXISTS (
         SELECT 1
-        FROM service_providing_group_product_application AS spgpa
+        FROM flex.service_providing_group_product_application_involved_parties AS spgpa_ip -- noqa
         WHERE
-            spgpa.id
+            spgpa_ip.service_providing_group_product_application_id
             = service_providing_group_product_application_attachment.service_providing_group_product_application_id -- noqa
+            AND spgpa_ip.party_id = (SELECT flex.current_party())
     )
 );

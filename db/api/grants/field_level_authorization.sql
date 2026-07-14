@@ -7207,6 +7207,8 @@ TO flex_end_user;
 GRANT INSERT (
     service_providing_group_product_application_id,
     object_id,
+    filename,
+    filename_sanitised,
     content_type,
     size_bytes
 ) ON TABLE
@@ -7262,6 +7264,8 @@ TO flex_system_operator;
 GRANT INSERT (
     service_providing_group_product_application_id,
     object_id,
+    filename,
+    filename_sanitised,
     content_type,
     size_bytes
 ) ON TABLE

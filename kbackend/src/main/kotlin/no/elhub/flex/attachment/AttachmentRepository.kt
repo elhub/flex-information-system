@@ -181,7 +181,7 @@ class AttachmentRepositoryImpl(private val baseResource: String) : AttachmentRep
                         "objectId" to objectId,
                         "filename" to filename,
                         "filenameSanitised" to sanitisedFilename.value,
-                        "contentType" to contentType,
+                        "contentType" to contentType.toString(),
                         "sizeBytes" to sizeBytes,
                     ),
                 ).queryRequiredSingle(::rowMapper)
