@@ -56,7 +56,9 @@ GET /<res>_attachment?res_id=eq.12
   {
     "id": 15,
     "<res>_id": 12,
-    "name": "a.jpg",
+    "object_id": "87373baf-d752-41e1-b80a-d91fb9eaf37b",
+    "filename": "&a@g.jpg",
+    "filename_sanitised": "ag.jpg",
     "content_type": "image/jpeg",
     "size_bytes": 12149102,
     "recorded_at": "2026-07-01T14:05:39+01:00",
@@ -65,7 +67,9 @@ GET /<res>_attachment?res_id=eq.12
   {
     "id": 19,
     "<res>_id": 12,
-    "name": "b.pdf",
+    "object_id": "292e2a5e-11fc-4028-bbf6-7959b1693db3",
+    "filename": "b.pdf",
+    "filename_sanitised": "b.pdf",
     "content_type": "application/pdf",
     "size_bytes": 58010098,
     "recorded_at": "2026-06-24T09:17:48+01:00",
@@ -82,7 +86,9 @@ GET /<res>_attachment/19
 {
   "id": 19,
   "<res>_id": 12,
-  "name": "b.pdf",
+  "object_id": "292e2a5e-11fc-4028-bbf6-7959b1693db3",
+  "filename": "b.pdf",
+  "filename_sanitised": "b.pdf",
   "content_type": "application/pdf",
   "size_bytes": 58010098,
   "recorded_at": "2026-06-24T09:17:48+01:00",
@@ -124,10 +130,11 @@ detail.
 
 ### Uploading files
 
-File upload is a non-standard endpoint as it needs to receive the file contents
-in the body. The user uses a multipart form with a part containing the reference
-to the resource the attachment will belong to, and a part containing the file
-contents as well as the filename.
+We want to handle file upload in a common way. As a result, the endpoint is a
+bit special with respect to the rest of the API. The endpoint needs to receive
+the file contents in the body. The user uses a multipart form with a part
+containing the reference to the resource the attachment will belong to, and a
+part containing the file contents as well as the filename.
 
 Here is an example of call to the upload endpoint:
 
@@ -140,7 +147,7 @@ Content-Disposition: form-data; name="res_id"
 
 12
 ----ResFormBoundaryABCDEF
-Content-Disposition: form-data; name="file"; filename="c.pdf"
+Content-Disposition: form-data; name="file"; filename="c%%.pdf"
 Content-Type: application/pdf
 
 [binary data of the PDF]
@@ -151,7 +158,9 @@ Content-Type: application/pdf
 {
   "id": 27,
   "res_id": 12,
-  "name": "c.pdf",
+  "object_id": "6c212ab9-5053-42a8-8c8c-37481bacada1",
+  "filename": "c%%.pdf",
+  "filename_sanitised": "c.pdf",
   "content_type": "application/pdf",
   "size_bytes": 70440701,
   "recorded_at": "2026-07-03T13:55:08+01:00",
@@ -163,23 +172,11 @@ Here are more details about the various steps of the upload sequence:
 
 ![Attachment Upload Sequence diagram](diagrams/attachment_upload_sequence.png)
 
-### Deleting files
-
-Deleting a file can be done with the delete endpoint with the attachment row ID:
-
-```text
-DELETE /res_attachment/27
-```
-
-Internally, it focuses on deleting the metadata first, then tries to delete from
-the bucket, but this second part is our responsibility and less important for
-the user.
-
 ### Updating files
 
-As a first version of the feature, we do not implement file versioning. If a
-user needs to upload a new version of a file, they can just delete the existing
-version and upload a new one.
+File versioning is not supported in our system. If a user needs to upload a new
+version of a file, they can just delete the existing version and upload a new
+one. A dedicated update operation sounds unnecessary in our use case.
 
 ### History
 
@@ -189,11 +186,23 @@ on an application can lead to a better understanding of the decision. Only very
 old documents should be deleted at some point, but this may just be carried out
 once in a while by administrators if/when the bucket gets too big.
 
+### Deleting files
+
+Deleting a file can be done with the delete endpoint with the attachment row ID:
+
+```text
+DELETE /res_attachment/27
+```
+
+Internally, it is a shallow delete though, as we keep track of the deleted
+metadata in the history. The bucket remains untouched as cleaning it is our
+future responsability and less important for the user.
+
 ## Storage
 
-In addition to the database and the API endpoints, we need to decide what we
-store in the bucket, in which format exactly, and how we make the link between
-metadata and storage.
+In addition to the database and the API endpoints, this section describes what
+we store in the bucket, in which format exactly, and how we make the link
+between metadata and storage.
 
 ### Data quality
 

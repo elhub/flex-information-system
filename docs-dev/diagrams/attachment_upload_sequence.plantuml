@@ -19,13 +19,13 @@ activate user #d6e4d5
 
 fis -> fis: Decode multipart form data
 rnote right of fis
-""<color #d58000>parent_id</color>"", ""<color #05677d>file_name</color>"", ""<color #05677d>file_contents</color>""
+""<color #d58000>parent_id</color>"", ""<color #05677d>content_type</color>"", ""<color #05677d>filename</color>"", ""<color #05677d>file_contents</color>""
 end note
 
 fis -> fis: Validate file
 rnote right of fis
 Check that the file is not too big.
-Guess the ""<color #05677d>content_type</color>"" and make sure it is supported (PDF, JPEG, PNG).
+Check that content type, extension, and file contents are consistent and supported (PDF, JPEG, PNG).
 Make a content disarm pass on the contents.
 end note
 
@@ -34,10 +34,10 @@ rnote right of fis
 ""<color #886599>object_id</color>""
 end note
 
-fis -> bucket: Store ""<color #05677d>file_contents</color>"" in bucket under key ""<color #886599>object_id</color>/<color #05677d>file_name</color>""
+fis -> bucket: Store ""<color #05677d>file_contents</color>"" in bucket under key ""attachment/<color #886599>object_id</color>/<color #05677d>filename_sanitised</color>""
 activate bucket #d6e4d5
 rnote right of fis
-""Content-Disposition: attachment""
+""Content-Disposition: attachment; filename=<color #05677d>filename</color>""
 end note
 
 bucket -> fis: ""200 OK""

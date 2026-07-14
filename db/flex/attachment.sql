@@ -25,11 +25,12 @@ CREATE TABLE IF NOT EXISTS attachment (
     CONSTRAINT attachment_size_bytes_check CHECK (size_bytes > 0),
     CONSTRAINT attachment_filename_check CHECK (
         char_length(filename) >= 1
-        AND char_length(filename) <= 256
+        AND char_length(filename) <= 64
     ),
     CONSTRAINT attachment_filename_sanitised_check CHECK (
         char_length(filename_sanitised) >= 1
-        AND char_length(filename_sanitised) <= 256
+        AND char_length(filename_sanitised) <= 64
+        AND filename_sanitised ~ '^[a-zA-Z0-9_.-]+$'
     )
 );
 

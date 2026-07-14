@@ -16,11 +16,11 @@ activate user #d6e4d5
 
 fis -> fis: Get metadata for attachment <color #d58000>19</color>
 rnote right of fis
-""<color #05677d>object_id</color>"", ""<color #05677d>name</color>""
+""<color #886599>object_id</color>"", ""<color #05677d>filename_sanitised</color>""
 end note
 
 fis -> bucket:\
-Get presigned download URL for ""<color #05677d>object_id</color>/<color #05677d>name</color>""\n\
+Get presigned download URL for ""attachment/<color #886599>object_id</color>/<color #05677d>filename_sanitised</color>""\n\
 (with credentials for bucket)
 activate bucket #d6e4d5
 
@@ -33,9 +33,6 @@ deactivate bucket
 fis -> user:\
 ""301 Moved Permanently""\n\
 Redirect to ""<color #886599>url</color>""
-rnote left of fis
-""Content-Disposition: attachment""
-end note
 deactivate fis
 
 user -> bucket: ""GET <color #886599>url</color>""
@@ -45,7 +42,8 @@ deactivate bucket
 deactivate user
 rnote left of bucket
 File contents
-""Content-Disposition: attachment"" so that the browser downloads the file
+""Content-Disposition: attachment; filename=<color #05677d>filename</color>""
+(the browser <i>downloads</i> the file, with the original name given by the user)
 end note
 
 @enduml
