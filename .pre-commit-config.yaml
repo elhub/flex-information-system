@@ -318,19 +318,19 @@ repos:
   #
   ## OpenAPI
   #
-  # - repo: local
-  #   hooks:
-  #     - id: check-openapi
-  #       name: check openapi documents with spectral
-  #       language: system
-  #       entry: spectral
-  #       args:
-  #         - lint
-  #         - --fail-severity
-  #         - warn
-  #         - --verbose
-  #       pass_filenames: true
-  #       files: '^.*openapi\.(json|yml|yaml)$'
+  - repo: local
+    hooks:
+      - id: check-openapi
+        name: check openapi documents with spectral
+        language: system
+        entry: spectral
+        args:
+          - lint
+          - --fail-severity
+          - warn
+          - --verbose
+        pass_filenames: true
+        files: '^.*openapi\.(json|yml|yaml)$'
 
   #
   ## Secret linting
