@@ -4,6 +4,8 @@ import arrow.core.Either
 import arrow.core.left
 import arrow.core.raise.either
 import org.apache.pdfbox.Loader
+import org.apache.pdfbox.cos.COSName
+import java.io.ByteArrayOutputStream
 import javax.imageio.ImageIO
 
 // file content parsing utilities
@@ -18,6 +20,12 @@ enum class FileContentType {
         PDF -> "application/pdf"
         JPEG -> "image/jpeg"
         PNG -> "image/png"
+    }
+
+    fun toExtension() = when (this) {
+        PDF -> "pdf"
+        JPEG -> "jpeg"
+        PNG -> "png"
     }
 
     companion object {
@@ -92,12 +100,57 @@ data class FileContent(
 
 private fun parsePdf(bytes: ByteArray): Either<FileValidationError, FileContent> =
     Either.catch {
-        val doc = Loader.loadPDF(bytes) // valid PDF if no throw
-        // TODO: content disarm?
-        doc.close()
-        FileContent(contentType = FileContentType.PDF, bytes = bytes)
+        Loader.loadPDF(bytes).use { doc ->
+            // valid PDF if no throw when generating `doc`
+
+            // content disarm below
+
+            val catalog = doc.documentCatalog
+
+            // no document-level JS actions / embedded files
+            catalog.openAction = null
+            catalog.names?.let {
+                it.setJavascript(null)
+                it.embeddedFiles = null
+            }
+
+            // wipe metadata
+            doc.documentInformation.apply {
+                title = null
+                author = null
+                subject = null
+                keywords = null
+                creator = null
+                producer = null
+                creationDate = null
+                modificationDate = null
+                // clear custom structural metadata
+                setCustomMetadataValue(null, null)
+            }
+            catalog.metadata = null
+
+            // remove field-level actions
+            catalog.acroForm?.let { form ->
+                form.fields.forEach { field ->
+                    // remove additional actions from each field's dictionary
+                    field.cosObject.removeItem(COSName.AA)
+                    // clear the actions on each widget annotation
+                    field.widgets.forEach { widget ->
+                        widget.action = null
+                        widget.actions = null
+                    }
+                }
+            }
+
+            // save to new ByteArray
+            val out = ByteArrayOutputStream()
+            doc.save(out)
+            val sanitisedBytes = out.toByteArray()
+
+            FileContent(contentType = FileContentType.PDF, bytes = sanitisedBytes)
+        }
     }.mapLeft { e ->
-        InvalidFileContent("Could not parse PDF: ${e.message}")
+        InvalidFileContent("Could not parse and sanitise PDF: ${e.message}")
     }
 
 private fun parseImage(
@@ -139,7 +192,6 @@ private fun parseImage(
             ImageIO.read(bytes.inputStream())
         }.mapLeft { e -> InvalidFileContent("Could not decode image: ${e.message}") }.bind()
             ?: raise(InvalidFileContent("Could not decode image: unrecognised or truncated data"))
-        image.flush()
 
         // JPEG only: verify EOI marker at end of file
         if (detectedContentType == FileContentType.JPEG) {
@@ -149,9 +201,18 @@ private fun parseImage(
             }
         }
 
-        // TODO: content disarm?
+        // content disarm by just re-encoding from the decoded BufferedImage
+        // (strips all metadata and any non-pixel payload)
 
-        FileContent(contentType = detectedContentType, bytes = bytes)
+        val sanitisedBytes = Either.catch {
+            val out = ByteArrayOutputStream()
+            ImageIO.write(image, detectedContentType.toExtension(), out)
+            out.toByteArray()
+        }.mapLeft { e -> InvalidFileContent("Could not sanitise image: ${e.message}") }.bind()
+
+        image.flush()
+
+        FileContent(contentType = detectedContentType, bytes = sanitisedBytes)
     }
 
 /** Errors that can occur when validating an uploaded file. */
