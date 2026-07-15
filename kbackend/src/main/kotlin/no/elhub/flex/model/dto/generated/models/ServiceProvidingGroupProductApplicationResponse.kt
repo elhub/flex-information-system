@@ -108,6 +108,11 @@ public data class ServiceProvidingGroupProductApplicationResponse(
   @SerialName("procuring_system_operator")
   public val procuringSystemOperator: PartyResponse? = null,
   /**
+   * Embedded service_providing_group_product_application_attachment
+   */
+  @SerialName("attachment")
+  public val attachment: List<ServiceProvidingGroupProductApplicationAttachmentResponse>? = null,
+  /**
    * Embedded service_providing_group_product_application_comment
    */
   @SerialName("comment")
