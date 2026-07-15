@@ -395,6 +395,12 @@ func (data *api) kbackendProxyHandler(w http.ResponseWriter, req *http.Request) 
 				pr.Out.Header.Set("Cookie", cookie)
 			}
 		},
+		ModifyResponse: func(resp *http.Response) error {
+			// the Go trace middleware already sets this header, so we need to drop
+			// the Kotlin one to make sure we don't send two to the client
+			resp.Header.Del("Traceresponse")
+			return nil
+		},
 		ErrorHandler: func(w http.ResponseWriter, r *http.Request, err error) {
 			slog.ErrorContext(r.Context(), "kbackend proxy error", "error", err)
 			writeInternalServerError(w)
