@@ -63,6 +63,18 @@ if resource.endswith("_comment"):
             "comment_resource.j2.yml",
         ),
     )["data"]
+elif resource.endswith("_attachment"):
+    base_resource = next(
+        r
+        for r in resources["resources"]
+        if r["id"] == resource.removesuffix("_attachment")
+    )
+    yaml_resource = yaml.safe_load(
+        j2.template_str(
+            {"resource": base_resource["id"], "data": base_resource},
+            "attachment_resource.j2.yml",
+        ),
+    )["data"]
 else:
     yaml_resource = next(r for r in resources["resources"] if r["id"] == resource)
 properties = yaml_resource["properties"]

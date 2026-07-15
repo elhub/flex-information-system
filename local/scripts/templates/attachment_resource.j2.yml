@@ -58,6 +58,10 @@ data:
       format: text
       type: string
       example: application/pdf
+      enum:
+        - id: application/pdf
+        - id: image/jpeg
+        - id: image/png
     size_bytes:
       description: Size of the attachment in bytes.
       format: bigint
