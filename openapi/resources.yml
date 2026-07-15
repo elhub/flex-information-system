@@ -3829,6 +3829,7 @@ resources:
       - list
       - read
     comments: true
+    attachments: true
     module: api
     history_rls: true
     properties:

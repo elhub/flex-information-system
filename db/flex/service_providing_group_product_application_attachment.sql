@@ -1,9 +1,9 @@
 --liquibase formatted sql
--- Manually managed file
+-- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
 
 -- changeset flex:service-providing-group-product-application-attachment-create runOnChange:true endDelimiter:--
 CREATE TABLE IF NOT EXISTS
-service_providing_group_product_application_attachment (
+flex.service_providing_group_product_application_attachment (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     service_providing_group_product_application_id bigint NOT NULL,
     attachment_id bigint NOT NULL,

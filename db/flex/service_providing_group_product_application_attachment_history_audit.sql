@@ -1,5 +1,5 @@
 --liquibase formatted sql
--- Manually managed file
+-- GENERATED CODE -- DO NOT EDIT
 
 -- changeset flex:service-providing-group-product-application-attachment-history-table-create endDelimiter:--
 CREATE TABLE IF NOT EXISTS

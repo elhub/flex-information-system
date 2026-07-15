@@ -4,28 +4,31 @@
 -- RF04 - Keywords should not be used as identifiers.
 -- ST06 - Select wildcards then simple targets before calculations and aggregates.
 
--- changeset flex:api-service-providing-group-product-application-attachment-create endDelimiter:-- runOnChange:true
+{%- set liquibase_resource = resource | replace("_", "-") %}
+{%- set lower_acronym = data.acronym | lower %}
+
+-- changeset flex:api-{{ liquibase_resource }}-attachment-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW
-api.service_providing_group_product_application_attachment
+api.{{ resource }}_attachment
 WITH (security_invoker = true) AS (
     SELECT
-        spgpaa.id,
-        spgpaa.recorded_by,
-        lower(spgpaa.record_time_range) AS recorded_at,
-        spgpaa.service_providing_group_product_application_id,
+        {{ lower_acronym }}a.id,
+        {{ lower_acronym }}a.recorded_by,
+        lower({{ lower_acronym }}a.record_time_range) AS recorded_at,
+        {{ lower_acronym }}a.{{ resource }}_id,
         att.object_id,
         att.filename,
         att.filename_sanitised,
         att.content_type,
         att.size_bytes
-    FROM flex.service_providing_group_product_application_attachment AS spgpaa
+    FROM flex.{{ resource }}_attachment AS {{ lower_acronym }}a
         INNER JOIN flex.attachment AS att
-            ON spgpaa.attachment_id = att.id
+            ON {{ lower_acronym }}a.attachment_id = att.id
 );
 
--- changeset flex:api-service-providing-group-product-application-attachment-stateful-operation-function endDelimiter:-- runOnChange:true
+-- changeset flex:api-{{ liquibase_resource }}-attachment-stateful-operation-function endDelimiter:-- runOnChange:true
 CREATE OR REPLACE FUNCTION
-spgpa_attachment_stateful_operation()
+{{ lower_acronym }}_attachment_stateful_operation()
 RETURNS TRIGGER
 LANGUAGE plpgsql
 AS $$
@@ -52,11 +55,11 @@ BEGIN
         ) RETURNING id INTO l_attachment_id;
 
         -- then the link
-        INSERT INTO flex.service_providing_group_product_application_attachment (
-            service_providing_group_product_application_id,
+        INSERT INTO flex.{{ resource }}_attachment (
+            {{ resource }}_id,
             attachment_id
         ) VALUES (
-            NEW.service_providing_group_product_application_id,
+            NEW.{{ resource }}_id,
             l_attachment_id
         ) RETURNING id, record_time_range, recorded_by
         INTO l_link_id, l_link_record_time_range, l_link_recorded_by;
@@ -69,7 +72,7 @@ BEGIN
         RETURN NEW;
     ELSIF (TG_OP = 'DELETE') THEN
         -- first delete the link, getting the attachment ID
-        DELETE FROM flex.service_providing_group_product_application_attachment
+        DELETE FROM flex.{{ resource }}_attachment
         WHERE id = OLD.id
         RETURNING attachment_id INTO l_attachment_id;
 
@@ -84,28 +87,28 @@ BEGIN
 END;
 $$;
 
--- changeset flex:api-service-providing-group-product-application-attachment-stateful-operation-trigger endDelimiter:-- runOnChange:true
+-- changeset flex:api-{{ liquibase_resource }}-attachment-stateful-operation-trigger endDelimiter:-- runOnChange:true
 CREATE TRIGGER
-spgpa_attachment_stateful_operation_trigger
+{{ lower_acronym }}_attachment_stateful_operation_trigger
 INSTEAD OF INSERT OR DELETE
-ON api.service_providing_group_product_application_attachment
+ON api.{{ resource }}_attachment
 FOR EACH ROW EXECUTE FUNCTION
-spgpa_attachment_stateful_operation();
+{{ lower_acronym }}_attachment_stateful_operation();
 
--- changeset flex:api-service-providing-group-product-application-attachment-can-edit-function endDelimiter:-- runOnChange:true
+-- changeset flex:api-{{ liquibase_resource }}-attachment-can-edit-function endDelimiter:-- runOnChange:true
 CREATE OR REPLACE FUNCTION
-api.service_providing_group_product_application_attachment_can_edit(
-    in_service_providing_group_product_application_id BIGINT
+api.{{ resource }}_attachment_can_edit(
+    in_{{ resource }}_id BIGINT
 )
 RETURNS BOOLEAN
 LANGUAGE sql
 AS $$
 SELECT EXISTS (
     SELECT 1
-    FROM flex.service_providing_group_product_application_involved_parties
-        AS spgpa_ip
-    WHERE spgpa_ip.service_providing_group_product_application_id
-    = in_service_providing_group_product_application_id
-        AND spgpa_ip.party_id = (SELECT flex.current_party())
+    FROM flex.{{ resource }}_involved_parties
+        AS {{ lower_acronym }}_ip
+    WHERE {{ lower_acronym }}_ip.{{ resource }}_id
+    = in_{{ resource }}_id
+        AND {{ lower_acronym }}_ip.party_id = (SELECT flex.current_party())
 );
 $$;

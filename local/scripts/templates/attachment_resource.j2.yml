@@ -1,0 +1,65 @@
+{%- set resource_spaces = resource | replace("_", " ") %}
+data:
+  id: {{ resource }}_attachment
+  module: {{ data.module }}
+  acronym: {{ data.acronym }}A
+  summary: {{ data.summary }} Attachment
+  description: >-
+    File attachment associated with a
+    {{ resource_spaces }},
+    allowing involved parties to exchange supporting documents.
+  operations:
+    - list
+    - read
+    - create
+    - delete
+  audit: true
+  generate_views: true
+  history:
+    - list
+    - read
+  history_rls: false
+  properties:
+    id:
+      description: Unique surrogate identifier.
+      format: bigint
+      type: integer
+      readOnly: true
+      x-filter: true
+      example: 9
+    {{ resource }}_id:
+      description: Reference to the {{ resource_spaces }}.
+      format: bigint
+      type: integer
+      x-no-update: true
+      x-filter: true
+      x-foreign-key:
+        resource: {{ resource }}
+        field: id
+        cardinality: many-to-one
+      example: 7
+    object_id:
+      description: Identifier of the object to which the attachment is linked.
+      format: text
+      type: string
+      example: 08aa9239-d209-4c15-a916-2b4942ce45ee
+    filename:
+      description: Original filename of the attachment.
+      format: text
+      type: string
+      example: document.pdf
+    filename_sanitised:
+      description: Sanitised filename safe for storage.
+      format: text
+      type: string
+      example: document.pdf
+    content_type:
+      description: MIME type of the attachment.
+      format: text
+      type: string
+      example: application/pdf
+    size_bytes:
+      description: Size of the attachment in bytes.
+      format: bigint
+      type: integer
+      example: 204800
