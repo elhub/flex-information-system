@@ -1,11 +1,19 @@
 """
-Tests for SPGPAA (Service Providing Group Product Application Attachment) RLS.
+Tests for SPGPAA (Service Providing Group Product Application Attachment).
 
 Focuses on:
+  - SPGPAA-FISO001: FISO can upload, download, and delete attachments.
+  - SPGPAA-SP001: SP can upload, download, and delete their own attachments,
+    but cannot access attachments on another SP's SPGPA.
   - SPGPAA-COM001: only involved parties (procuring SO and SP of the SPG) can
     read attachments on a SPGPA.
+
+Note: the 'upload with read-only scope returns 403' case is not included because
+the real auth server always issues manage+read scopes together; testing scope
+restrictions at the JWT level requires an in-process test setup.
 """
 
+from io import BytesIO
 from typing import cast
 
 import pytest
@@ -27,6 +35,12 @@ from flex.api.service_provider_product_application import (
 from flex.api.system_operator_product_type import create_system_operator_product_type
 from flex.api.service_providing_group_product_application import (
     create_service_providing_group_product_application,
+)
+from flex.api.service_providing_group_product_application_attachment import (
+    create_service_providing_group_product_application_attachment,
+    delete_service_providing_group_product_application_attachment,
+    list_service_providing_group_product_application_attachment,
+    read_service_providing_group_product_application_attachment,
 )
 from flex.models import (
     ControllableUnitCreateRequest,
@@ -51,18 +65,20 @@ from flex.models import (
     SystemOperatorProductTypeResponse,
     ErrorMessage,
 )
+from flex.models.create_service_providing_group_product_application_attachment_body import (
+    CreateServiceProvidingGroupProductApplicationAttachmentBody,
+)
+from flex.models.service_providing_group_product_application_attachment_response import (
+    ServiceProvidingGroupProductApplicationAttachmentResponse,
+)
+from flex.types import File
 from flex import AuthenticatedClient
 from security_token_service import SecurityTokenService, TestEntity
 import datetime
 
 
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
-
-
+# return a structurally minimal but valid single-page PDF
 def minimal_pdf() -> bytes:
-    """Return a structurally minimal but valid single-page PDF."""
     stream = b"BT /F1 12 Tf 72 720 Td (hello) Tj ET"
     length = len(stream)
     parts = []
@@ -101,108 +117,98 @@ def minimal_pdf() -> bytes:
     return b"".join(parts)
 
 
-def upload_attachment(client: AuthenticatedClient, spgpa_id: int) -> dict | None:
-    """
-    Upload a minimal PDF attachment to the given SPGPA.
-    Returns the parsed JSON response body on success, or None on failure.
-    """
-    pdf = minimal_pdf()
-    response = client.get_httpx_client().post(
-        "/service_providing_group_product_application_attachment",
-        content=_multipart_body(spgpa_id, pdf),
-        headers={"Content-Type": _multipart_content_type()},
-    )
-    if response.status_code == 201:
-        return response.json()
-    return None
-
-
-_BOUNDARY = "PythonTestBoundary12345"
-
-
-def _multipart_content_type() -> str:
-    return f"multipart/form-data; boundary={_BOUNDARY}"
-
-
-def _multipart_body(spgpa_id: int, file_bytes: bytes) -> bytes:
-    b = _BOUNDARY.encode()
-    parts = []
-    # Field: service_providing_group_product_application_id
-    parts.append(b"--" + b + b"\r\n")
-    parts.append(
-        b'Content-Disposition: form-data; name="service_providing_group_product_application_id"\r\n'
-    )
-    parts.append(b"\r\n")
-    parts.append(str(spgpa_id).encode() + b"\r\n")
-    # File part
-    parts.append(b"--" + b + b"\r\n")
-    parts.append(
-        b'Content-Disposition: form-data; name="file"; filename="test.pdf"\r\n'
-    )
-    parts.append(b"Content-Type: application/pdf\r\n")
-    parts.append(b"\r\n")
-    parts.append(file_bytes)
-    parts.append(b"\r\n")
-    parts.append(b"--" + b + b"--\r\n")
-    return b"".join(parts)
-
-
-def list_attachments(client: AuthenticatedClient, spgpa_id: int) -> list | None:
-    """
-    List attachments for a SPGPA using the GET endpoint.
-    Returns a list on success (may be empty), or None if access is denied / error.
-    """
-    response = client.get_httpx_client().get(
-        "/service_providing_group_product_application_attachment",
-        params={"service_providing_group_product_application_id": f"eq.{spgpa_id}"},
-    )
-    if response.status_code == 200:
-        return response.json()
-    return None
-
-
-def read_attachment(client: AuthenticatedClient, attachment_id: int) -> dict | None:
-    """
-    Read a single attachment by ID.
-    Returns the parsed JSON on success, or None if not found / denied.
-    """
-    response = client.get_httpx_client().get(
-        f"/service_providing_group_product_application_attachment/{attachment_id}",
-    )
-    if response.status_code == 200:
-        return response.json()
-    return None
-
-
-# ---------------------------------------------------------------------------
-# Fixture
-# ---------------------------------------------------------------------------
-
-
-@pytest.fixture()
-def data():
-    sts = SecurityTokenService()
-
-    client_fiso = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "FISO"))
-
-    # SP that owns the SPG
-    client_sp = cast(AuthenticatedClient, sts.fresh_client(TestEntity.TEST, "SP"))
-    sp_id = sts.get_userinfo(client_sp)["party_id"]
-
-    # SO that is the procuring system operator (involved party)
-    client_so = cast(AuthenticatedClient, sts.fresh_client(TestEntity.TEST, "SO"))
-    so_id = sts.get_userinfo(client_so)["party_id"]
-
-    # Unrelated SO — not involved in any SPGPA we create
-    client_other_so = cast(
-        AuthenticatedClient, sts.fresh_client(TestEntity.COMMON, "SO")
+def _make_file(pdf_bytes: bytes, filename: str = "test.pdf") -> File:
+    return File(
+        payload=BytesIO(pdf_bytes), file_name=filename, mime_type="application/pdf"
     )
 
-    client_eu = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "EU"))
-    eu_id = sts.get_userinfo(client_eu)["party_id"]
 
-    # ── Create and activate a SPG for the SP ─────────────────────────────────
+# upload a PDF to the given SPGPA
+def upload_attachment(
+    client: AuthenticatedClient,
+    spgpa_id: int,
+    filename: str = "test.pdf",
+    pdf_bytes: bytes | None = None,
+):
+    if pdf_bytes is None:
+        pdf_bytes = minimal_pdf()
+    body = CreateServiceProvidingGroupProductApplicationAttachmentBody(
+        service_providing_group_product_application_id=spgpa_id,
+        file=_make_file(pdf_bytes, filename),
+    )
+    return create_service_providing_group_product_application_attachment.sync(
+        client=client,
+        body=body,
+    )
 
+
+# like above, but returns the full response including status code
+def upload_attachment_detailed(
+    client: AuthenticatedClient,
+    spgpa_id: int,
+    filename: str = "test.pdf",
+    pdf_bytes: bytes | None = None,
+):
+    if pdf_bytes is None:
+        pdf_bytes = minimal_pdf()
+    body = CreateServiceProvidingGroupProductApplicationAttachmentBody(
+        service_providing_group_product_application_id=spgpa_id,
+        file=_make_file(pdf_bytes, filename),
+    )
+    return create_service_providing_group_product_application_attachment.sync_detailed(
+        client=client,
+        body=body,
+    )
+
+
+# download without following the redirect so we can inspect the raw response
+def download_attachment_no_redirect(client: AuthenticatedClient, attachment_id: int):
+    return client.get_httpx_client().request(
+        "GET",
+        f"/service_providing_group_product_application_attachment/{attachment_id}/download",
+        follow_redirects=False,
+    )
+
+
+def delete_attachment(client: AuthenticatedClient, attachment_id: int):
+    return delete_service_providing_group_product_application_attachment.sync(
+        id=attachment_id,
+        client=client,
+    )
+
+
+# like above but returns the full response including status code
+def delete_attachment_detailed(client: AuthenticatedClient, attachment_id: int):
+    return delete_service_providing_group_product_application_attachment.sync_detailed(
+        id=attachment_id,
+        client=client,
+    )
+
+
+def list_attachments(client: AuthenticatedClient, spgpa_id: int):
+    return list_service_providing_group_product_application_attachment.sync(
+        client=client,
+        service_providing_group_product_application_id=f"eq.{spgpa_id}",
+    )
+
+
+def read_attachment(client: AuthenticatedClient, attachment_id: int):
+    return read_service_providing_group_product_application_attachment.sync(
+        id=attachment_id,
+        client=client,
+    )
+
+
+# create and activate a full SPGPA chain for the given SP/SO
+def _create_spgpa(
+    client_fiso: AuthenticatedClient,
+    client_sp: AuthenticatedClient,
+    client_so: AuthenticatedClient,
+    sp_id: int,
+    so_id: int,
+    eu_id: int,
+    pt_id: int,
+) -> int:
     cu = create_controllable_unit.sync(
         client=client_fiso,
         body=ControllableUnitCreateRequest(
@@ -229,7 +235,7 @@ def data():
     spg = create_service_providing_group.sync(
         client=client_fiso,
         body=ServiceProvidingGroupCreateRequest(
-            name="SPG for SPGPAA RLS test",
+            name="SPG for SPGPAA test",
             service_provider_id=sp_id,
             bidding_zone=ServiceProvidingGroupBiddingZone.NO3,
         ),
@@ -250,23 +256,10 @@ def data():
         client=client_fiso,
         id=cast(int, spg.id),
         body=ServiceProvidingGroupUpdateRequest(
-            status=ServiceProvidingGroupStatus.ACTIVE,
+            status=ServiceProvidingGroupStatus.ACTIVE
         ),
     )
     assert not isinstance(u, ErrorMessage)
-
-    # ── Qualify the SP for a product type with the SO ─────────────────────────
-
-    pt_id = 5
-
-    sopt = create_system_operator_product_type.sync(
-        client=client_so,
-        body=SystemOperatorProductTypeCreateRequest(
-            system_operator_id=so_id,
-            product_type_id=pt_id,
-        ),
-    )
-    assert isinstance(sopt, SystemOperatorProductTypeResponse)
 
     sppa = create_service_provider_product_application.sync(
         client=client_sp,
@@ -288,8 +281,6 @@ def data():
     )
     assert not isinstance(u, ErrorMessage)
 
-    # ── Create a SPGPA ────────────────────────────────────────────────────────
-
     spgpa = create_service_providing_group_product_application.sync(
         client=client_sp,
         body=ServiceProvidingGroupProductApplicationCreateRequest(
@@ -302,73 +293,186 @@ def data():
     )
     assert isinstance(spgpa, ServiceProvidingGroupProductApplicationResponse)
 
+    return cast(int, spgpa.id)
+
+
+@pytest.fixture()
+def data():
+    sts = SecurityTokenService()
+
+    client_fiso = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "FISO"))
+
+    # SP1 owns the primary SPGPA used in most tests
+    client_sp = cast(AuthenticatedClient, sts.fresh_client(TestEntity.TEST, "SP"))
+    sp_id = sts.get_userinfo(client_sp)["party_id"]
+
+    # SP2 owns a second SPGPA used in SP-isolation tests
+    client_sp2 = cast(AuthenticatedClient, sts.fresh_client(TestEntity.TEST, "SP"))
+    sp2_id = sts.get_userinfo(client_sp2)["party_id"]
+
+    # SO is the procuring system operator (involved party for both SPGPAs)
+    client_so = cast(AuthenticatedClient, sts.fresh_client(TestEntity.TEST, "SO"))
+    so_id = sts.get_userinfo(client_so)["party_id"]
+
+    # Unrelated SO, not involved in any SPGPA we create
+    client_other_so = cast(
+        AuthenticatedClient, sts.fresh_client(TestEntity.COMMON, "SO")
+    )
+
+    client_eu = cast(AuthenticatedClient, sts.get_client(TestEntity.TEST, "EU"))
+    eu_id = sts.get_userinfo(client_eu)["party_id"]
+
+    pt_id = 5  # manual_congestion product type
+
+    # SO must register the product type before SPs can apply
+    sopt = create_system_operator_product_type.sync(
+        client=client_so,
+        body=SystemOperatorProductTypeCreateRequest(
+            system_operator_id=so_id,
+            product_type_id=pt_id,
+        ),
+    )
+    assert isinstance(sopt, SystemOperatorProductTypeResponse)
+
+    spgpa_id = _create_spgpa(
+        client_fiso, client_sp, client_so, sp_id, so_id, eu_id, pt_id
+    )
+    spgpa_id_sp2 = _create_spgpa(
+        client_fiso, client_sp2, client_so, sp2_id, so_id, eu_id, pt_id
+    )
+
     yield (
         sts,
         client_sp,
+        client_sp2,
         client_so,
         client_other_so,
         client_fiso,
-        cast(int, spgpa.id),
+        spgpa_id,
+        spgpa_id_sp2,
     )
 
 
-# ---------------------------------------------------------------------------
-# Tests
-# ---------------------------------------------------------------------------
+# RLS: SPGPAA-FISO001
+def test_spgpaa_fiso(data):
+    (_, _, _, client_so, _, client_fiso, spgpa_id, _) = data
+
+    # SO role is not allowed to upload (only FISO and SP)
+    resp = upload_attachment_detailed(client_so, spgpa_id)
+    assert resp.status_code.value == 403
+
+    # endpoint: POST /service_providing_group_product_application_attachment
+    # FISO can upload a valid PDF
+    a = upload_attachment(client_fiso, spgpa_id, filename="hello.pdf")
+    assert isinstance(a, ServiceProvidingGroupProductApplicationAttachmentResponse)
+    assert a.filename == "hello.pdf"
+    assert str(a.content_type.value) == "application/pdf"
+    assert a.service_providing_group_product_application_id == spgpa_id
+
+    # FISO can upload a second PDF to the same SPGPA
+    a2 = upload_attachment(client_fiso, spgpa_id, filename="second.pdf")
+    assert isinstance(a2, ServiceProvidingGroupProductApplicationAttachmentResponse)
+
+    # a file exceeding the 20 MB size limit is rejected
+    resp = upload_attachment_detailed(
+        client_fiso, spgpa_id, filename="big.pdf", pdf_bytes=bytes(20_000_001)
+    )
+    assert resp.status_code.value == 400
+
+    # endpoint: GET /service_providing_group_product_application_attachment/{id}/download
+    # download of a non-existent ID returns not found
+    raw = download_attachment_no_redirect(client_fiso, 999_999_999)
+    assert raw.status_code == 404
+
+    # download of a valid ID returns a redirect with a non-empty Location header
+    raw = download_attachment_no_redirect(client_fiso, cast(int, a.id))
+    assert raw.status_code in (301, 302)
+    assert raw.headers.get("location") or raw.headers.get("Location")
+
+    # endpoint: DELETE /service_providing_group_product_application_attachment/{id}
+    # delete of a non-existent ID returns not found
+    resp = delete_attachment_detailed(client_fiso, 999_999_999)
+    assert resp.status_code.value == 404
+
+    # delete of a valid ID works, but a subsequent download returns not found
+    result = delete_attachment(client_fiso, cast(int, a.id))
+    assert result is None
+    raw = download_attachment_no_redirect(client_fiso, cast(int, a.id))
+    assert raw.status_code == 404
+
+
+# RLS: SPGPAA-SP001
+def test_spgpaa_sp(data):
+    (_, client_sp, client_sp2, _, _, _, spgpa_id, _) = data
+
+    # endpoint: POST /service_providing_group_product_application_attachment
+    # SP1 can upload to their own SPGPA
+    a = upload_attachment(client_sp, spgpa_id, filename="sp1.pdf")
+    assert isinstance(a, ServiceProvidingGroupProductApplicationAttachmentResponse)
+
+    # SP2 cannot upload to SP1's SPGPA
+    resp = upload_attachment_detailed(client_sp2, spgpa_id)
+    assert resp.status_code.value == 403
+
+    # endpoint: DELETE /service_providing_group_product_application_attachment/{id}
+    # SP2 cannot delete SP1's attachment (not found because RLS hides the row)
+    resp = delete_attachment_detailed(client_sp2, cast(int, a.id))
+    assert resp.status_code.value == 404
+
+    # SP1 can delete their own attachment
+    result = delete_attachment(client_sp, cast(int, a.id))
+    assert result is None
 
 
 # RLS: SPGPAA-COM001
 def test_spgpaa_com001(data):
-    """
-    Only involved parties (procuring SO and SP of the SPG) may read attachments
-    on a SPGPA.  Unrelated parties must see nothing.
-    """
-    (sts, client_sp, client_so, client_other_so, client_fiso, spgpa_id) = data
+    (_, client_sp, _, client_so, client_other_so, client_fiso, spgpa_id, _) = data
 
-    # FISO uploads an attachment so we have something to test reads against.
-    attachment = upload_attachment(client_fiso, spgpa_id)
-    assert attachment is not None, "FISO should be able to upload an attachment"
-    attachment_id = attachment["id"]
-
-    # ── SP is an involved party (service_provider of the SPG) ────────────────
+    # FISO uploads an attachment so we have something to test read visibility against
+    a = upload_attachment(client_fiso, spgpa_id)
+    assert isinstance(a, ServiceProvidingGroupProductApplicationAttachmentResponse)
+    attachment_id = cast(int, a.id)
 
     # endpoint: GET /service_providing_group_product_application_attachment
+    # SP is an involved party (owner of the SPG), can list and read
     sp_list = list_attachments(client_sp, spgpa_id)
-    assert sp_list is not None
-    assert any(a["id"] == attachment_id for a in sp_list), (
-        "SP (involved party) should see the attachment in the list"
-    )
+    assert isinstance(sp_list, list)
+    assert any(a.id == attachment_id for a in sp_list)
 
     # endpoint: GET /service_providing_group_product_application_attachment/{id}
     sp_read = read_attachment(client_sp, attachment_id)
-    assert sp_read is not None, (
-        "SP (involved party) should be able to read the attachment"
+    assert isinstance(
+        sp_read, ServiceProvidingGroupProductApplicationAttachmentResponse
     )
 
-    # ── SO is an involved party (procuring_system_operator) ──────────────────
-
+    # SO is an involved party (PSO), can list and read
     so_list = list_attachments(client_so, spgpa_id)
-    assert so_list is not None
-    assert any(a["id"] == attachment_id for a in so_list), (
-        "SO (involved party) should see the attachment in the list"
-    )
+    assert isinstance(so_list, list)
+    assert any(a.id == attachment_id for a in so_list)
 
     so_read = read_attachment(client_so, attachment_id)
-    assert so_read is not None, (
-        "SO (involved party) should be able to read the attachment"
+    assert isinstance(
+        so_read, ServiceProvidingGroupProductApplicationAttachmentResponse
     )
 
-    # ── Unrelated SO is NOT an involved party ────────────────────────────────
+    # SO can download (redirect to presigned URL)
+    raw = download_attachment_no_redirect(client_so, attachment_id)
+    assert raw.status_code in (301, 302)
 
+    # SO cannot upload or delete (wrong role, only FISO and SP are allowed)
+    resp = upload_attachment_detailed(client_so, spgpa_id, filename="so-upload.pdf")
+    assert resp.status_code.value == 403
+    resp = delete_attachment_detailed(client_so, attachment_id)
+    assert resp.status_code.value == 403
+
+    # unrelated SO is not an involved party, all rows are hidden
+    # endpoint: GET /service_providing_group_product_application_attachment
     other_so_list = list_attachments(client_other_so, spgpa_id)
-    # The endpoint may return an empty list (RLS filters rows) or an error.
-    # Either way the attachment must not be visible.
-    if other_so_list is not None:
-        assert not any(a["id"] == attachment_id for a in other_so_list), (
-            "Unrelated SO must not see the attachment in the list"
-        )
+    if isinstance(other_so_list, list):
+        assert not any(a.id == attachment_id for a in other_so_list)
 
+    # endpoint: GET /service_providing_group_product_application_attachment/{id}
     other_so_read = read_attachment(client_other_so, attachment_id)
-    assert other_so_read is None, (
-        "Unrelated SO must not be able to read the attachment by ID"
+    assert not isinstance(
+        other_so_read, ServiceProvidingGroupProductApplicationAttachmentResponse
     )

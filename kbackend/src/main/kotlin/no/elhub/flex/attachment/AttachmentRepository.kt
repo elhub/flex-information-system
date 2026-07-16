@@ -39,6 +39,7 @@ data class AttachmentRecord(
         buildJsonObject {
             put("id", JsonPrimitive(id))
             put("${baseResource}_id", JsonPrimitive(parentId))
+            put("object_id", JsonPrimitive(objectId))
             put("filename", JsonPrimitive(filename))
             put("filename_sanitised", JsonPrimitive(filenameSanitised))
             put("content_type", JsonPrimitive(contentType))

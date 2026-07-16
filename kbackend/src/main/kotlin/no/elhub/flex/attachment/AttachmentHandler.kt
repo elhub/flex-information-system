@@ -1,5 +1,6 @@
 package no.elhub.flex.attachment
 
+import arrow.core.Either
 import arrow.core.left
 import arrow.core.raise.either
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -11,7 +12,9 @@ import no.elhub.flex.auth.AccessTokenKey
 import no.elhub.flex.auth.FlexRole
 import no.elhub.flex.auth.toFlexPrincipal
 import no.elhub.flex.model.domain.db.NotFoundError
+import no.elhub.flex.model.error.ForbiddenError
 import no.elhub.flex.model.error.InternalServerError
+import no.elhub.flex.model.error.MultipartError
 import no.elhub.flex.model.error.ParsingError
 import no.elhub.flex.model.error.ResourceNotFoundError
 import no.elhub.flex.util.FileContent
@@ -22,6 +25,7 @@ import no.elhub.flex.util.multipart
 import no.elhub.flex.util.pathParameter
 import no.elhub.flex.util.respondJson
 import no.elhub.flex.util.respondRedirect
+import java.io.IOException
 import java.util.UUID
 
 private val logger = KotlinLogging.logger {}
@@ -90,8 +94,19 @@ class AttachmentHandler(
 
             val body = call.multipart(MAX_MULTIPART_SIZE_BYTES).bind()
 
-            // parent ID part expected first, allowing to check authorisation before the file bytes
-            val parentIdPart = body.readPart()
+            // parent ID part expected first, allowing to check authorisation before the file bytes.
+            // readPart() reads lazily, so the size limit IOException can surface here.
+            val parentIdPart = Either.catch { body.readPart() }
+                .mapLeft { e ->
+                    when (e) {
+                        is IOException -> MultipartError()
+
+                        else -> {
+                            logger.error { "Unexpected error reading multipart parent ID part: $e" }
+                            InternalServerError(traceIdOrUnknown())
+                        }
+                    }
+                }.bind()
             if (parentIdPart == null || parentIdPart !is PartData.FormItem || parentIdPart.name != "${baseResource}_id") {
                 parentIdPart?.release()
                 raise(ParsingError("Expected ${baseResource}_id as first multipart field"))
@@ -112,11 +127,21 @@ class AttachmentHandler(
                         }.bind()
                 }
             if (!canEdit) {
-                raise(ParsingError("User cannot upload attachment to this resource"))
+                raise(ForbiddenError("User cannot upload attachment to this resource"))
             }
 
             // now file part
-            val filePart = body.readPart()
+            val filePart = Either.catch { body.readPart() }
+                .mapLeft { e ->
+                    when (e) {
+                        is IOException -> MultipartError()
+
+                        else -> {
+                            logger.error { "Unexpected error reading multipart file part: $e" }
+                            InternalServerError(traceIdOrUnknown())
+                        }
+                    }
+                }.bind()
             if (filePart == null || filePart !is PartData.FileItem || filePart.name != "file") {
                 filePart?.release()
                 raise(ParsingError("Expected file as second multipart field"))
@@ -131,7 +156,19 @@ class AttachmentHandler(
                 .onLeft { filePart.release() }
                 .bind()
             val contentType = filePart.contentType?.let { FileContentType.fromString(it.toString()) }
-            val fileBytes = filePart.provider().toByteArray()
+            // read the full file body, this is where the size limit fires
+            val fileBytes = Either.catch { filePart.provider().toByteArray() }
+                .mapLeft { e ->
+                    filePart.release()
+                    when (e) {
+                        is IOException -> MultipartError()
+
+                        else -> {
+                            logger.error { "Unexpected error reading file bytes: $e" }
+                            InternalServerError(traceIdOrUnknown())
+                        }
+                    }
+                }.bind()
             filePart.release()
 
             if (contentType != null && extensionContentType != null && contentType != extensionContentType) {

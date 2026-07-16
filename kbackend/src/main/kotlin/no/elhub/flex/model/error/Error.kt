@@ -156,6 +156,19 @@ data class EndUserError(
 }
 
 /**
+ * Error indicating that the caller is not authorised to perform the requested action
+ *
+ * @property details details about the problem
+ * @property code the HTTP status code
+ */
+data class ForbiddenError(
+    val details: String,
+    override val code: HttpStatusCode = HttpStatusCode.Forbidden,
+) : AppError() {
+    override val message: String = details
+}
+
+/**
  * Error indicating something went wrong when fetching data
  *
  * @property details details about the problem
