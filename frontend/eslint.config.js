@@ -29,7 +29,6 @@ export default defineConfig([
     },
     rules: reactHooks.configs.recommended.rules,
   },
-  prettier,
   {
     languageOptions: {
       globals: {
@@ -71,4 +70,5 @@ export default defineConfig([
       ],
     },
   },
+  prettier,
 ]);

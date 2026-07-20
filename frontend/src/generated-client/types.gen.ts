@@ -18318,37 +18318,39 @@ export type ReadNoticeResponses = {
 
 export type ReadNoticeResponse = ReadNoticeResponses[keyof ReadNoticeResponses];
 
-export type DownloadServiceProvidingGroupProductApplicationAttachmentData = {
-  body?: never;
-  path: {
-    id: number;
+export type CallDownloadServiceProvidingGroupProductApplicationAttachmentData =
+  {
+    body?: never;
+    path: {
+      id: number;
+    };
+    query?: never;
+    url: "/service_providing_group_product_application_attachment/{id}/download";
   };
-  query?: never;
-  url: "/service_providing_group_product_application_attachment/{id}/download";
-};
 
-export type DownloadServiceProvidingGroupProductApplicationAttachmentErrors = {
-  /**
-   * Bad Request
-   */
-  400: ErrorMessage;
-  /**
-   * Unauthorized
-   */
-  401: ErrorMessage;
-  /**
-   * Forbidden
-   */
-  403: ErrorMessage;
-  /**
-   * Not Found
-   */
-  404: ErrorMessage | EmptyObject;
-  /**
-   * Internal Server Error
-   */
-  500: ErrorMessage;
-};
+export type CallDownloadServiceProvidingGroupProductApplicationAttachmentErrors =
+  {
+    /**
+     * Bad Request
+     */
+    400: ErrorMessage;
+    /**
+     * Unauthorized
+     */
+    401: ErrorMessage;
+    /**
+     * Forbidden
+     */
+    403: ErrorMessage;
+    /**
+     * Not Found
+     */
+    404: ErrorMessage | EmptyObject;
+    /**
+     * Internal Server Error
+     */
+    500: ErrorMessage;
+  };
 
-export type DownloadServiceProvidingGroupProductApplicationAttachmentError =
-  DownloadServiceProvidingGroupProductApplicationAttachmentErrors[keyof DownloadServiceProvidingGroupProductApplicationAttachmentErrors];
+export type CallDownloadServiceProvidingGroupProductApplicationAttachmentError =
+  CallDownloadServiceProvidingGroupProductApplicationAttachmentErrors[keyof CallDownloadServiceProvidingGroupProductApplicationAttachmentErrors];

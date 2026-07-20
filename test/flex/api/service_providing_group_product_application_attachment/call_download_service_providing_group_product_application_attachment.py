@@ -93,11 +93,11 @@ def _build_response(
 def sync_detailed(
     id: int,
     *,
-    client: AuthenticatedClient | Client,
+    client: AuthenticatedClient,
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage]:
-    """Download Service Providing Group Product Application Attachment
+    """Call download Service Providing Group Product Application Attachment
 
-     Download [Service Providing Group Product Application Attachment](https://elhub.github.io/flex-
+     Call download [Service Providing Group Product Application Attachment](https://elhub.github.io/flex-
     information-system/resources/service_providing_group_product_application_attachment/)
 
     Args:
@@ -125,11 +125,11 @@ def sync_detailed(
 def sync(
     id: int,
     *,
-    client: AuthenticatedClient | Client,
+    client: AuthenticatedClient,
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | None:
-    """Download Service Providing Group Product Application Attachment
+    """Call download Service Providing Group Product Application Attachment
 
-     Download [Service Providing Group Product Application Attachment](https://elhub.github.io/flex-
+     Call download [Service Providing Group Product Application Attachment](https://elhub.github.io/flex-
     information-system/resources/service_providing_group_product_application_attachment/)
 
     Args:
@@ -152,11 +152,11 @@ def sync(
 async def asyncio_detailed(
     id: int,
     *,
-    client: AuthenticatedClient | Client,
+    client: AuthenticatedClient,
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage]:
-    """Download Service Providing Group Product Application Attachment
+    """Call download Service Providing Group Product Application Attachment
 
-     Download [Service Providing Group Product Application Attachment](https://elhub.github.io/flex-
+     Call download [Service Providing Group Product Application Attachment](https://elhub.github.io/flex-
     information-system/resources/service_providing_group_product_application_attachment/)
 
     Args:
@@ -182,11 +182,11 @@ async def asyncio_detailed(
 async def asyncio(
     id: int,
     *,
-    client: AuthenticatedClient | Client,
+    client: AuthenticatedClient,
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | None:
-    """Download Service Providing Group Product Application Attachment
+    """Call download Service Providing Group Product Application Attachment
 
-     Download [Service Providing Group Product Application Attachment](https://elhub.github.io/flex-
+     Call download [Service Providing Group Product Application Attachment](https://elhub.github.io/flex-
     information-system/resources/service_providing_group_product_application_attachment/)
 
     Args:

@@ -4274,7 +4274,7 @@ export const zReadServiceProvidingGroupProductSuspensionCommentHistoryPath =
 export const zReadServiceProvidingGroupProductSuspensionCommentHistoryResponse =
   zServiceProvidingGroupProductSuspensionCommentHistory;
 
-export const zDownloadServiceProvidingGroupProductApplicationAttachmentPath =
+export const zCallDownloadServiceProvidingGroupProductApplicationAttachmentPath =
   z.object({
     id: z.coerce.number(),
   });

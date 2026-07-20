@@ -87,16 +87,14 @@
                             "string",
                             "null"
                         ],
-                        "description": "Detailed information about the error.",
-                        "example": null
+                        "description": "Detailed information about the error."
                     },
                     "hint": {
                         "type": [
                             "string",
                             "null"
                         ],
-                        "description": "A hint to help resolve the error.",
-                        "example": null
+                        "description": "A hint to help resolve the error."
                     },
                     "message": {
                         "type": "string",

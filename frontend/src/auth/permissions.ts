@@ -652,11 +652,7 @@ export type PermissionTarget =
   | "technical_resource_history.technology";
 
 export type PermissionOperation =
-  | "create"
-  | "delete"
-  | "lookup"
-  | "read"
-  | "update";
+  "create" | "delete" | "lookup" | "read" | "update";
 
 export type Permissions = {
   allow: (target: PermissionTarget, operation: PermissionOperation) => boolean;

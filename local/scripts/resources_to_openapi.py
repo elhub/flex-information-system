@@ -922,9 +922,9 @@ def generate_openapi_document(base_file, resources_file, servers_file):
                 "description": "",
                 "parameters": [id_path_parameter_template()],
                 "get": {
-                    "operationId": f"download_{resource['id']}",
-                    "summary": f"Download {resource_summary}",
-                    "description": f"Download [{resource_summary}](https://elhub.github.io/flex-information-system/resources/{resource['id']}/)",
+                    "operationId": f"call_download_{resource['id']}",
+                    "summary": f"Call download {resource_summary}",
+                    "description": f"Call download [{resource_summary}](https://elhub.github.io/flex-information-system/resources/{resource['id']}/)",
                     "tags": [resource["id"]],
                     "security": [
                         {"bearerAuth": [f"read:attachment:{resource['id']}"]},

@@ -17,6 +17,7 @@ dependencies = [
   "psycopg[binary,pool]",
   "pyjwt",
   "pytest",
+  "pytest-ordering",
   "python-dotenv",
   "ruff",
   "schemathesis",

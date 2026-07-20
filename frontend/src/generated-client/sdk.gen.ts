@@ -13,6 +13,8 @@ import type {
   CallControllableUnitLookupData,
   CallControllableUnitLookupErrors,
   CallControllableUnitLookupResponses,
+  CallDownloadServiceProvidingGroupProductApplicationAttachmentData,
+  CallDownloadServiceProvidingGroupProductApplicationAttachmentErrors,
   CallEntityLookupData,
   CallEntityLookupErrors,
   CallEntityLookupResponses,
@@ -124,8 +126,6 @@ import type {
   DeleteTechnicalResourceData,
   DeleteTechnicalResourceErrors,
   DeleteTechnicalResourceResponses,
-  DownloadServiceProvidingGroupProductApplicationAttachmentData,
-  DownloadServiceProvidingGroupProductApplicationAttachmentErrors,
   ListAccountingPointBalanceResponsiblePartyData,
   ListAccountingPointBalanceResponsiblePartyErrors,
   ListAccountingPointBalanceResponsiblePartyResponses,
@@ -5385,27 +5385,28 @@ export const readNotice = <ThrowOnError extends boolean = false>(
   });
 
 /**
- * Download Service Providing Group Product Application Attachment
+ * Call download Service Providing Group Product Application Attachment
  *
- * Download [Service Providing Group Product Application Attachment](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application_attachment/)
+ * Call download [Service Providing Group Product Application Attachment](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application_attachment/)
  */
-export const downloadServiceProvidingGroupProductApplicationAttachment = <
+export const callDownloadServiceProvidingGroupProductApplicationAttachment = <
   ThrowOnError extends boolean = false,
 >(
   options: Options<
-    DownloadServiceProvidingGroupProductApplicationAttachmentData,
+    CallDownloadServiceProvidingGroupProductApplicationAttachmentData,
     ThrowOnError
   >,
 ): RequestResult<
   unknown,
-  DownloadServiceProvidingGroupProductApplicationAttachmentErrors,
+  CallDownloadServiceProvidingGroupProductApplicationAttachmentErrors,
   ThrowOnError
 > =>
   (options.client ?? client).get<
     unknown,
-    DownloadServiceProvidingGroupProductApplicationAttachmentErrors,
+    CallDownloadServiceProvidingGroupProductApplicationAttachmentErrors,
     ThrowOnError
   >({
+    security: [{ scheme: "bearer", type: "http" }],
     url: "/service_providing_group_product_application_attachment/{id}/download",
     ...options,
   });
