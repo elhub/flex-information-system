@@ -1,10 +1,10 @@
 [tools]
 "python" = "3.14.6"
 "go" = "1.26.5"
-"uv" = "0.11.28"
+"uv" = "0.11.29"
 "golangci-lint" = "2.12.2"
 "pandoc" = "3.10"
-"ruff" = "0.15.21"
+"ruff" = "0.15.22"
 "sqlc" = "1.31.1"
 
 "go:github.com/google/go-licenses/v2" = "2.0.1"
