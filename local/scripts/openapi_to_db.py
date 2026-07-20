@@ -153,7 +153,7 @@ if __name__ == "__main__":
                 j2.template(
                     {"resource": resource["id"], "data": resource},
                     "attachment_view.j2.sql",
-                    f"{DB_DIR}/api/{resource['id']}_attachment.sql",
+                    f"{DB_DIR}/attachment/{resource['id']}_attachment.sql",
                 )
 
                 attachment_resource = yaml.safe_load(

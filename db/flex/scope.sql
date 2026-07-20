@@ -20,6 +20,9 @@ ADD CONSTRAINT check_scope CHECK (
         'manage:data:entity_client',
         'read:auth',
         'use:auth',
-        'manage:auth'
+        'manage:auth',
+        'read:attachment',
+        'use:attachment',
+        'manage:attachment'
     )
 );

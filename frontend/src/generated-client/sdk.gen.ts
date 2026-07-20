@@ -5406,7 +5406,6 @@ export const downloadServiceProvidingGroupProductApplicationAttachment = <
     DownloadServiceProvidingGroupProductApplicationAttachmentErrors,
     ThrowOnError
   >({
-    security: [{ scheme: "bearer", type: "http" }],
     url: "/service_providing_group_product_application_attachment/{id}/download",
     ...options,
   });

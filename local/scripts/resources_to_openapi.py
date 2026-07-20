@@ -869,6 +869,25 @@ def generate_openapi_document(base_file, resources_file, servers_file):
                 if param.get("name") == f"{base_resource_id}_id":
                     param["required"] = True
 
+        # fix scopes on all attachment endpoints: use attachment asset instead of data
+        for method, read in [("get", True), ("post", False)]:
+            if list_path and method in list_path:
+                verb = "read" if read else "manage"
+                security = [{"bearerAuth": [f"{verb}:attachment:{resource['id']}"]}]
+                if read:
+                    security.append({})
+                list_path[method]["security"] = security
+
+        id_path_obj = base["paths"].get(f"/{resource['id']}/{{id}}")
+        if id_path_obj:
+            for method, read in [("get", True), ("delete", False)]:
+                if method in id_path_obj:
+                    verb = "read" if read else "manage"
+                    security = [{"bearerAuth": [f"{verb}:attachment:{resource['id']}"]}]
+                    if read:
+                        security.append({})
+                    id_path_obj[method]["security"] = security
+
         # replace create request body
         if list_path and "post" in list_path:
             list_path["post"]["requestBody"] = {
@@ -908,7 +927,7 @@ def generate_openapi_document(base_file, resources_file, servers_file):
                     "description": f"Download [{resource_summary}](https://elhub.github.io/flex-information-system/resources/{resource['id']}/)",
                     "tags": [resource["id"]],
                     "security": [
-                        {"bearerAuth": [f"read:data:{resource['id']}"]},
+                        {"bearerAuth": [f"read:attachment:{resource['id']}"]},
                         {},
                     ],
                     "responses": {

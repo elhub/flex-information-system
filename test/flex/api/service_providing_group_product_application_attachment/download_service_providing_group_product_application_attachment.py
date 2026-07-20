@@ -93,7 +93,7 @@ def _build_response(
 def sync_detailed(
     id: int,
     *,
-    client: AuthenticatedClient,
+    client: AuthenticatedClient | Client,
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage]:
     """Download Service Providing Group Product Application Attachment
 
@@ -125,7 +125,7 @@ def sync_detailed(
 def sync(
     id: int,
     *,
-    client: AuthenticatedClient,
+    client: AuthenticatedClient | Client,
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Download Service Providing Group Product Application Attachment
 
@@ -152,7 +152,7 @@ def sync(
 async def asyncio_detailed(
     id: int,
     *,
-    client: AuthenticatedClient,
+    client: AuthenticatedClient | Client,
 ) -> Response[Any | EmptyObject | ErrorMessage | ErrorMessage]:
     """Download Service Providing Group Product Application Attachment
 
@@ -182,7 +182,7 @@ async def asyncio_detailed(
 async def asyncio(
     id: int,
     *,
-    client: AuthenticatedClient,
+    client: AuthenticatedClient | Client,
 ) -> Any | EmptyObject | ErrorMessage | ErrorMessage | None:
     """Download Service Providing Group Product Application Attachment
 

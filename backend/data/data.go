@@ -103,15 +103,29 @@ func NewAPIHandler(
 	)
 
 	// attachment read handled by PostgREST
-	// we just enforce the presence of the query parameter
+	// we just enforce the presence of the query parameter and the attachment scope
+	attachmentPostgRESTHandler := http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+		req.Header.Set("Accept-Profile", "attachment")
+		data.postgRESTHandler(w, req)
+	})
+	attachmentReadHandler := auth.CheckScope(
+		scope.Scope{Verb: scope.Read, Asset: "attachment:service_providing_group_product_application_attachment"},
+		attachmentPostgRESTHandler,
+	)
+	attachmentListHandler := middleware.DefaultQueryLimit(
+		auth.CheckScope(
+			scope.Scope{Verb: scope.Read, Asset: "attachment:service_providing_group_product_application_attachment"},
+			attachmentPostgRESTHandler,
+		),
+	)
 	mux.Handle(
 		"GET /service_providing_group_product_application_attachment",
 		requireQueryParameter(
 			"service_providing_group_product_application_id",
-			dataListPostgRESTHandler,
+			attachmentListHandler,
 		),
 	)
-	mux.Handle("GET /service_providing_group_product_application_attachment/{id}", dataPostgRESTHandler)
+	mux.Handle("GET /service_providing_group_product_application_attachment/{id}", attachmentReadHandler)
 
 	// attachment write handled by the Kotlin backend
 	mux.HandleFunc(

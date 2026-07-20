@@ -11,12 +11,14 @@ csv_reader = csv.reader(sys.stdin, delimiter=";")
 headers = next(csv_reader)
 excluded_rows = ("", None, "_", "-")
 
-if "MO" in headers:
-    mo_idx = headers.index("MO")
-    headers.pop(mo_idx)
+excluded_cols = {col for col in ("MO", "SCHEMA") if col in headers}
+excluded_idxs = {headers.index(col) for col in excluded_cols}
+for col in sorted(excluded_cols, key=lambda c: headers.index(c), reverse=True):
+    headers.pop(headers.index(col))
 
+if excluded_idxs:
     rows = [
-        [cell for i, cell in enumerate(row) if i != mo_idx]
+        [cell for i, cell in enumerate(row) if i not in excluded_idxs]
         for row in csv_reader
         if row[0] not in excluded_rows
     ]

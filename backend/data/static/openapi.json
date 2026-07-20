@@ -36793,14 +36793,6 @@
                 "tags": [
                     "service_providing_group_product_application_attachment"
                 ],
-                "security": [
-                    {
-                        "bearerAuth": [
-                            "read:data:service_providing_group_product_application_attachment"
-                        ]
-                    },
-                    {}
-                ],
                 "responses": {
                     "302": {
                         "description": "Found — redirect to a pre-signed download URL",

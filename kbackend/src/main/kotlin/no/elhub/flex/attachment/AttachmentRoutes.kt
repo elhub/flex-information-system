@@ -31,7 +31,7 @@ fun Application.attachmentRoutes(
 
         route("/${baseResource}_attachment") {
             method(HttpMethod.Post) {
-                requireScope(Scope(ScopeVerb.Manage, "data:${baseResource}_attachment"))
+                requireScope(Scope(ScopeVerb.Manage, "attachment:${baseResource}_attachment"))
                 editRoles.takeIf { it.isNotEmpty() }?.let {
                     requireRoles(*it.toTypedArray())
                 }
@@ -40,14 +40,14 @@ fun Application.attachmentRoutes(
         }
         route("/${baseResource}_attachment/{id}") {
             method(HttpMethod.Delete) {
-                requireScope(Scope(ScopeVerb.Manage, "data:${baseResource}_attachment"))
+                requireScope(Scope(ScopeVerb.Manage, "attachment:${baseResource}_attachment"))
                 editRoles.takeIf { it.isNotEmpty() }?.let {
                     requireRoles(*it.toTypedArray())
                 }
                 handle { handler.delete(call) }
             }
             route("/download") {
-                requireScope(Scope(ScopeVerb.Read, "data:${baseResource}_attachment"))
+                requireScope(Scope(ScopeVerb.Read, "attachment:${baseResource}_attachment"))
                 get { handler.download(call) }
             }
         }

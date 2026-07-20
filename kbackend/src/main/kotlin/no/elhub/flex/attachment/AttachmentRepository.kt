@@ -88,7 +88,7 @@ interface AttachmentRepository {
  * no way to supply [baseResource] automatically.
  */
 class AttachmentRepositoryImpl(private val baseResource: String) : AttachmentRepository {
-    private val view = "api.${baseResource}_attachment"
+    private val view = "attachment.${baseResource}_attachment"
     private val parentIdColumn = "${baseResource}_id"
 
     private val selectColumns =
@@ -148,7 +148,7 @@ class AttachmentRepositoryImpl(private val baseResource: String) : AttachmentRep
             Either.catch {
                 val canEdit = conn.prepareNamed(
                     """
-                    SELECT api.service_providing_group_product_application_attachment_can_edit(:parentId) AS can_edit
+                    SELECT attachment.service_providing_group_product_application_attachment_can_edit(:parentId) AS can_edit
                     """,
                     mapOf(
                         "parentId" to parentId,

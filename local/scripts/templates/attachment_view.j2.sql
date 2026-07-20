@@ -7,9 +7,9 @@
 {%- set liquibase_resource = resource | replace("_", "-") %}
 {%- set lower_acronym = data.acronym | lower %}
 
--- changeset flex:api-{{ liquibase_resource }}-attachment-create endDelimiter:-- runOnChange:true
+-- changeset flex:attachment-{{ liquibase_resource }}-attachment-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW
-api.{{ resource }}_attachment
+attachment.{{ resource }}_attachment
 WITH (security_invoker = true) AS (
     SELECT
         {{ lower_acronym }}a.id,
@@ -26,7 +26,7 @@ WITH (security_invoker = true) AS (
             ON {{ lower_acronym }}a.attachment_id = att.id
 );
 
--- changeset flex:api-{{ liquibase_resource }}-attachment-stateful-operation-function endDelimiter:-- runOnChange:true
+-- changeset flex:attachment-{{ liquibase_resource }}-attachment-stateful-operation-function endDelimiter:-- runOnChange:true
 CREATE OR REPLACE FUNCTION
 {{ lower_acronym }}_attachment_stateful_operation()
 RETURNS TRIGGER
@@ -87,17 +87,17 @@ BEGIN
 END;
 $$;
 
--- changeset flex:api-{{ liquibase_resource }}-attachment-stateful-operation-trigger endDelimiter:-- runOnChange:true
+-- changeset flex:attachment-{{ liquibase_resource }}-attachment-stateful-operation-trigger endDelimiter:-- runOnChange:true
 CREATE TRIGGER
 {{ lower_acronym }}_attachment_stateful_operation_trigger
 INSTEAD OF INSERT OR DELETE
-ON api.{{ resource }}_attachment
+ON attachment.{{ resource }}_attachment
 FOR EACH ROW EXECUTE FUNCTION
 {{ lower_acronym }}_attachment_stateful_operation();
 
--- changeset flex:api-{{ liquibase_resource }}-attachment-can-edit-function endDelimiter:-- runOnChange:true
+-- changeset flex:attachment-{{ liquibase_resource }}-attachment-can-edit-function endDelimiter:-- runOnChange:true
 CREATE OR REPLACE FUNCTION
-api.{{ resource }}_attachment_can_edit(
+attachment.{{ resource }}_attachment_can_edit(
     in_{{ resource }}_id BIGINT
 )
 RETURNS BOOLEAN

@@ -4,9 +4,9 @@
 -- RF04 - Keywords should not be used as identifiers.
 -- ST06 - Select wildcards then simple targets before calculations and aggregates.
 
--- changeset flex:api-service-providing-group-product-application-attachment-create endDelimiter:-- runOnChange:true
+-- changeset flex:attachment-service-providing-group-product-application-attachment-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW
-api.service_providing_group_product_application_attachment
+attachment.service_providing_group_product_application_attachment
 WITH (security_invoker = true) AS (
     SELECT
         spgpaa.id,
@@ -23,7 +23,7 @@ WITH (security_invoker = true) AS (
             ON spgpaa.attachment_id = att.id
 );
 
--- changeset flex:api-service-providing-group-product-application-attachment-stateful-operation-function endDelimiter:-- runOnChange:true
+-- changeset flex:attachment-service-providing-group-product-application-attachment-stateful-operation-function endDelimiter:-- runOnChange:true
 CREATE OR REPLACE FUNCTION
 spgpa_attachment_stateful_operation()
 RETURNS TRIGGER
@@ -84,17 +84,17 @@ BEGIN
 END;
 $$;
 
--- changeset flex:api-service-providing-group-product-application-attachment-stateful-operation-trigger endDelimiter:-- runOnChange:true
+-- changeset flex:attachment-service-providing-group-product-application-attachment-stateful-operation-trigger endDelimiter:-- runOnChange:true
 CREATE TRIGGER
 spgpa_attachment_stateful_operation_trigger
 INSTEAD OF INSERT OR DELETE
-ON api.service_providing_group_product_application_attachment
+ON attachment.service_providing_group_product_application_attachment
 FOR EACH ROW EXECUTE FUNCTION
 spgpa_attachment_stateful_operation();
 
--- changeset flex:api-service-providing-group-product-application-attachment-can-edit-function endDelimiter:-- runOnChange:true
+-- changeset flex:attachment-service-providing-group-product-application-attachment-can-edit-function endDelimiter:-- runOnChange:true
 CREATE OR REPLACE FUNCTION
-api.service_providing_group_product_application_attachment_can_edit(
+attachment.service_providing_group_product_application_attachment_can_edit(
     in_service_providing_group_product_application_id BIGINT
 )
 RETURNS BOOLEAN
