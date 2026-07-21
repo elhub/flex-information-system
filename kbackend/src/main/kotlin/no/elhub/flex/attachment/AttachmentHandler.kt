@@ -144,6 +144,7 @@ class AttachmentHandler(
         }.respondJson(call, HttpStatusCode.Created)
     }
 
+    @ConsistentCopyVisibility
     private data class CreateBody private constructor(
         val baseResourceId: Long,
         val contentType: FileContentType?,
