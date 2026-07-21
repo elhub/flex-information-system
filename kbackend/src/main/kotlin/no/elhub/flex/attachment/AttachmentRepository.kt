@@ -67,8 +67,7 @@ interface AttachmentRepository {
     suspend fun insert(
         parentId: Long,
         objectId: String,
-        filename: String,
-        sanitisedFilename: AttachmentFilename,
+        filename: AttachmentFilename,
         contentType: FileContentType,
         sizeBytes: Long,
     ): Either<RepositoryError, AttachmentRecord>
@@ -164,8 +163,7 @@ class AttachmentRepositoryImpl(private val baseResource: String) : AttachmentRep
     override suspend fun insert(
         parentId: Long,
         objectId: String,
-        filename: String,
-        sanitisedFilename: AttachmentFilename,
+        filename: AttachmentFilename,
         contentType: FileContentType,
         sizeBytes: Long,
     ): Either<RepositoryError, AttachmentRecord> =
@@ -180,8 +178,8 @@ class AttachmentRepositoryImpl(private val baseResource: String) : AttachmentRep
                     mapOf(
                         "parentId" to parentId,
                         "objectId" to objectId,
-                        "filename" to filename,
-                        "filenameSanitised" to sanitisedFilename.value,
+                        "filename" to filename.rawValue,
+                        "filenameSanitised" to filename.value,
                         "contentType" to contentType.toString(),
                         "sizeBytes" to sizeBytes,
                     ),

@@ -1,17 +1,21 @@
 package no.elhub.flex.attachment
 
 import arrow.core.Either
+import arrow.core.flatMap
 import arrow.core.left
 import arrow.core.raise.either
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.content.MultiPartData
 import io.ktor.http.content.PartData
 import io.ktor.server.routing.RoutingCall
 import io.ktor.utils.io.toByteArray
 import no.elhub.flex.auth.AccessTokenKey
+import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.auth.FlexRole
 import no.elhub.flex.auth.toFlexPrincipal
 import no.elhub.flex.model.domain.db.NotFoundError
+import no.elhub.flex.model.error.AppError
 import no.elhub.flex.model.error.ForbiddenError
 import no.elhub.flex.model.error.InternalServerError
 import no.elhub.flex.model.error.MultipartError
@@ -92,91 +96,18 @@ class AttachmentHandler(
         either {
             val principal = call.attributes[AccessTokenKey].toFlexPrincipal()
 
-            val body = call.multipart(MAX_MULTIPART_SIZE_BYTES).bind()
+            // extract information from multipart body
+            val createBody =
+                call.multipart(MAX_MULTIPART_SIZE_BYTES)
+                    .flatMap { with(principal) { CreateBody.parse(it, baseResource, repo) } }
+                    .bind()
 
-            // parent ID part expected first, allowing to check authorisation before the file bytes.
-            // readPart() reads lazily, so the size limit IOException can surface here.
-            val parentIdPart = Either.catch { body.readPart() }
-                .mapLeft { e ->
-                    when (e) {
-                        is IOException -> MultipartError()
-
-                        else -> {
-                            logger.error { "Unexpected error reading multipart parent ID part: $e" }
-                            InternalServerError(traceIdOrUnknown())
-                        }
-                    }
-                }.bind()
-            if (parentIdPart == null || parentIdPart !is PartData.FormItem || parentIdPart.name != "${baseResource}_id") {
-                parentIdPart?.release()
-                raise(ParsingError("Expected ${baseResource}_id as first multipart field"))
-            }
-            val parentId = parentIdPart.value.toLongOrNull()
-            parentIdPart.release()
-            if (parentId == null) raise(ParsingError("Invalid ${baseResource}_id"))
-
-            // authorisation check
-            val canEdit =
-                if (principal.role == FlexRole.FLEXIBILITY_INFORMATION_SYSTEM_OPERATOR.roleName) {
-                    true
-                } else {
-                    with(principal) { repo.canEdit(parentId) }
-                        .mapLeft { e ->
-                            logger.error { "Failed authorisation check on attachment for parentId=$parentId: $e" }
-                            InternalServerError(traceIdOrUnknown())
-                        }.bind()
-                }
-            if (!canEdit) {
-                raise(ForbiddenError("User cannot upload attachment to this resource"))
-            }
-
-            // now file part
-            val filePart = Either.catch { body.readPart() }
-                .mapLeft { e ->
-                    when (e) {
-                        is IOException -> MultipartError()
-
-                        else -> {
-                            logger.error { "Unexpected error reading multipart file part: $e" }
-                            InternalServerError(traceIdOrUnknown())
-                        }
-                    }
-                }.bind()
-            if (filePart == null || filePart !is PartData.FileItem || filePart.name != "file") {
-                filePart?.release()
-                raise(ParsingError("Expected file as second multipart field"))
-            }
-            val filename = filePart.originalFileName
-            if (filename == null) {
-                filePart.release()
-                raise(ParsingError("Missing file name"))
-            }
-            val extensionContentType = FileContentType.fromFilename(filename)
-            val filenameSanitised = AttachmentFilename.parse(filename)
-                .onLeft { filePart.release() }
-                .bind()
-            val contentType = filePart.contentType?.let { FileContentType.fromString(it.toString()) }
-            // read the full file body, this is where the size limit fires
-            val fileBytes = Either.catch { filePart.provider().toByteArray() }
-                .mapLeft { e ->
-                    filePart.release()
-                    when (e) {
-                        is IOException -> MultipartError()
-
-                        else -> {
-                            logger.error { "Unexpected error reading file bytes: $e" }
-                            InternalServerError(traceIdOrUnknown())
-                        }
-                    }
-                }.bind()
-            filePart.release()
-
-            if (contentType != null && extensionContentType != null && contentType != extensionContentType) {
-                raise(ParsingError("Content type $contentType does not match file extension for '$filename'"))
+            if (createBody.contentType != null && createBody.extensionContentType != null && createBody.contentType != createBody.extensionContentType) {
+                raise(ParsingError("Content type ${createBody.contentType} does not match file extension for '${createBody.filename.rawValue}'"))
             }
 
             // validate file content
-            val fileContent = FileContent.parse(contentType ?: extensionContentType, fileBytes)
+            val fileContent = FileContent.parse(createBody.contentType ?: createBody.extensionContentType, createBody.fileBytes)
                 .mapLeft { e ->
                     logger.error { "File validation failed for new attachment: $e" }
                     when (e) {
@@ -188,7 +119,7 @@ class AttachmentHandler(
 
             // upload to storage
             val objectId = UUID.randomUUID().toString()
-            attachmentStorageService.upload(objectId, filenameSanitised, fileContent)
+            attachmentStorageService.upload(objectId, createBody.filename, fileContent)
                 .mapLeft { e ->
                     logger.error { "Error while uploading $objectId: $e" }
                     InternalServerError(traceIdOrUnknown())
@@ -198,10 +129,9 @@ class AttachmentHandler(
             // insert metadata into DB
             with(principal) {
                 repo.insert(
-                    parentId,
+                    createBody.baseResourceId,
                     objectId,
-                    filename,
-                    filenameSanitised,
+                    createBody.filename,
                     fileContent.contentType,
                     fileContent.bytes.size.toLong(),
                 )
@@ -212,6 +142,98 @@ class AttachmentHandler(
                     InternalServerError(traceIdOrUnknown())
                 }.bind()
         }.respondJson(call, HttpStatusCode.Created)
+    }
+
+    private data class CreateBody private constructor(
+        val baseResourceId: Long,
+        val contentType: FileContentType?,
+        val extensionContentType: FileContentType?,
+        val fileBytes: ByteArray,
+        val filename: AttachmentFilename
+    ) {
+        companion object {
+            context(principal: FlexPrincipal)
+            suspend fun parse(body: MultiPartData, baseResource: String, repo: AttachmentRepository): Either<AppError, CreateBody> =
+                either {
+                    // base resource ID part expected first, allowing an authorisation check before file parsing
+                    val baseResourceIdPart = Either.catch { body.readPart() }
+                        .mapLeft { e ->
+                            when (e) {
+                                is IOException -> MultipartError()
+
+                                else -> {
+                                    logger.error { "Unexpected error reading multipart parent ID part: $e" }
+                                    InternalServerError(traceIdOrUnknown())
+                                }
+                            }
+                        }.bind()
+                    if (baseResourceIdPart == null || baseResourceIdPart !is PartData.FormItem || baseResourceIdPart.name != "${baseResource}_id") {
+                        baseResourceIdPart?.release()
+                        raise(ParsingError("Expected ${baseResource}_id as first multipart field"))
+                    }
+                    val baseResourceId = baseResourceIdPart.value.toLongOrNull()
+                    baseResourceIdPart.release()
+                    if (baseResourceId == null) raise(ParsingError("Invalid ${baseResource}_id"))
+
+                    // authorisation check
+                    val canEdit =
+                        if (principal.role == FlexRole.FLEXIBILITY_INFORMATION_SYSTEM_OPERATOR.roleName) {
+                            true
+                        } else {
+                            with(principal) { repo.canEdit(baseResourceId) }
+                                .mapLeft { e ->
+                                    logger.error { "Failed authorisation check on attachment for baseResourceId=$baseResourceId: $e" }
+                                    InternalServerError(traceIdOrUnknown())
+                                }.bind()
+                        }
+                    if (!canEdit) {
+                        raise(ForbiddenError("User cannot upload attachment to this resource"))
+                    }
+
+                    // now file part
+                    val filePart = Either.catch { body.readPart() }
+                        .mapLeft { e ->
+                            when (e) {
+                                is IOException -> MultipartError()
+
+                                else -> {
+                                    logger.error { "Unexpected error reading multipart file part: $e" }
+                                    InternalServerError(traceIdOrUnknown())
+                                }
+                            }
+                        }.bind()
+                    if (filePart == null || filePart !is PartData.FileItem || filePart.name != "file") {
+                        filePart?.release()
+                        raise(ParsingError("Expected file as second multipart field"))
+                    }
+                    val filename = filePart.originalFileName
+                    if (filename == null) {
+                        filePart.release()
+                        raise(ParsingError("Missing file name"))
+                    }
+                    val extensionContentType = FileContentType.fromFilename(filename)
+                    val filenameSanitised = AttachmentFilename.parse(filename)
+                        .onLeft { filePart.release() }
+                        .bind()
+                    val contentType = filePart.contentType?.let { FileContentType.fromString(it.toString()) }
+                    // read the full file body, this is where the size limit fires
+                    val fileBytes = Either.catch { filePart.provider().toByteArray() }
+                        .mapLeft { e ->
+                            filePart.release()
+                            when (e) {
+                                is IOException -> MultipartError()
+
+                                else -> {
+                                    logger.error { "Unexpected error reading file bytes: $e" }
+                                    InternalServerError(traceIdOrUnknown())
+                                }
+                            }
+                        }.bind()
+                    filePart.release()
+
+                    CreateBody(baseResourceId, contentType, extensionContentType, fileBytes, filenameSanitised)
+                }
+        }
     }
 
     suspend fun delete(call: RoutingCall) {

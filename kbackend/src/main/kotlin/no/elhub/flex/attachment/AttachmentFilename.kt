@@ -7,6 +7,7 @@ import no.elhub.flex.model.error.ParsingError
 @ConsistentCopyVisibility
 data class AttachmentFilename private constructor(
     val value: String,
+    val rawValue: String
 ) {
     /** Factory for parsing [AttachmentFilename] values. */
     companion object {
@@ -22,7 +23,7 @@ data class AttachmentFilename private constructor(
                     raise(ParsingError("Attachment filename must start with a letter"))
                 }
 
-                AttachmentFilename(sanitised)
+                AttachmentFilename(sanitised, str)
             }
     }
 }
