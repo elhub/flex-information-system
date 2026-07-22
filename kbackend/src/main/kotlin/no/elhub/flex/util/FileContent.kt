@@ -125,7 +125,7 @@ private fun parsePdf(bytes: ByteArray): Either<FileValidationError, FileContent>
                 creationDate = null
                 modificationDate = null
                 // clear custom structural metadata
-                setCustomMetadataValue(null, null)
+                metadataKeys.forEach { key -> setCustomMetadataValue(key, null) }
             }
             catalog.metadata = null
 
