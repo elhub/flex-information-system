@@ -230,8 +230,11 @@ class AttachmentHandler(
                                 }
                             }
                         }.bind()
+                    if (fileBytes.size.toLong() > MAX_MULTIPART_SIZE_BYTES) {
+                        filePart.release()
+                        raise(ParsingError("File exceeds maximum size of $MAX_MULTIPART_SIZE_BYTES bytes"))
+                    }
                     filePart.release()
-
                     CreateBody(baseResourceId, contentType, extensionContentType, fileBytes, filenameSanitised)
                 }
         }
