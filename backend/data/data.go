@@ -428,9 +428,9 @@ func requireQueryParameter(name string, next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 		if _, ok := req.URL.Query()[name]; !ok {
 			writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
-				Code:    http.StatusText(http.StatusBadRequest),
 				Message: "missing required query parameter: " + name,
 			})
+			return
 		}
 		next.ServeHTTP(w, req)
 	})
