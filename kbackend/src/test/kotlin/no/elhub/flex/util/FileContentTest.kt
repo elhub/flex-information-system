@@ -27,6 +27,14 @@ class FileContentTest : FunSpec({
     fun minimalJpeg(): ByteArray = minimalImage("jpeg")
     fun minimalPng(): ByteArray = minimalImage("png")
 
+    // create an image with the given dimensions encoded in the given format
+    fun imageOfSize(width: Int, height: Int, format: String): ByteArray {
+        val img = BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
+        val out = ByteArrayOutputStream()
+        ImageIO.write(img, format, out)
+        return out.toByteArray()
+    }
+
     // invalid PDF tests (happy path is tested in attachment test)
 
     test("random bytes are not a valid PDF") {
@@ -177,5 +185,26 @@ class FileContentTest : FunSpec({
 
         result.shouldBeLeft()
         result.value.shouldBeInstanceOf<InvalidFileContent>()
+    }
+
+    // decompression bomb / pixel limit tests
+
+    test("JPEG that decodes to more than 7 Mpx is rejected") {
+        // 8000x8000 = 64 Mpx
+        val bytes = imageOfSize(8000, 8000, "jpeg")
+
+        val result = FileContent.parse(FileContentType.JPEG, bytes)
+
+        result.shouldBeLeft()
+        result.value.shouldBeInstanceOf<InvalidFileContent>()
+    }
+
+    test("JPEG that decodes to just below 7 Mpx is accepted") {
+        // 2580x2580 = ~6.6 Mpx
+        val bytes = imageOfSize(2580, 2580, "jpeg")
+
+        val result = FileContent.parse(FileContentType.JPEG, bytes)
+
+        result.shouldBeRight()
     }
 })

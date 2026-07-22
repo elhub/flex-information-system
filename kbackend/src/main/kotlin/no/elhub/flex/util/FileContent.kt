@@ -153,6 +153,11 @@ private fun parsePdf(bytes: ByteArray): Either<FileValidationError, FileContent>
         InvalidFileContent("Could not parse and sanitise PDF: ${e.message}")
     }
 
+// avoid decompression bombs by bounding the maximum number of pixels
+// 7 Mpx makes a bit more than 20 MB of raw pixel data (3-4 bytes per pixel)
+// which is around our limit for uploaded files
+private const val MAX_IMAGE_PIXELS: Long = 7_000_000L
+
 private fun parseImage(
     bytes: ByteArray,
     expectedContentType: FileContentType? = null,
@@ -192,6 +197,17 @@ private fun parseImage(
             ImageIO.read(bytes.inputStream())
         }.mapLeft { e -> InvalidFileContent("Could not decode image: ${e.message}") }.bind()
             ?: raise(InvalidFileContent("Could not decode image: unrecognised or truncated data"))
+
+        // reject images that decompress to an excessively large pixel buffer
+        val pixelCount = image.width.toLong() * image.height.toLong()
+        if (pixelCount > MAX_IMAGE_PIXELS) {
+            image.flush()
+            raise(
+                InvalidFileContent(
+                    "Image dimensions ${image.width}x${image.height} exceed the maximum of $MAX_IMAGE_PIXELS pixels"
+                )
+            )
+        }
 
         // JPEG only: verify EOI marker at end of file
         if (detectedContentType == FileContentType.JPEG) {
