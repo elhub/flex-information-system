@@ -147,7 +147,7 @@ class AttachmentRepositoryImpl(private val baseResource: String) : AttachmentRep
             Either.catch {
                 val canEdit = conn.prepareNamed(
                     """
-                    SELECT attachment.service_providing_group_product_application_attachment_can_edit(:parentId) AS can_edit
+                    SELECT attachment.${baseResource}_attachment_can_edit(:parentId) AS can_edit
                     """,
                     mapOf(
                         "parentId" to parentId,
