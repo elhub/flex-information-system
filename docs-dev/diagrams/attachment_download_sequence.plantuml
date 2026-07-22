@@ -31,7 +31,7 @@ end note
 deactivate bucket
 
 fis -> user:\
-""301 Moved Permanently""\n\
+""302 Found""\n\
 Redirect to ""<color #886599>url</color>""
 deactivate fis
 
