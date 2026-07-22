@@ -5,9 +5,12 @@ import { IconDownload, IconUpload, IconCross } from "@elhub/ds-icons";
 import { Button, Loader } from "../ui";
 import { useConfirmAction } from "../ConfirmAction";
 import { IconDocument, IconImage } from "./icons";
-import type { Attachment } from "./types";
 import type { Permissions, PermissionTarget } from "../../auth/permissions";
-import { apiURL, API_VERSION } from "../../httpConfig";
+import {
+  attachmentRegistry,
+  type AttachmentResource,
+  type AttachmentItem,
+} from "./registry";
 
 // helpers
 
@@ -27,14 +30,13 @@ function formatDate(iso: string): string {
   });
 }
 
-// fetch file from backend and trigger a browser download
-async function triggerDownload(downloadUrl: string, fileName: string) {
-  const response = await fetch(downloadUrl, {
-    credentials: "include",
-    headers: { "Api-Version": API_VERSION },
-  });
-  if (!response.ok) throw new Error(`Download failed: ${response.status}`);
-  const blob = await response.blob();
+// trigger a browser download from a blob
+async function triggerDownload(
+  onDownload: (id: number) => Promise<Blob>,
+  attachmentId: number,
+  fileName: string,
+) {
+  const blob = await onDownload(attachmentId);
 
   // temporary object URL that will allow downloading without changing pages
   const objectUrl = URL.createObjectURL(blob);
@@ -50,38 +52,18 @@ async function triggerDownload(downloadUrl: string, fileName: string) {
   URL.revokeObjectURL(objectUrl);
 }
 
-// thin fetch wrapper that always sends credentials and the Api-Version header
-// TODO: replace calls with API client once attachments are automated
-async function apiFetch(url: string, init?: RequestInit): Promise<Response> {
-  const response = await fetch(url, {
-    ...init,
-    credentials: "include",
-    headers: {
-      "Api-Version": API_VERSION,
-      ...init?.headers,
-    },
-  });
-  if (!response.ok) {
-    const detail = await response.text().catch(() => "");
-    throw new Error(
-      `API error ${response.status} ${response.statusText}${detail ? `: ${detail}` : ""}`,
-    );
-  }
-  return response;
-}
-
 // AttachmentCard (component showing each attachment in the list)
 
 type AttachmentCardProps = {
-  attachment: Attachment;
-  downloadUrl: string;
+  attachment: AttachmentItem;
+  onDownload: (id: number) => Promise<Blob>;
   onDelete: () => Promise<void>;
   canDelete: boolean;
 };
 
 function AttachmentCard({
   attachment,
-  downloadUrl,
+  onDownload,
   onDelete,
   canDelete,
 }: AttachmentCardProps) {
@@ -96,7 +78,7 @@ function AttachmentCard({
     setDownloadError(false);
     setIsDownloading(true);
     try {
-      await triggerDownload(downloadUrl, attachment.filename);
+      await triggerDownload(onDownload, attachment.id, attachment.filename);
     } catch {
       setDownloadError(true);
     } finally {
@@ -273,7 +255,7 @@ function UploadArea({ onUpload, isPending, isError }: UploadAreaProps) {
 // AttachmentList (the whole component: all attachments + upload area)
 
 export type AttachmentListProps = {
-  resource: string;
+  resource: AttachmentResource;
   parentId: number | undefined;
 };
 
@@ -281,59 +263,31 @@ export function AttachmentList({ resource, parentId }: AttachmentListProps) {
   const queryClient = useQueryClient();
   const { permissions } = usePermissions<Permissions>();
 
-  const parentField = `${resource}_id`;
+  const client = attachmentRegistry[resource];
+  const permissionTarget = `${resource}_attachment` as PermissionTarget;
+  const reactQueryKey = [`${resource}_attachment`, parentId];
 
-  const queryKey = [`${resource}_attachment`, parentId];
-
-  const attachmentsQuery = useQuery<Attachment[]>({
-    queryKey,
-    queryFn: async () => {
-      const response = await apiFetch(
-        `${apiURL}/${resource}_attachment?${parentField}=eq.${parentId}`,
-        { headers: { Accept: "application/json" } },
-      );
-      return response.json();
-    },
+  const attachmentsQuery = useQuery<AttachmentItem[]>({
+    queryKey: reactQueryKey,
+    queryFn: () => client.list(parentId!),
     enabled: !!parentId,
   });
 
   const uploadAttachment = useMutation<unknown, Error, File>({
     mutationFn: async (file: File) => {
       if (!parentId) throw new Error("No parentId");
-      const body = new FormData();
-      body.append(parentField, String(parentId));
-      body.append("file", file, file.name);
-      const response = await apiFetch(`${apiURL}/${resource}_attachment`, {
-        method: "POST",
-        body,
-      });
-      return response.json();
+      return client.upload(parentId, file);
     },
-    onSettled: () => queryClient.invalidateQueries({ queryKey }),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: reactQueryKey }),
   });
 
   const deleteAttachment = useMutation<unknown, Error, number>({
-    mutationFn: async (attachmentId: number) => {
-      await apiFetch(`${apiURL}/${resource}_attachment/${attachmentId}`, {
-        method: "DELETE",
-      });
-    },
-    onSettled: () => queryClient.invalidateQueries({ queryKey }),
+    mutationFn: (attachmentId: number) => client.delete(attachmentId),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: reactQueryKey }),
   });
 
-  const canCreate =
-    permissions?.allow(
-      `${resource}_attachment` as PermissionTarget,
-      "create",
-    ) ?? false;
-  const canDelete =
-    permissions?.allow(
-      `${resource}_attachment` as PermissionTarget,
-      "delete",
-    ) ?? false;
-
-  const downloadUrl = (attachmentId: number) =>
-    `${apiURL}/${resource}_attachment/${attachmentId}/download`;
+  const canCreate = permissions?.allow(permissionTarget, "create") ?? false;
+  const canDelete = permissions?.allow(permissionTarget, "delete") ?? false;
 
   if (attachmentsQuery.error) throw attachmentsQuery.error;
 
@@ -353,7 +307,7 @@ export function AttachmentList({ resource, parentId }: AttachmentListProps) {
             <AttachmentCard
               key={attachment.id}
               attachment={attachment}
-              downloadUrl={downloadUrl(attachment.id)}
+              onDownload={client.download}
               onDelete={() =>
                 deleteAttachment.mutateAsync(attachment.id).then(() => {})
               }
