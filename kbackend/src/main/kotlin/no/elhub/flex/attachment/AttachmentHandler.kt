@@ -89,7 +89,7 @@ class AttachmentHandler(
                     url
                 }
                 .bind()
-        }.respondRedirect(call, true)
+        }.respondRedirect(call, false)
     }
 
     suspend fun create(call: RoutingCall) {
