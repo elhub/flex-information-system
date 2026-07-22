@@ -1,5 +1,5 @@
 [tools]
-"python" = "3.12"
+"python" = "3.14.6"
 "go" = "1.26.5"
 "uv" = "0.11.29"
 "golangci-lint" = "2.12.2"
