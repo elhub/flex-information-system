@@ -1,7 +1,7 @@
 import { Button, Link, Panel } from "../../../components/ui";
 import { LabelValue } from "../../../components/LabelValue";
 import { Link as RouterLink } from "react-router-dom";
-import { IconPencil } from "@elhub/ds-icons";
+import { IconPencil, IconExternal } from "@elhub/ds-icons";
 import { usePermissions } from "ra-core";
 import type { Permissions } from "../../../auth/permissions";
 import {
@@ -152,6 +152,16 @@ export const SpgpaShowSummary = ({ spgpa, spg }: Props) => {
       <div className="flex gap-4 mt-2">
         <NestedResourceHistoryButton child="product_application" />
         <EventButton filterOnSubject recordId={String(spgpa.id)} />
+        <Button
+          as={RouterLink}
+          to={`/service_providing_group_product_application/${spgpa.id}/print`}
+          target="_blank"
+          rel="noopener noreferrer"
+          variant="invisible"
+          icon={IconExternal}
+        >
+          Print
+        </Button>
       </div>
     </div>
   );

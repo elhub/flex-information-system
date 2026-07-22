@@ -6,7 +6,7 @@ import { Link } from "../ui";
 
 export const Header = () => {
   return (
-    <DSHeader className="w-full p-0">
+    <DSHeader className="w-full p-0 print:hidden">
       <div className="flex h-12 items-center justify-between bg-semantic-background-action-primary px-7">
         <Link
           className="flex items-center gap-2 h-10"
