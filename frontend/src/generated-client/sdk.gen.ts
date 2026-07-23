@@ -431,6 +431,9 @@ import type {
   ReadServiceProvidingGroupMembershipHistoryErrors,
   ReadServiceProvidingGroupMembershipHistoryResponses,
   ReadServiceProvidingGroupMembershipResponses,
+  ReadServiceProvidingGroupPowerPerSubstationData,
+  ReadServiceProvidingGroupPowerPerSubstationErrors,
+  ReadServiceProvidingGroupPowerPerSubstationResponses,
   ReadServiceProvidingGroupProductApplicationCommentData,
   ReadServiceProvidingGroupProductApplicationCommentErrors,
   ReadServiceProvidingGroupProductApplicationCommentHistoryData,
@@ -1334,6 +1337,33 @@ export const readControllableUnitSummary = <
   >({
     security: [{ scheme: "bearer", type: "http" }],
     url: "/controllable_unit_summary/{id}",
+    ...options,
+  });
+
+/**
+ * Read Service Providing Group Power Per Substation
+ *
+ * Read [Service Providing Group Power Per Substation](https://elhub.github.io/flex-information-system/resources/service_providing_group_power_per_substation/)
+ */
+export const readServiceProvidingGroupPowerPerSubstation = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<
+    ReadServiceProvidingGroupPowerPerSubstationData,
+    ThrowOnError
+  >,
+): RequestResult<
+  ReadServiceProvidingGroupPowerPerSubstationResponses,
+  ReadServiceProvidingGroupPowerPerSubstationErrors,
+  ThrowOnError
+> =>
+  (options.client ?? client).get<
+    ReadServiceProvidingGroupPowerPerSubstationResponses,
+    ReadServiceProvidingGroupPowerPerSubstationErrors,
+    ThrowOnError
+  >({
+    security: [{ scheme: "bearer", type: "http" }],
+    url: "/service_providing_group_power_per_substation/{id}",
     ...options,
   });
 

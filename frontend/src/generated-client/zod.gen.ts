@@ -1936,6 +1936,29 @@ export const zControllableUnitSummary = z.object({
 });
 
 /**
+ * Response schema - Per-substation breakdown of controllable units and their technical details for a service providing group.
+ */
+export const zServiceProvidingGroupPowerPerSubstation = z.object({
+  id: z.coerce.number().readonly(),
+  service_providing_group_id: z.coerce.number().readonly(),
+  substations: z
+    .array(
+      z.object({
+        substation_business_id: z.string().optional(),
+        substation_name: z.string().optional(),
+        controllable_unit: z
+          .object({
+            count: z.coerce.number().optional(),
+            maximum_active_power: zNumericAggregation.optional(),
+          })
+          .optional(),
+      }),
+    )
+    .readonly(),
+  service_providing_group: z.lazy((): any => zServiceProvidingGroup).nullish(),
+});
+
+/**
  * Response schema - Aggregated summary of controllable units and technical resources belonging to a service providing group.
  */
 export const zServiceProvidingGroupSummary = z.object({
@@ -1986,6 +2009,7 @@ export const zServiceProvidingGroup = z.object({
   additional_information: z.string().optional(),
   recorded_at: z.iso.datetime({ offset: true }).readonly(),
   recorded_by: z.coerce.number().readonly(),
+  power_per_substation: zServiceProvidingGroupPowerPerSubstation.nullish(),
   summary: zServiceProvidingGroupSummary.nullish(),
   service_provider: z.lazy((): any => zParty).nullish(),
   membership: z
@@ -2663,6 +2687,15 @@ export const zControllableUnitSummaryWritable = z.object({
 });
 
 /**
+ * Response schema - Per-substation breakdown of controllable units and their technical details for a service providing group.
+ */
+export const zServiceProvidingGroupPowerPerSubstationWritable = z.object({
+  service_providing_group: z
+    .lazy((): any => zServiceProvidingGroupWritable)
+    .nullish(),
+});
+
+/**
  * Response schema - Aggregated summary of controllable units and technical resources belonging to a service providing group.
  */
 export const zServiceProvidingGroupSummaryWritable = z.object({
@@ -2680,6 +2713,8 @@ export const zServiceProvidingGroupWritable = z.object({
   bidding_zone: zServiceProvidingGroupBiddingZone,
   status: zServiceProvidingGroupStatus,
   additional_information: z.string().optional(),
+  power_per_substation:
+    zServiceProvidingGroupPowerPerSubstationWritable.nullish(),
   summary: zServiceProvidingGroupSummaryWritable.nullish(),
   service_provider: z.lazy((): any => zPartyWritable).nullish(),
   membership: z
@@ -4409,6 +4444,20 @@ export const zReadControllableUnitSummaryQuery = z.object({
  * OK
  */
 export const zReadControllableUnitSummaryResponse = zControllableUnitSummary;
+
+export const zReadServiceProvidingGroupPowerPerSubstationPath = z.object({
+  id: z.coerce.number(),
+});
+
+export const zReadServiceProvidingGroupPowerPerSubstationQuery = z.object({
+  embed: z.string().optional(),
+});
+
+/**
+ * OK
+ */
+export const zReadServiceProvidingGroupPowerPerSubstationResponse =
+  zServiceProvidingGroupPowerPerSubstation;
 
 export const zReadServiceProvidingGroupSummaryPath = z.object({
   id: z.coerce.number(),

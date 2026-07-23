@@ -928,6 +928,35 @@ export type ControllableUnitSummary = {
 };
 
 /**
+ * Response schema - Per-substation breakdown of controllable units and their technical details for a service providing group.
+ */
+export type ServiceProvidingGroupPowerPerSubstation = {
+  /**
+   * Unique surrogate key (service providing group ID).
+   */
+  readonly id: number;
+  /**
+   * The ID of the service providing group this resource is a breakdown of.
+   */
+  readonly service_providing_group_id: number;
+  /**
+   * List of per-substation aggregates for the controllable units currently in the service providing group. Each element contains the substation identifier and name, plus count and maximum active power statistics for the controllable units connected to that substation. An element with null substation fields groups controllable units whose grid location has not yet been assigned.
+   */
+  readonly substations: Array<{
+    substation_business_id?: string;
+    substation_name?: string;
+    controllable_unit?: {
+      count?: number;
+      maximum_active_power?: NumericAggregation;
+    };
+  }>;
+  /**
+   * Embedded service_providing_group
+   */
+  service_providing_group?: ServiceProvidingGroup | null;
+};
+
+/**
  * Response schema - Aggregated summary of controllable units and technical resources belonging to a service providing group.
  */
 export type ServiceProvidingGroupSummary = {
@@ -1037,6 +1066,10 @@ export type ServiceProvidingGroup = {
    * The identity that recorded the resource.
    */
   readonly recorded_by: number;
+  /**
+   * Embedded service_providing_group_power_per_substation
+   */
+  power_per_substation?: ServiceProvidingGroupPowerPerSubstation | null;
   /**
    * Embedded service_providing_group_summary
    */
@@ -4448,6 +4481,16 @@ export type ControllableUnitSummaryWritable = {
 };
 
 /**
+ * Response schema - Per-substation breakdown of controllable units and their technical details for a service providing group.
+ */
+export type ServiceProvidingGroupPowerPerSubstationWritable = {
+  /**
+   * Embedded service_providing_group
+   */
+  service_providing_group?: ServiceProvidingGroupWritable | null;
+};
+
+/**
  * Response schema - Aggregated summary of controllable units and technical resources belonging to a service providing group.
  */
 export type ServiceProvidingGroupSummaryWritable = {
@@ -4475,6 +4518,10 @@ export type ServiceProvidingGroupWritable = {
    * Free text field for extra information about the service providing group if needed.
    */
   additional_information?: string;
+  /**
+   * Embedded service_providing_group_power_per_substation
+   */
+  power_per_substation?: ServiceProvidingGroupPowerPerSubstationWritable | null;
   /**
    * Embedded service_providing_group_summary
    */
@@ -7901,6 +7948,60 @@ export type ReadControllableUnitSummaryResponses = {
 
 export type ReadControllableUnitSummaryResponse =
   ReadControllableUnitSummaryResponses[keyof ReadControllableUnitSummaryResponses];
+
+export type ReadServiceProvidingGroupPowerPerSubstationData = {
+  body?: never;
+  path: {
+    id: number;
+  };
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
+  url: "/service_providing_group_power_per_substation/{id}";
+};
+
+export type ReadServiceProvidingGroupPowerPerSubstationErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type ReadServiceProvidingGroupPowerPerSubstationError =
+  ReadServiceProvidingGroupPowerPerSubstationErrors[keyof ReadServiceProvidingGroupPowerPerSubstationErrors];
+
+export type ReadServiceProvidingGroupPowerPerSubstationResponses = {
+  /**
+   * OK
+   */
+  200: ServiceProvidingGroupPowerPerSubstation;
+};
+
+export type ReadServiceProvidingGroupPowerPerSubstationResponse =
+  ReadServiceProvidingGroupPowerPerSubstationResponses[keyof ReadServiceProvidingGroupPowerPerSubstationResponses];
 
 export type ReadServiceProvidingGroupSummaryData = {
   body?: never;

@@ -158,6 +158,12 @@ export const tooltips = {
     "The ID of the controllable unit this resource is a summary of.",
   "controllable_unit_summary.technical_resource":
     "Aggregated statistics on technical resources belonging to the controllable unit, including counts and maximum active power breakdowns (sum, average, min, max) by category and technology.",
+  "service_providing_group_power_per_substation.id":
+    "Unique surrogate key (service providing group ID).",
+  "service_providing_group_power_per_substation.service_providing_group_id":
+    "The ID of the service providing group this resource is a breakdown of.",
+  "service_providing_group_power_per_substation.substations":
+    "List of per-substation aggregates for the controllable units currently in the service providing group. Each element contains the substation identifier and name, plus count and maximum active power statistics for the controllable units connected to that substation. An element with null substation fields groups controllable units whose grid location has not yet been assigned.",
   "service_providing_group_summary.id":
     "Unique surrogate key (service providing group ID).",
   "service_providing_group_summary.service_providing_group_id":
