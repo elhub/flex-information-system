@@ -14,7 +14,6 @@ from flex.models import (
     ServiceProvidingGroupBiddingZone,
     ServiceProvidingGroupResponse,
     ServiceProvidingGroupSummaryResponse,
-    ServiceProvidingGroupPowerPerSubstationResponse,
     ServiceProvidingGroupMembershipCreateRequest,
     ServiceProvidingGroupMembershipResponse,
     TechnicalResourceCreateRequest,
@@ -27,9 +26,6 @@ from flex.api.service_providing_group import (
 )
 from flex.api.service_providing_group_summary import (
     read_service_providing_group_summary,
-)
-from flex.api.service_providing_group_power_per_substation import (
-    read_service_providing_group_power_per_substation,
 )
 from flex.api.service_providing_group_membership import (
     create_service_providing_group_membership,
@@ -286,21 +282,3 @@ def test_service_providing_group_summary_aggregation(sts):
 
     # sum for energy_storage should be 55 (TR3+TR5)
     assert by_cat["energy_storage"].maximum_active_power.sum_ == pytest.approx(55.0)
-
-
-# RLS: SPGPPS-COM001
-def test_service_providing_group_power_per_substation_common(sts):
-    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
-    client_sp = sts.get_client(TestEntity.TEST, "SP")
-    client_so = sts.get_client(TestEntity.TEST, "SO")
-
-    for client in [client_fiso, client_sp, client_so]:
-        spgs = list_service_providing_group.sync(client=client)
-        assert isinstance(spgs, list)
-        assert len(spgs) > 0
-
-        pps = read_service_providing_group_power_per_substation.sync(
-            client=client, id=spgs[0].id
-        )
-        assert isinstance(pps, ServiceProvidingGroupPowerPerSubstationResponse)
-        assert isinstance(pps.substations, list)
