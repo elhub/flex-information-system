@@ -54,6 +54,12 @@ public data class ServiceProvidingGroupResponse(
   @SerialName("recorded_by")
   public val recordedBy: Long? = null,
   /**
+   * Response schema - Per-substation breakdown of controllable units and their technical details
+   * for a service providing group.
+   */
+  @SerialName("power_per_substation")
+  public val powerPerSubstation: ServiceProvidingGroupPowerPerSubstationResponse? = null,
+  /**
    * Response schema - Aggregated summary of controllable units and technical resources belonging to
    * a service providing group.
    */

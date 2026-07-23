@@ -45,6 +45,10 @@
             "description": "Controllable Unit Summary"
         },
         {
+            "name": "service_providing_group_power_per_substation",
+            "description": "Service Providing Group Power Per Substation"
+        },
+        {
             "name": "service_providing_group_summary",
             "description": "Service Providing Group Summary"
         },
@@ -1967,6 +1971,101 @@
                     "technical_resource"
                 ]
             },
+            "service_providing_group_power_per_substation_response": {
+                "summary": "Response - Service Providing Group Power Per Substation",
+                "description": "Response schema - Per-substation breakdown of controllable units and their technical details for a service providing group.",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "Unique surrogate key (service providing group ID).",
+                        "format": "bigint",
+                        "type": "integer",
+                        "readOnly": true,
+                        "example": 4
+                    },
+                    "service_providing_group_id": {
+                        "description": "The ID of the service providing group this resource is a breakdown of.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "readOnly": true,
+                        "example": 4
+                    },
+                    "substations": {
+                        "description": "List of per-substation aggregates for the controllable units currently in the service providing group. Each element contains the substation identifier and name, plus count and maximum active power statistics for the controllable units connected to that substation. An element with null substation fields groups controllable units whose grid location has not yet been assigned.",
+                        "type": "array",
+                        "readOnly": true,
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "substation_business_id": {
+                                    "type": "string",
+                                    "nullable": true
+                                },
+                                "substation_name": {
+                                    "type": "string",
+                                    "nullable": true
+                                },
+                                "controllable_unit": {
+                                    "type": "object",
+                                    "properties": {
+                                        "count": {
+                                            "type": "integer"
+                                        },
+                                        "maximum_active_power": {
+                                            "$ref": "#/components/schemas/numeric_aggregation"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "example": [
+                            {
+                                "substation_business_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                                "substation_name": "Substation A",
+                                "controllable_unit": {
+                                    "count": 3,
+                                    "maximum_active_power": {
+                                        "sum": 150,
+                                        "average": 50,
+                                        "min": 30,
+                                        "max": 80
+                                    }
+                                }
+                            },
+                            {
+                                "substation_business_id": null,
+                                "substation_name": null,
+                                "controllable_unit": {
+                                    "count": 1,
+                                    "maximum_active_power": {
+                                        "sum": 20,
+                                        "average": 20,
+                                        "min": 20,
+                                        "max": 20
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    "service_providing_group": {
+                        "description": "Embedded service_providing_group",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/service_providing_group_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "id",
+                    "service_providing_group_id",
+                    "substations"
+                ]
+            },
             "service_providing_group_summary_response": {
                 "summary": "Response - Service Providing Group Summary",
                 "description": "Response schema - Aggregated summary of controllable units and technical resources belonging to a service providing group.",
@@ -2240,6 +2339,18 @@
                         "type": "integer",
                         "readOnly": true,
                         "example": 145
+                    },
+                    "power_per_substation": {
+                        "description": "Embedded service_providing_group_power_per_substation",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/service_providing_group_power_per_substation_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     },
                     "summary": {
                         "description": "Embedded service_providing_group_summary",
@@ -12989,6 +13100,139 @@
                     {
                         "bearerAuth": [
                             "read:data:controllable_unit_summary"
+                        ]
+                    },
+                    {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
+                ]
+            }
+        },
+        "/service_providing_group_power_per_substation/{id}": {
+            "summary": "Service Providing Group Power Per Substation - single",
+            "description": "",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "schema": {
+                        "format": "bigint",
+                        "type": "integer"
+                    },
+                    "example": 14
+                }
+            ],
+            "get": {
+                "operationId": "read_service_providing_group_power_per_substation",
+                "summary": "Read Service Providing Group Power Per Substation",
+                "description": "Read [Service Providing Group Power Per Substation](https://elhub.github.io/flex-information-system/resources/service_providing_group_power_per_substation/)",
+                "tags": [
+                    "service_providing_group_power_per_substation"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/service_providing_group_power_per_substation_response"
+                                }
+                            }
+                        },
+                        "description": "OK",
+                        "links": {
+                            "service_providing_group_id": {
+                                "operationId": "read_service_providing_group",
+                                "parameters": {
+                                    "path.id": "$response.body#/service_providing_group_id"
+                                },
+                                "description": "The `service_providing_group_id` value returned in the response can be used as the `id` parameter in `GET /service_providing_group/{id}`."
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:service_providing_group_power_per_substation"
                         ]
                     },
                     {}

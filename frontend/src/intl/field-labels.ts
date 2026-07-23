@@ -409,6 +409,9 @@ export type FieldLabel =
   | "service_providing_group_membership_history.service_providing_group_membership_id"
   | "service_providing_group_membership_history.valid_from"
   | "service_providing_group_membership_history.valid_to"
+  | "service_providing_group_power_per_substation.id"
+  | "service_providing_group_power_per_substation.service_providing_group_id"
+  | "service_providing_group_power_per_substation.substations"
   | "service_providing_group_product_application.additional_information"
   | "service_providing_group_product_application.id"
   | "service_providing_group_product_application.maximum_active_power_down"
@@ -649,6 +652,11 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit_summary.controllable_unit_id": "ID",
     "controllable_unit_summary.technical_resource":
       "Technical resource aggregates",
+    "service_providing_group_power_per_substation.id": "ID",
+    "service_providing_group_power_per_substation.service_providing_group_id":
+      "Service Providing Group ID",
+    "service_providing_group_power_per_substation.substations":
+      "Per-substation aggregates",
     "service_providing_group_summary.id": "ID",
     "service_providing_group_summary.service_providing_group_id":
       "Service Providing Group ID",
@@ -1380,6 +1388,11 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit_summary.controllable_unit_id": "ID",
     "controllable_unit_summary.technical_resource":
       "Aggregat om tekniske ressurser",
+    "service_providing_group_power_per_substation.id": "ID",
+    "service_providing_group_power_per_substation.service_providing_group_id":
+      "Fleksibilitetsgruppe-ID",
+    "service_providing_group_power_per_substation.substations":
+      "Aggregat per transformatorstasjon",
     "service_providing_group_summary.id": "ID",
     "service_providing_group_summary.service_providing_group_id":
       "Fleksibilitetsgruppe-ID",
@@ -2107,6 +2120,11 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "controllable_unit_summary.controllable_unit_id": "ID",
     "controllable_unit_summary.technical_resource":
       "Aggregat om tekniske ressursar",
+    "service_providing_group_power_per_substation.id": "ID",
+    "service_providing_group_power_per_substation.service_providing_group_id":
+      "Fleksibilitetsgruppe-ID",
+    "service_providing_group_power_per_substation.substations":
+      "Aggregat per transformatorstasjon",
     "service_providing_group_summary.id": "ID",
     "service_providing_group_summary.service_providing_group_id":
       "Fleksibilitetsgruppe-ID",

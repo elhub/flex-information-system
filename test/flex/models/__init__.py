@@ -191,6 +191,13 @@ from .service_providing_group_membership_create_request import ServiceProvidingG
 from .service_providing_group_membership_history_response import ServiceProvidingGroupMembershipHistoryResponse
 from .service_providing_group_membership_response import ServiceProvidingGroupMembershipResponse
 from .service_providing_group_membership_update_request import ServiceProvidingGroupMembershipUpdateRequest
+from .service_providing_group_power_per_substation_response import ServiceProvidingGroupPowerPerSubstationResponse
+from .service_providing_group_power_per_substation_response_substations_item import (
+    ServiceProvidingGroupPowerPerSubstationResponseSubstationsItem,
+)
+from .service_providing_group_power_per_substation_response_substations_item_controllable_unit import (
+    ServiceProvidingGroupPowerPerSubstationResponseSubstationsItemControllableUnit,
+)
 from .service_providing_group_product_application_comment_create_request import (
     ServiceProvidingGroupProductApplicationCommentCreateRequest,
 )
@@ -423,6 +430,9 @@ __all__ = (
     "ServiceProvidingGroupMembershipHistoryResponse",
     "ServiceProvidingGroupMembershipResponse",
     "ServiceProvidingGroupMembershipUpdateRequest",
+    "ServiceProvidingGroupPowerPerSubstationResponse",
+    "ServiceProvidingGroupPowerPerSubstationResponseSubstationsItem",
+    "ServiceProvidingGroupPowerPerSubstationResponseSubstationsItemControllableUnit",
     "ServiceProvidingGroupProductApplicationCommentCreateRequest",
     "ServiceProvidingGroupProductApplicationCommentHistoryResponse",
     "ServiceProvidingGroupProductApplicationCommentResponse",

@@ -524,6 +524,103 @@ resources:
                   min: 20
                   max: 20
 
+  - id: service_providing_group_power_per_substation
+    acronym: SPGPPS
+    name: Service Providing Group Power Per Substation
+    summary: Service Providing Group Power Per Substation
+    description: >-
+      Per-substation breakdown of controllable units and their technical details
+      for a service providing group.
+    x-intl:
+      en: Service Providing Group Power Per Substation
+      nb: Effekt per transformatorstasjon for fleksibilitetsgruppe
+      nn: Effekt per transformatorstasjon for fleksibilitetsgruppe
+    operations:
+      - read
+    history: []
+    history_rls: false
+    generate_views: false
+    comments: false
+    module: api
+    audit: false
+    properties:
+      id:
+        description: Unique surrogate key (service providing group ID).
+        format: bigint
+        type: integer
+        readOnly: true
+        x-filter: true
+        example: 4
+        x-intl:
+          en: ID
+          nb: ID
+          nn: ID
+      service_providing_group_id:
+        description: >-
+          The ID of the service providing group this resource is a breakdown of.
+        format: bigint
+        type: integer
+        readOnly: true
+        x-filter: true
+        x-foreign-key:
+          resource: service_providing_group
+          field: id
+          cardinality: one-to-one
+        example: 4
+        x-intl:
+          en: Service Providing Group ID
+          nb: Fleksibilitetsgruppe-ID
+          nn: Fleksibilitetsgruppe-ID
+      substations:
+        description: >-
+          List of per-substation aggregates for the controllable units currently
+          in the service providing group. Each element contains the substation
+          identifier and name, plus count and maximum active power statistics
+          for the controllable units connected to that substation. An element
+          with null substation fields groups controllable units whose grid
+          location has not yet been assigned.
+        type: array
+        readOnly: true
+        x-intl:
+          en: Per-substation aggregates
+          nb: Aggregat per transformatorstasjon
+          nn: Aggregat per transformatorstasjon
+        items:
+          type: object
+          properties:
+            substation_business_id:
+              type: string
+              nullable: true
+            substation_name:
+              type: string
+              nullable: true
+            controllable_unit:
+              type: object
+              properties:
+                count:
+                  type: integer
+                maximum_active_power:
+                  $ref: "#/components/schemas/numeric_aggregation"
+        example:
+          - substation_business_id: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+            substation_name: "Substation A"
+            controllable_unit:
+              count: 3
+              maximum_active_power:
+                sum: 150
+                average: 50
+                min: 30
+                max: 80
+          - substation_business_id: null
+            substation_name: null
+            controllable_unit:
+              count: 1
+              maximum_active_power:
+                sum: 20
+                average: 20
+                min: 20
+                max: 20
+
   - id: service_providing_group_summary
     acronym: SPGSU
     name: Service Providing Group Summary

@@ -2684,6 +2684,70 @@ TO flex_third_party;
 
 GRANT SELECT (
     id,
+    service_providing_group_id,
+    substations
+) ON TABLE
+api.service_providing_group_power_per_substation
+TO flex_balance_responsible_party;
+
+GRANT SELECT (
+    id,
+    service_providing_group_id,
+    substations
+) ON TABLE
+api.service_providing_group_power_per_substation
+TO flex_energy_supplier;
+
+GRANT SELECT (
+    id,
+    service_providing_group_id,
+    substations
+) ON TABLE
+api.service_providing_group_power_per_substation
+TO flex_end_user;
+
+GRANT SELECT (
+    id,
+    service_providing_group_id,
+    substations
+) ON TABLE
+api.service_providing_group_power_per_substation
+TO flex_flexibility_information_system_operator;
+
+GRANT SELECT (
+    id,
+    service_providing_group_id,
+    substations
+) ON TABLE
+api.service_providing_group_power_per_substation
+TO flex_market_operator;
+
+GRANT SELECT (
+    id,
+    service_providing_group_id,
+    substations
+) ON TABLE
+api.service_providing_group_power_per_substation
+TO flex_system_operator;
+
+GRANT SELECT (
+    id,
+    service_providing_group_id,
+    substations
+) ON TABLE
+api.service_providing_group_power_per_substation
+TO flex_service_provider;
+
+GRANT SELECT (
+    id,
+    service_providing_group_id,
+    substations
+) ON TABLE
+api.service_providing_group_power_per_substation
+TO flex_third_party;
+
+GRANT SELECT (
+    id,
     controllable_unit_id,
     service_providing_group_id,
     valid_from,
