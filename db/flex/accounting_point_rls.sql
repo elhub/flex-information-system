@@ -109,6 +109,24 @@ USING (
     )
 );
 
+-- RLS: AP-BRP001
+GRANT SELECT ON accounting_point
+TO flex_balance_responsible_party;
+DROP POLICY IF EXISTS "AP_BRP001" ON accounting_point;
+CREATE POLICY "AP_BRP001"
+ON accounting_point
+FOR SELECT
+TO flex_balance_responsible_party
+USING (
+    EXISTS (
+        SELECT 1
+        FROM flex.accounting_point_balance_responsible_party AS ap_brp
+        WHERE ap_brp.accounting_point_id = accounting_point.id -- noqa
+            AND ap_brp.balance_responsible_party_id = (SELECT flex.current_party())
+            AND ap_brp.valid_time_range @> CURRENT_TIMESTAMP
+    )
+);
+
 GRANT INSERT, SELECT, UPDATE, DELETE ON accounting_point TO flex_internal_data;
 DROP POLICY IF EXISTS "AP_INTERNAL_DATA" ON accounting_point;
 CREATE POLICY "AP_INTERNAL_DATA"

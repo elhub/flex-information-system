@@ -51,7 +51,10 @@ No policies.
 
 #### Balance Responsible Party
 
-No policies.
+| Policy key | Policy                                                                                    | Status |
+|------------|-------------------------------------------------------------------------------------------|--------|
+| CUS-BRP001 | Read CU suspensions on CU where they are currently BRP on the AP.                         | DONE   |
+| CUS-BRP002 | Read CU suspension history on CU where they were BRP on the AP during the contract period. | DONE   |
 
 #### End User
 
