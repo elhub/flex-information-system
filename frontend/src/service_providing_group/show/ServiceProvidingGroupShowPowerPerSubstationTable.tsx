@@ -35,14 +35,14 @@ const columns: Column<SubstationRow>[] = [
   },
   {
     key: "maximumActivePowerSum",
-    header: "Aggregated flexible power",
+    header: "Aggregated rated power",
     render: (v) => (
       <div className="text-right">{formatKw(v as number | undefined)}</div>
     ),
   },
   {
     key: "maximumActivePowerAverage",
-    header: "Average flexible power",
+    header: "Average rated power",
     render: (v) => {
       const n = v as number | undefined;
       return (
@@ -54,14 +54,14 @@ const columns: Column<SubstationRow>[] = [
   },
   {
     key: "maximumActivePowerMin",
-    header: "Minimum flexible power",
+    header: "Minimum rated power",
     render: (v) => (
       <div className="text-right">{formatKw(v as number | undefined)}</div>
     ),
   },
   {
     key: "maximumActivePowerMax",
-    header: "Maximum flexible power",
+    header: "Maximum rated power",
     render: (v) => (
       <div className="text-right">{formatKw(v as number | undefined)}</div>
     ),
