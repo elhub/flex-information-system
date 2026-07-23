@@ -247,7 +247,7 @@ The bucket operations are therefore done in a way that we think of it as a
 dependency:
 
 - an object ID represents a reference, so we consider it _necessary_ for the
-  object to exist in the bucket before we create the metadata
+  object to exist in the bucket before we commit the metadata
 - deleting the object in the bucket can be considered as an internal operation
   to perform in the background: as long as the metadata is deleted, the object
   is no longer visible/reachable from our API, so it is effectively "deleted".
@@ -257,12 +257,12 @@ that does not exist, given that nothing other than our system interacts with the
 bucket.
 
 Both points above mean, however, that we accept the possibility of having dead
-objects in the bucket. Indeed, a network error after upload before creating the
-metadata can cause duplicates, losing the reference to the oldest one, as the
-API returns an error and we lose the object ID forever. And a network error
-after deleting metadata will be made silent because we do not want to return an
-internal server error on a delete operation if not strictly necessary, for user
-experience reasons. There we also lose the object ID forever. To solve this
+objects in the bucket. Indeed, a network error happening right after file upload
+before committing the metadata will return an internal error, causing the user
+to possibly retry uploading, losing the reference to the oldest file. A network
+error after deleting metadata will be made silent because we do not want to
+return an internal error on a delete operation if not strictly necessary, for
+better user experience: there we also lose the object ID forever. To solve this
 issue, we can have a background worker that sometimes goes through all objects
 in the bucket and all attachments in our system, and deletes objects that are no
 longer referenced, because the system has no way to use them anyway.

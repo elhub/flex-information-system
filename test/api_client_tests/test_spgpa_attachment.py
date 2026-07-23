@@ -1,18 +1,3 @@
-"""
-Tests for SPGPAA (Service Providing Group Product Application Attachment).
-
-Focuses on:
-  - SPGPAA-FISO001: FISO can upload, download, and delete attachments.
-  - SPGPAA-SP001: SP can upload, download, and delete their own attachments,
-    but cannot access attachments on another SP's SPGPA.
-  - SPGPAA-COM001: only involved parties (procuring SO and SP of the SPG) can
-    read attachments on a SPGPA.
-
-Note: the 'upload with read-only scope returns 403' case is not included because
-the real auth server always issues manage+read scopes together; testing scope
-restrictions at the JWT level requires an in-process test setup.
-"""
-
 from io import BytesIO
 from typing import cast
 

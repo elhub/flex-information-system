@@ -14,6 +14,7 @@ import no.elhub.flex.auth.AccessTokenKey
 import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.auth.FlexRole
 import no.elhub.flex.auth.toFlexPrincipal
+import no.elhub.flex.db.FlexTransaction.flexTransaction
 import no.elhub.flex.model.domain.db.NotFoundError
 import no.elhub.flex.model.error.AppError
 import no.elhub.flex.model.error.ForbiddenError
@@ -117,30 +118,35 @@ class AttachmentHandler(
                 }
                 .bind()
 
-            // upload to storage
+            // insert metadata into DB and upload to storage (atomically)
             val objectId = UUID.randomUUID().toString()
-            attachmentStorageService.upload(objectId, createBody.filename, fileContent)
-                .mapLeft { e ->
-                    logger.error { "Error while uploading $objectId: $e" }
-                    InternalServerError(traceIdOrUnknown())
-                }
-                .bind()
-
-            // insert metadata into DB
             with(principal) {
-                repo.insert(
-                    createBody.baseResourceId,
-                    objectId,
-                    createBody.filename,
-                    fileContent.contentType,
-                    fileContent.bytes.size.toLong(),
-                )
+                flexTransaction {
+                    either {
+                        val metadata = repo.insert(
+                            createBody.baseResourceId,
+                            objectId,
+                            createBody.filename,
+                            fileContent.contentType,
+                            fileContent.bytes.size.toLong(),
+                        )
+                            .map { it.specialise(baseResource) }
+                            .mapLeft { e ->
+                                logger.error { "DB metadata insert failed for objectId=$objectId: $e" }
+                                InternalServerError(traceIdOrUnknown())
+                            }.bind()
+
+                        attachmentStorageService.upload(objectId, createBody.filename, fileContent)
+                            .mapLeft { e ->
+                                logger.error { "Error while uploading $objectId: $e" }
+                                InternalServerError(traceIdOrUnknown())
+                            }
+                            .bind()
+
+                        metadata
+                    }
+                }
             }
-                .map { it.specialise(baseResource) }
-                .mapLeft { e ->
-                    logger.error { "DB insert failed after upload for objectId=$objectId: $e" }
-                    InternalServerError(traceIdOrUnknown())
-                }.bind()
         }.respondJson(call, HttpStatusCode.Created)
     }
 
