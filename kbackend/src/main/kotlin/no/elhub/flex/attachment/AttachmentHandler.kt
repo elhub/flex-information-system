@@ -146,7 +146,7 @@ class AttachmentHandler(
                         metadata
                     }
                 }
-            }
+            }.bind()
         }.respondJson(call, HttpStatusCode.Created)
     }
 
