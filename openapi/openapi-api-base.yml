@@ -80,6 +80,9 @@ components:
         - "read:auth"
         - "use:auth"
         - "manage:auth"
+        - "read:attachment"
+        - "use:attachment"
+        - "manage:attachment"
     category:
       description: >-
         Resource category classification. Derived from technologies.

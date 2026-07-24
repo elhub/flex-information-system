@@ -1,7 +1,8 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:api-entity-client-create endDelimiter:-- runOnChange:true
+-- changeset flex:api-entity-client-create endDelimiter:-- runAlways:true
+-- runAlways to be able to change flex.scope over time
 CREATE OR REPLACE VIEW api.entity_client
 WITH (security_invoker = true) AS (
     SELECT

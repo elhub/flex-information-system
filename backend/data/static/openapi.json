@@ -161,6 +161,10 @@
             "description": "Service Providing Group Product Application"
         },
         {
+            "name": "service_providing_group_product_application_attachment",
+            "description": "Service Providing Group Product Application Attachment"
+        },
+        {
             "name": "service_providing_group_product_application_comment",
             "description": "Service Providing Group Product Application Comment"
         },
@@ -250,7 +254,10 @@
                     "manage:data:entity_client",
                     "read:auth",
                     "use:auth",
-                    "manage:auth"
+                    "manage:auth",
+                    "read:attachment",
+                    "use:attachment",
+                    "manage:attachment"
                 ]
             },
             "category": {
@@ -1060,6 +1067,17 @@
                     "never"
                 ],
                 "example": "always"
+            },
+            "service_providing_group_product_application_attachment_content_type": {
+                "description": "MIME type of the attachment.",
+                "format": "text",
+                "type": "string",
+                "example": "application/pdf",
+                "enum": [
+                    "application/pdf",
+                    "image/jpeg",
+                    "image/png"
+                ]
             },
             "service_providing_group_product_application_comment_visibility": {
                 "description": "The level of visibility of the comment.",
@@ -6117,6 +6135,21 @@
                         ],
                         "nullable": true
                     },
+                    "attachment": {
+                        "description": "Embedded service_providing_group_product_application_attachment",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_product_application_attachment_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
                     "comment": {
                         "description": "Embedded service_providing_group_product_application_comment",
                         "oneOf": [
@@ -6141,6 +6174,90 @@
                     "status",
                     "maximum_active_power_up",
                     "maximum_active_power_down",
+                    "recorded_at",
+                    "recorded_by"
+                ]
+            },
+            "service_providing_group_product_application_attachment_response": {
+                "summary": "Response - Service Providing Group Product Application Attachment",
+                "description": "Response schema - File attachment associated with a service providing group product application, allowing involved parties to exchange supporting documents.",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "Unique surrogate identifier.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "readOnly": true,
+                        "example": 9
+                    },
+                    "service_providing_group_product_application_id": {
+                        "description": "Reference to the service providing group product application.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "example": 7
+                    },
+                    "object_id": {
+                        "description": "Identifier of the object to which the attachment is linked.",
+                        "format": "text",
+                        "type": "string",
+                        "example": "08aa9239-d209-4c15-a916-2b4942ce45ee"
+                    },
+                    "filename": {
+                        "description": "Original filename of the attachment.",
+                        "format": "text",
+                        "type": "string",
+                        "example": "document.pdf"
+                    },
+                    "filename_sanitised": {
+                        "description": "Sanitised filename safe for storage.",
+                        "format": "text",
+                        "type": "string",
+                        "example": "document.pdf"
+                    },
+                    "content_type": {
+                        "$ref": "#/components/schemas/service_providing_group_product_application_attachment_content_type"
+                    },
+                    "size_bytes": {
+                        "description": "Size of the attachment in bytes.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "example": 204800
+                    },
+                    "recorded_at": {
+                        "description": "When the resource was recorded (created or updated) in the system.",
+                        "format": "date-time",
+                        "type": "string",
+                        "readOnly": true,
+                        "example": "2023-12-31T23:59:00+00:00"
+                    },
+                    "recorded_by": {
+                        "description": "The identity that recorded the resource.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "readOnly": true,
+                        "example": 145
+                    },
+                    "service_providing_group_product_application": {
+                        "description": "Embedded service_providing_group_product_application",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/service_providing_group_product_application_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "id",
+                    "service_providing_group_product_application_id",
+                    "object_id",
+                    "filename",
+                    "filename_sanitised",
+                    "content_type",
+                    "size_bytes",
                     "recorded_at",
                     "recorded_by"
                 ]
@@ -8521,6 +8638,98 @@
                     "recorded_at",
                     "recorded_by",
                     "service_providing_group_product_application_id"
+                ]
+            },
+            "service_providing_group_product_application_attachment_history_response": {
+                "summary": "Service Providing Group Product Application Attachment - history",
+                "description": "Service Providing Group Product Application Attachment - history",
+                "properties": {
+                    "id": {
+                        "description": "Unique surrogate identifier.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "readOnly": true,
+                        "example": 9
+                    },
+                    "service_providing_group_product_application_id": {
+                        "description": "Reference to the service providing group product application.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "example": 7
+                    },
+                    "object_id": {
+                        "description": "Identifier of the object to which the attachment is linked.",
+                        "format": "text",
+                        "type": "string",
+                        "example": "08aa9239-d209-4c15-a916-2b4942ce45ee"
+                    },
+                    "filename": {
+                        "description": "Original filename of the attachment.",
+                        "format": "text",
+                        "type": "string",
+                        "example": "document.pdf"
+                    },
+                    "filename_sanitised": {
+                        "description": "Sanitised filename safe for storage.",
+                        "format": "text",
+                        "type": "string",
+                        "example": "document.pdf"
+                    },
+                    "content_type": {
+                        "$ref": "#/components/schemas/service_providing_group_product_application_attachment_content_type"
+                    },
+                    "size_bytes": {
+                        "description": "Size of the attachment in bytes.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "example": 204800
+                    },
+                    "recorded_at": {
+                        "description": "When the resource was recorded (created or updated) in the system.",
+                        "format": "date-time",
+                        "type": "string",
+                        "readOnly": true,
+                        "example": "2023-12-31T23:59:00+00:00"
+                    },
+                    "recorded_by": {
+                        "description": "The identity that recorded the resource.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "readOnly": true,
+                        "example": 145
+                    },
+                    "service_providing_group_product_application_attachment_id": {
+                        "description": "Reference to the resource that was updated.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "example": 48
+                    },
+                    "replaced_by": {
+                        "description": "The identity that updated the resource when it was replaced.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "nullable": true,
+                        "example": 90
+                    },
+                    "replaced_at": {
+                        "description": "When the resource was replaced in the system.",
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true,
+                        "example": "2024-07-07T10:00:00+00:00"
+                    }
+                },
+                "required": [
+                    "id",
+                    "service_providing_group_product_application_id",
+                    "object_id",
+                    "filename",
+                    "filename_sanitised",
+                    "content_type",
+                    "size_bytes",
+                    "recorded_at",
+                    "recorded_by",
+                    "service_providing_group_product_application_attachment_id"
                 ]
             },
             "service_providing_group_product_application_comment_history_response": {
@@ -32541,6 +32750,878 @@
                 ]
             }
         },
+        "/service_providing_group_product_application_attachment": {
+            "summary": "Service Providing Group Product Application Attachment",
+            "description": "",
+            "get": {
+                "operationId": "list_service_providing_group_product_application_attachment",
+                "summary": "List Service Providing Group Product Application Attachment",
+                "description": "List [Service Providing Group Product Application Attachment](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application_attachment/)",
+                "tags": [
+                    "service_providing_group_product_application_attachment"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "Unique surrogate identifier.",
+                        "name": "id"
+                    },
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "Reference to the service providing group product application.",
+                        "name": "service_providing_group_product_application_id",
+                        "required": true
+                    },
+                    {
+                        "description": "Filtering Columns",
+                        "in": "query",
+                        "name": "select",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Ordering",
+                        "in": "query",
+                        "name": "order",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "offset",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_providing_group_product_application_attachment_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "206": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_providing_group_product_application_attachment_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "Partial Content"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "416": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Range Not Satisfiable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:attachment:service_providing_group_product_application_attachment"
+                        ]
+                    },
+                    {}
+                ]
+            },
+            "post": {
+                "operationId": "create_service_providing_group_product_application_attachment",
+                "summary": "Create Service Providing Group Product Application Attachment",
+                "description": "Create [Service Providing Group Product Application Attachment](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application_attachment/)",
+                "tags": [
+                    "service_providing_group_product_application_attachment"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "service_providing_group_product_application_id",
+                                    "file"
+                                ],
+                                "properties": {
+                                    "service_providing_group_product_application_id": {
+                                        "description": "Reference to the service_providing_group_product_application.",
+                                        "type": "integer",
+                                        "format": "bigint"
+                                    },
+                                    "file": {
+                                        "description": "File to upload.",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/service_providing_group_product_application_attachment_response"
+                                }
+                            }
+                        },
+                        "description": "Created"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "409": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Conflict"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:attachment:service_providing_group_product_application_attachment"
+                        ]
+                    }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
+                ]
+            }
+        },
+        "/service_providing_group_product_application_attachment/{id}": {
+            "summary": "Service Providing Group Product Application Attachment - single",
+            "description": "",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "schema": {
+                        "format": "bigint",
+                        "type": "integer"
+                    },
+                    "example": 14
+                }
+            ],
+            "get": {
+                "operationId": "read_service_providing_group_product_application_attachment",
+                "summary": "Read Service Providing Group Product Application Attachment",
+                "description": "Read [Service Providing Group Product Application Attachment](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application_attachment/)",
+                "tags": [
+                    "service_providing_group_product_application_attachment"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/service_providing_group_product_application_attachment_response"
+                                }
+                            }
+                        },
+                        "description": "OK",
+                        "links": {
+                            "service_providing_group_product_application_id": {
+                                "operationId": "read_service_providing_group_product_application",
+                                "parameters": {
+                                    "path.id": "$response.body#/service_providing_group_product_application_id"
+                                },
+                                "description": "The `service_providing_group_product_application_id` value returned in the response can be used as the `id` parameter in `GET /service_providing_group_product_application/{id}`."
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:attachment:service_providing_group_product_application_attachment"
+                        ]
+                    },
+                    {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
+                ]
+            },
+            "delete": {
+                "operationId": "delete_service_providing_group_product_application_attachment",
+                "summary": "Delete Service Providing Group Product Application Attachment",
+                "description": "Delete [Service Providing Group Product Application Attachment](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application_attachment/)",
+                "tags": [
+                    "service_providing_group_product_application_attachment"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/empty_object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "content": {},
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:attachment:service_providing_group_product_application_attachment"
+                        ]
+                    }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
+                ]
+            }
+        },
+        "/service_providing_group_product_application_attachment_history": {
+            "summary": "Service Providing Group Product Application Attachment - history",
+            "description": "",
+            "parameters": [
+                {
+                    "in": "query",
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^eq\\.[0-9]+$"
+                    },
+                    "example": "eq.55",
+                    "description": "Identifier of the history record.",
+                    "name": "id"
+                },
+                {
+                    "in": "query",
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^eq\\.[0-9]+$"
+                    },
+                    "example": "eq.55",
+                    "description": "Identifier of the Service Providing Group Product Application Attachment whose history we want to inspect.",
+                    "name": "service_providing_group_product_application_attachment_id"
+                }
+            ],
+            "get": {
+                "operationId": "list_service_providing_group_product_application_attachment_history",
+                "summary": "List Service Providing Group Product Application Attachment - history",
+                "description": "List [Service Providing Group Product Application Attachment - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application_attachment/)",
+                "tags": [
+                    "service_providing_group_product_application_attachment"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "Unique surrogate identifier.",
+                        "name": "id"
+                    },
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "Reference to the service providing group product application.",
+                        "name": "service_providing_group_product_application_id"
+                    },
+                    {
+                        "description": "Filtering Columns",
+                        "in": "query",
+                        "name": "select",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Ordering",
+                        "in": "query",
+                        "name": "order",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "offset",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_providing_group_product_application_attachment_history_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "206": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_providing_group_product_application_attachment_history_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "Partial Content"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "416": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Range Not Satisfiable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:service_providing_group_product_application_attachment_history"
+                        ]
+                    },
+                    {}
+                ]
+            }
+        },
+        "/service_providing_group_product_application_attachment_history/{id}": {
+            "summary": "Service Providing Group Product Application Attachment - history record",
+            "description": "",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "schema": {
+                        "format": "bigint",
+                        "type": "integer"
+                    },
+                    "example": 14,
+                    "description": "Identifier of the history record we want to inspect."
+                }
+            ],
+            "get": {
+                "operationId": "read_service_providing_group_product_application_attachment_history",
+                "summary": "Read Service Providing Group Product Application Attachment - history",
+                "description": "Read [Service Providing Group Product Application Attachment - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application_attachment/)",
+                "tags": [
+                    "service_providing_group_product_application_attachment"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/service_providing_group_product_application_attachment_history_response"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:service_providing_group_product_application_attachment_history"
+                        ]
+                    },
+                    {}
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
+                ]
+            }
+        },
         "/service_providing_group_product_application_comment": {
             "summary": "Service Providing Group Product Application Comment",
             "description": "",
@@ -35655,6 +36736,114 @@
                         },
                         "description": "Comma-separated list of related resources to embed in the response."
                     },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
+                ]
+            }
+        },
+        "/service_providing_group_product_application_attachment/{id}/download": {
+            "summary": "Service Providing Group Product Application Attachment - download",
+            "description": "",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "schema": {
+                        "format": "bigint",
+                        "type": "integer"
+                    },
+                    "example": 14
+                }
+            ],
+            "get": {
+                "operationId": "call_download_service_providing_group_product_application_attachment",
+                "summary": "Call download Service Providing Group Product Application Attachment",
+                "description": "Call download [Service Providing Group Product Application Attachment](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application_attachment/)",
+                "tags": [
+                    "service_providing_group_product_application_attachment"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:attachment:service_providing_group_product_application_attachment"
+                        ]
+                    },
+                    {}
+                ],
+                "responses": {
+                    "302": {
+                        "description": "Found — redirect to a pre-signed download URL",
+                        "headers": {
+                            "Location": {
+                                "description": "Pre-signed URL to download the attachment directly from object storage.",
+                                "schema": {
+                                    "type": "string",
+                                    "format": "uri"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "parameters": [
                     {
                         "$ref": "#/components/parameters/ApiVersion"
                     }

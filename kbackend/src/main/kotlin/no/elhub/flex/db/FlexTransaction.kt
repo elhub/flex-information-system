@@ -38,6 +38,12 @@ object FlexTransaction {
     }
 
     /**
+     * Thrown internally by [flexTransaction] to force Exposed to roll back when [block] returns
+     * a [Either.Left]. Carries the left value so it can be re-surfaced after the rollback.
+     */
+    private class LeftRollbackException(val left: Any?) : Exception()
+
+    /**
      * Runs [block] inside an Exposed transaction, applying the RLS preamble only when opening
      * a top-level transaction. When called from within an existing [flexTransaction] the preamble
      * is skipped and the block participates in the outer transaction on the same connection.
@@ -50,19 +56,35 @@ object FlexTransaction {
      * entity IDs are set to `0`. Otherwise `auth.eid_details($eid)` is called to resolve them
      * from the identity table.
      *
+     * If [block] returns a [Either.Left] the transaction is **rolled back** and the [Either.Left]
+     * value is returned to the caller. A [Either.Right] result commits the transaction normally.
+     *
      * @param block the transactional work; receives the raw [java.sql.Connection]
      */
+    @Suppress("UNCHECKED_CAST")
     context(principal: FlexPrincipal)
     suspend fun <L, R> flexTransaction(block: suspend (Connection) -> Either<L, R>): Either<L, R> {
         val isNested = currentCoroutineContext()[InFlexTransaction.Key] != null
-        return withContext(InFlexTransaction) {
-            suspendTransaction(db) {
-                val conn = this.connection.connection as Connection
-                if (!isNested) {
-                    applyPreamble(conn, principal)
+        return try {
+            withContext(InFlexTransaction) {
+                suspendTransaction(db) {
+                    val conn = this.connection.connection as Connection
+                    if (!isNested) {
+                        applyPreamble(conn, principal)
+                    }
+                    val result = block(conn)
+
+                    // Throw to force Exposed to roll back instead of committing.
+
+                    // exception will be caught by the Exposed transaction handler, so that the
+                    // transaction is rolled back, then it throws the exception again for us
+                    if (result is Either.Left) throw LeftRollbackException(result.value)
+                    result
                 }
-                block(conn)
             }
+            // then we catch the exception again here to return the Left value to the caller
+        } catch (e: LeftRollbackException) {
+            Either.Left(e.left as L)
         }
     }
 

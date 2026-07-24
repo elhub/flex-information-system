@@ -49,6 +49,9 @@ export default defineConfig([
           argsIgnorePattern: "^_",
         },
       ],
+      // Prettier runs as a standalone pre-commit hook; disable the ESLint rule
+      // to avoid conflicts where each tool modifies files the other then rejects.
+      "prettier/prettier": "off",
     },
   },
   {
