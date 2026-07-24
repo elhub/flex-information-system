@@ -28,6 +28,12 @@ public enum class AuthScope(
   USE_AUTH("use:auth"),
   @SerialName("manage:auth")
   MANAGE_AUTH("manage:auth"),
+  @SerialName("read:attachment")
+  READ_ATTACHMENT("read:attachment"),
+  @SerialName("use:attachment")
+  USE_ATTACHMENT("use:attachment"),
+  @SerialName("manage:attachment")
+  MANAGE_ATTACHMENT("manage:attachment"),
   ;
 
   override fun toString(): String = value
