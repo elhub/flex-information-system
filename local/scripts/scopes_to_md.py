@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""Generate docs/auth/scopes.md from openapi/scopes.yml (the generated list)."""
+# generate docs/auth/scopes.md from openapi/scopes.yml
 
 import sys
 import yaml
@@ -8,7 +8,7 @@ import yaml
 SCOPES_YML = "./openapi/scopes.yml"
 SCOPES_MD = "./docs/auth/scopes.md"
 
-# module (second scope segment) => short description, in display order
+# module (second scope segment) |-> short description
 MODULES = {
     "data": "Resources of the main data API (`/api/`).",
     "grid": "Read-only grid topology (substations, lines, ...).",
@@ -19,7 +19,7 @@ MODULES = {
 HEADER = "\n\n".join(
     [
         "# Scopes",
-        # scopes can be longer than the 80 char line limit
+        # scopes can be longer than the line limit
         "<!-- GENERATED FILE (just scopes-to-md) — do not edit manually. -->\n"
         "<!-- markdownlint-disable MD013 -->",
         (
