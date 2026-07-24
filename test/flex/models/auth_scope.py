@@ -2,6 +2,10 @@ from enum import StrEnum
 
 
 class AuthScope(StrEnum):
+    MANAGEATTACHMENT = "manage:attachment"
+    MANAGEATTACHMENTSERVICE_PROVIDING_GROUP_PRODUCT_APPLICATION_ATTACHMENT = (
+        "manage:attachment:service_providing_group_product_application_attachment"
+    )
     MANAGEAUTH = "manage:auth"
     MANAGEDATA = "manage:data"
     MANAGEDATAACCOUNTING_POINT_GRID_LOCATION = "manage:data:accounting_point_grid_location"
@@ -40,6 +44,13 @@ class AuthScope(StrEnum):
     )
     MANAGEDATASYSTEM_OPERATOR_PRODUCT_TYPE = "manage:data:system_operator_product_type"
     MANAGEDATATECHNICAL_RESOURCE = "manage:data:technical_resource"
+    READATTACHMENT = "read:attachment"
+    READATTACHMENTSERVICE_PROVIDING_GROUP_PRODUCT_APPLICATION_ATTACHMENT = (
+        "read:attachment:service_providing_group_product_application_attachment"
+    )
+    READATTACHMENTSERVICE_PROVIDING_GROUP_PRODUCT_APPLICATION_ATTACHMENT_HISTORY = (
+        "read:attachment:service_providing_group_product_application_attachment_history"
+    )
     READAUTH = "read:auth"
     READDATA = "read:data"
     READDATAACCOUNTING_POINT = "read:data:accounting_point"
@@ -136,9 +147,12 @@ class AuthScope(StrEnum):
     READGRIDLINE = "read:grid:line"
     READGRIDSUBSTATION = "read:grid:substation"
     READGRIDSUBSTATION_CLUSTER = "read:grid:substation_cluster"
+    USEATTACHMENT = "use:attachment"
     USEAUTH = "use:auth"
     USEDATA = "use:data"
+    USEDATACONTROLLABLE_UNIT = "use:data:controllable_unit"
     USEDATACONTROLLABLE_UNITLOOKUP = "use:data:controllable_unit:lookup"
+    USEDATAENTITY = "use:data:entity"
     USEDATAENTITYLOOKUP = "use:data:entity:lookup"
 
     def __str__(self) -> str:

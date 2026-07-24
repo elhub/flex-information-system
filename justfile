@@ -136,8 +136,15 @@ connect user="postgres":
 
 # initialize local development environment
 init: && _java_install _plantuml_install _liquibase_install _keypair
-    rm -rf .bin .venv
+    #!/usr/bin/env bash
+    set -euo pipefail
+    rm -rf .bin
     pre-commit install
+
+    # install node modules for frontend
+    (cd frontend && npm install)
+    # ensure uv has installed all-the-things in the virtual environment
+    uv sync
 
 _java_install:
     #!/usr/bin/env bash
@@ -620,11 +627,14 @@ permissions: permissions-to-frontend permissions-to-md permissions-to-db
 permissions-to-db:
     echo "-- liquibase formatted sql\n-- AUTO-GENERATED FILE (just permissions-to-db)\n" \
         | tee db/api/grants/field_level_authorization.sql \
+        | tee db/attachment/grants/field_level_authorization.sql \
         | tee db/grid/grants/field_level_authorization.sql \
         > db/flex/grants/field_level_authorization.sql
 
     echo "-- changeset flex:api-field-level-authorization runOnChange:true" \
         >> db/api/grants/field_level_authorization.sql
+    echo "-- changeset flex:attachment-field-level-authorization runOnChange:true" \
+        >> db/attachment/grants/field_level_authorization.sql
     echo "-- changeset flex:grid-field-level-authorization runOnChange:true" \
         >> db/grid/grants/field_level_authorization.sql
     echo "-- changeset flex:flex-field-level-authorization runOnChange:true" \
@@ -635,7 +645,12 @@ permissions-to-db:
         >> db/api/grants/field_level_authorization.sql \
         2>> db/flex/grants/field_level_authorization.sql
 
-    cat local/input/permissions-grid.csv \
+    cat local/input/permissions.csv \
+        | .venv/bin/python3 local/scripts/permissions_to_grant.py attachment \
+        >> db/attachment/grants/field_level_authorization.sql \
+        2>> db/flex/grants/field_level_authorization.sql
+
+    cat local/input/permissions.csv \
         | .venv/bin/python3 local/scripts/permissions_to_grant.py grid \
         >> db/grid/grants/field_level_authorization.sql \
         2>> db/flex/grants/field_level_authorization.sql
@@ -658,7 +673,7 @@ permissions-to-md:
         echo "" >> docs/resources/${resource}.md
 
         grep -E "^((${resource})|(RESOURCE))\;" local/input/permissions.csv \
-            | cut -d ';' -f 2-12 \
+            | cut -d ';' -f 2,4-13 \
             | .venv/bin/python3 ./local/scripts/csv_to_md.py >> docs/resources/${resource}.md
 
     done

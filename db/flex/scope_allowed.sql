@@ -1,0 +1,133 @@
+--liquibase formatted sql
+-- GENERATED CODE (scope-to-db) — do not edit manually
+
+-- changeset flex:scope-allowed-function runOnChange:true endDelimiter:--
+-- Single source of truth for the set of accepted scopes. Called from the
+-- check_scope_allowed constraint on the flex.scope domain, so it is enforced
+-- per element on every flex.scope[] column. Replacing this function (a plain
+-- CREATE OR REPLACE, runOnChange) is the ONLY migration needed to change the
+-- accepted scopes: no domain, table, view or grant is ever touched.
+--
+-- It is intentionally PL/pgSQL (not an inlinable SQL function): an inlined
+-- IMMUTABLE SQL body gets cached in each backend's per-session domain-constraint
+-- cache, so a CREATE OR REPLACE would not be picked up by already-open pooled
+-- connections. A PL/pgSQL function is called through the function manager and
+-- its plan is invalidated on replacement, so the new list takes effect at once.
+CREATE OR REPLACE FUNCTION flex.scope_allowed(scope text)
+RETURNS boolean
+LANGUAGE plpgsql
+STABLE
+AS $$
+BEGIN
+    RETURN scope IN (
+        'read:auth',
+        'use:auth',
+        'manage:auth',
+        'read:data',
+        'read:data:controllable_unit',
+        'manage:data',
+        'manage:data:controllable_unit',
+        'read:data:controllable_unit_history',
+        'read:data:controllable_unit_suspension',
+        'manage:data:controllable_unit_suspension',
+        'read:data:controllable_unit_suspension_history',
+        'read:data:controllable_unit_suspension_comment',
+        'manage:data:controllable_unit_suspension_comment',
+        'read:data:controllable_unit_suspension_comment_history',
+        'read:data:controllable_unit_service_provider',
+        'manage:data:controllable_unit_service_provider',
+        'read:data:controllable_unit_service_provider_history',
+        'read:data:controllable_unit_summary',
+        'read:data:service_providing_group_summary',
+        'read:data:service_providing_group',
+        'manage:data:service_providing_group',
+        'read:data:service_providing_group_history',
+        'read:data:service_providing_group_membership',
+        'manage:data:service_providing_group_membership',
+        'read:data:service_providing_group_membership_history',
+        'read:data:service_providing_group_grid_prequalification',
+        'manage:data:service_providing_group_grid_prequalification',
+        'read:data:service_providing_group_grid_prequalification_history',
+        'read:data:service_providing_group_grid_prequalification_comment',
+        'manage:data:service_providing_group_grid_prequalification_comment',
+        'read:data:service_providing_group_grid_prequalification_comment_history',
+        'read:data:service_providing_group_grid_suspension',
+        'manage:data:service_providing_group_grid_suspension',
+        'read:data:service_providing_group_grid_suspension_history',
+        'read:data:service_providing_group_grid_suspension_comment',
+        'manage:data:service_providing_group_grid_suspension_comment',
+        'read:data:service_providing_group_grid_suspension_comment_history',
+        'read:data:entity',
+        'manage:data:entity',
+        'read:data:entity_client',
+        'manage:data:entity_client',
+        'read:data:party',
+        'manage:data:party',
+        'read:data:party_history',
+        'read:data:party_membership',
+        'manage:data:party_membership',
+        'read:data:party_membership_history',
+        'read:data:identity',
+        'read:data:technical_resource',
+        'manage:data:technical_resource',
+        'read:data:technical_resource_history',
+        'read:data:event',
+        'read:data:notification',
+        'manage:data:notification',
+        'read:data:accounting_point',
+        'read:data:accounting_point_balance_responsible_party',
+        'read:data:accounting_point_bidding_zone',
+        'read:data:accounting_point_end_user',
+        'read:data:accounting_point_energy_supplier',
+        'read:data:metering_grid_area',
+        'read:data:accounting_point_metering_grid_area',
+        'read:grid',
+        'read:grid:substation_cluster',
+        'read:grid:substation',
+        'read:grid:line',
+        'read:data:accounting_point_grid_location',
+        'manage:data:accounting_point_grid_location',
+        'read:data:accounting_point_grid_location_history',
+        'read:data:product_type',
+        'read:data:system_operator_product_type',
+        'manage:data:system_operator_product_type',
+        'read:data:system_operator_product_type_history',
+        'read:data:service_provider_product_application',
+        'manage:data:service_provider_product_application',
+        'read:data:service_provider_product_application_history',
+        'read:data:service_provider_product_application_comment',
+        'manage:data:service_provider_product_application_comment',
+        'read:data:service_provider_product_application_comment_history',
+        'read:data:service_provider_product_suspension',
+        'manage:data:service_provider_product_suspension',
+        'read:data:service_provider_product_suspension_history',
+        'read:data:service_provider_product_suspension_comment',
+        'manage:data:service_provider_product_suspension_comment',
+        'read:data:service_provider_product_suspension_comment_history',
+        'read:data:service_providing_group_product_application',
+        'manage:data:service_providing_group_product_application',
+        'read:data:service_providing_group_product_application_history',
+        'read:data:service_providing_group_product_application_comment',
+        'manage:data:service_providing_group_product_application_comment',
+        'read:data:service_providing_group_product_application_comment_history',
+        'read:attachment',
+        'read:attachment:service_providing_group_product_application_attachment',
+        'manage:attachment',
+        'manage:attachment:service_providing_group_product_application_attachment',
+        'read:attachment:service_providing_group_product_application_attachment_history',
+        'read:data:service_providing_group_product_suspension',
+        'manage:data:service_providing_group_product_suspension',
+        'read:data:service_providing_group_product_suspension_history',
+        'read:data:service_providing_group_product_suspension_comment',
+        'manage:data:service_providing_group_product_suspension_comment',
+        'read:data:service_providing_group_product_suspension_comment_history',
+        'read:data:notice',
+        'use:data',
+        'use:data:controllable_unit',
+        'use:data:controllable_unit:lookup',
+        'use:data:entity',
+        'use:data:entity:lookup',
+        'use:attachment'
+    );
+END;
+$$;

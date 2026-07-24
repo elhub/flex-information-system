@@ -295,6 +295,12 @@ $defs:
           When true, a comment sub-resource is automatically added to
           this resource.
 
+      attachments:
+        type: boolean
+        description: >-
+          When true, an attachment sub-resource is automatically added to
+          this resource.
+
       module:
         type: string
         enum: [api, grid]

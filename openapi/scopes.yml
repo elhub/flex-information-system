@@ -5,9 +5,8 @@ scopes:
   - use:auth
   - manage:auth
   - read:data
-  - manage:data
-  - use:data
   - read:data:controllable_unit
+  - manage:data
   - manage:data:controllable_unit
   - read:data:controllable_unit_history
   - read:data:controllable_unit_suspension
@@ -63,6 +62,10 @@ scopes:
   - read:data:accounting_point_energy_supplier
   - read:data:metering_grid_area
   - read:data:accounting_point_metering_grid_area
+  - read:grid
+  - read:grid:substation_cluster
+  - read:grid:substation
+  - read:grid:line
   - read:data:accounting_point_grid_location
   - manage:data:accounting_point_grid_location
   - read:data:accounting_point_grid_location_history
@@ -88,6 +91,11 @@ scopes:
   - read:data:service_providing_group_product_application_comment
   - manage:data:service_providing_group_product_application_comment
   - read:data:service_providing_group_product_application_comment_history
+  - read:attachment
+  - read:attachment:service_providing_group_product_application_attachment
+  - manage:attachment
+  - manage:attachment:service_providing_group_product_application_attachment
+  - read:attachment:service_providing_group_product_application_attachment_history
   - read:data:service_providing_group_product_suspension
   - manage:data:service_providing_group_product_suspension
   - read:data:service_providing_group_product_suspension_history
@@ -95,9 +103,9 @@ scopes:
   - manage:data:service_providing_group_product_suspension_comment
   - read:data:service_providing_group_product_suspension_comment_history
   - read:data:notice
+  - use:data
+  - use:data:controllable_unit
   - use:data:controllable_unit:lookup
+  - use:data:entity
   - use:data:entity:lookup
-  - read:grid
-  - read:grid:substation_cluster
-  - read:grid:substation
-  - read:grid:line
+  - use:attachment

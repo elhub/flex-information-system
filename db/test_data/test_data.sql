@@ -57,7 +57,7 @@ BEGIN
   ) VALUES (
     member_entity_id,
     party_id,
-    '{manage:data, read:grid, manage:auth}'
+    '{manage:data, read:grid, manage:auth, manage:attachment}'
   );
 
   RETURN party_id;
@@ -82,7 +82,7 @@ BEGIN
   ) VALUES (
     entity_id,
     party_id,
-    '{manage:data, read:grid, manage:auth}'
+    '{manage:data, read:grid, manage:auth, manage:attachment}'
   );
   RETURN party_id;
 END;
@@ -645,8 +645,8 @@ BEGIN
 
   INSERT INTO flex.entity_client (entity_id, name, scopes)
   VALUES
-  (entity_id_person, 'PC #1', '{manage:auth, read:grid, manage:data}'::text[]),
-  (entity_id_org, 'Laptop #4', '{manage:auth, read:grid, manage:data}'::text[]);
+  (entity_id_person, 'PC #1', '{manage:auth, read:grid, manage:data, manage:attachment}'::text[]),
+  (entity_id_org, 'Laptop #4', '{manage:auth, read:grid, manage:data, manage:attachment}'::text[]);
 
   -- end user parties
 

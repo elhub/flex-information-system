@@ -580,6 +580,33 @@ type ApiServiceProvidingGroupProductApplication struct {
 	RecordedAt                pgtype.Timestamptz
 }
 
+type ApiServiceProvidingGroupProductApplicationAttachment struct {
+	ID                                        int
+	ServiceProvidingGroupProductApplicationID int
+	ObjectID                                  string
+	Filename                                  string
+	FilenameSanitised                         string
+	ContentType                               string
+	SizeBytes                                 int
+	RecordedBy                                int
+	RecordedAt                                pgtype.Timestamptz
+}
+
+type ApiServiceProvidingGroupProductApplicationAttachmentHistory struct {
+	ServiceProvidingGroupProductApplicationAttachmentID int
+	ID                                                  int
+	ServiceProvidingGroupProductApplicationID           int
+	ObjectID                                            string
+	Filename                                            string
+	FilenameSanitised                                   string
+	ContentType                                         string
+	SizeBytes                                           int
+	RecordedBy                                          int
+	RecordedAt                                          pgtype.Timestamptz
+	ReplacedBy                                          *int
+	ReplacedAt                                          pgtype.Timestamptz
+}
+
 type ApiServiceProvidingGroupProductApplicationComment struct {
 	ID                                        int
 	ServiceProvidingGroupProductApplicationID int

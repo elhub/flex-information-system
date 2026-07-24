@@ -2,7 +2,7 @@
 -- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
 
 -- changeset flex:controllable-unit-suspension-comment-create runOnChange:true endDelimiter:--
-CREATE TABLE IF NOT EXISTS controllable_unit_suspension_comment (
+CREATE TABLE IF NOT EXISTS flex.controllable_unit_suspension_comment (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     controllable_unit_suspension_id bigint NOT NULL,
     visibility text NOT NULL DEFAULT 'same_party',
@@ -17,18 +17,25 @@ CREATE TABLE IF NOT EXISTS controllable_unit_suspension_comment (
     recorded_by bigint NOT NULL DEFAULT current_identity(),
 
     CONSTRAINT
-    controllable_unit_suspension_comment_visibility_check
-    CHECK (
-        visibility IN (
-            'same_party',
-            'any_involved_party'
-        )
-    ),
-    CONSTRAINT
     controllable_unit_suspension_comment_cus_fkey
     FOREIGN KEY (controllable_unit_suspension_id)
     REFERENCES controllable_unit_suspension (id)
     ON DELETE CASCADE
+);
+
+-- changeset flex:controllable-unit-suspension-comment-visibility-check runOnChange:true endDelimiter:--
+ALTER TABLE flex.controllable_unit_suspension_comment
+DROP CONSTRAINT IF EXISTS
+controllable_unit_suspension_comment_visibility_check;
+
+ALTER TABLE flex.controllable_unit_suspension_comment
+ADD CONSTRAINT
+controllable_unit_suspension_comment_visibility_check
+CHECK (
+    visibility IN (
+        'same_party',
+        'any_involved_party'
+    )
 );
 
 -- changeset flex:controllable-unit-suspension-comment-capture-event runOnChange:true endDelimiter:--

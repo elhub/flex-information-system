@@ -3,17 +3,26 @@
 """
 Generate openapi/scopes.yml from openapi/resources.yml.
 
-Coarse scopes and RPC scopes are hardcoded here (no resource definition).
-Every other thing under `data` and `grid` is derived mechanically from the
-resources.yml file.
+The accepted set of scopes is computed mechanically:
 
-The auth coarse/granular scopes are hardcoded here (they have no resource
-definition and change rarely). Everything under the `data` and `grid` modules
-is derived mechanically from the resource list.
+1. Derive the "leaf" scopes from the resource list. Every resource yields
+   `read:<asset>:<id>`, `manage:<asset>:<id>` (when it has a write operation)
+   and `read:<asset>:<id>_history` (when history is enabled). Comment and
+   attachment sub-resources are expanded the same way `resources_to_openapi.py`
+   does. The asset is derived from the module (`api` => `data`, `grid` =>
+   `grid`), except attachment sub-resources which live under the `attachment`
+   asset. History scopes always live under the same asset as their resource.
 
-A resource gets `manage` only when it has at least one of the
-create/update/delete operations. The history scopes are generated only if
-history is enabled on the resource.
+2. Append a small hardcoded set for things that have no resource definition:
+   the `auth` asset scopes, the RPC `:lookup` scopes and the coarse
+   `use:attachment` scope (there is no `use` operation on attachments).
+
+3. Compute the transitive prefix closure: for a scope `a:b:c:d` we also accept
+   `a:b:c` and `a:b`. Prefixes shorter than `verb:asset` (2 parts) are never
+   produced, which matches the `flex.scope` domain regex.
+
+This single list feeds both the `auth_scope` enum in the OpenAPI document and
+the `flex.scope_allowed()` database function.
 """
 
 import sys
@@ -22,99 +31,93 @@ import yaml
 # constants
 
 # module => scope asset
-MODULE_PREFIX = {
+MODULE_ASSET = {
     "api": "data",
     "grid": "grid",
 }
 
-# hardcoded auth scopes
+# auth asset scopes (no resource, changes rarely); kept first
 AUTH_SCOPES = [
     "read:auth",
     "use:auth",
     "manage:auth",
 ]
 
-# RPC scopes
-EXTRA_USE_SCOPES = {
-    "data": [
-        "use:data:controllable_unit:lookup",
-        "use:data:entity:lookup",
-    ],
-}
+# scopes that have no resource definition and are appended after the resource
+# leaves before computing the prefix closure (the closure then produces their
+# coarse prefixes, e.g. `use:data` from `use:data:entity:lookup`)
+EXTRA_SCOPES = [
+    # RPC scopes
+    "use:data:controllable_unit:lookup",
+    "use:data:entity:lookup",
+    # coarse "use" on attachments (no `use` operation, no leaf produces it)
+    "use:attachment",
+]
 
 WRITE_OPS = {"create", "update", "delete"}
-
-# comment resources always have list+read+create (manage) and history.
-COMMENT_OPERATIONS = ["list", "read", "create"]
-COMMENT_HAS_HISTORY = True
 
 # helpers
 
 
-def has_write(resource):
-    return bool(set(resource.get("operations", [])) & WRITE_OPS)
+def resource_leaves(rid, asset, operations, has_history):
+    """Leaf scopes for a single (sub-)resource under the given asset."""
+    leaves = [f"read:{asset}:{rid}"]
+    if set(operations or []) & WRITE_OPS:
+        leaves.append(f"manage:{asset}:{rid}")
+    if has_history:
+        leaves.append(f"read:{asset}:{rid}_history")
+    return leaves
 
 
-def scopes_for_resource(resource):
+def leaves_for_resource(resource):
+    """All leaf scopes contributed by a resource and its sub-resources."""
     module = resource.get("module", "api")
-    prefix = MODULE_PREFIX[module]
+    asset = MODULE_ASSET[module]
     rid = resource["id"]
-    scopes = []
 
-    scopes.append(f"read:{prefix}:{rid}")
-    if has_write(resource):
-        scopes.append(f"manage:{prefix}:{rid}")
-    if resource.get("history"):
-        scopes.append(f"read:{prefix}:{rid}_history")
+    leaves = resource_leaves(
+        rid, asset, resource.get("operations", []), bool(resource.get("history"))
+    )
 
-    return scopes
+    # comment sub-resource: same asset, list+read+create (=> manage) + history
+    if resource.get("comments"):
+        leaves += resource_leaves(f"{rid}_comment", asset, ["read", "create"], True)
+
+    # attachment sub-resource: `attachment` asset, list/read/create/delete
+    # (=> read + manage) + history
+    if resource.get("attachments"):
+        leaves += resource_leaves(
+            f"{rid}_attachment", "attachment", ["read", "create", "delete"], True
+        )
+
+    return leaves
 
 
-def comment_scopes_for_resource(resource):
-    module = resource.get("module", "api")
-    prefix = MODULE_PREFIX[module]
-    rid = resource["id"] + "_comment"
-    # comment resources have create (manage) and history
-    return [
-        f"read:{prefix}:{rid}",
-        f"manage:{prefix}:{rid}",
-        f"read:{prefix}:{rid}_history",
-    ]
+def prefixes(scope):
+    """Every prefix of `scope` from `verb:asset` (2 parts) up to the scope."""
+    parts = scope.split(":")
+    return [":".join(parts[:k]) for k in range(2, len(parts) + 1)]
 
 
 def build_scopes(resources):
-    by_module = {}
+    # gather leaves: auth first, then resource leaves, then the remaining
+    # hardcoded scopes (RPC, coarse attachment use)
+    leaves = list(AUTH_SCOPES)
     for resource in resources:
-        module = resource.get("module", "api")
-        prefix = MODULE_PREFIX.get(module)
-        if prefix is None:
-            continue
-        by_module.setdefault(prefix, [])
-        by_module[prefix].extend(scopes_for_resource(resource))
-        if resource.get("comments"):
-            by_module[prefix].extend(comment_scopes_for_resource(resource))
+        leaves += leaves_for_resource(resource)
+    leaves += EXTRA_SCOPES
 
-    scopes = []
+    # transitive prefix closure, keeping a deterministic order and inserting
+    # each coarse prefix right before its first specific scope
+    ordered = []
+    seen = set()
+    for leaf in leaves:
+        for scope in prefixes(leaf):
+            if scope not in seen:
+                seen.add(scope)
+                ordered.append(scope)
 
-    scopes.extend(AUTH_SCOPES)
-
-    for prefix in ["data", "grid"]:
-        if prefix not in by_module:
-            continue
-
-        # coarse scopes for the module
-        scopes.append(f"read:{prefix}")
-        if prefix == "data":
-            scopes.append(f"manage:{prefix}")
-            scopes.append(f"use:{prefix}")
-
-        # per-resource scopes
-        scopes.extend(by_module[prefix])
-
-        # extra use/RPC scopes for the module
-        scopes.extend(EXTRA_USE_SCOPES.get(prefix, []))
-
-    return scopes
+    return ordered
 
 
 def main():
@@ -127,23 +130,16 @@ def main():
     with open(resources_path) as f:
         resources_data = yaml.safe_load(f)
 
-    # include all modules that have a known prefix
+    # include all modules that have a known asset
     resources = [
-        r
-        for r in resources_data["resources"]
-        if r.get("module", "api") in MODULE_PREFIX
+        r for r in resources_data["resources"] if r.get("module", "api") in MODULE_ASSET
     ]
 
     scopes = build_scopes(resources)
 
-    output = {
-        "_comment": "GENERATED FILE (just generate-scopes) — do not edit manually.",
-        "scopes": scopes,
-    }
-
     with open(scopes_path, "w") as f:
         f.write("---\n")
-        f.write(f"# {output['_comment']}\n")
+        f.write("# GENERATED FILE (just generate-scopes) — do not edit manually.\n")
         f.write("scopes:\n")
         for scope in scopes:
             f.write(f"  - {scope}\n")

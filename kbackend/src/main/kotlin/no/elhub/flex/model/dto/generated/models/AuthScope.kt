@@ -18,12 +18,10 @@ public enum class AuthScope(
   MANAGE_AUTH("manage:auth"),
   @SerialName("read:data")
   READ_DATA("read:data"),
-  @SerialName("manage:data")
-  MANAGE_DATA("manage:data"),
-  @SerialName("use:data")
-  USE_DATA("use:data"),
   @SerialName("read:data:controllable_unit")
   READ_DATA_CONTROLLABLE_UNIT("read:data:controllable_unit"),
+  @SerialName("manage:data")
+  MANAGE_DATA("manage:data"),
   @SerialName("manage:data:controllable_unit")
   MANAGE_DATA_CONTROLLABLE_UNIT("manage:data:controllable_unit"),
   @SerialName("read:data:controllable_unit_history")
@@ -134,6 +132,14 @@ public enum class AuthScope(
   READ_DATA_METERING_GRID_AREA("read:data:metering_grid_area"),
   @SerialName("read:data:accounting_point_metering_grid_area")
   READ_DATA_ACCOUNTING_POINT_METERING_GRID_AREA("read:data:accounting_point_metering_grid_area"),
+  @SerialName("read:grid")
+  READ_GRID("read:grid"),
+  @SerialName("read:grid:substation_cluster")
+  READ_GRID_SUBSTATION_CLUSTER("read:grid:substation_cluster"),
+  @SerialName("read:grid:substation")
+  READ_GRID_SUBSTATION("read:grid:substation"),
+  @SerialName("read:grid:line")
+  READ_GRID_LINE("read:grid:line"),
   @SerialName("read:data:accounting_point_grid_location")
   READ_DATA_ACCOUNTING_POINT_GRID_LOCATION("read:data:accounting_point_grid_location"),
   @SerialName("manage:data:accounting_point_grid_location")
@@ -184,6 +190,16 @@ public enum class AuthScope(
   MANAGE_DATA_SERVICE_PROVIDING_GROUP_PRODUCT_APPLICATION_COMMENT("manage:data:service_providing_group_product_application_comment"),
   @SerialName("read:data:service_providing_group_product_application_comment_history")
   READ_DATA_SERVICE_PROVIDING_GROUP_PRODUCT_APPLICATION_COMMENT_HISTORY("read:data:service_providing_group_product_application_comment_history"),
+  @SerialName("read:attachment")
+  READ_ATTACHMENT("read:attachment"),
+  @SerialName("read:attachment:service_providing_group_product_application_attachment")
+  READ_ATTACHMENT_SERVICE_PROVIDING_GROUP_PRODUCT_APPLICATION_ATTACHMENT("read:attachment:service_providing_group_product_application_attachment"),
+  @SerialName("manage:attachment")
+  MANAGE_ATTACHMENT("manage:attachment"),
+  @SerialName("manage:attachment:service_providing_group_product_application_attachment")
+  MANAGE_ATTACHMENT_SERVICE_PROVIDING_GROUP_PRODUCT_APPLICATION_ATTACHMENT("manage:attachment:service_providing_group_product_application_attachment"),
+  @SerialName("read:attachment:service_providing_group_product_application_attachment_history")
+  READ_ATTACHMENT_SERVICE_PROVIDING_GROUP_PRODUCT_APPLICATION_ATTACHMENT_HISTORY("read:attachment:service_providing_group_product_application_attachment_history"),
   @SerialName("read:data:service_providing_group_product_suspension")
   READ_DATA_SERVICE_PROVIDING_GROUP_PRODUCT_SUSPENSION("read:data:service_providing_group_product_suspension"),
   @SerialName("manage:data:service_providing_group_product_suspension")
@@ -198,18 +214,18 @@ public enum class AuthScope(
   READ_DATA_SERVICE_PROVIDING_GROUP_PRODUCT_SUSPENSION_COMMENT_HISTORY("read:data:service_providing_group_product_suspension_comment_history"),
   @SerialName("read:data:notice")
   READ_DATA_NOTICE("read:data:notice"),
+  @SerialName("use:data")
+  USE_DATA("use:data"),
+  @SerialName("use:data:controllable_unit")
+  USE_DATA_CONTROLLABLE_UNIT("use:data:controllable_unit"),
   @SerialName("use:data:controllable_unit:lookup")
   USE_DATA_CONTROLLABLE_UNIT_LOOKUP("use:data:controllable_unit:lookup"),
+  @SerialName("use:data:entity")
+  USE_DATA_ENTITY("use:data:entity"),
   @SerialName("use:data:entity:lookup")
   USE_DATA_ENTITY_LOOKUP("use:data:entity:lookup"),
-  @SerialName("read:grid")
-  READ_GRID("read:grid"),
-  @SerialName("read:grid:substation_cluster")
-  READ_GRID_SUBSTATION_CLUSTER("read:grid:substation_cluster"),
-  @SerialName("read:grid:substation")
-  READ_GRID_SUBSTATION("read:grid:substation"),
-  @SerialName("read:grid:line")
-  READ_GRID_LINE("read:grid:line"),
+  @SerialName("use:attachment")
+  USE_ATTACHMENT("use:attachment"),
   ;
 
   override fun toString(): String = value

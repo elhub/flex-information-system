@@ -593,6 +593,31 @@ CREATE TABLE api.service_providing_group_product_application_history (
     replaced_by bigint NULL,
     replaced_at timestamp with time zone NULL
 );
+CREATE TABLE api.service_providing_group_product_application_attachment (
+    id bigint NOT NULL,
+    service_providing_group_product_application_id bigint NOT NULL,
+    object_id text NOT NULL,
+    filename text NOT NULL,
+    filename_sanitised text NOT NULL,
+    content_type text NOT NULL,
+    size_bytes bigint NOT NULL,
+    recorded_by bigint NOT NULL,
+    recorded_at timestamp with time zone NOT NULL
+);
+CREATE TABLE api.service_providing_group_product_application_attachment_history (
+    service_providing_group_product_application_attachment_id bigint NOT NULL,
+    id bigint NOT NULL,
+    service_providing_group_product_application_id bigint NOT NULL,
+    object_id text NOT NULL,
+    filename text NOT NULL,
+    filename_sanitised text NOT NULL,
+    content_type text NOT NULL,
+    size_bytes bigint NOT NULL,
+    recorded_by bigint NOT NULL,
+    recorded_at timestamp with time zone NOT NULL,
+    replaced_by bigint NULL,
+    replaced_at timestamp with time zone NULL
+);
 CREATE TABLE api.service_providing_group_product_application_comment (
     id bigint NOT NULL,
     service_providing_group_product_application_id bigint NOT NULL,

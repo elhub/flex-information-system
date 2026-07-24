@@ -9,6 +9,7 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import io.mockk.coEvery
 import io.mockk.mockk
 import no.elhub.flex.accountingpoint.AccountingPointService
+import no.elhub.flex.attachment.AttachmentStorageService
 import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.config.Tracing
 import no.elhub.flex.config.configureHealth
@@ -55,6 +56,7 @@ fun defaultTestApplication(): TestApplication {
                         single<ControllableUnitRepository> { mockRepo }
                         single<EventRepository> { mockEventRepo }
                         single { ControllableUnitLookup(get(), get(), get()) }
+                        single<AttachmentStorageService> { mockk(relaxed = true) }
                     },
                 )
             }

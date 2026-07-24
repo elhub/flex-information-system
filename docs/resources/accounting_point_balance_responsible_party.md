@@ -49,7 +49,9 @@ No policies.
 
 #### Balance Responsible Party
 
-No policies.
+| Policy key   | Policy                        | Status |
+|--------------|-------------------------------|--------|
+| APBRP-BRP001 | Read their own APBRP records. | DONE   |
 
 #### End User
 

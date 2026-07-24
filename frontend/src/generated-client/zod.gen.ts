@@ -20,9 +20,8 @@ export const zAuthScope = z.enum([
   "use:auth",
   "manage:auth",
   "read:data",
-  "manage:data",
-  "use:data",
   "read:data:controllable_unit",
+  "manage:data",
   "manage:data:controllable_unit",
   "read:data:controllable_unit_history",
   "read:data:controllable_unit_suspension",
@@ -78,6 +77,10 @@ export const zAuthScope = z.enum([
   "read:data:accounting_point_energy_supplier",
   "read:data:metering_grid_area",
   "read:data:accounting_point_metering_grid_area",
+  "read:grid",
+  "read:grid:substation_cluster",
+  "read:grid:substation",
+  "read:grid:line",
   "read:data:accounting_point_grid_location",
   "manage:data:accounting_point_grid_location",
   "read:data:accounting_point_grid_location_history",
@@ -103,6 +106,11 @@ export const zAuthScope = z.enum([
   "read:data:service_providing_group_product_application_comment",
   "manage:data:service_providing_group_product_application_comment",
   "read:data:service_providing_group_product_application_comment_history",
+  "read:attachment",
+  "read:attachment:service_providing_group_product_application_attachment",
+  "manage:attachment",
+  "manage:attachment:service_providing_group_product_application_attachment",
+  "read:attachment:service_providing_group_product_application_attachment_history",
   "read:data:service_providing_group_product_suspension",
   "manage:data:service_providing_group_product_suspension",
   "read:data:service_providing_group_product_suspension_history",
@@ -110,12 +118,12 @@ export const zAuthScope = z.enum([
   "manage:data:service_providing_group_product_suspension_comment",
   "read:data:service_providing_group_product_suspension_comment_history",
   "read:data:notice",
+  "use:data",
+  "use:data:controllable_unit",
   "use:data:controllable_unit:lookup",
+  "use:data:entity",
   "use:data:entity:lookup",
-  "read:grid",
-  "read:grid:substation_cluster",
-  "read:grid:substation",
-  "read:grid:line",
+  "use:attachment",
 ]);
 
 /**
@@ -537,6 +545,12 @@ export const zServiceProvidingGroupProductApplicationStatus = z.enum([
 export const zServiceProvidingGroupProductApplicationRampingCapability = z.enum(
   ["always", "partial", "never"],
 );
+
+/**
+ * MIME type of the attachment.
+ */
+export const zServiceProvidingGroupProductApplicationAttachmentContentType =
+  z.enum(["application/pdf", "image/jpeg", "image/png"]);
 
 /**
  * The level of visibility of the comment.
@@ -1502,6 +1516,26 @@ export const zServiceProvidingGroupProductApplicationHistory = z.object({
 });
 
 /**
+ * Service Providing Group Product Application Attachment - history
+ */
+export const zServiceProvidingGroupProductApplicationAttachmentHistory =
+  z.object({
+    id: z.coerce.number().readonly(),
+    service_providing_group_product_application_id: z.coerce.number(),
+    object_id: z.string(),
+    filename: z.string(),
+    filename_sanitised: z.string(),
+    content_type: zServiceProvidingGroupProductApplicationAttachmentContentType,
+    size_bytes: z.coerce.number(),
+    recorded_at: z.iso.datetime({ offset: true }).readonly(),
+    recorded_by: z.coerce.number().readonly(),
+    service_providing_group_product_application_attachment_id:
+      z.coerce.number(),
+    replaced_by: z.coerce.number().optional(),
+    replaced_at: z.iso.datetime({ offset: true }).optional(),
+  });
+
+/**
  * Service Providing Group Product Application Comment - history
  */
 export const zServiceProvidingGroupProductApplicationCommentHistory = z.object({
@@ -1847,6 +1881,23 @@ export const zServiceProvidingGroupProductApplicationHistoryWritable = z.object(
 );
 
 /**
+ * Service Providing Group Product Application Attachment - history
+ */
+export const zServiceProvidingGroupProductApplicationAttachmentHistoryWritable =
+  z.object({
+    service_providing_group_product_application_id: z.coerce.number(),
+    object_id: z.string(),
+    filename: z.string(),
+    filename_sanitised: z.string(),
+    content_type: zServiceProvidingGroupProductApplicationAttachmentContentType,
+    size_bytes: z.coerce.number(),
+    service_providing_group_product_application_attachment_id:
+      z.coerce.number(),
+    replaced_by: z.coerce.number().optional(),
+    replaced_at: z.iso.datetime({ offset: true }).optional(),
+  });
+
+/**
  * Service Providing Group Product Application Comment - history
  */
 export const zServiceProvidingGroupProductApplicationCommentHistoryWritable =
@@ -1904,18 +1955,10 @@ export const zNoticeDataPartyOutdated = z.object({
 });
 
 export const zNoticeData = z.discriminatedUnion("kind", [
-  zNoticeDataValidTimeOutsideContract.extend({
-    kind: z.literal("notice.data.valid_time.outside_contract"),
-  }),
-  zNoticeDataPartyMissing.extend({
-    kind: z.literal("notice.data.party.missing"),
-  }),
-  zNoticeDataPartyOutdated.extend({
-    kind: z.literal("notice.data.party.outdated"),
-  }),
-  zNoticeDataProductTypeNotQualified.extend({
-    kind: z.literal("notice.data.product_type.not_qualified"),
-  }),
+  zNoticeDataValidTimeOutsideContract,
+  zNoticeDataPartyMissing,
+  zNoticeDataPartyOutdated,
+  zNoticeDataProductTypeNotQualified,
 ]);
 
 /**
@@ -2586,9 +2629,31 @@ export const zServiceProvidingGroupProductApplication = z.object({
   recorded_by: z.coerce.number().readonly(),
   service_providing_group: zServiceProvidingGroup.nullish(),
   procuring_system_operator: zParty.nullish(),
+  attachment: z
+    .array(
+      z.lazy((): any => zServiceProvidingGroupProductApplicationAttachment),
+    )
+    .nullish(),
   comment: z
     .array(z.lazy((): any => zServiceProvidingGroupProductApplicationComment))
     .nullish(),
+});
+
+/**
+ * Response schema - File attachment associated with a service providing group product application, allowing involved parties to exchange supporting documents.
+ */
+export const zServiceProvidingGroupProductApplicationAttachment = z.object({
+  id: z.coerce.number().readonly(),
+  service_providing_group_product_application_id: z.coerce.number(),
+  object_id: z.string(),
+  filename: z.string(),
+  filename_sanitised: z.string(),
+  content_type: zServiceProvidingGroupProductApplicationAttachmentContentType,
+  size_bytes: z.coerce.number(),
+  recorded_at: z.iso.datetime({ offset: true }).readonly(),
+  recorded_by: z.coerce.number().readonly(),
+  service_providing_group_product_application:
+    zServiceProvidingGroupProductApplication.nullish(),
 });
 
 /**
@@ -2682,18 +2747,10 @@ export const zNoticeDataPartyOutdatedWritable = z.object({
 });
 
 export const zNoticeDataWritable = z.discriminatedUnion("kind", [
-  zNoticeDataValidTimeOutsideContract.extend({
-    kind: z.literal("notice.data.valid_time.outside_contract"),
-  }),
-  zNoticeDataPartyMissingWritable.extend({
-    kind: z.literal("notice.data.party.missing"),
-  }),
-  zNoticeDataPartyOutdatedWritable.extend({
-    kind: z.literal("notice.data.party.outdated"),
-  }),
-  zNoticeDataProductTypeNotQualified.extend({
-    kind: z.literal("notice.data.product_type.not_qualified"),
-  }),
+  zNoticeDataValidTimeOutsideContract,
+  zNoticeDataPartyMissingWritable,
+  zNoticeDataPartyOutdatedWritable,
+  zNoticeDataProductTypeNotQualified,
 ]);
 
 /**
@@ -3180,6 +3237,13 @@ export const zServiceProvidingGroupProductApplicationWritable = z.object({
   ramping_description: z.string().optional(),
   service_providing_group: zServiceProvidingGroupWritable.nullish(),
   procuring_system_operator: zPartyWritable.nullish(),
+  attachment: z
+    .array(
+      z.lazy(
+        (): any => zServiceProvidingGroupProductApplicationAttachmentWritable,
+      ),
+    )
+    .nullish(),
   comment: z
     .array(
       z.lazy(
@@ -3188,6 +3252,21 @@ export const zServiceProvidingGroupProductApplicationWritable = z.object({
     )
     .nullish(),
 });
+
+/**
+ * Response schema - File attachment associated with a service providing group product application, allowing involved parties to exchange supporting documents.
+ */
+export const zServiceProvidingGroupProductApplicationAttachmentWritable =
+  z.object({
+    service_providing_group_product_application_id: z.coerce.number(),
+    object_id: z.string(),
+    filename: z.string(),
+    filename_sanitised: z.string(),
+    content_type: zServiceProvidingGroupProductApplicationAttachmentContentType,
+    size_bytes: z.coerce.number(),
+    service_providing_group_product_application:
+      zServiceProvidingGroupProductApplicationWritable.nullish(),
+  });
 
 /**
  * Response schema - Comment made by a party involved in a service providing group product application.
@@ -4112,6 +4191,57 @@ export const zReadServiceProvidingGroupProductApplicationHistoryPath = z.object(
 export const zReadServiceProvidingGroupProductApplicationHistoryResponse =
   zServiceProvidingGroupProductApplicationHistory;
 
+export const zDeleteServiceProvidingGroupProductApplicationAttachmentBody =
+  zEmptyObjectWritable;
+
+export const zDeleteServiceProvidingGroupProductApplicationAttachmentPath =
+  z.object({
+    id: z.coerce.number(),
+  });
+
+/**
+ * No Content
+ */
+export const zDeleteServiceProvidingGroupProductApplicationAttachmentResponse =
+  z.void();
+
+export const zListServiceProvidingGroupProductApplicationAttachmentHistoryQuery =
+  z.object({
+    id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    service_providing_group_product_application_attachment_id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    service_providing_group_product_application_id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    select: z.string().optional(),
+    order: z.string().optional(),
+    offset: z.string().optional(),
+    limit: z.string().optional(),
+  });
+
+export const zListServiceProvidingGroupProductApplicationAttachmentHistoryResponse =
+  z.union([
+    z.array(zServiceProvidingGroupProductApplicationAttachmentHistory),
+    z.array(zServiceProvidingGroupProductApplicationAttachmentHistory),
+  ]);
+
+export const zReadServiceProvidingGroupProductApplicationAttachmentHistoryPath =
+  z.object({
+    id: z.coerce.number(),
+  });
+
+/**
+ * OK
+ */
+export const zReadServiceProvidingGroupProductApplicationAttachmentHistoryResponse =
+  zServiceProvidingGroupProductApplicationAttachmentHistory;
+
 export const zListServiceProvidingGroupProductApplicationCommentHistoryQuery =
   z.object({
     id: z
@@ -4242,6 +4372,11 @@ export const zReadServiceProvidingGroupProductSuspensionCommentHistoryPath =
  */
 export const zReadServiceProvidingGroupProductSuspensionCommentHistoryResponse =
   zServiceProvidingGroupProductSuspensionCommentHistory;
+
+export const zCallDownloadServiceProvidingGroupProductApplicationAttachmentPath =
+  z.object({
+    id: z.coerce.number(),
+  });
 
 export const zListControllableUnitQuery = z.object({
   id: z
@@ -6007,6 +6142,56 @@ export const zUpdateServiceProvidingGroupProductApplicationResponse = z.union([
   zServiceProvidingGroupProductApplication,
   z.void(),
 ]);
+
+export const zListServiceProvidingGroupProductApplicationAttachmentQuery =
+  z.object({
+    id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/)
+      .optional(),
+    service_providing_group_product_application_id: z
+      .string()
+      .regex(/^eq\.[0-9]+$/),
+    select: z.string().optional(),
+    order: z.string().optional(),
+    offset: z.string().optional(),
+    limit: z.string().optional(),
+    embed: z.string().optional(),
+  });
+
+export const zListServiceProvidingGroupProductApplicationAttachmentResponse =
+  z.union([
+    z.array(zServiceProvidingGroupProductApplicationAttachment),
+    z.array(zServiceProvidingGroupProductApplicationAttachment),
+  ]);
+
+export const zCreateServiceProvidingGroupProductApplicationAttachmentBody =
+  z.object({
+    service_providing_group_product_application_id: z.coerce.number(),
+    file: z.string(),
+  });
+
+/**
+ * Created
+ */
+export const zCreateServiceProvidingGroupProductApplicationAttachmentResponse =
+  zServiceProvidingGroupProductApplicationAttachment;
+
+export const zReadServiceProvidingGroupProductApplicationAttachmentPath =
+  z.object({
+    id: z.coerce.number(),
+  });
+
+export const zReadServiceProvidingGroupProductApplicationAttachmentQuery =
+  z.object({
+    embed: z.string().optional(),
+  });
+
+/**
+ * OK
+ */
+export const zReadServiceProvidingGroupProductApplicationAttachmentResponse =
+  zServiceProvidingGroupProductApplicationAttachment;
 
 export const zListServiceProvidingGroupProductApplicationCommentQuery =
   z.object({

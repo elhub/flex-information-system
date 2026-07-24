@@ -383,9 +383,11 @@ dependencies = [
     { name = "psycopg", extra = ["binary", "pool"] },
     { name = "pyjwt" },
     { name = "pytest" },
+    { name = "pytest-ordering" },
     { name = "python-dotenv" },
     { name = "ruff" },
     { name = "schemathesis" },
+    { name = "sourcemeta-jsonschema" },
     { name = "tabulate" },
 ]
 
@@ -405,9 +407,11 @@ requires-dist = [
     { name = "psycopg", extras = ["binary", "pool"] },
     { name = "pyjwt" },
     { name = "pytest" },
+    { name = "pytest-ordering" },
     { name = "python-dotenv" },
     { name = "ruff" },
     { name = "schemathesis" },
+    { name = "sourcemeta-jsonschema" },
     { name = "tabulate" },
 ]
 
@@ -1217,6 +1221,18 @@ wheels = [
 ]
 
 [[package]]
+name = "pytest-ordering"
+version = "0.6"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pytest" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/e1/ba/65091c36e6e18da479d22d860586e3ba3a4237cc92a66e3ddd945e4fe761/pytest-ordering-0.6.tar.gz", hash = "sha256:561ad653626bb171da78e682f6d39ac33bb13b3e272d406cd555adb6b006bda6", size = 2629, upload-time = "2018-11-14T00:55:26.004Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ec/98/adc368fe369465f291ab24e18b9900473786ed1afdf861ba90467eb0767e/pytest_ordering-0.6-py3-none-any.whl", hash = "sha256:3f314a178dbeb6777509548727dc69edf22d6d9a2867bf2d310ab85c403380b6", size = 4643, upload-time = "2018-10-25T16:25:18.445Z" },
+]
+
+[[package]]
 name = "python-dateutil"
 version = "2.9.0.post0"
 source = { registry = "https://pypi.org/simple" }
@@ -1534,6 +1550,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/e8/c4/ba2f8066cceb6f23394729afe52f3bf7adec04bf9ed2c820b39e19299111/sortedcontainers-2.4.0.tar.gz", hash = "sha256:25caa5a06cc30b6b83d11423433f65d1f9d76c4c6a0c90e3379eaa43b9bfdb88", size = 30594, upload-time = "2021-05-16T22:03:42.897Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/32/46/9cb0e58b2deb7f82b84065f37f3bffeb12413f947f9388e4cac22c4621ce/sortedcontainers-2.4.0-py2.py3-none-any.whl", hash = "sha256:a163dcaede0f1c021485e957a39245190e74249897e2ae4b2aa38595db237ee0", size = 29575, upload-time = "2021-05-16T22:03:41.177Z" },
+]
+
+[[package]]
+name = "sourcemeta-jsonschema"
+version = "16.0.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/6a/28/53ba12a854de3595358e1a4ad2ee9573b7a720f2173a892684bb54020bbe/sourcemeta_jsonschema-16.0.0.tar.gz", hash = "sha256:8e50e0512c67f983f7f97f49457b472a949694fb49e3333f615ba3eac3c964e1", size = 17049331, upload-time = "2026-06-16T17:11:41.92Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/61/b8/62c807fdcee7c78cfa15893811c0b85940467193b3561534e7ee7cbd6943/sourcemeta_jsonschema-16.0.0-py3-none-any.whl", hash = "sha256:ff87c93c2122923ceceefae45a8a904ba1a78ebce2cbb2001500442ff093310d", size = 17115142, upload-time = "2026-06-16T17:11:39.677Z" },
 ]
 
 [[package]]

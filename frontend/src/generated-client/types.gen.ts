@@ -34,9 +34,8 @@ export type AuthScope =
   | "use:auth"
   | "manage:auth"
   | "read:data"
-  | "manage:data"
-  | "use:data"
   | "read:data:controllable_unit"
+  | "manage:data"
   | "manage:data:controllable_unit"
   | "read:data:controllable_unit_history"
   | "read:data:controllable_unit_suspension"
@@ -92,6 +91,10 @@ export type AuthScope =
   | "read:data:accounting_point_energy_supplier"
   | "read:data:metering_grid_area"
   | "read:data:accounting_point_metering_grid_area"
+  | "read:grid"
+  | "read:grid:substation_cluster"
+  | "read:grid:substation"
+  | "read:grid:line"
   | "read:data:accounting_point_grid_location"
   | "manage:data:accounting_point_grid_location"
   | "read:data:accounting_point_grid_location_history"
@@ -117,6 +120,11 @@ export type AuthScope =
   | "read:data:service_providing_group_product_application_comment"
   | "manage:data:service_providing_group_product_application_comment"
   | "read:data:service_providing_group_product_application_comment_history"
+  | "read:attachment"
+  | "read:attachment:service_providing_group_product_application_attachment"
+  | "manage:attachment"
+  | "manage:attachment:service_providing_group_product_application_attachment"
+  | "read:attachment:service_providing_group_product_application_attachment_history"
   | "read:data:service_providing_group_product_suspension"
   | "manage:data:service_providing_group_product_suspension"
   | "read:data:service_providing_group_product_suspension_history"
@@ -124,12 +132,12 @@ export type AuthScope =
   | "manage:data:service_providing_group_product_suspension_comment"
   | "read:data:service_providing_group_product_suspension_comment_history"
   | "read:data:notice"
+  | "use:data"
+  | "use:data:controllable_unit"
   | "use:data:controllable_unit:lookup"
+  | "use:data:entity"
   | "use:data:entity:lookup"
-  | "read:grid"
-  | "read:grid:substation_cluster"
-  | "read:grid:substation"
-  | "read:grid:line";
+  | "use:attachment";
 
 /**
  * Resource category classification. Derived from technologies.
@@ -400,10 +408,7 @@ export type EmptyObject = {
  * The status of the controllable unit.
  */
 export type ControllableUnitStatus =
-  | "new"
-  | "active"
-  | "inactive"
-  | "terminated";
+  "new" | "active" | "inactive" | "terminated";
 
 /**
  * The regulation direction of the controllable unit. `up` means it can be used to increase production or decrease consumption, while `down` means to decrease production or increase consumption.
@@ -414,34 +419,25 @@ export type ControllableUnitRegulationDirection = "up" | "down" | "both";
  * The reason for the suspension.
  */
 export type ControllableUnitSuspensionReason =
-  | "compromises_safe_operation"
-  | "other";
+  "compromises_safe_operation" | "other";
 
 /**
  * The level of visibility of the comment.
  */
 export type ControllableUnitSuspensionCommentVisibility =
-  | "same_party"
-  | "any_involved_party";
+  "same_party" | "any_involved_party";
 
 /**
  * The bidding zone that restricts which CUs that can be added to the group. Also known as scheduling area or price area for TSO.
  */
 export type ServiceProvidingGroupBiddingZone =
-  | "NO1"
-  | "NO2"
-  | "NO3"
-  | "NO4"
-  | "NO5";
+  "NO1" | "NO2" | "NO3" | "NO4" | "NO5";
 
 /**
  * The status of the group.
  */
 export type ServiceProvidingGroupStatus =
-  | "new"
-  | "active"
-  | "inactive"
-  | "terminated";
+  "new" | "active" | "inactive" | "terminated";
 
 /**
  * The status of the grid prequalification for this service providing group.
@@ -457,23 +453,19 @@ export type ServiceProvidingGroupGridPrequalificationStatus =
  * The level of visibility of the comment.
  */
 export type ServiceProvidingGroupGridPrequalificationCommentVisibility =
-  | "same_party"
-  | "any_involved_party";
+  "same_party" | "any_involved_party";
 
 /**
  * The reason for the suspension.
  */
 export type ServiceProvidingGroupGridSuspensionReason =
-  | "breach_of_conditions"
-  | "significant_group_change"
-  | "other";
+  "breach_of_conditions" | "significant_group_change" | "other";
 
 /**
  * The level of visibility of the comment.
  */
 export type ServiceProvidingGroupGridSuspensionCommentVisibility =
-  | "same_party"
-  | "any_involved_party";
+  "same_party" | "any_involved_party";
 
 /**
  * The type of the business identifier.
@@ -522,11 +514,7 @@ export type PartyType =
  * The status of the party.
  */
 export type PartyStatus =
-  | "new"
-  | "active"
-  | "inactive"
-  | "suspended"
-  | "terminated";
+  "new" | "active" | "inactive" | "suspended" | "terminated";
 
 /**
  * The type of business identifier used for the device.
@@ -537,18 +525,13 @@ export type TechnicalResourceBusinessIdType = "serial_number" | "mac" | "other";
  * The direction of the effect on the balance that the BRP takes responsibility for.
  */
 export type AccountingPointBalanceResponsiblePartyEnergyDirection =
-  | "consumption"
-  | "production";
+  "consumption" | "production";
 
 /**
  * The bidding zone of the accounting point.
  */
 export type AccountingPointBiddingZoneBiddingZone =
-  | "NO1"
-  | "NO2"
-  | "NO3"
-  | "NO4"
-  | "NO5";
+  "NO1" | "NO2" | "NO3" | "NO4" | "NO5";
 
 /**
  * The type of the business identifier.
@@ -569,10 +552,7 @@ export type AccountingPointGridLocationObjectType = "substation";
  * How the grid location was determined. When a system operator creates or updates a grid location, this field is set automatically: `cso` if the SO is the connecting system operator, `so` otherwise.
  */
 export type AccountingPointGridLocationSource =
-  | "cso"
-  | "so"
-  | "grid_model"
-  | "system";
+  "cso" | "so" | "grid_model" | "system";
 
 /**
  * The quality of the grid location registration.
@@ -598,8 +578,7 @@ export type ServiceProviderProductApplicationStatus =
  * The level of visibility of the comment.
  */
 export type ServiceProviderProductApplicationCommentVisibility =
-  | "same_party"
-  | "any_involved_party";
+  "same_party" | "any_involved_party";
 
 /**
  * The reason for the suspension.
@@ -616,8 +595,7 @@ export type ServiceProviderProductSuspensionReason =
  * The level of visibility of the comment.
  */
 export type ServiceProviderProductSuspensionCommentVisibility =
-  | "same_party"
-  | "any_involved_party";
+  "same_party" | "any_involved_party";
 
 /**
  * The status of the application.
@@ -634,30 +612,31 @@ export type ServiceProvidingGroupProductApplicationStatus =
  * The ramping capability of the service providing group for this product application.
  */
 export type ServiceProvidingGroupProductApplicationRampingCapability =
-  | "always"
-  | "partial"
-  | "never";
+  "always" | "partial" | "never";
+
+/**
+ * MIME type of the attachment.
+ */
+export type ServiceProvidingGroupProductApplicationAttachmentContentType =
+  "application/pdf" | "image/jpeg" | "image/png";
 
 /**
  * The level of visibility of the comment.
  */
 export type ServiceProvidingGroupProductApplicationCommentVisibility =
-  | "same_party"
-  | "any_involved_party";
+  "same_party" | "any_involved_party";
 
 /**
  * The reason for the suspension.
  */
 export type ServiceProvidingGroupProductSuspensionReason =
-  | "failed_verification"
-  | "other";
+  "failed_verification" | "other";
 
 /**
  * The level of visibility of the comment.
  */
 export type ServiceProvidingGroupProductSuspensionCommentVisibility =
-  | "same_party"
-  | "any_involved_party";
+  "same_party" | "any_involved_party";
 
 /**
  * The status of the notice.
@@ -3013,9 +2992,56 @@ export type ServiceProvidingGroupProductApplication = {
    */
   procuring_system_operator?: Party | null;
   /**
+   * Embedded service_providing_group_product_application_attachment
+   */
+  attachment?: Array<ServiceProvidingGroupProductApplicationAttachment> | null;
+  /**
    * Embedded service_providing_group_product_application_comment
    */
   comment?: Array<ServiceProvidingGroupProductApplicationComment> | null;
+};
+
+/**
+ * Response schema - File attachment associated with a service providing group product application, allowing involved parties to exchange supporting documents.
+ */
+export type ServiceProvidingGroupProductApplicationAttachment = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the service providing group product application.
+   */
+  service_providing_group_product_application_id: number;
+  /**
+   * Identifier of the object to which the attachment is linked.
+   */
+  object_id: string;
+  /**
+   * Original filename of the attachment.
+   */
+  filename: string;
+  /**
+   * Sanitised filename safe for storage.
+   */
+  filename_sanitised: string;
+  content_type: ServiceProvidingGroupProductApplicationAttachmentContentType;
+  /**
+   * Size of the attachment in bytes.
+   */
+  size_bytes: number;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+  /**
+   * Embedded service_providing_group_product_application
+   */
+  service_providing_group_product_application?: ServiceProvidingGroupProductApplication | null;
 };
 
 /**
@@ -4230,6 +4256,57 @@ export type ServiceProvidingGroupProductApplicationHistory = {
 };
 
 /**
+ * Service Providing Group Product Application Attachment - history
+ */
+export type ServiceProvidingGroupProductApplicationAttachmentHistory = {
+  /**
+   * Unique surrogate identifier.
+   */
+  readonly id: number;
+  /**
+   * Reference to the service providing group product application.
+   */
+  service_providing_group_product_application_id: number;
+  /**
+   * Identifier of the object to which the attachment is linked.
+   */
+  object_id: string;
+  /**
+   * Original filename of the attachment.
+   */
+  filename: string;
+  /**
+   * Sanitised filename safe for storage.
+   */
+  filename_sanitised: string;
+  content_type: ServiceProvidingGroupProductApplicationAttachmentContentType;
+  /**
+   * Size of the attachment in bytes.
+   */
+  size_bytes: number;
+  /**
+   * When the resource was recorded (created or updated) in the system.
+   */
+  readonly recorded_at: string;
+  /**
+   * The identity that recorded the resource.
+   */
+  readonly recorded_by: number;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_product_application_attachment_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
+
+/**
  * Service Providing Group Product Application Comment - history
  */
 export type ServiceProvidingGroupProductApplicationCommentHistory = {
@@ -5327,9 +5404,44 @@ export type ServiceProvidingGroupProductApplicationWritable = {
    */
   procuring_system_operator?: PartyWritable | null;
   /**
+   * Embedded service_providing_group_product_application_attachment
+   */
+  attachment?: Array<ServiceProvidingGroupProductApplicationAttachmentWritable> | null;
+  /**
    * Embedded service_providing_group_product_application_comment
    */
   comment?: Array<ServiceProvidingGroupProductApplicationCommentWritable> | null;
+};
+
+/**
+ * Response schema - File attachment associated with a service providing group product application, allowing involved parties to exchange supporting documents.
+ */
+export type ServiceProvidingGroupProductApplicationAttachmentWritable = {
+  /**
+   * Reference to the service providing group product application.
+   */
+  service_providing_group_product_application_id: number;
+  /**
+   * Identifier of the object to which the attachment is linked.
+   */
+  object_id: string;
+  /**
+   * Original filename of the attachment.
+   */
+  filename: string;
+  /**
+   * Sanitised filename safe for storage.
+   */
+  filename_sanitised: string;
+  content_type: ServiceProvidingGroupProductApplicationAttachmentContentType;
+  /**
+   * Size of the attachment in bytes.
+   */
+  size_bytes: number;
+  /**
+   * Embedded service_providing_group_product_application
+   */
+  service_providing_group_product_application?: ServiceProvidingGroupProductApplicationWritable | null;
 };
 
 /**
@@ -6078,6 +6190,45 @@ export type ServiceProvidingGroupProductApplicationHistoryWritable = {
    * Reference to the resource that was updated.
    */
   service_providing_group_product_application_id: number;
+  /**
+   * The identity that updated the resource when it was replaced.
+   */
+  replaced_by?: number;
+  /**
+   * When the resource was replaced in the system.
+   */
+  replaced_at?: string;
+};
+
+/**
+ * Service Providing Group Product Application Attachment - history
+ */
+export type ServiceProvidingGroupProductApplicationAttachmentHistoryWritable = {
+  /**
+   * Reference to the service providing group product application.
+   */
+  service_providing_group_product_application_id: number;
+  /**
+   * Identifier of the object to which the attachment is linked.
+   */
+  object_id: string;
+  /**
+   * Original filename of the attachment.
+   */
+  filename: string;
+  /**
+   * Sanitised filename safe for storage.
+   */
+  filename_sanitised: string;
+  content_type: ServiceProvidingGroupProductApplicationAttachmentContentType;
+  /**
+   * Size of the attachment in bytes.
+   */
+  size_bytes: number;
+  /**
+   * Reference to the resource that was updated.
+   */
+  service_providing_group_product_application_attachment_id: number;
   /**
    * The identity that updated the resource when it was replaced.
    */
@@ -16527,6 +16678,389 @@ export type ReadServiceProvidingGroupProductApplicationHistoryResponses = {
 export type ReadServiceProvidingGroupProductApplicationHistoryResponse =
   ReadServiceProvidingGroupProductApplicationHistoryResponses[keyof ReadServiceProvidingGroupProductApplicationHistoryResponses];
 
+export type ListServiceProvidingGroupProductApplicationAttachmentData = {
+  body?: never;
+  path?: never;
+  query: {
+    /**
+     * Unique surrogate identifier.
+     */
+    id?: string;
+    /**
+     * Reference to the service providing group product application.
+     */
+    service_providing_group_product_application_id: string;
+    /**
+     * Filtering Columns
+     */
+    select?: string;
+    /**
+     * Ordering
+     */
+    order?: string;
+    /**
+     * Limiting and Pagination
+     */
+    offset?: string;
+    /**
+     * Limiting and Pagination
+     */
+    limit?: string;
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
+  url: "/service_providing_group_product_application_attachment";
+};
+
+export type ListServiceProvidingGroupProductApplicationAttachmentErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Range Not Satisfiable
+   */
+  416: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type ListServiceProvidingGroupProductApplicationAttachmentError =
+  ListServiceProvidingGroupProductApplicationAttachmentErrors[keyof ListServiceProvidingGroupProductApplicationAttachmentErrors];
+
+export type ListServiceProvidingGroupProductApplicationAttachmentResponses = {
+  /**
+   * OK
+   */
+  200: Array<ServiceProvidingGroupProductApplicationAttachment>;
+  /**
+   * Partial Content
+   */
+  206: Array<ServiceProvidingGroupProductApplicationAttachment>;
+};
+
+export type ListServiceProvidingGroupProductApplicationAttachmentResponse =
+  ListServiceProvidingGroupProductApplicationAttachmentResponses[keyof ListServiceProvidingGroupProductApplicationAttachmentResponses];
+
+export type CreateServiceProvidingGroupProductApplicationAttachmentData = {
+  body: {
+    /**
+     * Reference to the service_providing_group_product_application.
+     */
+    service_providing_group_product_application_id: number;
+    /**
+     * File to upload.
+     */
+    file: Blob | File;
+  };
+  path?: never;
+  query?: never;
+  url: "/service_providing_group_product_application_attachment";
+};
+
+export type CreateServiceProvidingGroupProductApplicationAttachmentErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Conflict
+   */
+  409: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type CreateServiceProvidingGroupProductApplicationAttachmentError =
+  CreateServiceProvidingGroupProductApplicationAttachmentErrors[keyof CreateServiceProvidingGroupProductApplicationAttachmentErrors];
+
+export type CreateServiceProvidingGroupProductApplicationAttachmentResponses = {
+  /**
+   * Created
+   */
+  201: ServiceProvidingGroupProductApplicationAttachment;
+};
+
+export type CreateServiceProvidingGroupProductApplicationAttachmentResponse =
+  CreateServiceProvidingGroupProductApplicationAttachmentResponses[keyof CreateServiceProvidingGroupProductApplicationAttachmentResponses];
+
+export type DeleteServiceProvidingGroupProductApplicationAttachmentData = {
+  body?: EmptyObjectWritable;
+  path: {
+    id: number;
+  };
+  query?: never;
+  url: "/service_providing_group_product_application_attachment/{id}";
+};
+
+export type DeleteServiceProvidingGroupProductApplicationAttachmentErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+};
+
+export type DeleteServiceProvidingGroupProductApplicationAttachmentError =
+  DeleteServiceProvidingGroupProductApplicationAttachmentErrors[keyof DeleteServiceProvidingGroupProductApplicationAttachmentErrors];
+
+export type DeleteServiceProvidingGroupProductApplicationAttachmentResponses = {
+  /**
+   * No Content
+   */
+  204: void;
+};
+
+export type DeleteServiceProvidingGroupProductApplicationAttachmentResponse =
+  DeleteServiceProvidingGroupProductApplicationAttachmentResponses[keyof DeleteServiceProvidingGroupProductApplicationAttachmentResponses];
+
+export type ReadServiceProvidingGroupProductApplicationAttachmentData = {
+  body?: never;
+  path: {
+    id: number;
+  };
+  query?: {
+    /**
+     * Comma-separated list of related resources to embed in the response.
+     */
+    embed?: string;
+  };
+  url: "/service_providing_group_product_application_attachment/{id}";
+};
+
+export type ReadServiceProvidingGroupProductApplicationAttachmentErrors = {
+  /**
+   * Bad Request
+   */
+  400: ErrorMessage;
+  /**
+   * Unauthorized
+   */
+  401: ErrorMessage;
+  /**
+   * Forbidden
+   */
+  403: ErrorMessage;
+  /**
+   * Not Found
+   */
+  404: ErrorMessage | EmptyObject;
+  /**
+   * Not Acceptable
+   */
+  406: ErrorMessage;
+  /**
+   * Internal Server Error
+   */
+  500: ErrorMessage;
+};
+
+export type ReadServiceProvidingGroupProductApplicationAttachmentError =
+  ReadServiceProvidingGroupProductApplicationAttachmentErrors[keyof ReadServiceProvidingGroupProductApplicationAttachmentErrors];
+
+export type ReadServiceProvidingGroupProductApplicationAttachmentResponses = {
+  /**
+   * OK
+   */
+  200: ServiceProvidingGroupProductApplicationAttachment;
+};
+
+export type ReadServiceProvidingGroupProductApplicationAttachmentResponse =
+  ReadServiceProvidingGroupProductApplicationAttachmentResponses[keyof ReadServiceProvidingGroupProductApplicationAttachmentResponses];
+
+export type ListServiceProvidingGroupProductApplicationAttachmentHistoryData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * Unique surrogate identifier.
+     */
+    id?: string;
+    /**
+     * Identifier of the Service Providing Group Product Application Attachment whose history we want to inspect.
+     */
+    service_providing_group_product_application_attachment_id?: string;
+    /**
+     * Reference to the service providing group product application.
+     */
+    service_providing_group_product_application_id?: string;
+    /**
+     * Filtering Columns
+     */
+    select?: string;
+    /**
+     * Ordering
+     */
+    order?: string;
+    /**
+     * Limiting and Pagination
+     */
+    offset?: string;
+    /**
+     * Limiting and Pagination
+     */
+    limit?: string;
+  };
+  url: "/service_providing_group_product_application_attachment_history";
+};
+
+export type ListServiceProvidingGroupProductApplicationAttachmentHistoryErrors =
+  {
+    /**
+     * Bad Request
+     */
+    400: ErrorMessage;
+    /**
+     * Unauthorized
+     */
+    401: ErrorMessage;
+    /**
+     * Forbidden
+     */
+    403: ErrorMessage;
+    /**
+     * Not Found
+     */
+    404: ErrorMessage | EmptyObject;
+    /**
+     * Not Acceptable
+     */
+    406: ErrorMessage;
+    /**
+     * Range Not Satisfiable
+     */
+    416: ErrorMessage;
+    /**
+     * Internal Server Error
+     */
+    500: ErrorMessage;
+  };
+
+export type ListServiceProvidingGroupProductApplicationAttachmentHistoryError =
+  ListServiceProvidingGroupProductApplicationAttachmentHistoryErrors[keyof ListServiceProvidingGroupProductApplicationAttachmentHistoryErrors];
+
+export type ListServiceProvidingGroupProductApplicationAttachmentHistoryResponses =
+  {
+    /**
+     * OK
+     */
+    200: Array<ServiceProvidingGroupProductApplicationAttachmentHistory>;
+    /**
+     * Partial Content
+     */
+    206: Array<ServiceProvidingGroupProductApplicationAttachmentHistory>;
+  };
+
+export type ListServiceProvidingGroupProductApplicationAttachmentHistoryResponse =
+  ListServiceProvidingGroupProductApplicationAttachmentHistoryResponses[keyof ListServiceProvidingGroupProductApplicationAttachmentHistoryResponses];
+
+export type ReadServiceProvidingGroupProductApplicationAttachmentHistoryData = {
+  body?: never;
+  path: {
+    /**
+     * Identifier of the history record we want to inspect.
+     */
+    id: number;
+  };
+  query?: never;
+  url: "/service_providing_group_product_application_attachment_history/{id}";
+};
+
+export type ReadServiceProvidingGroupProductApplicationAttachmentHistoryErrors =
+  {
+    /**
+     * Bad Request
+     */
+    400: ErrorMessage;
+    /**
+     * Unauthorized
+     */
+    401: ErrorMessage;
+    /**
+     * Forbidden
+     */
+    403: ErrorMessage;
+    /**
+     * Not Found
+     */
+    404: ErrorMessage | EmptyObject;
+    /**
+     * Not Acceptable
+     */
+    406: ErrorMessage;
+    /**
+     * Internal Server Error
+     */
+    500: ErrorMessage;
+  };
+
+export type ReadServiceProvidingGroupProductApplicationAttachmentHistoryError =
+  ReadServiceProvidingGroupProductApplicationAttachmentHistoryErrors[keyof ReadServiceProvidingGroupProductApplicationAttachmentHistoryErrors];
+
+export type ReadServiceProvidingGroupProductApplicationAttachmentHistoryResponses =
+  {
+    /**
+     * OK
+     */
+    200: ServiceProvidingGroupProductApplicationAttachmentHistory;
+  };
+
+export type ReadServiceProvidingGroupProductApplicationAttachmentHistoryResponse =
+  ReadServiceProvidingGroupProductApplicationAttachmentHistoryResponses[keyof ReadServiceProvidingGroupProductApplicationAttachmentHistoryResponses];
+
 export type ListServiceProvidingGroupProductApplicationCommentData = {
   body?: never;
   path?: never;
@@ -17882,3 +18416,40 @@ export type ReadNoticeResponses = {
 };
 
 export type ReadNoticeResponse = ReadNoticeResponses[keyof ReadNoticeResponses];
+
+export type CallDownloadServiceProvidingGroupProductApplicationAttachmentData =
+  {
+    body?: never;
+    path: {
+      id: number;
+    };
+    query?: never;
+    url: "/service_providing_group_product_application_attachment/{id}/download";
+  };
+
+export type CallDownloadServiceProvidingGroupProductApplicationAttachmentErrors =
+  {
+    /**
+     * Bad Request
+     */
+    400: ErrorMessage;
+    /**
+     * Unauthorized
+     */
+    401: ErrorMessage;
+    /**
+     * Forbidden
+     */
+    403: ErrorMessage;
+    /**
+     * Not Found
+     */
+    404: ErrorMessage | EmptyObject;
+    /**
+     * Internal Server Error
+     */
+    500: ErrorMessage;
+  };
+
+export type CallDownloadServiceProvidingGroupProductApplicationAttachmentError =
+  CallDownloadServiceProvidingGroupProductApplicationAttachmentErrors[keyof CallDownloadServiceProvidingGroupProductApplicationAttachmentErrors];

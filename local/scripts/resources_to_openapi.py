@@ -428,6 +428,24 @@ def generate_openapi_document(base_file, resources_file, servers_file, scopes_fi
     for i, comment_resource in comment_resources:
         resources.insert(i, comment_resource)
 
+    # generate and add attachment resources
+
+    attachment_resources = []
+    shift = 0
+    for i, resource in enumerate(resources):
+        if resource.get("attachments"):
+            attachment_resource = yaml.safe_load(
+                j2.template_str(
+                    {"resource": resource["id"], "data": resource},
+                    "attachment_resource.j2.yml",
+                ),
+            )["data"]
+            attachment_resources.append((i + 1 + shift, attachment_resource))
+            shift += 1
+
+    for i, attachment_resource in attachment_resources:
+        resources.insert(i, attachment_resource)
+
     # ---- TAGS ----
 
     # generate global tags for each resource in the resource file
@@ -570,7 +588,9 @@ def generate_openapi_document(base_file, resources_file, servers_file, scopes_fi
                 update_schema["properties"] = updatable_properties
             schemas[f"{resource['id']}_update_request"] = update_schema
 
-        if "create" in resource["operations"]:
+        if "create" in resource["operations"] and not resource["id"].endswith(
+            "_attachment"
+        ):
             create_properties = {
                 k: v for k, v in all_properties.items() if k not in readonly_properties
             }
@@ -830,6 +850,124 @@ def generate_openapi_document(base_file, resources_file, servers_file, scopes_fi
 
         # servers
         base["servers"] = [servers["api"]["dev"]]
+
+    # ---- ATTACHMENT POST-PROCESSING ----
+
+    # attachment post-processing
+
+    # for attachment subresources, the standard pipeline generates correct
+    # schemas and endpoints but 3 things need to be fixed:
+    # - the `<res>_id` filter on the list endpoint is REQUIRED
+    # - the create request body is different (multipart/form-data)
+    # - the download endpoint is missing
+
+    for resource in resources:
+        if not resource["id"].endswith("_attachment"):
+            continue
+
+        base_resource_id = resource["id"].removesuffix("_attachment")
+        resource_summary = resource["summary"]
+
+        # mark `<res>_id` as required on the list endpoint
+        list_path = base["paths"].get(f"/{resource['id']}")
+        if list_path and "get" in list_path:
+            for param in list_path["get"].get("parameters", []):
+                if param.get("name") == f"{base_resource_id}_id":
+                    param["required"] = True
+
+        # fix scopes on all attachment endpoints: use attachment asset instead of data
+        for method, read in [("get", True), ("post", False)]:
+            if list_path and method in list_path:
+                verb = "read" if read else "manage"
+                security = [{"bearerAuth": [f"{verb}:attachment:{resource['id']}"]}]
+                if read:
+                    security.append({})
+                list_path[method]["security"] = security
+
+        id_path_obj = base["paths"].get(f"/{resource['id']}/{{id}}")
+        if id_path_obj:
+            for method, read in [("get", True), ("delete", False)]:
+                if method in id_path_obj:
+                    verb = "read" if read else "manage"
+                    security = [{"bearerAuth": [f"{verb}:attachment:{resource['id']}"]}]
+                    if read:
+                        security.append({})
+                    id_path_obj[method]["security"] = security
+
+        # history endpoints live under the same asset as their resource
+        # (attachment), not data
+        for history_path in [
+            f"/{resource['id']}_history",
+            f"/{resource['id']}_history/{{id}}",
+        ]:
+            history_path_obj = base["paths"].get(history_path)
+            if not history_path_obj:
+                continue
+            if "get" in history_path_obj:
+                history_path_obj["get"]["security"] = [
+                    {"bearerAuth": [f"read:attachment:{resource['id']}_history"]},
+                    {},
+                ]
+
+        # replace create request body
+        if list_path and "post" in list_path:
+            list_path["post"]["requestBody"] = {
+                "required": True,
+                "content": {
+                    "multipart/form-data": {
+                        "schema": {
+                            "type": "object",
+                            "required": [f"{base_resource_id}_id", "file"],
+                            "properties": {
+                                f"{base_resource_id}_id": {
+                                    "description": f"Reference to the {base_resource_id}.",
+                                    "type": "integer",
+                                    "format": "bigint",
+                                },
+                                "file": {
+                                    "description": "File to upload.",
+                                    "type": "string",
+                                    "format": "binary",
+                                },
+                            },
+                        }
+                    }
+                },
+            }
+
+        # add download endpoint
+        id_path = base["paths"].get(f"/{resource['id']}/{{id}}")
+        if id_path:
+            base["paths"][f"/{resource['id']}/{{id}}/download"] = {
+                "summary": f"{resource_summary} - download",
+                "description": "",
+                "parameters": [id_path_parameter_template()],
+                "get": {
+                    "operationId": f"call_download_{resource['id']}",
+                    "summary": f"Call download {resource_summary}",
+                    "description": f"Call download [{resource_summary}](https://elhub.github.io/flex-information-system/resources/{resource['id']}/)",
+                    "tags": [resource["id"]],
+                    "security": [
+                        {"bearerAuth": [f"read:attachment:{resource['id']}"]},
+                        {},
+                    ],
+                    "responses": {
+                        "302": {
+                            "description": "Found — redirect to a pre-signed download URL",
+                            "headers": {
+                                "Location": {
+                                    "description": "Pre-signed URL to download the attachment directly from object storage.",
+                                    "schema": {"type": "string", "format": "uri"},
+                                }
+                            },
+                        },
+                        **{
+                            str(code): response_templates[str(code)]
+                            for code in [400, 401, 403, 404, 500]
+                        },
+                    },
+                },
+            }
 
     for rel in rels:
         # add foreign key relationships

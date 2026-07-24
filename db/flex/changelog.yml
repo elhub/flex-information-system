@@ -79,8 +79,14 @@ databaseChangeLog:
   - include:
       file: ./scope.sql
       relativeToChangelogFile: true
+  - include:
+      file: ./scope_allowed.sql
+      relativeToChangelogFile: true
 
   # Tables & views - order is important!
+  - include:
+      file: ./attachment.sql
+      relativeToChangelogFile: true
   - include:
       file: ./event.sql
       relativeToChangelogFile: true
@@ -238,6 +244,9 @@ databaseChangeLog:
       file: ./service_providing_group_product_application_comment.sql
       relativeToChangelogFile: true
   - include:
+      file: ./service_providing_group_product_application_attachment.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./service_providing_group_product_suspension.sql
       relativeToChangelogFile: true
   - include:
@@ -245,9 +254,6 @@ databaseChangeLog:
       relativeToChangelogFile: true
   - include:
       file: ./service_provider_product_application_comment.sql
-      relativeToChangelogFile: true
-  - include:
-      file: ./service_provider_product_application_comment_migrations.sql
       relativeToChangelogFile: true
   - include:
       file: ./service_provider_product_suspension.sql
@@ -258,14 +264,17 @@ databaseChangeLog:
   - include:
       file: ./service_provider_product_suspension_comment.sql
       relativeToChangelogFile: true
-  - include:
-      file: ./service_provider_product_suspension_comment_migrations.sql
-      relativeToChangelogFile: true
 
   # Views
 
   - include:
       file: ./accounting_point_service_provider.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./accounting_point_impacted_system_operator.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./accounting_point_procuring_system_operator.sql
       relativeToChangelogFile: true
   - include:
       file: ./accounting_point_bidding_zone.sql
@@ -287,6 +296,12 @@ databaseChangeLog:
       relativeToChangelogFile: true
   - include:
       file: ./controllable_unit_system_operator.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./controllable_unit_procuring_system_operator.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./controllable_unit_impacted_system_operator.sql
       relativeToChangelogFile: true
   - include:
       file: ./controllable_unit_summary.sql
@@ -312,6 +327,9 @@ databaseChangeLog:
       endsWithFilter: _history_audit.sql
       maxDepth: 1
 
+  - include:
+      file: ./scope_migrations.sql
+      relativeToChangelogFile: true
   - include:
       file: ./party_membership_migrations.sql
       relativeToChangelogFile: true

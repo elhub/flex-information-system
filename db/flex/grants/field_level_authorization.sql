@@ -2748,6 +2748,58 @@ flex.notice
 TO flex_third_party;
 
 GRANT SELECT ON TABLE
+flex.service_providing_group_product_application_attachment
+TO flex_balance_responsible_party;
+
+GRANT SELECT ON TABLE
+flex.service_providing_group_product_application_attachment
+TO flex_energy_supplier;
+
+GRANT SELECT ON TABLE
+flex.service_providing_group_product_application_attachment
+TO flex_end_user;
+
+GRANT INSERT ON TABLE
+flex.service_providing_group_product_application_attachment
+TO flex_flexibility_information_system_operator;
+
+GRANT SELECT ON TABLE
+flex.service_providing_group_product_application_attachment
+TO flex_flexibility_information_system_operator;
+
+GRANT DELETE ON TABLE
+flex.service_providing_group_product_application_attachment
+TO flex_flexibility_information_system_operator;
+
+GRANT SELECT ON TABLE
+flex.service_providing_group_product_application_attachment
+TO flex_market_operator;
+
+GRANT SELECT ON TABLE
+flex.service_providing_group_product_application_attachment
+TO flex_system_operator;
+
+GRANT INSERT ON TABLE
+flex.service_providing_group_product_application_attachment
+TO flex_service_provider;
+
+GRANT SELECT ON TABLE
+flex.service_providing_group_product_application_attachment
+TO flex_service_provider;
+
+GRANT DELETE ON TABLE
+flex.service_providing_group_product_application_attachment
+TO flex_service_provider;
+
+GRANT SELECT ON TABLE
+flex.service_providing_group_product_application_attachment
+TO flex_third_party;
+
+GRANT SELECT ON TABLE
+flex.service_providing_group_product_application_attachment
+TO flex_internal_event_notification;
+
+GRANT SELECT ON TABLE
 flex.substation_cluster
 TO flex_flexibility_information_system_operator;
 

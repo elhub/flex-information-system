@@ -50,49 +50,39 @@ USING (
             AND ap_so.system_operator_id = (SELECT flex.current_party())
             AND ap_so.valid_time_range @> CURRENT_TIMESTAMP
     )
-    OR
-    -- ISO: SO is targeted by a grid prequalification for an SPG that has had a
-    -- CU behind this AP
+);
+
+-- RLS: AP-SO002
+GRANT SELECT ON accounting_point
+TO flex_system_operator;
+DROP POLICY IF EXISTS "AP_SO002" ON accounting_point;
+CREATE POLICY "AP_SO002"
+ON accounting_point
+FOR SELECT
+TO flex_system_operator
+USING (
     EXISTS (
         SELECT 1
-        FROM flex.controllable_unit AS cu
-        WHERE cu.accounting_point_id = accounting_point.id -- noqa
-            AND EXISTS (
-                SELECT 1
-                FROM flex.service_providing_group_membership AS spgm
-                    INNER JOIN
-                        flex.service_providing_group_grid_prequalification
-                        AS spggp
-                        ON
-                            spgm.service_providing_group_id
-                            = spggp.service_providing_group_id
-                WHERE
-                    spgm.controllable_unit_id = cu.id
-                    AND spggp.impacted_system_operator_id
-                    = (SELECT flex.current_party())
-            )
+        FROM flex.accounting_point_impacted_system_operator AS ap_iso
+        WHERE ap_iso.accounting_point_id = accounting_point.id -- noqa
+            AND ap_iso.impacted_system_operator_id = (SELECT flex.current_party())
     )
-    OR
-    -- PSO: SO is targeted by a product application for an SPG that has had a CU
-    -- behind this AP
+);
+
+-- RLS: AP-SO003
+GRANT SELECT ON accounting_point
+TO flex_system_operator;
+DROP POLICY IF EXISTS "AP_SO003" ON accounting_point;
+CREATE POLICY "AP_SO003"
+ON accounting_point
+FOR SELECT
+TO flex_system_operator
+USING (
     EXISTS (
         SELECT 1
-        FROM flex.controllable_unit AS cu
-        WHERE cu.accounting_point_id = accounting_point.id -- noqa
-            AND EXISTS (
-                SELECT 1
-                FROM flex.service_providing_group_membership AS spgm
-                    INNER JOIN
-                        flex.service_providing_group_product_application
-                        AS spgpa
-                        ON
-                            spgm.service_providing_group_id
-                            = spgpa.service_providing_group_id
-                WHERE
-                    spgm.controllable_unit_id = cu.id
-                    AND spgpa.procuring_system_operator_id
-                    = (SELECT flex.current_party())
-            )
+        FROM flex.accounting_point_procuring_system_operator AS ap_pso
+        WHERE ap_pso.accounting_point_id = accounting_point.id -- noqa
+            AND ap_pso.procuring_system_operator_id = (SELECT flex.current_party())
     )
 );
 
@@ -116,6 +106,24 @@ USING (
                     cusp.controllable_unit_id = cu.id
                     AND cusp.service_provider_id = (SELECT flex.current_party())
             )
+    )
+);
+
+-- RLS: AP-BRP001
+GRANT SELECT ON accounting_point
+TO flex_balance_responsible_party;
+DROP POLICY IF EXISTS "AP_BRP001" ON accounting_point;
+CREATE POLICY "AP_BRP001"
+ON accounting_point
+FOR SELECT
+TO flex_balance_responsible_party
+USING (
+    EXISTS (
+        SELECT 1
+        FROM flex.accounting_point_balance_responsible_party AS ap_brp
+        WHERE ap_brp.accounting_point_id = accounting_point.id -- noqa
+            AND ap_brp.balance_responsible_party_id = (SELECT flex.current_party())
+            AND ap_brp.valid_time_range @> CURRENT_TIMESTAMP
     )
 );
 

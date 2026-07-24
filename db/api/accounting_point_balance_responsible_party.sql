@@ -37,7 +37,7 @@ WITH (security_invoker = false, security_barrier = true) AS (
         FROM flex.accounting_point_balance_responsible_party AS ap_brp -- noqa
             INNER JOIN flex.accounting_point_system_operator AS ap_so
                 ON
-                    ap_so.accounting_point_id = ap_brp.accounting_point_id
+                    ap_brp.accounting_point_id = ap_so.accounting_point_id
                     AND ap_so.valid_time_range && ap_brp.valid_time_range
         WHERE
             current_role = 'flex_system_operator'
@@ -74,7 +74,7 @@ WITH (security_invoker = false, security_barrier = true) AS (
         FROM flex.accounting_point_balance_responsible_party AS ap_brp -- noqa
             INNER JOIN flex.accounting_point_service_provider AS ap_sp
                 ON
-                    ap_sp.accounting_point_id = ap_brp.accounting_point_id
+                    ap_brp.accounting_point_id = ap_sp.accounting_point_id
                     AND ap_sp.valid_time_range && ap_brp.valid_time_range
         WHERE
             current_role = 'flex_service_provider'
@@ -87,4 +87,15 @@ WITH (security_invoker = false, security_barrier = true) AS (
     ) AS ap_brp_for_sp
     -- allow window, see above
     WHERE lower(valid_time_range) < current_timestamp + '2w'::interval
+    -- RLS: APBRP-BRP001
+    UNION ALL
+    SELECT
+        accounting_point_id,
+        balance_responsible_party_id,
+        energy_direction,
+        lower(valid_time_range) AS valid_from,
+        upper(valid_time_range) AS valid_to
+    FROM flex.accounting_point_balance_responsible_party
+    WHERE current_role = 'flex_balance_responsible_party'
+        AND balance_responsible_party_id = (SELECT flex.current_party())
 );

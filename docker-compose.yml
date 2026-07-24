@@ -41,7 +41,7 @@ services:
         postgres://flex_authenticator:authenticator_password@db:5432/flex
       PGRST_DB_ANON_ROLE: flex_anonymous
       PGRST_DB_PRE_REQUEST: "auth.pre_request"
-      PGRST_DB_SCHEMAS: api,grid
+      PGRST_DB_SCHEMAS: api,attachment,grid
       PGRST_DB_EXTRA_SEARCH_PATH: flex,public
       PGRST_LOG_LEVEL: info
       PGRST_JWT_SECRET: >-
@@ -75,6 +75,17 @@ services:
         condition: service_healthy
     extra_hosts:
       - "idp.flex.internal:host-gateway"
+  s3mock:
+    image: adobe/s3mock:latest
+    environment:
+      - COM_ADOBE_TESTING_S3MOCK_STORE_INITIAL_BUCKETS=flex-attachments
+    ports:
+      - "9090:9090"
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:9090/favicon.ico"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
   kbackend:
     image: flex-kbackend
     pull_policy: never # the image is always built locally
@@ -83,6 +94,8 @@ services:
     env_file: "./local/kbackend/test.env"
     depends_on:
       db:
+        condition: service_healthy
+      s3mock:
         condition: service_healthy
   frontend:
     build: ./frontend
@@ -131,6 +144,7 @@ services:
       NGINX_UPSTREAM_POSTGREST: http://postgrest:3000
       NGINX_UPSTREAM_FRONTEND: http://frontend:8080
       NGINX_UPSTREAM_BACKEND: http://backend:7001
+      NGINX_UPSTREAM_S3: http://s3mock:9090
       NGINX_SSL_CERTIFICATE: /etc/oci/certificates/certificate_fullchain_pem
       NGINX_SSL_CERTIFICATE_KEY: /etc/oci/certificates/private_key_pem
       NGINX_REAL_IP_FROM: 172.16.0.0/12

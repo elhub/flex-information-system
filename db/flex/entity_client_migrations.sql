@@ -1,9 +1,54 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- trigger to restrict the party field (can only be added once the field is there)
+-- changeset flex:entity-client-attachment-scope runOnChange:false endDelimiter:;
+ALTER TABLE flex.entity_client
+DISABLE TRIGGER USER;
+
+UPDATE flex.entity_client
+SET scopes = array_append(scopes, 'manage:attachment'::flex.scope)
+WHERE scopes @> '{manage:data}' AND NOT (scopes @> '{manage:attachment}');
+
+UPDATE flex.entity_client
+SET scopes = array_append(scopes, 'use:attachment'::flex.scope)
+WHERE
+    scopes @> '{use:data}'
+    AND NOT (scopes @> '{use:attachment}')
+    AND NOT (scopes @> '{manage:attachment}');
+
+UPDATE flex.entity_client
+SET scopes = array_append(scopes, 'read:attachment'::flex.scope)
+WHERE
+    scopes @> '{read:data}'
+    AND NOT (scopes @> '{read:attachment}')
+    AND NOT (scopes @> '{use:attachment}')
+    AND NOT (scopes @> '{manage:attachment}');
+
+UPDATE flex.entity_client_history
+SET scopes = array_append(scopes, 'manage:attachment'::flex.scope)
+WHERE scopes @> '{manage:data}' AND NOT (scopes @> '{manage:attachment}');
+
+UPDATE flex.entity_client_history
+SET scopes = array_append(scopes, 'use:attachment'::flex.scope)
+WHERE
+    scopes @> '{use:data}'
+    AND NOT (scopes @> '{use:attachment}')
+    AND NOT (scopes @> '{manage:attachment}');
+
+UPDATE flex.entity_client_history
+SET scopes = array_append(scopes, 'read:attachment'::flex.scope)
+WHERE
+    scopes IS NOT null
+    AND scopes @> '{read:data}'
+    AND NOT (scopes @> '{read:attachment}')
+    AND NOT (scopes @> '{use:attachment}')
+    AND NOT (scopes @> '{manage:attachment}');
+
+ALTER TABLE flex.entity_client
+ENABLE TRIGGER USER;
 
 -- changeset flex:entity-client-check-assumable-party-function runOnChange:true endDelimiter:--
+-- trigger to restrict the party field (can only be added once the field is there)
 CREATE OR REPLACE FUNCTION entity_client_check_assumable_party()
 RETURNS trigger
 SECURITY DEFINER

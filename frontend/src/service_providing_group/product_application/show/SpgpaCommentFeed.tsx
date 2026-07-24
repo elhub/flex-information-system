@@ -9,7 +9,7 @@ type SpgpaCommentFeedProps = {
 };
 
 export function SpgpaCommentFeed({ spgpaId }: SpgpaCommentFeedProps) {
-  const { commentsQuery, postComment } = useSpgpaComments(spgpaId);
+  const { commentsQuery, postComment, editComment } = useSpgpaComments(spgpaId);
   const { permissions } = usePermissions<Permissions>();
 
   const canCreate =
@@ -22,6 +22,7 @@ export function SpgpaCommentFeed({ spgpaId }: SpgpaCommentFeedProps) {
     <CommentFeed
       commentsQuery={commentsQuery}
       postComment={postComment}
+      editComment={editComment}
       canCreate={canCreate}
     />
   );
