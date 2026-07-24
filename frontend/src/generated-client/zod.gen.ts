@@ -25,6 +25,9 @@ export const zAuthScope = z.enum([
   "read:auth",
   "use:auth",
   "manage:auth",
+  "read:attachment",
+  "use:attachment",
+  "manage:attachment",
 ]);
 
 /**

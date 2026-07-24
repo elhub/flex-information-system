@@ -38,7 +38,10 @@ export type AuthScope =
   | "manage:data:entity_client"
   | "read:auth"
   | "use:auth"
-  | "manage:auth";
+  | "manage:auth"
+  | "read:attachment"
+  | "use:attachment"
+  | "manage:attachment";
 
 /**
  * Resource category classification. Derived from technologies.
