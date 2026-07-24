@@ -7,11 +7,13 @@ import io.ktor.server.request.httpMethod
 import io.ktor.server.request.path
 import org.slf4j.event.Level
 
-/** Configures the call logging plugin with MDC properties for structured JSON logging */
+private val silentPaths = setOf("/healthz", "/metrics")
+
+/** Configures the call logging plugin with standard Elhub format and trace information. */
 fun Application.configureLogging() {
     install(CallLogging) {
         level = Level.INFO
-        filter { call -> call.request.path() !in listOf("/healthz", "/metrics") }
+        filter { call -> call.request.path() !in silentPaths }
 
         mdc("trace_id") { call -> call.attributes.getOrNull(TraceKey)?.traceID }
         mdc("span_id") { call -> call.attributes.getOrNull(TraceKey)?.spanID }
