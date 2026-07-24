@@ -1655,7 +1655,7 @@ resources:
       - update
       - delete
     audit: true
-    generate_views: false
+    generate_views: true
     comments: false
     module: api
     history:

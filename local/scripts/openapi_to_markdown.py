@@ -94,8 +94,12 @@ for field, prop in properties.items():
     format = prop.get("format", "")
 
     if prop.get("enum"):
-        format += "<br/>One of: "
-        format += ", ".join([f"`{e['id']}`" for e in prop["enum"]])
+        enum_values = prop["enum"]
+        if len(enum_values) > 15:
+            format += "<br/>See [OpenAPI spec](https://elhub.github.io/flex-information-system/api/v1/) for allowed values."
+        else:
+            format += "<br/>One of: "
+            format += ", ".join([f"`{e['id']}`" for e in enum_values])
 
     if prop.get("pattern") is not None:
         pattern = prop["pattern"].replace("|", "\\|")
@@ -118,11 +122,25 @@ for field, prop in properties.items():
         if prop["items"].get("$ref"):
             # This is a reference to the base file enums
             ref_name = prop["items"]["$ref"].split("/")[-1]
-            enum = base["components"]["schemas"][ref_name]
-            format += "<br/>One of: "
-            format += ", ".join(
-                [f"`{e['id'] if 'id' in e else e}`" for e in enum["enum"]]
-            )
+            if ref_name == "auth_scope":
+                # the full scope list has its own dedicated documentation page
+                format += (
+                    "<br/>See the [list of scopes](../auth/scopes.md)"
+                    " for allowed values."
+                )
+            else:
+                enum = base["components"]["schemas"][ref_name]
+                enum_values = enum["enum"]
+                if not enum_values or len(enum_values) > 15:
+                    format += "<br/>See [OpenAPI spec](https://elhub.github.io/flex-information-system/api/v1/) for allowed values."
+                else:
+                    format += "<br/>One of: "
+                    format += ", ".join(
+                        [
+                            f"`{e['id'] if isinstance(e, dict) else e}`"
+                            for e in enum_values
+                        ]
+                    )
 
     if prop.get("type") == "object":
         format += "<br/>Object"

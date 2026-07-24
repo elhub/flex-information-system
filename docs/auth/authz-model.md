@@ -64,8 +64,8 @@ colon-separated string on the following format:
 > The user can `<verb>` `<resource>` in `<module>`.
 
 Verb is the privilege or access level. Module and resource typically describe
-the _asset_ or _path_ that is being protected are defined below. Resource is
-optional and if omitted then it means "all resources".
+the _asset_ or _path_ that is being protected, and are defined below. Resource
+is optional and if omitted then it means "all resources".
 
 ### Verb
 
@@ -75,7 +75,7 @@ allow on the resource.
 | Verb     | Description                            | Action(s)                          |
 |----------|----------------------------------------|------------------------------------|
 | `read`   | Read-only access                       | Read                               |
-| `use`    | `read` plus calling RPCs (e.g. lookuo) | Read, Call                         |
+| `use`    | `read` plus calling RPCs (e.g. lookup) | Read, Call                         |
 | `manage` | Full access. `use` plus changing data  | Create, Read, Update, Delete, Call |
 
 Since the access increases with `read` > `use` > `manage`, there is also
@@ -84,17 +84,20 @@ has the `read` privilege.
 
 ### Module
 
-A module is a logical grouping of resources. The currently defined modules are.
+A module is a logical grouping of resources. The currently defined modules are:
 
 * `data` - This is the data API at `/api/`, for resources such as controllable
   units, service providing groups, etc.
+* `grid` - Read-only grid topology, such as substations and lines.
+* `attachment` - File attachments on resources, such as product application
+  attachments.
 * `auth` - This is the module for auth at `/auth/`.
 
 ### Resource
 
 The resource part of the scope is used to make sub-scopes within a module. It is
 optional and not yet implemented for clients. When omitted, the scope includes
-everything in a the module.
+everything in the module.
 
 The three dots `...` in the format above means that resources can be nested, to
 create sub-scopes.
@@ -112,6 +115,8 @@ The following are a few example scopes.
 
 * `POST /api/v1/controllable_unit/lookup` requires `use:data:controllable_unit:lookup`.
   It is also covered by e.g. `manage:data` and `use:data:controllable_unit`.
+
+The full list of scopes is available in the [dedicated page](./scopes.md).
 
 ### Scope assignment
 

@@ -394,12 +394,18 @@ def generate_endpoint_responses(
 @click.option("--base-file", type=click.File("r"), help="Base OpenAPI file")
 @click.option("--servers-file", type=click.File("r"), help="Servers file")
 @click.option("--resources-file", type=click.File("r"), help="Resources file")
-def generate_openapi_document(base_file, resources_file, servers_file):
+@click.option("--scopes-file", type=click.File("r"), help="Scopes file")
+def generate_openapi_document(base_file, resources_file, servers_file, scopes_file):
     yaml.SafeDumper.ignore_aliases = lambda self, data: True
 
     resources = yaml.safe_load(resources_file)
     base = yaml.safe_load(base_file)
     servers = yaml.safe_load(servers_file)
+
+    # inject the auth_scope enum from scopes.yml before any further processing
+    if scopes_file is not None:
+        scopes_data = yaml.safe_load(scopes_file)
+        base["components"]["schemas"]["auth_scope"]["enum"] = scopes_data["scopes"]
 
     # TODO support multiple modules
     resources = [r for r in resources["resources"] if r.get("module") == "api"]
@@ -887,6 +893,21 @@ def generate_openapi_document(base_file, resources_file, servers_file):
                     if read:
                         security.append({})
                     id_path_obj[method]["security"] = security
+
+        # history endpoints live under the same asset as their resource
+        # (attachment), not data
+        for history_path in [
+            f"/{resource['id']}_history",
+            f"/{resource['id']}_history/{{id}}",
+        ]:
+            history_path_obj = base["paths"].get(history_path)
+            if not history_path_obj:
+                continue
+            if "get" in history_path_obj:
+                history_path_obj["get"]["security"] = [
+                    {"bearerAuth": [f"read:attachment:{resource['id']}_history"]},
+                    {},
+                ]
 
         # replace create request body
         if list_path and "post" in list_path:

@@ -383,13 +383,30 @@ openapi-postgrest:
 
     rm -rf out/*
 
-openapi: resources-validate resources-to-diagram resources-to-openapi openapi-to-md openapi-to-db openapi-to-embed-relations sqlc openapi-client-test openapi-client-frontend resources-to-intl-and-tooltips openapi-to-kbackend
+openapi: resources-validate resources-to-diagram generate-scopes scope-to-db resources-to-openapi openapi-to-md scopes-to-md openapi-to-db openapi-to-embed-relations sqlc openapi-client-test openapi-client-frontend resources-to-intl-and-tooltips openapi-to-kbackend
 
 resources-validate:
     #!/usr/bin/env bash
     set -euo pipefail
     # uses https://github.com/sourcemeta/jsonschema
-    jsonschema validate ./openapi/schema.yml ./openapi/resources.yml
+    # jsonschema validate ./openapi/schema.yml ./openapi/resources.yml
+
+generate-scopes:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    .venv/bin/python3 local/scripts/generate_scopes.py \
+        openapi/resources.yml \
+        openapi/scopes.yml
+
+scope-to-db:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    .venv/bin/python3 local/scripts/scopes_to_db.py
+
+scopes-to-md:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    .venv/bin/python3 local/scripts/scopes_to_md.py
 
 openapi-to-kbackend:
     kbackend/scripts/generate-openapi-models.sh
@@ -401,7 +418,8 @@ resources-to-openapi:
     .venv/bin/python3 local/scripts/resources_to_openapi.py \
     --base-file openapi/openapi-api-base.yml \
     --servers-file openapi/servers.yml \
-    --resources-file openapi/resources.yml > backend/data/static/openapi.json
+    --resources-file openapi/resources.yml \
+    --scopes-file openapi/scopes.yml > backend/data/static/openapi.json
 
     # remove custom fields from the final OpenAPI specification
     jq '( .components.schemas // empty )

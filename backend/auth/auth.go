@@ -117,11 +117,13 @@ func NewAPI(
 		defaultEntityScopes: scope.List{
 			scope.Scope{Verb: scope.Manage, Asset: "auth"}, // to be able to assume party
 			scope.Scope{Verb: scope.Manage, Asset: "data"}, // to be able to access their data
+			scope.Scope{Verb: scope.Read, Asset: "grid"},
 			scope.Scope{Verb: scope.Manage, Asset: "attachment"},
 		},
 		defaultOwnedPartyScopes: scope.List{ // full read-write access
 			scope.Scope{Verb: scope.Manage, Asset: "auth"},
 			scope.Scope{Verb: scope.Manage, Asset: "data"},
+			scope.Scope{Verb: scope.Read, Asset: "grid"},
 			scope.Scope{Verb: scope.Manage, Asset: "attachment"},
 		},
 	}
