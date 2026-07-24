@@ -21,8 +21,9 @@ The accepted set of scopes is computed mechanically:
    `a:b:c` and `a:b`. Prefixes shorter than `verb:asset` (2 parts) are never
    produced, which matches the `flex.scope` domain regex.
 
-This single list feeds both the `auth_scope` enum in the OpenAPI document and
-the `flex.scope_allowed()` database function.
+The final list is sorted so the generated output is stable regardless of the
+order of the resources. This single list feeds both the `auth_scope` enum in the
+OpenAPI document and the `flex.scope_allowed()` database function.
 """
 
 import sys
@@ -36,16 +37,15 @@ MODULE_ASSET = {
     "grid": "grid",
 }
 
-# auth asset scopes (no resource, changes rarely); kept first
+# auth asset scopes (no resource, changes rarely)
 AUTH_SCOPES = [
     "read:auth",
     "use:auth",
     "manage:auth",
 ]
 
-# scopes that have no resource definition and are appended after the resource
-# leaves before computing the prefix closure (the closure then produces their
-# coarse prefixes, e.g. `use:data` from `use:data:entity:lookup`)
+# scopes that have no resource definition (the prefix closure then produces
+# their coarse prefixes, e.g. `use:data` from `use:data:entity:lookup`)
 EXTRA_SCOPES = [
     # RPC scopes
     "use:data:controllable_unit:lookup",
@@ -100,24 +100,20 @@ def prefixes(scope):
 
 
 def build_scopes(resources):
-    # gather leaves: auth first, then resource leaves, then the remaining
-    # hardcoded scopes (RPC, coarse attachment use)
+    # gather leaves: auth, resource leaves, then the remaining hardcoded scopes
+    # (RPC, coarse attachment use)
     leaves = list(AUTH_SCOPES)
     for resource in resources:
         leaves += leaves_for_resource(resource)
     leaves += EXTRA_SCOPES
 
-    # transitive prefix closure, keeping a deterministic order and inserting
-    # each coarse prefix right before its first specific scope
-    ordered = []
-    seen = set()
+    # transitive prefix closure (a:b:c:d also yields a:b:c and a:b), then sort so
+    # the generated output is stable regardless of the resource order
+    scopes = set()
     for leaf in leaves:
-        for scope in prefixes(leaf):
-            if scope not in seen:
-                seen.add(scope)
-                ordered.append(scope)
+        scopes.update(prefixes(leaf))
 
-    return ordered
+    return sorted(scopes)
 
 
 def main():

@@ -77,10 +77,10 @@ databaseChangeLog:
 
   # Custom types
   - include:
-      file: ./scope.sql
+      file: ./scope_allowed.sql
       relativeToChangelogFile: true
   - include:
-      file: ./scope_allowed.sql
+      file: ./scope.sql
       relativeToChangelogFile: true
 
   # Tables & views - order is important!
@@ -327,9 +327,6 @@ databaseChangeLog:
       endsWithFilter: _history_audit.sql
       maxDepth: 1
 
-  - include:
-      file: ./scope_migrations.sql
-      relativeToChangelogFile: true
   - include:
       file: ./party_membership_migrations.sql
       relativeToChangelogFile: true

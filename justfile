@@ -383,7 +383,7 @@ openapi-postgrest:
 
     rm -rf out/*
 
-openapi: resources-validate resources-to-diagram generate-scopes scope-to-db resources-to-openapi openapi-to-md openapi-to-db openapi-to-embed-relations sqlc openapi-client-test openapi-client-frontend resources-to-intl-and-tooltips openapi-to-kbackend
+openapi: resources-validate resources-to-diagram generate-scopes scope-to-db resources-to-openapi openapi-to-md scopes-to-md openapi-to-db openapi-to-embed-relations sqlc openapi-client-test openapi-client-frontend resources-to-intl-and-tooltips openapi-to-kbackend
 
 resources-validate:
     #!/usr/bin/env bash
@@ -402,6 +402,11 @@ scope-to-db:
     #!/usr/bin/env bash
     set -euo pipefail
     .venv/bin/python3 local/scripts/scopes_to_db.py
+
+scopes-to-md:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    .venv/bin/python3 local/scripts/scopes_to_md.py
 
 openapi-to-kbackend:
     kbackend/scripts/generate-openapi-models.sh
