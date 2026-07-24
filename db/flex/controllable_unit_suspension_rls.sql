@@ -87,6 +87,40 @@ USING (
     )
 );
 
+-- RLS: CUS-BRP001
+GRANT SELECT ON controllable_unit_suspension TO flex_balance_responsible_party;
+DROP POLICY IF EXISTS "CUS_BRP001" ON controllable_unit_suspension;
+CREATE POLICY "CUS_BRP001"
+ON controllable_unit_suspension
+FOR SELECT
+TO flex_balance_responsible_party
+USING (
+    EXISTS (
+        SELECT 1
+        FROM flex.controllable_unit_balance_responsible_party AS cubrp
+        WHERE cubrp.controllable_unit_id = controllable_unit_suspension.controllable_unit_id -- noqa
+            AND cubrp.balance_responsible_party_id = (SELECT flex.current_party())
+            AND cubrp.valid_time_range @> current_timestamp
+    )
+);
+
+-- RLS: CUS-BRP002
+GRANT SELECT ON controllable_unit_suspension_history TO flex_balance_responsible_party;
+DROP POLICY IF EXISTS "CUS_BRP002" ON controllable_unit_suspension_history;
+CREATE POLICY "CUS_BRP002"
+ON controllable_unit_suspension_history
+FOR SELECT
+TO flex_balance_responsible_party
+USING (
+    EXISTS (
+        SELECT 1
+        FROM flex.controllable_unit_balance_responsible_party AS cubrp
+        WHERE cubrp.controllable_unit_id = controllable_unit_suspension_history.controllable_unit_id -- noqa
+            AND cubrp.balance_responsible_party_id = (SELECT flex.current_party())
+            AND cubrp.valid_time_range && controllable_unit_suspension_history.record_time_range -- noqa
+    )
+);
+
 -- RLS: CUS-SO001
 GRANT SELECT, INSERT, UPDATE, DELETE ON controllable_unit_suspension
 TO flex_system_operator;
