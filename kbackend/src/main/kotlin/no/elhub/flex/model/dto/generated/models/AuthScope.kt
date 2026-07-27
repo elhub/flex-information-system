@@ -212,8 +212,6 @@ public enum class AuthScope(
   READ_GRID_SUBSTATION("read:grid:substation"),
   @SerialName("read:grid:substation_cluster")
   READ_GRID_SUBSTATION_CLUSTER("read:grid:substation_cluster"),
-  @SerialName("use:attachment")
-  USE_ATTACHMENT("use:attachment"),
   @SerialName("use:auth")
   USE_AUTH("use:auth"),
   @SerialName("use:data")

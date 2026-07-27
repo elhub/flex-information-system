@@ -147,7 +147,6 @@ class AuthScope(StrEnum):
     READGRIDLINE = "read:grid:line"
     READGRIDSUBSTATION = "read:grid:substation"
     READGRIDSUBSTATION_CLUSTER = "read:grid:substation_cluster"
-    USEATTACHMENT = "use:attachment"
     USEAUTH = "use:auth"
     USEDATA = "use:data"
     USEDATACONTROLLABLE_UNIT = "use:data:controllable_unit"

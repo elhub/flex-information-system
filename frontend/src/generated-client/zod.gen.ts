@@ -117,7 +117,6 @@ export const zAuthScope = z.enum([
   "read:grid:line",
   "read:grid:substation",
   "read:grid:substation_cluster",
-  "use:attachment",
   "use:auth",
   "use:data",
   "use:data:controllable_unit",

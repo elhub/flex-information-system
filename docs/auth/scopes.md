@@ -125,7 +125,6 @@ File attachments attached to resources.
 - `read:attachment`
 - `read:attachment:service_providing_group_product_application_attachment`
 - `read:attachment:service_providing_group_product_application_attachment_history`
-- `use:attachment`
 
 ## `auth`
 
