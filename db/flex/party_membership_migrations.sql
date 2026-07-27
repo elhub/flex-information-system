@@ -48,6 +48,7 @@ ALTER TABLE flex.party_membership
 ENABLE TRIGGER USER;
 
 -- changeset flex:party-membership-attachment-scope runOnChange:false endDelimiter:;
+-- validCheckSum: 9:56c36c0e02c3f37dc5f25513a59405bf
 ALTER TABLE flex.party_membership
 DISABLE TRIGGER USER;
 
