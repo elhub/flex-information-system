@@ -417,6 +417,7 @@ export const AccountingPointLocationMap = ({
               type="symbol"
               layout={{
                 "text-field": ["get", "name"],
+                "text-font": ["Noto Sans Regular"],
                 "text-size": 11,
                 "text-anchor": "bottom",
                 "text-offset": [0, -1.8],
