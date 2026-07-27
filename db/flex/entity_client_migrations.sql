@@ -2,6 +2,7 @@
 -- Manually managed file
 
 -- changeset flex:entity-client-attachment-scope runOnChange:false endDelimiter:;
+-- validCheckSum: 9:c22a74dd5fc3961d8cc83d1cd1782472
 ALTER TABLE flex.entity_client
 DISABLE TRIGGER USER;
 
