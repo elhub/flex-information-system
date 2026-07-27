@@ -424,8 +424,6 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 
 	// middlewares with logging
 
-	router.Use(gin.Logger())
-
 	slogginConfig := sloggin.Config{ //nolint:exhaustruct
 		// We are providing our own trace.SlogHandler, so we don't need to log trace IDs here.
 		WithSpanID:        false,
