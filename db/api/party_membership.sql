@@ -1,8 +1,10 @@
 --liquibase formatted sql
--- Manually managed file
+-- GENERATED CODE -- DO NOT EDIT (scripts/openapi_to_db.py)
+-- noqa: disable=RF04,ST06
+-- RF04 - Keywords should not be used as identifiers.
+-- ST06 - Select wildcards then simple targets before calculations and aggregates.
 
--- changeset flex:api-party-membership-create endDelimiter:-- runAlways:true
--- runAlways to be able to change flex.scope over time
+-- changeset flex:api-party-membership-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW
 api.party_membership
 WITH (security_invoker = true) AS (
@@ -15,8 +17,7 @@ WITH (security_invoker = true) AS (
         scopes
     FROM flex.party_membership
 );
--- changeset flex:api-party-membership-history-create endDelimiter:-- runAlways:true
--- runAlways to be able to change flex.scope over time
+-- changeset flex:api-party-membership-history-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE VIEW
 api.party_membership_history
 WITH (

@@ -6,7 +6,6 @@ import {
   Alert,
   BodyText,
   Button,
-  Chips,
   FormItem,
   FormItemLabel,
   Modal,
@@ -17,66 +16,20 @@ import {
   callEntityLookup,
   createPartyMembership,
 } from "../../generated-client";
-import { AuthScope } from "../../generated-client/types.gen";
 import {
   zAuthScope,
   zEntityLookupRequest,
 } from "../../generated-client/zod.gen";
 import { throwOnError } from "../../util";
 import { Identifier } from "ra-core";
+import {
+  ScopesChipsInput,
+  DEFAULT_SCOPES,
+} from "../../components/EDS-ra/inputs/ScopesInput";
 
-// ScopesInput
-// TODO: improve/move this component when we have support for general scopes
-// (this is reimplemented here to avoid z-index issues when mixing RA with EDS)
-
-const ALL_SCOPES: AuthScope[] = zAuthScope.options;
-
-const DEFAULT_SCOPES: AuthScope[] = ["manage:data", "manage:auth"];
-
-const ScopesInput = ({
-  value,
-  onChange,
-  disabled,
-}: {
-  value: AuthScope[];
-  onChange: (scopes: AuthScope[]) => void;
-  disabled?: boolean;
-}) => {
-  const toggle = (scope: AuthScope) => {
-    if (disabled) return;
-    onChange(
-      value.includes(scope)
-        ? value.filter((s) => s !== scope)
-        : [...value, scope],
-    );
-  };
-
-  return (
-    <FormItem>
-      <FormItemLabel>Scopes</FormItemLabel>
-      <BodyText variant="subtle" className="mb-2">
-        Scopes determine the access level of the party member and what actions
-        they can perform on behalf of the party.
-      </BodyText>
-      <Chips>
-        {ALL_SCOPES.map((scope) => (
-          <Chips.Chip
-            key={scope}
-            onClick={() => toggle(scope)}
-            aria-pressed={value.includes(scope)}
-            disabled={disabled}
-            style={{
-              fontWeight: value.includes(scope) ? 600 : undefined,
-              opacity: value.includes(scope) ? 1 : 0.5,
-            }}
-          >
-            {scope}
-          </Chips.Chip>
-        ))}
-      </Chips>
-    </FormItem>
-  );
-};
+// ScopesChipsInput is used directly here (instead of the RA-integrated
+// ScopesInput wrapper) to avoid z-index issues when mixing RA and EDS in
+// modal contexts.
 
 // -----------------------------------------------------------------------------
 
@@ -203,11 +156,18 @@ export const AddPartyMemberViaEntityLookupModal = ({
           name="scopes"
           control={control}
           render={({ field }) => (
-            <ScopesInput
-              value={field.value}
-              onChange={field.onChange}
-              disabled={isPending}
-            />
+            <FormItem>
+              <FormItemLabel>Scopes</FormItemLabel>
+              <BodyText variant="subtle" className="mb-2">
+                Scopes determine the access level of the party member and what
+                actions they can perform on behalf of the party.
+              </BodyText>
+              <ScopesChipsInput
+                value={field.value}
+                onChange={field.onChange}
+                disabled={isPending}
+              />
+            </FormItem>
           )}
         />
         {errorMessage && <Alert variant="error">{errorMessage}</Alert>}

@@ -16,6 +16,13 @@ export { EnumInput } from "./EnumInput";
 export { FormToolbar } from "./FormToolbar";
 export { PartyReferenceInput } from "./PartyReferenceInput";
 export { ReferenceComboboxInput } from "./ReferenceComboboxInput";
+export {
+  ScopesInput,
+  ScopesChipsInput,
+  ALL_SCOPES,
+  DEFAULT_SCOPES,
+  type Scope,
+} from "./ScopesInput";
 export { TextAreaInput } from "./TextAreaInput";
 export { TextInput } from "./TextInput";
 export { UnitInput, type UnitDefinition } from "./UnitInput";
