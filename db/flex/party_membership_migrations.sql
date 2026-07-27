@@ -72,7 +72,6 @@ WHERE
     scopes IS NOT null
     AND scopes @> '{read:data}'
     AND NOT (scopes @> '{read:attachment}')
-    AND NOT (scopes @> '{use:attachment}')
     AND NOT (scopes @> '{manage:attachment}');
 
 ALTER TABLE flex.party_membership
