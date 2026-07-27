@@ -56,30 +56,15 @@ SET scopes = array_append(scopes, 'manage:attachment'::flex.scope)
 WHERE scopes @> '{manage:data}' AND NOT (scopes @> '{manage:attachment}');
 
 UPDATE flex.party_membership
-SET scopes = array_append(scopes, 'use:attachment'::flex.scope)
-WHERE
-    scopes @> '{use:data}'
-    AND NOT (scopes @> '{use:attachment}')
-    AND NOT (scopes @> '{manage:attachment}');
-
-UPDATE flex.party_membership
 SET scopes = array_append(scopes, 'read:attachment'::flex.scope)
 WHERE
     scopes @> '{read:data}'
     AND NOT (scopes @> '{read:attachment}')
-    AND NOT (scopes @> '{use:attachment}')
     AND NOT (scopes @> '{manage:attachment}');
 
 UPDATE flex.party_membership_history
 SET scopes = array_append(scopes, 'manage:attachment'::flex.scope)
 WHERE scopes @> '{manage:data}' AND NOT (scopes @> '{manage:attachment}');
-
-UPDATE flex.party_membership_history
-SET scopes = array_append(scopes, 'use:attachment'::flex.scope)
-WHERE
-    scopes @> '{use:data}'
-    AND NOT (scopes @> '{use:attachment}')
-    AND NOT (scopes @> '{manage:attachment}');
 
 UPDATE flex.party_membership_history
 SET scopes = array_append(scopes, 'read:attachment'::flex.scope)
