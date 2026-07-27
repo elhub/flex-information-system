@@ -14,7 +14,7 @@ import { Button, Panel } from "../../components/ui";
 import { elhubTheme } from "../../theme";
 import { gridURL } from "../../httpConfig";
 import { fetchJSON } from "../../util";
-import { IconBuilding } from "@elhub/ds-icons";
+import { BoltIcon } from "./BoltIcon";
 
 const OPENFREEMAP_STYLE = "https://tiles.openfreemap.org/styles/liberty";
 
@@ -163,7 +163,7 @@ const SubstationMarker = ({
             : "0 1px 4px rgba(0,0,0,0.3)",
         }}
       >
-        <IconBuilding
+        <BoltIcon
           style={{
             color: isSelected ? primaryColor : "white",
             width: isSelected ? 20 : 16,
