@@ -16,6 +16,7 @@ data class ControllableUnitForLookup(
     val id: Long,
     @SerialName("business_id") val businessId: String,
     val name: String,
+    val status: ControllableUnitStatus,
     @SerialName("technical_resources") val technicalResources: List<TechnicalResource>,
     @SerialName("start_date") val startDate: LocalDate?,
 )

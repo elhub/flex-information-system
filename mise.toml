@@ -6,6 +6,8 @@
 "pandoc" = "3.10"
 "ruff" = "0.15.22"
 "sqlc" = "1.31.1"
+jsonschema = "16.3.0"
+spectral = "6.16.2"
 
 "go:github.com/google/go-licenses/v2" = "2.0.1"
 "go:golang.org/x/vuln/cmd/govulncheck" = "1.5.0"
