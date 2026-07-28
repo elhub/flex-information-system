@@ -19,6 +19,7 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
+import kotlinx.serialization.json.Json
 import no.elhub.flex.accountingpoint.AccountingPointService
 import no.elhub.flex.auth.FlexAuthentication
 import no.elhub.flex.auth.FlexPrincipal
@@ -29,6 +30,8 @@ import no.elhub.flex.controllableunit.db.ControllableUnitRepository
 import no.elhub.flex.event.db.EventRepository
 import no.elhub.flex.model.domain.AccountingPoint
 import no.elhub.flex.model.domain.ControllableUnitForLookup
+import no.elhub.flex.model.domain.ControllableUnitStatus
+import no.elhub.flex.model.dto.generated.models.ControllableUnitLookupResponse
 import no.elhub.flex.model.error.InternalServerError
 import no.elhub.flex.model.error.ResourceNotFoundError
 import no.elhub.flex.routes.controllableunit.ControllableUnitLookup
@@ -540,6 +543,7 @@ class ControllableUnitLookupTest :
                         id = 1,
                         businessId = controllableUnitBusinessId,
                         name = "My CU",
+                        status = ControllableUnitStatus.ACTIVE,
                         technicalResources = emptyList(),
                         startDate = Clock.System.todayIn(TimeZone.of("Europe/Oslo")),
                     ),
@@ -556,6 +560,62 @@ class ControllableUnitLookupTest :
                 body.contains("accounting_point") shouldBe true
                 body.contains("end_user") shouldBe true
                 body.contains("controllable_units") shouldBe true
+                app.stop()
+            }
+
+            test("happy path should not return terminated CUs") {
+                val endUserBusinessId = "123456789"
+                val accountingPointBusinessId = "133700000000000053"
+                val controllableUnitBusinessId = "550e8400-e29b-41d4-a716-446655440000"
+                coEvery {
+                    with(any<FlexPrincipal>()) { mockAccountingPointService.getCurrentAccountingPoint(any()) }
+                } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
+                coEvery {
+                    mockAccountingPointService.synchronizeAccountingPoint(any(), any())
+                } returns Unit.right()
+                coEvery {
+                    with(any<FlexPrincipal>()) {
+                        mockAccountingPointService.checkEndUserMatchesAccountingPoint(endUserBusinessId, accountingPointBusinessId)
+                    }
+                } returns 7L.right()
+                coEvery {
+                    with(any<FlexPrincipal>()) {
+                        mockAccountingPointService.getAccountingPointByBusinessId(accountingPointBusinessId)
+                    }
+                } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
+                coEvery {
+                    with(any<FlexPrincipal>()) { mockRepo.lookupControllableUnits(any(), any()) }
+                } returns listOf(
+                    ControllableUnitForLookup(
+                        id = 1,
+                        businessId = controllableUnitBusinessId,
+                        name = "Terminated CU",
+                        status = ControllableUnitStatus.TERMINATED,
+                        technicalResources = emptyList(),
+                        startDate = null,
+                    ),
+                    ControllableUnitForLookup(
+                        id = 2,
+                        businessId = controllableUnitBusinessId,
+                        name = "My CU",
+                        status = ControllableUnitStatus.ACTIVE,
+                        technicalResources = emptyList(),
+                        startDate = Clock.System.todayIn(TimeZone.of("Europe/Oslo")),
+                    ),
+                ).right()
+
+                val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo)
+                val response = app.client.post("/controllable_unit/lookup") {
+                    contentType(ContentType.Application.Json)
+                    header("Authorization", "Bearer ${makeJwt()}")
+                    setBody("""{"end_user":"$endUserBusinessId","accounting_point":"$accountingPointBusinessId"}""")
+                }
+                response.status shouldBe HttpStatusCode.OK
+
+                val lookupResponse = Json.decodeFromString<ControllableUnitLookupResponse>(response.bodyAsText())
+                lookupResponse.controllableUnits.size shouldBe 1
+                lookupResponse.controllableUnits.first().id shouldBe 2
+
                 app.stop()
             }
 
@@ -598,8 +658,22 @@ class ControllableUnitLookupTest :
                 coEvery {
                     with(any<FlexPrincipal>()) { mockRepo.lookupControllableUnits(any(), any()) }
                 } returns listOf(
-                    ControllableUnitForLookup(id = 10L, businessId = "550e8400-e29b-41d4-a716-446655440000", name = "CU 1", technicalResources = emptyList(), startDate = null),
-                    ControllableUnitForLookup(id = 20L, businessId = "660e8400-e29b-41d4-a716-446655440001", name = "CU 2", technicalResources = emptyList(), startDate = null),
+                    ControllableUnitForLookup(
+                        id = 10L,
+                        businessId = "550e8400-e29b-41d4-a716-446655440000",
+                        name = "CU 1",
+                        status = ControllableUnitStatus.INACTIVE,
+                        technicalResources = emptyList(),
+                        startDate = null
+                    ),
+                    ControllableUnitForLookup(
+                        id = 20L,
+                        businessId = "660e8400-e29b-41d4-a716-446655440001",
+                        name = "CU 2",
+                        status = ControllableUnitStatus.ACTIVE,
+                        technicalResources = emptyList(),
+                        startDate = null
+                    ),
                 ).right()
 
                 val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo)
@@ -690,7 +764,14 @@ class ControllableUnitLookupTest :
                 coEvery {
                     with(any<FlexPrincipal>()) { mockRepo.lookupControllableUnits(any(), any()) }
                 } returns listOf(
-                    ControllableUnitForLookup(id = 10L, businessId = controllableUnitBusinessId, name = "CU 1", technicalResources = emptyList(), startDate = null),
+                    ControllableUnitForLookup(
+                        id = 10L,
+                        businessId = controllableUnitBusinessId,
+                        name = "CU 1",
+                        status = ControllableUnitStatus.ACTIVE,
+                        technicalResources = emptyList(),
+                        startDate = null
+                    ),
                 ).right()
 
                 val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo)
