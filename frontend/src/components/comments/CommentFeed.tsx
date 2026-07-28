@@ -178,7 +178,6 @@ export function CommentFeed({
               key={comment.id}
               comment={comment}
               createdByIdentity={identityMap[comment.created_by]}
-              recordedByIdentity={identityMap[comment.recorded_by]}
               isCurrentUser={
                 identityMap[comment.created_by]?.entity_id === currentEntityId
               }
