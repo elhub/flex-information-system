@@ -13,12 +13,14 @@ export const AccountingPointGridLocationPanel = ({
   userCanEdit,
   selectedSubstation,
   onClearSelection,
+  onCancelSelection,
 }: {
   apId: number;
   gridLocation: AccountingPointGridLocation | undefined;
   userCanEdit: boolean;
   selectedSubstation?: Substation | null;
   onClearSelection?: () => void;
+  onCancelSelection?: () => void;
 }) => {
   const translate = useTranslate();
   const [isEditingManual, setIsEditingManual] = useState(false);
@@ -54,6 +56,7 @@ export const AccountingPointGridLocationPanel = ({
           apId={apId}
           gridLocation={gridLocation}
           onDone={handleDone}
+          onCancel={onCancelSelection ?? handleDone}
           selectedSubstation={selectedSubstation}
           onClearMapSelection={onClearSelection}
         />

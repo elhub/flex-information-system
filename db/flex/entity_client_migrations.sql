@@ -2,6 +2,7 @@
 -- Manually managed file
 
 -- changeset flex:entity-client-attachment-scope runOnChange:false endDelimiter:;
+-- validCheckSum: 9:c22a74dd5fc3961d8cc83d1cd1782472
 ALTER TABLE flex.entity_client
 DISABLE TRIGGER USER;
 
@@ -10,18 +11,10 @@ SET scopes = array_append(scopes, 'manage:attachment'::flex.scope)
 WHERE scopes @> '{manage:data}' AND NOT (scopes @> '{manage:attachment}');
 
 UPDATE flex.entity_client
-SET scopes = array_append(scopes, 'use:attachment'::flex.scope)
-WHERE
-    scopes @> '{use:data}'
-    AND NOT (scopes @> '{use:attachment}')
-    AND NOT (scopes @> '{manage:attachment}');
-
-UPDATE flex.entity_client
 SET scopes = array_append(scopes, 'read:attachment'::flex.scope)
 WHERE
     scopes @> '{read:data}'
     AND NOT (scopes @> '{read:attachment}')
-    AND NOT (scopes @> '{use:attachment}')
     AND NOT (scopes @> '{manage:attachment}');
 
 UPDATE flex.entity_client_history
@@ -29,19 +22,11 @@ SET scopes = array_append(scopes, 'manage:attachment'::flex.scope)
 WHERE scopes @> '{manage:data}' AND NOT (scopes @> '{manage:attachment}');
 
 UPDATE flex.entity_client_history
-SET scopes = array_append(scopes, 'use:attachment'::flex.scope)
-WHERE
-    scopes @> '{use:data}'
-    AND NOT (scopes @> '{use:attachment}')
-    AND NOT (scopes @> '{manage:attachment}');
-
-UPDATE flex.entity_client_history
 SET scopes = array_append(scopes, 'read:attachment'::flex.scope)
 WHERE
     scopes IS NOT null
     AND scopes @> '{read:data}'
     AND NOT (scopes @> '{read:attachment}')
-    AND NOT (scopes @> '{use:attachment}')
     AND NOT (scopes @> '{manage:attachment}');
 
 ALTER TABLE flex.entity_client
@@ -82,3 +67,20 @@ BEFORE INSERT OR UPDATE ON entity_client
 FOR EACH ROW
 WHEN (new.party_id IS NOT null)
 EXECUTE FUNCTION entity_client_check_assumable_party();
+
+-- changeset flex:entity-client-add-grid-scopes runOnChange:false endDelimiter:;
+--preconditions onFail:MARK_RAN
+--precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM flex.entity_client WHERE 'read:grid' = ANY(scopes)
+ALTER TABLE flex.entity_client
+DISABLE TRIGGER USER;
+
+UPDATE flex.entity_client
+SET scopes = array_append(scopes, 'read:grid')
+WHERE NOT ('read:grid' = any(scopes));
+
+UPDATE flex.entity_client_history
+SET scopes = array_append(scopes, 'read:grid')
+WHERE NOT ('read:grid' = any(scopes));
+
+ALTER TABLE flex.entity_client
+ENABLE TRIGGER USER;
