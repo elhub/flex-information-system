@@ -28,11 +28,13 @@ const fields = getFields(zAccountingPointGridLocationCreateRequest.shape);
 
 const GridLocationFormFields = ({
   onDone,
+  onCancel,
   selectedSubstation, // selected via the map
   onClearMapSelection,
   existingGridLocation, // existing record (if editing)
 }: {
   onDone: () => void;
+  onCancel?: () => void;
   selectedSubstation?: Substation | null;
   onClearMapSelection?: () => void;
   existingGridLocation?: { name: string; business_id: string } | null;
@@ -109,7 +111,7 @@ const GridLocationFormFields = ({
         rows={5}
         warning="Please remember not to write any sensitive (power/market/personal) information in this field."
       />
-      <FormToolbar onCancel={onDone} saveAlwaysEnabled />
+      <FormToolbar onCancel={onCancel ?? onDone} saveAlwaysEnabled />
     </>
   );
 };
@@ -118,12 +120,14 @@ export const AccountingPointGridLocationInput = ({
   apId,
   gridLocation,
   onDone,
+  onCancel,
   selectedSubstation,
   onClearMapSelection,
 }: {
   apId: number;
   gridLocation: AccountingPointGridLocation | undefined;
   onDone: () => void;
+  onCancel?: () => void;
   selectedSubstation?: Substation | null;
   onClearMapSelection?: () => void;
 }) => {
@@ -205,6 +209,7 @@ export const AccountingPointGridLocationInput = ({
         <FormContainer>
           <GridLocationFormFields
             onDone={onDone}
+            onCancel={onCancel}
             selectedSubstation={selectedSubstation}
             onClearMapSelection={onClearMapSelection}
             existingGridLocation={gridLocation ?? null}
