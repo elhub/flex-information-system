@@ -19,6 +19,7 @@ import {
   BodyText,
   Card,
   CardContent,
+  Tag,
 } from "../../components/ui";
 import { IconPlus, IconTrash } from "@elhub/ds-icons";
 import { useConfirmAction } from "../../components/ConfirmAction";
@@ -138,6 +139,17 @@ export const TechnicalResourceList = () => {
       header: translate("field.technical_resource.device_type"),
       render: (value) =>
         translateEnum(`device_type.${value as string}` as EnumLabel),
+    },
+    {
+      key: "technology",
+      header: translate("field.technical_resource.technology"),
+      render: (value) => (
+        <div className="flex gap-2 flex-wrap">
+          {(value as Array<string>).map((v) => (
+            <Tag key={v}>{translateEnum(`technology.${v}` as EnumLabel)}</Tag>
+          ))}
+        </div>
+      ),
     },
   ];
 
