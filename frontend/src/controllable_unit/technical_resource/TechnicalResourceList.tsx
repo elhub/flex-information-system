@@ -145,7 +145,7 @@ export const TechnicalResourceList = () => {
       header: translate("field.technical_resource.technology"),
       render: (value) => (
         <div className="flex gap-2 flex-wrap">
-          {(value as Array<string>).map((v) => (
+          {(value as TechnicalResource["technology"]).map((v) => (
             <Tag key={v}>{translateEnum(`technology.${v}` as EnumLabel)}</Tag>
           ))}
         </div>
