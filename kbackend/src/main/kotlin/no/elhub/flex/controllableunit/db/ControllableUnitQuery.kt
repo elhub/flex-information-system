@@ -7,6 +7,7 @@ FROM (
              cu.id,
              cu.business_id::text,
              cu.name,
+             cu.status,
              cu.start_date,
              (
                  SELECT coalesce(jsonb_agg(row_to_json(tr)), '[]'::jsonb)
