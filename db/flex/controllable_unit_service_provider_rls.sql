@@ -82,6 +82,23 @@ USING (
     )
 );
 
+-- RLS: CUSP-BRP001
+GRANT SELECT ON controllable_unit_service_provider TO flex_balance_responsible_party;
+DROP POLICY IF EXISTS "CUSP_BRP001" ON controllable_unit_service_provider;
+CREATE POLICY "CUSP_BRP001"
+ON controllable_unit_service_provider
+FOR SELECT
+TO flex_balance_responsible_party
+USING (
+    EXISTS (
+        SELECT 1
+        FROM controllable_unit_balance_responsible_party AS cubrp
+        WHERE cubrp.controllable_unit_id = controllable_unit_service_provider.controllable_unit_id -- noqa
+            AND cubrp.balance_responsible_party_id = (SELECT current_party())
+            AND cubrp.valid_time_range @> current_timestamp
+    )
+);
+
 ALTER TABLE IF EXISTS controllable_unit_service_provider_history
 ENABLE ROW LEVEL SECURITY;
 
@@ -100,8 +117,26 @@ USING (
         WHERE cueu.controllable_unit_id = controllable_unit_service_provider_history.controllable_unit_id -- noqa
         -- this version of the CUSP in the history puts the contract in the
         -- period when the current party is the end user of the AP
-        AND cueu.end_user_id = (SELECT current_party())
+            AND cueu.end_user_id = (SELECT current_party())
             AND cueu.valid_time_range && controllable_unit_service_provider_history.valid_time_range -- noqa
+    )
+);
+
+-- RLS: CUSP-BRP002
+GRANT SELECT ON controllable_unit_service_provider_history
+TO flex_balance_responsible_party;
+DROP POLICY IF EXISTS "CUSP_BRP002" ON controllable_unit_service_provider_history;
+CREATE POLICY "CUSP_BRP002"
+ON controllable_unit_service_provider_history
+FOR SELECT
+TO flex_balance_responsible_party
+USING (
+    EXISTS (
+        SELECT 1
+        FROM controllable_unit_balance_responsible_party AS cubrp
+        WHERE cubrp.controllable_unit_id = controllable_unit_service_provider_history.controllable_unit_id -- noqa
+            AND cubrp.balance_responsible_party_id = (SELECT current_party())
+            AND cubrp.valid_time_range && controllable_unit_service_provider_history.valid_time_range -- noqa
     )
 );
 

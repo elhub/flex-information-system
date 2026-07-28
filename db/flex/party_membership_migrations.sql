@@ -29,3 +29,51 @@ SET scopes = '{manage:data, manage:auth}';
 
 ALTER TABLE flex.party_membership
 ENABLE TRIGGER USER;
+
+-- changeset flex:party-membership-add-grid-scopes runOnChange:false endDelimiter:;
+--preconditions onFail:MARK_RAN
+--precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM flex.party_membership WHERE 'read:grid' = ANY(scopes)
+ALTER TABLE flex.party_membership
+DISABLE TRIGGER USER;
+
+UPDATE flex.party_membership
+SET scopes = array_append(scopes, 'read:grid')
+WHERE NOT ('read:grid' = any(scopes));
+
+UPDATE flex.party_membership_history
+SET scopes = array_append(scopes, 'read:grid')
+WHERE NOT ('read:grid' = any(scopes));
+
+ALTER TABLE flex.party_membership
+ENABLE TRIGGER USER;
+
+-- changeset flex:party-membership-attachment-scope runOnChange:false endDelimiter:;
+-- validCheckSum: 9:56c36c0e02c3f37dc5f25513a59405bf
+ALTER TABLE flex.party_membership
+DISABLE TRIGGER USER;
+
+UPDATE flex.party_membership
+SET scopes = array_append(scopes, 'manage:attachment'::flex.scope)
+WHERE scopes @> '{manage:data}' AND NOT (scopes @> '{manage:attachment}');
+
+UPDATE flex.party_membership
+SET scopes = array_append(scopes, 'read:attachment'::flex.scope)
+WHERE
+    scopes @> '{read:data}'
+    AND NOT (scopes @> '{read:attachment}')
+    AND NOT (scopes @> '{manage:attachment}');
+
+UPDATE flex.party_membership_history
+SET scopes = array_append(scopes, 'manage:attachment'::flex.scope)
+WHERE scopes @> '{manage:data}' AND NOT (scopes @> '{manage:attachment}');
+
+UPDATE flex.party_membership_history
+SET scopes = array_append(scopes, 'read:attachment'::flex.scope)
+WHERE
+    scopes IS NOT null
+    AND scopes @> '{read:data}'
+    AND NOT (scopes @> '{read:attachment}')
+    AND NOT (scopes @> '{manage:attachment}');
+
+ALTER TABLE flex.party_membership
+ENABLE TRIGGER USER;

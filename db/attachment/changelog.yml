@@ -1,0 +1,29 @@
+---
+databaseChangeLog:
+  - changeSet:
+      id: attachment-schema
+      author: flex
+      runOnChange: true
+      changes:
+        - sql: CREATE SCHEMA IF NOT EXISTS attachment AUTHORIZATION flex
+        - sql: GRANT USAGE ON SCHEMA attachment TO flex_anonymous, flex_internal
+        - sql: GRANT USAGE ON SCHEMA attachment TO flex_operation_readonly, flex_operation_update, flex_operation_readwrite
+        - sql: ALTER DEFAULT PRIVILEGES IN SCHEMA attachment REVOKE EXECUTE ON FUNCTIONS FROM PUBLIC
+  - includeAll:
+      path: ./
+      relativeToChangelogFile: true
+      endsWithFilter: .sql
+      minDepth: 1
+      maxDepth: 1
+      # Reverse sort to ensure that <resource>.sql is run before <resource>_<something>.sql
+      resourceComparator: java.util.Comparator.reverseOrder
+  - includeAll:
+      path: ./grants/
+      relativeToChangelogFile: true
+      endsWithFilter: .sql
+  - changeSet:
+      id: attachment-operation-roles-grants
+      author: flex
+      runAlways: true
+      changes:
+        - sql: GRANT SELECT ON ALL TABLES IN SCHEMA attachment TO flex_operation_readonly

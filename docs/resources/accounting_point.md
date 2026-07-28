@@ -57,7 +57,9 @@ No policies.
 
 #### Balance Responsible Party
 
-No policies.
+| Policy key | Policy                                                  | Status |
+|------------|---------------------------------------------------------|--------|
+| AP-BRP001  | Read accounting points where they are currently BRP.    | DONE   |
 
 #### End User
 

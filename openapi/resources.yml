@@ -611,15 +611,6 @@ resources:
                 average: 50
                 min: 30
                 max: 80
-          - substation_business_id: null
-            substation_name: null
-            controllable_unit:
-              count: 1
-              maximum_active_power:
-                sum: 20
-                average: 20
-                min: 20
-                max: 20
 
   - id: service_providing_group_summary
     acronym: SPGSU
@@ -3915,6 +3906,7 @@ resources:
       - list
       - read
     comments: true
+    attachments: true
     module: api
     history_rls: true
     properties:

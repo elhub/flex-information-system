@@ -24,6 +24,7 @@ import { ServiceProvidingGroupGridPrequalificationList } from "../service_provid
 import { ServiceProvidingGroupProductApplicationInput } from "../service_providing_group/product_application/ServiceProvidingGroupProductApplicationInput";
 import { ServiceProvidingGroupProductApplicationShow } from "../service_providing_group/product_application/ServiceProvidingGroupProductApplicationShow";
 import { ServiceProvidingGroupProductApplicationHistoryList } from "../service_providing_group/product_application/ServiceProvidingGroupProductApplicationHistoryList";
+import { ServiceProvidingGroupProductApplicationPrint } from "../service_providing_group/product_application/print/ServiceProvidingGroupProductApplicationPrint";
 import { ServiceProvidingGroupProductSuspensionInput } from "../service_providing_group/product_suspension/ServiceProvidingGroupProductSuspensionInput";
 import { ServiceProvidingGroupProductSuspensionShow } from "../service_providing_group/product_suspension/ServiceProvidingGroupProductSuspensionShow";
 import { ServiceProvidingGroupProductSuspensionHistoryList } from "../service_providing_group/product_suspension/ServiceProvidingGroupProductSuspensionHistoryList";
@@ -174,6 +175,14 @@ export const createServiceProvidingGroupResources = (
           element={
             <ResourceContextProvider value="service_providing_group_product_application">
               <ServiceProvidingGroupProductApplicationShow />
+            </ResourceContextProvider>
+          }
+        />
+        <Route
+          path=":service_providing_group_id/product_application/:id/print"
+          element={
+            <ResourceContextProvider value="service_providing_group_product_application">
+              <ServiceProvidingGroupProductApplicationPrint />
             </ResourceContextProvider>
           }
         />
@@ -460,6 +469,10 @@ export const createServiceProvidingGroupResources = (
               <ServiceProvidingGroupProductApplicationShow />
             </ResourceContextProvider>
           }
+        />
+        <Route
+          path=":id/print"
+          element={<ServiceProvidingGroupProductApplicationPrint />}
         />
       </Resource>,
     );

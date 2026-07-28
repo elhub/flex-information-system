@@ -146,7 +146,10 @@ export const ProductTypeArrayInput = ({
     useGetProductTypesBySystemOperator(systemOperatorId);
 
   const options: ArrayInputOption[] =
-    productTypes?.map((pt) => ({ value: String(pt.id), label: pt.name })) ?? [];
+    productTypes?.map((pt) => ({
+      value: String(pt.id),
+      label: displayProductType(pt),
+    })) ?? [];
 
   return (
     <ArrayInput

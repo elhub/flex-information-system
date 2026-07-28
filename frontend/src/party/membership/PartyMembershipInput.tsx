@@ -9,8 +9,8 @@ import {
   AutocompleteReferenceInput,
   PartyReferenceInput,
   FormToolbar,
+  ScopesInput,
 } from "../../components/EDS-ra/inputs";
-import { ScopesInput } from "../../components/scopes";
 
 const filterRecord = ({ party_id, entity_id, scopes }: any) => ({
   party_id,
@@ -49,7 +49,7 @@ export const PartyMembershipInput = () => {
               reference="entity"
             />
           )}
-          <ScopesInput source="scopes" label="field.party_membership.scopes" />
+          <ScopesInput source="scopes" />
         </div>
         <FormToolbar />
       </FormContainer>

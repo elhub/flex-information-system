@@ -63,6 +63,9 @@ from .controllable_unit_suspension_reason import ControllableUnitSuspensionReaso
 from .controllable_unit_suspension_response import ControllableUnitSuspensionResponse
 from .controllable_unit_suspension_update_request import ControllableUnitSuspensionUpdateRequest
 from .controllable_unit_update_request import ControllableUnitUpdateRequest
+from .create_service_providing_group_product_application_attachment_body import (
+    CreateServiceProvidingGroupProductApplicationAttachmentBody,
+)
 from .device_type import DeviceType
 from .empty_object import EmptyObject
 from .entity_business_id_type import EntityBusinessIdType
@@ -197,6 +200,15 @@ from .service_providing_group_power_per_substation_response_substations_item imp
 )
 from .service_providing_group_power_per_substation_response_substations_item_controllable_unit import (
     ServiceProvidingGroupPowerPerSubstationResponseSubstationsItemControllableUnit,
+)
+from .service_providing_group_product_application_attachment_content_type import (
+    ServiceProvidingGroupProductApplicationAttachmentContentType,
+)
+from .service_providing_group_product_application_attachment_history_response import (
+    ServiceProvidingGroupProductApplicationAttachmentHistoryResponse,
+)
+from .service_providing_group_product_application_attachment_response import (
+    ServiceProvidingGroupProductApplicationAttachmentResponse,
 )
 from .service_providing_group_product_application_comment_create_request import (
     ServiceProvidingGroupProductApplicationCommentCreateRequest,
@@ -338,6 +350,7 @@ __all__ = (
     "ControllableUnitSuspensionResponse",
     "ControllableUnitSuspensionUpdateRequest",
     "ControllableUnitUpdateRequest",
+    "CreateServiceProvidingGroupProductApplicationAttachmentBody",
     "DeviceType",
     "EmptyObject",
     "EntityBusinessIdType",
@@ -433,6 +446,9 @@ __all__ = (
     "ServiceProvidingGroupPowerPerSubstationResponse",
     "ServiceProvidingGroupPowerPerSubstationResponseSubstationsItem",
     "ServiceProvidingGroupPowerPerSubstationResponseSubstationsItemControllableUnit",
+    "ServiceProvidingGroupProductApplicationAttachmentContentType",
+    "ServiceProvidingGroupProductApplicationAttachmentHistoryResponse",
+    "ServiceProvidingGroupProductApplicationAttachmentResponse",
     "ServiceProvidingGroupProductApplicationCommentCreateRequest",
     "ServiceProvidingGroupProductApplicationCommentHistoryResponse",
     "ServiceProvidingGroupProductApplicationCommentResponse",

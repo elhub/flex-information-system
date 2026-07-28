@@ -8,8 +8,8 @@ import {
   TextAreaInput,
   AutocompleteReferenceInput,
   FormToolbar,
+  ScopesInput,
 } from "../../components/EDS-ra/inputs";
-import { ScopesInput } from "../../components/scopes";
 
 const fields = getFields(zEntityClientCreateRequest.shape);
 
@@ -35,7 +35,7 @@ export const EntityClientInput = () => {
           <TextInput source="client_id" />
           <TextInput {...fields.name} />
           <AutocompleteReferenceInput {...fields.party_id} reference="party" />
-          <ScopesInput source="scopes" label="field.entity_client.scopes" />
+          <ScopesInput source="scopes" />
           <TextInput {...fields.client_secret} type="password" />
           <TextAreaInput {...fields.public_key} rows={3} />
         </div>

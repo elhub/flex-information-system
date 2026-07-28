@@ -1,0 +1,59 @@
+@startuml attachment_upload_sequence
+!theme plain
+
+title Attachment Upload Sequence
+
+skinparam LifelineStrategy solid
+skinparam SequenceMessageAlign direction
+
+participant User as user
+participant "FIS" as fis
+participant Bucket as bucket
+
+user -> fis: ""POST /res_attachment""
+rnote right of user
+Multipart form data
+end note
+activate fis #d6e4d5
+activate user #d6e4d5
+
+fis -> fis: Decode multipart form data
+rnote right of fis
+""<color #d58000>parent_id</color>"", ""<color #05677d>content_type</color>"", ""<color #05677d>filename</color>"", ""<color #05677d>file_contents</color>""
+end note
+
+fis -> fis: Validate file
+rnote right of fis
+Check that the file is not too big.
+Check that content type, extension, and file contents are consistent and supported (PDF, JPEG, PNG).
+Make a content disarm pass on the contents.
+end note
+
+fis -> fis: Generate a fresh identifier for the new attachment
+rnote right of fis
+""<color #886599>object_id</color>""
+end note
+
+group atomically
+  fis -> fis: Insert metadata for the new attachment
+  rnote right of fis
+  ""<color #886599>id</color>""
+  end note
+
+  fis -> bucket: Store ""<color #05677d>file_contents</color>"" in bucket under key ""attachment/<color #886599>object_id</color>/<color #05677d>filename_sanitised</color>""
+  activate bucket #d6e4d5
+  rnote right of fis
+  ""Content-Disposition: attachment; filename=<color #05677d>filename</color>""
+  end note
+
+  bucket -> fis: ""200 OK""
+  deactivate bucket
+end group
+
+fis -> user: ""201 Created""
+rnote left of fis
+""<color #886599>id</color>""
+end note
+deactivate fis
+
+@enduml

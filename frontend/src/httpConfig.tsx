@@ -14,6 +14,10 @@ export const userGuideCreateUsersURL: string | undefined =
   import.meta.env.VITE_FLEX_USER_GUIDE_CREATE_USERS_URL;
 export const API_VERSION = "2026-06-08";
 
+export const attachmentsEnabled =
+  (window.env.VITE_FLEX_DISABLE_ATTACHMENTS ??
+    import.meta.env.VITE_FLEX_DISABLE_ATTACHMENTS) !== "true";
+
 export async function httpClient(url: string, options: any = {}) {
   const u = new URL(url);
 
