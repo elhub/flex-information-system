@@ -28,7 +28,6 @@ function formatDate(iso: string): string {
 type CommentBubbleProps = {
   comment: Comment;
   createdByIdentity: Identity | undefined;
-  recordedByIdentity: Identity | undefined;
   isCurrentUser: boolean;
   onEdit?: (
     id: number,
@@ -40,7 +39,6 @@ type CommentBubbleProps = {
 export function CommentBubble({
   comment,
   createdByIdentity: identity,
-  recordedByIdentity,
   isCurrentUser,
   onEdit,
 }: CommentBubbleProps) {
@@ -55,10 +53,7 @@ export function CommentBubble({
   const isRestrictedVisibility = isEditing
     ? draftVisibility !== "any_involved_party"
     : comment.visibility !== "any_involved_party";
-  const authorName = identity?.entity_name ?? String(comment.created_by);
   const isEdited = comment.recorded_at !== comment.created_at;
-  const updatedByName =
-    recordedByIdentity?.entity_name ?? String(comment.recorded_by);
   const enumTranslation = useTranslateEnum();
   const translate = useTranslate();
   const bodyClass = `border-b px-3 py-1 text-base text-gray-700 leading-relaxed whitespace-pre-wrap ${
@@ -95,12 +90,10 @@ export function CommentBubble({
     <div className="flex flex-col">
       {/* Header */}
       <div className="flex flex-wrap items-center gap-2 mb-1">
-        <span className="text-xs font-bold text-gray-900">{authorName}</span>
         {identity?.party_name && (
-          <>
-            <span className="text-xs text-gray-500">{identity.party_name}</span>
-            <span className="text-xs text-gray-400">·</span>
-          </>
+          <span className="text-xs font-bold text-gray-900">
+            {identity.party_name}
+          </span>
         )}
         <span className="text-xs text-gray-400">
           {formatDate(comment.created_at)}
@@ -109,7 +102,8 @@ export function CommentBubble({
           <>
             <span className="text-xs text-gray-400">·</span>
             <span className="text-xs text-gray-400">
-              Updated by {updatedByName} at {formatDate(comment.recorded_at)}
+              {"Updated at "}
+              {formatDate(comment.recorded_at)}
             </span>
           </>
         )}

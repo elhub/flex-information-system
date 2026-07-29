@@ -57,7 +57,7 @@ val FlexAuthentication: ApplicationPlugin<FlexAuthenticationConfig> =
                 logger.debug { "No Authorization header or session cookie present" }
                 call.respond(
                     HttpStatusCode.Unauthorized,
-                    ErrorMessage(code = "HTTP401", message = MissingTokenError.message ?: "Unauthorized"),
+                    ErrorMessage(code = "HTTP401", message = MissingTokenError.message),
                 )
                 return@on
             }
@@ -66,7 +66,7 @@ val FlexAuthentication: ApplicationPlugin<FlexAuthenticationConfig> =
                 logger.debug { "JWT verification failed: ${error.message}" }
                 call.respond(
                     HttpStatusCode.Unauthorized,
-                    ErrorMessage(code = "HTTP401", message = error.message ?: "Unauthorized"),
+                    ErrorMessage(code = "HTTP401", message = error.message),
                 )
                 return@on
             }.also { token ->
