@@ -1,3 +1,4 @@
+import { usePermissions } from "ra-core";
 import { Link } from "react-router-dom";
 import { List, Datagrid } from "../components/EDS-ra/list";
 import {
@@ -18,6 +19,7 @@ import {
   isProductApplicationBlocked,
   getProductApplicationBlockDate,
 } from "../productApplicationBlock";
+import { Permissions } from "../auth/permissions";
 import { zServiceProviderProductApplication } from "../generated-client/zod.gen";
 import { getFields } from "../zod";
 
@@ -35,6 +37,11 @@ const CreateButton = () => (
 export const ServiceProviderProductApplicationList = () => {
   const fields = getFields(zServiceProviderProductApplication.shape);
   const blocked = isProductApplicationBlocked();
+  const { permissions } = usePermissions<Permissions>();
+  const canCreate = !!permissions?.allow(
+    "service_provider_product_application",
+    "create",
+  );
 
   const filters = [
     <PartyReferenceInput
@@ -76,7 +83,9 @@ export const ServiceProviderProductApplicationList = () => {
           </Tooltip>
         </div>,
       ]
-    : [<CreateButton key="create" />];
+    : canCreate
+      ? [<CreateButton key="create" />]
+      : [];
 
   return (
     <List
