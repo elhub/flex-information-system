@@ -144,6 +144,32 @@ GRANT EXECUTE ON FUNCTION
 api.summary(api.controllable_unit)
 TO flex_common, flex_entity;
 
+-- changeset flex:service_providing_group_power_per_substation-service_providing_group_id-to-service_providing_group runOnChange:true endDelimiter:--
+CREATE OR REPLACE FUNCTION api.service_providing_group(
+    api.service_providing_group_power_per_substation
+)
+RETURNS SETOF api.service_providing_group ROWS 1 AS $$
+  select * from api.service_providing_group where id = $1.service_providing_group_id
+$$ STABLE LANGUAGE sql;
+
+-- changeset flex:service_providing_group_power_per_substation-service_providing_group_id-to-service_providing_group-grant runOnChange:true endDelimiter:--
+GRANT EXECUTE ON FUNCTION
+api.service_providing_group(api.service_providing_group_power_per_substation)
+TO flex_common, flex_entity;
+
+-- changeset flex:service_providing_group-id-to-service_providing_group_power_per_substation runOnChange:true endDelimiter:--
+CREATE OR REPLACE FUNCTION api.power_per_substation(
+    api.service_providing_group
+)
+RETURNS SETOF api.service_providing_group_power_per_substation ROWS 1 AS $$
+  select * from api.service_providing_group_power_per_substation where service_providing_group_id = $1.id
+$$ STABLE LANGUAGE sql;
+
+-- changeset flex:service_providing_group-id-to-service_providing_group_power_per_substation-grant runOnChange:true endDelimiter:--
+GRANT EXECUTE ON FUNCTION
+api.power_per_substation(api.service_providing_group)
+TO flex_common, flex_entity;
+
 -- changeset flex:service_providing_group_summary-service_providing_group_id-to-service_providing_group runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.service_providing_group(
     api.service_providing_group_summary

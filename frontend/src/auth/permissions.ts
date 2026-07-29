@@ -468,6 +468,10 @@ export type PermissionTarget =
   | "service_providing_group_membership_history.service_providing_group_membership_id"
   | "service_providing_group_membership_history.valid_from"
   | "service_providing_group_membership_history.valid_to"
+  | "service_providing_group_power_per_substation"
+  | "service_providing_group_power_per_substation.id"
+  | "service_providing_group_power_per_substation.service_providing_group_id"
+  | "service_providing_group_power_per_substation.substations"
   | "service_providing_group_product_application"
   | "service_providing_group_product_application.additional_information"
   | "service_providing_group_product_application.id"
@@ -2456,6 +2460,23 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_membership_history.valid_to",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_power_per_substation.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation.substations",
       operation: "read",
     },
     {
@@ -4942,6 +4963,23 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_power_per_substation.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_power_per_substation.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation.substations",
+      operation: "read",
+    },
+    {
       target:
         "service_providing_group_product_application.additional_information",
       operation: "read",
@@ -7422,6 +7460,23 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_membership_history.valid_to",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_power_per_substation.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation.substations",
       operation: "read",
     },
     {
@@ -10640,6 +10695,23 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_power_per_substation.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_power_per_substation.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation.substations",
+      operation: "read",
+    },
+    {
       target:
         "service_providing_group_product_application.additional_information",
       operation: "read",
@@ -13496,6 +13568,23 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_membership_history.valid_to",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_power_per_substation.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation.substations",
       operation: "read",
     },
     {
@@ -16397,6 +16486,23 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_membership_history.valid_to",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_power_per_substation.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation.substations",
       operation: "read",
     },
     {
@@ -19474,6 +19580,23 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_power_per_substation.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_power_per_substation.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation.substations",
+      operation: "read",
+    },
+    {
       target:
         "service_providing_group_product_application.additional_information",
       operation: "create",
@@ -22213,6 +22336,23 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_membership_history.valid_to",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_power_per_substation.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation.substations",
       operation: "read",
     },
     {

@@ -88,6 +88,7 @@ Resources of the main data API (`/api/`).
 - `read:data:service_providing_group_history`
 - `read:data:service_providing_group_membership`
 - `read:data:service_providing_group_membership_history`
+- `read:data:service_providing_group_power_per_substation`
 - `read:data:service_providing_group_product_application`
 - `read:data:service_providing_group_product_application_comment`
 - `read:data:service_providing_group_product_application_comment_history`

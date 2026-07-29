@@ -563,6 +563,12 @@ type ApiServiceProvidingGroupMembershipHistory struct {
 	ReplacedAt                        pgtype.Timestamptz
 }
 
+type ApiServiceProvidingGroupPowerPerSubstation struct {
+	ID                      int
+	ServiceProvidingGroupID int
+	Substations             [][]byte
+}
+
 type ApiServiceProvidingGroupProductApplication struct {
 	ID                        int
 	ServiceProvidingGroupID   int

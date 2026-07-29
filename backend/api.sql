@@ -1,4 +1,5 @@
 -- AUTO-GENERATED FILE (scripts/openapi_to_db.py)
+-- noqa: disable=all
 
 CREATE SCHEMA api;
 
@@ -104,6 +105,11 @@ CREATE TABLE api.controllable_unit_summary (
     id bigint NOT NULL,
     controllable_unit_id bigint NOT NULL,
     technical_resource jsonb NOT NULL
+);
+CREATE TABLE api.service_providing_group_power_per_substation (
+    id bigint NOT NULL,
+    service_providing_group_id bigint NOT NULL,
+    substations jsonb [] NOT NULL
 );
 CREATE TABLE api.service_providing_group_summary (
     id bigint NOT NULL,
