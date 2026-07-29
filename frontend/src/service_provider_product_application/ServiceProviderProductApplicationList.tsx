@@ -23,6 +23,23 @@ import { Permissions } from "../auth/permissions";
 import { zServiceProviderProductApplication } from "../generated-client/zod.gen";
 import { getFields } from "../zod";
 
+const BlockedCreateButton = () => (
+  <div className="flex items-center gap-1">
+    <Button variant="primary" icon={IconPlus} iconPosition="left" disabled>
+      Create
+    </Button>
+    <Tooltip
+      content={`Product applications cannot be created before ${getProductApplicationBlockDate()}`}
+      className="max-w-2xl"
+    >
+      <IconQuestionCircleOutlined
+        size="small"
+        className="text-semantic-text-subtle cursor-help"
+      />
+    </Tooltip>
+  </div>
+);
+
 const CreateButton = () => (
   <Button
     as={Link}
@@ -61,31 +78,11 @@ export const ServiceProviderProductApplicationList = () => {
     />,
   ];
 
-  const actions = blocked
-    ? [
-        <div key="create-blocked" className="flex items-center gap-1">
-          <Button
-            variant="primary"
-            icon={IconPlus}
-            iconPosition="left"
-            disabled
-          >
-            Create
-          </Button>
-          <Tooltip
-            content={`Product applications cannot be created before ${getProductApplicationBlockDate()}`}
-            className="max-w-2xl"
-          >
-            <IconQuestionCircleOutlined
-              size="small"
-              className="text-semantic-text-subtle cursor-help"
-            />
-          </Tooltip>
-        </div>,
-      ]
-    : canCreate
-      ? [<CreateButton key="create" />]
-      : [];
+  const actions = !canCreate
+    ? []
+    : blocked
+      ? [<BlockedCreateButton key="create" />]
+      : [<CreateButton key="create" />];
 
   return (
     <List
