@@ -1,3 +1,4 @@
+import { usePermissions } from "ra-core";
 import { Link } from "react-router-dom";
 import { List, Datagrid } from "../components/EDS-ra/list";
 import {
@@ -18,8 +19,26 @@ import {
   isProductApplicationBlocked,
   getProductApplicationBlockDate,
 } from "../productApplicationBlock";
+import { Permissions } from "../auth/permissions";
 import { zServiceProviderProductApplication } from "../generated-client/zod.gen";
 import { getFields } from "../zod";
+
+const BlockedCreateButton = () => (
+  <div className="flex items-center gap-1">
+    <Button variant="primary" icon={IconPlus} iconPosition="left" disabled>
+      Create
+    </Button>
+    <Tooltip
+      content={`Product applications cannot be created before ${getProductApplicationBlockDate()}`}
+      className="max-w-2xl"
+    >
+      <IconQuestionCircleOutlined
+        size="small"
+        className="text-semantic-text-subtle cursor-help"
+      />
+    </Tooltip>
+  </div>
+);
 
 const CreateButton = () => (
   <Button
@@ -35,6 +54,11 @@ const CreateButton = () => (
 export const ServiceProviderProductApplicationList = () => {
   const fields = getFields(zServiceProviderProductApplication.shape);
   const blocked = isProductApplicationBlocked();
+  const { permissions } = usePermissions<Permissions>();
+  const canCreate = !!permissions?.allow(
+    "service_provider_product_application",
+    "create",
+  );
 
   const filters = [
     <PartyReferenceInput
@@ -54,29 +78,11 @@ export const ServiceProviderProductApplicationList = () => {
     />,
   ];
 
-  const actions = blocked
-    ? [
-        <div key="create-blocked" className="flex items-center gap-1">
-          <Button
-            variant="primary"
-            icon={IconPlus}
-            iconPosition="left"
-            disabled
-          >
-            Create
-          </Button>
-          <Tooltip
-            content={`Product applications cannot be created before ${getProductApplicationBlockDate()}`}
-            className="max-w-2xl"
-          >
-            <IconQuestionCircleOutlined
-              size="small"
-              className="text-semantic-text-subtle cursor-help"
-            />
-          </Tooltip>
-        </div>,
-      ]
-    : [<CreateButton key="create" />];
+  const actions = !canCreate
+    ? []
+    : blocked
+      ? [<BlockedCreateButton key="create" />]
+      : [<CreateButton key="create" />];
 
   return (
     <List
