@@ -2,9 +2,12 @@ package grid
 
 import (
 	"bytes"
+	_ "embed"
 	"encoding/json"
 	"flex/auth"
+	"flex/internal/embed"
 	"flex/internal/middleware"
+	"flex/internal/openapi"
 	"fmt"
 	"io"
 	"log/slog"
@@ -13,7 +16,11 @@ import (
 	"net/url"
 	"regexp"
 	"strconv"
+	"strings"
 )
+
+//go:embed static/openapi.json
+var openapiInput []byte
 
 // grid gathers handlers for all endpoints of the grid API.
 type grid struct {
@@ -24,7 +31,7 @@ type grid struct {
 var _ http.Handler = &grid{} //nolint:exhaustruct
 
 // NewAPIHandler returns a handler for all the grid API endpoints.
-func NewAPIHandler(postgRESTUpstream string) (http.Handler, error) {
+func NewAPIHandler(baseURL string, postgRESTUpstream string) (http.Handler, error) {
 	postgRESTURL, err := url.Parse(postgRESTUpstream)
 	if err != nil {
 		return nil, fmt.Errorf("invalid PostgREST URL: %w", err)
@@ -36,6 +43,15 @@ func NewAPIHandler(postgRESTUpstream string) (http.Handler, error) {
 		postgRESTURL: postgRESTURL,
 		mux:          mux,
 	}
+
+	// OpenAPI documentation handlers
+	mux.HandleFunc("GET /", openapi.ElementsHandlerFunc("Flex Grid API"))
+
+	mux.HandleFunc("GET /openapi.json", openapi.HandlerFunc(
+		openapiInput,
+		baseURL,
+		"Flex Grid API",
+	))
 
 	listPostgRESTHandler := middleware.DefaultQueryLimit(
 		auth.CheckScopeForRequest("grid", http.HandlerFunc(grid.postgRESTHandler)),
@@ -113,6 +129,19 @@ func (grid *grid) postgRESTHandler(w http.ResponseWriter, req *http.Request) {
 			"API call targeting a single-ID record. Rewriting into PostgREST format.",
 			"new url", url, "new query", query.Encode(),
 		)
+	}
+
+	// turn the embed parameter into a PostgREST select if present, checking that
+	// the scopes cover reading the embedding resources
+	mainResource := strings.TrimPrefix(url, "/")
+	if !embed.Handle(
+		ctx, w, query, mainResource, "grid",
+		embed.Relations(embedRelations),
+		func(w http.ResponseWriter, status int, msg string) {
+			writeErrorToResponseWriter(w, status, errorMessage{Message: msg}) //nolint:exhaustruct
+		},
+	) {
+		return
 	}
 
 	proxy := &httputil.ReverseProxy{ //nolint:exhaustruct

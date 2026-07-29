@@ -589,6 +589,50 @@ export const tooltips = {
     "The date from which the accounting point belongs to the metering grid area. Midnight aligned on Norwegian timezone.",
   "accounting_point_metering_grid_area.valid_to":
     "The date until which the accounting point belongs to the metering grid area. Midnight aligned on Norwegian timezone.",
+  "substation_cluster.id": "Unique surrogate identifier.",
+  "substation_cluster.name": "The name of the substation cluster.",
+  "substation_cluster.business_id":
+    "The business identifier (mRID) of the substation cluster.",
+  "substation_cluster.business_id_type": "The type of the business identifier.",
+  "substation_cluster.averaged_position":
+    "Averaged geographic position of the substation cluster (WGS84), as a GeoJSON point object.",
+  "substation_cluster.area":
+    "Geographic area covered by the substation cluster (WGS84), as a GeoJSON polygon object.",
+  "substation_cluster.status": "The status of the substation cluster.",
+  "substation_cluster.recorded_at":
+    "When the resource was recorded (created or updated) in the system.",
+  "substation_cluster.recorded_by": "The identity that recorded the resource.",
+  "substation.id": "Unique surrogate identifier.",
+  "substation.name": "The name of the substation.",
+  "substation.business_id": "The business identifier (mRID) of the substation.",
+  "substation.business_id_type": "The type of the business identifier.",
+  "substation.kind": "The type of substation.",
+  "substation.primary_concessionaire":
+    "The name of the primary grid concessionaire responsible for this substation.",
+  "substation.substation_cluster_id":
+    "The substation cluster this substation belongs to.",
+  "substation.voltage_levels":
+    "List of nominal voltage levels present at the substation, in kilovolt (kV).",
+  "substation.position":
+    "Geographic position of the substation (WGS84), as a GeoJSON point object.",
+  "substation.status": "The status of the substation.",
+  "substation.recorded_at":
+    "When the resource was recorded (created or updated) in the system.",
+  "substation.recorded_by": "The identity that recorded the resource.",
+  "line.id": "Unique surrogate identifier.",
+  "line.name": "The name of the line.",
+  "line.business_id": "The business identifier (mRID) of the line.",
+  "line.business_id_type": "The type of the business identifier.",
+  "line.from_substation_cluster_id":
+    "The substation cluster at the start of the line.",
+  "line.to_substation_cluster_id":
+    "The substation cluster at the end of the line.",
+  "line.line":
+    "Geographic path of the line (WGS84), as a GeoJSON linestring object.",
+  "line.status": "The status of the line.",
+  "line.recorded_at":
+    "When the resource was recorded (created or updated) in the system.",
+  "line.recorded_by": "The identity that recorded the resource.",
   "accounting_point_grid_location.id": "Unique surrogate key.",
   "accounting_point_grid_location.accounting_point_id":
     "The accounting point this grid location belongs to.",

@@ -167,6 +167,16 @@ export type FieldLabel =
   | "identity.id"
   | "identity.party_id"
   | "identity.party_name"
+  | "line.business_id"
+  | "line.business_id_type"
+  | "line.from_substation_cluster_id"
+  | "line.id"
+  | "line.line"
+  | "line.name"
+  | "line.recorded_at"
+  | "line.recorded_by"
+  | "line.status"
+  | "line.to_substation_cluster_id"
   | "metering_grid_area.business_id"
   | "metering_grid_area.business_id_type"
   | "metering_grid_area.id"
@@ -499,6 +509,27 @@ export type FieldLabel =
   | "service_providing_group_summary.id"
   | "service_providing_group_summary.service_providing_group_id"
   | "service_providing_group_summary.technical_resource"
+  | "substation.business_id"
+  | "substation.business_id_type"
+  | "substation.id"
+  | "substation.kind"
+  | "substation.name"
+  | "substation.position"
+  | "substation.primary_concessionaire"
+  | "substation.recorded_at"
+  | "substation.recorded_by"
+  | "substation.status"
+  | "substation.substation_cluster_id"
+  | "substation.voltage_levels"
+  | "substation_cluster.area"
+  | "substation_cluster.averaged_position"
+  | "substation_cluster.business_id"
+  | "substation_cluster.business_id_type"
+  | "substation_cluster.id"
+  | "substation_cluster.name"
+  | "substation_cluster.recorded_at"
+  | "substation_cluster.recorded_by"
+  | "substation_cluster.status"
   | "system_operator_product_type.id"
   | "system_operator_product_type.product_type_id"
   | "system_operator_product_type.recorded_at"
@@ -960,6 +991,37 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
       "Metering grid area",
     "accounting_point_metering_grid_area.valid_from": "Valid from",
     "accounting_point_metering_grid_area.valid_to": "Valid to",
+    "substation_cluster.id": "ID",
+    "substation_cluster.name": "Name",
+    "substation_cluster.business_id": "Business ID",
+    "substation_cluster.business_id_type": "Business ID type",
+    "substation_cluster.averaged_position": "Averaged position",
+    "substation_cluster.area": "Area",
+    "substation_cluster.status": "Status",
+    "substation_cluster.recorded_at": "Recorded at",
+    "substation_cluster.recorded_by": "Recorded by",
+    "substation.id": "ID",
+    "substation.name": "Name",
+    "substation.business_id": "Business ID",
+    "substation.business_id_type": "Business ID type",
+    "substation.kind": "Kind",
+    "substation.primary_concessionaire": "Primary concessionaire",
+    "substation.substation_cluster_id": "Substation cluster",
+    "substation.voltage_levels": "Voltage levels",
+    "substation.position": "Position",
+    "substation.status": "Status",
+    "substation.recorded_at": "Recorded at",
+    "substation.recorded_by": "Recorded by",
+    "line.id": "ID",
+    "line.name": "Name",
+    "line.business_id": "Business ID",
+    "line.business_id_type": "Business ID type",
+    "line.from_substation_cluster_id": "From substation cluster",
+    "line.to_substation_cluster_id": "To substation cluster",
+    "line.line": "Line",
+    "line.status": "Status",
+    "line.recorded_at": "Recorded at",
+    "line.recorded_by": "Recorded by",
     "accounting_point_grid_location.id": "ID",
     "accounting_point_grid_location.accounting_point_id": "Accounting point",
     "accounting_point_grid_location.object_type": "Object type",
@@ -1688,6 +1750,37 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "accounting_point_metering_grid_area.metering_grid_area_id": "Nettområde",
     "accounting_point_metering_grid_area.valid_from": "Gyldig fra",
     "accounting_point_metering_grid_area.valid_to": "Gyldig til",
+    "substation_cluster.id": "ID",
+    "substation_cluster.name": "Navn",
+    "substation_cluster.business_id": "Forretnings-ID",
+    "substation_cluster.business_id_type": "Forretnings-ID-type",
+    "substation_cluster.averaged_position": "Gjennomsnittlig posisjon",
+    "substation_cluster.area": "Område",
+    "substation_cluster.status": "Status",
+    "substation_cluster.recorded_at": "Registrert",
+    "substation_cluster.recorded_by": "Registrert av",
+    "substation.id": "ID",
+    "substation.name": "Navn",
+    "substation.business_id": "Forretnings-ID",
+    "substation.business_id_type": "Forretnings-ID-type",
+    "substation.kind": "Type",
+    "substation.primary_concessionaire": "Primær konsesjonær",
+    "substation.substation_cluster_id": "Stasjonsklynge",
+    "substation.voltage_levels": "Spenningsnivåer",
+    "substation.position": "Posisjon",
+    "substation.status": "Status",
+    "substation.recorded_at": "Registrert",
+    "substation.recorded_by": "Registrert av",
+    "line.id": "ID",
+    "line.name": "Navn",
+    "line.business_id": "Forretnings-ID",
+    "line.business_id_type": "Forretnings-ID-type",
+    "line.from_substation_cluster_id": "Fra stasjonsklynge",
+    "line.to_substation_cluster_id": "Til stasjonsklynge",
+    "line.line": "Linje",
+    "line.status": "Status",
+    "line.recorded_at": "Registrert",
+    "line.recorded_by": "Registrert av",
     "accounting_point_grid_location.id": "ID",
     "accounting_point_grid_location.accounting_point_id": "Avregningspunkt",
     "accounting_point_grid_location.object_type": "Objekttype",
@@ -2414,6 +2507,37 @@ export const fieldLabels: Record<string, Record<FieldLabel, string>> = {
     "accounting_point_metering_grid_area.metering_grid_area_id": "Nettområde",
     "accounting_point_metering_grid_area.valid_from": "Gyldig frå",
     "accounting_point_metering_grid_area.valid_to": "Gyldig til",
+    "substation_cluster.id": "ID",
+    "substation_cluster.name": "Namn",
+    "substation_cluster.business_id": "Forretnings-ID",
+    "substation_cluster.business_id_type": "Forretnings-ID-type",
+    "substation_cluster.averaged_position": "Gjennomsnittleg posisjon",
+    "substation_cluster.area": "Område",
+    "substation_cluster.status": "Status",
+    "substation_cluster.recorded_at": "Registrert",
+    "substation_cluster.recorded_by": "Registrert av",
+    "substation.id": "ID",
+    "substation.name": "Namn",
+    "substation.business_id": "Forretnings-ID",
+    "substation.business_id_type": "Forretnings-ID-type",
+    "substation.kind": "Type",
+    "substation.primary_concessionaire": "Primær konsesjonær",
+    "substation.substation_cluster_id": "Stasjonsklynge",
+    "substation.voltage_levels": "Spenningsnivå",
+    "substation.position": "Posisjon",
+    "substation.status": "Status",
+    "substation.recorded_at": "Registrert",
+    "substation.recorded_by": "Registrert av",
+    "line.id": "ID",
+    "line.name": "Namn",
+    "line.business_id": "Forretnings-ID",
+    "line.business_id_type": "Forretnings-ID-type",
+    "line.from_substation_cluster_id": "Frå stasjonsklynge",
+    "line.to_substation_cluster_id": "Til stasjonsklynge",
+    "line.line": "Linje",
+    "line.status": "Status",
+    "line.recorded_at": "Registrert",
+    "line.recorded_by": "Registrert av",
     "accounting_point_grid_location.id": "ID",
     "accounting_point_grid_location.accounting_point_id": "Avregningspunkt",
     "accounting_point_grid_location.object_type": "Objekttype",

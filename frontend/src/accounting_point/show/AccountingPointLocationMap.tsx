@@ -27,6 +27,7 @@ export type Substation = {
   kind: string;
   status: string;
   substation_cluster_id: number;
+  substation_cluster: SubstationCluster | null;
   voltage_levels: number[];
   position: Point;
 };
@@ -81,16 +82,15 @@ const toLineFC = (items: Line[]): FeatureCollection<LineString> => ({
 
 // hook getting the data
 
-// TODO: replace with embeddings when supported?
-
 const useGridData = (location: AccountingPoint["location"]) => {
-  // get nearby transformers for the AP
+  // get nearby transformers for the AP with their cluster embedded
   const queryParams = new URLSearchParams({
     kind: "eq.transformer",
     status: "eq.active",
     order: "proximity",
     longitude: location?.coordinates[0].toString() ?? "",
     latitude: location?.coordinates[1].toString() ?? "",
+    embed: "substation_cluster",
   });
   const nearTransformers = useQuery({
     queryKey: ["grid", "near_transformers", location],
@@ -103,17 +103,8 @@ const useGridData = (location: AccountingPoint["location"]) => {
     ? [...new Set(nearTransformers.data.map((s) => s.substation_cluster_id))]
     : [];
 
-  // fetch clusters and lines connecting them
+  // fetch lines connecting those clusters
   const hasClusterIds = clusterIds.length > 0;
-  const substationClusters = useQuery({
-    queryKey: ["grid", "near_substation_clusters", clusterIds],
-    queryFn: () =>
-      fetchJSON<SubstationCluster>(
-        `${gridURL}/substation_cluster?id=in.(${clusterIds.join(",")})&status=eq.active`,
-      ),
-    enabled: hasClusterIds,
-  });
-
   const lines = useQuery({
     queryKey: ["grid", "near_lines", clusterIds],
     queryFn: () =>
@@ -122,6 +113,17 @@ const useGridData = (location: AccountingPoint["location"]) => {
       ),
     enabled: hasClusterIds,
   });
+
+  // extract the embedded clusters from the substation results
+  const substationClusters = nearTransformers.data
+    ? Object.values(
+        Object.fromEntries(
+          nearTransformers.data
+            .filter((s) => s.substation_cluster != null)
+            .map((s) => [s.substation_cluster!.id, s.substation_cluster!]),
+        ),
+      )
+    : undefined;
 
   return { substations: nearTransformers, substationClusters, lines };
 };
@@ -332,8 +334,8 @@ export const AccountingPointLocationMap = ({
   // grid data -> GeoJSON data
 
   const clusterAreaFC =
-    canViewGrid && substationClusters.data
-      ? toSubstationClusterAreaFC(substationClusters.data)
+    canViewGrid && substationClusters
+      ? toSubstationClusterAreaFC(substationClusters)
       : null;
 
   const lineFC = canViewGrid && lines.data ? toLineFC(lines.data) : null;

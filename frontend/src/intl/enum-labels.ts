@@ -42,6 +42,9 @@ export type EnumLabel =
   | "entity.business_id_type.pid"
   | "entity.type.organisation"
   | "entity.type.person"
+  | "line.business_id_type.uuid"
+  | "line.status.active"
+  | "line.status.inactive"
   | "metering_grid_area.business_id_type.eic_y"
   | "metering_grid_area.status.active"
   | "metering_grid_area.status.inactive"
@@ -113,6 +116,16 @@ export type EnumLabel =
   | "service_providing_group_product_application.status.verified"
   | "service_providing_group_product_suspension.reason.failed_verification"
   | "service_providing_group_product_suspension.reason.other"
+  | "substation.business_id_type.uuid"
+  | "substation.kind.coupling"
+  | "substation.kind.junction"
+  | "substation.kind.power"
+  | "substation.kind.transformer"
+  | "substation.status.active"
+  | "substation.status.inactive"
+  | "substation_cluster.business_id_type.uuid"
+  | "substation_cluster.status.active"
+  | "substation_cluster.status.inactive"
   | "system_operator_product_type.status.active"
   | "system_operator_product_type.status.inactive"
   | "technical_resource.business_id_type.mac"
@@ -227,6 +240,19 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
       "EIC-Y (Energy Identification Code - Areas)",
     "metering_grid_area.status.active": "Active",
     "metering_grid_area.status.inactive": "Inactive",
+    "substation_cluster.business_id_type.uuid": "UUID",
+    "substation_cluster.status.active": "Active",
+    "substation_cluster.status.inactive": "Inactive",
+    "substation.business_id_type.uuid": "UUID",
+    "substation.kind.coupling": "Coupling",
+    "substation.kind.junction": "Junction",
+    "substation.kind.power": "Power",
+    "substation.kind.transformer": "Transformer",
+    "substation.status.active": "Active",
+    "substation.status.inactive": "Inactive",
+    "line.business_id_type.uuid": "UUID",
+    "line.status.active": "Active",
+    "line.status.inactive": "Inactive",
     "accounting_point_grid_location.object_type.substation": "Substation",
     "accounting_point_grid_location.source.cso": "Connecting system operator",
     "accounting_point_grid_location.source.so": "System operator",
@@ -394,6 +420,19 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
       "EIC-Y (Energy Identification Code - Områder)",
     "metering_grid_area.status.active": "Aktiv",
     "metering_grid_area.status.inactive": "Inaktiv",
+    "substation_cluster.business_id_type.uuid": "UUID",
+    "substation_cluster.status.active": "Aktiv",
+    "substation_cluster.status.inactive": "Inaktiv",
+    "substation.business_id_type.uuid": "UUID",
+    "substation.kind.coupling": "Koblingsstasjon",
+    "substation.kind.junction": "Knutepunktstasjon",
+    "substation.kind.power": "Kraftstasjon",
+    "substation.kind.transformer": "Transformatorstasjon",
+    "substation.status.active": "Aktiv",
+    "substation.status.inactive": "Inaktiv",
+    "line.business_id_type.uuid": "UUID",
+    "line.status.active": "Aktiv",
+    "line.status.inactive": "Inaktiv",
     "accounting_point_grid_location.object_type.substation": "Stasjon",
     "accounting_point_grid_location.source.cso": "Tilknyttende systemoperatør",
     "accounting_point_grid_location.source.so": "Systemoperatør",
@@ -561,6 +600,19 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
       "EIC-Y (Energy Identification Code - Område)",
     "metering_grid_area.status.active": "Aktiv",
     "metering_grid_area.status.inactive": "Inaktiv",
+    "substation_cluster.business_id_type.uuid": "UUID",
+    "substation_cluster.status.active": "Aktiv",
+    "substation_cluster.status.inactive": "Inaktiv",
+    "substation.business_id_type.uuid": "UUID",
+    "substation.kind.coupling": "Koblingsstasjon",
+    "substation.kind.junction": "Knutepunktstasjon",
+    "substation.kind.power": "Kraftstasjon",
+    "substation.kind.transformer": "Transformatorstasjon",
+    "substation.status.active": "Aktiv",
+    "substation.status.inactive": "Inaktiv",
+    "line.business_id_type.uuid": "UUID",
+    "line.status.active": "Aktiv",
+    "line.status.inactive": "Inaktiv",
     "accounting_point_grid_location.object_type.substation": "Stasjon",
     "accounting_point_grid_location.source.cso": "Tilknyttande systemoperatør",
     "accounting_point_grid_location.source.so": "Systemoperatør",

@@ -72,16 +72,19 @@ def name_inverse(child, parent):
     return child
 
 
-def collect(resources) -> list[Relationship]:
+def collect(resources, module="api") -> list[Relationship]:
     """
     Collect all FK relationships that have a cardinality annotation.
     Returns a list of dicts with the relationship metadata needed for the template.
+
+    Deduplicates reverse relationships (multiple FKs to the same parent yield
+    the same reverse name several times, we only keep the first one).
     """
     rels = []
+    seen_reverse: set[tuple[str, str]] = set()  # (child_resource, embed_name)
     for resource in resources:
         child = resource["id"]
-        # TODO support other modules than api
-        if resource.get("module") != "api":
+        if resource.get("module") != module:
             continue
         props = resource.get("properties", {})
         for field, attr in props.items():
@@ -96,7 +99,14 @@ def collect(resources) -> list[Relationship]:
             parent = fk["resource"]
             parent_field = fk["field"]
             cardinality = fk["cardinality"]
-            rels.extend(
-                from_foreign_key(child, child_field, parent, parent_field, cardinality)
+            new_rels = from_foreign_key(
+                child, child_field, parent, parent_field, cardinality
             )
+            for rel in new_rels:
+                key = (rel.child.resource, rel.name)
+                if key in seen_reverse and rel.child.resource != child:
+                    # duplicate reverse relationship: skip it
+                    continue
+                seen_reverse.add(key)
+                rels.append(rel)
     return rels

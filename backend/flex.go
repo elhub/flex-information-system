@@ -230,6 +230,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 
 	authAPIBaseURL := baseURL + "auth/v1/"
 	dataAPIBaseURL := baseURL + "api/v1/"
+	gridAPIBaseURL := baseURL + "grid/v0/"
 
 	oidcIssuer, exists := lookupenv("FLEX_OIDC_ISSUER")
 	if !exists {
@@ -355,7 +356,7 @@ func Run(ctx context.Context, lookupenv func(string) (string, bool)) error { //n
 
 	slog.DebugContext(ctx, "Creating grid API")
 
-	gridAPIHandler, err := grid.NewAPIHandler(postgRESTUpstream)
+	gridAPIHandler, err := grid.NewAPIHandler(gridAPIBaseURL, postgRESTUpstream)
 	if err != nil {
 		return fmt.Errorf("could not create grid API module: %w", err)
 	}

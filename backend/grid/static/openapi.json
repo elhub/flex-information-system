@@ -1,0 +1,1901 @@
+{
+    "openapi": "3.1.0",
+    "jsonSchemaDialect": "https://spec.openapis.org/oas/3.1/dialect/base",
+    "tags": [
+        {
+            "name": "introspection",
+            "description": "Introspection"
+        },
+        {
+            "name": "substation_cluster",
+            "description": "Substation Cluster"
+        },
+        {
+            "name": "substation",
+            "description": "Substation"
+        },
+        {
+            "name": "line",
+            "description": "Line"
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "description": "Bearer token using a JWT",
+                "type": "http",
+                "scheme": "Bearer",
+                "bearerFormat": "JWT"
+            }
+        },
+        "parameters": {
+            "ApiVersion": {
+                "name": "Api-Version",
+                "in": "header",
+                "required": true,
+                "description": "The API version to use. Must be a supported version date. See the [changelog](https://elhub.github.io/flex-information-system/changelog/) for available versions.\n",
+                "schema": {
+                    "type": "string",
+                    "enum": [
+                        "2026-06-08"
+                    ],
+                    "example": "2026-06-08"
+                }
+            }
+        },
+        "schemas": {
+            "error_message": {
+                "description": "Error message returned from the API.",
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "string",
+                        "pattern": "^[A-Z0-9]+$",
+                        "description": "The error code.",
+                        "example": "PT418"
+                    },
+                    "details": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "Detailed information about the error."
+                    },
+                    "hint": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "A hint to help resolve the error."
+                    },
+                    "message": {
+                        "type": "string",
+                        "description": "The error message.",
+                        "example": "error"
+                    }
+                },
+                "required": [
+                    "code",
+                    "message"
+                ]
+            },
+            "auth_scope": {
+                "description": "Authorization scopes.",
+                "format": "text",
+                "type": "string",
+                "enum": [
+                    "manage:attachment",
+                    "manage:attachment:service_providing_group_product_application_attachment",
+                    "manage:auth",
+                    "manage:data",
+                    "manage:data:accounting_point_grid_location",
+                    "manage:data:controllable_unit",
+                    "manage:data:controllable_unit_service_provider",
+                    "manage:data:controllable_unit_suspension",
+                    "manage:data:controllable_unit_suspension_comment",
+                    "manage:data:entity",
+                    "manage:data:entity_client",
+                    "manage:data:notification",
+                    "manage:data:party",
+                    "manage:data:party_membership",
+                    "manage:data:service_provider_product_application",
+                    "manage:data:service_provider_product_application_comment",
+                    "manage:data:service_provider_product_suspension",
+                    "manage:data:service_provider_product_suspension_comment",
+                    "manage:data:service_providing_group",
+                    "manage:data:service_providing_group_grid_prequalification",
+                    "manage:data:service_providing_group_grid_prequalification_comment",
+                    "manage:data:service_providing_group_grid_suspension",
+                    "manage:data:service_providing_group_grid_suspension_comment",
+                    "manage:data:service_providing_group_membership",
+                    "manage:data:service_providing_group_product_application",
+                    "manage:data:service_providing_group_product_application_comment",
+                    "manage:data:service_providing_group_product_suspension",
+                    "manage:data:service_providing_group_product_suspension_comment",
+                    "manage:data:system_operator_product_type",
+                    "manage:data:technical_resource",
+                    "read:attachment",
+                    "read:attachment:service_providing_group_product_application_attachment",
+                    "read:attachment:service_providing_group_product_application_attachment_history",
+                    "read:auth",
+                    "read:data",
+                    "read:data:accounting_point",
+                    "read:data:accounting_point_balance_responsible_party",
+                    "read:data:accounting_point_bidding_zone",
+                    "read:data:accounting_point_end_user",
+                    "read:data:accounting_point_energy_supplier",
+                    "read:data:accounting_point_grid_location",
+                    "read:data:accounting_point_grid_location_history",
+                    "read:data:accounting_point_metering_grid_area",
+                    "read:data:controllable_unit",
+                    "read:data:controllable_unit_history",
+                    "read:data:controllable_unit_service_provider",
+                    "read:data:controllable_unit_service_provider_history",
+                    "read:data:controllable_unit_summary",
+                    "read:data:controllable_unit_suspension",
+                    "read:data:controllable_unit_suspension_comment",
+                    "read:data:controllable_unit_suspension_comment_history",
+                    "read:data:controllable_unit_suspension_history",
+                    "read:data:entity",
+                    "read:data:entity_client",
+                    "read:data:event",
+                    "read:data:identity",
+                    "read:data:metering_grid_area",
+                    "read:data:notice",
+                    "read:data:notification",
+                    "read:data:party",
+                    "read:data:party_history",
+                    "read:data:party_membership",
+                    "read:data:party_membership_history",
+                    "read:data:product_type",
+                    "read:data:service_provider_product_application",
+                    "read:data:service_provider_product_application_comment",
+                    "read:data:service_provider_product_application_comment_history",
+                    "read:data:service_provider_product_application_history",
+                    "read:data:service_provider_product_suspension",
+                    "read:data:service_provider_product_suspension_comment",
+                    "read:data:service_provider_product_suspension_comment_history",
+                    "read:data:service_provider_product_suspension_history",
+                    "read:data:service_providing_group",
+                    "read:data:service_providing_group_grid_prequalification",
+                    "read:data:service_providing_group_grid_prequalification_comment",
+                    "read:data:service_providing_group_grid_prequalification_comment_history",
+                    "read:data:service_providing_group_grid_prequalification_history",
+                    "read:data:service_providing_group_grid_suspension",
+                    "read:data:service_providing_group_grid_suspension_comment",
+                    "read:data:service_providing_group_grid_suspension_comment_history",
+                    "read:data:service_providing_group_grid_suspension_history",
+                    "read:data:service_providing_group_history",
+                    "read:data:service_providing_group_membership",
+                    "read:data:service_providing_group_membership_history",
+                    "read:data:service_providing_group_product_application",
+                    "read:data:service_providing_group_product_application_comment",
+                    "read:data:service_providing_group_product_application_comment_history",
+                    "read:data:service_providing_group_product_application_history",
+                    "read:data:service_providing_group_product_suspension",
+                    "read:data:service_providing_group_product_suspension_comment",
+                    "read:data:service_providing_group_product_suspension_comment_history",
+                    "read:data:service_providing_group_product_suspension_history",
+                    "read:data:service_providing_group_summary",
+                    "read:data:system_operator_product_type",
+                    "read:data:system_operator_product_type_history",
+                    "read:data:technical_resource",
+                    "read:data:technical_resource_history",
+                    "read:grid",
+                    "read:grid:line",
+                    "read:grid:substation",
+                    "read:grid:substation_cluster",
+                    "use:auth",
+                    "use:data",
+                    "use:data:controllable_unit",
+                    "use:data:controllable_unit:lookup",
+                    "use:data:entity",
+                    "use:data:entity:lookup"
+                ]
+            },
+            "geojson_point": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "Point"
+                        ]
+                    },
+                    "coordinates": {
+                        "type": "array",
+                        "description": "[longitude, latitude] in decimal degrees (WGS84)",
+                        "items": {
+                            "type": "number"
+                        },
+                        "minItems": 2,
+                        "maxItems": 2
+                    }
+                },
+                "required": [
+                    "type",
+                    "coordinates"
+                ]
+            },
+            "geojson_polygon": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "Polygon"
+                        ]
+                    },
+                    "coordinates": {
+                        "type": "array",
+                        "description": "Array of linear rings (WGS84). First ring is the exterior boundary.",
+                        "items": {
+                            "type": "array",
+                            "items": {
+                                "type": "array",
+                                "items": {
+                                    "type": "number"
+                                },
+                                "minItems": 2,
+                                "maxItems": 2
+                            }
+                        }
+                    }
+                },
+                "required": [
+                    "type",
+                    "coordinates"
+                ]
+            },
+            "geojson_linestring": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "LineString"
+                        ]
+                    },
+                    "coordinates": {
+                        "type": "array",
+                        "description": "Array of [longitude, latitude] positions in decimal degrees (WGS84)",
+                        "items": {
+                            "type": "array",
+                            "items": {
+                                "type": "number"
+                            },
+                            "minItems": 2,
+                            "maxItems": 2
+                        },
+                        "minItems": 2
+                    }
+                },
+                "required": [
+                    "type",
+                    "coordinates"
+                ]
+            },
+            "empty_object": {
+                "description": "An empty object",
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+            },
+            "substation_cluster_business_id_type": {
+                "description": "The type of the business identifier.",
+                "format": "text",
+                "type": "string",
+                "readOnly": true,
+                "enum": [
+                    "uuid"
+                ],
+                "example": "uuid"
+            },
+            "substation_cluster_status": {
+                "description": "The status of the substation cluster.",
+                "format": "text",
+                "type": "string",
+                "readOnly": true,
+                "enum": [
+                    "active",
+                    "inactive"
+                ],
+                "example": "active"
+            },
+            "substation_business_id_type": {
+                "description": "The type of the business identifier.",
+                "format": "text",
+                "type": "string",
+                "readOnly": true,
+                "enum": [
+                    "uuid"
+                ],
+                "example": "uuid"
+            },
+            "substation_kind": {
+                "description": "The type of substation.",
+                "format": "text",
+                "type": "string",
+                "readOnly": true,
+                "enum": [
+                    "coupling",
+                    "junction",
+                    "power",
+                    "transformer"
+                ],
+                "example": "transformer"
+            },
+            "substation_status": {
+                "description": "The status of the substation.",
+                "format": "text",
+                "type": "string",
+                "readOnly": true,
+                "enum": [
+                    "active",
+                    "inactive"
+                ],
+                "example": "active"
+            },
+            "line_business_id_type": {
+                "description": "The type of the business identifier.",
+                "format": "text",
+                "type": "string",
+                "readOnly": true,
+                "enum": [
+                    "uuid"
+                ],
+                "example": "uuid"
+            },
+            "line_status": {
+                "description": "The status of the line.",
+                "format": "text",
+                "type": "string",
+                "readOnly": true,
+                "enum": [
+                    "active",
+                    "inactive"
+                ],
+                "example": "active"
+            },
+            "substation_cluster_response": {
+                "summary": "Response - Substation Cluster",
+                "description": "Response schema - A cluster of substations in the common grid model (Nemo), representing a group of electrically related substations in a geographic area.",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "Unique surrogate identifier.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "readOnly": true,
+                        "example": 1
+                    },
+                    "name": {
+                        "description": "The name of the substation cluster.",
+                        "format": "text",
+                        "type": "string",
+                        "readOnly": true,
+                        "example": "Snilldal"
+                    },
+                    "business_id": {
+                        "description": "The business identifier (mRID) of the substation cluster.",
+                        "format": "text",
+                        "type": "string",
+                        "readOnly": true,
+                        "example": "53919b79-876f-4dad-8bde-b29368367604"
+                    },
+                    "business_id_type": {
+                        "$ref": "#/components/schemas/substation_cluster_business_id_type",
+                        "readOnly": true
+                    },
+                    "averaged_position": {
+                        "description": "Averaged geographic position of the substation cluster (WGS84), as a GeoJSON point object.",
+                        "readOnly": true,
+                        "type": "object",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/geojson_point"
+                            }
+                        ],
+                        "example": {
+                            "type": "Point",
+                            "coordinates": [
+                                10.757933,
+                                59.911491
+                            ]
+                        }
+                    },
+                    "area": {
+                        "description": "Geographic area covered by the substation cluster (WGS84), as a GeoJSON polygon object.",
+                        "readOnly": true,
+                        "type": "object",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/geojson_polygon"
+                            }
+                        ],
+                        "example": {
+                            "type": "Polygon",
+                            "coordinates": [
+                                [
+                                    [
+                                        10.757933,
+                                        59.911491
+                                    ],
+                                    [
+                                        10.758933,
+                                        59.911491
+                                    ],
+                                    [
+                                        10.758933,
+                                        59.912491
+                                    ],
+                                    [
+                                        10.757933,
+                                        59.912491
+                                    ],
+                                    [
+                                        10.757933,
+                                        59.911491
+                                    ]
+                                ]
+                            ]
+                        }
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/substation_cluster_status",
+                        "readOnly": true
+                    },
+                    "recorded_at": {
+                        "description": "When the resource was recorded (created or updated) in the system.",
+                        "format": "date-time",
+                        "type": "string",
+                        "readOnly": true,
+                        "example": "2023-12-31T23:59:00+00:00"
+                    },
+                    "recorded_by": {
+                        "description": "The identity that recorded the resource.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "readOnly": true,
+                        "example": 145
+                    },
+                    "substation": {
+                        "description": "Embedded substation",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/substation_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "line": {
+                        "description": "Embedded line",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/line_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "business_id",
+                    "business_id_type",
+                    "averaged_position",
+                    "area",
+                    "status",
+                    "recorded_at",
+                    "recorded_by"
+                ]
+            },
+            "substation_response": {
+                "summary": "Response - Substation",
+                "description": "Response schema - A substation in the common grid model (Nemo), representing a node in the electricity grid.",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "Unique surrogate identifier.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "readOnly": true,
+                        "example": 1
+                    },
+                    "name": {
+                        "description": "The name of the substation.",
+                        "format": "text",
+                        "type": "string",
+                        "readOnly": true,
+                        "example": "Snilldal 1 KRA"
+                    },
+                    "business_id": {
+                        "description": "The business identifier (mRID) of the substation.",
+                        "format": "text",
+                        "type": "string",
+                        "readOnly": true,
+                        "example": "6f3a1b9e-2c4d-4e5f-8a7b-9c0d1e2f3a4b"
+                    },
+                    "business_id_type": {
+                        "$ref": "#/components/schemas/substation_business_id_type",
+                        "readOnly": true
+                    },
+                    "kind": {
+                        "$ref": "#/components/schemas/substation_kind",
+                        "readOnly": true
+                    },
+                    "primary_concessionaire": {
+                        "description": "The name of the primary grid concessionaire responsible for this substation.",
+                        "format": "text",
+                        "type": "string",
+                        "readOnly": true,
+                        "example": "Statnett SF"
+                    },
+                    "substation_cluster_id": {
+                        "description": "The substation cluster this substation belongs to.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "readOnly": true,
+                        "example": 1
+                    },
+                    "voltage_levels": {
+                        "description": "List of nominal voltage levels present at the substation, in kilovolt (kV).",
+                        "type": "array",
+                        "readOnly": true,
+                        "items": {
+                            "type": "number"
+                        },
+                        "example": [
+                            22.0,
+                            132.0
+                        ]
+                    },
+                    "position": {
+                        "description": "Geographic position of the substation (WGS84), as a GeoJSON point object.",
+                        "readOnly": true,
+                        "type": "object",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/geojson_point"
+                            }
+                        ],
+                        "example": {
+                            "type": "Point",
+                            "coordinates": [
+                                10.757933,
+                                59.911491
+                            ]
+                        }
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/substation_status",
+                        "readOnly": true
+                    },
+                    "recorded_at": {
+                        "description": "When the resource was recorded (created or updated) in the system.",
+                        "format": "date-time",
+                        "type": "string",
+                        "readOnly": true,
+                        "example": "2023-12-31T23:59:00+00:00"
+                    },
+                    "recorded_by": {
+                        "description": "The identity that recorded the resource.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "readOnly": true,
+                        "example": 145
+                    },
+                    "substation_cluster": {
+                        "description": "Embedded substation_cluster",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/substation_cluster_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "business_id",
+                    "business_id_type",
+                    "kind",
+                    "primary_concessionaire",
+                    "substation_cluster_id",
+                    "voltage_levels",
+                    "position",
+                    "status",
+                    "recorded_at",
+                    "recorded_by"
+                ]
+            },
+            "line_response": {
+                "summary": "Response - Line",
+                "description": "Response schema - A transmission or distribution line in the common grid model (Nemo), connecting two substation clusters.",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "Unique surrogate identifier.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "readOnly": true,
+                        "example": 1
+                    },
+                    "name": {
+                        "description": "The name of the line.",
+                        "format": "text",
+                        "type": "string",
+                        "readOnly": true,
+                        "example": "Snilldal - Trollheim"
+                    },
+                    "business_id": {
+                        "description": "The business identifier (mRID) of the line.",
+                        "format": "text",
+                        "type": "string",
+                        "readOnly": true,
+                        "example": "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d"
+                    },
+                    "business_id_type": {
+                        "$ref": "#/components/schemas/line_business_id_type",
+                        "readOnly": true
+                    },
+                    "from_substation_cluster_id": {
+                        "description": "The substation cluster at the start of the line.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "readOnly": true,
+                        "example": 1
+                    },
+                    "to_substation_cluster_id": {
+                        "description": "The substation cluster at the end of the line.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "readOnly": true,
+                        "example": 2
+                    },
+                    "line": {
+                        "description": "Geographic path of the line (WGS84), as a GeoJSON linestring object.",
+                        "readOnly": true,
+                        "type": "object",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/geojson_linestring"
+                            }
+                        ],
+                        "example": {
+                            "type": "LineString",
+                            "coordinates": [
+                                [
+                                    10.757933,
+                                    59.911491
+                                ],
+                                [
+                                    10.858933,
+                                    59.951491
+                                ]
+                            ]
+                        }
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/line_status",
+                        "readOnly": true
+                    },
+                    "recorded_at": {
+                        "description": "When the resource was recorded (created or updated) in the system.",
+                        "format": "date-time",
+                        "type": "string",
+                        "readOnly": true,
+                        "example": "2023-12-31T23:59:00+00:00"
+                    },
+                    "recorded_by": {
+                        "description": "The identity that recorded the resource.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "readOnly": true,
+                        "example": 145
+                    },
+                    "from_substation_cluster": {
+                        "description": "Embedded substation_cluster",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/substation_cluster_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "to_substation_cluster": {
+                        "description": "Embedded substation_cluster",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/substation_cluster_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "business_id",
+                    "business_id_type",
+                    "from_substation_cluster_id",
+                    "to_substation_cluster_id",
+                    "line",
+                    "status",
+                    "recorded_at",
+                    "recorded_by"
+                ]
+            }
+        }
+    },
+    "paths": {
+        "/openapi.json": {
+            "get": {
+                "operationId": "read_openapi_json",
+                "summary": "Read OpenAPI JSON Document",
+                "description": "Introspection for the Flexibility Information System grid API. The document is following the OpenAPI 3.1 spec.",
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:grid:openapi"
+                        ]
+                    },
+                    {}
+                ],
+                "tags": [
+                    "introspection"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/substation_cluster": {
+            "summary": "Substation Cluster",
+            "description": "",
+            "get": {
+                "operationId": "list_substation_cluster",
+                "summary": "List Substation Cluster",
+                "description": "List [Substation Cluster](https://elhub.github.io/flex-information-system/resources/substation_cluster/)",
+                "tags": [
+                    "substation_cluster"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "Unique surrogate identifier.",
+                        "name": "id"
+                    },
+                    {
+                        "in": "query",
+                        "name": "name",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somename",
+                        "description": "The name of the substation cluster."
+                    },
+                    {
+                        "in": "query",
+                        "name": "business_id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somebusiness_id",
+                        "description": "The business identifier (mRID) of the substation cluster."
+                    },
+                    {
+                        "in": "query",
+                        "name": "business_id_type",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somebusiness_id_type"
+                    },
+                    {
+                        "in": "query",
+                        "name": "status",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somestatus"
+                    },
+                    {
+                        "description": "Filtering Columns",
+                        "in": "query",
+                        "name": "select",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Ordering",
+                        "in": "query",
+                        "name": "order",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "offset",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/substation_cluster_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "206": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/substation_cluster_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "Partial Content"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "416": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Range Not Satisfiable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:grid:substation_cluster"
+                        ]
+                    },
+                    {}
+                ]
+            }
+        },
+        "/substation_cluster/{id}": {
+            "summary": "Substation Cluster - single",
+            "description": "",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "schema": {
+                        "format": "bigint",
+                        "type": "integer"
+                    },
+                    "example": 14
+                }
+            ],
+            "get": {
+                "operationId": "read_substation_cluster",
+                "summary": "Read Substation Cluster",
+                "description": "Read [Substation Cluster](https://elhub.github.io/flex-information-system/resources/substation_cluster/)",
+                "tags": [
+                    "substation_cluster"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/substation_cluster_response"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:grid:substation_cluster"
+                        ]
+                    },
+                    {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
+                ]
+            }
+        },
+        "/substation": {
+            "summary": "Substation",
+            "description": "",
+            "get": {
+                "operationId": "list_substation",
+                "summary": "List Substation",
+                "description": "List [Substation](https://elhub.github.io/flex-information-system/resources/substation/)",
+                "tags": [
+                    "substation"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "Unique surrogate identifier.",
+                        "name": "id"
+                    },
+                    {
+                        "in": "query",
+                        "name": "name",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somename",
+                        "description": "The name of the substation."
+                    },
+                    {
+                        "in": "query",
+                        "name": "business_id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somebusiness_id",
+                        "description": "The business identifier (mRID) of the substation."
+                    },
+                    {
+                        "in": "query",
+                        "name": "business_id_type",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somebusiness_id_type"
+                    },
+                    {
+                        "in": "query",
+                        "name": "kind",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somekind"
+                    },
+                    {
+                        "in": "query",
+                        "name": "primary_concessionaire",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.someprimary_concessionaire",
+                        "description": "The name of the primary grid concessionaire responsible for this substation."
+                    },
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "The substation cluster this substation belongs to.",
+                        "name": "substation_cluster_id"
+                    },
+                    {
+                        "in": "query",
+                        "name": "status",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somestatus"
+                    },
+                    {
+                        "description": "Filtering Columns",
+                        "in": "query",
+                        "name": "select",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Ordering",
+                        "in": "query",
+                        "name": "order",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "offset",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/substation_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "206": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/substation_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "Partial Content"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "416": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Range Not Satisfiable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:grid:substation"
+                        ]
+                    },
+                    {}
+                ]
+            }
+        },
+        "/substation/{id}": {
+            "summary": "Substation - single",
+            "description": "",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "schema": {
+                        "format": "bigint",
+                        "type": "integer"
+                    },
+                    "example": 14
+                }
+            ],
+            "get": {
+                "operationId": "read_substation",
+                "summary": "Read Substation",
+                "description": "Read [Substation](https://elhub.github.io/flex-information-system/resources/substation/)",
+                "tags": [
+                    "substation"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/substation_response"
+                                }
+                            }
+                        },
+                        "description": "OK",
+                        "links": {
+                            "substation_cluster_id": {
+                                "operationId": "read_substation_cluster",
+                                "parameters": {
+                                    "path.id": "$response.body#/substation_cluster_id"
+                                },
+                                "description": "The `substation_cluster_id` value returned in the response can be used as the `id` parameter in `GET /substation_cluster/{id}`."
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:grid:substation"
+                        ]
+                    },
+                    {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
+                ]
+            }
+        },
+        "/line": {
+            "summary": "Line",
+            "description": "",
+            "get": {
+                "operationId": "list_line",
+                "summary": "List Line",
+                "description": "List [Line](https://elhub.github.io/flex-information-system/resources/line/)",
+                "tags": [
+                    "line"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "Unique surrogate identifier.",
+                        "name": "id"
+                    },
+                    {
+                        "in": "query",
+                        "name": "name",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somename",
+                        "description": "The name of the line."
+                    },
+                    {
+                        "in": "query",
+                        "name": "business_id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somebusiness_id",
+                        "description": "The business identifier (mRID) of the line."
+                    },
+                    {
+                        "in": "query",
+                        "name": "business_id_type",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somebusiness_id_type"
+                    },
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "The substation cluster at the start of the line.",
+                        "name": "from_substation_cluster_id"
+                    },
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "The substation cluster at the end of the line.",
+                        "name": "to_substation_cluster_id"
+                    },
+                    {
+                        "in": "query",
+                        "name": "status",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somestatus"
+                    },
+                    {
+                        "description": "Filtering Columns",
+                        "in": "query",
+                        "name": "select",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Ordering",
+                        "in": "query",
+                        "name": "order",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "offset",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/line_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "206": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/line_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "Partial Content"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "416": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Range Not Satisfiable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:grid:line"
+                        ]
+                    },
+                    {}
+                ]
+            }
+        },
+        "/line/{id}": {
+            "summary": "Line - single",
+            "description": "",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "schema": {
+                        "format": "bigint",
+                        "type": "integer"
+                    },
+                    "example": 14
+                }
+            ],
+            "get": {
+                "operationId": "read_line",
+                "summary": "Read Line",
+                "description": "Read [Line](https://elhub.github.io/flex-information-system/resources/line/)",
+                "tags": [
+                    "line"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/line_response"
+                                }
+                            }
+                        },
+                        "description": "OK",
+                        "links": {
+                            "from_substation_cluster_id": {
+                                "operationId": "read_substation_cluster",
+                                "parameters": {
+                                    "path.id": "$response.body#/from_substation_cluster_id"
+                                },
+                                "description": "The `from_substation_cluster_id` value returned in the response can be used as the `id` parameter in `GET /substation_cluster/{id}`."
+                            },
+                            "to_substation_cluster_id": {
+                                "operationId": "read_substation_cluster",
+                                "parameters": {
+                                    "path.id": "$response.body#/to_substation_cluster_id"
+                                },
+                                "description": "The `to_substation_cluster_id` value returned in the response can be used as the `id` parameter in `GET /substation_cluster/{id}`."
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:grid:line"
+                        ]
+                    },
+                    {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    },
+                    {
+                        "$ref": "#/components/parameters/ApiVersion"
+                    }
+                ]
+            }
+        }
+    },
+    "servers": [
+        {
+            "url": "https://test.flex.internal:6443/grid/v0",
+            "description": "Development"
+        }
+    ],
+    "info": {
+        "title": "Flexibility Information System Grid API",
+        "description": "Norwegian Flexibility Information System Grid API",
+        "contact": {
+            "name": "Elhub AS",
+            "url": "https://elhub.no",
+            "email": "post@elhub.no"
+        },
+        "version": "0"
+    },
+    "externalDocs": {
+        "description": "API Changelog",
+        "url": "https://elhub.github.io/flex-information-system/changelog/"
+    }
+}

@@ -13,7 +13,8 @@ risk of making a copy-paste mistake.
 
 DB_DIR = "./db"
 output_file_backend_schema = "backend/api.sql"
-output_file_embedding = f"{DB_DIR}/api/embedding/embedding.sql"
+output_file_embedding_api = f"{DB_DIR}/api/embedding/embedding.sql"
+output_file_embedding_grid = f"{DB_DIR}/grid/embedding/embedding.sql"
 # ------------------------------------------------------------------------------
 
 # this part generates the api.sql input file for sqlc in the backend
@@ -244,9 +245,16 @@ if __name__ == "__main__":
                 )
 
         # generate embedding functions for all FK relationships with cardinality
-        rels = relationship.collect(resources)
+        api_rels = relationship.collect(resources, module="api")
         j2.template(
-            {"rels": rels},
+            {"module": "api", "rels": api_rels},
             "embedding.j2.sql",
-            output_file_embedding,
+            output_file_embedding_api,
+        )
+
+        grid_rels = relationship.collect(resources, module="grid")
+        j2.template(
+            {"module": "grid", "rels": grid_rels},
+            "embedding.j2.sql",
+            output_file_embedding_grid,
         )
