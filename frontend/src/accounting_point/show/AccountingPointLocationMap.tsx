@@ -1,13 +1,20 @@
-import { useCallback, useState } from "react";
-import Map, { Layer, Marker, Source, Popup } from "react-map-gl/maplibre";
+import { useCallback, useEffect, useRef, useState } from "react";
+import Map, {
+  FullscreenControl,
+  Layer,
+  Marker,
+  Source,
+  Popup,
+} from "react-map-gl/maplibre";
+import type { MapRef } from "react-map-gl/maplibre";
 import { useQuery } from "@tanstack/react-query";
 import type { FeatureCollection, LineString, Point, Polygon } from "geojson";
 import { AccountingPoint } from "../../generated-client";
-import { Panel } from "../../components/ui";
+import { Button, Panel } from "../../components/ui";
 import { elhubTheme } from "../../theme";
 import { gridURL } from "../../httpConfig";
-import type { MapLayerMouseEvent } from "react-map-gl/maplibre";
 import { fetchJSON } from "../../util";
+import { BoltIcon } from "./BoltIcon";
 
 const OPENFREEMAP_STYLE = "https://tiles.openfreemap.org/styles/liberty";
 
@@ -17,6 +24,8 @@ export type Substation = {
   id: number;
   name: string;
   business_id: string;
+  kind: string;
+  status: string;
   substation_cluster_id: number;
   voltage_levels: number[];
   position: Point;
@@ -38,17 +47,13 @@ type Line = {
 
 // GeoJSON feature collections from the grid entities, for rendering
 
-// substation position
+// substation positions (for label layer)
 const toSubstationFC = (items: Substation[]): FeatureCollection<Point> => ({
   type: "FeatureCollection",
   features: items.map((s) => ({
     type: "Feature",
     geometry: s.position,
-    properties: {
-      id: s.id,
-      name: s.name,
-      business_id: s.business_id,
-    },
+    properties: { id: s.id, name: s.name },
   })),
 });
 
@@ -64,7 +69,7 @@ const toSubstationClusterAreaFC = (
   })),
 });
 
-// line
+// transmission line
 const toLineFC = (items: Line[]): FeatureCollection<LineString> => ({
   type: "FeatureCollection",
   features: items.map((l) => ({
@@ -123,56 +128,194 @@ const useGridData = (location: AccountingPoint["location"]) => {
 
 // component
 
+type SubstationMarkerProps = {
+  substation: Substation;
+  isSelected: boolean;
+  onMarkerClick: (substation: Substation) => void;
+};
+
+const SubstationMarker = ({
+  substation,
+  isSelected,
+  onMarkerClick,
+}: SubstationMarkerProps) => {
+  const [longitude, latitude] = substation.position.coordinates;
+  const primaryColor = elhubTheme.palette.primary.main;
+
+  return (
+    <Marker
+      longitude={longitude}
+      latitude={latitude}
+      anchor="center"
+      onClick={(e) => {
+        e.originalEvent.stopPropagation();
+        onMarkerClick(substation);
+      }}
+    >
+      <div
+        className="flex items-center justify-center rounded-full cursor-pointer transition-transform"
+        style={{
+          background: isSelected ? "white" : primaryColor,
+          width: isSelected ? 36 : 28,
+          height: isSelected ? 36 : 28,
+          boxShadow: isSelected
+            ? `0 0 0 2px ${primaryColor}, 0 2px 6px rgba(0,0,0,0.4)`
+            : "0 1px 4px rgba(0,0,0,0.3)",
+        }}
+      >
+        <BoltIcon
+          style={{
+            color: isSelected ? primaryColor : "white",
+            width: isSelected ? 20 : 16,
+            height: isSelected ? 20 : 16,
+          }}
+        />
+      </div>
+    </Marker>
+  );
+};
+
+type SubstationInfoPopupProps = {
+  substation: Substation;
+  longitude: number;
+  latitude: number;
+  isAlreadySelected: boolean;
+  onSelect: () => void;
+  onClose: () => void;
+};
+
+const SubstationInfoPopup = ({
+  substation,
+  longitude,
+  latitude,
+  isAlreadySelected,
+  onSelect,
+  onClose,
+}: SubstationInfoPopupProps) => (
+  <Popup
+    longitude={longitude}
+    latitude={latitude}
+    closeButton={false}
+    closeOnClick={false}
+    anchor="bottom"
+    offset={20}
+    onClose={onClose}
+    maxWidth="280px"
+  >
+    <div className="p-1 flex flex-col gap-2 min-w-[220px]">
+      <p className="text-sm font-bold text-center">{substation.name}</p>
+      <table className="text-xs w-full border-separate border-spacing-y-0.5">
+        <tbody>
+          <tr>
+            <td className="text-gray-500 pr-3 whitespace-nowrap">
+              Business ID
+            </td>
+            <td className="font-medium text-right">{substation.business_id}</td>
+          </tr>
+          <tr>
+            <td className="text-gray-500 pr-3 whitespace-nowrap">Kind</td>
+            <td className="font-medium text-right">{substation.kind}</td>
+          </tr>
+          <tr>
+            <td className="text-gray-500 pr-3 whitespace-nowrap">Status</td>
+            <td className="font-medium text-right">{substation.status}</td>
+          </tr>
+          {substation.voltage_levels.length > 0 && (
+            <tr>
+              <td className="text-gray-500 pr-3 whitespace-nowrap">Voltage</td>
+              <td className="font-medium text-right">
+                {substation.voltage_levels.map((v) => `${v}kV`).join(", ")}
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+      {isAlreadySelected ? (
+        <p className="text-xs text-center text-gray-500 italic">
+          Already set as grid location
+        </p>
+      ) : (
+        <Button size="small" variant="primary" onClick={onSelect}>
+          Select
+        </Button>
+      )}
+    </div>
+  </Popup>
+);
+
 type Props = {
   location: AccountingPoint["location"];
   canViewGrid: boolean;
   onSubstationClick?: (substation: Substation) => void;
+  highlightedSubstationBusinessId?: string | null;
 };
 
 export const AccountingPointLocationMap = ({
   location,
   canViewGrid,
   onSubstationClick,
+  highlightedSubstationBusinessId,
 }: Props) => {
   const { substations, substationClusters, lines } = useGridData(
     canViewGrid ? location : undefined,
   );
 
-  const [hoveredSubstation, setHoveredSubstation] = useState<{
-    name: string;
+  const apLon = location?.coordinates[0];
+  const apLat = location?.coordinates[1];
+
+  const mapRef = useRef<MapRef>(null);
+  const [mapLoaded, setMapLoaded] = useState(false);
+
+  const [substationPopup, setSubstationPopup] = useState<{
+    substation: Substation;
     longitude: number;
     latitude: number;
   } | null>(null);
 
-  // transformer clicked: find its ID and bubble up to parent component
-  // so that the edit form gets filled automatically
-  const handleSubstationClick = useCallback(
-    (e: MapLayerMouseEvent) => {
-      if (!onSubstationClick || !substations.data) return;
-      const feature = e.features?.[0];
-      if (!feature) return;
-      const substation = substations.data.find(
-        (s) => s.id === feature.properties?.id,
-      );
-      if (substation) onSubstationClick(substation);
+  // grid location clicked: open info popup
+  const handleSubstationMarkerClick = useCallback(
+    (substation: Substation) => {
+      if (!onSubstationClick) return;
+      const [longitude, latitude] = substation.position.coordinates;
+      setSubstationPopup({ substation, longitude, latitude });
     },
-    [onSubstationClick, substations.data],
+    [onSubstationClick],
   );
 
-  // show popup on hover with substation name
-  const handleSubstationMouseEnter = useCallback((e: MapLayerMouseEvent) => {
-    const feature = e.features?.[0];
-    if (!feature?.geometry || feature.geometry.type !== "Point") return;
-    setHoveredSubstation({
-      name: feature.properties?.name ?? "",
-      longitude: feature.geometry.coordinates[0],
-      latitude: feature.geometry.coordinates[1],
-    });
-  }, []);
+  const handleSelectSubstation = useCallback(async () => {
+    if (!substationPopup) return;
+    if (document.fullscreenElement) await document.exitFullscreen();
+    onSubstationClick?.(substationPopup.substation);
+    setSubstationPopup(null);
+  }, [substationPopup, onSubstationClick]);
 
-  const handleSubstationMouseLeave = useCallback(() => {
-    setHoveredSubstation(null);
-  }, []);
+  const lastFittedIdRef = useRef<string | null | undefined>(undefined);
+
+  useEffect(() => {
+    if (!mapLoaded) return;
+    if (!highlightedSubstationBusinessId) return;
+    if (highlightedSubstationBusinessId === lastFittedIdRef.current) return;
+    if (apLon == null || apLat == null) return;
+    const substation = substations.data?.find(
+      (s) => s.business_id === highlightedSubstationBusinessId,
+    );
+    if (!substation) return;
+    const [sLon, sLat] = substation.position.coordinates;
+    mapRef.current?.fitBounds(
+      [
+        [Math.min(apLon, sLon), Math.min(apLat, sLat)],
+        [Math.max(apLon, sLon), Math.max(apLat, sLat)],
+      ],
+      { padding: 80, maxZoom: 13 },
+    );
+    lastFittedIdRef.current = highlightedSubstationBusinessId;
+  }, [
+    mapLoaded,
+    highlightedSubstationBusinessId,
+    substations.data,
+    apLon,
+    apLat,
+  ]);
 
   if (!location?.coordinates) {
     return (
@@ -188,9 +331,6 @@ export const AccountingPointLocationMap = ({
 
   // grid data -> GeoJSON data
 
-  const substationFC =
-    canViewGrid && substations.data ? toSubstationFC(substations.data) : null;
-
   const clusterAreaFC =
     canViewGrid && substationClusters.data
       ? toSubstationClusterAreaFC(substationClusters.data)
@@ -198,29 +338,27 @@ export const AccountingPointLocationMap = ({
 
   const lineFC = canViewGrid && lines.data ? toLineFC(lines.data) : null;
 
-  // can only interact with transformers
-  const interactiveLayerIds = onSubstationClick
-    ? ["grid-substations-layer"]
-    : [];
-
   // TODO: better colors?
-  const transformerStrokeColor = elhubTheme.palette.primary.main;
-  const transformerColor = elhubTheme.palette.primary.contrastText;
   const clusterAreaColor = elhubTheme.palette.error.main;
   const lineColor = elhubTheme.palette.primary.main;
+
+  const nearSubstations =
+    canViewGrid && substations.data ? substations.data : [];
+
+  const substationFC =
+    nearSubstations.length > 0 ? toSubstationFC(nearSubstations) : null;
 
   return (
     <Panel border className="bg-white overflow-hidden p-0">
       <Map
+        ref={mapRef}
         initialViewState={{ longitude, latitude, zoom: 13 }}
         style={{ width: "100%", height: 400 }}
         mapStyle={OPENFREEMAP_STYLE}
-        interactiveLayerIds={interactiveLayerIds}
-        onClick={handleSubstationClick}
-        onMouseEnter={handleSubstationMouseEnter}
-        onMouseLeave={handleSubstationMouseLeave}
-        cursor={hoveredSubstation ? "pointer" : undefined}
+        onLoad={() => setMapLoaded(true)}
+        onClick={() => setSubstationPopup(null)}
       >
+        <FullscreenControl position="top-right" />
         {/* lines between clusters */}
         {lineFC && (
           <Source id="grid-lines" type="geojson" data={lineFC}>
@@ -257,34 +395,57 @@ export const AccountingPointLocationMap = ({
           </Source>
         )}
 
-        {/* transformers */}
+        {/* substation markers */}
+        {nearSubstations.map((s) => (
+          <SubstationMarker
+            key={s.id}
+            substation={s}
+            isSelected={s.business_id === highlightedSubstationBusinessId}
+            onMarkerClick={handleSubstationMarkerClick}
+          />
+        ))}
+
+        {/* substation name labels via symbol layer — MapLibre handles collision avoidance */}
         {substationFC && (
-          <Source id="grid-substations" type="geojson" data={substationFC}>
+          <Source
+            id="grid-substation-labels"
+            type="geojson"
+            data={substationFC}
+          >
             <Layer
-              id="grid-substations-layer"
-              type="circle"
+              id="grid-substation-labels-layer"
+              type="symbol"
+              layout={{
+                "text-field": ["get", "name"],
+                "text-font": ["Noto Sans Regular"],
+                "text-size": 11,
+                "text-anchor": "bottom",
+                "text-offset": [0, -1.8],
+                "text-allow-overlap": false,
+                "text-ignore-placement": false,
+              }}
               paint={{
-                "circle-radius": 5,
-                "circle-color": transformerColor,
-                "circle-stroke-width": 1,
-                "circle-stroke-color": transformerStrokeColor,
+                "text-color": elhubTheme.palette.primary.main,
+                "text-halo-color": "white",
+                "text-halo-width": 1,
               }}
             />
           </Source>
         )}
 
-        {/* popup to show transformer name */}
-        {hoveredSubstation && (
-          <Popup
-            longitude={hoveredSubstation.longitude}
-            latitude={hoveredSubstation.latitude}
-            closeButton={false}
-            closeOnClick={false}
-            anchor="bottom"
-            offset={8}
-          >
-            <div className="text-xs font-medium">{hoveredSubstation.name}</div>
-          </Popup>
+        {/* info popup on substation click */}
+        {substationPopup && onSubstationClick && (
+          <SubstationInfoPopup
+            substation={substationPopup.substation}
+            longitude={substationPopup.longitude}
+            latitude={substationPopup.latitude}
+            isAlreadySelected={
+              substationPopup.substation.business_id ===
+              highlightedSubstationBusinessId
+            }
+            onSelect={handleSelectSubstation}
+            onClose={() => setSubstationPopup(null)}
+          />
         )}
 
         {/* the accounting point's geographical location */}
