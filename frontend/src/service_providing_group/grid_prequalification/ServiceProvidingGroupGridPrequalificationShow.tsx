@@ -1,21 +1,19 @@
 import { useParams } from "react-router-dom";
 import { usePermissions, useResourceContext } from "ra-core";
-import { Loader, Badge } from "../../components/ui";
+import { Loader } from "../../components/ui";
 import { ShowPageLayout } from "../../components/ShowPageLayout";
 import type { Permissions } from "../../auth/permissions";
 import { SpgpqShowSummary } from "./show/SpgpqShowSummary";
 import { SpgpqShowTabs } from "./show/SpgpqShowTabs";
 import { SpgpqActionBar } from "./show/SpgpqActionBar";
 import { useSpgpqRecord } from "./show/useSpgpqShowViewModel";
-import { useTranslateEnum } from "../../intl/intl";
-import { spgpqStatusVariantMap } from "./show/spgpqStatus";
 import { useServiceProvidingGroup } from "../show/useSpgShowViewModel";
+import { SpgpqStatusBadge } from "../../components/SpgpqStatusBadge";
 
 export const ServiceProvidingGroupGridPrequalificationShow = () => {
   const spgpqId = Number(useParams<{ id: string }>().id);
   const resource = useResourceContext()!;
   const { permissions } = usePermissions<Permissions>();
-  const translateEnum = useTranslateEnum();
 
   const isHistory = resource.endsWith("_history");
 
@@ -32,8 +30,6 @@ export const ServiceProvidingGroupGridPrequalificationShow = () => {
   if (!spgpq) return null;
   if (spg.error) throw spg.error;
 
-  const { status, icon } = spgpqStatusVariantMap[spgpq.status];
-
   return (
     <ShowPageLayout
       backTo={{
@@ -41,13 +37,7 @@ export const ServiceProvidingGroupGridPrequalificationShow = () => {
         label: "Grid prequalifications",
       }}
       title={`Grid Prequalification #${spgpq.id}${spg.data ? ` for ${spg.data.name}` : ""}`}
-      badge={
-        <Badge size="small" status={status} variant="block" icon={icon}>
-          {translateEnum(
-            `service_providing_group_grid_prequalification.status.${spgpq.status}`,
-          )}
-        </Badge>
-      }
+      badge={<SpgpqStatusBadge status={spgpq.status} />}
       actionBar={
         !isHistory && canUpdateStatus ? (
           <SpgpqActionBar spgpq={spgpq} />

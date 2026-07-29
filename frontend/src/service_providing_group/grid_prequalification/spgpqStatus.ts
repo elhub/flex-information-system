@@ -4,8 +4,8 @@ import {
   IconStopWatch15,
   IconWarningCircle,
 } from "@elhub/ds-icons";
-import { ServiceProvidingGroupGridPrequalificationStatus } from "../../../generated-client";
-import { StatusVariant } from "../../../components/EDS-ra/fields/StatusBadgeField";
+import { ServiceProvidingGroupGridPrequalificationStatus } from "../../generated-client";
+import { StatusVariant } from "../../components/EDS-ra/fields/StatusBadgeField";
 
 export const spgpqStatusVariantMap: Record<
   ServiceProvidingGroupGridPrequalificationStatus,

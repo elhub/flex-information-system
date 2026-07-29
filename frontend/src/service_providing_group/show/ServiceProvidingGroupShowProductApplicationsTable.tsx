@@ -1,4 +1,5 @@
 import { Loader, Button, Tooltip } from "../../components/ui";
+import { SpgpaStatusBadge } from "../../components/SpgpaStatusBadge";
 import { Column, SimpleTable } from "../../components/SimpleTable";
 import {
   SpgProductApplicationRow,
@@ -49,6 +50,7 @@ export const ServiceProvidingGroupShowProductApplicationsTable = ({
     {
       key: "status",
       header: t("service_providing_group_product_application.status"),
+      render: (value) => <SpgpaStatusBadge status={String(value)} />,
     },
   ];
 
