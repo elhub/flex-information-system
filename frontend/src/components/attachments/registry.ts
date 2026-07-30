@@ -19,6 +19,11 @@ async function buildMultipartBlob(
   const dash = "--";
   const crlf = "\r\n";
   const fileBytes = await file.arrayBuffer();
+  const safeFilename = file.name
+    .replace(/[\r\n]/g, "")
+    .replace(/\\/g, "\\\\")
+    .replace(/"/g, '\\"');
+  const safeContentType = file.type.replace(/[\r\n]/g, "");
 
   const parts: BlobPart[] = [
     enc.encode(
@@ -29,8 +34,8 @@ async function buildMultipartBlob(
     ),
     enc.encode(
       `${dash}${boundary}${crlf}` +
-        `Content-Disposition: form-data; name="file"; filename="${file.name}"${crlf}` +
-        (file.type ? `Content-Type: ${file.type}${crlf}` : "") +
+        `Content-Disposition: form-data; name="file"; filename="${safeFilename}"${crlf}` +
+        (safeContentType ? `Content-Type: ${safeContentType}${crlf}` : "") +
         `${crlf}`,
     ),
     fileBytes,
