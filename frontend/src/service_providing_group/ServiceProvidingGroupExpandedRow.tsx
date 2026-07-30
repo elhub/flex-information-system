@@ -1,14 +1,12 @@
-import { Loader, Badge, BodyText } from "../components/ui";
+import { Loader, BodyText } from "../components/ui";
 import styles from "./ServiceProvidingGroupExpandedRow.module.css";
 import { useTranslate } from "ra-core";
 import { RaRecord } from "ra-core";
 import { Link } from "react-router-dom";
 import { useSpgGridPrequalifications } from "./show/useSpgGridPrequalifications";
 import { useSpgProductApplications } from "./show/useSpgProductApplications";
-import { spgpqStatusVariantMap } from "./grid_prequalification/show/spgpqStatus";
-import { spgpaStatusVariantMap } from "./product_application/show/spgpaStatus";
-import { ServiceProvidingGroupGridPrequalificationStatus } from "../generated-client";
-import { ServiceProvidingGroupProductApplicationStatus } from "../generated-client";
+import { SpgpqStatusBadge } from "../components/SpgpqStatusBadge";
+import { SpgpaStatusBadge } from "../components/SpgpaStatusBadge";
 
 type BoxHeaderProps = {
   title: string;
@@ -97,30 +95,13 @@ export const ServiceProvidingGroupExpandedRow = ({ record }: Props) => {
           />
         ) : (
           prequalifications.map((prequal) => {
-            const variant =
-              spgpqStatusVariantMap[
-                prequal.status as ServiceProvidingGroupGridPrequalificationStatus
-              ];
             return (
               <RowItem
                 key={prequal.id}
                 id={prequal.id}
                 to={`/service_providing_group/${spgId}/grid_prequalification/${prequal.id}/show`}
                 name={prequal.impactedSystemOperatorName}
-                statusBadge={
-                  variant ? (
-                    <Badge
-                      size="small"
-                      status={variant.status}
-                      variant="block"
-                      icon={variant.icon}
-                    >
-                      {translate(
-                        `enum.service_providing_group_grid_prequalification.status.${prequal.status}`,
-                      )}
-                    </Badge>
-                  ) : null
-                }
+                statusBadge={<SpgpqStatusBadge status={prequal.status} />}
               />
             );
           })
@@ -147,30 +128,13 @@ export const ServiceProvidingGroupExpandedRow = ({ record }: Props) => {
           />
         ) : (
           productApplications.map((pa) => {
-            const variant =
-              spgpaStatusVariantMap[
-                pa.status as ServiceProvidingGroupProductApplicationStatus
-              ];
             return (
               <RowItem
                 key={pa.id}
                 id={pa.id}
                 to={`/service_providing_group/${spgId}/product_application/${pa.id}/show`}
                 name={pa.procuringSystemOperatorName}
-                statusBadge={
-                  variant ? (
-                    <Badge
-                      size="small"
-                      status={variant.status}
-                      variant="block"
-                      icon={variant.icon}
-                    >
-                      {translate(
-                        `enum.service_providing_group_product_application.status.${pa.status}`,
-                      )}
-                    </Badge>
-                  ) : null
-                }
+                statusBadge={<SpgpaStatusBadge status={pa.status} />}
               />
             );
           })
