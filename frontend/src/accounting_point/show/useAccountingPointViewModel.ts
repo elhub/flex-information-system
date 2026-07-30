@@ -15,7 +15,8 @@ import {
 } from "../../generated-client";
 
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
-import { useGetIdentity } from "ra-core";
+import { useGetIdentity, usePermissions } from "ra-core";
+import { Permissions } from "../../auth/permissions";
 import { throwOnError } from "../../util";
 
 export type AccountingPointShowViewModel = {
@@ -32,6 +33,7 @@ export type AccountingPointShowViewModel = {
 const getAccountingPointData = async (
   id: number,
   canReadConnections: boolean,
+  canReadGridLocation: boolean,
 ): Promise<AccountingPointShowViewModel> => {
   const accountingPoint = await readAccountingPoint({
     path: { id },
@@ -74,13 +76,13 @@ const getAccountingPointData = async (
       ])
     : [[], [], [], [], []];
 
-  const gridLocationResult = await listAccountingPointGridLocation({
-    query: { accounting_point_id: "eq." + accountingPoint.id },
-  });
-  const gridLocation =
-    gridLocationResult.response?.status === 403
-      ? undefined
-      : throwOnError(gridLocationResult)[0];
+  const gridLocation = canReadGridLocation
+    ? await listAccountingPointGridLocation({
+        query: { accounting_point_id: "eq." + accountingPoint.id },
+      }).then((result) =>
+        result.response?.status === 403 ? undefined : throwOnError(result)[0],
+      )
+    : undefined;
 
   const currentBRP = brpData[0];
   const currentBZ = bzData[0];
@@ -144,12 +146,18 @@ export const useAccountingPointViewModel = (
   id: number | undefined,
 ): UseQueryResult<AccountingPointShowViewModel> => {
   const { data: identity } = useGetIdentity();
+  const { permissions } = usePermissions<Permissions>();
   const canReadConnections =
     identity?.role === "flex_flexibility_information_system_operator";
+  const canReadGridLocation = !!permissions?.allow(
+    "accounting_point_grid_location",
+    "read",
+  );
 
   return useQuery({
     queryKey: accountingPointViewModelQueryKey(id),
-    queryFn: () => getAccountingPointData(id!, canReadConnections),
+    queryFn: () =>
+      getAccountingPointData(id!, canReadConnections, canReadGridLocation),
     enabled: !!id,
   });
 };
