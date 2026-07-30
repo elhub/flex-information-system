@@ -165,13 +165,10 @@ class AttachmentHandler(
                     // base resource ID part expected first, allowing an authorisation check before file parsing
                     val baseResourceIdPart = Either.catch { body.readPart() }
                         .mapLeft { e ->
+                            logger.error { "Unexpected error reading multipart parent ID part: $e" }
                             when (e) {
                                 is IOException -> MultipartError()
-
-                                else -> {
-                                    logger.error { "Unexpected error reading multipart parent ID part: $e" }
-                                    InternalServerError(traceIdOrUnknown())
-                                }
+                                else -> InternalServerError(traceIdOrUnknown())
                             }
                         }.bind()
                     if (baseResourceIdPart == null || baseResourceIdPart !is PartData.FormItem || baseResourceIdPart.name != "${baseResource}_id") {
@@ -200,13 +197,10 @@ class AttachmentHandler(
                     // now file part
                     val filePart = Either.catch { body.readPart() }
                         .mapLeft { e ->
+                            logger.error { "Unexpected error reading multipart file part: $e" }
                             when (e) {
                                 is IOException -> MultipartError()
-
-                                else -> {
-                                    logger.error { "Unexpected error reading multipart file part: $e" }
-                                    InternalServerError(traceIdOrUnknown())
-                                }
+                                else -> InternalServerError(traceIdOrUnknown())
                             }
                         }.bind()
                     if (filePart == null || filePart !is PartData.FileItem || filePart.name != "file") {
@@ -227,13 +221,10 @@ class AttachmentHandler(
                     val fileBytes = Either.catch { filePart.provider().toByteArray() }
                         .mapLeft { e ->
                             filePart.release()
+                            logger.error { "Unexpected error reading file bytes: $e" }
                             when (e) {
                                 is IOException -> MultipartError()
-
-                                else -> {
-                                    logger.error { "Unexpected error reading file bytes: $e" }
-                                    InternalServerError(traceIdOrUnknown())
-                                }
+                                else -> InternalServerError(traceIdOrUnknown())
                             }
                         }.bind()
                     if (fileBytes.size.toLong() > MAX_MULTIPART_SIZE_BYTES) {
