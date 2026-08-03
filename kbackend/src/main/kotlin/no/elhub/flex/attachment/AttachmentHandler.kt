@@ -8,9 +8,7 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.content.MultiPartData
 import io.ktor.http.content.PartData
-import io.ktor.server.request.receiveChannel
 import io.ktor.server.routing.RoutingCall
-import io.ktor.utils.io.readAvailable
 import io.ktor.utils.io.toByteArray
 import no.elhub.flex.auth.AccessTokenKey
 import no.elhub.flex.auth.FlexPrincipal
@@ -99,18 +97,7 @@ class AttachmentHandler(
         either {
             val principal = call.attributes[AccessTokenKey].toFlexPrincipal()
 
-            // TEMPORARY
-            // log raw body first 8 KB to see if garbage has been added to the body before the first multipart boundary
-            val rawPrefix = ByteArray(8192)
-            val rawPrefixRead = call.receiveChannel().readAvailable(rawPrefix)
-            val rawPrefixBytes = rawPrefix.take(rawPrefixRead).toByteArray()
-            logger.info {
-                "Multipart raw body prefix ($rawPrefixRead bytes) hex: ${rawPrefixBytes.joinToString("") { "%02x".format(it) }}"
-            }
-            logger.info {
-                "Multipart raw body prefix text: ${rawPrefixBytes.toString(Charsets.UTF_8).replace("\r", "\\r").replace("\n", "\\n\n")}"
-            }
-
+            // extract information from multipart body
             val createBody =
                 call.multipart(MAX_MULTIPART_SIZE_BYTES)
                     .flatMap { with(principal) { CreateBody.parse(it, baseResource, repo) } }
