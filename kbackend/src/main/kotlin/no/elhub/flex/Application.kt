@@ -3,6 +3,7 @@ package no.elhub.flex
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.netty.EngineMain
+import io.ktor.server.plugins.doublereceive.DoubleReceive
 import kotlinx.datetime.TimeZone
 import no.elhub.flex.auth.FlexAuthentication
 import no.elhub.flex.config.Tracing
@@ -39,6 +40,7 @@ class FlexApp
  */
 fun Application.module() {
     install(Tracing.plugin)
+    install(DoubleReceive)
     configureLogging()
     configureSerialization()
     configureDatabase()
