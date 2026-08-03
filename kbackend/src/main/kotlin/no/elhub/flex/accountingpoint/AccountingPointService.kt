@@ -1,6 +1,7 @@
 package no.elhub.flex.accountingpoint
 
 import arrow.core.Either
+import arrow.core.flatMap
 import arrow.core.left
 import arrow.core.raise.either
 import arrow.core.right
@@ -97,65 +98,62 @@ class AccountingPointServiceImpl(
         accountingPointBusinessId: String,
         validFrom: Instant
     ): Either<AppError, Unit> = fetchAccountingPointData(accountingPointBusinessId, validFrom)
-        .fold(
-            ifLeft = { e -> e.left() },
-            ifRight = { adapterAccountingPoint ->
-                logger.debug { "Raw data from adapter: ${adapterAccountingPoint.anonymizedForLogging()}" }
-                with(FlexPrincipal.internalData()) {
-                    flexTransaction { _ ->
-                        either {
-                            val accountingPointId = accountingPointRepository.insertAccountingPointIfNotExists(
-                                AccountingPoint(id = 0, businessId = accountingPointBusinessId)
-                            ).mapLeft { it.toInternalServerError("insertAccountingPointIfNotExists") }.bind()
+        .flatMap { adapterAccountingPoint ->
+            logger.debug { "Raw data from adapter: ${adapterAccountingPoint.anonymizedForLogging()}" }
+            with(FlexPrincipal.internalData()) {
+                flexTransaction { _ ->
+                    either {
+                        val accountingPointId = accountingPointRepository.insertAccountingPointIfNotExists(
+                            AccountingPoint(id = 0, businessId = accountingPointBusinessId)
+                        ).mapLeft { it.toInternalServerError("insertAccountingPointIfNotExists") }.bind()
 
-                            accountingPointRepository.lockSyncRowAndMarkStart(accountingPointId)
-                                .mapLeft { err -> err.toInternalServerError("lockSyncRowAndMarkStart") }.bind()
+                        accountingPointRepository.lockSyncRowAndMarkStart(accountingPointId)
+                            .mapLeft { err -> err.toInternalServerError("lockSyncRowAndMarkStart") }.bind()
 
-                            if (adapterAccountingPoint.latitude != null && adapterAccountingPoint.longitude != null) {
-                                accountingPointRepository.updateAccountingPointLocation(
-                                    accountingPointId,
-                                    Location(
-                                        longitude = adapterAccountingPoint.longitude,
-                                        latitude = adapterAccountingPoint.latitude,
-                                    )
-                                ).mapLeft { it.toInternalServerError("updateAccountingPointLocation") }.bind()
-                            }
-
-                            val endUsers = adapterAccountingPoint.toAccountingPointEndUsers(accountingPointId)
-                            val energySuppliers = adapterAccountingPoint.toAccountingPointEnergySuppliers(accountingPointId)
-
-                            val mgaBusinessIds = adapterAccountingPoint.meteringGridArea.map { it.businessId }
-                            val mgaMap = meteringGridAreaRepository
-                                .getMeteringGridAreasByBusinessIds(mgaBusinessIds)
-                                .mapLeft { err -> err.toInternalServerError("getMeteringGridAreasByBusinessIds") }
-                                .bind()
-
-                            val accountingPointMgas = adapterAccountingPoint.meteringGridArea.map { adapterMga ->
-                                AccountingPointMeteringGridArea(
-                                    id = 0L,
-                                    accountingPointId = accountingPointId,
-                                    meteringGridAreaId = mgaMap.getValue(adapterMga.businessId).id,
-                                    validFrom = adapterMga.validFrom,
-                                    validTo = adapterMga.validTo,
+                        if (adapterAccountingPoint.latitude != null && adapterAccountingPoint.longitude != null) {
+                            accountingPointRepository.updateAccountingPointLocation(
+                                accountingPointId,
+                                Location(
+                                    longitude = adapterAccountingPoint.longitude,
+                                    latitude = adapterAccountingPoint.latitude,
                                 )
-                            }
-                            accountingPointMeteringGridAreaRepository.replaceAllFor(accountingPointMgas)
-                                .mapLeft { err -> err.toInternalServerError("replaceAllFor MGAs") }
-                                .bind()
-
-                            accountingPointRepository.replaceAllAccountingPointEndUsers(endUsers)
-                                .mapLeft { it.toInternalServerError("replaceAllAccountingPointEndUsers") }.bind()
-
-                            accountingPointRepository.replaceAllAccountingPointEnergySupplier(energySuppliers)
-                                .mapLeft { it.toInternalServerError("replaceAllAccountingPointEnergySupplier") }.bind()
-
-                            accountingPointRepository.markSyncComplete(accountingPointId)
-                                .mapLeft { it.toInternalServerError("markSyncComplete") }.bind()
+                            ).mapLeft { it.toInternalServerError("updateAccountingPointLocation") }.bind()
                         }
+
+                        val endUsers = adapterAccountingPoint.toAccountingPointEndUsers(accountingPointId)
+                        val energySuppliers = adapterAccountingPoint.toAccountingPointEnergySuppliers(accountingPointId)
+
+                        val mgaBusinessIds = adapterAccountingPoint.meteringGridArea.map { it.businessId }
+                        val mgaMap = meteringGridAreaRepository
+                            .getMeteringGridAreasByBusinessIds(mgaBusinessIds)
+                            .mapLeft { err -> err.toInternalServerError("getMeteringGridAreasByBusinessIds") }
+                            .bind()
+
+                        val accountingPointMgas = adapterAccountingPoint.meteringGridArea.map { adapterMga ->
+                            AccountingPointMeteringGridArea(
+                                id = 0L,
+                                accountingPointId = accountingPointId,
+                                meteringGridAreaId = mgaMap.getValue(adapterMga.businessId).id,
+                                validFrom = adapterMga.validFrom,
+                                validTo = adapterMga.validTo,
+                            )
+                        }
+                        accountingPointMeteringGridAreaRepository.replaceAllFor(accountingPointMgas)
+                            .mapLeft { err -> err.toInternalServerError("replaceAllFor MGAs") }
+                            .bind()
+
+                        accountingPointRepository.replaceAllAccountingPointEndUsers(endUsers)
+                            .mapLeft { it.toInternalServerError("replaceAllAccountingPointEndUsers") }.bind()
+
+                        accountingPointRepository.replaceAllAccountingPointEnergySupplier(energySuppliers)
+                            .mapLeft { it.toInternalServerError("replaceAllAccountingPointEnergySupplier") }.bind()
+
+                        accountingPointRepository.markSyncComplete(accountingPointId)
+                            .mapLeft { it.toInternalServerError("markSyncComplete") }.bind()
                     }
                 }
-            },
-        )
+            }
+        }
 
     private fun RepositoryError.toInternalServerError(context: String): AppError {
         logger.error { "$context failed: $this" }
