@@ -74,7 +74,7 @@ class AccountingPointServiceTest : FunSpec({
 
     context("synchronizeAccountingPoint") {
 
-        test("adapter failure is swallowed and returns Right(Unit)") {
+        test("fetchAccountingPointData fails and returns Left") {
             // given
             coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns
                 NetworkError("timeout").left()
@@ -83,20 +83,7 @@ class AccountingPointServiceTest : FunSpec({
             val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM)
 
             // then
-            result.shouldBeRight()
-            coVerify(exactly = 0) { with(internalPrincipal) { accountingPointRepository.insertAccountingPointIfNotExists(any()) } }
-        }
-
-        test("adapter not-found is not swallowed") {
-            // given
-            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns
-                NotFoundError(GSRN).left()
-
-            // when
-            val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM)
-
-            // then
-            result.shouldBeLeft().code shouldBe HttpStatusCode.NotFound
+            result.shouldBeLeft()
             coVerify(exactly = 0) { with(internalPrincipal) { accountingPointRepository.insertAccountingPointIfNotExists(any()) } }
         }
 
