@@ -12,6 +12,8 @@ import { usePermissions } from "ra-core";
 import { Permissions } from "../../auth/permissions";
 import { useConfirmAction } from "../../components/ConfirmAction";
 import { PowerRatio } from "../../components/PowerRatio";
+import { RegulationDirectionIcon } from "../../controllable_unit/RegulationDirectionField";
+import { ControllableUnitRegulationDirection } from "../../generated-client";
 
 type Props = {
   spgId: number;
@@ -129,6 +131,12 @@ export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
     {
       key: "regulation_direction",
       header: t("controllable_unit.regulation_direction"),
+      render: (value) =>
+        value ? (
+          <RegulationDirectionIcon
+            value={value as ControllableUnitRegulationDirection}
+          />
+        ) : null,
     },
     {
       key: "mpid",
