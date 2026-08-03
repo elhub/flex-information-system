@@ -187,6 +187,17 @@ export type PermissionTarget =
   | "identity.id"
   | "identity.party_id"
   | "identity.party_name"
+  | "line"
+  | "line.business_id"
+  | "line.business_id_type"
+  | "line.from_substation_cluster_id"
+  | "line.id"
+  | "line.line"
+  | "line.name"
+  | "line.recorded_at"
+  | "line.recorded_by"
+  | "line.status"
+  | "line.to_substation_cluster_id"
   | "metering_grid_area"
   | "metering_grid_area.business_id"
   | "metering_grid_area.business_id_type"
@@ -457,6 +468,10 @@ export type PermissionTarget =
   | "service_providing_group_membership_history.service_providing_group_membership_id"
   | "service_providing_group_membership_history.valid_from"
   | "service_providing_group_membership_history.valid_to"
+  | "service_providing_group_power_per_substation"
+  | "service_providing_group_power_per_substation.id"
+  | "service_providing_group_power_per_substation.service_providing_group_id"
+  | "service_providing_group_power_per_substation.substations"
   | "service_providing_group_product_application"
   | "service_providing_group_product_application.additional_information"
   | "service_providing_group_product_application.id"
@@ -472,6 +487,16 @@ export type PermissionTarget =
   | "service_providing_group_product_application.service_providing_group_id"
   | "service_providing_group_product_application.status"
   | "service_providing_group_product_application.verified_at"
+  | "service_providing_group_product_application_attachment"
+  | "service_providing_group_product_application_attachment.content_type"
+  | "service_providing_group_product_application_attachment.filename"
+  | "service_providing_group_product_application_attachment.filename_sanitised"
+  | "service_providing_group_product_application_attachment.id"
+  | "service_providing_group_product_application_attachment.object_id"
+  | "service_providing_group_product_application_attachment.recorded_at"
+  | "service_providing_group_product_application_attachment.recorded_by"
+  | "service_providing_group_product_application_attachment.service_providing_group_product_application_id"
+  | "service_providing_group_product_application_attachment.size_bytes"
   | "service_providing_group_product_application_comment"
   | "service_providing_group_product_application_comment.content"
   | "service_providing_group_product_application_comment.created_at"
@@ -556,6 +581,29 @@ export type PermissionTarget =
   | "service_providing_group_summary.id"
   | "service_providing_group_summary.service_providing_group_id"
   | "service_providing_group_summary.technical_resource"
+  | "substation"
+  | "substation.business_id"
+  | "substation.business_id_type"
+  | "substation.id"
+  | "substation.kind"
+  | "substation.name"
+  | "substation.position"
+  | "substation.primary_concessionaire"
+  | "substation.recorded_at"
+  | "substation.recorded_by"
+  | "substation.status"
+  | "substation.substation_cluster_id"
+  | "substation.voltage_levels"
+  | "substation_cluster"
+  | "substation_cluster.area"
+  | "substation_cluster.averaged_position"
+  | "substation_cluster.business_id"
+  | "substation_cluster.business_id_type"
+  | "substation_cluster.id"
+  | "substation_cluster.name"
+  | "substation_cluster.recorded_at"
+  | "substation_cluster.recorded_by"
+  | "substation_cluster.status"
   | "system_operator_product_type"
   | "system_operator_product_type.id"
   | "system_operator_product_type.product_type_id"
@@ -2415,6 +2463,23 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_power_per_substation.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_power_per_substation.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation.substations",
+      operation: "read",
+    },
+    {
       target:
         "service_providing_group_product_application.additional_information",
       operation: "read",
@@ -2477,6 +2542,53 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_product_application.verified_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.content_type",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_attachment.filename",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.filename_sanitised",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_attachment.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.object_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_attachment",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.size_bytes",
       operation: "read",
     },
     {
@@ -4851,6 +4963,23 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_power_per_substation.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_power_per_substation.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation.substations",
+      operation: "read",
+    },
+    {
       target:
         "service_providing_group_product_application.additional_information",
       operation: "read",
@@ -4913,6 +5042,53 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_product_application.verified_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.content_type",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_attachment.filename",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.filename_sanitised",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_attachment.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.object_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_attachment",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.size_bytes",
       operation: "read",
     },
     {
@@ -7287,6 +7463,23 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_power_per_substation.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_power_per_substation.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation.substations",
+      operation: "read",
+    },
+    {
       target:
         "service_providing_group_product_application.additional_information",
       operation: "read",
@@ -7349,6 +7542,53 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_product_application.verified_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.content_type",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_attachment.filename",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.filename_sanitised",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_attachment.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.object_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_attachment",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.size_bytes",
       operation: "read",
     },
     {
@@ -8885,6 +9125,50 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "line.business_id",
+      operation: "read",
+    },
+    {
+      target: "line.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "line.from_substation_cluster_id",
+      operation: "read",
+    },
+    {
+      target: "line.id",
+      operation: "read",
+    },
+    {
+      target: "line.line",
+      operation: "read",
+    },
+    {
+      target: "line.name",
+      operation: "read",
+    },
+    {
+      target: "line",
+      operation: "read",
+    },
+    {
+      target: "line.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "line.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "line.status",
+      operation: "read",
+    },
+    {
+      target: "line.to_substation_cluster_id",
+      operation: "read",
+    },
+    {
       target: "metering_grid_area.business_id",
       operation: "read",
     },
@@ -10411,6 +10695,23 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_power_per_substation.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_power_per_substation.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation.substations",
+      operation: "read",
+    },
+    {
       target:
         "service_providing_group_product_application.additional_information",
       operation: "read",
@@ -10517,6 +10818,90 @@ const rawPermissions: Record<
     {
       target: "service_providing_group_product_application.verified_at",
       operation: "update",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.content_type",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.content_type",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_attachment",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_application_attachment",
+      operation: "delete",
+    },
+    {
+      target: "service_providing_group_product_application_attachment.filename",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_application_attachment.filename",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.filename_sanitised",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.filename_sanitised",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_attachment.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.object_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.object_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_attachment",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.service_providing_group_product_application_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.size_bytes",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.size_bytes",
+      operation: "read",
     },
     {
       target: "service_providing_group_product_application_comment.content",
@@ -10982,6 +11367,98 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_summary.technical_resource",
+      operation: "read",
+    },
+    {
+      target: "substation.business_id",
+      operation: "read",
+    },
+    {
+      target: "substation.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "substation.id",
+      operation: "read",
+    },
+    {
+      target: "substation.kind",
+      operation: "read",
+    },
+    {
+      target: "substation.name",
+      operation: "read",
+    },
+    {
+      target: "substation.position",
+      operation: "read",
+    },
+    {
+      target: "substation.primary_concessionaire",
+      operation: "read",
+    },
+    {
+      target: "substation",
+      operation: "read",
+    },
+    {
+      target: "substation.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "substation.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "substation.status",
+      operation: "read",
+    },
+    {
+      target: "substation.substation_cluster_id",
+      operation: "read",
+    },
+    {
+      target: "substation.voltage_levels",
+      operation: "read",
+    },
+    {
+      target: "substation_cluster.area",
+      operation: "read",
+    },
+    {
+      target: "substation_cluster.averaged_position",
+      operation: "read",
+    },
+    {
+      target: "substation_cluster.business_id",
+      operation: "read",
+    },
+    {
+      target: "substation_cluster.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "substation_cluster.id",
+      operation: "read",
+    },
+    {
+      target: "substation_cluster.name",
+      operation: "read",
+    },
+    {
+      target: "substation_cluster",
+      operation: "read",
+    },
+    {
+      target: "substation_cluster.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "substation_cluster.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "substation_cluster.status",
       operation: "read",
     },
     {
@@ -13094,6 +13571,23 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_power_per_substation.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_power_per_substation.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation.substations",
+      operation: "read",
+    },
+    {
       target:
         "service_providing_group_product_application.additional_information",
       operation: "read",
@@ -13156,6 +13650,53 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_product_application.verified_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.content_type",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_attachment.filename",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.filename_sanitised",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_attachment.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.object_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_attachment",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.size_bytes",
       operation: "read",
     },
     {
@@ -14548,6 +15089,50 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "line.business_id",
+      operation: "read",
+    },
+    {
+      target: "line.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "line.from_substation_cluster_id",
+      operation: "read",
+    },
+    {
+      target: "line.id",
+      operation: "read",
+    },
+    {
+      target: "line.line",
+      operation: "read",
+    },
+    {
+      target: "line.name",
+      operation: "read",
+    },
+    {
+      target: "line",
+      operation: "read",
+    },
+    {
+      target: "line.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "line.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "line.status",
+      operation: "read",
+    },
+    {
+      target: "line.to_substation_cluster_id",
+      operation: "read",
+    },
+    {
       target: "metering_grid_area.business_id",
       operation: "read",
     },
@@ -15904,6 +16489,23 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_power_per_substation.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_power_per_substation.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation.substations",
+      operation: "read",
+    },
+    {
       target:
         "service_providing_group_product_application.additional_information",
       operation: "read",
@@ -15987,6 +16589,53 @@ const rawPermissions: Record<
     {
       target: "service_providing_group_product_application.verified_at",
       operation: "update",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.content_type",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_attachment.filename",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.filename_sanitised",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_attachment.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.object_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_attachment",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.size_bytes",
+      operation: "read",
     },
     {
       target: "service_providing_group_product_application_comment.content",
@@ -16452,6 +17101,98 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_summary.technical_resource",
+      operation: "read",
+    },
+    {
+      target: "substation.business_id",
+      operation: "read",
+    },
+    {
+      target: "substation.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "substation.id",
+      operation: "read",
+    },
+    {
+      target: "substation.kind",
+      operation: "read",
+    },
+    {
+      target: "substation.name",
+      operation: "read",
+    },
+    {
+      target: "substation.position",
+      operation: "read",
+    },
+    {
+      target: "substation.primary_concessionaire",
+      operation: "read",
+    },
+    {
+      target: "substation",
+      operation: "read",
+    },
+    {
+      target: "substation.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "substation.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "substation.status",
+      operation: "read",
+    },
+    {
+      target: "substation.substation_cluster_id",
+      operation: "read",
+    },
+    {
+      target: "substation.voltage_levels",
+      operation: "read",
+    },
+    {
+      target: "substation_cluster.area",
+      operation: "read",
+    },
+    {
+      target: "substation_cluster.averaged_position",
+      operation: "read",
+    },
+    {
+      target: "substation_cluster.business_id",
+      operation: "read",
+    },
+    {
+      target: "substation_cluster.business_id_type",
+      operation: "read",
+    },
+    {
+      target: "substation_cluster.id",
+      operation: "read",
+    },
+    {
+      target: "substation_cluster.name",
+      operation: "read",
+    },
+    {
+      target: "substation_cluster",
+      operation: "read",
+    },
+    {
+      target: "substation_cluster.recorded_at",
+      operation: "read",
+    },
+    {
+      target: "substation_cluster.recorded_by",
+      operation: "read",
+    },
+    {
+      target: "substation_cluster.status",
       operation: "read",
     },
     {
@@ -18839,6 +19580,23 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_power_per_substation.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_power_per_substation.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation.substations",
+      operation: "read",
+    },
+    {
       target:
         "service_providing_group_product_application.additional_information",
       operation: "create",
@@ -18977,6 +19735,90 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_product_application.verified_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.content_type",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.content_type",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_attachment",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_application_attachment",
+      operation: "delete",
+    },
+    {
+      target: "service_providing_group_product_application_attachment.filename",
+      operation: "create",
+    },
+    {
+      target: "service_providing_group_product_application_attachment.filename",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.filename_sanitised",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.filename_sanitised",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_attachment.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.object_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.object_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_attachment",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.service_providing_group_product_application_id",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.size_bytes",
+      operation: "create",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.size_bytes",
       operation: "read",
     },
     {
@@ -21497,6 +22339,23 @@ const rawPermissions: Record<
       operation: "read",
     },
     {
+      target: "service_providing_group_power_per_substation.id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_power_per_substation.service_providing_group_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_power_per_substation.substations",
+      operation: "read",
+    },
+    {
       target:
         "service_providing_group_product_application.additional_information",
       operation: "read",
@@ -21559,6 +22418,53 @@ const rawPermissions: Record<
     },
     {
       target: "service_providing_group_product_application.verified_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.content_type",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_attachment.filename",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.filename_sanitised",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_attachment.id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.object_id",
+      operation: "read",
+    },
+    {
+      target: "service_providing_group_product_application_attachment",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.recorded_at",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.recorded_by",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.service_providing_group_product_application_id",
+      operation: "read",
+    },
+    {
+      target:
+        "service_providing_group_product_application_attachment.size_bytes",
       operation: "read",
     },
     {

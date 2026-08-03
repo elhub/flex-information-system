@@ -45,6 +45,9 @@ databaseChangeLog:
       file: ./api/changelog.yml
       relativeToChangelogFile: true
   - include:
+      file: ./attachment/changelog.yml
+      relativeToChangelogFile: true
+  - include:
       file: ./grid/changelog.yml
       relativeToChangelogFile: true
   - include:

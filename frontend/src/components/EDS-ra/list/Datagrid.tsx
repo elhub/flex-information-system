@@ -120,10 +120,7 @@ export const DataTable = <T extends RaRecord>({
             const childSource = children?.props?.source;
 
             return (
-              <Table.ColumnHeader
-                key={source ?? childSource ?? index}
-                scope="col"
-              >
+              <Table.ColumnHeader key={index} scope="col">
                 <span className="flex items-center gap-1">
                   <FieldTitle
                     source={childSource ?? source}
@@ -157,30 +154,22 @@ export const DataTable = <T extends RaRecord>({
                   </RecordContextProvider>
                 }
               >
-                {columns.map((child, index) => {
-                  const key =
-                    (child.props as { source?: string }).source ?? index;
-                  return (
-                    <Table.DataCell key={key}>
-                      {cloneElement(child)}
-                    </Table.DataCell>
-                  );
-                })}
+                {columns.map((child, index) => (
+                  <Table.DataCell key={index}>
+                    {cloneElement(child)}
+                  </Table.DataCell>
+                ))}
               </Table.ExpandableRow>
             ) : (
               <Table.Row
                 style={hasRowClick ? { cursor: "pointer" } : undefined}
                 onClick={(e) => handleRowClick(e, record)}
               >
-                {columns.map((child, index) => {
-                  const key =
-                    (child.props as { source?: string }).source ?? index;
-                  return (
-                    <Table.DataCell key={key}>
-                      {cloneElement(child)}
-                    </Table.DataCell>
-                  );
-                })}
+                {columns.map((child, index) => (
+                  <Table.DataCell key={index}>
+                    {cloneElement(child)}
+                  </Table.DataCell>
+                ))}
               </Table.Row>
             )}
           </RecordContextProvider>

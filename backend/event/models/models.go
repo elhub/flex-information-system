@@ -563,6 +563,12 @@ type ApiServiceProvidingGroupMembershipHistory struct {
 	ReplacedAt                        pgtype.Timestamptz
 }
 
+type ApiServiceProvidingGroupPowerPerSubstation struct {
+	ID                      int
+	ServiceProvidingGroupID int
+	Substations             [][]byte
+}
+
 type ApiServiceProvidingGroupProductApplication struct {
 	ID                        int
 	ServiceProvidingGroupID   int
@@ -578,6 +584,33 @@ type ApiServiceProvidingGroupProductApplication struct {
 	RampingDescription        *string
 	RecordedBy                int
 	RecordedAt                pgtype.Timestamptz
+}
+
+type ApiServiceProvidingGroupProductApplicationAttachment struct {
+	ID                                        int
+	ServiceProvidingGroupProductApplicationID int
+	ObjectID                                  string
+	Filename                                  string
+	FilenameSanitised                         string
+	ContentType                               string
+	SizeBytes                                 int
+	RecordedBy                                int
+	RecordedAt                                pgtype.Timestamptz
+}
+
+type ApiServiceProvidingGroupProductApplicationAttachmentHistory struct {
+	ServiceProvidingGroupProductApplicationAttachmentID int
+	ID                                                  int
+	ServiceProvidingGroupProductApplicationID           int
+	ObjectID                                            string
+	Filename                                            string
+	FilenameSanitised                                   string
+	ContentType                                         string
+	SizeBytes                                           int
+	RecordedBy                                          int
+	RecordedAt                                          pgtype.Timestamptz
+	ReplacedBy                                          *int
+	ReplacedAt                                          pgtype.Timestamptz
 }
 
 type ApiServiceProvidingGroupProductApplicationComment struct {

@@ -51,15 +51,21 @@ history_enabled = [
 ]
 
 
-def read_csv(csvReader: csv.DictReader) -> dict[str, dict[str, dict[str, list[str]]]]:
-    """Read the CSV file and return a data structure with SQL grants."""
-
-    party_types = cast(Sequence[str], csvReader.fieldnames)[2:]
+# read CSV and return a data structure with SQL grants
+# (only for resources where schema_filter matches the SCHEMA column)
+def read_csv(
+    csvReader: csv.DictReader,
+    schema_filter: str,
+) -> dict[str, dict[str, dict[str, list[str]]]]:
+    party_types = [h for h in cast(Sequence[str], csvReader.fieldnames)[3:]]
 
     # resource |-> party_type |-> action |-> [field]
     grants: dict[str, dict[str, dict[str, list[str]]]] = {}
 
     for row in csvReader:
+        if row["SCHEMA"] != schema_filter:
+            continue
+
         column = row["FIELD"]
         if column in ("", None, "_", "-"):
             column = "*"
@@ -118,7 +124,7 @@ if __name__ == "__main__":
 
     schema = sys.argv[1]
     csvReader = csv.DictReader(sys.stdin, delimiter=";")
-    grants = read_csv(csvReader)
+    grants = read_csv(csvReader, schema)
 
     for resource in grants.keys():
         for party_type in grants[resource].keys():

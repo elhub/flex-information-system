@@ -15,6 +15,7 @@ buildscript {
 dependencies {
     // Ktor
     implementation(libs.bundles.ktor)
+    implementation(libs.ktor.server.double.receive)
     implementation(libs.bundles.functional.programming)
     // Koin
     implementation(libs.bundles.dependency.injection)
@@ -30,6 +31,10 @@ dependencies {
     implementation(libs.elhub.jsonapi)
     // Scheduling
     implementation(libs.krontab)
+    // Object storage (S3)
+    implementation(libs.storage.aws.s3)
+    // File validation
+    implementation(libs.storage.pdfbox)
     // Unit Testing
     testImplementation(testFixtures(libs.elhub.jsonapi))
     testImplementation(libs.database.postgresql)
@@ -44,6 +49,7 @@ dependencies {
     testImplementation(libs.test.koin.test)
     testImplementation(libs.test.testcontainers)
     testImplementation(libs.test.testcontainers.postgres)
+    testImplementation(libs.test.testcontainers.s3mock)
     testImplementation(libs.test.mybatis)
     testImplementation(libs.test.wiremock)
 }

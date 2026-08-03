@@ -277,7 +277,11 @@ class SecurityTokenService:
             body=PartyMembershipCreateRequest(
                 party_id=cast(int, party.id),
                 entity_id=ent_id,
-                scopes=[AuthScope.MANAGEDATA, AuthScope.MANAGEAUTH],
+                scopes=[
+                    AuthScope.MANAGEDATA,
+                    AuthScope.MANAGEAUTH,
+                    AuthScope.MANAGEATTACHMENT,
+                ],
             ),
         )
         assert isinstance(pm, PartyMembershipResponse)

@@ -77,10 +77,16 @@ databaseChangeLog:
 
   # Custom types
   - include:
+      file: ./scope_allowed.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./scope.sql
       relativeToChangelogFile: true
 
   # Tables & views - order is important!
+  - include:
+      file: ./attachment.sql
+      relativeToChangelogFile: true
   - include:
       file: ./event.sql
       relativeToChangelogFile: true
@@ -238,6 +244,9 @@ databaseChangeLog:
       file: ./service_providing_group_product_application_comment.sql
       relativeToChangelogFile: true
   - include:
+      file: ./service_providing_group_product_application_attachment.sql
+      relativeToChangelogFile: true
+  - include:
       file: ./service_providing_group_product_suspension.sql
       relativeToChangelogFile: true
   - include:
@@ -299,6 +308,9 @@ databaseChangeLog:
       relativeToChangelogFile: true
   - include:
       file: ./service_providing_group_summary.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ./service_providing_group_power_per_substation.sql
       relativeToChangelogFile: true
   # notice
   - includeAll:

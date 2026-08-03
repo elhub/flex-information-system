@@ -94,7 +94,11 @@ if __name__ == "__main__":
 
     with open(output_file_backend_schema, "w") as backend_schema_f:
         print(
-            "-- AUTO-GENERATED FILE (scripts/openapi_to_db.py)\n",
+            "-- AUTO-GENERATED FILE (scripts/openapi_to_db.py)",
+            file=backend_schema_f,
+        )
+        print(
+            "-- noqa: disable=all\n",
             file=backend_schema_f,
         )
         print(
@@ -140,6 +144,53 @@ if __name__ == "__main__":
                     },
                     "resource_view.j2.sql",
                     f"{DB_DIR}/{resource['module']}/{resource['id']}.sql",
+                )
+
+            # generate files for the attachment resource
+            if resource.get("attachments", False):
+                j2.template(
+                    {"resource": resource["id"], "data": resource},
+                    "attachment_resource.j2.sql",
+                    f"{DB_DIR}/flex/{resource['id']}_attachment.sql",
+                )
+
+                j2.template(
+                    {"resource": resource["id"], "data": resource},
+                    "attachment_view.j2.sql",
+                    f"{DB_DIR}/attachment/{resource['id']}_attachment.sql",
+                )
+
+                attachment_resource = yaml.safe_load(
+                    j2.template_str(
+                        {"resource": resource["id"], "data": resource},
+                        "attachment_resource.j2.yml",
+                    ),
+                )["data"]
+
+                print(
+                    fake_table_create_statement(
+                        attachment_resource["id"],
+                        attachment_resource["properties"],
+                        True,
+                    ),
+                    file=backend_schema_f,
+                )
+
+                print(
+                    fake_history_table_create_statement(
+                        attachment_resource["id"],
+                        attachment_resource["properties"],
+                    ),
+                    file=backend_schema_f,
+                )
+
+                j2.template(
+                    {
+                        "resource": attachment_resource["id"],
+                        "data": attachment_resource,
+                    },
+                    "resource_history_audit.j2.sql",
+                    f"{DB_DIR}/flex/{attachment_resource['id']}_history_audit.sql",
                 )
 
             # generate files for the comment resource

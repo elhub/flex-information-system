@@ -15,6 +15,9 @@ from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
     from ..models.party_response import PartyResponse
+    from ..models.service_providing_group_product_application_attachment_response import (
+        ServiceProvidingGroupProductApplicationAttachmentResponse,
+    )
     from ..models.service_providing_group_product_application_comment_response import (
         ServiceProvidingGroupProductApplicationCommentResponse,
     )
@@ -55,6 +58,8 @@ class ServiceProvidingGroupProductApplicationResponse:
                 linearity on a minute resolution..
             service_providing_group (None | ServiceProvidingGroupResponse | Unset): Embedded service_providing_group
             procuring_system_operator (None | PartyResponse | Unset): Embedded party
+            attachment (list[ServiceProvidingGroupProductApplicationAttachmentResponse] | None | Unset): Embedded
+                service_providing_group_product_application_attachment
             comment (list[ServiceProvidingGroupProductApplicationCommentResponse] | None | Unset): Embedded
                 service_providing_group_product_application_comment
     """
@@ -75,6 +80,7 @@ class ServiceProvidingGroupProductApplicationResponse:
     ramping_description: None | str | Unset = UNSET
     service_providing_group: None | ServiceProvidingGroupResponse | Unset = UNSET
     procuring_system_operator: None | PartyResponse | Unset = UNSET
+    attachment: list[ServiceProvidingGroupProductApplicationAttachmentResponse] | None | Unset = UNSET
     comment: list[ServiceProvidingGroupProductApplicationCommentResponse] | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -152,6 +158,18 @@ class ServiceProvidingGroupProductApplicationResponse:
         else:
             procuring_system_operator = self.procuring_system_operator
 
+        attachment: list[dict[str, Any]] | None | Unset
+        if isinstance(self.attachment, Unset):
+            attachment = UNSET
+        elif isinstance(self.attachment, list):
+            attachment = []
+            for attachment_type_0_item_data in self.attachment:
+                attachment_type_0_item = attachment_type_0_item_data.to_dict()
+                attachment.append(attachment_type_0_item)
+
+        else:
+            attachment = self.attachment
+
         comment: list[dict[str, Any]] | None | Unset
         if isinstance(self.comment, Unset):
             comment = UNSET
@@ -193,6 +211,8 @@ class ServiceProvidingGroupProductApplicationResponse:
             field_dict["service_providing_group"] = service_providing_group
         if procuring_system_operator is not UNSET:
             field_dict["procuring_system_operator"] = procuring_system_operator
+        if attachment is not UNSET:
+            field_dict["attachment"] = attachment
         if comment is not UNSET:
             field_dict["comment"] = comment
 
@@ -201,6 +221,9 @@ class ServiceProvidingGroupProductApplicationResponse:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.party_response import PartyResponse
+        from ..models.service_providing_group_product_application_attachment_response import (
+            ServiceProvidingGroupProductApplicationAttachmentResponse,
+        )
         from ..models.service_providing_group_product_application_comment_response import (
             ServiceProvidingGroupProductApplicationCommentResponse,
         )
@@ -330,6 +353,32 @@ class ServiceProvidingGroupProductApplicationResponse:
 
         procuring_system_operator = _parse_procuring_system_operator(d.pop("procuring_system_operator", UNSET))
 
+        def _parse_attachment(
+            data: object,
+        ) -> list[ServiceProvidingGroupProductApplicationAttachmentResponse] | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, list):
+                    raise TypeError()
+                attachment_type_0 = []
+                _attachment_type_0 = data
+                for attachment_type_0_item_data in _attachment_type_0:
+                    attachment_type_0_item = ServiceProvidingGroupProductApplicationAttachmentResponse.from_dict(
+                        attachment_type_0_item_data
+                    )
+
+                    attachment_type_0.append(attachment_type_0_item)
+
+                return attachment_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(list[ServiceProvidingGroupProductApplicationAttachmentResponse] | None | Unset, data)
+
+        attachment = _parse_attachment(d.pop("attachment", UNSET))
+
         def _parse_comment(data: object) -> list[ServiceProvidingGroupProductApplicationCommentResponse] | None | Unset:
             if data is None:
                 return data
@@ -371,6 +420,7 @@ class ServiceProvidingGroupProductApplicationResponse:
             ramping_description=ramping_description,
             service_providing_group=service_providing_group,
             procuring_system_operator=procuring_system_operator,
+            attachment=attachment,
             comment=comment,
         )
 

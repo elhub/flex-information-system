@@ -45,6 +45,10 @@
             "description": "Controllable Unit Summary"
         },
         {
+            "name": "service_providing_group_power_per_substation",
+            "description": "Service Providing Group Power Per Substation"
+        },
+        {
             "name": "service_providing_group_summary",
             "description": "Service Providing Group Summary"
         },
@@ -161,6 +165,10 @@
             "description": "Service Providing Group Product Application"
         },
         {
+            "name": "service_providing_group_product_application_attachment",
+            "description": "Service Providing Group Product Application Attachment"
+        },
+        {
             "name": "service_providing_group_product_application_comment",
             "description": "Service Providing Group Product Application Comment"
         },
@@ -228,15 +236,114 @@
                 "format": "text",
                 "type": "string",
                 "enum": [
-                    "read:data",
-                    "use:data",
-                    "use:data:entity:lookup",
+                    "manage:attachment",
+                    "manage:attachment:service_providing_group_product_application_attachment",
+                    "manage:auth",
                     "manage:data",
-                    "manage:data:party_membership",
+                    "manage:data:accounting_point_grid_location",
+                    "manage:data:controllable_unit",
+                    "manage:data:controllable_unit_service_provider",
+                    "manage:data:controllable_unit_suspension",
+                    "manage:data:controllable_unit_suspension_comment",
+                    "manage:data:entity",
                     "manage:data:entity_client",
+                    "manage:data:notification",
+                    "manage:data:party",
+                    "manage:data:party_membership",
+                    "manage:data:service_provider_product_application",
+                    "manage:data:service_provider_product_application_comment",
+                    "manage:data:service_provider_product_suspension",
+                    "manage:data:service_provider_product_suspension_comment",
+                    "manage:data:service_providing_group",
+                    "manage:data:service_providing_group_grid_prequalification",
+                    "manage:data:service_providing_group_grid_prequalification_comment",
+                    "manage:data:service_providing_group_grid_suspension",
+                    "manage:data:service_providing_group_grid_suspension_comment",
+                    "manage:data:service_providing_group_membership",
+                    "manage:data:service_providing_group_product_application",
+                    "manage:data:service_providing_group_product_application_comment",
+                    "manage:data:service_providing_group_product_suspension",
+                    "manage:data:service_providing_group_product_suspension_comment",
+                    "manage:data:system_operator_product_type",
+                    "manage:data:technical_resource",
+                    "read:attachment",
+                    "read:attachment:service_providing_group_product_application_attachment",
+                    "read:attachment:service_providing_group_product_application_attachment_history",
                     "read:auth",
+                    "read:data",
+                    "read:data:accounting_point",
+                    "read:data:accounting_point_balance_responsible_party",
+                    "read:data:accounting_point_bidding_zone",
+                    "read:data:accounting_point_end_user",
+                    "read:data:accounting_point_energy_supplier",
+                    "read:data:accounting_point_grid_location",
+                    "read:data:accounting_point_grid_location_history",
+                    "read:data:accounting_point_metering_grid_area",
+                    "read:data:controllable_unit",
+                    "read:data:controllable_unit_history",
+                    "read:data:controllable_unit_service_provider",
+                    "read:data:controllable_unit_service_provider_history",
+                    "read:data:controllable_unit_summary",
+                    "read:data:controllable_unit_suspension",
+                    "read:data:controllable_unit_suspension_comment",
+                    "read:data:controllable_unit_suspension_comment_history",
+                    "read:data:controllable_unit_suspension_history",
+                    "read:data:entity",
+                    "read:data:entity_client",
+                    "read:data:event",
+                    "read:data:identity",
+                    "read:data:metering_grid_area",
+                    "read:data:notice",
+                    "read:data:notification",
+                    "read:data:party",
+                    "read:data:party_history",
+                    "read:data:party_membership",
+                    "read:data:party_membership_history",
+                    "read:data:product_type",
+                    "read:data:service_provider_product_application",
+                    "read:data:service_provider_product_application_comment",
+                    "read:data:service_provider_product_application_comment_history",
+                    "read:data:service_provider_product_application_history",
+                    "read:data:service_provider_product_suspension",
+                    "read:data:service_provider_product_suspension_comment",
+                    "read:data:service_provider_product_suspension_comment_history",
+                    "read:data:service_provider_product_suspension_history",
+                    "read:data:service_providing_group",
+                    "read:data:service_providing_group_grid_prequalification",
+                    "read:data:service_providing_group_grid_prequalification_comment",
+                    "read:data:service_providing_group_grid_prequalification_comment_history",
+                    "read:data:service_providing_group_grid_prequalification_history",
+                    "read:data:service_providing_group_grid_suspension",
+                    "read:data:service_providing_group_grid_suspension_comment",
+                    "read:data:service_providing_group_grid_suspension_comment_history",
+                    "read:data:service_providing_group_grid_suspension_history",
+                    "read:data:service_providing_group_history",
+                    "read:data:service_providing_group_membership",
+                    "read:data:service_providing_group_membership_history",
+                    "read:data:service_providing_group_power_per_substation",
+                    "read:data:service_providing_group_product_application",
+                    "read:data:service_providing_group_product_application_comment",
+                    "read:data:service_providing_group_product_application_comment_history",
+                    "read:data:service_providing_group_product_application_history",
+                    "read:data:service_providing_group_product_suspension",
+                    "read:data:service_providing_group_product_suspension_comment",
+                    "read:data:service_providing_group_product_suspension_comment_history",
+                    "read:data:service_providing_group_product_suspension_history",
+                    "read:data:service_providing_group_summary",
+                    "read:data:system_operator_product_type",
+                    "read:data:system_operator_product_type_history",
+                    "read:data:technical_resource",
+                    "read:data:technical_resource_history",
+                    "read:grid",
+                    "read:grid:line",
+                    "read:grid:substation",
+                    "read:grid:substation_cluster",
                     "use:auth",
-                    "manage:auth"
+                    "use:data",
+                    "use:data:controllable_unit",
+                    "use:data:controllable_unit:lookup",
+                    "use:data:entity",
+                    "use:data:entity:lookup"
                 ]
             },
             "category": {
@@ -1033,6 +1140,17 @@
                     "never"
                 ],
                 "example": "always"
+            },
+            "service_providing_group_product_application_attachment_content_type": {
+                "description": "MIME type of the attachment.",
+                "format": "text",
+                "type": "string",
+                "example": "application/pdf",
+                "enum": [
+                    "application/pdf",
+                    "image/jpeg",
+                    "image/png"
+                ]
             },
             "service_providing_group_product_application_comment_visibility": {
                 "description": "The level of visibility of the comment.",
@@ -1931,6 +2049,88 @@
                     "technical_resource"
                 ]
             },
+            "service_providing_group_power_per_substation_response": {
+                "summary": "Response - Service Providing Group Power Per Substation",
+                "description": "Response schema - Per-substation breakdown of controllable units and their technical details for a service providing group.",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "Unique surrogate key (service providing group ID).",
+                        "format": "bigint",
+                        "type": "integer",
+                        "readOnly": true,
+                        "example": 4
+                    },
+                    "service_providing_group_id": {
+                        "description": "The ID of the service providing group this resource is a breakdown of.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "readOnly": true,
+                        "example": 4
+                    },
+                    "substations": {
+                        "description": "List of per-substation aggregates for the controllable units currently in the service providing group. Each element contains the substation identifier and name, plus count and maximum active power statistics for the controllable units connected to that substation. An element with null substation fields groups controllable units whose grid location has not yet been assigned.",
+                        "type": "array",
+                        "readOnly": true,
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "substation_business_id": {
+                                    "type": "string",
+                                    "nullable": true
+                                },
+                                "substation_name": {
+                                    "type": "string",
+                                    "nullable": true
+                                },
+                                "controllable_unit": {
+                                    "type": "object",
+                                    "properties": {
+                                        "count": {
+                                            "type": "integer"
+                                        },
+                                        "maximum_active_power": {
+                                            "$ref": "#/components/schemas/numeric_aggregation"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "example": [
+                            {
+                                "substation_business_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                                "substation_name": "Substation A",
+                                "controllable_unit": {
+                                    "count": 3,
+                                    "maximum_active_power": {
+                                        "sum": 150,
+                                        "average": 50,
+                                        "min": 30,
+                                        "max": 80
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    "service_providing_group": {
+                        "description": "Embedded service_providing_group",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/service_providing_group_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "id",
+                    "service_providing_group_id",
+                    "substations"
+                ]
+            },
             "service_providing_group_summary_response": {
                 "summary": "Response - Service Providing Group Summary",
                 "description": "Response schema - Aggregated summary of controllable units and technical resources belonging to a service providing group.",
@@ -2201,6 +2401,18 @@
                         "type": "integer",
                         "readOnly": true,
                         "example": 145
+                    },
+                    "power_per_substation": {
+                        "description": "Embedded service_providing_group_power_per_substation",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/service_providing_group_power_per_substation_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
                     },
                     "summary": {
                         "description": "Embedded service_providing_group_summary",
@@ -6049,6 +6261,21 @@
                         ],
                         "nullable": true
                     },
+                    "attachment": {
+                        "description": "Embedded service_providing_group_product_application_attachment",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/service_providing_group_product_application_attachment_response"
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    },
                     "comment": {
                         "description": "Embedded service_providing_group_product_application_comment",
                         "oneOf": [
@@ -6073,6 +6300,90 @@
                     "status",
                     "maximum_active_power_up",
                     "maximum_active_power_down",
+                    "recorded_at",
+                    "recorded_by"
+                ]
+            },
+            "service_providing_group_product_application_attachment_response": {
+                "summary": "Response - Service Providing Group Product Application Attachment",
+                "description": "Response schema - File attachment associated with a service providing group product application, allowing involved parties to exchange supporting documents.",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "Unique surrogate identifier.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "readOnly": true,
+                        "example": 9
+                    },
+                    "service_providing_group_product_application_id": {
+                        "description": "Reference to the service providing group product application.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "example": 7
+                    },
+                    "object_id": {
+                        "description": "Identifier of the object to which the attachment is linked.",
+                        "format": "text",
+                        "type": "string",
+                        "example": "08aa9239-d209-4c15-a916-2b4942ce45ee"
+                    },
+                    "filename": {
+                        "description": "Original filename of the attachment.",
+                        "format": "text",
+                        "type": "string",
+                        "example": "document.pdf"
+                    },
+                    "filename_sanitised": {
+                        "description": "Sanitised filename safe for storage.",
+                        "format": "text",
+                        "type": "string",
+                        "example": "document.pdf"
+                    },
+                    "content_type": {
+                        "$ref": "#/components/schemas/service_providing_group_product_application_attachment_content_type"
+                    },
+                    "size_bytes": {
+                        "description": "Size of the attachment in bytes.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "example": 204800
+                    },
+                    "recorded_at": {
+                        "description": "When the resource was recorded (created or updated) in the system.",
+                        "format": "date-time",
+                        "type": "string",
+                        "readOnly": true,
+                        "example": "2023-12-31T23:59:00+00:00"
+                    },
+                    "recorded_by": {
+                        "description": "The identity that recorded the resource.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "readOnly": true,
+                        "example": 145
+                    },
+                    "service_providing_group_product_application": {
+                        "description": "Embedded service_providing_group_product_application",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/service_providing_group_product_application_response"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "id",
+                    "service_providing_group_product_application_id",
+                    "object_id",
+                    "filename",
+                    "filename_sanitised",
+                    "content_type",
+                    "size_bytes",
                     "recorded_at",
                     "recorded_by"
                 ]
@@ -8433,6 +8744,98 @@
                     "recorded_at",
                     "recorded_by",
                     "service_providing_group_product_application_id"
+                ]
+            },
+            "service_providing_group_product_application_attachment_history_response": {
+                "summary": "Service Providing Group Product Application Attachment - history",
+                "description": "Service Providing Group Product Application Attachment - history",
+                "properties": {
+                    "id": {
+                        "description": "Unique surrogate identifier.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "readOnly": true,
+                        "example": 9
+                    },
+                    "service_providing_group_product_application_id": {
+                        "description": "Reference to the service providing group product application.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "example": 7
+                    },
+                    "object_id": {
+                        "description": "Identifier of the object to which the attachment is linked.",
+                        "format": "text",
+                        "type": "string",
+                        "example": "08aa9239-d209-4c15-a916-2b4942ce45ee"
+                    },
+                    "filename": {
+                        "description": "Original filename of the attachment.",
+                        "format": "text",
+                        "type": "string",
+                        "example": "document.pdf"
+                    },
+                    "filename_sanitised": {
+                        "description": "Sanitised filename safe for storage.",
+                        "format": "text",
+                        "type": "string",
+                        "example": "document.pdf"
+                    },
+                    "content_type": {
+                        "$ref": "#/components/schemas/service_providing_group_product_application_attachment_content_type"
+                    },
+                    "size_bytes": {
+                        "description": "Size of the attachment in bytes.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "example": 204800
+                    },
+                    "recorded_at": {
+                        "description": "When the resource was recorded (created or updated) in the system.",
+                        "format": "date-time",
+                        "type": "string",
+                        "readOnly": true,
+                        "example": "2023-12-31T23:59:00+00:00"
+                    },
+                    "recorded_by": {
+                        "description": "The identity that recorded the resource.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "readOnly": true,
+                        "example": 145
+                    },
+                    "service_providing_group_product_application_attachment_id": {
+                        "description": "Reference to the resource that was updated.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "example": 48
+                    },
+                    "replaced_by": {
+                        "description": "The identity that updated the resource when it was replaced.",
+                        "format": "bigint",
+                        "type": "integer",
+                        "nullable": true,
+                        "example": 90
+                    },
+                    "replaced_at": {
+                        "description": "When the resource was replaced in the system.",
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true,
+                        "example": "2024-07-07T10:00:00+00:00"
+                    }
+                },
+                "required": [
+                    "id",
+                    "service_providing_group_product_application_id",
+                    "object_id",
+                    "filename",
+                    "filename_sanitised",
+                    "content_type",
+                    "size_bytes",
+                    "recorded_at",
+                    "recorded_by",
+                    "service_providing_group_product_application_attachment_id"
                 ]
             },
             "service_providing_group_product_application_comment_history_response": {
@@ -12799,6 +13202,136 @@
                     {
                         "bearerAuth": [
                             "read:data:controllable_unit_summary"
+                        ]
+                    },
+                    {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
+                ]
+            }
+        },
+        "/service_providing_group_power_per_substation/{id}": {
+            "summary": "Service Providing Group Power Per Substation - single",
+            "description": "",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "schema": {
+                        "format": "bigint",
+                        "type": "integer"
+                    },
+                    "example": 14
+                }
+            ],
+            "get": {
+                "operationId": "read_service_providing_group_power_per_substation",
+                "summary": "Read Service Providing Group Power Per Substation",
+                "description": "Read [Service Providing Group Power Per Substation](https://elhub.github.io/flex-information-system/resources/service_providing_group_power_per_substation/)",
+                "tags": [
+                    "service_providing_group_power_per_substation"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/service_providing_group_power_per_substation_response"
+                                }
+                            }
+                        },
+                        "description": "OK",
+                        "links": {
+                            "service_providing_group_id": {
+                                "operationId": "read_service_providing_group",
+                                "parameters": {
+                                    "path.id": "$response.body#/service_providing_group_id"
+                                },
+                                "description": "The `service_providing_group_id` value returned in the response can be used as the `id` parameter in `GET /service_providing_group/{id}`."
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:data:service_providing_group_power_per_substation"
                         ]
                     },
                     {}
@@ -31902,6 +32435,857 @@
                 "parameters": []
             }
         },
+        "/service_providing_group_product_application_attachment": {
+            "summary": "Service Providing Group Product Application Attachment",
+            "description": "",
+            "get": {
+                "operationId": "list_service_providing_group_product_application_attachment",
+                "summary": "List Service Providing Group Product Application Attachment",
+                "description": "List [Service Providing Group Product Application Attachment](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application_attachment/)",
+                "tags": [
+                    "service_providing_group_product_application_attachment"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "Unique surrogate identifier.",
+                        "name": "id"
+                    },
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "Reference to the service providing group product application.",
+                        "name": "service_providing_group_product_application_id",
+                        "required": true
+                    },
+                    {
+                        "description": "Filtering Columns",
+                        "in": "query",
+                        "name": "select",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Ordering",
+                        "in": "query",
+                        "name": "order",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "offset",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_providing_group_product_application_attachment_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "206": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_providing_group_product_application_attachment_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "Partial Content"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "416": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Range Not Satisfiable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:attachment:service_providing_group_product_application_attachment"
+                        ]
+                    },
+                    {}
+                ]
+            },
+            "post": {
+                "operationId": "create_service_providing_group_product_application_attachment",
+                "summary": "Create Service Providing Group Product Application Attachment",
+                "description": "Create [Service Providing Group Product Application Attachment](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application_attachment/)",
+                "tags": [
+                    "service_providing_group_product_application_attachment"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "service_providing_group_product_application_id",
+                                    "file"
+                                ],
+                                "properties": {
+                                    "service_providing_group_product_application_id": {
+                                        "description": "Reference to the service_providing_group_product_application.",
+                                        "type": "integer",
+                                        "format": "bigint"
+                                    },
+                                    "file": {
+                                        "description": "File to upload.",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/service_providing_group_product_application_attachment_response"
+                                }
+                            }
+                        },
+                        "description": "Created"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "409": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Conflict"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:attachment:service_providing_group_product_application_attachment"
+                        ]
+                    }
+                ],
+                "parameters": []
+            }
+        },
+        "/service_providing_group_product_application_attachment/{id}": {
+            "summary": "Service Providing Group Product Application Attachment - single",
+            "description": "",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "schema": {
+                        "format": "bigint",
+                        "type": "integer"
+                    },
+                    "example": 14
+                }
+            ],
+            "get": {
+                "operationId": "read_service_providing_group_product_application_attachment",
+                "summary": "Read Service Providing Group Product Application Attachment",
+                "description": "Read [Service Providing Group Product Application Attachment](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application_attachment/)",
+                "tags": [
+                    "service_providing_group_product_application_attachment"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/service_providing_group_product_application_attachment_response"
+                                }
+                            }
+                        },
+                        "description": "OK",
+                        "links": {
+                            "service_providing_group_product_application_id": {
+                                "operationId": "read_service_providing_group_product_application",
+                                "parameters": {
+                                    "path.id": "$response.body#/service_providing_group_product_application_id"
+                                },
+                                "description": "The `service_providing_group_product_application_id` value returned in the response can be used as the `id` parameter in `GET /service_providing_group_product_application/{id}`."
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:attachment:service_providing_group_product_application_attachment"
+                        ]
+                    },
+                    {}
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "embed",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Comma-separated list of related resources to embed in the response."
+                    }
+                ]
+            },
+            "delete": {
+                "operationId": "delete_service_providing_group_product_application_attachment",
+                "summary": "Delete Service Providing Group Product Application Attachment",
+                "description": "Delete [Service Providing Group Product Application Attachment](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application_attachment/)",
+                "tags": [
+                    "service_providing_group_product_application_attachment"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/empty_object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "content": {},
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "manage:attachment:service_providing_group_product_application_attachment"
+                        ]
+                    }
+                ],
+                "parameters": []
+            }
+        },
+        "/service_providing_group_product_application_attachment_history": {
+            "summary": "Service Providing Group Product Application Attachment - history",
+            "description": "",
+            "parameters": [
+                {
+                    "in": "query",
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^eq\\.[0-9]+$"
+                    },
+                    "example": "eq.55",
+                    "description": "Identifier of the history record.",
+                    "name": "id"
+                },
+                {
+                    "in": "query",
+                    "schema": {
+                        "type": "string",
+                        "pattern": "^eq\\.[0-9]+$"
+                    },
+                    "example": "eq.55",
+                    "description": "Identifier of the Service Providing Group Product Application Attachment whose history we want to inspect.",
+                    "name": "service_providing_group_product_application_attachment_id"
+                }
+            ],
+            "get": {
+                "operationId": "list_service_providing_group_product_application_attachment_history",
+                "summary": "List Service Providing Group Product Application Attachment - history",
+                "description": "List [Service Providing Group Product Application Attachment - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application_attachment/)",
+                "tags": [
+                    "service_providing_group_product_application_attachment"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "Unique surrogate identifier.",
+                        "name": "id"
+                    },
+                    {
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^eq\\.[0-9]+$"
+                        },
+                        "example": "eq.55",
+                        "description": "Reference to the service providing group product application.",
+                        "name": "service_providing_group_product_application_id"
+                    },
+                    {
+                        "description": "Filtering Columns",
+                        "in": "query",
+                        "name": "select",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Ordering",
+                        "in": "query",
+                        "name": "order",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "offset",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Limiting and Pagination",
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_providing_group_product_application_attachment_history_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "206": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/service_providing_group_product_application_attachment_history_response"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "description": "Partial Content"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "416": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Range Not Satisfiable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:attachment:service_providing_group_product_application_attachment_history"
+                        ]
+                    },
+                    {}
+                ]
+            }
+        },
+        "/service_providing_group_product_application_attachment_history/{id}": {
+            "summary": "Service Providing Group Product Application Attachment - history record",
+            "description": "",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "schema": {
+                        "format": "bigint",
+                        "type": "integer"
+                    },
+                    "example": 14,
+                    "description": "Identifier of the history record we want to inspect."
+                }
+            ],
+            "get": {
+                "operationId": "read_service_providing_group_product_application_attachment_history",
+                "summary": "Read Service Providing Group Product Application Attachment - history",
+                "description": "Read [Service Providing Group Product Application Attachment - history](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application_attachment/)",
+                "tags": [
+                    "service_providing_group_product_application_attachment"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/service_providing_group_product_application_attachment_history_response"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "406": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Not Acceptable"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:attachment:service_providing_group_product_application_attachment_history"
+                        ]
+                    },
+                    {}
+                ],
+                "parameters": []
+            }
+        },
         "/service_providing_group_product_application_comment": {
             "summary": "Service Providing Group Product Application Comment",
             "description": "",
@@ -34947,6 +36331,110 @@
                         "description": "Comma-separated list of related resources to embed in the response."
                     }
                 ]
+            }
+        },
+        "/service_providing_group_product_application_attachment/{id}/download": {
+            "summary": "Service Providing Group Product Application Attachment - download",
+            "description": "",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "schema": {
+                        "format": "bigint",
+                        "type": "integer"
+                    },
+                    "example": 14
+                }
+            ],
+            "get": {
+                "operationId": "call_download_service_providing_group_product_application_attachment",
+                "summary": "Call download Service Providing Group Product Application Attachment",
+                "description": "Call download [Service Providing Group Product Application Attachment](https://elhub.github.io/flex-information-system/resources/service_providing_group_product_application_attachment/)",
+                "tags": [
+                    "service_providing_group_product_application_attachment"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": [
+                            "read:attachment:service_providing_group_product_application_attachment"
+                        ]
+                    },
+                    {}
+                ],
+                "responses": {
+                    "302": {
+                        "description": "Found — redirect to a pre-signed download URL",
+                        "headers": {
+                            "Location": {
+                                "description": "Pre-signed URL to download the attachment directly from object storage.",
+                                "schema": {
+                                    "type": "string",
+                                    "format": "uri"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/error_message"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/empty_object"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "parameters": []
             }
         }
     },

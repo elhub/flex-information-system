@@ -32,6 +32,7 @@ ktor = [
 ]
 logging = [
   "ktor-server-call-logging",
+  "logging-logstash-encoder",
   "logging-oshai-kotlin-logging",
   "logging-logback",
 ]
@@ -79,9 +80,11 @@ ktor-server-metrics-micrometer = { group = "io.ktor", name = "ktor-server-metric
 ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-server-netty = { group = "io.ktor", name = "ktor-server-netty", version.ref = "ktor" }
 ktor-server-swagger = { group = "io.ktor", name = "ktor-server-swagger", version.ref = "ktor" }
+ktor-server-double-receive = { group = "io.ktor", name = "ktor-server-double-receive", version.ref = "ktor" }
 ktor-server-status-pages = { group = "io.ktor", name = "ktor-server-status-pages", version.ref = "ktor" }
 krontab = { group = "dev.inmo", name = "krontab", version.ref = "krontab" }
 logging-logback = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback" }
+logging-logstash-encoder = { group = "net.logstash.logback", name = "logstash-logback-encoder", version.ref = "logstash-logback-encoder" }
 logging-slf4j-simple = { group = "org.slf4j", name = "slf4j-simple", version.ref = "slf4j" }
 logging-oshai-kotlin-logging = { group = "io.github.oshai", name = "kotlin-logging-jvm", version.ref = "kotlin-logging" }
 monitoring-cohort-hikari = { group = "com.sksamuel.cohort", name = "cohort-hikari", version.ref = "cohort" }
@@ -99,8 +102,11 @@ test-ktor-server-test-host = { group = "io.ktor", name = "ktor-server-test-host"
 test-mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 test-testcontainers = { group = "org.testcontainers", name = "testcontainers", version.ref = "testcontainers" }
 test-testcontainers-postgres = { group = "org.testcontainers", name = "testcontainers-postgresql", version.ref = "testcontainers" }
+test-testcontainers-s3mock = { group = "com.adobe.testing", name = "s3mock-testcontainers", version.ref = "s3mock" }
 test-mybatis = { group = "org.mybatis", name = "mybatis", version.ref = "mybatis" }
 test-wiremock = { group = "org.wiremock", name = "wiremock", version.ref = "wiremock" }
+storage-aws-s3 = { group = "aws.sdk.kotlin", name = "s3", version.ref = "aws-sdk-kotlin" }
+storage-pdfbox = { group = "org.apache.pdfbox", name = "pdfbox", version.ref = "pdfbox" }
 
 [metadata]
 format.version = "1.1"
@@ -116,13 +122,13 @@ koin-compiler = { id = "io.insert-koin.compiler.plugin", version.ref = "koin-plu
 arrow = "2.2.3"
 cohort = "2.9.10"
 elhub-gradle = "0.11.0"
-elhub-jsonapi-wrapper = "0.5.4"
+elhub-jsonapi-wrapper = "0.5.6"
 exposed = "1.3.1"
 gradle-docker = "0.17.21"
 hikari = "7.1.0"
 koin = "4.2.2"
-koin-plugin = "1.0.2"
-kotest = "6.2.2"
+koin-plugin = "1.1.0"
+kotest = "6.2.3"
 kotlin-logging = "8.0.4"
 kotlinx-datetime = "0.8.0-0.6.x-compat"
 kotlinx-serialization = "1.11.0"
@@ -133,9 +139,13 @@ micrometer = "1.17.0"
 mockk = "1.14.11"
 mybatis = "3.5.19"
 postgresql = "42.7.13"
-logback = "1.5.38"
+logback = "1.6.1"
+logstash-logback-encoder = "9.0"
 slf4j = "2.0.18"
 snakeyaml = "2.6"
 testcontainers = "2.0.5"
 wiremock = "3.13.2"
 krontab = "2.9.0"
+aws-sdk-kotlin = "1.8.18"
+pdfbox = "3.0.8"
+s3mock = "5.1.0"

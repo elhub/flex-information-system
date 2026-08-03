@@ -1,47 +1,39 @@
 --liquibase formatted sql
 -- Manually managed file
 
--- changeset flex:entity-client-party-scopes runOnChange:false endDelimiter:;
---preconditions onFail:MARK_RAN
---precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = 'flex' AND table_name = 'entity_client' AND column_name = 'scopes'
+-- changeset flex:entity-client-attachment-scope runOnChange:false endDelimiter:;
+-- validCheckSum: 9:c22a74dd5fc3961d8cc83d1cd1782472
 ALTER TABLE flex.entity_client
 DISABLE TRIGGER USER;
 
--- add scopes
-ALTER TABLE flex.entity_client
-ADD COLUMN scopes flex.scope [];
+UPDATE flex.entity_client
+SET scopes = array_append(scopes, 'manage:attachment'::flex.scope)
+WHERE scopes @> '{manage:data}' AND NOT (scopes @> '{manage:attachment}');
 
 UPDATE flex.entity_client
-SET scopes = '{manage:data, manage:auth}'
-WHERE scopes IS null OR array_length(scopes, 1) = 0;
-
-ALTER TABLE flex.entity_client
-ALTER COLUMN scopes SET NOT NULL;
-
-ALTER TABLE flex.entity_client
-ADD CONSTRAINT check_scopes_not_empty CHECK (
-    array_length(scopes, 1) > 0
-);
-
-ALTER TABLE flex.entity_client_history
-ADD COLUMN scopes flex.scope [];
+SET scopes = array_append(scopes, 'read:attachment'::flex.scope)
+WHERE
+    scopes @> '{read:data}'
+    AND NOT (scopes @> '{read:attachment}')
+    AND NOT (scopes @> '{manage:attachment}');
 
 UPDATE flex.entity_client_history
-SET scopes = '{manage:data, manage:auth}';
+SET scopes = array_append(scopes, 'manage:attachment'::flex.scope)
+WHERE scopes @> '{manage:data}' AND NOT (scopes @> '{manage:attachment}');
 
--- add party
-ALTER TABLE flex.entity_client
-ADD COLUMN party_id bigint;
-
-ALTER TABLE flex.entity_client_history
-ADD COLUMN party_id bigint;
+UPDATE flex.entity_client_history
+SET scopes = array_append(scopes, 'read:attachment'::flex.scope)
+WHERE
+    scopes IS NOT null
+    AND scopes @> '{read:data}'
+    AND NOT (scopes @> '{read:attachment}')
+    AND NOT (scopes @> '{manage:attachment}');
 
 ALTER TABLE flex.entity_client
 ENABLE TRIGGER USER;
 
--- trigger to restrict the party field (can only be added once the field is there)
-
 -- changeset flex:entity-client-check-assumable-party-function runOnChange:true endDelimiter:--
+-- trigger to restrict the party field (can only be added once the field is there)
 CREATE OR REPLACE FUNCTION entity_client_check_assumable_party()
 RETURNS trigger
 SECURITY DEFINER
@@ -75,3 +67,20 @@ BEFORE INSERT OR UPDATE ON entity_client
 FOR EACH ROW
 WHEN (new.party_id IS NOT null)
 EXECUTE FUNCTION entity_client_check_assumable_party();
+
+-- changeset flex:entity-client-add-grid-scopes runOnChange:false endDelimiter:;
+--preconditions onFail:MARK_RAN
+--precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM flex.entity_client WHERE 'read:grid' = ANY(scopes)
+ALTER TABLE flex.entity_client
+DISABLE TRIGGER USER;
+
+UPDATE flex.entity_client
+SET scopes = array_append(scopes, 'read:grid')
+WHERE NOT ('read:grid' = any(scopes));
+
+UPDATE flex.entity_client_history
+SET scopes = array_append(scopes, 'read:grid')
+WHERE NOT ('read:grid' = any(scopes));
+
+ALTER TABLE flex.entity_client
+ENABLE TRIGGER USER;

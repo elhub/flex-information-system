@@ -1,4 +1,5 @@
 -- AUTO-GENERATED FILE (scripts/openapi_to_db.py)
+-- noqa: disable=all
 
 CREATE SCHEMA api;
 
@@ -104,6 +105,11 @@ CREATE TABLE api.controllable_unit_summary (
     id bigint NOT NULL,
     controllable_unit_id bigint NOT NULL,
     technical_resource jsonb NOT NULL
+);
+CREATE TABLE api.service_providing_group_power_per_substation (
+    id bigint NOT NULL,
+    service_providing_group_id bigint NOT NULL,
+    substations jsonb [] NOT NULL
 );
 CREATE TABLE api.service_providing_group_summary (
     id bigint NOT NULL,
@@ -588,6 +594,31 @@ CREATE TABLE api.service_providing_group_product_application_history (
     verified_at timestamp with time zone NULL,
     ramping_capability text NULL,
     ramping_description text NULL,
+    recorded_by bigint NOT NULL,
+    recorded_at timestamp with time zone NOT NULL,
+    replaced_by bigint NULL,
+    replaced_at timestamp with time zone NULL
+);
+CREATE TABLE api.service_providing_group_product_application_attachment (
+    id bigint NOT NULL,
+    service_providing_group_product_application_id bigint NOT NULL,
+    object_id text NOT NULL,
+    filename text NOT NULL,
+    filename_sanitised text NOT NULL,
+    content_type text NOT NULL,
+    size_bytes bigint NOT NULL,
+    recorded_by bigint NOT NULL,
+    recorded_at timestamp with time zone NOT NULL
+);
+CREATE TABLE api.service_providing_group_product_application_attachment_history (
+    service_providing_group_product_application_attachment_id bigint NOT NULL,
+    id bigint NOT NULL,
+    service_providing_group_product_application_id bigint NOT NULL,
+    object_id text NOT NULL,
+    filename text NOT NULL,
+    filename_sanitised text NOT NULL,
+    content_type text NOT NULL,
+    size_bytes bigint NOT NULL,
     recorded_by bigint NOT NULL,
     recorded_at timestamp with time zone NOT NULL,
     replaced_by bigint NULL,

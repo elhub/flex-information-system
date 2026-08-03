@@ -2,6 +2,7 @@ import { Tabs } from "../../components/ui";
 import { ServiceProvidingGroupShowTable } from "./ServiceProvidingGroupShowTable";
 import { ServiceProvidingGroupShowProductApplicationsTable } from "./ServiceProvidingGroupShowProductApplicationsTable";
 import { ServiceProvidingGroupShowGridPrequalificationsTable } from "./ServiceProvidingGroupShowGridPrequalificationsTable";
+import { ServiceProvidingGroupShowPowerPerSubstationTable } from "./ServiceProvidingGroupShowPowerPerSubstationTable";
 import { ServiceProvidingGroupShowSPGSummarySection } from "./ServiceProvidingGroupShowSPGSummarySection";
 import { ServiceProvidingGroupSummary } from "../../generated-client";
 import { SpgShowViewModel } from "./useSpgShowViewModel";
@@ -29,6 +30,7 @@ export const ServiceProvidingGroupShowTabs = ({
           label="Grid prequalifications"
           value="grid_prequalifications"
         />
+        <Tabs.Tab label="Power per substation" value="power_per_substation" />
       </Tabs.List>
       <Tabs.Panel value="summary">
         {summary ? (
@@ -48,6 +50,9 @@ export const ServiceProvidingGroupShowTabs = ({
       </Tabs.Panel>
       <Tabs.Panel value="grid_prequalifications">
         <ServiceProvidingGroupShowGridPrequalificationsTable spgId={spgId} />
+      </Tabs.Panel>
+      <Tabs.Panel value="power_per_substation">
+        <ServiceProvidingGroupShowPowerPerSubstationTable spgId={spgId} />
       </Tabs.Panel>
     </Tabs>
   );

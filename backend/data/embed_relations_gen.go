@@ -104,6 +104,7 @@ var embedRelations = map[string]map[string]string{
 		"grid_prequalification": "service_providing_group_grid_prequalification",
 		"grid_suspension": "service_providing_group_grid_suspension",
 		"membership": "service_providing_group_membership",
+		"power_per_substation": "service_providing_group_power_per_substation",
 		"product_application": "service_providing_group_product_application",
 		"product_suspension": "service_providing_group_product_suspension",
 		"service_provider": "party",
@@ -119,6 +120,9 @@ var embedRelations = map[string]map[string]string{
 	},
 	"service_providing_group_membership": {
 		"controllable_unit": "controllable_unit",
+		"service_providing_group": "service_providing_group",
+	},
+	"service_providing_group_power_per_substation": {
 		"service_providing_group": "service_providing_group",
 	},
 	"service_providing_group_product_application": {

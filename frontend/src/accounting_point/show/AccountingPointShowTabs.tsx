@@ -46,11 +46,22 @@ export const AccountingPointShowTabs = ({
   const [selectedSubstation, setSelectedSubstation] =
     useState<Substation | null>(null);
 
+  const highlightedBusinessId =
+    selectedSubstation?.business_id ?? gridLocation?.business_id ?? null;
+
   const handleSubstationClick = canEditGridLocation
-    ? (substation: Substation) => setSelectedSubstation(substation)
+    ? (substation: Substation) => {
+        setSelectedSubstation(substation);
+      }
     : undefined;
 
-  const handleClearSelection = () => setSelectedSubstation(null);
+  const handleClearSelection = () => {
+    setSelectedSubstation(null);
+  };
+
+  const handleCancelSelection = () => {
+    setSelectedSubstation(null);
+  };
 
   return (
     <Tabs value={tab} onChange={setTab} className="relative top-[-24px]">
@@ -63,6 +74,7 @@ export const AccountingPointShowTabs = ({
             location={location}
             canViewGrid={userCanViewGrid(identity)}
             onSubstationClick={handleSubstationClick}
+            highlightedSubstationBusinessId={highlightedBusinessId}
           />
         )}
         {canViewGridLocation && (
@@ -72,6 +84,7 @@ export const AccountingPointShowTabs = ({
             userCanEdit={canEditGridLocation}
             selectedSubstation={selectedSubstation}
             onClearSelection={handleClearSelection}
+            onCancelSelection={handleCancelSelection}
           />
         )}
       </Tabs.Panel>

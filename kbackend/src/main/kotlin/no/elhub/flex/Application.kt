@@ -3,6 +3,7 @@ package no.elhub.flex
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.netty.EngineMain
+import io.ktor.server.plugins.doublereceive.DoubleReceive
 import kotlinx.datetime.TimeZone
 import no.elhub.flex.auth.FlexAuthentication
 import no.elhub.flex.config.Tracing
@@ -39,10 +40,10 @@ class FlexApp
  */
 fun Application.module() {
     install(Tracing.plugin)
+    install(DoubleReceive)
     configureLogging()
     configureSerialization()
     configureDatabase()
-    configureRouting()
 
     val jwtSecret = environment.config.property("flex.jwt-secret").getString()
     install(FlexAuthentication) {
@@ -56,6 +57,12 @@ fun Application.module() {
         "accounting-point-adapter.api-key" to { it },
         "accounting-point-adapter.sync-enabled" to { it.toBoolean() },
         "flex.timezone" to { TimeZone.of(it) },
+        "attachment-storage.bucket" to { it },
+        "attachment-storage.internal-endpoint" to { it },
+        "attachment-storage.public-endpoint" to { it },
+        "attachment-storage.region" to { it },
+        "attachment-storage.access-key" to { it },
+        "attachment-storage.secret-key" to { it },
     )
 
     startKoin<FlexApp> {
@@ -68,6 +75,7 @@ fun Application.module() {
         slf4jLogger()
     }
 
+    configureRouting()
     configureMetrics()
     configureHealth()
     configureScheduling()

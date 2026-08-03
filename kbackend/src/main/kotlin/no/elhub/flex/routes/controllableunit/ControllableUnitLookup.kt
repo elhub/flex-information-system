@@ -11,6 +11,7 @@ import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.controllableunit.db.ControllableUnitRepository
 import no.elhub.flex.event.db.EventRepository
 import no.elhub.flex.model.domain.ControllableUnitForLookup
+import no.elhub.flex.model.domain.ControllableUnitStatus
 import no.elhub.flex.model.domain.GSRN
 import no.elhub.flex.model.dto.generated.models.ControllableUnitLookupRequest
 import no.elhub.flex.model.dto.generated.models.ControllableUnitLookupResponse
@@ -90,7 +91,9 @@ class ControllableUnitLookup(
                         businessId = accountingPoint.businessId
                     ),
                     endUser = ControllableUnitLookupResponseEndUser(id = endUserId),
-                    controllableUnits = controllableUnits.toDtos(),
+                    controllableUnits = controllableUnits
+                        .filter { it.status != ControllableUnitStatus.TERMINATED }
+                        .toDtos(),
                 )
             }
         }.respondJson(call)

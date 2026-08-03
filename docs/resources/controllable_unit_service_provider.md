@@ -58,7 +58,10 @@ No policies.
 
 #### Balance Responsible Party
 
-No policies.
+| Policy key  | Policy                                                                            | Status |
+|-------------|-----------------------------------------------------------------------------------|--------|
+| CUSP-BRP001 | Read CUSP on CU where they are currently BRP on the AP.                           | DONE   |
+| CUSP-BRP002 | Read CUSP history on CU where they were BRP on the AP during the contract period. | DONE   |
 
 #### End User
 

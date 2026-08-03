@@ -1,5 +1,6 @@
 package no.elhub.flex.db
 
+import arrow.core.left
 import arrow.core.raise.either
 import arrow.core.right
 import io.kotest.assertions.arrow.core.shouldBeRight
@@ -106,6 +107,40 @@ class FlexTransactionTest : FunSpec({
             }.shouldBeRight()
 
             found shouldBe 1L
+        }
+
+        test("outer transaction is rolled back when block returns Left") {
+            val businessId = uniqueGsrn()
+
+            val result = with(internalPrincipal) {
+                flexTransaction<String, Unit> { conn ->
+                    conn.prepareStatement(
+                        "INSERT INTO flex.accounting_point (business_id) VALUES (?)"
+                    ).use { stmt ->
+                        stmt.setString(1, businessId)
+                        stmt.execute()
+                    }
+
+                    // returning Left must roll back the insert above
+                    "deliberate rollback".left()
+                }
+            }
+
+            result shouldBe "deliberate rollback".left()
+
+            val count = PostgresTestContainer.withConnection { conn ->
+                conn.prepareStatement(
+                    "SELECT count(*) FROM flex.accounting_point WHERE business_id = ?"
+                ).use { stmt ->
+                    stmt.setString(1, businessId)
+                    stmt.executeQuery().use { rs ->
+                        rs.next()
+                        rs.getLong(1)
+                    }
+                }
+            }
+
+            count shouldBe 0L
         }
 
         test("outer transaction is rolled back when block throws an exception") {

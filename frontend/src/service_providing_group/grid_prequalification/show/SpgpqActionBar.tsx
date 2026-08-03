@@ -55,6 +55,17 @@ const getActionsForStatus = (
             "This will mark the grid prequalification as approved.",
           variant: "primary",
         },
+        {
+          label: "Conditionally approve",
+          payload: {
+            status: "conditionally_approved",
+            prequalified_at: new Date().toISOString(),
+          },
+          confirmTitle: "Conditionally approve grid prequalification",
+          confirmContent:
+            "This will mark the grid prequalification as conditionally approved.",
+          variant: "primary",
+        },
         notApprovedAction,
       ];
     default:

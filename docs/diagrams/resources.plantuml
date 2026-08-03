@@ -16,6 +16,8 @@ digraph flex {
     controllable_unit_service_provider -> party     [label=end_user_id]
     controllable_unit_summary    [label="{controllable_unit_summary}|{Aggregated summary of\ntechnical resources\nbelonging to a\ncontrollable unit.}" shape=record style=solid]
     controllable_unit_summary -> controllable_unit     [label=controllable_unit_id]
+    service_providing_group_power_per_substation    [label="{service_providing_group_power_per_substation}|{Per-substation breakdown of controllable\nunits and their technical details for a\nservice providing group.}" shape=record style=solid]
+    service_providing_group_power_per_substation -> service_providing_group     [label=service_providing_group_id]
     service_providing_group_summary    [label="{service_providing_group_summary}|{Aggregated summary of\ncontrollable units and\ntechnical resources belonging\nto a service providing group.}" shape=record style=solid]
     service_providing_group_summary -> service_providing_group     [label=service_providing_group_id]
     service_providing_group    [label="{service_providing_group}|{Group of controllable\nunits}|{🕰️}" shape=record style=solid]

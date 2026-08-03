@@ -130,16 +130,18 @@ def test_cusp_fiso(data):
     hist_size = len(
         list(
             filter(
-                lambda h: cast(
-                    ControllableUnitServiceProviderHistoryResponse, h
-                ).controllable_unit_id
-                == cast(
-                    ControllableUnitServiceProviderResponse, cusp
-                ).controllable_unit_id
-                and cast(
-                    ControllableUnitServiceProviderHistoryResponse, h
-                ).service_provider_id
-                == sp_id,
+                lambda h: (
+                    cast(
+                        ControllableUnitServiceProviderHistoryResponse, h
+                    ).controllable_unit_id
+                    == cast(
+                        ControllableUnitServiceProviderResponse, cusp
+                    ).controllable_unit_id
+                    and cast(
+                        ControllableUnitServiceProviderHistoryResponse, h
+                    ).service_provider_id
+                    == sp_id
+                ),
                 hist,
             )
         )
@@ -173,16 +175,18 @@ def test_cusp_fiso(data):
     hist_size2 = len(
         list(
             filter(
-                lambda h: cast(
-                    ControllableUnitServiceProviderHistoryResponse, h
-                ).controllable_unit_id
-                == cast(
-                    ControllableUnitServiceProviderResponse, cusp
-                ).controllable_unit_id
-                and cast(
-                    ControllableUnitServiceProviderHistoryResponse, h
-                ).service_provider_id
-                == sp_id,
+                lambda h: (
+                    cast(
+                        ControllableUnitServiceProviderHistoryResponse, h
+                    ).controllable_unit_id
+                    == cast(
+                        ControllableUnitServiceProviderResponse, cusp
+                    ).controllable_unit_id
+                    and cast(
+                        ControllableUnitServiceProviderHistoryResponse, h
+                    ).service_provider_id
+                    == sp_id
+                ),
                 hist,
             )
         )
@@ -474,7 +478,7 @@ def test_cusp_eu(data):
 def test_rla_absence(data):
     (sts, _, _, _) = data
 
-    roles_without_rla = ["BRP", "ES", "MO", "TP"]
+    roles_without_rla = ["ES", "MO", "TP"]
 
     for role in roles_without_rla:
         cusps = list_controllable_unit_service_provider.sync(
