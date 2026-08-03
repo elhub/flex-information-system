@@ -25,6 +25,7 @@ if (fs.existsSync(keyPath) && fs.existsSync(certPath)) {
 export default defineConfig({
   optimizeDeps: {
     include: ["@mui/material/Tooltip"],
+    exclude: ["maplibre-gl"],
   },
   plugins: [react(), checker({ typescript: true }), tailwindcss()],
   define: {
