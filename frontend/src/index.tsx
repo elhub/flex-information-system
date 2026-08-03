@@ -3,6 +3,11 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import "maplibre-gl/dist/maplibre-gl.css";
+import { setWorkerUrl } from "maplibre-gl";
+// ?worker&url tells Vite to bundle the worker with its sibling maplibre-gl-shared.mjs
+// into a self-contained chunk. Plain ?url omits the sibling and breaks vector tile loading.
+import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
+setWorkerUrl(workerUrl);
 
 import React from "react";
 import ReactDOM from "react-dom/client";
