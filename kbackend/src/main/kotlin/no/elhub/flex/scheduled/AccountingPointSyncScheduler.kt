@@ -56,7 +56,7 @@ class AccountingPointSyncScheduler(
                             ?.asLocalMidnightInstant(timezone)
                             ?: Instant.todayLocalMidnight(timezone)
                         accountingPointService.synchronizeAccountingPoint(accountingPoint.businessId, validFrom).bind()
-                        logger.debug { "Completed ${accountingPoint.id}" }
+                        logger.debug { "Accounting point ${accountingPoint.id} completed" }
                     }.onRight {
                         metrics.accountingPointSync.success()
                     }.onLeft { e ->
@@ -64,7 +64,7 @@ class AccountingPointSyncScheduler(
                         metrics.accountingPointSync.failure()
                     }
                 }
-                logger.info { "Completed accounting point sync" }
+                logger.info { "Completed sync of batch" }
             }
         }.mapLeft { e ->
             logger.error { "Error processing batch: $e" }

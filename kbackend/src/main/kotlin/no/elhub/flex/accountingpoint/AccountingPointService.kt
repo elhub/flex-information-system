@@ -98,14 +98,7 @@ class AccountingPointServiceImpl(
         validFrom: Instant
     ): Either<AppError, Unit> = fetchAccountingPointData(accountingPointBusinessId, validFrom)
         .fold(
-            ifLeft = { e ->
-                if (e.code == HttpStatusCode.NotFound) {
-                    e.left()
-                } else {
-                    logger.warn { "Skipping sync" }
-                    Unit.right()
-                }
-            },
+            ifLeft = { e -> e.left() },
             ifRight = { adapterAccountingPoint ->
                 logger.debug { "Raw data from adapter: ${adapterAccountingPoint.anonymizedForLogging()}" }
                 with(FlexPrincipal.internalData()) {
