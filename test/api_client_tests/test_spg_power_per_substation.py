@@ -64,7 +64,7 @@ def test_service_providing_group_power_per_substation_aggregation(sts):
 
     # test case:
     # - 5 CUs in one SPG across 4 APs
-    # - AP 1001 has 2 CUs, while AP 1004 won't have a grid location
+    # - AP 1011 has 2 CUs, while AP 1014 won't have a grid location
     # - each CU has one TR: CU1 has MAP = 10, CU2 has MAP = 20, etc
     # - 2 APs will have the same substation, so that CUs 1, 2, 3 end up in the
     #   same substation row in the per-substation aggregates
@@ -94,7 +94,7 @@ def test_service_providing_group_power_per_substation_aggregation(sts):
         client=client_fiso,
         body=ControllableUnitCreateRequest(
             name="SPGPPS-CU1",
-            accounting_point_id=1001,
+            accounting_point_id=1011,
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
             maximum_active_power=100.0,
         ),
@@ -105,7 +105,7 @@ def test_service_providing_group_power_per_substation_aggregation(sts):
         client=client_fiso,
         body=ControllableUnitCreateRequest(
             name="SPGPPS-CU2",
-            accounting_point_id=1001,
+            accounting_point_id=1011,
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
             maximum_active_power=100.0,
         ),
@@ -116,7 +116,7 @@ def test_service_providing_group_power_per_substation_aggregation(sts):
         client=client_fiso,
         body=ControllableUnitCreateRequest(
             name="SPGPPS-CU3",
-            accounting_point_id=1002,
+            accounting_point_id=1012,
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
             maximum_active_power=100.0,
         ),
@@ -127,7 +127,7 @@ def test_service_providing_group_power_per_substation_aggregation(sts):
         client=client_fiso,
         body=ControllableUnitCreateRequest(
             name="SPGPPS-CU4",
-            accounting_point_id=1003,
+            accounting_point_id=1013,
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
             maximum_active_power=100.0,
         ),
@@ -138,7 +138,7 @@ def test_service_providing_group_power_per_substation_aggregation(sts):
         client=client_fiso,
         body=ControllableUnitCreateRequest(
             name="SPGPPS-CU5",
-            accounting_point_id=1004,
+            accounting_point_id=1014,
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
             maximum_active_power=100.0,
         ),
@@ -253,7 +253,7 @@ def test_service_providing_group_power_per_substation_aggregation(sts):
     apgl1 = create_accounting_point_grid_location.sync(
         client=client_fiso,
         body=AccountingPointGridLocationCreateRequest(
-            accounting_point_id=1001,
+            accounting_point_id=1011,
             object_type=AccountingPointGridLocationObjectType.SUBSTATION,
             business_id=sub_a_business_id,
             name="Bor 132 kV",
@@ -267,7 +267,7 @@ def test_service_providing_group_power_per_substation_aggregation(sts):
     apgl2 = create_accounting_point_grid_location.sync(
         client=client_fiso,
         body=AccountingPointGridLocationCreateRequest(
-            accounting_point_id=1002,
+            accounting_point_id=1012,
             object_type=AccountingPointGridLocationObjectType.SUBSTATION,
             business_id=sub_a_business_id,
             name="Bor 132 kV",
@@ -280,7 +280,7 @@ def test_service_providing_group_power_per_substation_aggregation(sts):
     apgl3 = create_accounting_point_grid_location.sync(
         client=client_fiso,
         body=AccountingPointGridLocationCreateRequest(
-            accounting_point_id=1003,
+            accounting_point_id=1013,
             object_type=AccountingPointGridLocationObjectType.SUBSTATION,
             business_id=sub_b_business_id,
             name="Sol transformatorstasjon",
@@ -290,7 +290,7 @@ def test_service_providing_group_power_per_substation_aggregation(sts):
     )
     assert isinstance(apgl3, AccountingPointGridLocationResponse)
 
-    # AP 1004 intentionally left without a grid location
+    # AP 1014 intentionally left without a grid location
 
     # query the per-substation breakdown again
 
