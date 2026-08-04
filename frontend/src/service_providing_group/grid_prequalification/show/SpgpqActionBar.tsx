@@ -63,7 +63,7 @@ const getActionsForStatus = (
           },
           confirmTitle: "Conditionally approve grid prequalification",
           confirmContent:
-            "This will mark the grid prequalification as conditionally approved.",
+            "This will mark the grid prequalification as conditionally approved. Conditions can be described with comments on the grid prequalification.",
           variant: "primary",
         },
         notApprovedAction,
