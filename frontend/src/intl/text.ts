@@ -1,5 +1,12 @@
 export type TextKey =
   | "entity_role"
+  | "tab.summary"
+  | "tab.controllable_units"
+  | "tab.technical_resources"
+  | "tab.product_applications"
+  | "tab.grid_prequalifications"
+  | "tab.power_per_substation"
+  | "controllable_unit"
   | "controllable_unit.is_small.true"
   | "controllable_unit.is_small.true.label"
   | "controllable_unit.is_small.false"
@@ -50,6 +57,13 @@ export type TextKey =
 export const text: Record<string, Record<TextKey, string>> = {
   en: {
     entity_role: "Entity",
+    "tab.summary": "Summary",
+    "tab.controllable_units": "Controllable units",
+    "tab.technical_resources": "Technical resources",
+    "tab.product_applications": "Product applications",
+    "tab.grid_prequalifications": "Grid prequalifications",
+    "tab.power_per_substation": "Power per substation",
+    controllable_unit: "Controllable unit",
     "controllable_unit.is_small.true": "Yes (Small, ≤ 50 kW of flexible power)",
     "controllable_unit.is_small.true.label": "Yes",
     "controllable_unit.is_small.false":
@@ -112,6 +126,13 @@ export const text: Record<string, Record<TextKey, string>> = {
   },
   nb: {
     entity_role: "Entitet",
+    "tab.summary": "Sammendrag",
+    "tab.controllable_units": "Kontrollerbare enheter",
+    "tab.technical_resources": "Tekniske ressurser",
+    "tab.product_applications": "Produktprekvalifiseringer",
+    "tab.grid_prequalifications": "Nettprekvalifiseringer",
+    "tab.power_per_substation": "Kapasitet per substasjon",
+    controllable_unit: "Kontrollerbar enhet",
     "controllable_unit.is_small.true": "Ja (Liten, ≤ 50 kW fleksibel effekt)",
     "controllable_unit.is_small.true.label": "Ja",
     "controllable_unit.is_small.false":

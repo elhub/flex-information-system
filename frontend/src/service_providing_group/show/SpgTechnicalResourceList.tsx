@@ -45,7 +45,7 @@ export const SpgTechnicalResourceList = ({ spgId }: Props) => {
   const columns: ColumnOf<SpgTechnicalResource[]>[] = [
     {
       key: "controllable_unit_name",
-      header: "Controllable unit",
+      header: translate("text.controllable_unit"),
     },
     { key: "name", header: translate("field.technical_resource.name") },
     {
