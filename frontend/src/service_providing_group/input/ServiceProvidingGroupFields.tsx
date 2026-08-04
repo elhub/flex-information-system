@@ -1,4 +1,5 @@
 import { useGetIdentity } from "ra-core";
+import { Divider, Heading } from "../../components/ui";
 import { zServiceProvidingGroupCreateRequest } from "../../generated-client/zod.gen";
 import { getFields } from "../../zod";
 import {
@@ -43,10 +44,18 @@ export const ServiceProvidingGroupFields = ({ isEdit }: Props) => {
           description
         />
       )}
+      <div className="pt-6 pb-3">
+        <Divider />
+      </div>
+      <Heading level={4} size="small" className="pb-3">
+        Other
+      </Heading>
       <TextAreaInput
         {...fields.additional_information}
         rows={5}
         description
+        placeholder="This field is optional and can be left empty."
+        descriptionOverride="This field is meant to capture any additional information about the service providing group that might be relevant."
         tooltip={false}
         warning="Please remember not to write any sensitive (power/market/personal) information in this field."
       />
