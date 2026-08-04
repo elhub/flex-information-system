@@ -19,9 +19,11 @@ export const SpgTechnicalResourceList = ({ spgId }: Props) => {
   const translateEnum = useTranslateEnum();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const selectedTechnicalResourceId = searchParams.get("technical_resource")
-    ? Number(searchParams.get("technical_resource"))
-    : null;
+  const selectedTechnicalResourceId = (() => {
+    const value = searchParams.get("technical_resource");
+    const id = value ? Number(value) : NaN;
+    return Number.isFinite(id) ? id : null;
+  })();
 
   const setSelectedTechnicalResourceId = (id: number | null) =>
     setSearchParams(
