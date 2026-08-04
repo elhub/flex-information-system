@@ -7,6 +7,7 @@ import { ServiceProvidingGroupShowSPGSummarySection } from "./ServiceProvidingGr
 import { ServiceProvidingGroupSummary } from "../../generated-client";
 import { SpgShowViewModel } from "./useSpgShowViewModel";
 import { useTabSearchParam } from "../../hooks/useTabSearchParam";
+import { SpgTechnicalResourceList } from "./SpgTechnicalResourceList";
 
 type Props = {
   spgId: number;
@@ -25,6 +26,7 @@ export const ServiceProvidingGroupShowTabs = ({
       <Tabs.List>
         <Tabs.Tab label="Summary" value="summary" />
         <Tabs.Tab label="Controllable units" value="controllable_units" />
+        <Tabs.Tab label="Technical resources" value="technical_resources" />
         <Tabs.Tab label="Product applications" value="product_applications" />
         <Tabs.Tab
           label="Grid prequalifications"
@@ -44,6 +46,9 @@ export const ServiceProvidingGroupShowTabs = ({
       </Tabs.Panel>
       <Tabs.Panel value="controllable_units">
         <ServiceProvidingGroupShowTable spgId={spgId} />
+      </Tabs.Panel>
+      <Tabs.Panel value="technical_resources">
+        <SpgTechnicalResourceList spgId={spgId} />
       </Tabs.Panel>
       <Tabs.Panel value="product_applications">
         <ServiceProvidingGroupShowProductApplicationsTable spgId={spgId} />
