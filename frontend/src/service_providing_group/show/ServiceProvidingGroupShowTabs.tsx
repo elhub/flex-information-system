@@ -7,6 +7,8 @@ import { ServiceProvidingGroupShowSPGSummarySection } from "./ServiceProvidingGr
 import { ServiceProvidingGroupSummary } from "../../generated-client";
 import { SpgShowViewModel } from "./useSpgShowViewModel";
 import { useTabSearchParam } from "../../hooks/useTabSearchParam";
+import { SpgTechnicalResourceList } from "./SpgTechnicalResourceList";
+import { useTranslate } from "ra-core";
 
 type Props = {
   spgId: number;
@@ -20,17 +22,31 @@ export const ServiceProvidingGroupShowTabs = ({
   summary,
 }: Props) => {
   const [tab, setTab] = useTabSearchParam("summary");
+  const translate = useTranslate();
   return (
     <Tabs value={tab} onChange={setTab} className="relative top-[-24px]">
       <Tabs.List>
-        <Tabs.Tab label="Summary" value="summary" />
-        <Tabs.Tab label="Controllable units" value="controllable_units" />
-        <Tabs.Tab label="Product applications" value="product_applications" />
+        <Tabs.Tab label={translate("text.tab.summary")} value="summary" />
         <Tabs.Tab
-          label="Grid prequalifications"
+          label={translate("text.tab.controllable_units")}
+          value="controllable_units"
+        />
+        <Tabs.Tab
+          label={translate("text.tab.technical_resources")}
+          value="technical_resources"
+        />
+        <Tabs.Tab
+          label={translate("text.tab.product_applications")}
+          value="product_applications"
+        />
+        <Tabs.Tab
+          label={translate("text.tab.grid_prequalifications")}
           value="grid_prequalifications"
         />
-        <Tabs.Tab label="Power per substation" value="power_per_substation" />
+        <Tabs.Tab
+          label={translate("text.tab.power_per_substation")}
+          value="power_per_substation"
+        />
       </Tabs.List>
       <Tabs.Panel value="summary">
         {summary ? (
@@ -44,6 +60,9 @@ export const ServiceProvidingGroupShowTabs = ({
       </Tabs.Panel>
       <Tabs.Panel value="controllable_units">
         <ServiceProvidingGroupShowTable spgId={spgId} />
+      </Tabs.Panel>
+      <Tabs.Panel value="technical_resources">
+        <SpgTechnicalResourceList spgId={spgId} />
       </Tabs.Panel>
       <Tabs.Panel value="product_applications">
         <ServiceProvidingGroupShowProductApplicationsTable spgId={spgId} />
