@@ -2,16 +2,16 @@ import {
   listServiceProvidingGroupProductApplicationAttachment,
   createServiceProvidingGroupProductApplicationAttachment,
   deleteServiceProvidingGroupProductApplicationAttachment,
-  callDownloadServiceProvidingGroupProductApplicationAttachment,
 } from "../../generated-client";
 import { throwOnError } from "../../util";
+import { apiURL } from "../../httpConfig";
 
 // generic fetch functions for a given attachment resource
 export type AttachmentClient = {
   list: (parentId: number) => Promise<AttachmentItem[]>;
   upload: (parentId: number, file: File) => Promise<unknown>;
   delete: (attachmentId: number) => Promise<unknown>;
-  download: (attachmentId: number) => Promise<Blob>;
+  downloadUrl: (attachmentId: number) => string;
 };
 
 // common shape shared by all attachment resources
@@ -43,11 +43,8 @@ export const attachmentRegistry = {
       deleteServiceProvidingGroupProductApplicationAttachment({
         path: { id: attachmentId },
       }).then(throwOnError),
-    download: (attachmentId: number) =>
-      callDownloadServiceProvidingGroupProductApplicationAttachment({
-        path: { id: attachmentId },
-        parseAs: "blob",
-      }).then(throwOnError) as Promise<Blob>,
+    downloadUrl: (attachmentId: number) =>
+      `${apiURL}/service_providing_group_product_application_attachment/${attachmentId}/download`,
   },
 } satisfies Record<string, AttachmentClient>;
 

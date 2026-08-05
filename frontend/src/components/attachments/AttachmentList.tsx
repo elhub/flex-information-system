@@ -30,63 +30,25 @@ function formatDate(iso: string): string {
   });
 }
 
-// trigger a browser download from a blob
-async function triggerDownload(
-  onDownload: (id: number) => Promise<Blob>,
-  attachmentId: number,
-  fileName: string,
-) {
-  const blob = await onDownload(attachmentId);
-
-  // temporary object URL that will allow downloading without changing pages
-  const objectUrl = URL.createObjectURL(blob);
-
-  // add download link, click it, remove it
-  const a = document.createElement("a");
-  a.href = objectUrl;
-  a.download = fileName;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-
-  URL.revokeObjectURL(objectUrl);
-}
-
 // AttachmentCard (component showing each attachment in the list)
 
 type AttachmentCardProps = {
   attachment: AttachmentItem;
-  onDownload: (id: number) => Promise<Blob>;
+  downloadUrl: string;
   onDelete: () => Promise<void>;
   canDelete: boolean;
 };
 
 function AttachmentCard({
   attachment,
-  onDownload,
+  downloadUrl,
   onDelete,
   canDelete,
 }: AttachmentCardProps) {
   const [downloadHovered, setDownloadHovered] = useState(false);
   const [deleteHovered, setDeleteHovered] = useState(false);
-  const [isDownloading, setIsDownloading] = useState(false);
-  const [downloadError, setDownloadError] = useState(false);
 
   const isImage = attachment.content_type.startsWith("image/");
-
-  async function handleDownload() {
-    setDownloadError(false);
-    setIsDownloading(true);
-    try {
-      await triggerDownload(onDownload, attachment.id, attachment.filename);
-    } catch {
-      setDownloadError(true);
-    } finally {
-      setIsDownloading(false);
-    }
-  }
-
-  // confirm popup on delete to ensure no accidental delete is possible
   const { buttonProps: deleteButtonProps, dialog: deleteDialog } =
     useConfirmAction({
       title: "Delete attachment",
@@ -117,15 +79,15 @@ function AttachmentCard({
       style={{ backgroundColor: "var(--eds-global-color-white)" }}
       className="flex items-center gap-3 px-4 py-3 border border-solid border-semantic-border-default rounded-md"
     >
-      {/* file-type icon button, switches to download icon on hover */}
-      <button
-        type="button"
+      {/* file-type icon link, switches to download icon on hover */}
+      <a
+        href={downloadUrl}
+        target="_blank"
+        rel="noreferrer"
         aria-label={`Download ${attachment.filename}`}
         onMouseEnter={() => setDownloadHovered(true)}
         onMouseLeave={() => setDownloadHovered(false)}
-        onClick={handleDownload}
-        disabled={isDownloading}
-        className="shrink-0 flex items-center justify-center w-9 h-9 rounded-md text-semantic-text-subtle hover:text-semantic-background-action-primary hover:bg-semantic-background-action-selected transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-wait"
+        className="shrink-0 flex items-center justify-center w-9 h-9 rounded-md text-semantic-text-subtle hover:text-semantic-background-action-primary hover:bg-semantic-background-action-selected transition-colors cursor-pointer"
       >
         {downloadHovered ? (
           <IconDownload size="medium" />
@@ -134,7 +96,7 @@ function AttachmentCard({
         ) : (
           <IconDocument size="medium" />
         )}
-      </button>
+      </a>
 
       {/* name + metadata */}
       <div className="flex-1 min-w-0">
@@ -145,11 +107,6 @@ function AttachmentCard({
           {attachment.content_type} · {formatBytes(attachment.size_bytes)} ·{" "}
           {formatDate(attachment.recorded_at)}
         </p>
-        {downloadError && (
-          <p className="text-xs text-semantic-text-error mt-0.5">
-            Download failed. Please try again.
-          </p>
-        )}
       </div>
 
       {/* delete button */}
@@ -307,7 +264,7 @@ export function AttachmentList({ resource, parentId }: AttachmentListProps) {
             <AttachmentCard
               key={attachment.id}
               attachment={attachment}
-              onDownload={client.download}
+              downloadUrl={client.downloadUrl(attachment.id)}
               onDelete={() =>
                 deleteAttachment.mutateAsync(attachment.id).then(() => {})
               }
