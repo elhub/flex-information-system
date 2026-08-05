@@ -1,4 +1,4 @@
-FROM postgres:17.9-trixie
+FROM postgres:17.10-trixie
 
 RUN apt-get update \
       && apt-get install -y --no-install-recommends \

@@ -18,6 +18,9 @@ if TYPE_CHECKING:
     )
     from ..models.service_providing_group_grid_suspension_response import ServiceProvidingGroupGridSuspensionResponse
     from ..models.service_providing_group_membership_response import ServiceProvidingGroupMembershipResponse
+    from ..models.service_providing_group_power_per_substation_response import (
+        ServiceProvidingGroupPowerPerSubstationResponse,
+    )
     from ..models.service_providing_group_product_application_response import (
         ServiceProvidingGroupProductApplicationResponse,
     )
@@ -46,6 +49,8 @@ class ServiceProvidingGroupResponse:
         recorded_by (int): The identity that recorded the resource. Example: 145.
         additional_information (None | str | Unset): Free text field for extra information about the service providing
             group if needed.
+        power_per_substation (None | ServiceProvidingGroupPowerPerSubstationResponse | Unset): Embedded
+            service_providing_group_power_per_substation
         summary (None | ServiceProvidingGroupSummaryResponse | Unset): Embedded service_providing_group_summary
         service_provider (None | PartyResponse | Unset): Embedded party
         membership (list[ServiceProvidingGroupMembershipResponse] | None | Unset): Embedded
@@ -68,6 +73,7 @@ class ServiceProvidingGroupResponse:
     recorded_at: datetime.datetime
     recorded_by: int
     additional_information: None | str | Unset = UNSET
+    power_per_substation: None | ServiceProvidingGroupPowerPerSubstationResponse | Unset = UNSET
     summary: None | ServiceProvidingGroupSummaryResponse | Unset = UNSET
     service_provider: None | PartyResponse | Unset = UNSET
     membership: list[ServiceProvidingGroupMembershipResponse] | None | Unset = UNSET
@@ -79,6 +85,9 @@ class ServiceProvidingGroupResponse:
 
     def to_dict(self) -> dict[str, Any]:
         from ..models.party_response import PartyResponse
+        from ..models.service_providing_group_power_per_substation_response import (
+            ServiceProvidingGroupPowerPerSubstationResponse,
+        )
         from ..models.service_providing_group_summary_response import ServiceProvidingGroupSummaryResponse
 
         id = self.id
@@ -100,6 +109,14 @@ class ServiceProvidingGroupResponse:
             additional_information = UNSET
         else:
             additional_information = self.additional_information
+
+        power_per_substation: dict[str, Any] | None | Unset
+        if isinstance(self.power_per_substation, Unset):
+            power_per_substation = UNSET
+        elif isinstance(self.power_per_substation, ServiceProvidingGroupPowerPerSubstationResponse):
+            power_per_substation = self.power_per_substation.to_dict()
+        else:
+            power_per_substation = self.power_per_substation
 
         summary: dict[str, Any] | None | Unset
         if isinstance(self.summary, Unset):
@@ -192,6 +209,8 @@ class ServiceProvidingGroupResponse:
         )
         if additional_information is not UNSET:
             field_dict["additional_information"] = additional_information
+        if power_per_substation is not UNSET:
+            field_dict["power_per_substation"] = power_per_substation
         if summary is not UNSET:
             field_dict["summary"] = summary
         if service_provider is not UNSET:
@@ -219,6 +238,9 @@ class ServiceProvidingGroupResponse:
             ServiceProvidingGroupGridSuspensionResponse,
         )
         from ..models.service_providing_group_membership_response import ServiceProvidingGroupMembershipResponse
+        from ..models.service_providing_group_power_per_substation_response import (
+            ServiceProvidingGroupPowerPerSubstationResponse,
+        )
         from ..models.service_providing_group_product_application_response import (
             ServiceProvidingGroupProductApplicationResponse,
         )
@@ -250,6 +272,23 @@ class ServiceProvidingGroupResponse:
             return cast(None | str | Unset, data)
 
         additional_information = _parse_additional_information(d.pop("additional_information", UNSET))
+
+        def _parse_power_per_substation(data: object) -> None | ServiceProvidingGroupPowerPerSubstationResponse | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                power_per_substation_type_0 = ServiceProvidingGroupPowerPerSubstationResponse.from_dict(data)
+
+                return power_per_substation_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(None | ServiceProvidingGroupPowerPerSubstationResponse | Unset, data)
+
+        power_per_substation = _parse_power_per_substation(d.pop("power_per_substation", UNSET))
 
         def _parse_summary(data: object) -> None | ServiceProvidingGroupSummaryResponse | Unset:
             if data is None:
@@ -420,6 +459,7 @@ class ServiceProvidingGroupResponse:
             recorded_at=recorded_at,
             recorded_by=recorded_by,
             additional_information=additional_information,
+            power_per_substation=power_per_substation,
             summary=summary,
             service_provider=service_provider,
             membership=membership,

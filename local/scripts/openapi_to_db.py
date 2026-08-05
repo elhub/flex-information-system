@@ -95,7 +95,11 @@ if __name__ == "__main__":
 
     with open(output_file_backend_schema, "w") as backend_schema_f:
         print(
-            "-- AUTO-GENERATED FILE (scripts/openapi_to_db.py)\n",
+            "-- AUTO-GENERATED FILE (scripts/openapi_to_db.py)",
+            file=backend_schema_f,
+        )
+        print(
+            "-- noqa: disable=all\n",
             file=backend_schema_f,
         )
         print(

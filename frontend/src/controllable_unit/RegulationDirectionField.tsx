@@ -8,15 +8,14 @@ type RegulationDirectionFieldProps = {
   label?: string | boolean;
 };
 
-export const RegulationDirectionField = ({
-  source,
-}: RegulationDirectionFieldProps) => {
+type RegulationDirectionIconProps = {
+  value: ControllableUnitRegulationDirection;
+};
+
+export const RegulationDirectionIcon = ({
+  value,
+}: RegulationDirectionIconProps) => {
   const translate = useTranslate();
-  const record = useRecordContext();
-  const value: ControllableUnitRegulationDirection = record?.[source];
-
-  if (!value) return null;
-
   const label = translate(
     `enum.controllable_unit.regulation_direction.${value}`,
   );
@@ -36,4 +35,15 @@ export const RegulationDirectionField = ({
       </span>
     </Tooltip>
   );
+};
+
+export const RegulationDirectionField = ({
+  source,
+}: RegulationDirectionFieldProps) => {
+  const record = useRecordContext();
+  const value: ControllableUnitRegulationDirection = record?.[source];
+
+  if (!value) return null;
+
+  return <RegulationDirectionIcon value={value} />;
 };

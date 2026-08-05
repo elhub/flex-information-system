@@ -4,8 +4,8 @@ import {
   IconStopWatch15,
   IconWarningCircle,
 } from "@elhub/ds-icons";
-import { ServiceProvidingGroupProductApplicationStatus } from "../../../generated-client";
-import { StatusVariant } from "../../../components/EDS-ra/fields/StatusBadgeField";
+import { ServiceProvidingGroupProductApplicationStatus } from "../../generated-client";
+import { StatusVariant } from "../../components/EDS-ra/fields/StatusBadgeField";
 
 export const spgpaStatusVariantMap: Record<
   ServiceProvidingGroupProductApplicationStatus,

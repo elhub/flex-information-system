@@ -1,4 +1,5 @@
 import { Loader, Button } from "../../components/ui";
+import { SpgpqStatusBadge } from "../../components/SpgpqStatusBadge";
 import { Column, SimpleTable } from "../../components/SimpleTable";
 import {
   SpgGridPrequalificationRow,
@@ -40,6 +41,7 @@ export const ServiceProvidingGroupShowGridPrequalificationsTable = ({
     {
       key: "status",
       header: t("service_providing_group_grid_prequalification.status"),
+      render: (value) => <SpgpqStatusBadge status={String(value)} />,
     },
     {
       key: "prequalifiedAt",

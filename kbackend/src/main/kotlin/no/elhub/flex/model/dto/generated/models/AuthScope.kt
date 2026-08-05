@@ -178,6 +178,8 @@ public enum class AuthScope(
   READ_DATA_SERVICE_PROVIDING_GROUP_MEMBERSHIP("read:data:service_providing_group_membership"),
   @SerialName("read:data:service_providing_group_membership_history")
   READ_DATA_SERVICE_PROVIDING_GROUP_MEMBERSHIP_HISTORY("read:data:service_providing_group_membership_history"),
+  @SerialName("read:data:service_providing_group_power_per_substation")
+  READ_DATA_SERVICE_PROVIDING_GROUP_POWER_PER_SUBSTATION("read:data:service_providing_group_power_per_substation"),
   @SerialName("read:data:service_providing_group_product_application")
   READ_DATA_SERVICE_PROVIDING_GROUP_PRODUCT_APPLICATION("read:data:service_providing_group_product_application"),
   @SerialName("read:data:service_providing_group_product_application_comment")

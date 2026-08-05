@@ -118,6 +118,7 @@ class AuthScope(StrEnum):
     READDATASERVICE_PROVIDING_GROUP_HISTORY = "read:data:service_providing_group_history"
     READDATASERVICE_PROVIDING_GROUP_MEMBERSHIP = "read:data:service_providing_group_membership"
     READDATASERVICE_PROVIDING_GROUP_MEMBERSHIP_HISTORY = "read:data:service_providing_group_membership_history"
+    READDATASERVICE_PROVIDING_GROUP_POWER_PER_SUBSTATION = "read:data:service_providing_group_power_per_substation"
     READDATASERVICE_PROVIDING_GROUP_PRODUCT_APPLICATION = "read:data:service_providing_group_product_application"
     READDATASERVICE_PROVIDING_GROUP_PRODUCT_APPLICATION_COMMENT = (
         "read:data:service_providing_group_product_application_comment"

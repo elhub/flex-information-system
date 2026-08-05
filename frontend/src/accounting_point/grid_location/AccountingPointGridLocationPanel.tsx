@@ -23,11 +23,12 @@ export const AccountingPointGridLocationPanel = ({
   onCancelSelection?: () => void;
 }) => {
   const translate = useTranslate();
-  const [isEditingManual, setIsEditingManual] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   // when a substation is clicked on the map, open the edit form
-  const isEditing = isEditingManual || (!!selectedSubstation && userCanEdit);
-  const setIsEditing = (value: boolean) => setIsEditingManual(value);
+  if (!!selectedSubstation && userCanEdit && !isEditing) {
+    setIsEditing(true);
+  }
 
   const handleDone = () => {
     setIsEditing(false);
@@ -56,7 +57,10 @@ export const AccountingPointGridLocationPanel = ({
           apId={apId}
           gridLocation={gridLocation}
           onDone={handleDone}
-          onCancel={onCancelSelection ?? handleDone}
+          onCancel={() => {
+            setIsEditing(false);
+            onCancelSelection?.();
+          }}
           selectedSubstation={selectedSubstation}
           onClearMapSelection={onClearSelection}
         />

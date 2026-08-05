@@ -3,14 +3,11 @@ import {
   useRecordContext,
   ResourceContextProvider,
 } from "ra-core";
+import { FunctionField } from "react-admin";
 import { Link } from "react-router-dom";
 import { Datagrid, List } from "../../components/EDS-ra/list";
-import {
-  ReferenceField,
-  StatusBadgeField,
-  TextField,
-} from "../../components/EDS-ra/fields";
-import { spgpaStatusVariantMap } from "./show/spgpaStatus";
+import { ReferenceField, TextField } from "../../components/EDS-ra/fields";
+import { SpgpaStatusBadge } from "../../components/SpgpaStatusBadge";
 import { Button, Tooltip } from "../../components/ui";
 import { IconPlus, IconQuestionCircleOutlined } from "@elhub/ds-icons";
 import { Permissions } from "../../auth/permissions";
@@ -113,10 +110,11 @@ export const ServiceProvidingGroupProductApplicationList = () => {
             <TextField source="name" />
           </ReferenceField>
           <ProductTypeArrayField source={fields.product_type_ids.source} />
-          <StatusBadgeField
-            source={fields.status.source}
-            enumKey="service_providing_group_product_application.status"
-            variantMap={spgpaStatusVariantMap}
+          <FunctionField
+            label={fields.status.source}
+            render={(record: { status: string }) => (
+              <SpgpaStatusBadge status={record.status} />
+            )}
           />
         </Datagrid>
       </List>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Form, ResourceContextProvider, useNotify } from "ra-core";
 import { useFormContext } from "react-hook-form";
 import { useQueryClient } from "@tanstack/react-query";
@@ -135,34 +135,41 @@ export const AccountingPointGridLocationInput = ({
   const notify = useNotify();
   const isCreate = gridLocation === undefined;
 
-  // initial form values + override with selected substation if present
-  const baseRecord: Partial<
-    z.infer<typeof zAccountingPointGridLocationCreateRequest>
-  > = isCreate
-    ? {
-        accounting_point_id: apId,
-        object_type: "substation",
-        quality: "guessed",
-      }
-    : {
-        accounting_point_id: apId,
-        name: gridLocation.name,
-        object_type: gridLocation.object_type,
-        business_id: gridLocation.business_id ?? undefined,
-        nominal_voltage: gridLocation.nominal_voltage,
-        quality: gridLocation.quality,
-        additional_information: gridLocation.additional_information ?? "",
-      };
+  // clearing selectedSubstation by picking via the combobox should not reset
+  // the form fields (namely nominal voltage) so we compute the initial form
+  // values once when the input component loads and then only explicit
+  // manipulation of the form state can cause changes
+  const record = useMemo(() => {
+    const base: Partial<
+      z.infer<typeof zAccountingPointGridLocationCreateRequest>
+    > = isCreate
+      ? {
+          accounting_point_id: apId,
+          object_type: "substation",
+          quality: "guessed",
+        }
+      : {
+          accounting_point_id: apId,
+          name: gridLocation.name,
+          object_type: gridLocation.object_type,
+          business_id: gridLocation.business_id ?? undefined,
+          nominal_voltage: gridLocation.nominal_voltage,
+          quality: gridLocation.quality,
+          additional_information: gridLocation.additional_information ?? "",
+        };
 
-  const record = selectedSubstation
-    ? {
-        ...baseRecord,
+    if (selectedSubstation) {
+      return {
+        ...base,
         name: selectedSubstation.name,
         object_type: "substation" as const,
         business_id: selectedSubstation.business_id,
         nominal_voltage: undefined,
-      }
-    : baseRecord;
+      };
+    }
+    return base;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onSubmit = async (values: object) => {
     if (isCreate) {

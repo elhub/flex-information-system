@@ -8,7 +8,9 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.content.MultiPartData
 import io.ktor.http.content.PartData
+import io.ktor.server.request.receiveChannel
 import io.ktor.server.routing.RoutingCall
+import io.ktor.utils.io.readAvailable
 import io.ktor.utils.io.toByteArray
 import no.elhub.flex.auth.AccessTokenKey
 import no.elhub.flex.auth.FlexPrincipal
@@ -97,7 +99,18 @@ class AttachmentHandler(
         either {
             val principal = call.attributes[AccessTokenKey].toFlexPrincipal()
 
-            // extract information from multipart body
+            // TEMPORARY
+            // log raw body first 8 KB to see if garbage has been added to the body before the first multipart boundary
+            val rawPrefix = ByteArray(8192)
+            val rawPrefixRead = call.receiveChannel().readAvailable(rawPrefix)
+            val rawPrefixBytes = rawPrefix.take(rawPrefixRead).toByteArray()
+            logger.info {
+                "Multipart raw body prefix ($rawPrefixRead bytes) hex: ${rawPrefixBytes.joinToString("") { "%02x".format(it) }}"
+            }
+            logger.info {
+                "Multipart raw body prefix text: ${rawPrefixBytes.toString(Charsets.UTF_8).replace("\r", "\\r").replace("\n", "\\n\n")}"
+            }
+
             val createBody =
                 call.multipart(MAX_MULTIPART_SIZE_BYTES)
                     .flatMap { with(principal) { CreateBody.parse(it, baseResource, repo) } }
@@ -165,13 +178,10 @@ class AttachmentHandler(
                     // base resource ID part expected first, allowing an authorisation check before file parsing
                     val baseResourceIdPart = Either.catch { body.readPart() }
                         .mapLeft { e ->
+                            logger.error { "Unexpected error reading multipart parent ID part: $e" }
                             when (e) {
                                 is IOException -> MultipartError()
-
-                                else -> {
-                                    logger.error { "Unexpected error reading multipart parent ID part: $e" }
-                                    InternalServerError(traceIdOrUnknown())
-                                }
+                                else -> InternalServerError(traceIdOrUnknown())
                             }
                         }.bind()
                     if (baseResourceIdPart == null || baseResourceIdPart !is PartData.FormItem || baseResourceIdPart.name != "${baseResource}_id") {
@@ -200,13 +210,10 @@ class AttachmentHandler(
                     // now file part
                     val filePart = Either.catch { body.readPart() }
                         .mapLeft { e ->
+                            logger.error { "Unexpected error reading multipart file part: $e" }
                             when (e) {
                                 is IOException -> MultipartError()
-
-                                else -> {
-                                    logger.error { "Unexpected error reading multipart file part: $e" }
-                                    InternalServerError(traceIdOrUnknown())
-                                }
+                                else -> InternalServerError(traceIdOrUnknown())
                             }
                         }.bind()
                     if (filePart == null || filePart !is PartData.FileItem || filePart.name != "file") {
@@ -227,13 +234,10 @@ class AttachmentHandler(
                     val fileBytes = Either.catch { filePart.provider().toByteArray() }
                         .mapLeft { e ->
                             filePart.release()
+                            logger.error { "Unexpected error reading file bytes: $e" }
                             when (e) {
                                 is IOException -> MultipartError()
-
-                                else -> {
-                                    logger.error { "Unexpected error reading file bytes: $e" }
-                                    InternalServerError(traceIdOrUnknown())
-                                }
+                                else -> InternalServerError(traceIdOrUnknown())
                             }
                         }.bind()
                     if (fileBytes.size.toLong() > MAX_MULTIPART_SIZE_BYTES) {
