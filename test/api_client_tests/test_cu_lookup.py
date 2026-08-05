@@ -5,11 +5,13 @@ from security_token_service import (
 from flex.models import (
     ControllableUnitLookupRequest,
     ControllableUnitCreateRequest,
+    ControllableUnitUpdateRequest,
     ControllableUnitLookupResponse,
     ControllableUnitRegulationDirection,
     ControllableUnitResponse,
     ControllableUnitServiceProviderCreateRequest,
     ControllableUnitServiceProviderResponse,
+    ControllableUnitStatus,
     EntityCreateRequest,
     EntityBusinessIdType,
     EntityType,
@@ -19,6 +21,7 @@ from flex.models import (
 from flex.api.controllable_unit import (
     read_controllable_unit,
     create_controllable_unit,
+    update_controllable_unit,
     call_controllable_unit_lookup,
 )
 from flex.api.controllable_unit_service_provider import (
@@ -437,3 +440,58 @@ def test_cu_lookup_flow(sts):
         ),
     )
     assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
+
+
+def test_cu_lookup_terminated_cu_excluded(sts):
+    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+
+    eu_entity = read_entity.sync(
+        client=client_fiso,
+        id=sts.get_userinfo(sts.get_client(TestEntity.TEST))["entity_id"],
+    )
+    assert isinstance(eu_entity, EntityResponse)
+
+    end_user = birth_date_from_pid(eu_entity.business_id)
+
+    # first create a CU and check we can look it up
+    cu = create_controllable_unit.sync(
+        client=client_fiso,
+        body=ControllableUnitCreateRequest(
+            name="TEST-CU-LOOKUP-TERMINATED",
+            accounting_point_id=1001,  # technical ID of AP 133700000000010007
+            regulation_direction=ControllableUnitRegulationDirection.BOTH,
+            maximum_active_power=3.5,
+        ),
+    )
+    assert isinstance(cu, ControllableUnitResponse)
+
+    cul = call_controllable_unit_lookup.sync(
+        client=client_fiso,
+        body=ControllableUnitLookupRequest(
+            end_user=end_user,
+            controllable_unit=cu.business_id,
+        ),
+    )
+    assert isinstance(cul, ControllableUnitLookupResponse)
+    assert len(cul.controllable_units) == 1
+    assert cul.controllable_units[0].id == cu.id
+
+    # now terminate the CU and check it is no longer returned by the lookup
+    u = update_controllable_unit.sync(
+        client=client_fiso,
+        id=cast(int, cu.id),
+        body=ControllableUnitUpdateRequest(
+            status=ControllableUnitStatus.TERMINATED,
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
+
+    e = call_controllable_unit_lookup.sync(
+        client=client_fiso,
+        body=ControllableUnitLookupRequest(
+            end_user=end_user,
+            controllable_unit=cu.business_id,
+        ),
+    )
+    assert isinstance(e, ErrorMessage)
+    assert e.code == "HTTP404"

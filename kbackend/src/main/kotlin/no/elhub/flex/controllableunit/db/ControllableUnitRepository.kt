@@ -32,8 +32,8 @@ import java.sql.ResultSet
 interface ControllableUnitRepository {
 
     /**
-     * Retrieves all controllable units associated with either the given [controllableUnitBusinessId] or the given
-     * [accountingPointBusinessId].
+     * Retrieves all non-terminated controllable units associated with either the given [controllableUnitBusinessId]
+     * or the given [accountingPointBusinessId].
      *
      * Returns [RepositoryError] when the query fails.
      */

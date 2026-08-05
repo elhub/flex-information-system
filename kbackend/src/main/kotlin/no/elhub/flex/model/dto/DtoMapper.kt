@@ -13,7 +13,6 @@ fun List<ControllableUnitForLookup>.toDtos(): List<ControllableUnitDto> =
             businessId = cu.businessId,
             name = cu.name,
             technicalResources = cu.technicalResources.toDtos()
-
         )
     }
 

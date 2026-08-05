@@ -19,7 +19,8 @@ AS $$
     FROM flex.controllable_unit AS cu
         INNER JOIN flex.accounting_point AS ap
             ON cu.accounting_point_id = ap.id
-    WHERE cu.business_id = l_controllable_unit_business_id::uuid;
+    WHERE cu.business_id = l_controllable_unit_business_id::uuid
+        AND cu.status != 'terminated';
 $$;
 
 
