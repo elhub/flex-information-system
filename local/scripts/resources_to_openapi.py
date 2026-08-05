@@ -32,6 +32,12 @@ from copy import deepcopy
 import j2
 import relationship
 
+# module => OAuth asset name (mirrors generate_scopes.py)
+MODULE_ASSET = {
+    "api": "data",
+    "grid": "grid",
+}
+
 # templates
 
 
@@ -390,25 +396,55 @@ def generate_endpoint_responses(
     return endpoint_responses
 
 
+# recursively merge overlay into base
+# (dicts and lists merged, overlay takes priority for the rest)
+def _deep_merge(base: dict, overlay: dict) -> dict:
+    result = deepcopy(base)
+    for key, value in overlay.items():
+        if key in result and isinstance(result[key], dict) and isinstance(value, dict):
+            result[key] = _deep_merge(result[key], value)
+        elif (
+            key in result and isinstance(result[key], list) and isinstance(value, list)
+        ):
+            result[key] = result[key] + value
+        else:
+            result[key] = deepcopy(value)
+    return result
+
+
 @click.command()
-@click.option("--base-file", type=click.File("r"), help="Base OpenAPI file")
+@click.option(
+    "--base-file", type=click.File("r"), help="Module-specific base OpenAPI file"
+)
+@click.option(
+    "--common-base-file", type=click.File("r"), help="Common base OpenAPI file"
+)
 @click.option("--servers-file", type=click.File("r"), help="Servers file")
 @click.option("--resources-file", type=click.File("r"), help="Resources file")
 @click.option("--scopes-file", type=click.File("r"), help="Scopes file")
-def generate_openapi_document(base_file, resources_file, servers_file, scopes_file):
+@click.option("--module", default="api", help="Module to generate (api, grid, ...)")
+def generate_openapi_document(
+    base_file, common_base_file, resources_file, servers_file, scopes_file, module
+):
     yaml.SafeDumper.ignore_aliases = lambda self, data: True
 
     resources = yaml.safe_load(resources_file)
-    base = yaml.safe_load(base_file)
     servers = yaml.safe_load(servers_file)
+
+    # build base by deep-merging common + module-specific overlay
+    if common_base_file is not None:
+        common = yaml.safe_load(common_base_file)
+        overlay = yaml.safe_load(base_file)
+        base = _deep_merge(common, overlay)
+    else:
+        base = yaml.safe_load(base_file)
 
     # inject the auth_scope enum from scopes.yml before any further processing
     if scopes_file is not None:
         scopes_data = yaml.safe_load(scopes_file)
         base["components"]["schemas"]["auth_scope"]["enum"] = scopes_data["scopes"]
 
-    # TODO support multiple modules
-    resources = [r for r in resources["resources"] if r.get("module") == "api"]
+    resources = [r for r in resources["resources"] if r.get("module") == module]
 
     # generate and add comment resources
 
@@ -777,9 +813,15 @@ def generate_openapi_document(base_file, resources_file, servers_file, scopes_fi
             )
 
             endpoint_template["security"] = [
-                {"bearerAuth": [scope_verb(operation) + ":data:" + resource["id"]]}
+                {
+                    "bearerAuth": [
+                        scope_verb(operation)
+                        + f":{MODULE_ASSET[module]}:"
+                        + resource["id"]
+                    ]
+                }
             ]
-            # Anon users are getting "read:data" scope, so
+            # Anon users are getting "read:<asset>" scope, so
             # we need to add an empty security scheme defintion to signal "unauthenticated"
             if scope_verb(operation) == "read":
                 endpoint_template["security"].append({})
@@ -818,11 +860,14 @@ def generate_openapi_document(base_file, resources_file, servers_file, scopes_fi
             endpoint_template["security"] = [
                 {
                     "bearerAuth": [
-                        scope_verb(operation) + ":data:" + resource["id"] + "_history"
+                        scope_verb(operation)
+                        + f":{MODULE_ASSET[module]}:"
+                        + resource["id"]
+                        + "_history"
                     ],
                 }
             ]
-            # Anon users are getting "read:data" scope, so
+            # Anon users are getting "read:<asset>" scope, so
             # we need to add an empty security scheme defintion to signal "unauthenticated"
             if scope_verb(operation) == "read":
                 endpoint_template["security"].append({})
@@ -849,7 +894,7 @@ def generate_openapi_document(base_file, resources_file, servers_file, scopes_fi
             )
 
         # servers
-        base["servers"] = [servers["api"]["dev"]]
+        base["servers"] = [servers[module]["dev"]]
 
     # ---- ATTACHMENT POST-PROCESSING ----
 

@@ -1,0 +1,61 @@
+---
+# Common base shared across all module OpenAPI documents.
+# Module-specific overlays (openapi-api-base.yml, openapi-grid-base.yml) are
+# deep-merged on top of this file by resources_to_openapi.py at codegen time.
+
+openapi: 3.1.0
+jsonSchemaDialect: https://spec.openapis.org/oas/3.1/dialect/base
+tags: []
+components:
+  securitySchemes:
+    bearerAuth:
+      description: Bearer token using a JWT
+      type: http
+      scheme: Bearer
+      bearerFormat: JWT
+  parameters:
+    ApiVersion:
+      name: Api-Version
+      in: header
+      required: true
+      description: >
+        The API version to use. Must be a supported version date.
+        See the [changelog](https://elhub.github.io/flex-information-system/changelog/)
+        for available versions.
+      schema:
+        type: string
+        enum:
+          - "2026-06-08"
+        example: "2026-06-08"
+  schemas:
+    error_message:
+      description: Error message returned from the API.
+      type: object
+      properties:
+        code:
+          type: string
+          pattern: "^[A-Z0-9]+$"
+          description: The error code.
+          example: PT418
+        details:
+          type: [string, "null"]
+          description: Detailed information about the error.
+        hint:
+          type: [string, "null"]
+          description: A hint to help resolve the error.
+        message:
+          type: string
+          description: The error message.
+          example: error
+      required:
+        - code
+        - message
+    auth_scope:
+      description: >-
+        Authorization scopes.
+      format: text
+      type: string
+      # populated at codegen from openapi/scopes.yml by resources_to_openapi.py
+      enum: []
+paths: {}
+servers: []

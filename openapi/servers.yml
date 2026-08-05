@@ -20,3 +20,13 @@ api:
   test:
     url: https://flex-test.elhub.no/api/v1
     description: Test
+grid:
+  dev:
+    url: https://test.flex.internal:6443/grid/v0
+    description: Development
+  local:
+    url: https://test.flex.internal:6443/grid/v0
+    description: Local
+  test:
+    url: https://flex-test.elhub.no/grid/v0
+    description: Test

@@ -1,0 +1,102 @@
+---
+# Grid module overlay — deep-merged on top of openapi-base-common.yml by
+# resources_to_openapi.py at codegen time.
+
+openapi: 3.1.0
+info:
+  title: Flexibility Information System Grid API
+  description: Norwegian Flexibility Information System Grid API
+  contact:
+    name: Elhub AS
+    url: https://elhub.no
+    email: post@elhub.no
+  version: "0"
+externalDocs:
+  description: API Changelog
+  url: https://elhub.github.io/flex-information-system/changelog/
+tags:
+  - name: introspection
+    description: Introspection
+components:
+  schemas:
+    geojson_point:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [Point]
+        coordinates:
+          type: array
+          description: "[longitude, latitude] in decimal degrees (WGS84)"
+          items:
+            type: number
+          minItems: 2
+          maxItems: 2
+      required:
+        - type
+        - coordinates
+    geojson_polygon:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [Polygon]
+        coordinates:
+          type: array
+          description: "Array of linear rings (WGS84). First ring is the exterior boundary."
+          items:
+            type: array
+            items:
+              type: array
+              items:
+                type: number
+              minItems: 2
+              maxItems: 2
+      required:
+        - type
+        - coordinates
+    geojson_linestring:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [LineString]
+        coordinates:
+          type: array
+          description: "Array of [longitude, latitude] positions in decimal degrees (WGS84)"
+          items:
+            type: array
+            items:
+              type: number
+            minItems: 2
+            maxItems: 2
+          minItems: 2
+      required:
+        - type
+        - coordinates
+paths:
+  /openapi.json:
+    get:
+      operationId: read_openapi_json
+      summary: Read OpenAPI JSON Document
+      description: >-
+        Introspection for the Flexibility Information System grid API.
+        The document is following the OpenAPI 3.1 spec.
+      security:
+        - bearerAuth: ["read:grid:openapi"]
+        - {}
+      tags:
+        - introspection
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error_message"

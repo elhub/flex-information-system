@@ -416,10 +416,20 @@ resources-to-openapi:
     set -euo pipefail
 
     .venv/bin/python3 local/scripts/resources_to_openapi.py \
+    --common-base-file openapi/openapi-base-common.yml \
     --base-file openapi/openapi-api-base.yml \
     --servers-file openapi/servers.yml \
     --resources-file openapi/resources.yml \
-    --scopes-file openapi/scopes.yml > backend/data/static/openapi.json
+    --scopes-file openapi/scopes.yml \
+    --module api > backend/data/static/openapi.json
+
+    .venv/bin/python3 local/scripts/resources_to_openapi.py \
+    --common-base-file openapi/openapi-base-common.yml \
+    --base-file openapi/openapi-grid-base.yml \
+    --servers-file openapi/servers.yml \
+    --resources-file openapi/resources.yml \
+    --scopes-file openapi/scopes.yml \
+    --module grid > backend/grid/static/openapi.json
 
     # remove custom fields from the final OpenAPI specification
     jq '( .components.schemas // empty )
@@ -433,6 +443,17 @@ resources-to-openapi:
         > openapi/openapi-api-clean.json
     mv openapi/openapi-api-clean.json backend/data/static/openapi.json
 
+    jq '( .components.schemas // empty )
+            |= walk(
+                if type == "object" then
+                with_entries(select(.key | startswith("x-") | not))
+                else . end
+            )' \
+        --indent 4 \
+        < backend/grid/static/openapi.json \
+        > openapi/openapi-grid-clean.json
+    mv openapi/openapi-grid-clean.json backend/grid/static/openapi.json
+
     yq -o=json --indent 4 openapi/openapi-auth.yml > backend/auth/static/openapi.json
 
     spectral lint \
@@ -444,6 +465,11 @@ resources-to-openapi:
         --fail-severity warn \
         --verbose \
         backend/auth/static/openapi.json
+
+    spectral lint \
+        --fail-severity warn \
+        --verbose \
+        backend/grid/static/openapi.json
 
 resources-to-diagram:
     #!/usr/bin/env bash
@@ -464,7 +490,13 @@ openapi-to-embed-relations:
 
     cat openapi/resources.yml | \
         .venv/bin/python3 local/scripts/openapi_to_embed_relations.py \
+        --module api --package data \
         > backend/data/embed_relations_gen.go
+
+    cat openapi/resources.yml | \
+        .venv/bin/python3 local/scripts/openapi_to_embed_relations.py \
+        --module grid --package grid \
+        > backend/grid/embed_relations_gen.go
 
 sqlc:
     #!/usr/bin/env bash

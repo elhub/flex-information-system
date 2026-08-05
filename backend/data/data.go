@@ -2,7 +2,6 @@ package data
 
 import (
 	"bytes"
-	"context"
 	_ "embed"
 	"encoding/json"
 	"errors"
@@ -717,22 +716,9 @@ func (data *api) postgRESTHandler(w http.ResponseWriter, req *http.Request) {
 
 	// turn the embed parameter into a PostgREST select if present, checking that
 	// the scopes cover reading the embedding resources
-
-	embedNodes, err := parseEmbed(query)
-	if err != nil {
-		slog.WarnContext(ctx, "malformed embed query parameter", "error", err)
-		writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
-			Message: "malformed embed parameter: " + err.Error(),
-		})
-
+	if !handleEmbed(ctx, w, query, url) {
 		return
 	}
-	if !checkEmbedScopes(ctx, embedNodes, w, url) {
-		return
-	}
-
-	// write the select parameter (if applies)
-	applyEmbedRewrite(query, embedNodes)
 
 	if err := validAtQueryRewrite(query); err != nil {
 		writeErrorToResponseWriter(w, http.StatusBadRequest, errorMessage{ //nolint:exhaustruct
@@ -755,52 +741,6 @@ func (data *api) postgRESTHandler(w http.ResponseWriter, req *http.Request) {
 	}
 
 	proxy.ServeHTTP(w, req)
-}
-
-// checkEmbedScopes checks that the scopes in the context cover all the
-// resources that embed nodes contain, or sends an HTTP error.
-// It returns true if the scopes are sufficient, false if an error was written.
-func checkEmbedScopes(
-	ctx context.Context,
-	embedNodes []embedNode,
-	w http.ResponseWriter,
-	url string,
-) bool {
-	if len(embedNodes) > 0 {
-		rd, err := auth.RequestDetailsFromContext(ctx)
-		if err != nil {
-			slog.ErrorContext(ctx, "no request details in context", "error", err)
-			writeInternalServerError(w)
-
-			return false
-		}
-
-		requestScope := rd.Scope()
-
-		// resource of the API call
-		mainResource := strings.TrimPrefix(strings.TrimPrefix(url, "/"), "/")
-		if idx := strings.Index(mainResource, "/"); idx != -1 {
-			mainResource = mainResource[:idx]
-		}
-
-		for _, resource := range resourceNames(mainResource, embedNodes) {
-			requiredScope := scope.Scope{Verb: scope.Read, Asset: "data:" + resource}
-			if !requestScope.Covers(requiredScope) {
-				slog.DebugContext(ctx, "insufficient scope for embedded resource",
-					"required_scope", requiredScope.String(),
-					"scope", requestScope.String(),
-					"embedded_resource", resource,
-				)
-				writeErrorToResponseWriter(w, http.StatusForbidden, errorMessage{ //nolint:exhaustruct
-					Message: "insufficient scope for embedded resource: " + resource,
-				})
-
-				return false
-			}
-		}
-	}
-
-	return true
 }
 
 // errorMessage is the format of PostgREST error messages.

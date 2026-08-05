@@ -1,5 +1,5 @@
-//nolint:testpackage
-package data
+//nolint:testpackage,goconst
+package embed
 
 import (
 	"net/url"
@@ -7,6 +7,24 @@ import (
 	"sort"
 	"testing"
 )
+
+// testRelations mirrors enough of the real embedRelations to exercise resourceNames.
+//
+//nolint:gochecknoglobals
+var testRelations = Relations{
+	"controllable_unit": {
+		"accounting_point":   "accounting_point",
+		"technical_resource": "technical_resource",
+	},
+	"controllable_unit_service_provider": {
+		"controllable_unit": "controllable_unit",
+		"service_provider":  "party",
+		"end_user":          "party",
+	},
+	"accounting_point": {
+		"metering_grid_area": "accounting_point_metering_grid_area",
+	},
+}
 
 //nolint:funlen
 func TestParseEmbed(t *testing.T) {
@@ -247,7 +265,7 @@ func TestApplyEmbedRewrite(t *testing.T) {
 				t.Fatalf("parseEmbed() unexpected error: %v", err)
 			}
 
-			applyEmbedRewrite(query, nodes)
+			applyRewrite(query, nodes)
 
 			if got := query.Get("select"); got != tt.wantSelect {
 				t.Errorf("applyEmbedRewrite() select = %q, want %q", got, tt.wantSelect)
@@ -346,7 +364,7 @@ func TestResourceNames(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			got := resourceNames(tt.parentResource, tt.nodes)
+			got := resourceNames(tt.parentResource, tt.nodes, testRelations)
 			sort.Strings(got)
 			sort.Strings(tt.want)
 
