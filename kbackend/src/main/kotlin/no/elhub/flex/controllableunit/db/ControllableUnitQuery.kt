@@ -7,7 +7,6 @@ FROM (
              cu.id,
              cu.business_id::text,
              cu.name,
-             cu.status,
              cu.start_date,
              (
                  SELECT coalesce(jsonb_agg(row_to_json(tr)), '[]'::jsonb)
@@ -22,5 +21,6 @@ FROM (
                              ON cu.accounting_point_id = ap.id
                                  AND coalesce(cu.business_id = nullIf(?, '')::uuid, true)
                                  AND coalesce(ap.business_id = nullIf(?, ''), true)
+         WHERE cu.status != 'terminated'
      ) as cu;
 """

@@ -11,7 +11,6 @@ import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.controllableunit.db.ControllableUnitRepository
 import no.elhub.flex.event.db.EventRepository
 import no.elhub.flex.model.domain.ControllableUnitForLookup
-import no.elhub.flex.model.domain.ControllableUnitStatus
 import no.elhub.flex.model.domain.GSRN
 import no.elhub.flex.model.dto.generated.models.ControllableUnitLookupRequest
 import no.elhub.flex.model.dto.generated.models.ControllableUnitLookupResponse
@@ -61,7 +60,7 @@ class ControllableUnitLookup(
                     request.controllableUnitBusinessId,
                     accountingPointBusinessId
                 ).bind()
-                logger.debug { "Found ${controllableUnits.size} controllable units on accounting point $accountingPointBusinessId" }
+                logger.debug { "Found ${controllableUnits.size} non-terminated controllable units on accounting point $accountingPointBusinessId" }
 
                 val validFrom = controllableUnits.mapNotNull { it.startDate }.minByOrNull { it }?.asLocalMidnightInstant(timezone)
                     ?: Instant.todayLocalMidnight(timezone)
@@ -91,9 +90,7 @@ class ControllableUnitLookup(
                         businessId = accountingPoint.businessId
                     ),
                     endUser = ControllableUnitLookupResponseEndUser(id = endUserId),
-                    controllableUnits = controllableUnits
-                        .filter { it.status != ControllableUnitStatus.TERMINATED }
-                        .toDtos(),
+                    controllableUnits = controllableUnits.toDtos(),
                 )
             }
         }.respondJson(call)
