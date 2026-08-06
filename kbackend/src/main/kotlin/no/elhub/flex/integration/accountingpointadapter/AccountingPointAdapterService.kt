@@ -10,6 +10,7 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
+import no.elhub.flex.config.TraceInfo
 import no.elhub.flex.integration.accountingpointadapter.generated.client.AccountingPointClient
 import no.elhub.flex.integration.accountingpointadapter.generated.client.ApiConfiguration
 import no.elhub.flex.integration.accountingpointadapter.generated.client.NetworkResult
@@ -22,7 +23,8 @@ import no.elhub.flex.integration.accountingpointadapter.generated.client.Network
 interface AccountingPointAdapterService {
     suspend fun getAccountingPoint(
         accountingPointId: String,
-        validFrom: Instant
+        validFrom: Instant,
+        traceInfo: TraceInfo,
     ): Either<AccountingPointAdapterError, AccountingPoint>
 }
 
@@ -48,13 +50,15 @@ class AccountingPointAdapterHttpService(
             },
         )
 
-    private val config = ApiConfiguration(
-        basePath = baseUrl,
-        customHeaders = mapOf("Authorization" to "Bearer $apiKey")
-    )
-
-    override suspend fun getAccountingPoint(accountingPointId: String, validFrom: Instant): Either<AccountingPointAdapterError, AccountingPoint> =
-        when (val result = client.readAccountingPoint(accountingPointId, validFrom, apiConfiguration = config)) {
+    override suspend fun getAccountingPoint(accountingPointId: String, validFrom: Instant, traceInfo: TraceInfo): Either<AccountingPointAdapterError, AccountingPoint> {
+        val config = ApiConfiguration(
+            basePath = baseUrl,
+            customHeaders = mapOf(
+                "Authorization" to "Bearer $apiKey",
+                "traceparent" to traceInfo.toString(),
+            )
+        )
+        return when (val result = client.readAccountingPoint(accountingPointId, validFrom, apiConfiguration = config)) {
             is NetworkResult.Success -> result.data.right()
 
             is NetworkResult.Failure -> when (val error = result.error) {
@@ -71,4 +75,5 @@ class AccountingPointAdapterHttpService(
                 is ClientNetworkError.Unknown -> NetworkError(error.cause?.message).left()
             }
         }
+    }
 }

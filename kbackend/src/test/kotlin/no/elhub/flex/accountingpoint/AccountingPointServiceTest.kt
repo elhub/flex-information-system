@@ -17,6 +17,7 @@ import no.elhub.flex.PostgresTestContainer
 import no.elhub.flex.accountingpoint.db.AccountingPointMeteringGridAreaRepository
 import no.elhub.flex.accountingpoint.db.AccountingPointRepository
 import no.elhub.flex.auth.FlexPrincipal
+import no.elhub.flex.config.TraceInfo
 import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterService
 import no.elhub.flex.integration.accountingpointadapter.NetworkError
 import no.elhub.flex.integration.accountingpointadapter.NotFoundError
@@ -39,6 +40,7 @@ private val timezone = TimeZone.of("Europe/Oslo")
 private val VALID_FROM = Instant.parse("2024-01-01T00:00:00Z").atLocalMidnight(timezone)
 private const val GSRN = "133700000000000053"
 private const val AP_ID = 42L
+private val TRACE_INFO = TraceInfo.fresh()
 
 class AccountingPointServiceTest : FunSpec({
 
@@ -76,11 +78,11 @@ class AccountingPointServiceTest : FunSpec({
 
         test("fetchAccountingPointData fails and returns Left") {
             // given
-            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns
+            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM, any()) } returns
                 NetworkError("timeout").left()
 
             // when
-            val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM)
+            val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM, TRACE_INFO)
 
             // then
             result.shouldBeLeft()
@@ -89,7 +91,7 @@ class AccountingPointServiceTest : FunSpec({
 
         test("happy path calls all repo methods in order and returns Right(Unit)") {
             // given
-            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns adapterAccountingPoint.right()
+            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM, any()) } returns adapterAccountingPoint.right()
             with(internalPrincipal) {
                 coEvery { accountingPointRepository.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
                 coEvery { accountingPointRepository.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
@@ -101,7 +103,7 @@ class AccountingPointServiceTest : FunSpec({
             }
 
             // when
-            val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM)
+            val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM, TRACE_INFO)
 
             // then
             result.shouldBeRight()
@@ -118,7 +120,7 @@ class AccountingPointServiceTest : FunSpec({
 
         test("concurrent sync (lock timeout) returns InternalServerError") {
             // given
-            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns adapterAccountingPoint.right()
+            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM, any()) } returns adapterAccountingPoint.right()
             with(internalPrincipal) {
                 coEvery { accountingPointRepository.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
                 coEvery { accountingPointRepository.lockSyncRowAndMarkStart(AP_ID) } returns
@@ -126,7 +128,7 @@ class AccountingPointServiceTest : FunSpec({
             }
 
             // when
-            val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM)
+            val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM, TRACE_INFO)
 
             // then
             result.shouldBeLeft().shouldBeInstanceOf<InternalServerError>()
@@ -139,7 +141,7 @@ class AccountingPointServiceTest : FunSpec({
 
         test("maps adapter data to correct domain objects before upserting") {
             // given
-            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns adapterAccountingPoint.right()
+            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM, any()) } returns adapterAccountingPoint.right()
             with(internalPrincipal) {
                 coEvery { accountingPointRepository.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
                 coEvery { accountingPointRepository.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
@@ -151,7 +153,7 @@ class AccountingPointServiceTest : FunSpec({
             }
 
             // when
-            service.synchronizeAccountingPoint(GSRN, VALID_FROM)
+            service.synchronizeAccountingPoint(GSRN, VALID_FROM, TRACE_INFO)
 
             // then
             with(internalPrincipal) {
@@ -178,13 +180,13 @@ class AccountingPointServiceTest : FunSpec({
 
         test("insertAccountingPointIfNotExists failure returns InternalServerError") {
             // given
-            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns adapterAccountingPoint.right()
+            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM, any()) } returns adapterAccountingPoint.right()
             with(internalPrincipal) {
                 coEvery { accountingPointRepository.insertAccountingPointIfNotExists(any()) } returns DatabaseError("db down").left()
             }
 
             // when
-            val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM)
+            val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM, TRACE_INFO)
 
             // then
             result.shouldBeLeft().shouldBeInstanceOf<InternalServerError>()
@@ -192,7 +194,7 @@ class AccountingPointServiceTest : FunSpec({
 
         test("replaceAllAccountingPointEndUsers failure returns InternalServerError") {
             // given
-            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns adapterAccountingPoint.right()
+            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM, any()) } returns adapterAccountingPoint.right()
             with(internalPrincipal) {
                 coEvery { accountingPointRepository.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
                 coEvery { accountingPointRepository.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
@@ -202,7 +204,7 @@ class AccountingPointServiceTest : FunSpec({
             }
 
             // when
-            val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM)
+            val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM, TRACE_INFO)
 
             // then
             result.shouldBeLeft().shouldBeInstanceOf<InternalServerError>()
@@ -213,7 +215,7 @@ class AccountingPointServiceTest : FunSpec({
 
         test("replaceAllAccountingPointEnergySupplier failure returns InternalServerError") {
             // given
-            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns adapterAccountingPoint.right()
+            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM, any()) } returns adapterAccountingPoint.right()
             with(internalPrincipal) {
                 coEvery { accountingPointRepository.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
                 coEvery { accountingPointRepository.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
@@ -224,7 +226,7 @@ class AccountingPointServiceTest : FunSpec({
             }
 
             // when
-            val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM)
+            val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM, TRACE_INFO)
 
             // then
             result.shouldBeLeft().shouldBeInstanceOf<InternalServerError>()
@@ -235,7 +237,7 @@ class AccountingPointServiceTest : FunSpec({
 
         test("markSyncComplete failure returns InternalServerError") {
             // given
-            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns adapterAccountingPoint.right()
+            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM, any()) } returns adapterAccountingPoint.right()
             with(internalPrincipal) {
                 coEvery { accountingPointRepository.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
                 coEvery { accountingPointRepository.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
@@ -247,7 +249,7 @@ class AccountingPointServiceTest : FunSpec({
             }
 
             // when
-            val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM)
+            val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM, TRACE_INFO)
 
             // then
             result.shouldBeLeft().shouldBeInstanceOf<InternalServerError>()
@@ -255,7 +257,7 @@ class AccountingPointServiceTest : FunSpec({
 
         test("energy supplier upsert is not called when end user upsert fails") {
             // given
-            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns adapterAccountingPoint.right()
+            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM, any()) } returns adapterAccountingPoint.right()
             with(internalPrincipal) {
                 coEvery { accountingPointRepository.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
                 coEvery { accountingPointRepository.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
@@ -265,7 +267,7 @@ class AccountingPointServiceTest : FunSpec({
             }
 
             // when
-            service.synchronizeAccountingPoint(GSRN, VALID_FROM)
+            service.synchronizeAccountingPoint(GSRN, VALID_FROM, TRACE_INFO)
 
             // then
             with(internalPrincipal) {
@@ -277,7 +279,7 @@ class AccountingPointServiceTest : FunSpec({
         test("syncs location when lat/lon are both non-null") {
             // given
             val apWithLocation = adapterAccountingPoint.copy(latitude = 59.9139, longitude = 10.7522)
-            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns apWithLocation.right()
+            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM, any()) } returns apWithLocation.right()
             with(internalPrincipal) {
                 coEvery { accountingPointRepository.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
                 coEvery { accountingPointRepository.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
@@ -290,7 +292,7 @@ class AccountingPointServiceTest : FunSpec({
             }
 
             // when
-            val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM)
+            val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM, TRACE_INFO)
 
             // then
             result.shouldBeRight()
@@ -302,7 +304,7 @@ class AccountingPointServiceTest : FunSpec({
         test("does not sync location when lat/lon are explicitly null") {
             // given
             val apWithNullLocation = adapterAccountingPoint.copy(latitude = null, longitude = null)
-            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns apWithNullLocation.right()
+            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM, any()) } returns apWithNullLocation.right()
             with(internalPrincipal) {
                 coEvery { accountingPointRepository.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
                 coEvery { accountingPointRepository.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
@@ -314,7 +316,7 @@ class AccountingPointServiceTest : FunSpec({
             }
 
             // when
-            val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM)
+            val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM, TRACE_INFO)
 
             // then
             result.shouldBeRight()
@@ -325,7 +327,7 @@ class AccountingPointServiceTest : FunSpec({
 
         test("does not sync location when lat/lon are absent from response") {
             // given — adapterAccountingPoint has no lat/lon (defaults to null)
-            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns adapterAccountingPoint.right()
+            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM, any()) } returns adapterAccountingPoint.right()
             with(internalPrincipal) {
                 coEvery { accountingPointRepository.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
                 coEvery { accountingPointRepository.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
@@ -337,7 +339,7 @@ class AccountingPointServiceTest : FunSpec({
             }
 
             // when
-            val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM)
+            val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM, TRACE_INFO)
 
             // then
             result.shouldBeRight()
@@ -372,7 +374,7 @@ class AccountingPointServiceTest : FunSpec({
                 mga3.businessId to domainMga3,
             )
             val apWithAllMgas = adapterAccountingPoint.copy(meteringGridArea = listOf(mga1, mga2, mga3))
-            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns apWithAllMgas.right()
+            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM, any()) } returns apWithAllMgas.right()
             with(internalPrincipal) {
                 coEvery { accountingPointRepository.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
                 coEvery { accountingPointRepository.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
@@ -384,7 +386,7 @@ class AccountingPointServiceTest : FunSpec({
             }
 
             // when
-            val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM)
+            val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM, TRACE_INFO)
 
             // then
             result.shouldBeRight()

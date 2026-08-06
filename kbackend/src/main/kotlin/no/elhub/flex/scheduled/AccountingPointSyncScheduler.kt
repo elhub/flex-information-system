@@ -8,11 +8,13 @@ import kotlinx.datetime.TimeZone
 import no.elhub.flex.accountingpoint.AccountingPointService
 import no.elhub.flex.accountingpoint.db.AccountingPointSyncRepository
 import no.elhub.flex.auth.FlexPrincipal
+import no.elhub.flex.config.TraceInfo
 import no.elhub.flex.controllableunit.db.ControllableUnitRepository
 import no.elhub.flex.metrics.FlexMetrics
 import no.elhub.flex.model.domain.AccountingPointId
 import no.elhub.flex.util.asLocalMidnightInstant
 import no.elhub.flex.util.todayLocalMidnight
+import no.elhub.flex.util.withTrace
 import org.koin.core.annotation.Property
 import org.koin.core.annotation.Single
 import kotlin.time.Instant
@@ -51,12 +53,15 @@ class AccountingPointSyncScheduler(
 
                 accountingPoints.forEach { accountingPoint ->
                     either {
-                        logger.debug { "Syncing accounting point with id ${accountingPoint.id}.." }
-                        val validFrom = earliestStartDates[AccountingPointId(accountingPoint.id)]
-                            ?.asLocalMidnightInstant(timezone)
-                            ?: Instant.todayLocalMidnight(timezone)
-                        accountingPointService.synchronizeAccountingPoint(accountingPoint.businessId, validFrom).bind()
-                        logger.debug { "Accounting point ${accountingPoint.id} completed" }
+                        // fresh trace for each accounting point for better observability in case of errors in sync
+                        withTrace(TraceInfo.fresh()) { traceInfo ->
+                            logger.debug { "Syncing accounting point with id ${accountingPoint.id}.." }
+                            val validFrom = earliestStartDates[AccountingPointId(accountingPoint.id)]
+                                ?.asLocalMidnightInstant(timezone)
+                                ?: Instant.todayLocalMidnight(timezone)
+                            accountingPointService.synchronizeAccountingPoint(accountingPoint.businessId, validFrom, traceInfo).bind()
+                            logger.debug { "Accounting point ${accountingPoint.id} completed" }
+                        }
                     }.onRight {
                         metrics.accountingPointSync.success()
                     }.onLeft { e ->

@@ -8,6 +8,7 @@ import kotlinx.datetime.TimeZone
 import no.elhub.flex.accountingpoint.AccountingPointService
 import no.elhub.flex.auth.AccessTokenKey
 import no.elhub.flex.auth.FlexPrincipal
+import no.elhub.flex.config.TraceKey
 import no.elhub.flex.controllableunit.db.ControllableUnitRepository
 import no.elhub.flex.event.db.EventRepository
 import no.elhub.flex.model.domain.ControllableUnitForLookup
@@ -67,7 +68,8 @@ class ControllableUnitLookup(
                 logger.debug { "Using $validFrom as start date for accounting point sync" }
 
                 if (accountingPointAdapterSyncEnabled) {
-                    accountingPointService.synchronizeAccountingPoint(accountingPointBusinessId, validFrom).bind()
+                    val traceInfo = call.attributes[TraceKey]
+                    accountingPointService.synchronizeAccountingPoint(accountingPointBusinessId, validFrom, traceInfo).bind()
                 } else {
                     logger.info { "Accounting point sync disabled, not calling adapter." }
                 }
