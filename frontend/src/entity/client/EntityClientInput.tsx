@@ -31,13 +31,30 @@ export const EntityClientInput = () => {
     { enabled: !!entityId },
   );
 
-  const partiesFromMembershipResource = memberships.map(
-    (m: any) => m.entity_id,
+  const { data: entityParties = [] } = useGetList(
+    "party",
+    {
+      pagination: { page: 1, perPage: 1000 },
+      sort: { field: "id", order: "ASC" },
+      filter: entityId ? { entity_id: entityId } : {},
+    },
+    { enabled: !!entityId },
   );
-  const parties = [...new Set([entityId, ...partiesFromMembershipResource])];
-  const partyFilter = {
-    ...(parties.length ? { "entity_id@in": parties.join(",") } : {}),
-  };
+
+  const membershipPartyIds = memberships.map((m: any) => m.party_id);
+  const ownedPartyIds = entityParties.map((p: any) => p.id);
+
+  const allPartyIds = [
+    ...new Set(
+      [...membershipPartyIds, ...ownedPartyIds].filter(
+        (id: any): id is string | number => id !== undefined && id !== null,
+      ),
+    ),
+  ];
+
+  const partyFilter = allPartyIds.length
+    ? { "id@in": allPartyIds.join(",") }
+    : {};
 
   return (
     <Form
