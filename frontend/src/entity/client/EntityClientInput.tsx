@@ -31,31 +31,15 @@ export const EntityClientInput = () => {
     { enabled: !!entityId },
   );
 
-  const { data: entityParties = [] } = useGetList(
-    "party",
-    {
-      pagination: { page: 1, perPage: 1000 },
-      sort: { field: "id", order: "ASC" },
-      filter: entityId ? { entity_id: entityId } : {},
-    },
-    { enabled: !!entityId },
-  );
-
-  const membershipPartyIds = memberships.map((m: any) => m.party_id);
-  const ownedPartyIds = entityParties.map((p: any) => p.id);
-
-  const allPartyIds = [
-    ...new Set(
-      [...membershipPartyIds, ...ownedPartyIds].filter(
-        (id: any): id is string | number => id !== undefined && id !== null,
-      ),
-    ),
+  const membershipPartyIds = [
+    ...new Set(memberships.map((m: any) => m.party_id).filter(Boolean)),
   ];
 
-  const partyFilter = allPartyIds.length
-    ? { "id@in": allPartyIds.join(",") }
+  const partyFilter = entityId
+    ? {
+        or: `(entity_id.eq.${entityId},id.in.(${membershipPartyIds.join(",")}))`,
+      }
     : {};
-
   return (
     <Form
       record={record}
