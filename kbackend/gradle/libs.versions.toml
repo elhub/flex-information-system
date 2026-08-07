@@ -31,6 +31,7 @@ ktor = [
   "ktor-server-status-pages",
 ]
 logging = [
+  "kotlinx-coroutines-slf4j",
   "ktor-server-call-logging",
   "logging-logstash-encoder",
   "logging-oshai-kotlin-logging",
@@ -66,6 +67,7 @@ fp-arrow-core = { group = "io.arrow-kt", name = "arrow-core", version.ref = "arr
 fp-arrow-fx-coroutines = { group = "io.arrow-kt", name = "arrow-fx-coroutines", version.ref = "arrow" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx-datetime" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+kotlinx-coroutines-slf4j = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-slf4j", version.ref = "kotlinx-coroutines-slf4j" }
 ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-server-call-logging = { group = "io.ktor", name = "ktor-server-call-logging", version.ref = "ktor" }
 ktor-server-auth = { group = "io.ktor", name = "ktor-server-auth", version.ref = "ktor" }
@@ -132,6 +134,7 @@ kotlin-logging = "8.0.4"
 kotlinx-datetime = "0.8.0-0.6.x-compat"
 kotlinx-serialization = "1.11.0"
 kotlinx-serialization-plugin = "2.4.10"
+kotlinx-coroutines-slf4j = "1.11.0"
 ktor = "3.5.1"
 liquibase = "5.0.3"
 micrometer = "1.17.0"

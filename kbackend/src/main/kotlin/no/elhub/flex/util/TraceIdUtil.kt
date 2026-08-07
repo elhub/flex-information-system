@@ -1,6 +1,7 @@
 package no.elhub.flex.util
 
 import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.slf4j.MDCContext
 import kotlinx.coroutines.withContext
 import no.elhub.flex.config.TraceContext
 import no.elhub.flex.config.TraceInfo
@@ -30,7 +31,7 @@ suspend fun <T> withTrace(traceInfo: TraceInfo, block: suspend () -> T): T {
     MDC.put("trace_id", traceInfo.traceID)
     MDC.put("span_id", traceInfo.spanID)
     try {
-        return withContext(TraceContext(traceInfo)) { block() }
+        return withContext(TraceContext(traceInfo) + MDCContext()) { block() }
     } finally {
         MDC.remove("trace_id")
         MDC.remove("span_id")
