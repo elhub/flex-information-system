@@ -3,12 +3,15 @@ package no.elhub.flex.config
 import arrow.core.Either
 import arrow.core.flatMap
 import arrow.core.raise.either
+import io.ktor.server.application.ApplicationCallPipeline
 import io.ktor.server.application.createApplicationPlugin
 import io.ktor.util.AttributeKey
+import kotlinx.coroutines.withContext
 import no.elhub.flex.model.error.ParsingError
 import no.elhub.flex.util.header
 import java.security.SecureRandom
 import kotlin.ByteArray
+import kotlin.coroutines.CoroutineContext
 
 /** Ktor plugin for handling W3C Trace Context headers. **/
 object Tracing {
@@ -39,14 +42,38 @@ object Tracing {
                 // set traceresponse header in the response for observability tools
                 call.response.headers.append("traceresponse", traceInfo.toString())
 
-                // store trace information in the call attributes for use in logging and downstream calls
-                call.attributes.put(TraceKey, traceInfo)
+                // store the trace context in call attributes so that the logging plugin can read it
+                // (the plugin only receives a call, not the coroutine context)
+                call.attributes.put(TraceContextKey, TraceContext(traceInfo))
+            }
+
+            // wrap the rest of the pipeline in the trace coroutine context so that the trace can
+            // be accessed anywhere via currentTraceContext() without explicit passing
+            application.intercept(ApplicationCallPipeline.Call) {
+                val traceContext = context.attributes.getOrNull(TraceContextKey)
+                    ?: TraceContext(TraceInfo.fresh())
+                withContext(traceContext) {
+                    proceed()
+                }
             }
         }
 }
 
-/** Attribute key for storing [TraceInfo] in Ktor call attributes. */
-val TraceKey = AttributeKey<TraceInfo>("trace")
+/** Attribute key for storing [TraceContext] in Ktor call attributes. */
+val TraceContextKey = AttributeKey<TraceContext>("traceContext")
+
+/**
+ * Carries [TraceInfo] through the coroutine context so that any suspend function can access
+ * the current trace without it being threaded explicitly through every call signature.
+ *
+ * Installed into the coroutine context by the [Tracing] plugin for HTTP requests, and by
+ * [no.elhub.flex.util.withTrace] for non-HTTP contexts such as scheduled jobs.
+ */
+@JvmInline
+value class TraceContext(val traceInfo: TraceInfo) : CoroutineContext.Element {
+    companion object Key : CoroutineContext.Key<TraceContext>
+    override val key: CoroutineContext.Key<*> get() = Key
+}
 
 /**
  * Representation of a trace header (`traceparent` or `traceresponse`) in the
