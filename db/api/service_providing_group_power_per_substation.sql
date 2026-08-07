@@ -12,7 +12,7 @@ WITH (security_invoker = true) AS (
         spgpps.substations
     FROM flex.service_providing_group_power_per_substation AS spgpps
     WHERE current_role = 'flex_flexibility_information_system_operator'
-    UNION
+    UNION ALL
     -- RLS: SPGPPS-SO001
     SELECT
         spgpps.id,
