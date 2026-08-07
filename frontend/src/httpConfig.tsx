@@ -57,7 +57,10 @@ export async function httpClient(url: string, options: any = {}) {
       u.searchParams.set(key, value.replace("in.", "in.(") + ")");
     }
     // workaround for the "embed" filter, avoid the automatic inclusion of "eq."
-    if (key === "embed" && value.startsWith("eq.")) {
+    if (
+      (key === "embed" || key === "or" || key === "and") &&
+      value.startsWith("eq.")
+    ) {
       u.searchParams.set(key, value.slice(3));
     }
   });

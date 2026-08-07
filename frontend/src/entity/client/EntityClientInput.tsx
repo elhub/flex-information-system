@@ -1,4 +1,4 @@
-import { Form, useGetList, useRecordContext } from "ra-core";
+import { Form, useRecordContext } from "ra-core";
 import { useLocation } from "react-router-dom";
 import { zEntityClientCreateRequest } from "../../generated-client/zod.gen";
 import { getFields, unTypedZodResolver } from "../../zod";
@@ -21,23 +21,10 @@ export const EntityClientInput = () => {
   const record = { ...actualRecord, ...overrideRecord };
   const entityId = record?.entity_id;
 
-  const { data: memberships = [] } = useGetList(
-    "party_membership",
-    {
-      pagination: { page: 1, perPage: 1000 },
-      sort: { field: "id", order: "ASC" },
-      filter: entityId ? { entity_id: entityId } : {},
-    },
-    { enabled: !!entityId },
-  );
-
-  const membershipPartyIds = [
-    ...new Set(memberships.map((m: any) => m.party_id).filter(Boolean)),
-  ];
-
   const partyFilter = entityId
     ? {
-        or: `(entity_id.eq.${entityId},id.in.(${membershipPartyIds.join(",")}))`,
+        embed: "party_membership",
+        or: `(entity_id.eq.${entityId},party_membership.not.is.null)`,
       }
     : {};
   return (
