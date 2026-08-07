@@ -23,7 +23,7 @@ import no.elhub.flex.integration.accountingpointadapter.generated.client.Network
 interface AccountingPointAdapterService {
     suspend fun getAccountingPoint(
         accountingPointId: String,
-        validFrom: Instant,
+        validFrom: Instant
     ): Either<AccountingPointAdapterError, AccountingPoint>
 }
 

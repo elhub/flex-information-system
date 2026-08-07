@@ -41,7 +41,7 @@ interface AccountingPointService {
      */
     suspend fun synchronizeAccountingPoint(
         accountingPointBusinessId: String,
-        validFrom: Instant,
+        validFrom: Instant
     ): Either<AppError, Unit>
 
     /**
@@ -94,7 +94,7 @@ class AccountingPointServiceImpl(
     }
     override suspend fun synchronizeAccountingPoint(
         accountingPointBusinessId: String,
-        validFrom: Instant,
+        validFrom: Instant
     ): Either<AppError, Unit> = fetchAccountingPointData(accountingPointBusinessId, validFrom)
         .flatMap { adapterAccountingPoint ->
             logger.debug { "Raw data from adapter: ${adapterAccountingPoint.anonymizedForLogging()}" }
@@ -217,7 +217,7 @@ class AccountingPointServiceImpl(
 
     private suspend fun fetchAccountingPointData(
         accountingPointBusinessId: String,
-        validFrom: Instant,
+        validFrom: Instant
     ): Either<AppError, AdapterAccountingPoint> =
         accountingPointAdapter.getAccountingPoint(accountingPointBusinessId, validFrom)
             .mapLeft { err ->
