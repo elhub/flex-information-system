@@ -9,7 +9,8 @@ import org.koin.ktor.ext.get
 
 private val logger = KotlinLogging.logger {}
 
-fun Application.configureScheduling() {
+fun Application.configureScheduling(accountingPointAdapterSyncEnabled: Boolean) {
+    if (!accountingPointAdapterSyncEnabled) return
     launch {
         try {
             get<AccountingPointSyncScheduler>().start()
