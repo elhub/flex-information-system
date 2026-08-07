@@ -14,6 +14,7 @@ import no.elhub.flex.integration.accountingpointadapter.generated.client.Account
 import no.elhub.flex.integration.accountingpointadapter.generated.client.ApiConfiguration
 import no.elhub.flex.integration.accountingpointadapter.generated.client.NetworkResult
 import no.elhub.flex.integration.accountingpointadapter.generated.models.AccountingPoint
+import no.elhub.flex.util.retry
 import org.koin.core.annotation.Property
 import org.koin.core.annotation.Single
 import kotlin.time.Instant
@@ -33,7 +34,8 @@ class AccountingPointAdapterHttpService(
 ) : AccountingPointAdapterService {
 
     private companion object {
-        const val REQUEST_TIMEOUT_MILLIS = 5000L
+        const val REQUEST_TIMEOUT_MILLIS = 6000L
+        const val RETRY_TIMES = 2u
     }
 
     private val client =
@@ -54,21 +56,23 @@ class AccountingPointAdapterHttpService(
     )
 
     override suspend fun getAccountingPoint(accountingPointId: String, validFrom: Instant): Either<AccountingPointAdapterError, AccountingPoint> =
-        when (val result = client.readAccountingPoint(accountingPointId, validFrom, apiConfiguration = config)) {
-            is NetworkResult.Success -> result.data.right()
+        retry(times = RETRY_TIMES, description = "getting data from the adapter for $accountingPointId") {
+            when (val result = client.readAccountingPoint(accountingPointId, validFrom, apiConfiguration = config)) {
+                is NetworkResult.Success -> result.data.right()
 
-            is NetworkResult.Failure -> when (val error = result.error) {
-                is ClientNetworkError.Http -> if (error.statusCode == HttpStatusCode.NotFound.value) {
-                    NotFoundError(accountingPointId).left()
-                } else {
-                    HttpError(error.statusCode, error.statusDescription).left()
+                is NetworkResult.Failure -> when (val error = result.error) {
+                    is ClientNetworkError.Http -> if (error.statusCode == HttpStatusCode.NotFound.value) {
+                        NotFoundError(accountingPointId).left()
+                    } else {
+                        HttpError(error.statusCode, error.statusDescription).left()
+                    }
+
+                    is ClientNetworkError.Network -> NetworkError(error.cause?.message).left()
+
+                    is ClientNetworkError.Serialization -> NetworkError(error.cause.message).left()
+
+                    is ClientNetworkError.Unknown -> NetworkError(error.cause?.message).left()
                 }
-
-                is ClientNetworkError.Network -> NetworkError(error.cause?.message).left()
-
-                is ClientNetworkError.Serialization -> NetworkError(error.cause.message).left()
-
-                is ClientNetworkError.Unknown -> NetworkError(error.cause?.message).left()
             }
         }
 }

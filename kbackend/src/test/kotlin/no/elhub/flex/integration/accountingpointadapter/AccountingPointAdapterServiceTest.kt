@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.client.WireMock.aResponse
 import com.github.tomakehurst.wiremock.client.WireMock.equalTo
 import com.github.tomakehurst.wiremock.client.WireMock.get
 import com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo
+import com.github.tomakehurst.wiremock.stubbing.Scenario.STARTED
 import io.kotest.assertions.arrow.core.shouldBeLeft
 import io.kotest.assertions.arrow.core.shouldBeRight
 import io.kotest.core.spec.style.FunSpec
@@ -106,6 +107,47 @@ class AccountingPointAdapterServiceTest : FunSpec({
             val accountingPoint = result.shouldBeRight()
             accountingPoint.latitude shouldBe null
             accountingPoint.longitude shouldBe null
+        }
+
+        test("retries on failure and returns Right when a retry succeeds") {
+            val scenario = "retry-then-success"
+            val failState = "first-attempt-failed"
+
+            AccountingPointAdapterWireMockServer.stubFor(
+                get(urlPathEqualTo("/accounting_point/$GSRN"))
+                    .inScenario(scenario)
+                    .whenScenarioStateIs(STARTED)
+                    .willReturn(aResponse().withStatus(HttpStatusCode.InternalServerError.value))
+                    .willSetStateTo(failState),
+            )
+            AccountingPointAdapterWireMockServer.stubFor(
+                get(urlPathEqualTo("/accounting_point/$GSRN"))
+                    .inScenario(scenario)
+                    .whenScenarioStateIs(failState)
+                    .willReturn(
+                        aResponse()
+                            .withStatus(HttpStatusCode.OK.value)
+                            .withHeader("Content-Type", "application/json")
+                            .withBodyFile("accounting-point-200.json"),
+                    ),
+            )
+
+            val result = service.getAccountingPoint(GSRN, VALID_FROM)
+
+            result.shouldBeRight().gsrn shouldBe GSRN
+        }
+
+        test("returns Left after exhausting all 2 retries (2 total attempts)") {
+            AccountingPointAdapterWireMockServer.stubFor(
+                get(urlPathEqualTo("/accounting_point/$GSRN"))
+                    .willReturn(aResponse().withStatus(HttpStatusCode.InternalServerError.value)),
+            )
+
+            val result = service.getAccountingPoint(GSRN, VALID_FROM)
+
+            val error = result.shouldBeLeft().shouldBeInstanceOf<HttpError>()
+            error.statusCode shouldBe HttpStatusCode.InternalServerError.value
+            AccountingPointAdapterWireMockServer.verifyRequestCount(3, urlPathEqualTo("/accounting_point/$GSRN"))
         }
     }
 })
