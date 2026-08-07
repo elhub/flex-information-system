@@ -76,5 +76,7 @@ fun Application.module() {
     configureRouting()
     configureMetrics()
     configureHealth()
-    configureScheduling()
+
+    val accountingPointAdapterSyncEnabled = environment.config.property("accounting-point-adapter.sync-enabled").getString().toBoolean()
+    configureScheduling(accountingPointAdapterSyncEnabled)
 }
