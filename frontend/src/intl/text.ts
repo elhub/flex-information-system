@@ -45,7 +45,9 @@ export type TextKey =
   | "spg_manage_members_review_modal_removing_plural"
   | "spg_manage_members_review_modal_close"
   | "comment.visibility.same_party.description"
-  | "comment.visibility.any_involved_party.description";
+  | "comment.visibility.any_involved_party.description"
+  | "spg_create_additional_information_override_description"
+  | "spg_create_additional_information_placeholder";
 
 export const text: Record<string, Record<TextKey, string>> = {
   en: {
@@ -109,6 +111,10 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Only visible to your current party",
     "comment.visibility.any_involved_party.description":
       "Visible to all parties involved in this resource",
+    spg_create_additional_information_override_description:
+      "This field is meant to capture any additional information about the service providing group that might be relevant.",
+    spg_create_additional_information_placeholder:
+      "This field is optional and can be left empty.",
   },
   nb: {
     entity_role: "Entitet",
@@ -170,5 +176,9 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Kun synlig for din nåværende aktør",
     "comment.visibility.any_involved_party.description":
       "Synlig for alle parter involvert i denne ressursen",
+    spg_create_additional_information_override_description:
+      "Dette feltet er ment å fange opp eventuell tilleggsinformasjon om fleksibilitetsgruppen som kan være relevant.",
+    spg_create_additional_information_placeholder:
+      "Dette feltet er valgfritt og kan stå tomt.",
   },
 };

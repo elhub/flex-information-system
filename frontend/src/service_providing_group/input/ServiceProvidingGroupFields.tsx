@@ -1,4 +1,4 @@
-import { useGetIdentity } from "ra-core";
+import { useGetIdentity, useTranslate } from "ra-core";
 import { Divider, Heading } from "../../components/ui";
 import { zServiceProvidingGroupCreateRequest } from "../../generated-client/zod.gen";
 import { getFields } from "../../zod";
@@ -14,6 +14,7 @@ type Props = {
 };
 
 export const ServiceProvidingGroupFields = ({ isEdit }: Props) => {
+  const translate = useTranslate();
   const { data: identity } = useGetIdentity();
   const isServiceProvider = identity?.role === "flex_service_provider";
   const fields = getFields(zServiceProvidingGroupCreateRequest.shape);
@@ -54,8 +55,12 @@ export const ServiceProvidingGroupFields = ({ isEdit }: Props) => {
         {...fields.additional_information}
         rows={5}
         description
-        placeholder="This field is optional and can be left empty."
-        descriptionOverride="This field is meant to capture any additional information about the service providing group that might be relevant."
+        placeholder={translate(
+          "text.spg_create_additional_information_placeholder",
+        )}
+        descriptionOverride={translate(
+          "text.spg_create_additional_information_override_description",
+        )}
         tooltip={false}
         warning="Please remember not to write any sensitive (power/market/personal) information in this field."
       />
