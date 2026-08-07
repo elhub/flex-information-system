@@ -53,13 +53,12 @@ class AccountingPointSyncScheduler(
 
                 accountingPoints.forEach { accountingPoint ->
                     either {
-                        // fresh trace for each accounting point for better observability in case of errors in sync
-                        withTrace(TraceInfo.fresh()) { traceInfo ->
+                        withTrace(TraceInfo.fresh()) {
                             logger.debug { "Syncing accounting point with id ${accountingPoint.id}.." }
                             val validFrom = earliestStartDates[AccountingPointId(accountingPoint.id)]
                                 ?.asLocalMidnightInstant(timezone)
                                 ?: Instant.todayLocalMidnight(timezone)
-                            accountingPointService.synchronizeAccountingPoint(accountingPoint.businessId, validFrom, traceInfo).bind()
+                            accountingPointService.synchronizeAccountingPoint(accountingPoint.businessId, validFrom).bind()
                             logger.debug { "Accounting point ${accountingPoint.id} completed" }
                         }
                     }.onRight {

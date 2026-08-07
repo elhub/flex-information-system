@@ -8,7 +8,6 @@ import io.ktor.http.HttpStatusCode
 import no.elhub.flex.accountingpoint.db.AccountingPointMeteringGridAreaRepository
 import no.elhub.flex.accountingpoint.db.AccountingPointRepository
 import no.elhub.flex.auth.FlexPrincipal
-import no.elhub.flex.config.TraceInfo
 import no.elhub.flex.db.FlexTransaction.flexTransaction
 import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterService
 import no.elhub.flex.meteringgridarea.db.MeteringGridAreaRepository
@@ -43,7 +42,6 @@ interface AccountingPointService {
     suspend fun synchronizeAccountingPoint(
         accountingPointBusinessId: String,
         validFrom: Instant,
-        traceInfo: TraceInfo,
     ): Either<AppError, Unit>
 
     /**
@@ -97,8 +95,7 @@ class AccountingPointServiceImpl(
     override suspend fun synchronizeAccountingPoint(
         accountingPointBusinessId: String,
         validFrom: Instant,
-        traceInfo: TraceInfo,
-    ): Either<AppError, Unit> = fetchAccountingPointData(accountingPointBusinessId, validFrom, traceInfo)
+    ): Either<AppError, Unit> = fetchAccountingPointData(accountingPointBusinessId, validFrom)
         .flatMap { adapterAccountingPoint ->
             logger.debug { "Raw data from adapter: ${adapterAccountingPoint.anonymizedForLogging()}" }
             with(FlexPrincipal.internalData()) {
@@ -221,9 +218,8 @@ class AccountingPointServiceImpl(
     private suspend fun fetchAccountingPointData(
         accountingPointBusinessId: String,
         validFrom: Instant,
-        traceInfo: TraceInfo,
     ): Either<AppError, AdapterAccountingPoint> =
-        accountingPointAdapter.getAccountingPoint(accountingPointBusinessId, validFrom, traceInfo)
+        accountingPointAdapter.getAccountingPoint(accountingPointBusinessId, validFrom)
             .mapLeft { err ->
                 when (err) {
                     is AdapterNotFoundError -> {

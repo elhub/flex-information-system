@@ -27,7 +27,7 @@ import kotlin.time.Instant
 
 fun defaultTestApplication(): TestApplication {
     val mockAccountingPointService = mockk<AccountingPointService>().also { svc ->
-        coEvery { svc.synchronizeAccountingPoint(any(), any<Instant>(), any()) } returns Unit.right()
+        coEvery { svc.synchronizeAccountingPoint(any(), any<Instant>()) } returns Unit.right()
         coEvery { with(any<FlexPrincipal>()) { svc.getCurrentAccountingPoint(any()) } } returns
             DataFetchError("stub").left()
         coEvery { with(any<FlexPrincipal>()) { svc.getAccountingPointByBusinessId(any()) } } returns

@@ -10,11 +10,11 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
-import no.elhub.flex.config.TraceInfo
 import no.elhub.flex.integration.accountingpointadapter.generated.client.AccountingPointClient
 import no.elhub.flex.integration.accountingpointadapter.generated.client.ApiConfiguration
 import no.elhub.flex.integration.accountingpointadapter.generated.client.NetworkResult
 import no.elhub.flex.integration.accountingpointadapter.generated.models.AccountingPoint
+import no.elhub.flex.util.currentTraceContext
 import org.koin.core.annotation.Property
 import org.koin.core.annotation.Single
 import kotlin.time.Instant
@@ -24,7 +24,6 @@ interface AccountingPointAdapterService {
     suspend fun getAccountingPoint(
         accountingPointId: String,
         validFrom: Instant,
-        traceInfo: TraceInfo,
     ): Either<AccountingPointAdapterError, AccountingPoint>
 }
 
@@ -50,12 +49,15 @@ class AccountingPointAdapterHttpService(
             },
         )
 
-    override suspend fun getAccountingPoint(accountingPointId: String, validFrom: Instant, traceInfo: TraceInfo): Either<AccountingPointAdapterError, AccountingPoint> {
+    override suspend fun getAccountingPoint(
+        accountingPointId: String,
+        validFrom: Instant,
+    ): Either<AccountingPointAdapterError, AccountingPoint> {
         val config = ApiConfiguration(
             basePath = baseUrl,
             customHeaders = mapOf(
                 "Authorization" to "Bearer $apiKey",
-                "traceparent" to traceInfo.toString(),
+                "traceparent" to currentTraceContext().traceInfo.toString(),
             )
         )
         return when (val result = client.readAccountingPoint(accountingPointId, validFrom, apiConfiguration = config)) {

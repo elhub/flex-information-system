@@ -73,7 +73,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockAccountingPointService.getCurrentAccountingPoint(any()) }
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
                 coEvery {
-                    mockAccountingPointService.synchronizeAccountingPoint(any(), any(), any())
+                    mockAccountingPointService.synchronizeAccountingPoint(any(), any())
                 } returns Unit.right()
                 coEvery {
                     with(any<FlexPrincipal>()) {
@@ -106,7 +106,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockAccountingPointService.getCurrentAccountingPoint(any()) }
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
                 coEvery {
-                    mockAccountingPointService.synchronizeAccountingPoint(any(), any(), any())
+                    mockAccountingPointService.synchronizeAccountingPoint(any(), any())
                 } returns Unit.right()
                 coEvery {
                     with(any<FlexPrincipal>()) {
@@ -162,7 +162,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockAccountingPointService.getCurrentAccountingPoint(any()) }
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
                 coEvery {
-                    mockAccountingPointService.synchronizeAccountingPoint(any(), any(), any())
+                    mockAccountingPointService.synchronizeAccountingPoint(any(), any())
                 } returns Unit.right()
                 coEvery {
                     with(any<FlexPrincipal>()) {
@@ -243,7 +243,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockAccountingPointService.getCurrentAccountingPoint(any()) }
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
                 coEvery {
-                    mockAccountingPointService.synchronizeAccountingPoint(any(), any(), any())
+                    mockAccountingPointService.synchronizeAccountingPoint(any(), any())
                 } returns Unit.right()
                 coEvery {
                     with(any<FlexPrincipal>()) {
@@ -315,7 +315,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockAccountingPointService.getCurrentAccountingPoint(any()) }
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
                 coEvery {
-                    mockAccountingPointService.synchronizeAccountingPoint(any(), any(), any())
+                    mockAccountingPointService.synchronizeAccountingPoint(any(), any())
                 } returns Unit.right()
                 coEvery {
                     with(any<FlexPrincipal>()) {
@@ -340,7 +340,7 @@ class ControllableUnitLookupTest :
                 val endUserBusinessId = "123456789"
                 val accountingPointBusinessId = "133700000000000053"
                 coEvery {
-                    mockAccountingPointService.synchronizeAccountingPoint(any(), any(), any())
+                    mockAccountingPointService.synchronizeAccountingPoint(any(), any())
                 } returns Unit.right()
                 coEvery {
                     with(any<FlexPrincipal>()) {
@@ -394,7 +394,7 @@ class ControllableUnitLookupTest :
                         setBody("""{"end_user":"$endUserBusinessId","accounting_point":"$accountingPointBusinessId"}""")
                     }
                     response.status shouldBe HttpStatusCode.NotFound
-                    coVerify(exactly = 0) { syncDisabledAccountingPointService.synchronizeAccountingPoint(any(), any(), any()) }
+                    coVerify(exactly = 0) { syncDisabledAccountingPointService.synchronizeAccountingPoint(any(), any()) }
                     app.stop()
                 }
 
@@ -426,7 +426,7 @@ class ControllableUnitLookupTest :
                         setBody("""{"end_user":"$endUserBusinessId","controllable_unit":"$controllableUnitBusinessId"}""")
                     }
                     response.status shouldBe HttpStatusCode.OK
-                    coVerify(exactly = 0) { syncDisabledAccountingPointService.synchronizeAccountingPoint(any(), any(), any()) }
+                    coVerify(exactly = 0) { syncDisabledAccountingPointService.synchronizeAccountingPoint(any(), any()) }
                     app.stop()
                 }
             }
@@ -438,7 +438,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockAccountingPointService.getCurrentAccountingPoint(any()) }
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
                 coEvery {
-                    mockAccountingPointService.synchronizeAccountingPoint(any(), any(), any())
+                    mockAccountingPointService.synchronizeAccountingPoint(any(), any())
                 } returns Unit.right()
                 coEvery {
                     with(any<FlexPrincipal>()) {
@@ -472,7 +472,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockAccountingPointService.getCurrentAccountingPoint(any()) }
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
                 coEvery {
-                    mockAccountingPointService.synchronizeAccountingPoint(any(), any(), any())
+                    mockAccountingPointService.synchronizeAccountingPoint(any(), any())
                 } returns Unit.right()
                 coEvery {
                     with(any<FlexPrincipal>()) {
@@ -523,7 +523,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockAccountingPointService.getCurrentAccountingPoint(any()) }
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
                 coEvery {
-                    mockAccountingPointService.synchronizeAccountingPoint(any(), any(), any())
+                    mockAccountingPointService.synchronizeAccountingPoint(any(), any())
                 } returns Unit.right()
                 coEvery {
                     with(any<FlexPrincipal>()) {
@@ -565,7 +565,7 @@ class ControllableUnitLookupTest :
                 val endUserBusinessId = "123456789"
                 val accountingPointBusinessId = "133700000000000053"
                 coEvery {
-                    mockAccountingPointService.synchronizeAccountingPoint(any(), any(), any())
+                    mockAccountingPointService.synchronizeAccountingPoint(any(), any())
                 } returns InternalServerError("traceId").left()
 
                 val app = testApp(mockRepo, mockAccountingPointService, mockEventRepo)
@@ -585,7 +585,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockAccountingPointService.getCurrentAccountingPoint(any()) }
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
                 coEvery {
-                    mockAccountingPointService.synchronizeAccountingPoint(any(), any(), any())
+                    mockAccountingPointService.synchronizeAccountingPoint(any(), any())
                 } returns Unit.right()
                 coEvery {
                     with(any<FlexPrincipal>()) {
@@ -644,7 +644,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockAccountingPointService.getCurrentAccountingPoint(any()) }
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
                 coEvery {
-                    mockAccountingPointService.synchronizeAccountingPoint(any(), any(), any())
+                    mockAccountingPointService.synchronizeAccountingPoint(any(), any())
                 } returns Unit.right()
                 coEvery {
                     with(any<FlexPrincipal>()) {
@@ -689,7 +689,7 @@ class ControllableUnitLookupTest :
                     with(any<FlexPrincipal>()) { mockAccountingPointService.getCurrentAccountingPoint(controllableUnitBusinessId) }
                 } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
                 coEvery {
-                    mockAccountingPointService.synchronizeAccountingPoint(any(), any(), any())
+                    mockAccountingPointService.synchronizeAccountingPoint(any(), any())
                 } returns Unit.right()
                 coEvery {
                     with(any<FlexPrincipal>()) {
