@@ -42,9 +42,7 @@ No policies.
 
 #### Common
 
-| Policy key    | Policy                                                | Status |
-|---------------|-------------------------------------------------------|--------|
-| SPGPPS-COM001 | Read power per substation for SPGs they can see.      | DONE   |
+No policies.
 
 #### Balance Responsible Party
 
@@ -60,7 +58,9 @@ No policies.
 
 #### Flexibility Information System Operator
 
-No policies.
+| Policy key     | Policy                                  | Status |
+|----------------|-----------------------------------------|--------|
+| SPGPPS-FISO001 | Read power per substation for all SPGs. | DONE   |
 
 #### Organisation
 
@@ -68,7 +68,9 @@ No policies.
 
 #### System Operator
 
-No policies.
+| Policy key   | Policy                                           | Status |
+|--------------|--------------------------------------------------|--------|
+| SPGPPS-SO001 | Read power per substation for SPGs they can see. | DONE   |
 
 #### Service Provider
 

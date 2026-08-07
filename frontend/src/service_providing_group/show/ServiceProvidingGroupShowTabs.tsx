@@ -14,12 +14,14 @@ type Props = {
   spgId: number;
   spgViewModel: SpgShowViewModel;
   summary: ServiceProvidingGroupSummary | undefined;
+  showPowerPerSubstation?: boolean;
 };
 
 export const ServiceProvidingGroupShowTabs = ({
   spgId,
   spgViewModel,
   summary,
+  showPowerPerSubstation,
 }: Props) => {
   const [tab, setTab] = useTabSearchParam("summary");
   const translate = useTranslate();
@@ -43,10 +45,12 @@ export const ServiceProvidingGroupShowTabs = ({
           label={translate("text.tab.grid_prequalifications")}
           value="grid_prequalifications"
         />
-        <Tabs.Tab
-          label={translate("text.tab.power_per_substation")}
-          value="power_per_substation"
-        />
+        {showPowerPerSubstation && (
+          <Tabs.Tab
+            label={translate("text.tab.power_per_substation")}
+            value="power_per_substation"
+          />
+        )}
       </Tabs.List>
       <Tabs.Panel value="summary">
         {summary ? (
@@ -70,9 +74,11 @@ export const ServiceProvidingGroupShowTabs = ({
       <Tabs.Panel value="grid_prequalifications">
         <ServiceProvidingGroupShowGridPrequalificationsTable spgId={spgId} />
       </Tabs.Panel>
-      <Tabs.Panel value="power_per_substation">
-        <ServiceProvidingGroupShowPowerPerSubstationTable spgId={spgId} />
-      </Tabs.Panel>
+      {showPowerPerSubstation && (
+        <Tabs.Panel value="power_per_substation">
+          <ServiceProvidingGroupShowPowerPerSubstationTable spgId={spgId} />
+        </Tabs.Panel>
+      )}
     </Tabs>
   );
 };

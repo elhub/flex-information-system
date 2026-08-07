@@ -7,7 +7,7 @@ import { throwOnError } from "../../util";
 import { useQuery } from "@tanstack/react-query";
 import { ShowPageLayout } from "../../components/ShowPageLayout";
 import { useTranslateEnum } from "../../intl/intl";
-import { usePermissions } from "ra-core";
+import { useGetIdentity, usePermissions } from "ra-core";
 import { Permissions } from "../../auth/permissions";
 import { ActivateServiceProvidingGroupButton } from "../ActivateServiceProvidingGroupButton";
 import { spgStatusVariantMap } from "../serviceProvidingGroupStatus";
@@ -18,6 +18,10 @@ export const ServiceProvidingGroupShow = () => {
   const spgId = Number(useParams<{ id: string }>().id);
   const { permissions } = usePermissions<Permissions>();
   const translateEnum = useTranslateEnum();
+  const { data: identity } = useGetIdentity();
+  const isFISOOrSO =
+    identity?.role === "flex_flexibility_information_system_operator" ||
+    identity?.role === "flex_system_operator";
 
   const {
     data: spg,
@@ -92,6 +96,7 @@ export const ServiceProvidingGroupShow = () => {
         spgId={spg.id}
         spgViewModel={spgViewModel}
         summary={spg.summary ?? undefined}
+        showPowerPerSubstation={isFISOOrSO}
       />
     </ShowPageLayout>
   );

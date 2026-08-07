@@ -338,13 +338,13 @@ def test_service_providing_group_power_per_substation_aggregation(sts):
     assert null_sub.controllable_unit.maximum_active_power.max_ == pytest.approx(50.0)
 
 
-# RLS: SPGPPS-COM001
+# RLS: SPGPPS-FISO001
+# RLS: SPGPPS-SO001
 def test_service_providing_group_power_per_substation_common(sts):
     client_fiso = sts.get_client(TestEntity.TEST, "FISO")
-    client_sp = sts.get_client(TestEntity.TEST, "SP")
     client_so = sts.get_client(TestEntity.TEST, "SO")
 
-    for client in [client_fiso, client_sp, client_so]:
+    for client in [client_fiso, client_so]:
         spgs = list_service_providing_group.sync(client=client)
         assert isinstance(spgs, list)
         assert len(spgs) > 0
