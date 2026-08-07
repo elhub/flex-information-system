@@ -12,7 +12,7 @@ import no.elhub.flex.model.dto.generated.models.ErrorMessage
 import no.elhub.flex.model.error.AppError
 import no.elhub.flex.model.error.InternalServerError
 
-val logger = KotlinLogging.logger {}
+private val logger = KotlinLogging.logger {}
 
 /**
  * Extension function to respond with a JSON body from either an error or a successful serializable value.

@@ -2,7 +2,10 @@ package no.elhub.flex.integration.accountingpointadapter
 
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.MappingBuilder
+import com.github.tomakehurst.wiremock.client.WireMock.exactly
+import com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
+import com.github.tomakehurst.wiremock.matching.UrlPattern
 import io.kotest.core.listeners.AfterSpecListener
 import io.kotest.core.listeners.BeforeSpecListener
 import io.kotest.core.spec.Spec
@@ -19,6 +22,9 @@ object AccountingPointAdapterWireMockServer : BeforeSpecListener, AfterSpecListe
     fun stubFor(mappingBuilder: MappingBuilder) = server.stubFor(mappingBuilder)
 
     fun resetAll() = server.resetAll()
+
+    fun verifyRequestCount(count: Int, urlPattern: UrlPattern) =
+        server.verify(exactly(count), getRequestedFor(urlPattern))
 
     override suspend fun beforeSpec(spec: Spec) {
         server.start()
