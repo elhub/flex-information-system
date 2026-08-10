@@ -1,19 +1,16 @@
 import React from "react";
 import {
-  ArrayField,
   FieldProps,
   Link,
   SelectInput,
   useGetOne,
   useRecordContext,
-  WithListContext,
 } from "react-admin";
-import { Stack, Chip, Tooltip } from "@mui/material";
+import { Chip, Tooltip } from "@mui/material";
 import {
   listSystemOperatorProductType,
   ProductType,
 } from "../generated-client";
-import { Tag } from "../components/ui";
 import {
   ArrayInput,
   ArrayInputOption,
@@ -104,33 +101,6 @@ export const ProductTypeInput = (props: any) => {
   const productTypes = useGetAllProductTypes();
 
   return <SelectInput choices={productTypes} {...props} />;
-};
-
-// field component to display MULTIPLE product types
-export const ProductTypeArrayField = (props: any) => {
-  const productTypes = useGetAllProductTypes();
-
-  return (
-    <ArrayField source="product_type_ids" {...props}>
-      <WithListContext
-        render={({ data }) => (
-          <Stack direction="row" spacing={2}>
-            {data?.map((pt_id) => (
-              <Tag key={pt_id as any}>
-                {
-                  productTypes?.find(
-                    // The typing from react-admin is not great here. It says its a record but its a number
-                    (productType) =>
-                      productType.id === (pt_id as unknown as number),
-                  )?.name
-                }
-              </Tag>
-            ))}
-          </Stack>
-        )}
-      />
-    </ArrayField>
-  );
 };
 
 // input component to select MULTIPLE product types

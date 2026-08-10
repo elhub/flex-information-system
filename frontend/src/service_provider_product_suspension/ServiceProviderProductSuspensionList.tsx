@@ -1,4 +1,5 @@
 import { usePermissions } from "ra-core";
+import { FunctionField } from "react-admin";
 import { List, Datagrid } from "../components/EDS-ra/list";
 import {
   DateField,
@@ -12,7 +13,7 @@ import {
   EnumArrayInput,
   PartyReferenceInput,
 } from "../components/EDS-ra/inputs";
-import { ProductTypeArrayField } from "../product_type/components";
+import { ProductTypeArrayField } from "../components/ProductTypeArrayField";
 import { Permissions } from "../auth/permissions";
 import { zServiceProviderProductSuspension } from "../generated-client/zod.gen";
 import { getFields } from "../zod";
@@ -65,7 +66,12 @@ export const ServiceProviderProductSuspensionList = () => {
         >
           <TextField source="name" />
         </ReferenceField>
-        <ProductTypeArrayField source={fields.product_type_ids.source} />
+        <FunctionField
+          source={fields.product_type_ids.source}
+          render={(record) => (
+            <ProductTypeArrayField productTypeIds={record.product_type_ids} />
+          )}
+        />
         <EnumField
           source={fields.reason.source}
           enumKey="service_provider_product_suspension.reason"

@@ -3,9 +3,10 @@ import {
   RecordContextProvider,
   ResourceContextProvider,
 } from "ra-core";
+import { FunctionField } from "react-admin";
 import { BodyText, Heading, VerticalSpace } from "../components/ui";
 import { DateField } from "../components/EDS-ra";
-import { ProductTypeArrayField } from "../product_type/components";
+import { ProductTypeArrayField } from "../components/ProductTypeArrayField";
 import { Notice as GNotice } from "../generated-client";
 import {
   zControllableUnitServiceProvider,
@@ -78,9 +79,12 @@ const NoticeSPPSProductTypeNotQualifiedShowDetails = ({
       </Heading>
       <VerticalSpace />
       <RecordContextProvider value={notice.data}>
-        <ProductTypeArrayField
+        <FunctionField
           label="field.service_provider_product_suspension.product_type_ids"
           source={noticeDataFields.product_type_ids.source}
+          render={(record) => (
+            <ProductTypeArrayField productTypeIds={record.product_type_ids} />
+          )}
         />
       </RecordContextProvider>
     </>

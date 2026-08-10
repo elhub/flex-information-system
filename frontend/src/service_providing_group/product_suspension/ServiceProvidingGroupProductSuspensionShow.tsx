@@ -1,4 +1,5 @@
 import { useRecordContext, usePermissions } from "ra-core";
+import { FunctionField } from "react-admin";
 import { Link } from "react-router-dom";
 import { IconPencil, IconClockReset } from "@elhub/ds-icons";
 import { Button, Content, Heading, VerticalSpace } from "../../components/ui";
@@ -11,7 +12,7 @@ import {
   EnumField,
 } from "../../components/EDS-ra";
 import { EventButton } from "../../event/EventButton";
-import { ProductTypeArrayField } from "../../product_type/components";
+import { ProductTypeArrayField } from "../../components/ProductTypeArrayField";
 import { Permissions } from "../../auth/permissions";
 import { ServiceProvidingGroupProductSuspension } from "../../generated-client";
 import { getFields } from "../../zod";
@@ -92,7 +93,13 @@ export const ServiceProvidingGroupProductSuspensionShow = () => {
           reference="party"
           label
         />
-        <ProductTypeArrayField source={fields.product_type_ids.source} label />
+        <FunctionField
+          source={fields.product_type_ids.source}
+          label
+          render={(record) => (
+            <ProductTypeArrayField productTypeIds={record.product_type_ids} />
+          )}
+        />
       </Content>
       <VerticalSpace />
       <Heading level={2} size="small" spacing>
