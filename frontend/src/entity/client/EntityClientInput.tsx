@@ -1,4 +1,4 @@
-import { Form, useRecordContext } from "ra-core";
+﻿import { Form, useRecordContext } from "ra-core";
 import { useLocation } from "react-router-dom";
 import { zEntityClientCreateRequest } from "../../generated-client/zod.gen";
 import { getFields, unTypedZodResolver } from "../../zod";
@@ -24,6 +24,7 @@ export const EntityClientInput = () => {
   const partyFilter = entityId
     ? {
         embed: "party_membership",
+        "party_membership.entity_id": entityId,
         or: `(entity_id.eq.${entityId},party_membership.not.is.null)`,
       }
     : {};
