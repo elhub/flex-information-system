@@ -2,6 +2,7 @@
 package embed
 
 import (
+	"errors"
 	"net/url"
 	"reflect"
 	"sort"
@@ -380,6 +381,117 @@ func TestResourceNames(t *testing.T) {
 
 					return
 				}
+			}
+		})
+	}
+}
+
+//nolint:funlen
+func TestValidateRelations(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name           string
+		parentResource string
+		nodes          []embedNode
+		wantErr        bool
+		wantErrIs      error
+	}{
+		{
+			name:           "empty nodes",
+			parentResource: "controllable_unit",
+			nodes:          nil,
+			wantErr:        false,
+			wantErrIs:      nil,
+		},
+		{
+			name:           "valid single node",
+			parentResource: "controllable_unit",
+			nodes:          []embedNode{{name: "accounting_point"}}, //nolint:exhaustruct
+			wantErr:        false,
+			wantErrIs:      nil,
+		},
+		{
+			name:           "valid multiple top-level nodes",
+			parentResource: "controllable_unit",
+			nodes: []embedNode{
+				{name: "accounting_point"},   //nolint:exhaustruct
+				{name: "technical_resource"}, //nolint:exhaustruct
+			},
+			wantErr:   false,
+			wantErrIs: nil,
+		},
+		{
+			name:           "valid nested node",
+			parentResource: "controllable_unit",
+			nodes: []embedNode{
+				{name: "accounting_point", children: []embedNode{ //nolint:exhaustruct
+					{name: "metering_grid_area"}, //nolint:exhaustruct
+				}},
+			},
+			wantErr:   false,
+			wantErrIs: nil,
+		},
+		{
+			name:           "unknown top-level embed",
+			parentResource: "controllable_unit",
+			nodes:          []embedNode{{name: "nonexistent"}}, //nolint:exhaustruct
+			wantErr:        true,
+			wantErrIs:      errUnknownEmbed,
+		},
+		{
+			name:           "unknown parent resource",
+			parentResource: "nonexistent_resource",
+			nodes:          []embedNode{{name: "accounting_point"}}, //nolint:exhaustruct
+			wantErr:        true,
+			wantErrIs:      errUnknownEmbed,
+		},
+		{
+			name:           "unknown nested embed",
+			parentResource: "controllable_unit",
+			nodes: []embedNode{
+				{name: "accounting_point", children: []embedNode{ //nolint:exhaustruct
+					{name: "nonexistent_child"}, //nolint:exhaustruct
+				}},
+			},
+			wantErr:   true,
+			wantErrIs: errUnknownEmbed,
+		},
+		{
+			name:           "embed name that resolves to different resource with valid child",
+			parentResource: "controllable_unit_service_provider",
+			nodes: []embedNode{
+				{name: "controllable_unit", children: []embedNode{ //nolint:exhaustruct
+					{name: "technical_resource"}, //nolint:exhaustruct
+				}},
+			},
+			wantErr:   false,
+			wantErrIs: nil,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			err := validateRelations(tt.parentResource, tt.nodes, testRelations)
+
+			if tt.wantErr {
+				if err == nil {
+					t.Errorf("validateRelations() expected error, got nil")
+
+					return
+				}
+
+				if tt.wantErrIs != nil && !errors.Is(err, tt.wantErrIs) {
+					t.Errorf("validateRelations() error = %v, want %v", err, tt.wantErrIs)
+				}
+
+				return
+			}
+
+			if err != nil {
+				t.Errorf("validateRelations() unexpected error: %v", err)
 			}
 		})
 	}
