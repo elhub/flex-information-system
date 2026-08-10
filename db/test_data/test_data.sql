@@ -50,15 +50,17 @@ BEGIN
   SET status = 'active'
   WHERE id = party_id;
 
-  INSERT INTO flex.party_membership (
-    entity_id,
-    party_id,
-    scopes
-  ) VALUES (
-    member_entity_id,
-    party_id,
-    '{manage:data, read:grid, manage:auth, manage:attachment}'
-  );
+  IF parent_entity_id != member_entity_id THEN
+      INSERT INTO flex.party_membership (
+        entity_id,
+        party_id,
+        scopes
+      ) VALUES (
+        member_entity_id,
+        party_id,
+        '{manage:data, read:grid, manage:auth, manage:attachment}'
+      );
+  END IF;
 
   RETURN party_id;
 END;
