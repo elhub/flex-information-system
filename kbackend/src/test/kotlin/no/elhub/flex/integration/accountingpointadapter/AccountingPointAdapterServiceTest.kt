@@ -137,7 +137,7 @@ class AccountingPointAdapterServiceTest : FunSpec({
             result.shouldBeRight().gsrn shouldBe GSRN
         }
 
-        test("returns Left after exhausting all 2 retries (2 total attempts)") {
+        test("returns Left after exhausting all 2 retries (3 total attempts)") {
             AccountingPointAdapterWireMockServer.stubFor(
                 get(urlPathEqualTo("/accounting_point/$GSRN"))
                     .willReturn(aResponse().withStatus(HttpStatusCode.InternalServerError.value)),
