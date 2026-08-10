@@ -124,7 +124,7 @@ WHERE (
 -- changeset flex:service-providing-group-product-application-ramping-capability-trigger runOnChange:true endDelimiter:--
 -- SPGPA-VAL007
 ALTER TABLE flex.service_providing_group_product_application
-DROP CONSTRAINT IF EXISTS spg_product_aopplication_ramping_capability_require_check;
+DROP CONSTRAINT IF EXISTS spg_product_application_ramping_capability_required_check;
 
 CREATE OR REPLACE FUNCTION
 spg_product_application_ramping_capability_required_check()
