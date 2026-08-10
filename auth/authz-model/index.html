@@ -18,7 +18,7 @@
         <link rel="prev" href="../authn-model/">
       
       
-        <link rel="next" href="../users-management/">
+        <link rel="next" href="../scopes/">
       
       
         
@@ -637,6 +637,8 @@
       
         
       
+        
+      
     
     
     
@@ -962,6 +964,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scopes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scopes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -2212,6 +2242,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -3164,6 +3198,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../resources/service_providing_group_power_per_substation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Service Providing Group Power Per Substation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../resources/service_providing_group_product_application/" class="md-nav__link">
         
   
@@ -3172,6 +3234,34 @@
     
   
     Service Providing Group Product Application
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/service_providing_group_product_application_attachment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Service Providing Group Product Application Attachment
   
 
     
@@ -3867,8 +3957,8 @@ colon-separated string on the following format:</p>
 <p>The user can <code>&lt;verb&gt;</code> <code>&lt;resource&gt;</code> in <code>&lt;module&gt;</code>.</p>
 </blockquote>
 <p>Verb is the privilege or access level. Module and resource typically describe
-the <em>asset</em> or <em>path</em> that is being protected are defined below. Resource is
-optional and if omitted then it means "all resources".</p>
+the <em>asset</em> or <em>path</em> that is being protected, and are defined below. Resource
+is optional and if omitted then it means "all resources".</p>
 <h3 id="verb">Verb</h3>
 <p>A verb specifies the type of access. The verbs are defined by the actions they
 allow on the resource.</p>
@@ -3888,7 +3978,7 @@ allow on the resource.</p>
 </tr>
 <tr>
 <td><code>use</code></td>
-<td><code>read</code> plus calling RPCs (e.g. lookuo)</td>
+<td><code>read</code> plus calling RPCs (e.g. lookup)</td>
 <td>Read, Call</td>
 </tr>
 <tr>
@@ -3902,16 +3992,19 @@ allow on the resource.</p>
 implicit inheritance. This e.g. means that a user with the <code>use</code> verb implicitly
 has the <code>read</code> privilege.</p>
 <h3 id="module">Module</h3>
-<p>A module is a logical grouping of resources. The currently defined modules are.</p>
+<p>A module is a logical grouping of resources. The currently defined modules are:</p>
 <ul>
 <li><code>data</code> - This is the data API at <code>/api/</code>, for resources such as controllable
   units, service providing groups, etc.</li>
+<li><code>grid</code> - Read-only grid topology, such as substations and lines.</li>
+<li><code>attachment</code> - File attachments on resources, such as product application
+  attachments.</li>
 <li><code>auth</code> - This is the module for auth at <code>/auth/</code>.</li>
 </ul>
 <h3 id="resource">Resource</h3>
 <p>The resource part of the scope is used to make sub-scopes within a module. It is
 optional and not yet implemented for clients. When omitted, the scope includes
-everything in a the module.</p>
+everything in the module.</p>
 <p>The three dots <code>...</code> in the format above means that resources can be nested, to
 create sub-scopes.</p>
 <p>Each path on our API has a required scope, and every request is checked to see
@@ -3929,6 +4022,7 @@ that the client has a matching scope.</p>
   It is also covered by e.g. <code>manage:data</code> and <code>use:data:controllable_unit</code>.</p>
 </li>
 </ul>
+<p>The full list of scopes is available in the <a href="../scopes/">dedicated page</a>.</p>
 <h3 id="scope-assignment">Scope assignment</h3>
 <p>Everytime a user changes identity in the system, they get assigned different
 scopes.
