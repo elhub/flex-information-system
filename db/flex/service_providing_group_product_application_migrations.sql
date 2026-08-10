@@ -141,7 +141,7 @@ BEGIN
        WHERE pt.business_id = 'manual_frequency_restoration' OR pt.business_id = 'manual_frequency_restoration_disruption'
     ) THEN
         RAISE sqlstate 'PT400' using
-            message = 'ramping_capability is required and must not be empty';
+            message = 'ramping_capability is required and must not be null';
     END IF;
 RETURN NEW;
 END;
