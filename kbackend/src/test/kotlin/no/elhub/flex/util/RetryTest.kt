@@ -2,7 +2,6 @@ package no.elhub.flex.util
 
 import arrow.core.left
 import arrow.core.right
-import io.github.oshai.kotlinlogging.KotlinLogging
 import io.kotest.assertions.arrow.core.shouldBeLeft
 import io.kotest.assertions.arrow.core.shouldBeRight
 import io.kotest.core.spec.style.FunSpec
