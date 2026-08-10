@@ -95,6 +95,11 @@ export const ServiceProviderProductApplicationInput = () => {
         />
         <PartyReferenceInput
           {...fields.system_operator_id}
+          filter={{
+            type: "system_operator",
+            embed: "system_operator_product_type!",
+            "system_operator_product_type.status": "active",
+          }}
           optionText={(record) => record.name}
         />
         <ProductTypesInput {...fields.product_type_ids} />
