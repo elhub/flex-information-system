@@ -63,8 +63,8 @@ change from `requested` will trigger this check as well.
 | SPGPA-VAL004        | If `status` is set to `prequalified`, then `prequalified_at` must already be specified in the resource or the request.           | DONE   |
 | SPGPA-VAL005        | If `status` is set to `verified`, then `verified_at` must already be specified in the resource or the request.                   | DONE   |
 | SPGPA-VAL006        | If `status` is set to `rejected`, then both `prequalified_at` and `verified_at` must be unset in the resource or by the request. | DONE   |
-| SPGPA-VAL007        | If `product_type_ids` contains Manual Congestion, then `ramping_capability` must be set                                          | DONE   |
-| SPGPA-VAL008        | If `product_type_ids` contains Manual Congestion, then `ramping_description` must be set                                         | DONE   |
+| SPGPA-VAL007        | If `product_type_ids` contains Manual Frequency Restoration, then `ramping_capability` must be set                                          | DONE   |
+| SPGPA-VAL008        | If `product_type_ids` contains Manual Frequency Restoration, then `ramping_description` must be set                                         | DONE   |
 | SPGPA-VAL009        | `product_type_ids` must not be empty.                                                                                            | DONE   |
 
 ## Notifications

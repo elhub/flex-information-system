@@ -121,19 +121,76 @@ WHERE (
     ramping_capability IS NULL OR ramping_description IS NULL
 ) AND 1 = any(product_type_ids);
 
+-- changeset flex:service-providing-group-product-application-ramping-capability-function runOnChange:true endDelimiter:--
 -- SPGPA-VAL007
 ALTER TABLE flex.service_providing_group_product_application
-ADD CONSTRAINT spg_product_application_ramping_capability_required_check CHECK (
-    ramping_capability IS NOT NULL
-    OR NOT (1 = any(product_type_ids))
-);
+DROP CONSTRAINT IF EXISTS spg_product_application_ramping_capability_required_check;
 
+CREATE OR REPLACE FUNCTION
+spg_product_application_ramping_capability_required_check()
+RETURNS trigger
+SECURITY INVOKER
+LANGUAGE plpgsql
+AS
+$$
+BEGIN
+    IF NULLIF(NEW.ramping_capability, '') IS NULL AND EXISTS (
+       SELECT 1
+       FROM unnest(NEW.product_type_ids) AS pt_update_id
+       JOIN flex.product_type pt ON pt.id = pt_update_id
+       WHERE pt.business_id = 'manual_frequency_restoration' OR pt.business_id = 'manual_frequency_restoration_disruption'
+    ) THEN
+        RAISE sqlstate 'PT400' using
+            message = 'ramping_capability is required and must not be null';
+    END IF;
+RETURN NEW;
+END;
+$$;
+
+-- changeset flex:service-providing-group-product-application-ramping-capability-trigger runOnChange:true endDelimiter:--
+CREATE OR REPLACE TRIGGER
+spg_product_application_ramping_capability_required_check
+BEFORE INSERT OR UPDATE ON
+service_providing_group_product_application
+FOR EACH ROW
+EXECUTE FUNCTION
+spg_product_application_ramping_capability_required_check();
+
+
+-- changeset flex:service-providing-group-product-application-ramping-description-function runOnChange:true endDelimiter:--
 -- SPGPA-VAL008
 ALTER TABLE flex.service_providing_group_product_application
-ADD CONSTRAINT spg_product_application_ramping_description_check CHECK (
-    ramping_description IS NOT NULL
-    OR NOT (1 = any(product_type_ids))
-);
+DROP CONSTRAINT IF EXISTS spg_product_application_ramping_description_check;
+
+CREATE OR REPLACE FUNCTION
+spg_product_application_ramping_description_check()
+RETURNS trigger
+SECURITY INVOKER
+LANGUAGE plpgsql
+AS
+$$
+BEGIN
+    IF NULLIF(NEW.ramping_description, '') IS NULL AND EXISTS(
+       SELECT 1
+       FROM unnest(NEW.product_type_ids) AS pt_update_id
+       JOIN flex.product_type pt ON pt.id = pt_update_id
+       WHERE pt.business_id = 'manual_frequency_restoration' OR pt.business_id = 'manual_frequency_restoration_disruption'
+    ) THEN
+       RAISE sqlstate 'PT400' using
+           message = 'ramping_description is required and must not be empty';
+   END IF;
+RETURN NEW;
+END;
+$$;
+
+-- changeset flex:service-providing-group-product-application-ramping-description-trigger runOnChange:true endDelimiter:--
+CREATE OR REPLACE TRIGGER
+spg_product_application_ramping_description_check
+BEFORE INSERT OR UPDATE ON
+flex.service_providing_group_product_application
+FOR EACH ROW
+EXECUTE FUNCTION
+spg_product_application_ramping_description_check();
 
 -- changeset flex:service-providing-group-product-application-product-type-ids-not-empty-function runOnChange:true endDelimiter:--
 -- trigger to check that product_type_ids is not empty
@@ -159,7 +216,8 @@ $$;
 -- SPGPA-VAL009
 CREATE OR REPLACE TRIGGER
 service_providing_group_product_application_product_type_ids_not_empty
-BEFORE INSERT OR UPDATE ON service_providing_group_product_application
+BEFORE INSERT OR UPDATE ON
+flex.service_providing_group_product_application
 FOR EACH ROW
 EXECUTE FUNCTION
 service_providing_group_product_application_product_type_ids_not_empty();

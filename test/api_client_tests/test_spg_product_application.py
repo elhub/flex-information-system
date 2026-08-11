@@ -177,8 +177,8 @@ def data():
 
     # apply for some product types for both SO and qualify the applications
 
-    # random choice of product type. 1 is required for a few tests
-    pt_ids = [5, 7, 1]
+    # random choice of product type. 8 is required for a few tests
+    pt_ids = [5, 7, 8]
 
     for clt, id in [(client_so, so_id), (client_other_so, other_so_id)]:
         for pt_id in pt_ids:
@@ -544,7 +544,7 @@ def test_spgpa_fiso_sp_so(data):
         client=client_fiso,
         id=cast(int, spgpa.id),
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
-            product_type_ids=[1],
+            product_type_ids=[8],
             ramping_description="Description",
         ),
     )
@@ -555,7 +555,7 @@ def test_spgpa_fiso_sp_so(data):
         client=client_fiso,
         id=cast(int, spgpa.id),
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
-            product_type_ids=[1],
+            product_type_ids=[8],
             ramping_capability=ServiceProvidingGroupProductApplicationRampingCapability.ALWAYS,
         ),
     )
@@ -566,7 +566,7 @@ def test_spgpa_fiso_sp_so(data):
         client=client_fiso,
         id=cast(int, spgpa.id),
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
-            product_type_ids=[1],
+            product_type_ids=[8],
             ramping_capability=ServiceProvidingGroupProductApplicationRampingCapability.ALWAYS,
             ramping_description="Description",
         ),
