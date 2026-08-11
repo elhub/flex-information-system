@@ -1,6 +1,6 @@
 import { Form, useRecordContext, useTranslate } from "ra-core";
 import { useFormContext, useWatch } from "react-hook-form";
-import { useEffect } from "react";
+import { useEffect, ComponentProps } from "react";
 import { useLocation } from "react-router-dom";
 import { z } from "zod";
 import { getFields, unTypedZodResolver } from "../../zod";
@@ -39,7 +39,7 @@ const spgpaFormSchema =
   zServiceProvidingGroupProductApplicationCreateRequest.extend({
     ramping_capability:
       zServiceProvidingGroupProductApplicationRampingCapability,
-    ramping_description: z.string(),
+    ramping_description: z.string().optional().nullable(),
   });
 
 // component restricting the selectable product types based on the
@@ -83,18 +83,21 @@ const RampingNotice = () => {
     </ul>
   );
 };
-const RampingDescriptionInput = ({ fieldProps }: { fieldProps: any }) => {
+const RampingDescriptionInput = (
+  props: ComponentProps<typeof TextAreaInput>,
+) => {
   const { control } = useFormContext();
   const productTypeIds = useWatch({ control, name: "product_type_ids" });
   const shouldShow = productTypeIds?.includes(8) || productTypeIds?.includes(9);
   if (!shouldShow) return null;
   return (
     <TextAreaInput
-      {...fieldProps}
+      {...props}
       rows={5}
       description
       tooltip={false}
       infoElement={<RampingNotice />}
+      required={true}
     />
   );
 };
@@ -106,9 +109,23 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
   const parsedOverrideRecord = spgpaFormSchema
     .partial()
     .parse(overrideRecord ?? {});
-
   const record = { ...actualRecord, ...parsedOverrideRecord };
   const createOrUpdate = useCreateOrUpdate();
+
+  if (createOrUpdate === "create") {
+    spgpaFormSchema.superRefine((data, ctx) => {
+      if (
+        data.product_type_ids.includes(8) ||
+        data.product_type_ids.includes(9)
+      ) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "ramping_description required when having mFRR",
+          path: ["ramping_description"],
+        });
+      }
+    });
+  }
 
   if (createOrUpdate === "create" && isProductApplicationBlocked()) {
     return (
@@ -186,7 +203,7 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
           description
           tooltip={false}
         />
-        <RampingDescriptionInput fieldProps={fields.ramping_description} />
+        <RampingDescriptionInput {...fields.ramping_description} />
         <TextAreaInput
           {...fields.additional_information}
           rows={8}
