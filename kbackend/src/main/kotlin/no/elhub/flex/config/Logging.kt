@@ -15,9 +15,9 @@ fun Application.configureLogging() {
         level = Level.INFO
         filter { call -> call.request.path() !in silentPaths }
 
-        mdc("trace_id") { call -> call.attributes.getOrNull(TraceKey)?.traceID }
-        mdc("span_id") { call -> call.attributes.getOrNull(TraceKey)?.spanID }
-        mdc("parent_span_id") { call -> call.attributes.getOrNull(TraceKey)?.parentSpanID }
+        mdc("trace_id") { call -> call.attributes.getOrNull(TraceContextKey)?.traceInfo?.traceID }
+        mdc("span_id") { call -> call.attributes.getOrNull(TraceContextKey)?.traceInfo?.spanID }
+        mdc("parent_span_id") { call -> call.attributes.getOrNull(TraceContextKey)?.traceInfo?.parentSpanID }
         mdc("http.method") { call -> call.request.httpMethod.value }
         mdc("http.uri") { call -> call.request.path() }
         mdc("http.status") { call -> call.response.status()?.value?.toString() }

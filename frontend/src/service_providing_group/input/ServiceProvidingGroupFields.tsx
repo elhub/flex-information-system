@@ -1,4 +1,5 @@
-import { useGetIdentity } from "ra-core";
+import { useGetIdentity, useTranslate } from "ra-core";
+import { Divider, Heading } from "../../components/ui";
 import { zServiceProvidingGroupCreateRequest } from "../../generated-client/zod.gen";
 import { getFields } from "../../zod";
 import {
@@ -13,6 +14,7 @@ type Props = {
 };
 
 export const ServiceProvidingGroupFields = ({ isEdit }: Props) => {
+  const translate = useTranslate();
   const { data: identity } = useGetIdentity();
   const isServiceProvider = identity?.role === "flex_service_provider";
   const fields = getFields(zServiceProvidingGroupCreateRequest.shape);
@@ -43,10 +45,22 @@ export const ServiceProvidingGroupFields = ({ isEdit }: Props) => {
           description
         />
       )}
+      <div className="pt-6 pb-3">
+        <Divider />
+      </div>
+      <Heading level={4} size="small" className="pb-3">
+        Other
+      </Heading>
       <TextAreaInput
         {...fields.additional_information}
         rows={5}
         description
+        placeholder={translate(
+          "text.spg_create_additional_information_placeholder",
+        )}
+        descriptionOverride={translate(
+          "text.spg_create_additional_information_override_description",
+        )}
         tooltip={false}
         warning="Please remember not to write any sensitive (power/market/personal) information in this field."
       />

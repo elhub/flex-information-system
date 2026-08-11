@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 	"slices"
+	"strings"
 )
 
 type contextKey string
@@ -15,7 +16,9 @@ const apiVersionKey contextKey = "api-version"
 // contains an unsupported version. On success it echoes the latest version
 // back in the response and stores the requested version in the context.
 // Add a new entry to knownVersions when a breaking change ships. Remove old entries at sunset.
-// The OpenAPI endpoints (/ and /openapi.json) are exempt.
+// The OpenAPI endpoints (/ and /openapi.json) are exempt, as are download
+// endpoints (paths ending in /download) since they are navigated to directly
+// by the browser and cannot carry custom headers.
 func RequireAPIVersion(next http.Handler) http.Handler {
 	knownVersions := []string{
 		"2026-06-08",
@@ -26,7 +29,7 @@ func RequireAPIVersion(next http.Handler) http.Handler {
 		"/openapi.json": true,
 	}
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if exempt[r.URL.Path] {
+		if exempt[r.URL.Path] || strings.HasSuffix(r.URL.Path, "/download") {
 			next.ServeHTTP(w, r)
 			return
 		}
