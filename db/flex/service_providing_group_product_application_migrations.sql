@@ -134,7 +134,7 @@ LANGUAGE plpgsql
 AS
 $$
 BEGIN
-    IF NEW.ramping_capability IS NULL AND EXISTS (
+    IF NULLIF(NEW.ramping_capability, '') IS NULL AND EXISTS (
        SELECT 1
        FROM unnest(NEW.product_type_ids) AS pt_update_id
        JOIN flex.product_type pt ON pt.id = pt_update_id
@@ -170,7 +170,7 @@ LANGUAGE plpgsql
 AS
 $$
 BEGIN
-    IF NEW.ramping_description IS NULL AND EXISTS(
+    IF NULLIF(NEW.ramping_description, '') IS NULL AND EXISTS(
        SELECT 1
        FROM unnest(NEW.product_type_ids) AS pt_update_id
        JOIN flex.product_type pt ON pt.id = pt_update_id
@@ -204,7 +204,7 @@ $$
 BEGIN
     IF array_length(NEW.product_type_ids, 1) IS NULL THEN
         RAISE sqlstate 'PT400' using
-            message = 'product_type_ids is required and must not be empty';
+            message = 'product_type_ids must not be empty';
         RETURN null;
     END IF;
 
