@@ -20,6 +20,7 @@ class Relationship:
     name: str
     parent: Field
     cardinality: str
+    hidden: bool = False
 
 
 def from_foreign_key(
@@ -39,8 +40,16 @@ def from_foreign_key(
         )
     )
 
+    # We generally don't want lots of embeds on the party resource.
+    # Lots of stuff in the system is pointing at it.
+    hidden = False
     if parent == "party":
-        return rels
+        # Some exceptions.
+        # When we add these we don't want them to show up in the OpenAPI spec.
+        if child not in ("party_membership", "system_operator_product_type"):
+            return rels
+        hidden = True
+
     # Reverse relationship
     rels.append(
         Relationship(
@@ -48,6 +57,7 @@ def from_foreign_key(
             name=name_inverse(child, parent),
             parent=Field(resource=child, name=child_field),
             cardinality=parent_cardinality,
+            hidden=hidden,
         )
     )
     return rels

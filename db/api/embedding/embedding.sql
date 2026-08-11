@@ -417,6 +417,19 @@ GRANT EXECUTE ON FUNCTION
 api.party(api.party_membership)
 TO flex_common, flex_entity;
 
+-- changeset flex:party-id-to-party_membership runOnChange:true endDelimiter:--
+CREATE OR REPLACE FUNCTION api.membership(
+    api.party
+)
+RETURNS SETOF api.party_membership AS $$
+  select * from api.party_membership where party_id = $1.id
+$$ STABLE LANGUAGE sql;
+
+-- changeset flex:party-id-to-party_membership-grant runOnChange:true endDelimiter:--
+GRANT EXECUTE ON FUNCTION
+api.membership(api.party)
+TO flex_common, flex_entity;
+
 -- changeset flex:party_membership-entity_id-to-entity runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION api.entity(
     api.party_membership
@@ -792,6 +805,19 @@ $$ STABLE LANGUAGE sql;
 -- changeset flex:system_operator_product_type-system_operator_id-to-party-grant runOnChange:true endDelimiter:--
 GRANT EXECUTE ON FUNCTION
 api.system_operator(api.system_operator_product_type)
+TO flex_common, flex_entity;
+
+-- changeset flex:party-id-to-system_operator_product_type runOnChange:true endDelimiter:--
+CREATE OR REPLACE FUNCTION api.system_operator_product_type(
+    api.party
+)
+RETURNS SETOF api.system_operator_product_type AS $$
+  select * from api.system_operator_product_type where system_operator_id = $1.id
+$$ STABLE LANGUAGE sql;
+
+-- changeset flex:party-id-to-system_operator_product_type-grant runOnChange:true endDelimiter:--
+GRANT EXECUTE ON FUNCTION
+api.system_operator_product_type(api.party)
 TO flex_common, flex_entity;
 
 -- changeset flex:system_operator_product_type-product_type_id-to-product_type runOnChange:true endDelimiter:--

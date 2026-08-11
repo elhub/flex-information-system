@@ -1015,6 +1015,9 @@ def generate_openapi_document(
             }
 
     for rel in rels:
+        # Hidden relationships are not exposed in the OpenAPI spec
+        if rel.hidden:
+            continue
         # add foreign key relationships
         schema = {"$ref": f"#/components/schemas/{rel.parent.resource}_response"}
 

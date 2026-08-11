@@ -84,6 +84,8 @@ var embedRelations = map[string]map[string]string{
 	},
 	"party": {
 		"entity": "entity",
+		"membership": "party_membership",
+		"system_operator_product_type": "system_operator_product_type",
 	},
 	"party_membership": {
 		"entity": "entity",

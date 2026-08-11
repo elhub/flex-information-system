@@ -53,6 +53,12 @@ func Handle(
 		return false
 	}
 
+	if err := validateRelations(mainResource, nodes, relations); err != nil {
+		slog.WarnContext(ctx, "unknown embed relation", "error", err)
+		writeError(w, http.StatusBadRequest, err.Error())
+		return false
+	}
+
 	if !checkScopes(ctx, w, nodes, mainResource, asset, relations, writeError) {
 		return false
 	}
@@ -77,6 +83,7 @@ var (
 	errEmptyIdentifier       = errors.New("expected identifier, got empty string")
 	errUnexpectedChars       = errors.New("unexpected characters after embed expression")
 	errInvalidIdentChar      = errors.New("unexpected character at start of identifier")
+	errUnknownEmbed          = errors.New("unknown embed relation")
 )
 
 // parseEmbed parses the embed query parameter into a list of embed nodes.
@@ -146,6 +153,29 @@ func applyRewrite(query url.Values, nodes []embedNode) {
 
 	query.Set("select", "*,"+emitEmbedList(nodes))
 	query.Del("embed")
+}
+
+// validateRelations checks that every embed node name exists in the relations map for its parent resource.
+func validateRelations(parentResource string, nodes []embedNode, relations Relations) error {
+	for _, node := range nodes {
+		parentRelations, ok := relations[parentResource]
+		if !ok {
+			return fmt.Errorf("%w: %q is not embeddable from %q", errUnknownEmbed, node.name, parentResource)
+		}
+
+		actual, ok := parentRelations[node.name]
+		if !ok {
+			return fmt.Errorf("%w: %q is not embeddable from %q", errUnknownEmbed, node.name, parentResource)
+		}
+
+		if len(node.children) > 0 {
+			if err := validateRelations(actual, node.children, relations); err != nil {
+				return err
+			}
+		}
+	}
+
+	return nil
 }
 
 // resourceNames returns the list of all unique resource names appearing in the embed node tree.
