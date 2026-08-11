@@ -63,7 +63,8 @@ export function CommentFeed({
   canCreate,
 }: CommentFeedProps) {
   const [text, setText] = useState("");
-  const [visibility, setVisibility] = useState<Visibility>("same_party");
+  const [visibility, setVisibility] =
+    useState<Visibility>("any_involved_party");
 
   const { data: identity } = useGetIdentity();
   const translate = useTranslate();
@@ -82,7 +83,7 @@ export function CommentFeed({
       {
         onSuccess: () => {
           setText("");
-          setVisibility("same_party");
+          setVisibility("any_involved_party");
         },
       },
     );
