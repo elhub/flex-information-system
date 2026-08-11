@@ -130,7 +130,11 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
         />
         <PartyReferenceInput
           {...fields.procuring_system_operator_id}
-          filter={{ type: "system_operator" }}
+          filter={{
+            type: "system_operator",
+            embed: "system_operator_product_type!",
+            "system_operator_product_type.status": "active",
+          }}
           description
           tooltip={false}
         />
