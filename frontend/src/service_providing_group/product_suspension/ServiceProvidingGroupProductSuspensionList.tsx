@@ -3,6 +3,7 @@ import {
   useRecordContext,
   ResourceContextProvider,
 } from "ra-core";
+import { FunctionField } from "react-admin";
 import { Link, useLocation } from "react-router-dom";
 import { Datagrid, List } from "../../components/EDS-ra/list";
 import {
@@ -16,7 +17,7 @@ import { DeleteButton } from "../../components/EDS-ra/buttons";
 import { Button } from "../../components/ui";
 import { IconPlus } from "@elhub/ds-icons";
 import { Permissions } from "../../auth/permissions";
-import { ProductTypeArrayField } from "../../product_type/components";
+import { ProductTypeArrayField } from "../../components/ProductTypeArrayField";
 import { zServiceProvidingGroupProductSuspension } from "../../generated-client/zod.gen";
 import { getFields } from "../../zod";
 
@@ -91,7 +92,14 @@ export const ServiceProvidingGroupProductSuspensionList = () => {
             >
               <TextField source="name" />
             </ReferenceField>
-            <ProductTypeArrayField source={fields.product_type_ids.source} />
+            <FunctionField
+              source={fields.product_type_ids.source}
+              render={(record) => (
+                <ProductTypeArrayField
+                  productTypeIds={record.product_type_ids}
+                />
+              )}
+            />
             <EnumField
               source={fields.reason.source}
               enumKey="service_providing_group_product_suspension.reason"

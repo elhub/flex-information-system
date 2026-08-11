@@ -1,4 +1,5 @@
 import { usePermissions } from "ra-core";
+import { FunctionField } from "react-admin";
 import { Link } from "react-router-dom";
 import { List, Datagrid } from "../components/EDS-ra/list";
 import {
@@ -14,7 +15,7 @@ import {
 } from "../components/EDS-ra/inputs";
 import { Button, Tooltip } from "../components/ui";
 import { IconPlus, IconQuestionCircleOutlined } from "@elhub/ds-icons";
-import { ProductTypeArrayField } from "../product_type/components";
+import { ProductTypeArrayField } from "../components/ProductTypeArrayField";
 import {
   isProductApplicationBlocked,
   getProductApplicationBlockDate,
@@ -108,7 +109,12 @@ export const ServiceProviderProductApplicationList = () => {
         >
           <TextField source="name" />
         </ReferenceField>
-        <ProductTypeArrayField source={fields.product_type_ids.source} />
+        <FunctionField
+          source={fields.product_type_ids.source}
+          render={(record) => (
+            <ProductTypeArrayField productTypeIds={record.product_type_ids} />
+          )}
+        />
         <StatusBadgeField
           source={fields.status.source}
           enumKey="service_provider_product_application.status"

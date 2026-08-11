@@ -1,4 +1,5 @@
 import { useParams } from "react-router-dom";
+import { FunctionField } from "react-admin";
 import { Datagrid, List } from "../../components/EDS-ra/list";
 import {
   DateField,
@@ -8,7 +9,7 @@ import {
   TextField,
 } from "../../components/EDS-ra/fields";
 import { TextInput } from "../../components/EDS-ra/inputs";
-import { ProductTypeArrayField } from "../../product_type/components";
+import { ProductTypeArrayField } from "../../components/ProductTypeArrayField";
 import { ListServiceProvidingGroupProductApplicationHistoryData } from "../../generated-client";
 import { getFields } from "../../zod";
 import {
@@ -55,7 +56,13 @@ export const ServiceProvidingGroupProductApplicationHistoryList = () => {
         >
           <TextField {...procuringSystemOperatorIdFields.name} />
         </ReferenceField>
-        <ProductTypeArrayField source="product_type_ids" sortable={false} />
+        <FunctionField
+          source="product_type_ids"
+          sortable={false}
+          render={(record) => (
+            <ProductTypeArrayField productTypeIds={record.product_type_ids} />
+          )}
+        />
         <EnumField
           {...spgpaFields.status}
           enumKey="service_providing_group_product_application.status"

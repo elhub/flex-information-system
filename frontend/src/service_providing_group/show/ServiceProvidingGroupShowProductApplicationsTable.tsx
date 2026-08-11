@@ -14,6 +14,7 @@ import {
   isProductApplicationBlocked,
   getProductApplicationBlockDate,
 } from "../../productApplicationBlock";
+import { ProductTypeArrayField } from "../../components/ProductTypeArrayField";
 
 type Props = {
   spgId: number;
@@ -45,7 +46,23 @@ export const ServiceProvidingGroupShowProductApplicationsTable = ({
     {
       key: "productTypeIds",
       header: t("service_providing_group_product_application.product_type_ids"),
-      render: (value) => String(value),
+      render: (value) => (
+        <ProductTypeArrayField productTypeIds={value as number[]} />
+      ),
+    },
+    {
+      key: "maximumActivePowerUp",
+      header: t(
+        "service_providing_group_product_application.maximum_active_power_up",
+      ),
+      render: (value) => `${value} kW`,
+    },
+    {
+      key: "maximumActivePowerDown",
+      header: t(
+        "service_providing_group_product_application.maximum_active_power_down",
+      ),
+      render: (value) => `${value} kW`,
     },
     {
       key: "status",

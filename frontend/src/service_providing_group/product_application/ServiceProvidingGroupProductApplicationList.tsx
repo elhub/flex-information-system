@@ -11,7 +11,7 @@ import { SpgpaStatusBadge } from "../../components/SpgpaStatusBadge";
 import { Button, Tooltip } from "../../components/ui";
 import { IconPlus, IconQuestionCircleOutlined } from "@elhub/ds-icons";
 import { Permissions } from "../../auth/permissions";
-import { ProductTypeArrayField } from "../../product_type/components";
+import { ProductTypeArrayField } from "../../components/ProductTypeArrayField";
 import {
   isProductApplicationBlocked,
   getProductApplicationBlockDate,
@@ -109,7 +109,12 @@ export const ServiceProvidingGroupProductApplicationList = () => {
           >
             <TextField source="name" />
           </ReferenceField>
-          <ProductTypeArrayField source={fields.product_type_ids.source} />
+          <FunctionField
+            source={fields.product_type_ids.source}
+            render={(record) => (
+              <ProductTypeArrayField productTypeIds={record.product_type_ids} />
+            )}
+          />
           <FunctionField
             label={fields.status.source}
             render={(record: { status: string }) => (

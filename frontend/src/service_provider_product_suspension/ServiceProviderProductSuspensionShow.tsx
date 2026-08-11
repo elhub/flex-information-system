@@ -1,4 +1,5 @@
 import { Content, Heading, VerticalSpace } from "../components/ui";
+import { FunctionField } from "react-admin";
 import {
   Show,
   TextField,
@@ -7,7 +8,7 @@ import {
   IdentityField,
   EnumField,
 } from "../components/EDS-ra";
-import { ProductTypeArrayField } from "../product_type/components";
+import { ProductTypeArrayField } from "../components/ProductTypeArrayField";
 import { getFields } from "../zod";
 import { zServiceProviderProductSuspensionHistory } from "../generated-client/zod.gen";
 
@@ -35,7 +36,13 @@ export const ServiceProviderProductSuspensionShow = () => {
           reference="party"
           label
         />
-        <ProductTypeArrayField source={fields.product_type_ids.source} label />
+        <FunctionField
+          source={fields.product_type_ids.source}
+          label
+          render={(record) => (
+            <ProductTypeArrayField productTypeIds={record.product_type_ids} />
+          )}
+        />
         <EnumField
           source={fields.reason.source}
           enumKey="service_provider_product_suspension.reason"
