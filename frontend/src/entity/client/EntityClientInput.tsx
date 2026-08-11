@@ -1,4 +1,4 @@
-import { Form, useRecordContext } from "ra-core";
+﻿import { Form, useRecordContext } from "ra-core";
 import { useLocation } from "react-router-dom";
 import { zEntityClientCreateRequest } from "../../generated-client/zod.gen";
 import { getFields, unTypedZodResolver } from "../../zod";
@@ -9,6 +9,7 @@ import {
   AutocompleteReferenceInput,
   FormToolbar,
   ScopesInput,
+  PartyReferenceInput,
 } from "../../components/EDS-ra/inputs";
 
 const fields = getFields(zEntityClientCreateRequest.shape);
@@ -18,7 +19,15 @@ export const EntityClientInput = () => {
   const { state: overrideRecord } = useLocation();
   const actualRecord = useRecordContext();
   const record = { ...actualRecord, ...overrideRecord };
+  const entityId = record?.entity_id;
 
+  const partyFilter = entityId
+    ? {
+        embed: "membership",
+        "membership.entity_id": entityId,
+        or: `(entity_id.eq.${entityId},membership.not.is.null)`,
+      }
+    : {};
   return (
     <Form
       record={record}
@@ -34,7 +43,11 @@ export const EntityClientInput = () => {
           />
           <TextInput source="client_id" />
           <TextInput {...fields.name} />
-          <AutocompleteReferenceInput {...fields.party_id} reference="party" />
+          <PartyReferenceInput
+            {...fields.party_id}
+            reference="party"
+            filter={partyFilter}
+          />
           <ScopesInput source="scopes" />
           <TextInput {...fields.client_secret} type="password" />
           <TextAreaInput {...fields.public_key} rows={3} />
