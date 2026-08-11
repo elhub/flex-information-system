@@ -34,7 +34,7 @@ class AccountingPointAdapterHttpService(
 ) : AccountingPointAdapterService {
 
     private companion object {
-        const val REQUEST_TIMEOUT_MILLIS = 5000L
+        const val REQUEST_TIMEOUT_MILLIS = 6000L
     }
 
     private val client =
