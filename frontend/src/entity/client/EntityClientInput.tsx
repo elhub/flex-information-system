@@ -23,9 +23,9 @@ export const EntityClientInput = () => {
 
   const partyFilter = entityId
     ? {
-        embed: "party_membership",
-        "party_membership.entity_id": entityId,
-        or: `(entity_id.eq.${entityId},party_membership.not.is.null)`,
+        embed: "membership",
+        "membership.entity_id": entityId,
+        or: `(entity_id.eq.${entityId},membership.not.is.null)`,
       }
     : {};
   return (
