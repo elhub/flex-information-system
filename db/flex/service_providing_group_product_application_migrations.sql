@@ -121,7 +121,7 @@ WHERE (
     ramping_capability IS NULL OR ramping_description IS NULL
 ) AND 1 = any(product_type_ids);
 
--- changeset flex:service-providing-group-product-application-ramping-capability-trigger runOnChange:true endDelimiter:--
+-- changeset flex:service-providing-group-product-application-ramping-capability-function runOnChange:true endDelimiter:--
 -- SPGPA-VAL007
 ALTER TABLE flex.service_providing_group_product_application
 DROP CONSTRAINT IF EXISTS spg_product_application_ramping_capability_required_check;
@@ -147,6 +147,7 @@ RETURN NEW;
 END;
 $$;
 
+-- changeset flex:service-providing-group-product-application-ramping-capability-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER
 spg_product_application_ramping_capability_required_check
 BEFORE INSERT OR UPDATE ON
@@ -156,7 +157,7 @@ EXECUTE FUNCTION
 spg_product_application_ramping_capability_required_check();
 
 
--- changeset flex:service-providing-group-product-application-ramping-description-trigger runOnChange:true endDelimiter:--
+-- changeset flex:service-providing-group-product-application-ramping-description-function runOnChange:true endDelimiter:--
 -- SPGPA-VAL008
 ALTER TABLE flex.service_providing_group_product_application
 DROP CONSTRAINT IF EXISTS spg_product_application_ramping_description_check;
@@ -182,6 +183,7 @@ RETURN NEW;
 END;
 $$;
 
+-- changeset flex:service-providing-group-product-application-ramping-description-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER
 spg_product_application_ramping_description_check
 BEFORE INSERT OR UPDATE ON
