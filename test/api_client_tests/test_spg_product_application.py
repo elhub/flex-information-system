@@ -177,7 +177,7 @@ def data():
 
     # apply for some product types for both SO and qualify the applications
 
-    # random choice of product type. 1 is required for a few tests
+    # random choice of product type. 8 is required for a few tests
     pt_ids = [5, 7, 8]
 
     for clt, id in [(client_so, so_id), (client_other_so, other_so_id)]:

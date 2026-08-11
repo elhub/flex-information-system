@@ -177,7 +177,7 @@ BEGIN
        WHERE pt.business_id = 'manual_frequency_restoration' OR pt.business_id = 'manual_frequency_restoration_disruption'
     ) THEN
        RAISE sqlstate 'PT400' using
-           message = 'ramping_description is require and must not be empty';
+           message = 'ramping_description is required and must not be empty';
    END IF;
 RETURN NEW;
 END;
@@ -204,7 +204,7 @@ $$
 BEGIN
     IF array_length(NEW.product_type_ids, 1) IS NULL THEN
         RAISE sqlstate 'PT400' using
-            message = 'product_type_ids must not be empty';
+            message = 'product_type_ids is required and must not be empty';
         RETURN null;
     END IF;
 
