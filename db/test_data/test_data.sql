@@ -930,14 +930,6 @@ BEGIN
       ]::cu_sp[]
     ) INTO cu_id;
 
-    INSERT INTO flex.service_providing_group_membership (
-      controllable_unit_id, service_providing_group_id, valid_time_range
-    ) VALUES (
-        cu_id,
-        spg_id,
-        '[2024-09-01 00:00:00 Europe/Oslo,)'::tstzrange
-    );
-
     PERFORM test_data.add_technical_resource(
       entity_first_name || ' ' || technology_name || ' Unit #1',
       cu_id,
@@ -964,6 +956,14 @@ BEGIN
       'other',
       'ACME',
       technology_name || ' 2000'
+    );
+
+    INSERT INTO flex.service_providing_group_membership (
+      controllable_unit_id, service_providing_group_id, valid_time_range
+    ) VALUES (
+        cu_id,
+        spg_id,
+        '[2024-09-01 00:00:00 Europe/Oslo,)'::tstzrange
     );
 
     accounting_point_seq := accounting_point_seq + 1;
