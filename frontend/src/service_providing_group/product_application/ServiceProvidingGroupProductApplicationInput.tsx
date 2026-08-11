@@ -1,5 +1,5 @@
 import { Form, useRecordContext, useTranslate } from "ra-core";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { z } from "zod";
@@ -81,6 +81,21 @@ const RampingNotice = () => {
         <li>{translate("text.spgpa_ramping_deviations")}</li>
       )}
     </ul>
+  );
+};
+const RampingDescriptionInput = ({ fieldProps }: { fieldProps: any }) => {
+  const { control } = useFormContext();
+  const productTypeIds = useWatch({ control, name: "product_type_ids" });
+  const shouldShow = productTypeIds?.includes(8) || productTypeIds?.includes(9);
+  if (!shouldShow) return null;
+  return (
+    <TextAreaInput
+      {...fieldProps}
+      rows={5}
+      description
+      tooltip={false}
+      infoElement={<RampingNotice />}
+    />
   );
 };
 
@@ -171,13 +186,7 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
           description
           tooltip={false}
         />
-        <TextAreaInput
-          {...fields.ramping_description}
-          rows={5}
-          description
-          tooltip={false}
-          infoElement={<RampingNotice />}
-        />
+        <RampingDescriptionInput fieldProps={fields.ramping_description} />
         <TextAreaInput
           {...fields.additional_information}
           rows={8}
