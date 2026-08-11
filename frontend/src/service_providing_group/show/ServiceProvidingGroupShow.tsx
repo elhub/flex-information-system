@@ -94,6 +94,7 @@ export const ServiceProvidingGroupShow = () => {
       <ServiceProvidingGroupShowSummary spg={spg} />
       <ServiceProvidingGroupShowTabs
         spgId={spg.id}
+        spgStatus={spg.status}
         spgViewModel={spgViewModel}
         summary={spg.summary ?? undefined}
         showPowerPerSubstation={isFISOOrSO}

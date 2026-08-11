@@ -86,6 +86,7 @@ const RampingNotice = () => {
 
 // common layout to create and edit pages
 export const ServiceProvidingGroupProductApplicationInput = () => {
+  const translate = useTranslate();
   const { state: overrideRecord } = useLocation();
   const actualRecord = useRecordContext();
   const parsedOverrideRecord = spgpaFormSchema
@@ -123,9 +124,10 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
         <VerticalSpace size="small" />
         <AutocompleteReferenceInput
           {...fields.service_providing_group_id}
+          filter={{ status: "active" }}
           reference="service_providing_group"
           readOnly={!!record?.service_providing_group_id}
-          description
+          descriptionOverride={translate("text.spgpa_spg_override_description")}
           tooltip={false}
         />
         <PartyReferenceInput

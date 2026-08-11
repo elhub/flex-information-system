@@ -4,7 +4,10 @@ import { ServiceProvidingGroupShowProductApplicationsTable } from "./ServiceProv
 import { ServiceProvidingGroupShowGridPrequalificationsTable } from "./ServiceProvidingGroupShowGridPrequalificationsTable";
 import { ServiceProvidingGroupShowPowerPerSubstationTable } from "./ServiceProvidingGroupShowPowerPerSubstationTable";
 import { ServiceProvidingGroupShowSPGSummarySection } from "./ServiceProvidingGroupShowSPGSummarySection";
-import { ServiceProvidingGroupSummary } from "../../generated-client";
+import {
+  ServiceProvidingGroupStatus,
+  ServiceProvidingGroupSummary,
+} from "../../generated-client";
 import { SpgShowViewModel } from "./useSpgShowViewModel";
 import { useTabSearchParam } from "../../hooks/useTabSearchParam";
 import { SpgTechnicalResourceList } from "./SpgTechnicalResourceList";
@@ -12,6 +15,7 @@ import { useTranslate } from "ra-core";
 
 type Props = {
   spgId: number;
+  spgStatus: ServiceProvidingGroupStatus;
   spgViewModel: SpgShowViewModel;
   summary: ServiceProvidingGroupSummary | undefined;
   showPowerPerSubstation?: boolean;
@@ -19,6 +23,7 @@ type Props = {
 
 export const ServiceProvidingGroupShowTabs = ({
   spgId,
+  spgStatus,
   spgViewModel,
   summary,
   showPowerPerSubstation,
@@ -69,7 +74,10 @@ export const ServiceProvidingGroupShowTabs = ({
         <SpgTechnicalResourceList spgId={spgId} />
       </Tabs.Panel>
       <Tabs.Panel value="product_applications">
-        <ServiceProvidingGroupShowProductApplicationsTable spgId={spgId} />
+        <ServiceProvidingGroupShowProductApplicationsTable
+          spgId={spgId}
+          spgStatus={spgStatus}
+        />
       </Tabs.Panel>
       <Tabs.Panel value="grid_prequalifications">
         <ServiceProvidingGroupShowGridPrequalificationsTable spgId={spgId} />

@@ -15,13 +15,16 @@ import {
   getProductApplicationBlockDate,
 } from "../../productApplicationBlock";
 import { ProductTypeArrayField } from "../../components/ProductTypeArrayField";
+import { ServiceProvidingGroupStatus } from "../../generated-client";
 
 type Props = {
   spgId: number;
+  spgStatus: ServiceProvidingGroupStatus;
 };
 
 export const ServiceProvidingGroupShowProductApplicationsTable = ({
   spgId,
+  spgStatus,
 }: Props) => {
   const { data, isLoading, error } = useSpgProductApplications(spgId);
   const navigate = useNavigate();
@@ -83,13 +86,17 @@ export const ServiceProvidingGroupShowProductApplicationsTable = ({
     <div className="flex flex-col gap-4">
       <div className="flex justify-end">
         {canCreate &&
-          (isProductApplicationBlocked() ? (
+          (isProductApplicationBlocked() || spgStatus !== "active" ? (
             <div className="flex items-center gap-1">
               <Button variant="primary" icon={IconPlus} disabled>
                 Create product application
               </Button>
               <Tooltip
-                content={`Product applications cannot be created before ${getProductApplicationBlockDate()}`}
+                content={
+                  isProductApplicationBlocked()
+                    ? `Product applications cannot be created before ${getProductApplicationBlockDate()}`
+                    : "The service providing group must be active to create product application"
+                }
               >
                 <IconQuestionCircleOutlined
                   size="small"
