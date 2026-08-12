@@ -28,6 +28,10 @@ from flex.models import (
     ServiceProviderProductApplicationUpdateRequest,
     ServiceProviderProductApplicationStatus,
     ServiceProviderProductApplicationResponse,
+    TechnicalResourceCreateRequest,
+    TechnicalResourceResponse,
+    Technology,
+    DeviceType,
     ErrorMessage,
 )
 from flex.api.accounting_point_grid_location import (
@@ -41,6 +45,7 @@ from flex.api.accounting_point_grid_location import (
 from flex.api.controllable_unit import (
     create_controllable_unit,
 )
+from flex.api.technical_resource import create_technical_resource
 from flex.api.controllable_unit_service_provider import (
     create_controllable_unit_service_provider,
 )
@@ -260,6 +265,18 @@ def test_apgl_so_procuring(sts):
         ),
     )
     assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
+
+    tr = create_technical_resource.sync(
+        client=client_fiso,
+        body=TechnicalResourceCreateRequest(
+            name="TEST-APGL-SO-PROCURING-CU-TR",
+            controllable_unit_id=cast(int, cu.id),
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=5.0,
+            device_type=DeviceType.OTHER,
+        ),
+    )
+    assert isinstance(tr, TechnicalResourceResponse)
 
     spgm = create_service_providing_group_membership.sync(
         client=client_sp,

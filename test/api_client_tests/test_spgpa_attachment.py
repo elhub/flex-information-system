@@ -3,6 +3,7 @@ from typing import cast
 
 import pytest
 from flex.api.controllable_unit import create_controllable_unit
+from flex.api.technical_resource import create_technical_resource
 from flex.api.controllable_unit_service_provider import (
     create_controllable_unit_service_provider,
 )
@@ -48,6 +49,10 @@ from flex.models import (
     ServiceProviderProductApplicationResponse,
     SystemOperatorProductTypeCreateRequest,
     SystemOperatorProductTypeResponse,
+    TechnicalResourceCreateRequest,
+    TechnicalResourceResponse,
+    Technology,
+    DeviceType,
     ErrorMessage,
 )
 from flex.models.create_service_providing_group_product_application_attachment_body import (
@@ -226,6 +231,18 @@ def _create_spgpa(
         ),
     )
     assert isinstance(spg, ServiceProvidingGroupResponse)
+
+    tr = create_technical_resource.sync(
+        client=client_fiso,
+        body=TechnicalResourceCreateRequest(
+            name="CU for SPGPAA test TR",
+            controllable_unit_id=cast(int, cu.id),
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=5.0,
+            device_type=DeviceType.OTHER,
+        ),
+    )
+    assert isinstance(tr, TechnicalResourceResponse)
 
     spgm = create_service_providing_group_membership.sync(
         client=client_fiso,

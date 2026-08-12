@@ -135,6 +135,43 @@ AFTER INSERT OR UPDATE ON service_providing_group_membership
 FOR EACH ROW
 EXECUTE FUNCTION timeline.midnight_aligned();
 
+-- changeset flex:service-providing-group-membership-flexible-power-check runOnChange:true endDelimiter:--
+-- SPGM-VAL003: The CU's flexible power must not exceed 80% of the
+-- combined maximum active power of all its technical resources.
+CREATE OR REPLACE FUNCTION
+service_providing_group_membership_flexible_power_check()
+RETURNS trigger
+LANGUAGE plpgsql
+SECURITY INVOKER
+AS $$
+DECLARE
+    lv_cu_map decimal;
+    lv_tr_sum_map decimal;
+BEGIN
+    SELECT maximum_active_power INTO lv_cu_map
+    FROM flex.controllable_unit
+    WHERE id = NEW.controllable_unit_id;
+
+    SELECT COALESCE(SUM(maximum_active_power), 0) INTO lv_tr_sum_map
+    FROM flex.technical_resource
+    WHERE controllable_unit_id = NEW.controllable_unit_id;
+
+    IF lv_cu_map > 0.8 * lv_tr_sum_map THEN
+        RAISE 'The flexible power of controllable unit id=% (% kW) exceeds 80%% of the combined maximum active power of its technical resources (% kW)',
+            NEW.controllable_unit_id, lv_cu_map, lv_tr_sum_map;
+    END IF;
+
+    RETURN NEW;
+END;
+$$;
+
+-- changeset flex:service-providing-group-membership-flexible-power-check-trigger runOnChange:true endDelimiter:--
+CREATE OR REPLACE TRIGGER
+service_providing_group_membership_flexible_power_check
+BEFORE INSERT OR UPDATE ON service_providing_group_membership
+FOR EACH ROW EXECUTE PROCEDURE
+service_providing_group_membership_flexible_power_check();
+
 -- changeset flex:service-providing-group-membership-controllable-unit-idx runOnChange:true endDelimiter:-- runInTransaction:false
 CREATE INDEX CONCURRENTLY IF NOT EXISTS
 service_providing_group_membership_controllable_unit_idx

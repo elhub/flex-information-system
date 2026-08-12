@@ -7,6 +7,7 @@ import {
   Loader,
   Search,
   Switch,
+  Tooltip,
 } from "../../components/ui";
 import { Column, SimpleTable } from "../../components/SimpleTable";
 import { PowerRatio } from "../../components/PowerRatio";
@@ -183,12 +184,31 @@ export const ManageMembersPanel = ({
               onChange={toggleSelectAll}
             />
           ),
-          render: (row) => (
-            <Checkbox
-              checked={effectiveCheckedIds.has(row.id)}
-              onChange={() => toggleCu(row.id)}
-            />
-          ),
+          render: (row) => {
+            const ineligible =
+              !row.isEligible && row.membershipId === undefined;
+            const checkbox = (
+              <Checkbox
+                checked={effectiveCheckedIds.has(row.id)}
+                onChange={() => toggleCu(row.id)}
+                disabled={ineligible}
+              />
+            );
+            if (!ineligible) return checkbox;
+            return (
+              <Tooltip
+                content={translate(
+                  "text.spg_manage_members_cu_ineligible_flexible_power",
+                  {
+                    flexible_power: row.maximum_active_power,
+                    rated_power: row.rated_power,
+                  },
+                )}
+              >
+                <span>{checkbox}</span>
+              </Tooltip>
+            );
+          },
         }}
       />
 

@@ -21,7 +21,6 @@ dependencies = [
   "python-dotenv",
   "ruff",
   "schemathesis",
-  "sourcemeta-jsonschema",
   "tabulate",
 ]
 

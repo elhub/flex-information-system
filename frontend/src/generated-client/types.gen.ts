@@ -1224,7 +1224,7 @@ export type ServiceProvidingGroupMembershipUpdateRequest = {
  */
 export type ServiceProvidingGroupMembershipCreateRequest = {
   /**
-   * Reference to the controllable unit this relation links to a service providing group.
+   * Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 80% of the combined maximum active power of all its technical resources (SPGM-VAL003).
    */
   controllable_unit_id: number;
   /**
@@ -1250,7 +1250,7 @@ export type ServiceProvidingGroupMembership = {
    */
   readonly id: number;
   /**
-   * Reference to the controllable unit this relation links to a service providing group.
+   * Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 80% of the combined maximum active power of all its technical resources (SPGM-VAL003).
    */
   controllable_unit_id: number;
   /**
@@ -3572,7 +3572,7 @@ export type ServiceProvidingGroupMembershipHistory = {
    */
   readonly id: number;
   /**
-   * Reference to the controllable unit this relation links to a service providing group.
+   * Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 80% of the combined maximum active power of all its technical resources (SPGM-VAL003).
    */
   controllable_unit_id: number;
   /**
@@ -4760,7 +4760,7 @@ export type ServiceProvidingGroupWritable = {
  */
 export type ServiceProvidingGroupMembershipWritable = {
   /**
-   * Reference to the controllable unit this relation links to a service providing group.
+   * Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 80% of the combined maximum active power of all its technical resources (SPGM-VAL003).
    */
   controllable_unit_id: number;
   /**
@@ -5744,7 +5744,7 @@ export type ServiceProvidingGroupHistoryWritable = {
  */
 export type ServiceProvidingGroupMembershipHistoryWritable = {
   /**
-   * Reference to the controllable unit this relation links to a service providing group.
+   * Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 80% of the combined maximum active power of all its technical resources (SPGM-VAL003).
    */
   controllable_unit_id: number;
   /**
@@ -8735,7 +8735,7 @@ export type ListServiceProvidingGroupMembershipData = {
      */
     id?: string;
     /**
-     * Reference to the controllable unit this relation links to a service providing group.
+     * Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 80% of the combined maximum active power of all its technical resources (SPGM-VAL003).
      */
     controllable_unit_id?: string;
     /**
@@ -9048,7 +9048,7 @@ export type ListServiceProvidingGroupMembershipHistoryData = {
      */
     service_providing_group_membership_id?: string;
     /**
-     * Reference to the controllable unit this relation links to a service providing group.
+     * Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 80% of the combined maximum active power of all its technical resources (SPGM-VAL003).
      */
     controllable_unit_id?: string;
     /**

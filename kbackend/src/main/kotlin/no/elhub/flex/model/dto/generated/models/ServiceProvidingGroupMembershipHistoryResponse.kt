@@ -16,7 +16,9 @@ public data class ServiceProvidingGroupMembershipHistoryResponse(
   @SerialName("id")
   public val id: Long? = null,
   /**
-   * Reference to the controllable unit this relation links to a service providing group.
+   * Reference to the controllable unit this relation links to a service providing group. The
+   * controllable unit's flexible power must not exceed 80% of the combined maximum active power of all
+   * its technical resources (SPGM-VAL003).
    */
   @SerialName("controllable_unit_id")
   public val controllableUnitId: Long,

@@ -18,6 +18,10 @@ from flex.models import (
     ServiceProvidingGroupGridPrequalificationStatus,
     ServiceProvidingGroupMembershipCreateRequest,
     ServiceProvidingGroupMembershipResponse,
+    TechnicalResourceCreateRequest,
+    TechnicalResourceResponse,
+    Technology,
+    DeviceType,
     ServiceProvidingGroupProductApplicationCreateRequest,
     ServiceProvidingGroupProductApplicationUpdateRequest,
     ServiceProvidingGroupProductApplicationStatus,
@@ -33,6 +37,7 @@ from flex.models import (
 from flex.api.controllable_unit import (
     create_controllable_unit,
 )
+from flex.api.technical_resource import create_technical_resource
 from flex.api.controllable_unit_service_provider import (
     create_controllable_unit_service_provider,
 )
@@ -181,6 +186,42 @@ def data():
 
     # put the CUs into the test SPG
     # 1 in the past, 2 now/future
+
+    tr1 = create_technical_resource.sync(
+        client=client_fiso,
+        body=TechnicalResourceCreateRequest(
+            name="New CU 1 TR",
+            controllable_unit_id=cast(int, cu1.id),
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=5.0,
+            device_type=DeviceType.OTHER,
+        ),
+    )
+    assert isinstance(tr1, TechnicalResourceResponse)
+
+    tr2 = create_technical_resource.sync(
+        client=client_fiso,
+        body=TechnicalResourceCreateRequest(
+            name="New CU 2 TR",
+            controllable_unit_id=cast(int, cu2.id),
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=5.0,
+            device_type=DeviceType.OTHER,
+        ),
+    )
+    assert isinstance(tr2, TechnicalResourceResponse)
+
+    tr3 = create_technical_resource.sync(
+        client=client_fiso,
+        body=TechnicalResourceCreateRequest(
+            name="New CU 3 TR",
+            controllable_unit_id=cast(int, cu3.id),
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=5.0,
+            device_type=DeviceType.OTHER,
+        ),
+    )
+    assert isinstance(tr3, TechnicalResourceResponse)
 
     spgm1 = create_service_providing_group_membership.sync(
         client=client_fiso,

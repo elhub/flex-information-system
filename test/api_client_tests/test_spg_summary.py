@@ -103,7 +103,7 @@ def test_service_providing_group_summary_aggregation(sts):
             name="SPGSU-TEST-AGGREGATION",
             accounting_point_id=1002,
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
-            maximum_active_power=100.0,
+            maximum_active_power=24.0,
         ),
     )
     assert isinstance(cu1, ControllableUnitResponse)
@@ -114,7 +114,7 @@ def test_service_providing_group_summary_aggregation(sts):
             name="SPGSU-TEST-AGGREGATION",
             accounting_point_id=1003,
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
-            maximum_active_power=100.0,
+            maximum_active_power=56.0,
         ),
     )
     assert isinstance(cu2, ControllableUnitResponse)

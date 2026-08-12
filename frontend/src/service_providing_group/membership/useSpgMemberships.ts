@@ -22,6 +22,9 @@ const mapEmbeddedControllableUnit = (
     cu.accounting_point?.bidding_zone ?? [],
   );
 
+  const rated_power =
+    cu.summary?.technical_resource?.maximum_active_power?.sum ?? undefined;
+
   return {
     ...cu,
     membershipId,
@@ -29,8 +32,11 @@ const mapEmbeddedControllableUnit = (
     bidding_zone: biddingZone?.bidding_zone,
     brp_name: brp?.balance_responsible_party?.name,
     technical_resource_count: cu.summary?.technical_resource?.count ?? 0,
-    rated_power:
-      cu.summary?.technical_resource?.maximum_active_power?.sum ?? undefined,
+    rated_power,
+    isEligible:
+      rated_power === undefined
+        ? true
+        : cu.maximum_active_power <= 0.8 * rated_power,
   };
 };
 

@@ -389,7 +389,7 @@ resources-validate:
     #!/usr/bin/env bash
     set -euo pipefail
     # uses https://github.com/sourcemeta/jsonschema
-    jsonschema validate ./openapi/schema.yml ./openapi/resources.yml
+    "$(mise which jsonschema)" validate ./openapi/schema.yml ./openapi/resources.yml
 
 generate-scopes:
     #!/usr/bin/env bash

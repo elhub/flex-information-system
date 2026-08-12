@@ -940,7 +940,10 @@ resources:
           nn: ID
       controllable_unit_id:
         description: >-
-          Reference to the controllable unit this relation links to a service providing group.
+          Reference to the controllable unit this relation links to a service
+          providing group. The controllable unit's flexible power must not exceed
+          80% of the combined maximum active power of all its technical resources
+          (SPGM-VAL003).
         format: bigint
         type: integer
         x-no-update: true

@@ -18,6 +18,10 @@ from flex.models import (
     ServiceProvidingGroupBiddingZone,
     ServiceProvidingGroupGridPrequalificationCreateRequest,
     ServiceProvidingGroupGridPrequalificationResponse,
+    TechnicalResourceCreateRequest,
+    TechnicalResourceResponse,
+    Technology,
+    DeviceType,
     ErrorMessage,
 )
 from flex.api.service_providing_group import (
@@ -35,6 +39,7 @@ from flex.api.service_providing_group_grid_prequalification import (
     create_service_providing_group_grid_prequalification,
 )
 from flex.api.controllable_unit import create_controllable_unit
+from flex.api.technical_resource import create_technical_resource
 from flex.api.controllable_unit_service_provider import (
     create_controllable_unit_service_provider,
 )
@@ -119,6 +124,18 @@ def test_spg_fiso_sp(sts):
         ),
     )
     assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
+
+    tr = create_technical_resource.sync(
+        client=client_fiso,
+        body=TechnicalResourceCreateRequest(
+            name="New CU TR",
+            controllable_unit_id=cast(int, cu.id),
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=5.0,
+            device_type=DeviceType.OTHER,
+        ),
+    )
+    assert isinstance(tr, TechnicalResourceResponse)
 
     # cannot activate SPG as it is still empty
     u = update_service_providing_group.sync(

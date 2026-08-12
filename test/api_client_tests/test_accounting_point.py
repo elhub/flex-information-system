@@ -28,6 +28,10 @@ from flex.models import (
     ServiceProviderProductApplicationResponse,
     ServiceProviderProductApplicationStatus,
     ServiceProviderProductApplicationUpdateRequest,
+    TechnicalResourceCreateRequest,
+    TechnicalResourceResponse,
+    Technology,
+    DeviceType,
 )
 from flex.api.accounting_point import (
     list_accounting_point,
@@ -35,6 +39,7 @@ from flex.api.accounting_point import (
 )
 from flex.api.system_operator_product_type import create_system_operator_product_type
 from flex.api.controllable_unit import create_controllable_unit
+from flex.api.technical_resource import create_technical_resource
 from flex.api.controllable_unit_service_provider import (
     create_controllable_unit_service_provider,
 )
@@ -143,6 +148,18 @@ def test_ap_so(sts):
     )
     assert isinstance(cu_sp_iso, ControllableUnitServiceProviderResponse)
 
+    tr_iso = create_technical_resource.sync(
+        client=client_fiso,
+        body=TechnicalResourceCreateRequest(
+            name="TEST-AP-SO-ISO-CU-TR",
+            controllable_unit_id=cast(int, cu_iso.id),
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=5.0,
+            device_type=DeviceType.OTHER,
+        ),
+    )
+    assert isinstance(tr_iso, TechnicalResourceResponse)
+
     spgm_iso = create_service_providing_group_membership.sync(
         client=client_sp,
         body=ServiceProvidingGroupMembershipCreateRequest(
@@ -204,6 +221,18 @@ def test_ap_so(sts):
         ),
     )
     assert isinstance(cu_sp_pso, ControllableUnitServiceProviderResponse)
+
+    tr_pso = create_technical_resource.sync(
+        client=client_fiso,
+        body=TechnicalResourceCreateRequest(
+            name="TEST-AP-SO-PSO-CU-TR",
+            controllable_unit_id=cast(int, cu_pso.id),
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=5.0,
+            device_type=DeviceType.OTHER,
+        ),
+    )
+    assert isinstance(tr_pso, TechnicalResourceResponse)
 
     spgm_pso = create_service_providing_group_membership.sync(
         client=client_sp,
