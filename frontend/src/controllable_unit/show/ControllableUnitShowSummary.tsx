@@ -177,13 +177,13 @@ export const ControllableUnitShowSummary = ({
             tooltip
             labelKey="controllable_unit.maximum_active_power"
             value={
-              <div className="flex items-center gap-3">
+              <span className="inline-flex items-center gap-3">
                 <span>{controllableUnit.maximum_active_power} kW</span>
                 <PowerRatio
                   flexiblePower={controllableUnit.maximum_active_power}
                   ratedPower={trRatedPower}
                 />
-              </div>
+              </span>
             }
           />
           <LabelValue
