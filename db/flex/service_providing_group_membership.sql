@@ -136,7 +136,7 @@ FOR EACH ROW
 EXECUTE FUNCTION timeline.midnight_aligned();
 
 -- changeset flex:service-providing-group-membership-flexible-power-check runOnChange:true endDelimiter:--
--- SPGM-VAL003: The CU's flexible power must not exceed 80% of the
+-- SPGM-VAL003: The CU's flexible power must not exceed 100% of the
 -- combined maximum active power of all its technical resources.
 CREATE OR REPLACE FUNCTION
 service_providing_group_membership_flexible_power_check()
