@@ -55,8 +55,7 @@ export type TextKey =
   | "comment.visibility.same_party.description"
   | "comment.visibility.any_involved_party.description"
   | "spg_create_additional_information_override_description"
-  | "spg_create_additional_information_placeholder"
-  | "spg_manage_members_cu_ineligible_flexible_power";
+  | "spg_create_additional_information_placeholder";
 
 export const text: Record<string, Record<TextKey, string>> = {
   en: {
