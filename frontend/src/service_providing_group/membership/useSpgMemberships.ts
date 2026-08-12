@@ -34,9 +34,7 @@ const mapEmbeddedControllableUnit = (
     technical_resource_count: cu.summary?.technical_resource?.count ?? 0,
     rated_power,
     isEligible:
-      rated_power === undefined
-        ? true
-        : cu.maximum_active_power <= 0.8 * rated_power,
+      rated_power === undefined ? true : cu.maximum_active_power <= rated_power,
   };
 };
 

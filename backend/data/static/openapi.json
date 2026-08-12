@@ -2574,7 +2574,7 @@
                 "type": "object",
                 "properties": {
                     "controllable_unit_id": {
-                        "description": "Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 80% of the combined maximum active power of all its technical resources (SPGM-VAL003).",
+                        "description": "Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 100% of the combined maximum active power of all its technical resources (SPGM-VAL003).",
                         "format": "bigint",
                         "type": "integer",
                         "example": 6
@@ -2617,7 +2617,7 @@
                         "example": 27
                     },
                     "controllable_unit_id": {
-                        "description": "Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 80% of the combined maximum active power of all its technical resources (SPGM-VAL003).",
+                        "description": "Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 100% of the combined maximum active power of all its technical resources (SPGM-VAL003).",
                         "format": "bigint",
                         "type": "integer",
                         "example": 6
@@ -7419,7 +7419,7 @@
                         "example": 27
                     },
                     "controllable_unit_id": {
-                        "description": "Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 80% of the combined maximum active power of all its technical resources (SPGM-VAL003).",
+                        "description": "Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 100% of the combined maximum active power of all its technical resources (SPGM-VAL003).",
                         "format": "bigint",
                         "type": "integer",
                         "example": 6
@@ -14587,7 +14587,7 @@
                             "pattern": "^eq\\.[0-9]+$"
                         },
                         "example": "eq.55",
-                        "description": "Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 80% of the combined maximum active power of all its technical resources (SPGM-VAL003).",
+                        "description": "Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 100% of the combined maximum active power of all its technical resources (SPGM-VAL003).",
                         "name": "controllable_unit_id"
                     },
                     {
@@ -15303,7 +15303,7 @@
                             "pattern": "^eq\\.[0-9]+$"
                         },
                         "example": "eq.55",
-                        "description": "Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 80% of the combined maximum active power of all its technical resources (SPGM-VAL003).",
+                        "description": "Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 100% of the combined maximum active power of all its technical resources (SPGM-VAL003).",
                         "name": "controllable_unit_id"
                     },
                     {

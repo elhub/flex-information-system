@@ -156,8 +156,8 @@ BEGIN
     FROM flex.technical_resource
     WHERE controllable_unit_id = NEW.controllable_unit_id;
 
-    IF lv_cu_map > 0.8 * lv_tr_sum_map THEN
-        RAISE 'The flexible power of controllable unit id=% (% kW) exceeds 80%% of the combined maximum active power of its technical resources (% kW)',
+    IF lv_cu_map > lv_tr_sum_map THEN
+        RAISE 'The flexible power of controllable unit id=% (% kW) exceeds 100%% of the combined maximum active power of its technical resources (% kW)',
             NEW.controllable_unit_id, lv_cu_map, lv_tr_sum_map;
     END IF;
 
