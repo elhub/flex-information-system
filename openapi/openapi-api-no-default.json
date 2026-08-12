@@ -6005,7 +6005,7 @@
                         "nullable": true
                     },
                     "ramping_description": {
-                        "description": "Free text description of ramping details. Only required for product mFRR.",
+                        "description": "Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).",
                         "format": "text",
                         "type": "string",
                         "nullable": true,
@@ -6097,7 +6097,7 @@
                         "nullable": true
                     },
                     "ramping_description": {
-                        "description": "Free text description of ramping details. Only required for product mFRR.",
+                        "description": "Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).",
                         "format": "text",
                         "type": "string",
                         "nullable": true,
@@ -6203,7 +6203,7 @@
                         "nullable": true
                     },
                     "ramping_description": {
-                        "description": "Free text description of ramping details. Only required for product mFRR.",
+                        "description": "Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).",
                         "format": "text",
                         "type": "string",
                         "nullable": true,
@@ -8678,7 +8678,7 @@
                         "nullable": true
                     },
                     "ramping_description": {
-                        "description": "Free text description of ramping details. Only required for product mFRR.",
+                        "description": "Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).",
                         "format": "text",
                         "type": "string",
                         "nullable": true,

@@ -73,7 +73,8 @@ public data class ServiceProvidingGroupProductApplicationHistoryResponse(
   @SerialName("ramping_capability")
   public val rampingCapability: ServiceProvidingGroupProductApplicationRampingCapability? = null,
   /**
-   * Free text description of ramping details. Only required for product mFRR.
+   * Free text description of ramping details. Only required for product Manual Frequency
+   * Restoration (mFRR).
    */
   @SerialName("ramping_description")
   public val rampingDescription: String? = null,
