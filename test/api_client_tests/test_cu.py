@@ -252,6 +252,18 @@ def test_controllable_unit_so(sts):
     )
     assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
 
+    tr = create_technical_resource.sync(
+        client=client_fiso,
+        body=TechnicalResourceCreateRequest(
+            name="TEST-CU-18-TR",
+            controllable_unit_id=cast(int, cu.id),
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=5.0,
+            device_type=DeviceType.OTHER,
+        ),
+    )
+    assert isinstance(tr, TechnicalResourceResponse)
+
     spgm = create_service_providing_group_membership.sync(
         client=client_sp,
         body=ServiceProvidingGroupMembershipCreateRequest(

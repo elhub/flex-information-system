@@ -286,7 +286,7 @@ def test_cus_so(data):
             name="TEST-CU-18",
             accounting_point_id=1002,
             regulation_direction=ControllableUnitRegulationDirection.UP,
-            maximum_active_power=2,
+            maximum_active_power=0.8,
         ),
     )
     assert isinstance(cu, ControllableUnitResponse)

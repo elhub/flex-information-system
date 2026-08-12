@@ -96,7 +96,7 @@ def test_service_providing_group_power_per_substation_aggregation(sts):
             name="SPGPPS-CU1",
             accounting_point_id=1011,
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
-            maximum_active_power=100.0,
+            maximum_active_power=8.0,
         ),
     )
     assert isinstance(cu1, ControllableUnitResponse)
@@ -107,7 +107,7 @@ def test_service_providing_group_power_per_substation_aggregation(sts):
             name="SPGPPS-CU2",
             accounting_point_id=1011,
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
-            maximum_active_power=100.0,
+            maximum_active_power=16.0,
         ),
     )
     assert isinstance(cu2, ControllableUnitResponse)
@@ -118,7 +118,7 @@ def test_service_providing_group_power_per_substation_aggregation(sts):
             name="SPGPPS-CU3",
             accounting_point_id=1012,
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
-            maximum_active_power=100.0,
+            maximum_active_power=24.0,
         ),
     )
     assert isinstance(cu3, ControllableUnitResponse)
@@ -129,7 +129,7 @@ def test_service_providing_group_power_per_substation_aggregation(sts):
             name="SPGPPS-CU4",
             accounting_point_id=1013,
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
-            maximum_active_power=100.0,
+            maximum_active_power=32.0,
         ),
     )
     assert isinstance(cu4, ControllableUnitResponse)
@@ -140,7 +140,7 @@ def test_service_providing_group_power_per_substation_aggregation(sts):
             name="SPGPPS-CU5",
             accounting_point_id=1014,
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
-            maximum_active_power=100.0,
+            maximum_active_power=40.0,
         ),
     )
     assert isinstance(cu5, ControllableUnitResponse)

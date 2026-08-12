@@ -21,6 +21,10 @@ from flex.models import (
     ServiceProviderProductApplicationResponse,
     ServiceProvidingGroupMembershipCreateRequest,
     ServiceProvidingGroupMembershipResponse,
+    TechnicalResourceCreateRequest,
+    TechnicalResourceResponse,
+    Technology,
+    DeviceType,
     ServiceProvidingGroupProductApplicationCreateRequest,
     ServiceProvidingGroupProductApplicationResponse,
     ServiceProvidingGroupProductApplicationUpdateRequest,
@@ -36,6 +40,7 @@ from flex.models import (
 from flex.api.controllable_unit import (
     create_controllable_unit,
 )
+from flex.api.technical_resource import create_technical_resource
 from flex.api.controllable_unit_service_provider import (
     create_controllable_unit_service_provider,
 )
@@ -124,6 +129,18 @@ def data():
         ),
     )
     assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
+
+    tr = create_technical_resource.sync(
+        client=client_fiso,
+        body=TechnicalResourceCreateRequest(
+            name="CU-SPGPS-1-TR",
+            controllable_unit_id=cast(int, cu.id),
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=5.0,
+            device_type=DeviceType.OTHER,
+        ),
+    )
+    assert isinstance(tr, TechnicalResourceResponse)
 
     spgm = create_service_providing_group_membership.sync(
         client=client_fiso,
