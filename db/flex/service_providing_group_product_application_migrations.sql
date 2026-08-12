@@ -75,10 +75,7 @@ BEGIN
         IF l_pt_id NOT IN (SELECT unnest(l_qualifying_pt_ids)) THEN
             RAISE sqlstate 'PT400' using
                 message =
-                    'service provider has no ongoing qualification for product type ' || (
-                        SELECT business_id FROM product_type
-                        WHERE id = l_pt_id
-                    ) || ' for this system operator';
+                    'a service provider product application must be created for this product before sending a service providing group product application';
             RETURN null;
         END IF;
     END LOOP;
