@@ -108,6 +108,8 @@ export const useAddMembersState = ({ spgId, destination }: Props) => {
     .filter(Boolean) as CuWithMembership[];
 
   const toggleCu = (cuId: number) => {
+    const cu = (allCUs ?? []).find((c) => c.id === cuId);
+    if (cu && !cu.isEligible && !effectiveCheckedIds.has(cuId)) return;
     setCheckedIds((prev) => {
       const next = new Set(prev ?? originalMemberIds);
       if (next.has(cuId)) {
@@ -125,7 +127,9 @@ export const useAddMembersState = ({ spgId, destination }: Props) => {
       if (allFilteredSelected) {
         filteredCUs.forEach((cu) => next.delete(cu.id));
       } else {
-        filteredCUs.forEach((cu) => next.add(cu.id));
+        filteredCUs
+          .filter((cu) => cu.isEligible || cu.membershipId !== undefined)
+          .forEach((cu) => next.add(cu.id));
       }
       return next;
     });
