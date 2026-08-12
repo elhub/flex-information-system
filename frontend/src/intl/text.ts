@@ -26,6 +26,7 @@ export type TextKey =
   | "spgpa_ramping_details"
   | "spgpa_ramping_deviations"
   | "spgpa_ramping_rate"
+  | "spgpa_spg_override_description"
   | "spg_activate_group_ensure_pt2"
   | "spg_manage_members_heading"
   | "spg_manage_members_heading_no_name"
@@ -88,6 +89,8 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Describe how the units in the service providing group are regulated to deliver this response. E.g. units are switched off one by one to achieve a stepwise profile, or each unit gradually adjusts production/consumption simultaneously.",
     spgpa_ramping_deviations: "Describe when and how the profile will deviate.",
     spgpa_ramping_rate: "State the ramp rate (MW/s)",
+    spgpa_spg_override_description:
+      "Reference to the service providing group. The list ONLY show active service providing groups.",
     spg_manage_members_heading: "Manage members of %{name}",
     spg_manage_members_heading_no_name: "Manage members",
     spg_manage_members_body:
@@ -161,6 +164,8 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Beskriv hvordan enhetene som inngår i fleksibilitetsgruppen reguleres for å gi denne responsen. F.eks. enhetene kobles ut én og én for å oppnå en trinnvis profil, eller hver enhet regulerer produksjon/forbruk gradvis samtidig.",
     spgpa_ramping_deviations: "Beskriv når og hvordan profil vil avvike.",
     spgpa_ramping_rate: "Oppgi raskeste endring av aktiv effekt (MW/s).",
+    spgpa_spg_override_description:
+      "Referanse til fleksibilitetsgruppen. Listen viser KUN aktive fleksibilitetsgrupper.",
     spg_manage_members_heading: "Administrer medlemmer for %{name}",
     spg_manage_members_heading_no_name: "Administrer medlemmer",
     spg_manage_members_body:
