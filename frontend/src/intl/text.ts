@@ -78,7 +78,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     cu_flexible_power_exceeds_rated_power_heading:
       "Flexible power exceeds rated power",
     cu_flexible_power_exceeds_rated_power_body:
-      "The flexible power of this controllable unit exceeds the combined maximum active power of all its technical resources. Update the flexible power or add technical resources to match the actual rated power.",
+      "The flexible power of this controllable unit exceeds the combined maximum active power of all its technical resources. Update the flexible power or add technical resources.",
     "lookup.input.accounting_point": "Accounting point",
     "lookup.input.controllable_unit": "Controllable unit",
     "lookup.input.end_user": "End user",
@@ -159,7 +159,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     cu_flexible_power_exceeds_rated_power_heading:
       "Fleksibel effekt overstiger installert effekt",
     cu_flexible_power_exceeds_rated_power_body:
-      "Den fleksible effekten til denne kontrollerbare enheten overstiger den kombinerte maksimale aktive effekten til alle tekniske ressurser. Oppdater fleksibel effekt eller legg til tekniske ressurser for å samsvare med faktisk installert effekt.",
+      "Den fleksible effekten til denne kontrollerbare enheten overstiger merkeeffekten. Oppdater fleksibel effekt eller legg til tekniske ressurser.",
     "lookup.input.accounting_point": "Avregningspunkt",
     "lookup.input.controllable_unit": "Kontrollerbar enhet",
     "lookup.input.end_user": "Sluttbruker",
