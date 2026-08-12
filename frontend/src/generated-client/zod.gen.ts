@@ -3988,6 +3988,7 @@ export const zListSystemOperatorProductTypeHistoryQuery = z.object({
     .string()
     .regex(/^eq\.[0-9]+$/)
     .optional(),
+  status: z.string().optional(),
   select: z.string().optional(),
   order: z.string().optional(),
   offset: z.string().optional(),
@@ -5804,6 +5805,7 @@ export const zListSystemOperatorProductTypeQuery = z.object({
     .string()
     .regex(/^eq\.[0-9]+$/)
     .optional(),
+  status: z.string().optional(),
   select: z.string().optional(),
   order: z.string().optional(),
   offset: z.string().optional(),

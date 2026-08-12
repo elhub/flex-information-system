@@ -16,6 +16,7 @@ def _get_kwargs(
     id: str | Unset = UNSET,
     system_operator_id: str | Unset = UNSET,
     product_type_id: str | Unset = UNSET,
+    status: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -30,6 +31,8 @@ def _get_kwargs(
     params["system_operator_id"] = system_operator_id
 
     params["product_type_id"] = product_type_id
+
+    params["status"] = status
 
     params["select"] = select
 
@@ -149,6 +152,7 @@ def sync_detailed(
     id: str | Unset = UNSET,
     system_operator_id: str | Unset = UNSET,
     product_type_id: str | Unset = UNSET,
+    status: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -164,6 +168,7 @@ def sync_detailed(
         id (str | Unset):
         system_operator_id (str | Unset):
         product_type_id (str | Unset):
+        status (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -182,6 +187,7 @@ def sync_detailed(
         id=id,
         system_operator_id=system_operator_id,
         product_type_id=product_type_id,
+        status=status,
         select=select,
         order=order,
         offset=offset,
@@ -202,6 +208,7 @@ def sync(
     id: str | Unset = UNSET,
     system_operator_id: str | Unset = UNSET,
     product_type_id: str | Unset = UNSET,
+    status: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -217,6 +224,7 @@ def sync(
         id (str | Unset):
         system_operator_id (str | Unset):
         product_type_id (str | Unset):
+        status (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -236,6 +244,7 @@ def sync(
         id=id,
         system_operator_id=system_operator_id,
         product_type_id=product_type_id,
+        status=status,
         select=select,
         order=order,
         offset=offset,
@@ -250,6 +259,7 @@ async def asyncio_detailed(
     id: str | Unset = UNSET,
     system_operator_id: str | Unset = UNSET,
     product_type_id: str | Unset = UNSET,
+    status: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -265,6 +275,7 @@ async def asyncio_detailed(
         id (str | Unset):
         system_operator_id (str | Unset):
         product_type_id (str | Unset):
+        status (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -283,6 +294,7 @@ async def asyncio_detailed(
         id=id,
         system_operator_id=system_operator_id,
         product_type_id=product_type_id,
+        status=status,
         select=select,
         order=order,
         offset=offset,
@@ -301,6 +313,7 @@ async def asyncio(
     id: str | Unset = UNSET,
     system_operator_id: str | Unset = UNSET,
     product_type_id: str | Unset = UNSET,
+    status: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
     offset: str | Unset = UNSET,
@@ -316,6 +329,7 @@ async def asyncio(
         id (str | Unset):
         system_operator_id (str | Unset):
         product_type_id (str | Unset):
+        status (str | Unset):
         select (str | Unset):
         order (str | Unset):
         offset (str | Unset):
@@ -336,6 +350,7 @@ async def asyncio(
             id=id,
             system_operator_id=system_operator_id,
             product_type_id=product_type_id,
+            status=status,
             select=select,
             order=order,
             offset=offset,

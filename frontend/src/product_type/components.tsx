@@ -41,6 +41,7 @@ export function useGetAllProductTypes() {
 
 export const useGetProductTypesBySystemOperator = (
   systemOperatorId?: number,
+  status?: "active" | "inactive",
 ) => {
   const { data: allProductTypes, isLoading: ptLoading } = useProductTypes();
 
@@ -49,7 +50,10 @@ export const useGetProductTypesBySystemOperator = (
     enabled: systemOperatorId != null,
     queryFn: () =>
       listSystemOperatorProductType({
-        query: { system_operator_id: `eq.${systemOperatorId}` },
+        query: {
+          system_operator_id: `eq.${systemOperatorId}`,
+          ...(status && { status: `eq.${status}` }),
+        },
       }).then(throwOnError),
   });
 
@@ -59,7 +63,6 @@ export const useGetProductTypesBySystemOperator = (
   if (!systemOperatorId) {
     return { data: allProductTypes, isLoading };
   }
-
   const filtered = soptQuery.data
     ?.map((sopt) =>
       allProductTypes?.find((pt) => pt.id === sopt.product_type_id),
@@ -106,14 +109,18 @@ export const ProductTypeInput = (props: any) => {
 // input component to select MULTIPLE product types
 type ProductTypeArrayInputProps = Omit<ArrayInputProps, "options"> & {
   systemOperatorId?: number;
+  status?: "active" | "inactive";
 };
 
 export const ProductTypeArrayInput = ({
   systemOperatorId,
+  status,
   ...rest
 }: ProductTypeArrayInputProps) => {
-  const { data: productTypes } =
-    useGetProductTypesBySystemOperator(systemOperatorId);
+  const { data: productTypes } = useGetProductTypesBySystemOperator(
+    systemOperatorId,
+    status,
+  );
 
   const options: ArrayInputOption[] =
     productTypes?.map((pt) => ({

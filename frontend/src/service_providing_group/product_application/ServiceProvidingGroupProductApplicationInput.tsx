@@ -64,7 +64,11 @@ const ProductTypesInput = (
   }, [productTypeIdsDirty, systemOperatorID, setValue]);
 
   return (
-    <ProductTypeArrayInput systemOperatorId={systemOperatorID} {...props} />
+    <ProductTypeArrayInput
+      systemOperatorId={systemOperatorID}
+      {...props}
+      status={"active"}
+    />
   );
 };
 
