@@ -159,6 +159,61 @@ def test_cusp_spgm_consistency_not_ok(data):
     assert isinstance(spgm, ErrorMessage)
 
 
+# SPGM-VAL003
+def test_spgm_val003_flexible_power_exceeded(data):
+    (sts, _, spg_id, eu_id) = data
+
+    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_sp = sts.get_client(TestEntity.TEST, "SP")
+    sp_id = sts.get_userinfo(client_sp)["party_id"]
+
+    # Create a CU where flexible power (10 kW) > 80% of TR sum (10 kW)
+    cu = create_controllable_unit.sync(
+        client=client_fiso,
+        body=ControllableUnitCreateRequest(
+            name="VAL003 CU",
+            accounting_point_id=1002,
+            regulation_direction=ControllableUnitRegulationDirection.BOTH,
+            maximum_active_power=10.0,
+        ),
+    )
+    assert isinstance(cu, ControllableUnitResponse)
+
+    create_technical_resource.sync(
+        client=client_fiso,
+        body=TechnicalResourceCreateRequest(
+            name="VAL003 CU TR",
+            controllable_unit_id=cast(int, cu.id),
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=10.0,
+            device_type=DeviceType.OTHER,
+        ),
+    )
+
+    cu_sp = create_controllable_unit_service_provider.sync(
+        client=client_fiso,
+        body=ControllableUnitServiceProviderCreateRequest(
+            controllable_unit_id=cast(int, cu.id),
+            service_provider_id=sp_id,
+            end_user_id=eu_id,
+            contract_reference="VAL003-CONTRACT",
+            valid_from=datetime.datetime.fromisoformat("2024-01-01T00:00:00+01:00"),
+        ),
+    )
+    assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
+
+    # SPGM-VAL003: 10.0 kW > 80% of 10.0 kW (8.0 kW) — must be rejected
+    spgm = create_service_providing_group_membership.sync(
+        client=client_fiso,
+        body=ServiceProvidingGroupMembershipCreateRequest(
+            controllable_unit_id=cast(int, cu.id),
+            service_providing_group_id=spg_id,
+            valid_from=datetime.datetime.fromisoformat("2024-01-01T00:00:00+01:00"),
+        ),
+    )
+    assert isinstance(spgm, ErrorMessage)
+
+
 # RLS: SPGM-SP002
 def test_spgm_sp002(data):
     (sts, cu_id, spg_id, eu_id) = data
