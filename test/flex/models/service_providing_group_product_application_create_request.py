@@ -39,13 +39,8 @@ class ServiceProvidingGroupProductApplicationCreateRequest:
                 2021-08-08T10:00:00+02.
             ramping_capability (None | ServiceProvidingGroupProductApplicationRampingCapability | Unset):
             ramping_description (None | str | Unset): Free text description of ramping details. Only required for product
-<<<<<<< Updated upstream
-                mFRR. Example: Units are (dis)connected one by one to achieve a stepwise profile. We ensure linearity on a
-                minute resolution.
-=======
                 Manual Frequency Restoration (mFRR). Example: Units are (dis)connected one by one to achieve a stepwise profile.
-                We ensure linearity on a minute resolution..
->>>>>>> Stashed changes
+                We ensure linearity on a minute resolution.
     """
 
     service_providing_group_id: int
