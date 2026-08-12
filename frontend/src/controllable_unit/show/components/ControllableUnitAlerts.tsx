@@ -1,5 +1,6 @@
 import type { ControllableUnitShowViewModel } from "../useControllableUnitViewModel";
 import { BodyText, Alert, Heading } from "../../../components/ui";
+import { useTranslate } from "ra-core";
 
 type AlertType = {
   severity: "info" | "success" | "warning" | "error";
@@ -10,6 +11,7 @@ type AlertType = {
 const useControllableUnitAlerts = (
   controllableUnitViewModel: ControllableUnitShowViewModel,
 ): AlertType | null => {
+  const translate = useTranslate();
   const { controllableUnit, suspensions, technicalResources } =
     controllableUnitViewModel;
 
@@ -19,6 +21,20 @@ const useControllableUnitAlerts = (
       severity: "error",
       heading: "Controllable unit is suspended",
       body: `Reason: ${suspension.reason}`,
+    };
+  }
+
+  if (
+    controllableUnit.status === "active" &&
+    technicalResources &&
+    technicalResources.length > 0 &&
+    controllableUnit.maximum_active_power >
+      technicalResources.reduce((s, tr) => s + tr.maximum_active_power, 0)
+  ) {
+    return {
+      severity: "warning",
+      heading: translate("text.cu_flexible_power_exceeds_rated_power_heading"),
+      body: translate("text.cu_flexible_power_exceeds_rated_power_body"),
     };
   }
 
