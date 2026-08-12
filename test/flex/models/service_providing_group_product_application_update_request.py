@@ -38,7 +38,7 @@ class ServiceProvidingGroupProductApplicationUpdateRequest:
             ramping_capability (None | ServiceProvidingGroupProductApplicationRampingCapability | Unset):
             ramping_description (None | str | Unset): Free text description of ramping details. Only required for product
                 mFRR. Example: Units are (dis)connected one by one to achieve a stepwise profile. We ensure linearity on a
-                minute resolution..
+                minute resolution.
     """
 
     product_type_ids: list[int] | Unset = UNSET
