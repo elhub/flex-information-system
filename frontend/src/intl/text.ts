@@ -126,7 +126,7 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Removing %{count} controllable units",
     spg_manage_members_review_modal_close: "Close",
     spg_manage_members_cu_ineligible_flexible_power:
-      "Cannot add: flexible power (%{flexible_power} kW) exceeds 80% of rated power (%{rated_power} kW).",
+      "Cannot add: flexible power (%{flexible_power} kW) exceeds 100% of rated power (%{rated_power} kW).",
     "comment.visibility.same_party.description":
       "Only visible to your current party",
     "comment.visibility.any_involved_party.description":
@@ -202,7 +202,7 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Fjerner %{count} kontrollerbare enheter",
     spg_manage_members_review_modal_close: "Lukk",
     spg_manage_members_cu_ineligible_flexible_power:
-      "Kan ikke legge til: fleksibel effekt (%{flexible_power} kW) overstiger 80 % av installert effekt (%{rated_power} kW).",
+      "Kan ikke legge til: fleksibel effekt (%{flexible_power} kW) overstiger 100 % av merkeeffekt (%{rated_power} kW).",
     "comment.visibility.same_party.description":
       "Kun synlig for din nåværende aktør",
     "comment.visibility.any_involved_party.description":

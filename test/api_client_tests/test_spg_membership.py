@@ -167,14 +167,14 @@ def test_spgm_val003_flexible_power_exceeded(data):
     client_sp = sts.get_client(TestEntity.TEST, "SP")
     sp_id = sts.get_userinfo(client_sp)["party_id"]
 
-    # Create a CU where flexible power (10 kW) > 80% of TR sum (10 kW)
+    # Create a CU where flexible power (11 kW) > 100% of TR sum (10 kW)
     cu = create_controllable_unit.sync(
         client=client_fiso,
         body=ControllableUnitCreateRequest(
             name="VAL003 CU",
             accounting_point_id=1002,
             regulation_direction=ControllableUnitRegulationDirection.BOTH,
-            maximum_active_power=10.0,
+            maximum_active_power=11.0,
         ),
     )
     assert isinstance(cu, ControllableUnitResponse)
@@ -202,7 +202,7 @@ def test_spgm_val003_flexible_power_exceeded(data):
     )
     assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
 
-    # SPGM-VAL003: 10.0 kW > 80% of 10.0 kW (8.0 kW) — must be rejected
+    # SPGM-VAL003: 11.0 kW > 100% of 10.0 kW — must be rejected
     spgm = create_service_providing_group_membership.sync(
         client=client_fiso,
         body=ServiceProvidingGroupMembershipCreateRequest(
