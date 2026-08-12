@@ -888,7 +888,7 @@ export const tooltips = {
   "service_providing_group_product_application.ramping_capability":
     "The ramping capability of the service providing group for this product application.",
   "service_providing_group_product_application.ramping_description":
-    "Free text description of ramping details. Only required for product Manual Congestion.",
+    "Free text description of ramping details. Only required for product mFRR.",
   "service_providing_group_product_application.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group_product_application.recorded_by":
@@ -916,7 +916,7 @@ export const tooltips = {
   "service_providing_group_product_application_history.ramping_capability":
     "The ramping capability of the service providing group for this product application.",
   "service_providing_group_product_application_history.ramping_description":
-    "Free text description of ramping details. Only required for product Manual Congestion.",
+    "Free text description of ramping details. Only required for product mFRR.",
   "service_providing_group_product_application_history.recorded_at":
     "When the resource was recorded (created or updated) in the system.",
   "service_providing_group_product_application_history.recorded_by":

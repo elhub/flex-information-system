@@ -4094,7 +4094,7 @@ resources:
           nn: Rampingevne
       ramping_description:
         description: >-
-          Free text description of ramping details. Only required for product Manual Congestion.
+          Free text description of ramping details. Only required for product mFRR.
         format: text
         type: string
         nullable: true
