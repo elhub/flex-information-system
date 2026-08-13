@@ -1,19 +1,24 @@
 import { BodyText, Button, Dropdown, Loader } from "../ui";
 import {
+  IconBean,
   IconBuilding,
   IconChevronDown,
+  IconQuestionCircle,
   IconUser,
   IconViewOff,
-  IconBean,
 } from "@elhub/ds-icons";
 import {
-  useGetIdentity,
+  getStorage,
   useDataProvider,
+  useGetIdentity,
   useRedirect,
   useTranslate,
-  getStorage,
 } from "ra-core";
-import { authURL } from "../../httpConfig";
+import {
+  authURL,
+  userGuideCreateUsersURL,
+  userGuideURL,
+} from "../../httpConfig";
 import { FlexIdentity, sessionInfoKey } from "../../auth";
 
 const UserDropdown = () => {
@@ -38,6 +43,14 @@ const UserDropdown = () => {
 
   const handleMe = () => {
     redirect(`/entity/${identity?.entityID}/show`);
+  };
+
+  const handleUserGuide = () => {
+    redirect(`${userGuideURL}`);
+  };
+
+  const handlerCreateUserGuide = () => {
+    redirect(`${userGuideCreateUsersURL}`);
   };
 
   const handleParty = async () => {
@@ -88,6 +101,27 @@ const UserDropdown = () => {
       icon: IconViewOff,
       onClick: handleLogout,
     },
+  ];
+
+  const helpItems = [
+    ...(userGuideURL
+      ? [
+          {
+            label: "User Guide",
+            icon: IconQuestionCircle,
+            onClick: handleUserGuide,
+          },
+        ]
+      : []),
+    ...(userGuideCreateUsersURL
+      ? [
+          {
+            label: "Create User Guide",
+            icon: IconQuestionCircle,
+            onClick: handlerCreateUserGuide,
+          },
+        ]
+      : []),
   ];
 
   return (
@@ -141,6 +175,26 @@ const UserDropdown = () => {
             );
           })}
         </Dropdown.Menu.GroupedList>
+        {helpItems.length > 0 && (
+          <>
+            <Dropdown.Menu.Divider />
+            <Dropdown.Menu.GroupedList>
+              {helpItems.map((item, index) => {
+                const Icon = item.icon;
+                return (
+                  <Dropdown.Menu.GroupedList.Item
+                    key={index}
+                    className="flex gap-2 center"
+                    onClick={item.onClick}
+                  >
+                    <Icon />
+                    <BodyText>{item.label}</BodyText>
+                  </Dropdown.Menu.GroupedList.Item>
+                );
+              })}
+            </Dropdown.Menu.GroupedList>
+          </>
+        )}
       </Dropdown.Menu>
     </Dropdown>
   );
