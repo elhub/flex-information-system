@@ -61,7 +61,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         projectName = "fis-backend"
                         source = Source.CommitSha
                         isMonoRepo = true
-                        autoMerge = false
+                        autoMerge = true
                     }.triggerOnVcsChange {
                         triggerRules = """
                                 -:*
@@ -118,7 +118,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         projectName = "fis-frontend"
                         source = Source.CommitSha
                         isMonoRepo = true
-                        autoMerge = false
+                        autoMerge = true
                     }.triggerOnVcsChange { triggerRules = "+:frontend/**" }
 
                     gitOps {
@@ -161,7 +161,7 @@ elhubProject(Group.FLEX, "flex-information-system") {
                         projectName = "flex-kbackend"
                         source = Source.CommitSha
                         isMonoRepo = true
-                        autoMerge = false
+                        autoMerge = true
                     }.triggerOnVcsChange {
                         triggerRules = """
                             -:*
