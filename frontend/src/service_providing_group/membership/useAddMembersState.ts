@@ -90,10 +90,6 @@ export const useAddMembersState = ({ spgId, destination }: Props) => {
     [allCUs, effectiveCheckedIds],
   );
 
-  const allFilteredSelected =
-    filteredCUs.length > 0 &&
-    filteredCUs.every((cu) => effectiveCheckedIds.has(cu.id));
-
   const cuById = useMemo(
     () => new Map((allCUs ?? []).map((cu) => [cu.id, cu])),
     [allCUs],
@@ -107,9 +103,22 @@ export const useAddMembersState = ({ spgId, destination }: Props) => {
     .map((id) => cuById.get(id))
     .filter(Boolean) as CuWithMembership[];
 
+  const isCuSelectable = (cu: CuWithMembership): boolean =>
+    effectiveCheckedIds.has(cu.id) || (cu.status === "active" && cu.isEligible);
+
+  const selectableFilteredCUs = useMemo(
+    () => filteredCUs.filter(isCuSelectable),
+    [filteredCUs, effectiveCheckedIds],
+  );
+
+  const allFilteredSelected =
+    selectableFilteredCUs.length > 0 &&
+    selectableFilteredCUs.every((cu) => effectiveCheckedIds.has(cu.id));
+
   const toggleCu = (cuId: number) => {
     const cu = (allCUs ?? []).find((c) => c.id === cuId);
-    if (cu && !cu.isEligible && !effectiveCheckedIds.has(cuId)) return;
+    if (cu && !isCuSelectable(cu)) return;
+
     setCheckedIds((prev) => {
       const next = new Set(prev ?? originalMemberIds);
       if (next.has(cuId)) {
@@ -125,11 +134,9 @@ export const useAddMembersState = ({ spgId, destination }: Props) => {
     setCheckedIds((prev) => {
       const next = new Set(prev ?? originalMemberIds);
       if (allFilteredSelected) {
-        filteredCUs.forEach((cu) => next.delete(cu.id));
+        selectableFilteredCUs.forEach((cu) => next.delete(cu.id));
       } else {
-        filteredCUs
-          .filter((cu) => cu.isEligible || cu.membershipId !== undefined)
-          .forEach((cu) => next.add(cu.id));
+        selectableFilteredCUs.forEach((cu) => next.add(cu.id));
       }
       return next;
     });
@@ -201,6 +208,7 @@ export const useAddMembersState = ({ spgId, destination }: Props) => {
     toRemove,
     totalFlexibleCapacity,
     allFilteredSelected,
+    isCuSelectable,
     toggleCu,
     toggleSelectAll,
     handleApplyChanges,
