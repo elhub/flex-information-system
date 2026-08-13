@@ -11,10 +11,12 @@
 -- anything present in staging will have an active status after sync, while
 -- anything missing from here will be set to inactive
 -- changeset flex:metering-grid-area-staging-create runOnChange:false endDelimiter:--
+-- validCheckSum: 9:be35f7b153bb04eaa066a6124ade45a8
 CREATE UNLOGGED TABLE IF NOT EXISTS
 staging.metering_grid_area (
     business_id text NOT NULL, -- EIC-Y
-    name text NOT NULL,
+    name text NOT NULL, -- noqa
+    status text NOT NULL,
 
     CONSTRAINT mga_staging_business_id_unique UNIQUE (business_id),
     CONSTRAINT mga_staging_business_id_check CHECK (
@@ -22,7 +24,20 @@ staging.metering_grid_area (
     ),
     CONSTRAINT mga_staging_name_check CHECK (
         char_length(name) <= 128
+    ),
+    CONSTRAINT mga_staging_status_check CHECK (
+        status IN ('active', 'inactive')
     )
+);
+
+--changeset flex:metering-grid-area-staging-status runOnChange:false endDelimiter:;
+--preconditions onFail:MARK_RAN
+--precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = 'staging' AND table_name = 'metering_grid_area' AND column_name = 'status'
+ALTER TABLE staging.metering_grid_area
+ADD COLUMN IF NOT EXISTS status text NOT NULL;
+ALTER TABLE staging.metering_grid_area
+ADD CONSTRAINT mga_staging_status_check CHECK (
+    status IN ('active', 'inactive')
 );
 
 -- changeset flex:metering-grid-area-system-operator-staging-create runOnChange:false endDelimiter:--
@@ -104,9 +119,7 @@ CREATE OR REPLACE VIEW staging.metering_grid_area_system_operator_v AS (
         stg.valid_time_range
     FROM staging.metering_grid_area_system_operator AS stg
         INNER JOIN flex.metering_grid_area AS mga
-            ON
-                stg.metering_grid_area_business_id = mga.business_id
-                AND mga.status = 'active'
+            ON stg.metering_grid_area_business_id = mga.business_id
         INNER JOIN flex.party AS so
             ON
                 stg.system_operator_business_id = so.business_id
@@ -121,15 +134,13 @@ CREATE OR REPLACE VIEW staging.metering_grid_area_price_area_v AS (
         stg.valid_time_range
     FROM staging.metering_grid_area_price_area AS stg
         INNER JOIN flex.metering_grid_area AS mga
-            ON
-                stg.metering_grid_area_business_id = mga.business_id
-                AND mga.status = 'active'
+            ON stg.metering_grid_area_business_id = mga.business_id
 );
 
 -- update functions
 -- see ESBR staging for detailed documentation about the MERGE procedures
 
--- changeset flex:metering-grid-area-staging-update runOnChange:false endDelimiter:--
+-- changeset flex:metering-grid-area-staging-update runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION
 staging.metering_grid_area_update()
 RETURNS void
@@ -137,40 +148,35 @@ SECURITY DEFINER
 LANGUAGE plpgsql
 AS $$
 BEGIN
-    -- step 1: deactivate MGAs not in staging anymore
-    -- TODO: refactor in PG17?
-    UPDATE flex.metering_grid_area AS flex_mga
-    SET status = 'inactive'
-    WHERE NOT EXISTS (
-        SELECT 1
-        FROM staging.metering_grid_area AS staging_mga
-        WHERE staging_mga.business_id = flex_mga.business_id
-    );
-
     MERGE INTO flex.metering_grid_area AS flex_mga
     USING staging.metering_grid_area AS staging_mga
         ON flex_mga.business_id = staging_mga.business_id
+    -- step 1: deactivate MGAs not in staging anymore
+    WHEN NOT MATCHED BY SOURCE THEN
+        UPDATE SET status = 'inactive'
     -- step 2: update/reactivate changed MGAs
     WHEN MATCHED AND (
-        flex_mga.status = 'inactive'
+        staging_mga.status IS DISTINCT FROM flex_mga.status
         OR staging_mga.name IS DISTINCT FROM flex_mga.name
     ) THEN
         UPDATE SET
             name = staging_mga.name,
-            status = 'active'
+            status = staging_mga.status
     -- step 3: insert new MGAs
-    WHEN NOT MATCHED /* BY TARGET */ THEN
+    WHEN NOT MATCHED BY TARGET THEN
         INSERT (
             business_id,
-            name
+            name,
+            status
         ) VALUES (
             staging_mga.business_id,
-            staging_mga.name
+            staging_mga.name,
+            staging_mga.status
         );
 END;
 $$;
 
--- changeset flex:metering-grid-area-system-operator-staging-update runOnChange:false endDelimiter:--
+-- changeset flex:metering-grid-area-system-operator-staging-update runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION
 staging.metering_grid_area_system_operator_update()
 RETURNS void
@@ -178,24 +184,14 @@ SECURITY DEFINER
 LANGUAGE plpgsql
 AS $$
 BEGIN
-    -- step 1: delete records in flex not matched by start time in staging
-    -- TODO: refactor in PG17
-    DELETE FROM flex.metering_grid_area_system_operator AS flex_mgaso
-    WHERE NOT EXISTS (
-        SELECT 1
-        FROM staging.metering_grid_area_system_operator_v AS staging_mgaso
-        WHERE staging_mgaso.metering_grid_area_id
-        = flex_mgaso.metering_grid_area_id
-            AND lower(staging_mgaso.valid_time_range)
-            = lower(flex_mgaso.valid_time_range)
-    );
-
     MERGE INTO flex.metering_grid_area_system_operator AS flex_mgaso
     USING staging.metering_grid_area_system_operator_v AS staging_mgaso
         ON flex_mgaso.metering_grid_area_id
         = staging_mgaso.metering_grid_area_id
         AND lower(flex_mgaso.valid_time_range)
         = lower(staging_mgaso.valid_time_range)
+    -- step 1: delete records in flex not matched by start time in staging
+    WHEN NOT MATCHED BY SOURCE THEN DELETE
     -- step 2: update changed records
     WHEN MATCHED AND (
         upper(staging_mgaso.valid_time_range)
@@ -206,7 +202,7 @@ BEGIN
             system_operator_id = staging_mgaso.system_operator_id,
             valid_time_range = staging_mgaso.valid_time_range
     -- step 3: insert new records
-    WHEN NOT MATCHED /* BY TARGET */ THEN
+    WHEN NOT MATCHED BY TARGET THEN
         INSERT (
             metering_grid_area_id,
             system_operator_id,
@@ -219,7 +215,7 @@ BEGIN
 END;
 $$;
 
--- changeset flex:metering-grid-area-price-area-staging-update runOnChange:false endDelimiter:--
+-- changeset flex:metering-grid-area-price-area-staging-update runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION
 staging.metering_grid_area_price_area_update()
 RETURNS void
@@ -227,24 +223,14 @@ SECURITY DEFINER
 LANGUAGE plpgsql
 AS $$
 BEGIN
-    -- step 1: delete records in flex not matched by start time in staging
-    -- TODO: refactor in PG17
-    DELETE FROM flex.metering_grid_area_price_area AS flex_mgapa
-    WHERE NOT EXISTS (
-        SELECT 1
-        FROM staging.metering_grid_area_price_area_v AS staging_mgapa
-        WHERE staging_mgapa.metering_grid_area_id
-        = flex_mgapa.metering_grid_area_id
-            AND lower(staging_mgapa.valid_time_range)
-            = lower(flex_mgapa.valid_time_range)
-    );
-
     MERGE INTO flex.metering_grid_area_price_area AS flex_mgapa
     USING staging.metering_grid_area_price_area_v AS staging_mgapa
         ON flex_mgapa.metering_grid_area_id
         = staging_mgapa.metering_grid_area_id
         AND lower(flex_mgapa.valid_time_range)
         = lower(staging_mgapa.valid_time_range)
+    -- step 1: delete records in flex not matched by start time in staging
+    WHEN NOT MATCHED BY SOURCE THEN DELETE
     -- step 2: update changed records
     WHEN MATCHED AND (
         upper(staging_mgapa.valid_time_range)
@@ -255,7 +241,7 @@ BEGIN
             price_area = staging_mgapa.price_area,
             valid_time_range = staging_mgapa.valid_time_range
     -- step 3: insert new records
-    WHEN NOT MATCHED /* BY TARGET */ THEN
+    WHEN NOT MATCHED BY TARGET THEN
         INSERT (
             metering_grid_area_id,
             price_area,
