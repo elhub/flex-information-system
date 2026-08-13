@@ -540,7 +540,7 @@ export const zServiceProvidingGroupProductApplicationStatus = z.enum([
 ]);
 
 /**
- * The ramping capability of the service providing group for this product application.
+ * Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation.
  */
 export const zServiceProvidingGroupProductApplicationRampingCapability = z.enum(
   ["always", "partial", "never"],

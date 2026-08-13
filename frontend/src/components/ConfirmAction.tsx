@@ -71,7 +71,7 @@ export const useConfirmAction = ({
   };
 
   const dialog = (
-    <Modal open={open} onClose={() => setOpen(false)}>
+    <Modal open={open} onClose={() => setOpen(false)} className="max-w-lg">
       <Modal.Header title={title} />
       {content ? <Modal.Content>{content}</Modal.Content> : null}
       <Modal.Footer>

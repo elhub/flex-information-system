@@ -609,7 +609,7 @@ export type ServiceProvidingGroupProductApplicationStatus =
   | "rejected";
 
 /**
- * The ramping capability of the service providing group for this product application.
+ * Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation.
  */
 export type ServiceProvidingGroupProductApplicationRampingCapability =
   "always" | "partial" | "never";
@@ -2913,7 +2913,7 @@ export type ServiceProvidingGroupProductApplicationUpdateRequest = {
   verified_at?: string;
   ramping_capability?: ServiceProvidingGroupProductApplicationRampingCapability | null;
   /**
-   * Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).
+   * Free text description of ramping details.
    */
   ramping_description?: string;
 };
@@ -2957,7 +2957,7 @@ export type ServiceProvidingGroupProductApplicationCreateRequest = {
   verified_at?: string;
   ramping_capability?: ServiceProvidingGroupProductApplicationRampingCapability | null;
   /**
-   * Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).
+   * Free text description of ramping details.
    */
   ramping_description?: string;
 };
@@ -3005,7 +3005,7 @@ export type ServiceProvidingGroupProductApplication = {
   verified_at?: string;
   ramping_capability?: ServiceProvidingGroupProductApplicationRampingCapability | null;
   /**
-   * Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).
+   * Free text description of ramping details.
    */
   ramping_description?: string;
   /**
@@ -4263,7 +4263,7 @@ export type ServiceProvidingGroupProductApplicationHistory = {
   verified_at?: string;
   ramping_capability?: ServiceProvidingGroupProductApplicationRampingCapability | null;
   /**
-   * Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).
+   * Free text description of ramping details.
    */
   ramping_description?: string;
   /**
@@ -5439,7 +5439,7 @@ export type ServiceProvidingGroupProductApplicationWritable = {
   verified_at?: string;
   ramping_capability?: ServiceProvidingGroupProductApplicationRampingCapability | null;
   /**
-   * Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).
+   * Free text description of ramping details.
    */
   ramping_description?: string;
   /**
@@ -6230,7 +6230,7 @@ export type ServiceProvidingGroupProductApplicationHistoryWritable = {
   verified_at?: string;
   ramping_capability?: ServiceProvidingGroupProductApplicationRampingCapability | null;
   /**
-   * Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).
+   * Free text description of ramping details.
    */
   ramping_description?: string;
   /**

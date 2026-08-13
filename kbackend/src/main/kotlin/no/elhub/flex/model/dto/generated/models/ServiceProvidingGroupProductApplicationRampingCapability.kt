@@ -5,7 +5,8 @@ import kotlin.collections.Map
 import kotlinx.serialization.SerialName
 
 /**
- * The ramping capability of the service providing group for this product application.
+ * Whether the service providing group can ramp in accordance with the product requirements during
+ * both activation and deactivation.
  */
 public enum class ServiceProvidingGroupProductApplicationRampingCapability(
   public val `value`: String,
