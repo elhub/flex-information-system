@@ -6506,6 +6506,7 @@ export type ListControllableUnitData = {
      * Free text name of the controllable unit.
      */
     name?: string;
+    status?: string;
     /**
      * Reference to the accounting point that the controllable unit is connected to.
      */
@@ -6766,6 +6767,7 @@ export type ListControllableUnitHistoryData = {
      * Free text name of the controllable unit.
      */
     name?: string;
+    status?: string;
     /**
      * Reference to the accounting point that the controllable unit is connected to.
      */

@@ -3384,6 +3384,7 @@ export const zListControllableUnitHistoryQuery = z.object({
     .optional(),
   business_id: z.string().optional(),
   name: z.string().optional(),
+  status: z.string().optional(),
   accounting_point_id: z
     .string()
     .regex(/^eq\.[0-9]+$/)
@@ -4423,6 +4424,7 @@ export const zListControllableUnitQuery = z.object({
     .optional(),
   business_id: z.string().optional(),
   name: z.string().optional(),
+  status: z.string().optional(),
   accounting_point_id: z
     .string()
     .regex(/^eq\.[0-9]+$/)

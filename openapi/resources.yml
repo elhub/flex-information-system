@@ -103,6 +103,7 @@ resources:
           en: Status
           nb: Status
           nn: Status
+        x-filter: true
       regulation_direction:
         description: >-
           The regulation direction of the controllable unit. `up` means it can be used to increase production or decrease consumption, while `down` means to
