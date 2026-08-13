@@ -8,8 +8,8 @@
 
 -- staging unlogged tables
 
--- anything present in staging will have an active status after sync, while
--- anything missing from here will be set to inactive
+-- records present in staging will have their status applied after sync, while
+-- records missing from staging will be set to inactive
 -- changeset flex:metering-grid-area-staging-create runOnChange:false endDelimiter:--
 -- validCheckSum: 9:be35f7b153bb04eaa066a6124ade45a8
 CREATE UNLOGGED TABLE IF NOT EXISTS
