@@ -86,10 +86,9 @@ SELECT * FROM flex.energy_supplier_balance_responsibility;
 
 #### MGA results
 
-- the deleted MGA (`4`) should still exist, but marked as inactive, and no related
-  data should be present in the two related tables
+- the deleted MGA (`4`) should still exist, but marked as inactive
 - the renamed MGA should have reused the same record (`1`)
-- the new MGA should have been created (`9`), as well as new records for MGA-SO
-  and MGA price area (`9`, `10`)
+- the new MGA should have been created (`7`), as well as new records for MGA-SO
+  and MGA price area
 - terminated records should reuse the existing record (*e.g.*, record `1` should
   continue to exist in all tables)
