@@ -14388,6 +14388,7 @@ export type ListSystemOperatorProductTypeData = {
      * Reference to the product type.
      */
     product_type_id?: string;
+    status?: string;
     /**
      * Filtering Columns
      */
@@ -14644,6 +14645,7 @@ export type ListSystemOperatorProductTypeHistoryData = {
      * Reference to the product type.
      */
     product_type_id?: string;
+    status?: string;
     /**
      * Filtering Columns
      */

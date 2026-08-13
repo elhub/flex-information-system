@@ -3614,6 +3614,7 @@ resources:
         description: The status of the relation.
         format: text
         type: string
+        x-filter: true
         default: active
         enum:
           - id: active
