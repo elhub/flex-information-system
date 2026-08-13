@@ -34,7 +34,7 @@ staging.metering_grid_area (
 --preconditions onFail:MARK_RAN
 --precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = 'staging' AND table_name = 'metering_grid_area' AND column_name = 'status'
 ALTER TABLE staging.metering_grid_area
-ADD COLUMN IF NOT EXISTS status text NOT NULL;
+ADD COLUMN IF NOT EXISTS status text;
 ALTER TABLE staging.metering_grid_area
 ADD CONSTRAINT mga_staging_status_check CHECK (
     status IN ('active', 'inactive')
