@@ -160,7 +160,7 @@ export const ControllableUnitList = () => {
   const actions = [
     ...(canLookup ? [<CULookupButton key="lookup" />] : []),
     ...(isFiso ? [<CreateButton key="create" />] : []),
-    <ExportButton key="export" />,
+    <ExportButton key="export" maxResults={100000} />,
   ];
 
   return (
