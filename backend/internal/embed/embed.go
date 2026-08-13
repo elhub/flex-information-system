@@ -53,6 +53,12 @@ func Handle(
 		return false
 	}
 
+	if err := validateRelations(mainResource, nodes, relations); err != nil {
+		slog.WarnContext(ctx, "unknown embed relation", "error", err)
+		writeError(w, http.StatusBadRequest, err.Error())
+		return false
+	}
+
 	if !checkScopes(ctx, w, nodes, mainResource, asset, relations, writeError) {
 		return false
 	}
