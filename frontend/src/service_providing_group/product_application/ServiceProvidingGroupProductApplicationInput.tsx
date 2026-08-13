@@ -122,11 +122,13 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
             : "Edit  SPG product application"}
         </Heading>
         <VerticalSpace size="small" />
-{createOrUpdate === "create" && (
-  <Alert variant="info">
-    If not already done, a service provider product application must be created before creating a service providing group product application.
-  </Alert>
-)}
+        {createOrUpdate === "create" && (
+          <Alert variant="info">
+            If not already done, a service provider product application must be
+            created before creating a service providing group product
+            application.
+          </Alert>
+        )}
         <AutocompleteReferenceInput
           {...fields.service_providing_group_id}
           filter={{ status: "active" }}

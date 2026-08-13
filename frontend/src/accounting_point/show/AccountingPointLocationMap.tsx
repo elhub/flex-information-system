@@ -85,12 +85,11 @@ const toLineFC = (items: Line[]): FeatureCollection<LineString> => ({
 const useGridData = (location: AccountingPoint["location"]) => {
   // get nearby transformers for the AP with their cluster embedded
   const queryParams = new URLSearchParams({
-    kind: "eq.transformer",
-    status: "eq.active",
+    kind: "transformer",
+    status: "active",
     order: "proximity",
     longitude: location?.coordinates[0].toString() ?? "",
     latitude: location?.coordinates[1].toString() ?? "",
-    embed: "substation_cluster",
   });
   const nearTransformers = useQuery({
     queryKey: ["grid", "near_transformers", location],
