@@ -1,7 +1,8 @@
-import { NavLink, matchPath, useLocation, useMatch } from "react-router-dom";
+import { matchPath, NavLink, useLocation, useMatch } from "react-router-dom";
 import { Button, Dropdown, Nav } from "../ui";
 import { IconChevronDown } from "@elhub/ds-icons";
 import { useGetIdentity } from "ra-core";
+import { userGuideCreateUsersURL, userGuideURL } from "../../httpConfig";
 
 type MenuItem =
   | {
@@ -44,6 +45,23 @@ const navLinks: MenuItem[] = [
       { label: "Notices", to: "/notice" },
     ],
   },
+  ...(userGuideURL && userGuideCreateUsersURL
+    ? [
+        {
+          label: "Need help?",
+          items: [
+            {
+              label: "User Guide",
+              to: userGuideURL,
+            },
+            {
+              label: "User guide for creating users",
+              to: userGuideCreateUsersURL,
+            },
+          ],
+        },
+      ]
+    : []),
 ];
 
 const className = ({ isActive }: { isActive: boolean }) =>
