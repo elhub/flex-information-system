@@ -11,6 +11,8 @@ export type TextKey =
   | "controllable_unit.is_small.true.label"
   | "controllable_unit.is_small.false"
   | "controllable_unit.is_small.false.label"
+  | "cu_flexible_power_exceeds_rated_power_heading"
+  | "cu_flexible_power_exceeds_rated_power_body"
   | "lookup.input.accounting_point"
   | "lookup.input.controllable_unit"
   | "lookup.input.end_user"
@@ -73,6 +75,10 @@ export const text: Record<string, Record<TextKey, string>> = {
     "controllable_unit.is_small.false":
       "No (Not small, > 50 kW of flexible power)",
     "controllable_unit.is_small.false.label": "No",
+    cu_flexible_power_exceeds_rated_power_heading:
+      "Flexible power exceeds rated power",
+    cu_flexible_power_exceeds_rated_power_body:
+      "The flexible power of this controllable unit exceeds the combined maximum active power of all its technical resources. Update the flexible power or add technical resources.",
     "lookup.input.accounting_point": "Accounting point",
     "lookup.input.controllable_unit": "Controllable unit",
     "lookup.input.end_user": "End user",
@@ -150,6 +156,10 @@ export const text: Record<string, Record<TextKey, string>> = {
     "controllable_unit.is_small.false":
       "Nei (Ikke liten, > 50 kW fleksibel effekt)",
     "controllable_unit.is_small.false.label": "Nei",
+    cu_flexible_power_exceeds_rated_power_heading:
+      "Fleksibel effekt overstiger installert effekt",
+    cu_flexible_power_exceeds_rated_power_body:
+      "Den fleksible effekten til denne kontrollerbare enheten overstiger merkeeffekten. Oppdater fleksibel effekt eller legg til tekniske ressurser.",
     "lookup.input.accounting_point": "Avregningspunkt",
     "lookup.input.controllable_unit": "Kontrollerbar enhet",
     "lookup.input.end_user": "Sluttbruker",
