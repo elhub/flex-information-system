@@ -88,6 +88,9 @@ def test_service_providing_group_summary_aggregation(sts):
     cu_agg = summary.controllable_unit
     assert cu_agg.count == 0
     assert cu_agg.maximum_active_power.sum_ == pytest.approx(0.0)
+    assert cu_agg.flexible_power.sum_ == pytest.approx(0.0)
+    assert cu_agg.flexible_power_up.sum_ == pytest.approx(0.0)
+    assert cu_agg.flexible_power_down.sum_ == pytest.approx(0.0)
 
     tr_agg = summary.technical_resource
     assert tr_agg.count == 0
@@ -243,11 +246,21 @@ def test_service_providing_group_summary_aggregation(sts):
     # should be 2 CUs in the summary
     assert cu_agg.count == 2
 
-    # sum MAP should be 100
+    # sum MAP should be 100 (sum of TR MAPs per CU: 30 + 70)
     assert cu_agg.maximum_active_power.sum_ == pytest.approx(100.0)
 
     # average MAP should be total 100 for 2 CUs = 50
     assert cu_agg.maximum_active_power.average == pytest.approx(50.0)
+
+    # flexible_power: sum of cu.maximum_active_power = 24 + 56 = 80
+    assert cu_agg.flexible_power.sum_ == pytest.approx(80.0)
+    assert cu_agg.flexible_power.average == pytest.approx(40.0)
+
+    # both CUs have regulation_direction=BOTH so up and down equal the total
+    assert cu_agg.flexible_power_up.sum_ == pytest.approx(80.0)
+    assert cu_agg.flexible_power_up.average == pytest.approx(40.0)
+    assert cu_agg.flexible_power_down.sum_ == pytest.approx(80.0)
+    assert cu_agg.flexible_power_down.average == pytest.approx(40.0)
 
     # now at TR level
     tr_agg = summary.technical_resource

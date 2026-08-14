@@ -1,15 +1,12 @@
 import { Heading, Panel } from "../../components/ui";
 import { ServiceProvidingGroupSummary } from "../../generated-client";
 import { LabelValue } from "../../components/LabelValue";
-import { SpgShowViewModel } from "../show/useSpgShowViewModel";
 
 type Props = {
-  spgViewModel: SpgShowViewModel;
   summary: ServiceProvidingGroupSummary;
 };
 
 export const ServiceProvidingGroupControllableUnitSummary = ({
-  spgViewModel,
   summary,
 }: Props) => {
   const cu = summary.controllable_unit;
@@ -51,17 +48,17 @@ export const ServiceProvidingGroupControllableUnitSummary = ({
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         <LabelValue
           label="Aggregated flexible power"
-          value={spgViewModel.totalCapacityKw}
+          value={cu.flexible_power?.sum ?? 0}
           unit="kW"
         />
         <LabelValue
           label="Aggregated flexible power (down)"
-          value={spgViewModel.consumptionCapacityKw}
+          value={cu.flexible_power_down?.sum ?? 0}
           unit="kW"
         />
         <LabelValue
           label="Aggregated flexible power (up)"
-          value={spgViewModel.productionCapacityKw}
+          value={cu.flexible_power_up?.sum ?? 0}
           unit="kW"
         />
       </div>

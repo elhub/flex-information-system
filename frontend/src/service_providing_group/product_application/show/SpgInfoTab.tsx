@@ -4,7 +4,6 @@ import { useTranslateEnum } from "../../../intl/intl";
 import { spgStatusVariantMap } from "../../serviceProvidingGroupStatus";
 import { Link as RouterLink } from "react-router-dom";
 import { ServiceProvidingGroup } from "../../../generated-client";
-import { useSpgShowViewModel } from "../../show/useSpgShowViewModel";
 import { ServiceProvidingGroupControllableUnitSummary } from "../../summary/ServiceProvidingGroupControllableUnitSummary";
 import { ServiceProvidingGroupTechnicalResourceSummary } from "../../summary/ServiceProvidingGroupTechnicalResourceSummary";
 
@@ -13,15 +12,12 @@ type Props = {
   spg: ServiceProvidingGroup | undefined;
 };
 
-export const SpgInfoTab = ({ spgId, spg }: Props) => {
-  const { data: spgViewModel, isPending, error } = useSpgShowViewModel(spgId);
+export const SpgInfoTab = ({ spgId: _spgId, spg }: Props) => {
   const translateEnum = useTranslateEnum();
 
-  if (!spg || isPending) {
+  if (!spg) {
     return <Loader size="small" />;
   }
-
-  if (error) throw error;
 
   const { status, icon } = spgStatusVariantMap[spg.status];
 
@@ -54,10 +50,7 @@ export const SpgInfoTab = ({ spgId, spg }: Props) => {
       </Panel>
       {spg.summary && (
         <>
-          <ServiceProvidingGroupControllableUnitSummary
-            spgViewModel={spgViewModel}
-            summary={spg.summary}
-          />
+          <ServiceProvidingGroupControllableUnitSummary summary={spg.summary} />
           <ServiceProvidingGroupTechnicalResourceSummary
             summary={spg.summary}
           />

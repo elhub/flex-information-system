@@ -2173,7 +2173,7 @@
                         "example": 4
                     },
                     "controllable_unit": {
-                        "description": "Aggregated statistics on controllable units currently in the service providing group, including count and maximum active power information (sum, average, min, max).",
+                        "description": "Aggregated statistics on controllable units currently in the service providing group, including count, maximum active power information (sum, average, min, max), and flexible power breakdowns total, up and down (sum, average, min, max).",
                         "type": "object",
                         "readOnly": true,
                         "properties": {
@@ -2181,6 +2181,15 @@
                                 "type": "integer"
                             },
                             "maximum_active_power": {
+                                "$ref": "#/components/schemas/numeric_aggregation"
+                            },
+                            "flexible_power": {
+                                "$ref": "#/components/schemas/numeric_aggregation"
+                            },
+                            "flexible_power_up": {
+                                "$ref": "#/components/schemas/numeric_aggregation"
+                            },
+                            "flexible_power_down": {
                                 "$ref": "#/components/schemas/numeric_aggregation"
                             }
                         },
@@ -2191,6 +2200,24 @@
                                 "average": 83.33,
                                 "min": 50,
                                 "max": 120
+                            },
+                            "flexible_power": {
+                                "sum": 200,
+                                "average": 66.67,
+                                "min": 40,
+                                "max": 100
+                            },
+                            "flexible_power_up": {
+                                "sum": 150,
+                                "average": 75,
+                                "min": 50,
+                                "max": 100
+                            },
+                            "flexible_power_down": {
+                                "sum": 100,
+                                "average": 50,
+                                "min": 40,
+                                "max": 60
                             }
                         }
                     },

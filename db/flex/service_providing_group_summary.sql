@@ -92,6 +92,24 @@ WITH (security_invoker = false) AS (
                 'average', cu_aggregates.cu_avg_map,
                 'min', cu_aggregates.cu_min_map,
                 'max', cu_aggregates.cu_max_map
+            ),
+            'flexible_power', JSONB_BUILD_OBJECT(
+                'sum', cu_aggregates.cu_fp_sum,
+                'average', cu_aggregates.cu_fp_avg,
+                'min', cu_aggregates.cu_fp_min,
+                'max', cu_aggregates.cu_fp_max
+            ),
+            'flexible_power_up', JSONB_BUILD_OBJECT(
+                'sum', cu_aggregates.cu_fp_up_sum,
+                'average', cu_aggregates.cu_fp_up_avg,
+                'min', cu_aggregates.cu_fp_up_min,
+                'max', cu_aggregates.cu_fp_up_max
+            ),
+            'flexible_power_down', JSONB_BUILD_OBJECT(
+                'sum', cu_aggregates.cu_fp_down_sum,
+                'average', cu_aggregates.cu_fp_down_avg,
+                'min', cu_aggregates.cu_fp_down_min,
+                'max', cu_aggregates.cu_fp_down_max
             )
         ) AS controllable_unit
     FROM flex.service_providing_group AS spg
@@ -105,18 +123,51 @@ WITH (security_invoker = false) AS (
                 COALESCE(SUM(cu_map), 0) AS cu_sum_map,
                 COALESCE(AVG(cu_map), 0) AS cu_avg_map,
                 MIN(cu_map) AS cu_min_map,
-                MAX(cu_map) AS cu_max_map
+                MAX(cu_map) AS cu_max_map,
+                COALESCE(SUM(cu_fp), 0) AS cu_fp_sum,
+                COALESCE(AVG(cu_fp), 0) AS cu_fp_avg,
+                MIN(cu_fp) AS cu_fp_min,
+                MAX(cu_fp) AS cu_fp_max,
+                COALESCE(SUM(cu_fp) FILTER (
+                    WHERE cu_direction IN ('up', 'both')
+                ), 0) AS cu_fp_up_sum,
+                COALESCE(AVG(cu_fp) FILTER (
+                    WHERE cu_direction IN ('up', 'both')
+                ), 0) AS cu_fp_up_avg,
+                MIN(cu_fp) FILTER (
+                    WHERE cu_direction IN ('up', 'both')
+                ) AS cu_fp_up_min,
+                MAX(cu_fp) FILTER (
+                    WHERE cu_direction IN ('up', 'both')
+                ) AS cu_fp_up_max,
+                COALESCE(SUM(cu_fp) FILTER (
+                    WHERE cu_direction IN ('down', 'both')
+                ), 0) AS cu_fp_down_sum,
+                COALESCE(AVG(cu_fp) FILTER (
+                    WHERE cu_direction IN ('down', 'both')
+                ), 0) AS cu_fp_down_avg,
+                MIN(cu_fp) FILTER (
+                    WHERE cu_direction IN ('down', 'both')
+                ) AS cu_fp_down_min,
+                MAX(cu_fp) FILTER (
+                    WHERE cu_direction IN ('down', 'both')
+                ) AS cu_fp_down_max
             FROM (
                 -- MAP of CU = sum of MAP of all TRs in the CU
                 -- the MAP field on CU is not only technical information
                 -- (cf discount) so we do not use that field here
-                SELECT COALESCE(SUM(tr.maximum_active_power), 0) AS cu_map
+                SELECT
+                    COALESCE(SUM(tr.maximum_active_power), 0) AS cu_map,
+                    cu.maximum_active_power AS cu_fp,
+                    cu.regulation_direction AS cu_direction
                 FROM flex.service_providing_group_membership AS spgm
+                    JOIN flex.controllable_unit AS cu
+                        ON spgm.controllable_unit_id = cu.id
                     LEFT JOIN flex.technical_resource AS tr
                         ON spgm.controllable_unit_id = tr.controllable_unit_id
                 WHERE spgm.service_providing_group_id = spg.id
                     AND spgm.valid_time_range @> current_timestamp
-                GROUP BY spgm.controllable_unit_id
+                GROUP BY spgm.controllable_unit_id, cu.maximum_active_power, cu.regulation_direction
             ) AS cu_aggregates
         ) AS cu_aggregates ON TRUE
         LEFT JOIN LATERAL ( -- TR-level aggregates

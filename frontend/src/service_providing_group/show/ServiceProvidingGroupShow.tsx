@@ -11,7 +11,6 @@ import { useGetIdentity, usePermissions } from "ra-core";
 import { Permissions } from "../../auth/permissions";
 import { ActivateServiceProvidingGroupButton } from "../ActivateServiceProvidingGroupButton";
 import { spgStatusVariantMap } from "../serviceProvidingGroupStatus";
-import { useSpgShowViewModel } from "./useSpgShowViewModel";
 import { ServiceProvidingGroupAlerts } from "./ServiceProvidingGroupAlerts";
 
 export const ServiceProvidingGroupShow = () => {
@@ -37,13 +36,7 @@ export const ServiceProvidingGroupShow = () => {
     enabled: !!spgId,
   });
 
-  const {
-    data: spgViewModel,
-    isPending: isSPGViewModelPending,
-    error: errorSPGViewModel,
-  } = useSpgShowViewModel(spgId);
-
-  if (isSPGPending || isSPGViewModelPending) {
+  if (isSPGPending) {
     return <Loader />;
   }
 
@@ -51,11 +44,7 @@ export const ServiceProvidingGroupShow = () => {
     throw errorSPG;
   }
 
-  if (errorSPGViewModel) {
-    throw errorSPGViewModel;
-  }
-
-  if (!spg || !spgViewModel) {
+  if (!spg) {
     return null;
   }
 
@@ -95,7 +84,6 @@ export const ServiceProvidingGroupShow = () => {
       <ServiceProvidingGroupShowTabs
         spgId={spg.id}
         spgStatus={spg.status}
-        spgViewModel={spgViewModel}
         summary={spg.summary ?? undefined}
         showPowerPerSubstation={isFISOOrSO}
       />

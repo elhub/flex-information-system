@@ -2,10 +2,7 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Heading } from "../../../components/ui";
 import { useSpgpaRecord } from "../show/useSpgpaShowViewModel";
-import {
-  useServiceProvidingGroup,
-  useSpgShowViewModel,
-} from "../../show/useSpgShowViewModel";
+import { useServiceProvidingGroup } from "../../show/useSpgShowViewModel";
 import { useTranslateEnum } from "../../../intl/intl";
 import { useParty } from "../../../hooks/party";
 import { useProductTypes } from "../../../product_type/useProductTypes";
@@ -26,11 +23,6 @@ export const ServiceProvidingGroupProductApplicationPrint = () => {
   const spgQuery = useServiceProvidingGroup(spgpa?.service_providing_group_id);
   const spg = spgQuery.data;
 
-  const spgViewModelQuery = useSpgShowViewModel(
-    spgpa?.service_providing_group_id,
-  );
-  const spgViewModel = spgViewModelQuery.data;
-
   const psoQuery = useParty(spgpa?.procuring_system_operator_id);
 
   const productTypesQuery = useProductTypes();
@@ -45,7 +37,6 @@ export const ServiceProvidingGroupProductApplicationPrint = () => {
   const allLoaded =
     !spgpaQuery.isPending &&
     !spgQuery.isPending &&
-    !spgViewModelQuery.isPending &&
     !psoQuery.isPending &&
     !productTypesQuery.isPending &&
     !commentsQuery.commentsQuery.isPending;
@@ -59,7 +50,6 @@ export const ServiceProvidingGroupProductApplicationPrint = () => {
   // --- Error handling ---
   if (spgpaQuery.error) throw spgpaQuery.error;
   if (spgQuery.error) throw spgQuery.error;
-  if (spgViewModelQuery.error) throw spgViewModelQuery.error;
   if (psoQuery.error) throw psoQuery.error;
   if (commentsQuery.commentsQuery.error)
     throw commentsQuery.commentsQuery.error;
@@ -72,7 +62,7 @@ export const ServiceProvidingGroupProductApplicationPrint = () => {
     );
   }
 
-  if (!spgpa || !spg || !spgViewModel) return null;
+  if (!spgpa || !spg) return null;
 
   const statusLabel = translateEnum(
     `service_providing_group_product_application.status.${spgpa.status}`,
@@ -106,7 +96,7 @@ export const ServiceProvidingGroupProductApplicationPrint = () => {
       {/* SPG info */}
       <section className="flex flex-col gap-2">
         <Heading size="large">Service providing group info</Heading>
-        <SpgpaPrintSpgInfo spg={spg} spgViewModel={spgViewModel} />
+        <SpgpaPrintSpgInfo spg={spg} />
       </section>
 
       {/* Comments */}
