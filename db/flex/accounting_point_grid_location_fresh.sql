@@ -29,12 +29,12 @@ CREATE OR REPLACE VIEW accounting_point_grid_location_fresh AS (
     -- we cannot make a guess without the accounting point's location
     WHERE ap.location IS NOT NULL
     -- a location already set by a user should not be updated by the system
-    AND NOT EXISTS (
-        SELECT 1 FROM flex.accounting_point_grid_location AS apgl
-        WHERE
-            apgl.accounting_point_id = ap.id
-            AND apgl.source != 'system'
-    )
+        AND NOT EXISTS (
+            SELECT 1 FROM flex.accounting_point_grid_location AS apgl
+            WHERE
+                apgl.accounting_point_id = ap.id
+                AND apgl.source != 'system'
+        )
 );
 
 -- changeset flex:accounting-point-grid-location-sync-function runOnChange:true endDelimiter:--
@@ -91,4 +91,13 @@ SELECT cron.schedule(
     'accounting-point-grid-location-sync',
     '27 3 * * *', -- every day at 03.27
     $$SELECT flex.accounting_point_grid_location_sync()$$
+);
+
+-- changeset flex:accounting-point-grid-location-sync-job-alter runOnChange:true endDelimiter:;
+SELECT cron.alter_job(
+    (
+        SELECT jobid FROM cron.job
+        WHERE jobname = 'accounting-point-grid-location-sync'
+    ),
+    '24 */3 * * *' -- At minute 24 past every 3rd hour -> https://crontab.guru/#24_*/3_*_*_*
 );
