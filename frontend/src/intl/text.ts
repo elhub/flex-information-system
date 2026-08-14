@@ -86,7 +86,7 @@ export type TextKey =
   | "header_nav_need_help"
   | "header_nav_user_guide"
   | "header_nav_create_user_guide"
-  | "header_nav_assume_party";
+  | "header_nav_assume_party"
   | "comment.visibility.same_party.description"
   | "comment.visibility.any_involved_party.description";
 

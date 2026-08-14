@@ -29,7 +29,6 @@ const useMenuItems = () => {
   const roleIdentity = identity as FlexIdentity | undefined;
 
   const translate = useTranslate();
-  console.log(roleIdentity);
   const navLinks: MenuItem[] = [
     { label: translate("text.header_nav_dashboard"), to: "/" },
     {
@@ -83,7 +82,7 @@ const useMenuItems = () => {
                 label: translate("text.header_nav_user_guide"),
                 to: userGuideURL,
               },
-              ...(identity?.role == "flex_organisation"
+              ...(roleIdentity?.role == "flex_organisation"
                 ? [
                     {
                       label: translate("text.header_nav_create_user_guide"),
