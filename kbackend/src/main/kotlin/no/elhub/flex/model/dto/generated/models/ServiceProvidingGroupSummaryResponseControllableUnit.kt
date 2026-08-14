@@ -14,4 +14,8 @@ public data class ServiceProvidingGroupSummaryResponseControllableUnit(
   public val count: Int? = null,
   @SerialName("maximum_active_power")
   public val maximumActivePower: NumericAggregation? = null,
+  @SerialName("maximum_active_power_up")
+  public val maximumActivePowerUp: NumericAggregation? = null,
+  @SerialName("maximum_active_power_down")
+  public val maximumActivePowerDown: NumericAggregation? = null,
 )

@@ -675,13 +675,33 @@ resources:
             type: integer
           maximum_active_power:
             $ref: "#/components/schemas/numeric_aggregation"
+          maximum_active_power_up:
+            description: >-
+              Maximum active power aggregated over controllable units with
+              regulation_direction equal to up or both.
+            $ref: "#/components/schemas/numeric_aggregation"
+          maximum_active_power_down:
+            description: >-
+              Maximum active power aggregated over controllable units with
+              regulation_direction equal to down or both.
+            $ref: "#/components/schemas/numeric_aggregation"
         example:
           count: 3
           maximum_active_power:
-            sum: 250
-            average: 83.33
+            sum: 200
+            average: 66.67
+            min: 40
+            max: 100
+          maximum_active_power_up:
+            sum: 150
+            average: 75
             min: 50
-            max: 120
+            max: 100
+          maximum_active_power_down:
+            sum: 100
+            average: 50
+            min: 40
+            max: 60
       technical_resource:
         description: >-
           Aggregated statistics on technical resources belonging to

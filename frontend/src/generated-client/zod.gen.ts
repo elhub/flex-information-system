@@ -2110,6 +2110,8 @@ export const zServiceProvidingGroupSummary = z.object({
     .object({
       count: z.coerce.number().optional(),
       maximum_active_power: zNumericAggregation.optional(),
+      maximum_active_power_up: zNumericAggregation.optional(),
+      maximum_active_power_down: zNumericAggregation.optional(),
     })
     .readonly(),
   technical_resource: z

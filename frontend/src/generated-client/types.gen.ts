@@ -1079,6 +1079,14 @@ export type ServiceProvidingGroupSummary = {
   readonly controllable_unit: {
     count?: number;
     maximum_active_power?: NumericAggregation;
+    /**
+     * Maximum active power aggregated over controllable units with regulation_direction equal to up or both.
+     */
+    maximum_active_power_up?: NumericAggregation;
+    /**
+     * Maximum active power aggregated over controllable units with regulation_direction equal to down or both.
+     */
+    maximum_active_power_down?: NumericAggregation;
   };
   /**
    * Aggregated statistics on technical resources belonging to controllable units with active membership in the service providing group, including counts and maximum active power breakdowns (sum, average, min, max) by category and technology.
