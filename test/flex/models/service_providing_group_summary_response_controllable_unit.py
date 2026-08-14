@@ -17,7 +17,7 @@ T = TypeVar("T", bound="ServiceProvidingGroupSummaryResponseControllableUnit")
 
 @_attrs_define
 class ServiceProvidingGroupSummaryResponseControllableUnit:
-    """Aggregated statistics on controllable units currently in the service providing group,  including count and maximum
+    """Aggregated statistics on controllable units currently in the service providing group, including count and maximum
     active power information (sum, average, min, max).
 
         Example:

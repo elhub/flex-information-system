@@ -31,7 +31,7 @@ class ServiceProvidingGroupSummaryResponse:
             service_providing_group_id (int): The ID of the service providing group this resource is a summary of. Example:
                 4.
             controllable_unit (ServiceProvidingGroupSummaryResponseControllableUnit): Aggregated statistics on controllable
-                units currently in the service providing group,  including count and maximum active power information (sum,
+                units currently in the service providing group, including count and maximum active power information (sum,
                 average, min, max). Example: {'count': 3, 'maximum_active_power': {'sum': 200, 'average': 66.67, 'min': 40,
                 'max': 100}, 'maximum_active_power_up': {'sum': 150, 'average': 75, 'min': 50, 'max': 100},
                 'maximum_active_power_down': {'sum': 100, 'average': 50, 'min': 40, 'max': 60}}.

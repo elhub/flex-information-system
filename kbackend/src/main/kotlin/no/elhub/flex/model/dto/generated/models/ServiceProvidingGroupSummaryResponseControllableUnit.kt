@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * Aggregated statistics on controllable units currently in the service providing group,  including
+ * Aggregated statistics on controllable units currently in the service providing group, including
  * count and maximum active power information (sum, average, min, max).
  */
 @Serializable

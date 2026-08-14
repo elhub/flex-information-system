@@ -21,8 +21,8 @@ public data class ServiceProvidingGroupSummaryResponse(
   @SerialName("service_providing_group_id")
   public val serviceProvidingGroupId: Long? = null,
   /**
-   * Aggregated statistics on controllable units currently in the service providing group,
-   * including count and maximum active power information (sum, average, min, max).
+   * Aggregated statistics on controllable units currently in the service providing group, including
+   * count and maximum active power information (sum, average, min, max).
    */
   @SerialName("controllable_unit")
   public val controllableUnit: ServiceProvidingGroupSummaryResponseControllableUnit? = null,
