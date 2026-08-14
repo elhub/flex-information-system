@@ -58,7 +58,33 @@ export type TextKey =
   | "comment.visibility.same_party.description"
   | "comment.visibility.any_involved_party.description"
   | "spg_create_additional_information_override_description"
-  | "spg_create_additional_information_placeholder";
+  | "spg_create_additional_information_placeholder"
+  | "user_dropdown_logout"
+  | "user_dropdown_user_guide"
+  | "user_dropdown_create_user_guide"
+  | "user_dropdown_my_party"
+  | "user_dropdown_assume_another_party"
+  | "user_dropdown_assume_party"
+  | "user_dropdown_my_entity"
+  | "user_dropdown_user"
+  | "user_dropdown_organisation_administrator"
+  | "header_nav_dashboard"
+  | "header_nav_controllable_units"
+  | "header_nav_service_providing_groups"
+  | "header_nav_applications"
+  | "header_nav_service_provider_product_applications"
+  | "header_nav_service_providing_group_product_applications"
+  | "header_nav_other"
+  | "header_nav_system_operator_product_listing"
+  | "header_nav_entities"
+  | "header_nav_parties"
+  | "header_nav_events"
+  | "header_nav_notifications"
+  | "header_nav_notices"
+  | "header_nav_need_help"
+  | "header_nav_user_guide"
+  | "header_nav_create_user_guide"
+  | "header_nav_assume_party";
 
 export const text: Record<string, Record<TextKey, string>> = {
   en: {
@@ -141,6 +167,35 @@ export const text: Record<string, Record<TextKey, string>> = {
       "This field is meant to capture any additional information about the service providing group that might be relevant.",
     spg_create_additional_information_placeholder:
       "This field is optional and can be left empty.",
+    user_dropdown_logout: "Logout",
+    user_dropdown_user_guide: "User guide",
+    user_dropdown_create_user_guide: "Create user guide",
+    user_dropdown_my_party: "My party",
+    user_dropdown_assume_another_party: "Assume another party",
+    user_dropdown_assume_party: "Assume party",
+    user_dropdown_my_entity: "My entity",
+    user_dropdown_user: "User",
+    user_dropdown_organisation_administrator: "Organisation administrator",
+    header_nav_dashboard: "Dashboard",
+    header_nav_controllable_units: "Controllable units",
+    header_nav_service_providing_groups: "Service providing groups",
+    header_nav_applications: "Applications",
+    header_nav_service_provider_product_applications:
+      "Service provider product applications",
+    header_nav_service_providing_group_product_applications:
+      "Service providing group product applications",
+    header_nav_other: "Other",
+    header_nav_system_operator_product_listing:
+      "System operator product listing",
+    header_nav_entities: "Entities",
+    header_nav_parties: "Parties",
+    header_nav_events: "Events",
+    header_nav_notifications: "Notifications",
+    header_nav_notices: "Notices",
+    header_nav_need_help: "Need help?",
+    header_nav_user_guide: "User guide",
+    header_nav_create_user_guide: "User guide for creating users",
+    header_nav_assume_party: "Assume party",
   },
   nb: {
     entity_role: "Entitet",
@@ -221,5 +276,34 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Dette feltet er ment å fange opp eventuell tilleggsinformasjon om fleksibilitetsgruppen som kan være relevant.",
     spg_create_additional_information_placeholder:
       "Dette feltet er valgfritt og kan stå tomt.",
+    user_dropdown_logout: "Logg ut",
+    user_dropdown_user_guide: "Brukerveiledning",
+    user_dropdown_create_user_guide: "Opprett Ny bruker veiledning",
+    user_dropdown_my_party: "Min part",
+    user_dropdown_assume_another_party: "Bytt part",
+    user_dropdown_assume_party: "Velg part",
+    user_dropdown_my_entity: "Min entitet",
+    user_dropdown_user: "Bruker",
+    user_dropdown_organisation_administrator: "Organisasjonsadministrator",
+    header_nav_dashboard: "Oversikt",
+    header_nav_controllable_units: "Kontrollerbare enheter",
+    header_nav_service_providing_groups: "Fleksibilitetsgrupper",
+    header_nav_applications: "Søknader",
+    header_nav_service_provider_product_applications:
+      "Tjenesteleverandørens produktsøknader",
+    header_nav_service_providing_group_product_applications:
+      "Fleksibilitetsgruppens produktsøknader",
+    header_nav_other: "Annet",
+    header_nav_system_operator_product_listing:
+      "Systemoperatørens produktliste",
+    header_nav_entities: "Entiteter",
+    header_nav_parties: "Parter",
+    header_nav_events: "Hendelser",
+    header_nav_notifications: "Varsler",
+    header_nav_notices: "Merknader",
+    header_nav_need_help: "Trenger du hjelp?",
+    header_nav_user_guide: "Brukerveiledning",
+    header_nav_create_user_guide: "Nybrukerveiledning",
+    header_nav_assume_party: "Bytt part",
   },
 };

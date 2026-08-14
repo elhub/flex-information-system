@@ -78,26 +78,29 @@ const UserDropdown = () => {
     ...(identity?.partyID
       ? [
           {
-            label: identity?.partyName ?? "My party",
+            label:
+              identity?.partyName ?? translate("text.user_dropdown_my_party"),
             icon: IconBuilding,
             onClick: handleParty,
           },
         ]
       : []),
     {
-      label: identity?.partyID ? "Assume another party" : "Assume party",
+      label: identity?.partyID
+        ? translate("text.user_dropdown_assume_another_party")
+        : translate("text.user_dropdown_assume_party"),
       icon: IconBean,
       onClick: handleAssumeParty,
     },
   ];
   const dropDownEntityItems = [
     {
-      label: identity?.entityName ?? "My entity",
+      label: identity?.entityName ?? translate("text.user_dropdown_my_entity"),
       icon: IconUser,
       onClick: handleMe,
     },
     {
-      label: "Logout",
+      label: translate("text.user_dropdown_logout"),
       icon: IconViewOff,
       onClick: handleLogout,
     },
@@ -107,16 +110,16 @@ const UserDropdown = () => {
     ...(userGuideURL
       ? [
           {
-            label: "User Guide",
+            label: translate("text.user_dropdown_user_guide"),
             icon: IconQuestionCircle,
             onClick: handleUserGuide,
           },
         ]
       : []),
-    ...(userGuideCreateUsersURL
+    ...(userGuideCreateUsersURL && identity?.role === "flex_organisation"
       ? [
           {
-            label: "Create User Guide",
+            label: translate("text.user_dropdown_create_user_guide"),
             icon: IconQuestionCircle,
             onClick: handlerCreateUserGuide,
           },
@@ -136,7 +139,9 @@ const UserDropdown = () => {
       >
         <div className="flex flex-row gap-2 items-center">
           <IconUser />
-          <BodyText weight="bold">{identity?.fullName ?? "User"}</BodyText>
+          <BodyText weight="bold">
+            {identity?.fullName ?? translate("text.user_dropdown_user")}
+          </BodyText>
         </div>
       </Button>
       <Dropdown.Menu arrow placement="bottom">

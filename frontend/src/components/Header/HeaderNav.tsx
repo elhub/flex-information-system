@@ -1,7 +1,9 @@
 import { matchPath, NavLink, useLocation, useMatch } from "react-router-dom";
 import { Button, Dropdown, Nav } from "../ui";
 import { IconChevronDown } from "@elhub/ds-icons";
-import { useGetIdentity } from "ra-core";
+import { useGetIdentity, useTranslate } from "ra-core";
+import { userGuideCreateUsersURL, userGuideURL } from "../../httpConfig";
+import { FlexIdentity } from "../../auth";
 
 type MenuItem =
   | {
@@ -12,39 +14,6 @@ type MenuItem =
       label: string;
       items: { label: string; to: string }[];
     };
-
-const navLinks: MenuItem[] = [
-  { label: "Dashboard", to: "/" },
-  { label: "Controllable units", to: "/controllable_unit" },
-  { label: "Service providing groups", to: "/service_providing_group" },
-  {
-    label: "Applications",
-    items: [
-      {
-        label: "Service provider product applications",
-        to: "/service_provider_product_application",
-      },
-      {
-        label: "Service providing group product applications",
-        to: "/service_providing_group_product_application",
-      },
-    ],
-  },
-  {
-    label: "Other",
-    items: [
-      {
-        label: "System operator product listing",
-        to: "/system_operator_product_type",
-      },
-      { label: "Entities", to: "/entity" },
-      { label: "Parties", to: "/party" },
-      { label: "Events", to: "/event" },
-      { label: "Notifications", to: "/notification" },
-      { label: "Notices", to: "/notice" },
-    ],
-  },
-];
 
 const className = ({ isActive }: { isActive: boolean }) =>
   [
@@ -57,13 +26,88 @@ const className = ({ isActive }: { isActive: boolean }) =>
 
 const useMenuItems = () => {
   const { data: identity, isSuccess } = useGetIdentity();
+  const roleIdentity = identity as FlexIdentity | undefined;
+
+  const translate = useTranslate();
+  console.log(roleIdentity);
+  const navLinks: MenuItem[] = [
+    { label: translate("text.header_nav_dashboard"), to: "/" },
+    {
+      label: translate("text.header_nav_controllable_units"),
+      to: "/controllable_unit",
+    },
+    {
+      label: translate("text.header_nav_service_providing_groups"),
+      to: "/service_providing_group",
+    },
+    {
+      label: translate("text.header_nav_applications"),
+      items: [
+        {
+          label: translate(
+            "text.header_nav_service_provider_product_applications",
+          ),
+          to: "/service_provider_product_application",
+        },
+        {
+          label: translate(
+            "text.header_nav_service_providing_group_product_applications",
+          ),
+          to: "/service_providing_group_product_application",
+        },
+      ],
+    },
+    {
+      label: translate("text.header_nav_other"),
+      items: [
+        {
+          label: translate("text.header_nav_system_operator_product_listing"),
+          to: "/system_operator_product_type",
+        },
+        { label: translate("text.header_nav_entities"), to: "/entity" },
+        { label: translate("text.header_nav_parties"), to: "/party" },
+        { label: translate("text.header_nav_events"), to: "/event" },
+        {
+          label: translate("text.header_nav_notifications"),
+          to: "/notification",
+        },
+        { label: translate("text.header_nav_notices"), to: "/notice" },
+      ],
+    },
+    ...(userGuideURL && userGuideCreateUsersURL
+      ? [
+          {
+            label: translate("text.header_nav_need_help"),
+            items: [
+              {
+                label: translate("text.header_nav_user_guide"),
+                to: userGuideURL,
+              },
+              ...(identity?.role == "flex_organisation"
+                ? [
+                    {
+                      label: translate("text.header_nav_create_user_guide"),
+                      to: userGuideCreateUsersURL,
+                    },
+                  ]
+                : []),
+            ],
+          },
+        ]
+      : []),
+  ];
 
   if (!isSuccess) {
     return [];
   }
 
   if (!identity.partyID) {
-    return [{ label: "Assume party", to: "/login/assumeParty" }];
+    return [
+      {
+        label: translate("text.header_nav_assume_party"),
+        to: "/login/assumeParty",
+      },
+    ];
   }
 
   return navLinks;
