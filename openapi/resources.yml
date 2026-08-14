@@ -4071,7 +4071,7 @@ resources:
           nn: Verifisert
       ramping_capability:
         description: >-
-          The ramping capability of the service providing group for this product application.
+          Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation.
         format: text
         type: string
         nullable: true

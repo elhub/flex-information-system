@@ -24,7 +24,7 @@ import {
   EnumInput,
   AutocompleteReferenceInput,
   PartyReferenceInput,
-  FormToolbar,
+  FormToolbarWithConfirmation,
   UnitInput,
   type BaseInputProps,
   DateTimeInput,
@@ -82,9 +82,25 @@ const RampingNotice = () => {
       <li>{translate("text.spgpa_ramping_details")}</li>
       <li>{translate("text.spgpa_ramping_rate")}</li>
       {rampingCapability !== "always" && (
-        <li>{translate("text.spgpa_ramping_deviations")}</li>
+        <>
+          <li>{translate("text.spgpa_ramping_deviations")}</li>
+          <li>{translate("text.spgpa_add_attachment")}</li>
+        </>
       )}
     </ul>
+  );
+};
+
+const AdditionalInformationNotice = () => {
+  const translate = useTranslate();
+  return (
+    <>
+      {translate("text.spga_additional_information_description")
+        .split("\n\n")
+        .map((paragraph, i) => (
+          <p key={i}>{paragraph}</p>
+        ))}
+    </>
   );
 };
 
@@ -201,6 +217,7 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
           description
           tooltip={false}
           warning="Please remember not to write any sensitive (power/market/personal) information in this field."
+          infoElement={<AdditionalInformationNotice />}
         />
         <DateTimeInput
           {...fields.prequalified_at}
@@ -208,7 +225,12 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
           tooltip={false}
         />
         <DateTimeInput {...fields.verified_at} description tooltip={false} />
-        <FormToolbar />
+        <FormToolbarWithConfirmation
+          confirmTitle={translate("ra.action.save")}
+          confirmContent={
+            <p>{translate("text.spga_save_confirmation_text")}</p>
+          }
+        />
       </FormContainer>
     </Form>
   );

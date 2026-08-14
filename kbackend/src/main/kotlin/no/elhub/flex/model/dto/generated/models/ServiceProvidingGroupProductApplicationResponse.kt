@@ -69,7 +69,8 @@ public data class ServiceProvidingGroupProductApplicationResponse(
   @SerialName("verified_at")
   public val verifiedAt: Instant? = null,
   /**
-   * The ramping capability of the service providing group for this product application.
+   * Whether the service providing group can ramp in accordance with the product requirements during
+   * both activation and deactivation.
    */
   @SerialName("ramping_capability")
   public val rampingCapability: ServiceProvidingGroupProductApplicationRampingCapability? = null,

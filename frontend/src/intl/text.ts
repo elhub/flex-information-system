@@ -6,6 +6,8 @@ export type TextKey =
   | "tab.product_applications"
   | "tab.grid_prequalifications"
   | "tab.power_per_substation"
+  | "form_toolbar.save"
+  | "form_toolbar.cancel"
   | "controllable_unit"
   | "controllable_unit.is_small.true"
   | "controllable_unit.is_small.true.label"
@@ -28,8 +30,10 @@ export type TextKey =
   | "spgpa_ramping_details"
   | "spgpa_ramping_deviations"
   | "spgpa_ramping_rate"
+  | "spgpa_add_attachment"
   | "spgpa_spg_override_description"
-  | "spg_activate_group_ensure_pt2"
+  | "spga_additional_information_description"
+  | "spga_save_confirmation_text"
   | "spg_manage_members_heading"
   | "spg_manage_members_heading_no_name"
   | "spg_manage_members_body"
@@ -55,8 +59,6 @@ export type TextKey =
   | "spg_manage_members_review_modal_removing_plural"
   | "spg_manage_members_review_modal_close"
   | "spg_manage_members_cu_ineligible_flexible_power"
-  | "comment.visibility.same_party.description"
-  | "comment.visibility.any_involved_party.description"
   | "spg_create_additional_information_override_description"
   | "spg_create_additional_information_placeholder"
   | "user_dropdown_logout"
@@ -85,6 +87,8 @@ export type TextKey =
   | "header_nav_user_guide"
   | "header_nav_create_user_guide"
   | "header_nav_assume_party";
+  | "comment.visibility.same_party.description"
+  | "comment.visibility.any_involved_party.description";
 
 export const text: Record<string, Record<TextKey, string>> = {
   en: {
@@ -95,6 +99,8 @@ export const text: Record<string, Record<TextKey, string>> = {
     "tab.product_applications": "Product applications",
     "tab.grid_prequalifications": "Grid prequalifications",
     "tab.power_per_substation": "Power per substation",
+    "form_toolbar.save": "Save",
+    "form_toolbar.cancel": "Cancel",
     controllable_unit: "Controllable unit",
     "controllable_unit.is_small.true": "Yes (Small, ≤ 50 kW of flexible power)",
     "controllable_unit.is_small.true.label": "Yes",
@@ -122,8 +128,14 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Describe how the units in the service providing group are regulated to deliver this response. E.g. units are switched off one by one to achieve a stepwise profile, or each unit gradually adjusts production/consumption simultaneously.",
     spgpa_ramping_deviations: "Describe when and how the profile will deviate.",
     spgpa_ramping_rate: "State the ramp rate (MW/s)",
+    spgpa_add_attachment:
+      "If possible, please attach a ramping profile illustrating the deviation. Files can be attached after the application has been saved.",
     spgpa_spg_override_description:
       "Reference to the service providing group. The list ONLY show active service providing groups.",
+    spga_additional_information_description:
+      "Are there any accounting points within the service providing group that have flexible connection agreements, such as UKT/TPV or other bilateral agreements with the grid owner?\n\nIf yes, attach documentation demonstrating dialogue with the grid owner about possible participation in the market.\n\nAlso attach any agreements covering notification procedures in the event of market activation. Files can be attached after the application has been saved.",
+    spga_save_confirmation_text:
+      "Saving the application will submit it to the procuring system operator. Before saving, ensure that the application is complete and accurate. If required, remember to attach supporting documents after the application has been saved.",
     spg_manage_members_heading: "Manage members of %{name}",
     spg_manage_members_heading_no_name: "Manage members",
     spg_manage_members_body:
@@ -159,10 +171,6 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_manage_members_review_modal_close: "Close",
     spg_manage_members_cu_ineligible_flexible_power:
       "Cannot add: flexible power (%{flexible_power} kW) exceeds 100% of rated power (%{rated_power} kW).",
-    "comment.visibility.same_party.description":
-      "Only visible to your current party",
-    "comment.visibility.any_involved_party.description":
-      "Visible to all parties involved in this resource",
     spg_create_additional_information_override_description:
       "This field is meant to capture any additional information about the service providing group that might be relevant.",
     spg_create_additional_information_placeholder:
@@ -196,6 +204,10 @@ export const text: Record<string, Record<TextKey, string>> = {
     header_nav_user_guide: "User guide",
     header_nav_create_user_guide: "User guide for creating users",
     header_nav_assume_party: "Assume party",
+    "comment.visibility.same_party.description":
+      "Only visible to your current party",
+    "comment.visibility.any_involved_party.description":
+      "Visible to all parties involved in this resource",
   },
   nb: {
     entity_role: "Entitet",
@@ -205,6 +217,8 @@ export const text: Record<string, Record<TextKey, string>> = {
     "tab.product_applications": "Produktprekvalifiseringer",
     "tab.grid_prequalifications": "Nettprekvalifiseringer",
     "tab.power_per_substation": "Kapasitet per substasjon",
+    "form_toolbar.save": "Lagre",
+    "form_toolbar.cancel": "Avbryt",
     controllable_unit: "Kontrollerbar enhet",
     "controllable_unit.is_small.true": "Ja (Liten, ≤ 50 kW fleksibel effekt)",
     "controllable_unit.is_small.true.label": "Ja",
@@ -232,8 +246,14 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Beskriv hvordan enhetene som inngår i fleksibilitetsgruppen reguleres for å gi denne responsen. F.eks. enhetene kobles ut én og én for å oppnå en trinnvis profil, eller hver enhet regulerer produksjon/forbruk gradvis samtidig.",
     spgpa_ramping_deviations: "Beskriv når og hvordan profil vil avvike.",
     spgpa_ramping_rate: "Oppgi raskeste endring av aktiv effekt (MW/s).",
+    spgpa_add_attachment:
+      "Legg om mulig ved en ramping-profil som illustrerer avviket. Filer kan legges ved etter at søknaden er lagret.",
     spgpa_spg_override_description:
       "Referanse til fleksibilitetsgruppen. Listen viser KUN aktive fleksibilitetsgrupper.",
+    spga_additional_information_description:
+      "Er det noen målepunkter i fleksibilitetsgruppen som har fleksible tilknytningsavtaler, som UKT/TPV eller andre bilaterale avtaler med netteier?\n\nHvis ja, legg ved dokumentasjon som viser dialog med netteier om mulig deltakelse i markedet.\n\nLegg også ved eventuelle avtaler som dekker varslingsprosedyrer ved markedsaktivering. Filer kan legges ved etter at søknaden er lagret.",
+    spga_save_confirmation_text:
+      "Lagring av søknaden sender den til systemansvarlig for innkjøp. Kontroller at søknaden er fullstendig og korrekt før du lagrer. Husk om nødvendig å legge ved støttedokumenter etter at søknaden er lagret.",
     spg_manage_members_heading: "Administrer medlemmer for %{name}",
     spg_manage_members_heading_no_name: "Administrer medlemmer",
     spg_manage_members_body:
@@ -268,10 +288,6 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_manage_members_review_modal_close: "Lukk",
     spg_manage_members_cu_ineligible_flexible_power:
       "Kan ikke legge til: fleksibel effekt (%{flexible_power} kW) overstiger 100 % av merkeeffekt (%{rated_power} kW).",
-    "comment.visibility.same_party.description":
-      "Kun synlig for din nåværende aktør",
-    "comment.visibility.any_involved_party.description":
-      "Synlig for alle parter involvert i denne ressursen",
     spg_create_additional_information_override_description:
       "Dette feltet er ment å fange opp eventuell tilleggsinformasjon om fleksibilitetsgruppen som kan være relevant.",
     spg_create_additional_information_placeholder:
@@ -305,5 +321,9 @@ export const text: Record<string, Record<TextKey, string>> = {
     header_nav_user_guide: "Brukerveiledning",
     header_nav_create_user_guide: "Nybrukerveiledning",
     header_nav_assume_party: "Bytt part",
+    "comment.visibility.same_party.description":
+      "Kun synlig for din nåværende aktør",
+    "comment.visibility.any_involved_party.description":
+      "Synlig for alle parter involvert i denne ressursen",
   },
 };
