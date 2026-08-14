@@ -58,7 +58,6 @@ const fetchSpgShowData = async (serviceProvidingGroupId: number) => {
     query: {
       service_providing_group_id: `eq.${serviceProvidingGroupId}`,
       order: "id.desc",
-      limit: "200",
     },
   }).then(throwOnError);
 
@@ -78,7 +77,6 @@ const fetchSpgShowData = async (serviceProvidingGroupId: number) => {
   const controllableUnits = await listControllableUnit({
     query: {
       id: `in.(${controllableUnitIds.join(",")})`,
-      limit: "500",
       embed: "summary",
     },
   }).then(throwOnError);
@@ -90,7 +88,6 @@ const fetchSpgShowData = async (serviceProvidingGroupId: number) => {
   const accountingPoints = await listAccountingPoint({
     query: {
       id: `in.(${accountingPointIds.join(",")})`,
-      limit: "500",
     },
   }).then(throwOnError);
 
