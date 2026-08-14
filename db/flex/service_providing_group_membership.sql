@@ -187,11 +187,7 @@ BEGIN
     FROM flex.controllable_unit
     WHERE id = NEW.controllable_unit_id;
 
-    IF lv_status IS NULL THEN
-        RAISE 'Controllable unit id=% does not exist', NEW.controllable_unit_id;
-    END IF;
-
-    IF lv_status <> 'active' THEN
+    IF COALESCE(lv_status, '') <> 'active' THEN
         RAISE 'Controllable unit id=% must have status active to be added to a service providing group',
             NEW.controllable_unit_id;
     END IF;
