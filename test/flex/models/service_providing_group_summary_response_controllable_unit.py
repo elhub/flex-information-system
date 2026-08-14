@@ -17,28 +17,25 @@ T = TypeVar("T", bound="ServiceProvidingGroupSummaryResponseControllableUnit")
 
 @_attrs_define
 class ServiceProvidingGroupSummaryResponseControllableUnit:
-    """Aggregated statistics on controllable units currently in the service providing group, including count, maximum
-    active power information (sum, average, min, max), and flexible power breakdowns total, up and down (sum, average,
-    min, max).
+    """Aggregated statistics on controllable units currently in the service providing group,  including count and maximum
+    active power information (sum, average, min, max).
 
         Example:
-            {'count': 3, 'maximum_active_power': {'sum': 250, 'average': 83.33, 'min': 50, 'max': 120}, 'flexible_power':
-                {'sum': 200, 'average': 66.67, 'min': 40, 'max': 100}, 'flexible_power_up': {'sum': 150, 'average': 75, 'min':
-                50, 'max': 100}, 'flexible_power_down': {'sum': 100, 'average': 50, 'min': 40, 'max': 60}}
+            {'count': 3, 'maximum_active_power': {'sum': 200, 'average': 66.67, 'min': 40, 'max': 100},
+                'maximum_active_power_up': {'sum': 150, 'average': 75, 'min': 50, 'max': 100}, 'maximum_active_power_down':
+                {'sum': 100, 'average': 50, 'min': 40, 'max': 60}}
 
         Attributes:
             count (int | Unset):
             maximum_active_power (NumericAggregation | Unset):
-            flexible_power (NumericAggregation | Unset):
-            flexible_power_up (NumericAggregation | Unset):
-            flexible_power_down (NumericAggregation | Unset):
+            maximum_active_power_up (NumericAggregation | Unset):
+            maximum_active_power_down (NumericAggregation | Unset):
     """
 
     count: int | Unset = UNSET
     maximum_active_power: NumericAggregation | Unset = UNSET
-    flexible_power: NumericAggregation | Unset = UNSET
-    flexible_power_up: NumericAggregation | Unset = UNSET
-    flexible_power_down: NumericAggregation | Unset = UNSET
+    maximum_active_power_up: NumericAggregation | Unset = UNSET
+    maximum_active_power_down: NumericAggregation | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -48,17 +45,13 @@ class ServiceProvidingGroupSummaryResponseControllableUnit:
         if not isinstance(self.maximum_active_power, Unset):
             maximum_active_power = self.maximum_active_power.to_dict()
 
-        flexible_power: dict[str, Any] | Unset = UNSET
-        if not isinstance(self.flexible_power, Unset):
-            flexible_power = self.flexible_power.to_dict()
+        maximum_active_power_up: dict[str, Any] | Unset = UNSET
+        if not isinstance(self.maximum_active_power_up, Unset):
+            maximum_active_power_up = self.maximum_active_power_up.to_dict()
 
-        flexible_power_up: dict[str, Any] | Unset = UNSET
-        if not isinstance(self.flexible_power_up, Unset):
-            flexible_power_up = self.flexible_power_up.to_dict()
-
-        flexible_power_down: dict[str, Any] | Unset = UNSET
-        if not isinstance(self.flexible_power_down, Unset):
-            flexible_power_down = self.flexible_power_down.to_dict()
+        maximum_active_power_down: dict[str, Any] | Unset = UNSET
+        if not isinstance(self.maximum_active_power_down, Unset):
+            maximum_active_power_down = self.maximum_active_power_down.to_dict()
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -67,12 +60,10 @@ class ServiceProvidingGroupSummaryResponseControllableUnit:
             field_dict["count"] = count
         if maximum_active_power is not UNSET:
             field_dict["maximum_active_power"] = maximum_active_power
-        if flexible_power is not UNSET:
-            field_dict["flexible_power"] = flexible_power
-        if flexible_power_up is not UNSET:
-            field_dict["flexible_power_up"] = flexible_power_up
-        if flexible_power_down is not UNSET:
-            field_dict["flexible_power_down"] = flexible_power_down
+        if maximum_active_power_up is not UNSET:
+            field_dict["maximum_active_power_up"] = maximum_active_power_up
+        if maximum_active_power_down is not UNSET:
+            field_dict["maximum_active_power_down"] = maximum_active_power_down
 
         return field_dict
 
@@ -90,33 +81,25 @@ class ServiceProvidingGroupSummaryResponseControllableUnit:
         else:
             maximum_active_power = NumericAggregation.from_dict(_maximum_active_power)
 
-        _flexible_power = d.pop("flexible_power", UNSET)
-        flexible_power: NumericAggregation | Unset
-        if isinstance(_flexible_power, Unset):
-            flexible_power = UNSET
+        _maximum_active_power_up = d.pop("maximum_active_power_up", UNSET)
+        maximum_active_power_up: NumericAggregation | Unset
+        if isinstance(_maximum_active_power_up, Unset):
+            maximum_active_power_up = UNSET
         else:
-            flexible_power = NumericAggregation.from_dict(_flexible_power)
+            maximum_active_power_up = NumericAggregation.from_dict(_maximum_active_power_up)
 
-        _flexible_power_up = d.pop("flexible_power_up", UNSET)
-        flexible_power_up: NumericAggregation | Unset
-        if isinstance(_flexible_power_up, Unset):
-            flexible_power_up = UNSET
+        _maximum_active_power_down = d.pop("maximum_active_power_down", UNSET)
+        maximum_active_power_down: NumericAggregation | Unset
+        if isinstance(_maximum_active_power_down, Unset):
+            maximum_active_power_down = UNSET
         else:
-            flexible_power_up = NumericAggregation.from_dict(_flexible_power_up)
-
-        _flexible_power_down = d.pop("flexible_power_down", UNSET)
-        flexible_power_down: NumericAggregation | Unset
-        if isinstance(_flexible_power_down, Unset):
-            flexible_power_down = UNSET
-        else:
-            flexible_power_down = NumericAggregation.from_dict(_flexible_power_down)
+            maximum_active_power_down = NumericAggregation.from_dict(_maximum_active_power_down)
 
         service_providing_group_summary_response_controllable_unit = cls(
             count=count,
             maximum_active_power=maximum_active_power,
-            flexible_power=flexible_power,
-            flexible_power_up=flexible_power_up,
-            flexible_power_down=flexible_power_down,
+            maximum_active_power_up=maximum_active_power_up,
+            maximum_active_power_down=maximum_active_power_down,
         )
 
         service_providing_group_summary_response_controllable_unit.additional_properties = d

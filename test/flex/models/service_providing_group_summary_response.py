@@ -31,11 +31,10 @@ class ServiceProvidingGroupSummaryResponse:
             service_providing_group_id (int): The ID of the service providing group this resource is a summary of. Example:
                 4.
             controllable_unit (ServiceProvidingGroupSummaryResponseControllableUnit): Aggregated statistics on controllable
-                units currently in the service providing group, including count, maximum active power information (sum, average,
-                min, max), and flexible power breakdowns total, up and down (sum, average, min, max). Example: {'count': 3,
-                'maximum_active_power': {'sum': 250, 'average': 83.33, 'min': 50, 'max': 120}, 'flexible_power': {'sum': 200,
-                'average': 66.67, 'min': 40, 'max': 100}, 'flexible_power_up': {'sum': 150, 'average': 75, 'min': 50, 'max':
-                100}, 'flexible_power_down': {'sum': 100, 'average': 50, 'min': 40, 'max': 60}}.
+                units currently in the service providing group,  including count and maximum active power information (sum,
+                average, min, max). Example: {'count': 3, 'maximum_active_power': {'sum': 200, 'average': 66.67, 'min': 40,
+                'max': 100}, 'maximum_active_power_up': {'sum': 150, 'average': 75, 'min': 50, 'max': 100},
+                'maximum_active_power_down': {'sum': 100, 'average': 50, 'min': 40, 'max': 60}}.
             technical_resource (ServiceProvidingGroupSummaryResponseTechnicalResource): Aggregated statistics on technical
                 resources belonging to controllable units with active membership in the service providing group, including
                 counts and maximum active power breakdowns (sum, average, min, max) by category and technology. Example:

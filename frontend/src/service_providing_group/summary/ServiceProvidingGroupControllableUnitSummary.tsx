@@ -22,43 +22,22 @@ export const ServiceProvidingGroupControllableUnitSummary = ({
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         <LabelValue
           label="Aggregated rated power"
+          value={summary.technical_resource.maximum_active_power?.sum ?? 0}
+          unit="kW"
+        />
+        <LabelValue
+          label="Aggregated flexible power"
           value={cu.maximum_active_power?.sum ?? 0}
           unit="kW"
         />
         <LabelValue
-          label="Average rated power"
-          value={
-            cu.maximum_active_power?.average
-              ? Math.round(cu.maximum_active_power.average * 100) / 100
-              : 0
-          }
-          unit="kW"
-        />
-        <LabelValue
-          label="Minimum rated power"
-          value={cu.maximum_active_power?.min ?? 0}
-          unit="kW"
-        />
-        <LabelValue
-          label="Maximum rated power"
-          value={cu.maximum_active_power?.max ?? 0}
-          unit="kW"
-        />
-      </div>
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-        <LabelValue
-          label="Aggregated flexible power"
-          value={cu.flexible_power?.sum ?? 0}
-          unit="kW"
-        />
-        <LabelValue
           label="Aggregated flexible power (down)"
-          value={cu.flexible_power_down?.sum ?? 0}
+          value={cu.maximum_active_power_down?.sum ?? 0}
           unit="kW"
         />
         <LabelValue
           label="Aggregated flexible power (up)"
-          value={cu.flexible_power_up?.sum ?? 0}
+          value={cu.maximum_active_power_up?.sum ?? 0}
           unit="kW"
         />
       </div>
