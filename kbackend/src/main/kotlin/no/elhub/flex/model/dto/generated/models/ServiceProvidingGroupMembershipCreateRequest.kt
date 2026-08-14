@@ -14,7 +14,8 @@ public data class ServiceProvidingGroupMembershipCreateRequest(
   /**
    * Reference to the controllable unit this relation links to a service providing group. The
    * controllable unit's flexible power must not exceed 100% of the combined maximum active power of
-   * all its technical resources (SPGM-VAL003).
+   * all its technical resources (SPGM-VAL003). The controllable unit must be active before it can be
+   * added to a service providing group (SPGM-VAL004).
    */
   @SerialName("controllable_unit_id")
   public val controllableUnitId: Long,

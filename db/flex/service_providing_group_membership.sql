@@ -172,6 +172,41 @@ BEFORE INSERT OR UPDATE ON service_providing_group_membership
 FOR EACH ROW EXECUTE PROCEDURE
 service_providing_group_membership_flexible_power_check();
 
+-- changeset flex:service-providing-group-membership-status-check runOnChange:true endDelimiter:--
+-- SPGM-VAL004: A controllable unit must be active before it can be added to a service-providing group.
+CREATE OR REPLACE FUNCTION
+service_providing_group_membership_status_check()
+RETURNS trigger
+LANGUAGE plpgsql
+SECURITY INVOKER
+AS $$
+DECLARE
+    lv_status text;
+BEGIN
+    SELECT lower(status::text) INTO lv_status
+    FROM flex.controllable_unit
+    WHERE id = NEW.controllable_unit_id;
+
+    IF lv_status IS NULL THEN
+        RAISE 'Controllable unit id=% does not exist', NEW.controllable_unit_id;
+    END IF;
+
+    IF lv_status <> 'active' THEN
+        RAISE 'Controllable unit id=% must have status active to be added to a service providing group',
+            NEW.controllable_unit_id;
+    END IF;
+
+    RETURN NEW;
+END;
+$$;
+
+-- changeset flex:service-providing-group-membership-status-check-trigger runOnChange:true endDelimiter:--
+CREATE OR REPLACE TRIGGER
+service_providing_group_membership_status_check
+BEFORE INSERT OR UPDATE ON service_providing_group_membership
+FOR EACH ROW EXECUTE PROCEDURE
+service_providing_group_membership_status_check();
+
 -- changeset flex:service-providing-group-membership-controllable-unit-idx runOnChange:true endDelimiter:-- runInTransaction:false
 CREATE INDEX CONCURRENTLY IF NOT EXISTS
 service_providing_group_membership_controllable_unit_idx
