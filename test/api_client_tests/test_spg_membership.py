@@ -6,6 +6,8 @@ from security_token_service import (
 from flex.models import (
     ControllableUnitResponse,
     ControllableUnitCreateRequest,
+    ControllableUnitUpdateRequest,
+    ControllableUnitStatus,
     ControllableUnitServiceProviderResponse,
     ControllableUnitServiceProviderCreateRequest,
     ControllableUnitRegulationDirection,
@@ -27,6 +29,7 @@ from flex.models import (
 )
 from flex.api.controllable_unit import (
     create_controllable_unit,
+    update_controllable_unit,
 )
 from flex.api.technical_resource import (
     create_technical_resource,
@@ -89,6 +92,15 @@ def data():
         ),
     )
     assert isinstance(tr, TechnicalResourceResponse)
+
+    u = update_controllable_unit.sync(
+        client=client_fiso,
+        id=cast(int, cu.id),
+        body=ControllableUnitUpdateRequest(
+            status=ControllableUnitStatus.ACTIVE,
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
 
     # NB: the AP there is linked to Test SO in the test data
 
@@ -189,6 +201,15 @@ def test_spgm_val003_flexible_power_exceeded(data):
             device_type=DeviceType.OTHER,
         ),
     )
+
+    u = update_controllable_unit.sync(
+        client=client_fiso,
+        id=cast(int, cu.id),
+        body=ControllableUnitUpdateRequest(
+            status=ControllableUnitStatus.ACTIVE,
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
 
     cu_sp = create_controllable_unit_service_provider.sync(
         client=client_fiso,
