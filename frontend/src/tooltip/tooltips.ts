@@ -208,7 +208,7 @@ export const tooltips = {
     "The identity that replaced the resource.",
   "service_providing_group_membership.id": "Unique surrogate key.",
   "service_providing_group_membership.controllable_unit_id":
-    "Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 100% of the combined maximum active power of all its technical resources (SPGM-VAL003). The controllable unit must be active before it can be added to a service providing group (SPGM-VAL004).",
+    "Reference to the controllable unit this relation links to a service providing group.",
   "service_providing_group_membership.service_providing_group_id":
     "Reference to the service providing group this relation links to a controllable unit.",
   "service_providing_group_membership.valid_from":
@@ -222,7 +222,7 @@ export const tooltips = {
   "service_providing_group_membership_history.id":
     "Unique surrogate identifier.",
   "service_providing_group_membership_history.controllable_unit_id":
-    "Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 100% of the combined maximum active power of all its technical resources (SPGM-VAL003). The controllable unit must be active before it can be added to a service providing group (SPGM-VAL004).",
+    "Reference to the controllable unit this relation links to a service providing group.",
   "service_providing_group_membership_history.service_providing_group_id":
     "Reference to the service providing group this relation links to a controllable unit.",
   "service_providing_group_membership_history.valid_from":
