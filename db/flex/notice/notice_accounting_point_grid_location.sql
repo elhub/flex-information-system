@@ -18,10 +18,14 @@ WITH (security_invoker = false) AS (
             ON
                 ap.id = ap_so.accounting_point_id
                 AND ap_so.valid_time_range @> current_timestamp
-    WHERE NOT EXISTS (
-        SELECT 1 FROM flex.accounting_point_grid_location AS apgl
-        WHERE apgl.accounting_point_id = ap.id
-    )
+    WHERE
+        -- for APs that have a geographical location, we will be able to
+        -- guess the grid location the next time the guessing runs
+        ap.location IS null
+        AND NOT EXISTS (
+            SELECT 1 FROM flex.accounting_point_grid_location AS apgl
+            WHERE apgl.accounting_point_id = ap.id
+        )
 );
 
 -- APs with a grid location registered but source is not cso or grid_model
