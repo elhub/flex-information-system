@@ -7,7 +7,6 @@
         "dev": "vite dev",
         "format": "prettier --write ./src",
         "lint": "eslint --fix ./src",
-        "owasp": "owasp-dependency-check --project \"flex-portal\"",
         "serve": "vite preview",
         "test": "true",
         "type-check": "tsc --noEmit"
