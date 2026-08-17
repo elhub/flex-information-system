@@ -6,9 +6,10 @@ import {
 import { FunctionField } from "react-admin";
 import { Link } from "react-router-dom";
 import { Datagrid, List } from "../../components/EDS-ra/list";
-import { ReferenceField, TextField } from "../../components/EDS-ra/fields";
+import { TextField, DateField } from "../../components/EDS-ra/fields";
 import { SpgpaStatusBadge } from "../../components/SpgpaStatusBadge";
 import { Button, Tooltip } from "../../components/ui";
+import { useTranslateField } from "../../intl/intl";
 import { IconPlus, IconQuestionCircleOutlined } from "@elhub/ds-icons";
 import { Permissions } from "../../auth/permissions";
 import { ProductTypeArrayField } from "../../components/ProductTypeArrayField";
@@ -54,6 +55,7 @@ const BlockedCreateButton = () => (
 export const ServiceProvidingGroupProductApplicationList = () => {
   const record = useRecordContext();
   const id = record?.id;
+  const t = useTranslateField();
   const { permissions, isLoading } = usePermissions<Permissions>();
 
   if (isLoading) return null;
@@ -85,7 +87,17 @@ export const ServiceProvidingGroupProductApplicationList = () => {
         perPage={10}
         actions={actions}
         empty={false}
-        filter={id ? { service_providing_group_id: id } : undefined}
+        filter={
+          id
+            ? {
+                service_providing_group_id: id,
+                embed: "procuring_system_operator",
+              }
+            : {
+                embed:
+                  "service_providing_group(service_provider),procuring_system_operator",
+              }
+        }
         sort={{ field: "id", order: "DESC" }}
         disableSyncWithLocation
       >
@@ -95,20 +107,11 @@ export const ServiceProvidingGroupProductApplicationList = () => {
           }
         >
           <TextField source={fields.id.source} />
+          {!record?.id && <TextField source="service_providing_group.name" />}
           {!record?.id && (
-            <ReferenceField
-              source={fields.service_providing_group_id.source}
-              reference="service_providing_group"
-            >
-              <TextField source="name" />
-            </ReferenceField>
+            <TextField source="service_providing_group.service_provider.name" />
           )}
-          <ReferenceField
-            source={fields.procuring_system_operator_id.source}
-            reference="party"
-          >
-            <TextField source="name" />
-          </ReferenceField>
+          <TextField source="procuring_system_operator.name" />
           <FunctionField
             source={fields.product_type_ids.source}
             render={(record) => (
@@ -116,11 +119,12 @@ export const ServiceProvidingGroupProductApplicationList = () => {
             )}
           />
           <FunctionField
-            label={fields.status.source}
+            label={t("service_providing_group_product_application.status")}
             render={(record: { status: string }) => (
               <SpgpaStatusBadge status={record.status} />
             )}
           />
+          <DateField source={fields.recorded_at.source} showTime />
         </Datagrid>
       </List>
     </ResourceContextProvider>

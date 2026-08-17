@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { BodyText } from "../../ui";
-import { useRecordContext } from "ra-core";
+import { useRecordContext, useFieldValue } from "ra-core";
 import { BaseField, BaseFieldProps } from "./BaseField";
 
 type TextFieldProps = BaseFieldProps & {
@@ -20,7 +20,7 @@ export const TextField = ({
   weight,
 }: TextFieldProps) => {
   const record = useRecordContext();
-  const value = record?.[source];
+  const value = useFieldValue({ record: record, source: source });
   const content =
     value == null || value === "" ? (
       emptyText ? (
@@ -39,6 +39,7 @@ export const TextField = ({
       label={hideLabel ? false : label}
       tooltip={tooltip}
       unit={unit}
+      skipPermissionCheck={source.includes(".")}
     >
       {content}
     </BaseField>
