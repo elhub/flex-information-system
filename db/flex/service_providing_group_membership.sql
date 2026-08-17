@@ -199,7 +199,7 @@ $$;
 -- changeset flex:service-providing-group-membership-status-check-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER
 service_providing_group_membership_status_check
-AFTER INSERT ON service_providing_group_membership
+BEFORE INSERT ON service_providing_group_membership
 FOR EACH ROW EXECUTE PROCEDURE
 service_providing_group_membership_status_check();
 
