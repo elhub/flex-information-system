@@ -9,6 +9,8 @@ from flex.models import (
     ControllableUnitCreateRequest,
     ControllableUnitRegulationDirection,
     ControllableUnitResponse,
+    ControllableUnitUpdateRequest,
+    ControllableUnitStatus,
     ControllableUnitServiceProviderCreateRequest,
     ControllableUnitServiceProviderResponse,
     ControllableUnitLookupRequest,
@@ -57,6 +59,7 @@ from flex.api.event import (
 from flex.api.controllable_unit import (
     create_controllable_unit,
     call_controllable_unit_lookup,
+    update_controllable_unit,
 )
 from flex.api.controllable_unit_service_provider import (
     create_controllable_unit_service_provider,
@@ -383,6 +386,15 @@ def test_event_sp(sts):
         ),
     )
     assert isinstance(spg, ServiceProvidingGroupResponse)
+
+    u = update_controllable_unit.sync(
+        client=client_fiso,
+        id=cast(int, cu.id),
+        body=ControllableUnitUpdateRequest(
+            status=ControllableUnitStatus.ACTIVE,
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
 
     spgm = create_service_providing_group_membership.sync(
         client=client_fiso,

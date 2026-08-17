@@ -1,19 +1,24 @@
 import { BodyText, Button, Dropdown, Loader } from "../ui";
 import {
+  IconBean,
   IconBuilding,
   IconChevronDown,
+  IconQuestionCircle,
   IconUser,
   IconViewOff,
-  IconBean,
 } from "@elhub/ds-icons";
 import {
-  useGetIdentity,
+  getStorage,
   useDataProvider,
+  useGetIdentity,
   useRedirect,
   useTranslate,
-  getStorage,
 } from "ra-core";
-import { authURL } from "../../httpConfig";
+import {
+  authURL,
+  userGuideCreateUsersURL,
+  userGuideURL,
+} from "../../httpConfig";
 import { FlexIdentity, sessionInfoKey } from "../../auth";
 
 const UserDropdown = () => {
@@ -38,6 +43,14 @@ const UserDropdown = () => {
 
   const handleMe = () => {
     redirect(`/entity/${identity?.entityID}/show`);
+  };
+
+  const handleUserGuide = () => {
+    redirect(`${userGuideURL}`);
+  };
+
+  const handlerCreateUserGuide = () => {
+    redirect(`${userGuideCreateUsersURL}`);
   };
 
   const handleParty = async () => {
@@ -65,29 +78,53 @@ const UserDropdown = () => {
     ...(identity?.partyID
       ? [
           {
-            label: identity?.partyName ?? "My party",
+            label:
+              identity?.partyName ?? translate("text.user_dropdown_my_party"),
             icon: IconBuilding,
             onClick: handleParty,
           },
         ]
       : []),
     {
-      label: identity?.partyID ? "Assume another party" : "Assume party",
+      label: identity?.partyID
+        ? translate("text.user_dropdown_assume_another_party")
+        : translate("text.user_dropdown_assume_party"),
       icon: IconBean,
       onClick: handleAssumeParty,
     },
   ];
   const dropDownEntityItems = [
     {
-      label: identity?.entityName ?? "My entity",
+      label: identity?.entityName ?? translate("text.user_dropdown_my_entity"),
       icon: IconUser,
       onClick: handleMe,
     },
     {
-      label: "Logout",
+      label: translate("text.user_dropdown_logout"),
       icon: IconViewOff,
       onClick: handleLogout,
     },
+  ];
+
+  const helpItems = [
+    ...(userGuideURL
+      ? [
+          {
+            label: translate("text.user_dropdown_user_guide"),
+            icon: IconQuestionCircle,
+            onClick: handleUserGuide,
+          },
+        ]
+      : []),
+    ...(userGuideCreateUsersURL && identity?.role === "flex_organisation"
+      ? [
+          {
+            label: translate("text.user_dropdown_create_user_guide"),
+            icon: IconQuestionCircle,
+            onClick: handlerCreateUserGuide,
+          },
+        ]
+      : []),
   ];
 
   return (
@@ -102,7 +139,9 @@ const UserDropdown = () => {
       >
         <div className="flex flex-row gap-2 items-center">
           <IconUser />
-          <BodyText weight="bold">{identity?.fullName ?? "User"}</BodyText>
+          <BodyText weight="bold">
+            {identity?.fullName ?? translate("text.user_dropdown_user")}
+          </BodyText>
         </div>
       </Button>
       <Dropdown.Menu arrow placement="bottom">
@@ -141,6 +180,26 @@ const UserDropdown = () => {
             );
           })}
         </Dropdown.Menu.GroupedList>
+        {helpItems.length > 0 && (
+          <>
+            <Dropdown.Menu.Divider />
+            <Dropdown.Menu.GroupedList>
+              {helpItems.map((item, index) => {
+                const Icon = item.icon;
+                return (
+                  <Dropdown.Menu.GroupedList.Item
+                    key={index}
+                    className="flex gap-2 center"
+                    onClick={item.onClick}
+                  >
+                    <Icon />
+                    <BodyText>{item.label}</BodyText>
+                  </Dropdown.Menu.GroupedList.Item>
+                );
+              })}
+            </Dropdown.Menu.GroupedList>
+          </>
+        )}
       </Dropdown.Menu>
     </Dropdown>
   );

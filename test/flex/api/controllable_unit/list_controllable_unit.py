@@ -16,6 +16,7 @@ def _get_kwargs(
     id: str | Unset = UNSET,
     business_id: str | Unset = UNSET,
     name: str | Unset = UNSET,
+    status: str | Unset = UNSET,
     accounting_point_id: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
@@ -31,6 +32,8 @@ def _get_kwargs(
     params["business_id"] = business_id
 
     params["name"] = name
+
+    params["status"] = status
 
     params["accounting_point_id"] = accounting_point_id
 
@@ -152,6 +155,7 @@ def sync_detailed(
     id: str | Unset = UNSET,
     business_id: str | Unset = UNSET,
     name: str | Unset = UNSET,
+    status: str | Unset = UNSET,
     accounting_point_id: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
@@ -168,6 +172,7 @@ def sync_detailed(
         id (str | Unset):
         business_id (str | Unset):
         name (str | Unset):
+        status (str | Unset):
         accounting_point_id (str | Unset):
         select (str | Unset):
         order (str | Unset):
@@ -187,6 +192,7 @@ def sync_detailed(
         id=id,
         business_id=business_id,
         name=name,
+        status=status,
         accounting_point_id=accounting_point_id,
         select=select,
         order=order,
@@ -208,6 +214,7 @@ def sync(
     id: str | Unset = UNSET,
     business_id: str | Unset = UNSET,
     name: str | Unset = UNSET,
+    status: str | Unset = UNSET,
     accounting_point_id: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
@@ -224,6 +231,7 @@ def sync(
         id (str | Unset):
         business_id (str | Unset):
         name (str | Unset):
+        status (str | Unset):
         accounting_point_id (str | Unset):
         select (str | Unset):
         order (str | Unset):
@@ -244,6 +252,7 @@ def sync(
         id=id,
         business_id=business_id,
         name=name,
+        status=status,
         accounting_point_id=accounting_point_id,
         select=select,
         order=order,
@@ -259,6 +268,7 @@ async def asyncio_detailed(
     id: str | Unset = UNSET,
     business_id: str | Unset = UNSET,
     name: str | Unset = UNSET,
+    status: str | Unset = UNSET,
     accounting_point_id: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
@@ -275,6 +285,7 @@ async def asyncio_detailed(
         id (str | Unset):
         business_id (str | Unset):
         name (str | Unset):
+        status (str | Unset):
         accounting_point_id (str | Unset):
         select (str | Unset):
         order (str | Unset):
@@ -294,6 +305,7 @@ async def asyncio_detailed(
         id=id,
         business_id=business_id,
         name=name,
+        status=status,
         accounting_point_id=accounting_point_id,
         select=select,
         order=order,
@@ -313,6 +325,7 @@ async def asyncio(
     id: str | Unset = UNSET,
     business_id: str | Unset = UNSET,
     name: str | Unset = UNSET,
+    status: str | Unset = UNSET,
     accounting_point_id: str | Unset = UNSET,
     select: str | Unset = UNSET,
     order: str | Unset = UNSET,
@@ -329,6 +342,7 @@ async def asyncio(
         id (str | Unset):
         business_id (str | Unset):
         name (str | Unset):
+        status (str | Unset):
         accounting_point_id (str | Unset):
         select (str | Unset):
         order (str | Unset):
@@ -350,6 +364,7 @@ async def asyncio(
             id=id,
             business_id=business_id,
             name=name,
+            status=status,
             accounting_point_id=accounting_point_id,
             select=select,
             order=order,

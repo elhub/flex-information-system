@@ -609,7 +609,7 @@ export type ServiceProvidingGroupProductApplicationStatus =
   | "rejected";
 
 /**
- * The ramping capability of the service providing group for this product application.
+ * Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation.
  */
 export type ServiceProvidingGroupProductApplicationRampingCapability =
   "always" | "partial" | "never";
@@ -1079,6 +1079,14 @@ export type ServiceProvidingGroupSummary = {
   readonly controllable_unit: {
     count?: number;
     maximum_active_power?: NumericAggregation;
+    /**
+     * Maximum active power aggregated over controllable units with regulation_direction equal to up or both.
+     */
+    maximum_active_power_up?: NumericAggregation;
+    /**
+     * Maximum active power aggregated over controllable units with regulation_direction equal to down or both.
+     */
+    maximum_active_power_down?: NumericAggregation;
   };
   /**
    * Aggregated statistics on technical resources belonging to controllable units with active membership in the service providing group, including counts and maximum active power breakdowns (sum, average, min, max) by category and technology.
@@ -1224,7 +1232,7 @@ export type ServiceProvidingGroupMembershipUpdateRequest = {
  */
 export type ServiceProvidingGroupMembershipCreateRequest = {
   /**
-   * Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 100% of the combined maximum active power of all its technical resources (SPGM-VAL003).
+   * Reference to the controllable unit this relation links to a service providing group.
    */
   controllable_unit_id: number;
   /**
@@ -1250,7 +1258,7 @@ export type ServiceProvidingGroupMembership = {
    */
   readonly id: number;
   /**
-   * Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 100% of the combined maximum active power of all its technical resources (SPGM-VAL003).
+   * Reference to the controllable unit this relation links to a service providing group.
    */
   controllable_unit_id: number;
   /**
@@ -3572,7 +3580,7 @@ export type ServiceProvidingGroupMembershipHistory = {
    */
   readonly id: number;
   /**
-   * Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 100% of the combined maximum active power of all its technical resources (SPGM-VAL003).
+   * Reference to the controllable unit this relation links to a service providing group.
    */
   controllable_unit_id: number;
   /**
@@ -4760,7 +4768,7 @@ export type ServiceProvidingGroupWritable = {
  */
 export type ServiceProvidingGroupMembershipWritable = {
   /**
-   * Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 100% of the combined maximum active power of all its technical resources (SPGM-VAL003).
+   * Reference to the controllable unit this relation links to a service providing group.
    */
   controllable_unit_id: number;
   /**
@@ -5744,7 +5752,7 @@ export type ServiceProvidingGroupHistoryWritable = {
  */
 export type ServiceProvidingGroupMembershipHistoryWritable = {
   /**
-   * Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 100% of the combined maximum active power of all its technical resources (SPGM-VAL003).
+   * Reference to the controllable unit this relation links to a service providing group.
    */
   controllable_unit_id: number;
   /**
@@ -6498,6 +6506,7 @@ export type ListControllableUnitData = {
      * Free text name of the controllable unit.
      */
     name?: string;
+    status?: string;
     /**
      * Reference to the accounting point that the controllable unit is connected to.
      */
@@ -6758,6 +6767,7 @@ export type ListControllableUnitHistoryData = {
      * Free text name of the controllable unit.
      */
     name?: string;
+    status?: string;
     /**
      * Reference to the accounting point that the controllable unit is connected to.
      */
@@ -8735,7 +8745,7 @@ export type ListServiceProvidingGroupMembershipData = {
      */
     id?: string;
     /**
-     * Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 100% of the combined maximum active power of all its technical resources (SPGM-VAL003).
+     * Reference to the controllable unit this relation links to a service providing group.
      */
     controllable_unit_id?: string;
     /**
@@ -9048,7 +9058,7 @@ export type ListServiceProvidingGroupMembershipHistoryData = {
      */
     service_providing_group_membership_id?: string;
     /**
-     * Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 100% of the combined maximum active power of all its technical resources (SPGM-VAL003).
+     * Reference to the controllable unit this relation links to a service providing group.
      */
     controllable_unit_id?: string;
     /**
@@ -14388,6 +14398,7 @@ export type ListSystemOperatorProductTypeData = {
      * Reference to the product type.
      */
     product_type_id?: string;
+    status?: string;
     /**
      * Filtering Columns
      */
@@ -14644,6 +14655,7 @@ export type ListSystemOperatorProductTypeHistoryData = {
      * Reference to the product type.
      */
     product_type_id?: string;
+    status?: string;
     /**
      * Filtering Columns
      */

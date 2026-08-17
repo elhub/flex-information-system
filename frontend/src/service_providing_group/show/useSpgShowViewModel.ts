@@ -32,9 +32,6 @@ export type SpgMembershipRow = {
 
 export type SpgShowViewModel = {
   rows: SpgMembershipRow[];
-  totalCapacityKw: number;
-  productionCapacityKw: number;
-  consumptionCapacityKw: number;
 };
 
 const serviceProvidingGroupQueryKey = (spgId: number | undefined) => [
@@ -58,16 +55,12 @@ const fetchSpgShowData = async (serviceProvidingGroupId: number) => {
     query: {
       service_providing_group_id: `eq.${serviceProvidingGroupId}`,
       order: "id.desc",
-      limit: "200",
     },
   }).then(throwOnError);
 
   if (memberships.length === 0) {
     return {
       rows: [],
-      totalCapacityKw: 0,
-      productionCapacityKw: 0,
-      consumptionCapacityKw: 0,
     } satisfies SpgShowViewModel;
   }
 
@@ -78,7 +71,6 @@ const fetchSpgShowData = async (serviceProvidingGroupId: number) => {
   const controllableUnits = await listControllableUnit({
     query: {
       id: `in.(${controllableUnitIds.join(",")})`,
-      limit: "500",
       embed: "summary",
     },
   }).then(throwOnError);
@@ -90,7 +82,6 @@ const fetchSpgShowData = async (serviceProvidingGroupId: number) => {
   const accountingPoints = await listAccountingPoint({
     query: {
       id: `in.(${accountingPointIds.join(",")})`,
-      limit: "500",
     },
   }).then(throwOnError);
 
@@ -148,31 +139,8 @@ const fetchSpgShowData = async (serviceProvidingGroupId: number) => {
     };
   });
 
-  const totalCapacityKw = controllableUnits.reduce(
-    (sum, cu) => sum + cu.maximum_active_power,
-    0,
-  );
-
-  const productionCapacityKw = controllableUnits
-    .filter(
-      (cu) =>
-        cu.regulation_direction === "up" || cu.regulation_direction === "both",
-    )
-    .reduce((sum, cu) => sum + cu.maximum_active_power, 0);
-
-  const consumptionCapacityKw = controllableUnits
-    .filter(
-      (cu) =>
-        cu.regulation_direction === "down" ||
-        cu.regulation_direction === "both",
-    )
-    .reduce((sum, cu) => sum + cu.maximum_active_power, 0);
-
   return {
     rows,
-    totalCapacityKw,
-    productionCapacityKw,
-    consumptionCapacityKw,
   } satisfies SpgShowViewModel;
 };
 

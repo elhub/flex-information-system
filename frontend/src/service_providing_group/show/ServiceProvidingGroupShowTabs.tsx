@@ -8,7 +8,6 @@ import {
   ServiceProvidingGroupStatus,
   ServiceProvidingGroupSummary,
 } from "../../generated-client";
-import { SpgShowViewModel } from "./useSpgShowViewModel";
 import { useTabSearchParam } from "../../hooks/useTabSearchParam";
 import { SpgTechnicalResourceList } from "./SpgTechnicalResourceList";
 import { useTranslate } from "ra-core";
@@ -16,7 +15,6 @@ import { useTranslate } from "ra-core";
 type Props = {
   spgId: number;
   spgStatus: ServiceProvidingGroupStatus;
-  spgViewModel: SpgShowViewModel;
   summary: ServiceProvidingGroupSummary | undefined;
   showPowerPerSubstation?: boolean;
 };
@@ -24,7 +22,6 @@ type Props = {
 export const ServiceProvidingGroupShowTabs = ({
   spgId,
   spgStatus,
-  spgViewModel,
   summary,
   showPowerPerSubstation,
 }: Props) => {
@@ -59,10 +56,7 @@ export const ServiceProvidingGroupShowTabs = ({
       </Tabs.List>
       <Tabs.Panel value="summary">
         {summary ? (
-          <ServiceProvidingGroupShowSPGSummarySection
-            spgViewModel={spgViewModel}
-            summary={summary}
-          />
+          <ServiceProvidingGroupShowSPGSummarySection summary={summary} />
         ) : (
           "No summary available"
         )}

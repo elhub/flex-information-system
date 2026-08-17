@@ -9,6 +9,8 @@ from flex.models import (
     AccountingPointGridLocationQuality,
     AccountingPointGridLocationResponse,
     ControllableUnitCreateRequest,
+    ControllableUnitUpdateRequest,
+    ControllableUnitStatus,
     ControllableUnitRegulationDirection,
     ControllableUnitResponse,
     ControllableUnitServiceProviderCreateRequest,
@@ -23,6 +25,7 @@ from flex.models import (
     TechnicalResourceCreateRequest,
     TechnicalResourceResponse,
     Technology,
+    ErrorMessage,
 )
 from flex.api.accounting_point_grid_location import (
     create_accounting_point_grid_location,
@@ -37,7 +40,10 @@ from flex.api.service_providing_group_power_per_substation import (
 from flex.api.service_providing_group_membership import (
     create_service_providing_group_membership,
 )
-from flex.api.controllable_unit import create_controllable_unit
+from flex.api.controllable_unit import (
+    create_controllable_unit,
+    update_controllable_unit,
+)
 from flex.api.controllable_unit_service_provider import (
     create_controllable_unit_service_provider,
 )
@@ -206,6 +212,18 @@ def test_service_providing_group_power_per_substation_aggregation(sts):
         ),
     )
     assert isinstance(tr5, TechnicalResourceResponse)
+
+    # active all CUs so that they can be assigned to the SPG
+
+    for cu in [cu1, cu2, cu3, cu4, cu5]:
+        u = update_controllable_unit.sync(
+            client=client_fiso,
+            id=cast(int, cu.id),
+            body=ControllableUnitUpdateRequest(
+                status=ControllableUnitStatus.ACTIVE,
+            ),
+        )
+        assert not isinstance(u, ErrorMessage)
 
     # assign CUs to SP and put them in the SPG
 

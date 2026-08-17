@@ -81,7 +81,7 @@ const fetchAllControllableUnitsWithMembership = async (spgId: number) => {
       query: { service_providing_group_id: "eq." + spgId },
     }).then(throwOnError),
     listControllableUnit({
-      query: { embed: CONTROLLABLE_UNIT_EMBED },
+      query: { status: "neq.terminated", embed: CONTROLLABLE_UNIT_EMBED },
     }).then(throwOnError),
   ]);
 

@@ -50,17 +50,17 @@ BEGIN
   SET status = 'active'
   WHERE id = party_id;
 
-  IF parent_entity_id != member_entity_id THEN
-      INSERT INTO flex.party_membership (
-        entity_id,
-        party_id,
-        scopes
-      ) VALUES (
-        member_entity_id,
-        party_id,
-        '{manage:data, read:grid, manage:auth, manage:attachment}'
-      );
-  END IF;
+
+  INSERT INTO flex.party_membership (
+    entity_id,
+    party_id,
+    scopes
+  ) VALUES (
+    member_entity_id,
+    party_id,
+    '{manage:data, read:grid, manage:auth, manage:attachment}'
+  );
+
 
   RETURN party_id;
 END;
@@ -959,6 +959,10 @@ BEGIN
       'ACME',
       technology_name || ' 2000'
     );
+
+    UPDATE flex.controllable_unit
+    SET status = 'active'
+    WHERE id = cu_id;
 
     INSERT INTO flex.service_providing_group_membership (
       controllable_unit_id, service_providing_group_id, valid_time_range

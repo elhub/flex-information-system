@@ -1,14 +1,12 @@
 import { Heading } from "../../../components/ui";
 import { LabelValue } from "../../../components/LabelValue";
 import type { ServiceProvidingGroupSummary } from "../../../generated-client";
-import type { SpgShowViewModel } from "../../show/useSpgShowViewModel";
 
 type Props = {
-  spgViewModel: SpgShowViewModel;
   summary: ServiceProvidingGroupSummary;
 };
 
-export const SpgpaPrintCuSummary = ({ spgViewModel, summary }: Props) => {
+export const SpgpaPrintCuSummary = ({ summary }: Props) => {
   const cu = summary.controllable_unit;
 
   return (
@@ -22,43 +20,22 @@ export const SpgpaPrintCuSummary = ({ spgViewModel, summary }: Props) => {
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         <LabelValue
           label="Aggregated rated power"
+          value={summary.technical_resource.maximum_active_power?.sum ?? 0}
+          unit="kW"
+        />
+        <LabelValue
+          label="Aggregated flexible power"
           value={cu.maximum_active_power?.sum ?? 0}
           unit="kW"
         />
         <LabelValue
-          label="Average rated power"
-          value={
-            cu.maximum_active_power?.average
-              ? Math.round(cu.maximum_active_power.average * 100) / 100
-              : 0
-          }
-          unit="kW"
-        />
-        <LabelValue
-          label="Minimum rated power"
-          value={cu.maximum_active_power?.min ?? 0}
-          unit="kW"
-        />
-        <LabelValue
-          label="Maximum rated power"
-          value={cu.maximum_active_power?.max ?? 0}
-          unit="kW"
-        />
-      </div>
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-        <LabelValue
-          label="Aggregated flexible power"
-          value={spgViewModel.totalCapacityKw}
-          unit="kW"
-        />
-        <LabelValue
           label="Aggregated flexible power (down)"
-          value={spgViewModel.consumptionCapacityKw}
+          value={cu.maximum_active_power_down?.sum ?? 0}
           unit="kW"
         />
         <LabelValue
           label="Aggregated flexible power (up)"
-          value={spgViewModel.productionCapacityKw}
+          value={cu.maximum_active_power_up?.sum ?? 0}
           unit="kW"
         />
       </div>

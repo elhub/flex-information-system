@@ -1,17 +1,14 @@
 import { Link, Panel } from "../../components/ui";
 
 import type { ServiceProvidingGroupSummary } from "../../generated-client";
-import { SpgShowViewModel } from "./useSpgShowViewModel";
 import { ServiceProvidingGroupControllableUnitSummary } from "../summary/ServiceProvidingGroupControllableUnitSummary";
 import { ServiceProvidingGroupTechnicalResourceSummary } from "../summary/ServiceProvidingGroupTechnicalResourceSummary";
 
 type Props = {
-  spgViewModel: SpgShowViewModel;
   summary: ServiceProvidingGroupSummary;
 };
 
 export const ServiceProvidingGroupShowSPGSummarySection = ({
-  spgViewModel,
   summary,
 }: Props) => {
   return (
@@ -35,10 +32,7 @@ export const ServiceProvidingGroupShowSPGSummarySection = ({
           {" ."}
         </p>
       </Panel>
-      <ServiceProvidingGroupControllableUnitSummary
-        spgViewModel={spgViewModel}
-        summary={summary}
-      />
+      <ServiceProvidingGroupControllableUnitSummary summary={summary} />
       <ServiceProvidingGroupTechnicalResourceSummary
         summary={summary}
         showDetails

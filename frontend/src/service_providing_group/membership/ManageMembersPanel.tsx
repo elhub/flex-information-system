@@ -59,6 +59,7 @@ export const ManageMembersPanel = ({
     toRemove,
     totalFlexibleCapacity,
     allFilteredSelected,
+    isCuSelectable,
     toggleCu,
     toggleSelectAll,
     handleApplyChanges,
@@ -185,25 +186,28 @@ export const ManageMembersPanel = ({
             />
           ),
           render: (row) => {
-            const ineligible =
-              !row.isEligible && row.membershipId === undefined;
+            const selectable = isCuSelectable(row);
             const checkbox = (
               <Checkbox
                 checked={effectiveCheckedIds.has(row.id)}
                 onChange={() => toggleCu(row.id)}
-                disabled={ineligible}
+                disabled={!selectable}
               />
             );
-            if (!ineligible) return checkbox;
+            if (selectable) return checkbox;
             return (
               <Tooltip
-                content={translate(
-                  "text.spg_manage_members_cu_ineligible_flexible_power",
-                  {
-                    flexible_power: row.maximum_active_power,
-                    rated_power: row.rated_power,
-                  },
-                )}
+                content={
+                  row.status !== "active"
+                    ? translate("text.spg_manage_members_cu_ineligible_status")
+                    : translate(
+                        "text.spg_manage_members_cu_ineligible_flexible_power",
+                        {
+                          flexible_power: row.maximum_active_power,
+                          rated_power: row.rated_power,
+                        },
+                      )
+                }
               >
                 <span>{checkbox}</span>
               </Tooltip>

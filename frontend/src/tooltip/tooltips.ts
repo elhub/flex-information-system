@@ -208,7 +208,7 @@ export const tooltips = {
     "The identity that replaced the resource.",
   "service_providing_group_membership.id": "Unique surrogate key.",
   "service_providing_group_membership.controllable_unit_id":
-    "Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 100% of the combined maximum active power of all its technical resources (SPGM-VAL003).",
+    "Reference to the controllable unit this relation links to a service providing group.",
   "service_providing_group_membership.service_providing_group_id":
     "Reference to the service providing group this relation links to a controllable unit.",
   "service_providing_group_membership.valid_from":
@@ -222,7 +222,7 @@ export const tooltips = {
   "service_providing_group_membership_history.id":
     "Unique surrogate identifier.",
   "service_providing_group_membership_history.controllable_unit_id":
-    "Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 100% of the combined maximum active power of all its technical resources (SPGM-VAL003).",
+    "Reference to the controllable unit this relation links to a service providing group.",
   "service_providing_group_membership_history.service_providing_group_id":
     "Reference to the service providing group this relation links to a controllable unit.",
   "service_providing_group_membership_history.valid_from":
@@ -886,7 +886,7 @@ export const tooltips = {
   "service_providing_group_product_application.verified_at":
     "When the product application was last verified.",
   "service_providing_group_product_application.ramping_capability":
-    "The ramping capability of the service providing group for this product application.",
+    "Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation.",
   "service_providing_group_product_application.ramping_description":
     "Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).",
   "service_providing_group_product_application.recorded_at":
@@ -914,7 +914,7 @@ export const tooltips = {
   "service_providing_group_product_application_history.verified_at":
     "When the product application was last verified.",
   "service_providing_group_product_application_history.ramping_capability":
-    "The ramping capability of the service providing group for this product application.",
+    "Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation.",
   "service_providing_group_product_application_history.ramping_description":
     "Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).",
   "service_providing_group_product_application_history.recorded_at":

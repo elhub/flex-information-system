@@ -6,6 +6,7 @@ import { IconPencil } from "@elhub/ds-icons";
 import { usePermissions, useTranslate } from "ra-core";
 import { Link as RouterLink } from "react-router-dom";
 import { Permissions } from "../../auth/permissions";
+import { PowerRatio } from "../../components/PowerRatio";
 
 const formatRange = (start: string | undefined, end: string | undefined) => {
   if (!start) {
@@ -35,7 +36,13 @@ export const ControllableUnitShowSummary = ({
     biddingZone,
     meteringGridArea,
     energySupplier,
+    technicalResources,
   } = viewModel;
+
+  const trRatedPower = technicalResources?.reduce(
+    (sum, tr) => sum + tr.maximum_active_power,
+    0,
+  );
 
   const translate = useTranslate();
   const { permissions } = usePermissions<Permissions>();
@@ -169,8 +176,15 @@ export const ControllableUnitShowSummary = ({
             size="small"
             tooltip
             labelKey="controllable_unit.maximum_active_power"
-            value={controllableUnit.maximum_active_power}
-            unit="kW"
+            value={
+              <span className="inline-flex items-center gap-3">
+                <span>{controllableUnit.maximum_active_power} kW</span>
+                <PowerRatio
+                  flexiblePower={controllableUnit.maximum_active_power}
+                  ratedPower={trRatedPower}
+                />
+              </span>
+            }
           />
           <LabelValue
             size="small"

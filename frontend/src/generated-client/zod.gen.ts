@@ -540,7 +540,7 @@ export const zServiceProvidingGroupProductApplicationStatus = z.enum([
 ]);
 
 /**
- * The ramping capability of the service providing group for this product application.
+ * Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation.
  */
 export const zServiceProvidingGroupProductApplicationRampingCapability = z.enum(
   ["always", "partial", "never"],
@@ -2110,6 +2110,8 @@ export const zServiceProvidingGroupSummary = z.object({
     .object({
       count: z.coerce.number().optional(),
       maximum_active_power: zNumericAggregation.optional(),
+      maximum_active_power_up: zNumericAggregation.optional(),
+      maximum_active_power_down: zNumericAggregation.optional(),
     })
     .readonly(),
   technical_resource: z
@@ -3382,6 +3384,7 @@ export const zListControllableUnitHistoryQuery = z.object({
     .optional(),
   business_id: z.string().optional(),
   name: z.string().optional(),
+  status: z.string().optional(),
   accounting_point_id: z
     .string()
     .regex(/^eq\.[0-9]+$/)
@@ -3988,6 +3991,7 @@ export const zListSystemOperatorProductTypeHistoryQuery = z.object({
     .string()
     .regex(/^eq\.[0-9]+$/)
     .optional(),
+  status: z.string().optional(),
   select: z.string().optional(),
   order: z.string().optional(),
   offset: z.string().optional(),
@@ -4420,6 +4424,7 @@ export const zListControllableUnitQuery = z.object({
     .optional(),
   business_id: z.string().optional(),
   name: z.string().optional(),
+  status: z.string().optional(),
   accounting_point_id: z
     .string()
     .regex(/^eq\.[0-9]+$/)
@@ -5804,6 +5809,7 @@ export const zListSystemOperatorProductTypeQuery = z.object({
     .string()
     .regex(/^eq\.[0-9]+$/)
     .optional(),
+  status: z.string().optional(),
   select: z.string().optional(),
   order: z.string().optional(),
   offset: z.string().optional(),

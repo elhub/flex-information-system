@@ -1116,7 +1116,7 @@
                 "example": "prequalification"
             },
             "service_providing_group_product_application_ramping_capability": {
-                "description": "The ramping capability of the service providing group for this product application.",
+                "description": "Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation.",
                 "format": "text",
                 "type": "string",
                 "nullable": true,
@@ -2146,15 +2146,35 @@
                             },
                             "maximum_active_power": {
                                 "$ref": "#/components/schemas/numeric_aggregation"
+                            },
+                            "maximum_active_power_up": {
+                                "description": "Maximum active power aggregated over controllable units with regulation_direction equal to up or both.",
+                                "$ref": "#/components/schemas/numeric_aggregation"
+                            },
+                            "maximum_active_power_down": {
+                                "description": "Maximum active power aggregated over controllable units with regulation_direction equal to down or both.",
+                                "$ref": "#/components/schemas/numeric_aggregation"
                             }
                         },
                         "example": {
                             "count": 3,
                             "maximum_active_power": {
-                                "sum": 250,
-                                "average": 83.33,
+                                "sum": 200,
+                                "average": 66.67,
+                                "min": 40,
+                                "max": 100
+                            },
+                            "maximum_active_power_up": {
+                                "sum": 150,
+                                "average": 75,
                                 "min": 50,
-                                "max": 120
+                                "max": 100
+                            },
+                            "maximum_active_power_down": {
+                                "sum": 100,
+                                "average": 50,
+                                "min": 40,
+                                "max": 60
                             }
                         }
                     },
@@ -2535,7 +2555,7 @@
                 "type": "object",
                 "properties": {
                     "controllable_unit_id": {
-                        "description": "Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 100% of the combined maximum active power of all its technical resources (SPGM-VAL003).",
+                        "description": "Reference to the controllable unit this relation links to a service providing group.",
                         "format": "bigint",
                         "type": "integer",
                         "example": 6
@@ -2578,7 +2598,7 @@
                         "example": 27
                     },
                     "controllable_unit_id": {
-                        "description": "Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 100% of the combined maximum active power of all its technical resources (SPGM-VAL003).",
+                        "description": "Reference to the controllable unit this relation links to a service providing group.",
                         "format": "bigint",
                         "type": "integer",
                         "example": 6
@@ -7341,7 +7361,7 @@
                         "example": 27
                     },
                     "controllable_unit_id": {
-                        "description": "Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 100% of the combined maximum active power of all its technical resources (SPGM-VAL003).",
+                        "description": "Reference to the controllable unit this relation links to a service providing group.",
                         "format": "bigint",
                         "type": "integer",
                         "example": 6
@@ -9338,6 +9358,14 @@
                     },
                     {
                         "in": "query",
+                        "name": "status",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somestatus"
+                    },
+                    {
+                        "in": "query",
                         "schema": {
                             "type": "string",
                             "pattern": "^eq\\.[0-9]+$"
@@ -9918,6 +9946,14 @@
                         },
                         "example": "eq.somename",
                         "description": "Free text name of the controllable unit."
+                    },
+                    {
+                        "in": "query",
+                        "name": "status",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somestatus"
                     },
                     {
                         "in": "query",
@@ -14367,7 +14403,7 @@
                             "pattern": "^eq\\.[0-9]+$"
                         },
                         "example": "eq.55",
-                        "description": "Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 100% of the combined maximum active power of all its technical resources (SPGM-VAL003).",
+                        "description": "Reference to the controllable unit this relation links to a service providing group.",
                         "name": "controllable_unit_id"
                     },
                     {
@@ -15065,7 +15101,7 @@
                             "pattern": "^eq\\.[0-9]+$"
                         },
                         "example": "eq.55",
-                        "description": "Reference to the controllable unit this relation links to a service providing group. The controllable unit's flexible power must not exceed 100% of the combined maximum active power of all its technical resources (SPGM-VAL003).",
+                        "description": "Reference to the controllable unit this relation links to a service providing group.",
                         "name": "controllable_unit_id"
                     },
                     {
@@ -27028,6 +27064,14 @@
                         "name": "product_type_id"
                     },
                     {
+                        "in": "query",
+                        "name": "status",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somestatus"
+                    },
+                    {
                         "description": "Filtering Columns",
                         "in": "query",
                         "name": "select",
@@ -27608,6 +27652,14 @@
                         "example": "eq.55",
                         "description": "Reference to the product type.",
                         "name": "product_type_id"
+                    },
+                    {
+                        "in": "query",
+                        "name": "status",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "eq.somestatus"
                     },
                     {
                         "description": "Filtering Columns",

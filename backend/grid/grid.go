@@ -134,6 +134,12 @@ func (grid *grid) postgRESTHandler(w http.ResponseWriter, req *http.Request) {
 	// turn the embed parameter into a PostgREST select if present, checking that
 	// the scopes cover reading the embedding resources
 	mainResource := strings.TrimPrefix(url, "/")
+
+	// special case for substation_distance, which is a function what we use sometimes for the substation resource
+	if mainResource == "rpc/substation_distance" {
+		mainResource = "substation" //nolint:goconst
+	}
+
 	if !embed.Handle(
 		ctx, w, query, mainResource, "grid",
 		embed.Relations(embedRelations),

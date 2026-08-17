@@ -5,6 +5,8 @@ from security_token_service import (
 )
 from flex.models import (
     ControllableUnitCreateRequest,
+    ControllableUnitUpdateRequest,
+    ControllableUnitStatus,
     ControllableUnitRegulationDirection,
     ControllableUnitResponse,
     ControllableUnitServiceProviderCreateRequest,
@@ -19,6 +21,7 @@ from flex.models import (
     TechnicalResourceCreateRequest,
     TechnicalResourceResponse,
     Technology,
+    ErrorMessage,
 )
 from flex.api.service_providing_group import (
     create_service_providing_group,
@@ -30,7 +33,10 @@ from flex.api.service_providing_group_summary import (
 from flex.api.service_providing_group_membership import (
     create_service_providing_group_membership,
 )
-from flex.api.controllable_unit import create_controllable_unit
+from flex.api.controllable_unit import (
+    create_controllable_unit,
+    update_controllable_unit,
+)
 from flex.api.controllable_unit_service_provider import (
     create_controllable_unit_service_provider,
 )
@@ -88,6 +94,8 @@ def test_service_providing_group_summary_aggregation(sts):
     cu_agg = summary.controllable_unit
     assert cu_agg.count == 0
     assert cu_agg.maximum_active_power.sum_ == pytest.approx(0.0)
+    assert cu_agg.maximum_active_power_up.sum_ == pytest.approx(0.0)
+    assert cu_agg.maximum_active_power_down.sum_ == pytest.approx(0.0)
 
     tr_agg = summary.technical_resource
     assert tr_agg.count == 0
@@ -179,6 +187,18 @@ def test_service_providing_group_summary_aggregation(sts):
     )
     assert isinstance(tr5, TechnicalResourceResponse)
 
+    # active all CUs so that they can be assigned to the SPG
+
+    for cu in [cu1, cu2]:
+        u = update_controllable_unit.sync(
+            client=client_fiso,
+            id=cast(int, cu.id),
+            body=ControllableUnitUpdateRequest(
+                status=ControllableUnitStatus.ACTIVE,
+            ),
+        )
+        assert not isinstance(u, ErrorMessage)
+
     cusp1 = create_controllable_unit_service_provider.sync(
         client=client_fiso,
         body=ControllableUnitServiceProviderCreateRequest(
@@ -243,11 +263,17 @@ def test_service_providing_group_summary_aggregation(sts):
     # should be 2 CUs in the summary
     assert cu_agg.count == 2
 
-    # sum MAP should be 100
-    assert cu_agg.maximum_active_power.sum_ == pytest.approx(100.0)
+    # sum MAP should be 100 (sum of TR MAPs per CU: 30 + 70)
+    assert cu_agg.maximum_active_power.sum_ == pytest.approx(80.0)
 
-    # average MAP should be total 100 for 2 CUs = 50
-    assert cu_agg.maximum_active_power.average == pytest.approx(50.0)
+    # average MAP should be 80 / 2 CUs = 40
+    assert cu_agg.maximum_active_power.average == pytest.approx(40.0)
+
+    # both CUs have regulation_direction=BOTH so up and down equal the total
+    assert cu_agg.maximum_active_power_up.sum_ == pytest.approx(80.0)
+    assert cu_agg.maximum_active_power_up.average == pytest.approx(40.0)
+    assert cu_agg.maximum_active_power_down.sum_ == pytest.approx(80.0)
+    assert cu_agg.maximum_active_power_down.average == pytest.approx(40.0)
 
     # now at TR level
     tr_agg = summary.technical_resource

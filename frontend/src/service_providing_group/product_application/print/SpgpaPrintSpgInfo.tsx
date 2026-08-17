@@ -2,7 +2,6 @@ import { Heading } from "../../../components/ui";
 import { LabelValue } from "../../../components/LabelValue";
 import { useTranslateEnum } from "../../../intl/intl";
 import { ServiceProvidingGroup } from "../../../generated-client";
-import type { SpgShowViewModel } from "../../show/useSpgShowViewModel";
 import { SpgpaPrintCuSummary } from "./SpgpaPrintCuSummary";
 import { Column, SimpleTable } from "../../../components/SimpleTable";
 import type { Technology } from "../../../generated-client";
@@ -22,10 +21,9 @@ const formatKw = (value: number | undefined) =>
 
 type Props = {
   spg: ServiceProvidingGroup;
-  spgViewModel: SpgShowViewModel;
 };
 
-export const SpgpaPrintSpgInfo = ({ spg, spgViewModel }: Props) => {
+export const SpgpaPrintSpgInfo = ({ spg }: Props) => {
   const translateEnum = useTranslateEnum();
 
   const statusLabel = translateEnum(
@@ -75,10 +73,7 @@ export const SpgpaPrintSpgInfo = ({ spg, spgViewModel }: Props) => {
 
       {spg.summary && (
         <>
-          <SpgpaPrintCuSummary
-            spgViewModel={spgViewModel}
-            summary={spg.summary}
-          />
+          <SpgpaPrintCuSummary summary={spg.summary} />
 
           <div className="flex flex-col gap-4">
             <Heading size="large">Technical resource summary</Heading>
