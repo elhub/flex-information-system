@@ -178,7 +178,7 @@ CREATE OR REPLACE FUNCTION
 service_providing_group_membership_status_check()
 RETURNS trigger
 LANGUAGE plpgsql
-SECURITY INVOKER
+SECURITY DEFINER
 AS $$
 DECLARE
     lv_status text;
@@ -199,7 +199,7 @@ $$;
 -- changeset flex:service-providing-group-membership-status-check-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER
 service_providing_group_membership_status_check
-BEFORE INSERT OR UPDATE ON service_providing_group_membership
+AFTER INSERT ON service_providing_group_membership
 FOR EACH ROW EXECUTE PROCEDURE
 service_providing_group_membership_status_check();
 
