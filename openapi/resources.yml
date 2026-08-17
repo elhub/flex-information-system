@@ -103,6 +103,7 @@ resources:
           en: Status
           nb: Status
           nn: Status
+        x-filter: true
       regulation_direction:
         description: >-
           The regulation direction of the controllable unit. `up` means it can be used to increase production or decrease consumption, while `down` means to
@@ -960,10 +961,7 @@ resources:
           nn: ID
       controllable_unit_id:
         description: >-
-          Reference to the controllable unit this relation links to a service
-          providing group. The controllable unit's flexible power must not exceed
-          100% of the combined maximum active power of all its technical resources
-          (SPGM-VAL003).
+          Reference to the controllable unit this relation links to a service providing group.
         format: bigint
         type: integer
         x-no-update: true

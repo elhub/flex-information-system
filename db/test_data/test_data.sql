@@ -960,6 +960,10 @@ BEGIN
       technology_name || ' 2000'
     );
 
+    UPDATE flex.controllable_unit
+    SET status = 'active'
+    WHERE id = cu_id;
+
     INSERT INTO flex.service_providing_group_membership (
       controllable_unit_id, service_providing_group_id, valid_time_range
     ) VALUES (

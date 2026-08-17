@@ -6,6 +6,8 @@ from security_token_service import (
 from flex.models import (
     ControllableUnitResponse,
     ControllableUnitCreateRequest,
+    ControllableUnitUpdateRequest,
+    ControllableUnitStatus,
     ControllableUnitServiceProviderResponse,
     ControllableUnitServiceProviderCreateRequest,
     ControllableUnitRegulationDirection,
@@ -27,6 +29,7 @@ from flex.models import (
 )
 from flex.api.controllable_unit import (
     create_controllable_unit,
+    update_controllable_unit,
 )
 from flex.api.technical_resource import (
     create_technical_resource,
@@ -89,6 +92,15 @@ def data():
         ),
     )
     assert isinstance(tr, TechnicalResourceResponse)
+
+    u = update_controllable_unit.sync(
+        client=client_fiso,
+        id=cast(int, cu.id),
+        body=ControllableUnitUpdateRequest(
+            status=ControllableUnitStatus.ACTIVE,
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
 
     # NB: the AP there is linked to Test SO in the test data
 
@@ -190,6 +202,15 @@ def test_spgm_val003_flexible_power_exceeded(data):
         ),
     )
 
+    u = update_controllable_unit.sync(
+        client=client_fiso,
+        id=cast(int, cu.id),
+        body=ControllableUnitUpdateRequest(
+            status=ControllableUnitStatus.ACTIVE,
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
+
     cu_sp = create_controllable_unit_service_provider.sync(
         client=client_fiso,
         body=ControllableUnitServiceProviderCreateRequest(
@@ -205,6 +226,60 @@ def test_spgm_val003_flexible_power_exceeded(data):
     # SPGM-VAL003: 11.0 kW > 100% of 10.0 kW — must be rejected
     spgm = create_service_providing_group_membership.sync(
         client=client_fiso,
+        body=ServiceProvidingGroupMembershipCreateRequest(
+            controllable_unit_id=cast(int, cu.id),
+            service_providing_group_id=spg_id,
+            valid_from=datetime.datetime.fromisoformat("2024-01-01T00:00:00+01:00"),
+        ),
+    )
+    assert isinstance(spgm, ErrorMessage)
+
+
+# SPGM-VAL004
+def test_spgm_val004_cu_must_be_active(data):
+    (sts, _, spg_id, eu_id) = data
+
+    client_fiso = sts.get_client(TestEntity.TEST, "FISO")
+    client_sp = sts.get_client(TestEntity.TEST, "SP")
+    sp_id = sts.get_userinfo(client_sp)["party_id"]
+
+    cu = create_controllable_unit.sync(
+        client=client_fiso,
+        body=ControllableUnitCreateRequest(
+            name="VAL004 CU",
+            accounting_point_id=1002,
+            regulation_direction=ControllableUnitRegulationDirection.BOTH,
+            maximum_active_power=3.5,
+        ),
+    )
+    assert isinstance(cu, ControllableUnitResponse)
+
+    create_technical_resource.sync(
+        client=client_fiso,
+        body=TechnicalResourceCreateRequest(
+            name="VAL004 CU TR",
+            controllable_unit_id=cast(int, cu.id),
+            technology=[Technology.OTHER_CONSUMPTION],
+            maximum_active_power=5.0,
+            device_type=DeviceType.OTHER,
+        ),
+    )
+
+    cu_sp = create_controllable_unit_service_provider.sync(
+        client=client_fiso,
+        body=ControllableUnitServiceProviderCreateRequest(
+            controllable_unit_id=cast(int, cu.id),
+            service_provider_id=sp_id,
+            end_user_id=eu_id,
+            contract_reference="VAL004-CONTRACT",
+            valid_from=datetime.datetime.fromisoformat("2024-01-01T00:00:00+01:00"),
+        ),
+    )
+    assert isinstance(cu_sp, ControllableUnitServiceProviderResponse)
+
+    # SPGM-VAL004: a CU must be active before it can be added to an SPG
+    spgm = create_service_providing_group_membership.sync(
+        client=client_sp,
         body=ServiceProvidingGroupMembershipCreateRequest(
             controllable_unit_id=cast(int, cu.id),
             service_providing_group_id=spg_id,

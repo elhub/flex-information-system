@@ -4,6 +4,8 @@ from security_token_service import (
 )
 from flex.models import (
     ControllableUnitCreateRequest,
+    ControllableUnitUpdateRequest,
+    ControllableUnitStatus,
     ControllableUnitRegulationDirection,
     ControllableUnitResponse,
     ControllableUnitServiceProviderCreateRequest,
@@ -38,7 +40,10 @@ from flex.api.service_providing_group_membership import (
 from flex.api.service_providing_group_grid_prequalification import (
     create_service_providing_group_grid_prequalification,
 )
-from flex.api.controllable_unit import create_controllable_unit
+from flex.api.controllable_unit import (
+    create_controllable_unit,
+    update_controllable_unit,
+)
 from flex.api.technical_resource import create_technical_resource
 from flex.api.controllable_unit_service_provider import (
     create_controllable_unit_service_provider,
@@ -136,6 +141,15 @@ def test_spg_fiso_sp(sts):
         ),
     )
     assert isinstance(tr, TechnicalResourceResponse)
+
+    # Activate the CU so that it can be added to the SPG
+    update_controllable_unit.sync(
+        client=client_fiso,
+        id=cast(int, cu.id),
+        body=ControllableUnitUpdateRequest(
+            status=ControllableUnitStatus.ACTIVE,
+        ),
+    )
 
     # cannot activate SPG as it is still empty
     u = update_service_providing_group.sync(
