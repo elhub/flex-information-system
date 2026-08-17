@@ -93,7 +93,6 @@ interface AccountingPointService {
     /**
      * Gets the earliest date from which we have active data about an accounting point in the system.
      */
-    // NB: nullable result here because we want to decide at the call site what we do if no data is there
     context(principal: FlexPrincipal)
     suspend fun getAccountingPointStart(accountingPointId: Long): Either<AppError, Instant?>
 }
