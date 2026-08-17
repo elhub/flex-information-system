@@ -9,7 +9,6 @@ import { useServiceProvidingGroups } from "../hooks/useServiceProvidingGroups";
 import { useControllableUnits } from "../hooks/useControllableUnits";
 import { StatCard } from "../shared/StatCard";
 import { useNotices } from "../hooks/useNotices";
-import { useGetIdentity } from "ra-core";
 import {
   isProductApplicationBlocked,
   getProductApplicationBlockDate,
@@ -20,13 +19,6 @@ export const SpStatCards = () => {
   const spgQuery = useServiceProvidingGroups();
   const cuQuery = useControllableUnits();
   const noticeQuery = useNotices("active");
-  const { data: identity } = useGetIdentity();
-
-  const noticeQueryParams = identity
-    ? new URLSearchParams({
-        filter: JSON.stringify({ party_id: identity?.partyID }),
-      })
-    : undefined;
 
   const isLoading =
     applicationsQuery.isLoading ||
@@ -92,9 +84,9 @@ export const SpStatCards = () => {
         }
         borderClass="border-l-semantic-border-error"
         iconBgClass="bg-semantic-background-error"
-        linkTo={`/notice?${noticeQueryParams?.toString() || ""}`}
+        linkTo="/notice"
         actionLabel="View"
-        actionTo={`/notice?${noticeQueryParams?.toString() || ""}`}
+        actionTo="/notice"
       />
       <StatCard
         label="SP Product Applications"

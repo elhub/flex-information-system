@@ -1,5 +1,4 @@
 import { IconClockCircle, IconWarningTriangle } from "@elhub/ds-icons";
-import { useGetIdentity } from "ra-core";
 import { useDashboardApplications } from "../hooks/useDashboardApplications";
 import { StatCard } from "../shared/StatCard";
 import { Alert, Loader } from "../../components/ui";
@@ -8,13 +7,6 @@ import { useNotices } from "../hooks/useNotices";
 export const SoStatCards = () => {
   const { activeItems, isLoading, error } = useDashboardApplications();
   const noticeQuery = useNotices("active");
-  const { data: identity } = useGetIdentity();
-
-  const noticeQueryParams = identity
-    ? new URLSearchParams({
-        filter: JSON.stringify({ party_id: identity?.partyID }),
-      })
-    : undefined;
 
   if (isLoading || noticeQuery.isLoading) return <Loader size="small" />;
   if (error || noticeQuery.error)
@@ -45,7 +37,7 @@ export const SoStatCards = () => {
         }
         borderClass="border-l-semantic-border-error"
         iconBgClass="bg-semantic-background-error"
-        linkTo={`/notice?${noticeQueryParams?.toString() || ""}`}
+        linkTo="/notice"
       />
     </div>
   );
