@@ -18,10 +18,14 @@ WITH (security_invoker = false) AS (
             ON
                 ap.id = ap_so.accounting_point_id
                 AND ap_so.valid_time_range @> current_timestamp
-    WHERE NOT EXISTS (
-        SELECT 1 FROM flex.accounting_point_grid_location AS apgl
-        WHERE apgl.accounting_point_id = ap.id
-    )
+    WHERE
+        -- only raise a notice when the accounting point has no geographical location;
+        -- if it has a location, the grid location can be guessed on the next run
+        ap.location IS null
+        AND NOT EXISTS (
+            SELECT 1 FROM flex.accounting_point_grid_location AS apgl
+            WHERE apgl.accounting_point_id = ap.id
+        )
 );
 
 -- APs with a grid location registered but source is not cso or grid_model
