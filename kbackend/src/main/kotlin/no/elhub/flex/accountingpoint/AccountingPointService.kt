@@ -14,6 +14,7 @@ import no.elhub.flex.meteringgridarea.db.MeteringGridAreaRepository
 import no.elhub.flex.model.domain.AccountingPoint
 import no.elhub.flex.model.domain.AccountingPointEndUser
 import no.elhub.flex.model.domain.AccountingPointEnergySupplier
+import no.elhub.flex.model.domain.AccountingPointId
 import no.elhub.flex.model.domain.AccountingPointMeteringGridArea
 import no.elhub.flex.model.domain.Location
 import no.elhub.flex.model.domain.db.NoMatchError
@@ -80,8 +81,24 @@ interface AccountingPointService {
      */
     context(principal: FlexPrincipal)
     suspend fun getByIds(accountingPointIds: List<Long>): Either<AppError, List<AccountingPoint>>
+
+    // NB: nullable results here because we want to decide at the call site what we do if no data is there
+
+    /**
+     * Gets the earliest date from which we have active data about the given accounting points in the system.
+     */
+    context(principal: FlexPrincipal)
+    suspend fun getAccountingPointStarts(accountingPointIds: List<Long>): Either<AppError, Map<AccountingPointId, Instant?>>
+
+    /**
+     * Gets the earliest date from which we have active data about an accounting point in the system.
+     */
+    // NB: nullable result here because we want to decide at the call site what we do if no data is there
+    context(principal: FlexPrincipal)
+    suspend fun getAccountingPointStart(accountingPointId: Long): Either<AppError, Instant?>
 }
 
+@Suppress("TooManyFunctions")
 @Single(createdAtStart = true)
 class AccountingPointServiceImpl(
     private val accountingPointRepository: AccountingPointRepository,
@@ -214,6 +231,28 @@ class AccountingPointServiceImpl(
     override suspend fun getByIds(accountingPointIds: List<Long>): Either<AppError, List<AccountingPoint>> =
         accountingPointRepository.getByIds(accountingPointIds)
             .mapLeft { InternalServerError(traceIdOrUnknown()) }
+
+    context(principal: FlexPrincipal)
+    override suspend fun getAccountingPointStarts(accountingPointIds: List<Long>): Either<AppError, Map<AccountingPointId, Instant?>> =
+        accountingPointRepository.getAccountingPointStarts(accountingPointIds)
+            .map { apStarts ->
+                apStarts.mapValues {
+                    // earliest of both dates, or null if none exists
+                    if (it.value.controllableUnitStartTime == null && it.value.controllableUnitServiceProviderValidTimeStart == null) {
+                        null
+                    } else {
+                        minOf(
+                            it.value.controllableUnitStartTime ?: Instant.DISTANT_FUTURE,
+                            it.value.controllableUnitServiceProviderValidTimeStart ?: Instant.DISTANT_FUTURE,
+                        )
+                    }
+                }
+            }
+            .mapLeft { InternalServerError(traceIdOrUnknown()) }
+
+    context(principal: FlexPrincipal)
+    override suspend fun getAccountingPointStart(accountingPointId: Long): Either<AppError, Instant?> =
+        getAccountingPointStarts(listOf(accountingPointId)).map { it[AccountingPointId(accountingPointId)] }
 
     private suspend fun fetchAccountingPointData(
         accountingPointBusinessId: String,

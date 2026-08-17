@@ -6,6 +6,7 @@ import dev.inmo.krontab.doInfinity
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.datetime.TimeZone
 import no.elhub.flex.accountingpoint.AccountingPointService
+import no.elhub.flex.accountingpoint.db.AccountingPointRepository
 import no.elhub.flex.accountingpoint.db.AccountingPointSyncRepository
 import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.config.TraceInfo
@@ -23,7 +24,6 @@ import kotlin.time.Instant
 class AccountingPointSyncScheduler(
     private val accountingPointSyncRepository: AccountingPointSyncRepository,
     private val accountingPointService: AccountingPointService,
-    private val controllableUnitRepository: ControllableUnitRepository,
     private val metrics: FlexMetrics,
     @Property("flex.timezone") private val timezone: TimeZone = TimeZone.of("Europe/Oslo"),
 ) {
@@ -47,8 +47,8 @@ class AccountingPointSyncScheduler(
 
                 val accountingPoints = accountingPointService.getByIds(accountingPointIdBatch).bind()
 
-                val earliestStartDates = controllableUnitRepository
-                    .getEarliestStartDateByAccountingPointIds(accountingPoints.map { it.id })
+                val earliestStartDates = accountingPointService
+                    .getAccountingPointStarts(accountingPoints.map { it.id })
                     .bind()
 
                 accountingPoints.forEach { accountingPoint ->
@@ -56,7 +56,6 @@ class AccountingPointSyncScheduler(
                         withTrace(TraceInfo.fresh()) {
                             logger.debug { "Syncing accounting point with id ${accountingPoint.id}.." }
                             val validFrom = earliestStartDates[AccountingPointId(accountingPoint.id)]
-                                ?.asLocalMidnightInstant(timezone)
                                 ?: Instant.todayLocalMidnight(timezone)
                             accountingPointService.synchronizeAccountingPoint(accountingPoint.businessId, validFrom).bind()
                             logger.debug { "Accounting point ${accountingPoint.id} completed" }

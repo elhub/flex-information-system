@@ -52,6 +52,9 @@ class ControllableUnitLookupTest :
             coEvery {
                 with(any<FlexPrincipal>()) { mockEventRepo.insertEvent(any(), any(), any(), any(), any(), any()) }
             } returns Unit.right()
+            coEvery {
+                with(any<FlexPrincipal>()) { mockAccountingPointService.getAccountingPointStart(any()) }
+            } returns null.right()
         }
 
         context("POST /controllable_unit/lookup") {
@@ -405,6 +408,9 @@ class ControllableUnitLookupTest :
                     coEvery {
                         with(any<FlexPrincipal>()) { syncDisabledAccountingPointService.getCurrentAccountingPoint(controllableUnitBusinessId) }
                     } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
+                    coEvery {
+                        with(any<FlexPrincipal>()) { syncDisabledAccountingPointService.getAccountingPointStart(any()) }
+                    } returns null.right()
                     coEvery {
                         with(any<FlexPrincipal>()) {
                             syncDisabledAccountingPointService.checkEndUserMatchesAccountingPoint(endUserBusinessId, accountingPointBusinessId)
