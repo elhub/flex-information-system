@@ -16,6 +16,14 @@ const noticeTypes = [
     action: "Register a grid location for the accounting point.",
   },
   {
+    id: "no.elhub.flex.controllable_unit.flexible_power_exceeds_rated_power",
+    shortId: "controllable_unit.flexible_power_exceeds_rated_power",
+    label: "Inconsistency: Flexible power exceeds rated power",
+    description:
+      "The flexible power of this controllable unit exceeds the combined maximum active power of all its technical resources.",
+    action: "Update the flexible power or add technical resources.",
+  },
+  {
     id: "no.elhub.flex.controllable_unit_service_provider.valid_time.outside_contract",
     shortId: "controllable_unit_service_provider.valid_time.outside_contract",
     label: "Inconsistency: Valid time on CUSP vs End User",
