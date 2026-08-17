@@ -12,7 +12,7 @@ WITH (security_invoker = false) AS (
         'controllable_unit' AS source_resource,
         cu.id AS source_id,
         jsonb_build_object(
-            'flexible_power', cu.maximum_active_power,
+            'maximum_active_power', cu.maximum_active_power,
             'rated_power', sum(tr.maximum_active_power)
         ) AS data, --noqa
         md5(cu.id::text) AS deduplication_key -- noqa

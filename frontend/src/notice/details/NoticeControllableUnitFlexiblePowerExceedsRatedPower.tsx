@@ -7,7 +7,7 @@ import { useTranslate } from "ra-core";
 type Props = {
   notice: {
     source?: string;
-    data: { flexible_power: number; rated_power: number };
+    data: { maximum_active_power: number; rated_power: number };
   };
 };
 
@@ -29,7 +29,7 @@ export const NoticeControllableUnitFlexiblePowerExceedsRatedPower = ({
         <LabelValue
           size="small"
           labelKey="controllable_unit.maximum_active_power"
-          value={notice.data.flexible_power}
+          value={notice.data.maximum_active_power}
           unit="kW"
         />
         <LabelValue
