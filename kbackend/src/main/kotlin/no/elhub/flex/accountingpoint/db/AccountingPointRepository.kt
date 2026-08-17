@@ -524,8 +524,8 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
                         )
                 }.toMap()
             }.mapLeft { e ->
-                logger.error { "getAccountingPointStart failed: ${e.message}" }
-                DatabaseError("Failed to read accounting point start")
+                logger.error { "getAccountingPointStarts failed: ${e.message}" }
+                DatabaseError("Failed to read accounting point starts")
             }
         }
 }
