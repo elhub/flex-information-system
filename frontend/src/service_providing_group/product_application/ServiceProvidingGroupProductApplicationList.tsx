@@ -118,6 +118,11 @@ export const ServiceProvidingGroupProductApplicationList = () => {
               <ProductTypeArrayField productTypeIds={record.product_type_ids} />
             )}
           />
+          <TextField source={fields.maximum_active_power_up.source} unit="kW" />
+          <TextField
+            source={fields.maximum_active_power_down.source}
+            unit="kW"
+          />
           <FunctionField
             label={t("service_providing_group_product_application.status")}
             render={(record: { status: string }) => (
