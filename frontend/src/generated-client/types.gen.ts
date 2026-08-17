@@ -368,6 +368,24 @@ export type NoticeDataProductTypeNotQualified = {
   product_type_ids?: Array<number>;
 };
 
+/**
+ * Format of the data field in a notice with data.kind = notice.data.cu.flexible_power_exceeds_rated_power
+ */
+export type NoticeDataCuFlexiblePowerExceedsRatedPower = {
+  /**
+   * Identifies the notice data schema for discriminated union deserialization.
+   */
+  kind: "notice.data.cu.flexible_power_exceeds_rated_power";
+  /**
+   * The flexible power of the controllable unit in kW.
+   */
+  maximum_active_power?: number;
+  /**
+   * The combined maximum active power of all technical resources in kW.
+   */
+  rated_power?: number;
+};
+
 export type NoticeData =
   | ({
       kind: "notice.data.valid_time.outside_contract";
@@ -380,7 +398,10 @@ export type NoticeData =
     } & NoticeDataPartyOutdated)
   | ({
       kind: "notice.data.product_type.not_qualified";
-    } & NoticeDataProductTypeNotQualified);
+    } & NoticeDataProductTypeNotQualified)
+  | ({
+      kind: "notice.data.cu.flexible_power_exceeds_rated_power";
+    } & NoticeDataCuFlexiblePowerExceedsRatedPower);
 
 export type NumericAggregation = {
   sum?: number;
@@ -4532,7 +4553,10 @@ export type NoticeDataWritable =
     } & NoticeDataPartyOutdatedWritable)
   | ({
       kind: "notice.data.product_type.not_qualified";
-    } & NoticeDataProductTypeNotQualified);
+    } & NoticeDataProductTypeNotQualified)
+  | ({
+      kind: "notice.data.cu.flexible_power_exceeds_rated_power";
+    } & NoticeDataCuFlexiblePowerExceedsRatedPower);
 
 /**
  * An empty object

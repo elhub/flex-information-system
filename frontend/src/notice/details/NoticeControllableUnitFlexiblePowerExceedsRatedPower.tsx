@@ -3,11 +3,12 @@ import { LabelValue } from "../../components/LabelValue";
 import { Link as RouterLink } from "react-router-dom";
 import { IconPencil } from "@elhub/ds-icons";
 import { useTranslate } from "ra-core";
+import { NoticeDataCuFlexiblePowerExceedsRatedPower } from "../../generated-client";
 
 type Props = {
   notice: {
     source?: string;
-    data: { maximum_active_power: number; rated_power: number };
+    data: NoticeDataCuFlexiblePowerExceedsRatedPower;
   };
 };
 

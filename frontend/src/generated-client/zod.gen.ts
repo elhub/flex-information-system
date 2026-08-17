@@ -261,6 +261,15 @@ export const zNoticeDataProductTypeNotQualified = z.object({
   product_type_ids: z.array(z.coerce.number()).optional(),
 });
 
+/**
+ * Format of the data field in a notice with data.kind = notice.data.cu.flexible_power_exceeds_rated_power
+ */
+export const zNoticeDataCuFlexiblePowerExceedsRatedPower = z.object({
+  kind: z.literal("notice.data.cu.flexible_power_exceeds_rated_power"),
+  maximum_active_power: z.coerce.number().optional(),
+  rated_power: z.coerce.number().optional(),
+});
+
 export const zNumericAggregation = z.object({
   sum: z.coerce.number().optional(),
   average: z.coerce.number().optional(),
@@ -1959,6 +1968,7 @@ export const zNoticeData = z.discriminatedUnion("kind", [
   zNoticeDataPartyMissing,
   zNoticeDataPartyOutdated,
   zNoticeDataProductTypeNotQualified,
+  zNoticeDataCuFlexiblePowerExceedsRatedPower,
 ]);
 
 /**
@@ -2777,6 +2787,7 @@ export const zNoticeDataWritable = z.discriminatedUnion("kind", [
   zNoticeDataPartyMissingWritable,
   zNoticeDataPartyOutdatedWritable,
   zNoticeDataProductTypeNotQualified,
+  zNoticeDataCuFlexiblePowerExceedsRatedPower,
 ]);
 
 /**
