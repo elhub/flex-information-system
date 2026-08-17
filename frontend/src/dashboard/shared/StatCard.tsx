@@ -28,12 +28,20 @@ export const StatCard = ({
   actionDisabled,
   actionDisabledTooltip,
 }: StatCardProps) => {
+  const underlineOnHover = linkTo
+    ? "group-hover:underline group-focus-visible:underline"
+    : "";
+
   const summary = (
     <>
-      <p className="text-xs font-semibold uppercase tracking-wide text-semantic-text-subtle mb-1 group-hover:underline group-focus-visible:underline">
+      <p
+        className={`text-xs font-semibold uppercase tracking-wide text-semantic-text-subtle mb-1 ${underlineOnHover}`}
+      >
         {label}
       </p>
-      <p className="text-2xl font-bold text-semantic-text leading-none group-hover:underline group-focus-visible:underline">
+      <p
+        className={`text-2xl font-bold text-semantic-text leading-none ${underlineOnHover}`}
+      >
         {value}
       </p>
     </>
