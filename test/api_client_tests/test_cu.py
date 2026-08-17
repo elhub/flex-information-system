@@ -264,6 +264,15 @@ def test_controllable_unit_so(sts):
     )
     assert isinstance(tr, TechnicalResourceResponse)
 
+    u = update_controllable_unit.sync(
+        client=client_fiso,
+        id=cast(int, cu.id),
+        body=ControllableUnitUpdateRequest(
+            status=ControllableUnitStatus.ACTIVE,
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
+
     spgm = create_service_providing_group_membership.sync(
         client=client_sp,
         body=ServiceProvidingGroupMembershipCreateRequest(

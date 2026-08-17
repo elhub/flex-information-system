@@ -5,6 +5,8 @@ from security_token_service import (
 )
 from flex.models import (
     ControllableUnitCreateRequest,
+    ControllableUnitUpdateRequest,
+    ControllableUnitStatus,
     ControllableUnitRegulationDirection,
     ControllableUnitResponse,
     ControllableUnitServiceProviderCreateRequest,
@@ -19,6 +21,7 @@ from flex.models import (
     TechnicalResourceCreateRequest,
     TechnicalResourceResponse,
     Technology,
+    ErrorMessage,
 )
 from flex.api.service_providing_group import (
     create_service_providing_group,
@@ -30,7 +33,10 @@ from flex.api.service_providing_group_summary import (
 from flex.api.service_providing_group_membership import (
     create_service_providing_group_membership,
 )
-from flex.api.controllable_unit import create_controllable_unit
+from flex.api.controllable_unit import (
+    create_controllable_unit,
+    update_controllable_unit,
+)
 from flex.api.controllable_unit_service_provider import (
     create_controllable_unit_service_provider,
 )
@@ -180,6 +186,18 @@ def test_service_providing_group_summary_aggregation(sts):
         ),
     )
     assert isinstance(tr5, TechnicalResourceResponse)
+
+    # active all CUs so that they can be assigned to the SPG
+
+    for cu in [cu1, cu2]:
+        u = update_controllable_unit.sync(
+            client=client_fiso,
+            id=cast(int, cu.id),
+            body=ControllableUnitUpdateRequest(
+                status=ControllableUnitStatus.ACTIVE,
+            ),
+        )
+        assert not isinstance(u, ErrorMessage)
 
     cusp1 = create_controllable_unit_service_provider.sync(
         client=client_fiso,
