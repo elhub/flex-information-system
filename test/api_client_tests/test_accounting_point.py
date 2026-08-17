@@ -248,6 +248,15 @@ def test_ap_so(sts):
     )
     assert isinstance(tr_pso, TechnicalResourceResponse)
 
+    u = update_controllable_unit.sync(
+        client=client_fiso,
+        id=cast(int, cu_pso.id),
+        body=ControllableUnitUpdateRequest(
+            status=ControllableUnitStatus.ACTIVE,
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
+
     spgm_pso = create_service_providing_group_membership.sync(
         client=client_sp,
         body=ServiceProvidingGroupMembershipCreateRequest(
