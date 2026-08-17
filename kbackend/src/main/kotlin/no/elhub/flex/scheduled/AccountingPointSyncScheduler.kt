@@ -6,14 +6,11 @@ import dev.inmo.krontab.doInfinity
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.datetime.TimeZone
 import no.elhub.flex.accountingpoint.AccountingPointService
-import no.elhub.flex.accountingpoint.db.AccountingPointRepository
 import no.elhub.flex.accountingpoint.db.AccountingPointSyncRepository
 import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.config.TraceInfo
-import no.elhub.flex.controllableunit.db.ControllableUnitRepository
 import no.elhub.flex.metrics.FlexMetrics
 import no.elhub.flex.model.domain.AccountingPointId
-import no.elhub.flex.util.asLocalMidnightInstant
 import no.elhub.flex.util.todayLocalMidnight
 import no.elhub.flex.util.withTrace
 import org.koin.core.annotation.Property
