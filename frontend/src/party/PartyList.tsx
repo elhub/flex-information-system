@@ -44,8 +44,6 @@ export const PartyList = () => {
       empty={false}
       filters={partyFilters}
       actions={canCreate ? [<CreateButton key="create" />] : []}
-      storeKey={false}
-      disableSyncWithLocation
     >
       <Datagrid>
         <TextField source={partyFields.id.source} />
