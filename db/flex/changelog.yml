@@ -280,9 +280,6 @@ databaseChangeLog:
       file: ./accounting_point_bidding_zone.sql
       relativeToChangelogFile: true
   - include:
-      file: ./accounting_point_start.sql
-      relativeToChangelogFile: true
-  - include:
       file: ./controllable_unit_bidding_zone.sql
       relativeToChangelogFile: true
   - include:

@@ -507,11 +507,18 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
                 conn.prepareNamed(
                     """
                     SELECT
-                        accounting_point_id,
-                        controllable_unit_start_time,
-                        controllable_unit_service_provider_valid_time_start
-                    FROM flex.accounting_point_start
-                    WHERE accounting_point_id = ANY(:accountingPointIds)
+                        ap.id AS accounting_point_id,
+                        MIN(cu.start_date)::timestamp AT TIME ZONE 'Europe/Oslo'
+                            AS controllable_unit_start_time,
+                        MIN(LOWER(cusp.valid_time_range))
+                            AS controllable_unit_service_provider_valid_time_start
+                    FROM flex.accounting_point AS ap
+                        LEFT JOIN flex.controllable_unit AS cu
+                            ON ap.id = cu.accounting_point_id
+                        LEFT JOIN flex.controllable_unit_service_provider AS cusp
+                            ON cu.id = cusp.controllable_unit_id
+                    WHERE ap.id = ANY(:accountingPointIds)
+                    GROUP BY ap.id
                     """.trimIndent(),
                     mapOf("accountingPointIds" to conn.createBigintArray(accountingPointIds))
                 ).query { rs ->
