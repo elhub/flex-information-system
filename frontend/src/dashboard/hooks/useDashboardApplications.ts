@@ -54,6 +54,7 @@ export const useDashboardApplications = () => {
       listServiceProviderProductApplication({
         query: {
           embed: "service_provider,system_operator",
+          system_operator_id: partyId ? `eq.${partyId}` : undefined,
         },
         headers: {
           Prefer: "count=exact",
@@ -68,6 +69,7 @@ export const useDashboardApplications = () => {
         query: {
           embed:
             "service_providing_group(service_provider),procuring_system_operator",
+          procuring_system_operator_id: partyId ? `eq.${partyId}` : undefined,
         },
         headers: {
           Prefer: "count=exact",
@@ -82,6 +84,7 @@ export const useDashboardApplications = () => {
         query: {
           embed:
             "service_providing_group(service_provider),impacted_system_operator",
+          impacted_system_operator_id: partyId ? `eq.${partyId}` : undefined,
         },
         headers: {
           Prefer: "count=exact",
