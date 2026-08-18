@@ -14,9 +14,11 @@ import { useConfirmAction } from "../../components/ConfirmAction";
 import { PowerRatio } from "../../components/PowerRatio";
 import { RegulationDirectionIcon } from "../../controllable_unit/RegulationDirectionField";
 import { ControllableUnitRegulationDirection } from "../../generated-client";
+import { formatScaled, KILO, Scale } from "../../utils/scales";
 
 type Props = {
   spgId: number;
+  powerScale: Scale;
 };
 
 const DeleteButton = ({
@@ -53,7 +55,10 @@ const DeleteButton = ({
   );
 };
 
-export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
+export const ServiceProvidingGroupShowTable = ({
+  spgId,
+  powerScale,
+}: Props) => {
   const { data, isLoading, error } = useSpgShowViewModel(spgId);
   const navigate = useNavigate();
   const t = useTranslateField();
@@ -66,6 +71,9 @@ export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
     "service_providing_group_membership",
     "delete",
   );
+
+  const formatPower = (value: unknown) =>
+    formatScaled(Number(value), "W", KILO, powerScale);
 
   if (isLoading) {
     return <Loader />;
@@ -111,7 +119,7 @@ export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
       header: t("technical_resource.maximum_active_power"),
       render: (value) => (
         <div className="text-right">
-          {value != null ? `${String(value)} kW` : "—"}
+          {value != null ? formatPower(value) : "—"}
         </div>
       ),
     },
@@ -120,7 +128,7 @@ export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
       header: t("controllable_unit.maximum_active_power"),
       render: (value, row) => (
         <div className="flex items-center justify-end gap-3">
-          <span>{String(value)} kW</span>
+          <span>{formatPower(value)}</span>
           <PowerRatio
             flexiblePower={row.maximum_active_power}
             ratedPower={row.rated_power}

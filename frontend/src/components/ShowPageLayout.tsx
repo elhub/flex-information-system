@@ -13,6 +13,7 @@ type ShowPageLayoutProps = {
   badge?: ReactNode;
   alerts?: ReactNode;
   actionBar?: ReactNode;
+  toolbar?: ReactNode;
   children: [ReactNode, ReactNode];
 };
 
@@ -22,6 +23,7 @@ export const ShowPageLayout = ({
   badge,
   alerts,
   actionBar,
+  toolbar,
   children: [leftPanel, rightPanel],
 }: ShowPageLayoutProps) => {
   const navigate = useNavigate();
@@ -50,6 +52,7 @@ export const ShowPageLayout = ({
         {badge && <div className="flex items-center gap-1">{badge}</div>}
       </div>
       {actionBar}
+      {toolbar}
       <div className="grid grid-cols-1 gap-4 xl:grid-cols-[25%_minmax(0,1fr)]">
         {leftPanel}
         {rightPanel}

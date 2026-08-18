@@ -11,12 +11,14 @@ import {
 import { useTabSearchParam } from "../../hooks/useTabSearchParam";
 import { SpgTechnicalResourceList } from "./SpgTechnicalResourceList";
 import { useTranslate } from "ra-core";
+import { Scale } from "../../utils/scales";
 
 type Props = {
   spgId: number;
   spgStatus: ServiceProvidingGroupStatus;
   summary: ServiceProvidingGroupSummary | undefined;
   showPowerPerSubstation?: boolean;
+  powerScale: Scale;
 };
 
 export const ServiceProvidingGroupShowTabs = ({
@@ -24,6 +26,7 @@ export const ServiceProvidingGroupShowTabs = ({
   spgStatus,
   summary,
   showPowerPerSubstation,
+  powerScale,
 }: Props) => {
   const [tab, setTab] = useTabSearchParam("summary");
   const translate = useTranslate();
@@ -56,21 +59,25 @@ export const ServiceProvidingGroupShowTabs = ({
       </Tabs.List>
       <Tabs.Panel value="summary">
         {summary ? (
-          <ServiceProvidingGroupShowSPGSummarySection summary={summary} />
+          <ServiceProvidingGroupShowSPGSummarySection
+            summary={summary}
+            powerScale={powerScale}
+          />
         ) : (
           "No summary available"
         )}
       </Tabs.Panel>
       <Tabs.Panel value="controllable_units">
-        <ServiceProvidingGroupShowTable spgId={spgId} />
+        <ServiceProvidingGroupShowTable spgId={spgId} powerScale={powerScale} />
       </Tabs.Panel>
       <Tabs.Panel value="technical_resources">
-        <SpgTechnicalResourceList spgId={spgId} />
+        <SpgTechnicalResourceList spgId={spgId} powerScale={powerScale} />
       </Tabs.Panel>
       <Tabs.Panel value="product_applications">
         <ServiceProvidingGroupShowProductApplicationsTable
           spgId={spgId}
           spgStatus={spgStatus}
+          powerScale={powerScale}
         />
       </Tabs.Panel>
       <Tabs.Panel value="grid_prequalifications">
@@ -78,7 +85,10 @@ export const ServiceProvidingGroupShowTabs = ({
       </Tabs.Panel>
       {showPowerPerSubstation && (
         <Tabs.Panel value="power_per_substation">
-          <ServiceProvidingGroupShowPowerPerSubstationTable spgId={spgId} />
+          <ServiceProvidingGroupShowPowerPerSubstationTable
+            spgId={spgId}
+            powerScale={powerScale}
+          />
         </Tabs.Panel>
       )}
     </Tabs>

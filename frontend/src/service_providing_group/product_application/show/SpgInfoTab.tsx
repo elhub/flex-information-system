@@ -6,13 +6,19 @@ import { Link as RouterLink } from "react-router-dom";
 import { ServiceProvidingGroup } from "../../../generated-client";
 import { ServiceProvidingGroupControllableUnitSummary } from "../../summary/ServiceProvidingGroupControllableUnitSummary";
 import { ServiceProvidingGroupTechnicalResourceSummary } from "../../summary/ServiceProvidingGroupTechnicalResourceSummary";
+import { KILO, Scale } from "../../../utils/scales";
 
 type Props = {
   spgId: number;
   spg: ServiceProvidingGroup | undefined;
+  powerScale?: Scale;
 };
 
-export const SpgInfoTab = ({ spgId: _spgId, spg }: Props) => {
+export const SpgInfoTab = ({
+  spgId: _spgId,
+  spg,
+  powerScale = KILO,
+}: Props) => {
   const translateEnum = useTranslateEnum();
 
   if (!spg) {
@@ -50,9 +56,13 @@ export const SpgInfoTab = ({ spgId: _spgId, spg }: Props) => {
       </Panel>
       {spg.summary && (
         <>
-          <ServiceProvidingGroupControllableUnitSummary summary={spg.summary} />
+          <ServiceProvidingGroupControllableUnitSummary
+            summary={spg.summary}
+            displayScale={powerScale}
+          />
           <ServiceProvidingGroupTechnicalResourceSummary
             summary={spg.summary}
+            displayScale={powerScale}
           />
         </>
       )}

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Loader } from "../../../components/ui";
 import { ShowPageLayout } from "../../../components/ShowPageLayout";
@@ -10,10 +11,16 @@ import { useSpgpaRecord } from "./useSpgpaShowViewModel";
 import { useServiceProvidingGroup } from "../../show/useSpgShowViewModel";
 import { SpgpaAlerts } from "./SpgpaAlerts";
 import { SpgpaStatusBadge } from "../../../components/SpgpaStatusBadge";
+import { ScaleToggle } from "../../../components/ScaleToggle";
+import { KILO, MEGA, Scale } from "../../../utils/scales";
+
+const POWER_SCALE_OPTIONS: Scale[] = [KILO, MEGA];
 
 export const ServiceProvidingGroupProductApplicationShow = () => {
   const spgpaId = Number(useParams<{ id: string }>().id);
   const { permissions } = usePermissions<Permissions>();
+
+  const [powerScale, setPowerScale] = useState<Scale>(KILO);
 
   const { data: spgpa, isPending, error } = useSpgpaRecord(spgpaId);
   const spg = useServiceProvidingGroup(spgpa?.service_providing_group_id);
@@ -38,12 +45,24 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
       badge={<SpgpaStatusBadge status={spgpa.status} />}
       actionBar={canUpdateStatus ? <SpgpaActionBar spgpa={spgpa} /> : undefined}
       alerts={<SpgpaAlerts spgpa={spgpa} />}
+      toolbar={
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-medium">Display unit:</span>
+          <ScaleToggle
+            unit="W"
+            options={POWER_SCALE_OPTIONS}
+            value={powerScale}
+            onChange={setPowerScale}
+          />
+        </div>
+      }
     >
-      <SpgpaShowSummary spgpa={spgpa} spg={spg.data} />
+      <SpgpaShowSummary spgpa={spgpa} spg={spg.data} powerScale={powerScale} />
       <SpgpaShowTabs
         spgId={spgpa.service_providing_group_id}
         spgpaId={spgpa.id}
         spg={spg.data}
+        powerScale={powerScale}
       />
     </ShowPageLayout>
   );

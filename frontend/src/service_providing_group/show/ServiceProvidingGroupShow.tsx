@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Badge, Loader } from "../../components/ui";
 import { useParams } from "react-router-dom";
 import { ServiceProvidingGroupShowSummary } from "./ServiceProvidingGroupShowSummary";
@@ -12,6 +13,10 @@ import { Permissions } from "../../auth/permissions";
 import { ActivateServiceProvidingGroupButton } from "../ActivateServiceProvidingGroupButton";
 import { spgStatusVariantMap } from "../serviceProvidingGroupStatus";
 import { ServiceProvidingGroupAlerts } from "./ServiceProvidingGroupAlerts";
+import { ScaleToggle } from "../../components/ScaleToggle";
+import { KILO, MEGA, Scale } from "../../utils/scales";
+
+const POWER_SCALE_OPTIONS: Scale[] = [KILO, MEGA];
 
 export const ServiceProvidingGroupShow = () => {
   const spgId = Number(useParams<{ id: string }>().id);
@@ -21,6 +26,8 @@ export const ServiceProvidingGroupShow = () => {
   const isFISOOrSO =
     identity?.role === "flex_flexibility_information_system_operator" ||
     identity?.role === "flex_system_operator";
+
+  const [powerScale, setPowerScale] = useState<Scale>(KILO);
 
   const {
     data: spg,
@@ -61,6 +68,17 @@ export const ServiceProvidingGroupShow = () => {
       }}
       title={`Group Details - ${spg.name}`}
       alerts={<ServiceProvidingGroupAlerts spg={spg} />}
+      toolbar={
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-medium">Display unit:</span>
+          <ScaleToggle
+            unit="W"
+            options={POWER_SCALE_OPTIONS}
+            value={powerScale}
+            onChange={setPowerScale}
+          />
+        </div>
+      }
       badge={
         <>
           <Badge
@@ -86,6 +104,7 @@ export const ServiceProvidingGroupShow = () => {
         spgStatus={spg.status}
         summary={spg.summary ?? undefined}
         showPowerPerSubstation={isFISOOrSO}
+        powerScale={powerScale}
       />
     </ShowPageLayout>
   );

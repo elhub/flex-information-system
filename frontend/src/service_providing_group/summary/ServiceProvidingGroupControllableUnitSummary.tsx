@@ -1,13 +1,16 @@
 import { Heading, Panel } from "../../components/ui";
 import { ServiceProvidingGroupSummary } from "../../generated-client";
 import { LabelValue } from "../../components/LabelValue";
+import { KILO, Scale } from "../../utils/scales";
 
 type Props = {
   summary: ServiceProvidingGroupSummary;
+  displayScale?: Scale;
 };
 
 export const ServiceProvidingGroupControllableUnitSummary = ({
   summary,
+  displayScale,
 }: Props) => {
   const cu = summary.controllable_unit;
 
@@ -23,22 +26,30 @@ export const ServiceProvidingGroupControllableUnitSummary = ({
         <LabelValue
           label="Aggregated rated power"
           value={summary.technical_resource.maximum_active_power?.sum ?? 0}
-          unit="kW"
+          unit="W"
+          storageScale={KILO}
+          displayScale={displayScale}
         />
         <LabelValue
           label="Aggregated flexible power"
           value={cu.maximum_active_power?.sum ?? 0}
-          unit="kW"
+          unit="W"
+          storageScale={KILO}
+          displayScale={displayScale}
         />
         <LabelValue
           label="Aggregated flexible power (down)"
           value={cu.maximum_active_power_down?.sum ?? 0}
-          unit="kW"
+          unit="W"
+          storageScale={KILO}
+          displayScale={displayScale}
         />
         <LabelValue
           label="Aggregated flexible power (up)"
           value={cu.maximum_active_power_up?.sum ?? 0}
-          unit="kW"
+          unit="W"
+          storageScale={KILO}
+          displayScale={displayScale}
         />
       </div>
     </Panel>

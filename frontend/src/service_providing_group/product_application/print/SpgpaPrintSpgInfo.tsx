@@ -1,5 +1,6 @@
 import { Heading } from "../../../components/ui";
 import { LabelValue } from "../../../components/LabelValue";
+import { KILO, formatScaled } from "../../../utils/scales";
 import { useTranslateEnum } from "../../../intl/intl";
 import { ServiceProvidingGroup } from "../../../generated-client";
 import { SpgpaPrintCuSummary } from "./SpgpaPrintCuSummary";
@@ -15,9 +16,6 @@ type TechnologyRow = {
   min: number | undefined;
   max: number | undefined;
 };
-
-const formatKw = (value: number | undefined) =>
-  value !== undefined ? `${Math.round(value * 100) / 100} kW` : "-";
 
 type Props = {
   spg: ServiceProvidingGroup;
@@ -40,25 +38,37 @@ export const SpgpaPrintSpgInfo = ({ spg }: Props) => {
     {
       key: "sum",
       header: "Aggregated rated power",
-      render: (v) => <div className="text-right">{formatKw(v as number)}</div>,
+      render: (v) => (
+        <div className="text-right">
+          {formatScaled(v as number, "W", KILO, KILO)}
+        </div>
+      ),
     },
     {
       key: "average",
       header: "Average rated power",
-      render: (v) => <div className="text-right">{formatKw(v as number)}</div>,
+      render: (v) => (
+        <div className="text-right">
+          {formatScaled(v as number, "W", KILO, KILO)}
+        </div>
+      ),
     },
     {
       key: "min",
       header: "Minimum rated power",
       render: (v) => (
-        <div className="text-right">{formatKw(v as number | undefined)}</div>
+        <div className="text-right">
+          {formatScaled(v as number | undefined, "W", KILO, KILO)}
+        </div>
       ),
     },
     {
       key: "max",
       header: "Maximum rated power",
       render: (v) => (
-        <div className="text-right">{formatKw(v as number | undefined)}</div>
+        <div className="text-right">
+          {formatScaled(v as number | undefined, "W", KILO, KILO)}
+        </div>
       ),
     },
   ];
@@ -89,7 +99,8 @@ export const SpgpaPrintSpgInfo = ({ spg }: Props) => {
                 value={
                   spg.summary.technical_resource.maximum_active_power?.sum ?? 0
                 }
-                unit="kW"
+                unit="W"
+                storageScale={KILO}
               />
               <LabelValue
                 label="Average rated power"
@@ -101,21 +112,24 @@ export const SpgpaPrintSpgInfo = ({ spg }: Props) => {
                       ) / 100
                     : 0
                 }
-                unit="kW"
+                unit="W"
+                storageScale={KILO}
               />
               <LabelValue
                 label="Minimum rated power"
                 value={
                   spg.summary.technical_resource.maximum_active_power?.min ?? 0
                 }
-                unit="kW"
+                unit="W"
+                storageScale={KILO}
               />
               <LabelValue
                 label="Maximum rated power"
                 value={
                   spg.summary.technical_resource.maximum_active_power?.max ?? 0
                 }
-                unit="kW"
+                unit="W"
+                storageScale={KILO}
               />
             </div>
 
