@@ -1,10 +1,12 @@
-import { BodyText, Button, Link, Loader } from "../../components/ui";
+import { BodyText, Button, Link, Loader, Search } from "../../components/ui";
 import { Column, SimpleTable } from "../../components/SimpleTable";
 import {
-  useSpgShowViewModel,
   type SpgMembershipRow,
   useRemoveMembershipFromShow,
+  useSpgShowViewModel,
 } from "./useSpgShowViewModel";
+
+import { useMemo, useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useTranslateField } from "../../intl/intl";
 import { IconCrossCircle, IconUser } from "@elhub/ds-icons";
@@ -58,6 +60,20 @@ export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
   const navigate = useNavigate();
   const t = useTranslateField();
   const { permissions } = usePermissions<Permissions>();
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredCUs = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    let result = data?.rows;
+    if (q) {
+      result = result?.filter(
+        (cu) =>
+          cu.name?.toLowerCase().includes(q) ||
+          (cu.id != null && String(cu.id).includes(q)),
+      );
+    }
+    return result;
+  }, [searchQuery, data?.rows]);
   const canManageMembers = permissions?.allow(
     "service_providing_group_membership",
     "create",
@@ -165,6 +181,17 @@ export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-end">
+        <div className="flex-1 mr-4">
+          <Search
+            label={"Search"}
+            hideLabel
+            clearButtonLabel={"Clear"}
+            placeholder={"Filter by name, id or accounting point id"}
+            value={searchQuery}
+            onChange={(value) => setSearchQuery(value)}
+            onClear={() => setSearchQuery("")}
+          />
+        </div>
         {canManageMembers && (
           <Button
             as={RouterLink}
@@ -179,7 +206,7 @@ export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
       <SimpleTable
         rowClick={(row) => navigate(`/controllable_unit/${row.id}/show`)}
         size="small"
-        data={data?.rows ?? []}
+        data={filteredCUs ?? []}
         columns={columns}
         className="w-full"
         action={
