@@ -5,12 +5,11 @@ import {
   useRemoveMembershipFromShow,
   useSpgShowViewModel,
 } from "./useSpgShowViewModel";
-
+import { usePermissions, useTranslate } from "ra-core";
 import { useMemo, useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useTranslateField } from "../../intl/intl";
 import { IconCrossCircle, IconUser } from "@elhub/ds-icons";
-import { usePermissions } from "ra-core";
 import { Permissions } from "../../auth/permissions";
 import { useConfirmAction } from "../../components/ConfirmAction";
 import { PowerRatio } from "../../components/PowerRatio";
@@ -59,6 +58,7 @@ export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
   const { data, isLoading, error } = useSpgShowViewModel(spgId);
   const navigate = useNavigate();
   const t = useTranslateField();
+  const translate = useTranslate();
   const { permissions } = usePermissions<Permissions>();
   const [searchQuery, setSearchQuery] = useState("");
   const filteredCUs = useMemo(() => {
@@ -183,10 +183,10 @@ export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
       <div className="flex justify-end">
         <div className="flex-1 mr-4">
           <Search
-            label={"Search"}
+            label={translate("text.spg_show_table_search_label")}
             hideLabel
-            clearButtonLabel={"Clear"}
-            placeholder={"Filter by name, id or accounting point id"}
+            clearButtonLabel={translate("text.spg_show_table_search_clear")}
+            placeholder={translate("text.spg_show_table_search_placeholder")}
             value={searchQuery}
             onChange={(value) => setSearchQuery(value)}
             onClear={() => setSearchQuery("")}
