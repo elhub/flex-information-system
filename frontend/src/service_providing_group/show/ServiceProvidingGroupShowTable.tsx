@@ -61,7 +61,6 @@ export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
   const t = useTranslateField();
   const { permissions } = usePermissions<Permissions>();
   const [searchQuery, setSearchQuery] = useState("");
-
   const filteredCUs = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
     let result = data?.rows;
@@ -69,7 +68,8 @@ export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
       result = result?.filter(
         (cu) =>
           cu.name?.toLowerCase().includes(q) ||
-          (cu.id != null && String(cu.id).includes(q)),
+          (cu.id != null && String(cu.id).includes(q)) ||
+          (cu.mpid != null && String(cu.mpid).includes(q)),
       );
     }
     return result;
