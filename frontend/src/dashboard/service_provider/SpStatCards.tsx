@@ -9,7 +9,6 @@ import { useServiceProvidingGroups } from "../hooks/useServiceProvidingGroups";
 import { useControllableUnits } from "../hooks/useControllableUnits";
 import { StatCard } from "../shared/StatCard";
 import { useNotices } from "../hooks/useNotices";
-import { useGetIdentity } from "ra-core";
 import {
   isProductApplicationBlocked,
   getProductApplicationBlockDate,
@@ -20,13 +19,6 @@ export const SpStatCards = () => {
   const spgQuery = useServiceProvidingGroups();
   const cuQuery = useControllableUnits();
   const noticeQuery = useNotices("active");
-  const { data: identity } = useGetIdentity();
-
-  const noticeQueryParams = identity
-    ? new URLSearchParams({
-        filter: JSON.stringify({ party_id: identity?.partyID }),
-      })
-    : undefined;
 
   const isLoading =
     applicationsQuery.isLoading ||
@@ -62,6 +54,7 @@ export const SpStatCards = () => {
         }
         borderClass="border-l-semantic-border-success"
         iconBgClass="bg-semantic-background-success"
+        linkTo="/controllable_unit"
         actionLabel="Create new"
         actionTo="/controllable_unit/lookup"
       />
@@ -76,6 +69,7 @@ export const SpStatCards = () => {
         }
         borderClass="border-l-semantic-border-success"
         iconBgClass="bg-semantic-background-success"
+        linkTo="/service_providing_group"
         actionLabel="Create new"
         actionTo="/service_providing_group/create"
       />
@@ -90,8 +84,9 @@ export const SpStatCards = () => {
         }
         borderClass="border-l-semantic-border-error"
         iconBgClass="bg-semantic-background-error"
+        linkTo="/notice"
         actionLabel="View"
-        actionTo={`/notice?${noticeQueryParams?.toString() || ""}`}
+        actionTo="/notice"
       />
       <StatCard
         label="SP Product Applications"
@@ -104,6 +99,7 @@ export const SpStatCards = () => {
         }
         borderClass="border-l-semantic-border-information"
         iconBgClass="bg-semantic-background-information"
+        linkTo="/service_provider_product_application"
         actionLabel="Create new"
         actionTo="/service_provider_product_application/create"
         actionDisabled={blocked}
@@ -120,6 +116,7 @@ export const SpStatCards = () => {
         }
         borderClass="border-l-semantic-border-information"
         iconBgClass="bg-semantic-background-information"
+        linkTo="/service_providing_group_product_application"
         actionLabel="Create new"
         actionTo="/service_providing_group_product_application/create"
         actionDisabled={blocked}
@@ -136,6 +133,7 @@ export const SpStatCards = () => {
         }
         borderClass="border-l-semantic-border-information"
         iconBgClass="bg-semantic-background-information"
+        linkTo="/service_providing_group_grid_prequalification"
         actionLabel="View"
         actionTo="/service_providing_group_grid_prequalification"
       />

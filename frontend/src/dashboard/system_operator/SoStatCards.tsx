@@ -37,6 +37,7 @@ export const SoStatCards = () => {
         }
         borderClass="border-l-semantic-border-error"
         iconBgClass="bg-semantic-background-error"
+        linkTo="/notice"
       />
     </div>
   );
