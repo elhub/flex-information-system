@@ -1,7 +1,7 @@
 import { useTranslate } from "ra-core";
 import { useSearchParams } from "react-router-dom";
 import { SimpleTable, ColumnOf } from "../../components/SimpleTable";
-import { Tag } from "../../components/ui";
+import { Loader, Tag } from "../../components/ui";
 import { useTranslateEnum } from "../../intl/intl";
 import { EnumLabel } from "../../intl/enum-labels";
 import { TechnicalResourceDetailModal } from "../../controllable_unit/technical_resource/TechnicalResourceDetailModal";
@@ -39,7 +39,11 @@ export const SpgTechnicalResourceList = ({ spgId }: Props) => {
       { replace: true },
     );
 
-  const { data } = useSpgTechnicalResources(spgId);
+  const { data, isLoading } = useSpgTechnicalResources(spgId);
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   const selectedRecord =
     data?.find((r) => r.id === selectedTechnicalResourceId) ?? null;

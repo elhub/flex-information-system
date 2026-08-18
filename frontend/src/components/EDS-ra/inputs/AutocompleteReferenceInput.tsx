@@ -37,7 +37,7 @@ export const AutocompleteReferenceInput = ({
     <ReferenceInput
       source={source}
       reference={reference}
-      perPage={1000}
+      perPage={5000}
       {...rest}
     >
       <ReferenceComboboxInput
