@@ -35,7 +35,8 @@ export function formatScaled(
 ): string {
   if (value === undefined) return "-";
   const converted = convertScale(value, storageScale, displayScale);
-  return `${converted} ${displayScale.prefix}${unit}`;
+  const rounded = roundTo3(converted);
+  return `${rounded} ${displayScale.prefix}${unit}`;
 }
 
 export function roundTo3(n: number): number {
