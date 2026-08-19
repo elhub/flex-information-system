@@ -200,3 +200,60 @@ WHEN (
     AND OLD.status = 'requested' AND NEW.status != 'rejected' -- noqa
 )
 EXECUTE FUNCTION spgpa_sync_grid_prequalifications();
+
+-- changeset flex:service-providing-group-product-application-check-duplicates-function runOnChange:true endDelimiter:--
+-- SPGPA-VAL010
+CREATE OR REPLACE FUNCTION spgpa_check_duplicates()
+RETURNS trigger
+SECURITY DEFINER
+LANGUAGE plpgsql
+AS
+$$
+DECLARE
+    already_applied_product_type_ids bigint [];
+    applied_twice_product_type_ids bigint [];
+    product_type_names text;
+BEGIN
+    -- product types with an existing application for the same SPG and SO
+    SELECT array_agg(DISTINCT product_type_id)
+    INTO already_applied_product_type_ids
+    FROM (
+        SELECT unnest(product_type_ids) AS product_type_id
+        FROM flex.service_providing_group_product_application
+        WHERE service_providing_group_id = NEW.service_providing_group_id
+        AND procuring_system_operator_id = NEW.procuring_system_operator_id
+        AND id <> NEW.id
+    ) pt;
+
+    -- product types in the current application that are in the previous set
+    SELECT ARRAY(
+        SELECT unnest(NEW.product_type_ids)
+        INTERSECT
+        SELECT unnest(already_applied_product_type_ids)
+    )
+    INTO applied_twice_product_type_ids;
+
+    IF array_length(applied_twice_product_type_ids, 1) IS NOT null THEN
+        SELECT array_to_string(array_agg(name), ', ')
+        INTO product_type_names
+        FROM flex.product_type
+        WHERE id = ANY(applied_twice_product_type_ids);
+
+        RAISE sqlstate 'PT400' using
+            message =
+                'Product type(s) '
+                || product_type_names
+                || ' have already been applied for on this service providing group and system operator. Please modify the existing application(s) instead.';
+        RETURN null;
+    END IF;
+
+    RETURN NEW;
+END;
+$$;
+
+-- changeset flex:service-providing-group-product-application-check-duplicates-trigger runOnChange:true endDelimiter:--
+CREATE OR REPLACE TRIGGER spgpa_check_duplicates
+BEFORE INSERT OR UPDATE
+ON flex.service_providing_group_product_application
+FOR EACH ROW
+EXECUTE FUNCTION spgpa_check_duplicates();
