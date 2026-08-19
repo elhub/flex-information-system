@@ -36,13 +36,14 @@ FOR ALL
 TO flex_flexibility_information_system_operator
 USING (true);
 
--- RLS: SPGPA-SP001
 GRANT SELECT, INSERT, UPDATE ON service_providing_group_product_application
 TO flex_service_provider;
+
+-- RLS: SPGPA-SP001
 DROP POLICY IF EXISTS "SPGPA_SP001" ON service_providing_group_product_application;
 CREATE POLICY "SPGPA_SP001"
 ON service_providing_group_product_application
-FOR ALL
+FOR SELECT
 TO flex_service_provider
 USING (
     EXISTS (
@@ -51,6 +52,23 @@ USING (
         WHERE service_providing_group_product_application.service_providing_group_id = service_providing_group.id -- noqa
             AND service_providing_group.service_provider_id = (SELECT flex.current_party()) -- noqa
     )
+);
+
+-- RLS: SPGPA-SP002
+DROP POLICY IF EXISTS "SPGPA_SP001_002" ON service_providing_group_product_application;
+CREATE POLICY "SPGPA_SP001_002"
+ON service_providing_group_product_application
+FOR ALL -- WITH CHECK = INSERT + UPDATE
+TO flex_service_provider
+WITH CHECK (
+    EXISTS (
+        SELECT 1
+        FROM service_providing_group
+        WHERE service_providing_group_product_application.service_providing_group_id = service_providing_group.id -- noqa
+            AND service_providing_group.service_provider_id = (SELECT flex.current_party()) -- noqa
+    )
+    -- NB: always true for INSERT
+    AND service_providing_group_product_application.status = 'requested'
 );
 
 -- RLS: SPGPA-SO001
