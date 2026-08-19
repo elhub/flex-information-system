@@ -112,6 +112,7 @@ service_providing_group_product_application_insert_on_active_spg();
 -- changeset flex:service-providing-group-product-application-sp-status-update-function runOnChange:true endDelimiter:--
 -- trigger to check that a status update done by the SP is always a reset
 -- i.e., rejected->requested
+-- RLS: SPGPA-SP002
 CREATE OR REPLACE FUNCTION
 service_providing_group_product_application_sp_status_update()
 RETURNS trigger
@@ -126,8 +127,9 @@ BEGIN
     THEN
         RAISE sqlstate 'PT400' using
             message =
-                'a service provider can only request a new application process'
-                || ' when it is rejected';
+                'A service provider can only request a new application process'
+                || ' on rejected applications. Other status updates must be'
+                || ' done by the system operator.';
         RETURN null;
     END IF;
 
