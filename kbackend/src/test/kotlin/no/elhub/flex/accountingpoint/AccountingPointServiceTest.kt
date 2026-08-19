@@ -17,6 +17,7 @@ import no.elhub.flex.PostgresTestContainer
 import no.elhub.flex.accountingpoint.db.AccountingPointMeteringGridAreaRepository
 import no.elhub.flex.accountingpoint.db.AccountingPointRepository
 import no.elhub.flex.auth.FlexPrincipal
+import no.elhub.flex.controllableunit.db.ControllableUnitRepository
 import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterService
 import no.elhub.flex.integration.accountingpointadapter.NetworkError
 import no.elhub.flex.integration.accountingpointadapter.NotFoundError
@@ -51,11 +52,13 @@ class AccountingPointServiceTest : FunSpec({
     val accountingPointRepository = mockk<AccountingPointRepository>()
     val meteringGridAreaRepository = mockk<MeteringGridAreaRepository>()
     val accountingPointMeteringGridAreaRepository = mockk<AccountingPointMeteringGridAreaRepository>()
+    val controllableUnitRepository = mockk<ControllableUnitRepository>()
     val service = AccountingPointServiceImpl(
         accountingPointRepository,
         meteringGridAreaRepository,
         accountingPointMeteringGridAreaRepository,
-        mockAdapter
+        mockAdapter,
+        controllableUnitRepository,
     )
 
     val internalPrincipal = FlexPrincipal.internalData()
@@ -447,7 +450,7 @@ class AccountingPointServiceTest : FunSpec({
             val cuStart = Instant.parse("2024-01-01T00:00:00Z")
             val cuspStart = Instant.parse("2024-06-01T00:00:00Z")
             with(internalPrincipal) {
-                coEvery { accountingPointRepository.getAccountingPointStarts(listOf(apId)) } returns mapOf(
+                coEvery { controllableUnitRepository.getAccountingPointStarts(listOf(apId)) } returns mapOf(
                     apKey to AccountingPointStart(
                         accountingPointId = apId,
                         controllableUnitStartTime = cuStart,
@@ -468,7 +471,7 @@ class AccountingPointServiceTest : FunSpec({
             val cuStart = Instant.parse("2024-06-01T00:00:00Z")
             val cuspStart = Instant.parse("2024-01-01T00:00:00Z")
             with(internalPrincipal) {
-                coEvery { accountingPointRepository.getAccountingPointStarts(listOf(apId)) } returns mapOf(
+                coEvery { controllableUnitRepository.getAccountingPointStarts(listOf(apId)) } returns mapOf(
                     apKey to AccountingPointStart(
                         accountingPointId = apId,
                         controllableUnitStartTime = cuStart,
@@ -487,7 +490,7 @@ class AccountingPointServiceTest : FunSpec({
         test("returns CU start when CUSP start is null") {
             val cuStart = Instant.parse("2024-03-01T00:00:00Z")
             with(internalPrincipal) {
-                coEvery { accountingPointRepository.getAccountingPointStarts(listOf(apId)) } returns mapOf(
+                coEvery { controllableUnitRepository.getAccountingPointStarts(listOf(apId)) } returns mapOf(
                     apKey to AccountingPointStart(
                         accountingPointId = apId,
                         controllableUnitStartTime = cuStart,
@@ -503,7 +506,7 @@ class AccountingPointServiceTest : FunSpec({
         test("returns CUSP start when CU start is null") {
             val cuspStart = Instant.parse("2024-03-01T00:00:00Z")
             with(internalPrincipal) {
-                coEvery { accountingPointRepository.getAccountingPointStarts(listOf(apId)) } returns mapOf(
+                coEvery { controllableUnitRepository.getAccountingPointStarts(listOf(apId)) } returns mapOf(
                     apKey to AccountingPointStart(
                         accountingPointId = apId,
                         controllableUnitStartTime = null,
@@ -518,7 +521,7 @@ class AccountingPointServiceTest : FunSpec({
 
         test("returns null when both CU start and CUSP start are null") {
             with(internalPrincipal) {
-                coEvery { accountingPointRepository.getAccountingPointStarts(listOf(apId)) } returns mapOf(
+                coEvery { controllableUnitRepository.getAccountingPointStarts(listOf(apId)) } returns mapOf(
                     apKey to AccountingPointStart(
                         accountingPointId = apId,
                         controllableUnitStartTime = null,
@@ -533,7 +536,7 @@ class AccountingPointServiceTest : FunSpec({
 
         test("maps repository error to InternalServerError") {
             with(internalPrincipal) {
-                coEvery { accountingPointRepository.getAccountingPointStarts(any()) } returns DatabaseError("db failure").left()
+                coEvery { controllableUnitRepository.getAccountingPointStarts(any()) } returns DatabaseError("db failure").left()
             }
 
             val result = with(internalPrincipal) { service.getAccountingPointStarts(listOf(apId)) }

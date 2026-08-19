@@ -8,6 +8,7 @@ import io.ktor.http.HttpStatusCode
 import no.elhub.flex.accountingpoint.db.AccountingPointMeteringGridAreaRepository
 import no.elhub.flex.accountingpoint.db.AccountingPointRepository
 import no.elhub.flex.auth.FlexPrincipal
+import no.elhub.flex.controllableunit.db.ControllableUnitRepository
 import no.elhub.flex.db.FlexTransaction.flexTransaction
 import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterService
 import no.elhub.flex.meteringgridarea.db.MeteringGridAreaRepository
@@ -104,6 +105,7 @@ class AccountingPointServiceImpl(
     private val meteringGridAreaRepository: MeteringGridAreaRepository,
     private val accountingPointMeteringGridAreaRepository: AccountingPointMeteringGridAreaRepository,
     private val accountingPointAdapter: AccountingPointAdapterService,
+    private val controllableUnitRepository: ControllableUnitRepository,
 ) : AccountingPointService {
     companion object {
         private val logger = KotlinLogging.logger {}
@@ -233,7 +235,7 @@ class AccountingPointServiceImpl(
 
     context(principal: FlexPrincipal)
     override suspend fun getAccountingPointStarts(accountingPointIds: List<Long>): Either<AppError, Map<AccountingPointId, Instant?>> =
-        accountingPointRepository.getAccountingPointStarts(accountingPointIds)
+        controllableUnitRepository.getAccountingPointStarts(accountingPointIds)
             .map { apStarts ->
                 apStarts.mapValues {
                     // earliest of both dates, or null if none exists

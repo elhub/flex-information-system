@@ -10,6 +10,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
 import no.elhub.flex.PostgresTestContainer
 import no.elhub.flex.auth.FlexPrincipal
+import no.elhub.flex.model.domain.AccountingPointId
 import no.elhub.flex.model.domain.ControllableUnit
 import no.elhub.flex.model.domain.ControllableUnitStatus
 import no.elhub.flex.model.domain.RegulationDirection
@@ -18,6 +19,7 @@ import java.math.BigDecimal
 import java.sql.Connection
 import java.util.UUID
 import kotlin.time.Clock
+import kotlin.time.Instant
 
 @Suppress("MagicNumber")
 class ControllableUnitRepositoryTest : FunSpec({
@@ -25,6 +27,7 @@ class ControllableUnitRepositoryTest : FunSpec({
     val repo = ControllableUnitRepositoryImpl()
 
     val principal = FlexPrincipal(role = "flex_flexibility_information_system_operator", eid = "0")
+    val internalDataPrincipal = FlexPrincipal.internalData()
 
     beforeTest {
         PostgresTestContainer.withConnection { conn ->
@@ -155,6 +158,59 @@ class ControllableUnitRepositoryTest : FunSpec({
             result shouldContainExactlyInAnyOrder targetSeeded
         }
     }
+
+    context("getAccountingPointStarts") {
+
+        test("returns the earliest CU start_date per accounting point") {
+            // given - two APs, each with two CUs with different start dates
+            val apId1 = insertAccountingPoint(uniqueGsrn())
+            val apId2 = insertAccountingPoint(uniqueGsrn())
+            val earlierDate = "2024-01-01"
+            val laterDate = "2025-06-01"
+            insertControllableUnitWithStartDate(apId1, UUID.randomUUID().toString(), earlierDate)
+            insertControllableUnitWithStartDate(apId1, UUID.randomUUID().toString(), laterDate)
+            insertControllableUnitWithStartDate(apId2, UUID.randomUUID().toString(), laterDate)
+            insertControllableUnitWithStartDate(apId2, UUID.randomUUID().toString(), earlierDate)
+
+            // when
+            val result = with(internalDataPrincipal) {
+                repo.getAccountingPointStarts(listOf(apId1, apId2))
+            }.shouldBeRight()
+
+            // then - each AP's controllableUnitStartTime reflects the earliest CU start_date
+            result.size shouldBe 2
+            val start1 = result[AccountingPointId(apId1)]
+            val start2 = result[AccountingPointId(apId2)]
+            start1?.controllableUnitStartTime shouldBe Instant.parse("2023-12-31T23:00:00Z")
+            start2?.controllableUnitStartTime shouldBe Instant.parse("2023-12-31T23:00:00Z")
+        }
+
+        test("does not include APs not in the input list") {
+            // given - two APs seeded, only one queried
+            val apId1 = insertAccountingPoint(uniqueGsrn())
+            insertAccountingPoint(uniqueGsrn()) // noise
+            insertControllableUnitWithStartDate(apId1, UUID.randomUUID().toString(), "2024-01-01")
+
+            // when
+            val result = with(internalDataPrincipal) {
+                repo.getAccountingPointStarts(listOf(apId1))
+            }.shouldBeRight()
+
+            // then
+            result.size shouldBe 1
+            result.keys shouldContainExactlyInAnyOrder listOf(AccountingPointId(apId1))
+        }
+
+        test("returns empty map for empty input") {
+            // when
+            val result = with(internalDataPrincipal) {
+                repo.getAccountingPointStarts(emptyList())
+            }.shouldBeRight()
+
+            // then
+            result.size shouldBe 0
+        }
+    }
 })
 
 private fun uniqueUuid(): String = UUID.randomUUID().toString()
@@ -244,6 +300,31 @@ private fun insertControllableUnit(conn: Connection, cu: ControllableUnit, apId:
             rs.next()
             rs.getLong(1)
         }
+    }
+
+/** Inserts a controllable unit with a specific start_date (ISO date string, e.g. "2024-01-01"). */
+private fun insertControllableUnitWithStartDate(apId: Long, cuBusinessId: String, startDate: String): Long =
+    PostgresTestContainer.withConnection { conn ->
+        conn.autoCommit = false
+        conn.createStatement().use { it.execute("SELECT flex.set_entity_party_identity(0, 0, 0)") }
+        val id = conn.prepareStatement(
+            """
+            INSERT INTO flex.controllable_unit (business_id, name, start_date, regulation_direction, maximum_active_power, accounting_point_id)
+            VALUES (?::uuid, ?, ?::date, 'up', 100.0, ?)
+            RETURNING id
+            """.trimIndent(),
+        ).use { stmt ->
+            stmt.setString(1, cuBusinessId)
+            stmt.setString(2, "CU $cuBusinessId")
+            stmt.setString(3, startDate)
+            stmt.setLong(4, apId)
+            stmt.executeQuery().use { rs ->
+                rs.next()
+                rs.getLong(1)
+            }
+        }
+        conn.commit()
+        id
     }
 
 private fun insertTechnicalResource(name: String, cuId: Long) =
