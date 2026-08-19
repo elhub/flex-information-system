@@ -159,7 +159,7 @@ class ControllableUnitRepositoryTest : FunSpec({
         }
     }
 
-    context("getAccountingPointStarts") {
+    context("getAccountingPointStartDates") {
 
         test("returns the earliest CU start_date per accounting point") {
             // given - two APs, each with two CUs with different start dates
@@ -174,7 +174,7 @@ class ControllableUnitRepositoryTest : FunSpec({
 
             // when
             val result = with(internalDataPrincipal) {
-                repo.getAccountingPointStarts(listOf(apId1, apId2))
+                repo.getAccountingPointStartDates(listOf(apId1, apId2))
             }.shouldBeRight()
 
             // then - each AP's controllableUnitStartTime reflects the earliest CU start_date
@@ -193,7 +193,7 @@ class ControllableUnitRepositoryTest : FunSpec({
 
             // when
             val result = with(internalDataPrincipal) {
-                repo.getAccountingPointStarts(listOf(apId1))
+                repo.getAccountingPointStartDates(listOf(apId1))
             }.shouldBeRight()
 
             // then
@@ -204,7 +204,7 @@ class ControllableUnitRepositoryTest : FunSpec({
         test("returns empty map for empty input") {
             // when
             val result = with(internalDataPrincipal) {
-                repo.getAccountingPointStarts(emptyList())
+                repo.getAccountingPointStartDates(emptyList())
             }.shouldBeRight()
 
             // then

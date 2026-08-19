@@ -45,7 +45,7 @@ class AccountingPointSyncScheduler(
                 val accountingPoints = accountingPointService.getByIds(accountingPointIdBatch).bind()
 
                 val earliestStartDates = accountingPointService
-                    .getAccountingPointStarts(accountingPoints.map { it.id })
+                    .getAccountingPointStartDates(accountingPoints.map { it.id })
                     .bind()
 
                 accountingPoints.forEach { accountingPoint ->

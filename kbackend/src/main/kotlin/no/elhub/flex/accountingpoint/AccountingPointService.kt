@@ -5,6 +5,8 @@ import arrow.core.flatMap
 import arrow.core.raise.either
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.http.HttpStatusCode
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import no.elhub.flex.accountingpoint.db.AccountingPointMeteringGridAreaRepository
 import no.elhub.flex.accountingpoint.db.AccountingPointRepository
 import no.elhub.flex.auth.FlexPrincipal
@@ -89,13 +91,13 @@ interface AccountingPointService {
      * Gets the earliest date from which we have active data about the given accounting points in the system.
      */
     context(principal: FlexPrincipal)
-    suspend fun getAccountingPointStarts(accountingPointIds: List<Long>): Either<AppError, Map<AccountingPointId, Instant?>>
+    suspend fun getAccountingPointStartDates(accountingPointIds: List<Long>): Either<AppError, Map<AccountingPointId, Instant?>>
 
     /**
      * Gets the earliest date from which we have active data about an accounting point in the system.
      */
     context(principal: FlexPrincipal)
-    suspend fun getAccountingPointStart(accountingPointId: Long): Either<AppError, Instant?>
+    suspend fun getAccountingPointStartDate(accountingPointId: Long): Either<AppError, Instant?>
 }
 
 @Suppress("TooManyFunctions")
@@ -234,26 +236,20 @@ class AccountingPointServiceImpl(
             .mapLeft { InternalServerError(traceIdOrUnknown()) }
 
     context(principal: FlexPrincipal)
-    override suspend fun getAccountingPointStarts(accountingPointIds: List<Long>): Either<AppError, Map<AccountingPointId, Instant?>> =
-        controllableUnitRepository.getAccountingPointStarts(accountingPointIds)
+    override suspend fun getAccountingPointStartDates(accountingPointIds: List<Long>): Either<AppError, Map<AccountingPointId, Instant?>> =
+        controllableUnitRepository.getAccountingPointStartDates(accountingPointIds)
             .map { apStarts ->
                 apStarts.mapValues {
                     // earliest of both dates, or null if none exists
-                    if (it.value.controllableUnitStartTime == null && it.value.controllableUnitServiceProviderValidTimeStart == null) {
-                        null
-                    } else {
-                        minOf(
-                            it.value.controllableUnitStartTime ?: Instant.DISTANT_FUTURE,
-                            it.value.controllableUnitServiceProviderValidTimeStart ?: Instant.DISTANT_FUTURE,
-                        )
-                    }
+                    listOfNotNull(it.value.controllableUnitStartTime, it.value.controllableUnitServiceProviderValidTimeStart)
+                        .minOrNull()
                 }
             }
             .mapLeft { InternalServerError(traceIdOrUnknown()) }
 
     context(principal: FlexPrincipal)
-    override suspend fun getAccountingPointStart(accountingPointId: Long): Either<AppError, Instant?> =
-        getAccountingPointStarts(listOf(accountingPointId)).map { it[AccountingPointId(accountingPointId)] }
+    override suspend fun getAccountingPointStartDate(accountingPointId: Long): Either<AppError, Instant?> =
+        getAccountingPointStartDates(listOf(accountingPointId)).map { it[AccountingPointId(accountingPointId)] }
 
     private suspend fun fetchAccountingPointData(
         accountingPointBusinessId: String,

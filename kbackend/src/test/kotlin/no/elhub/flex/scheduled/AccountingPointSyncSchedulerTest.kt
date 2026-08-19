@@ -57,7 +57,7 @@ class AccountingPointSyncSchedulerTest : FunSpec({
             with(principal) {
                 coEvery { syncRepository.getBatchForSync(any()) } returns listOf(ap1.id, ap2.id).right()
                 coEvery { accountingPointService.getByIds(listOf(ap1.id, ap2.id)) } returns listOf(ap1, ap2).right()
-                coEvery { accountingPointService.getAccountingPointStarts(any()) } returns
+                coEvery { accountingPointService.getAccountingPointStartDates(any()) } returns
                     mapOf(AccountingPointId(ap1.id) to startInstant, AccountingPointId(ap2.id) to startInstant).right()
             }
             coEvery { accountingPointService.synchronizeAccountingPoint(ap1.businessId, any()) } returns Unit.right()
@@ -79,7 +79,7 @@ class AccountingPointSyncSchedulerTest : FunSpec({
             with(principal) {
                 coEvery { syncRepository.getBatchForSync(any()) } returns listOf(ap1.id).right()
                 coEvery { accountingPointService.getByIds(any()) } returns listOf(ap1).right()
-                coEvery { accountingPointService.getAccountingPointStarts(any()) } returns
+                coEvery { accountingPointService.getAccountingPointStartDates(any()) } returns
                     mapOf(AccountingPointId(ap1.id) to null).right()
             }
             coEvery { accountingPointService.synchronizeAccountingPoint(ap1.businessId, capture(validFromSlot)) } returns Unit.right()
@@ -137,12 +137,12 @@ class AccountingPointSyncSchedulerTest : FunSpec({
             coVerify(exactly = 0) { accountingPointService.synchronizeAccountingPoint(any(), any()) }
         }
 
-        test("getAccountingPointStarts failure: no synchronize calls are made") {
+        test("getAccountingPointStartDates failure: no synchronize calls are made") {
             // given
             with(principal) {
                 coEvery { syncRepository.getBatchForSync(any()) } returns listOf(ap1.id).right()
                 coEvery { accountingPointService.getByIds(any()) } returns listOf(ap1).right()
-                coEvery { accountingPointService.getAccountingPointStarts(any()) } returns
+                coEvery { accountingPointService.getAccountingPointStartDates(any()) } returns
                     InternalServerError("trace-id").left()
             }
 
@@ -158,7 +158,7 @@ class AccountingPointSyncSchedulerTest : FunSpec({
             with(principal) {
                 coEvery { syncRepository.getBatchForSync(any()) } returns listOf(ap1.id, ap2.id).right()
                 coEvery { accountingPointService.getByIds(listOf(ap1.id, ap2.id)) } returns listOf(ap1, ap2).right()
-                coEvery { accountingPointService.getAccountingPointStarts(any()) } returns
+                coEvery { accountingPointService.getAccountingPointStartDates(any()) } returns
                     mapOf(AccountingPointId(ap1.id) to startInstant, AccountingPointId(ap2.id) to startInstant).right()
             }
             coEvery { accountingPointService.synchronizeAccountingPoint(ap1.businessId, any()) } returns InternalServerError("trace-id").left()

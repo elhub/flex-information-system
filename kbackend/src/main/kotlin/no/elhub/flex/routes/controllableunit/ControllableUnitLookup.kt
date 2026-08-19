@@ -64,7 +64,7 @@ class ControllableUnitLookup(
                 ).bind()
                 logger.debug { "Found ${controllableUnits.size} non-terminated controllable units on accounting point $accountingPointBusinessId" }
 
-                val validFrom = accountingPointService.getAccountingPointStart(accountingPoint.id).bind()
+                val validFrom = accountingPointService.getAccountingPointStartDate(accountingPoint.id).bind()
                     ?: Instant.todayLocalMidnight(timezone)
                 logger.debug { "Using $validFrom as start date for accounting point sync" }
 

@@ -4,7 +4,6 @@ import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
 import io.github.oshai.kotlinlogging.KotlinLogging
-import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toKotlinLocalDate
 import kotlinx.serialization.json.Json
 import no.elhub.flex.auth.FlexPrincipal
@@ -12,7 +11,7 @@ import no.elhub.flex.db.FlexTransaction.flexTransaction
 import no.elhub.flex.db.prepareNamed
 import no.elhub.flex.db.query
 import no.elhub.flex.model.domain.AccountingPointId
-import no.elhub.flex.model.domain.AccountingPointStart
+import no.elhub.flex.model.domain.AccountingPointStartDates
 import no.elhub.flex.model.domain.ControllableUnit
 import no.elhub.flex.model.domain.ControllableUnitForLookup
 import no.elhub.flex.model.domain.ControllableUnitStatus
@@ -62,7 +61,7 @@ interface ControllableUnitRepository {
      * @param accountingPointIds the internal IDs of the accounting points whose data we want to get
      */
     context(principal: FlexPrincipal)
-    suspend fun getAccountingPointStarts(accountingPointIds: List<Long>): Either<RepositoryError, Map<AccountingPointId, AccountingPointStart>>
+    suspend fun getAccountingPointStartDates(accountingPointIds: List<Long>): Either<RepositoryError, Map<AccountingPointId, AccountingPointStartDates>>
 }
 
 private val logger = KotlinLogging.logger {}
@@ -126,17 +125,15 @@ class ControllableUnitRepositoryImpl : ControllableUnitRepository {
     }
 
     context(principal: FlexPrincipal)
-    override suspend fun getAccountingPointStarts(accountingPointIds: List<Long>): Either<RepositoryError, Map<AccountingPointId, AccountingPointStart>> =
+    override suspend fun getAccountingPointStartDates(accountingPointIds: List<Long>): Either<RepositoryError, Map<AccountingPointId, AccountingPointStartDates>> =
         flexTransaction { conn ->
             Either.catch {
                 conn.prepareNamed(
                     """
                     SELECT
                         cu.accounting_point_id,
-                        MIN(cu.start_date)::timestamp AT TIME ZONE 'Europe/Oslo'
-                            AS controllable_unit_start_time,
-                        MIN(LOWER(cusp.valid_time_range))
-                            AS controllable_unit_service_provider_valid_time_start
+                        MIN(cu.start_date)::timestamp AS controllable_unit_start_time,
+                        MIN(LOWER(cusp.valid_time_range)) AS controllable_unit_service_provider_valid_time_start
                     FROM flex.controllable_unit AS cu
                         LEFT JOIN flex.controllable_unit_service_provider AS cusp
                             ON cu.id = cusp.controllable_unit_id
@@ -147,8 +144,7 @@ class ControllableUnitRepositoryImpl : ControllableUnitRepository {
                 ).query { rs ->
                     val accountingPointId = rs.getLong("accounting_point_id")
                     AccountingPointId(accountingPointId) to
-                        AccountingPointStart(
-                            accountingPointId = accountingPointId,
+                        AccountingPointStartDates(
                             controllableUnitStartTime = rs.getTimestamp("controllable_unit_start_time").toKotlinInstantOrNull(),
                             controllableUnitServiceProviderValidTimeStart = rs.getTimestamp("controllable_unit_service_provider_valid_time_start").toKotlinInstantOrNull(),
                         )
