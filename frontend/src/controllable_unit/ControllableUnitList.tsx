@@ -186,7 +186,7 @@ export const ControllableUnitList = () => {
 
     const rows = controllableUnits.map((record) => {
       return {
-        id: record.accounting_point_id,
+        id: record.id,
         business_id: record.business_id,
         accounting_point:
           accountingPointById.get(record.accounting_point_id) ?? "",
