@@ -1,5 +1,7 @@
 import { Link as RouterLink } from "react-router-dom";
+import type { Exporter } from "ra-core";
 import {
+  defaultExporter,
   useGetIdentity,
   useGetList,
   useGetOne,
@@ -25,8 +27,9 @@ import { getFields } from "../zod";
 import { IconPlus } from "@elhub/ds-icons";
 import { findCurrentlyValidRecord } from "../util";
 import type {
-  AccountingPointBiddingZone,
   AccountingPointBalanceResponsibleParty,
+  AccountingPointBiddingZone,
+  ControllableUnit,
 } from "../generated-client";
 
 const CULookupButton = () => (
@@ -157,10 +160,43 @@ export const ControllableUnitList = () => {
 
   const fields = getFields(zControllableUnit.shape);
 
+  const exporter: Exporter = async (
+    records,
+    fetchRelatedRecords,
+    dataProvider,
+    resource,
+  ) => {
+    const { data } = await dataProvider.getList<ControllableUnit>(
+      "controllable_unit",
+      {
+        filter: { embed: "accounting_point" },
+        pagination: { page: 1, perPage: 100000 },
+        sort: { field: "id", order: "DESC" },
+      },
+    );
+
+    const rows = data.map((record) => ({
+      id: record.id,
+      business_id: record.business_id,
+      accounting_point: record.accounting_point?.business_id ?? "",
+      name: record.name,
+      maximum_active_power: record.maximum_active_power,
+      is_small: record.is_small,
+      regulation_direction: record.regulation_direction,
+      start_date: record.start_date,
+      status: record.status,
+      additional_information: record.additional_information,
+      recorded_by: record.recorded_by,
+      recorded_at: record.recorded_at,
+    }));
+
+    defaultExporter(rows, fetchRelatedRecords, dataProvider, resource);
+  };
+
   const actions = [
     ...(canLookup ? [<CULookupButton key="lookup" />] : []),
     ...(isFiso ? [<CreateButton key="create" />] : []),
-    <ExportButton key="export" maxResults={100000} />,
+    <ExportButton key="export" exporter={exporter} maxResults={100000} />,
   ];
 
   return (
