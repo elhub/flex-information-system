@@ -226,7 +226,7 @@ type ApiEvent struct {
 	Type        string
 	Source      string
 	Subject     *string
-	Data        *string
+	Data        []byte
 }
 
 type ApiIdentity struct {

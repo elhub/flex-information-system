@@ -729,6 +729,73 @@
                     }
                 }
             },
+            "event_data_updated_fields": {
+                "type": "object",
+                "description": "Common format of the data field in events concerning update operations.",
+                "required": [
+                    "kind",
+                    "updated_fields"
+                ],
+                "properties": {
+                    "kind": {
+                        "description": "Identifies the event data schema for discriminated union deserialization.",
+                        "type": "string",
+                        "const": "event.data.updated_fields"
+                    },
+                    "updated_fields": {
+                        "description": "Names of the fields that were modified by the update.",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "text"
+                        },
+                        "example": [
+                            "status",
+                            "valid_from"
+                        ]
+                    }
+                },
+                "additionalProperties": false
+            },
+            "event_data_controllable_unit_lookup": {
+                "type": "object",
+                "description": "Format of the data field in a controllable_unit.lookup event.",
+                "required": [
+                    "kind",
+                    "requesting_party_id"
+                ],
+                "properties": {
+                    "kind": {
+                        "description": "Identifies the event data schema for discriminated union deserialization.",
+                        "type": "string",
+                        "const": "event.data.controllable_unit.lookup"
+                    },
+                    "requesting_party_id": {
+                        "description": "The party that performed the controllable unit lookup.",
+                        "type": "integer",
+                        "format": "bigint",
+                        "example": 42
+                    }
+                },
+                "additionalProperties": false
+            },
+            "event_data": {
+                "oneOf": [
+                    {
+                        "$ref": "#/components/schemas/event_data_updated_fields"
+                    },
+                    {
+                        "$ref": "#/components/schemas/event_data_controllable_unit_lookup"
+                    }
+                ],
+                "discriminator": {
+                    "propertyName": "kind",
+                    "mapping": {
+                        "event.data.updated_fields": "#/components/schemas/event_data_updated_fields",
+                        "event.data.controllable_unit.lookup": "#/components/schemas/event_data_controllable_unit_lookup"
+                    }
+                }
+            },
             "numeric_aggregation": {
                 "type": "object",
                 "properties": {
@@ -4360,8 +4427,15 @@
                     },
                     "data": {
                         "description": "The data of the event.",
-                        "format": "text",
-                        "type": "string",
+                        "type": "object",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/event_data"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
                         "readOnly": true,
                         "nullable": true
                     },

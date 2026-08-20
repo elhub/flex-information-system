@@ -382,6 +382,42 @@ export type NoticeData =
       kind: "notice.data.product_type.not_qualified";
     } & NoticeDataProductTypeNotQualified);
 
+/**
+ * Common format of the data field in events concerning update operations.
+ */
+export type EventDataUpdatedFields = {
+  /**
+   * Identifies the event data schema for discriminated union deserialization.
+   */
+  kind: "event.data.updated_fields";
+  /**
+   * Names of the fields that were modified by the update.
+   */
+  updated_fields: Array<string>;
+};
+
+/**
+ * Format of the data field in a controllable_unit.lookup event.
+ */
+export type EventDataControllableUnitLookup = {
+  /**
+   * Identifies the event data schema for discriminated union deserialization.
+   */
+  kind: "event.data.controllable_unit.lookup";
+  /**
+   * The party that performed the controllable unit lookup.
+   */
+  requesting_party_id: number;
+};
+
+export type EventData =
+  | ({
+      kind: "event.data.updated_fields";
+    } & EventDataUpdatedFields)
+  | ({
+      kind: "event.data.controllable_unit.lookup";
+    } & EventDataControllableUnitLookup);
+
 export type NumericAggregation = {
   sum?: number;
   average?: number;
@@ -2133,7 +2169,7 @@ export type Event = {
   /**
    * The data of the event.
    */
-  readonly data?: string;
+  readonly data?: EventData | null;
   /**
    * Embedded notification
    */
