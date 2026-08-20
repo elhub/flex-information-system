@@ -19,11 +19,9 @@ import {
   getProductApplicationBlockDate,
 } from "../../productApplicationBlock";
 import { ProductTypeArrayField } from "../../components/ProductTypeArrayField";
-import {
-  ServiceProvidingGroupStatus,
-  ServiceProvidingGroupProductApplicationStatus,
-} from "../../generated-client";
+import { ServiceProvidingGroupStatus } from "../../generated-client";
 import { useSpgpaDrafts } from "../../hooks/useSpgpaDrafts";
+import { DRAFT_STATUS } from "../product_application/spgpaStatus";
 
 type Props = {
   spgId: number;
@@ -95,16 +93,13 @@ export const ServiceProvidingGroupShowProductApplicationsTable = ({
     drafts
       .filter((d) => d.spgId === spgId)
       .map((d, i) => ({
-        // Use a large negative offset per index to guarantee unique numeric IDs
-        // across multiple drafts for the same SPG.
-        id: -(i + 1) as unknown as number,
+        id: -(i + 1),
         __draftId: d.draftId,
         procuringSystemOperatorName: d.systemOperatorName ?? "",
         productTypeIds: d.values.product_type_ids ?? [],
         maximumActivePowerUp: d.values.maximum_active_power_up ?? 0,
         maximumActivePowerDown: d.values.maximum_active_power_down ?? 0,
-        status:
-          "draft" as unknown as ServiceProvidingGroupProductApplicationStatus,
+        status: DRAFT_STATUS,
       }));
 
   const tableData = [...draftRows, ...(data ?? [])];
