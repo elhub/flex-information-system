@@ -18,6 +18,7 @@ import { NoticePartyMissing } from "./details/NoticePartyMissing";
 import { NoticePartyOutdated } from "./details/NoticePartyOutdated";
 import { NoticePartyResidual } from "./details/NoticePartyResidual";
 import noticeTypes from "./noticeTypes";
+import type { ReactNode } from "react";
 
 import { Link } from "react-router-dom";
 
@@ -28,6 +29,8 @@ type Notice = GNotice & {
 type NoticeShowDetailsProps = {
   notice: Notice;
 };
+
+type NoticeDetailsRenderer = (notice: Notice) => ReactNode;
 
 // component to show details of a notice of type
 // no.elhub.flex.controllable_unit_service_provider.valid_time.outside_contract
@@ -93,32 +96,32 @@ const NoticeSPPSProductTypeNotQualifiedShowDetails = ({
   );
 };
 
+const noticeDetailsRenderers: Record<string, NoticeDetailsRenderer> = {
+  "no.elhub.flex.party.outdated": (notice) => (
+    <NoticePartyOutdated source={notice.source} noticeData={notice.data} />
+  ),
+  "no.elhub.flex.party.missing": (notice) => (
+    <NoticePartyMissing noticeData={notice.data} />
+  ),
+  "no.elhub.flex.party.residual": (notice) => (
+    <NoticePartyResidual source={notice.source} />
+  ),
+  "no.elhub.flex.controllable_unit_service_provider.valid_time.outside_contract":
+    (notice) => (
+      <NoticeCUSPValidTimeOutsideContractShowDetails notice={notice} />
+    ),
+  "no.elhub.flex.service_provider_product_suspension.product_type.not_qualified":
+    (notice) => (
+      <NoticeSPPSProductTypeNotQualifiedShowDetails notice={notice} />
+    ),
+};
+
 export const NoticeShowDetails = () => {
   const record = useRecordContext<Notice>();
   const noticeType = noticeTypes.find((nt) => nt.id === record?.type);
-  const typeSpecificDetails = () => {
-    switch (record?.type) {
-      case "no.elhub.flex.party.outdated":
-        return (
-          <NoticePartyOutdated
-            source={record.source}
-            noticeData={record.data}
-          />
-        );
-      case "no.elhub.flex.party.missing":
-        return <NoticePartyMissing noticeData={record.data} />;
-      case "no.elhub.flex.party.residual":
-        return <NoticePartyResidual source={record.source} />;
-      case "no.elhub.flex.controllable_unit_service_provider.valid_time.outside_contract":
-        return (
-          <NoticeCUSPValidTimeOutsideContractShowDetails notice={record} />
-        );
-      case "no.elhub.flex.service_provider_product_suspension.product_type.not_qualified":
-        return <NoticeSPPSProductTypeNotQualifiedShowDetails notice={record} />;
-      default:
-        return null;
-    }
-  };
+  const typeSpecificDetails = record
+    ? noticeDetailsRenderers[record.type]?.(record)
+    : null;
 
   return (
     <>
@@ -151,7 +154,7 @@ export const NoticeShowDetails = () => {
           <VerticalSpace />
         </>
       )}
-      {typeSpecificDetails() ?? (
+      {typeSpecificDetails ?? (
         <BodyText>No additional details on this notice.</BodyText>
       )}
     </>
