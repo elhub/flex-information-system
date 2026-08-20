@@ -68,7 +68,7 @@ export const ServiceProvidingGroupShow = () => {
       }}
       title={`Group Details - ${spg.name}`}
       alerts={<ServiceProvidingGroupAlerts spg={spg} />}
-      toolbar={
+      titleExtra={
         <div className="flex items-center gap-2">
           <span className="text-sm font-medium">Display unit:</span>
           <ScaleToggle

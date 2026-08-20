@@ -45,7 +45,7 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
       badge={<SpgpaStatusBadge status={spgpa.status} />}
       actionBar={canUpdateStatus ? <SpgpaActionBar spgpa={spgpa} /> : undefined}
       alerts={<SpgpaAlerts spgpa={spgpa} />}
-      toolbar={
+      titleExtra={
         <div className="flex items-center gap-2">
           <span className="text-sm font-medium">Display unit:</span>
           <ScaleToggle
