@@ -10,7 +10,11 @@ import { TextField } from "../../components/EDS-ra/fields";
 import { SpgpaStatusBadge } from "../../components/SpgpaStatusBadge";
 import { Button, Tooltip } from "../../components/ui";
 import { useTranslateField } from "../../intl/intl";
-import { IconPlus, IconQuestionCircleOutlined } from "@elhub/ds-icons";
+import {
+  IconPlus,
+  IconQuestionCircleOutlined,
+  IconTrash,
+} from "@elhub/ds-icons";
 import { Permissions } from "../../auth/permissions";
 import { ProductTypeArrayField } from "../../components/ProductTypeArrayField";
 import {
@@ -19,6 +23,8 @@ import {
 } from "../../productApplicationBlock";
 import { zServiceProvidingGroupProductApplication } from "../../generated-client/zod.gen";
 import { getFields } from "../../zod";
+import { useSpgpaDrafts } from "../../hooks/useSpgpaDrafts";
+import { DRAFT_STATUS } from "./spgpaStatus";
 
 const CreateButton = ({ id }: { id: any }) => (
   <Button
@@ -57,6 +63,7 @@ export const ServiceProvidingGroupProductApplicationList = () => {
   const id = record?.id;
   const t = useTranslateField();
   const { permissions, isLoading } = usePermissions<Permissions>();
+  const { drafts, deleteDraft } = useSpgpaDrafts();
 
   if (isLoading) return null;
 
@@ -81,6 +88,30 @@ export const ServiceProvidingGroupProductApplicationList = () => {
       ? [<CreateButton key="create" id={id} />]
       : [];
 
+  const visibleDrafts = id
+    ? drafts.filter((d) => d.spgId === Number(id))
+    : drafts;
+
+  const prependData = visibleDrafts.map((draft, i) => ({
+    id: -(i + 1),
+    service_providing_group: {
+      name: draft.spgName,
+      service_provider: { name: undefined },
+      summary: {
+        controllable_unit: { maximum_active_power: { sum: undefined } },
+        technical_resource: { maximum_active_power: { sum: undefined } },
+      },
+    },
+    procuring_system_operator: { name: draft.systemOperatorName },
+    product_type_ids: draft.values.product_type_ids,
+    maximum_active_power_up: draft.values.maximum_active_power_up,
+    maximum_active_power_down: draft.values.maximum_active_power_down,
+    status: DRAFT_STATUS,
+    __draftValues: draft.values,
+    __draftId: draft.draftId,
+    __spgId: draft.spgId,
+  }));
+
   return (
     <ResourceContextProvider value="service_providing_group_product_application">
       <List
@@ -102,9 +133,33 @@ export const ServiceProvidingGroupProductApplicationList = () => {
         disableSyncWithLocation
       >
         <Datagrid
-          rowClick={(r) =>
-            `/service_providing_group_product_application/${r.id}/show`
-          }
+          prependData={prependData}
+          rowActions={(r) => {
+            const row = r as (typeof prependData)[number];
+            if (!row.__draftId) return null;
+            return (
+              <Button
+                variant="invisible"
+                size="small"
+                icon={IconTrash}
+                aria-label="Delete draft"
+                onClick={() => deleteDraft(row.__spgId, row.__draftId)}
+              />
+            );
+          }}
+          rowClick={(r) => {
+            if (r.__draftId) {
+              const row = r as (typeof prependData)[number];
+              const createPath = row.__spgId
+                ? `/service_providing_group/${row.__spgId}/product_application/create`
+                : "/service_providing_group_product_application/create";
+              return {
+                to: createPath,
+                state: { ...row.__draftValues, __draftId: row.__draftId },
+              };
+            }
+            return `/service_providing_group_product_application/${r.id}/show`;
+          }}
         >
           <TextField source={fields.id.source} />
           {!record?.id && (
@@ -171,8 +226,8 @@ export const ServiceProvidingGroupProductApplicationList = () => {
           )}
           <FunctionField
             label={t("service_providing_group_product_application.status")}
-            render={(record: { status: string }) => (
-              <SpgpaStatusBadge status={record.status} />
+            render={(r: { status: string }) => (
+              <SpgpaStatusBadge status={r.status} />
             )}
           />
         </Datagrid>

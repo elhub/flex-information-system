@@ -11,6 +11,7 @@ type FormToolbarWithConfirmationProps = {
   saveLabel?: string;
   cancelLabel?: string;
   onCancel?: () => void;
+  onSuccess?: () => void;
   saveAlwaysEnabled?: boolean;
   className?: string;
 };
@@ -21,6 +22,7 @@ export const FormToolbarWithConfirmation = ({
   saveLabel,
   cancelLabel,
   onCancel,
+  onSuccess,
   saveAlwaysEnabled = false,
   className,
 }: FormToolbarWithConfirmationProps) => {
@@ -42,7 +44,12 @@ export const FormToolbarWithConfirmation = ({
     content: confirmContent,
     confirmText: resolvedSaveLabel,
     cancelText: resolvedCancelLabel,
-    onConfirm: () => save && handleSubmit(save as SubmitHandler<FieldValues>)(),
+    onConfirm: async () => {
+      if (save) {
+        await handleSubmit(save as SubmitHandler<FieldValues>)();
+        onSuccess?.();
+      }
+    },
   });
 
   return (

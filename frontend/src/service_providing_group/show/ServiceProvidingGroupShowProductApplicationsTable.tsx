@@ -7,7 +7,11 @@ import {
 } from "./useSpgProductApplications";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useTranslateField } from "../../intl/intl";
-import { IconPlus, IconQuestionCircleOutlined } from "@elhub/ds-icons";
+import {
+  IconPlus,
+  IconQuestionCircleOutlined,
+  IconTrash,
+} from "@elhub/ds-icons";
 import { usePermissions } from "ra-core";
 import { Permissions } from "../../auth/permissions";
 import {
@@ -15,7 +19,11 @@ import {
   getProductApplicationBlockDate,
 } from "../../productApplicationBlock";
 import { ProductTypeArrayField } from "../../components/ProductTypeArrayField";
-import { ServiceProvidingGroupStatus } from "../../generated-client";
+import {
+  ServiceProvidingGroupStatus,
+  ServiceProvidingGroupProductApplicationStatus,
+} from "../../generated-client";
+import { useSpgpaDrafts } from "../../hooks/useSpgpaDrafts";
 
 type Props = {
   spgId: number;
@@ -30,6 +38,7 @@ export const ServiceProvidingGroupShowProductApplicationsTable = ({
   const navigate = useNavigate();
   const t = useTranslateField();
   const { permissions } = usePermissions<Permissions>();
+  const { drafts, deleteDraft } = useSpgpaDrafts();
   const canCreate = permissions?.allow(
     "service_providing_group_product_application",
     "create",
@@ -82,6 +91,24 @@ export const ServiceProvidingGroupShowProductApplicationsTable = ({
     throw error;
   }
 
+  const draftRows: (SpgProductApplicationRow & { __draftId?: string })[] =
+    drafts
+      .filter((d) => d.spgId === spgId)
+      .map((d, i) => ({
+        // Use a large negative offset per index to guarantee unique numeric IDs
+        // across multiple drafts for the same SPG.
+        id: -(i + 1) as unknown as number,
+        __draftId: d.draftId,
+        procuringSystemOperatorName: d.systemOperatorName ?? "",
+        productTypeIds: d.values.product_type_ids ?? [],
+        maximumActivePowerUp: d.values.maximum_active_power_up ?? 0,
+        maximumActivePowerDown: d.values.maximum_active_power_down ?? 0,
+        status:
+          "draft" as unknown as ServiceProvidingGroupProductApplicationStatus,
+      }));
+
+  const tableData = [...draftRows, ...(data ?? [])];
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-end">
@@ -117,13 +144,45 @@ export const ServiceProvidingGroupShowProductApplicationsTable = ({
           ))}
       </div>
       <SimpleTable
-        rowClick={(row) =>
-          navigate(
-            `/service_providing_group/${spgId}/product_application/${row.id}/show`,
-          )
+        rowKey={(row) =>
+          (row as SpgProductApplicationRow & { __draftId?: string })
+            .__draftId ?? String(row.id)
         }
+        rowActions={(row) => {
+          const draftId = (
+            row as SpgProductApplicationRow & { __draftId?: string }
+          ).__draftId;
+          if (draftId === undefined) return null;
+          return (
+            <Button
+              variant="invisible"
+              size="small"
+              icon={IconTrash}
+              aria-label="Delete draft"
+              onClick={() => deleteDraft(spgId, draftId)}
+            />
+          );
+        }}
+        rowClick={(row) => {
+          const draftId = (
+            row as SpgProductApplicationRow & { __draftId?: string }
+          ).__draftId;
+          if (draftId !== undefined) {
+            const draft = drafts.find(
+              (d) => d.spgId === spgId && d.draftId === draftId,
+            );
+            navigate(
+              `/service_providing_group/${spgId}/product_application/create`,
+              { state: { ...draft?.values, __draftId: draftId } },
+            );
+          } else {
+            navigate(
+              `/service_providing_group/${spgId}/product_application/${row.id}/show`,
+            );
+          }
+        }}
         size="small"
-        data={data ?? []}
+        data={tableData}
         columns={columns}
         className="w-full"
       />
