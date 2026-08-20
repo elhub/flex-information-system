@@ -54,12 +54,11 @@ USING (
     )
 );
 
--- RLS: SPGPA-SP002
-DROP POLICY IF EXISTS "SPGPA_SP001_002_INSERT"
+DROP POLICY IF EXISTS "SPGPA_SP001_INSERT"
 ON service_providing_group_product_application;
-CREATE POLICY "SPGPA_SP001_002_INSERT"
+CREATE POLICY "SPGPA_SP001_INSERT"
 ON service_providing_group_product_application
-FOR INSERT -- WITH CHECK only (no USING for INSERT)
+FOR INSERT
 TO flex_service_provider
 WITH CHECK (
     EXISTS (
@@ -70,9 +69,10 @@ WITH CHECK (
     )
 );
 
-DROP POLICY IF EXISTS "SPGPA_SP002_UPDATE"
+-- RLS: SPGPA-SP002
+DROP POLICY IF EXISTS "SPGPA_SP002"
 ON service_providing_group_product_application;
-CREATE POLICY "SPGPA_SP002_UPDATE"
+CREATE POLICY "SPGPA_SP002"
 ON service_providing_group_product_application
 FOR UPDATE
 TO flex_service_provider
