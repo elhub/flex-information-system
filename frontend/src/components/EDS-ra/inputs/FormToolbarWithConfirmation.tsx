@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
-import { useSaveContext, useTranslate } from "ra-core";
-import { FieldValues, SubmitHandler, useFormContext } from "react-hook-form";
+import { SaveHandler, useSaveContext, useTranslate } from "ra-core";
+import { FieldValues, useFormContext } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useConfirmAction } from "../../ConfirmAction";
 import { Button } from "../../ui";
@@ -47,8 +47,9 @@ export const FormToolbarWithConfirmation = ({
     onConfirm: async () => {
       if (!save) return;
       await handleSubmit(async (values) => {
-        await (save as SubmitHandler<FieldValues>)(values);
-        onSuccess?.();
+        await (save as SaveHandler<FieldValues>)(values, {
+          onSuccess: () => onSuccess?.(),
+        });
       })();
     },
   });
