@@ -68,10 +68,12 @@ BEGIN
 
     l_event_data := null;
     IF TG_OP = 'UPDATE' THEN
-        SELECT jsonb_build_object(
-            'kind', 'event.data.updated_fields',
-            'updated_fields', array_agg(pre.key)
-        )
+        SELECT (
+            '{'
+            || '"kind": "event.data.updated_fields",'
+            || '"updated_fields": ' || to_jsonb(array_agg(pre.key))::text
+            || '}'
+        )::jsonb
         INTO l_event_data
         -- fields that changed from OLD to NEW
         FROM jsonb_each(to_jsonb(OLD)) AS pre

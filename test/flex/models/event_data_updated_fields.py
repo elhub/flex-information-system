@@ -15,8 +15,7 @@ class EventDataUpdatedFields:
     Attributes:
         kind (Literal['event.data.updated_fields']): Identifies the event data schema for discriminated union
             deserialization.
-        updated_fields (list[str]): Names of the fields that were modified by the update. Example: ['status',
-            'valid_from'].
+        updated_fields (list[str]): Names of the fields that were modified by the update. Example: ['status'].
     """
 
     kind: Literal["event.data.updated_fields"]

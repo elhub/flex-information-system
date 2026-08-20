@@ -736,8 +736,7 @@
                             "format": "text"
                         },
                         "example": [
-                            "status",
-                            "valid_from"
+                            "status"
                         ]
                     }
                 },
