@@ -12,7 +12,6 @@ import { useTranslateField } from "../../intl/intl";
 import { IconCrossCircle, IconUser } from "@elhub/ds-icons";
 import { Permissions } from "../../auth/permissions";
 import { useConfirmAction } from "../../components/ConfirmAction";
-import { PowerRatio } from "../../components/PowerRatio";
 import { RegulationDirectionIcon } from "../../controllable_unit/RegulationDirectionField";
 import { ControllableUnitRegulationDirection } from "../../generated-client";
 
@@ -134,15 +133,7 @@ export const ServiceProvidingGroupShowTable = ({ spgId }: Props) => {
     {
       key: "maximum_active_power",
       header: t("controllable_unit.maximum_active_power"),
-      render: (value, row) => (
-        <div className="flex items-center justify-end gap-3">
-          <span>{String(value)} kW</span>
-          <PowerRatio
-            flexiblePower={row.maximum_active_power}
-            ratedPower={row.rated_power}
-          />
-        </div>
-      ),
+      render: (value) => <div className="text-right">{String(value)} kW</div>,
     },
     {
       key: "regulation_direction",

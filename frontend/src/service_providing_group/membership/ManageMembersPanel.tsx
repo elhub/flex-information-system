@@ -10,7 +10,6 @@ import {
   Tooltip,
 } from "../../components/ui";
 import { Column, SimpleTable } from "../../components/SimpleTable";
-import { PowerRatio } from "../../components/PowerRatio";
 import { AccountingPointLink } from "../../components/AccountingPointLink";
 import { CuStatusBadge } from "../../components/CuStatusBadge";
 import { useTranslateField } from "../../intl/intl";
@@ -127,15 +126,7 @@ export const ManageMembersPanel = ({
       {
         key: "maximum_active_power",
         header: t("controllable_unit.maximum_active_power"),
-        render: (v, row) => (
-          <div className="flex items-center justify-end gap-3">
-            <span>{String(v)} kW</span>
-            <PowerRatio
-              flexiblePower={row.maximum_active_power}
-              ratedPower={row.rated_power}
-            />
-          </div>
-        ),
+        render: (v) => `${String(v)} kW`,
       },
       baseColumns[4], // status
     ],
