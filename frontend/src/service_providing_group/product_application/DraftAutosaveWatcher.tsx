@@ -70,10 +70,14 @@ export const DraftAutosaveWatcher = ({
             verified_at: values.verified_at,
           },
         };
-        localStorage.setItem(
-          draftStorageKey(spgId, draftId),
-          JSON.stringify(entry),
-        );
+        try {
+          localStorage.setItem(
+            draftStorageKey(spgId, draftId),
+            JSON.stringify(entry),
+          );
+        } catch {
+          // Ignore write failures (e.g. quota exceeded, disabled storage)
+        }
       }, AUTOSAVE_DELAY_MS);
     });
 
