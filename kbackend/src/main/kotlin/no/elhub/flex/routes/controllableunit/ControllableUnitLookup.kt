@@ -50,8 +50,10 @@ class ControllableUnitLookup(
                 val request = call.body<ControllableUnitLookupRequest>().bind()
                     .let { validateInput(it).bind() }
 
-                val accountingPointBusinessId = request.accountingPointBusinessId?.value
-                    ?: accountingPointService.getCurrentAccountingPoint(request.controllableUnitBusinessId).bind().businessId
+                val accountingPoint = request.accountingPointBusinessId
+                    ?.let { accountingPointService.getAccountingPointByBusinessId(it.value).bind() }
+                    ?: accountingPointService.getCurrentAccountingPoint(request.controllableUnitBusinessId).bind()
+                val accountingPointBusinessId = accountingPoint.businessId
 
                 logger.debug { "Controllable unit used in lookup: ${request.controllableUnitBusinessId}" }
                 logger.debug { "Accounting point used in lookup: $accountingPointBusinessId" }
@@ -62,7 +64,7 @@ class ControllableUnitLookup(
                 ).bind()
                 logger.debug { "Found ${controllableUnits.size} non-terminated controllable units on accounting point $accountingPointBusinessId" }
 
-                val validFrom = controllableUnits.mapNotNull { it.startDate }.minByOrNull { it }?.asLocalMidnightInstant(timezone)
+                val validFrom = accountingPointService.getAccountingPointStartDate(accountingPoint.id).bind()
                     ?: Instant.todayLocalMidnight(timezone)
                 logger.debug { "Using $validFrom as start date for accounting point sync" }
 
@@ -76,7 +78,6 @@ class ControllableUnitLookup(
                     request.endUser,
                     accountingPointBusinessId
                 ).bind()
-                val accountingPoint = accountingPointService.getAccountingPointByBusinessId(accountingPointBusinessId).bind()
 
                 insertLookupEvent(
                     accountingPoint.id,

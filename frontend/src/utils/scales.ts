@@ -31,7 +31,7 @@ export function formatScaled(
   value: number | undefined,
   unit: string,
   storageScale: Scale,
-  displayScale: Scale,
+  displayScale: Scale = storageScale,
 ): string {
   if (value === undefined) return "-";
   const converted = convertScale(value, storageScale, displayScale);

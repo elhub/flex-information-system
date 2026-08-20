@@ -37,6 +37,9 @@ export type TextKey =
   | "spg_manage_members_heading"
   | "spg_manage_members_heading_no_name"
   | "spg_manage_members_body"
+  | "spg_show_table_search_label"
+  | "spg_show_table_search_clear"
+  | "spg_show_table_search_placeholder"
   | "spg_manage_members_search_label"
   | "spg_manage_members_search_clear"
   | "spg_manage_members_search_placeholder"
@@ -178,6 +181,10 @@ export const text: Record<string, Record<TextKey, string>> = {
       "This field is meant to capture any additional information about the service providing group that might be relevant.",
     spg_create_additional_information_placeholder:
       "This field is optional and can be left empty.",
+    spg_show_table_search_label: "Search",
+    spg_show_table_search_clear: "Clear",
+    spg_show_table_search_placeholder:
+      "Filter by name, id or accounting point id",
     user_dropdown_logout: "Logout",
     user_dropdown_user_guide: "User guide",
     user_dropdown_create_user_guide: "Create user guide",
@@ -297,6 +304,10 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Dette feltet er ment å fange opp eventuell tilleggsinformasjon om fleksibilitetsgruppen som kan være relevant.",
     spg_create_additional_information_placeholder:
       "Dette feltet er valgfritt og kan stå tomt.",
+    spg_show_table_search_label: "S\u00f8k",
+    spg_show_table_search_clear: "Fjern",
+    spg_show_table_search_placeholder:
+      "Filtrer p\u00e5 navn, id eller avregningspunkt",
     user_dropdown_logout: "Logg ut",
     user_dropdown_user_guide: "Brukerveiledning",
     user_dropdown_create_user_guide: "Opprett Ny bruker veiledning",

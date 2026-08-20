@@ -19,7 +19,6 @@ import { useControllableUnitsInSpg } from "../membership/useSpgMemberships";
 import { LabelValue } from "../../components/LabelValue";
 import { SimpleTable } from "../../components/SimpleTable";
 import { useTranslateField } from "../../intl/intl";
-import { PowerRatio } from "../../components/PowerRatio";
 
 export const ServiceProvidingGroupActivate = () => {
   const translate = useTranslate();
@@ -96,18 +95,7 @@ export const ServiceProvidingGroupActivate = () => {
     {
       key: "maximum_active_power" as const,
       header: t("controllable_unit.maximum_active_power"),
-      render: (
-        v: unknown,
-        row: { maximum_active_power: number; rated_power?: number },
-      ) => (
-        <div className="flex items-center justify-end gap-3">
-          <span>{String(v)} kW</span>
-          <PowerRatio
-            flexiblePower={row.maximum_active_power}
-            ratedPower={row.rated_power}
-          />
-        </div>
-      ),
+      render: (v: unknown) => (v != null ? `${String(v)} kW` : "—"),
     },
     { key: "status" as const, header: t("controllable_unit.status") },
   ];
