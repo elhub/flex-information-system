@@ -1,5 +1,6 @@
 import {
   IconCrossCircle,
+  IconPencil,
   IconQualitiesCircle,
   IconStopWatch15,
   IconWarningCircle,
@@ -7,8 +8,10 @@ import {
 import { ServiceProvidingGroupProductApplicationStatus } from "../../generated-client";
 import { StatusVariant } from "../../components/EDS-ra/fields/StatusBadgeField";
 
+export const DRAFT_STATUS = "draft";
+
 export const spgpaStatusVariantMap: Record<
-  ServiceProvidingGroupProductApplicationStatus,
+  ServiceProvidingGroupProductApplicationStatus | typeof DRAFT_STATUS,
   StatusVariant
 > = {
   requested: { status: "ongoing", icon: IconStopWatch15 },
@@ -20,4 +23,5 @@ export const spgpaStatusVariantMap: Record<
   prequalified: { status: "approved", icon: IconQualitiesCircle },
   verified: { status: "approved", icon: IconQualitiesCircle },
   rejected: { status: "failed", icon: IconCrossCircle },
+  draft: { status: "stopped", icon: IconPencil },
 };
