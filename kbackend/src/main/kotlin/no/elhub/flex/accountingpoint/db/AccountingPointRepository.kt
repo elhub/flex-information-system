@@ -25,11 +25,10 @@ import no.elhub.flex.util.createBigintArray
 import no.elhub.flex.util.createNullableTimestampArray
 import no.elhub.flex.util.createTimestampArray
 import org.koin.core.annotation.Single
-import java.sql.Array
 import java.sql.Connection
 import java.sql.SQLException
-import kotlin.time.Instant
 
+@Suppress("TooManyFunctions")
 interface AccountingPointRepository {
     /**
      * Calls `api.current_controllable_unit_accounting_point($controllableUnitBusinessId)`.
@@ -163,6 +162,7 @@ interface AccountingPointRepository {
 
 private val logger = KotlinLogging.logger {}
 
+@Suppress("TooManyFunctions")
 @Single(createdAtStart = true)
 class AccountingPointRepositoryImpl : AccountingPointRepository {
 

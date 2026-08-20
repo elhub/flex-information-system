@@ -7,7 +7,6 @@ import io.kotest.assertions.arrow.core.shouldBeRight
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
-import io.ktor.http.HttpStatusCode
 import io.mockk.clearMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -17,12 +16,14 @@ import no.elhub.flex.PostgresTestContainer
 import no.elhub.flex.accountingpoint.db.AccountingPointMeteringGridAreaRepository
 import no.elhub.flex.accountingpoint.db.AccountingPointRepository
 import no.elhub.flex.auth.FlexPrincipal
+import no.elhub.flex.controllableunit.db.ControllableUnitRepository
 import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterService
 import no.elhub.flex.integration.accountingpointadapter.NetworkError
-import no.elhub.flex.integration.accountingpointadapter.NotFoundError
 import no.elhub.flex.integration.accountingpointadapter.generated.models.EndUser
 import no.elhub.flex.integration.accountingpointadapter.generated.models.EnergySupplier
 import no.elhub.flex.meteringgridarea.db.MeteringGridAreaRepository
+import no.elhub.flex.model.domain.AccountingPointId
+import no.elhub.flex.model.domain.AccountingPointStartDates
 import no.elhub.flex.model.domain.Location
 import no.elhub.flex.model.domain.MeteringGridArea
 import no.elhub.flex.model.domain.MeteringGridAreaStatus
@@ -49,11 +50,13 @@ class AccountingPointServiceTest : FunSpec({
     val accountingPointRepository = mockk<AccountingPointRepository>()
     val meteringGridAreaRepository = mockk<MeteringGridAreaRepository>()
     val accountingPointMeteringGridAreaRepository = mockk<AccountingPointMeteringGridAreaRepository>()
+    val controllableUnitRepository = mockk<ControllableUnitRepository>()
     val service = AccountingPointServiceImpl(
         accountingPointRepository,
         meteringGridAreaRepository,
         accountingPointMeteringGridAreaRepository,
-        mockAdapter
+        mockAdapter,
+        controllableUnitRepository,
     )
 
     val internalPrincipal = FlexPrincipal.internalData()
@@ -431,6 +434,105 @@ class AccountingPointServiceTest : FunSpec({
             val result = with(internalPrincipal) { service.getByIds(listOf(ap1.id)) }
 
             // then
+            result.shouldBeLeft().shouldBeInstanceOf<InternalServerError>()
+        }
+    }
+
+    context("getAccountingPointStartDates") {
+
+        val apId = 10L
+        val apKey = AccountingPointId(apId)
+
+        test("returns the minimum of CU start time and CUSP valid time start") {
+            // given - CU start is earlier
+            val cuStart = Instant.parse("2024-01-01T00:00:00Z")
+            val cuspStart = Instant.parse("2024-06-01T00:00:00Z")
+            with(internalPrincipal) {
+                coEvery { controllableUnitRepository.getAccountingPointStartDates(listOf(apId)) } returns mapOf(
+                    apKey to AccountingPointStartDates(
+                        controllableUnitStartTime = cuStart,
+                        controllableUnitServiceProviderValidTimeStart = cuspStart,
+                    )
+                ).right()
+            }
+
+            // when
+            val result = with(internalPrincipal) { service.getAccountingPointStartDates(listOf(apId)) }.shouldBeRight()
+
+            // then - minimum of the two is CU start
+            result[apKey] shouldBe cuStart
+        }
+
+        test("returns the CUSP start when it is earlier than the CU start") {
+            // given - CUSP start is earlier
+            val cuStart = Instant.parse("2024-06-01T00:00:00Z")
+            val cuspStart = Instant.parse("2024-01-01T00:00:00Z")
+            with(internalPrincipal) {
+                coEvery { controllableUnitRepository.getAccountingPointStartDates(listOf(apId)) } returns mapOf(
+                    apKey to AccountingPointStartDates(
+                        controllableUnitStartTime = cuStart,
+                        controllableUnitServiceProviderValidTimeStart = cuspStart,
+                    )
+                ).right()
+            }
+
+            // when
+            val result = with(internalPrincipal) { service.getAccountingPointStartDates(listOf(apId)) }.shouldBeRight()
+
+            // then - minimum of the two is CUSP start
+            result[apKey] shouldBe cuspStart
+        }
+
+        test("returns CU start when CUSP start is null") {
+            val cuStart = Instant.parse("2024-03-01T00:00:00Z")
+            with(internalPrincipal) {
+                coEvery { controllableUnitRepository.getAccountingPointStartDates(listOf(apId)) } returns mapOf(
+                    apKey to AccountingPointStartDates(
+                        controllableUnitStartTime = cuStart,
+                        controllableUnitServiceProviderValidTimeStart = null,
+                    )
+                ).right()
+            }
+
+            val result = with(internalPrincipal) { service.getAccountingPointStartDates(listOf(apId)) }.shouldBeRight()
+            result[apKey] shouldBe cuStart
+        }
+
+        test("returns CUSP start when CU start is null") {
+            val cuspStart = Instant.parse("2024-03-01T00:00:00Z")
+            with(internalPrincipal) {
+                coEvery { controllableUnitRepository.getAccountingPointStartDates(listOf(apId)) } returns mapOf(
+                    apKey to AccountingPointStartDates(
+                        controllableUnitStartTime = null,
+                        controllableUnitServiceProviderValidTimeStart = cuspStart,
+                    )
+                ).right()
+            }
+
+            val result = with(internalPrincipal) { service.getAccountingPointStartDates(listOf(apId)) }.shouldBeRight()
+            result[apKey] shouldBe cuspStart
+        }
+
+        test("returns null when both CU start and CUSP start are null") {
+            with(internalPrincipal) {
+                coEvery { controllableUnitRepository.getAccountingPointStartDates(listOf(apId)) } returns mapOf(
+                    apKey to AccountingPointStartDates(
+                        controllableUnitStartTime = null,
+                        controllableUnitServiceProviderValidTimeStart = null,
+                    )
+                ).right()
+            }
+
+            val result = with(internalPrincipal) { service.getAccountingPointStartDates(listOf(apId)) }.shouldBeRight()
+            result[apKey] shouldBe null
+        }
+
+        test("maps repository error to InternalServerError") {
+            with(internalPrincipal) {
+                coEvery { controllableUnitRepository.getAccountingPointStartDates(any()) } returns DatabaseError("db failure").left()
+            }
+
+            val result = with(internalPrincipal) { service.getAccountingPointStartDates(listOf(apId)) }
             result.shouldBeLeft().shouldBeInstanceOf<InternalServerError>()
         }
     }
