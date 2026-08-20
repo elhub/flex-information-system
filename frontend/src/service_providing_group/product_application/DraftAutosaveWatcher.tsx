@@ -19,11 +19,15 @@ export const DraftAutosaveWatcher = ({
 
   // Watched as a snapshot to resolve the system operator name for display in the drafts list.
   const systemOperatorId = watch("procuring_system_operator_id");
+  // Watched as a snapshot so autosave works in the global create flow where spgId
+  // is not known up-front but selected inside the form.
+  const selectedSpgId: number | undefined =
+    watch("service_providing_group_id") ?? spgId;
 
   const { data: spg } = useGetOne(
     "service_providing_group",
-    { id: spgId! },
-    { enabled: !!spgId },
+    { id: selectedSpgId! },
+    { enabled: !!selectedSpgId },
   );
   const { data: systemOperator } = useGetOne(
     "party",
@@ -48,7 +52,7 @@ export const DraftAutosaveWatcher = ({
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    if (!spgId) return;
+    if (!selectedSpgId) return;
 
     const { unsubscribe } = watch((values) => {
       if (debounceTimer.current) clearTimeout(debounceTimer.current);
@@ -72,7 +76,7 @@ export const DraftAutosaveWatcher = ({
         };
         try {
           localStorage.setItem(
-            draftStorageKey(spgId, draftId),
+            draftStorageKey(selectedSpgId, draftId),
             JSON.stringify(entry),
           );
         } catch {
@@ -85,7 +89,7 @@ export const DraftAutosaveWatcher = ({
       unsubscribe();
       if (debounceTimer.current) clearTimeout(debounceTimer.current);
     };
-  }, [watch, spgId, draftId]);
+  }, [watch, selectedSpgId, draftId]);
 
   return null;
 };
