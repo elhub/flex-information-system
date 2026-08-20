@@ -12,7 +12,7 @@ import { useGetAllProductTypes } from "../../../product_type/components";
 import { useParty } from "../../../hooks/party";
 import {
   EventButton,
-  NestedResourceHistoryButton,
+  ResourceHistoryButton,
 } from "../../../components/EDS-ra/buttons";
 import { useTranslateEnum } from "../../../intl/intl";
 
@@ -150,7 +150,7 @@ export const SpgpaShowSummary = ({ spgpa, spg }: Props) => {
         </div>
       </Panel>
       <div className="flex gap-4 mt-2">
-        <NestedResourceHistoryButton child="product_application" />
+        <ResourceHistoryButton id={String(spgpa.id)} />
         <EventButton filterOnSubject recordId={String(spgpa.id)} />
         <Button
           as={RouterLink}

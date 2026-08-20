@@ -206,18 +206,6 @@ export const createServiceProvidingGroupResources = (
             </ResourceContextProvider>
           }
         />
-        <Route
-          path=":service_providing_group_id/product_application_history"
-          element={<ServiceProvidingGroupProductApplicationHistoryList />}
-        />
-        <Route
-          path=":service_providing_group_id/product_application_history/:id/show"
-          element={
-            <ResourceContextProvider value="service_providing_group_product_application_history">
-              <ServiceProvidingGroupProductApplicationShow />
-            </ResourceContextProvider>
-          }
-        />
         {/* service providing group grid suspension */}
         {/* list is also part of SPG show page */}
         <Route
@@ -461,14 +449,6 @@ export const createServiceProvidingGroupResources = (
         <Route
           path=":service_providing_group_product_application_id/history"
           element={<ServiceProvidingGroupProductApplicationHistoryList />}
-        />
-        <Route
-          path=":service_providing_group_product_application_id/history/:id/show"
-          element={
-            <ResourceContextProvider value="service_providing_group_product_application_history">
-              <ServiceProvidingGroupProductApplicationShow />
-            </ResourceContextProvider>
-          }
         />
         <Route
           path=":id/print"
