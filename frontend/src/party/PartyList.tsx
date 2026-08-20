@@ -23,14 +23,14 @@ export const PartyList = () => {
       key="entity_id"
       source="entity_id"
       reference="entity"
-      style={{ width: "280px" }}
+      inputClassName="w-[280px]"
     />,
     <PartyReferenceInput
       key="id"
       overrideLabel="Party"
       noTypeFilter
       source="id"
-      style={{ width: "410px" }}
+      inputClassName="w-[410px]"
     />,
     <EnumArrayInput
       key="type"
