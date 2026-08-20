@@ -138,7 +138,7 @@ export const TechnicalResourceList = () => {
     {
       key: "maximum_active_power",
       header: translate("field.technical_resource.maximum_active_power"),
-      render: (value) => value + " kW",
+      render: (v) => `${String(v)} kW`,
     },
     {
       key: "device_type",
