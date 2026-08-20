@@ -1,3 +1,4 @@
+import { CSSProperties } from "react";
 import { Combobox } from "../../ui";
 import {
   RaRecord,
@@ -11,6 +12,7 @@ import { BaseInput, BaseInputProps } from "./BaseInput";
 type ReferenceComboboxInputProps = BaseInputProps & {
   fieldName?: string;
   optionText?: (record: RaRecord) => string;
+  style?: CSSProperties;
 };
 
 export const ReferenceComboboxInput = ({
@@ -25,6 +27,7 @@ export const ReferenceComboboxInput = ({
   resource: resourceProp,
   description,
   descriptionOverride,
+  style,
   ...rest
 }: ReferenceComboboxInputProps) => {
   const { id, field, fieldState } = useInput({
@@ -80,6 +83,7 @@ export const ReferenceComboboxInput = ({
       descriptionOverride={descriptionOverride}
     >
       <Combobox
+        style={style}
         options={options ?? []}
         selectedOptions={selectedValue ? [selectedValue] : []}
         onToggleSelected={handleToggle}

@@ -1,4 +1,5 @@
 import { Combobox } from "../../ui";
+import { CSSProperties } from "react";
 import { useInput } from "ra-core";
 import { BaseInput, BaseInputProps } from "./BaseInput";
 
@@ -11,6 +12,7 @@ export type ArrayInputProps = BaseInputProps & {
   options: ArrayInputOption[];
   defaultValue?: string[];
   placeholder?: string;
+  style?: CSSProperties;
   format?: (value: any) => string[];
   parse?: (value: string[]) => any;
 };
@@ -24,6 +26,7 @@ export const ArrayInput = ({
   disabled,
   defaultValue,
   placeholder,
+  style,
   format,
   parse,
   description,
@@ -64,6 +67,7 @@ export const ArrayInput = ({
       descriptionOverride={descriptionOverride}
     >
       <Combobox
+        style={style}
         options={options}
         selectedOptions={selectedOptions}
         onToggleSelected={handleToggle}

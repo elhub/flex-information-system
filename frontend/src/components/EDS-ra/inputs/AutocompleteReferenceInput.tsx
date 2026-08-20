@@ -4,6 +4,7 @@ import {
   UseReferenceInputControllerParams,
   useResourceContext,
 } from "react-admin";
+import { CSSProperties } from "react";
 import { ReferenceComboboxInput } from "./ReferenceComboboxInput";
 import { BaseInputProps } from "./BaseInput";
 
@@ -15,6 +16,7 @@ type AutocompleteReferenceInputProps = Omit<
     reference: string;
     fieldName?: string;
     optionText?: (record: RaRecord) => string;
+    style?: CSSProperties;
   };
 
 export const AutocompleteReferenceInput = ({
@@ -27,6 +29,7 @@ export const AutocompleteReferenceInput = ({
   readOnly,
   disabled,
   resource: resourceProp,
+  style,
   tooltip,
   description,
   descriptionOverride,
@@ -49,6 +52,7 @@ export const AutocompleteReferenceInput = ({
         readOnly={readOnly}
         resource={resource}
         disabled={disabled}
+        style={style}
         tooltip={tooltip}
         description={description}
         descriptionOverride={descriptionOverride}

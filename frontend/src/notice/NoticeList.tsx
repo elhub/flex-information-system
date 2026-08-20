@@ -75,6 +75,7 @@ export const NoticeList = () => {
             label="field.notice.party_id"
             noTypeFilter
             key="party"
+            style={{ width: "410px" }}
           />,
         ]
       : []),
