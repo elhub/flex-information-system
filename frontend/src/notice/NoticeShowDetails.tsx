@@ -1,10 +1,10 @@
 import {
-  useRecordContext,
   RecordContextProvider,
   ResourceContextProvider,
+  useRecordContext,
 } from "ra-core";
 import { FunctionField } from "react-admin";
-import { BodyText, Heading, VerticalSpace } from "../components/ui";
+import { BodyText, Button, Heading, VerticalSpace } from "../components/ui";
 import { DateField } from "../components/EDS-ra";
 import { ProductTypeArrayField } from "../components/ProductTypeArrayField";
 import { Notice as GNotice } from "../generated-client";
@@ -18,6 +18,8 @@ import { NoticePartyMissing } from "./details/NoticePartyMissing";
 import { NoticePartyOutdated } from "./details/NoticePartyOutdated";
 import { NoticePartyResidual } from "./details/NoticePartyResidual";
 import noticeTypes from "./noticeTypes";
+
+import { Link } from "react-router-dom";
 
 type Notice = GNotice & {
   data: any;
@@ -94,7 +96,6 @@ const NoticeSPPSProductTypeNotQualifiedShowDetails = ({
 export const NoticeShowDetails = () => {
   const record = useRecordContext<Notice>();
   const noticeType = noticeTypes.find((nt) => nt.id === record?.type);
-
   const typeSpecificDetails = () => {
     switch (record?.type) {
       case "no.elhub.flex.party.outdated":
@@ -135,7 +136,18 @@ export const NoticeShowDetails = () => {
           <Heading level={3} size="xsmall" spacing>
             Action
           </Heading>
-          <BodyText>{noticeType.action}</BodyText>
+          <BodyText>{noticeType.action.description}</BodyText>
+          {noticeType.action.text && record?.source && (
+            <Button className="mt-4">
+              <Link
+                to={`${record.source}/show`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span className="break-all">{noticeType.action.text}</span>
+              </Link>
+            </Button>
+          )}
           <VerticalSpace />
         </>
       )}
