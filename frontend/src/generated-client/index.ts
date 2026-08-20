@@ -780,7 +780,7 @@ export type {
   MeteringGridAreaWritable,
   Notice,
   NoticeData,
-  NoticeDataCuFlexiblePowerExceedsRatedPower,
+  NoticeDataCuMaximumActivePowerRatio,
   NoticeDataPartyMissing,
   NoticeDataPartyMissingWritable,
   NoticeDataPartyOutdated,

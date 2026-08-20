@@ -98,7 +98,7 @@ export const NoticeShowDetails = () => {
 
   const typeSpecificDetails = () => {
     switch (record?.type) {
-      case "no.elhub.flex.controllable_unit.flexible_power_exceeds_rated_power":
+      case "no.elhub.flex.controllable_unit.maximum_active_power.ratio":
         return (
           <NoticeControllableUnitFlexiblePowerExceedsRatedPower
             notice={record}

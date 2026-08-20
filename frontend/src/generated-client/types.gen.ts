@@ -369,13 +369,13 @@ export type NoticeDataProductTypeNotQualified = {
 };
 
 /**
- * Format of the data field in a notice with data.kind = notice.data.cu.flexible_power_exceeds_rated_power
+ * Format of the data field in a notice with data.kind = notice.data.cu.maximum_active_power.ratio
  */
-export type NoticeDataCuFlexiblePowerExceedsRatedPower = {
+export type NoticeDataCuMaximumActivePowerRatio = {
   /**
    * Identifies the notice data schema for discriminated union deserialization.
    */
-  kind: "notice.data.cu.flexible_power_exceeds_rated_power";
+  kind: "notice.data.cu.maximum_active_power.ratio";
   /**
    * The flexible power of the controllable unit in kW.
    */
@@ -400,8 +400,8 @@ export type NoticeData =
       kind: "notice.data.product_type.not_qualified";
     } & NoticeDataProductTypeNotQualified)
   | ({
-      kind: "notice.data.cu.flexible_power_exceeds_rated_power";
-    } & NoticeDataCuFlexiblePowerExceedsRatedPower);
+      kind: "notice.data.cu.maximum_active_power.ratio";
+    } & NoticeDataCuMaximumActivePowerRatio);
 
 export type NumericAggregation = {
   sum?: number;
@@ -4555,8 +4555,8 @@ export type NoticeDataWritable =
       kind: "notice.data.product_type.not_qualified";
     } & NoticeDataProductTypeNotQualified)
   | ({
-      kind: "notice.data.cu.flexible_power_exceeds_rated_power";
-    } & NoticeDataCuFlexiblePowerExceedsRatedPower);
+      kind: "notice.data.cu.maximum_active_power.ratio";
+    } & NoticeDataCuMaximumActivePowerRatio);
 
 /**
  * An empty object

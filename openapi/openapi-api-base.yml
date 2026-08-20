@@ -460,18 +460,18 @@ components:
             format: bigint
             type: integer
             example: 2
-    notice_data_cu_flexible_power_exceeds_rated_power:
+    notice_data_cu_maximum_active_power_ratio:
       type: object
       description: >-
         Format of the data field in a notice with data.kind =
-        notice.data.cu.flexible_power_exceeds_rated_power
+        notice.data.cu.maximum_active_power.ratio
       required:
         - kind
       properties:
         kind:
           description: Identifies the notice data schema for discriminated union deserialization.
           type: string
-          const: notice.data.cu.flexible_power_exceeds_rated_power
+          const: notice.data.cu.maximum_active_power.ratio
         maximum_active_power:
           description: The flexible power of the controllable unit in kW.
           type: number
@@ -486,7 +486,7 @@ components:
         - $ref: "#/components/schemas/notice_data_party_missing"
         - $ref: "#/components/schemas/notice_data_party_outdated"
         - $ref: "#/components/schemas/notice_data_product_type_not_qualified"
-        - $ref: "#/components/schemas/notice_data_cu_flexible_power_exceeds_rated_power"
+        - $ref: "#/components/schemas/notice_data_cu_maximum_active_power_ratio"
       discriminator:
         propertyName: kind
         mapping:
@@ -494,7 +494,7 @@ components:
           notice.data.party.missing: "#/components/schemas/notice_data_party_missing"
           notice.data.party.outdated: "#/components/schemas/notice_data_party_outdated"
           notice.data.product_type.not_qualified: "#/components/schemas/notice_data_product_type_not_qualified"
-          notice.data.cu.flexible_power_exceeds_rated_power: "#/components/schemas/notice_data_cu_flexible_power_exceeds_rated_power"
+          notice.data.cu.maximum_active_power.ratio: "#/components/schemas/notice_data_cu_maximum_active_power_ratio"
     numeric_aggregation:
       type: object
       properties:

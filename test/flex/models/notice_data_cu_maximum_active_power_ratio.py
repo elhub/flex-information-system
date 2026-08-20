@@ -8,21 +8,21 @@ from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="NoticeDataCuFlexiblePowerExceedsRatedPower")
+T = TypeVar("T", bound="NoticeDataCuMaximumActivePowerRatio")
 
 
 @_attrs_define
-class NoticeDataCuFlexiblePowerExceedsRatedPower:
-    """Format of the data field in a notice with data.kind = notice.data.cu.flexible_power_exceeds_rated_power
+class NoticeDataCuMaximumActivePowerRatio:
+    """Format of the data field in a notice with data.kind = notice.data.cu.maximum_active_power.ratio
 
     Attributes:
-        kind (Literal['notice.data.cu.flexible_power_exceeds_rated_power']): Identifies the notice data schema for
-            discriminated union deserialization.
+        kind (Literal['notice.data.cu.maximum_active_power.ratio']): Identifies the notice data schema for discriminated
+            union deserialization.
         maximum_active_power (float | Unset): The flexible power of the controllable unit in kW. Example: 10.0.
         rated_power (float | Unset): The combined maximum active power of all technical resources in kW. Example: 8.0.
     """
 
-    kind: Literal["notice.data.cu.flexible_power_exceeds_rated_power"]
+    kind: Literal["notice.data.cu.maximum_active_power.ratio"]
     maximum_active_power: float | Unset = UNSET
     rated_power: float | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
@@ -51,22 +51,22 @@ class NoticeDataCuFlexiblePowerExceedsRatedPower:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        kind = cast(Literal["notice.data.cu.flexible_power_exceeds_rated_power"], d.pop("kind"))
-        if kind != "notice.data.cu.flexible_power_exceeds_rated_power":
-            raise ValueError(f"kind must match const 'notice.data.cu.flexible_power_exceeds_rated_power', got '{kind}'")
+        kind = cast(Literal["notice.data.cu.maximum_active_power.ratio"], d.pop("kind"))
+        if kind != "notice.data.cu.maximum_active_power.ratio":
+            raise ValueError(f"kind must match const 'notice.data.cu.maximum_active_power.ratio', got '{kind}'")
 
         maximum_active_power = d.pop("maximum_active_power", UNSET)
 
         rated_power = d.pop("rated_power", UNSET)
 
-        notice_data_cu_flexible_power_exceeds_rated_power = cls(
+        notice_data_cu_maximum_active_power_ratio = cls(
             kind=kind,
             maximum_active_power=maximum_active_power,
             rated_power=rated_power,
         )
 
-        notice_data_cu_flexible_power_exceeds_rated_power.additional_properties = d
-        return notice_data_cu_flexible_power_exceeds_rated_power
+        notice_data_cu_maximum_active_power_ratio.additional_properties = d
+        return notice_data_cu_maximum_active_power_ratio
 
     @property
     def additional_keys(self) -> list[str]:

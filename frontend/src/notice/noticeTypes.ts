@@ -16,8 +16,8 @@ const noticeTypes = [
     action: "Register a grid location for the accounting point.",
   },
   {
-    id: "no.elhub.flex.controllable_unit.flexible_power_exceeds_rated_power",
-    shortId: "controllable_unit.flexible_power_exceeds_rated_power",
+    id: "no.elhub.flex.controllable_unit.maximum_active_power.ratio",
+    shortId: "controllable_unit.maximum_active_power.ratio",
     label: "Inconsistency: Flexible power exceeds rated power",
     description:
       "The flexible power of this controllable unit exceeds the combined maximum active power of all its technical resources.",

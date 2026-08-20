@@ -8,11 +8,11 @@ CREATE OR REPLACE VIEW notice_cu_flexible_power_exceeds_rated_power
 WITH (security_invoker = false) AS (
     SELECT
         cusp.service_provider_id AS party_id,
-        'no.elhub.flex.controllable_unit.flexible_power_exceeds_rated_power'::ltree AS type, -- noqa
+        'no.elhub.flex.controllable_unit.maximum_active_power.ratio'::ltree AS type, -- noqa
         'controllable_unit' AS source_resource,
         cu.id AS source_id,
         jsonb_build_object(
-            'kind', 'notice.data.cu.flexible_power_exceeds_rated_power',
+            'kind', 'notice.data.cu.maximum_active_power.ratio',
             'maximum_active_power', cu.maximum_active_power,
             'rated_power', sum(tr.maximum_active_power)
         ) AS data, --noqa
