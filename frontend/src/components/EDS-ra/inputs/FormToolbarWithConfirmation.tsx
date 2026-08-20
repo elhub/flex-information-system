@@ -45,10 +45,11 @@ export const FormToolbarWithConfirmation = ({
     confirmText: resolvedSaveLabel,
     cancelText: resolvedCancelLabel,
     onConfirm: async () => {
-      if (save) {
-        await handleSubmit(save as SubmitHandler<FieldValues>)();
+      if (!save) return;
+      await handleSubmit(async (values) => {
+        await (save as SubmitHandler<FieldValues>)(values);
         onSuccess?.();
-      }
+      })();
     },
   });
 
