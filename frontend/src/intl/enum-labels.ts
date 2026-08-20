@@ -280,7 +280,7 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_provider_product_suspension.reason.breach_of_conditions":
       "Breach of conditions",
     "service_provider_product_suspension.reason.other": "Other",
-    "service_providing_group_product_application.status.draft": "Draft",
+    "service_providing_group_product_application.status.draft": "Local draft",
     "service_providing_group_product_application.status.requested": "Requested",
     "service_providing_group_product_application.status.prequalification":
       "Prequalification",
@@ -463,7 +463,7 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_provider_product_suspension.reason.breach_of_conditions":
       "Brudd på vilkår",
     "service_provider_product_suspension.reason.other": "Annet",
-    "service_providing_group_product_application.status.draft": "Utkast",
+    "service_providing_group_product_application.status.draft": "Lokalt utkast",
     "service_providing_group_product_application.status.requested": "Forespurt",
     "service_providing_group_product_application.status.prequalification":
       "Prekvalifisering",
