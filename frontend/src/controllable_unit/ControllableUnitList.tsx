@@ -27,7 +27,6 @@ import { getFields } from "../zod";
 import { IconPlus } from "@elhub/ds-icons";
 import { findCurrentlyValidRecord } from "../util";
 import type {
-  AccountingPoint,
   AccountingPointBalanceResponsibleParty,
   AccountingPointBiddingZone,
   ControllableUnit,
@@ -167,40 +166,30 @@ export const ControllableUnitList = () => {
     dataProvider,
     resource,
   ) => {
-    const controllableUnits = records as ControllableUnit[];
-    const apIds = [
-      ...new Set(controllableUnits.map((record) => record.accounting_point_id)),
-    ];
-    if (apIds.length === 0) {
-      defaultExporter([], fetchRelatedRecords, dataProvider, resource);
-      return;
-    }
-
-    const { data: accountingPoints } =
-      await dataProvider.getMany<AccountingPoint>("accounting_point", {
-        ids: apIds,
-      });
-    const accountingPointById = new Map(
-      accountingPoints.map((point) => [point.id, point.business_id]),
+    const { data } = await dataProvider.getList<ControllableUnit>(
+      "controllable_unit",
+      {
+        filter: { embed: "accounting_point" },
+        pagination: { page: 1, perPage: 100000 },
+        sort: { field: "id", order: "DESC" },
+      },
     );
 
-    const rows = controllableUnits.map((record) => {
-      return {
-        id: record.id,
-        business_id: record.business_id,
-        accounting_point:
-          accountingPointById.get(record.accounting_point_id) ?? "",
-        name: record.name,
-        maximum_active_power: record.maximum_active_power,
-        is_small: record.is_small,
-        regulation_direction: record.regulation_direction,
-        start_date: record.start_date,
-        status: record.status,
-        additional_information: record.additional_information,
-        recorded_by: record.recorded_by,
-        recorded_at: record.recorded_at,
-      };
-    });
+    const rows = data.map((record) => ({
+      id: record.id,
+      business_id: record.business_id,
+      accounting_point: record.accounting_point?.business_id ?? "",
+      name: record.name,
+      maximum_active_power: record.maximum_active_power,
+      is_small: record.is_small,
+      regulation_direction: record.regulation_direction,
+      start_date: record.start_date,
+      status: record.status,
+      additional_information: record.additional_information,
+      recorded_by: record.recorded_by,
+      recorded_at: record.recorded_at,
+    }));
+
     defaultExporter(rows, fetchRelatedRecords, dataProvider, resource);
   };
 
