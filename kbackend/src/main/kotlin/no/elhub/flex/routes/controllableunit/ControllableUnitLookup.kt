@@ -120,7 +120,7 @@ class ControllableUnitLookup(
             accountingPointId,
             controllableUnitId?.let { "controllable_unit" },
             controllableUnitId,
-            "{\"requesting_party_id\": $requestingPartyId}"
+            "{\"kind\": \"event.data.controllable_unit.lookup\", \"requesting_party_id\": $requestingPartyId}"
         )
             .mapLeft { e ->
                 logger.error { "Failed to insert lookup event: ${e.message}" }

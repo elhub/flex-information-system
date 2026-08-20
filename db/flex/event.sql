@@ -7,12 +7,12 @@ CREATE TABLE IF NOT EXISTS event (
     -- reverse DNS style identifier
     -- (ltree makes it faster to filter on this field in the queries,
     -- because it looks like a path)
-    type ltree NOT NULL CHECK (
+    type ltree NOT NULL CHECK ( -- noqa
         type ~ 'no.elhub.flex.*'
     ),
     source_resource text NOT NULL,
     source_id bigint NOT NULL,
-    data jsonb NULL,
+    data jsonb NULL, -- noqa
     record_time_range tstzrange NOT NULL DEFAULT tstzrange(
         localtimestamp, null, '[)'
     ),
@@ -69,7 +69,10 @@ BEGIN
     l_event_data := null;
     IF TG_OP = 'UPDATE' THEN
         SELECT (
-            '{"updated_fields": ' || to_jsonb(array_agg(pre.key))::text || '}'
+            '{'
+            || '"kind": "event.data.updated_fields",'
+            || '"updated_fields": ' || to_jsonb(array_agg(pre.key))::text
+            || '}'
         )::jsonb
         INTO l_event_data
         -- fields that changed from OLD to NEW

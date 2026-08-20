@@ -17,7 +17,7 @@ An event happening in the system.
 | <a name="field-type" href="#field-type">type</a>                      | The type of the event.                                                                | text<br/>Pattern: `^no.elhub.flex.`<br/>Read only                                                                                                                  |           |
 | <a name="field-source" href="#field-source">source</a>                | The URI of the resource concerned by the event.                                       | text<br/>Pattern: `^(\/([a-z][a-z_]*\|[0-9]+))+$`<br/>Read only                                                                                                    |           |
 | <a name="field-subject" href="#field-subject">subject</a>             | The URI of the specific subject of the event within the resource pointed by `source`. | text<br/>Read only<br/><br/>Used in cases where an event happens on a subresource, but we still want to consider it as an event on the main resource, for clarity. |           |
-| <a name="field-data" href="#field-data">data</a>                      | The data of the event.                                                                | text<br/>Read only                                                                                                                                                 |           |
+| <a name="field-data" href="#field-data">data</a>                      | The data of the event.                                                                | <br/>Object<br/>Read only                                                                                                                                          |           |
 
 ## Validation Rules
 

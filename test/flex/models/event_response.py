@@ -10,6 +10,8 @@ from attrs import field as _attrs_field
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
+    from ..models.event_data_controllable_unit_lookup import EventDataControllableUnitLookup
+    from ..models.event_data_updated_fields import EventDataUpdatedFields
     from ..models.notification_response import NotificationResponse
 
 
@@ -28,7 +30,7 @@ class EventResponse:
         source (str): The URI of the resource concerned by the event. Example: /controllable_unit/4.
         subject (None | str | Unset): The URI of the specific subject of the event within the resource pointed by
             `source`. Example: /technical_resource/2.
-        data (None | str | Unset): The data of the event.
+        data (EventDataControllableUnitLookup | EventDataUpdatedFields | None | Unset): The data of the event.
         notification (list[NotificationResponse] | None | Unset): Embedded notification
     """
 
@@ -38,11 +40,14 @@ class EventResponse:
     type_: str
     source: str
     subject: None | str | Unset = UNSET
-    data: None | str | Unset = UNSET
+    data: EventDataControllableUnitLookup | EventDataUpdatedFields | None | Unset = UNSET
     notification: list[NotificationResponse] | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        from ..models.event_data_controllable_unit_lookup import EventDataControllableUnitLookup
+        from ..models.event_data_updated_fields import EventDataUpdatedFields
+
         id = self.id
 
         specversion = self.specversion
@@ -59,9 +64,13 @@ class EventResponse:
         else:
             subject = self.subject
 
-        data: None | str | Unset
+        data: dict[str, Any] | None | Unset
         if isinstance(self.data, Unset):
             data = UNSET
+        elif isinstance(self.data, EventDataUpdatedFields):
+            data = self.data.to_dict()
+        elif isinstance(self.data, EventDataControllableUnitLookup):
+            data = self.data.to_dict()
         else:
             data = self.data
 
@@ -99,6 +108,8 @@ class EventResponse:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.event_data_controllable_unit_lookup import EventDataControllableUnitLookup
+        from ..models.event_data_updated_fields import EventDataUpdatedFields
         from ..models.notification_response import NotificationResponse
 
         d = dict(src_dict)
@@ -121,12 +132,28 @@ class EventResponse:
 
         subject = _parse_subject(d.pop("subject", UNSET))
 
-        def _parse_data(data: object) -> None | str | Unset:
+        def _parse_data(data: object) -> EventDataControllableUnitLookup | EventDataUpdatedFields | None | Unset:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(None | str | Unset, data)
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                componentsschemasevent_data_type_0 = EventDataUpdatedFields.from_dict(data)
+
+                return componentsschemasevent_data_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                componentsschemasevent_data_type_1 = EventDataControllableUnitLookup.from_dict(data)
+
+                return componentsschemasevent_data_type_1
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(EventDataControllableUnitLookup | EventDataUpdatedFields | None | Unset, data)
 
         data = _parse_data(d.pop("data", UNSET))
 
