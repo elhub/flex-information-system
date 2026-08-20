@@ -12,7 +12,7 @@ import {
   IconQuestionCircleOutlined,
   IconTrash,
 } from "@elhub/ds-icons";
-import { usePermissions } from "ra-core";
+import { usePermissions, useTranslate } from "ra-core";
 import { Permissions } from "../../auth/permissions";
 import {
   isProductApplicationBlocked,
@@ -35,6 +35,7 @@ export const ServiceProvidingGroupShowProductApplicationsTable = ({
   const { data, isLoading, error } = useSpgProductApplications(spgId);
   const navigate = useNavigate();
   const t = useTranslateField();
+  const translate = useTranslate();
   const { permissions } = usePermissions<Permissions>();
   const { drafts, deleteDraft } = useSpgpaDrafts();
   const canCreate = permissions?.allow(
@@ -153,7 +154,7 @@ export const ServiceProvidingGroupShowProductApplicationsTable = ({
               variant="invisible"
               size="small"
               icon={IconTrash}
-              aria-label="Delete draft"
+              aria-label={translate("text.spgpa_delete_draft")}
               onClick={() => deleteDraft(spgId, draftId)}
             />
           );

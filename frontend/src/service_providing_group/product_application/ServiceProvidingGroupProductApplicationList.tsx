@@ -2,6 +2,7 @@ import {
   usePermissions,
   useRecordContext,
   ResourceContextProvider,
+  useTranslate,
 } from "ra-core";
 import { FunctionField } from "react-admin";
 import { Link } from "react-router-dom";
@@ -62,6 +63,7 @@ export const ServiceProvidingGroupProductApplicationList = () => {
   const record = useRecordContext();
   const id = record?.id;
   const t = useTranslateField();
+  const translate = useTranslate();
   const { permissions, isLoading } = usePermissions<Permissions>();
   const { drafts, deleteDraft } = useSpgpaDrafts();
 
@@ -142,7 +144,7 @@ export const ServiceProvidingGroupProductApplicationList = () => {
                 variant="invisible"
                 size="small"
                 icon={IconTrash}
-                aria-label="Delete draft"
+                aria-label={translate("text.spgpa_delete_draft")}
                 onClick={() => deleteDraft(row.__spgId, row.__draftId)}
               />
             );
