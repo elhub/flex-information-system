@@ -55,10 +55,11 @@ USING (
 );
 
 -- RLS: SPGPA-SP002
-DROP POLICY IF EXISTS "SPGPA_SP001_002" ON service_providing_group_product_application;
-CREATE POLICY "SPGPA_SP001_002"
+DROP POLICY IF EXISTS "SPGPA_SP001_002_INSERT"
+ON service_providing_group_product_application;
+CREATE POLICY "SPGPA_SP001_002_INSERT"
 ON service_providing_group_product_application
-FOR ALL -- WITH CHECK = INSERT + UPDATE
+FOR INSERT -- WITH CHECK only (no USING for INSERT)
 TO flex_service_provider
 WITH CHECK (
     EXISTS (
@@ -67,7 +68,27 @@ WITH CHECK (
         WHERE service_providing_group_product_application.service_providing_group_id = service_providing_group.id -- noqa
             AND service_providing_group.service_provider_id = (SELECT flex.current_party()) -- noqa
     )
-    -- NB: always true for INSERT
+);
+
+DROP POLICY IF EXISTS "SPGPA_SP002_UPDATE"
+ON service_providing_group_product_application;
+CREATE POLICY "SPGPA_SP002_UPDATE"
+ON service_providing_group_product_application
+FOR UPDATE
+TO flex_service_provider
+USING (
+    -- SP can act on rows that are requested (data changes) or rejected (status reset)
+    -- NB: ownership is enforced by WITH CHECK, not here
+    service_providing_group_product_application.status IN ('requested', 'rejected')
+)
+WITH CHECK (
+    EXISTS (
+        SELECT 1
+        FROM service_providing_group
+        WHERE service_providing_group_product_application.service_providing_group_id = service_providing_group.id -- noqa
+            AND service_providing_group.service_provider_id = (SELECT flex.current_party()) -- noqa
+    )
+    -- SP can never change the status to something other than requested
     AND service_providing_group_product_application.status = 'requested'
 );
 
