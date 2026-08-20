@@ -10,9 +10,9 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS notice_fresh AS (
     -- Controllable Unit Service Provider notices
     SELECT * FROM notice_cusp_valid_time_outside_contract
 
-    -- Controllable Unit flexible power notices
+    -- Controllable Unit maximum active power notices
     UNION ALL
-    SELECT * FROM notice_cu_flexible_power_exceeds_rated_power
+    SELECT * FROM notice_cu_maximum_active_power_ratio
 
     -- Controllable Unit Suspension notices
     UNION ALL
