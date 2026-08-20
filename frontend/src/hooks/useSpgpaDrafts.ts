@@ -1,21 +1,12 @@
 import { useState, useCallback, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import type { ServiceProvidingGroupProductApplicationCreateRequest } from "../generated-client";
 
 const DRAFT_KEY_PREFIX = "Flex.spgpa_draft.";
 const DRAFT_TTL_DAYS = 7;
 
-export type DraftValues = {
-  service_providing_group_id?: number;
-  procuring_system_operator_id?: number;
-  product_type_ids?: number[];
-  maximum_active_power_up?: number;
-  maximum_active_power_down?: number;
-  ramping_capability?: string;
-  ramping_description?: string;
-  additional_information?: string;
-  prequalified_at?: string;
-  verified_at?: string;
-};
+export type DraftValues =
+  Partial<ServiceProvidingGroupProductApplicationCreateRequest>;
 
 export type SpgpaDraft = {
   spgId: number;
