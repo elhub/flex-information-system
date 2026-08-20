@@ -11,11 +11,7 @@ WITH (security_invoker = false) AS (
         'no.elhub.flex.controllable_unit.maximum_active_power.ratio'::ltree AS type, -- noqa
         'controllable_unit' AS source_resource,
         cu.id AS source_id,
-        jsonb_build_object(
-            'kind', 'notice.data.cu.maximum_active_power.ratio',
-            'maximum_active_power', cu.maximum_active_power,
-            'rated_power', coalesce(sum(tr.maximum_active_power), 0)
-        ) AS data, -- noqa
+        null::jsonb AS data, -- noqa
         md5(cu.id::text) AS deduplication_key -- noqa
     FROM flex.controllable_unit AS cu
         INNER JOIN flex.controllable_unit_service_provider AS cusp

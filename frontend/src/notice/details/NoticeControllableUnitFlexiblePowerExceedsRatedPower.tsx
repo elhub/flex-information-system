@@ -1,14 +1,11 @@
-import { Button, VerticalSpace } from "../../components/ui";
-import { LabelValue } from "../../components/LabelValue";
+import { Button } from "../../components/ui";
 import { Link as RouterLink } from "react-router-dom";
 import { IconPencil } from "@elhub/ds-icons";
 import { useTranslate } from "ra-core";
-import { NoticeDataCuMaximumActivePowerRatio } from "../../generated-client";
 
 type Props = {
   notice: {
     source?: string;
-    data: NoticeDataCuMaximumActivePowerRatio;
   };
 };
 
@@ -23,32 +20,13 @@ export const NoticeControllableUnitFlexiblePowerExceedsRatedPower = ({
   const translate = useTranslate();
   const cuId = getCuIdFromSource(notice.source);
 
-  return (
-    <>
-      <VerticalSpace size="small" />
-      <div className="flex flex-col gap-4 mb-4">
-        <LabelValue
-          size="small"
-          labelKey="controllable_unit.maximum_active_power"
-          value={notice.data.maximum_active_power}
-          unit="kW"
-        />
-        <LabelValue
-          size="small"
-          labelKey="technical_resource.maximum_active_power"
-          value={notice.data.rated_power}
-          unit="kW"
-        />
-      </div>
-      {cuId != null && (
-        <Button
-          as={RouterLink}
-          to={`/controllable_unit/${cuId}/edit`}
-          icon={IconPencil}
-        >
-          {`${translate("text.edit")} ${translate("text.controllable_unit")}`}
-        </Button>
-      )}
-    </>
-  );
+  return cuId != null ? (
+    <Button
+      as={RouterLink}
+      to={`/controllable_unit/${cuId}/show`}
+      icon={IconPencil}
+    >
+      {`${translate("text.edit")} ${translate("text.controllable_unit")}`}
+    </Button>
+  ) : null;
 };
