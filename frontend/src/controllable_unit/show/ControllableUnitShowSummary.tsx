@@ -64,7 +64,7 @@ export const ControllableUnitShowSummary = ({
     "?filter=" +
     encodeURIComponent(
       JSON.stringify({
-        "source@like": `/controllable_unit/${controllableUnit.id}`,
+        "source@eq": `/controllable_unit/${controllableUnit.id}`,
       }),
     );
 

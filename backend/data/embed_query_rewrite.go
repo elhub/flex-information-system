@@ -17,6 +17,10 @@ func handleEmbed(ctx context.Context, w http.ResponseWriter, query url.Values, r
 		mainResource = mainResource[:idx]
 	}
 
+	if mainResource == "rpc/event_source" {
+		mainResource = "event" //nolint:goconst
+	}
+
 	return embed.Handle(
 		ctx, w, query, mainResource, "data",
 		embed.Relations(embedRelations),

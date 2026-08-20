@@ -1,5 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
+-- noqa: disable=RF04
+-- RF04 - Keywords should not be used as identifiers.
 
 -- changeset flex:event-create runOnChange:true endDelimiter:--
 CREATE TABLE IF NOT EXISTS event (
@@ -21,6 +23,17 @@ CREATE TABLE IF NOT EXISTS event (
     subject_id bigint NULL,
     processed boolean NOT NULL DEFAULT false
 );
+
+-- changeset flex:event-source-idx runOnChange:true endDelimiter:-- runInTransaction:false
+CREATE INDEX CONCURRENTLY IF NOT EXISTS
+event_source_idx
+ON event (source_resource, source_id);
+
+-- changeset flex:event-subject-idx runOnChange:true endDelimiter:-- runInTransaction:false
+CREATE INDEX CONCURRENTLY IF NOT EXISTS
+event_subject_idx
+ON event (subject_resource, subject_id)
+WHERE subject_resource IS NOT null AND subject_id IS NOT null;
 
 -- changeset flex:event-capture runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION capture_event()

@@ -18,7 +18,7 @@ export const useEvent = (props: UseEventProps = {}) => {
   const filter =
     "?filter=" +
     encodeURIComponent(
-      `{ "${filterField}@like": "/${resource}/${actualRecordId}" }`,
+      `{ "${filterField}@eq": "/${resource}/${actualRecordId}" }`,
     );
 
   const to = `/event${filter}`;
