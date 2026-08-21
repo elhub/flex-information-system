@@ -75,6 +75,7 @@ export const NoticeList = () => {
             label="field.notice.party_id"
             noTypeFilter
             key="party"
+            inputClassName="w-[24rem]"
           />,
         ]
       : []),
@@ -82,7 +83,7 @@ export const NoticeList = () => {
       key="notice_type"
       source={noticeFields.type.source}
       choices={noticeTypes.map((nt) => ({ id: nt.id, name: nt.label }))}
-      style={{ width: "400px" }}
+      inputClassName="w-[24rem]"
     />,
     <EnumArrayInput
       key="notice_status"

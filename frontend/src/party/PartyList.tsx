@@ -23,14 +23,21 @@ export const PartyList = () => {
       key="entity_id"
       source="entity_id"
       reference="entity"
+      inputClassName="w-[18rem]"
     />,
     <PartyReferenceInput
       key="id"
       overrideLabel="Party"
       noTypeFilter
       source="id"
+      inputClassName="w-[26rem]"
     />,
-    <EnumArrayInput key="type" source="type@in" enumKey="party.type" />,
+    <EnumArrayInput
+      key="type"
+      source="type@in"
+      enumKey="party.type"
+      inputClassName="w-[15rem]"
+    />,
     <EnumArrayInput key="status" source="status@in" enumKey="party.status" />,
   ];
 
