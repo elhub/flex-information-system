@@ -128,8 +128,9 @@ BEGIN
         RAISE sqlstate 'PT400' using
             message =
                 'A service provider can only update an application when its'
-                || ' status is "requested" or set back to "requested".'
-                || ' Any other updates must be done by the system operator.';
+                || ' status is "requested" or reset to "requested" after'
+                || ' rejection. Any other updates must be done by the system'
+                || ' operator.';
         RETURN null;
     END IF;
 
