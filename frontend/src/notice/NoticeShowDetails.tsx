@@ -4,7 +4,7 @@ import {
   useRecordContext,
 } from "ra-core";
 import { FunctionField } from "react-admin";
-import { BodyText, Button, Heading, VerticalSpace } from "../components/ui";
+import { BodyText, Heading, VerticalSpace } from "../components/ui";
 import { DateField } from "../components/EDS-ra";
 import { ProductTypeArrayField } from "../components/ProductTypeArrayField";
 import { Notice as GNotice } from "../generated-client";
@@ -19,8 +19,7 @@ import { NoticePartyOutdated } from "./details/NoticePartyOutdated";
 import { NoticePartyResidual } from "./details/NoticePartyResidual";
 import noticeTypes from "./noticeTypes";
 import type { ReactNode } from "react";
-
-import { Link } from "react-router-dom";
+import { NoticeActionButton } from "./details/NoticeActionButton";
 
 type Notice = GNotice & {
   data: any;
@@ -38,7 +37,6 @@ const NoticeCUSPValidTimeOutsideContractShowDetails = ({
   notice,
 }: NoticeShowDetailsProps) => {
   const cuspFields = getFields(zControllableUnitServiceProvider.shape);
-
   return (
     <>
       <Heading level={3} size="xsmall" spacing>
@@ -114,6 +112,20 @@ const noticeDetailsRenderers: Record<string, NoticeDetailsRenderer> = {
     (notice) => (
       <NoticeSPPSProductTypeNotQualifiedShowDetails notice={notice} />
     ),
+  "no.elhub.flex.accounting_point_grid_location.source_insufficient": (
+    notice,
+  ) => (
+    <NoticeActionButton
+      notice={notice}
+      buttonTextKey={"text.notice_insufficient_grid_location_source_button"}
+    />
+  ),
+  "no.elhub.flex.accounting_point_grid_location.missing": (notice) => (
+    <NoticeActionButton
+      notice={notice}
+      buttonTextKey={"text.notice_missing_grid_location_button"}
+    />
+  ),
 };
 
 export const NoticeShowDetails = () => {
@@ -139,18 +151,7 @@ export const NoticeShowDetails = () => {
           <Heading level={3} size="xsmall" spacing>
             Action
           </Heading>
-          <BodyText>{noticeType.action.description}</BodyText>
-          {noticeType.action.text && record?.source && (
-            <Button className="mt-4">
-              <Link
-                to={`${record.source}/show`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span className="break-all">{noticeType.action.text}</span>
-              </Link>
-            </Button>
-          )}
+          <BodyText>{noticeType.action}</BodyText>
           <VerticalSpace />
         </>
       )}
