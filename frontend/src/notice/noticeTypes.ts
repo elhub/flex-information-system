@@ -6,7 +6,7 @@ const noticeTypes = [
     description:
       "The grid location of this accounting point is guessed by the system. Due to the size of the connected controllable unit(s), its grid location must come from a reliable source (DSO or grid model). The grid location thus needs to be verified and confirmed.",
     action:
-      "Check the grid location information on the accounting point (the link under Source on the left hand side here). If correct: set the voltage level and confirm. If incorrect: choose the correct grid location, set the voltage level and confirm.",
+      "Check the grid location information on the accounting point. If correct: set the voltage level and confirm. If incorrect: choose the correct grid location, set the voltage level and confirm.",
   },
   {
     id: "no.elhub.flex.accounting_point_grid_location.missing",

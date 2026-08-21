@@ -92,7 +92,9 @@ export type TextKey =
   | "header_nav_create_user_guide"
   | "header_nav_assume_party"
   | "comment.visibility.same_party.description"
-  | "comment.visibility.any_involved_party.description";
+  | "comment.visibility.any_involved_party.description"
+  | "notice_missing_grid_location_button"
+  | "notice_insufficient_grid_location_source_button";
 
 export const text: Record<string, Record<TextKey, string>> = {
   en: {
@@ -218,6 +220,9 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Only visible to your current party",
     "comment.visibility.any_involved_party.description":
       "Visible to all parties involved in this resource",
+    notice_missing_grid_location_button:
+      "Check the grid location information here",
+    notice_insufficient_grid_location_source_button: "Go to accounting point",
   },
   nb: {
     entity_role: "Entitet",
@@ -341,5 +346,8 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Kun synlig for din nåværende aktør",
     "comment.visibility.any_involved_party.description":
       "Synlig for alle parter involvert i denne ressursen",
+    notice_missing_grid_location_button:
+      "Sjekk informasjon om nettlokasjon her",
+    notice_insufficient_grid_location_source_button: "Gå til målepunktet",
   },
 };
