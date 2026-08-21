@@ -4,7 +4,7 @@
 -- changeset flex:api-event-source-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE FUNCTION api.event_source(
     source_resource text,
-    source_id integer
+    source_id bigint
 )
 RETURNS SETOF api.event
 SECURITY INVOKER
@@ -35,7 +35,7 @@ TO flex_common;
 -- changeset flex:api-event-subject-create endDelimiter:-- runOnChange:true
 CREATE OR REPLACE FUNCTION api.event_subject(
     subject_resource text,
-    subject_id integer
+    subject_id bigint
 )
 RETURNS SETOF api.event
 SECURITY INVOKER
