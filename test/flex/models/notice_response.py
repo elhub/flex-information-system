@@ -11,6 +11,7 @@ from ..models.notice_status import NoticeStatus
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
+    from ..models.notice_data_cu_maximum_active_power_ratio import NoticeDataCuMaximumActivePowerRatio
     from ..models.notice_data_party_missing import NoticeDataPartyMissing
     from ..models.notice_data_party_outdated import NoticeDataPartyOutdated
     from ..models.notice_data_product_type_not_qualified import NoticeDataProductTypeNotQualified
@@ -36,8 +37,8 @@ class NoticeResponse:
         recorded_by (int): The identity that recorded the resource. Example: 145.
         source (None | str | Unset): The URI of the resource concerned by the event. Example:
             /service_providing_group_membership/4.
-        data (None | NoticeDataPartyMissing | NoticeDataPartyOutdated | NoticeDataProductTypeNotQualified |
-            NoticeDataValidTimeOutsideContract | Unset): The data of the notice.
+        data (None | NoticeDataCuMaximumActivePowerRatio | NoticeDataPartyMissing | NoticeDataPartyOutdated |
+            NoticeDataProductTypeNotQualified | NoticeDataValidTimeOutsideContract | Unset): The data of the notice.
         party (None | PartyResponse | Unset): Embedded party
     """
 
@@ -50,6 +51,7 @@ class NoticeResponse:
     source: None | str | Unset = UNSET
     data: (
         None
+        | NoticeDataCuMaximumActivePowerRatio
         | NoticeDataPartyMissing
         | NoticeDataPartyOutdated
         | NoticeDataProductTypeNotQualified
@@ -60,6 +62,7 @@ class NoticeResponse:
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        from ..models.notice_data_cu_maximum_active_power_ratio import NoticeDataCuMaximumActivePowerRatio
         from ..models.notice_data_party_missing import NoticeDataPartyMissing
         from ..models.notice_data_party_outdated import NoticeDataPartyOutdated
         from ..models.notice_data_product_type_not_qualified import NoticeDataProductTypeNotQualified
@@ -95,6 +98,8 @@ class NoticeResponse:
             data = self.data.to_dict()
         elif isinstance(self.data, NoticeDataProductTypeNotQualified):
             data = self.data.to_dict()
+        elif isinstance(self.data, NoticeDataCuMaximumActivePowerRatio):
+            data = self.data.to_dict()
         else:
             data = self.data
 
@@ -129,6 +134,7 @@ class NoticeResponse:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.notice_data_cu_maximum_active_power_ratio import NoticeDataCuMaximumActivePowerRatio
         from ..models.notice_data_party_missing import NoticeDataPartyMissing
         from ..models.notice_data_party_outdated import NoticeDataPartyOutdated
         from ..models.notice_data_product_type_not_qualified import NoticeDataProductTypeNotQualified
@@ -161,6 +167,7 @@ class NoticeResponse:
             data: object,
         ) -> (
             None
+            | NoticeDataCuMaximumActivePowerRatio
             | NoticeDataPartyMissing
             | NoticeDataPartyOutdated
             | NoticeDataProductTypeNotQualified
@@ -203,8 +210,17 @@ class NoticeResponse:
                 return componentsschemasnotice_data_type_3
             except (TypeError, ValueError, AttributeError, KeyError):
                 pass
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                componentsschemasnotice_data_type_4 = NoticeDataCuMaximumActivePowerRatio.from_dict(data)
+
+                return componentsschemasnotice_data_type_4
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
             return cast(
                 None
+                | NoticeDataCuMaximumActivePowerRatio
                 | NoticeDataPartyMissing
                 | NoticeDataPartyOutdated
                 | NoticeDataProductTypeNotQualified

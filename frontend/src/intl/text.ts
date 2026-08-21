@@ -1,5 +1,6 @@
 export type TextKey =
   | "entity_role"
+  | "edit"
   | "tab.summary"
   | "tab.controllable_units"
   | "tab.technical_resources"
@@ -97,6 +98,7 @@ export type TextKey =
 export const text: Record<string, Record<TextKey, string>> = {
   en: {
     entity_role: "Entity",
+    edit: "Edit",
     "tab.summary": "Summary",
     "tab.controllable_units": "Controllable units",
     "tab.technical_resources": "Technical resources",
@@ -221,6 +223,7 @@ export const text: Record<string, Record<TextKey, string>> = {
   },
   nb: {
     entity_role: "Entitet",
+    edit: "Endre",
     "tab.summary": "Sammendrag",
     "tab.controllable_units": "Kontrollerbare enheter",
     "tab.technical_resources": "Tekniske ressurser",

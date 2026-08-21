@@ -17,6 +17,7 @@ import { DataTable } from "../components/EDS-ra/list/Datagrid";
 import { NoticePartyMissing } from "./details/NoticePartyMissing";
 import { NoticePartyOutdated } from "./details/NoticePartyOutdated";
 import { NoticePartyResidual } from "./details/NoticePartyResidual";
+import { NoticeControllableUnitFlexiblePowerExceedsRatedPower } from "./details/NoticeControllableUnitFlexiblePowerExceedsRatedPower";
 import noticeTypes from "./noticeTypes";
 
 type Notice = GNotice & {
@@ -97,6 +98,12 @@ export const NoticeShowDetails = () => {
 
   const typeSpecificDetails = () => {
     switch (record?.type) {
+      case "no.elhub.flex.controllable_unit.maximum_active_power.ratio":
+        return (
+          <NoticeControllableUnitFlexiblePowerExceedsRatedPower
+            notice={record}
+          />
+        );
       case "no.elhub.flex.party.outdated":
         return (
           <NoticePartyOutdated
