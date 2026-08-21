@@ -29,9 +29,8 @@ def test_embed_accounting_point_bidding_zone_is_list(sts):
     assert isinstance(data["accounting_point"]["bidding_zone"], list)
 
 
-# the `!` join hint (rewritten to PostgREST's `!inner`) must restrict the
-# parent (controllable_unit) rows, not just the embedded rows, when filtering
-# on a column of the embedded resource
+# the `!` join hint must restrict the parent (controllable_unit) rows,
+# not just the embedded rows, when filtering on a column of the embedded resource
 def test_embed_inner_join_hint_filters_parent_rows(sts):
     client = sts.get_client(TestEntity.TEST, "FISO")
 
