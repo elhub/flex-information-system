@@ -28,7 +28,7 @@ AS $$
 $$;
 
 -- changeset flex:api-event-source-grants runOnChange:true
-GRANT EXECUTE ON FUNCTION api.event_source(text, integer)
+GRANT EXECUTE ON FUNCTION api.event_source(text, bigint)
 TO flex_common;
 
 
@@ -59,5 +59,5 @@ AS $$
 $$;
 
 -- changeset flex:api-event-subject-grants runOnChange:true
-GRANT EXECUTE ON FUNCTION api.event_subject(text, integer)
+GRANT EXECUTE ON FUNCTION api.event_subject(text, bigint)
 TO flex_common;
