@@ -1,5 +1,4 @@
 import { useTranslate, useI18nProvider } from "ra-core";
-import { CSSProperties } from "react";
 import { I18nProvider } from "../../../intl/intl";
 import { BaseInputProps } from "./BaseInput";
 import { ArrayInput } from "./ArrayInput";
@@ -8,7 +7,7 @@ type EnumArrayInputProps = BaseInputProps & {
   enumKey: string;
   defaultValue?: string[];
   placeholder?: string;
-  style?: CSSProperties;
+  inputClassName?: string;
 };
 
 export const EnumArrayInput = ({ enumKey, ...rest }: EnumArrayInputProps) => {
