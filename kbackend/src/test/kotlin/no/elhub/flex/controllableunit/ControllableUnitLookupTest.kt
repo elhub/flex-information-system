@@ -634,7 +634,7 @@ class ControllableUnitLookupTest :
                             1,
                             null,
                             null,
-                            "{\"requesting_party_id\": 1}"
+                            "{\"kind\": \"event.data.controllable_unit.lookup\", \"requesting_party_id\": 1}"
                         )
                     }
                 }
@@ -678,7 +678,7 @@ class ControllableUnitLookupTest :
                             1,
                             null,
                             null,
-                            "{\"requesting_party_id\": 1}"
+                            "{\"kind\": \"event.data.controllable_unit.lookup\", \"requesting_party_id\": 1}"
                         )
                     }
                 }
@@ -731,7 +731,7 @@ class ControllableUnitLookupTest :
                             1,
                             "controllable_unit",
                             10,
-                            "{\"requesting_party_id\": 1}"
+                            "{\"kind\": \"event.data.controllable_unit.lookup\", \"requesting_party_id\": 1}"
                         )
                     }
                 }
