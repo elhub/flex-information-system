@@ -1,11 +1,10 @@
 import { Button } from "../../components/ui/index";
 import { useTranslate } from "ra-core";
 import { Link as RouterLink } from "react-router-dom";
+import { Notice } from "../../generated-client/index";
 
 type Props = {
-  notice: {
-    source?: string;
-  };
+  notice: Notice;
   buttonTextKey: string;
 };
 
