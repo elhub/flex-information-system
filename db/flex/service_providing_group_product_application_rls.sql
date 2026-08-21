@@ -36,14 +36,14 @@ FOR ALL
 TO flex_flexibility_information_system_operator
 USING (true);
 
+-- RLS: SPGPA-SP001
+-- RLS: SPGPA-SP002
 GRANT SELECT, INSERT, UPDATE ON service_providing_group_product_application
 TO flex_service_provider;
-
--- RLS: SPGPA-SP001
 DROP POLICY IF EXISTS "SPGPA_SP001" ON service_providing_group_product_application;
 CREATE POLICY "SPGPA_SP001"
 ON service_providing_group_product_application
-FOR SELECT
+FOR ALL
 TO flex_service_provider
 USING (
     EXISTS (
@@ -52,44 +52,6 @@ USING (
         WHERE service_providing_group_product_application.service_providing_group_id = service_providing_group.id -- noqa
             AND service_providing_group.service_provider_id = (SELECT flex.current_party()) -- noqa
     )
-);
-
-DROP POLICY IF EXISTS "SPGPA_SP001_INSERT"
-ON service_providing_group_product_application;
-CREATE POLICY "SPGPA_SP001_INSERT"
-ON service_providing_group_product_application
-FOR INSERT
-TO flex_service_provider
-WITH CHECK (
-    EXISTS (
-        SELECT 1
-        FROM service_providing_group
-        WHERE service_providing_group_product_application.service_providing_group_id = service_providing_group.id -- noqa
-            AND service_providing_group.service_provider_id = (SELECT flex.current_party()) -- noqa
-    )
-);
-
--- RLS: SPGPA-SP002
-DROP POLICY IF EXISTS "SPGPA_SP002"
-ON service_providing_group_product_application;
-CREATE POLICY "SPGPA_SP002"
-ON service_providing_group_product_application
-FOR UPDATE
-TO flex_service_provider
-USING (
-    -- SP can act on rows that are requested (data changes) or rejected (status reset)
-    -- NB: ownership is enforced by WITH CHECK, not here
-    service_providing_group_product_application.status IN ('requested', 'rejected')
-)
-WITH CHECK (
-    EXISTS (
-        SELECT 1
-        FROM service_providing_group
-        WHERE service_providing_group_product_application.service_providing_group_id = service_providing_group.id -- noqa
-            AND service_providing_group.service_provider_id = (SELECT flex.current_party()) -- noqa
-    )
-    -- SP can never change the status to something other than requested
-    AND service_providing_group_product_application.status = 'requested'
 );
 
 -- RLS: SPGPA-SO001
