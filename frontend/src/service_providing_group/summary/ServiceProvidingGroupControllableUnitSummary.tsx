@@ -41,8 +41,7 @@ export const ServiceProvidingGroupControllableUnitSummary = ({
                   "W",
                   KILO,
                   displayScale,
-                )}{" "}
-                kW
+                )}
               </span>
               <PowerRatio
                 flexiblePower={cu.maximum_active_power?.sum}
