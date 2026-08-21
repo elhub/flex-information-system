@@ -214,6 +214,14 @@ DECLARE
     applied_twice_product_type_ids bigint [];
     product_type_names text;
 BEGIN
+    -- on update, skip check if product types did not change
+    IF (
+        TG_OP = 'UPDATE'
+        AND NEW.product_type_ids IS NOT DISTINCT FROM OLD.product_type_ids
+    ) THEN
+        RETURN NEW;
+    END IF;
+
     -- product types with an existing application for the same SPG and SO
     SELECT array_agg(DISTINCT product_type_id)
     INTO already_applied_product_type_ids
