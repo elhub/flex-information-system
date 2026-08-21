@@ -240,6 +240,7 @@ class AccountingPointServiceImpl(
         controllableUnitRepository.getAccountingPointStartDates(accountingPointIds)
             .map { apStarts ->
                 apStarts.mapValues {
+                    logger.debug { "Accounting point ${it.key.value} has CU start ${it.value.controllableUnitStartTime} and CUSP start ${it.value.controllableUnitServiceProviderValidTimeStart}" }
                     // earliest of both dates, or null if none exists
                     listOfNotNull(it.value.controllableUnitStartTime, it.value.controllableUnitServiceProviderValidTimeStart)
                         .minOrNull()
