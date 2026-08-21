@@ -54,7 +54,7 @@ controllable_unit;accounting_point_id;api;;R;R;R;RC;R;R;RC;R;;;;
 controllable_unit;additional_information;api;;R;R;R;RCU;R;R;RCU;R;;;;
 controllable_unit;recorded_at;api;;R;R;R;R;R;R;R;R;;;;
 controllable_unit;recorded_by;api;;R;R;R;R;R;R;R;R;;;;
-controllable_unit_service_provider;;api;;;;;D;;;D;;;;R;
+controllable_unit_service_provider;;api;;;;;D;;;D;;;;R;R
 controllable_unit_service_provider;id;api;;R;R;R;R;R;R;R;R;;;;
 controllable_unit_service_provider;controllable_unit_id;api;;R;R;R;RC;R;R;RC;R;;;;
 controllable_unit_service_provider;service_provider_id;api;;R;R;R;RC;R;R;RC;R;;;;

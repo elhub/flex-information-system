@@ -177,7 +177,3 @@ controllable_unit_service_provider_end_user_check_update
 BEFORE UPDATE OF valid_time_range ON controllable_unit_service_provider
 FOR EACH ROW
 EXECUTE FUNCTION controllable_unit_service_provider_end_user_check();
-
--- changeset flex:controllable-unit-service-provider-grants runOnChange:true endDelimiter:;
-GRANT SELECT ON TABLE controllable_unit_service_provider
-TO flex_internal_data;
