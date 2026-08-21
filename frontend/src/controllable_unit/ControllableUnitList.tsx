@@ -218,7 +218,6 @@ export const ControllableUnitList = () => {
       empty={false}
       filters={controllableUnitFilters}
       actions={actions}
-      // inner-join embed so filtering on accounting_point.business_id restricts CU rows
       filter={{ embed: "accounting_point!" }}
     >
       <Datagrid>
