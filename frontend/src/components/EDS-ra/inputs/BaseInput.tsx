@@ -19,6 +19,7 @@ export type BaseInputProps = {
   descriptionOverride?: string;
   warning?: string;
   infoElement?: React.ReactNode;
+  className?: string;
 };
 
 type BaseInputPropsWithChildren = BaseInputProps & {
@@ -39,6 +40,7 @@ export const BaseInput = ({
   descriptionOverride,
   warning,
   infoElement,
+  className,
   children,
   resource: resourceProp,
   overrideLabel,
@@ -78,6 +80,7 @@ export const BaseInput = ({
       error={error}
       inputProps={{ required, disabled: isDisabled }}
       size="large"
+      className={className}
     >
       <FlexDiv style={{ gap: "var(--eds-size-2)", alignItems: "center" }}>
         <FormItemLabel htmlFor={id} size="large">

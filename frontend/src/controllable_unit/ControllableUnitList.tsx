@@ -19,7 +19,7 @@ import {
 import { cuStatusVariantMap } from "./controllableUnitStatus";
 import { RegulationDirectionField } from "./RegulationDirectionField";
 import { AccountingPointLinkField } from "../accounting_point/AccountingPointLinkField";
-import { EnumArrayInput } from "../components/EDS-ra/inputs";
+import { EnumArrayInput, TextInput } from "../components/EDS-ra/inputs";
 import { BodyText, Button, Tooltip } from "../components/ui";
 import { Permissions } from "../auth/permissions";
 import { zControllableUnit } from "../generated-client/zod.gen";
@@ -146,11 +146,24 @@ const IsSmallField = ({
 export const ControllableUnitList = () => {
   const { permissions } = usePermissions<Permissions>();
   const { data: identity } = useGetIdentity();
+  const translate = useTranslate();
   const canLookup = permissions?.allow("controllable_unit", "lookup");
   const isFiso =
     identity?.role === "flex_flexibility_information_system_operator";
 
   const controllableUnitFilters = [
+    <TextInput
+      key="name"
+      source="name@ilike"
+      tooltip={false}
+      className="w-[24rem]"
+    />,
+    <TextInput
+      key="accounting_point"
+      source="accounting_point.business_id@ilike"
+      overrideLabel={translate("field.controllable_unit.accounting_point_id")}
+      tooltip={false}
+    />,
     <EnumArrayInput
       key="status"
       source="status@in"
@@ -205,6 +218,7 @@ export const ControllableUnitList = () => {
       empty={false}
       filters={controllableUnitFilters}
       actions={actions}
+      filter={{ embed: "accounting_point!" }}
     >
       <Datagrid>
         <TextField source={fields.id.source} />
