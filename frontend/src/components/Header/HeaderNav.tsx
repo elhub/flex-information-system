@@ -65,7 +65,12 @@ const useMenuItems = () => {
         },
         { label: translate("text.header_nav_entities"), to: "/entity" },
         { label: translate("text.header_nav_parties"), to: "/party" },
-        { label: translate("text.header_nav_events"), to: "/event" },
+        // Event is a performance-sensitive resource to list unfiltered when not FISO due to RLA.
+        // Other party types should access events through individual resources or notifications.
+        ...(roleIdentity?.role ===
+        "flex_flexibility_information_system_operator"
+          ? [{ label: translate("text.header_nav_events"), to: "/event" }]
+          : []),
         {
           label: translate("text.header_nav_notifications"),
           to: "/notification",
@@ -82,7 +87,7 @@ const useMenuItems = () => {
                 label: translate("text.header_nav_user_guide"),
                 to: userGuideURL,
               },
-              ...(roleIdentity?.role == "flex_organisation"
+              ...(roleIdentity?.role === "flex_organisation"
                 ? [
                     {
                       label: translate("text.header_nav_create_user_guide"),

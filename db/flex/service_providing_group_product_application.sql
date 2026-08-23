@@ -110,8 +110,9 @@ EXECUTE FUNCTION
 service_providing_group_product_application_insert_on_active_spg();
 
 -- changeset flex:service-providing-group-product-application-sp-status-update-function runOnChange:true endDelimiter:--
--- trigger to check that a status update done by the SP is always a reset
--- i.e., rejected->requested
+-- trigger to check that an update done by the SP is always done when requested
+-- or reset (rejected->requested)
+-- RLS: SPGPA-SP002
 CREATE OR REPLACE FUNCTION
 service_providing_group_product_application_sp_status_update()
 RETURNS trigger
@@ -120,14 +121,16 @@ LANGUAGE plpgsql
 AS
 $$
 BEGIN
-    IF
-        current_role = 'flex_service_provider'
-        AND NOT (OLD.status = 'rejected' AND NEW.status = 'requested')
-    THEN
+    IF (
+        NEW.status != 'requested'
+        OR NOT (OLD.status IN ('requested', 'rejected'))
+    ) THEN
         RAISE sqlstate 'PT400' using
             message =
-                'a service provider can only request a new application process'
-                || ' when it is rejected';
+                'A service provider can only update an application when its'
+                || ' status is "requested" or reset to "requested" after'
+                || ' rejection. Any other updates must be done by the system'
+                || ' operator.';
         RETURN null;
     END IF;
 
@@ -138,9 +141,9 @@ $$;
 -- changeset flex:service-providing-group-product-application-sp-status-update-trigger runOnChange:true endDelimiter:--
 CREATE OR REPLACE TRIGGER
 service_providing_group_product_application_sp_status_update
-BEFORE UPDATE OF status ON service_providing_group_product_application
+BEFORE UPDATE ON service_providing_group_product_application
 FOR EACH ROW
-WHEN (OLD.status IS DISTINCT FROM NEW.status) -- noqa
+WHEN (current_role = 'flex_service_provider') -- noqa
 EXECUTE FUNCTION
 service_providing_group_product_application_sp_status_update();
 
@@ -214,6 +217,14 @@ DECLARE
     applied_twice_product_type_ids bigint [];
     product_type_names text;
 BEGIN
+    -- on update, skip check if product types did not change
+    IF (
+        TG_OP = 'UPDATE'
+        AND NEW.product_type_ids IS NOT DISTINCT FROM OLD.product_type_ids
+    ) THEN
+        RETURN NEW;
+    END IF;
+
     -- product types with an existing application for the same SPG and SO
     SELECT array_agg(DISTINCT product_type_id)
     INTO already_applied_product_type_ids

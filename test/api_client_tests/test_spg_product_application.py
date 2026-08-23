@@ -367,6 +367,16 @@ def test_spgpa_fiso_sp_so(data):
     )
     assert isinstance(spggps_before, list)
 
+    # SP cannot update when the resulting status would not be requested
+    u = update_service_providing_group_product_application.sync(
+        client=client_sp,
+        id=cast(int, spgpa.id),
+        body=ServiceProvidingGroupProductApplicationUpdateRequest(
+            status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFICATION,
+        ),
+    )
+    assert isinstance(u, ErrorMessage)
+
     # RLS: SPGPA-SO002
     # also they cannot update the ones they can read but that do not target them
 
@@ -390,21 +400,11 @@ def test_spgpa_fiso_sp_so(data):
         body=ServiceProvidingGroupProductApplicationUpdateRequest(
             status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFIED,
             prequalified_at=datetime.datetime.fromisoformat(
-                "2024-01-01T00:00:00+01:00"
+                "2020-01-01T00:00:00+01:00"
             ),
         ),
     )
     assert not isinstance(u, ErrorMessage)
-
-    # SP cannot update when the status is not rejected
-    u = update_service_providing_group_product_application.sync(
-        client=client_sp,
-        id=cast(int, spgpa.id),
-        body=ServiceProvidingGroupProductApplicationUpdateRequest(
-            status=ServiceProvidingGroupProductApplicationStatus.PREQUALIFICATION,
-        ),
-    )
-    assert isinstance(u, ErrorMessage)
 
     # FISO can read and update
     # RLS: SPGPA-FISO001
@@ -556,9 +556,18 @@ def test_spgpa_fiso_sp_so(data):
     )
     assert not isinstance(u, ErrorMessage)
 
-    # last part of SPGPA-SP001 : SP can reset a rejected application
+    # RLS: SPGPA-SP002
+    # SP cannot update resource fields when status is not requested
+    u = update_service_providing_group_product_application.sync(
+        client=client_sp,
+        id=cast(int, spgpa.id),
+        body=ServiceProvidingGroupProductApplicationUpdateRequest(
+            maximum_active_power_up=2.0,
+        ),
+    )
+    assert isinstance(u, ErrorMessage)
 
-    # (cannot update to anything else than requested)
+    # SP cannot update status to anything other than requested
     u = update_service_providing_group_product_application.sync(
         client=client_sp,
         id=cast(int, spgpa.id),
@@ -567,6 +576,15 @@ def test_spgpa_fiso_sp_so(data):
         ),
     )
     assert isinstance(u, ErrorMessage)
+
+    u = update_service_providing_group_product_application.sync(
+        client=client_sp,
+        id=cast(int, spgpa.id),
+        body=ServiceProvidingGroupProductApplicationUpdateRequest(
+            status=ServiceProvidingGroupProductApplicationStatus.REQUESTED,
+        ),
+    )
+    assert not isinstance(u, ErrorMessage)
 
     # SPGPA-VAL007 - ramping for manual congestion(product type 1)
     u = update_service_providing_group_product_application.sync(
@@ -601,18 +619,6 @@ def test_spgpa_fiso_sp_so(data):
         ),
     )
     assert not isinstance(u, ErrorMessage)
-
-    # rejected -> requested : ok
-    # TODO - this test is disabled since we have remove the
-    # SPs permission (FLA) to update the status (for the time being)
-    # u = update_service_providing_group_product_application.sync(
-    #     client=client_sp,
-    #     id=cast(int, spgpa.id),
-    #     body=ServiceProvidingGroupProductApplicationUpdateRequest(
-    #         status=ServiceProvidingGroupProductApplicationStatus.REQUESTED,
-    #     ),
-    # )
-    # assert not isinstance(u, ErrorMessage)
 
     # just to trigger notification to SO
     for spgm_id in spgm_ids:
