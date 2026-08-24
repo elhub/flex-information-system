@@ -17,7 +17,7 @@ export const AccountingPointLinkField = ({
   const { data } = useGetManyAggregate(
     "accounting_point",
     { ids: accountingPointId ? [accountingPointId] : [] },
-    { enabled: !!accountingPoint },
+    { enabled: accountingPoint === undefined },
   );
 
   if (data) {
