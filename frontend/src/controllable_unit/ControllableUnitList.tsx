@@ -3,8 +3,6 @@ import type { Exporter } from "ra-core";
 import {
   defaultExporter,
   useGetIdentity,
-  useGetList,
-  useGetOne,
   usePermissions,
   useRecordContext,
   useTranslate,
@@ -54,26 +52,16 @@ const CreateButton = () => (
   </Button>
 );
 
-// custom component resolving the bidding zone through the accounting point
-// (keeping source for React-Admin behaviour)
 const BiddingZoneField = ({ source: _source }: { source: string }) => {
   const record = useRecordContext();
   const translate = useTranslate();
-  const { data } = useGetList(
-    "accounting_point_bidding_zone",
-    {
-      filter: { accounting_point_id: record?.accounting_point_id },
-      // default sort is on `id` which does not exist on AP-BZ
-      sort: { field: "valid_from", order: "DESC" },
-    },
-    { enabled: !!record?.accounting_point_id },
-  );
 
   const current = findCurrentlyValidRecord(
-    data as AccountingPointBiddingZone[] | undefined,
+    record?.accounting_point?.bidding_zone as
+      AccountingPointBiddingZone[] | undefined,
   );
 
-  if (!current) return <BodyText size="small">-</BodyText>;
+  if (!current?.bidding_zone) return <BodyText size="small">-</BodyText>;
   return (
     <BodyText size="small">
       {translate(
@@ -90,25 +78,12 @@ const BalanceResponsiblePartyField = ({
   source: string;
 }) => {
   const record = useRecordContext();
-  const { data } = useGetList(
-    "accounting_point_balance_responsible_party",
-    {
-      filter: { accounting_point_id: record?.accounting_point_id },
-      // default sort is on `id` which does not exist on AP-BRP either
-      sort: { field: "valid_from", order: "DESC" },
-    },
-    { enabled: !!record?.accounting_point_id },
-  );
-
   const current = findCurrentlyValidRecord(
-    data as AccountingPointBalanceResponsibleParty[] | undefined,
+    record?.accounting_point?.balance_responsible_party as
+      AccountingPointBalanceResponsibleParty[] | undefined,
   );
 
-  const { data: party } = useGetOne(
-    "party",
-    { id: current?.balance_responsible_party_id },
-    { enabled: !!current?.balance_responsible_party_id },
-  );
+  const party = current?.balance_responsible_party;
 
   if (!party) return <BodyText size="small">-</BodyText>;
   return <BodyText size="small">{party.name}</BodyText>;
@@ -218,7 +193,10 @@ export const ControllableUnitList = () => {
       empty={false}
       filters={controllableUnitFilters}
       actions={actions}
-      filter={{ embed: "accounting_point!" }}
+      filter={{
+        embed:
+          "accounting_point(bidding_zone, balance_responsible_party(balance_responsible_party))",
+      }}
     >
       <Datagrid>
         <TextField source={fields.id.source} />
