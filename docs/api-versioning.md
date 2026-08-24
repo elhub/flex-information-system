@@ -75,33 +75,46 @@ for each version.
 ## Non-breaking changes
 
 There are also other kinds of changes we allow ourselves doing on the API
-_without considering them to be breaking changes_. As a rule of thumb, any
-_addition_ to the specification is not considered to be breaking the API.
-Integrations using tolerant parsers (ignoring unknown fields, parsing open
-enums, _etc._) should continue to work seamlessly after such changes.
+_without considering them to be breaking changes_. Here is a list of these
+changes, from lowest to highest impact on the clients.
 
-<!-- TODO: decide what is breaking and reformat -->
+The least impactful type of change is adding to the specification something
+completely new and optional. In such cases, integrations will continue to work
+seamlessly:
 
-- new field
-- new optional parameter or field
-- new enum value
-- new endpoint
-- new optional header
-- new response HTTP status or schema
-- specifying a freeform object
-- adding constraints (length, min, max, etc)
-- stricter format (e.g., string -> uuid)
-- changing number format (int32, int64)
-- making a field nullable or non-nullable
-- making a required field optional
-- null vs empty (list) vs missing field
-- unit change (seconds vs milliseconds)
-- timezone changes
-- rounding of numbers
-- side effects (internal behaviour of API)
-- pagination changes: sorting, etc
-- new auth
-- 
+* adding a new endpoint
+* adding a new optional query parameter to an endpoint
+* adding an optional header to an endpoint
+* making a required field optional
+
+Next is new values, schemas, or null behaviour, that may not make tolerant
+parsers fail when reading responses, but might need a bit of work, namely on the
+request side:
+
+* adding a new value to an enumeration
+* adding a new HTTP status or response schema
+* adding a new field to a resource
+* making a field nullable or non-nullable
+* switching between null, empty lists, and missing field
+
+Next is everything that specifies more precisely things that were left a bit too
+vague in earlier versions of the API. If integrations are not strict enough in
+the formats, especially in the requests, they may need a bit of work as well:
+
+* specifying a freeform `object` in the OpenAPI document
+* adding constraints (_e.g._, length, min, max)
+* making a format stricter (_e.g._, expecting a UUID instead of a plain string)
+* changing a number format (32-bit vs. 64-bit integers)
+* changing the unit of a field (_e.g._, seconds vs. milliseconds)
+* changing the rounding precision of numbers
+
+Last is changes in API behaviour or details going beyond the pure specification:
+
+* changes in pagination: sorting, page size, filtering
+* changes in authorisation: roles, scopes, permissions
+* internal behaviour of the API, side effects
+
+Some of such changes are not even visible in the API specification.
 
 ## Documentation
 
