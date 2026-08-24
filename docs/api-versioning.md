@@ -76,9 +76,32 @@ for each version.
 
 There are also other kinds of changes we allow ourselves doing on the API
 _without considering them to be breaking changes_. As a rule of thumb, any
-_addition_ to the specification is not considered to be breaking the API. For
-instance, we take freedom to _add new fields_ to resources or specify fields
-that are currently left as a general `object`.
+_addition_ to the specification is not considered to be breaking the API.
+Integrations using tolerant parsers (ignoring unknown fields, parsing open
+enums, _etc._) should continue to work seamlessly after such changes.
+
+<!-- TODO: decide what is breaking and reformat -->
+
+- new field
+- new optional parameter or field
+- new enum value
+- new endpoint
+- new optional header
+- new response HTTP status or schema
+- specifying a freeform object
+- adding constraints (length, min, max, etc)
+- stricter format (e.g., string -> uuid)
+- changing number format (int32, int64)
+- making a field nullable or non-nullable
+- making a required field optional
+- null vs empty (list) vs missing field
+- unit change (seconds vs milliseconds)
+- timezone changes
+- rounding of numbers
+- side effects (internal behaviour of API)
+- pagination changes: sorting, etc
+- new auth
+- 
 
 ## Documentation
 
