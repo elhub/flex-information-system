@@ -95,7 +95,7 @@ export type TextKey =
   | "comment.visibility.any_involved_party.description"
   | "notice_missing_grid_location_button"
   | "notice_insufficient_grid_location_source_button"
-  | "notice_bidding_zone_mismatch";
+  | "notice_bidding_zone_mismatch_button";
 
 export const text: Record<string, Record<TextKey, string>> = {
   en: {
@@ -224,7 +224,8 @@ export const text: Record<string, Record<TextKey, string>> = {
     notice_missing_grid_location_button:
       "Check the grid location information here",
     notice_insufficient_grid_location_source_button: "Go to accounting point",
-    notice_bidding_zone_mismatch: "Go to Service providing group membership",
+    notice_bidding_zone_mismatch_button:
+      "Go to Service providing group membership",
   },
   nb: {
     entity_role: "Entitet",
@@ -351,6 +352,6 @@ export const text: Record<string, Record<TextKey, string>> = {
     notice_missing_grid_location_button:
       "Sjekk informasjon om nettlokasjon her",
     notice_insufficient_grid_location_source_button: "Gå til målepunktet",
-    notice_bidding_zone_mismatch: "Gå til gruppen",
+    notice_bidding_zone_mismatch_button: "Gå til gruppen",
   },
 };
