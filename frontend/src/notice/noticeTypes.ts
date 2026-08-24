@@ -154,6 +154,13 @@ const noticeTypes = [
     action:
       "Suspension is a temporary procedure. Consider reinstating the SPG or removing their qualification.",
   },
+  {
+    id: "no.elhub.flex.service_providing_group_membership.bidding_zone_mismatch",
+    shortId: "service_providing_group_membership.bidding_zone_mismatch",
+    label: "Inconsistency: mismatch between CU bidding Zone and SPG",
+    description: "The CUs bidding zone does not match the one on the SPG",
+    action: "End or update the valid time on the SPG membership",
+  },
 ];
 
 export default noticeTypes;
