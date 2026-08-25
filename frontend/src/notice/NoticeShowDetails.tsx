@@ -17,6 +17,7 @@ import { DataTable } from "../components/EDS-ra/list/Datagrid";
 import { NoticePartyMissing } from "./details/NoticePartyMissing";
 import { NoticePartyOutdated } from "./details/NoticePartyOutdated";
 import { NoticePartyResidual } from "./details/NoticePartyResidual";
+import { NoticeControllableUnitMaximumActivePowerRatio } from "./details/NoticeControllableUnitMaximumActivePowerRatio";
 import noticeTypes from "./noticeTypes";
 import type { ReactNode } from "react";
 import { NoticeActionButton } from "./details/NoticeActionButton";
@@ -112,6 +113,9 @@ const noticeDetailsRenderers: Record<string, NoticeDetailsRenderer> = {
     (notice) => (
       <NoticeSPPSProductTypeNotQualifiedShowDetails notice={notice} />
     ),
+  "no.elhub.flex.controllable_unit.maximum_active_power.ratio": (notice) => (
+    <NoticeControllableUnitMaximumActivePowerRatio notice={notice} />
+  ),
   "no.elhub.flex.accounting_point_grid_location.source_insufficient": (
     notice,
   ) => (
