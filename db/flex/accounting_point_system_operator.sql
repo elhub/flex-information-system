@@ -7,7 +7,7 @@ WITH (security_invoker = false) AS (
     SELECT
         ap_mga.accounting_point_id,
         mga_so.system_operator_id,
-        row_number() OVER () AS id,
+        1 AS id,
         (
             ap_mga.valid_time_range
             * mga_so.valid_time_range
