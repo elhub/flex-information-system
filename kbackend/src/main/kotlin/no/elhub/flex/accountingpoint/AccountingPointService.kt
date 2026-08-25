@@ -2,7 +2,9 @@ package no.elhub.flex.accountingpoint
 
 import arrow.core.Either
 import arrow.core.flatMap
+import arrow.core.left
 import arrow.core.raise.either
+import arrow.core.right
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.http.HttpStatusCode
 import kotlinx.datetime.TimeZone
@@ -58,9 +60,13 @@ interface AccountingPointService {
     ): Either<AppError, Long>
 
     /**
-     * Looks up an accounting point by its business ID
+     * Looks up an accounting point by its business ID.
      *
-     * Returns [ResourceNotFoundError] if not found.
+     * If no accounting point with this business ID exists yet, it is created on the fly
+     * (with no further data populated), the same way [synchronizeAccountingPoint] does it.
+     * The sync process is responsible for progressively filling in the rest of the data.
+     *
+     * Returns [InternalServerError] if the lookup/creation fails.
      */
     context(principal: FlexPrincipal)
     suspend fun getAccountingPointByBusinessId(accountingPointBusinessId: String): Either<AppError, AccountingPoint>
@@ -215,12 +221,20 @@ class AccountingPointServiceImpl(
     context(principal: FlexPrincipal)
     override suspend fun getAccountingPointByBusinessId(
         accountingPointBusinessId: String
-    ): Either<AppError, AccountingPoint> = accountingPointRepository.getAccountingPointByBusinessId(accountingPointBusinessId).mapLeft { error ->
-        when (error) {
-            is NotFoundError -> ResourceNotFoundError("accounting point with business ID $accountingPointBusinessId not found")
-            else -> InternalServerError(traceIdOrUnknown())
-        }
-    }
+    ): Either<AppError, AccountingPoint> = accountingPointRepository.getAccountingPointByBusinessId(accountingPointBusinessId)
+        .fold(
+            ifLeft = { error ->
+                when (error) {
+                    is NotFoundError -> accountingPointRepository.insertAccountingPointIfNotExists(
+                        AccountingPoint(id = 0, businessId = accountingPointBusinessId)
+                    ).map { id -> AccountingPoint(id = id, businessId = accountingPointBusinessId) }
+                        .mapLeft { it.toInternalServerError("insertAccountingPointIfNotExists") }
+
+                    else -> InternalServerError(traceIdOrUnknown()).left()
+                }
+            },
+            ifRight = { it.right() }
+        )
 
     context(principal: FlexPrincipal)
     override suspend fun getCurrentAccountingPoint(controllableUnitBusinessId: String): Either<AppError, AccountingPoint> = accountingPointRepository.getCurrentAccountingPoint(controllableUnitBusinessId).mapLeft { error ->
