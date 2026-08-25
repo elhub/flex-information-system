@@ -1,6 +1,6 @@
 import { Form, useRecordContext, useTranslate } from "ra-core";
 import { useFormContext } from "react-hook-form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { z } from "zod";
 import { getFields, unTypedZodResolver } from "../../zod";
@@ -30,6 +30,8 @@ import {
   DateTimeInput,
 } from "../../components/EDS-ra/inputs";
 import { ProductTypeArrayInput } from "../../product_type/components";
+import { draftStorageKey } from "../../hooks/useSpgpaDrafts";
+import { DraftAutosaveWatcher } from "./DraftAutosaveWatcher";
 
 // ramping_capability and ramping_description are required in the frontend even
 // though the API allows null (the API-level constraint only enforces non-null
@@ -109,12 +111,19 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
   const translate = useTranslate();
   const { state: overrideRecord } = useLocation();
   const actualRecord = useRecordContext();
+
+  // Read the draft ID from location state when restoring a saved draft.
+  // This must be extracted before Zod parses the state, as Zod strips unknown keys.
+  const restoredDraftId = overrideRecord?.__draftId as string | undefined;
+
   const parsedOverrideRecord = spgpaFormSchema
     .partial()
     .parse(overrideRecord ?? {});
 
   const record = { ...actualRecord, ...parsedOverrideRecord };
   const createOrUpdate = useCreateOrUpdate();
+
+  const [draftId] = useState(() => restoredDraftId ?? crypto.randomUUID());
 
   if (createOrUpdate === "create" && isProductApplicationBlocked()) {
     return (
@@ -129,12 +138,17 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
 
   const fields = getFields(spgpaFormSchema.shape);
 
+  const spgId = record?.service_providing_group_id as number | undefined;
+
   return (
     <Form
       record={record}
       resolver={unTypedZodResolver(spgpaFormSchema)}
       sanitizeEmptyValues
     >
+      {createOrUpdate === "create" && (
+        <DraftAutosaveWatcher spgId={spgId} draftId={draftId} />
+      )}
       <FormContainer>
         <Heading level={3} size="medium">
           {createOrUpdate === "create"
@@ -229,6 +243,11 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
           confirmTitle={translate("ra.action.save")}
           confirmContent={
             <p>{translate("text.spga_save_confirmation_text")}</p>
+          }
+          onSuccess={
+            createOrUpdate === "create" && spgId
+              ? () => localStorage.removeItem(draftStorageKey(spgId, draftId))
+              : undefined
           }
         />
       </FormContainer>

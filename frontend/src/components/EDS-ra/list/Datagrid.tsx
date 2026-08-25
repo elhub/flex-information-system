@@ -16,12 +16,16 @@ import {
 import { BodyText, Loader, Table } from "../../ui";
 import { FieldTooltip } from "../fields";
 
+export type RowClickResult = string | { to: string; state?: unknown };
+
 type DatagridProps<T extends RaRecord = RaRecord> = {
   children: ReactNode;
   empty?: boolean;
   emptyNode?: ReactNode;
-  rowClick?: false | ((record: T) => string);
+  rowClick?: false | ((record: T) => RowClickResult);
   expandPanel?: (record: T) => ReactNode;
+  prependData?: T[];
+  rowActions?: (record: T) => ReactNode;
 };
 
 export const Datagrid = <T extends RaRecord>({
@@ -30,6 +34,8 @@ export const Datagrid = <T extends RaRecord>({
   emptyNode,
   rowClick,
   expandPanel,
+  prependData,
+  rowActions,
 }: DatagridProps<T>) => {
   const { data: listData, isLoading } = useListContext<T>();
   const data = listData ?? [];
@@ -45,6 +51,8 @@ export const Datagrid = <T extends RaRecord>({
       emptyNode={emptyNode}
       rowClick={rowClick}
       expandPanel={expandPanel}
+      prependData={prependData}
+      rowActions={rowActions}
     >
       {children}
     </DataTable>
@@ -55,9 +63,11 @@ type DataTableProps<T extends RaRecord = RaRecord> = {
   children: ReactNode;
   empty?: boolean;
   emptyNode?: ReactNode;
-  rowClick?: false | ((record: T) => string);
+  rowClick?: false | ((record: T) => RowClickResult);
   expandPanel?: (record: T) => ReactNode;
   data: T[];
+  prependData?: T[];
+  rowActions?: (record: T) => ReactNode;
 };
 
 export const DataTable = <T extends RaRecord>({
@@ -67,11 +77,18 @@ export const DataTable = <T extends RaRecord>({
   rowClick,
   expandPanel,
   data,
+  prependData,
+  rowActions,
 }: DataTableProps<T>) => {
   const resource = useResourceContext();
   const columns = Children.toArray(children).filter(isValidElement);
   const navigate = useNavigate();
   const hasRowClick = rowClick !== false;
+
+  // Only render the actions column when at least one row actually produces an action.
+  const allRows = [...(prependData ?? []), ...data];
+  const hasAnyAction =
+    rowActions != null && allRows.some((r) => rowActions(r) != null);
 
   const handleRowClick = (
     e: React.MouseEvent<HTMLTableRowElement>,
@@ -86,15 +103,23 @@ export const DataTable = <T extends RaRecord>({
       return;
     }
 
-    const url =
+    const result =
       typeof rowClick === "function"
         ? rowClick(record)
         : `/${resource}/${record.id}/show`;
 
-    navigate(url);
+    if (typeof result === "string") {
+      navigate(result);
+    } else {
+      navigate(result.to, { state: result.state });
+    }
   };
 
-  if (data.length === 0 && empty !== false) {
+  if (
+    data.length === 0 &&
+    (prependData ?? []).length === 0 &&
+    empty !== false
+  ) {
     return emptyNode !== undefined ? (
       emptyNode
     ) : (
@@ -139,9 +164,50 @@ export const DataTable = <T extends RaRecord>({
               </Table.ColumnHeader>
             );
           })}
+          {hasAnyAction && (
+            <Table.ColumnHeader style={{ width: "1px" }} aria-label="Actions" />
+          )}
         </Table.Row>
       </Table.Header>
       <Table.Body>
+        {(prependData ?? []).map((record) => (
+          <RecordContextProvider key={record.id} value={record}>
+            {expandPanel ? (
+              <Table.ExpandableRow
+                style={hasRowClick ? { cursor: "pointer" } : undefined}
+                onClick={(e) => handleRowClick(e, record)}
+                content={
+                  <RecordContextProvider value={record}>
+                    {expandPanel(record)}
+                  </RecordContextProvider>
+                }
+              >
+                {columns.map((child, index) => (
+                  <Table.DataCell key={index}>
+                    {cloneElement(child)}
+                  </Table.DataCell>
+                ))}
+                {hasAnyAction && (
+                  <Table.DataCell>{rowActions!(record)}</Table.DataCell>
+                )}
+              </Table.ExpandableRow>
+            ) : (
+              <Table.Row
+                style={hasRowClick ? { cursor: "pointer" } : undefined}
+                onClick={(e) => handleRowClick(e, record)}
+              >
+                {columns.map((child, index) => (
+                  <Table.DataCell key={index}>
+                    {cloneElement(child)}
+                  </Table.DataCell>
+                ))}
+                {hasAnyAction && (
+                  <Table.DataCell>{rowActions!(record)}</Table.DataCell>
+                )}
+              </Table.Row>
+            )}
+          </RecordContextProvider>
+        ))}
         {data.map((record) => (
           <RecordContextProvider key={record.id} value={record}>
             {expandPanel ? (
@@ -159,6 +225,9 @@ export const DataTable = <T extends RaRecord>({
                     {cloneElement(child)}
                   </Table.DataCell>
                 ))}
+                {hasAnyAction && (
+                  <Table.DataCell>{rowActions!(record)}</Table.DataCell>
+                )}
               </Table.ExpandableRow>
             ) : (
               <Table.Row
@@ -170,6 +239,9 @@ export const DataTable = <T extends RaRecord>({
                     {cloneElement(child)}
                   </Table.DataCell>
                 ))}
+                {hasAnyAction && (
+                  <Table.DataCell>{rowActions!(record)}</Table.DataCell>
+                )}
               </Table.Row>
             )}
           </RecordContextProvider>
