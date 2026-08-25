@@ -5,15 +5,19 @@ import arrow.core.flatMap
 import arrow.core.raise.either
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.http.HttpStatusCode
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import no.elhub.flex.accountingpoint.db.AccountingPointMeteringGridAreaRepository
 import no.elhub.flex.accountingpoint.db.AccountingPointRepository
 import no.elhub.flex.auth.FlexPrincipal
+import no.elhub.flex.controllableunit.db.ControllableUnitRepository
 import no.elhub.flex.db.FlexTransaction.flexTransaction
 import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterService
 import no.elhub.flex.meteringgridarea.db.MeteringGridAreaRepository
 import no.elhub.flex.model.domain.AccountingPoint
 import no.elhub.flex.model.domain.AccountingPointEndUser
 import no.elhub.flex.model.domain.AccountingPointEnergySupplier
+import no.elhub.flex.model.domain.AccountingPointId
 import no.elhub.flex.model.domain.AccountingPointMeteringGridArea
 import no.elhub.flex.model.domain.Location
 import no.elhub.flex.model.domain.db.NoMatchError
@@ -80,14 +84,30 @@ interface AccountingPointService {
      */
     context(principal: FlexPrincipal)
     suspend fun getByIds(accountingPointIds: List<Long>): Either<AppError, List<AccountingPoint>>
+
+    // NB: nullable results here because we want to decide at the call site what we do if no data is there
+
+    /**
+     * Gets the earliest date from which we have active data about the given accounting points in the system.
+     */
+    context(principal: FlexPrincipal)
+    suspend fun getAccountingPointStartDates(accountingPointIds: List<Long>): Either<AppError, Map<AccountingPointId, Instant?>>
+
+    /**
+     * Gets the earliest date from which we have active data about an accounting point in the system.
+     */
+    context(principal: FlexPrincipal)
+    suspend fun getAccountingPointStartDate(accountingPointId: Long): Either<AppError, Instant?>
 }
 
+@Suppress("TooManyFunctions")
 @Single(createdAtStart = true)
 class AccountingPointServiceImpl(
     private val accountingPointRepository: AccountingPointRepository,
     private val meteringGridAreaRepository: MeteringGridAreaRepository,
     private val accountingPointMeteringGridAreaRepository: AccountingPointMeteringGridAreaRepository,
     private val accountingPointAdapter: AccountingPointAdapterService,
+    private val controllableUnitRepository: ControllableUnitRepository,
 ) : AccountingPointService {
     companion object {
         private val logger = KotlinLogging.logger {}
@@ -214,6 +234,23 @@ class AccountingPointServiceImpl(
     override suspend fun getByIds(accountingPointIds: List<Long>): Either<AppError, List<AccountingPoint>> =
         accountingPointRepository.getByIds(accountingPointIds)
             .mapLeft { InternalServerError(traceIdOrUnknown()) }
+
+    context(principal: FlexPrincipal)
+    override suspend fun getAccountingPointStartDates(accountingPointIds: List<Long>): Either<AppError, Map<AccountingPointId, Instant?>> =
+        controllableUnitRepository.getAccountingPointStartDates(accountingPointIds)
+            .map { apStarts ->
+                apStarts.mapValues {
+                    logger.debug { "Accounting point ${it.key.value} has CU start ${it.value.controllableUnitStartTime} and CUSP start ${it.value.controllableUnitServiceProviderValidTimeStart}" }
+                    // earliest of both dates, or null if none exists
+                    listOfNotNull(it.value.controllableUnitStartTime, it.value.controllableUnitServiceProviderValidTimeStart)
+                        .minOrNull()
+                }
+            }
+            .mapLeft { InternalServerError(traceIdOrUnknown()) }
+
+    context(principal: FlexPrincipal)
+    override suspend fun getAccountingPointStartDate(accountingPointId: Long): Either<AppError, Instant?> =
+        getAccountingPointStartDates(listOf(accountingPointId)).map { it[AccountingPointId(accountingPointId)] }
 
     private suspend fun fetchAccountingPointData(
         accountingPointBusinessId: String,

@@ -38,6 +38,9 @@ export type TextKey =
   | "spg_manage_members_heading"
   | "spg_manage_members_heading_no_name"
   | "spg_manage_members_body"
+  | "spg_show_table_search_label"
+  | "spg_show_table_search_clear"
+  | "spg_show_table_search_placeholder"
   | "spg_manage_members_search_label"
   | "spg_manage_members_search_clear"
   | "spg_manage_members_search_placeholder"
@@ -75,6 +78,7 @@ export type TextKey =
   | "header_nav_dashboard"
   | "header_nav_controllable_units"
   | "header_nav_service_providing_groups"
+  | "header_nav_grid_prequalification"
   | "header_nav_applications"
   | "header_nav_service_provider_product_applications"
   | "header_nav_service_providing_group_product_applications"
@@ -90,7 +94,10 @@ export type TextKey =
   | "header_nav_create_user_guide"
   | "header_nav_assume_party"
   | "comment.visibility.same_party.description"
-  | "comment.visibility.any_involved_party.description";
+  | "comment.visibility.any_involved_party.description"
+  | "notice_missing_grid_location_button"
+  | "notice_insufficient_grid_location_source_button"
+  | "notice_bidding_zone_mismatch_button";
 
 export const text: Record<string, Record<TextKey, string>> = {
   en: {
@@ -180,6 +187,10 @@ export const text: Record<string, Record<TextKey, string>> = {
       "This field is meant to capture any additional information about the service providing group that might be relevant.",
     spg_create_additional_information_placeholder:
       "This field is optional and can be left empty.",
+    spg_show_table_search_label: "Search",
+    spg_show_table_search_clear: "Clear",
+    spg_show_table_search_placeholder:
+      "Filter by name, id or accounting point id",
     user_dropdown_logout: "Logout",
     user_dropdown_user_guide: "User guide",
     user_dropdown_create_user_guide: "Create user guide",
@@ -192,6 +203,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     header_nav_dashboard: "Dashboard",
     header_nav_controllable_units: "Controllable units",
     header_nav_service_providing_groups: "Service providing groups",
+    header_nav_grid_prequalification: "Grid prequalifications",
     header_nav_applications: "Applications",
     header_nav_service_provider_product_applications:
       "Service provider product applications",
@@ -213,6 +225,11 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Only visible to your current party",
     "comment.visibility.any_involved_party.description":
       "Visible to all parties involved in this resource",
+    notice_missing_grid_location_button:
+      "Check the grid location information here",
+    notice_insufficient_grid_location_source_button: "Go to accounting point",
+    notice_bidding_zone_mismatch_button:
+      "Go to Service providing group membership",
   },
   nb: {
     entity_role: "Entitet",
@@ -300,6 +317,10 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Dette feltet er ment å fange opp eventuell tilleggsinformasjon om fleksibilitetsgruppen som kan være relevant.",
     spg_create_additional_information_placeholder:
       "Dette feltet er valgfritt og kan stå tomt.",
+    spg_show_table_search_label: "S\u00f8k",
+    spg_show_table_search_clear: "Fjern",
+    spg_show_table_search_placeholder:
+      "Filtrer p\u00e5 navn, id eller avregningspunkt",
     user_dropdown_logout: "Logg ut",
     user_dropdown_user_guide: "Brukerveiledning",
     user_dropdown_create_user_guide: "Opprett Ny bruker veiledning",
@@ -312,6 +333,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     header_nav_dashboard: "Oversikt",
     header_nav_controllable_units: "Kontrollerbare enheter",
     header_nav_service_providing_groups: "Fleksibilitetsgrupper",
+    header_nav_grid_prequalification: "Nettprekvalifiseringer",
     header_nav_applications: "Søknader",
     header_nav_service_provider_product_applications:
       "Tjenesteleverandørens produktsøknader",
@@ -333,5 +355,9 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Kun synlig for din nåværende aktør",
     "comment.visibility.any_involved_party.description":
       "Synlig for alle parter involvert i denne ressursen",
+    notice_missing_grid_location_button:
+      "Sjekk informasjon om nettlokasjon her",
+    notice_insufficient_grid_location_source_button: "Gå til målepunktet",
+    notice_bidding_zone_mismatch_button: "Gå til gruppen",
   },
 };

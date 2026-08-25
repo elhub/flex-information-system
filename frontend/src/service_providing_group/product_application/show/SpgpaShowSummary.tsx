@@ -1,5 +1,6 @@
 import { Button, Link, Panel } from "../../../components/ui";
 import { LabelValue } from "../../../components/LabelValue";
+import { KILO, Scale } from "../../../utils/scales";
 import { Link as RouterLink } from "react-router-dom";
 import { IconPencil, IconExternal } from "@elhub/ds-icons";
 import { usePermissions } from "ra-core";
@@ -12,16 +13,17 @@ import { useGetAllProductTypes } from "../../../product_type/components";
 import { useParty } from "../../../hooks/party";
 import {
   EventButton,
-  NestedResourceHistoryButton,
+  ResourceHistoryButton,
 } from "../../../components/EDS-ra/buttons";
 import { useTranslateEnum } from "../../../intl/intl";
 
 type Props = {
   spgpa: ServiceProvidingGroupProductApplication;
   spg: ServiceProvidingGroup | undefined;
+  powerScale: Scale;
 };
 
-export const SpgpaShowSummary = ({ spgpa, spg }: Props) => {
+export const SpgpaShowSummary = ({ spgpa, spg, powerScale }: Props) => {
   const { permissions } = usePermissions<Permissions>();
   const translateEnum = useTranslateEnum();
   const canEdit = permissions?.allow(
@@ -95,14 +97,18 @@ export const SpgpaShowSummary = ({ spgpa, spg }: Props) => {
             size="large"
             label="Max active power (up)"
             value={spgpa.maximum_active_power_up}
-            unit="kW"
+            unit="W"
+            storageScale={KILO}
+            displayScale={powerScale}
           />
 
           <LabelValue
             size="large"
             label="Max active power (down)"
             value={spgpa.maximum_active_power_down}
-            unit="kW"
+            unit="W"
+            storageScale={KILO}
+            displayScale={powerScale}
           />
 
           {spgpa.ramping_capability && (
@@ -150,7 +156,7 @@ export const SpgpaShowSummary = ({ spgpa, spg }: Props) => {
         </div>
       </Panel>
       <div className="flex gap-4 mt-2">
-        <NestedResourceHistoryButton child="product_application" />
+        <ResourceHistoryButton id={String(spgpa.id)} />
         <EventButton filterOnSubject recordId={String(spgpa.id)} />
         <Button
           as={RouterLink}

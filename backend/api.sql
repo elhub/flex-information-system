@@ -363,7 +363,7 @@ CREATE TABLE api.event (
     type text NOT NULL,
     source text NOT NULL,
     subject text NULL,
-    data text NULL
+    data jsonb NULL
 );
 CREATE TABLE api.notification (
     id bigint NOT NULL,

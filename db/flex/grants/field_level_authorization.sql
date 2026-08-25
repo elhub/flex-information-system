@@ -512,6 +512,10 @@ flex.controllable_unit_service_provider
 TO flex_internal_event_notification;
 
 GRANT SELECT ON TABLE
+flex.controllable_unit_service_provider
+TO flex_internal_data;
+
+GRANT SELECT ON TABLE
 flex.controllable_unit_service_provider_history
 TO flex_balance_responsible_party;
 
@@ -546,6 +550,10 @@ TO flex_third_party;
 GRANT SELECT ON TABLE
 flex.controllable_unit_service_provider_history
 TO flex_internal_event_notification;
+
+GRANT SELECT ON TABLE
+flex.controllable_unit_service_provider_history
+TO flex_internal_data;
 
 GRANT SELECT ON TABLE
 flex.controllable_unit_suspension

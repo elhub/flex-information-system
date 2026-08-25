@@ -73,6 +73,7 @@ class ControllableUnitLookupTimezoneTest : FunSpec({
                 MeteringGridAreaRepositoryImpl(),
                 AccountingPointMeteringGridAreaRepositoryImpl(),
                 adapterService,
+                ControllableUnitRepositoryImpl(),
             ),
             eventRepo = EventRepositoryImpl(),
             // keep enabled so that we check that checks in the DB pass

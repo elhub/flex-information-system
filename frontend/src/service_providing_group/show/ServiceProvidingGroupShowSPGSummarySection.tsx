@@ -1,4 +1,5 @@
 import { Link, Panel } from "../../components/ui";
+import { Scale } from "../../utils/scales";
 
 import type { ServiceProvidingGroupSummary } from "../../generated-client";
 import { ServiceProvidingGroupControllableUnitSummary } from "../summary/ServiceProvidingGroupControllableUnitSummary";
@@ -6,10 +7,12 @@ import { ServiceProvidingGroupTechnicalResourceSummary } from "../summary/Servic
 
 type Props = {
   summary: ServiceProvidingGroupSummary;
+  powerScale: Scale;
 };
 
 export const ServiceProvidingGroupShowSPGSummarySection = ({
   summary,
+  powerScale,
 }: Props) => {
   return (
     <div className="flex flex-col gap-4">
@@ -32,10 +35,14 @@ export const ServiceProvidingGroupShowSPGSummarySection = ({
           {" ."}
         </p>
       </Panel>
-      <ServiceProvidingGroupControllableUnitSummary summary={summary} />
+      <ServiceProvidingGroupControllableUnitSummary
+        summary={summary}
+        displayScale={powerScale}
+      />
       <ServiceProvidingGroupTechnicalResourceSummary
         summary={summary}
         showDetails
+        displayScale={powerScale}
       />
     </div>
   );

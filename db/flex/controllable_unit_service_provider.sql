@@ -177,3 +177,8 @@ controllable_unit_service_provider_end_user_check_update
 BEFORE UPDATE OF valid_time_range ON controllable_unit_service_provider
 FOR EACH ROW
 EXECUTE FUNCTION controllable_unit_service_provider_end_user_check();
+
+-- changeset flex:controllable-unit-service-provider-controllable-unit-idx runOnChange:true endDelimiter:-- runInTransaction:false
+CREATE INDEX CONCURRENTLY IF NOT EXISTS
+controllable_unit_service_provider_controllable_unit_idx
+ON controllable_unit_service_provider (controllable_unit_id);

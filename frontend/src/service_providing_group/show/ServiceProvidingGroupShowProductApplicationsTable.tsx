@@ -16,15 +16,18 @@ import {
 } from "../../productApplicationBlock";
 import { ProductTypeArrayField } from "../../components/ProductTypeArrayField";
 import { ServiceProvidingGroupStatus } from "../../generated-client";
+import { formatScaled, KILO, Scale } from "../../utils/scales";
 
 type Props = {
   spgId: number;
   spgStatus: ServiceProvidingGroupStatus;
+  powerScale: Scale;
 };
 
 export const ServiceProvidingGroupShowProductApplicationsTable = ({
   spgId,
   spgStatus,
+  powerScale,
 }: Props) => {
   const { data, isLoading, error } = useSpgProductApplications(spgId);
   const navigate = useNavigate();
@@ -34,6 +37,9 @@ export const ServiceProvidingGroupShowProductApplicationsTable = ({
     "service_providing_group_product_application",
     "create",
   );
+
+  const formatPower = (value: unknown) =>
+    formatScaled(Number(value), "W", KILO, powerScale);
 
   const columns: Column<SpgProductApplicationRow>[] = [
     {
@@ -58,14 +64,14 @@ export const ServiceProvidingGroupShowProductApplicationsTable = ({
       header: t(
         "service_providing_group_product_application.maximum_active_power_up",
       ),
-      render: (value) => `${value} kW`,
+      render: formatPower,
     },
     {
       key: "maximumActivePowerDown",
       header: t(
         "service_providing_group_product_application.maximum_active_power_down",
       ),
-      render: (value) => `${value} kW`,
+      render: formatPower,
     },
     {
       key: "status",

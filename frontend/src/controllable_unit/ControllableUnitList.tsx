@@ -1,8 +1,8 @@
 import { Link as RouterLink } from "react-router-dom";
+import type { Exporter } from "ra-core";
 import {
+  defaultExporter,
   useGetIdentity,
-  useGetList,
-  useGetOne,
   usePermissions,
   useRecordContext,
   useTranslate,
@@ -17,7 +17,7 @@ import {
 import { cuStatusVariantMap } from "./controllableUnitStatus";
 import { RegulationDirectionField } from "./RegulationDirectionField";
 import { AccountingPointLinkField } from "../accounting_point/AccountingPointLinkField";
-import { EnumArrayInput } from "../components/EDS-ra/inputs";
+import { EnumArrayInput, TextInput } from "../components/EDS-ra/inputs";
 import { BodyText, Button, Tooltip } from "../components/ui";
 import { Permissions } from "../auth/permissions";
 import { zControllableUnit } from "../generated-client/zod.gen";
@@ -25,8 +25,9 @@ import { getFields } from "../zod";
 import { IconPlus } from "@elhub/ds-icons";
 import { findCurrentlyValidRecord } from "../util";
 import type {
-  AccountingPointBiddingZone,
   AccountingPointBalanceResponsibleParty,
+  AccountingPointBiddingZone,
+  ControllableUnit,
 } from "../generated-client";
 
 const CULookupButton = () => (
@@ -51,26 +52,16 @@ const CreateButton = () => (
   </Button>
 );
 
-// custom component resolving the bidding zone through the accounting point
-// (keeping source for React-Admin behaviour)
 const BiddingZoneField = ({ source: _source }: { source: string }) => {
   const record = useRecordContext();
   const translate = useTranslate();
-  const { data } = useGetList(
-    "accounting_point_bidding_zone",
-    {
-      filter: { accounting_point_id: record?.accounting_point_id },
-      // default sort is on `id` which does not exist on AP-BZ
-      sort: { field: "valid_from", order: "DESC" },
-    },
-    { enabled: !!record?.accounting_point_id },
-  );
 
   const current = findCurrentlyValidRecord(
-    data as AccountingPointBiddingZone[] | undefined,
+    record?.accounting_point?.bidding_zone as
+      AccountingPointBiddingZone[] | undefined,
   );
 
-  if (!current) return <BodyText size="small">-</BodyText>;
+  if (!current?.bidding_zone) return <BodyText size="small">-</BodyText>;
   return (
     <BodyText size="small">
       {translate(
@@ -87,25 +78,12 @@ const BalanceResponsiblePartyField = ({
   source: string;
 }) => {
   const record = useRecordContext();
-  const { data } = useGetList(
-    "accounting_point_balance_responsible_party",
-    {
-      filter: { accounting_point_id: record?.accounting_point_id },
-      // default sort is on `id` which does not exist on AP-BRP either
-      sort: { field: "valid_from", order: "DESC" },
-    },
-    { enabled: !!record?.accounting_point_id },
-  );
-
   const current = findCurrentlyValidRecord(
-    data as AccountingPointBalanceResponsibleParty[] | undefined,
+    record?.accounting_point?.balance_responsible_party as
+      AccountingPointBalanceResponsibleParty[] | undefined,
   );
 
-  const { data: party } = useGetOne(
-    "party",
-    { id: current?.balance_responsible_party_id },
-    { enabled: !!current?.balance_responsible_party_id },
-  );
+  const party = current?.balance_responsible_party;
 
   if (!party) return <BodyText size="small">-</BodyText>;
   return <BodyText size="small">{party.name}</BodyText>;
@@ -143,11 +121,24 @@ const IsSmallField = ({
 export const ControllableUnitList = () => {
   const { permissions } = usePermissions<Permissions>();
   const { data: identity } = useGetIdentity();
+  const translate = useTranslate();
   const canLookup = permissions?.allow("controllable_unit", "lookup");
   const isFiso =
     identity?.role === "flex_flexibility_information_system_operator";
 
   const controllableUnitFilters = [
+    <TextInput
+      key="name"
+      source="name@ilike"
+      tooltip={false}
+      className="w-[24rem]"
+    />,
+    <TextInput
+      key="accounting_point"
+      source="accounting_point.business_id@ilike"
+      overrideLabel={translate("field.controllable_unit.accounting_point_id")}
+      tooltip={false}
+    />,
     <EnumArrayInput
       key="status"
       source="status@in"
@@ -157,10 +148,43 @@ export const ControllableUnitList = () => {
 
   const fields = getFields(zControllableUnit.shape);
 
+  const exporter: Exporter = async (
+    records,
+    fetchRelatedRecords,
+    dataProvider,
+    resource,
+  ) => {
+    const { data } = await dataProvider.getList<ControllableUnit>(
+      "controllable_unit",
+      {
+        filter: { embed: "accounting_point" },
+        pagination: { page: 1, perPage: 100000 },
+        sort: { field: "id", order: "DESC" },
+      },
+    );
+
+    const rows = data.map((record) => ({
+      id: record.id,
+      business_id: record.business_id,
+      accounting_point: record.accounting_point?.business_id ?? "",
+      name: record.name,
+      maximum_active_power: record.maximum_active_power,
+      is_small: record.is_small,
+      regulation_direction: record.regulation_direction,
+      start_date: record.start_date,
+      status: record.status,
+      additional_information: record.additional_information,
+      recorded_by: record.recorded_by,
+      recorded_at: record.recorded_at,
+    }));
+
+    defaultExporter(rows, fetchRelatedRecords, dataProvider, resource);
+  };
+
   const actions = [
     ...(canLookup ? [<CULookupButton key="lookup" />] : []),
     ...(isFiso ? [<CreateButton key="create" />] : []),
-    <ExportButton key="export" maxResults={100000} />,
+    <ExportButton key="export" exporter={exporter} maxResults={100000} />,
   ];
 
   return (
@@ -169,6 +193,10 @@ export const ControllableUnitList = () => {
       empty={false}
       filters={controllableUnitFilters}
       actions={actions}
+      filter={{
+        embed:
+          "accounting_point(bidding_zone, balance_responsible_party(balance_responsible_party))",
+      }}
     >
       <Datagrid>
         <TextField source={fields.id.source} />

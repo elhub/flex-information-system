@@ -63,9 +63,10 @@ change from `requested` will trigger this check as well.
 | SPGPA-VAL004        | If `status` is set to `prequalified`, then `prequalified_at` must already be specified in the resource or the request.           | DONE   |
 | SPGPA-VAL005        | If `status` is set to `verified`, then `verified_at` must already be specified in the resource or the request.                   | DONE   |
 | SPGPA-VAL006        | If `status` is set to `rejected`, then both `prequalified_at` and `verified_at` must be unset in the resource or by the request. | DONE   |
-| SPGPA-VAL007        | If `product_type_ids` contains Manual Frequency Restoration, then `ramping_capability` must be set                                          | DONE   |
-| SPGPA-VAL008        | If `product_type_ids` contains Manual Frequency Restoration, then `ramping_description` must be set                                         | DONE   |
+| SPGPA-VAL007        | If `product_type_ids` contains Manual Frequency Restoration, then `ramping_capability` must be set                               | DONE   |
+| SPGPA-VAL008        | If `product_type_ids` contains Manual Frequency Restoration, then `ramping_description` must be set                              | DONE   |
 | SPGPA-VAL009        | `product_type_ids` must not be empty.                                                                                            | DONE   |
+| SPGPA-VAL010        | Product types can be applied for only once per SPG and system operator.                                                          | DONE   |
 
 ## Notifications
 
@@ -123,10 +124,10 @@ No policies.
 
 #### Service Provider
 
-| Policy key  | Policy                                                                       | Status |
-|-------------|------------------------------------------------------------------------------|--------|
-| SPGPA-SP001 | Create and read SPGPA for SPG they are in charge for.                        | DONE   |
-| SPGPA-SP002 | Update SPGPA for SPG they are in charge for, when the status is `requested`. | DONE   |
+| Policy key  | Policy                                                                                                             | Status |
+|-------------|--------------------------------------------------------------------------------------------------------------------|--------|
+| SPGPA-SP001 | Create and read SPGPA for SPG they are in charge for.                                                              | DONE   |
+| SPGPA-SP002 | Update SPGPA for SPG they are in charge for, when the status is `requested` or set from `rejected` to `requested`. | DONE   |
 
 #### Third Party
 
@@ -143,7 +144,7 @@ For party type abbreviations, check
 | service_providing_group_id   |      | R   | R  | R  | R    | R  | RC  | R  |     |
 | procuring_system_operator_id |      | R   | R  | R  | R    | R  | RC  | R  |     |
 | product_type_ids             |      | R   | R  | R  | RU   | RU | RCU | R  |     |
-| status                       |      | R   | R  | R  | RU   | RU | RC  | R  |     |
+| status                       |      | R   | R  | R  | RU   | RU | RCU | R  |     |
 | maximum_active_power_up      |      | R   | R  | R  | RU   | R  | RCU | R  |     |
 | maximum_active_power_down    |      | R   | R  | R  | RU   | R  | RCU | R  |     |
 | additional_information       |      | R   | R  | R  | RU   | R  | RCU | R  |     |

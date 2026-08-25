@@ -19,7 +19,6 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
-import kotlinx.serialization.json.Json
 import no.elhub.flex.accountingpoint.AccountingPointService
 import no.elhub.flex.auth.FlexAuthentication
 import no.elhub.flex.auth.FlexPrincipal
@@ -30,7 +29,6 @@ import no.elhub.flex.controllableunit.db.ControllableUnitRepository
 import no.elhub.flex.event.db.EventRepository
 import no.elhub.flex.model.domain.AccountingPoint
 import no.elhub.flex.model.domain.ControllableUnitForLookup
-import no.elhub.flex.model.dto.generated.models.ControllableUnitLookupResponse
 import no.elhub.flex.model.error.InternalServerError
 import no.elhub.flex.model.error.ResourceNotFoundError
 import no.elhub.flex.routes.controllableunit.ControllableUnitLookup
@@ -52,6 +50,9 @@ class ControllableUnitLookupTest :
             coEvery {
                 with(any<FlexPrincipal>()) { mockEventRepo.insertEvent(any(), any(), any(), any(), any(), any()) }
             } returns Unit.right()
+            coEvery {
+                with(any<FlexPrincipal>()) { mockAccountingPointService.getAccountingPointStartDate(any()) }
+            } returns null.right()
         }
 
         context("POST /controllable_unit/lookup") {
@@ -406,6 +407,9 @@ class ControllableUnitLookupTest :
                         with(any<FlexPrincipal>()) { syncDisabledAccountingPointService.getCurrentAccountingPoint(controllableUnitBusinessId) }
                     } returns AccountingPoint(id = 1, businessId = accountingPointBusinessId).right()
                     coEvery {
+                        with(any<FlexPrincipal>()) { syncDisabledAccountingPointService.getAccountingPointStartDate(any()) }
+                    } returns null.right()
+                    coEvery {
                         with(any<FlexPrincipal>()) {
                             syncDisabledAccountingPointService.checkEndUserMatchesAccountingPoint(endUserBusinessId, accountingPointBusinessId)
                         }
@@ -630,7 +634,7 @@ class ControllableUnitLookupTest :
                             1,
                             null,
                             null,
-                            "{\"requesting_party_id\": 1}"
+                            "{\"kind\": \"event.data.controllable_unit.lookup\", \"requesting_party_id\": 1}"
                         )
                     }
                 }
@@ -674,7 +678,7 @@ class ControllableUnitLookupTest :
                             1,
                             null,
                             null,
-                            "{\"requesting_party_id\": 1}"
+                            "{\"kind\": \"event.data.controllable_unit.lookup\", \"requesting_party_id\": 1}"
                         )
                     }
                 }
@@ -727,7 +731,7 @@ class ControllableUnitLookupTest :
                             1,
                             "controllable_unit",
                             10,
-                            "{\"requesting_party_id\": 1}"
+                            "{\"kind\": \"event.data.controllable_unit.lookup\", \"requesting_party_id\": 1}"
                         )
                     }
                 }

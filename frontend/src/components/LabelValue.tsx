@@ -6,6 +6,7 @@ import { BodyText, BodyTextProps, Link } from "./ui";
 import { ReactNode } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { cn } from "../util";
+import { convertScale, IDENTITY, Scale } from "../utils/scales";
 
 type LabelValueProps = {
   labelKey?: TooltipKey | FieldLabel;
@@ -14,6 +15,8 @@ type LabelValueProps = {
   link?: string;
   linkText?: string;
   unit?: string;
+  storageScale?: Scale;
+  displayScale?: Scale;
   tooltip?: boolean;
   className?: string;
 } & Omit<BodyTextProps, "children">;
@@ -22,6 +25,8 @@ export const LabelValue = ({
   label,
   value,
   unit,
+  storageScale = IDENTITY,
+  displayScale = storageScale,
   labelKey,
   tooltip = false,
   link,
@@ -31,11 +36,19 @@ export const LabelValue = ({
 }: LabelValueProps) => {
   const translateLabel = useTranslateField();
 
+  const scaledValue =
+    typeof value === "number"
+      ? convertScale(value, storageScale, displayScale)
+      : value;
+
+  const unitLabel = unit ? `${displayScale.prefix}${unit}` : undefined;
+
   const formattedValue =
-    value !== undefined && value !== null && value !== ""
-      ? unit && (typeof value === "string" || typeof value === "number")
-        ? `${value} ${unit}`
-        : value
+    scaledValue !== undefined && scaledValue !== null && scaledValue !== ""
+      ? unitLabel &&
+        (typeof scaledValue === "string" || typeof scaledValue === "number")
+        ? `${scaledValue} ${unitLabel}`
+        : scaledValue
       : "No value";
 
   return (

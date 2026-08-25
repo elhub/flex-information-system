@@ -9,12 +9,14 @@ import {
   useSpgTechnicalResources,
   SpgTechnicalResource,
 } from "./useSpgTechnicalResources";
+import { formatScaled, KILO, Scale } from "../../utils/scales";
 
 type Props = {
   spgId: number;
+  powerScale: Scale;
 };
 
-export const SpgTechnicalResourceList = ({ spgId }: Props) => {
+export const SpgTechnicalResourceList = ({ spgId, powerScale }: Props) => {
   const translate = useTranslate();
   const translateEnum = useTranslateEnum();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -57,7 +59,7 @@ export const SpgTechnicalResourceList = ({ spgId }: Props) => {
     {
       key: "maximum_active_power",
       header: translate("field.technical_resource.maximum_active_power"),
-      render: (value) => `${value} kW`,
+      render: (value) => formatScaled(Number(value), "W", KILO, powerScale),
     },
     {
       key: "device_type",
@@ -102,6 +104,7 @@ export const SpgTechnicalResourceList = ({ spgId }: Props) => {
         record={selectedRecord}
         open={selectedTechnicalResourceId !== null}
         onClose={() => setSelectedTechnicalResourceId(null)}
+        displayScale={powerScale}
       />
     </div>
   );

@@ -15,9 +15,11 @@ export const useResourceHistory = (props: UseResourceHistoryProps = {}) => {
 
   const canRead = permissions?.allow(historyResource, "read");
 
-  const actualId = resource.endsWith("_history")
-    ? record?.[actualResource + "_id"]
-    : props.id || record?.id;
+  const actualId =
+    props.id ??
+    (resource.endsWith("_history")
+      ? record?.[actualResource + "_id"]
+      : record?.id);
 
   const to = `/${actualResource}/${actualId}/history`;
   const disabled = !canRead;

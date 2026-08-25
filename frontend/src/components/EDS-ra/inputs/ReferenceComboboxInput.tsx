@@ -11,6 +11,7 @@ import { BaseInput, BaseInputProps } from "./BaseInput";
 type ReferenceComboboxInputProps = BaseInputProps & {
   fieldName?: string;
   optionText?: (record: RaRecord) => string;
+  inputClassName?: string;
 };
 
 export const ReferenceComboboxInput = ({
@@ -25,6 +26,7 @@ export const ReferenceComboboxInput = ({
   resource: resourceProp,
   description,
   descriptionOverride,
+  inputClassName,
   ...rest
 }: ReferenceComboboxInputProps) => {
   const { id, field, fieldState } = useInput({
@@ -80,6 +82,7 @@ export const ReferenceComboboxInput = ({
       descriptionOverride={descriptionOverride}
     >
       <Combobox
+        inputClassName={inputClassName}
         options={options ?? []}
         selectedOptions={selectedValue ? [selectedValue] : []}
         onToggleSelected={handleToggle}

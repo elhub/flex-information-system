@@ -6,7 +6,7 @@ import {
 import { FunctionField } from "react-admin";
 import { Link } from "react-router-dom";
 import { Datagrid, List } from "../../components/EDS-ra/list";
-import { TextField, DateField } from "../../components/EDS-ra/fields";
+import { TextField } from "../../components/EDS-ra/fields";
 import { SpgpaStatusBadge } from "../../components/SpgpaStatusBadge";
 import { Button, Tooltip } from "../../components/ui";
 import { useTranslateField } from "../../intl/intl";
@@ -95,7 +95,7 @@ export const ServiceProvidingGroupProductApplicationList = () => {
               }
             : {
                 embed:
-                  "service_providing_group(service_provider),procuring_system_operator",
+                  "service_providing_group(service_provider,summary),procuring_system_operator",
               }
         }
         sort={{ field: "id", order: "DESC" }}
@@ -107,29 +107,74 @@ export const ServiceProvidingGroupProductApplicationList = () => {
           }
         >
           <TextField source={fields.id.source} />
-          {!record?.id && <TextField source="service_providing_group.name" />}
           {!record?.id && (
-            <TextField source="service_providing_group.service_provider.name" />
+            <TextField
+              source="service_providing_group.name"
+              label={t(
+                "service_providing_group_product_application.service_providing_group_id",
+              )}
+              hideLabel={true}
+            />
           )}
-          <TextField source="procuring_system_operator.name" />
+
+          {!record?.id && (
+            <TextField
+              source="service_providing_group.service_provider.name"
+              label={t("service_providing_group.service_provider_id")}
+              hideLabel={true}
+            />
+          )}
+          <TextField
+            source="procuring_system_operator.name"
+            label={t(
+              "service_providing_group_product_application.procuring_system_operator_id",
+            )}
+            hideLabel={true}
+          />
           <FunctionField
             source={fields.product_type_ids.source}
             render={(record) => (
               <ProductTypeArrayField productTypeIds={record.product_type_ids} />
             )}
           />
-          <TextField source={fields.maximum_active_power_up.source} unit="kW" />
+          <TextField
+            source={fields.maximum_active_power_up.source}
+            unit="kW"
+            label={t(
+              "service_providing_group_product_application.maximum_active_power_up",
+            )}
+            hideLabel={true}
+          />
           <TextField
             source={fields.maximum_active_power_down.source}
             unit="kW"
+            label={t(
+              "service_providing_group_product_application.maximum_active_power_down",
+            )}
+            hideLabel={true}
           />
+          {!record?.id && (
+            <TextField
+              source="service_providing_group.summary.controllable_unit.maximum_active_power.sum"
+              label={t("controllable_unit.maximum_active_power")}
+              hideLabel={true}
+              unit="kW"
+            />
+          )}
+          {!record?.id && (
+            <TextField
+              source="service_providing_group.summary.technical_resource.maximum_active_power.sum"
+              label={t("technical_resource.maximum_active_power")}
+              hideLabel={true}
+              unit="kW"
+            />
+          )}
           <FunctionField
             label={t("service_providing_group_product_application.status")}
             render={(record: { status: string }) => (
               <SpgpaStatusBadge status={record.status} />
             )}
           />
-          <DateField source={fields.recorded_at.source} showTime />
         </Datagrid>
       </List>
     </ResourceContextProvider>

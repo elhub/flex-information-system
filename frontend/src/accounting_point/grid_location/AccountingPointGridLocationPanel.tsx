@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { AccountingPointGridLocation } from "../../generated-client";
 import { LabelValue } from "../../components/LabelValue";
+import { KILO } from "../../utils/scales";
 import { Button, Panel } from "../../components/ui";
 import { useTranslate } from "ra-core";
 import { IconPencil } from "@elhub/ds-icons";
@@ -97,7 +98,8 @@ export const AccountingPointGridLocationPanel = ({
             size="small"
             labelKey="accounting_point_grid_location.nominal_voltage"
             value={gridLocation.nominal_voltage}
-            unit="kV"
+            unit="V"
+            storageScale={KILO}
           />
           <LabelValue
             size="small"

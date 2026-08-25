@@ -1,4 +1,5 @@
 import { LabelValue } from "../../../components/LabelValue";
+import { KILO } from "../../../utils/scales";
 import { ServiceProvidingGroupProductApplication } from "../../../generated-client";
 import { useTranslateEnum } from "../../../intl/intl";
 
@@ -35,14 +36,16 @@ export const SpgpaPrintSummary = ({
         size="small"
         label="Max active power (up)"
         value={spgpa.maximum_active_power_up}
-        unit="kW"
+        unit="W"
+        storageScale={KILO}
       />
 
       <LabelValue
         size="small"
         label="Max active power (down)"
         value={spgpa.maximum_active_power_down}
-        unit="kW"
+        unit="W"
+        storageScale={KILO}
       />
 
       {spgpa.ramping_capability && (
