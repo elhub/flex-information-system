@@ -14,7 +14,7 @@ const getCuIdFromSource = (source?: string) => {
   return Number.isInteger(id) && id > 0 ? id : undefined;
 };
 
-export const NoticeControllableUnitFlexiblePowerExceedsRatedPower = ({
+export const NoticeControllableUnitMaximumActivePowerRatio = ({
   notice,
 }: Props) => {
   const translate = useTranslate();
