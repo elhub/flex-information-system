@@ -36,6 +36,7 @@ export type TextKey =
   | "spga_save_confirmation_text"
   | "spgpa_draft_status_tooltip"
   | "spgpa_delete_draft"
+  | "spgpa_draft_autosaved"
   | "spg_manage_members_heading"
   | "spg_manage_members_heading_no_name"
   | "spg_manage_members_body"
@@ -149,6 +150,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     spgpa_draft_status_tooltip:
       "Saved only in this browser. This draft is private and is not visible to others.",
     spgpa_delete_draft: "Delete draft",
+    spgpa_draft_autosaved: "Draft autosaved",
     spg_manage_members_heading: "Manage members of %{name}",
     spg_manage_members_heading_no_name: "Manage members",
     spg_manage_members_body:
@@ -282,6 +284,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     spgpa_draft_status_tooltip:
       "Lagret kun i denne nettleseren. Dette utkastet er privat og ikke synlig for andre.",
     spgpa_delete_draft: "Slett utkast",
+    spgpa_draft_autosaved: "Utkast lagret automatisk",
     spg_manage_members_heading: "Administrer medlemmer for %{name}",
     spg_manage_members_heading_no_name: "Administrer medlemmer",
     spg_manage_members_body:
