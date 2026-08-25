@@ -19,11 +19,10 @@ import {
 } from "../../generated-client/zod.gen";
 
 export const ServiceProvidingGroupProductApplicationHistoryList = () => {
-  const params = useParams();
+  const { service_providing_group_product_application_id } = useParams();
+
   const filter: ListServiceProvidingGroupProductApplicationHistoryData["query"] =
-    {
-      service_providing_group_id: params.service_providing_group_id,
-    };
+    { service_providing_group_product_application_id };
 
   const filters = [
     <TextInput

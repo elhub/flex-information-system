@@ -28,7 +28,7 @@ export const EventButton = (
   const filter =
     "?filter=" +
     encodeURIComponent(
-      `{ "${filterField}@like": "/${resource}/${actualRecordId}" }`,
+      `{ "${filterField}@eq": "/${resource}/${actualRecordId}" }`,
     );
 
   return canRead ? (

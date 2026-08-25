@@ -261,6 +261,27 @@ export const zNoticeDataProductTypeNotQualified = z.object({
   product_type_ids: z.array(z.coerce.number()).optional(),
 });
 
+/**
+ * Common format of the data field in events concerning update operations.
+ */
+export const zEventDataUpdatedFields = z.object({
+  kind: z.literal("event.data.updated_fields"),
+  updated_fields: z.array(z.string()),
+});
+
+/**
+ * Format of the data field in a controllable_unit.lookup event.
+ */
+export const zEventDataControllableUnitLookup = z.object({
+  kind: z.literal("event.data.controllable_unit.lookup"),
+  requesting_party_id: z.coerce.number(),
+});
+
+export const zEventData = z.discriminatedUnion("kind", [
+  zEventDataUpdatedFields,
+  zEventDataControllableUnitLookup,
+]);
+
 export const zNumericAggregation = z.object({
   sum: z.coerce.number().optional(),
   average: z.coerce.number().optional(),
@@ -2391,7 +2412,7 @@ export const zEvent = z.object({
     .regex(/^(\/([a-z][a-z_]*|[0-9]+))+$/)
     .readonly(),
   subject: z.string().readonly().optional(),
-  data: z.string().readonly().optional(),
+  data: zEventData.nullish(),
   notification: z.array(z.lazy((): any => zNotification)).nullish(),
 });
 

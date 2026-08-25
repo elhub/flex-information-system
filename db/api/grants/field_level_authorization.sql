@@ -1601,6 +1601,10 @@ GRANT SELECT ON TABLE
 api.controllable_unit_service_provider
 TO flex_internal_event_notification;
 
+GRANT SELECT ON TABLE
+api.controllable_unit_service_provider
+TO flex_internal_data;
+
 GRANT SELECT (
     id,
     controllable_unit_service_provider_id,
@@ -1740,6 +1744,10 @@ TO flex_third_party;
 GRANT SELECT ON TABLE
 api.controllable_unit_service_provider_history
 TO flex_internal_event_notification;
+
+GRANT SELECT ON TABLE
+api.controllable_unit_service_provider_history
+TO flex_internal_data;
 
 GRANT SELECT (
     id,
@@ -6729,6 +6737,7 @@ TO flex_service_provider;
 
 GRANT UPDATE (
     product_type_ids,
+    status,
     maximum_active_power_up,
     maximum_active_power_down,
     additional_information,

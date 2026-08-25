@@ -28,3 +28,8 @@ CREATE TABLE IF NOT EXISTS metering_grid_area_system_operator (
         system_operator_id, system_operator_party_type
     ) REFERENCES party (id, type)
 );
+
+-- changeset flex:metering-grid-area-system-operator-metering-grid-area-idx runOnChange:true endDelimiter:-- runInTransaction:false
+CREATE INDEX CONCURRENTLY IF NOT EXISTS
+metering_grid_area_system_operator_metering_grid_area_idx
+ON metering_grid_area_system_operator (metering_grid_area_id);

@@ -7,15 +7,18 @@ import { Permissions } from "../../auth/permissions";
 import { useTranslateEnum } from "../../intl/intl";
 import { EnumLabel } from "../../intl/enum-labels";
 import { LabelValue } from "../../components/LabelValue";
+import { KILO, Scale } from "../../utils/scales";
 
 export const TechnicalResourceDetailModal = ({
   record,
   open,
   onClose,
+  displayScale,
 }: {
   record: TechnicalResource | null;
   open: boolean;
   onClose: () => void;
+  displayScale?: Scale;
 }) => {
   const translateEnum = useTranslateEnum();
   const navigate = useNavigate();
@@ -72,7 +75,9 @@ export const TechnicalResourceDetailModal = ({
           className="contents"
           labelKey="technical_resource.maximum_active_power"
           value={record.maximum_active_power}
-          unit="kW"
+          unit="W"
+          storageScale={KILO}
+          displayScale={displayScale}
         />
 
         <LabelValue

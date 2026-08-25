@@ -7,6 +7,7 @@ type EnumArrayInputProps = BaseInputProps & {
   enumKey: string;
   defaultValue?: string[];
   placeholder?: string;
+  inputClassName?: string;
 };
 
 export const EnumArrayInput = ({ enumKey, ...rest }: EnumArrayInputProps) => {

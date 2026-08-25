@@ -1,5 +1,7 @@
 --liquibase formatted sql
 -- Manually managed file
+-- noqa: disable=RF04
+-- RF04 - Keywords should not be used as identifiers.
 
 -- changeset flex:event-create runOnChange:true endDelimiter:--
 CREATE TABLE IF NOT EXISTS event (
@@ -7,12 +9,12 @@ CREATE TABLE IF NOT EXISTS event (
     -- reverse DNS style identifier
     -- (ltree makes it faster to filter on this field in the queries,
     -- because it looks like a path)
-    type ltree NOT NULL CHECK (
+    type ltree NOT NULL CHECK ( -- noqa
         type ~ 'no.elhub.flex.*'
     ),
     source_resource text NOT NULL,
     source_id bigint NOT NULL,
-    data jsonb NULL,
+    data jsonb NULL, -- noqa
     record_time_range tstzrange NOT NULL DEFAULT tstzrange(
         localtimestamp, null, '[)'
     ),
@@ -21,6 +23,17 @@ CREATE TABLE IF NOT EXISTS event (
     subject_id bigint NULL,
     processed boolean NOT NULL DEFAULT false
 );
+
+-- changeset flex:event-source-idx runOnChange:true endDelimiter:-- runInTransaction:false
+CREATE INDEX CONCURRENTLY IF NOT EXISTS
+event_source_idx
+ON event (source_resource, source_id);
+
+-- changeset flex:event-subject-idx runOnChange:true endDelimiter:-- runInTransaction:false
+CREATE INDEX CONCURRENTLY IF NOT EXISTS
+event_subject_idx
+ON event (subject_resource, subject_id)
+WHERE subject_resource IS NOT null AND subject_id IS NOT null;
 
 -- changeset flex:event-capture runOnChange:true endDelimiter:--
 CREATE OR REPLACE FUNCTION capture_event()
@@ -69,7 +82,10 @@ BEGIN
     l_event_data := null;
     IF TG_OP = 'UPDATE' THEN
         SELECT (
-            '{"updated_fields": ' || to_jsonb(array_agg(pre.key))::text || '}'
+            '{'
+            || '"kind": "event.data.updated_fields",'
+            || '"updated_fields": ' || to_jsonb(array_agg(pre.key))::text
+            || '}'
         )::jsonb
         INTO l_event_data
         -- fields that changed from OLD to NEW

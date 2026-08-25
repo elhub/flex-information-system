@@ -37,6 +37,7 @@ TO flex_flexibility_information_system_operator
 USING (true);
 
 -- RLS: SPGPA-SP001
+-- RLS: SPGPA-SP002
 GRANT SELECT, INSERT, UPDATE ON service_providing_group_product_application
 TO flex_service_provider;
 DROP POLICY IF EXISTS "SPGPA_SP001" ON service_providing_group_product_application;

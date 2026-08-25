@@ -13,6 +13,7 @@ type ShowPageLayoutProps = {
   badge?: ReactNode;
   alerts?: ReactNode;
   actionBar?: ReactNode;
+  titleExtra?: ReactNode;
   children: [ReactNode, ReactNode];
 };
 
@@ -22,6 +23,7 @@ export const ShowPageLayout = ({
   badge,
   alerts,
   actionBar,
+  titleExtra,
   children: [leftPanel, rightPanel],
 }: ShowPageLayoutProps) => {
   const navigate = useNavigate();
@@ -48,6 +50,7 @@ export const ShowPageLayout = ({
           {title}
         </Heading>
         {badge && <div className="flex items-center gap-1">{badge}</div>}
+        {titleExtra && <div className="ml-auto">{titleExtra}</div>}
       </div>
       {actionBar}
       <div className="grid grid-cols-1 gap-4 xl:grid-cols-[25%_minmax(0,1fr)]">

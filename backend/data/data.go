@@ -97,6 +97,9 @@ func NewAPIHandler(
 	dataListPostgRESTHandler := middleware.DefaultQueryLimit(
 		auth.CheckScopeForRequest("data", http.HandlerFunc(data.postgRESTHandler)),
 	)
+	eventListPostgRESTHandler := middleware.DefaultQueryLimit(
+		auth.CheckScopeForRequest("data", http.HandlerFunc(data.eventHandler)),
+	)
 	dataPostgRESTHandler := auth.CheckScopeForRequest(
 		"data", http.HandlerFunc(data.postgRESTHandler),
 	)
@@ -205,7 +208,7 @@ func NewAPIHandler(
 	mux.Handle("PATCH /entity_client/{id}", dataPostgRESTHandler)
 	mux.Handle("DELETE /entity_client/{id}", dataPostgRESTHandler)
 
-	mux.Handle("GET /event", dataListPostgRESTHandler)
+	mux.Handle("GET /event", eventListPostgRESTHandler)
 	mux.Handle("GET /event/{id}", dataPostgRESTHandler)
 
 	mux.Handle("GET /identity", dataListPostgRESTHandler)
@@ -673,6 +676,50 @@ func validAtQueryRewrite(query url.Values) error {
 	}
 
 	return nil
+}
+
+func (data *api) eventHandler(w http.ResponseWriter, req *http.Request) {
+	query := req.URL.Query()
+
+	regexResource := regexp.MustCompile(`^eq\./([a-z_]+)/([0-9]+)$`)
+
+	rewritten := false
+
+	if match := regexResource.FindStringSubmatch(query.Get("source")); match != nil {
+		query.Del("source")
+		resource := match[1]
+		resourceID := match[2]
+
+		query.Set("source_resource", resource)
+		query.Set("source_id", resourceID)
+
+		// target the function instead of the table, so we can use the event source
+		// filtering mechanism
+		req.URL.Path = "/rpc/event_source"
+
+		rewritten = true
+	}
+
+	if match := regexResource.FindStringSubmatch(query.Get("subject")); match != nil {
+		query.Del("subject")
+		resource := match[1]
+		resourceID := match[2]
+
+		query.Set("subject_resource", resource)
+		query.Set("subject_id", resourceID)
+
+		// target the function instead of the table, so we can use the event subject
+		// filtering mechanism
+		req.URL.Path = "/rpc/event_subject"
+
+		rewritten = true
+	}
+
+	if rewritten {
+		req.URL.RawQuery = query.Encode()
+	}
+
+	data.postgRESTHandler(w, req)
 }
 
 // postgRESTHandler forwards the request to the PostgREST API.

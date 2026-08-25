@@ -26,6 +26,13 @@ FOR SELECT
 TO flex_internal_event_notification
 USING (true);
 
+GRANT SELECT ON controllable_unit_service_provider TO flex_internal_data;
+DROP POLICY IF EXISTS "CUSP_INTERNAL_DATA" ON controllable_unit_service_provider;
+CREATE POLICY "CUSP_INTERNAL_DATA" ON controllable_unit_service_provider
+FOR SELECT
+TO flex_internal_data
+USING (true);
+
 -- RLS: CUSP-FISO001
 GRANT SELECT, INSERT, UPDATE, DELETE ON controllable_unit_service_provider
 TO flex_flexibility_information_system_operator;

@@ -15,6 +15,7 @@ type AutocompleteReferenceInputProps = Omit<
     reference: string;
     fieldName?: string;
     optionText?: (record: RaRecord) => string;
+    inputClassName?: string;
   };
 
 export const AutocompleteReferenceInput = ({
@@ -27,6 +28,7 @@ export const AutocompleteReferenceInput = ({
   readOnly,
   disabled,
   resource: resourceProp,
+  inputClassName,
   tooltip,
   description,
   descriptionOverride,
@@ -49,6 +51,7 @@ export const AutocompleteReferenceInput = ({
         readOnly={readOnly}
         resource={resource}
         disabled={disabled}
+        inputClassName={inputClassName}
         tooltip={tooltip}
         description={description}
         descriptionOverride={descriptionOverride}

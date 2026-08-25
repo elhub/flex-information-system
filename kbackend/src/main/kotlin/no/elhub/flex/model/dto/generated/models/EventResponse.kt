@@ -42,11 +42,8 @@ public data class EventResponse(
    */
   @SerialName("subject")
   public val subject: String? = null,
-  /**
-   * The data of the event.
-   */
   @SerialName("data")
-  public val `data`: String? = null,
+  public val `data`: EventData? = null,
   /**
    * Embedded notification
    */

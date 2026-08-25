@@ -2206,8 +2206,10 @@ resources:
           nn: Emne
       data:
         description: The data of the event.
-        format: text
-        type: string
+        type: object
+        oneOf:
+          - $ref: "#/components/schemas/event_data"
+          - type: "null"
         readOnly: true
         nullable: true
         x-intl:

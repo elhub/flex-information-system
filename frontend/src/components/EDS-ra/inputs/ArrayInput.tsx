@@ -11,6 +11,7 @@ export type ArrayInputProps = BaseInputProps & {
   options: ArrayInputOption[];
   defaultValue?: string[];
   placeholder?: string;
+  inputClassName?: string;
   format?: (value: any) => string[];
   parse?: (value: string[]) => any;
 };
@@ -24,6 +25,7 @@ export const ArrayInput = ({
   disabled,
   defaultValue,
   placeholder,
+  inputClassName,
   format,
   parse,
   description,
@@ -64,6 +66,7 @@ export const ArrayInput = ({
       descriptionOverride={descriptionOverride}
     >
       <Combobox
+        inputClassName={inputClassName}
         options={options}
         selectedOptions={selectedOptions}
         onToggleSelected={handleToggle}
