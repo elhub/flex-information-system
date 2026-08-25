@@ -88,7 +88,6 @@ from .identity_response import IdentityResponse
 from .metering_grid_area_business_id_type import MeteringGridAreaBusinessIdType
 from .metering_grid_area_response import MeteringGridAreaResponse
 from .metering_grid_area_status import MeteringGridAreaStatus
-from .notice_data_cu_maximum_active_power_ratio import NoticeDataCuMaximumActivePowerRatio
 from .notice_data_party_missing import NoticeDataPartyMissing
 from .notice_data_party_outdated import NoticeDataPartyOutdated
 from .notice_data_product_type_not_qualified import NoticeDataProductTypeNotQualified
@@ -374,7 +373,6 @@ __all__ = (
     "MeteringGridAreaBusinessIdType",
     "MeteringGridAreaResponse",
     "MeteringGridAreaStatus",
-    "NoticeDataCuMaximumActivePowerRatio",
     "NoticeDataPartyMissing",
     "NoticeDataPartyOutdated",
     "NoticeDataProductTypeNotQualified",
