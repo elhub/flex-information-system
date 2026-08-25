@@ -10,7 +10,7 @@ WITH (security_invoker = false) AS (
         -- hardcoded id since it is not really in use
         -- we had a previous (costly) implementation using row_number
         -- cannot change the view definition w/o doing lots of refactoring
-        1 AS id,
+        1::bigint AS id,
         (
             ap_mga.valid_time_range
             * mga_so.valid_time_range
