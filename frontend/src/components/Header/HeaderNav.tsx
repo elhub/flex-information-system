@@ -40,6 +40,10 @@ const useMenuItems = () => {
       to: "/service_providing_group",
     },
     {
+      label: translate("text.header_nav_grid_prequalification"),
+      to: "/service_providing_group_grid_prequalification",
+    },
+    {
       label: translate("text.header_nav_applications"),
       items: [
         {

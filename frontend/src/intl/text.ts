@@ -77,6 +77,7 @@ export type TextKey =
   | "header_nav_dashboard"
   | "header_nav_controllable_units"
   | "header_nav_service_providing_groups"
+  | "header_nav_grid_prequalification"
   | "header_nav_applications"
   | "header_nav_service_provider_product_applications"
   | "header_nav_service_providing_group_product_applications"
@@ -200,6 +201,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     header_nav_dashboard: "Dashboard",
     header_nav_controllable_units: "Controllable units",
     header_nav_service_providing_groups: "Service providing groups",
+    header_nav_grid_prequalification: "Grid prequalifications",
     header_nav_applications: "Applications",
     header_nav_service_provider_product_applications:
       "Service provider product applications",
@@ -328,6 +330,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     header_nav_dashboard: "Oversikt",
     header_nav_controllable_units: "Kontrollerbare enheter",
     header_nav_service_providing_groups: "Fleksibilitetsgrupper",
+    header_nav_grid_prequalification: "Nettprekvalifiseringer",
     header_nav_applications: "Søknader",
     header_nav_service_provider_product_applications:
       "Tjenesteleverandørens produktsøknader",
