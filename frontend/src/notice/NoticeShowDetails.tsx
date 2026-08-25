@@ -131,7 +131,7 @@ const noticeDetailsRenderers: Record<string, NoticeDetailsRenderer> = {
   ) => (
     <NoticeActionButton
       notice={notice}
-      buttonTextKey={"text.notice_bidding_zone_mismatch"}
+      buttonTextKey={"text.notice_bidding_zone_mismatch_button"}
     />
   ),
   "no.elhub.flex.service_providing_group_membership.valid_time.outside_contract":
