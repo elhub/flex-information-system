@@ -96,7 +96,8 @@ export type TextKey =
   | "comment.visibility.any_involved_party.description"
   | "notice_missing_grid_location_button"
   | "notice_insufficient_grid_location_source_button"
-  | "notice_bidding_zone_mismatch_button";
+  | "notice_bidding_zone_mismatch_button"
+  | "notice_spg_membership_button";
 
 export const text: Record<string, Record<TextKey, string>> = {
   en: {
@@ -223,6 +224,7 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Only visible to your current party",
     "comment.visibility.any_involved_party.description":
       "Visible to all parties involved in this resource",
+    notice_spg_membership_button: "Go to SPG membership",
     notice_missing_grid_location_button:
       "Check the grid location information here",
     notice_insufficient_grid_location_source_button: "Go to accounting point",
@@ -352,6 +354,7 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Kun synlig for din nåværende aktør",
     "comment.visibility.any_involved_party.description":
       "Synlig for alle parter involvert i denne ressursen",
+    notice_spg_membership_button: "G� til medlemskap for fleksibilitetsgruppe",
     notice_missing_grid_location_button:
       "Sjekk informasjon om nettlokasjon her",
     notice_insufficient_grid_location_source_button: "Gå til målepunktet",

@@ -128,12 +128,19 @@ const noticeDetailsRenderers: Record<string, NoticeDetailsRenderer> = {
   ),
   "no.elhub.flex.service_providing_group_membership.bidding_zone_mismatch": (
     notice,
-  ) => {
+  ) => (
     <NoticeActionButton
       notice={notice}
       buttonTextKey={"text.notice_bidding_zone_mismatch"}
-    />;
-  },
+    />
+  ),
+  "no.elhub.flex.service_providing_group_membership.valid_time.outside_contract":
+    (notice) => (
+      <NoticeActionButton
+        notice={notice}
+        buttonTextKey={"text.notice_spg_membership_button"}
+      />
+    ),
 };
 
 export const NoticeShowDetails = () => {
