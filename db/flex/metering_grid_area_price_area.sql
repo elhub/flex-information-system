@@ -23,3 +23,8 @@ CREATE TABLE IF NOT EXISTS metering_grid_area_price_area (
     CONSTRAINT mgapa_metering_grid_area_fkey
     FOREIGN KEY (metering_grid_area_id) REFERENCES metering_grid_area (id)
 );
+
+-- changeset flex:metering-grid-area-price-area-metering-grid-area-idx runOnChange:true endDelimiter:-- runInTransaction:false
+CREATE INDEX CONCURRENTLY IF NOT EXISTS
+metering_grid_area_price_area_metering_grid_area_idx
+ON metering_grid_area_price_area (metering_grid_area_id);
