@@ -354,7 +354,7 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Kun synlig for din nåværende aktør",
     "comment.visibility.any_involved_party.description":
       "Synlig for alle parter involvert i denne ressursen",
-    notice_spg_membership_button: "G� til medlemskap for fleksibilitetsgruppe",
+    notice_spg_membership_button: "Gå til medlemskap for fleksibilitetsgruppe",
     notice_missing_grid_location_button:
       "Sjekk informasjon om nettlokasjon her",
     notice_insufficient_grid_location_source_button: "Gå til målepunktet",
