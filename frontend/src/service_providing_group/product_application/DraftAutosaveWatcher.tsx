@@ -1,9 +1,10 @@
-import { useGetOne } from "ra-core";
+import { useGetOne, useNotify } from "ra-core";
 import { useFormContext } from "react-hook-form";
 import { useEffect, useRef } from "react";
 import { draftStorageKey } from "../../hooks/useSpgpaDrafts";
 
 const AUTOSAVE_DELAY_MS = 1000;
+const NOTIFICATION_INTERVAL_MS = 10_000;
 
 // Inner component that sits inside <Form> so it can access useFormContext.
 // Uses RHF's subscription API (watch callback) so that every field change
@@ -16,6 +17,8 @@ export const DraftAutosaveWatcher = ({
   draftId: string;
 }) => {
   const { watch } = useFormContext();
+  const notify = useNotify();
+  const lastNotifiedAt = useRef(0);
 
   // Watched as a snapshot to resolve the system operator name for display in the drafts list.
   const systemOperatorId = watch("procuring_system_operator_id");
@@ -79,6 +82,11 @@ export const DraftAutosaveWatcher = ({
             draftStorageKey(selectedSpgId, draftId),
             JSON.stringify(entry),
           );
+          const now = Date.now();
+          if (now - lastNotifiedAt.current >= NOTIFICATION_INTERVAL_MS) {
+            notify("text.spgpa_draft_autosaved", { type: "info" });
+            lastNotifiedAt.current = now;
+          }
         } catch {
           // Ignore write failures (e.g. quota exceeded, disabled storage)
         }
