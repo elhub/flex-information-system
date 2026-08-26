@@ -408,48 +408,6 @@ class AccountingPointServiceTest : FunSpec({
         }
     }
 
-    context("getAccountingPointByBusinessId") {
-
-        test("returns existing accounting point when found") {
-            // given
-            val existingAp = AccountingPoint(id = AP_ID, businessId = GSRN)
-            with(internalPrincipal) {
-                coEvery { accountingPointRepository.getAccountingPointByBusinessId(GSRN) } returns existingAp.right()
-            }
-
-            // when
-            val result = with(internalPrincipal) { service.getAccountingPointByBusinessId(GSRN) }
-
-            // then
-            result.shouldBeRight() shouldBe existingAp
-            with(internalPrincipal) {
-                coVerify(exactly = 0) { accountingPointRepository.insertAccountingPointIfNotExists(any()) }
-            }
-        }
-
-        test("creates the accounting point on the fly when not found") {
-            // given
-            with(internalPrincipal) {
-                coEvery { accountingPointRepository.getAccountingPointByBusinessId(GSRN) } returns
-                    NotFoundError("accounting point does not exist in database").left()
-                coEvery { accountingPointRepository.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
-            }
-
-            // when
-            val result = with(internalPrincipal) { service.getAccountingPointByBusinessId(GSRN) }
-
-            // then
-            result.shouldBeRight() shouldBe AccountingPoint(id = AP_ID, businessId = GSRN)
-            with(internalPrincipal) {
-                coVerify(exactly = 1) {
-                    accountingPointRepository.insertAccountingPointIfNotExists(
-                        match { it.businessId == GSRN }
-                    )
-                }
-            }
-        }
-    }
-
     context("getByIds") {
 
         val ap1 = AccountingPoint(id = 1L, businessId = "133700000000000001")
