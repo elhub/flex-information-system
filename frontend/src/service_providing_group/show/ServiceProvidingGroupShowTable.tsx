@@ -160,12 +160,10 @@ export const ServiceProvidingGroupShowTable = ({
     {
       key: "mpid",
       header: t("controllable_unit.accounting_point_id"),
-      render: (value, row) =>
+      render: (value) =>
         value !== "-" ? (
           <BodyText
             size={"small"}
-            as={RouterLink}
-            to={`/accounting_point/${row.accountingPointId}/show`}
             onClick={(e: React.MouseEvent) => e.stopPropagation()}
           >
             {String(value)}
