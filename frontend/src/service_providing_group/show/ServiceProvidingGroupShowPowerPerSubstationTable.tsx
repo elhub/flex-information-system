@@ -6,6 +6,7 @@ import {
 } from "./useSpgPowerPerSubstation";
 import { formatScaled, KILO, Scale } from "../../utils/scales";
 import { PowerRatio } from "../../components/PowerRatio";
+import { useTranslate } from "ra-core";
 
 type Props = {
   spgId: number;
@@ -17,6 +18,7 @@ export const ServiceProvidingGroupShowPowerPerSubstationTable = ({
   powerScale,
 }: Props) => {
   const { data, isLoading, error } = useSpgPowerPerSubstation(spgId);
+  const translate = useTranslate();
 
   const formatPower = (value: number | undefined) =>
     formatScaled(value, "W", KILO, powerScale);
@@ -44,7 +46,7 @@ export const ServiceProvidingGroupShowPowerPerSubstationTable = ({
     },
     {
       key: "maximumActivePowerSum",
-      header: "Aggregated flexible power",
+      header: translate("text.table.header.aggregated_flexible_power"),
       render: (v, row) => (
         <div className="flex items-center justify-end gap-3">
           <span>{formatPower(v as number | undefined)}</span>
@@ -57,21 +59,21 @@ export const ServiceProvidingGroupShowPowerPerSubstationTable = ({
     },
     {
       key: "ratedPowerSum",
-      header: "Aggregated rated power",
+      header: translate("text.table.header.aggregated_rated_power"),
       render: (v) => (
         <div className="text-right">{formatPower(v as number | undefined)}</div>
       ),
     },
     {
       key: "ratedPowerMin",
-      header: "Minimum rated power",
+      header: translate("text.table.header.minimum_rated_power"),
       render: (v) => (
         <div className="text-right">{formatPower(v as number | undefined)}</div>
       ),
     },
     {
       key: "ratedPowerMax",
-      header: "Maximum rated power",
+      header: translate("text.table.header.maximum_rated_power"),
       render: (v) => (
         <div className="text-right">{formatPower(v as number | undefined)}</div>
       ),

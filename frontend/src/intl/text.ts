@@ -7,6 +7,10 @@ export type TextKey =
   | "tab.product_applications"
   | "tab.grid_prequalifications"
   | "tab.power_per_substation"
+  | "table.header.aggregated_flexible_power"
+  | "table.header.aggregated_rated_power"
+  | "table.header.minimum_rated_power"
+  | "table.header.maximum_rated_power"
   | "form_toolbar.save"
   | "form_toolbar.cancel"
   | "controllable_unit"
@@ -114,6 +118,10 @@ export const text: Record<string, Record<TextKey, string>> = {
     "tab.product_applications": "Product applications",
     "tab.grid_prequalifications": "Grid prequalifications",
     "tab.power_per_substation": "Power per substation",
+    "table.header.aggregated_flexible_power": "Aggregated flexible power",
+    "table.header.aggregated_rated_power": "Aggregated rated power",
+    "table.header.minimum_rated_power": "Minimum rated power",
+    "table.header.maximum_rated_power": "Maximum rated power",
     "form_toolbar.save": "Save",
     "form_toolbar.cancel": "Cancel",
     controllable_unit: "Controllable unit",
@@ -252,6 +260,10 @@ export const text: Record<string, Record<TextKey, string>> = {
     "tab.product_applications": "Produktprekvalifiseringer",
     "tab.grid_prequalifications": "Nettprekvalifiseringer",
     "tab.power_per_substation": "Kapasitet per substasjon",
+    "table.header.aggregated_flexible_power": "Aggregert fleksibel effekt",
+    "table.header.aggregated_rated_power": "Aggregert merkeeffekt",
+    "table.header.minimum_rated_power": "Minimum merkeeffekt",
+    "table.header.maximum_rated_power": "Maksimum merkeeffekt",
     "form_toolbar.save": "Lagre",
     "form_toolbar.cancel": "Avbryt",
     controllable_unit: "Kontrollerbar enhet",
