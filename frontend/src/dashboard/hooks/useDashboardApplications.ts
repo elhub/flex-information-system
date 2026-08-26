@@ -2,8 +2,8 @@ import { useGetIdentity } from "ra-core";
 import { useQuery } from "@tanstack/react-query";
 import {
   listServiceProviderProductApplication,
-  listServiceProvidingGroupProductApplication,
   listServiceProvidingGroupGridPrequalification,
+  listServiceProvidingGroupProductApplication,
 } from "../../generated-client";
 import { useProductTypes } from "../../product_type/components";
 import { getCountAndData } from "../../util";
@@ -47,14 +47,15 @@ export type DashboardItem = {
 export const useDashboardApplications = () => {
   const { data: identity } = useGetIdentity();
   const partyId = identity?.partyID as number | undefined;
-
   const sppaQuery = useQuery({
     queryKey: ["dashboard-sppa", partyId],
     queryFn: () =>
       listServiceProviderProductApplication({
         query: {
           embed: "service_provider,system_operator",
-          system_operator_id: partyId ? `eq.${partyId}` : undefined,
+          ...(identity?.role === "flex_system_operator" && partyId
+            ? { system_operator_id: `eq.${partyId}` }
+            : {}),
         },
         headers: {
           Prefer: "count=exact",
@@ -69,7 +70,9 @@ export const useDashboardApplications = () => {
         query: {
           embed:
             "service_providing_group(service_provider),procuring_system_operator",
-          procuring_system_operator_id: partyId ? `eq.${partyId}` : undefined,
+          ...(identity?.role === "flex_system_operator" && partyId
+            ? { procuring_system_operator_id: `eq.${partyId}` }
+            : {}),
         },
         headers: {
           Prefer: "count=exact",
@@ -84,7 +87,9 @@ export const useDashboardApplications = () => {
         query: {
           embed:
             "service_providing_group(service_provider),impacted_system_operator",
-          impacted_system_operator_id: partyId ? `eq.${partyId}` : undefined,
+          ...(identity?.role === "flex_system_operator" && partyId
+            ? { impacted_system_operator_id: `eq.${partyId}` }
+            : {}),
         },
         headers: {
           Prefer: "count=exact",
