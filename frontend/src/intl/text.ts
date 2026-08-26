@@ -40,6 +40,7 @@ export type TextKey =
   | "spgpa_spg_override_description"
   | "spga_additional_information_description"
   | "spga_save_confirmation_text"
+  | "spgpa_draft_status_label"
   | "spgpa_draft_status_tooltip"
   | "spgpa_delete_draft"
   | "spgpa_draft_autosaved"
@@ -161,6 +162,7 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Are there any accounting points within the service providing group that have flexible connection agreements, such as UKT/TPV or other bilateral agreements with the grid owner?\n\nIf yes, attach documentation demonstrating dialogue with the grid owner about possible participation in the market.\n\nAlso attach any agreements covering notification procedures in the event of market activation. Files can be attached after the application has been saved.",
     spga_save_confirmation_text:
       "Saving the application will submit it to the procuring system operator. Before saving, ensure that the application is complete and accurate. If required, remember to attach supporting documents after the application has been saved.",
+    spgpa_draft_status_label: "Local draft",
     spgpa_draft_status_tooltip:
       "Saved only in this browser. This draft is private and is not visible to others.",
     spgpa_delete_draft: "Delete draft",
@@ -303,6 +305,7 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Er det noen målepunkter i fleksibilitetsgruppen som har fleksible tilknytningsavtaler, som UKT/TPV eller andre bilaterale avtaler med netteier?\n\nHvis ja, legg ved dokumentasjon som viser dialog med netteier om mulig deltakelse i markedet.\n\nLegg også ved eventuelle avtaler som dekker varslingsprosedyrer ved markedsaktivering. Filer kan legges ved etter at søknaden er lagret.",
     spga_save_confirmation_text:
       "Lagring av søknaden sender den til PSO. Kontroller at søknaden er fullstendig og korrekt før du lagrer. Husk om nødvendig å legge ved støttedokumenter etter at søknaden er lagret.",
+    spgpa_draft_status_label: "Lokalt utkast",
     spgpa_draft_status_tooltip:
       "Lagret kun i denne nettleseren. Dette utkastet er privat og ikke synlig for andre.",
     spgpa_delete_draft: "Slett utkast",
