@@ -1,5 +1,6 @@
 export type TextKey =
   | "entity_role"
+  | "edit"
   | "tab.summary"
   | "tab.controllable_units"
   | "tab.technical_resources"
@@ -15,6 +16,7 @@ export type TextKey =
   | "controllable_unit.is_small.false.label"
   | "cu_flexible_power_exceeds_rated_power_heading"
   | "cu_flexible_power_exceeds_rated_power_body"
+  | "power_ratio_tooltip"
   | "lookup.input.accounting_point"
   | "lookup.input.controllable_unit"
   | "lookup.input.end_user"
@@ -34,6 +36,9 @@ export type TextKey =
   | "spgpa_spg_override_description"
   | "spga_additional_information_description"
   | "spga_save_confirmation_text"
+  | "spgpa_draft_status_tooltip"
+  | "spgpa_delete_draft"
+  | "spgpa_draft_autosaved"
   | "spg_manage_members_heading"
   | "spg_manage_members_heading_no_name"
   | "spg_manage_members_body"
@@ -77,6 +82,7 @@ export type TextKey =
   | "header_nav_dashboard"
   | "header_nav_controllable_units"
   | "header_nav_service_providing_groups"
+  | "header_nav_grid_prequalification"
   | "header_nav_applications"
   | "header_nav_service_provider_product_applications"
   | "header_nav_service_providing_group_product_applications"
@@ -92,11 +98,16 @@ export type TextKey =
   | "header_nav_create_user_guide"
   | "header_nav_assume_party"
   | "comment.visibility.same_party.description"
-  | "comment.visibility.any_involved_party.description";
+  | "comment.visibility.any_involved_party.description"
+  | "notice_missing_grid_location_button"
+  | "notice_insufficient_grid_location_source_button"
+  | "notice_bidding_zone_mismatch_button"
+  | "notice_spg_membership_button";
 
 export const text: Record<string, Record<TextKey, string>> = {
   en: {
     entity_role: "Entity",
+    edit: "Edit",
     "tab.summary": "Summary",
     "tab.controllable_units": "Controllable units",
     "tab.technical_resources": "Technical resources",
@@ -115,6 +126,8 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Flexible power exceeds rated power",
     cu_flexible_power_exceeds_rated_power_body:
       "The flexible power of this controllable unit exceeds the combined maximum active power of all its technical resources. Update the flexible power or add technical resources.",
+    power_ratio_tooltip:
+      "The flexible power represents %{percentage}% of the rated power",
     "lookup.input.accounting_point": "Accounting point",
     "lookup.input.controllable_unit": "Controllable unit",
     "lookup.input.end_user": "End user",
@@ -140,6 +153,10 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Are there any accounting points within the service providing group that have flexible connection agreements, such as UKT/TPV or other bilateral agreements with the grid owner?\n\nIf yes, attach documentation demonstrating dialogue with the grid owner about possible participation in the market.\n\nAlso attach any agreements covering notification procedures in the event of market activation. Files can be attached after the application has been saved.",
     spga_save_confirmation_text:
       "Saving the application will submit it to the procuring system operator. Before saving, ensure that the application is complete and accurate. If required, remember to attach supporting documents after the application has been saved.",
+    spgpa_draft_status_tooltip:
+      "Saved only in this browser. This draft is private and is not visible to others.",
+    spgpa_delete_draft: "Delete draft",
+    spgpa_draft_autosaved: "Draft autosaved",
     spg_manage_members_heading: "Manage members of %{name}",
     spg_manage_members_heading_no_name: "Manage members",
     spg_manage_members_body:
@@ -197,6 +214,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     header_nav_dashboard: "Dashboard",
     header_nav_controllable_units: "Controllable units",
     header_nav_service_providing_groups: "Service providing groups",
+    header_nav_grid_prequalification: "Grid prequalifications",
     header_nav_applications: "Applications",
     header_nav_service_provider_product_applications:
       "Service provider product applications",
@@ -218,9 +236,16 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Only visible to your current party",
     "comment.visibility.any_involved_party.description":
       "Visible to all parties involved in this resource",
+    notice_spg_membership_button: "Go to SPG membership",
+    notice_missing_grid_location_button:
+      "Check the grid location information here",
+    notice_insufficient_grid_location_source_button: "Go to accounting point",
+    notice_bidding_zone_mismatch_button:
+      "Go to Service providing group membership",
   },
   nb: {
     entity_role: "Entitet",
+    edit: "Endre",
     "tab.summary": "Sammendrag",
     "tab.controllable_units": "Kontrollerbare enheter",
     "tab.technical_resources": "Tekniske ressurser",
@@ -239,6 +264,8 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Fleksibel effekt overstiger installert effekt",
     cu_flexible_power_exceeds_rated_power_body:
       "Den fleksible effekten til denne kontrollerbare enheten overstiger merkeeffekten. Oppdater fleksibel effekt eller legg til tekniske ressurser.",
+    power_ratio_tooltip:
+      "Den fleksible effekten utgjør %{percentage}% av merkeeffekten",
     "lookup.input.accounting_point": "Avregningspunkt",
     "lookup.input.controllable_unit": "Kontrollerbar enhet",
     "lookup.input.end_user": "Sluttbruker",
@@ -263,7 +290,11 @@ export const text: Record<string, Record<TextKey, string>> = {
     spga_additional_information_description:
       "Er det noen målepunkter i fleksibilitetsgruppen som har fleksible tilknytningsavtaler, som UKT/TPV eller andre bilaterale avtaler med netteier?\n\nHvis ja, legg ved dokumentasjon som viser dialog med netteier om mulig deltakelse i markedet.\n\nLegg også ved eventuelle avtaler som dekker varslingsprosedyrer ved markedsaktivering. Filer kan legges ved etter at søknaden er lagret.",
     spga_save_confirmation_text:
-      "Lagring av søknaden sender den til systemansvarlig for innkjøp. Kontroller at søknaden er fullstendig og korrekt før du lagrer. Husk om nødvendig å legge ved støttedokumenter etter at søknaden er lagret.",
+      "Lagring av søknaden sender den til PSO. Kontroller at søknaden er fullstendig og korrekt før du lagrer. Husk om nødvendig å legge ved støttedokumenter etter at søknaden er lagret.",
+    spgpa_draft_status_tooltip:
+      "Lagret kun i denne nettleseren. Dette utkastet er privat og ikke synlig for andre.",
+    spgpa_delete_draft: "Slett utkast",
+    spgpa_draft_autosaved: "Utkast lagret automatisk",
     spg_manage_members_heading: "Administrer medlemmer for %{name}",
     spg_manage_members_heading_no_name: "Administrer medlemmer",
     spg_manage_members_body:
@@ -320,6 +351,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     header_nav_dashboard: "Oversikt",
     header_nav_controllable_units: "Kontrollerbare enheter",
     header_nav_service_providing_groups: "Fleksibilitetsgrupper",
+    header_nav_grid_prequalification: "Nettprekvalifiseringer",
     header_nav_applications: "Søknader",
     header_nav_service_provider_product_applications:
       "Tjenesteleverandørens produktsøknader",
@@ -341,5 +373,10 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Kun synlig for din nåværende aktør",
     "comment.visibility.any_involved_party.description":
       "Synlig for alle parter involvert i denne ressursen",
+    notice_spg_membership_button: "Gå til medlemskap for fleksibilitetsgruppe",
+    notice_missing_grid_location_button:
+      "Sjekk informasjon om nettlokasjon her",
+    notice_insufficient_grid_location_source_button: "Gå til målepunktet",
+    notice_bidding_zone_mismatch_button: "Gå til gruppen",
   },
 };

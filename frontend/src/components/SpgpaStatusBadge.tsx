@@ -1,6 +1,10 @@
-import { Badge } from "./ui";
+import { Badge, Tooltip } from "./ui";
 import { useTranslateEnum } from "../intl/intl";
-import { spgpaStatusVariantMap } from "../service_providing_group/product_application/spgpaStatus";
+import { useTranslate } from "ra-core";
+import {
+  spgpaStatusVariantMap,
+  DRAFT_STATUS,
+} from "../service_providing_group/product_application/spgpaStatus";
 import { type EnumLabel } from "../intl/enum-labels";
 
 type Props = {
@@ -9,6 +13,7 @@ type Props = {
 
 export const SpgpaStatusBadge = ({ status }: Props) => {
   const te = useTranslateEnum();
+  const translate = useTranslate();
 
   if (!status) return <>—</>;
 
@@ -16,7 +21,7 @@ export const SpgpaStatusBadge = ({ status }: Props) => {
     spgpaStatusVariantMap[status as keyof typeof spgpaStatusVariantMap];
   if (!variant) return <>{status}</>;
 
-  return (
+  const badge = (
     <Badge
       size="small"
       status={variant.status}
@@ -29,4 +34,14 @@ export const SpgpaStatusBadge = ({ status }: Props) => {
       )}
     </Badge>
   );
+
+  if (status === DRAFT_STATUS) {
+    return (
+      <Tooltip content={translate("text.spgpa_draft_status_tooltip")}>
+        {badge}
+      </Tooltip>
+    );
+  }
+
+  return badge;
 };

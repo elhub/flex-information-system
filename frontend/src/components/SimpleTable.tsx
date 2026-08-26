@@ -17,6 +17,7 @@ type SimpleTableProps<T extends { id?: string | number }> = {
   size?: "medium" | "small";
   empty?: ReactNode;
   action?: { render: (row: T) => ReactNode; header?: string };
+  rowActions?: (row: T) => ReactNode;
   checkbox?: { render: (row: T) => ReactNode; header?: ReactNode };
   rowKey?: (row: T) => string | number;
   className?: string;
@@ -29,6 +30,7 @@ export const SimpleTable = <T extends { id?: string | number }>({
   size,
   empty = "No results",
   action,
+  rowActions,
   checkbox,
   className,
   rowKey,
@@ -55,6 +57,10 @@ export const SimpleTable = <T extends { id?: string | number }>({
     ) : (
       <>{empty}</>
     );
+
+  const hasAnyAction =
+    rowActions != null && data.some((r) => rowActions(r) != null);
+
   return (
     <Table className={className} size={size}>
       <Table.Header>
@@ -77,6 +83,9 @@ export const SimpleTable = <T extends { id?: string | number }>({
               {action.header ?? ""}
             </Table.ColumnHeader>
           )}
+          {hasAnyAction && (
+            <Table.ColumnHeader style={{ width: "1px" }} aria-label="Actions" />
+          )}
         </Table.Row>
       </Table.Header>
       <Table.Body>
@@ -97,6 +106,9 @@ export const SimpleTable = <T extends { id?: string | number }>({
               </Table.DataCell>
             ))}
             {action && <Table.DataCell>{action.render(row)}</Table.DataCell>}
+            {hasAnyAction && (
+              <Table.DataCell>{rowActions!(row)}</Table.DataCell>
+            )}
           </Table.Row>
         ))}
       </Table.Body>

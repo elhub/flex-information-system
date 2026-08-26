@@ -24,10 +24,6 @@ type Props = {
 export const SpgpaPrintSpgInfo = ({ spg }: Props) => {
   const translateEnum = useTranslateEnum();
 
-  const statusLabel = translateEnum(
-    `service_providing_group.status.${spg.status}`,
-  );
-
   const technologyColumns: Column<TechnologyRow>[] = [
     { key: "technology", header: "Technology" },
     {
@@ -78,7 +74,6 @@ export const SpgpaPrintSpgInfo = ({ spg }: Props) => {
       <div className="flex flex-col gap-4">
         <LabelValue label="Name" value={spg.name} />
         <LabelValue label="Bidding zone" value={spg.bidding_zone} />
-        <LabelValue label="Status" value={statusLabel} />
       </div>
 
       {spg.summary && (
