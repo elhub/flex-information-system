@@ -1,6 +1,6 @@
 import { Form, useRecordContext, useTranslate } from "ra-core";
 import { useFormContext } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { z } from "zod";
 import { getFields, unTypedZodResolver } from "../../zod";
@@ -26,10 +26,9 @@ import {
   PartyReferenceInput,
   FormToolbarWithConfirmation,
   UnitInput,
-  type BaseInputProps,
   DateTimeInput,
 } from "../../components/EDS-ra/inputs";
-import { ProductTypeArrayInput } from "../../product_type/components";
+import { SystemOperatorProductTypesInput } from "../../product_type/components";
 import { draftStorageKey } from "../../hooks/useSpgpaDrafts";
 import { DraftAutosaveWatcher } from "./DraftAutosaveWatcher";
 
@@ -43,36 +42,6 @@ const spgpaFormSchema =
       zServiceProvidingGroupProductApplicationRampingCapability,
     ramping_description: z.string(),
   });
-
-// component restricting the selectable product types based on the
-// already selected procuring system operator
-const ProductTypesInput = (
-  props: Pick<
-    BaseInputProps,
-    "source" | "required" | "description" | "tooltip"
-  >,
-) => {
-  const { setValue, watch } = useFormContext();
-  const {
-    formState: { dirtyFields },
-  } = useFormContext();
-  const productTypeIdsDirty = dirtyFields.product_type_ids;
-  const systemOperatorID = watch("procuring_system_operator_id");
-
-  useEffect(() => {
-    if (systemOperatorID && productTypeIdsDirty) {
-      setValue("product_type_ids", []);
-    }
-  }, [productTypeIdsDirty, systemOperatorID, setValue]);
-
-  return (
-    <ProductTypeArrayInput
-      systemOperatorId={systemOperatorID}
-      {...props}
-      status={"active"}
-    />
-  );
-};
 
 const RampingNotice = () => {
   const translate = useTranslate();
@@ -181,8 +150,9 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
           description
           tooltip={false}
         />
-        <ProductTypesInput
+        <SystemOperatorProductTypesInput
           {...fields.product_type_ids}
+          systemOperatorSource="procuring_system_operator_id"
           description
           tooltip={false}
         />

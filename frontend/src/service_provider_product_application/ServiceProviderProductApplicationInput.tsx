@@ -1,6 +1,4 @@
 import { Form, useGetIdentity, useRecordContext } from "ra-core";
-import { useFormContext } from "react-hook-form";
-import { useEffect } from "react";
 import { useCreateOrUpdate } from "../auth";
 import { zServiceProviderProductApplicationCreateRequest } from "../generated-client/zod.gen";
 import { getFields, unTypedZodResolver } from "../zod";
@@ -15,34 +13,7 @@ import {
   FormToolbar,
   PartyReferenceInput,
 } from "../components/EDS-ra/inputs";
-import { ProductTypeArrayInput } from "../product_type/components";
-
-// component restricting the selectable product types based on the
-// already selected system operator
-const ProductTypesInput = (props: { source: string; required: boolean }) => {
-  const { setValue, watch } = useFormContext();
-  const systemOperatorID = watch("system_operator_id");
-  const {
-    formState: { dirtyFields },
-  } = useFormContext();
-  const productTypeIdsDirty = dirtyFields.product_type_ids;
-
-  // we need to filter the already selected product types
-  // in cases when switching system operator
-  useEffect(() => {
-    if (systemOperatorID && productTypeIdsDirty) {
-      setValue("product_type_ids", []);
-    }
-  }, [productTypeIdsDirty, systemOperatorID, setValue]);
-
-  return (
-    <ProductTypeArrayInput
-      systemOperatorId={systemOperatorID}
-      {...props}
-      status={"active"}
-    />
-  );
-};
+import { SystemOperatorProductTypesInput } from "../product_type/components";
 
 // common layout to create and edit pages
 export const ServiceProviderProductApplicationInput = () => {
@@ -106,7 +77,10 @@ export const ServiceProviderProductApplicationInput = () => {
           }}
           optionText={(record) => record.name}
         />
-        <ProductTypesInput {...fields.product_type_ids} />
+        <SystemOperatorProductTypesInput
+          {...fields.product_type_ids}
+          systemOperatorSource="system_operator_id"
+        />
 
         <VerticalSpace size="small" />
         {createOrUpdate === "update" && (

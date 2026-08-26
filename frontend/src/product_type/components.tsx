@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import {
   FieldProps,
   Link,
@@ -6,6 +6,7 @@ import {
   useGetOne,
   useRecordContext,
 } from "react-admin";
+import { useFormContext } from "react-hook-form";
 import { Chip, Tooltip } from "@mui/material";
 import {
   listSystemOperatorProductType,
@@ -15,6 +16,7 @@ import {
   ArrayInput,
   ArrayInputOption,
   ArrayInputProps,
+  BaseInputProps,
 } from "../components/EDS-ra/inputs";
 import { useQuery } from "@tanstack/react-query";
 import { useProductTypes } from "./useProductTypes";
@@ -136,6 +138,42 @@ export const ProductTypeArrayInput = ({
       }
       parse={(v: string[]) => (Array.isArray(v) ? v : []).map(Number)}
       {...rest}
+    />
+  );
+};
+
+// input component to select MULTIPLE product types, restricted to the active
+// product types of a system operator referenced by another form field;
+// resets the selection whenever that system operator field changes
+type SystemOperatorProductTypesInputProps = Pick<
+  BaseInputProps,
+  "source" | "required" | "description" | "tooltip"
+> & {
+  systemOperatorSource: string;
+};
+
+export const SystemOperatorProductTypesInput = ({
+  systemOperatorSource,
+  ...rest
+}: SystemOperatorProductTypesInputProps) => {
+  const { setValue, watch, getValues } = useFormContext();
+  const systemOperatorID = watch(systemOperatorSource);
+  const previousSystemOperatorID = useRef(systemOperatorID);
+
+  useEffect(() => {
+    if (previousSystemOperatorID.current !== systemOperatorID) {
+      if (getValues("product_type_ids")?.length) {
+        setValue("product_type_ids", []);
+      }
+      previousSystemOperatorID.current = systemOperatorID;
+    }
+  }, [systemOperatorID, getValues, setValue]);
+
+  return (
+    <ProductTypeArrayInput
+      systemOperatorId={systemOperatorID}
+      {...rest}
+      status={"active"}
     />
   );
 };
