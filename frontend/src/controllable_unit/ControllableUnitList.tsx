@@ -1,4 +1,4 @@
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import type { Exporter } from "ra-core";
 import {
   defaultExporter,
@@ -28,7 +28,8 @@ import type {
   AccountingPointBiddingZone,
   ControllableUnit,
 } from "../generated-client";
-import { AccountingPointTextField } from "../accounting_point/AccountingPointTextField";
+
+import { AccountingPointLinkField } from "../accounting_point/AccountingPointLinkField";
 
 const CULookupButton = () => (
   <Button
@@ -117,23 +118,6 @@ const IsSmallField = ({
     </Tooltip>
   );
 };
-const ShowLocationButton = ({ label: _label }: { label?: string }) => {
-  const record = useRecordContext();
-  const navigate = useNavigate();
-  const translate = useTranslate();
-
-  if (!record?.accounting_point_id) return null;
-
-  const handleClick = () => {
-    navigate(`/accounting_point/${record.accounting_point_id}/show`);
-  };
-
-  return (
-    <Button onClick={handleClick} variant="secondary">
-      {translate("text.controllable_unit.show_location")}
-    </Button>
-  );
-};
 
 export const ControllableUnitList = () => {
   const { permissions } = usePermissions<Permissions>();
@@ -219,11 +203,8 @@ export const ControllableUnitList = () => {
         <TextField source={fields.id.source} />
         <TextField source={fields.name.source} weight="semibold" />
         <DateField source={fields.start_date.source} />
-        <ShowLocationButton
-          label={translate("text.controllable_unit_show_label")}
-        />
         <IsSmallField source={fields.is_small.source} headerTooltip />
-        <AccountingPointTextField source={fields.accounting_point_id.source} />
+        <AccountingPointLinkField source={fields.accounting_point_id.source} />
         <BiddingZoneField source="bidding_zone" />
         <BalanceResponsiblePartyField source="balance_responsible_party" />
         <StatusBadgeField

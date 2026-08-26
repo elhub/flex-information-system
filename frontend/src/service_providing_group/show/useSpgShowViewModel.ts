@@ -23,6 +23,7 @@ export type SpgMembershipRow = {
   validTo: string;
   maximum_active_power: number;
   rated_power: number | undefined;
+  location: string;
   regulation_direction: string;
   mpid: string;
   accountingPointId: number;
@@ -129,6 +130,7 @@ const fetchSpgShowData = async (serviceProvidingGroupId: number) => {
       maximum_active_power: cu.maximum_active_power,
       rated_power: cu.summary?.technical_resource?.maximum_active_power?.sum,
       regulation_direction: cu.regulation_direction,
+      location: ap?.business_id ?? "-",
       mpid: ap?.business_id ?? "-",
       accountingPointId: cu.accounting_point_id,
       brpName: (() => {
