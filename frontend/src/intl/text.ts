@@ -1,5 +1,6 @@
 export type TextKey =
   | "entity_role"
+  | "edit"
   | "tab.summary"
   | "tab.controllable_units"
   | "tab.technical_resources"
@@ -17,6 +18,7 @@ export type TextKey =
   | "cu_flexible_power_exceeds_rated_power_body"
   | "controllable_unit.show_location"
   | "controllable_unit_show_label"
+  | "power_ratio_tooltip"
   | "lookup.input.accounting_point"
   | "lookup.input.controllable_unit"
   | "lookup.input.end_user"
@@ -107,6 +109,7 @@ export type TextKey =
 export const text: Record<string, Record<TextKey, string>> = {
   en: {
     entity_role: "Entity",
+    edit: "Edit",
     "tab.summary": "Summary",
     "tab.controllable_units": "Controllable units",
     "tab.technical_resources": "Technical resources",
@@ -125,6 +128,8 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Flexible power exceeds rated power",
     cu_flexible_power_exceeds_rated_power_body:
       "The flexible power of this controllable unit exceeds the combined maximum active power of all its technical resources. Update the flexible power or add technical resources.",
+    power_ratio_tooltip:
+      "The flexible power represents %{percentage}% of the rated power",
     "lookup.input.accounting_point": "Accounting point",
     "lookup.input.controllable_unit": "Controllable unit",
     "lookup.input.end_user": "End user",
@@ -245,6 +250,7 @@ export const text: Record<string, Record<TextKey, string>> = {
   },
   nb: {
     entity_role: "Entitet",
+    edit: "Endre",
     "tab.summary": "Sammendrag",
     "tab.controllable_units": "Kontrollerbare enheter",
     "tab.technical_resources": "Tekniske ressurser",
@@ -265,6 +271,8 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Fleksibel effekt overstiger installert effekt",
     cu_flexible_power_exceeds_rated_power_body:
       "Den fleksible effekten til denne kontrollerbare enheten overstiger merkeeffekten. Oppdater fleksibel effekt eller legg til tekniske ressurser.",
+    power_ratio_tooltip:
+      "Den fleksible effekten utgjør %{percentage}% av merkeeffekten",
     "lookup.input.accounting_point": "Avregningspunkt",
     "lookup.input.controllable_unit": "Kontrollerbar enhet",
     "lookup.input.end_user": "Sluttbruker",
