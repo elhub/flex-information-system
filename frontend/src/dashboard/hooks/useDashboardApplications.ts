@@ -88,7 +88,7 @@ export const useDashboardApplications = () => {
           embed:
             "service_providing_group(service_provider),impacted_system_operator",
           ...(identity?.role === "flex_system_operator" && partyId
-            ? { impacted_system_operator_id: `partyId.eq.${partyId}` }
+            ? { impacted_system_operator_id: `eq.${partyId}` }
             : {}),
         },
         headers: {
