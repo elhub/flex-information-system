@@ -7,6 +7,8 @@ export type TextKey =
   | "tab.product_applications"
   | "tab.grid_prequalifications"
   | "tab.power_per_substation"
+  | "technical_resources.show_location"
+  | "technical_resources_show_label"
   | "form_toolbar.save"
   | "form_toolbar.cancel"
   | "controllable_unit"
@@ -131,6 +133,8 @@ export const text: Record<string, Record<TextKey, string>> = {
     "lookup.input.accounting_point": "Accounting point",
     "lookup.input.controllable_unit": "Controllable unit",
     "lookup.input.end_user": "End user",
+    "technical_resources.show_location": "Show",
+    technical_resources_show_label: "Location",
     spg_grid_prequalification_header: "Grid prequalifications",
     spg_product_application_header: "Product applications",
     spg_grid_prequalification_empty: "No grid prequalifications",
@@ -252,6 +256,8 @@ export const text: Record<string, Record<TextKey, string>> = {
     "tab.product_applications": "Produktprekvalifiseringer",
     "tab.grid_prequalifications": "Nettprekvalifiseringer",
     "tab.power_per_substation": "Kapasitet per substasjon",
+    "technical_resources.show_location": "Vis",
+    technical_resources_show_label: "Lokasjon",
     "form_toolbar.save": "Lagre",
     "form_toolbar.cancel": "Avbryt",
     controllable_unit: "Kontrollerbar enhet",
