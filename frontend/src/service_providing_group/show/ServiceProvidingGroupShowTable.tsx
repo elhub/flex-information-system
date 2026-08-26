@@ -153,7 +153,7 @@ export const ServiceProvidingGroupShowTable = ({
             navigate(`/accounting_point/${row.accountingPointId}/show`)
           }
         >
-          {translate("text.technical_resources.show_location")}
+          {translate("text.technical_resources_show_location")}
         </Button>
       ),
     },
