@@ -2115,6 +2115,12 @@ export const zServiceProvidingGroupPowerPerSubstation = z.object({
             maximum_active_power: zNumericAggregation.optional(),
           })
           .optional(),
+        technical_resource: z
+          .object({
+            count: z.coerce.number().optional(),
+            maximum_active_power: zNumericAggregation.optional(),
+          })
+          .optional(),
       }),
     )
     .readonly(),

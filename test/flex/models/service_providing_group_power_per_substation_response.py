@@ -29,11 +29,11 @@ class ServiceProvidingGroupPowerPerSubstationResponse:
                 Example: 4.
             substations (list[ServiceProvidingGroupPowerPerSubstationResponseSubstationsItem]): List of per-substation
                 aggregates for the controllable units currently in the service providing group. Each element contains the
-                substation identifier and name, plus count and maximum active power statistics for the controllable units
-                connected to that substation. An element with null substation fields groups controllable units whose grid
-                location has not yet been assigned. Example: [{'substation_business_id': 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
-                'substation_name': 'Substation A', 'controllable_unit': {'count': 3, 'maximum_active_power': {'sum': 150,
-                'average': 50, 'min': 30, 'max': 80}}}].
+                substation identifier and name, plus controllable unit and technical resource aggregates. An element with null
+                substation fields groups controllable units whose grid location has not yet been assigned. Example:
+                [{'substation_business_id': 'a1b2c3d4-e5f6-7890-abcd-ef1234567890', 'substation_name': 'Substation A',
+                'controllable_unit': {'count': 3, 'maximum_active_power': {'sum': 120, 'average': 40, 'min': 20, 'max': 60}},
+                'technical_resource': {'count': 5, 'maximum_active_power': {'sum': 150, 'average': 50, 'min': 30, 'max': 80}}}].
             service_providing_group (None | ServiceProvidingGroupResponse | Unset): Embedded service_providing_group
     """
 

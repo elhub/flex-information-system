@@ -8,9 +8,9 @@ export type SubstationRow = {
   substationName: string | null;
   controllableUnitCount: number;
   maximumActivePowerSum: number | undefined;
-  maximumActivePowerAverage: number | undefined;
-  maximumActivePowerMin: number | undefined;
-  maximumActivePowerMax: number | undefined;
+  ratedPowerSum: number | undefined;
+  ratedPowerMin: number | undefined;
+  ratedPowerMax: number | undefined;
 };
 
 const fetchSpgPowerPerSubstation = async (
@@ -26,10 +26,9 @@ const fetchSpgPowerPerSubstation = async (
     substationName: s.substation_name ?? null,
     controllableUnitCount: s.controllable_unit?.count ?? 0,
     maximumActivePowerSum: s.controllable_unit?.maximum_active_power?.sum,
-    maximumActivePowerAverage:
-      s.controllable_unit?.maximum_active_power?.average,
-    maximumActivePowerMin: s.controllable_unit?.maximum_active_power?.min,
-    maximumActivePowerMax: s.controllable_unit?.maximum_active_power?.max,
+    ratedPowerSum: s.technical_resource?.maximum_active_power?.sum,
+    ratedPowerMin: s.technical_resource?.maximum_active_power?.min,
+    ratedPowerMax: s.technical_resource?.maximum_active_power?.max,
   }));
 };
 

@@ -5,6 +5,7 @@ import {
   useSpgPowerPerSubstation,
 } from "./useSpgPowerPerSubstation";
 import { formatScaled, KILO, Scale } from "../../utils/scales";
+import { PowerRatio } from "../../components/PowerRatio";
 
 type Props = {
   spgId: number;
@@ -43,34 +44,33 @@ export const ServiceProvidingGroupShowPowerPerSubstationTable = ({
     },
     {
       key: "maximumActivePowerSum",
+      header: "Aggregated flexible power",
+      render: (v, row) => (
+        <div className="flex items-center justify-end gap-3">
+          <span>{formatPower(v as number | undefined)}</span>
+          <PowerRatio
+            flexiblePower={v as number | undefined}
+            ratedPower={row.ratedPowerSum}
+          />
+        </div>
+      ),
+    },
+    {
+      key: "ratedPowerSum",
       header: "Aggregated rated power",
       render: (v) => (
         <div className="text-right">{formatPower(v as number | undefined)}</div>
       ),
     },
     {
-      key: "maximumActivePowerAverage",
-      header: "Average rated power",
-      render: (v) => {
-        const n = v as number | undefined;
-        return (
-          <div className="text-right">
-            {formatPower(
-              n !== undefined ? Math.round(n * 100) / 100 : undefined,
-            )}
-          </div>
-        );
-      },
-    },
-    {
-      key: "maximumActivePowerMin",
+      key: "ratedPowerMin",
       header: "Minimum rated power",
       render: (v) => (
         <div className="text-right">{formatPower(v as number | undefined)}</div>
       ),
     },
     {
-      key: "maximumActivePowerMax",
+      key: "ratedPowerMax",
       header: "Maximum rated power",
       render: (v) => (
         <div className="text-right">{formatPower(v as number | undefined)}</div>

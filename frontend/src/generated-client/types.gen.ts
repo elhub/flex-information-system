@@ -1081,12 +1081,16 @@ export type ServiceProvidingGroupPowerPerSubstation = {
    */
   readonly service_providing_group_id: number;
   /**
-   * List of per-substation aggregates for the controllable units currently in the service providing group. Each element contains the substation identifier and name, plus count and maximum active power statistics for the controllable units connected to that substation. An element with null substation fields groups controllable units whose grid location has not yet been assigned.
+   * List of per-substation aggregates for the controllable units currently in the service providing group. Each element contains the substation identifier and name, plus controllable unit and technical resource aggregates. An element with null substation fields groups controllable units whose grid location has not yet been assigned.
    */
   readonly substations: Array<{
     substation_business_id?: string;
     substation_name?: string;
     controllable_unit?: {
+      count?: number;
+      maximum_active_power?: NumericAggregation;
+    };
+    technical_resource?: {
       count?: number;
       maximum_active_power?: NumericAggregation;
     };
