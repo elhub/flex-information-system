@@ -15,6 +15,8 @@ export type TextKey =
   | "controllable_unit.is_small.false.label"
   | "cu_flexible_power_exceeds_rated_power_heading"
   | "cu_flexible_power_exceeds_rated_power_body"
+  | "controllable_unit.show_location"
+  | "controllable_unit_show_label"
   | "lookup.input.accounting_point"
   | "lookup.input.controllable_unit"
   | "lookup.input.end_user"
@@ -100,8 +102,7 @@ export type TextKey =
   | "notice_missing_grid_location_button"
   | "notice_insufficient_grid_location_source_button"
   | "notice_bidding_zone_mismatch_button"
-  | "notice_spg_membership_button"
-  | "controllable_unit.show_location";
+  | "notice_spg_membership_button";
 
 export const text: Record<string, Record<TextKey, string>> = {
   en: {
@@ -127,6 +128,9 @@ export const text: Record<string, Record<TextKey, string>> = {
     "lookup.input.accounting_point": "Accounting point",
     "lookup.input.controllable_unit": "Controllable unit",
     "lookup.input.end_user": "End user",
+    "controllable_unit.show_location": "Show",
+    controllable_unit_show_label: "Location",
+
     spg_grid_prequalification_header: "Grid prequalifications",
     spg_product_application_header: "Product applications",
     spg_grid_prequalification_empty: "No grid prequalifications",
@@ -238,7 +242,6 @@ export const text: Record<string, Record<TextKey, string>> = {
     notice_insufficient_grid_location_source_button: "Go to accounting point",
     notice_bidding_zone_mismatch_button:
       "Go to Service providing group membership",
-    "controllable_unit.show_location": "Show",
   },
   nb: {
     entity_role: "Entitet",
@@ -256,6 +259,8 @@ export const text: Record<string, Record<TextKey, string>> = {
     "controllable_unit.is_small.false":
       "Nei (Ikke liten, > 50 kW fleksibel effekt)",
     "controllable_unit.is_small.false.label": "Nei",
+    "controllable_unit.show_location": "Vis",
+    controllable_unit_show_label: "Lokasjon",
     cu_flexible_power_exceeds_rated_power_heading:
       "Fleksibel effekt overstiger installert effekt",
     cu_flexible_power_exceeds_rated_power_body:
@@ -372,6 +377,5 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Sjekk informasjon om nettlokasjon her",
     notice_insufficient_grid_location_source_button: "Gå til målepunktet",
     notice_bidding_zone_mismatch_button: "Gå til gruppen",
-    "controllable_unit.show_location": "Vis",
   },
 };

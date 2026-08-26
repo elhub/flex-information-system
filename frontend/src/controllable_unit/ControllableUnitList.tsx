@@ -219,7 +219,9 @@ export const ControllableUnitList = () => {
         <TextField source={fields.id.source} />
         <TextField source={fields.name.source} weight="semibold" />
         <DateField source={fields.start_date.source} />
-        <ShowLocationButton label={"Location"} />
+        <ShowLocationButton
+          label={translate("text.controllable_unit_show_label")}
+        />
         <IsSmallField source={fields.is_small.source} headerTooltip />
         <AccountingPointTextField source={fields.accounting_point_id.source} />
         <BiddingZoneField source="bidding_zone" />
