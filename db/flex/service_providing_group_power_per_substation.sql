@@ -42,7 +42,7 @@ WITH (security_invoker = false) AS (
                 )
                 FROM (
                     -- current memberships, grouped by location, then for each
-                    -- location we aggregate flexible and rated power
+                    -- location we aggregate maximum active power on both CU and TR level.
                     -- (CUs without location end up in a common row with null as
                     -- substation so that we do not show partial information)
                     SELECT
