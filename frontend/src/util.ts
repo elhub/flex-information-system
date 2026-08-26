@@ -111,10 +111,19 @@ export const findCurrentlyValidRecord = <
 };
 
 // TODO: replace all occurrences with calls to a generated API client
-export const fetchJSON = async <T>(url: string): Promise<T[]> => {
+export const fetchJSON = async <T>(
+  url: string,
+  init: RequestInit = {},
+): Promise<T[]> => {
+  const headers = new Headers(init.headers ?? { Accept: "application/json" });
+  if (!headers.has("Accept")) {
+    headers.set("Accept", "application/json");
+  }
+
   const response = await fetch(url, {
-    headers: { Accept: "application/json" },
-    credentials: "include",
+    ...init,
+    headers,
+    credentials: init.credentials ?? "include",
   });
 
   if (!response.ok) {
