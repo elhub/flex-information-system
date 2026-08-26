@@ -70,6 +70,9 @@ import datetime
 
 import pytest
 
+# run before other test modules creating APs (CU lookup)
+pytestmark = pytest.mark.run(order=1)
+
 
 @pytest.fixture
 def sts():

@@ -1,7 +1,9 @@
 package no.elhub.flex.routes.controllableunit
 
 import arrow.core.Either
+import arrow.core.left
 import arrow.core.raise.either
+import arrow.core.right
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.server.routing.RoutingCall
 import kotlinx.datetime.TimeZone
@@ -20,6 +22,7 @@ import no.elhub.flex.model.dto.toDtos
 import no.elhub.flex.model.error.AppError
 import no.elhub.flex.model.error.BadRequestError
 import no.elhub.flex.model.error.InternalServerError
+import no.elhub.flex.model.error.ResourceNotFoundError
 import no.elhub.flex.util.TraceIdUtil.Companion.traceIdOrUnknown
 import no.elhub.flex.util.asLocalMidnightInstant
 import no.elhub.flex.util.body
@@ -50,10 +53,8 @@ class ControllableUnitLookup(
                 val request = call.body<ControllableUnitLookupRequest>().bind()
                     .let { validateInput(it).bind() }
 
-                val accountingPoint = request.accountingPointBusinessId
-                    ?.let { accountingPointService.getAccountingPointByBusinessId(it.value).bind() }
-                    ?: accountingPointService.getCurrentAccountingPoint(request.controllableUnitBusinessId).bind()
-                val accountingPointBusinessId = accountingPoint.businessId
+                val accountingPointBusinessId = request.accountingPointBusinessId?.value
+                    ?: accountingPointService.getCurrentAccountingPoint(request.controllableUnitBusinessId).bind().businessId
 
                 logger.debug { "Controllable unit used in lookup: ${request.controllableUnitBusinessId}" }
                 logger.debug { "Accounting point used in lookup: $accountingPointBusinessId" }
@@ -64,8 +65,15 @@ class ControllableUnitLookup(
                 ).bind()
                 logger.debug { "Found ${controllableUnits.size} non-terminated controllable units on accounting point $accountingPointBusinessId" }
 
-                val validFrom = accountingPointService.getAccountingPointStartDate(accountingPoint.id).bind()
-                    ?: Instant.todayLocalMidnight(timezone)
+                val validFrom =
+                    // try to see if AP already exists in DB
+                    accountingPointService.getAccountingPointByBusinessId(accountingPointBusinessId)
+                        // not found is OK here
+                        .fold({ if (it is ResourceNotFoundError) null.right() else it.left() }, { it.id.right() })
+                        .bind()
+                        // if it exists, compute start date, otherwise take the default one
+                        ?.let { apId -> accountingPointService.getAccountingPointStartDate(apId).bind() }
+                        ?: Instant.todayLocalMidnight(timezone)
                 logger.debug { "Using $validFrom as start date for accounting point sync" }
 
                 if (accountingPointAdapterSyncEnabled) {
@@ -78,6 +86,9 @@ class ControllableUnitLookup(
                     request.endUser,
                     accountingPointBusinessId
                 ).bind()
+
+                // after sync the AP must exist to remain in the non-failing case
+                val accountingPoint = accountingPointService.getAccountingPointByBusinessId(accountingPointBusinessId).bind()
 
                 insertLookupEvent(
                     accountingPoint.id,

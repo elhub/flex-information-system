@@ -22,6 +22,7 @@ import no.elhub.flex.integration.accountingpointadapter.NetworkError
 import no.elhub.flex.integration.accountingpointadapter.generated.models.EndUser
 import no.elhub.flex.integration.accountingpointadapter.generated.models.EnergySupplier
 import no.elhub.flex.meteringgridarea.db.MeteringGridAreaRepository
+import no.elhub.flex.model.domain.AccountingPoint
 import no.elhub.flex.model.domain.AccountingPointId
 import no.elhub.flex.model.domain.AccountingPointStartDates
 import no.elhub.flex.model.domain.Location
@@ -29,6 +30,7 @@ import no.elhub.flex.model.domain.MeteringGridArea
 import no.elhub.flex.model.domain.MeteringGridAreaStatus
 import no.elhub.flex.model.domain.db.DatabaseError
 import no.elhub.flex.model.domain.db.LockTimeoutError
+import no.elhub.flex.model.domain.db.NotFoundError
 import no.elhub.flex.model.error.InternalServerError
 import no.elhub.flex.util.atLocalMidnight
 import kotlin.time.Instant
@@ -408,8 +410,8 @@ class AccountingPointServiceTest : FunSpec({
 
     context("getByIds") {
 
-        val ap1 = no.elhub.flex.model.domain.AccountingPoint(id = 1L, businessId = "133700000000000001")
-        val ap2 = no.elhub.flex.model.domain.AccountingPoint(id = 2L, businessId = "133700000000000002")
+        val ap1 = AccountingPoint(id = 1L, businessId = "133700000000000001")
+        val ap2 = AccountingPoint(id = 2L, businessId = "133700000000000002")
 
         test("returns accounting points from repository on success") {
             // given
