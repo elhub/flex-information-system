@@ -16,8 +16,6 @@ export type TextKey =
   | "controllable_unit.is_small.false.label"
   | "cu_flexible_power_exceeds_rated_power_heading"
   | "cu_flexible_power_exceeds_rated_power_body"
-  | "controllable_unit.show_location"
-  | "controllable_unit_show_label"
   | "power_ratio_tooltip"
   | "lookup.input.accounting_point"
   | "lookup.input.controllable_unit"
@@ -133,9 +131,6 @@ export const text: Record<string, Record<TextKey, string>> = {
     "lookup.input.accounting_point": "Accounting point",
     "lookup.input.controllable_unit": "Controllable unit",
     "lookup.input.end_user": "End user",
-    "controllable_unit.show_location": "Show",
-    controllable_unit_show_label: "Location",
-
     spg_grid_prequalification_header: "Grid prequalifications",
     spg_product_application_header: "Product applications",
     spg_grid_prequalification_empty: "No grid prequalifications",
@@ -265,8 +260,6 @@ export const text: Record<string, Record<TextKey, string>> = {
     "controllable_unit.is_small.false":
       "Nei (Ikke liten, > 50 kW fleksibel effekt)",
     "controllable_unit.is_small.false.label": "Nei",
-    "controllable_unit.show_location": "Vis",
-    controllable_unit_show_label: "Lokasjon",
     cu_flexible_power_exceeds_rated_power_heading:
       "Fleksibel effekt overstiger installert effekt",
     cu_flexible_power_exceeds_rated_power_body:
