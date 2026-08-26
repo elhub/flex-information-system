@@ -71,7 +71,7 @@ export const useDashboardApplications = () => {
           embed:
             "service_providing_group(service_provider),procuring_system_operator",
           ...(identity?.role === "flex_system_operator" && partyId
-            ? { procuring_system_operator_id: `partyId.eq.${partyId}` }
+            ? { procuring_system_operator_id: `eq.${partyId}` }
             : {}),
         },
         headers: {
