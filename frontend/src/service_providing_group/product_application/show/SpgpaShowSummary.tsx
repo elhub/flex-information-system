@@ -66,8 +66,7 @@ export const SpgpaShowSummary = ({ spgpa, spg, powerScale }: Props) => {
             label="Service providing group"
             value={
               <>
-                <BodyText className={"mb-2"}>
-                  {" "}
+                <BodyText className="mb-2">
                   {spg?.name} (#{spg?.id})
                 </BodyText>
                 <Button
