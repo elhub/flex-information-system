@@ -23,6 +23,7 @@ import {
 import { Permissions } from "../auth/permissions";
 import { zServiceProviderProductApplication } from "../generated-client/zod.gen";
 import { getFields } from "../zod";
+import { useTranslateField } from "../intl/intl";
 
 const BlockedCreateButton = () => (
   <div className="flex items-center gap-1">
@@ -56,6 +57,7 @@ export const ServiceProviderProductApplicationList = () => {
   const fields = getFields(zServiceProviderProductApplication.shape);
   const blocked = isProductApplicationBlocked();
   const { permissions } = usePermissions<Permissions>();
+  const t = useTranslateField();
   const canCreate = !!permissions?.allow(
     "service_provider_product_application",
     "create",
@@ -100,12 +102,16 @@ export const ServiceProviderProductApplicationList = () => {
         <ReferenceField
           source={fields.service_provider_id.source}
           reference="party"
+          label={t("service_provider_product_application.service_provider_id")}
+          hideLabel={true}
         >
-          <TextField source="name" />
+          <TextField source="name" hideLabel={true} />
         </ReferenceField>
         <ReferenceField
           source={fields.system_operator_id.source}
           reference="party"
+          label={t("service_provider_product_application.system_operator_id")}
+          hideLabel={true}
         >
           <TextField source="name" />
         </ReferenceField>
