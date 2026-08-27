@@ -1,7 +1,10 @@
 import { useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import { useTranslate } from "ra-core";
 import { useConfirmAction } from "../../../components/ConfirmAction";
-import { Button } from "../../../components/ui";
+import { Button, Textarea } from "../../../components/ui";
 import {
+  createServiceProvidingGroupGridPrequalificationComment,
   ServiceProvidingGroupGridPrequalification,
   ServiceProvidingGroupGridPrequalificationUpdateRequest,
   updateServiceProvidingGroupGridPrequalification,
@@ -15,6 +18,8 @@ type ActionConfig = {
   confirmTitle: string;
   confirmContent: string;
   variant: "primary" | "secondary";
+  requiresComment?: boolean;
+  commentPlaceholder?: string;
 };
 
 const notApprovedAction: ActionConfig = {
@@ -28,6 +33,7 @@ const notApprovedAction: ActionConfig = {
 
 const getActionsForStatus = (
   spgpq: ServiceProvidingGroupGridPrequalification,
+  translate: ReturnType<typeof useTranslate>,
 ): ActionConfig[] => {
   switch (spgpq.status) {
     case "requested":
@@ -56,15 +62,20 @@ const getActionsForStatus = (
           variant: "primary",
         },
         {
-          label: "Conditionally approve",
+          label: translate("text.spgpq_conditionally_approve_button"),
           payload: {
             status: "conditionally_approved",
             prequalified_at: new Date().toISOString(),
           },
-          confirmTitle: "Conditionally approve grid prequalification",
-          confirmContent:
-            "This will mark the grid prequalification as conditionally approved. Conditions can be described with comments on the grid prequalification.",
+          confirmTitle: translate("text.spgpq_conditionally_approve_title"),
+          confirmContent: translate(
+            "text.spgpq_conditionally_approve_description",
+          ),
           variant: "primary",
+          requiresComment: true,
+          commentPlaceholder: translate(
+            "text.spgpq_conditionally_approve_placeholder",
+          ),
         },
         notApprovedAction,
       ];
@@ -83,16 +94,44 @@ const ActionButton = ({
   spgId: number;
 }) => {
   const queryClient = useQueryClient();
+  const [comment, setComment] = useState("");
   const { buttonProps, dialog } = useConfirmAction({
     title: config.confirmTitle,
-    content: config.confirmContent,
+    content: config.requiresComment ? (
+      <>
+        <p className="mb-4">{config.confirmContent}</p>
+        <Textarea
+          value={comment}
+          onChange={(event) => setComment(event.target.value)}
+          placeholder={config.commentPlaceholder}
+          aria-label={config.commentPlaceholder}
+          rows={4}
+          maxLength={2048}
+        />
+      </>
+    ) : (
+      config.confirmContent
+    ),
     confirmText: config.label,
+    confirmDisabled: config.requiresComment && !comment.trim(),
     onConfirmMutation: {
-      mutationFn: () =>
-        updateServiceProvidingGroupGridPrequalification({
+      mutationFn: async () => {
+        await updateServiceProvidingGroupGridPrequalification({
           path: { id: spgpqId },
           body: config.payload,
-        }).then(throwOnError),
+        }).then(throwOnError);
+
+        if (config.requiresComment) {
+          await createServiceProvidingGroupGridPrequalificationComment({
+            body: {
+              service_providing_group_grid_prequalification_id: spgpqId,
+              content: comment.trim(),
+              visibility: "any_involved_party",
+            },
+          }).then(throwOnError);
+        }
+      },
+      onSuccess: () => setComment(""),
       onSettled: () => {
         void queryClient.invalidateQueries({
           queryKey: spgpqQueryKey(spgpqId),
@@ -100,6 +139,11 @@ const ActionButton = ({
         void queryClient.invalidateQueries({
           queryKey: ["service_providing_group", spgId],
         });
+        if (config.requiresComment) {
+          void queryClient.invalidateQueries({
+            queryKey: ["spgpq_comments", spgpqId],
+          });
+        }
       },
     },
   });
@@ -119,7 +163,8 @@ type Props = {
 };
 
 export const SpgpqActionBar = ({ spgpq }: Props) => {
-  const actions = getActionsForStatus(spgpq);
+  const translate = useTranslate();
+  const actions = getActionsForStatus(spgpq, translate);
 
   if (actions.length === 0) return null;
 
