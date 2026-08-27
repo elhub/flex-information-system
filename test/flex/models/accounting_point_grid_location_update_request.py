@@ -21,8 +21,8 @@ class AccountingPointGridLocationUpdateRequest:
         Attributes:
             object_type (AccountingPointGridLocationObjectType | Unset): The type of object in the common grid model that
                 the accounting point is at. Example: substation.
-            business_id (str | Unset): Business identifier (mRID) referencing the object in the common grid model. Example:
-                53919b79-876f-4dad-8bde-b29368367604.
+            business_id (str | Unset): Business identifier (mRID) referencing the object in the common grid model (NEMO).
+                Example: 53919b79-876f-4dad-8bde-b29368367604.
             name (str | Unset): Name of the grid model object at the location. Example: Snilldal 1 KRA.
             nominal_voltage (float | Unset): Nominal voltage level at the grid location, in kilovolt (kV). Example: 22.
             additional_information (None | str | Unset): Free text field for extra information about the grid location if

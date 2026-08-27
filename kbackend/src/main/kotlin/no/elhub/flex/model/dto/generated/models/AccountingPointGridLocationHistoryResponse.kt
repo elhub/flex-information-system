@@ -29,7 +29,7 @@ public data class AccountingPointGridLocationHistoryResponse(
   @SerialName("object_type")
   public val objectType: AccountingPointGridLocationObjectType,
   /**
-   * Business identifier (mRID) referencing the object in the common grid model.
+   * Business identifier (mRID) referencing the object in the common grid model (NEMO).
    */
   @SerialName("business_id")
   public val businessId: String,

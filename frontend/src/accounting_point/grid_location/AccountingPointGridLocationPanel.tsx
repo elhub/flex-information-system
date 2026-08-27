@@ -91,6 +91,7 @@ export const AccountingPointGridLocationPanel = ({
           />
           <LabelValue
             size="small"
+            tooltip
             labelKey="accounting_point_grid_location.business_id"
             value={gridLocation.business_id}
           />

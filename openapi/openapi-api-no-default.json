@@ -5081,7 +5081,7 @@
                         "$ref": "#/components/schemas/accounting_point_grid_location_object_type"
                     },
                     "business_id": {
-                        "description": "Business identifier (mRID) referencing the object in the common grid model.",
+                        "description": "Business identifier (mRID) referencing the object in the common grid model (NEMO).",
                         "format": "text",
                         "type": "string",
                         "nullable": false,
@@ -5130,7 +5130,7 @@
                         "$ref": "#/components/schemas/accounting_point_grid_location_object_type"
                     },
                     "business_id": {
-                        "description": "Business identifier (mRID) referencing the object in the common grid model.",
+                        "description": "Business identifier (mRID) referencing the object in the common grid model (NEMO).",
                         "format": "text",
                         "type": "string",
                         "nullable": false,
@@ -5194,7 +5194,7 @@
                         "$ref": "#/components/schemas/accounting_point_grid_location_object_type"
                     },
                     "business_id": {
-                        "description": "Business identifier (mRID) referencing the object in the common grid model.",
+                        "description": "Business identifier (mRID) referencing the object in the common grid model (NEMO).",
                         "format": "text",
                         "type": "string",
                         "nullable": false,
@@ -8193,7 +8193,7 @@
                         "$ref": "#/components/schemas/accounting_point_grid_location_object_type"
                     },
                     "business_id": {
-                        "description": "Business identifier (mRID) referencing the object in the common grid model.",
+                        "description": "Business identifier (mRID) referencing the object in the common grid model (NEMO).",
                         "format": "text",
                         "type": "string",
                         "nullable": false,

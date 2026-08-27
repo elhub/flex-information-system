@@ -645,7 +645,7 @@ export const tooltips = {
   "accounting_point_grid_location.object_type":
     "The type of object in the common grid model that the accounting point is at.",
   "accounting_point_grid_location.business_id":
-    "Business identifier (mRID) referencing the object in the common grid model.",
+    "Business identifier (mRID) referencing the object in the common grid model (NEMO).",
   "accounting_point_grid_location.name":
     "Name of the grid model object at the location.",
   "accounting_point_grid_location.nominal_voltage":
@@ -666,7 +666,7 @@ export const tooltips = {
   "accounting_point_grid_location_history.object_type":
     "The type of object in the common grid model that the accounting point is at.",
   "accounting_point_grid_location_history.business_id":
-    "Business identifier (mRID) referencing the object in the common grid model.",
+    "Business identifier (mRID) referencing the object in the common grid model (NEMO).",
   "accounting_point_grid_location_history.name":
     "Name of the grid model object at the location.",
   "accounting_point_grid_location_history.nominal_voltage":
