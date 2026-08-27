@@ -105,7 +105,7 @@ export const ServiceProviderProductApplicationList = () => {
           label={t("service_provider_product_application.service_provider_id")}
           hideLabel={true}
         >
-          <TextField source="name" hideLabel={true} />
+          <TextField source="name" />
         </ReferenceField>
         <ReferenceField
           source={fields.system_operator_id.source}
