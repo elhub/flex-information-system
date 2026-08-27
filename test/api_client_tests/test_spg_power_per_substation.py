@@ -326,34 +326,51 @@ def test_service_providing_group_power_per_substation_aggregation(sts):
         None,
     }
 
-    # substation A: CU1 + CU2 + CU3 (TR: 10, 20, 30)
+    # substation A: CU MAP 8, 16, 24; rated power 10, 20, 30
     sub_a = by_sub[sub_a_business_id]
     assert sub_a.substation_name == "Bor 132 kV"
     assert sub_a.controllable_unit.count == 3
-    assert sub_a.controllable_unit.maximum_active_power.sum_ == pytest.approx(60.0)
-    assert sub_a.controllable_unit.maximum_active_power.average == pytest.approx(20.0)
-    assert sub_a.controllable_unit.maximum_active_power.min_ == pytest.approx(10.0)
-    assert sub_a.controllable_unit.maximum_active_power.max_ == pytest.approx(30.0)
+    assert sub_a.controllable_unit.maximum_active_power.sum_ == pytest.approx(48.0)
+    assert sub_a.controllable_unit.maximum_active_power.average == pytest.approx(16.0)
+    assert sub_a.controllable_unit.maximum_active_power.min_ == pytest.approx(8.0)
+    assert sub_a.controllable_unit.maximum_active_power.max_ == pytest.approx(24.0)
+    assert sub_a.technical_resource.count == 3
+    assert sub_a.technical_resource.maximum_active_power.sum_ == pytest.approx(60.0)
+    assert sub_a.technical_resource.maximum_active_power.average == pytest.approx(20.0)
+    assert sub_a.technical_resource.maximum_active_power.min_ == pytest.approx(10.0)
+    assert sub_a.technical_resource.maximum_active_power.max_ == pytest.approx(30.0)
 
-    # substation B: CU4 (TR: 40)
+    # substation B: CU MAP 32; rated power 40
     sub_b = by_sub[sub_b_business_id]
     assert sub_b.substation_name == "Sol transformatorstasjon"
     assert sub_b.controllable_unit.count == 1
-    assert sub_b.controllable_unit.maximum_active_power.sum_ == pytest.approx(40.0)
-    assert sub_b.controllable_unit.maximum_active_power.average == pytest.approx(40.0)
-    assert sub_b.controllable_unit.maximum_active_power.min_ == pytest.approx(40.0)
-    assert sub_b.controllable_unit.maximum_active_power.max_ == pytest.approx(40.0)
+    assert sub_b.controllable_unit.maximum_active_power.sum_ == pytest.approx(32.0)
+    assert sub_b.controllable_unit.maximum_active_power.average == pytest.approx(32.0)
+    assert sub_b.controllable_unit.maximum_active_power.min_ == pytest.approx(32.0)
+    assert sub_b.controllable_unit.maximum_active_power.max_ == pytest.approx(32.0)
+    assert sub_b.technical_resource.count == 1
+    assert sub_b.technical_resource.maximum_active_power.sum_ == pytest.approx(40.0)
+    assert sub_b.technical_resource.maximum_active_power.average == pytest.approx(40.0)
+    assert sub_b.technical_resource.maximum_active_power.min_ == pytest.approx(40.0)
+    assert sub_b.technical_resource.maximum_active_power.max_ == pytest.approx(40.0)
 
-    # null substation: CU5 (TR: 50)
+    # null substation: CU MAP 40; rated power 50
     null_sub = by_sub[None]
     assert null_sub.substation_name is None
     assert null_sub.controllable_unit.count == 1
-    assert null_sub.controllable_unit.maximum_active_power.sum_ == pytest.approx(50.0)
+    assert null_sub.controllable_unit.maximum_active_power.sum_ == pytest.approx(40.0)
     assert null_sub.controllable_unit.maximum_active_power.average == pytest.approx(
+        40.0
+    )
+    assert null_sub.controllable_unit.maximum_active_power.min_ == pytest.approx(40.0)
+    assert null_sub.controllable_unit.maximum_active_power.max_ == pytest.approx(40.0)
+    assert null_sub.technical_resource.count == 1
+    assert null_sub.technical_resource.maximum_active_power.sum_ == pytest.approx(50.0)
+    assert null_sub.technical_resource.maximum_active_power.average == pytest.approx(
         50.0
     )
-    assert null_sub.controllable_unit.maximum_active_power.min_ == pytest.approx(50.0)
-    assert null_sub.controllable_unit.maximum_active_power.max_ == pytest.approx(50.0)
+    assert null_sub.technical_resource.maximum_active_power.min_ == pytest.approx(50.0)
+    assert null_sub.technical_resource.maximum_active_power.max_ == pytest.approx(50.0)
 
 
 # RLS: SPGPPS-FISO001

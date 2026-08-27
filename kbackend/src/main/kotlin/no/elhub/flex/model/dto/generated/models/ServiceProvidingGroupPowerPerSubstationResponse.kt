@@ -23,9 +23,9 @@ public data class ServiceProvidingGroupPowerPerSubstationResponse(
   public val serviceProvidingGroupId: Long? = null,
   /**
    * List of per-substation aggregates for the controllable units currently in the service providing
-   * group. Each element contains the substation identifier and name, plus count and maximum active
-   * power statistics for the controllable units connected to that substation. An element with null
-   * substation fields groups controllable units whose grid location has not yet been assigned.
+   * group. Each element contains the substation identifier and name, plus controllable unit and
+   * technical resource aggregates. An element with null substation fields groups controllable units
+   * whose grid location has not yet been assigned.
    */
   @SerialName("substations")
   public val substations: List<ServiceProvidingGroupPowerPerSubstationResponseSubstations>? = null,

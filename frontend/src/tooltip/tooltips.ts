@@ -163,7 +163,7 @@ export const tooltips = {
   "service_providing_group_power_per_substation.service_providing_group_id":
     "The ID of the service providing group this resource is a breakdown of.",
   "service_providing_group_power_per_substation.substations":
-    "List of per-substation aggregates for the controllable units currently in the service providing group. Each element contains the substation identifier and name, plus count and maximum active power statistics for the controllable units connected to that substation. An element with null substation fields groups controllable units whose grid location has not yet been assigned.",
+    "List of per-substation aggregates for the controllable units currently in the service providing group. Each element contains the substation identifier and name, plus controllable unit and technical resource aggregates. An element with null substation fields groups controllable units whose grid location has not yet been assigned.",
   "service_providing_group_summary.id":
     "Unique surrogate key (service providing group ID).",
   "service_providing_group_summary.service_providing_group_id":

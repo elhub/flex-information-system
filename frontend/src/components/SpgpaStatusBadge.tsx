@@ -29,9 +29,11 @@ export const SpgpaStatusBadge = ({ status }: Props) => {
       icon={variant.icon}
       style={{ whiteSpace: "nowrap" }}
     >
-      {te(
-        `service_providing_group_product_application.status.${status}` as EnumLabel,
-      )}
+      {status === DRAFT_STATUS
+        ? translate("text.spgpa_draft_status_label")
+        : te(
+            `service_providing_group_product_application.status.${status}` as EnumLabel,
+          )}
     </Badge>
   );
 

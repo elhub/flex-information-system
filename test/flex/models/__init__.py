@@ -203,6 +203,9 @@ from .service_providing_group_power_per_substation_response_substations_item imp
 from .service_providing_group_power_per_substation_response_substations_item_controllable_unit import (
     ServiceProvidingGroupPowerPerSubstationResponseSubstationsItemControllableUnit,
 )
+from .service_providing_group_power_per_substation_response_substations_item_technical_resource import (
+    ServiceProvidingGroupPowerPerSubstationResponseSubstationsItemTechnicalResource,
+)
 from .service_providing_group_product_application_attachment_content_type import (
     ServiceProvidingGroupProductApplicationAttachmentContentType,
 )
@@ -450,6 +453,7 @@ __all__ = (
     "ServiceProvidingGroupPowerPerSubstationResponse",
     "ServiceProvidingGroupPowerPerSubstationResponseSubstationsItem",
     "ServiceProvidingGroupPowerPerSubstationResponseSubstationsItemControllableUnit",
+    "ServiceProvidingGroupPowerPerSubstationResponseSubstationsItemTechnicalResource",
     "ServiceProvidingGroupProductApplicationAttachmentContentType",
     "ServiceProvidingGroupProductApplicationAttachmentHistoryResponse",
     "ServiceProvidingGroupProductApplicationAttachmentResponse",

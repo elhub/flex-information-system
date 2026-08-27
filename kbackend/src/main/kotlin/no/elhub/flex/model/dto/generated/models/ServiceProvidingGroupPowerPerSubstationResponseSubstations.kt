@@ -6,9 +6,9 @@ import kotlinx.serialization.Serializable
 
 /**
  * List of per-substation aggregates for the controllable units currently in the service providing
- * group. Each element contains the substation identifier and name, plus count and maximum active power
- * statistics for the controllable units connected to that substation. An element with null substation
- * fields groups controllable units whose grid location has not yet been assigned.
+ * group. Each element contains the substation identifier and name, plus controllable unit and
+ * technical resource aggregates. An element with null substation fields groups controllable units
+ * whose grid location has not yet been assigned.
  */
 @Serializable
 public data class ServiceProvidingGroupPowerPerSubstationResponseSubstations(
@@ -18,5 +18,8 @@ public data class ServiceProvidingGroupPowerPerSubstationResponseSubstations(
   public val substationName: String? = null,
   @SerialName("controllable_unit")
   public val controllableUnit: ServiceProvidingGroupPowerPerSubstationResponseControllableUnit? =
+      null,
+  @SerialName("technical_resource")
+  public val technicalResource: ServiceProvidingGroupPowerPerSubstationResponseTechnicalResource? =
       null,
 )
