@@ -5,6 +5,7 @@ import { ServiceProvidingGroup } from "../../../generated-client";
 import { useTabSearchParam } from "../../../hooks/useTabSearchParam";
 import { attachmentsEnabled } from "../../../httpConfig";
 import { Scale } from "../../../utils/scales";
+import { SpgInfoTab } from "./SpgInfoTab";
 
 type Props = {
   spgId: number;
@@ -13,16 +14,20 @@ type Props = {
   powerScale: Scale;
 };
 
-export const SpgpaShowTabs = ({ spgpaId }: Props) => {
-  const [tab, setTab] = useTabSearchParam("comments");
+export const SpgpaShowTabs = ({ spgId, spgpaId, spg, powerScale }: Props) => {
+  const [tab, setTab] = useTabSearchParam("spg_info");
   return (
     <Tabs value={tab} onChange={setTab} className="relative top-[-24px]">
       <Tabs.List>
+        <Tabs.Tab label="SPG info" value="spg_info" />
         <Tabs.Tab label="Comments" value="comments" />
         {attachmentsEnabled && (
           <Tabs.Tab label="Attachments" value="attachments" />
         )}
       </Tabs.List>
+      <Tabs.Panel value="spg_info">
+        <SpgInfoTab spgId={spgId} spg={spg} powerScale={powerScale} />
+      </Tabs.Panel>
       <Tabs.Panel value="comments">
         <SpgpaCommentFeed spgpaId={spgpaId} />
       </Tabs.Panel>
