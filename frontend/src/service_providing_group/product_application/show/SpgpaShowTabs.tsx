@@ -1,5 +1,4 @@
 import { Tabs } from "../../../components/ui";
-import { SpgInfoTab } from "./SpgInfoTab";
 import { SpgpaCommentFeed } from "./SpgpaCommentFeed";
 import { AttachmentList } from "../../../components/attachments/AttachmentList";
 import { ServiceProvidingGroup } from "../../../generated-client";
@@ -14,20 +13,16 @@ type Props = {
   powerScale: Scale;
 };
 
-export const SpgpaShowTabs = ({ spgId, spgpaId, spg, powerScale }: Props) => {
-  const [tab, setTab] = useTabSearchParam("spg_info");
+export const SpgpaShowTabs = ({ spgpaId }: Props) => {
+  const [tab, setTab] = useTabSearchParam("comments");
   return (
     <Tabs value={tab} onChange={setTab} className="relative top-[-24px]">
       <Tabs.List>
-        <Tabs.Tab label="SPG info" value="spg_info" />
         <Tabs.Tab label="Comments" value="comments" />
         {attachmentsEnabled && (
           <Tabs.Tab label="Attachments" value="attachments" />
         )}
       </Tabs.List>
-      <Tabs.Panel value="spg_info">
-        <SpgInfoTab spgId={spgId} spg={spg} powerScale={powerScale} />
-      </Tabs.Panel>
       <Tabs.Panel value="comments">
         <SpgpaCommentFeed spgpaId={spgpaId} />
       </Tabs.Panel>
