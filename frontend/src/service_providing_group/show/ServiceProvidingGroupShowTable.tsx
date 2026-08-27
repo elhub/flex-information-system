@@ -1,4 +1,4 @@
-import { BodyText, Button, Link, Loader, Search } from "../../components/ui";
+import { BodyText, Button, Loader, Search } from "../../components/ui";
 import { Column, SimpleTable } from "../../components/SimpleTable";
 import {
   type SpgMembershipRow,
@@ -144,27 +144,30 @@ export const ServiceProvidingGroupShowTable = ({
       render: (value) => <div className="text-right">{formatPower(value)}</div>,
     },
     {
-      key: "regulation_direction",
-      header: t("controllable_unit.regulation_direction"),
-      render: (value) =>
-        value ? (
-          <RegulationDirectionIcon
-            value={value as ControllableUnitRegulationDirection}
-          />
-        ) : null,
+      key: "location",
+      header: translate("text.technical_resources_show_label"),
+      render: (value, row) => (
+        <Button
+          variant="secondary"
+          onClick={() =>
+            navigate(`/accounting_point/${row.accountingPointId}/show`)
+          }
+        >
+          {translate("text.technical_resources_show_location")}
+        </Button>
+      ),
     },
     {
       key: "mpid",
       header: t("controllable_unit.accounting_point_id"),
-      render: (value, row) =>
+      render: (value) =>
         value !== "-" ? (
-          <Link
-            as={RouterLink}
-            to={`/accounting_point/${row.accountingPointId}/show`}
+          <BodyText
+            size={"small"}
             onClick={(e: React.MouseEvent) => e.stopPropagation()}
           >
             {String(value)}
-          </Link>
+          </BodyText>
         ) : (
           <>{value}</>
         ),
@@ -174,6 +177,16 @@ export const ServiceProvidingGroupShowTable = ({
       header: t(
         "accounting_point_balance_responsible_party.balance_responsible_party_id",
       ),
+    },
+    {
+      key: "regulation_direction",
+      header: t("controllable_unit.regulation_direction"),
+      render: (value) =>
+        value ? (
+          <RegulationDirectionIcon
+            value={value as ControllableUnitRegulationDirection}
+          />
+        ) : null,
     },
   ];
 

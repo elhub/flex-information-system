@@ -1,11 +1,11 @@
 import { Tabs } from "../../../components/ui";
-import { SpgInfoTab } from "./SpgInfoTab";
 import { SpgpaCommentFeed } from "./SpgpaCommentFeed";
 import { AttachmentList } from "../../../components/attachments/AttachmentList";
 import { ServiceProvidingGroup } from "../../../generated-client";
 import { useTabSearchParam } from "../../../hooks/useTabSearchParam";
 import { attachmentsEnabled } from "../../../httpConfig";
 import { Scale } from "../../../utils/scales";
+import { SpgInfoTab } from "./SpgInfoTab";
 
 type Props = {
   spgId: number;

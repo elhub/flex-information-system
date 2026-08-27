@@ -16,7 +16,6 @@ import {
 } from "../components/EDS-ra/fields";
 import { cuStatusVariantMap } from "./controllableUnitStatus";
 import { RegulationDirectionField } from "./RegulationDirectionField";
-import { AccountingPointLinkField } from "../accounting_point/AccountingPointLinkField";
 import { EnumArrayInput, TextInput } from "../components/EDS-ra/inputs";
 import { BodyText, Button, Tooltip } from "../components/ui";
 import { Permissions } from "../auth/permissions";
@@ -29,6 +28,8 @@ import type {
   AccountingPointBiddingZone,
   ControllableUnit,
 } from "../generated-client";
+
+import { AccountingPointLinkField } from "../accounting_point/AccountingPointLinkField";
 
 const CULookupButton = () => (
   <Button
@@ -202,7 +203,6 @@ export const ControllableUnitList = () => {
         <TextField source={fields.id.source} />
         <TextField source={fields.name.source} weight="semibold" />
         <DateField source={fields.start_date.source} />
-        <RegulationDirectionField source={fields.regulation_direction.source} />
         <IsSmallField source={fields.is_small.source} headerTooltip />
         <AccountingPointLinkField source={fields.accounting_point_id.source} />
         <BiddingZoneField source="bidding_zone" />
@@ -212,6 +212,7 @@ export const ControllableUnitList = () => {
           enumKey="controllable_unit.status"
           variantMap={cuStatusVariantMap}
         />
+        <RegulationDirectionField source={fields.regulation_direction.source} />
       </Datagrid>
     </List>
   );
