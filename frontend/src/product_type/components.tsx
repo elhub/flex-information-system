@@ -154,6 +154,7 @@ type SystemOperatorProductTypesInputProps = Pick<
 
 export const SystemOperatorProductTypesInput = ({
   systemOperatorSource,
+  source,
   ...rest
 }: SystemOperatorProductTypesInputProps) => {
   const { setValue, watch, getValues } = useFormContext();
@@ -162,8 +163,8 @@ export const SystemOperatorProductTypesInput = ({
 
   useEffect(() => {
     if (previousSystemOperatorID.current !== systemOperatorID) {
-      if (getValues("product_type_ids")?.length) {
-        setValue("product_type_ids", []);
+      if (getValues(source)?.length) {
+        setValue(source, []);
       }
       previousSystemOperatorID.current = systemOperatorID;
     }
@@ -172,6 +173,7 @@ export const SystemOperatorProductTypesInput = ({
   return (
     <ProductTypeArrayInput
       systemOperatorId={systemOperatorID}
+      source={source}
       {...rest}
       status={"active"}
     />
