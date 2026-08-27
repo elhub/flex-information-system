@@ -108,7 +108,6 @@ export type EnumLabel =
   | "service_providing_group_product_application.ramping_capability.always"
   | "service_providing_group_product_application.ramping_capability.never"
   | "service_providing_group_product_application.ramping_capability.partial"
-  | "service_providing_group_product_application.status.draft"
   | "service_providing_group_product_application.status.prequalification"
   | "service_providing_group_product_application.status.prequalified"
   | "service_providing_group_product_application.status.rejected"
@@ -280,7 +279,6 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_provider_product_suspension.reason.breach_of_conditions":
       "Breach of conditions",
     "service_provider_product_suspension.reason.other": "Other",
-    "service_providing_group_product_application.status.draft": "Local draft",
     "service_providing_group_product_application.status.requested": "Requested",
     "service_providing_group_product_application.status.prequalification":
       "Prequalification",
@@ -463,7 +461,6 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_provider_product_suspension.reason.breach_of_conditions":
       "Brudd på vilkår",
     "service_provider_product_suspension.reason.other": "Annet",
-    "service_providing_group_product_application.status.draft": "Lokalt utkast",
     "service_providing_group_product_application.status.requested": "Forespurt",
     "service_providing_group_product_application.status.prequalification":
       "Prekvalifisering",
@@ -643,7 +640,6 @@ export const enumLabels: Record<string, Record<EnumLabel, string>> = {
     "service_provider_product_suspension.reason.breach_of_conditions":
       "Brot på vilkår",
     "service_provider_product_suspension.reason.other": "Anna",
-    "service_providing_group_product_application.status.draft": "Utkast",
     "service_providing_group_product_application.status.requested": "Førespurt",
     "service_providing_group_product_application.status.prequalification":
       "Prekvalifisering",

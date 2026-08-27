@@ -2460,7 +2460,7 @@ export type AccountingPointMeteringGridArea = {
 export type AccountingPointGridLocationUpdateRequest = {
   object_type?: AccountingPointGridLocationObjectType;
   /**
-   * Business identifier (mRID) referencing the object in the common grid model.
+   * Business identifier (mRID) referencing the object in the common grid model (NEMO).
    */
   business_id?: string;
   /**
@@ -2488,7 +2488,7 @@ export type AccountingPointGridLocationCreateRequest = {
   accounting_point_id: number;
   object_type: AccountingPointGridLocationObjectType;
   /**
-   * Business identifier (mRID) referencing the object in the common grid model.
+   * Business identifier (mRID) referencing the object in the common grid model (NEMO).
    */
   business_id: string;
   /**
@@ -2520,7 +2520,7 @@ export type AccountingPointGridLocation = {
   accounting_point_id: number;
   object_type: AccountingPointGridLocationObjectType;
   /**
-   * Business identifier (mRID) referencing the object in the common grid model.
+   * Business identifier (mRID) referencing the object in the common grid model (NEMO).
    */
   business_id: string;
   /**
@@ -4002,7 +4002,7 @@ export type AccountingPointGridLocationHistory = {
   accounting_point_id: number;
   object_type: AccountingPointGridLocationObjectType;
   /**
-   * Business identifier (mRID) referencing the object in the common grid model.
+   * Business identifier (mRID) referencing the object in the common grid model (NEMO).
    */
   business_id: string;
   /**
@@ -5285,7 +5285,7 @@ export type AccountingPointGridLocationWritable = {
   accounting_point_id: number;
   object_type: AccountingPointGridLocationObjectType;
   /**
-   * Business identifier (mRID) referencing the object in the common grid model.
+   * Business identifier (mRID) referencing the object in the common grid model (NEMO).
    */
   business_id: string;
   /**
@@ -6058,7 +6058,7 @@ export type AccountingPointGridLocationHistoryWritable = {
   accounting_point_id: number;
   object_type: AccountingPointGridLocationObjectType;
   /**
-   * Business identifier (mRID) referencing the object in the common grid model.
+   * Business identifier (mRID) referencing the object in the common grid model (NEMO).
    */
   business_id: string;
   /**

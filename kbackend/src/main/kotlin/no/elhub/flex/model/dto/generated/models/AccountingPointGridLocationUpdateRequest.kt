@@ -18,7 +18,7 @@ public data class AccountingPointGridLocationUpdateRequest(
   @SerialName("object_type")
   public val objectType: AccountingPointGridLocationObjectType? = null,
   /**
-   * Business identifier (mRID) referencing the object in the common grid model.
+   * Business identifier (mRID) referencing the object in the common grid model (NEMO).
    */
   @SerialName("business_id")
   public val businessId: String? = null,

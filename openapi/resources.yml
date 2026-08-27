@@ -3391,7 +3391,7 @@ resources:
       business_id:
         description: >-
           Business identifier (mRID) referencing the object in the common
-          grid model.
+          grid model (NEMO).
         format: text
         type: string
         nullable:
