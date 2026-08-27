@@ -1,8 +1,8 @@
-import { Button, Link, Panel } from "../../../components/ui";
+import { BodyText, Button, Link, Panel } from "../../../components/ui";
 import { LabelValue } from "../../../components/LabelValue";
 import { KILO, Scale } from "../../../utils/scales";
-import { Link as RouterLink } from "react-router-dom";
-import { IconPencil, IconExternal } from "@elhub/ds-icons";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { IconExternal, IconPencil } from "@elhub/ds-icons";
 import { usePermissions } from "ra-core";
 import type { Permissions } from "../../../auth/permissions";
 import {
@@ -33,9 +33,9 @@ export const SpgpaShowSummary = ({ spgpa, spg, powerScale }: Props) => {
 
   const procuringServiceProvider = useParty(spgpa.procuring_system_operator_id);
   const productTypes = useGetAllProductTypes();
+  const navigate = useNavigate();
 
   if (procuringServiceProvider.error) throw procuringServiceProvider.error;
-
   const productTypeNames = productTypes
     ?.filter((pt) => spgpa.product_type_ids.includes(pt.id))
     .map((pt) => pt.name)
@@ -62,20 +62,28 @@ export const SpgpaShowSummary = ({ spgpa, spg, powerScale }: Props) => {
         <div className="flex flex-col gap-4">
           {/* Application fields */}
           <LabelValue
-            size="small"
+            size="large"
             label="Service providing group"
             value={
-              <Link
-                as={RouterLink}
-                to={`/service_providing_group/${spgpa.service_providing_group_id}/show`}
-              >
-                {spg?.name} (#{spg?.id})
-              </Link>
+              <>
+                <BodyText className="mb-2">
+                  {spg?.name} (#{spg?.id})
+                </BodyText>
+                <Button
+                  onClick={() =>
+                    navigate(
+                      `/service_providing_group/${spgpa.service_providing_group_id}/show`,
+                    )
+                  }
+                >
+                  See group
+                </Button>
+              </>
             }
           />
 
           <LabelValue
-            size="small"
+            size="large"
             label="System Operator / PSO"
             value={
               <Link
@@ -88,11 +96,15 @@ export const SpgpaShowSummary = ({ spgpa, spg, powerScale }: Props) => {
           />
 
           <LabelValue
-            size="small"
+            size="large"
             label="Product types"
             value={productTypeNames}
           />
-
+          <LabelValue
+            size="large"
+            label="Bidding Zone"
+            value={spg?.bidding_zone}
+          />
           <LabelValue
             size="large"
             label="Max active power (up)"
@@ -113,7 +125,7 @@ export const SpgpaShowSummary = ({ spgpa, spg, powerScale }: Props) => {
 
           {spgpa.ramping_capability && (
             <LabelValue
-              size="small"
+              size="large"
               labelKey="service_providing_group_product_application.ramping_capability"
               value={translateEnum(
                 `service_providing_group_product_application.ramping_capability.${spgpa.ramping_capability}`,
@@ -123,6 +135,7 @@ export const SpgpaShowSummary = ({ spgpa, spg, powerScale }: Props) => {
 
           {spgpa.ramping_description && (
             <LabelValue
+              size="large"
               labelKey="service_providing_group_product_application.ramping_description"
               value={
                 <span className="whitespace-pre-wrap">
@@ -133,12 +146,12 @@ export const SpgpaShowSummary = ({ spgpa, spg, powerScale }: Props) => {
           )}
 
           <LabelValue
-            size="small"
+            size="large"
             label="Prequalified at"
             value={spgpa.prequalified_at}
           />
           <LabelValue
-            size="small"
+            size="large"
             label="Verified at"
             value={spgpa.verified_at}
           />
