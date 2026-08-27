@@ -70,14 +70,13 @@ export const SpgpaShowSummary = ({ spgpa, spg, powerScale }: Props) => {
                   {spg?.name} (#{spg?.id})
                 </BodyText>
                 <Button
-                  as={RouterLink}
                   onClick={() =>
                     navigate(
                       `/service_providing_group/${spgpa.service_providing_group_id}/show`,
                     )
                   }
                 >
-                  {"See group"}
+                  See group
                 </Button>
               </>
             }
