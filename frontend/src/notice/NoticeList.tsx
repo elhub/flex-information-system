@@ -9,13 +9,11 @@ import {
   TextField,
 } from "../components/EDS-ra";
 import { BodyText } from "../components/ui";
-import { Link } from "../components/ui";
 import { noticeStatusVariantMap } from "./noticeStatus";
 import noticeTypes from "./noticeTypes";
 import { zNotice } from "../generated-client/zod.gen";
 import { getFields } from "../zod";
 import { useGetIdentity, useListContext, useRecordContext } from "react-admin";
-import { Link as RouterLink } from "react-router-dom";
 import { useEffect, useRef } from "react";
 
 const DefaultFilters = ({
@@ -37,18 +35,6 @@ const DefaultFilters = ({
       setFilters({ ...filterValues, ...updates });
   }, [filterValues, setFilters, isFiso, partyID]);
   return null;
-};
-
-const SourceLink = ({ label: _label }: { label?: string }) => {
-  const noticeRecord = useRecordContext()!;
-  if (!noticeRecord.source) return null;
-  return (
-    <span onClick={(e) => e.stopPropagation()}>
-      <Link as={RouterLink} to={`${noticeRecord.source}/show`}>
-        {noticeRecord.source}
-      </Link>
-    </span>
-  );
 };
 
 const NoticeType = ({ label: _label }: { label?: string }) => {
@@ -106,7 +92,6 @@ export const NoticeList = () => {
           <TextField source="name" />
         </ReferenceField>
         <NoticeType label="field.notice.type" />
-        <SourceLink label="field.notice.source" />
         <StatusBadgeField
           source={noticeFields.status.source}
           enumKey="notice.status"
