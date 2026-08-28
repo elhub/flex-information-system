@@ -6,6 +6,7 @@ import {
   useListContext,
 } from "ra-core";
 import { BodyText, Pagination, Panel } from "../../ui";
+import { Combobox } from "../../../components/ui";
 
 type ListProps = ListBaseProps & {
   filters?: ReactNode[];
@@ -33,7 +34,7 @@ export const List = ({
   );
 
   return (
-    <ListBase {...rest}>
+    <ListBase perPage={25} {...rest}>
       <div className="flex flex-col gap-2">
         {actions && <ListActions actions={actions} />}
         {borderless ? (
@@ -67,8 +68,8 @@ const ListActions = ({ actions }: ListActionsProps) => (
 );
 
 const ListPagination = () => {
-  const { page, perPage, setPage, total } = useListContext();
-
+  const { page, perPage, setPerPage, setPage, total } = useListContext();
+  const selectableOptions = ["25", "50", "75", "100"];
   if (!total) {
     return null;
   }
@@ -76,12 +77,23 @@ const ListPagination = () => {
   const pageCount = Math.ceil(total / perPage);
 
   return (
-    <Pagination
-      count={pageCount}
-      page={page}
-      onPageChange={setPage}
-      prevText="Previous"
-      nextText="Next"
-    />
+    <div className="flex items-center gap-4">
+      <div className="mr-auto">
+        <Pagination
+          count={pageCount}
+          page={page}
+          onPageChange={setPage}
+          prevText="Previous"
+          nextText="Next"
+        />
+      </div>
+      <div className="w-32 shrink-0">
+        <Combobox
+          options={selectableOptions}
+          selectedOptions={perPage ? [perPage.toString()] : []}
+          onToggleSelected={(option) => setPerPage(+option)}
+        />
+      </div>
+    </div>
   );
 };
