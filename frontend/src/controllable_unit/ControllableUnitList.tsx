@@ -196,7 +196,7 @@ export const ControllableUnitList = () => {
       actions={actions}
       filter={{
         embed:
-          "accounting_point(bidding_zone, balance_responsible_party(balance_responsible_party))",
+          "accounting_point!(bidding_zone, balance_responsible_party(balance_responsible_party))",
       }}
     >
       <Datagrid>
