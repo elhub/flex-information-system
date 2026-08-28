@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS accounting_point_grid_location (
     accounting_point_id bigint NOT NULL,
     object_type text NOT NULL,
     business_id text NOT NULL,
-    name text NOT NULL,
+    name text NOT NULL, -- noqa
     nominal_voltage decimal(9, 3) NOT NULL,
     additional_information text,
     source text NOT NULL,
@@ -60,7 +60,7 @@ LANGUAGE plpgsql
 AS
 $$
 BEGIN
-    IF coalesce((SELECT current_party()),0) = 0 THEN
+    IF coalesce((SELECT flex.current_party()),0) = 0 THEN
         RETURN NEW;
     END IF;
 
@@ -68,7 +68,7 @@ BEGIN
         SELECT 1
         FROM accounting_point_system_operator AS ap_so
         WHERE ap_so.accounting_point_id = NEW.accounting_point_id
-            AND ap_so.system_operator_id = (SELECT current_party())
+            AND ap_so.system_operator_id = (SELECT flex.current_party())
             AND ap_so.valid_time_range @> current_timestamp
     ) THEN
         NEW.source := 'cso';
