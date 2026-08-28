@@ -34,7 +34,7 @@ class AccountingPointRepositoryTest : FunSpec({
     beforeTest {
         PostgresTestContainer.withConnection { conn ->
             conn.createStatement().use {
-                it.execute("TRUNCATE flex.accounting_point CASCADE")
+                it.execute("TRUNCATE flex.accounting_point, flex.substation, flex.substation_cluster CASCADE")
             }
         }
     }
@@ -827,6 +827,82 @@ class AccountingPointRepositoryTest : FunSpec({
         }
     }
 
+    context("updateAccountingPointGridLocationFromSubstation") {
+
+        test("inserts a new grid location row from the substation when none exists") {
+            // given
+            val apId = insertAccountingPoint(uniqueGsrn())
+            val substationBusinessId = UUID.randomUUID()
+            insertSubstation(substationBusinessId, name = "Substation A")
+
+            // when
+            with(internalDataPrincipal) {
+                repo.updateAccountingPointGridLocationFromSubstation(apId, substationBusinessId)
+            }.shouldBeRight()
+
+            // then
+            val row = queryGridLocation(apId)
+            check(row != null) { "Expected a grid location row for ap $apId" }
+            row.objectType shouldBe "substation"
+            row.businessId shouldBe substationBusinessId.toString()
+            row.name shouldBe "Substation A"
+        }
+
+        test("updates the existing grid location row from the substation") {
+            // given
+            val apId = insertAccountingPoint(uniqueGsrn())
+            val firstSubstationBusinessId = UUID.randomUUID()
+            val secondSubstationBusinessId = UUID.randomUUID()
+            insertSubstation(firstSubstationBusinessId, name = "Substation A")
+            insertSubstation(secondSubstationBusinessId, name = "Substation B")
+
+            with(internalDataPrincipal) {
+                repo.updateAccountingPointGridLocationFromSubstation(apId, firstSubstationBusinessId)
+            }.shouldBeRight()
+
+            // when
+            with(internalDataPrincipal) {
+                repo.updateAccountingPointGridLocationFromSubstation(apId, secondSubstationBusinessId)
+            }.shouldBeRight()
+
+            // then
+            val row = queryGridLocation(apId)
+            check(row != null) { "Expected a grid location row for ap $apId" }
+            row.businessId shouldBe secondSubstationBusinessId.toString()
+            row.name shouldBe "Substation B"
+        }
+
+        test("returns DatabaseError when the substation does not exist") {
+            // given
+            val apId = insertAccountingPoint(uniqueGsrn())
+            val missingSubstationBusinessId = UUID.randomUUID()
+
+            // when
+            val result = with(internalDataPrincipal) {
+                repo.updateAccountingPointGridLocationFromSubstation(apId, missingSubstationBusinessId)
+            }
+
+            // then
+            result.shouldBeLeft()
+            queryGridLocation(apId) shouldBe null
+        }
+
+        test("returns DatabaseError when the accounting point does not exist") {
+            // given
+            val missingApId = Long.MAX_VALUE
+            val substationBusinessId = UUID.randomUUID()
+            insertSubstation(substationBusinessId, name = "Substation A")
+
+            // when
+            val result = with(internalDataPrincipal) {
+                repo.updateAccountingPointGridLocationFromSubstation(missingApId, substationBusinessId)
+            }
+
+            // then
+            result.shouldBeLeft()
+        }
+    }
+
     context("getByIds") {
 
         test("returns matching accounting points for the given IDs") {
@@ -968,6 +1044,76 @@ private fun queryEnergySupplierRows(apId: Long): List<EnergySupplierRow> =
                 rows
             }
         }
+    }
+
+private data class GridLocationRow(
+    val objectType: String,
+    val businessId: String,
+    val name: String,
+)
+
+private fun queryGridLocation(apId: Long): GridLocationRow? =
+    PostgresTestContainer.withConnection { conn ->
+        conn.prepareStatement(
+            "SELECT object_type, business_id, name FROM flex.accounting_point_grid_location WHERE accounting_point_id = ?"
+        ).use { stmt ->
+            stmt.setLong(1, apId)
+            stmt.executeQuery().use { rs ->
+                if (rs.next()) {
+                    GridLocationRow(
+                        objectType = rs.getString(1),
+                        businessId = rs.getString(2),
+                        name = rs.getString(3),
+                    )
+                } else {
+                    null
+                }
+            }
+        }
+    }
+
+private fun insertSubstation(businessId: UUID, name: String): Long =
+    PostgresTestContainer.withConnection { conn ->
+        conn.autoCommit = false
+        conn.createStatement().use { it.execute("SELECT flex.set_entity_party_identity(0, 0, 0)") }
+        val clusterId = conn.prepareStatement(
+            """
+            INSERT INTO flex.substation_cluster (name, business_id, averaged_position, area)
+            VALUES (
+                ?,
+                ?,
+                ST_SetSRID(ST_MakePoint(10.0, 60.0), 4326),
+                ST_SetSRID(ST_GeomFromText('POLYGON((9 59, 11 59, 11 61, 9 61, 9 59))'), 4326)
+            )
+            RETURNING id
+            """.trimIndent(),
+        ).use { stmt ->
+            stmt.setString(1, "$name cluster")
+            stmt.setString(2, UUID.randomUUID().toString())
+            stmt.executeQuery().use { rs ->
+                rs.next()
+                rs.getLong(1)
+            }
+        }
+        val id = conn.prepareStatement(
+            """
+            INSERT INTO flex.substation (
+                name, business_id, kind, primary_concessionaire, substation_cluster_id, voltage_levels, position
+            )
+            VALUES (?, ?, 'transformer', 'concessionaire', ?, ARRAY[132.0], ST_SetSRID(ST_MakePoint(10.0, 60.0), 4326))
+            RETURNING id
+            """.trimIndent(),
+        ).use { stmt ->
+            stmt.setString(1, name)
+            stmt.setString(2, businessId.toString())
+            stmt.setLong(3, clusterId)
+            stmt.executeQuery().use { rs ->
+                rs.next()
+                rs.getLong(1)
+            }
+        }
+        conn.commit()
+        id
     }
 
 private fun insertAccountingPoint(apBusinessId: String): Long =

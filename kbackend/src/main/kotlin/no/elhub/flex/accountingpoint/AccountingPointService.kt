@@ -3,6 +3,7 @@ package no.elhub.flex.accountingpoint
 import arrow.core.Either
 import arrow.core.flatMap
 import arrow.core.raise.either
+import arrow.core.right
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.http.HttpStatusCode
 import kotlinx.datetime.TimeZone
@@ -140,6 +141,7 @@ class AccountingPointServiceImpl(
 
                         val endUsers = adapterAccountingPoint.toAccountingPointEndUsers(accountingPointId)
                         val energySuppliers = adapterAccountingPoint.toAccountingPointEnergySuppliers(accountingPointId)
+                        val gridModelSubstation = adapterAccountingPoint.substation
 
                         val mgaBusinessIds = adapterAccountingPoint.meteringGridArea.map { it.businessId }
                         val mgaMap = meteringGridAreaRepository
@@ -165,6 +167,22 @@ class AccountingPointServiceImpl(
 
                         accountingPointRepository.replaceAllAccountingPointEnergySupplier(energySuppliers)
                             .mapLeft { it.toInternalServerError("replaceAllAccountingPointEnergySupplier") }.bind()
+
+                        // substation update can fail if the substation has not been synced yet: we just log the issue
+                        gridModelSubstation?.let { substationBusinessId ->
+                            accountingPointRepository.updateAccountingPointGridLocationFromSubstation(
+                                accountingPointId,
+                                substationBusinessId,
+                            ).fold(
+                                { err ->
+                                    logger.warn {
+                                        "updateAccountingPointGridLocationFromSubstation failed for accounting point " +
+                                            "$accountingPointId, substation $substationBusinessId: $err"
+                                    }
+                                },
+                                { },
+                            )
+                        }
 
                         accountingPointRepository.markSyncComplete(accountingPointId)
                             .mapLeft { it.toInternalServerError("markSyncComplete") }.bind()
