@@ -15,6 +15,7 @@ export type TextKey =
   | "table.header.maximum_rated_power"
   | "form_toolbar.save"
   | "form_toolbar.cancel"
+  | "form_toolbar.confirm"
   | "controllable_unit"
   | "controllable_unit.is_small.true"
   | "controllable_unit.is_small.true.label"
@@ -29,6 +30,10 @@ export type TextKey =
   | "spg_grid_prequalification_header"
   | "spg_product_application_header"
   | "spg_grid_prequalification_empty"
+  | "spgpq_conditionally_approve_button"
+  | "spgpq_conditionally_approve_title"
+  | "spgpq_conditionally_approve_description"
+  | "spgpq_conditionally_approve_placeholder"
   | "spg_product_application_empty"
   | "spg_activate_group_notice"
   | "spg_activate_group_title"
@@ -127,6 +132,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "table.header.maximum_rated_power": "Maximum rated power",
     "form_toolbar.save": "Save",
     "form_toolbar.cancel": "Cancel",
+    "form_toolbar.confirm": "Confirm",
     controllable_unit: "Controllable unit",
     "controllable_unit.is_small.true": "Yes (Small, ≤ 50 kW of flexible power)",
     "controllable_unit.is_small.true.label": "Yes",
@@ -147,6 +153,13 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_grid_prequalification_header: "Grid prequalifications",
     spg_product_application_header: "Product applications",
     spg_grid_prequalification_empty: "No grid prequalifications",
+    spgpq_conditionally_approve_button: "Conditionally approve",
+    spgpq_conditionally_approve_title:
+      "Conditionally approve grid prequalification",
+    spgpq_conditionally_approve_description:
+      "This will mark the grid prequalification as conditionally approved. Describe the conditions below. They will be added as a comment visible to all involved parties.",
+    spgpq_conditionally_approve_placeholder:
+      "Describe the conditions for approval",
     spg_product_application_empty: "No product applications",
     spg_activate_group_notice:
       "Activating the service providing group will allow it to be used in a product application",
@@ -274,6 +287,7 @@ export const text: Record<string, Record<TextKey, string>> = {
     "table.header.maximum_rated_power": "Maksimum merkeeffekt",
     "form_toolbar.save": "Lagre",
     "form_toolbar.cancel": "Avbryt",
+    "form_toolbar.confirm": "Bekreft",
     controllable_unit: "Kontrollerbar enhet",
     "controllable_unit.is_small.true": "Ja (Liten, ≤ 50 kW fleksibel effekt)",
     "controllable_unit.is_small.true.label": "Ja",
@@ -292,6 +306,13 @@ export const text: Record<string, Record<TextKey, string>> = {
     spg_grid_prequalification_header: "Nettprekvalifiseringer",
     spg_product_application_header: "Produktprekvalifiseringer",
     spg_grid_prequalification_empty: "Ingen nettprekvalifiseringer",
+    spgpq_conditionally_approve_button: "Godkjenn med vilkår",
+    spgpq_conditionally_approve_title:
+      "Godkjenn nettprekvalifisering med vilkår",
+    spgpq_conditionally_approve_description:
+      "Dette godkjenner nettprekvalifiseringen med vilkår. Beskriv vilkårene nedenfor. De legges til som en kommentar som er synlig for alle involverte parter.",
+    spgpq_conditionally_approve_placeholder:
+      "Beskriv vilkårene for godkjenning",
     spg_product_application_empty: "Ingen produktprekvalifiseringer",
     spg_activate_group_notice:
       "Ved å aktivere gruppen vil den være mulig å bruke i en produktprekvalifisering",
