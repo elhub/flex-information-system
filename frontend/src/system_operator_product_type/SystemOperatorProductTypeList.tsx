@@ -21,6 +21,7 @@ import { Permissions } from "../auth/permissions";
 import { Link } from "react-router-dom";
 import { Button } from "../components/ui";
 import { IconPlus } from "@elhub/ds-icons";
+import { useTranslateField } from "../intl/intl";
 
 const CreateButton = () => (
   <Button
@@ -35,6 +36,7 @@ const CreateButton = () => (
 
 export const SystemOperatorProductTypeList = () => {
   const fields = getFields(zSystemOperatorProductType.shape);
+  const t = useTranslateField();
   const { permissions } = usePermissions<Permissions>();
   const canCreate = permissions?.allow(
     "system_operator_product_type",
@@ -68,6 +70,8 @@ export const SystemOperatorProductTypeList = () => {
         <ReferenceField
           source={fields.system_operator_id.source}
           reference="party"
+          label={t("system_operator_product_type.system_operator_id")}
+          hideLabel={true}
         >
           <TextField source="name" />
         </ReferenceField>

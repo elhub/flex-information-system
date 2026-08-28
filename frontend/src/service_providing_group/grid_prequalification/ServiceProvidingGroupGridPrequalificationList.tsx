@@ -16,6 +16,7 @@ import { IconPlus } from "@elhub/ds-icons";
 import { Permissions } from "../../auth/permissions";
 import { zServiceProvidingGroupGridPrequalification } from "../../generated-client/zod.gen";
 import { getFields } from "../../zod";
+import { useTranslateField } from "../../intl/intl";
 
 const CreateButton = ({ id }: { id: any }) => (
   <Button
@@ -34,6 +35,7 @@ const CreateButton = ({ id }: { id: any }) => (
 );
 
 export const ServiceProvidingGroupGridPrequalificationList = () => {
+  const t = useTranslateField();
   const record = useRecordContext();
   const id = record?.id;
   const { permissions } = usePermissions<Permissions>();
@@ -70,6 +72,10 @@ export const ServiceProvidingGroupGridPrequalificationList = () => {
               <ReferenceField
                 source={fields.service_providing_group_id.source}
                 reference="service_providing_group"
+                label={t(
+                  "service_providing_group_grid_prequalification.service_providing_group_id",
+                )}
+                hideLabel={true}
               >
                 <TextField source="name" />
               </ReferenceField>
@@ -77,6 +83,10 @@ export const ServiceProvidingGroupGridPrequalificationList = () => {
             <ReferenceField
               source={fields.impacted_system_operator_id.source}
               reference="party"
+              label={t(
+                "service_providing_group_grid_prequalification.impacted_system_operator_id",
+              )}
+              hideLabel={true}
             >
               <TextField source="name" />
             </ReferenceField>
