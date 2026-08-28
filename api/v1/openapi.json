@@ -729,6 +729,72 @@
           }
         }
       },
+      "event_data_updated_fields": {
+        "type": "object",
+        "description": "Common format of the data field in events concerning update operations.",
+        "required": [
+          "kind",
+          "updated_fields"
+        ],
+        "properties": {
+          "kind": {
+            "description": "Identifies the event data schema for discriminated union deserialization.",
+            "type": "string",
+            "const": "event.data.updated_fields"
+          },
+          "updated_fields": {
+            "description": "Names of the fields that were modified by the update.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "text"
+            },
+            "example": [
+              "status"
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "event_data_controllable_unit_lookup": {
+        "type": "object",
+        "description": "Format of the data field in a controllable_unit.lookup event.",
+        "required": [
+          "kind",
+          "requesting_party_id"
+        ],
+        "properties": {
+          "kind": {
+            "description": "Identifies the event data schema for discriminated union deserialization.",
+            "type": "string",
+            "const": "event.data.controllable_unit.lookup"
+          },
+          "requesting_party_id": {
+            "description": "The party that performed the controllable unit lookup.",
+            "type": "integer",
+            "format": "bigint",
+            "example": 42
+          }
+        },
+        "additionalProperties": false
+      },
+      "event_data": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/event_data_updated_fields"
+          },
+          {
+            "$ref": "#/components/schemas/event_data_controllable_unit_lookup"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "kind",
+          "mapping": {
+            "event.data.updated_fields": "#/components/schemas/event_data_updated_fields",
+            "event.data.controllable_unit.lookup": "#/components/schemas/event_data_controllable_unit_lookup"
+          }
+        }
+      },
       "numeric_aggregation": {
         "type": "object",
         "properties": {
@@ -1143,7 +1209,7 @@
         "example": "prequalification"
       },
       "service_providing_group_product_application_ramping_capability": {
-        "description": "The ramping capability of the service providing group for this product application.",
+        "description": "Whether the service providing group can ramp in accordance with the product requirements during both activation and deactivation.",
         "format": "text",
         "type": "string",
         "nullable": true,
@@ -2091,7 +2157,7 @@
             "example": 4
           },
           "substations": {
-            "description": "List of per-substation aggregates for the controllable units currently in the service providing group. Each element contains the substation identifier and name, plus count and maximum active power statistics for the controllable units connected to that substation. An element with null substation fields groups controllable units whose grid location has not yet been assigned.",
+            "description": "List of per-substation aggregates for the controllable units currently in the service providing group. Each element contains the substation identifier and name, plus controllable unit and technical resource aggregates. An element with null substation fields groups controllable units whose grid location has not yet been assigned.",
             "type": "array",
             "readOnly": true,
             "items": {
@@ -2115,6 +2181,17 @@
                       "$ref": "#/components/schemas/numeric_aggregation"
                     }
                   }
+                },
+                "technical_resource": {
+                  "type": "object",
+                  "properties": {
+                    "count": {
+                      "type": "integer"
+                    },
+                    "maximum_active_power": {
+                      "$ref": "#/components/schemas/numeric_aggregation"
+                    }
+                  }
                 }
               }
             },
@@ -2124,6 +2201,15 @@
                 "substation_name": "Substation A",
                 "controllable_unit": {
                   "count": 3,
+                  "maximum_active_power": {
+                    "sum": 120,
+                    "average": 40,
+                    "min": 20,
+                    "max": 60
+                  }
+                },
+                "technical_resource": {
+                  "count": 5,
                   "maximum_active_power": {
                     "sum": 150,
                     "average": 50,
@@ -2182,15 +2268,35 @@
               },
               "maximum_active_power": {
                 "$ref": "#/components/schemas/numeric_aggregation"
+              },
+              "maximum_active_power_up": {
+                "description": "Maximum active power aggregated over controllable units with regulation_direction equal to up or both.",
+                "$ref": "#/components/schemas/numeric_aggregation"
+              },
+              "maximum_active_power_down": {
+                "description": "Maximum active power aggregated over controllable units with regulation_direction equal to down or both.",
+                "$ref": "#/components/schemas/numeric_aggregation"
               }
             },
             "example": {
               "count": 3,
               "maximum_active_power": {
-                "sum": 250,
-                "average": 83.33,
+                "sum": 200,
+                "average": 66.67,
+                "min": 40,
+                "max": 100
+              },
+              "maximum_active_power_up": {
+                "sum": 150,
+                "average": 75,
                 "min": 50,
-                "max": 120
+                "max": 100
+              },
+              "maximum_active_power_down": {
+                "sum": 100,
+                "average": 50,
+                "min": 40,
+                "max": 60
               }
             }
           },
@@ -4340,8 +4446,15 @@
           },
           "data": {
             "description": "The data of the event.",
-            "format": "text",
-            "type": "string",
+            "type": "object",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/event_data"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "readOnly": true,
             "nullable": true
           },
@@ -5021,7 +5134,7 @@
             "$ref": "#/components/schemas/accounting_point_grid_location_object_type"
           },
           "business_id": {
-            "description": "Business identifier (mRID) referencing the object in the common grid model.",
+            "description": "Business identifier (mRID) referencing the object in the common grid model (NEMO).",
             "format": "text",
             "type": "string",
             "nullable": false,
@@ -5070,7 +5183,7 @@
             "$ref": "#/components/schemas/accounting_point_grid_location_object_type"
           },
           "business_id": {
-            "description": "Business identifier (mRID) referencing the object in the common grid model.",
+            "description": "Business identifier (mRID) referencing the object in the common grid model (NEMO).",
             "format": "text",
             "type": "string",
             "nullable": false,
@@ -5134,7 +5247,7 @@
             "$ref": "#/components/schemas/accounting_point_grid_location_object_type"
           },
           "business_id": {
-            "description": "Business identifier (mRID) referencing the object in the common grid model.",
+            "description": "Business identifier (mRID) referencing the object in the common grid model (NEMO).",
             "format": "text",
             "type": "string",
             "nullable": false,
@@ -6071,7 +6184,7 @@
             "nullable": true
           },
           "ramping_description": {
-            "description": "Free text description of ramping details. Only required for product Manual Congestion.",
+            "description": "Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).",
             "format": "text",
             "type": "string",
             "nullable": true,
@@ -6164,7 +6277,7 @@
             "nullable": true
           },
           "ramping_description": {
-            "description": "Free text description of ramping details. Only required for product Manual Congestion.",
+            "description": "Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).",
             "format": "text",
             "type": "string",
             "nullable": true,
@@ -6271,7 +6384,7 @@
             "nullable": true
           },
           "ramping_description": {
-            "description": "Free text description of ramping details. Only required for product Manual Congestion.",
+            "description": "Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).",
             "format": "text",
             "type": "string",
             "nullable": true,
@@ -8163,7 +8276,7 @@
             "$ref": "#/components/schemas/accounting_point_grid_location_object_type"
           },
           "business_id": {
-            "description": "Business identifier (mRID) referencing the object in the common grid model.",
+            "description": "Business identifier (mRID) referencing the object in the common grid model (NEMO).",
             "format": "text",
             "type": "string",
             "nullable": false,
@@ -8766,7 +8879,7 @@
             "nullable": true
           },
           "ramping_description": {
-            "description": "Free text description of ramping details. Only required for product Manual Congestion.",
+            "description": "Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).",
             "format": "text",
             "type": "string",
             "nullable": true,
@@ -9436,6 +9549,14 @@
           },
           {
             "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somestatus"
+          },
+          {
+            "in": "query",
             "schema": {
               "type": "string",
               "pattern": "^eq\\.[0-9]+$"
@@ -10030,6 +10151,14 @@
             },
             "example": "eq.somename",
             "description": "Free text name of the controllable unit."
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somestatus"
           },
           {
             "in": "query",
@@ -27540,6 +27669,14 @@
             "name": "product_type_id"
           },
           {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somestatus"
+          },
+          {
             "description": "Filtering Columns",
             "in": "query",
             "name": "select",
@@ -28134,6 +28271,14 @@
             "example": "eq.55",
             "description": "Reference to the product type.",
             "name": "product_type_id"
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eq.somestatus"
           },
           {
             "description": "Filtering Columns",
