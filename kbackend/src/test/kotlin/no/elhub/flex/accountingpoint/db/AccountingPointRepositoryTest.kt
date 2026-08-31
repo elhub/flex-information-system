@@ -3,6 +3,7 @@ package no.elhub.flex.accountingpoint.db
 import io.kotest.assertions.arrow.core.shouldBeLeft
 import io.kotest.assertions.arrow.core.shouldBeRight
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.datatest.withData
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
@@ -829,77 +830,141 @@ class AccountingPointRepositoryTest : FunSpec({
 
     context("updateAccountingPointGridLocationFromSubstation") {
 
-        test("inserts a new grid location row from the substation when none exists") {
+        withData(
+            nameFn = { it.description },
+            listOf(
+                GridLocationSyncScenario(
+                    description = "inserts a new grid location row when none exists",
+                    outcome = GridLocationOutcome.SyncedToTarget,
+                ),
+                GridLocationSyncScenario(
+                    description = "updates an existing grid_model/guessed row to point at a new substation",
+                    existing = ExistingGridLocationSeed(
+                        name = "Old Substation",
+                        nominalVoltage = 0.0,
+                        source = "grid_model",
+                        quality = "guessed",
+                        additionalInformation = null,
+                    ),
+                    outcome = GridLocationOutcome.SyncedToTarget,
+                ),
+                GridLocationSyncScenario(
+                    description = "does not touch a row confirmed by a CSO (source=cso, quality=confirmed)",
+                    existing = ExistingGridLocationSeed(
+                        name = "CSO Confirmed Substation",
+                        nominalVoltage = 22.0,
+                        source = "cso",
+                        quality = "confirmed",
+                        additionalInformation = "Manually confirmed by the CSO",
+                    ),
+                    outcome = GridLocationOutcome.UnchangedFromSeed,
+                ),
+                GridLocationSyncScenario(
+                    description = "does not touch a row confirmed by an SO (source=so, quality=confirmed)",
+                    existing = ExistingGridLocationSeed(
+                        name = "SO Confirmed Substation",
+                        nominalVoltage = 11.0,
+                        source = "so",
+                        quality = "confirmed",
+                        additionalInformation = null,
+                    ),
+                    outcome = GridLocationOutcome.UnchangedFromSeed,
+                ),
+                GridLocationSyncScenario(
+                    description = "overwrites a guessed row (source=system), preserving unrelated additional_information",
+                    existing = ExistingGridLocationSeed(
+                        name = "System Guessed Substation",
+                        nominalVoltage = 0.0,
+                        source = "system",
+                        quality = "guessed",
+                        additionalInformation = "left over note",
+                    ),
+                    outcome = GridLocationOutcome.SyncedToTarget,
+                ),
+                GridLocationSyncScenario(
+                    description = "re-syncing the same substation that is already stored is a no-op",
+                    existing = ExistingGridLocationSeed(
+                        name = "Stable Substation",
+                        nominalVoltage = 0.0,
+                        source = "grid_model",
+                        quality = "guessed",
+                        additionalInformation = null,
+                    ),
+                    targetIsExistingSubstation = true,
+                    outcome = GridLocationOutcome.SyncedToTarget,
+                ),
+                GridLocationSyncScenario(
+                    description = "returns DatabaseError and creates no row when the substation does not exist",
+                    targetSubstationExists = false,
+                    outcome = GridLocationOutcome.RepositoryError,
+                ),
+                GridLocationSyncScenario(
+                    description = "returns DatabaseError when the accounting point does not exist",
+                    apExists = false,
+                    outcome = GridLocationOutcome.RepositoryError,
+                ),
+            ),
+        ) { scenario ->
             // given
-            val apId = insertAccountingPoint(uniqueGsrn())
-            val substationBusinessId = UUID.randomUUID()
-            insertSubstation(substationBusinessId, name = "Substation A")
+            val apId = if (scenario.apExists) insertAccountingPoint(uniqueGsrn()) else Long.MAX_VALUE
+            val targetSubstationId = UUID.randomUUID()
+            if (scenario.targetSubstationExists) insertSubstation(targetSubstationId, name = "Target Substation")
 
-            // when
-            with(internalDataPrincipal) {
-                repo.updateAccountingPointGridLocationFromSubstation(apId, substationBusinessId)
-            }.shouldBeRight()
+            val existingSubstationId = scenario.existing?.let { seed ->
+                val id = if (scenario.targetIsExistingSubstation) targetSubstationId else UUID.randomUUID()
+                if (!scenario.targetIsExistingSubstation) insertSubstation(id, name = seed.name)
+                insertGridLocationRow(
+                    apId = apId,
+                    businessId = id,
+                    name = seed.name,
+                    nominalVoltage = seed.nominalVoltage,
+                    source = seed.source,
+                    quality = seed.quality,
+                    additionalInformation = seed.additionalInformation,
+                )
+                id
+            }
 
-            // then
-            val row = queryGridLocation(apId)
-            check(row != null) { "Expected a grid location row for ap $apId" }
-            row.objectType shouldBe "substation"
-            row.businessId shouldBe substationBusinessId.toString()
-            row.name shouldBe "Substation A"
-        }
-
-        test("updates the existing grid location row from the substation") {
-            // given
-            val apId = insertAccountingPoint(uniqueGsrn())
-            val firstSubstationBusinessId = UUID.randomUUID()
-            val secondSubstationBusinessId = UUID.randomUUID()
-            insertSubstation(firstSubstationBusinessId, name = "Substation A")
-            insertSubstation(secondSubstationBusinessId, name = "Substation B")
-
-            with(internalDataPrincipal) {
-                repo.updateAccountingPointGridLocationFromSubstation(apId, firstSubstationBusinessId)
-            }.shouldBeRight()
-
-            // when
-            with(internalDataPrincipal) {
-                repo.updateAccountingPointGridLocationFromSubstation(apId, secondSubstationBusinessId)
-            }.shouldBeRight()
-
-            // then
-            val row = queryGridLocation(apId)
-            check(row != null) { "Expected a grid location row for ap $apId" }
-            row.businessId shouldBe secondSubstationBusinessId.toString()
-            row.name shouldBe "Substation B"
-        }
-
-        test("returns DatabaseError when the substation does not exist") {
-            // given
-            val apId = insertAccountingPoint(uniqueGsrn())
-            val missingSubstationBusinessId = UUID.randomUUID()
+            val effectiveTargetId = if (scenario.targetIsExistingSubstation) {
+                checkNotNull(existingSubstationId) { "targetIsExistingSubstation requires an existing seed" }
+            } else {
+                targetSubstationId
+            }
 
             // when
             val result = with(internalDataPrincipal) {
-                repo.updateAccountingPointGridLocationFromSubstation(apId, missingSubstationBusinessId)
+                repo.updateAccountingPointGridLocationFromSubstation(apId, effectiveTargetId)
             }
 
             // then
-            result.shouldBeLeft()
-            queryGridLocation(apId) shouldBe null
-        }
+            when (scenario.outcome) {
+                GridLocationOutcome.RepositoryError -> {
+                    result.shouldBeLeft()
+                    queryGridLocation(apId) shouldBe null
+                }
 
-        test("returns DatabaseError when the accounting point does not exist") {
-            // given
-            val missingApId = Long.MAX_VALUE
-            val substationBusinessId = UUID.randomUUID()
-            insertSubstation(substationBusinessId, name = "Substation A")
+                GridLocationOutcome.UnchangedFromSeed -> {
+                    result.shouldBeRight()
+                    val seed = checkNotNull(scenario.existing)
+                    val row = checkNotNull(queryGridLocation(apId))
+                    row.businessId shouldBe checkNotNull(existingSubstationId).toString()
+                    row.name shouldBe seed.name
+                    row.nominalVoltage shouldBe seed.nominalVoltage
+                    row.source shouldBe seed.source
+                    row.quality shouldBe seed.quality
+                    row.additionalInformation shouldBe seed.additionalInformation
+                }
 
-            // when
-            val result = with(internalDataPrincipal) {
-                repo.updateAccountingPointGridLocationFromSubstation(missingApId, substationBusinessId)
+                GridLocationOutcome.SyncedToTarget -> {
+                    result.shouldBeRight()
+                    val row = checkNotNull(queryGridLocation(apId))
+                    row.businessId shouldBe effectiveTargetId.toString()
+                    row.name shouldBe "Target Substation"
+                    row.nominalVoltage shouldBe 0.0
+                    row.source shouldBe "grid_model"
+                    row.quality shouldBe "guessed"
+                }
             }
-
-            // then
-            result.shouldBeLeft()
         }
     }
 
@@ -1050,12 +1115,20 @@ private data class GridLocationRow(
     val objectType: String,
     val businessId: String,
     val name: String,
+    val nominalVoltage: Double,
+    val source: String,
+    val quality: String,
+    val additionalInformation: String?,
 )
 
 private fun queryGridLocation(apId: Long): GridLocationRow? =
     PostgresTestContainer.withConnection { conn ->
         conn.prepareStatement(
-            "SELECT object_type, business_id, name FROM flex.accounting_point_grid_location WHERE accounting_point_id = ?"
+            """
+            SELECT object_type, business_id, name, nominal_voltage, source, quality, additional_information
+            FROM flex.accounting_point_grid_location
+            WHERE accounting_point_id = ?
+            """.trimIndent(),
         ).use { stmt ->
             stmt.setLong(1, apId)
             stmt.executeQuery().use { rs ->
@@ -1064,12 +1137,87 @@ private fun queryGridLocation(apId: Long): GridLocationRow? =
                         objectType = rs.getString(1),
                         businessId = rs.getString(2),
                         name = rs.getString(3),
+                        nominalVoltage = rs.getBigDecimal(4).toDouble(),
+                        source = rs.getString(5),
+                        quality = rs.getString(6),
+                        additionalInformation = rs.getString(7),
                     )
                 } else {
                     null
                 }
             }
         }
+    }
+
+/**
+ * A pre-existing `flex.accounting_point_grid_location` row to seed before exercising
+ * `updateAccountingPointGridLocationFromSubstation`, describing its prior state.
+ */
+private data class ExistingGridLocationSeed(
+    val name: String,
+    val nominalVoltage: Double,
+    val source: String,
+    val quality: String,
+    val additionalInformation: String?,
+)
+
+private enum class GridLocationOutcome {
+    /** The row ends up pointing at the target substation, with `source=grid_model`/`quality=guessed`. */
+    SyncedToTarget,
+
+    /** The row is left exactly as seeded (used for `quality=confirmed` rows, which must not be touched). */
+    UnchangedFromSeed,
+
+    /** The repository call returns `Left`, and no row is created. */
+    RepositoryError,
+}
+
+private data class GridLocationSyncScenario(
+    val description: String,
+    val apExists: Boolean = true,
+    val existing: ExistingGridLocationSeed? = null,
+    val targetSubstationExists: Boolean = true,
+    /** If true, the substation we sync to is the same one referenced by [existing] (idempotent re-sync case). */
+    val targetIsExistingSubstation: Boolean = false,
+    val outcome: GridLocationOutcome,
+)
+
+private fun insertGridLocationRow(
+    apId: Long,
+    businessId: UUID,
+    name: String,
+    nominalVoltage: Double,
+    source: String,
+    quality: String,
+    additionalInformation: String?,
+): Long =
+    PostgresTestContainer.withConnection { conn ->
+        conn.autoCommit = false
+        conn.createStatement().use { it.execute("SELECT flex.set_entity_party_identity(0, 0, 0)") }
+        val id = conn.prepareStatement(
+            """
+            INSERT INTO flex.accounting_point_grid_location (
+                accounting_point_id, object_type, business_id, name, nominal_voltage,
+                additional_information, source, quality
+            )
+            VALUES (?, 'substation', ?, ?, ?, ?, ?, ?)
+            RETURNING id
+            """.trimIndent(),
+        ).use { stmt ->
+            stmt.setLong(1, apId)
+            stmt.setString(2, businessId.toString())
+            stmt.setString(3, name)
+            stmt.setBigDecimal(4, java.math.BigDecimal.valueOf(nominalVoltage))
+            if (additionalInformation != null) stmt.setString(5, additionalInformation) else stmt.setNull(5, java.sql.Types.VARCHAR)
+            stmt.setString(6, source)
+            stmt.setString(7, quality)
+            stmt.executeQuery().use { rs ->
+                rs.next()
+                rs.getLong(1)
+            }
+        }
+        conn.commit()
+        id
     }
 
 private fun insertSubstation(businessId: UUID, name: String): Long =

@@ -437,7 +437,13 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
     ): Either<RepositoryError, Unit> =
         flexTransaction { conn ->
             Either.catch {
-                val rowsAffected = conn.prepareNamed(
+                val substationExists = conn.prepareNamed(
+                    "SELECT 1 FROM flex.substation WHERE business_id = :substationBusinessId",
+                    mapOf("substationBusinessId" to substationBusinessId.toString()),
+                ).querySingle { true } ?: false
+                check(substationExists) { "No substation found for business ID $substationBusinessId" }
+
+                conn.prepareNamed(
                     """
                     MERGE INTO flex.accounting_point_grid_location AS apgl
                     USING (
@@ -446,6 +452,8 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
                         WHERE business_id = :substationBusinessId
                     ) AS sub
                     ON apgl.accounting_point_id = :accountingPointId
+                    WHEN MATCHED AND apgl.quality = 'confirmed' THEN
+                        DO NOTHING
                     WHEN MATCHED THEN UPDATE SET
                         object_type = 'substation',
                         business_id = sub.business_id,
@@ -463,9 +471,10 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
                         "accountingPointId" to accountingPointId,
                         "substationBusinessId" to substationBusinessId.toString(),
                     ),
-                ).use { stmt -> stmt.executeUpdate() }
-
-                check(rowsAffected > 0) { "No substation found for business ID $substationBusinessId" }
+                ).use { stmt ->
+                    stmt.executeUpdate()
+                    Unit
+                }
             }.mapLeft { e ->
                 logger.error { "updateAccountingPointGridLocationFromSubstation failed: ${e.message}" }
                 DatabaseError("Failed to update grid location for accounting point $accountingPointId")
