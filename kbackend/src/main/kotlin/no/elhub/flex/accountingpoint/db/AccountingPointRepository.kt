@@ -27,7 +27,6 @@ import no.elhub.flex.util.createTimestampArray
 import org.koin.core.annotation.Single
 import java.sql.Connection
 import java.sql.SQLException
-import java.util.UUID
 
 @Suppress("TooManyFunctions")
 interface AccountingPointRepository {
@@ -111,17 +110,6 @@ interface AccountingPointRepository {
     context(principal: FlexPrincipal)
     suspend fun replaceAllAccountingPointEnergySupplier(
         accountingPointEnergySuppliers: List<AccountingPointEnergySupplier>
-    ): Either<RepositoryError, Unit>
-
-    /**
-     * Updates the grid location of an accounting point with the given substation.
-     *
-     * Returns [DatabaseError] if no row exists for [accountingPointId] or [substationBusinessId].
-     * */
-    context(principal: FlexPrincipal)
-    suspend fun updateAccountingPointGridLocationFromSubstation(
-        accountingPointId: Long,
-        substationBusinessId: UUID,
     ): Either<RepositoryError, Unit>
 
     /**
@@ -427,57 +415,6 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
             }.mapLeft { e ->
                 logger.error { "replaceAllAccountingPointEnergySupplier failed: ${e.message}" }
                 DatabaseError("Failed to replace accounting point energy suppliers")
-            }
-        }
-
-    context(principal: FlexPrincipal)
-    override suspend fun updateAccountingPointGridLocationFromSubstation(
-        accountingPointId: Long,
-        substationBusinessId: UUID,
-    ): Either<RepositoryError, Unit> =
-        flexTransaction { conn ->
-            Either.catch {
-                val substationExists = conn.prepareNamed(
-                    "SELECT 1 FROM flex.substation WHERE business_id = :substationBusinessId",
-                    mapOf("substationBusinessId" to substationBusinessId.toString()),
-                ).querySingle { true } ?: false
-                check(substationExists) { "No substation found for business ID $substationBusinessId" }
-
-                conn.prepareNamed(
-                    """
-                    MERGE INTO flex.accounting_point_grid_location AS apgl
-                    USING (
-                        SELECT business_id, name
-                        FROM flex.substation
-                        WHERE business_id = :substationBusinessId
-                    ) AS sub
-                    ON apgl.accounting_point_id = :accountingPointId
-                    WHEN MATCHED AND apgl.quality = 'confirmed' THEN
-                        DO NOTHING
-                    WHEN MATCHED THEN UPDATE SET
-                        object_type = 'substation',
-                        business_id = sub.business_id,
-                        name = sub.name,
-                        nominal_voltage = 0,
-                        source = 'grid_model',
-                        quality = 'guessed'
-                    WHEN NOT MATCHED THEN INSERT (
-                        accounting_point_id, object_type, business_id, name, nominal_voltage, source, quality
-                    ) VALUES (
-                        :accountingPointId, 'substation', sub.business_id, sub.name, 0, 'grid_model', 'guessed'
-                    )
-                    """,
-                    mapOf(
-                        "accountingPointId" to accountingPointId,
-                        "substationBusinessId" to substationBusinessId.toString(),
-                    ),
-                ).use { stmt ->
-                    stmt.executeUpdate()
-                    Unit
-                }
-            }.mapLeft { e ->
-                logger.warn { "updateAccountingPointGridLocationFromSubstation failed: ${e.message}" }
-                DatabaseError("Failed to update grid location for accounting point $accountingPointId")
             }
         }
 

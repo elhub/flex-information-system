@@ -21,8 +21,10 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 import no.elhub.flex.PostgresTestContainer
 import no.elhub.flex.accountingpoint.AccountingPointServiceImpl
+import no.elhub.flex.accountingpoint.db.AccountingPointGridLocationRepositoryImpl
 import no.elhub.flex.accountingpoint.db.AccountingPointMeteringGridAreaRepositoryImpl
 import no.elhub.flex.accountingpoint.db.AccountingPointRepositoryImpl
+import no.elhub.flex.accountingpoint.db.SubstationRepositoryImpl
 import no.elhub.flex.auth.FlexAuthentication
 import no.elhub.flex.config.Tracing
 import no.elhub.flex.config.configureSerialization
@@ -72,6 +74,8 @@ class ControllableUnitLookupTimezoneTest : FunSpec({
                 AccountingPointRepositoryImpl(),
                 MeteringGridAreaRepositoryImpl(),
                 AccountingPointMeteringGridAreaRepositoryImpl(),
+                AccountingPointGridLocationRepositoryImpl(),
+                SubstationRepositoryImpl(),
                 adapterService,
                 ControllableUnitRepositoryImpl(),
             ),

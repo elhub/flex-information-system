@@ -5,8 +5,10 @@ import arrow.core.flatMap
 import arrow.core.raise.either
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.http.HttpStatusCode
+import no.elhub.flex.accountingpoint.db.AccountingPointGridLocationRepository
 import no.elhub.flex.accountingpoint.db.AccountingPointMeteringGridAreaRepository
 import no.elhub.flex.accountingpoint.db.AccountingPointRepository
+import no.elhub.flex.accountingpoint.db.SubstationRepository
 import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.controllableunit.db.ControllableUnitRepository
 import no.elhub.flex.db.FlexTransaction.flexTransaction
@@ -15,6 +17,10 @@ import no.elhub.flex.meteringgridarea.db.MeteringGridAreaRepository
 import no.elhub.flex.model.domain.AccountingPoint
 import no.elhub.flex.model.domain.AccountingPointEndUser
 import no.elhub.flex.model.domain.AccountingPointEnergySupplier
+import no.elhub.flex.model.domain.AccountingPointGridLocation
+import no.elhub.flex.model.domain.AccountingPointGridLocationObjectType
+import no.elhub.flex.model.domain.AccountingPointGridLocationQuality
+import no.elhub.flex.model.domain.AccountingPointGridLocationSource
 import no.elhub.flex.model.domain.AccountingPointId
 import no.elhub.flex.model.domain.AccountingPointMeteringGridArea
 import no.elhub.flex.model.domain.Location
@@ -104,6 +110,8 @@ class AccountingPointServiceImpl(
     private val accountingPointRepository: AccountingPointRepository,
     private val meteringGridAreaRepository: MeteringGridAreaRepository,
     private val accountingPointMeteringGridAreaRepository: AccountingPointMeteringGridAreaRepository,
+    private val accountingPointGridLocationRepository: AccountingPointGridLocationRepository,
+    private val substationRepository: SubstationRepository,
     private val accountingPointAdapter: AccountingPointAdapterService,
     private val controllableUnitRepository: ControllableUnitRepository,
 ) : AccountingPointService {
@@ -165,15 +173,33 @@ class AccountingPointServiceImpl(
                         accountingPointRepository.replaceAllAccountingPointEnergySupplier(energySuppliers)
                             .mapLeft { it.toInternalServerError("replaceAllAccountingPointEnergySupplier") }.bind()
 
-                        // substation update can fail if the substation has not been synced yet: we just log the issue
                         gridModelSubstation?.let { substationBusinessId ->
-                            accountingPointRepository.updateAccountingPointGridLocationFromSubstation(
-                                accountingPointId,
-                                substationBusinessId,
-                            ).fold(
+                            either {
+                                val substationName = substationRepository.getNameByBusinessId(substationBusinessId).bind()
+
+                                val currentGridLocation = accountingPointGridLocationRepository
+                                    .getByAccountingPointId(accountingPointId)
+                                    .bind()
+
+                                if (currentGridLocation?.quality != AccountingPointGridLocationQuality.CONFIRMED) {
+                                    accountingPointGridLocationRepository.upsert(
+                                        AccountingPointGridLocation(
+                                            accountingPointId = accountingPointId,
+                                            objectType = AccountingPointGridLocationObjectType.SUBSTATION,
+                                            businessId = substationBusinessId,
+                                            name = substationName,
+                                            nominalVoltage = 0.0,
+                                            additionalInformation = null,
+                                            source = AccountingPointGridLocationSource.GRID_MODEL,
+                                            quality = AccountingPointGridLocationQuality.GUESSED,
+                                        )
+                                    ).bind()
+                                }
+                            }.fold(
+                                // substation update can fail if the substation has not been synced yet: we just log the issue
                                 { err ->
                                     logger.warn {
-                                        "updateAccountingPointGridLocationFromSubstation failed for accounting point " +
+                                        "grid location upsert failed for accounting point " +
                                             "$accountingPointId, substation $substationBusinessId: $err"
                                     }
                                 },
