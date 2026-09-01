@@ -40,7 +40,7 @@ export const AccountingPointGridLocationPanel = ({
   return (
     <Panel border className="bg-white h-fit p-4 mt-4">
       <div className="flex items-center justify-between mt-4">
-        <Heading level="3" size={"medium"} className={"mb-4"}>
+        <Heading level={3} size="medium" className="mb-4">
           {isConfirmed ? "Confirmed Grid location" : "Suggested Grid location"}
         </Heading>
         {userCanEdit && !isEditing && gridLocation != null && (
