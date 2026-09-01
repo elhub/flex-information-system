@@ -2,9 +2,8 @@ import { useState } from "react";
 import { AccountingPointGridLocation } from "../../generated-client";
 import { LabelValue } from "../../components/LabelValue";
 import { KILO } from "../../utils/scales";
-import { Button, Panel } from "../../components/ui";
+import { Button, Heading, Panel } from "../../components/ui";
 import { useTranslate } from "ra-core";
-import { IconPencil } from "@elhub/ds-icons";
 import { AccountingPointGridLocationInput } from "./AccountingPointGridLocationInput";
 import { Substation } from "../show/AccountingPointLocationMap";
 
@@ -36,19 +35,20 @@ export const AccountingPointGridLocationPanel = ({
     onClearSelection?.();
   };
 
+  const isConfirmed = gridLocation?.quality.toLowerCase() === "confirmed";
+
   return (
-    <Panel border className="bg-white h-fit p-4">
-      <div className="flex items-center justify-between mb-4">
-        {!isEditing && (
-          <h3 className="text-base font-semibold">{gridLocation?.name}</h3>
-        )}
+    <Panel border className="bg-white h-fit p-4 mt-4">
+      <div className="flex items-center justify-between mt-4">
+        <Heading level="3" size={"medium"} className={"mb-4"}>
+          {isConfirmed ? "Confirmed Grid location" : "Suggested Grid location"}
+        </Heading>
         {userCanEdit && !isEditing && gridLocation != null && (
           <Button
-            variant="invisible"
-            icon={IconPencil}
+            variant={isConfirmed ? "secondary" : "primary"}
             onClick={() => setIsEditing(true)}
           >
-            Edit Details
+            {isConfirmed ? "Edit details" : "Validate Grid Location"}
           </Button>
         )}
       </div>
@@ -72,7 +72,7 @@ export const AccountingPointGridLocationPanel = ({
           </p>
           {userCanEdit && (
             <Button
-              variant="secondary"
+              variant="primary"
               className="max-w-fit"
               onClick={() => setIsEditing(true)}
             >
@@ -83,41 +83,49 @@ export const AccountingPointGridLocationPanel = ({
       ) : (
         <div className="flex flex-col gap-4">
           <LabelValue
-            size="small"
+            size="large"
+            tooltip
+            labelKey="accounting_point_grid_location.name"
+            value={gridLocation?.name}
+          />
+          <LabelValue
+            size="large"
             labelKey="accounting_point_grid_location.object_type"
             value={translate(
               `enum.accounting_point_grid_location.object_type.${gridLocation.object_type}`,
             )}
           />
           <LabelValue
-            size="small"
+            size="large"
             tooltip
             labelKey="accounting_point_grid_location.business_id"
             value={gridLocation.business_id}
           />
           <LabelValue
-            size="small"
+            size="large"
+            tooltip
             labelKey="accounting_point_grid_location.nominal_voltage"
             value={gridLocation.nominal_voltage}
             unit="V"
             storageScale={KILO}
           />
           <LabelValue
-            size="small"
+            size="large"
             labelKey="accounting_point_grid_location.source"
             value={translate(
               `enum.accounting_point_grid_location.source.${gridLocation.source}`,
             )}
           />
           <LabelValue
-            size="small"
+            size="large"
+            tooltip
             labelKey="accounting_point_grid_location.quality"
             value={translate(
               `enum.accounting_point_grid_location.quality.${gridLocation.quality}`,
             )}
           />
           <LabelValue
-            size="small"
+            size="large"
             labelKey="accounting_point_grid_location.additional_information"
             value={
               gridLocation.additional_information ? (
