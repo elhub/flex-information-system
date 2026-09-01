@@ -61,14 +61,12 @@ export const AccountingPointShowTabs = ({
       </Tabs.List>
       <Tabs.Panel value="location" className="flex-1 min-h-0">
         {canViewLocation && (
-          <div className={""}>
-            <AccountingPointLocationMap
-              location={location}
-              canViewGrid={userCanViewGrid(identity)}
-              onSubstationClick={handleSubstationClick}
-              highlightedSubstationBusinessId={highlightedBusinessId}
-            />
-          </div>
+          <AccountingPointLocationMap
+            location={location}
+            canViewGrid={userCanViewGrid(identity)}
+            onSubstationClick={handleSubstationClick}
+            highlightedSubstationBusinessId={highlightedBusinessId}
+          />
         )}
       </Tabs.Panel>
     </Tabs>
