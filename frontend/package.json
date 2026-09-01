@@ -41,7 +41,6 @@
         "recharts": "^3.8.1",
         "tailwind-merge": "^3.4.0",
         "tailwindcss": "^4.1.18",
-        "use-react-router-breadcrumbs": "^4.0.1",
         "vite-plugin-checker": "^0.14.0",
         "zod": "^4.1.13"
     },
