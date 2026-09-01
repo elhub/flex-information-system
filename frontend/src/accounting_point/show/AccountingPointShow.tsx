@@ -1,17 +1,43 @@
 import { useAccountingPointViewModel } from "./useAccountingPointViewModel";
 import { useParams } from "react-router-dom";
-import { Loader, Panel } from "../../components/ui";
+import { Heading, Loader, Panel } from "../../components/ui";
 import { ShowPageLayout } from "../../components/ShowPageLayout";
 import { useGetIdentity } from "react-admin";
 import { AccountingPointConnections } from "./AccountingPointConnections";
 import { AccountingPointShowTabs } from "./AccountingPointShowTabs";
 import { LabelValue } from "../../components/LabelValue";
-import { formatDate } from "date-fns";
+import { AccountingPointGridLocationPanel } from "../grid_location/AccountingPointGridLocationPanel";
+import { usePermissions } from "ra-core";
+import { Permissions } from "../../auth/permissions";
+import { useState } from "react";
+import { Substation } from "./AccountingPointLocationMap";
 
 export const AccountingPointShow = () => {
   const { id } = useParams<{ id: string }>();
   const apId = Number(id);
   const { data: identity } = useGetIdentity();
+  const { permissions } = usePermissions<Permissions>();
+
+  const canViewGridLocation = !!permissions?.allow(
+    "accounting_point_grid_location",
+    "read",
+  );
+
+  const canEditGridLocation = !!permissions?.allow(
+    "accounting_point_grid_location",
+    "update",
+  );
+
+  const handleCancelSelection = () => {
+    setSelectedSubstation(null);
+  };
+
+  const handleClearSelection = () => {
+    setSelectedSubstation(null);
+  };
+
+  const [selectedSubstation, setSelectedSubstation] =
+    useState<Substation | null>(null);
 
   const {
     data: viewModel,
@@ -38,50 +64,47 @@ export const AccountingPointShow = () => {
       backTo={{ pathname: "/accounting_point", label: "Accounting points" }}
       title="Accounting Point"
     >
-      <Panel
-        border
-        className="bg-semantic-background-alternative h-fit p-4 sm:p-5"
-      >
-        <h3 className="text-base font-semibold mb-4">General Information</h3>
-        <div className="flex flex-col gap-4">
-          <LabelValue
-            size="small"
-            labelKey="accounting_point.id"
-            value={ap.id}
-          />
-          <LabelValue
-            size="small"
-            labelKey="accounting_point.business_id"
-            value={ap.business_id}
-          />
-
-          {identity?.role ===
-            "flex_flexibility_information_system_operator" && (
-            <AccountingPointConnections
-              biddingZone={viewModel.biddingZone}
-              balanceResponsibleParty={viewModel.balanceResponsibleParty}
-              endUser={viewModel.endUser}
-              energySupplier={viewModel.energySupplier}
-              systemOperator={viewModel.systemOperator}
-              meteringGridArea={viewModel.meteringGridArea}
+      <div>
+        <Panel
+          border
+          className="bg-semantic-background-alternative h-fit p-4 sm:p-5"
+        >
+          <Heading level={3} size="medium" className="mb-4">
+            General Information
+          </Heading>
+          <div className="flex flex-col gap-4">
+            <LabelValue
+              size="large"
+              labelKey="accounting_point.business_id"
+              value={ap.business_id}
             />
-          )}
 
-          <LabelValue
-            size="small"
-            labelKey="accounting_point.recorded_at"
-            value={
-              ap.recorded_at
-                ? formatDate(ap.recorded_at, "dd.MM.yyyy HH:mm")
-                : undefined
-            }
+            {identity?.role ===
+              "flex_flexibility_information_system_operator" && (
+              <AccountingPointConnections
+                endUser={viewModel.endUser}
+                meteringGridArea={viewModel.meteringGridArea}
+              />
+            )}
+          </div>
+        </Panel>
+        {canViewGridLocation && (
+          <AccountingPointGridLocationPanel
+            apId={ap.id}
+            gridLocation={viewModel.gridLocation}
+            userCanEdit={canEditGridLocation}
+            selectedSubstation={selectedSubstation}
+            onClearSelection={handleClearSelection}
+            onCancelSelection={handleCancelSelection}
           />
-        </div>
-      </Panel>
+        )}
+      </div>
+
       <AccountingPointShowTabs
-        accountingPoint={ap}
         gridLocation={viewModel.gridLocation}
         location={ap.location}
+        selectedSubstation={selectedSubstation}
+        onSelectSubstation={setSelectedSubstation}
       />
     </ShowPageLayout>
   );
