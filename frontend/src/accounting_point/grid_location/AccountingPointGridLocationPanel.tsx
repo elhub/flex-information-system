@@ -41,14 +41,14 @@ export const AccountingPointGridLocationPanel = ({
     <Panel border className="bg-white h-fit p-4 mt-4">
       <div className="flex items-center justify-between mt-4">
         <Heading level={3} size="medium" className="mb-4">
-          {isConfirmed ? "Confirmed Grid location" : "Suggested Grid location"}
+          {isConfirmed ? "Confirmed grid location" : "Suggested grid location"}
         </Heading>
         {userCanEdit && !isEditing && gridLocation != null && (
           <Button
             variant={isConfirmed ? "secondary" : "primary"}
             onClick={() => setIsEditing(true)}
           >
-            {isConfirmed ? "Edit details" : "Validate Grid Location"}
+            {isConfirmed ? "Edit details" : "Validate grid location"}
           </Button>
         )}
       </div>

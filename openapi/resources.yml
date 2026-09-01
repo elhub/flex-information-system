@@ -3484,7 +3484,9 @@ resources:
           nb: Kilde
           nn: Kjelde
       quality:
-        description: The quality of the grid location registration.
+        description: >-
+          Indicates how the grid location was determined. Guessed means that Flexibility Information
+          System has estimated the location, while confirmed means that someone has verified it.
         format: text
         type: string
         enum:
