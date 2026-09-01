@@ -476,7 +476,7 @@ class AccountingPointRepositoryImpl : AccountingPointRepository {
                     Unit
                 }
             }.mapLeft { e ->
-                logger.error { "updateAccountingPointGridLocationFromSubstation failed: ${e.message}" }
+                logger.warn { "updateAccountingPointGridLocationFromSubstation failed: ${e.message}" }
                 DatabaseError("Failed to update grid location for accounting point $accountingPointId")
             }
         }

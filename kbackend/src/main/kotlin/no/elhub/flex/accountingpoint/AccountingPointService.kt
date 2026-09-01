@@ -3,11 +3,8 @@ package no.elhub.flex.accountingpoint
 import arrow.core.Either
 import arrow.core.flatMap
 import arrow.core.raise.either
-import arrow.core.right
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.http.HttpStatusCode
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import no.elhub.flex.accountingpoint.db.AccountingPointMeteringGridAreaRepository
 import no.elhub.flex.accountingpoint.db.AccountingPointRepository
 import no.elhub.flex.auth.FlexPrincipal
