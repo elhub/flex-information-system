@@ -108,7 +108,7 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
 
   const fields = getFields(spgpaFormSchema.shape);
 
-  const spgId = record?.service_providing_group_id as number | undefined;
+  const recordSpgId = record?.service_providing_group_id as number | undefined;
 
   const handleCreateSuccess = (values: FieldValues) => {
     const spgId = values.service_providing_group_id as number | undefined;
@@ -127,7 +127,7 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
       sanitizeEmptyValues
     >
       {createOrUpdate === "create" && (
-        <DraftAutosaveWatcher spgId={spgId} draftId={draftId} />
+        <DraftAutosaveWatcher spgId={recordSpgId} draftId={draftId} />
       )}
       <FormContainer>
         <Heading level={3} size="medium">
