@@ -66,6 +66,13 @@ grid.substation
 TO flex_system_operator;
 
 GRANT SELECT (
+    name,
+    business_id
+) ON TABLE
+grid.substation
+TO flex_internal_data;
+
+GRANT SELECT (
     id,
     name,
     business_id,

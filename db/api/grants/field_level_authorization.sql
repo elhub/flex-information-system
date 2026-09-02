@@ -5373,6 +5373,47 @@ GRANT SELECT (
 api.accounting_point_grid_location
 TO flex_internal_event_notification;
 
+GRANT INSERT (
+    accounting_point_id,
+    object_type,
+    business_id,
+    name,
+    nominal_voltage,
+    additional_information,
+    source,
+    quality
+) ON TABLE
+api.accounting_point_grid_location
+TO flex_internal_data;
+
+GRANT SELECT (
+    id,
+    accounting_point_id,
+    object_type,
+    business_id,
+    name,
+    nominal_voltage,
+    additional_information,
+    source,
+    quality,
+    recorded_at,
+    recorded_by
+) ON TABLE
+api.accounting_point_grid_location
+TO flex_internal_data;
+
+GRANT UPDATE (
+    object_type,
+    business_id,
+    name,
+    nominal_voltage,
+    additional_information,
+    source,
+    quality
+) ON TABLE
+api.accounting_point_grid_location
+TO flex_internal_data;
+
 GRANT SELECT (
     id,
     accounting_point_grid_location_id,
@@ -5429,6 +5470,25 @@ GRANT SELECT (
 ) ON TABLE
 api.accounting_point_grid_location_history
 TO flex_internal_event_notification;
+
+GRANT SELECT (
+    id,
+    accounting_point_grid_location_id,
+    accounting_point_id,
+    object_type,
+    business_id,
+    name,
+    nominal_voltage,
+    additional_information,
+    source,
+    quality,
+    recorded_at,
+    replaced_at,
+    recorded_by,
+    replaced_by
+) ON TABLE
+api.accounting_point_grid_location_history
+TO flex_internal_data;
 
 GRANT SELECT (
     id,

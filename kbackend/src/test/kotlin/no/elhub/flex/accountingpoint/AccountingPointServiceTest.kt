@@ -13,8 +13,10 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.datetime.TimeZone
 import no.elhub.flex.PostgresTestContainer
+import no.elhub.flex.accountingpoint.db.AccountingPointGridLocationRepository
 import no.elhub.flex.accountingpoint.db.AccountingPointMeteringGridAreaRepository
 import no.elhub.flex.accountingpoint.db.AccountingPointRepository
+import no.elhub.flex.accountingpoint.db.SubstationRepository
 import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.controllableunit.db.ControllableUnitRepository
 import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterService
@@ -23,6 +25,10 @@ import no.elhub.flex.integration.accountingpointadapter.generated.models.EndUser
 import no.elhub.flex.integration.accountingpointadapter.generated.models.EnergySupplier
 import no.elhub.flex.meteringgridarea.db.MeteringGridAreaRepository
 import no.elhub.flex.model.domain.AccountingPoint
+import no.elhub.flex.model.domain.AccountingPointGridLocation
+import no.elhub.flex.model.domain.AccountingPointGridLocationObjectType
+import no.elhub.flex.model.domain.AccountingPointGridLocationQuality
+import no.elhub.flex.model.domain.AccountingPointGridLocationSource
 import no.elhub.flex.model.domain.AccountingPointId
 import no.elhub.flex.model.domain.AccountingPointStartDates
 import no.elhub.flex.model.domain.Location
@@ -33,6 +39,7 @@ import no.elhub.flex.model.domain.db.LockTimeoutError
 import no.elhub.flex.model.domain.db.NotFoundError
 import no.elhub.flex.model.error.InternalServerError
 import no.elhub.flex.util.atLocalMidnight
+import java.util.UUID
 import kotlin.time.Instant
 import no.elhub.flex.integration.accountingpointadapter.generated.models.AccountingPoint as AdapterAccountingPoint
 import no.elhub.flex.integration.accountingpointadapter.generated.models.MeteringGridArea as AdapterMeteringGridArea
@@ -52,18 +59,31 @@ class AccountingPointServiceTest : FunSpec({
     val accountingPointRepository = mockk<AccountingPointRepository>()
     val meteringGridAreaRepository = mockk<MeteringGridAreaRepository>()
     val accountingPointMeteringGridAreaRepository = mockk<AccountingPointMeteringGridAreaRepository>()
+    val accountingPointGridLocationRepository = mockk<AccountingPointGridLocationRepository>()
+    val substationRepository = mockk<SubstationRepository>()
     val controllableUnitRepository = mockk<ControllableUnitRepository>()
     val service = AccountingPointServiceImpl(
         accountingPointRepository,
         meteringGridAreaRepository,
         accountingPointMeteringGridAreaRepository,
+        accountingPointGridLocationRepository,
+        substationRepository,
         mockAdapter,
         controllableUnitRepository,
     )
 
     val internalPrincipal = FlexPrincipal.internalData()
 
-    beforeTest { clearMocks(accountingPointRepository, mockAdapter, meteringGridAreaRepository, accountingPointMeteringGridAreaRepository) }
+    beforeTest {
+        clearMocks(
+            accountingPointRepository,
+            mockAdapter,
+            meteringGridAreaRepository,
+            accountingPointMeteringGridAreaRepository,
+            accountingPointGridLocationRepository,
+            substationRepository,
+        )
+    }
 
     val adapterEndUser = EndUser(businessId = "12345678901", validFrom = VALID_FROM)
     val adapterEnergySupplier = EnergySupplier(businessId = "7080001234567", validFrom = VALID_FROM)
@@ -348,6 +368,252 @@ class AccountingPointServiceTest : FunSpec({
             result.shouldBeRight()
             with(internalPrincipal) {
                 coVerify(exactly = 0) { accountingPointRepository.updateAccountingPointLocation(any(), any()) }
+            }
+        }
+
+        test("syncs grid location when substation is present and no current location exists") {
+            // given
+            val substationBusinessId = UUID.randomUUID()
+            val apWithSubstation = adapterAccountingPoint.copy(substation = substationBusinessId)
+            val substationName = "Target Substation"
+            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns apWithSubstation.right()
+            with(internalPrincipal) {
+                coEvery { accountingPointRepository.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
+                coEvery { accountingPointRepository.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
+                coEvery { meteringGridAreaRepository.getMeteringGridAreasByBusinessIds(any()) } returns mgaMap.right()
+                coEvery { accountingPointMeteringGridAreaRepository.replaceAllFor(any()) } returns Unit.right()
+                coEvery { accountingPointRepository.replaceAllAccountingPointEndUsers(any()) } returns Unit.right()
+                coEvery { accountingPointRepository.replaceAllAccountingPointEnergySupplier(any()) } returns Unit.right()
+                coEvery { substationRepository.getNameByBusinessId(substationBusinessId) } returns substationName.right()
+                coEvery { accountingPointGridLocationRepository.getByAccountingPointId(AP_ID) } returns null.right()
+                coEvery {
+                    accountingPointGridLocationRepository.upsert(
+                        AccountingPointGridLocation(
+                            accountingPointId = AP_ID,
+                            objectType = AccountingPointGridLocationObjectType.SUBSTATION,
+                            businessId = substationBusinessId,
+                            name = substationName,
+                            nominalVoltage = 0.0,
+                            additionalInformation = null,
+                            source = AccountingPointGridLocationSource.GRID_MODEL,
+                            quality = AccountingPointGridLocationQuality.GUESSED,
+                        ),
+                    )
+                } returns Unit.right()
+                coEvery { accountingPointRepository.markSyncComplete(any()) } returns Unit.right()
+            }
+
+            // when
+            val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM)
+
+            // then
+            result.shouldBeRight()
+            with(internalPrincipal) {
+                coVerify(exactly = 1) { substationRepository.getNameByBusinessId(substationBusinessId) }
+                coVerify(exactly = 1) { accountingPointGridLocationRepository.upsert(any()) }
+                coVerify(exactly = 1) { accountingPointRepository.markSyncComplete(AP_ID) }
+            }
+        }
+
+        test("syncs grid location when substation is present and current location is guessed") {
+            // given
+            val substationBusinessId = UUID.randomUUID()
+            val apWithSubstation = adapterAccountingPoint.copy(substation = substationBusinessId)
+            val substationName = "Target Substation"
+            val existingGridLocation = AccountingPointGridLocation(
+                accountingPointId = AP_ID,
+                objectType = AccountingPointGridLocationObjectType.SUBSTATION,
+                businessId = UUID.randomUUID(),
+                name = "Old Substation",
+                nominalVoltage = 0.0,
+                additionalInformation = null,
+                source = AccountingPointGridLocationSource.GRID_MODEL,
+                quality = AccountingPointGridLocationQuality.GUESSED,
+            )
+            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns apWithSubstation.right()
+            with(internalPrincipal) {
+                coEvery { accountingPointRepository.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
+                coEvery { accountingPointRepository.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
+                coEvery { meteringGridAreaRepository.getMeteringGridAreasByBusinessIds(any()) } returns mgaMap.right()
+                coEvery { accountingPointMeteringGridAreaRepository.replaceAllFor(any()) } returns Unit.right()
+                coEvery { accountingPointRepository.replaceAllAccountingPointEndUsers(any()) } returns Unit.right()
+                coEvery { accountingPointRepository.replaceAllAccountingPointEnergySupplier(any()) } returns Unit.right()
+                coEvery { substationRepository.getNameByBusinessId(substationBusinessId) } returns substationName.right()
+                coEvery {
+                    accountingPointGridLocationRepository.getByAccountingPointId(AP_ID)
+                } returns existingGridLocation.right()
+                coEvery { accountingPointGridLocationRepository.upsert(any()) } returns Unit.right()
+                coEvery { accountingPointRepository.markSyncComplete(any()) } returns Unit.right()
+            }
+
+            // when
+            val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM)
+
+            // then
+            result.shouldBeRight()
+            with(internalPrincipal) {
+                coVerify(exactly = 1) { accountingPointGridLocationRepository.upsert(any()) }
+                coVerify(exactly = 1) { accountingPointRepository.markSyncComplete(AP_ID) }
+            }
+        }
+
+        test("does not sync grid location when current location is already confirmed") {
+            // given
+            val substationBusinessId = UUID.randomUUID()
+            val apWithSubstation = adapterAccountingPoint.copy(substation = substationBusinessId)
+            val substationName = "Target Substation"
+            val confirmedGridLocation = AccountingPointGridLocation(
+                accountingPointId = AP_ID,
+                objectType = AccountingPointGridLocationObjectType.SUBSTATION,
+                businessId = UUID.randomUUID(),
+                name = "Confirmed Substation",
+                nominalVoltage = 22.0,
+                additionalInformation = "Manually confirmed",
+                source = AccountingPointGridLocationSource.CSO,
+                quality = AccountingPointGridLocationQuality.CONFIRMED,
+            )
+            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns apWithSubstation.right()
+            with(internalPrincipal) {
+                coEvery { accountingPointRepository.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
+                coEvery { accountingPointRepository.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
+                coEvery { meteringGridAreaRepository.getMeteringGridAreasByBusinessIds(any()) } returns mgaMap.right()
+                coEvery { accountingPointMeteringGridAreaRepository.replaceAllFor(any()) } returns Unit.right()
+                coEvery { accountingPointRepository.replaceAllAccountingPointEndUsers(any()) } returns Unit.right()
+                coEvery { accountingPointRepository.replaceAllAccountingPointEnergySupplier(any()) } returns Unit.right()
+                coEvery { substationRepository.getNameByBusinessId(substationBusinessId) } returns substationName.right()
+                coEvery {
+                    accountingPointGridLocationRepository.getByAccountingPointId(AP_ID)
+                } returns confirmedGridLocation.right()
+                coEvery { accountingPointRepository.markSyncComplete(any()) } returns Unit.right()
+            }
+
+            // when
+            val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM)
+
+            // then
+            result.shouldBeRight()
+            with(internalPrincipal) {
+                coVerify(exactly = 0) { accountingPointGridLocationRepository.upsert(any()) }
+                coVerify(exactly = 1) { accountingPointRepository.markSyncComplete(AP_ID) }
+            }
+        }
+
+        test("does not sync grid location when substation is absent from response") {
+            // given — adapterAccountingPoint has no substation (defaults to null)
+            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns adapterAccountingPoint.right()
+            with(internalPrincipal) {
+                coEvery { accountingPointRepository.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
+                coEvery { accountingPointRepository.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
+                coEvery { meteringGridAreaRepository.getMeteringGridAreasByBusinessIds(any()) } returns mgaMap.right()
+                coEvery { accountingPointMeteringGridAreaRepository.replaceAllFor(any()) } returns Unit.right()
+                coEvery { accountingPointRepository.replaceAllAccountingPointEndUsers(any()) } returns Unit.right()
+                coEvery { accountingPointRepository.replaceAllAccountingPointEnergySupplier(any()) } returns Unit.right()
+                coEvery { accountingPointRepository.markSyncComplete(any()) } returns Unit.right()
+            }
+
+            // when
+            val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM)
+
+            // then
+            result.shouldBeRight()
+            with(internalPrincipal) {
+                coVerify(exactly = 0) { substationRepository.getNameByBusinessId(any()) }
+                coVerify(exactly = 0) { accountingPointGridLocationRepository.getByAccountingPointId(any()) }
+                coVerify(exactly = 0) { accountingPointGridLocationRepository.upsert(any()) }
+                coVerify(exactly = 1) { accountingPointRepository.markSyncComplete(AP_ID) }
+            }
+        }
+
+        test("sync still completes when substation is not found") {
+            // given — the substation has not been synced to the grid model yet
+            val substationBusinessId = UUID.randomUUID()
+            val apWithSubstation = adapterAccountingPoint.copy(substation = substationBusinessId)
+            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns apWithSubstation.right()
+            with(internalPrincipal) {
+                coEvery { accountingPointRepository.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
+                coEvery { accountingPointRepository.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
+                coEvery { meteringGridAreaRepository.getMeteringGridAreasByBusinessIds(any()) } returns mgaMap.right()
+                coEvery { accountingPointMeteringGridAreaRepository.replaceAllFor(any()) } returns Unit.right()
+                coEvery { accountingPointRepository.replaceAllAccountingPointEndUsers(any()) } returns Unit.right()
+                coEvery { accountingPointRepository.replaceAllAccountingPointEnergySupplier(any()) } returns Unit.right()
+                coEvery {
+                    substationRepository.getNameByBusinessId(substationBusinessId)
+                } returns NotFoundError("substation does not exist in database").left()
+                coEvery { accountingPointRepository.markSyncComplete(any()) } returns Unit.right()
+            }
+
+            // when
+            val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM)
+
+            // then
+            result.shouldBeRight()
+            with(internalPrincipal) {
+                coVerify(exactly = 0) { accountingPointGridLocationRepository.getByAccountingPointId(any()) }
+                coVerify(exactly = 0) { accountingPointGridLocationRepository.upsert(any()) }
+                coVerify(exactly = 1) { accountingPointRepository.markSyncComplete(AP_ID) }
+            }
+        }
+
+        test("sync still completes when getByAccountingPointId fails") {
+            // given
+            val substationBusinessId = UUID.randomUUID()
+            val apWithSubstation = adapterAccountingPoint.copy(substation = substationBusinessId)
+            val substationName = "Target Substation"
+            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns apWithSubstation.right()
+            with(internalPrincipal) {
+                coEvery { accountingPointRepository.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
+                coEvery { accountingPointRepository.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
+                coEvery { meteringGridAreaRepository.getMeteringGridAreasByBusinessIds(any()) } returns mgaMap.right()
+                coEvery { accountingPointMeteringGridAreaRepository.replaceAllFor(any()) } returns Unit.right()
+                coEvery { accountingPointRepository.replaceAllAccountingPointEndUsers(any()) } returns Unit.right()
+                coEvery { accountingPointRepository.replaceAllAccountingPointEnergySupplier(any()) } returns Unit.right()
+                coEvery { substationRepository.getNameByBusinessId(substationBusinessId) } returns substationName.right()
+                coEvery {
+                    accountingPointGridLocationRepository.getByAccountingPointId(AP_ID)
+                } returns DatabaseError("db down").left()
+                coEvery { accountingPointRepository.markSyncComplete(any()) } returns Unit.right()
+            }
+
+            // when
+            val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM)
+
+            // then
+            result.shouldBeRight()
+            with(internalPrincipal) {
+                coVerify(exactly = 0) { accountingPointGridLocationRepository.upsert(any()) }
+                coVerify(exactly = 1) { accountingPointRepository.markSyncComplete(AP_ID) }
+            }
+        }
+
+        test("sync still completes when upsert fails") {
+            // given — the substation has not been synced to the grid model yet
+            val substationBusinessId = UUID.randomUUID()
+            val apWithSubstation = adapterAccountingPoint.copy(substation = substationBusinessId)
+            val substationName = "Target Substation"
+            coEvery { mockAdapter.getAccountingPoint(GSRN, VALID_FROM) } returns apWithSubstation.right()
+            with(internalPrincipal) {
+                coEvery { accountingPointRepository.insertAccountingPointIfNotExists(any()) } returns AP_ID.right()
+                coEvery { accountingPointRepository.lockSyncRowAndMarkStart(AP_ID) } returns Unit.right()
+                coEvery { meteringGridAreaRepository.getMeteringGridAreasByBusinessIds(any()) } returns mgaMap.right()
+                coEvery { accountingPointMeteringGridAreaRepository.replaceAllFor(any()) } returns Unit.right()
+                coEvery { accountingPointRepository.replaceAllAccountingPointEndUsers(any()) } returns Unit.right()
+                coEvery { accountingPointRepository.replaceAllAccountingPointEnergySupplier(any()) } returns Unit.right()
+                coEvery { substationRepository.getNameByBusinessId(substationBusinessId) } returns substationName.right()
+                coEvery { accountingPointGridLocationRepository.getByAccountingPointId(AP_ID) } returns null.right()
+                coEvery {
+                    accountingPointGridLocationRepository.upsert(any())
+                } returns DatabaseError("Failed to upsert grid location for accounting point $AP_ID").left()
+                coEvery { accountingPointRepository.markSyncComplete(any()) } returns Unit.right()
+            }
+
+            // when
+            val result = service.synchronizeAccountingPoint(GSRN, VALID_FROM)
+
+            // then
+            result.shouldBeRight()
+            with(internalPrincipal) {
+                coVerify(exactly = 1) { accountingPointGridLocationRepository.upsert(any()) }
+                coVerify(exactly = 1) { accountingPointRepository.markSyncComplete(AP_ID) }
             }
         }
 
