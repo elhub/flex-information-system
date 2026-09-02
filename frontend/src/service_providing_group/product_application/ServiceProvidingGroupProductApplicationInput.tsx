@@ -1,7 +1,7 @@
 import { Form, useRecordContext, useTranslate } from "ra-core";
 import { useFormContext } from "react-hook-form";
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { getFields, unTypedZodResolver } from "../../zod";
 import { useCreateOrUpdate } from "../../auth";
@@ -78,6 +78,7 @@ const AdditionalInformationNotice = () => {
 // common layout to create and edit pages
 export const ServiceProvidingGroupProductApplicationInput = () => {
   const translate = useTranslate();
+  const navigate = useNavigate();
   const { state: overrideRecord } = useLocation();
   const actualRecord = useRecordContext();
 
@@ -108,6 +109,18 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
   const fields = getFields(spgpaFormSchema.shape);
 
   const spgId = record?.service_providing_group_id as number | undefined;
+
+  const handleCreateSuccess = (values: {
+    service_providing_group_id?: number;
+  }) => {
+    const spgId = values.service_providing_group_id;
+
+    if (spgId !== undefined) {
+      localStorage.removeItem(draftStorageKey(spgId, draftId));
+    }
+
+    navigate(-1);
+  };
 
   return (
     <Form
@@ -215,9 +228,7 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
             <p>{translate("text.spga_save_confirmation_text")}</p>
           }
           onSuccess={
-            createOrUpdate === "create" && spgId
-              ? () => localStorage.removeItem(draftStorageKey(spgId, draftId))
-              : undefined
+            createOrUpdate === "create" ? handleCreateSuccess : undefined
           }
         />
       </FormContainer>
