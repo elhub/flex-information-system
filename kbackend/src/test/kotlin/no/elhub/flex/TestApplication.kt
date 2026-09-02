@@ -18,8 +18,11 @@ import no.elhub.flex.config.configureRouting
 import no.elhub.flex.config.configureSerialization
 import no.elhub.flex.controllableunit.db.ControllableUnitRepository
 import no.elhub.flex.event.db.EventRepository
+import no.elhub.flex.metrics.FlexMetrics
+import no.elhub.flex.model.domain.Party
 import no.elhub.flex.model.domain.db.DatabaseError
 import no.elhub.flex.model.error.DataFetchError
+import no.elhub.flex.party.PartyService
 import no.elhub.flex.routes.controllableunit.ControllableUnitLookup
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
@@ -42,6 +45,10 @@ fun defaultTestApplication(): TestApplication {
     val mockEventRepo = mockk<EventRepository>().also { repo ->
         coEvery { with(any<FlexPrincipal>()) { repo.insertEvent(any(), any(), any(), any(), any(), any()) } } returns Unit.right()
     }
+    val mockPartyService = mockk<PartyService>().also { svc ->
+        coEvery { svc.getParty(any()) } returns
+            Party(id = 1L, name = "Test Party", role = "flex_organisation", businessId = "123456789")
+    }
 
     return TestApplication {
         application {
@@ -55,7 +62,9 @@ fun defaultTestApplication(): TestApplication {
                         single<AccountingPointService> { mockAccountingPointService }
                         single<ControllableUnitRepository> { mockRepo }
                         single<EventRepository> { mockEventRepo }
-                        single { ControllableUnitLookup(get(), get(), get()) }
+                        single { FlexMetrics(get()) }
+                        single<PartyService> { mockPartyService }
+                        single { ControllableUnitLookup(get(), get(), get(), get(), get()) }
                         single<AttachmentStorageService> { mockk(relaxed = true) }
                     },
                 )
