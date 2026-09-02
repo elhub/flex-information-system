@@ -27,8 +27,9 @@ class AccountingPointGridLocationUpdateRequest:
             nominal_voltage (float | Unset): Nominal voltage level at the grid location, in kilovolt (kV). Example: 22.
             additional_information (None | str | Unset): Free text field for extra information about the grid location if
                 needed.
-            quality (AccountingPointGridLocationQuality | Unset): The quality of the grid location registration. Example:
-                confirmed.
+            quality (AccountingPointGridLocationQuality | Unset): Indicates how the grid location was determined. Guessed
+                means that Flexibility Information System has estimated the location, while confirmed means that someone has
+                verified it. Example: confirmed.
     """
 
     object_type: AccountingPointGridLocationObjectType | Unset = UNSET
