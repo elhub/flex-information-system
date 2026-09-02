@@ -1,5 +1,5 @@
 import { Form, useRecordContext, useTranslate } from "ra-core";
-import { useFormContext } from "react-hook-form";
+import { FieldValues, useFormContext } from "react-hook-form";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { z } from "zod";
@@ -110,10 +110,8 @@ export const ServiceProvidingGroupProductApplicationInput = () => {
 
   const spgId = record?.service_providing_group_id as number | undefined;
 
-  const handleCreateSuccess = (values: {
-    service_providing_group_id?: number;
-  }) => {
-    const spgId = values.service_providing_group_id;
+  const handleCreateSuccess = (values: FieldValues) => {
+    const spgId = values.service_providing_group_id as number | undefined;
 
     if (spgId !== undefined) {
       localStorage.removeItem(draftStorageKey(spgId, draftId));
