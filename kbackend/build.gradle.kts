@@ -34,6 +34,8 @@ dependencies {
     implementation(libs.storage.aws.s3)
     // File validation
     implementation(libs.storage.pdfbox)
+    // Caching
+    implementation(libs.caching.caffeine)
     // Unit Testing
     testImplementation(testFixtures(libs.elhub.jsonapi))
     testImplementation(libs.database.postgresql)
