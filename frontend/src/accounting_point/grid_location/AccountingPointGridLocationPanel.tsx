@@ -36,12 +36,17 @@ export const AccountingPointGridLocationPanel = ({
   };
 
   const isConfirmed = gridLocation?.quality.toLowerCase() === "confirmed";
+  const heading = !gridLocation
+    ? "Missing grid location"
+    : isConfirmed
+      ? "Confirmed grid location"
+      : "Suggested grid location";
 
   return (
     <Panel border className="bg-white h-fit p-4 mt-4">
       <div className="flex items-center justify-between mt-4">
         <Heading level={3} size="medium" className="mb-4">
-          {isConfirmed ? "Confirmed grid location" : "Suggested grid location"}
+          {heading}
         </Heading>
         {userCanEdit && !isEditing && gridLocation != null && (
           <Button
