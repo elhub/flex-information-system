@@ -37,7 +37,7 @@ export const AccountingPointGridLocationPanel = ({
 
   const isConfirmed = gridLocation?.quality.toLowerCase() === "confirmed";
   const heading = !gridLocation
-    ? "Add grid location"
+    ? "Missing grid location"
     : isConfirmed
       ? "Confirmed grid location"
       : "Suggested grid location";
