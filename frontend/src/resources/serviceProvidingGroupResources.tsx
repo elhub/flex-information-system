@@ -15,7 +15,6 @@ import { ServiceProvidingGroupActivate } from "../service_providing_group/input/
 import { ServiceProvidingGroupHistoryList } from "../service_providing_group/ServiceProvidingGroupHistoryList";
 import { ServiceProvidingGroupMembershipInput } from "../service_providing_group/membership/ServiceProvidingGroupMembershipInput";
 import { ServiceProvidingGroupMembershipShow } from "../service_providing_group/membership/ServiceProvidingGroupMembershipShow";
-import { ServiceProvidingGroupMembershipList } from "../service_providing_group/membership/ServiceProvidingGroupMembershipList";
 import { ServiceProvidingGroupMembershipHistoryList } from "../service_providing_group/membership/ServiceProvidingGroupMembershipHistoryList";
 import { ServiceProvidingGroupGridPrequalificationShow } from "../service_providing_group/grid_prequalification/ServiceProvidingGroupGridPrequalificationShow";
 import { ServiceProvidingGroupGridPrequalificationInput } from "../service_providing_group/grid_prequalification/ServiceProvidingGroupGridPrequalificationInput";
@@ -28,14 +27,10 @@ import { ServiceProvidingGroupProductApplicationPrint } from "../service_providi
 import { ServiceProvidingGroupProductSuspensionInput } from "../service_providing_group/product_suspension/ServiceProvidingGroupProductSuspensionInput";
 import { ServiceProvidingGroupProductSuspensionShow } from "../service_providing_group/product_suspension/ServiceProvidingGroupProductSuspensionShow";
 import { ServiceProvidingGroupProductSuspensionHistoryList } from "../service_providing_group/product_suspension/ServiceProvidingGroupProductSuspensionHistoryList";
-import {
-  ServiceProvidingGroupGridSuspensionHistoryList,
-  ServiceProvidingGroupGridSuspensionInput,
-  ServiceProvidingGroupGridSuspensionList,
-  ServiceProvidingGroupGridSuspensionShow,
-  ServiceProvidingGroupProductApplicationList,
-} from "../service_providing_group";
-import { ServiceProvidingGroupProductSuspensionList } from "../service_providing_group/product_suspension/ServiceProvidingGroupProductSuspensionList";
+import { ServiceProvidingGroupGridSuspensionHistoryList } from "../service_providing_group/grid_suspension/ServiceProvidingGroupGridSuspensionHistoryList";
+import { ServiceProvidingGroupGridSuspensionInput } from "../service_providing_group/grid_suspension/ServiceProvidingGroupGridSuspensionInput";
+import { ServiceProvidingGroupGridSuspensionShow } from "../service_providing_group/grid_suspension/ServiceProvidingGroupGridSuspensionShow";
+import { ServiceProvidingGroupProductApplicationList } from "../service_providing_group/product_application/ServiceProvidingGroupProductApplicationList";
 
 export const createServiceProvidingGroupResources = (
   permissions: Permissions,
@@ -207,7 +202,6 @@ export const createServiceProvidingGroupResources = (
           }
         />
         {/* service providing group grid suspension */}
-        {/* list is also part of SPG show page */}
         <Route
           path=":service_providing_group_id/grid_suspension/:id/show"
           element={
@@ -370,7 +364,6 @@ export const createServiceProvidingGroupResources = (
         key="service_providing_group_membership"
         name="service_providing_group_membership"
         icon={BookmarkAddIcon}
-        list={ServiceProvidingGroupMembershipList}
         show={ServiceProvidingGroupMembershipShow}
         edit={
           canUpdateMembership ? (
@@ -472,7 +465,6 @@ export const createServiceProvidingGroupResources = (
       <Resource
         key="service_providing_group_grid_suspension"
         name="service_providing_group_grid_suspension"
-        list={ServiceProvidingGroupGridSuspensionList}
         show={ServiceProvidingGroupGridSuspensionShow}
         create={
           canCreateSPGGS ? (
@@ -515,7 +507,6 @@ export const createServiceProvidingGroupResources = (
       <Resource
         key="service_providing_group_product_suspension"
         name="service_providing_group_product_suspension"
-        list={ServiceProvidingGroupProductSuspensionList}
         show={ServiceProvidingGroupProductSuspensionShow}
         create={
           canCreateSPGPS ? (

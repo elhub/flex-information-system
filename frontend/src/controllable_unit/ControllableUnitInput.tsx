@@ -6,17 +6,15 @@ import {
   zControllableUnitCreateRequest,
 } from "../generated-client/zod.gen";
 import { getFields, unTypedZodResolver } from "../zod";
-import { useCreateOrUpdate } from "../auth";
+import { useCreateOrUpdate } from "../auth/useCreateOrUpdate";
 import { FormContainer, Heading, FlexDiv } from "../components/ui";
-import {
-  TextInput,
-  EnumInput,
-  AutocompleteReferenceInput,
-  DateInput,
-  UnitInput,
-  FormToolbar,
-  TextAreaInput,
-} from "../components/EDS-ra/inputs";
+import { AutocompleteReferenceInput } from "../components/EDS-ra/inputs/AutocompleteReferenceInput";
+import { DateInput } from "../components/EDS-ra/inputs/DateInput";
+import { EnumInput } from "../components/EDS-ra/inputs/EnumInput";
+import { FormToolbar } from "../components/EDS-ra/inputs/FormToolbar";
+import { TextAreaInput } from "../components/EDS-ra/inputs/TextAreaInput";
+import { TextInput } from "../components/EDS-ra/inputs/TextInput";
+import { UnitInput } from "../components/EDS-ra/inputs/UnitInput";
 import { formatDateToMidnightISO } from "../components/datetime";
 
 export type ControllableUnitInputLocationState = {

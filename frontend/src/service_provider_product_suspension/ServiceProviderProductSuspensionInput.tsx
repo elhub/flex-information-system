@@ -2,11 +2,9 @@ import { Form, useGetIdentity } from "ra-core";
 import { getFields, unTypedZodResolver } from "../zod";
 import { zServiceProviderProductSuspensionCreateRequest } from "../generated-client/zod.gen";
 import { FormContainer, Heading, VerticalSpace } from "../components/ui";
-import {
-  EnumInput,
-  FormToolbar,
-  PartyReferenceInput,
-} from "../components/EDS-ra/inputs";
+import { EnumInput } from "../components/EDS-ra/inputs/EnumInput";
+import { FormToolbar } from "../components/EDS-ra/inputs/FormToolbar";
+import { PartyReferenceInput } from "../components/EDS-ra/inputs/PartyReferenceInput";
 import { ProductTypeArrayInput } from "../product_type/components";
 
 export const ServiceProviderProductSuspensionInput = () => {

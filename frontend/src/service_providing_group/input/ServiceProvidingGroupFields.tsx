@@ -2,12 +2,10 @@ import { useGetIdentity, useTranslate } from "ra-core";
 import { Divider, Heading } from "../../components/ui";
 import { zServiceProvidingGroupCreateRequest } from "../../generated-client/zod.gen";
 import { getFields } from "../../zod";
-import {
-  EnumInput,
-  PartyReferenceInput,
-  TextAreaInput,
-  TextInput,
-} from "../../components/EDS-ra/inputs";
+import { EnumInput } from "../../components/EDS-ra/inputs/EnumInput";
+import { PartyReferenceInput } from "../../components/EDS-ra/inputs/PartyReferenceInput";
+import { TextAreaInput } from "../../components/EDS-ra/inputs/TextAreaInput";
+import { TextInput } from "../../components/EDS-ra/inputs/TextInput";
 
 type Props = {
   isEdit?: boolean;

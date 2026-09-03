@@ -9,10 +9,8 @@ import {
   ServiceProvidingGroupGridPrequalification,
 } from "../../../generated-client";
 import { useParty } from "../../../hooks/party";
-import {
-  EventButton,
-  NestedResourceHistoryButton,
-} from "../../../components/EDS-ra/buttons";
+import { EventButton } from "../../../components/EDS-ra/buttons/EventButton";
+import { NestedResourceHistoryButton } from "../../../components/EDS-ra/buttons/NestedResourceHistoryButton";
 
 type Props = {
   spgpq: ServiceProvidingGroupGridPrequalification;

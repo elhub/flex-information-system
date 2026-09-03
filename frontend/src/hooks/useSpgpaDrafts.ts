@@ -5,7 +5,7 @@ import type { ServiceProvidingGroupProductApplicationCreateRequest } from "../ge
 const DRAFT_KEY_PREFIX = "Flex.spgpa_draft.";
 const DRAFT_TTL_DAYS = 7;
 
-export type DraftValues =
+type DraftValues =
   Partial<ServiceProvidingGroupProductApplicationCreateRequest>;
 
 export type SpgpaDraft = {

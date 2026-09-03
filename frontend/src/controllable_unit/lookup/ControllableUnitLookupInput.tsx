@@ -4,7 +4,8 @@ import { callControllableUnitLookup } from "../../generated-client";
 import { zControllableUnitLookupRequest } from "../../generated-client/zod.gen";
 import { getFields, unTypedZodResolver } from "../../zod";
 import { FormContainer, Heading } from "../../components/ui";
-import { TextInput, FormToolbar } from "../../components/EDS-ra/inputs";
+import { FormToolbar } from "../../components/EDS-ra/inputs/FormToolbar";
+import { TextInput } from "../../components/EDS-ra/inputs/TextInput";
 
 export const ControllableUnitLookupInput = () => {
   const navigate = useNavigate();

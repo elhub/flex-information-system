@@ -1,11 +1,9 @@
 import { Form, useGetIdentity, useRecordContext } from "ra-core";
 import { FormContainer, Heading } from "../components/ui";
-import { useCreateOrUpdate } from "../auth";
-import {
-  EnumInput,
-  FormToolbar,
-  PartyReferenceInput,
-} from "../components/EDS-ra/inputs";
+import { useCreateOrUpdate } from "../auth/useCreateOrUpdate";
+import { EnumInput } from "../components/EDS-ra/inputs/EnumInput";
+import { FormToolbar } from "../components/EDS-ra/inputs/FormToolbar";
+import { PartyReferenceInput } from "../components/EDS-ra/inputs/PartyReferenceInput";
 import { ProductTypeInput } from "../product_type/components";
 import { zSystemOperatorProductTypeCreateRequest } from "../generated-client/zod.gen";
 import { getFields, unTypedZodResolver } from "../zod";

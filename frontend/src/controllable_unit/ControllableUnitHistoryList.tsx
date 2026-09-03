@@ -1,11 +1,10 @@
 import { useRecordContext, useTranslate } from "ra-core";
 import { useParams } from "react-router-dom";
-import { Datagrid, List } from "../components/EDS-ra/list";
-import {
-  DateField,
-  StatusBadgeField,
-  TextField,
-} from "../components/EDS-ra/fields";
+import { Datagrid } from "../components/EDS-ra/list/Datagrid";
+import { List } from "../components/EDS-ra/list/List";
+import { DateField } from "../components/EDS-ra/fields/DateField";
+import { StatusBadgeField } from "../components/EDS-ra/fields/StatusBadgeField";
+import { TextField } from "../components/EDS-ra/fields/TextField";
 import { BodyText, Tooltip } from "../components/ui";
 import {
   zControllableUnit,

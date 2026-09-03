@@ -3,14 +3,12 @@ import { FunctionField } from "react-admin";
 import { Link } from "react-router-dom";
 import { IconPencil, IconClockReset } from "@elhub/ds-icons";
 import { Button, Content, Heading, VerticalSpace } from "../../components/ui";
-import {
-  Show,
-  TextField,
-  ReferenceField,
-  DateField,
-  IdentityField,
-  EnumField,
-} from "../../components/EDS-ra";
+import { DateField } from "../../components/EDS-ra/fields/DateField";
+import { EnumField } from "../../components/EDS-ra/fields/EnumField";
+import { IdentityField } from "../../components/EDS-ra/fields/IdentityField";
+import { ReferenceField } from "../../components/EDS-ra/fields/ReferenceField";
+import { TextField } from "../../components/EDS-ra/fields/TextField";
+import { Show } from "../../components/EDS-ra/show";
 import { EventButton } from "../../event/EventButton";
 import { ProductTypeArrayField } from "../../components/ProductTypeArrayField";
 import { Permissions } from "../../auth/permissions";

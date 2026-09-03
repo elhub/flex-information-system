@@ -12,16 +12,14 @@ import {
   BodyText,
   Link,
 } from "../../components/ui";
-import {
-  BaseField,
-  DateField,
-  EnumField,
-  FieldTooltip,
-  IdentityField,
-  ReferenceField,
-  Show,
-  TextField,
-} from "../../components/EDS-ra";
+import { BaseField } from "../../components/EDS-ra/fields/BaseField";
+import { DateField } from "../../components/EDS-ra/fields/DateField";
+import { EnumField } from "../../components/EDS-ra/fields/EnumField";
+import { FieldTooltip } from "../../components/EDS-ra/fields/FieldTooltip";
+import { IdentityField } from "../../components/EDS-ra/fields/IdentityField";
+import { ReferenceField } from "../../components/EDS-ra/fields/ReferenceField";
+import { TextField } from "../../components/EDS-ra/fields/TextField";
+import { Show } from "../../components/EDS-ra/show";
 import { TechnicalResource } from "../../generated-client";
 import { Button } from "../../components/ui";
 import { IconClockReset, IconPencil } from "@elhub/ds-icons";

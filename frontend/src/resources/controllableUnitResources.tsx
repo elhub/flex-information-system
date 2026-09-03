@@ -19,7 +19,6 @@ import { ControllableUnitServiceProviderHistoryList } from "../controllable_unit
 import { TechnicalResourceShow } from "../controllable_unit/technical_resource/TechnicalResourceShow";
 import { TechnicalResourceInput } from "../controllable_unit/technical_resource/TechnicalResourceInput";
 import { TechnicalResourceHistoryList } from "../controllable_unit/technical_resource/TechnicalResourceHistoryList";
-import { ControllableUnitSuspensionList } from "../controllable_unit";
 import { ControllableUnitServiceProviderList } from "../controllable_unit/service_provider/ControllableUnitServiceProviderList";
 import { ControllableUnitBalanceResponsiblePartyList } from "../controllable_unit/balance_responsible_party/ControllableUnitBalanceResponsiblePartyList";
 import ControllableUnitCreate from "../controllable_unit/ControllableUnitCreate";
@@ -82,10 +81,6 @@ export const createControllableUnitResources = (permissions: Permissions) => {
               </CreateRedirectPreviousPage>
             </ResourceContextProvider>
           }
-        />
-        <Route
-          path=":controllable_unit_id/suspension"
-          element={<ControllableUnitSuspensionList />}
         />
 
         <Route
@@ -228,8 +223,8 @@ export const createControllableUnitResources = (permissions: Permissions) => {
     );
   }
 
-  // CUSP and CU suspension also need to exist as standalone resources
-  // (access with flat URL)
+  // CUSP also needs to exist as a standalone resource
+  // (access with flat URL, e.g. from the event/notice "Go to resource" button)
 
   const canReadCUSP = permissions.allow(
     "controllable_unit_service_provider",
@@ -271,7 +266,6 @@ export const createControllableUnitResources = (permissions: Permissions) => {
       <Resource
         key="controllable_unit_suspension"
         name="controllable_unit_suspension"
-        list={ControllableUnitSuspensionList}
         show={ControllableUnitSuspensionShow}
         create={
           canCreateCUS ? (

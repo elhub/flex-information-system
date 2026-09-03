@@ -4,7 +4,9 @@ import { useEffect } from "react";
 import { zEntityCreateRequest } from "../generated-client/zod.gen";
 import { getFields, unTypedZodResolver } from "../zod";
 import { FormContainer, Heading } from "../components/ui";
-import { TextInput, EnumInput, FormToolbar } from "../components/EDS-ra/inputs";
+import { EnumInput } from "../components/EDS-ra/inputs/EnumInput";
+import { FormToolbar } from "../components/EDS-ra/inputs/FormToolbar";
+import { TextInput } from "../components/EDS-ra/inputs/TextInput";
 
 const businessIDTypeOfEntityType = (entityType: string) => {
   switch (entityType) {

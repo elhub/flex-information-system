@@ -1,13 +1,12 @@
 import { useParams } from "react-router-dom";
-import { Datagrid, List } from "../../components/EDS-ra/list";
-import {
-  DateField,
-  IdentityField,
-  ReferenceField,
-  ScopesField,
-  TextField,
-} from "../../components/EDS-ra/fields";
-import { TextInput } from "../../components/EDS-ra/inputs";
+import { Datagrid } from "../../components/EDS-ra/list/Datagrid";
+import { List } from "../../components/EDS-ra/list/List";
+import { DateField } from "../../components/EDS-ra/fields/DateField";
+import { IdentityField } from "../../components/EDS-ra/fields/IdentityField";
+import { ReferenceField } from "../../components/EDS-ra/fields/ReferenceField";
+import { ScopesField } from "../../components/EDS-ra/fields/ScopesField";
+import { TextField } from "../../components/EDS-ra/fields/TextField";
+import { TextInput } from "../../components/EDS-ra/inputs/TextInput";
 import {
   zPartyMembership,
   zPartyMembershipHistory,

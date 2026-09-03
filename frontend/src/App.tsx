@@ -11,7 +11,7 @@ import { DataProvider } from "ra-core";
 import { HashRouter, Route, Routes } from "react-router-dom";
 import { apiURL, httpClient } from "./httpConfig";
 
-import { authProvider } from "./auth";
+import { authProvider } from "./auth/authProvider";
 import { elhubTheme } from "./theme";
 import { LoginPage } from "./LoginPage";
 import { AssumePartyPage } from "./AssumePartyPage";

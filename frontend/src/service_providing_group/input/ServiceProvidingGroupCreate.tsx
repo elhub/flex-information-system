@@ -4,7 +4,7 @@ import { createServiceProvidingGroup } from "../../generated-client";
 import { zServiceProvidingGroupCreateRequest } from "../../generated-client/zod.gen";
 import { unTypedZodResolver } from "../../zod";
 import { FormContainer, Heading } from "../../components/ui";
-import { FormToolbar } from "../../components/EDS-ra/inputs";
+import { FormToolbar } from "../../components/EDS-ra/inputs/FormToolbar";
 import { ServiceProvidingGroupStepper } from "./ServiceProvidingGroupStepper";
 import { ServiceProvidingGroupFields } from "./ServiceProvidingGroupFields";
 

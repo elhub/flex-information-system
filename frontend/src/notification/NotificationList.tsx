@@ -1,10 +1,9 @@
 import { useGetIdentity, useRecordContext } from "ra-core";
-import { Datagrid, List } from "../components/EDS-ra/list";
-import {
-  DateField,
-  ReferenceField,
-  TextField,
-} from "../components/EDS-ra/fields";
+import { Datagrid } from "../components/EDS-ra/list/Datagrid";
+import { List } from "../components/EDS-ra/list/List";
+import { DateField } from "../components/EDS-ra/fields/DateField";
+import { ReferenceField } from "../components/EDS-ra/fields/ReferenceField";
+import { TextField } from "../components/EDS-ra/fields/TextField";
 import { BodyText } from "../components/ui";
 import { zNotification } from "../generated-client/zod.gen";
 import { getFields } from "../zod";

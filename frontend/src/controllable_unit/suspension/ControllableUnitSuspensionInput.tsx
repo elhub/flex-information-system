@@ -1,10 +1,8 @@
 import { Form, useGetIdentity, useRecordContext } from "ra-core";
-import {
-  AutocompleteReferenceInput,
-  EnumInput,
-  FormToolbar,
-  PartyReferenceInput,
-} from "../../components/EDS-ra/inputs";
+import { AutocompleteReferenceInput } from "../../components/EDS-ra/inputs/AutocompleteReferenceInput";
+import { EnumInput } from "../../components/EDS-ra/inputs/EnumInput";
+import { FormToolbar } from "../../components/EDS-ra/inputs/FormToolbar";
+import { PartyReferenceInput } from "../../components/EDS-ra/inputs/PartyReferenceInput";
 import { ControllableUnitSuspension } from "../../generated-client";
 import useLocationState from "../../hooks/useLocationState";
 import {

@@ -13,12 +13,10 @@ import {
   zAccountingPointGridLocationUpdateRequest,
 } from "../../generated-client/zod.gen";
 import { FormContainer } from "../../components/ui";
-import {
-  EnumInput,
-  UnitInput,
-  TextAreaInput,
-  FormToolbar,
-} from "../../components/EDS-ra";
+import { EnumInput } from "../../components/EDS-ra/inputs/EnumInput";
+import { FormToolbar } from "../../components/EDS-ra/inputs/FormToolbar";
+import { TextAreaInput } from "../../components/EDS-ra/inputs/TextAreaInput";
+import { UnitInput } from "../../components/EDS-ra/inputs/UnitInput";
 import { accountingPointViewModelQueryKey } from "../show/useAccountingPointViewModel";
 import { unTypedZodResolver, getFields } from "../../zod";
 import { Substation } from "../show/AccountingPointLocationMap";

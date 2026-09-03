@@ -4,11 +4,9 @@ import { useMemo } from "react";
 import { zServiceProvidingGroupMembershipCreateRequest } from "../../generated-client/zod.gen";
 import { getFields, unTypedZodResolver } from "../../zod";
 import { FormContainer, Heading, FlexDiv } from "../../components/ui";
-import {
-  AutocompleteReferenceInput,
-  DateInput,
-  FormToolbar,
-} from "../../components/EDS-ra/inputs";
+import { AutocompleteReferenceInput } from "../../components/EDS-ra/inputs/AutocompleteReferenceInput";
+import { DateInput } from "../../components/EDS-ra/inputs/DateInput";
+import { FormToolbar } from "../../components/EDS-ra/inputs/FormToolbar";
 import { ValidTimeTooltip } from "../../components/ValidTimeTooltip";
 
 const filterRecord = ({

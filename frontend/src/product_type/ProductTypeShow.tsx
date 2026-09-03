@@ -1,5 +1,6 @@
 import { zProductType } from "../generated-client/zod.gen";
-import { Show, TextField } from "../components/EDS-ra";
+import { TextField } from "../components/EDS-ra/fields/TextField";
+import { Show } from "../components/EDS-ra/show";
 import { Heading, Content } from "../components/ui";
 import { getFields } from "../zod";
 

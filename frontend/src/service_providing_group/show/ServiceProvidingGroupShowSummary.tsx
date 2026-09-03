@@ -1,4 +1,5 @@
-import { EnumField, ReferenceField } from "../../components/EDS-ra";
+import { EnumField } from "../../components/EDS-ra/fields/EnumField";
+import { ReferenceField } from "../../components/EDS-ra/fields/ReferenceField";
 import { Button, Panel } from "../../components/ui";
 import { LabelValue } from "../../components/LabelValue";
 import { RecordContextProvider, usePermissions } from "ra-core";

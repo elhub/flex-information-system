@@ -14,10 +14,10 @@ import {
 } from "../generated-client";
 import {
   ArrayInput,
-  ArrayInputOption,
-  ArrayInputProps,
-  BaseInputProps,
-} from "../components/EDS-ra/inputs";
+  type ArrayInputOption,
+  type ArrayInputProps,
+} from "../components/EDS-ra/inputs/ArrayInput";
+import { type BaseInputProps } from "../components/EDS-ra/inputs/BaseInput";
 import { useQuery } from "@tanstack/react-query";
 import { useProductTypes } from "./useProductTypes";
 import { throwOnError } from "../util";
@@ -41,7 +41,7 @@ export function useGetAllProductTypes() {
   return productTypes;
 }
 
-export const useGetProductTypesBySystemOperator = (
+const useGetProductTypesBySystemOperator = (
   systemOperatorId?: number,
   status?: "active" | "inactive",
 ) => {

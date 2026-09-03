@@ -1,15 +1,12 @@
 import { useGetOne, usePermissions, ResourceContextProvider } from "ra-core";
 import { Link, useParams } from "react-router-dom";
-import { Datagrid, List } from "../../components/EDS-ra/list";
-import {
-  DateField,
-  ReferenceField,
-  TextField,
-} from "../../components/EDS-ra/fields";
-import {
-  DeleteButton,
-  NestedResourceHistoryButton,
-} from "../../components/EDS-ra/buttons";
+import { Datagrid } from "../../components/EDS-ra/list/Datagrid";
+import { List } from "../../components/EDS-ra/list/List";
+import { DateField } from "../../components/EDS-ra/fields/DateField";
+import { ReferenceField } from "../../components/EDS-ra/fields/ReferenceField";
+import { TextField } from "../../components/EDS-ra/fields/TextField";
+import { DeleteButton } from "../../components/EDS-ra/buttons/DeleteButton";
+import { NestedResourceHistoryButton } from "../../components/EDS-ra/buttons/NestedResourceHistoryButton";
 import { Button, Heading, Loader } from "../../components/ui";
 import { IconPlus, IconSearch } from "@elhub/ds-icons";
 import { Permissions } from "../../auth/permissions";

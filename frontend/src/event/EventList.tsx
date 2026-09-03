@@ -1,5 +1,7 @@
-import { Datagrid, List } from "../components/EDS-ra/list";
-import { DateField, TextField } from "../components/EDS-ra/fields";
+import { Datagrid } from "../components/EDS-ra/list/Datagrid";
+import { List } from "../components/EDS-ra/list/List";
+import { DateField } from "../components/EDS-ra/fields/DateField";
+import { TextField } from "../components/EDS-ra/fields/TextField";
 import { zEvent } from "../generated-client/zod.gen";
 import { getFields } from "../zod";
 

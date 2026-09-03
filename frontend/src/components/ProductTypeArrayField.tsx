@@ -10,7 +10,7 @@ const displayProductType = (productType: ProductType) =>
 const PRODUCT_TYPE_QUERY_KEY = ["product_type", "all"] as const;
 
 // hook to get all possible product types sorted by ID
-export function useGetAllProductTypes() {
+function useGetAllProductTypes() {
   const { data } = useQuery({
     queryKey: PRODUCT_TYPE_QUERY_KEY,
     queryFn: () => listProductType().then(throwOnError),

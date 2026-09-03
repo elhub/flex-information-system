@@ -8,14 +8,12 @@ import {
   Loader,
   VerticalSpace,
 } from "../components/ui";
-import {
-  Show,
-  TextField,
-  ReferenceField,
-  DateField,
-  IdentityField,
-  ResourceButton,
-} from "../components/EDS-ra";
+import { ResourceButton } from "../components/EDS-ra/buttons/ResourceButton";
+import { DateField } from "../components/EDS-ra/fields/DateField";
+import { IdentityField } from "../components/EDS-ra/fields/IdentityField";
+import { ReferenceField } from "../components/EDS-ra/fields/ReferenceField";
+import { TextField } from "../components/EDS-ra/fields/TextField";
+import { Show } from "../components/EDS-ra/show";
 import { getFields } from "../zod";
 import { AcknowledgeButton } from "./AcknowledgeButton";
 
@@ -29,7 +27,7 @@ const JsonDataField = () => {
   );
 };
 
-export const EventResourceButton = () => {
+const EventResourceButton = () => {
   const eventRecord = useRecordContext()!;
   const {
     data: event,

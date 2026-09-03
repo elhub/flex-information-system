@@ -31,7 +31,7 @@ export type SpgMembershipRow = {
   status: string;
 };
 
-export type SpgShowViewModel = {
+type SpgShowViewModel = {
   rows: SpgMembershipRow[];
 };
 
@@ -146,7 +146,7 @@ const fetchSpgShowData = async (serviceProvidingGroupId: number) => {
   } satisfies SpgShowViewModel;
 };
 
-export const spgShowViewModelQueryKey = (spgId: number | undefined) => [
+const spgShowViewModelQueryKey = (spgId: number | undefined) => [
   "serviceProvidingGroupShowViewModel",
   spgId,
 ];

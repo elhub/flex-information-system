@@ -7,7 +7,6 @@ import { ServiceProviderProductApplicationList } from "../service_provider_produ
 import { ServiceProviderProductApplicationShow } from "../service_provider_product_application/ServiceProviderProductApplicationShow";
 import { ServiceProviderProductApplicationInput } from "../service_provider_product_application/ServiceProviderProductApplicationInput";
 import { ServiceProviderProductApplicationHistoryList } from "../service_provider_product_application/ServiceProviderProductApplicationHistoryList";
-import { ServiceProviderProductSuspensionList } from "../service_provider_product_suspension/ServiceProviderProductSuspensionList";
 import { ServiceProviderProductSuspensionShow } from "../service_provider_product_suspension/ServiceProviderProductSuspensionShow";
 import { ServiceProviderProductSuspensionInput } from "../service_provider_product_suspension/ServiceProviderProductSuspensionInput";
 import { ServiceProviderProductSuspensionHistoryList } from "../service_provider_product_suspension/ServiceProviderProductSuspensionHistoryList";
@@ -91,7 +90,6 @@ export const createServiceProviderResources = (permissions: Permissions) => {
       <Resource
         key="service_provider_product_suspension"
         name="service_provider_product_suspension"
-        list={ServiceProviderProductSuspensionList}
         show={ServiceProviderProductSuspensionShow}
         edit={
           canUpdateSuspension ? (

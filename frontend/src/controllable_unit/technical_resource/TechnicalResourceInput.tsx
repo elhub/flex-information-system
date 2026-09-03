@@ -5,15 +5,13 @@ import useLocationState from "../../hooks/useLocationState";
 import { zTechnicalResourceCreateRequest } from "../../generated-client/zod.gen";
 import { getFields, unTypedZodResolver } from "../../zod";
 import { FormContainer, BodyText, Heading, FlexDiv } from "../../components/ui";
-import {
-  TextInput,
-  TextAreaInput,
-  AutocompleteReferenceInput,
-  EnumInput,
-  EnumArrayInput,
-  UnitInput,
-  FormToolbar,
-} from "../../components/EDS-ra/inputs";
+import { AutocompleteReferenceInput } from "../../components/EDS-ra/inputs/AutocompleteReferenceInput";
+import { EnumArrayInput } from "../../components/EDS-ra/inputs/EnumArrayInput";
+import { EnumInput } from "../../components/EDS-ra/inputs/EnumInput";
+import { FormToolbar } from "../../components/EDS-ra/inputs/FormToolbar";
+import { TextAreaInput } from "../../components/EDS-ra/inputs/TextAreaInput";
+import { TextInput } from "../../components/EDS-ra/inputs/TextInput";
+import { UnitInput } from "../../components/EDS-ra/inputs/UnitInput";
 
 export type TechnicalResourceInputLocationState = {
   technicalResource?: Partial<TechnicalResource>;

@@ -6,14 +6,12 @@ import {
   zPartyUpdateRequest,
 } from "../generated-client/zod.gen";
 import { getFields, unTypedZodResolver } from "../zod";
-import { useCreateOrUpdate } from "../auth";
+import { useCreateOrUpdate } from "../auth/useCreateOrUpdate";
 import { FormContainer, Heading, VerticalSpace } from "../components/ui";
-import {
-  TextInput,
-  EnumInput,
-  AutocompleteReferenceInput,
-  FormToolbar,
-} from "../components/EDS-ra/inputs";
+import { AutocompleteReferenceInput } from "../components/EDS-ra/inputs/AutocompleteReferenceInput";
+import { EnumInput } from "../components/EDS-ra/inputs/EnumInput";
+import { FormToolbar } from "../components/EDS-ra/inputs/FormToolbar";
+import { TextInput } from "../components/EDS-ra/inputs/TextInput";
 import { Party } from "../generated-client/types.gen";
 import useLocationState from "../hooks/useLocationState";
 

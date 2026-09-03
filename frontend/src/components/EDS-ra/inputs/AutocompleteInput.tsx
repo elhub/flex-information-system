@@ -2,7 +2,7 @@ import { Combobox } from "../../ui";
 import { useInput } from "ra-core";
 import { BaseInput, BaseInputProps } from "./BaseInput";
 
-export type AutocompleteInputChoice = {
+type AutocompleteInputChoice = {
   id: string;
   name: string;
 };

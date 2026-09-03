@@ -10,13 +10,11 @@ import {
 import { ControllableUnitServiceProvider } from "../../generated-client";
 import useLocationState from "../../hooks/useLocationState";
 import { FormContainer, Heading, FlexDiv } from "../../components/ui";
-import {
-  TextInput,
-  AutocompleteReferenceInput,
-  PartyReferenceInput,
-  FormToolbar,
-  DateInput,
-} from "../../components/EDS-ra/inputs";
+import { AutocompleteReferenceInput } from "../../components/EDS-ra/inputs/AutocompleteReferenceInput";
+import { DateInput } from "../../components/EDS-ra/inputs/DateInput";
+import { FormToolbar } from "../../components/EDS-ra/inputs/FormToolbar";
+import { PartyReferenceInput } from "../../components/EDS-ra/inputs/PartyReferenceInput";
+import { TextInput } from "../../components/EDS-ra/inputs/TextInput";
 import { formatISO, parse } from "date-fns";
 
 export type ControllableUnitServiceProviderLocationState = {

@@ -8,7 +8,9 @@ import {
   usePermissions,
   useResourceContext,
 } from "ra-core";
-import { EditButton, EventButton, ResourceHistoryButton } from "./buttons";
+import { EditButton } from "./buttons/EditButton";
+import { EventButton } from "./buttons/EventButton";
+import { ResourceHistoryButton } from "./buttons/ResourceHistoryButton";
 
 type SimpleShowLayoutProps = {
   children: ReactNode;
