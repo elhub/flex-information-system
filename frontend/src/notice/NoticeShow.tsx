@@ -101,7 +101,6 @@ const NoticeShowContent = () => {
 
   return (
     <ShowPageLayout
-      backTo={{ pathname: "/notice", label: "Notices" }}
       title={
         notice?.id
           ? `Notice - ${noticeTypes.find((nt) => nt.id === notice.type)?.label ?? notice.type}`

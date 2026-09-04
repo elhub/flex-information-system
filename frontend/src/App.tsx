@@ -31,7 +31,6 @@ import postgrestRestProvider, {
 
 import { useI18nProvider } from "./intl/intl";
 import { Header } from "./components/Header/Header";
-import { NavigationHistoryProvider } from "./components/NavigationHistoryProvider";
 import { SessionExpiryBanner } from "./components/SessionExpiryBanner";
 
 const config: IDataProviderConfig = {
@@ -60,12 +59,12 @@ const dataProvider: DataProvider = {
 };
 
 const Layout = ({ children }: LayoutProps) => (
-  <NavigationHistoryProvider>
+  <>
     <Header />
     <SessionExpiryBanner />
     <div className="py-8 px-6 ">{children}</div>
     <ReactQueryDevtools initialIsOpen={false} />
-  </NavigationHistoryProvider>
+  </>
 );
 
 // shared QueryClient instance used by both the Admin component and the auth
