@@ -10,6 +10,7 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 import io.ktor.http.HttpStatusCode
+import java.util.UUID
 import kotlin.time.Instant
 
 private const val GSRN = "133700000000000053"
@@ -106,6 +107,23 @@ class AccountingPointAdapterServiceTest : FunSpec({
             val accountingPoint = result.shouldBeRight()
             accountingPoint.latitude shouldBe null
             accountingPoint.longitude shouldBe null
+        }
+
+        test("200 response with substation is parsed correctly") {
+            AccountingPointAdapterWireMockServer.stubFor(
+                get(urlPathEqualTo("/accounting_point/$GSRN"))
+                    .willReturn(
+                        aResponse()
+                            .withStatus(HttpStatusCode.OK.value)
+                            .withHeader("Content-Type", "application/json")
+                            .withBodyFile("accounting-point-200-with-substation.json"),
+                    ),
+            )
+
+            val result = service.getAccountingPoint(GSRN, VALID_FROM)
+
+            val accountingPoint = result.shouldBeRight()
+            accountingPoint.substation shouldBe UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6")
         }
     }
 })
