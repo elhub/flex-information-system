@@ -157,7 +157,7 @@ BEGIN
     END IF;
 
     IF NOT EXISTS (
-        SELECT 1 FROM substation WHERE business_id = NEW.business_id
+        SELECT 1 FROM flex.substation WHERE business_id = NEW.business_id
     ) THEN
         RAISE EXCEPTION
             '% is not a valid %', NEW.business_id, NEW.object_type;

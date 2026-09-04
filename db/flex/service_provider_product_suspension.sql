@@ -67,7 +67,7 @@ BEGIN
                 message =
                     'service provider is not qualified by system operator'
                         || ' for product type '
-                        || (SELECT business_id FROM product_type WHERE id = l_pt_id);
+                        || (SELECT business_id FROM flex.product_type WHERE id = l_pt_id);
             RETURN null;
         END IF;
     END LOOP;
