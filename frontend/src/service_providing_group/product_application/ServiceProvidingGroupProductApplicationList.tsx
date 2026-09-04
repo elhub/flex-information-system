@@ -9,19 +9,11 @@ import { Link } from "react-router-dom";
 import { Datagrid, List } from "../../components/EDS-ra/list";
 import { TextField } from "../../components/EDS-ra/fields";
 import { SpgpaStatusBadge } from "../../components/SpgpaStatusBadge";
-import { Button, Tooltip } from "../../components/ui";
+import { Button } from "../../components/ui";
 import { useTranslateField } from "../../intl/intl";
-import {
-  IconPlus,
-  IconQuestionCircleOutlined,
-  IconTrash,
-} from "@elhub/ds-icons";
+import { IconPlus, IconTrash } from "@elhub/ds-icons";
 import { Permissions } from "../../auth/permissions";
 import { ProductTypeArrayField } from "../../components/ProductTypeArrayField";
-import {
-  isProductApplicationBlocked,
-  getProductApplicationBlockDate,
-} from "../../productApplicationBlock";
 import { zServiceProvidingGroupProductApplication } from "../../generated-client/zod.gen";
 import { getFields } from "../../zod";
 import { useSpgpaDrafts } from "../../hooks/useSpgpaDrafts";
@@ -41,22 +33,6 @@ const CreateButton = ({ id }: { id: any }) => (
   >
     Create
   </Button>
-);
-
-const blockTooltip = `Product applications cannot be created before ${getProductApplicationBlockDate()}`;
-
-const BlockedCreateButton = () => (
-  <div className="flex items-center gap-1">
-    <Button variant="primary" icon={IconPlus} iconPosition="left" disabled>
-      Create
-    </Button>
-    <Tooltip className="max-w-2xl" content={blockTooltip}>
-      <IconQuestionCircleOutlined
-        size="small"
-        className="text-semantic-text-subtle cursor-help"
-      />
-    </Tooltip>
-  </div>
 );
 
 export const ServiceProvidingGroupProductApplicationList = () => {
@@ -80,15 +56,9 @@ export const ServiceProvidingGroupProductApplicationList = () => {
 
   if (!canRead) return null;
 
-  const blocked = isProductApplicationBlocked();
-
   const fields = getFields(zServiceProvidingGroupProductApplication.shape);
 
-  const actions = blocked
-    ? [<BlockedCreateButton key="create" />]
-    : canCreate
-      ? [<CreateButton key="create" id={id} />]
-      : [];
+  const actions = canCreate ? [<CreateButton key="create" id={id} />] : [];
 
   const visibleDrafts = id
     ? drafts.filter((d) => d.spgId === Number(id))

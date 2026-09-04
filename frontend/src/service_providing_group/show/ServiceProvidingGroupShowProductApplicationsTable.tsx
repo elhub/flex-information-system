@@ -14,10 +14,6 @@ import {
 } from "@elhub/ds-icons";
 import { usePermissions, useTranslate } from "ra-core";
 import { Permissions } from "../../auth/permissions";
-import {
-  isProductApplicationBlocked,
-  getProductApplicationBlockDate,
-} from "../../productApplicationBlock";
 import { ProductTypeArrayField } from "../../components/ProductTypeArrayField";
 import { ServiceProvidingGroupStatus } from "../../generated-client";
 import { formatScaled, KILO, Scale } from "../../utils/scales";
@@ -115,18 +111,12 @@ export const ServiceProvidingGroupShowProductApplicationsTable = ({
     <div className="flex flex-col gap-4">
       <div className="flex justify-end">
         {canCreate &&
-          (isProductApplicationBlocked() || spgStatus !== "active" ? (
+          (spgStatus !== "active" ? (
             <div className="flex items-center gap-1">
               <Button variant="primary" icon={IconPlus} disabled>
                 Create product application
               </Button>
-              <Tooltip
-                content={
-                  isProductApplicationBlocked()
-                    ? `Product applications cannot be created before ${getProductApplicationBlockDate()}`
-                    : "The service providing group must be active to create product application"
-                }
-              >
+              <Tooltip content="The service providing group must be active to create product application">
                 <IconQuestionCircleOutlined
                   size="small"
                   className="text-semantic-text-subtle cursor-help"

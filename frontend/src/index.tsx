@@ -21,7 +21,6 @@ declare global {
       PRIMARY_COLOR?: string;
       VITE_FLEX_URL?: string;
       VITE_FLEX_COLOR_DARK?: string;
-      VITE_FLEX_PRODUCT_APPLICATION_BLOCK_BEFORE?: string;
       VITE_FLEX_USER_GUIDE_URL?: string;
       VITE_FLEX_USER_GUIDE_CREATE_USERS_URL?: string;
       VITE_FLEX_DISABLE_ATTACHMENTS?: string;
