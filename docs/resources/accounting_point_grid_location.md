@@ -40,20 +40,20 @@ see [Accounting Point Grid Location](../technical/accounting-point-grid-location
 |---------------------|----------------------------------------------------------------------------------------------------------------|--------|
 | APGL-VAL001         | Updates to the grid location are only allowed based on the current `source` value. See transition table below. | DONE   |
 | APGL-VAL002         | `quality=confirmed` is only permitted when `source` is `cso`, `so` or `grid_model`.                            | DONE   |
-| APGL-VAL003         | A grid location can only be `confirmed` with a non-zero voltage level.                                         | DONE   |
+| APGL-VAL003         | A grid location can only be `confirmed` with a non-zero voltage level, unless the source is the `grid_model`.  | DONE   |
 
 ### APGL-VAL001 source transition table
 
 The table shows which new `source` values are permitted given the current value
 of the record. `yes` means the transition is allowed, `no` means it is denied.
 
-| Current ↓ \ New → | `grid_model` | `cso` | `so` | `system` |
-|-------------------|--------------|-------|------|----------|
-| `grid_model`      | yes          | no    | no   | no       |
-| `cso`             | yes          | yes   | no   | no       |
-| `so`              | yes          | yes   | yes  | no       |
-| `system`          | yes          | yes   | yes  | yes      |
-| missing           | yes          | yes   | yes  | yes      |
+| Current ↓ \ New → | `grid_model` | `cso`               | `so` | `system` |
+|-------------------|--------------|---------------------|------|----------|
+| `grid_model`      | yes          | yes (voltage level) | no   | no       |
+| `cso`             | yes          | yes                 | no   | no       |
+| `so`              | yes          | yes                 | yes  | no       |
+| `system`          | yes          | yes                 | yes  | yes      |
+| missing           | yes          | yes                 | yes  | yes      |
 
 ## Notifications
 

@@ -234,16 +234,17 @@ location if it is missing or the current information is determined by system.
 The following table shows what transitions are allowed to update the grid
 location based on the current source.
 
-| Current ↓ \ New → | `grid_model` | `cso` | `so` | `system` |
-|-------------------|--------------|-------|------|----------|
-| `grid_model`      | yes          | no    | no   | no       |
-| `cso`             | yes          | yes   | no   | no       |
-| `so`              | yes          | yes   | yes  | no       |
-| `system`          | yes          | yes   | yes  | yes      |
-| missing           | yes          | yes   | yes  | yes      |
+| Current ↓ \ New → | `grid_model` | `cso`               | `so` | `system` |
+|-------------------|--------------|---------------------|------|----------|
+| `grid_model`      | yes          | yes (voltage level) | no   | no       |
+| `cso`             | yes          | yes                 | no   | no       |
+| `so`              | yes          | yes                 | yes  | no       |
+| `system`          | yes          | yes                 | yes  | yes      |
+| missing           | yes          | yes                 | yes  | yes      |
 
 The table shows that the priority order of the source is `grid_model` > `cso` >
-`so` > `system`.
+`so` > `system`. A location set by the grid model cannot be changed, but the CSO
+can always fill in the gaps if the voltage level is missing.
 
 ## Guessing grid location
 

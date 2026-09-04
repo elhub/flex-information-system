@@ -94,6 +94,27 @@ LANGUAGE plpgsql
 AS
 $$
 BEGIN
+    -- TODO: remove this block when grid model sync includes voltage level
+    IF OLD.source = 'grid_model' AND NEW.source = 'cso' THEN
+        IF (
+            -- only voltage and additional information can change
+            -- other fields not listed here are immutable
+            NEW.object_type IS DISTINCT FROM OLD.object_type
+            OR NEW.business_id IS DISTINCT FROM OLD.business_id
+            OR NEW.name IS DISTINCT FROM OLD.name
+            OR NEW.quality IS DISTINCT FROM OLD.quality
+        ) THEN
+            RAISE EXCEPTION
+                'CSO can only change the voltage and additional information'
+                ' on a location set by the grid model.';
+        END IF;
+
+        -- CSO just fills information, but it remains a grid-model set location
+        NEW.source := 'grid_model';
+
+        RETURN NEW;
+    END IF;
+
     IF OLD.source IS DISTINCT FROM NEW.source THEN
         IF NOT (
             CASE OLD.source
@@ -181,7 +202,7 @@ LANGUAGE plpgsql
 AS
 $$
 BEGIN
-    IF NEW.nominal_voltage = 0 THEN
+    IF NEW.source != 'grid_model' AND NEW.nominal_voltage = 0 THEN
         RAISE EXCEPTION
             'nominal voltage must be greater than zero when confirming the location';
     END IF;
