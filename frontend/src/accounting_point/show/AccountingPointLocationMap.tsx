@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Map, {
   FullscreenControl,
   Layer,
@@ -250,6 +250,7 @@ type Props = {
   canViewGrid: boolean;
   onSubstationClick?: (substation: Substation) => void;
   highlightedSubstationBusinessId?: string | null;
+  selectedSubstation: Substation | null;
 };
 
 export const AccountingPointLocationMap = ({
@@ -257,39 +258,78 @@ export const AccountingPointLocationMap = ({
   canViewGrid,
   onSubstationClick,
   highlightedSubstationBusinessId,
+  selectedSubstation,
 }: Props) => {
   const { substations, substationClusters, lines } = useGridData(
     canViewGrid ? location : undefined,
   );
-
   const apLon = location?.coordinates[0];
   const apLat = location?.coordinates[1];
+  const selectedSubstationBusinessId = selectedSubstation?.business_id ?? null;
 
   const mapRef = useRef<MapRef>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
 
-  const [substationPopup, setSubstationPopup] = useState<{
+  const [markerPopup, setMarkerPopup] = useState<{
     substation: Substation;
     longitude: number;
     latitude: number;
   } | null>(null);
+  const [
+    dismissedSelectedSubstationBusinessId,
+    setDismissedSelectedSubstationBusinessId,
+  ] = useState<string | null>(null);
+
+  const selectedSubstationPopup = useMemo(() => {
+    if (!selectedSubstation?.position?.coordinates) return null;
+    const [longitude, latitude] = selectedSubstation.position.coordinates;
+    return { substation: selectedSubstation, longitude, latitude };
+  }, [selectedSubstation]);
+
+  const activeSelectedPopup =
+    selectedSubstationPopup &&
+    selectedSubstationPopup.substation.business_id !==
+      dismissedSelectedSubstationBusinessId
+      ? selectedSubstationPopup
+      : null;
+  const activePopup = markerPopup ?? activeSelectedPopup;
+
+  const closePopup = useCallback(() => {
+    setMarkerPopup(null);
+    if (selectedSubstationBusinessId) {
+      setDismissedSelectedSubstationBusinessId(selectedSubstationBusinessId);
+    }
+  }, [selectedSubstationBusinessId]);
 
   // grid location clicked: open info popup
   const handleSubstationMarkerClick = useCallback(
     (substation: Substation) => {
+      // center the map around the substation popup
+      if (substation.position?.coordinates) {
+        mapRef.current?.setCenter([
+          substation.position.coordinates[0],
+          substation.position.coordinates[1],
+        ]);
+      }
       if (!onSubstationClick) return;
       const [longitude, latitude] = substation.position.coordinates;
-      setSubstationPopup({ substation, longitude, latitude });
+      setMarkerPopup({ substation, longitude, latitude });
     },
     [onSubstationClick],
   );
 
+  useEffect(() => {
+    if (!selectedSubstation?.position?.coordinates) return;
+    const [longitude, latitude] = selectedSubstation.position.coordinates;
+    mapRef.current?.setCenter([longitude, latitude]);
+  }, [selectedSubstation]);
+
   const handleSelectSubstation = useCallback(async () => {
-    if (!substationPopup) return;
+    if (!activePopup) return;
     if (document.fullscreenElement) await document.exitFullscreen();
-    onSubstationClick?.(substationPopup.substation);
-    setSubstationPopup(null);
-  }, [substationPopup, onSubstationClick]);
+    onSubstationClick?.(activePopup.substation);
+    setMarkerPopup(null);
+  }, [activePopup, onSubstationClick]);
 
   const lastFittedIdRef = useRef<string | null | undefined>(undefined);
 
@@ -358,7 +398,7 @@ export const AccountingPointLocationMap = ({
         style={{ width: "100%", height: 700 }}
         mapStyle={OPENFREEMAP_STYLE}
         onLoad={() => setMapLoaded(true)}
-        onClick={() => setSubstationPopup(null)}
+        onClick={closePopup}
       >
         <FullscreenControl position="top-right" />
         {/* lines between clusters */}
@@ -436,17 +476,17 @@ export const AccountingPointLocationMap = ({
         )}
 
         {/* info popup on substation click */}
-        {substationPopup && onSubstationClick && (
+        {activePopup && onSubstationClick && (
           <SubstationInfoPopup
-            substation={substationPopup.substation}
-            longitude={substationPopup.longitude}
-            latitude={substationPopup.latitude}
+            substation={activePopup.substation}
+            longitude={activePopup.longitude}
+            latitude={activePopup.latitude}
             isAlreadySelected={
-              substationPopup.substation.business_id ===
+              activePopup.substation.business_id ===
               highlightedSubstationBusinessId
             }
             onSelect={handleSelectSubstation}
-            onClose={() => setSubstationPopup(null)}
+            onClose={closePopup}
           />
         )}
 

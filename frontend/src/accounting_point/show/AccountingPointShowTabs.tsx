@@ -18,7 +18,7 @@ const userCanViewGrid = (identity: UserIdentity | undefined) =>
 type Props = {
   gridLocation: AccountingPointGridLocation | undefined;
   location: AccountingPoint["location"];
-  selectedSubstation?: Substation | null;
+  selectedSubstation: Substation | null;
   onSelectSubstation: (substation: Substation) => void;
 };
 
@@ -66,6 +66,7 @@ export const AccountingPointShowTabs = ({
             canViewGrid={userCanViewGrid(identity)}
             onSubstationClick={handleSubstationClick}
             highlightedSubstationBusinessId={highlightedBusinessId}
+            selectedSubstation={selectedSubstation}
           />
         )}
       </Tabs.Panel>

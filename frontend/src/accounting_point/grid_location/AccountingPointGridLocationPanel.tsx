@@ -12,6 +12,7 @@ export const AccountingPointGridLocationPanel = ({
   gridLocation,
   userCanEdit,
   selectedSubstation,
+  onSelectSubstation,
   onClearSelection,
   onCancelSelection,
 }: {
@@ -19,6 +20,7 @@ export const AccountingPointGridLocationPanel = ({
   gridLocation: AccountingPointGridLocation | undefined;
   userCanEdit: boolean;
   selectedSubstation?: Substation | null;
+  onSelectSubstation?: (substation: Substation | null) => void;
   onClearSelection?: () => void;
   onCancelSelection?: () => void;
 }) => {
@@ -68,6 +70,7 @@ export const AccountingPointGridLocationPanel = ({
             onCancelSelection?.();
           }}
           selectedSubstation={selectedSubstation}
+          onSelectSubstation={onSelectSubstation}
           onClearMapSelection={onClearSelection}
         />
       ) : gridLocation == null ? (

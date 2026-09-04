@@ -94,6 +94,7 @@ export const AccountingPointShow = () => {
             gridLocation={viewModel.gridLocation}
             userCanEdit={canEditGridLocation}
             selectedSubstation={selectedSubstation}
+            onSelectSubstation={setSelectedSubstation}
             onClearSelection={handleClearSelection}
             onCancelSelection={handleCancelSelection}
           />
