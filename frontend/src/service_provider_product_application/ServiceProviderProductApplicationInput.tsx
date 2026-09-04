@@ -2,11 +2,7 @@ import { Form, useGetIdentity, useRecordContext } from "ra-core";
 import { useCreateOrUpdate } from "../auth";
 import { zServiceProviderProductApplicationCreateRequest } from "../generated-client/zod.gen";
 import { getFields, unTypedZodResolver } from "../zod";
-import { Alert, FormContainer, Heading, VerticalSpace } from "../components/ui";
-import {
-  isProductApplicationBlocked,
-  getProductApplicationBlockDate,
-} from "../productApplicationBlock";
+import { FormContainer, Heading, VerticalSpace } from "../components/ui";
 import {
   DateTimeInput,
   EnumInput,
@@ -24,17 +20,6 @@ export const ServiceProviderProductApplicationInput = () => {
   if (identityLoading) return <>Loading...</>;
 
   const isServiceProvider = identity?.role == "flex_service_provider";
-
-  if (createOrUpdate === "create" && isProductApplicationBlocked()) {
-    return (
-      <FormContainer>
-        <Alert variant="warning">
-          Product applications cannot be created before{" "}
-          {getProductApplicationBlockDate()}.
-        </Alert>
-      </FormContainer>
-    );
-  }
 
   const record = {
     ...currentRecord,

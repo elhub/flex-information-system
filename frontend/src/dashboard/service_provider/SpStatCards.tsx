@@ -9,10 +9,6 @@ import { useServiceProvidingGroups } from "../hooks/useServiceProvidingGroups";
 import { useControllableUnits } from "../hooks/useControllableUnits";
 import { StatCard } from "../shared/StatCard";
 import { useNotices } from "../hooks/useNotices";
-import {
-  isProductApplicationBlocked,
-  getProductApplicationBlockDate,
-} from "../../productApplicationBlock";
 
 export const SpStatCards = () => {
   const applicationsQuery = useDashboardApplications();
@@ -37,9 +33,6 @@ export const SpStatCards = () => {
   const sppaCount = applicationsQuery.sppaCount;
   const spgpaCount = applicationsQuery.spgpaCount;
   const sppgpCount = applicationsQuery.gridPrequalificationsCount;
-
-  const blocked = isProductApplicationBlocked();
-  const blockTooltip = `Product applications cannot be created before ${getProductApplicationBlockDate()}`;
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -102,8 +95,6 @@ export const SpStatCards = () => {
         linkTo="/service_provider_product_application"
         actionLabel="Create new"
         actionTo="/service_provider_product_application/create"
-        actionDisabled={blocked}
-        actionDisabledTooltip={blockTooltip}
       />
       <StatCard
         label="SPG Product Applications"
@@ -119,8 +110,6 @@ export const SpStatCards = () => {
         linkTo="/service_providing_group_product_application"
         actionLabel="Create new"
         actionTo="/service_providing_group_product_application/create"
-        actionDisabled={blocked}
-        actionDisabledTooltip={blockTooltip}
       />
       <StatCard
         label="Grid Prequalifications"
