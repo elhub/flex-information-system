@@ -180,7 +180,7 @@ const getAccountingPointData = async (
   };
 };
 
-export const getControllableUnitData = async (
+const getControllableUnitData = async (
   controllableUnitId: number,
 ): Promise<ControllableUnitShowViewModel> => {
   const controllableUnit = await readControllableUnit({

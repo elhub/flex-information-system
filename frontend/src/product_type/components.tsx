@@ -41,7 +41,7 @@ export function useGetAllProductTypes() {
   return productTypes;
 }
 
-export const useGetProductTypesBySystemOperator = (
+const useGetProductTypesBySystemOperator = (
   systemOperatorId?: number,
   status?: "active" | "inactive",
 ) => {

@@ -63,7 +63,7 @@ const fetchControllableUnitsInSpg = async (spgId: number) => {
   );
 };
 
-export const controllableUnitsInSpgQueryKey = (spgId: number) => [
+const controllableUnitsInSpgQueryKey = (spgId: number) => [
   "controllableUnitsInSpg",
   spgId,
 ];

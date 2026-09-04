@@ -4,7 +4,6 @@ export type Scale = {
 };
 
 export const IDENTITY: Scale = { prefix: "", exponent: 0 };
-export const MILLI: Scale = { prefix: "m", exponent: -3 };
 export const KILO: Scale = { prefix: "k", exponent: 3 };
 export const MEGA: Scale = { prefix: "M", exponent: 6 };
 
@@ -39,6 +38,6 @@ export function formatScaled(
   return `${rounded} ${displayScale.prefix}${unit}`;
 }
 
-export function roundTo3(n: number): number {
+function roundTo3(n: number): number {
   return Math.round(n * 1000) / 1000;
 }

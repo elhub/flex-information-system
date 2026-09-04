@@ -61,7 +61,7 @@ export const AccountingPointShow = () => {
 
   return (
     <ShowPageLayout
-      backTo={{ pathname: "/accounting_point", label: "Accounting points" }}
+      backTo={{ pathname: "/", label: "Dashboard" }}
       title="Accounting Point"
     >
       <div>
