@@ -60,10 +60,7 @@ export const AccountingPointShow = () => {
   const ap = viewModel.accountingPoint;
 
   return (
-    <ShowPageLayout
-      backTo={{ pathname: "/", label: "Dashboard" }}
-      title="Accounting Point"
-    >
+    <ShowPageLayout title="Accounting Point">
       <div>
         <Panel
           border

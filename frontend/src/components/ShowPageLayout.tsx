@@ -1,14 +1,7 @@
-import { IconArrowLeft } from "@elhub/ds-icons";
 import { ReactNode } from "react";
-import { useNavigate } from "react-router-dom";
-import { usePreviousPage } from "./NavigationHistoryProvider";
-import { Button, Heading } from "./ui";
+import { Heading } from "./ui";
 
 type ShowPageLayoutProps = {
-  backTo: {
-    pathname: string;
-    label: string;
-  };
   title: string;
   badge?: ReactNode;
   alerts?: ReactNode;
@@ -18,7 +11,6 @@ type ShowPageLayoutProps = {
 };
 
 export const ShowPageLayout = ({
-  backTo,
   title,
   badge,
   alerts,
@@ -26,25 +18,9 @@ export const ShowPageLayout = ({
   titleExtra,
   children: [leftPanel, rightPanel],
 }: ShowPageLayoutProps) => {
-  const navigate = useNavigate();
-  const previousPage = usePreviousPage();
-  const back = previousPage ? previousPage : backTo;
-
-  const handleBack = () => navigate(back.pathname, { replace: true });
-
   return (
     <div className="flex flex-col gap-4 p-2">
       {alerts}
-      <Button
-        onClick={handleBack}
-        variant="invisible"
-        className="max-w-fit"
-        icon={IconArrowLeft}
-        iconPosition="left"
-      >
-        Go back to {back.label}
-      </Button>
-
       <div className="flex items-center gap-2">
         <Heading level={2} size="xlarge">
           {title}

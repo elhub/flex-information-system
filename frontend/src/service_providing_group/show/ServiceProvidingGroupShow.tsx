@@ -62,10 +62,6 @@ export const ServiceProvidingGroupShow = () => {
 
   return (
     <ShowPageLayout
-      backTo={{
-        pathname: "/service_providing_group",
-        label: "Service providing groups",
-      }}
       title={`Group Details - ${spg.name}`}
       alerts={<ServiceProvidingGroupAlerts spg={spg} />}
       titleExtra={

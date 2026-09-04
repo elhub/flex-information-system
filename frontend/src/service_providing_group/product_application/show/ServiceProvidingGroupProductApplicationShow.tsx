@@ -43,10 +43,6 @@ export const ServiceProvidingGroupProductApplicationShow = () => {
 
   return (
     <ShowPageLayout
-      backTo={{
-        pathname: "/service_providing_group_product_application",
-        label: "Product applications",
-      }}
       title={`Product Application #${spgpa.id}${spg.data ? ` for ${spg.data.name}` : ""}`}
       badge={<SpgpaStatusBadge status={spgpa.status} />}
       actionBar={canUpdateStatus ? <SpgpaActionBar spgpa={spgpa} /> : undefined}
