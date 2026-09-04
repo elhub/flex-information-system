@@ -1,5 +1,4 @@
 export * from "./ServiceProvidingGroupList";
-export * from "./ServiceProvidingGroupHistoryList";
 export * from "./input/ServiceProvidingGroupInput";
 export * from "./input/ServiceProvidingGroupCreate";
 export * from "./input/ServiceProvidingGroupManageMembers";
@@ -8,7 +7,6 @@ export * from "./membership/ServiceProvidingGroupMembershipHistoryList";
 export * from "./membership/ServiceProvidingGroupMembershipInput";
 export * from "./membership/ServiceProvidingGroupMembershipShow";
 export * from "./product_application/ServiceProvidingGroupProductApplicationList";
-export * from "./product_application/ServiceProvidingGroupProductApplicationHistoryList";
 export * from "./product_application/ServiceProvidingGroupProductApplicationInput";
 export * from "./product_application/ServiceProvidingGroupProductApplicationShow";
 export * from "./grid_suspension/ServiceProvidingGroupGridSuspensionInput";
