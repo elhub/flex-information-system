@@ -30,12 +30,14 @@ const GridLocationFormFields = ({
   onDone,
   onCancel,
   selectedSubstation, // selected via the map
+  onSelectSubstation,
   onClearMapSelection,
   existingGridLocation, // existing record (if editing)
 }: {
   onDone: () => void;
   onCancel?: () => void;
   selectedSubstation?: Substation | null;
+  onSelectSubstation?: (substation: Substation | null) => void;
   onClearMapSelection?: () => void;
   existingGridLocation?: { name: string; business_id: string } | null;
 }) => {
@@ -51,17 +53,17 @@ const GridLocationFormFields = ({
     selectedSubstation?.voltage_levels ?? comboboxVoltageLevels;
 
   const handleSubstationSelect = (substation: Substation | null) => {
+    onSelectSubstation?.(substation);
     if (substation) {
       setValue("name", substation.name);
       const isNewSubstation = substation.business_id !== currentBusinessId;
       if (isNewSubstation) setValue("nominal_voltage", null);
       setComboboxVoltageLevels(substation.voltage_levels);
-      // the user picked via the combobox, so the map selection is stale
-      onClearMapSelection?.();
     } else {
       setValue("name", "");
       setValue("nominal_voltage", null);
       setComboboxVoltageLevels([]);
+      onClearMapSelection?.();
     }
   };
 
@@ -122,6 +124,7 @@ export const AccountingPointGridLocationInput = ({
   onDone,
   onCancel,
   selectedSubstation,
+  onSelectSubstation,
   onClearMapSelection,
 }: {
   apId: number;
@@ -129,6 +132,7 @@ export const AccountingPointGridLocationInput = ({
   onDone: () => void;
   onCancel?: () => void;
   selectedSubstation?: Substation | null;
+  onSelectSubstation?: (substation: Substation | null) => void;
   onClearMapSelection?: () => void;
 }) => {
   const queryClient = useQueryClient();
@@ -200,8 +204,7 @@ export const AccountingPointGridLocationInput = ({
     <ResourceContextProvider value="accounting_point_grid_location">
       {selectedSubstation && (
         <div className="mb-4 rounded bg-green-50 border border-green-200 px-3 py-2 text-sm text-green-800">
-          Selected transformer from map:{" "}
-          <strong>{selectedSubstation.name}</strong>
+          Selected transformer: <strong>{selectedSubstation.name}</strong>
         </div>
       )}
       <Form
@@ -218,6 +221,7 @@ export const AccountingPointGridLocationInput = ({
             onDone={onDone}
             onCancel={onCancel}
             selectedSubstation={selectedSubstation}
+            onSelectSubstation={onSelectSubstation}
             onClearMapSelection={onClearMapSelection}
             existingGridLocation={gridLocation ?? null}
           />

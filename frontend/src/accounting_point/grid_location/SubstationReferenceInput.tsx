@@ -43,7 +43,7 @@ export const SubstationReferenceInput = ({
     queryKey: ["grid", "substation_search", search],
     queryFn: () =>
       fetchJSON<Substation>(`${gridURL}/substation?${queryParams.toString()}`),
-    enabled: search.length >= 2,
+    enabled: true,
     placeholderData: (prev) => prev,
   });
 
@@ -86,6 +86,7 @@ export const SubstationReferenceInput = ({
   return (
     <BaseInput
       source={source}
+      descriptionOverride={"Search for substation"}
       required={required}
       tooltip={tooltip}
       id={id}
@@ -93,7 +94,7 @@ export const SubstationReferenceInput = ({
       resource="accounting_point_grid_location"
     >
       <Combobox
-        options={[]}
+        options={options}
         filteredOptions={options}
         selectedOptions={selectedOption ? [selectedOption] : []}
         onToggleSelected={handleToggle}
