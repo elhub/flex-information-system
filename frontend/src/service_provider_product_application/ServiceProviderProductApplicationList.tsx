@@ -1,15 +1,18 @@
 import { usePermissions } from "ra-core";
 import { FunctionField } from "react-admin";
 import { Link } from "react-router-dom";
-import { Datagrid } from "../components/EDS-ra/list/Datagrid";
-import { List } from "../components/EDS-ra/list/List";
-import { DateField } from "../components/EDS-ra/fields/DateField";
-import { ReferenceField } from "../components/EDS-ra/fields/ReferenceField";
-import { StatusBadgeField } from "../components/EDS-ra/fields/StatusBadgeField";
-import { TextField } from "../components/EDS-ra/fields/TextField";
+import { List, Datagrid } from "../components/EDS-ra/list";
+import {
+  DateField,
+  ReferenceField,
+  StatusBadgeField,
+  TextField,
+} from "../components/EDS-ra/fields";
 import { sppaStatusVariantMap } from "./show/sppaStatus";
-import { EnumArrayInput } from "../components/EDS-ra/inputs/EnumArrayInput";
-import { PartyReferenceInput } from "../components/EDS-ra/inputs/PartyReferenceInput";
+import {
+  EnumArrayInput,
+  PartyReferenceInput,
+} from "../components/EDS-ra/inputs";
 import { Button, Tooltip } from "../components/ui";
 import { IconPlus, IconQuestionCircleOutlined } from "@elhub/ds-icons";
 import { ProductTypeArrayField } from "../components/ProductTypeArrayField";

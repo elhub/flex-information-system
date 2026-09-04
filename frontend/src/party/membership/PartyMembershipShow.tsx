@@ -2,13 +2,15 @@ import { useRecordContext, usePermissions } from "ra-core";
 import { Link } from "react-router-dom";
 import { IconPencil } from "@elhub/ds-icons";
 import { Button, Content, Heading, VerticalSpace } from "../../components/ui";
-import { NestedResourceHistoryButton } from "../../components/EDS-ra/buttons/NestedResourceHistoryButton";
-import { DateField } from "../../components/EDS-ra/fields/DateField";
-import { IdentityField } from "../../components/EDS-ra/fields/IdentityField";
-import { ReferenceField } from "../../components/EDS-ra/fields/ReferenceField";
-import { ScopesField } from "../../components/EDS-ra/fields/ScopesField";
-import { TextField } from "../../components/EDS-ra/fields/TextField";
-import { Show } from "../../components/EDS-ra/show";
+import {
+  Show,
+  TextField,
+  ReferenceField,
+  DateField,
+  IdentityField,
+  ScopesField,
+  NestedResourceHistoryButton,
+} from "../../components/EDS-ra";
 import { EventButton } from "../../event/EventButton";
 import { Permissions } from "../../auth/permissions";
 import { getFields } from "../../zod";

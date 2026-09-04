@@ -14,10 +14,10 @@ import {
 } from "../generated-client";
 import {
   ArrayInput,
-  type ArrayInputOption,
-  type ArrayInputProps,
-} from "../components/EDS-ra/inputs/ArrayInput";
-import { type BaseInputProps } from "../components/EDS-ra/inputs/BaseInput";
+  ArrayInputOption,
+  ArrayInputProps,
+  BaseInputProps,
+} from "../components/EDS-ra/inputs";
 import { useQuery } from "@tanstack/react-query";
 import { useProductTypes } from "./useProductTypes";
 import { throwOnError } from "../util";

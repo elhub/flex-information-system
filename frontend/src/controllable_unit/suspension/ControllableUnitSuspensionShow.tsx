@@ -2,12 +2,14 @@ import { useRecordContext, usePermissions } from "ra-core";
 import { useNavigate } from "react-router-dom";
 import { IconPencil, IconClockReset } from "@elhub/ds-icons";
 import { Button, Content, Heading } from "../../components/ui";
-import { DateField } from "../../components/EDS-ra/fields/DateField";
-import { EnumField } from "../../components/EDS-ra/fields/EnumField";
-import { IdentityField } from "../../components/EDS-ra/fields/IdentityField";
-import { ReferenceField } from "../../components/EDS-ra/fields/ReferenceField";
-import { TextField } from "../../components/EDS-ra/fields/TextField";
-import { Show } from "../../components/EDS-ra/show";
+import {
+  DateField,
+  EnumField,
+  IdentityField,
+  ReferenceField,
+  Show,
+  TextField,
+} from "../../components/EDS-ra";
 import { EventButton } from "../../event/EventButton";
 import { Permissions } from "../../auth/permissions";
 import { ControllableUnitSuspension } from "../../generated-client";

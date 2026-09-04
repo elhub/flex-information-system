@@ -1,14 +1,15 @@
 import { usePermissions } from "react-admin";
-import { Datagrid } from "../components/EDS-ra/list/Datagrid";
-import { List } from "../components/EDS-ra/list/List";
-import { EnumField } from "../components/EDS-ra/fields/EnumField";
-import { ReferenceField } from "../components/EDS-ra/fields/ReferenceField";
-import { StatusBadgeField } from "../components/EDS-ra/fields/StatusBadgeField";
-import { TextField } from "../components/EDS-ra/fields/TextField";
+import { List, Datagrid } from "../components/EDS-ra/list";
+import {
+  TextField,
+  ReferenceField,
+  EnumField,
+  StatusBadgeField,
+} from "../components/EDS-ra/fields";
 import { zServiceProvidingGroup } from "../generated-client/zod.gen";
 import { getFields } from "../zod";
 import { Permissions } from "../auth/permissions";
-import { CreateButton } from "../components/EDS-ra/buttons/CreateButton";
+import { CreateButton } from "../components/EDS-ra";
 import { spgStatusVariantMap } from "./serviceProvidingGroupStatus";
 import { ServiceProvidingGroupExpandedRow } from "./ServiceProvidingGroupExpandedRow";
 import { RaRecord } from "ra-core";

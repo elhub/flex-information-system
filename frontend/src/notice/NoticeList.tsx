@@ -1,11 +1,13 @@
-import { ReferenceField } from "../components/EDS-ra/fields/ReferenceField";
-import { StatusBadgeField } from "../components/EDS-ra/fields/StatusBadgeField";
-import { TextField } from "../components/EDS-ra/fields/TextField";
-import { AutocompleteInput } from "../components/EDS-ra/inputs/AutocompleteInput";
-import { EnumArrayInput } from "../components/EDS-ra/inputs/EnumArrayInput";
-import { PartyReferenceInput } from "../components/EDS-ra/inputs/PartyReferenceInput";
-import { Datagrid } from "../components/EDS-ra/list/Datagrid";
-import { List } from "../components/EDS-ra/list/List";
+import {
+  AutocompleteInput,
+  Datagrid,
+  EnumArrayInput,
+  List,
+  PartyReferenceInput,
+  ReferenceField,
+  StatusBadgeField,
+  TextField,
+} from "../components/EDS-ra";
 import { BodyText } from "../components/ui";
 import { noticeStatusVariantMap } from "./noticeStatus";
 import noticeTypes from "./noticeTypes";

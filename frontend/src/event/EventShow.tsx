@@ -1,8 +1,6 @@
 import { useRecordContext } from "ra-core";
 import { zEvent } from "../generated-client/zod.gen";
-import { DateField } from "../components/EDS-ra/fields/DateField";
-import { TextField } from "../components/EDS-ra/fields/TextField";
-import { Show } from "../components/EDS-ra/show";
+import { Show, TextField, DateField } from "../components/EDS-ra";
 import { BaseField } from "../components/EDS-ra/fields/BaseField";
 import { BodyText } from "../components/ui";
 import { Heading, Content } from "../components/ui";

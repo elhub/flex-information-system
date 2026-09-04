@@ -1,7 +1,5 @@
 import { zEntity } from "../generated-client/zod.gen";
-import { EnumField } from "../components/EDS-ra/fields/EnumField";
-import { TextField } from "../components/EDS-ra/fields/TextField";
-import { Show } from "../components/EDS-ra/show";
+import { Show, TextField, EnumField } from "../components/EDS-ra";
 import { Heading, VerticalSpace, Content } from "../components/ui";
 import { getFields } from "../zod";
 import { EntityClientList } from "./client/EntityClientList";

@@ -5,14 +5,15 @@ import {
 } from "ra-core";
 import { Link as RouterLink } from "react-router-dom";
 import { Permissions } from "../../auth/permissions";
-import { Datagrid } from "../../components/EDS-ra/list/Datagrid";
-import { List } from "../../components/EDS-ra/list/List";
-import { DateField } from "../../components/EDS-ra/fields/DateField";
-import { IdentityField } from "../../components/EDS-ra/fields/IdentityField";
-import { ReferenceField } from "../../components/EDS-ra/fields/ReferenceField";
-import { ScopesField } from "../../components/EDS-ra/fields/ScopesField";
-import { TextField } from "../../components/EDS-ra/fields/TextField";
-import { DeleteButton } from "../../components/EDS-ra/buttons/DeleteButton";
+import { List, Datagrid } from "../../components/EDS-ra/list";
+import {
+  DateField,
+  IdentityField,
+  ReferenceField,
+  ScopesField,
+  TextField,
+} from "../../components/EDS-ra/fields";
+import { DeleteButton } from "../../components/EDS-ra/buttons";
 import { Button } from "../../components/ui";
 import { IconPlus } from "@elhub/ds-icons";
 

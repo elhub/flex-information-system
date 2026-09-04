@@ -4,11 +4,13 @@ import { useMemo } from "react";
 import { zPartyMembershipCreateRequest } from "../../generated-client/zod.gen";
 import { getFields, unTypedZodResolver } from "../../zod";
 import { FormContainer, Heading } from "../../components/ui";
-import { AutocompleteReferenceInput } from "../../components/EDS-ra/inputs/AutocompleteReferenceInput";
-import { FormToolbar } from "../../components/EDS-ra/inputs/FormToolbar";
-import { PartyReferenceInput } from "../../components/EDS-ra/inputs/PartyReferenceInput";
-import { ScopesInput } from "../../components/EDS-ra/inputs/ScopesInput";
-import { TextInput } from "../../components/EDS-ra/inputs/TextInput";
+import {
+  TextInput,
+  AutocompleteReferenceInput,
+  PartyReferenceInput,
+  FormToolbar,
+  ScopesInput,
+} from "../../components/EDS-ra/inputs";
 
 const filterRecord = ({ party_id, entity_id, scopes }: any) => ({
   party_id,

@@ -3,7 +3,7 @@ import { Button, Dropdown, Nav } from "../ui";
 import { IconChevronDown } from "@elhub/ds-icons";
 import { useGetIdentity, useTranslate } from "ra-core";
 import { userGuideCreateUsersURL, userGuideURL } from "../../httpConfig";
-import { FlexIdentity } from "../../auth/authProvider";
+import { FlexIdentity } from "../../auth";
 
 type MenuItem =
   | {

@@ -3,7 +3,7 @@ import { ServiceProvidingGroup } from "../../generated-client";
 import { zServiceProvidingGroupCreateRequest } from "../../generated-client/zod.gen";
 import { unTypedZodResolver } from "../../zod";
 import { FormContainer, Heading } from "../../components/ui";
-import { FormToolbar } from "../../components/EDS-ra/inputs/FormToolbar";
+import { FormToolbar } from "../../components/EDS-ra/inputs";
 import { ServiceProvidingGroupFields } from "./ServiceProvidingGroupFields";
 
 export const ServiceProvidingGroupInput = () => {

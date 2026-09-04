@@ -6,9 +6,8 @@ import {
 } from "ra-core";
 import { FunctionField } from "react-admin";
 import { Link } from "react-router-dom";
-import { Datagrid } from "../../components/EDS-ra/list/Datagrid";
-import { List } from "../../components/EDS-ra/list/List";
-import { TextField } from "../../components/EDS-ra/fields/TextField";
+import { Datagrid, List } from "../../components/EDS-ra/list";
+import { TextField } from "../../components/EDS-ra/fields";
 import { SpgpaStatusBadge } from "../../components/SpgpaStatusBadge";
 import { Button, Tooltip } from "../../components/ui";
 import { useTranslateField } from "../../intl/intl";

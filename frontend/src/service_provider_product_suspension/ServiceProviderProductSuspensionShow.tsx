@@ -1,11 +1,13 @@
 import { Content, Heading, VerticalSpace } from "../components/ui";
 import { FunctionField } from "react-admin";
-import { DateField } from "../components/EDS-ra/fields/DateField";
-import { EnumField } from "../components/EDS-ra/fields/EnumField";
-import { IdentityField } from "../components/EDS-ra/fields/IdentityField";
-import { ReferenceField } from "../components/EDS-ra/fields/ReferenceField";
-import { TextField } from "../components/EDS-ra/fields/TextField";
-import { Show } from "../components/EDS-ra/show";
+import {
+  Show,
+  TextField,
+  ReferenceField,
+  DateField,
+  IdentityField,
+  EnumField,
+} from "../components/EDS-ra";
 import { ProductTypeArrayField } from "../components/ProductTypeArrayField";
 import { getFields } from "../zod";
 import { zServiceProviderProductSuspensionHistory } from "../generated-client/zod.gen";

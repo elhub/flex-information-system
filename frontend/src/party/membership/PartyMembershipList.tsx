@@ -6,14 +6,15 @@ import {
   useRecordContext,
 } from "ra-core";
 import { useState } from "react";
-import { Datagrid } from "../../components/EDS-ra/list/Datagrid";
-import { List } from "../../components/EDS-ra/list/List";
-import { DeleteButton } from "../../components/EDS-ra/buttons/DeleteButton";
-import { NestedResourceHistoryButton } from "../../components/EDS-ra/buttons/NestedResourceHistoryButton";
-import { DateField } from "../../components/EDS-ra/fields/DateField";
-import { ReferenceField } from "../../components/EDS-ra/fields/ReferenceField";
-import { ScopesField } from "../../components/EDS-ra/fields/ScopesField";
-import { TextField } from "../../components/EDS-ra/fields/TextField";
+import { List, Datagrid } from "../../components/EDS-ra/list";
+import {
+  DeleteButton,
+  DateField,
+  ReferenceField,
+  ScopesField,
+  TextField,
+  NestedResourceHistoryButton,
+} from "../../components/EDS-ra";
 import { Button } from "../../components/ui";
 import { useNavigate } from "react-router-dom";
 import { Permissions } from "../../auth/permissions";

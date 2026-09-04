@@ -1,10 +1,14 @@
-import { ReferenceField } from "../components/EDS-ra/fields/ReferenceField";
-import { StatusBadgeField } from "../components/EDS-ra/fields/StatusBadgeField";
-import { TextField } from "../components/EDS-ra/fields/TextField";
-import { Datagrid } from "../components/EDS-ra/list/Datagrid";
-import { List } from "../components/EDS-ra/list/List";
-import { EnumArrayInput } from "../components/EDS-ra/inputs/EnumArrayInput";
-import { PartyReferenceInput } from "../components/EDS-ra/inputs/PartyReferenceInput";
+import {
+  Datagrid,
+  List,
+  ReferenceField,
+  StatusBadgeField,
+  TextField,
+} from "../components/EDS-ra";
+import {
+  EnumArrayInput,
+  PartyReferenceInput,
+} from "../components/EDS-ra/inputs";
 import { zSystemOperatorProductType } from "../generated-client/zod.gen";
 import { getFields } from "../zod";
 import {

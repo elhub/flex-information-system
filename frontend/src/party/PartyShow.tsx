@@ -17,9 +17,11 @@ import { readEntity, Party } from "../generated-client";
 import { throwOnError } from "../util";
 import { useTranslateEnum } from "../intl/intl";
 import { partyStatusVariantMap } from "./partyStatus";
-import { EditButton } from "../components/EDS-ra/buttons/EditButton";
-import { EventButton } from "../components/EDS-ra/buttons/EventButton";
-import { ResourceHistoryButton } from "../components/EDS-ra/buttons/ResourceHistoryButton";
+import {
+  EventButton,
+  EditButton,
+  ResourceHistoryButton,
+} from "../components/EDS-ra";
 
 const PartyShowTabs = () => {
   const [tab, setTab] = useTabSearchParam("party_memberships");

@@ -16,13 +16,15 @@ import {
   FormItemLabel,
   TextField,
 } from "../components/ui";
-import { DateInput } from "../components/EDS-ra/inputs/DateInput";
-import { EnumInput } from "../components/EDS-ra/inputs/EnumInput";
-import { FormToolbar } from "../components/EDS-ra/inputs/FormToolbar";
-import { PartyReferenceInput } from "../components/EDS-ra/inputs/PartyReferenceInput";
-import { TextAreaInput } from "../components/EDS-ra/inputs/TextAreaInput";
-import { TextInput } from "../components/EDS-ra/inputs/TextInput";
-import { UnitInput } from "../components/EDS-ra/inputs/UnitInput";
+import {
+  TextInput,
+  TextAreaInput,
+  EnumInput,
+  PartyReferenceInput,
+  FormToolbar,
+  DateInput,
+  UnitInput,
+} from "../components/EDS-ra/inputs";
 import z from "zod";
 import { useState } from "react";
 import { format, formatISO, isPast, parse } from "date-fns";

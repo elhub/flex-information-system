@@ -19,7 +19,7 @@ import {
   userGuideCreateUsersURL,
   userGuideURL,
 } from "../../httpConfig";
-import { FlexIdentity, sessionInfoKey } from "../../auth/authProvider";
+import { FlexIdentity, sessionInfoKey } from "../../auth";
 
 const UserDropdown = () => {
   const { data: rawIdentity, isLoading } = useGetIdentity();

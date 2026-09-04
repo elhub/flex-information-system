@@ -1,9 +1,9 @@
-import { Datagrid } from "../components/EDS-ra/list/Datagrid";
-import { List } from "../components/EDS-ra/list/List";
-import { EnumField } from "../components/EDS-ra/fields/EnumField";
-import { TextField } from "../components/EDS-ra/fields/TextField";
-import { AutocompleteReferenceInput } from "../components/EDS-ra/inputs/AutocompleteReferenceInput";
-import { EnumArrayInput } from "../components/EDS-ra/inputs/EnumArrayInput";
+import { Datagrid, List } from "../components/EDS-ra/list";
+import { EnumField, TextField } from "../components/EDS-ra/fields";
+import {
+  AutocompleteReferenceInput,
+  EnumArrayInput,
+} from "../components/EDS-ra/inputs";
 import { zEntity } from "../generated-client/zod.gen";
 import { getFields } from "../zod";
 

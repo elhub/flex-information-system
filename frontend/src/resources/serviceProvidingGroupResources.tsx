@@ -27,10 +27,12 @@ import { ServiceProvidingGroupProductApplicationPrint } from "../service_providi
 import { ServiceProvidingGroupProductSuspensionInput } from "../service_providing_group/product_suspension/ServiceProvidingGroupProductSuspensionInput";
 import { ServiceProvidingGroupProductSuspensionShow } from "../service_providing_group/product_suspension/ServiceProvidingGroupProductSuspensionShow";
 import { ServiceProvidingGroupProductSuspensionHistoryList } from "../service_providing_group/product_suspension/ServiceProvidingGroupProductSuspensionHistoryList";
-import { ServiceProvidingGroupGridSuspensionHistoryList } from "../service_providing_group/grid_suspension/ServiceProvidingGroupGridSuspensionHistoryList";
-import { ServiceProvidingGroupGridSuspensionInput } from "../service_providing_group/grid_suspension/ServiceProvidingGroupGridSuspensionInput";
-import { ServiceProvidingGroupGridSuspensionShow } from "../service_providing_group/grid_suspension/ServiceProvidingGroupGridSuspensionShow";
-import { ServiceProvidingGroupProductApplicationList } from "../service_providing_group/product_application/ServiceProvidingGroupProductApplicationList";
+import {
+  ServiceProvidingGroupGridSuspensionHistoryList,
+  ServiceProvidingGroupGridSuspensionInput,
+  ServiceProvidingGroupGridSuspensionShow,
+  ServiceProvidingGroupProductApplicationList,
+} from "../service_providing_group";
 
 export const createServiceProvidingGroupResources = (
   permissions: Permissions,

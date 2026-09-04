@@ -5,12 +5,9 @@
 import { JSX } from "react";
 import { Resource } from "react-admin";
 import { Permissions } from "../auth/permissions";
-import { EventList } from "../event/EventList";
-import { EventShow } from "../event/EventShow";
-import { NotificationList } from "../notification/NotificationList";
-import { NotificationShow } from "../notification/NotificationShow";
-import { NoticeList } from "../notice/NoticeList";
-import { NoticeShow } from "../notice/NoticeShow";
+import { EventList, EventShow } from "../event";
+import { NotificationList, NotificationShow } from "../notification";
+import { NoticeList, NoticeShow } from "../notice";
 
 export const createSystemResources = (permissions: Permissions) => {
   const resources: JSX.Element[] = [];

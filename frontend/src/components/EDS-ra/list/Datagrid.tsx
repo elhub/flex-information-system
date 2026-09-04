@@ -14,7 +14,7 @@ import {
   useListContext,
 } from "ra-core";
 import { BodyText, Loader, Table } from "../../ui";
-import { FieldTooltip } from "../fields/FieldTooltip";
+import { FieldTooltip } from "../fields";
 
 type RowClickResult = string | { to: string; state?: unknown };
 

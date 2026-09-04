@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { getFields, unTypedZodResolver } from "../../zod";
-import { useCreateOrUpdate } from "../../auth/useCreateOrUpdate";
+import { useCreateOrUpdate } from "../../auth";
 import {
   zServiceProvidingGroupProductApplicationCreateRequest,
   zServiceProvidingGroupProductApplicationRampingCapability,
@@ -19,13 +19,15 @@ import {
   isProductApplicationBlocked,
   getProductApplicationBlockDate,
 } from "../../productApplicationBlock";
-import { AutocompleteReferenceInput } from "../../components/EDS-ra/inputs/AutocompleteReferenceInput";
-import { DateTimeInput } from "../../components/EDS-ra/inputs/DateTimeInput";
-import { EnumInput } from "../../components/EDS-ra/inputs/EnumInput";
-import { FormToolbarWithConfirmation } from "../../components/EDS-ra/inputs/FormToolbarWithConfirmation";
-import { PartyReferenceInput } from "../../components/EDS-ra/inputs/PartyReferenceInput";
-import { TextAreaInput } from "../../components/EDS-ra/inputs/TextAreaInput";
-import { UnitInput } from "../../components/EDS-ra/inputs/UnitInput";
+import {
+  TextAreaInput,
+  EnumInput,
+  AutocompleteReferenceInput,
+  PartyReferenceInput,
+  FormToolbarWithConfirmation,
+  UnitInput,
+  DateTimeInput,
+} from "../../components/EDS-ra/inputs";
 import { SystemOperatorProductTypesInput } from "../../product_type/components";
 import { draftStorageKey } from "../../hooks/useSpgpaDrafts";
 import { DraftAutosaveWatcher } from "./DraftAutosaveWatcher";

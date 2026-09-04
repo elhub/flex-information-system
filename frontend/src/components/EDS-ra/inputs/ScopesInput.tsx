@@ -3,7 +3,7 @@ import { Chips } from "../../ui";
 import { BaseInput, BaseInputProps } from "./BaseInput";
 
 // TODO: use all scopes, not only this practical subset
-const ALL_SCOPES = [
+export const ALL_SCOPES = [
   "read:data",
   "use:data",
   "use:data:entity:lookup",

@@ -1,13 +1,14 @@
 import { useParams } from "react-router-dom";
 import { FunctionField } from "react-admin";
-import { Datagrid } from "../../components/EDS-ra/list/Datagrid";
-import { List } from "../../components/EDS-ra/list/List";
-import { DateField } from "../../components/EDS-ra/fields/DateField";
-import { EnumField } from "../../components/EDS-ra/fields/EnumField";
-import { IdentityField } from "../../components/EDS-ra/fields/IdentityField";
-import { ReferenceField } from "../../components/EDS-ra/fields/ReferenceField";
-import { TextField } from "../../components/EDS-ra/fields/TextField";
-import { TextInput } from "../../components/EDS-ra/inputs/TextInput";
+import { Datagrid, List } from "../../components/EDS-ra/list";
+import {
+  DateField,
+  EnumField,
+  IdentityField,
+  ReferenceField,
+  TextField,
+} from "../../components/EDS-ra/fields";
+import { TextInput } from "../../components/EDS-ra/inputs";
 import { ProductTypeArrayField } from "../../components/ProductTypeArrayField";
 import { ListServiceProvidingGroupProductApplicationHistoryData } from "../../generated-client";
 import { getFields } from "../../zod";

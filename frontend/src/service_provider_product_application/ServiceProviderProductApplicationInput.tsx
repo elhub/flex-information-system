@@ -1,5 +1,5 @@
 import { Form, useGetIdentity, useRecordContext } from "ra-core";
-import { useCreateOrUpdate } from "../auth/useCreateOrUpdate";
+import { useCreateOrUpdate } from "../auth";
 import { zServiceProviderProductApplicationCreateRequest } from "../generated-client/zod.gen";
 import { getFields, unTypedZodResolver } from "../zod";
 import { Alert, FormContainer, Heading, VerticalSpace } from "../components/ui";
@@ -7,10 +7,12 @@ import {
   isProductApplicationBlocked,
   getProductApplicationBlockDate,
 } from "../productApplicationBlock";
-import { DateTimeInput } from "../components/EDS-ra/inputs/DateTimeInput";
-import { EnumInput } from "../components/EDS-ra/inputs/EnumInput";
-import { FormToolbar } from "../components/EDS-ra/inputs/FormToolbar";
-import { PartyReferenceInput } from "../components/EDS-ra/inputs/PartyReferenceInput";
+import {
+  DateTimeInput,
+  EnumInput,
+  FormToolbar,
+  PartyReferenceInput,
+} from "../components/EDS-ra/inputs";
 import { SystemOperatorProductTypesInput } from "../product_type/components";
 
 // common layout to create and edit pages

@@ -1,12 +1,14 @@
 import { Form, useRecordContext } from "ra-core";
 import { useLocation } from "react-router-dom";
 import { useMemo } from "react";
-import { AutocompleteReferenceInput } from "../../components/EDS-ra/inputs/AutocompleteReferenceInput";
-import { DateTimeInput } from "../../components/EDS-ra/inputs/DateTimeInput";
-import { EnumInput } from "../../components/EDS-ra/inputs/EnumInput";
-import { FormToolbar } from "../../components/EDS-ra/inputs/FormToolbar";
-import { PartyReferenceInput } from "../../components/EDS-ra/inputs/PartyReferenceInput";
-import { useCreateOrUpdate } from "../../auth/useCreateOrUpdate";
+import {
+  AutocompleteReferenceInput,
+  DateTimeInput,
+  EnumInput,
+  FormToolbar,
+  PartyReferenceInput,
+} from "../../components/EDS-ra/inputs";
+import { useCreateOrUpdate } from "../../auth";
 import { zServiceProvidingGroupGridPrequalificationCreateRequest } from "../../generated-client/zod.gen";
 import { getFields, unTypedZodResolver } from "../../zod";
 import { FormContainer, Heading } from "../../components/ui";

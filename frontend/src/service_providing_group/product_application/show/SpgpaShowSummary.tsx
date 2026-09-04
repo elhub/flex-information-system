@@ -11,8 +11,10 @@ import {
 } from "../../../generated-client";
 import { useGetAllProductTypes } from "../../../product_type/components";
 import { useParty } from "../../../hooks/party";
-import { EventButton } from "../../../components/EDS-ra/buttons/EventButton";
-import { ResourceHistoryButton } from "../../../components/EDS-ra/buttons/ResourceHistoryButton";
+import {
+  EventButton,
+  ResourceHistoryButton,
+} from "../../../components/EDS-ra/buttons";
 import { useTranslateEnum } from "../../../intl/intl";
 
 type Props = {

@@ -8,15 +8,15 @@ import {
   useTranslate,
 } from "ra-core";
 import { ExportButton } from "react-admin";
-import { Datagrid } from "../components/EDS-ra/list/Datagrid";
-import { List } from "../components/EDS-ra/list/List";
-import { DateField } from "../components/EDS-ra/fields/DateField";
-import { StatusBadgeField } from "../components/EDS-ra/fields/StatusBadgeField";
-import { TextField } from "../components/EDS-ra/fields/TextField";
+import { Datagrid, List } from "../components/EDS-ra/list";
+import {
+  DateField,
+  StatusBadgeField,
+  TextField,
+} from "../components/EDS-ra/fields";
 import { cuStatusVariantMap } from "./controllableUnitStatus";
 import { RegulationDirectionField } from "./RegulationDirectionField";
-import { EnumArrayInput } from "../components/EDS-ra/inputs/EnumArrayInput";
-import { TextInput } from "../components/EDS-ra/inputs/TextInput";
+import { EnumArrayInput, TextInput } from "../components/EDS-ra/inputs";
 import { BodyText, Button, Tooltip } from "../components/ui";
 import { Permissions } from "../auth/permissions";
 import { zControllableUnit } from "../generated-client/zod.gen";

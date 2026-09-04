@@ -1,8 +1,10 @@
 import { Form, useGetIdentity, useRecordContext } from "ra-core";
-import { AutocompleteReferenceInput } from "../../components/EDS-ra/inputs/AutocompleteReferenceInput";
-import { EnumInput } from "../../components/EDS-ra/inputs/EnumInput";
-import { FormToolbar } from "../../components/EDS-ra/inputs/FormToolbar";
-import { PartyReferenceInput } from "../../components/EDS-ra/inputs/PartyReferenceInput";
+import {
+  AutocompleteReferenceInput,
+  EnumInput,
+  FormToolbar,
+  PartyReferenceInput,
+} from "../../components/EDS-ra/inputs";
 import {
   ServiceProvidingGroupGridSuspension,
   ServiceProvidingGroupGridSuspensionCreateRequest,

@@ -5,7 +5,7 @@ import {
 } from "ra-core";
 import { FunctionField } from "react-admin";
 import { BodyText, Heading, VerticalSpace } from "../components/ui";
-import { DateField } from "../components/EDS-ra/fields/DateField";
+import { DateField } from "../components/EDS-ra";
 import { ProductTypeArrayField } from "../components/ProductTypeArrayField";
 import { Notice as GNotice } from "../generated-client";
 import {

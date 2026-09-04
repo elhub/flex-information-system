@@ -3,7 +3,7 @@ import { useInput } from "ra-core";
 import { TextField, Select, SelectContent, SelectItem } from "../../ui";
 import { BaseInput, BaseInputProps } from "./BaseInput";
 
-type UnitDefinition = {
+export type UnitDefinition = {
   label: string;
   scale: number; // factor relative to the base unit (units[0])
 };

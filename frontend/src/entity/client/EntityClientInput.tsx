@@ -3,12 +3,14 @@ import { useLocation } from "react-router-dom";
 import { zEntityClientCreateRequest } from "../../generated-client/zod.gen";
 import { getFields, unTypedZodResolver } from "../../zod";
 import { FormContainer } from "../../components/ui";
-import { AutocompleteReferenceInput } from "../../components/EDS-ra/inputs/AutocompleteReferenceInput";
-import { FormToolbar } from "../../components/EDS-ra/inputs/FormToolbar";
-import { PartyReferenceInput } from "../../components/EDS-ra/inputs/PartyReferenceInput";
-import { ScopesInput } from "../../components/EDS-ra/inputs/ScopesInput";
-import { TextAreaInput } from "../../components/EDS-ra/inputs/TextAreaInput";
-import { TextInput } from "../../components/EDS-ra/inputs/TextInput";
+import {
+  TextInput,
+  TextAreaInput,
+  AutocompleteReferenceInput,
+  FormToolbar,
+  ScopesInput,
+  PartyReferenceInput,
+} from "../../components/EDS-ra/inputs";
 
 const fields = getFields(zEntityClientCreateRequest.shape);
 
