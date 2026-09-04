@@ -20,6 +20,7 @@ type Props = {
   location: AccountingPoint["location"];
   selectedSubstation: Substation | null;
   onSelectSubstation: (substation: Substation) => void;
+  formSelectionTick: number;
 };
 
 export const AccountingPointShowTabs = ({
@@ -27,6 +28,7 @@ export const AccountingPointShowTabs = ({
   location,
   selectedSubstation,
   onSelectSubstation,
+  formSelectionTick,
 }: Props) => {
   const { permissions } = usePermissions<Permissions>();
   const { data: identity } = useGetIdentity();
@@ -67,6 +69,7 @@ export const AccountingPointShowTabs = ({
             onSubstationClick={handleSubstationClick}
             highlightedSubstationBusinessId={highlightedBusinessId}
             selectedSubstation={selectedSubstation}
+            formSelectionTick={formSelectionTick}
           />
         )}
       </Tabs.Panel>

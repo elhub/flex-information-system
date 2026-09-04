@@ -204,8 +204,7 @@ export const AccountingPointGridLocationInput = ({
     <ResourceContextProvider value="accounting_point_grid_location">
       {selectedSubstation && (
         <div className="mb-4 rounded bg-green-50 border border-green-200 px-3 py-2 text-sm text-green-800">
-          Selected transformer from map:{" "}
-          <strong>{selectedSubstation.name}</strong>
+          Selected transformer: <strong>{selectedSubstation.name}</strong>
         </div>
       )}
       <Form

@@ -251,6 +251,7 @@ type Props = {
   onSubstationClick?: (substation: Substation) => void;
   highlightedSubstationBusinessId?: string | null;
   selectedSubstation: Substation | null;
+  formSelectionTick: number;
 };
 
 export const AccountingPointLocationMap = ({
@@ -259,6 +260,7 @@ export const AccountingPointLocationMap = ({
   onSubstationClick,
   highlightedSubstationBusinessId,
   selectedSubstation,
+  formSelectionTick,
 }: Props) => {
   const { substations, substationClusters, lines } = useGridData(
     canViewGrid ? location : undefined,
@@ -274,11 +276,11 @@ export const AccountingPointLocationMap = ({
     substation: Substation;
     longitude: number;
     latitude: number;
+    formSelectionTickAtOpen: number;
   } | null>(null);
-  const [
-    dismissedSelectedSubstationBusinessId,
-    setDismissedSelectedSubstationBusinessId,
-  ] = useState<string | null>(null);
+  const [dismissedFormSelectionTick, setDismissedFormSelectionTick] = useState<
+    number | null
+  >(null);
 
   const selectedSubstationPopup = useMemo(() => {
     if (!selectedSubstation?.position?.coordinates) return null;
@@ -287,19 +289,18 @@ export const AccountingPointLocationMap = ({
   }, [selectedSubstation]);
 
   const activeSelectedPopup =
-    selectedSubstationPopup &&
-    selectedSubstationPopup.substation.business_id !==
-      dismissedSelectedSubstationBusinessId
+    selectedSubstationPopup && dismissedFormSelectionTick !== formSelectionTick
       ? selectedSubstationPopup
       : null;
-  const activePopup = markerPopup ?? activeSelectedPopup;
+  const isMarkerPopupStale =
+    !!markerPopup && markerPopup.formSelectionTickAtOpen !== formSelectionTick;
+  const activePopup =
+    (isMarkerPopupStale ? null : markerPopup) ?? activeSelectedPopup;
 
   const closePopup = useCallback(() => {
     setMarkerPopup(null);
-    if (selectedSubstationBusinessId) {
-      setDismissedSelectedSubstationBusinessId(selectedSubstationBusinessId);
-    }
-  }, [selectedSubstationBusinessId]);
+    setDismissedFormSelectionTick(formSelectionTick);
+  }, [formSelectionTick]);
 
   // grid location clicked: open info popup
   const handleSubstationMarkerClick = useCallback(
@@ -313,9 +314,14 @@ export const AccountingPointLocationMap = ({
       }
       if (!onSubstationClick) return;
       const [longitude, latitude] = substation.position.coordinates;
-      setMarkerPopup({ substation, longitude, latitude });
+      setMarkerPopup({
+        substation,
+        longitude,
+        latitude,
+        formSelectionTickAtOpen: formSelectionTick,
+      });
     },
-    [onSubstationClick],
+    [onSubstationClick, formSelectionTick],
   );
 
   useEffect(() => {
@@ -335,6 +341,10 @@ export const AccountingPointLocationMap = ({
 
   useEffect(() => {
     if (!mapLoaded) return;
+    if (selectedSubstationBusinessId) {
+      lastFittedIdRef.current = undefined;
+      return;
+    }
     if (!highlightedSubstationBusinessId) return;
     if (highlightedSubstationBusinessId === lastFittedIdRef.current) return;
     if (apLon == null || apLat == null) return;
@@ -353,6 +363,7 @@ export const AccountingPointLocationMap = ({
     lastFittedIdRef.current = highlightedSubstationBusinessId;
   }, [
     mapLoaded,
+    selectedSubstationBusinessId,
     highlightedSubstationBusinessId,
     substations.data,
     apLon,
