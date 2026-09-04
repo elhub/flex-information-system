@@ -31,7 +31,9 @@ class AccountingPointGridLocationHistoryResponse:
         source (AccountingPointGridLocationSource): How the grid location was determined. When a system operator creates
             or updates a grid location, this field is set automatically: `cso` if the SO is the connecting system operator,
             `so` otherwise. Example: cso.
-        quality (AccountingPointGridLocationQuality): The quality of the grid location registration. Example: confirmed.
+        quality (AccountingPointGridLocationQuality): Indicates how the grid location was determined. Guessed means that
+            Flexibility Information System has estimated the location, while confirmed means that someone has verified it.
+            Example: confirmed.
         recorded_at (datetime.datetime): When the resource was recorded (created or updated) in the system. Example:
             2023-12-31T23:59:00+00:00.
         recorded_by (int): The identity that recorded the resource. Example: 145.

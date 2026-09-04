@@ -10,10 +10,10 @@ import io.ktor.client.request.headers
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.isSuccess
 import io.ktor.serialization.ContentConvertException
-import java.io.IOException
 import kotlin.String
 import kotlin.time.Instant
 import kotlinx.coroutines.CancellationException
+import kotlinx.io.IOException
 import no.elhub.flex.integration.accountingpointadapter.generated.models.AccountingPoint
 
 public class AccountingPointClient(

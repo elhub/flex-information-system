@@ -13,21 +13,21 @@ export type DashboardItemKind =
   | "spg_product_application"
   | "spg_grid_prequalification";
 
-export const ACTIVE_STATUSES = new Set([
+const ACTIVE_STATUSES = new Set([
   "requested",
   "in_progress",
   "communication_test",
   "prequalification",
 ]);
 
-export const RESOLVED_SPPA = new Set(["qualified", "not_qualified"]);
-export const RESOLVED_SPGPA = new Set([
+const RESOLVED_SPPA = new Set(["qualified", "not_qualified"]);
+const RESOLVED_SPGPA = new Set([
   "prequalified",
   "verified",
   "temporary_qualified",
   "rejected",
 ]);
-export const RESOLVED_SPGGP = new Set([
+const RESOLVED_SPGGP = new Set([
   "approved",
   "conditionally_approved",
   "not_approved",

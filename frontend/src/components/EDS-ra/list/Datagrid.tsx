@@ -16,7 +16,7 @@ import {
 import { BodyText, Loader, Table } from "../../ui";
 import { FieldTooltip } from "../fields";
 
-export type RowClickResult = string | { to: string; state?: unknown };
+type RowClickResult = string | { to: string; state?: unknown };
 
 type DatagridProps<T extends RaRecord = RaRecord> = {
   children: ReactNode;

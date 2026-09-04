@@ -16,13 +16,18 @@ import io.ktor.server.application.install
 import io.ktor.server.routing.post
 import io.ktor.server.routing.routing
 import io.ktor.server.testing.TestApplication
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry
+import io.mockk.coEvery
+import io.mockk.mockk
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 import no.elhub.flex.PostgresTestContainer
 import no.elhub.flex.accountingpoint.AccountingPointServiceImpl
+import no.elhub.flex.accountingpoint.db.AccountingPointGridLocationRepositoryImpl
 import no.elhub.flex.accountingpoint.db.AccountingPointMeteringGridAreaRepositoryImpl
 import no.elhub.flex.accountingpoint.db.AccountingPointRepositoryImpl
+import no.elhub.flex.accountingpoint.db.SubstationRepositoryImpl
 import no.elhub.flex.auth.FlexAuthentication
 import no.elhub.flex.config.Tracing
 import no.elhub.flex.config.configureSerialization
@@ -31,6 +36,9 @@ import no.elhub.flex.event.db.EventRepositoryImpl
 import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterHttpService
 import no.elhub.flex.integration.accountingpointadapter.AccountingPointAdapterWireMockServer
 import no.elhub.flex.meteringgridarea.db.MeteringGridAreaRepositoryImpl
+import no.elhub.flex.metrics.FlexMetrics
+import no.elhub.flex.model.domain.Party
+import no.elhub.flex.party.PartyService
 import no.elhub.flex.routes.controllableunit.ControllableUnitLookup
 import no.elhub.flex.util.TEST_JWT_SECRET
 import no.elhub.flex.util.makeJwt
@@ -66,16 +74,23 @@ class ControllableUnitLookupTimezoneTest : FunSpec({
             baseUrl = AccountingPointAdapterWireMockServer.baseUrl(),
             apiKey = "test-api-key",
         )
+        val mockPartyService = mockk<PartyService>()
+        coEvery { mockPartyService.getParty(any()) } returns
+            Party(id = 1L, name = "Test Party", role = "flex_organisation", businessId = "123456789")
         lookup = ControllableUnitLookup(
             repo = ControllableUnitRepositoryImpl(),
             accountingPointService = AccountingPointServiceImpl(
                 AccountingPointRepositoryImpl(),
                 MeteringGridAreaRepositoryImpl(),
                 AccountingPointMeteringGridAreaRepositoryImpl(),
+                AccountingPointGridLocationRepositoryImpl(),
+                SubstationRepositoryImpl(),
                 adapterService,
                 ControllableUnitRepositoryImpl(),
             ),
             eventRepo = EventRepositoryImpl(),
+            metrics = FlexMetrics(SimpleMeterRegistry()),
+            partyService = mockPartyService,
             // keep enabled so that we check that checks in the DB pass
             accountingPointAdapterSyncEnabled = true,
             timezone = osloTz,

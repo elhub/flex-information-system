@@ -3,6 +3,7 @@ package no.elhub.flex.accountingpoint.db
 import io.kotest.assertions.arrow.core.shouldBeLeft
 import io.kotest.assertions.arrow.core.shouldBeRight
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.datatest.withData
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
@@ -34,7 +35,7 @@ class AccountingPointRepositoryTest : FunSpec({
     beforeTest {
         PostgresTestContainer.withConnection { conn ->
             conn.createStatement().use {
-                it.execute("TRUNCATE flex.accounting_point CASCADE")
+                it.execute("TRUNCATE flex.accounting_point, flex.substation, flex.substation_cluster CASCADE")
             }
         }
     }

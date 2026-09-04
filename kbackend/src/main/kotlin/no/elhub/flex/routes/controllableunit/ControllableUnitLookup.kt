@@ -12,8 +12,10 @@ import no.elhub.flex.auth.AccessTokenKey
 import no.elhub.flex.auth.FlexPrincipal
 import no.elhub.flex.controllableunit.db.ControllableUnitRepository
 import no.elhub.flex.event.db.EventRepository
+import no.elhub.flex.metrics.FlexMetrics
 import no.elhub.flex.model.domain.ControllableUnitForLookup
 import no.elhub.flex.model.domain.GSRN
+import no.elhub.flex.model.domain.Party
 import no.elhub.flex.model.dto.generated.models.ControllableUnitLookupRequest
 import no.elhub.flex.model.dto.generated.models.ControllableUnitLookupResponse
 import no.elhub.flex.model.dto.generated.models.ControllableUnitLookupResponseAccountingPoint
@@ -21,8 +23,10 @@ import no.elhub.flex.model.dto.generated.models.ControllableUnitLookupResponseEn
 import no.elhub.flex.model.dto.toDtos
 import no.elhub.flex.model.error.AppError
 import no.elhub.flex.model.error.BadRequestError
+import no.elhub.flex.model.error.EndUserError
 import no.elhub.flex.model.error.InternalServerError
 import no.elhub.flex.model.error.ResourceNotFoundError
+import no.elhub.flex.party.PartyService
 import no.elhub.flex.util.TraceIdUtil.Companion.traceIdOrUnknown
 import no.elhub.flex.util.asLocalMidnightInstant
 import no.elhub.flex.util.body
@@ -41,6 +45,8 @@ class ControllableUnitLookup(
     private val repo: ControllableUnitRepository,
     private val accountingPointService: AccountingPointService,
     private val eventRepo: EventRepository,
+    private val metrics: FlexMetrics,
+    private val partyService: PartyService,
     @Property("accounting-point-adapter.sync-enabled") private val accountingPointAdapterSyncEnabled: Boolean = true,
     @Property("flex.timezone") private val timezone: TimeZone = TimeZone.of("Europe/Oslo"),
 ) {
@@ -48,6 +54,8 @@ class ControllableUnitLookup(
 
     suspend fun handle(call: RoutingCall) {
         val requestingPartyId = call.attributes[AccessTokenKey].partyId
+        var accountingPointBusinessIdForMetrics: String? = null
+
         with(FlexPrincipal.internalData()) {
             either {
                 val request = call.body<ControllableUnitLookupRequest>().bind()
@@ -55,6 +63,7 @@ class ControllableUnitLookup(
 
                 val accountingPointBusinessId = request.accountingPointBusinessId?.value
                     ?: accountingPointService.getCurrentAccountingPoint(request.controllableUnitBusinessId).bind().businessId
+                accountingPointBusinessIdForMetrics = accountingPointBusinessId
 
                 logger.debug { "Controllable unit used in lookup: ${request.controllableUnitBusinessId}" }
                 logger.debug { "Accounting point used in lookup: $accountingPointBusinessId" }
@@ -105,8 +114,30 @@ class ControllableUnitLookup(
                     controllableUnits = controllableUnits.toDtos(),
                 )
             }
+                .onRight { response ->
+                    val party = resolveParty(requestingPartyId)
+                    metrics.controllableUnitLookup.success(response.accountingPoint.businessId, party)
+                }
+                .onLeft { error ->
+                    val party = resolveParty(requestingPartyId)
+                    when (error) {
+                        is EndUserError -> metrics.controllableUnitLookup.wrongEndUser(accountingPointBusinessIdForMetrics, party)
+                        is BadRequestError -> metrics.controllableUnitLookup.badRequest(accountingPointBusinessIdForMetrics, party)
+                        else -> metrics.controllableUnitLookup.failure(accountingPointBusinessIdForMetrics, party)
+                    }
+                }
         }.respondJson(call)
     }
+
+    /**
+     * Resolves the requesting party for metrics tagging, always returning a non-null [Party].
+     *
+     * Falls back to a placeholder with `"unknown"` name/role/businessId if the party cannot be
+     * resolved (not found, or lookup failure)
+     */
+    private suspend fun resolveParty(partyId: Int): Party =
+        partyService.getParty(partyId.toLong())
+            ?: Party(id = partyId.toLong(), name = "unknown", role = "unknown", businessId = "unknown")
 
     context(principal: FlexPrincipal)
     private suspend fun fetchControllableUnits(

@@ -355,7 +355,7 @@ export const AccountingPointLocationMap = ({
       <Map
         ref={mapRef}
         initialViewState={{ longitude, latitude, zoom: 13 }}
-        style={{ width: "100%", height: 400 }}
+        style={{ width: "100%", height: 700 }}
         mapStyle={OPENFREEMAP_STYLE}
         onLoad={() => setMapLoaded(true)}
         onClick={() => setSubstationPopup(null)}

@@ -45,7 +45,8 @@ public data class AccountingPointGridLocationCreateRequest(
   @SerialName("additional_information")
   public val additionalInformation: String? = null,
   /**
-   * The quality of the grid location registration.
+   * Indicates how the grid location was determined. Guessed means that Flexibility Information
+   * System has estimated the location, while confirmed means that someone has verified it.
    */
   @SerialName("quality")
   public val quality: AccountingPointGridLocationQuality,

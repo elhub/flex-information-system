@@ -1,7 +1,6 @@
 import { fetchUtils } from "react-admin";
 
-export const serverURL =
-  window.env.VITE_FLEX_URL ?? import.meta.env.VITE_FLEX_URL;
+const serverURL = window.env.VITE_FLEX_URL ?? import.meta.env.VITE_FLEX_URL;
 export const apiURL = serverURL + "/api/v1";
 export const authURL = serverURL + "/auth/v1";
 export const gridURL = serverURL + "/grid/v0";

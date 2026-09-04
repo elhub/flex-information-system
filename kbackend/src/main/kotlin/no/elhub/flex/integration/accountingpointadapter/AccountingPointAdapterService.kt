@@ -10,13 +10,17 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.contextual
 import no.elhub.flex.integration.accountingpointadapter.generated.client.AccountingPointClient
 import no.elhub.flex.integration.accountingpointadapter.generated.client.ApiConfiguration
 import no.elhub.flex.integration.accountingpointadapter.generated.client.NetworkResult
 import no.elhub.flex.integration.accountingpointadapter.generated.models.AccountingPoint
+import no.elhub.flex.util.UUIDSerializer
 import no.elhub.flex.util.currentTraceContext
 import org.koin.core.annotation.Property
 import org.koin.core.annotation.Single
+import java.util.UUID
 import kotlin.time.Instant
 import no.elhub.flex.integration.accountingpointadapter.generated.client.NetworkError as ClientNetworkError
 
@@ -44,7 +48,13 @@ class AccountingPointAdapterHttpService(
                     requestTimeoutMillis = REQUEST_TIMEOUT_MILLIS
                 }
                 install(ContentNegotiation) {
-                    json(Json.Default)
+                    json(
+                        Json {
+                            serializersModule = SerializersModule {
+                                contextual(UUID::class, UUIDSerializer)
+                            }
+                        },
+                    )
                 }
             },
         )

@@ -15,6 +15,14 @@ FOR SELECT
 TO flex_internal_event_notification
 USING (true);
 
+GRANT SELECT, INSERT, UPDATE ON accounting_point_grid_location
+TO flex_internal_data;
+DROP POLICY IF EXISTS "APGL_INTERNAL_DATA" ON accounting_point_grid_location;
+CREATE POLICY "APGL_INTERNAL_DATA" ON accounting_point_grid_location
+FOR ALL
+TO flex_internal_data
+USING (true);
+
 -- RLS: APGL-FISO001
 GRANT SELECT, INSERT, UPDATE ON accounting_point_grid_location
 TO flex_flexibility_information_system_operator;

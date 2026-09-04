@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { readServiceProvidingGroupGridPrequalification } from "../../../generated-client";
 import { throwOnError } from "../../../util";
-import { useServiceProvidingGroup } from "../../show/useSpgShowViewModel";
 
 export const spgpqQueryKey = (id: number | undefined) => [
   "service_providing_group_grid_prequalification",
@@ -17,8 +16,3 @@ export const useSpgpqRecord = (id: number | undefined) =>
       }).then(throwOnError),
     enabled: !!id,
   });
-
-export const useSpgpqSpgData = (spgId: number | undefined) => {
-  const spg = useServiceProvidingGroup(spgId);
-  return { spg };
-};

@@ -108,6 +108,7 @@ test-mybatis = { group = "org.mybatis", name = "mybatis", version.ref = "mybatis
 test-wiremock = { group = "org.wiremock", name = "wiremock", version.ref = "wiremock" }
 storage-aws-s3 = { group = "aws.sdk.kotlin", name = "s3", version.ref = "aws-sdk-kotlin" }
 storage-pdfbox = { group = "org.apache.pdfbox", name = "pdfbox", version.ref = "pdfbox" }
+caching-caffeine = { group = "com.github.ben-manes.caffeine", name = "caffeine", version.ref = "caffeine" }
 
 [metadata]
 format.version = "1.1"
@@ -151,3 +152,4 @@ krontab = "2.9.0"
 aws-sdk-kotlin = "1.8.25"
 pdfbox = "3.0.8"
 s3mock = "5.1.0"
+caffeine = "3.2.4"
