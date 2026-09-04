@@ -83,9 +83,9 @@ LANGUAGE sql
 AS $$
 -- SELECT is OK for an SO impacted by a SPGGP in the same SPG
 SELECT EXISTS (
-    SELECT 1 FROM service_providing_group_grid_prequalification
+    SELECT 1 FROM flex.service_providing_group_grid_prequalification
     WHERE service_providing_group_id = spg_id
-    AND impacted_system_operator_id = (SELECT current_party())
+    AND impacted_system_operator_id = (SELECT flex.current_party())
 )
 $$;
 

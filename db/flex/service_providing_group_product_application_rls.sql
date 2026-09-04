@@ -66,7 +66,7 @@ LANGUAGE sql
 AS $$
 SELECT EXISTS (
     SELECT 1
-    FROM service_providing_group_product_application
+    FROM flex.service_providing_group_product_application
     WHERE service_providing_group_id = in_spg_id
         AND procuring_system_operator_id = in_so_id
 )
