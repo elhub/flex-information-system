@@ -12,6 +12,7 @@ setWorkerUrl(workerUrl);
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { App } from "./App";
+import { Modal } from "./components/ui";
 import { client } from "./generated-client/client.gen";
 import { apiURL, API_VERSION } from "./httpConfig";
 
@@ -39,6 +40,8 @@ client.interceptors.request.use((request) => {
   }
   return request;
 });
+
+Modal.setAppElement?.("#root");
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
