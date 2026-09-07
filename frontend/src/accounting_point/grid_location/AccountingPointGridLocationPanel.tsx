@@ -39,10 +39,12 @@ export const AccountingPointGridLocationPanel = ({
 
   const isConfirmed = gridLocation?.quality.toLowerCase() === "confirmed";
   const heading = !gridLocation
-    ? "Missing grid location"
+    ? translate("text.accounting_point_grid_location_panel.heading.missing")
     : isConfirmed
-      ? "Confirmed grid location"
-      : "Suggested grid location";
+      ? translate("text.accounting_point_grid_location_panel.heading.confirmed")
+      : translate(
+          "text.accounting_point_grid_location_panel.heading.suggested",
+        );
 
   return (
     <Panel border className="bg-white h-fit p-4 mt-4">
@@ -55,7 +57,13 @@ export const AccountingPointGridLocationPanel = ({
             variant={isConfirmed ? "secondary" : "primary"}
             onClick={() => setIsEditing(true)}
           >
-            {isConfirmed ? "Edit details" : "Validate grid location"}
+            {isConfirmed
+              ? translate(
+                  "text.accounting_point_grid_location_panel.button.edit_details",
+                )
+              : translate(
+                  "text.accounting_point_grid_location_panel.button.validate_grid_location",
+                )}
           </Button>
         )}
       </div>
@@ -76,7 +84,9 @@ export const AccountingPointGridLocationPanel = ({
       ) : gridLocation == null ? (
         <div className="flex flex-col gap-4">
           <p className="text-sm text-gray-500">
-            No grid location set for this accounting point yet
+            {translate(
+              "text.accounting_point_grid_location_panel.empty.no_grid_location_set",
+            )}
           </p>
           {userCanEdit && (
             <Button
@@ -84,7 +94,9 @@ export const AccountingPointGridLocationPanel = ({
               className="max-w-fit"
               onClick={() => setIsEditing(true)}
             >
-              Add grid location
+              {translate(
+                "text.accounting_point_grid_location_panel.button.add_grid_location",
+              )}
             </Button>
           )}
         </div>
