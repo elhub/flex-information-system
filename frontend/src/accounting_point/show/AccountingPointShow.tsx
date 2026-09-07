@@ -30,22 +30,24 @@ export const AccountingPointShow = () => {
 
   const handleCancelSelection = () => {
     setSelectedSubstation(null);
+    setPopupSubstation(null);
   };
 
   const handleClearSelection = () => {
     setSelectedSubstation(null);
+    setPopupSubstation(null);
   };
 
   const handleSubstationSelect = (substation: Substation | null) => {
     setSelectedSubstation(substation);
-    if (substation) {
-      setSelectionTick((current) => current + 1);
-    }
+    setPopupSubstation(substation);
   };
 
   const [selectedSubstation, setSelectedSubstation] =
     useState<Substation | null>(null);
-  const [selectionTick, setSelectionTick] = useState(0);
+  const [popupSubstation, setPopupSubstation] = useState<Substation | null>(
+    null,
+  );
 
   const {
     data: viewModel,
@@ -114,7 +116,8 @@ export const AccountingPointShow = () => {
         location={ap.location}
         selectedSubstation={selectedSubstation}
         onSelectSubstation={handleSubstationSelect}
-        selectionTick={selectionTick}
+        popupSubstation={popupSubstation}
+        onClosePopup={() => setPopupSubstation(null)}
       />
     </ShowPageLayout>
   );

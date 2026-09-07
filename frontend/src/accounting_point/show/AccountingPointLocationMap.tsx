@@ -251,7 +251,8 @@ type Props = {
   onSubstationClick?: (substation: Substation) => void;
   highlightedSubstationBusinessId?: string | null;
   selectedSubstation: Substation | null;
-  selectionTick: number;
+  popupSubstation: Substation | null;
+  onClosePopup: () => void;
 };
 
 export const AccountingPointLocationMap = ({
@@ -260,7 +261,8 @@ export const AccountingPointLocationMap = ({
   onSubstationClick,
   highlightedSubstationBusinessId,
   selectedSubstation,
-  selectionTick,
+  popupSubstation,
+  onClosePopup,
 }: Props) => {
   const { substations, substationClusters, lines } = useGridData(
     canViewGrid ? location : undefined,
@@ -272,23 +274,13 @@ export const AccountingPointLocationMap = ({
   const mapRef = useRef<MapRef>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
 
-  const [closedSelectionTick, setClosedSelectionTick] = useState<number | null>(
-    null,
-  );
-
-  const activePopup =
-    selectedSubstation?.position?.coordinates &&
-    closedSelectionTick !== selectionTick
-      ? {
-          substation: selectedSubstation,
-          longitude: selectedSubstation.position.coordinates[0],
-          latitude: selectedSubstation.position.coordinates[1],
-        }
-      : null;
-
-  const closePopup = useCallback(() => {
-    setClosedSelectionTick(selectionTick);
-  }, [selectionTick]);
+  const activePopup = popupSubstation?.position?.coordinates
+    ? {
+        substation: popupSubstation,
+        longitude: popupSubstation.position.coordinates[0],
+        latitude: popupSubstation.position.coordinates[1],
+      }
+    : null;
 
   // grid location clicked: open info popup
   const handleSubstationMarkerClick = useCallback(
@@ -309,11 +301,11 @@ export const AccountingPointLocationMap = ({
     },
     [onSubstationClick],
   );
-
   useEffect(() => {
     if (!selectedSubstation?.position?.coordinates) return;
     if (apLon === undefined || apLat === undefined) return;
     const [sLon, sLat] = selectedSubstation.position.coordinates;
+
     mapRef.current?.fitBounds(
       [
         [Math.min(apLon, sLon), Math.min(apLat, sLat)],
@@ -401,7 +393,7 @@ export const AccountingPointLocationMap = ({
         style={{ width: "100%", height: 700 }}
         mapStyle={OPENFREEMAP_STYLE}
         onLoad={() => setMapLoaded(true)}
-        onClick={closePopup}
+        onClick={onClosePopup}
       >
         <FullscreenControl position="top-right" />
         {/* lines between clusters */}
@@ -489,7 +481,7 @@ export const AccountingPointLocationMap = ({
               highlightedSubstationBusinessId
             }
             onSelect={handleSelectSubstation}
-            onClose={closePopup}
+            onClose={onClosePopup}
           />
         )}
 

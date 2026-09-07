@@ -20,7 +20,8 @@ type Props = {
   location: AccountingPoint["location"];
   selectedSubstation: Substation | null;
   onSelectSubstation: (substation: Substation) => void;
-  selectionTick: number;
+  popupSubstation: Substation | null;
+  onClosePopup: () => void;
 };
 
 export const AccountingPointShowTabs = ({
@@ -28,7 +29,8 @@ export const AccountingPointShowTabs = ({
   location,
   selectedSubstation,
   onSelectSubstation,
-  selectionTick,
+  popupSubstation,
+  onClosePopup,
 }: Props) => {
   const { permissions } = usePermissions<Permissions>();
   const { data: identity } = useGetIdentity();
@@ -69,7 +71,8 @@ export const AccountingPointShowTabs = ({
             onSubstationClick={handleSubstationClick}
             highlightedSubstationBusinessId={highlightedBusinessId}
             selectedSubstation={selectedSubstation}
-            selectionTick={selectionTick}
+            popupSubstation={popupSubstation}
+            onClosePopup={onClosePopup}
           />
         )}
       </Tabs.Panel>
