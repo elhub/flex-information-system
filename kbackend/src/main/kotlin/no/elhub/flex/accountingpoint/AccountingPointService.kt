@@ -177,21 +177,31 @@ class AccountingPointServiceImpl(
                             either {
                                 val substationName = substationRepository.getNameByBusinessId(substationBusinessId).bind()
 
-                                val currentGridLocation = accountingPointGridLocationRepository
+                                val mustUpdateGridLocation = accountingPointGridLocationRepository
                                     .getByAccountingPointId(accountingPointId)
                                     .bind()
+                                    ?.let { currentGridLocation ->
+                                        // grid model always takes priority over other sources
+                                        currentGridLocation.source != AccountingPointGridLocationSource.GRID_MODEL ||
+                                            // a grid model location can be updated if the substation is different
+                                            substationBusinessId != currentGridLocation.businessId ||
+                                            // or if its currently stored voltage is zero
+                                            // (we possibly got something from the API)
+                                            currentGridLocation.nominalVoltage == 0.0
+                                    }
+                                    ?: true // if no grid location present, always update
 
-                                if (currentGridLocation?.quality != AccountingPointGridLocationQuality.CONFIRMED) {
+                                if (mustUpdateGridLocation) {
                                     accountingPointGridLocationRepository.upsert(
                                         AccountingPointGridLocation(
                                             accountingPointId = accountingPointId,
                                             objectType = AccountingPointGridLocationObjectType.SUBSTATION,
                                             businessId = substationBusinessId,
                                             name = substationName,
-                                            nominalVoltage = 0.0,
+                                            nominalVoltage = 0.0, // TODO: update when grid model API provides voltage
                                             additionalInformation = null,
                                             source = AccountingPointGridLocationSource.GRID_MODEL,
-                                            quality = AccountingPointGridLocationQuality.GUESSED,
+                                            quality = AccountingPointGridLocationQuality.CONFIRMED,
                                         )
                                     ).bind()
                                 }

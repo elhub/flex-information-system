@@ -189,7 +189,150 @@ class AccountingPointGridLocationRepositoryTest : FunSpec({
             }
         }
     }
+
+    // check that CSO can only fill in the voltage or additional information
+    // on a grid_model sourced row, nothing more
+    context("CSO editing a grid_model-sourced location") {
+
+        data class Scenario(
+            val description: String,
+            val update: (existingBusinessId: UUID, otherBusinessId: UUID) -> AccountingPointGridLocation,
+            val allowed: Boolean,
+        )
+
+        withData(
+            nameFn = { it.description },
+            listOf(
+                Scenario(
+                    description = "CSO can fill in the voltage on a grid_model row",
+                    update = { existingId, _ ->
+                        gridLocation(existingId, nominalVoltage = 22.0, source = AccountingPointGridLocationSource.CSO)
+                    },
+                    allowed = true,
+                ),
+                Scenario(
+                    description = "CSO can also fill in additional information",
+                    update = { existingId, _ ->
+                        gridLocation(
+                            existingId,
+                            nominalVoltage = 22.0,
+                            additionalInformation = "Filled in by CSO",
+                            source = AccountingPointGridLocationSource.CSO,
+                        )
+                    },
+                    allowed = true,
+                ),
+                Scenario(
+                    description = "CSO cannot change the substation",
+                    update = { _, otherId ->
+                        gridLocation(otherId, nominalVoltage = 22.0, source = AccountingPointGridLocationSource.CSO)
+                    },
+                    allowed = false,
+                ),
+                Scenario(
+                    description = "CSO cannot change the name",
+                    update = { existingId, _ ->
+                        gridLocation(
+                            existingId,
+                            name = "Renamed by CSO",
+                            nominalVoltage = 22.0,
+                            source = AccountingPointGridLocationSource.CSO,
+                        )
+                    },
+                    allowed = false,
+                ),
+                Scenario(
+                    description = "CSO cannot demote the quality back to guessed",
+                    update = { existingId, _ ->
+                        gridLocation(
+                            existingId,
+                            nominalVoltage = 22.0,
+                            quality = AccountingPointGridLocationQuality.GUESSED,
+                            source = AccountingPointGridLocationSource.CSO,
+                        )
+                    },
+                    allowed = false,
+                ),
+                Scenario(
+                    description = "SO (non-CSO) cannot touch a grid_model row at all",
+                    update = { existingId, _ ->
+                        gridLocation(existingId, nominalVoltage = 22.0, source = AccountingPointGridLocationSource.SO)
+                    },
+                    allowed = false,
+                ),
+                Scenario(
+                    description = "system cannot touch a grid_model row at all",
+                    update = { existingId, _ ->
+                        gridLocation(existingId, nominalVoltage = 22.0, source = AccountingPointGridLocationSource.SYSTEM)
+                    },
+                    allowed = false,
+                ),
+            ),
+        ) { scenario ->
+            // given
+            val apId = insertAccountingPoint(uniqueGsrn())
+            val existingId = UUID.randomUUID()
+            val otherId = UUID.randomUUID()
+            insertSubstation(existingId, name = "Original Substation")
+            insertSubstation(otherId, name = "Other Substation")
+            insertGridLocationRow(
+                apId = apId,
+                businessId = existingId,
+                name = "Original Substation",
+                nominalVoltage = 0.0,
+                source = "grid_model",
+                quality = "confirmed",
+                additionalInformation = null,
+            )
+
+            // when
+            val update = scenario.update(existingId, otherId).copy(accountingPointId = apId)
+            val result = with(internalDataPrincipal) { repo.upsert(update) }
+
+            // then
+            val row = queryGridLocation(apId)
+            if (scenario.allowed) {
+                result.shouldBeRight()
+                checkNotNull(row)
+                // the row is never "taken over": it remains source=grid_model
+                row.source shouldBe "grid_model"
+                row.businessId shouldBe existingId.toString()
+                row.nominalVoltage shouldBe update.nominalVoltage
+                row.additionalInformation shouldBe update.additionalInformation
+                row.quality shouldBe "confirmed"
+            } else {
+                result.shouldBeLeft()
+                // nothing changed
+                checkNotNull(row)
+                row.source shouldBe "grid_model"
+                row.businessId shouldBe existingId.toString()
+                row.name shouldBe "Original Substation"
+                row.nominalVoltage shouldBe 0.0
+                row.quality shouldBe "confirmed"
+                row.additionalInformation shouldBe null
+            }
+        }
+    }
 })
+
+private fun gridLocation(
+    businessId: UUID,
+    name: String = "Original Substation",
+    nominalVoltage: Double = 0.0,
+    additionalInformation: String? = null,
+    source: AccountingPointGridLocationSource,
+    quality: AccountingPointGridLocationQuality = AccountingPointGridLocationQuality.CONFIRMED,
+): AccountingPointGridLocation =
+    AccountingPointGridLocation(
+        accountingPointId = 0,
+        objectType = AccountingPointGridLocationObjectType.SUBSTATION,
+        businessId = businessId,
+        name = name,
+        nominalVoltage = nominalVoltage,
+        additionalInformation = additionalInformation,
+        source = source,
+        quality = quality,
+    )
 
 private data class GridLocationRow(
     val objectType: String,
