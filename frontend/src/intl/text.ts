@@ -114,7 +114,14 @@ export type TextKey =
   | "notice_missing_grid_location_button"
   | "notice_insufficient_grid_location_source_button"
   | "notice_bidding_zone_mismatch_button"
-  | "notice_spg_membership_button";
+  | "notice_spg_membership_button"
+  | "accounting_point_location_map.popup.business_id"
+  | "accounting_point_location_map.popup.kind"
+  | "accounting_point_location_map.popup.status"
+  | "accounting_point_location_map.popup.voltage"
+  | "accounting_point_location_map.popup.selected_as_grid_location"
+  | "accounting_point_location_map.popup.select"
+  | "accounting_point_location_map.no_location_set";
 
 export const text: Record<string, Record<TextKey, string>> = {
   en: {
@@ -269,6 +276,15 @@ export const text: Record<string, Record<TextKey, string>> = {
     notice_insufficient_grid_location_source_button: "Go to accounting point",
     notice_bidding_zone_mismatch_button:
       "Go to Service providing group membership",
+    "accounting_point_location_map.popup.business_id": "Business ID",
+    "accounting_point_location_map.popup.kind": "Kind",
+    "accounting_point_location_map.popup.status": "Status",
+    "accounting_point_location_map.popup.voltage": "Voltage",
+    "accounting_point_location_map.popup.selected_as_grid_location":
+      "Selected as grid location",
+    "accounting_point_location_map.popup.select": "Select",
+    "accounting_point_location_map.no_location_set":
+      "No location set for this accounting point.",
   },
   nb: {
     entity_role: "Entitet",
@@ -420,5 +436,14 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Sjekk informasjon om nettlokasjon her",
     notice_insufficient_grid_location_source_button: "Gå til målepunktet",
     notice_bidding_zone_mismatch_button: "Gå til gruppen",
+    "accounting_point_location_map.popup.business_id": "Forretnings-ID",
+    "accounting_point_location_map.popup.kind": "Type",
+    "accounting_point_location_map.popup.status": "Status",
+    "accounting_point_location_map.popup.voltage": "Spenning",
+    "accounting_point_location_map.popup.selected_as_grid_location":
+      "Valgt som nettlokasjon",
+    "accounting_point_location_map.popup.select": "Velg",
+    "accounting_point_location_map.no_location_set":
+      "Ingen lokasjon er satt for dette avregningspunktet.",
   },
 };

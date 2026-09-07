@@ -9,6 +9,7 @@ import Map, {
 import type { MapRef } from "react-map-gl/maplibre";
 import { useQuery } from "@tanstack/react-query";
 import type { FeatureCollection, LineString, Point, Polygon } from "geojson";
+import { useTranslate } from "ra-core";
 import { AccountingPoint } from "../../generated-client";
 import { Button, Panel } from "../../components/ui";
 import { elhubTheme } from "../../theme";
@@ -182,6 +183,12 @@ type SubstationInfoPopupProps = {
   longitude: number;
   latitude: number;
   isAlreadySelected: boolean;
+  businessIdLabel: string;
+  kindLabel: string;
+  statusLabel: string;
+  voltageLabel: string;
+  selectedAsGridLocationLabel: string;
+  selectLabel: string;
   onSelect: () => void;
   onClose: () => void;
 };
@@ -191,6 +198,12 @@ const SubstationInfoPopup = ({
   longitude,
   latitude,
   isAlreadySelected,
+  businessIdLabel,
+  kindLabel,
+  statusLabel,
+  voltageLabel,
+  selectedAsGridLocationLabel,
+  selectLabel,
   onSelect,
   onClose,
 }: SubstationInfoPopupProps) => (
@@ -210,21 +223,27 @@ const SubstationInfoPopup = ({
         <tbody>
           <tr>
             <td className="text-gray-500 pr-3 whitespace-nowrap">
-              Business ID
+              {businessIdLabel}
             </td>
             <td className="font-medium text-right">{substation.business_id}</td>
           </tr>
           <tr>
-            <td className="text-gray-500 pr-3 whitespace-nowrap">Kind</td>
+            <td className="text-gray-500 pr-3 whitespace-nowrap">
+              {kindLabel}
+            </td>
             <td className="font-medium text-right">{substation.kind}</td>
           </tr>
           <tr>
-            <td className="text-gray-500 pr-3 whitespace-nowrap">Status</td>
+            <td className="text-gray-500 pr-3 whitespace-nowrap">
+              {statusLabel}
+            </td>
             <td className="font-medium text-right">{substation.status}</td>
           </tr>
           {substation.voltage_levels.length > 0 && (
             <tr>
-              <td className="text-gray-500 pr-3 whitespace-nowrap">Voltage</td>
+              <td className="text-gray-500 pr-3 whitespace-nowrap">
+                {voltageLabel}
+              </td>
               <td className="font-medium text-right">
                 {substation.voltage_levels.map((v) => `${v}kV`).join(", ")}
               </td>
@@ -234,11 +253,11 @@ const SubstationInfoPopup = ({
       </table>
       {isAlreadySelected ? (
         <p className="text-xs text-center text-gray-500 italic">
-          Selected as grid location
+          {selectedAsGridLocationLabel}
         </p>
       ) : (
         <Button size="small" variant="primary" onClick={onSelect}>
-          Select
+          {selectLabel}
         </Button>
       )}
     </div>
@@ -264,6 +283,7 @@ export const AccountingPointLocationMap = ({
   popupSubstation,
   onClosePopup,
 }: Props) => {
+  const translate = useTranslate();
   const { substations, substationClusters, lines } = useGridData(
     canViewGrid ? location : undefined,
   );
@@ -358,7 +378,7 @@ export const AccountingPointLocationMap = ({
     return (
       <Panel border className="bg-white p-4">
         <p className="text-sm text-gray-500">
-          No location set for this accounting point.
+          {translate("text.accounting_point_location_map.no_location_set")}
         </p>
       </Panel>
     );
@@ -480,6 +500,24 @@ export const AccountingPointLocationMap = ({
               activePopup.substation.business_id ===
               highlightedSubstationBusinessId
             }
+            businessIdLabel={translate(
+              "text.accounting_point_location_map.popup.business_id",
+            )}
+            kindLabel={translate(
+              "text.accounting_point_location_map.popup.kind",
+            )}
+            statusLabel={translate(
+              "text.accounting_point_location_map.popup.status",
+            )}
+            voltageLabel={translate(
+              "text.accounting_point_location_map.popup.voltage",
+            )}
+            selectedAsGridLocationLabel={translate(
+              "text.accounting_point_location_map.popup.selected_as_grid_location",
+            )}
+            selectLabel={translate(
+              "text.accounting_point_location_map.popup.select",
+            )}
             onSelect={handleSelectSubstation}
             onClose={onClosePopup}
           />
