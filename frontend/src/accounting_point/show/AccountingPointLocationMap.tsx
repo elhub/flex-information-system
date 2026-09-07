@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Map, {
   FullscreenControl,
+  NavigationControl,
   Layer,
   Marker,
   Source,
@@ -398,6 +399,7 @@ export const AccountingPointLocationMap = ({
         onClick={onClosePopup}
       >
         <FullscreenControl position="top-right" />
+        <NavigationControl position="top-right" />
         {/* lines between clusters */}
         {lineFC && (
           <Source id="grid-lines" type="geojson" data={lineFC}>
