@@ -292,13 +292,18 @@ export const AccountingPointLocationMap = ({
 
   // grid location clicked: open info popup
   const handleSubstationMarkerClick = useCallback(
-    (substation: Substation) => {
-      // center the map around the substation popup
-      if (substation.position?.coordinates) {
-        mapRef.current?.setCenter([
-          substation.position.coordinates[0],
-          substation.position.coordinates[1],
-        ]);
+    (substation: Substation, location: AccountingPoint["location"]) => {
+      if (substation.position?.coordinates && location) {
+        const apLon = location?.coordinates[0];
+        const apLat = location?.coordinates[1];
+        const [sLon, sLat] = substation.position.coordinates;
+        mapRef.current?.fitBounds(
+          [
+            [Math.min(apLon, sLon), Math.min(apLat, sLat)],
+            [Math.max(apLon, sLon), Math.max(apLat, sLat)],
+          ],
+          { padding: 80, maxZoom: 13 },
+        );
       }
       onSubstationClick?.(substation);
     },
@@ -307,8 +312,15 @@ export const AccountingPointLocationMap = ({
 
   useEffect(() => {
     if (!selectedSubstation?.position?.coordinates) return;
-    const [longitude, latitude] = selectedSubstation.position.coordinates;
-    mapRef.current?.setCenter([longitude, latitude]);
+    if (apLon === undefined || apLat === undefined) return;
+    const [sLon, sLat] = selectedSubstation.position.coordinates;
+    mapRef.current?.fitBounds(
+      [
+        [Math.min(apLon, sLon), Math.min(apLat, sLat)],
+        [Math.max(apLon, sLon), Math.max(apLat, sLat)],
+      ],
+      { padding: 80, maxZoom: 13 },
+    );
   }, [selectedSubstation]);
 
   const handleSelectSubstation = useCallback(async () => {
@@ -434,7 +446,7 @@ export const AccountingPointLocationMap = ({
             key={s.id}
             substation={s}
             isSelected={s.business_id === highlightedSubstationBusinessId}
-            onMarkerClick={handleSubstationMarkerClick}
+            onMarkerClick={() => handleSubstationMarkerClick(s, location)}
           />
         ))}
 
