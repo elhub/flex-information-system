@@ -51,24 +51,24 @@ export const TechnicalResourceDetailModal = ({
           className="contents"
           labelKey="technical_resource.technology"
           value={
-            <div className="flex gap-2 flex-wrap">
+            <span className="flex gap-2 flex-wrap">
               {record.technology.map((v) => (
                 <Tag key={v}>
                   {translateEnum(`technology.${v}` as EnumLabel)}
                 </Tag>
               ))}
-            </div>
+            </span>
           }
         />
         <LabelValue
           className="contents"
           labelKey="technical_resource.category"
           value={
-            <div className="flex gap-2 flex-wrap">
+            <span className="flex gap-2 flex-wrap">
               {record.category.map((v) => (
                 <Tag key={v}>{translateEnum(`category.${v}` as EnumLabel)}</Tag>
               ))}
-            </div>
+            </span>
           }
         />
         <LabelValue
