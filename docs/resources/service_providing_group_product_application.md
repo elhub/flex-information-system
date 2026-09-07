@@ -52,6 +52,8 @@ change from `requested` will trigger this check as well.
 | <a name="field-ramping_description" href="#field-ramping_description">ramping_description</a>                            | Free text description of ramping details. Only required for product Manual Frequency Restoration (mFRR).                          | text                                                                                                                                     |                                                                   |
 | <a name="field-recorded_at" href="#field-recorded_at">recorded_at</a>                                                    | When the resource was recorded (created or updated) in the system.                                                                | date-time<br/>Read only                                                                                                                  |                                                                   |
 | <a name="field-recorded_by" href="#field-recorded_by">recorded_by</a>                                                    | The identity that recorded the resource.                                                                                          | bigint<br/>Read only                                                                                                                     |                                                                   |
+| <a name="field-created_at" href="#field-created_at">created_at</a>                                                       | When the application was first created.                                                                                           | date-time<br/>Read only                                                                                                                  |                                                                   |
+| <a name="field-completed_at" href="#field-completed">completed_at</a>                                                    | When the application was marked complete by the procuring system operator.                                                        | date-time<br/>Read only                                                                                                                  |                                                                   |
 
 ## Validation Rules
 
@@ -154,3 +156,5 @@ For party type abbreviations, check
 | ramping_description          |      | R   | R  | R  | RU   | R  | RCU | R  |     |
 | recorded_at                  |      | R   | R  | R  | R    | R  | R   | R  |     |
 | recorded_by                  |      | R   | R  | R  | R    | R  | R   | R  |     |
+| created_at                   |      | R   | R  | R  | R    | R  | R   | R  |     |
+| completed_at                 |      | R   | R  | R  | RU   | RU | R   | R  |     |

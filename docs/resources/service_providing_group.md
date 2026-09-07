@@ -42,6 +42,7 @@ After termination, the status can only be edited by a FIS operator.
 | <a name="field-additional_information" href="#field-additional_information">additional_information</a> | Free text field for extra information about the service providing group if needed.                                             | text                                                                                                                                                                                                           |                               |
 | <a name="field-recorded_at" href="#field-recorded_at">recorded_at</a>                                  | When the resource was recorded (created or updated) in the system.                                                             | date-time<br/>Read only                                                                                                                                                                                        |                               |
 | <a name="field-recorded_by" href="#field-recorded_by">recorded_by</a>                                  | The identity that recorded the resource.                                                                                       | bigint<br/>Read only                                                                                                                                                                                           |                               |
+| <a name="field-created_at" href="#field-created_at">created_at</a>                                     | When the service providing group was first created.                                                                            | date-time<br/>Read only                                                                                                                                                                                        |                               |
 
 ## Validation Rules
 
@@ -128,3 +129,4 @@ For party type abbreviations, check
 | additional_information |      | R   | R  | R  | RCU  | R  | RCU | R  |     |
 | recorded_at            |      | R   | R  | R  | R    | R  | R   | R  |     |
 | recorded_by            |      | R   | R  | R  | R    | R  | R   | R  |     |
+| created_at             |      | R   | R  | R  | R    | R  | R   | R  |     |

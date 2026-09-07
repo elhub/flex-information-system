@@ -16,6 +16,13 @@ simplify if certain conditions are met.
 - The service provider has
   [registered the Service Providing Group](./service-providing-group-registration.md).
 
+## Completion
+
+Applications are first marked _complete_ by the procuring system operator, and
+they are meant to be processed in chronological order based on the resulting
+`completed_at` timestamps. Any change to the application or the underlying SPG
+causes the system to consider the application as possibly incomplete again.
+
 ## Prequalification checks
 
 The procedure for prequalifying a SPG will differ based on what product types
