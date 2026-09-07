@@ -64,6 +64,7 @@ export const SpgpaShowSummary = ({ spgpa, spg, powerScale }: Props) => {
           <LabelValue
             size="large"
             label="Service providing group"
+            valueAs="span"
             value={
               <>
                 <BodyText className="mb-2">

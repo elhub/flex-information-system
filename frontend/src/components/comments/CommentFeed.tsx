@@ -5,6 +5,7 @@ import { useGetIdentity, useTranslate } from "ra-core";
 import type { UseMutationResult, UseQueryResult } from "@tanstack/react-query";
 import {
   Button,
+  FormItem,
   Loader,
   Select,
   SelectContent,
@@ -95,63 +96,67 @@ export function CommentFeed({
       {canCreate && (
         <div className="p-4 border-b-2 border-gray-200">
           <p className="text-sm font-bold text-gray-900 mb-2">New comment</p>
-          <Textarea
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            placeholder="Write a comment…"
-            rows={3}
-          />
+          <FormItem>
+            <Textarea
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              placeholder="Write a comment…"
+              rows={3}
+            />
+          </FormItem>
           {postComment.isError && (
             <p className="text-sm text-red-600 mt-1">
               Failed to post comment. Please try again.
             </p>
           )}
           <div className="flex justify-end items-center gap-2 mt-2">
-            <Select
-              className="w-80"
-              value={visibility}
-              onValueChange={(v) => setVisibility(v as Visibility)}
-              placeholder="Visibility"
-            >
-              <SelectContent>
-                <SelectItem value="same_party">
-                  <span className="flex items-start gap-2">
-                    <span className="shrink-0 mt-0.5">
-                      <IconViewOff size="small" />
-                    </span>
-                    <span className="flex flex-col">
-                      <span>
-                        {enumTranslation("comment.visibility.same_party")}
+            <FormItem>
+              <Select
+                className="w-80"
+                value={visibility}
+                onValueChange={(v) => setVisibility(v as Visibility)}
+                placeholder="Visibility"
+              >
+                <SelectContent>
+                  <SelectItem value="same_party">
+                    <span className="flex items-start gap-2">
+                      <span className="shrink-0 mt-0.5">
+                        <IconViewOff size="small" />
                       </span>
-                      <span className="text-xs text-gray-500">
-                        {translate(
-                          "text.comment.visibility.same_party.description",
-                        )}
-                      </span>
-                    </span>
-                  </span>
-                </SelectItem>
-                <SelectItem value="any_involved_party">
-                  <span className="flex items-start gap-2">
-                    <span className="shrink-0 mt-0.5">
-                      <IconViewOn size="small" />
-                    </span>
-                    <span className="flex flex-col">
-                      <span>
-                        {enumTranslation(
-                          "comment.visibility.any_involved_party",
-                        )}
-                      </span>
-                      <span className="text-xs text-gray-500">
-                        {translate(
-                          "text.comment.visibility.any_involved_party.description",
-                        )}
+                      <span className="flex flex-col">
+                        <span>
+                          {enumTranslation("comment.visibility.same_party")}
+                        </span>
+                        <span className="text-xs text-gray-500">
+                          {translate(
+                            "text.comment.visibility.same_party.description",
+                          )}
+                        </span>
                       </span>
                     </span>
-                  </span>
-                </SelectItem>
-              </SelectContent>
-            </Select>
+                  </SelectItem>
+                  <SelectItem value="any_involved_party">
+                    <span className="flex items-start gap-2">
+                      <span className="shrink-0 mt-0.5">
+                        <IconViewOn size="small" />
+                      </span>
+                      <span className="flex flex-col">
+                        <span>
+                          {enumTranslation(
+                            "comment.visibility.any_involved_party",
+                          )}
+                        </span>
+                        <span className="text-xs text-gray-500">
+                          {translate(
+                            "text.comment.visibility.any_involved_party.description",
+                          )}
+                        </span>
+                      </span>
+                    </span>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </FormItem>
             <Button
               variant="primary"
               onClick={handlePost}
