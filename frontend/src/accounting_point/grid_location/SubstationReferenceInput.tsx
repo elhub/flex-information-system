@@ -1,5 +1,5 @@
 import React, { useId, useState } from "react";
-import { useInput } from "ra-core";
+import { useInput, useTranslate } from "ra-core";
 import { useQuery } from "@tanstack/react-query";
 import { BaseInput } from "../../components/EDS-ra/inputs/BaseInput";
 import { Combobox } from "../../components/ui";
@@ -25,6 +25,7 @@ export const SubstationReferenceInput = ({
   onSelect,
   knownSubstation,
 }: Props) => {
+  const translate = useTranslate();
   const { id: inputId, field, fieldState } = useInput({ source });
   const fallbackId = useId();
   const id = inputId || fallbackId;
@@ -86,7 +87,9 @@ export const SubstationReferenceInput = ({
   return (
     <BaseInput
       source={source}
-      descriptionOverride={"Search for substation"}
+      descriptionOverride={translate(
+        "text.substation_reference_input.search_for_substation",
+      )}
       required={required}
       tooltip={tooltip}
       id={id}

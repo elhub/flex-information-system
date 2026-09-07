@@ -128,7 +128,8 @@ export type TextKey =
   | "accounting_point_grid_location_panel.button.edit_details"
   | "accounting_point_grid_location_panel.button.validate_grid_location"
   | "accounting_point_grid_location_panel.button.add_grid_location"
-  | "accounting_point_grid_location_panel.empty.no_grid_location_set";
+  | "accounting_point_grid_location_panel.empty.no_grid_location_set"
+  | "substation_reference_input.search_for_substation";
 
 export const text: Record<string, Record<TextKey, string>> = {
   en: {
@@ -305,6 +306,7 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Add grid location",
     "accounting_point_grid_location_panel.empty.no_grid_location_set":
       "No grid location set for this accounting point yet",
+    "substation_reference_input.search_for_substation": "Search for substation",
   },
   nb: {
     entity_role: "Entitet",
@@ -479,5 +481,6 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Legg til nettlokasjon",
     "accounting_point_grid_location_panel.empty.no_grid_location_set":
       "Ingen nettlokasjon er satt for dette avregningspunktet ennå",
+    "substation_reference_input.search_for_substation": "Søk etter stasjon",
   },
 };
