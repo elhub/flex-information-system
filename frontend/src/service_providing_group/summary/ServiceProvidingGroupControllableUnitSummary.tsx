@@ -33,6 +33,7 @@ export const ServiceProvidingGroupControllableUnitSummary = ({
         />
         <LabelValue
           label="Aggregated flexible power"
+          valueAs="span"
           value={
             <span className="inline-flex items-center gap-3">
               <span>
