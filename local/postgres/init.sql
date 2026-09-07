@@ -108,3 +108,11 @@ flex_organisation,
 flex_system_operator,
 flex_service_provider,
 flex_third_party;
+
+-- Monitoring
+CREATE ROLE postgres_exporter
+WITH NOINHERIT LOGIN PASSWORD 'postgres_exporter_password';
+GRANT pg_monitor TO postgres_exporter;
+GRANT pg_read_all_stats TO postgres_exporter;
+-- https://github.com/prometheus-community/postgres_exporter/issues/1100
+GRANT EXECUTE ON FUNCTION pg_catalog.pg_ls_waldir() TO postgres_exporter;
