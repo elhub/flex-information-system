@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Map, {
   FullscreenControl,
+  NavigationControl,
   Layer,
   Marker,
   Source,
@@ -9,8 +10,9 @@ import Map, {
 import type { MapRef } from "react-map-gl/maplibre";
 import { useQuery } from "@tanstack/react-query";
 import type { FeatureCollection, LineString, Point, Polygon } from "geojson";
+import { useTranslate } from "ra-core";
 import { AccountingPoint } from "../../generated-client";
-import { Button, Panel } from "../../components/ui";
+import { Panel } from "../../components/ui";
 import { elhubTheme } from "../../theme";
 import { gridURL } from "../../httpConfig";
 import { fetchJSON } from "../../util";
@@ -181,8 +183,11 @@ type SubstationInfoPopupProps = {
   substation: Substation;
   longitude: number;
   latitude: number;
-  isAlreadySelected: boolean;
-  onSelect: () => void;
+  businessIdLabel: string;
+  kindLabel: string;
+  statusLabel: string;
+  voltageLabel: string;
+  selectedAsGridLocationLabel: string;
   onClose: () => void;
 };
 
@@ -190,8 +195,11 @@ const SubstationInfoPopup = ({
   substation,
   longitude,
   latitude,
-  isAlreadySelected,
-  onSelect,
+  businessIdLabel,
+  kindLabel,
+  statusLabel,
+  voltageLabel,
+  selectedAsGridLocationLabel,
   onClose,
 }: SubstationInfoPopupProps) => (
   <Popup
@@ -210,21 +218,27 @@ const SubstationInfoPopup = ({
         <tbody>
           <tr>
             <td className="text-gray-500 pr-3 whitespace-nowrap">
-              Business ID
+              {businessIdLabel}
             </td>
             <td className="font-medium text-right">{substation.business_id}</td>
           </tr>
           <tr>
-            <td className="text-gray-500 pr-3 whitespace-nowrap">Kind</td>
+            <td className="text-gray-500 pr-3 whitespace-nowrap">
+              {kindLabel}
+            </td>
             <td className="font-medium text-right">{substation.kind}</td>
           </tr>
           <tr>
-            <td className="text-gray-500 pr-3 whitespace-nowrap">Status</td>
+            <td className="text-gray-500 pr-3 whitespace-nowrap">
+              {statusLabel}
+            </td>
             <td className="font-medium text-right">{substation.status}</td>
           </tr>
           {substation.voltage_levels.length > 0 && (
             <tr>
-              <td className="text-gray-500 pr-3 whitespace-nowrap">Voltage</td>
+              <td className="text-gray-500 pr-3 whitespace-nowrap">
+                {voltageLabel}
+              </td>
               <td className="font-medium text-right">
                 {substation.voltage_levels.map((v) => `${v}kV`).join(", ")}
               </td>
@@ -232,15 +246,9 @@ const SubstationInfoPopup = ({
           )}
         </tbody>
       </table>
-      {isAlreadySelected ? (
-        <p className="text-xs text-center text-gray-500 italic">
-          Already set as grid location
-        </p>
-      ) : (
-        <Button size="small" variant="primary" onClick={onSelect}>
-          Select
-        </Button>
-      )}
+      <p className="text-xs text-center text-gray-500 italic">
+        {selectedAsGridLocationLabel}
+      </p>
     </div>
   </Popup>
 );
@@ -250,6 +258,9 @@ type Props = {
   canViewGrid: boolean;
   onSubstationClick?: (substation: Substation) => void;
   highlightedSubstationBusinessId?: string | null;
+  selectedSubstation: Substation | null;
+  popupSubstation: Substation | null;
+  onClosePopup: () => void;
 };
 
 export const AccountingPointLocationMap = ({
@@ -257,44 +268,70 @@ export const AccountingPointLocationMap = ({
   canViewGrid,
   onSubstationClick,
   highlightedSubstationBusinessId,
+  selectedSubstation,
+  popupSubstation,
+  onClosePopup,
 }: Props) => {
+  const translate = useTranslate();
   const { substations, substationClusters, lines } = useGridData(
     canViewGrid ? location : undefined,
   );
-
   const apLon = location?.coordinates[0];
   const apLat = location?.coordinates[1];
+  const selectedSubstationBusinessId = selectedSubstation?.business_id ?? null;
 
   const mapRef = useRef<MapRef>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
 
-  const [substationPopup, setSubstationPopup] = useState<{
-    substation: Substation;
-    longitude: number;
-    latitude: number;
-  } | null>(null);
+  const activePopup = popupSubstation?.position?.coordinates
+    ? {
+        substation: popupSubstation,
+        longitude: popupSubstation.position.coordinates[0],
+        latitude: popupSubstation.position.coordinates[1],
+      }
+    : null;
 
   // grid location clicked: open info popup
   const handleSubstationMarkerClick = useCallback(
-    (substation: Substation) => {
-      if (!onSubstationClick) return;
-      const [longitude, latitude] = substation.position.coordinates;
-      setSubstationPopup({ substation, longitude, latitude });
+    (substation: Substation, location: AccountingPoint["location"]) => {
+      if (substation.position?.coordinates && location) {
+        const apLon = location?.coordinates[0];
+        const apLat = location?.coordinates[1];
+        const [sLon, sLat] = substation.position.coordinates;
+        mapRef.current?.fitBounds(
+          [
+            [Math.min(apLon, sLon), Math.min(apLat, sLat)],
+            [Math.max(apLon, sLon), Math.max(apLat, sLat)],
+          ],
+          { padding: 80, maxZoom: 13 },
+        );
+      }
+      onSubstationClick?.(substation);
     },
     [onSubstationClick],
   );
+  useEffect(() => {
+    if (!selectedSubstation?.position?.coordinates) return;
+    if (apLon === undefined || apLat === undefined) return;
+    const [sLon, sLat] = selectedSubstation.position.coordinates;
 
-  const handleSelectSubstation = useCallback(async () => {
-    if (!substationPopup) return;
-    if (document.fullscreenElement) await document.exitFullscreen();
-    onSubstationClick?.(substationPopup.substation);
-    setSubstationPopup(null);
-  }, [substationPopup, onSubstationClick]);
+    mapRef.current?.fitBounds(
+      [
+        [Math.min(apLon, sLon), Math.min(apLat, sLat)],
+        [Math.max(apLon, sLon), Math.max(apLat, sLat)],
+      ],
+      { padding: 80, maxZoom: 13 },
+    );
+  }, [selectedSubstation]);
 
   const lastFittedIdRef = useRef<string | null | undefined>(undefined);
 
   useEffect(() => {
     if (!mapLoaded) return;
+    if (selectedSubstationBusinessId) {
+      lastFittedIdRef.current = undefined;
+      return;
+    }
     if (!highlightedSubstationBusinessId) return;
     if (highlightedSubstationBusinessId === lastFittedIdRef.current) return;
     if (apLon == null || apLat == null) return;
@@ -313,6 +350,7 @@ export const AccountingPointLocationMap = ({
     lastFittedIdRef.current = highlightedSubstationBusinessId;
   }, [
     mapLoaded,
+    selectedSubstationBusinessId,
     highlightedSubstationBusinessId,
     substations.data,
     apLon,
@@ -323,7 +361,7 @@ export const AccountingPointLocationMap = ({
     return (
       <Panel border className="bg-white p-4">
         <p className="text-sm text-gray-500">
-          No location set for this accounting point.
+          {translate("text.accounting_point_location_map.no_location_set")}
         </p>
       </Panel>
     );
@@ -358,9 +396,10 @@ export const AccountingPointLocationMap = ({
         style={{ width: "100%", height: 700 }}
         mapStyle={OPENFREEMAP_STYLE}
         onLoad={() => setMapLoaded(true)}
-        onClick={() => setSubstationPopup(null)}
+        onClick={onClosePopup}
       >
         <FullscreenControl position="top-right" />
+        <NavigationControl position="top-right" />
         {/* lines between clusters */}
         {lineFC && (
           <Source id="grid-lines" type="geojson" data={lineFC}>
@@ -403,7 +442,7 @@ export const AccountingPointLocationMap = ({
             key={s.id}
             substation={s}
             isSelected={s.business_id === highlightedSubstationBusinessId}
-            onMarkerClick={handleSubstationMarkerClick}
+            onMarkerClick={() => handleSubstationMarkerClick(s, location)}
           />
         ))}
 
@@ -436,17 +475,27 @@ export const AccountingPointLocationMap = ({
         )}
 
         {/* info popup on substation click */}
-        {substationPopup && onSubstationClick && (
+        {activePopup && onSubstationClick && (
           <SubstationInfoPopup
-            substation={substationPopup.substation}
-            longitude={substationPopup.longitude}
-            latitude={substationPopup.latitude}
-            isAlreadySelected={
-              substationPopup.substation.business_id ===
-              highlightedSubstationBusinessId
-            }
-            onSelect={handleSelectSubstation}
-            onClose={() => setSubstationPopup(null)}
+            substation={activePopup.substation}
+            longitude={activePopup.longitude}
+            latitude={activePopup.latitude}
+            businessIdLabel={translate(
+              "text.accounting_point_location_map.popup.business_id",
+            )}
+            kindLabel={translate(
+              "text.accounting_point_location_map.popup.kind",
+            )}
+            statusLabel={translate(
+              "text.accounting_point_location_map.popup.status",
+            )}
+            voltageLabel={translate(
+              "text.accounting_point_location_map.popup.voltage",
+            )}
+            selectedAsGridLocationLabel={translate(
+              "text.accounting_point_location_map.popup.selected_as_grid_location",
+            )}
+            onClose={onClosePopup}
           />
         )}
 

@@ -114,7 +114,22 @@ export type TextKey =
   | "notice_missing_grid_location_button"
   | "notice_insufficient_grid_location_source_button"
   | "notice_bidding_zone_mismatch_button"
-  | "notice_spg_membership_button";
+  | "notice_spg_membership_button"
+  | "accounting_point_location_map.popup.business_id"
+  | "accounting_point_location_map.popup.kind"
+  | "accounting_point_location_map.popup.status"
+  | "accounting_point_location_map.popup.voltage"
+  | "accounting_point_location_map.popup.selected_as_grid_location"
+  | "accounting_point_location_map.popup.select"
+  | "accounting_point_location_map.no_location_set"
+  | "accounting_point_grid_location_panel.heading.missing"
+  | "accounting_point_grid_location_panel.heading.confirmed"
+  | "accounting_point_grid_location_panel.heading.suggested"
+  | "accounting_point_grid_location_panel.button.edit_details"
+  | "accounting_point_grid_location_panel.button.validate_grid_location"
+  | "accounting_point_grid_location_panel.button.add_grid_location"
+  | "accounting_point_grid_location_panel.empty.no_grid_location_set"
+  | "substation_reference_input.search_for_substation";
 
 export const text: Record<string, Record<TextKey, string>> = {
   en: {
@@ -269,6 +284,29 @@ export const text: Record<string, Record<TextKey, string>> = {
     notice_insufficient_grid_location_source_button: "Go to accounting point",
     notice_bidding_zone_mismatch_button:
       "Go to Service providing group membership",
+    "accounting_point_location_map.popup.business_id": "Business ID",
+    "accounting_point_location_map.popup.kind": "Kind",
+    "accounting_point_location_map.popup.status": "Status",
+    "accounting_point_location_map.popup.voltage": "Voltage",
+    "accounting_point_location_map.popup.selected_as_grid_location":
+      "Selected as grid location",
+    "accounting_point_location_map.popup.select": "Select",
+    "accounting_point_location_map.no_location_set":
+      "No location set for this accounting point.",
+    "accounting_point_grid_location_panel.heading.missing":
+      "Missing grid location",
+    "accounting_point_grid_location_panel.heading.confirmed":
+      "Confirmed grid location",
+    "accounting_point_grid_location_panel.heading.suggested":
+      "Suggested grid location",
+    "accounting_point_grid_location_panel.button.edit_details": "Edit details",
+    "accounting_point_grid_location_panel.button.validate_grid_location":
+      "Validate grid location",
+    "accounting_point_grid_location_panel.button.add_grid_location":
+      "Add grid location",
+    "accounting_point_grid_location_panel.empty.no_grid_location_set":
+      "No grid location set for this accounting point yet",
+    "substation_reference_input.search_for_substation": "Search for substation",
   },
   nb: {
     entity_role: "Entitet",
@@ -420,5 +458,29 @@ export const text: Record<string, Record<TextKey, string>> = {
       "Sjekk informasjon om nettlokasjon her",
     notice_insufficient_grid_location_source_button: "Gå til målepunktet",
     notice_bidding_zone_mismatch_button: "Gå til gruppen",
+    "accounting_point_location_map.popup.business_id": "Forretnings-ID",
+    "accounting_point_location_map.popup.kind": "Type",
+    "accounting_point_location_map.popup.status": "Status",
+    "accounting_point_location_map.popup.voltage": "Spenning",
+    "accounting_point_location_map.popup.selected_as_grid_location":
+      "Valgt som nettlokasjon",
+    "accounting_point_location_map.popup.select": "Velg",
+    "accounting_point_location_map.no_location_set":
+      "Ingen lokasjon er satt for dette avregningspunktet.",
+    "accounting_point_grid_location_panel.heading.missing":
+      "Mangler nettlokasjon",
+    "accounting_point_grid_location_panel.heading.confirmed":
+      "Bekreftet nettlokasjon",
+    "accounting_point_grid_location_panel.heading.suggested":
+      "Foreslått nettlokasjon",
+    "accounting_point_grid_location_panel.button.edit_details":
+      "Rediger detaljer",
+    "accounting_point_grid_location_panel.button.validate_grid_location":
+      "Valider nettlokasjon",
+    "accounting_point_grid_location_panel.button.add_grid_location":
+      "Legg til nettlokasjon",
+    "accounting_point_grid_location_panel.empty.no_grid_location_set":
+      "Ingen nettlokasjon er satt for dette avregningspunktet ennå",
+    "substation_reference_input.search_for_substation": "Søk etter stasjon",
   },
 };

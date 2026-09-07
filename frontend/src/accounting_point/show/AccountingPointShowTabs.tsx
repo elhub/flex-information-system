@@ -18,8 +18,10 @@ const userCanViewGrid = (identity: UserIdentity | undefined) =>
 type Props = {
   gridLocation: AccountingPointGridLocation | undefined;
   location: AccountingPoint["location"];
-  selectedSubstation?: Substation | null;
+  selectedSubstation: Substation | null;
   onSelectSubstation: (substation: Substation) => void;
+  popupSubstation: Substation | null;
+  onClosePopup: () => void;
 };
 
 export const AccountingPointShowTabs = ({
@@ -27,6 +29,8 @@ export const AccountingPointShowTabs = ({
   location,
   selectedSubstation,
   onSelectSubstation,
+  popupSubstation,
+  onClosePopup,
 }: Props) => {
   const { permissions } = usePermissions<Permissions>();
   const { data: identity } = useGetIdentity();
@@ -66,6 +70,9 @@ export const AccountingPointShowTabs = ({
             canViewGrid={userCanViewGrid(identity)}
             onSubstationClick={handleSubstationClick}
             highlightedSubstationBusinessId={highlightedBusinessId}
+            selectedSubstation={selectedSubstation}
+            popupSubstation={popupSubstation}
+            onClosePopup={onClosePopup}
           />
         )}
       </Tabs.Panel>
