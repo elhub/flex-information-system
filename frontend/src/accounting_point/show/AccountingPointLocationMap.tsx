@@ -11,7 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { FeatureCollection, LineString, Point, Polygon } from "geojson";
 import { useTranslate } from "ra-core";
 import { AccountingPoint } from "../../generated-client";
-import { Button, Panel } from "../../components/ui";
+import { Panel } from "../../components/ui";
 import { elhubTheme } from "../../theme";
 import { gridURL } from "../../httpConfig";
 import { fetchJSON } from "../../util";
@@ -182,14 +182,11 @@ type SubstationInfoPopupProps = {
   substation: Substation;
   longitude: number;
   latitude: number;
-  isAlreadySelected: boolean;
   businessIdLabel: string;
   kindLabel: string;
   statusLabel: string;
   voltageLabel: string;
   selectedAsGridLocationLabel: string;
-  selectLabel: string;
-  onSelect: () => void;
   onClose: () => void;
 };
 
@@ -197,14 +194,11 @@ const SubstationInfoPopup = ({
   substation,
   longitude,
   latitude,
-  isAlreadySelected,
   businessIdLabel,
   kindLabel,
   statusLabel,
   voltageLabel,
   selectedAsGridLocationLabel,
-  selectLabel,
-  onSelect,
   onClose,
 }: SubstationInfoPopupProps) => (
   <Popup
@@ -251,15 +245,9 @@ const SubstationInfoPopup = ({
           )}
         </tbody>
       </table>
-      {isAlreadySelected ? (
-        <p className="text-xs text-center text-gray-500 italic">
-          {selectedAsGridLocationLabel}
-        </p>
-      ) : (
-        <Button size="small" variant="primary" onClick={onSelect}>
-          {selectLabel}
-        </Button>
-      )}
+      <p className="text-xs text-center text-gray-500 italic">
+        {selectedAsGridLocationLabel}
+      </p>
     </div>
   </Popup>
 );
@@ -334,12 +322,6 @@ export const AccountingPointLocationMap = ({
       { padding: 80, maxZoom: 13 },
     );
   }, [selectedSubstation]);
-
-  const handleSelectSubstation = useCallback(async () => {
-    if (!activePopup) return;
-    if (document.fullscreenElement) await document.exitFullscreen();
-    onSubstationClick?.(activePopup.substation);
-  }, [activePopup, onSubstationClick]);
 
   const lastFittedIdRef = useRef<string | null | undefined>(undefined);
 
@@ -496,10 +478,6 @@ export const AccountingPointLocationMap = ({
             substation={activePopup.substation}
             longitude={activePopup.longitude}
             latitude={activePopup.latitude}
-            isAlreadySelected={
-              activePopup.substation.business_id ===
-              highlightedSubstationBusinessId
-            }
             businessIdLabel={translate(
               "text.accounting_point_location_map.popup.business_id",
             )}
@@ -515,10 +493,6 @@ export const AccountingPointLocationMap = ({
             selectedAsGridLocationLabel={translate(
               "text.accounting_point_location_map.popup.selected_as_grid_location",
             )}
-            selectLabel={translate(
-              "text.accounting_point_location_map.popup.select",
-            )}
-            onSelect={handleSelectSubstation}
             onClose={onClosePopup}
           />
         )}
