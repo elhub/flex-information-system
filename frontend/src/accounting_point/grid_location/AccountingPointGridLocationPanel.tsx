@@ -2,7 +2,7 @@ import { useState } from "react";
 import { AccountingPointGridLocation } from "../../generated-client";
 import { LabelValue } from "../../components/LabelValue";
 import { KILO } from "../../utils/scales";
-import { Button, Heading, Panel } from "../../components/ui";
+import { Alert, BodyText, Button, Heading, Panel } from "../../components/ui";
 import { useTranslate } from "ra-core";
 import { AccountingPointGridLocationInput } from "./AccountingPointGridLocationInput";
 import { Substation } from "../show/AccountingPointLocationMap";
@@ -11,6 +11,7 @@ export const AccountingPointGridLocationPanel = ({
   apId,
   gridLocation,
   userCanEdit,
+  isConnectingSystemOperator,
   selectedSubstation,
   onSelectSubstation,
   onClearSelection,
@@ -19,6 +20,7 @@ export const AccountingPointGridLocationPanel = ({
   apId: number;
   gridLocation: AccountingPointGridLocation | undefined;
   userCanEdit: boolean;
+  isConnectingSystemOperator?: boolean;
   selectedSubstation?: Substation | null;
   onSelectSubstation?: (substation: Substation | null) => void;
   onClearSelection?: () => void;
@@ -48,7 +50,7 @@ export const AccountingPointGridLocationPanel = ({
 
   return (
     <Panel border className="bg-white h-fit p-4 mt-4">
-      <div className="flex items-center justify-between mt-4">
+      <div className="flex items-center justify-between">
         <Heading level={3} size="medium" className="mb-4">
           {heading}
         </Heading>
@@ -56,6 +58,7 @@ export const AccountingPointGridLocationPanel = ({
           <Button
             variant={isConfirmed ? "secondary" : "primary"}
             onClick={() => setIsEditing(true)}
+            className="mt-[-16px]"
           >
             {isConfirmed
               ? translate(
@@ -67,6 +70,16 @@ export const AccountingPointGridLocationPanel = ({
           </Button>
         )}
       </div>
+
+      {gridLocation?.nominal_voltage === 0 && isConnectingSystemOperator && (
+        <Alert variant="warning" className="gap-4 mb-4">
+          <Heading size="small">Missing nominal voltage</Heading>
+          <BodyText>
+            As the connecting system operator, you can update the grid location
+            to give this information.
+          </BodyText>
+        </Alert>
+      )}
 
       {isEditing ? (
         <AccountingPointGridLocationInput
