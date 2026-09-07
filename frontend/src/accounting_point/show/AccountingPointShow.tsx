@@ -90,6 +90,10 @@ export const AccountingPointShow = () => {
             apId={ap.id}
             gridLocation={viewModel.gridLocation}
             userCanEdit={canEditGridLocation}
+            isConnectingSystemOperator={
+              identity?.partyID !== undefined &&
+              identity.partyID === ap.system_operator_id
+            }
             selectedSubstation={selectedSubstation}
             onClearSelection={handleClearSelection}
             onCancelSelection={handleCancelSelection}
