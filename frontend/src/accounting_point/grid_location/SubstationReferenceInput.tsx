@@ -44,7 +44,7 @@ export const SubstationReferenceInput = ({
     queryKey: ["grid", "substation_search", search],
     queryFn: () =>
       fetchJSON<Substation>(`${gridURL}/substation?${queryParams.toString()}`),
-    enabled: true,
+    enabled: search.length >= 1,
     placeholderData: (prev) => prev,
   });
 
